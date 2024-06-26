@@ -134,23 +134,28 @@ export interface CheckProps<TElement extends Element = HTMLSpanElement>
         UncontrollableActivatableProps
 {
     // accessibilities:
-    label          ?: string
+    label                ?: string
     
     
     
     // formats:
-    type           ?: 'checkbox' | 'radio'
+    type                 ?: 'checkbox' | 'radio'
     
     
     
     // values:
-    defaultChecked ?: boolean
-    checked        ?: boolean
+    defaultChecked       ?: boolean
+    checked              ?: boolean
+    
+    
+    
+    // components:
+    nativeInputComponent ?: React.ReactComponentElement<any, React.InputHTMLAttributes<HTMLInputElement> & React.RefAttributes<HTMLInputElement>>
     
     
     
     // children:
-    children       ?: React.ReactNode
+    children             ?: React.ReactNode
 }
 const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TElement>): JSX.Element|null => {
     // styles:
@@ -217,6 +222,11 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         
         defaultChecked, // take, to be aliased to `defaultActive`
         checked,        // take, to be aliased to `active`
+        
+        
+        
+        // components:
+        nativeInputComponent = (<input /> as React.ReactComponentElement<any, React.InputHTMLAttributes<HTMLInputElement> & React.RefAttributes<HTMLInputElement>>),
         
         
         
@@ -402,62 +412,55 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
                 // type,
             }}
         >
-            <input
-                // refs:
-                ref={mergedInputRef}
-                
-                
-                
-                // accessibilities:
-                
-                {...{
+            {React.cloneElement<React.InputHTMLAttributes<HTMLInputElement> & React.RefAttributes<HTMLInputElement>>(nativeInputComponent,
+                // props:
+                {
+                    // refs:
+                    ref      : mergedInputRef,
+                    
+                    
+                    
+                    // accessibilities:
+                    
                     // autoFocus,    // still on <EditableControl> element
                     tabIndex : -2,   // not focusable // do not use `tabIndex : -1`, causing to be ignored by <EditableControl> for `inputValidator.handleInit()`
                     // enterKeyHint, // not supported
-                }}
-                
-                disabled={!propEnabled} // do not submit the value if disabled
-                readOnly={propReadOnly} // locks the value & no validation if readOnly
-                
-                
-                
-                // forms:
-                {...{
+                    
+                    disabled : !propEnabled, // do not submit the value if disabled
+                    readOnly : propReadOnly, // locks the value & no validation if readOnly
+                    
+                    
+                    
+                    // forms:
                     name,
                     form,
-                }}
-                
-                
-                
-                // values:
-                {...{
+                    
+                    
+                    
+                    // values:
                     defaultValue,
                     value,
                     
                     // defaultChecked,       // fully controllable, no defaultChecked
                     checked  : isActive,     // fully controllable
                     onChange : handleChange,
-                }}
-                
-                
-                
-                // validations:
-                {...{
+                    
+                    
+                    
+                    // validations:
                     required,
-                }}
-                
-                
-                
-                // formats:
-                {...{
+                    
+                    
+                    
+                    // formats:
                     type,
-                }}
-                
-                
-                
-                // handlers:
-                onClick={handleInputClickTriggersChange} // a hack to prevent the `triggerChange` triggers `onClick` => re-trigger `triggerChange` => infinity trigger
-            />
+                    
+                    
+                    
+                    // handlers:
+                    onClick  : handleInputClickTriggersChange, // a hack to prevent the `triggerChange` triggers `onClick` => re-trigger `triggerChange` => infinity trigger
+                },
+            )}
             { !!children && <span>
                 { children }
             </span> }
