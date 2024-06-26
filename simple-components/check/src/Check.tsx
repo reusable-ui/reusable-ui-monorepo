@@ -401,7 +401,7 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         defaultValue      : nativeInputDefaultValue   = defaultValue,
         value             : nativeInputValue          = value,
         
-        // defaultChecked : nativeInputDefaultChecked,          // fully controllable, no defaultChecked
+        // defaultChecked : nativeInputDefaultChecked,            // fully controllable, no defaultChecked
         checked           : nativeInputChecked        = isActive, // fully controllable
         
         
