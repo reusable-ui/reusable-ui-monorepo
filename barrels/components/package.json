@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/components",
-  "version": "6.12.0",
+  "version": "6.13.0",
   "description": "A set of official Reusable-UI components.",
   "keywords": [
     "component",
@@ -48,7 +48,7 @@
     "@reusable-ui/button-icon": "^6.5.0",
     "@reusable-ui/card": "^6.5.0",
     "@reusable-ui/carousel": "^6.5.0",
-    "@reusable-ui/check": "^6.7.0",
+    "@reusable-ui/check": "^6.8.0",
     "@reusable-ui/close-button": "^6.5.0",
     "@reusable-ui/collapse": "^6.5.0",
     "@reusable-ui/container": "^6.5.0",
@@ -87,7 +87,7 @@
     "@reusable-ui/pagination": "^6.5.0",
     "@reusable-ui/popup": "^6.5.0",
     "@reusable-ui/progress": "^6.5.0",
-    "@reusable-ui/radio": "^6.7.0",
+    "@reusable-ui/radio": "^6.8.0",
     "@reusable-ui/range": "^6.8.0",
     "@reusable-ui/responsives": "^6.5.0",
     "@reusable-ui/tab": "^6.5.0",
