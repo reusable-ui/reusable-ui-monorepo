@@ -72,7 +72,7 @@
     "@reusable-ui/hamburger-menu-button": "^6.5.0",
     "@reusable-ui/icon": "^6.5.0",
     "@reusable-ui/indicator": "^6.5.0",
-    "@reusable-ui/input": "^6.5.0",
+    "@reusable-ui/input": "^6.6.0",
     "@reusable-ui/label": "^6.5.0",
     "@reusable-ui/list": "^6.5.1",
     "@reusable-ui/masonry": "^6.5.0",
