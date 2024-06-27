@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/check",
-  "version": "6.8.0",
+  "version": "6.8.1",
   "description": "A UI for the user to select multiple options.",
   "keywords": [
     "check",

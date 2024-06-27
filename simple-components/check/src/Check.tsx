@@ -383,7 +383,7 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
     const {
         // accessibilities:
         // autoFocus      : nativeInputAutoFocus      = autoFocus,    // still on <EditableActionControl> element
-        tabIndex          : nativeInputTabIndex       = -2,           // not focusable // do not use `tabIndex : -1`, causing to be ignored by <EditableControl> for `inputValidator.handleInit()`
+        tabIndex          : nativeInputTabIndex       = -1,           // not focusable
         // enterKeyHint   : nativeInputEnterKeyHint   = enterKeyHint, // not supported
         
         disabled          : nativeInputDisabled       = !propEnabled, // do not submit the value if disabled
