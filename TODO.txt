@@ -1,3 +1,4 @@
+[high prior] <EditableTextControl isValid={true}> doesn't work with empty value
 [high prior] .static class conflics with tailwind class
 [high prior] restore themes & basic variants to portal (global stackable)
 [high prior] added @reusable-ui/events, @reusable-ui/drag-n-drop, @reusable-ui/draggable, @reusable-ui/droppable, @reusable-ui/orderable-list
