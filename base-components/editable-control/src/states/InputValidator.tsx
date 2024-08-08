@@ -87,7 +87,7 @@ export const useInputValidator     = <TElement extends EditableControlElement = 
                 
                 // lazy responsives => a bit delayed of responsives is ok:
                 startTransition(() => {
-                    triggerRender(); // notify to react runtime to re-render with a new validity state
+                    triggerRender(); // notify to react runtime to re-render with a new validity state, causing `useInvalidable()` runs the effect => calls `onValidation` => `handleValidation()`
                 });
             } // if
         };
