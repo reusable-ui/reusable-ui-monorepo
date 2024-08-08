@@ -16,6 +16,15 @@
 [high prior] ignores keyCode bubbling from <portal> of <Modal> & <Dropdown>
 [high prior] standardize coding formatting like <Grip>
 
+[high prior] InputValidator::handleChange(), FormValidator::handleChange(), SelectValidator::handleChange() are not aware of validation property change, such as:
+    * required
+    * minLength
+    * maxLength
+    * min
+    * max
+    * step
+    * pattern
+
 [med  prior] add <ProfileImage>
 [med  prior] add <Grip>
 [med  prior] add <OrderableList>
