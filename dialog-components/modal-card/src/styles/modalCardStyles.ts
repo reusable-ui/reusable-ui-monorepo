@@ -63,9 +63,10 @@ export const onModalCardStylesChange = watchChanges(cssModalConfig.onChange, css
 export const usesModalCardLayout = () => {
     return style({
         // layouts:
+        // the scrollable is not working with `display: 'grid'`, use `display: 'flex'` instead:
         display        : 'flex',
         flexDirection  : 'column',
-        justifyContent : 'start',   // if <Popup> is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
+        justifyContent : 'center',  // center <Popup> vertically
         alignItems     : 'center',  // center <Popup> horizontally
         flexWrap       : 'nowrap',  // no wrapping
         
@@ -199,6 +200,27 @@ export const usesModalCardVariants = () => {
                 inlineSize    : 'max-content',    // forcing the <Card>'s width follows the <Card>'s items width
                 blockSize     : 'max-content',    // forcing the <Card>'s height follows the <Card>'s items height
             }),
+            rule(':not(.scrollable).horzStretch>&', {
+                // children:
+                ...children(['&', '*'], { // <Popup> & <Card>
+                    inlineSize    : '100%',
+                    /*
+                        NOTE:
+                        Side effect: the <CardBody> always scrollable because the whole <Card> is forced to stretch to maximum width
+                    */
+                }),
+            }),
+            rule(':not(.scrollable).vertStretch>&', {
+                // children:
+                ...children(['&', '*'], { // <Popup> & <Card>
+                    blockSize     : '100%',
+                    /*
+                        NOTE:
+                        Side effect: the <CardBody> always scrollable because the whole <Card> is forced to stretch to maximum height
+                    */
+                }),
+            }),
+            
             rule('.scrollable>&', {
                 // children:
                 ...children(['&', '*'], { // <Popup> & <Card>
@@ -209,6 +231,18 @@ export const usesModalCardVariants = () => {
                     blockSize     : 'auto',           // follows the content's height, but
                     maxBlockSize  : '100%',           // up to the maximum available parent's height
                     overflow      : 'hidden',         // force the <Card> to scroll
+                }),
+            }),
+            rule('.scrollable.horzStretch>&', {
+                // children:
+                ...children(['&', '*'], { // <Popup> & <Card>
+                    inlineSize    : '100%',
+                }),
+            }),
+            rule('.scrollable.vertStretch>&', {
+                // children:
+                ...children(['&', '*'], { // <Popup> & <Card>
+                    blockSize     : '100%',
                 }),
             }),
         ]),

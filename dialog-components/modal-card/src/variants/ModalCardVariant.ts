@@ -44,7 +44,12 @@ export const useModalCardVariant = ({ modalCardStyle = _defaultModalCardStyle, h
     
     
     return {
-        class: (modalCardStyle === 'regular') ? null : modalCardStyle,
+        class: [
+            ((modalCardStyle === 'regular') ? null : modalCardStyle),
+            ((horzAlign === 'stretch') ? 'horzStretch' : null),
+            ((vertAlign === 'stretch') ? 'vertStretch' : null),
+        ].filter((c): c is Exclude<typeof c, null> => (c !== null))
+        .join(' ') || null,
         
         style : useMemo(() => ({
             [

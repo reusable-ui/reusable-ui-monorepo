@@ -74,6 +74,8 @@ function App() {
                     onExpandEnd={() => console.log('expanded')}
                     
                     autoFocusOn={buttonSaveRef}
+                    horzAlign='stretch'
+                    vertAlign='stretch'
                 >
                     <CardHeader>
                         <h1>Test Modal Card</h1>
