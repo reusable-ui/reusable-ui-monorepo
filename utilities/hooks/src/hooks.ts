@@ -194,6 +194,112 @@ export const useMountedFlag = () => {
 
 
 
+export const useSetTimeout = () => {
+    // states:
+    const [timerRegistry] = useState<Map<ReturnType<typeof setTimeout>, (value: boolean) => void>>(
+        () => new Map<ReturnType<typeof setTimeout>, (value: boolean) => void>()
+    );
+    
+    
+    
+    // effects:
+    useEffect(() => {
+        // cleanups:
+        return () => {
+            // if there are SOME running timer tasks => ABORT all:
+            for (const [timerTask, resolve] of timerRegistry) {
+                // ABORT the running timer task, so the `resolve(true)` will never called:
+                clearTimeout(timerTask);
+                
+                
+                
+                // NOTIFY the timeout has been ABORTED:
+                resolve(false);
+            } // for
+            timerRegistry.clear();
+        };
+    }, []);
+    
+    
+    
+    // returns a function to CREATE a timeout promise:
+    return (delay: number): Promise<boolean> => {
+        const { promise, resolve } = Promise.withResolvers<boolean>();
+        
+        
+        
+        const timerTask = setTimeout(() => {
+            // the timeout has been DONE => UNREGISTER from the registry:
+            timerRegistry.delete(timerTask);
+            
+            
+            
+            // NOTIFY the timeout has been DONE:
+            resolve(true);
+        }, delay);
+        timerRegistry.set(timerTask, resolve);
+        
+        
+        
+        return promise;
+    };
+};
+
+
+
+export const useRequestAnimationFrame = () => {
+    // states:
+    const [timerRegistry] = useState<Map<ReturnType<typeof requestAnimationFrame>, (value: DOMHighResTimeStamp|false) => void>>(
+        () => new Map<ReturnType<typeof requestAnimationFrame>, (value: DOMHighResTimeStamp|false) => void>()
+    );
+    
+    
+    
+    // effects:
+    useEffect(() => {
+        // cleanups:
+        return () => {
+            // if there are SOME running timer tasks => ABORT all:
+            for (const [timerTask, resolve] of timerRegistry) {
+                // ABORT the running timer task, so the `resolve(true)` will never called:
+                cancelAnimationFrame(timerTask);
+                
+                
+                
+                // NOTIFY the timeout has been ABORTED:
+                resolve(false);
+            } // for
+            timerRegistry.clear();
+        };
+    }, []);
+    
+    
+    
+    // returns a function to CREATE a timeout promise:
+    return (): Promise<DOMHighResTimeStamp|false> => {
+        const { promise, resolve } = Promise.withResolvers<DOMHighResTimeStamp|false>();
+        
+        
+        
+        const timerTask = requestAnimationFrame((time) => {
+            // the timeout has been DONE => UNREGISTER from the registry:
+            timerRegistry.delete(timerTask);
+            
+            
+            
+            // NOTIFY the timeout has been DONE:
+            resolve(time);
+        });
+        timerRegistry.set(timerTask, resolve);
+        
+        
+        
+        return promise;
+    };
+};
+
+
+
 export type ScheduledTriggerEventCallback = () => void
 export type ScheduleTriggerEventFunction  = (scheduledTriggerEventCallback: ScheduledTriggerEventCallback) => void
 export const useScheduleTriggerEvent = (): ScheduleTriggerEventFunction => {
