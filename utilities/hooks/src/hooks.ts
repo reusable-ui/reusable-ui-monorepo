@@ -194,6 +194,19 @@ export const useMountedFlag = () => {
 
 
 
+export class TimerPromise<T> extends Promise<T> {
+    readonly #onAbort : () => void
+    constructor(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void, onAbort: () => void) {
+        super(executor);
+        this.#onAbort = onAbort;
+    }
+    
+    
+    
+    abort() {
+        this.#onAbort();
+    }
+}
 export const useSetTimeout = () => {
     // states:
     const [timerRegistry] = useState<Map<ReturnType<typeof setTimeout>, (value: boolean) => void>>(
@@ -223,7 +236,7 @@ export const useSetTimeout = () => {
     
     
     // returns a function to CREATE a timeout promise:
-    return (delay: number): Promise<boolean> => {
+    return (delay: number): TimerPromise<boolean> => {
         const { promise, resolve } = Promise.withResolvers<boolean>();
         
         
@@ -241,7 +254,22 @@ export const useSetTimeout = () => {
         
         
         
-        return promise;
+        return new TimerPromise<boolean>(
+            /* executor: */ (resolve, reject): void => {
+                promise
+                .then((value)   => resolve(value))
+                .catch((reason) => reject(reason))
+            },
+            /* onAbort: */ (): void => {
+                // ABORT the running timer task, so the `resolve(true)` will never called:
+                clearTimeout(timerTask);
+                
+                
+                
+                // NOTIFY the timeout has been ABORTED:
+                resolve(false);
+            }
+        );
     };
 };
 
@@ -276,7 +304,7 @@ export const useRequestAnimationFrame = () => {
     
     
     // returns a function to CREATE a timeout promise:
-    return (): Promise<DOMHighResTimeStamp|false> => {
+    return (): TimerPromise<DOMHighResTimeStamp|false> => {
         const { promise, resolve } = Promise.withResolvers<DOMHighResTimeStamp|false>();
         
         
@@ -294,7 +322,22 @@ export const useRequestAnimationFrame = () => {
         
         
         
-        return promise;
+        return new TimerPromise<DOMHighResTimeStamp|false>(
+            /* executor: */ (resolve, reject): void => {
+                promise
+                .then((value)   => resolve(value))
+                .catch((reason) => reject(reason))
+            },
+            /* onAbort: */ (): void => {
+                // ABORT the running timer task, so the `resolve(true)` will never called:
+                cancelAnimationFrame(timerTask);
+                
+                
+                
+                // NOTIFY the timeout has been ABORTED:
+                resolve(false);
+            },
+        );
     };
 };
 
