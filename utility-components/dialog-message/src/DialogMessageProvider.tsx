@@ -622,9 +622,9 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                     .catch(reject);
                 },
                 {
-                    onCloseDialog        : promiseDialog.closeDialog,
-                    onCollapseStartEvent : promiseDialog.collapseStartEvent,
-                    onCollapseEndEvent   : promiseDialog.collapseEndEvent,
+                    onCloseDialog        : (data, actionType) /* wrap with arrow function to workaround `this` context problem */ => promiseDialog.closeDialog(data, actionType),
+                    onCollapseStartEvent : ()                 /* wrap with arrow function to workaround `this` context problem */ => promiseDialog.collapseStartEvent(),
+                    onCollapseEndEvent   : ()                 /* wrap with arrow function to workaround `this` context problem */ => promiseDialog.collapseEndEvent(),
                 }
             );
         }
@@ -716,7 +716,7 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
         let title : React.ReactNode    = (typeof(fetchErrorTitle  ) === 'function') ? fetchErrorTitle(fetchErrorInfo  ) : fetchErrorTitle;
         if (title === undefined) title = _fetchErrorTitleDefault;
         
-        const promiseEvents = (async (): Promise<Pick<PromiseDialog<TData>, 'closeDialog'|'collapseStartEvent'|'collapseEndEvent'>> => {
+        const promiseOfWrappedPromiseDialog = (async (): Promise<{ promiseDialog: PromiseDialog<TData> }> => {
             const promiseDialog = showMessageError<TData>({
                 // contents:
                 title,
@@ -736,30 +736,25 @@ const DialogMessageProvider = (props: React.PropsWithChildren<DialogMessageProvi
                 // options:
                 ...restShowMessageOptions,
             });
-            return {
-                closeDialog        : promiseDialog.closeDialog,
-                collapseStartEvent : promiseDialog.collapseStartEvent,
-                collapseEndEvent   : promiseDialog.collapseEndEvent,
-            };
+            return { promiseDialog }; // a hack: wrap the PromiseDialog with an object so this async function cannot deep_unwrap the underlying Promise<PromiseDialog>
         })();
-        const closeDialog          = async (data: TData|undefined, actionType?: ModalActionType): Promise<void> => {
-            (await promiseEvents).closeDialog(data, actionType);
-        };
-        let   lastExpandedEvent    : ModalExpandedChangeEvent<TData>|undefined = undefined;
-        const promiseCollapseStart = promiseEvents.then(async ({collapseStartEvent}): Promise<void> => {
-            const event = await collapseStartEvent(); // wait until <Dialog> to be starting_to_close by user
-            lastExpandedEvent = event;
-        });
-        const promiseCollapseEnd   = promiseEvents.then(async ({collapseEndEvent  }): Promise<void> => {
-            const event = await collapseEndEvent();   // wait until <Dialog> to be fully_closed by user
-            lastExpandedEvent = event;
-        });
-        const getLastExpandedEvent = () => lastExpandedEvent!; // the `lastExpandedEvent` is guaranteed to be set (not undefined) after `promiseCollapseStart`|`promiseCollapseEnd` resolved
-        return createPromiseDialog(
-            closeDialog,
-            promiseCollapseStart,
-            promiseCollapseEnd,
-            getLastExpandedEvent,
+        const promiseOfPromiseDialog = (
+            promiseOfWrappedPromiseDialog
+            .then((wrappedPromiseDialog) => wrappedPromiseDialog)
+        );
+        return new PromiseDialog<TData>((resolve, reject) => {
+                promiseOfPromiseDialog
+                .then(({promiseDialog}) => {
+                    promiseDialog
+                    .then(resolve)
+                    .catch(reject);
+                })
+            },
+            {
+                onCloseDialog        : (data, actionType) /* wrap with arrow function to workaround `this` context problem */ => promiseOfPromiseDialog.then(({promiseDialog}): void                                     => { promiseDialog.closeDialog(data, actionType); }),
+                onCollapseStartEvent : ()                 /* wrap with arrow function to workaround `this` context problem */ => promiseOfPromiseDialog.then(({promiseDialog}): Promise<ModalExpandedChangeEvent<TData>> =>   promiseDialog.collapseStartEvent()),
+                onCollapseEndEvent   : ()                 /* wrap with arrow function to workaround `this` context problem */ => promiseOfPromiseDialog.then(({promiseDialog}): Promise<ModalExpandedChangeEvent<TData>> =>   promiseDialog.collapseEndEvent()),
+            }
         );
     });
     const showMessageSuccess      = useEvent(<TData extends unknown = 'ok'   >(dialogMessageSuccess      : DialogMessageSuccess<TData>         | React.ReactNode, options?: ShowMessageOptions<TData>): PromiseDialog<TData> => {
