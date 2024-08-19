@@ -199,7 +199,7 @@ export interface TimerPromiseOptions {
 }
 export class TimerPromise<T> extends Promise<T> {
     readonly #options: TimerPromiseOptions
-    constructor(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void, options: TimerPromiseOptions) {
+    constructor(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: unknown) => void) => void, options: TimerPromiseOptions) {
         super(executor);
         this.#options = options;
     }
