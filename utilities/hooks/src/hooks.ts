@@ -203,7 +203,7 @@ export class TimerPromise<T> extends Promise<T> {
     
     
     
-    abort() {
+    abort(): void {
         this.#onAbort();
     }
 }
