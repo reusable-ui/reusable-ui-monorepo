@@ -36,25 +36,78 @@ import type {
 
 
 // types:
-export interface PromiseDialogBase<TData extends any = any>
-extends
-    Promise<TData|undefined>
-{
-    closeDialog(data: TData|undefined, actionType?: ModalActionType) : void
+export interface PromiseDialogBaseOptions<TData extends unknown = unknown> {
+    onCloseDialog: (data: TData|undefined, actionType?: ModalActionType) => void
 }
-export interface PromiseDialog<TData extends any = any>
+export class PromiseDialogBase<TData extends unknown = unknown>
+    extends
+        Promise<TData|undefined>
+{
+    readonly #options: PromiseDialogBaseOptions<TData>
+    constructor(executor: (resolve: (value: TData|undefined | PromiseLike<TData|undefined>) => void, reject: (reason?: unknown) => void) => void, options: PromiseDialogBaseOptions<TData>) {
+        super(executor);
+        this.#options = options;
+    }
+    
+    
+    
+    closeDialog(data: TData|undefined, actionType?: ModalActionType) : void {
+        this.#options.onCloseDialog(data, actionType);
+    }
+}
+
+export interface PromiseDialogOptions<TData extends unknown = unknown>
+    extends
+        PromiseDialogBaseOptions<TData>
+{
+    onCollapseStartEvent() : Promise<ModalExpandedChangeEvent<TData>>
+    onCollapseEndEvent()   : Promise<ModalExpandedChangeEvent<TData>>
+}
+export class PromiseDialog<TData extends unknown = unknown>
     extends
         PromiseDialogBase<TData>
 {
-    collapseStartEvent() : Promise<ModalExpandedChangeEvent<TData>>
-    collapseEndEvent()   : Promise<ModalExpandedChangeEvent<TData>>
+    readonly #options: PromiseDialogOptions<TData>
+    constructor(executor: (resolve: (value: TData|undefined | PromiseLike<TData|undefined>) => void, reject: (reason?: unknown) => void) => void, options: PromiseDialogOptions<TData>) {
+        super(executor, options);
+        this.#options = options;
+    }
+    
+    
+    
+    collapseStartEvent() : Promise<ModalExpandedChangeEvent<TData>> {
+        return this.#options.onCollapseStartEvent();
+    }
+    collapseEndEvent()   : Promise<ModalExpandedChangeEvent<TData>> {
+        return this.#options.onCollapseEndEvent();
+    }
 }
-export interface CancelablePromiseDialog<TData extends any = any>
+
+export interface CancelablePromiseDialogOptions<TData extends unknown = unknown>
+    extends
+        PromiseDialogBaseOptions<TData>
+{
+    onCollapseStartEvent() : Promise<ModalExpandedChangeEvent<TData>|undefined>
+    onCollapseEndEvent()   : Promise<ModalExpandedChangeEvent<TData>|undefined>
+}
+export class CancelablePromiseDialog<TData extends unknown = unknown>
     extends
         PromiseDialogBase<TData>
 {
-    collapseStartEvent() : Promise<ModalExpandedChangeEvent<TData>|undefined>
-    collapseEndEvent()   : Promise<ModalExpandedChangeEvent<TData>|undefined>
+    readonly #options: CancelablePromiseDialogOptions<TData>
+    constructor(executor: (resolve: (value: TData|undefined | PromiseLike<TData|undefined>) => void, reject: (reason?: unknown) => void) => void, options: CancelablePromiseDialogOptions<TData>) {
+        super(executor, options);
+        this.#options = options;
+    }
+    
+    
+    
+    collapseStartEvent() : Promise<ModalExpandedChangeEvent<TData>|undefined> {
+        return this.#options.onCollapseStartEvent();
+    }
+    collapseEndEvent()   : Promise<ModalExpandedChangeEvent<TData>|undefined> {
+        return this.#options.onCollapseEndEvent();
+    }
 }
 
 
@@ -74,7 +127,7 @@ export interface ModalBaseProps<TElement extends Element = HTMLElement, TModalEx
 {
     /* empty */
 }
-export interface DialogState<TData extends any = any> {
+export interface DialogState<TData extends unknown = unknown> {
     dialogComponent   : React.ReactComponentElement<any, ModalBaseProps<Element, ModalExpandedChangeEvent<TData>>>
     lastExpandedEvent : ModalExpandedChangeEvent<TData>|undefined
     
@@ -86,7 +139,7 @@ export type AnswerButtonComponentOrChildren              =
     |Required<ButtonComponentProps>['buttonComponent']                                                                  // <Button>
     |React.ReactComponentElement<React.ExoticComponent<{ children?: React.ReactNode }>, { children?: React.ReactNode }> // <React.Fragment>
     |Iterable<React.ReactNode>                                                                                          // Array<React.Node>
-export type AnswerOptionList<TData extends any = 'ok'> =
+export type AnswerOptionList<TData extends unknown = 'ok'> =
     |Map   <        TData            , AnswerButtonComponentOrChildren> // { answer => TheComponent }
     |Record<Extract<TData, keyof any>, AnswerButtonComponentOrChildren> // { answer :  TheComponent }
 
@@ -129,7 +182,7 @@ export type FetchErrorMessage = React.ReactNode | ((errorInfo: FetchErrorInfo) =
 
 
 // options:
-export interface ShowMessageOptions<TData extends any = 'ok'>
+export interface ShowMessageOptions<TData extends unknown = 'ok'>
     extends
         Omit<ModalBaseProps<Element>,
             // contents:
@@ -144,7 +197,7 @@ export interface ShowMessageOptions<TData extends any = 'ok'>
 
 
 // states:
-export interface DialogMessage<TData extends any = 'ok'>
+export interface DialogMessage<TData extends unknown = 'ok'>
     extends
         ShowMessageOptions<TData>
 {
@@ -152,7 +205,7 @@ export interface DialogMessage<TData extends any = 'ok'>
     title                     ?: React.ReactNode
     message                    : React.ReactNode
 }
-export interface DialogMessageError<TData extends any = 'ok'>
+export interface DialogMessageError<TData extends unknown = 'ok'>
     extends
         ShowMessageOptions<TData>
 {
@@ -160,7 +213,7 @@ export interface DialogMessageError<TData extends any = 'ok'>
     title                     ?: React.ReactNode
     error                      : React.ReactNode
 }
-export interface DialogMessageFieldError<TData extends any = 'ok'>
+export interface DialogMessageFieldError<TData extends unknown = 'ok'>
     extends
         ShowMessageOptions<TData>
 {
@@ -180,7 +233,7 @@ export interface DialogMessageFieldError<TData extends any = 'ok'>
     // contexts:
     context                   ?: any
 }
-export interface DialogMessageFetchError<TData extends any = 'ok'>
+export interface DialogMessageFetchError<TData extends unknown = 'ok'>
     extends
         ShowMessageOptions<TData>
 {
@@ -195,7 +248,7 @@ export interface DialogMessageFetchError<TData extends any = 'ok'>
     // contexts:
     context                   ?: any
 }
-export interface DialogMessageSuccess<TData extends any = 'ok'>
+export interface DialogMessageSuccess<TData extends unknown = 'ok'>
     extends
         ShowMessageOptions<TData>
 {
@@ -203,7 +256,7 @@ export interface DialogMessageSuccess<TData extends any = 'ok'>
     title                     ?: React.ReactNode
     success                    : React.ReactNode
 }
-export interface DialogMessageNotification<TData extends any = 'ok'>
+export interface DialogMessageNotification<TData extends unknown = 'ok'>
     extends
         ShowMessageOptions<TData>
 {
