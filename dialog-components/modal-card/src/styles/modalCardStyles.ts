@@ -72,6 +72,11 @@ export const usesModalCardLayout = () => {
         
         
         
+        // accessibilities:
+        pointerEvents  : 'none', // just a wrapper <Popup> element (ghost), which the size may bigger (when the `(horz|vert)Align=stretch` and the user limits the size of <Card>) than the <Card>, thus causing to BLOCK the <Backdrop> INTERACTION, so we set 'none'
+        
+        
+        
         // animations:
         // a fix to overwrite <Popup>'s filter:
         filter         : modals.modalUiFilter,
@@ -87,6 +92,11 @@ export const usesModalCardLayout = () => {
             
             // layouts:
             ...style({
+                // accessibilities:
+                pointerEvents : 'initial', // cancel out *inherited* ghost layer from <Popup>, *re-enabling* mouse_event on the <Card>
+                
+                
+                
                 // children:
                 ...children([headerElm, footerElm, bodyElm], {
                     // customize:
