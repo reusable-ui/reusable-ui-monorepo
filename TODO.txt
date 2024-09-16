@@ -25,6 +25,7 @@
     * step
     * pattern
 
+[med  prior] update <ModalCard> using grid instead of flex, similar to <ModalSide>
 [med  prior] add <ProfileImage>
 [med  prior] add <Grip>
 [med  prior] add <OrderableList>

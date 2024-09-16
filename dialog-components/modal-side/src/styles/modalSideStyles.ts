@@ -47,14 +47,14 @@ import {
     
     
     
-    // a capability of UI to rotate its layout:
-    usesOrientationable,
+    // // a capability of UI to rotate its layout:
+    // usesOrientationable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
-    // defaults:
-    defaultOrientationableOptions as cardDefaultOrientationableOptions,
+    // // defaults:
+    // defaultOrientationableOptions as cardDefaultOrientationableOptions,
     
     
     
@@ -77,18 +77,32 @@ import {
 export const onModalSideStylesChange = watchChanges(cssModalSideConfig.onChange);
 
 export const usesModalSideLayout = () => {
-    const orientationableStuff = usesOrientationable(cardDefaultOrientationableOptions);
-    const {ifOrientationInline, ifOrientationBlock} = orientationableStuff;
+    // // const orientationableStuff = usesOrientationable(cardDefaultOrientationableOptions);
+    // // const {ifOrientationInline, ifOrientationBlock} = orientationableStuff;
     
     
     
     return style({
-        // layouts:
-        display        : 'flex',
-        flexDirection  : 'column',
-        justifyContent : 'start',   // if <Collapse> is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the first item should be visible first
-        alignItems     : 'stretch', // stretch <Collapse> horizontally
-        flexWrap       : 'nowrap',  // no wrapping
+        display : 'grid',
+        
+        // defines which part of <Card> REMAIN VISIBLE when sliding:
+        ...rule('.inlineStart>&', {
+            justifyContent : 'end',   // priority to show the RIGHT  part of <Card>, the LEFT   part may be CROPPED during collapsing
+        }),
+        ...rule('.inlineEnd>&', {
+            justifyContent : 'start', // priority to show the LEFT   part of <Card>, the RIGHT  part may be CROPPED during collapsing
+        }),
+        ...rule('.blockStart>&', {
+            alignContent   : 'end',   // priority to show the BOTTOM part of <Card>, the TOP    part may be CROPPED during collapsing
+        }),
+        ...rule('.blockEnd>&', {
+            alignContent   : 'start', // priority to show the TOP    part of <Card>, the BOTTOM part may be CROPPED during collapsing
+        }),
+        
+        
+        
+        // accessibilities:
+        pointerEvents  : 'none', // just a wrapper <Popup> element (ghost), which the size may bigger (when the user limits the size of <Card>) than the <Card>, thus causing to BLOCK the <Backdrop> INTERACTION, so we set 'none'
         
         
         
@@ -110,29 +124,34 @@ export const usesModalSideLayout = () => {
             
             // layouts:
             ...style({
-                // layouts:
-                // a fix for collapsing vertically, so the <CardBody> appears sliding:
-                ...rule(':is(.inlineStart, .blockStart)>&', {
-                    justifyContent : 'end', // if items are not growable, the excess space (if any) placed at the beginning, and if no sufficient space available => the last item should be visible first
-                }),
-                ...ifOrientationInline({...rule(':is(.inlineStart, .inlineEnd)>&', {
-                    ...children(bodyElm, {
-                        // sizes:
-                        flex : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
-                    }),
-                })}),
-                ...ifOrientationBlock({...rule(':is(.blockStart, .blockEnd)>&', {
-                    ...children(bodyElm, {
-                        // sizes:
-                        flex : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
-                    }),
-                })}),
+                // // layouts:
+                // // a fix for collapsing vertically, so the <CardBody> appears sliding:
+                // // ...rule(':is(.inlineStart, .blockStart)>&', {
+                // //     justifyContent : 'end', // if items are not growable, the excess space (if any) placed at the beginning, and if no sufficient space available => the last item should be visible first
+                // // }),
+                // // ...ifOrientationInline({...rule(':is(.inlineStart, .inlineEnd)>&', {
+                // //     ...children(bodyElm, {
+                // //         // sizes:
+                // //         flex : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
+                // //     }),
+                // // })}),
+                // // ...ifOrientationBlock({...rule(':is(.blockStart, .blockEnd)>&', {
+                // //     ...children(bodyElm, {
+                // //         // sizes:
+                // //         flex : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
+                // //     }),
+                // // })}),
                 
                 
                 
                 // sizes:
                 // maximum height of <Card> when side-left & side-right:
                 flex          : [[1, 1, '100%']], // growable, shrinkable, initial from parent's height
+                
+                
+                
+                // accessibilities:
+                pointerEvents : 'initial', // cancel out *inherited* ghost layer from <Popup>, *re-enabling* mouse_event on the <Card>
                 
                 
                 
