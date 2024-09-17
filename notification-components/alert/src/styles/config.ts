@@ -20,21 +20,29 @@ import {
 // configs:
 export const [alerts, alertValues, cssAlertConfig] = cssConfig(() => {
     const bases = {
-        // spacings:
-        gapInlineSm : spacers.sm        as CssKnownProps['gapInline'],
-        gapBlockSm  : spacers.sm        as CssKnownProps['gapBlock' ],
-        gapInlineMd : spacers.md        as CssKnownProps['gapInline'],
-        gapBlockMd  : spacers.md        as CssKnownProps['gapBlock' ],
-        gapInlineLg : spacers.lg        as CssKnownProps['gapInline'],
-        gapBlockLg  : spacers.lg        as CssKnownProps['gapBlock' ],
+        // icons:
+        iconShapeOutside : 'circle(50%)'            as CssKnownProps['shapeOutside'], // assumes the icon shape is always a circle
+        
+        iconMarginSm     : spacers.sm               as CssKnownProps['margin'      ],
+        iconMarginMd     : spacers.md               as CssKnownProps['margin'      ],
+        iconMarginLg     : spacers.lg               as CssKnownProps['margin'      ],
+        
+        
+        
+        // controls:
+        controlMarginSm  : spacers.sm               as CssKnownProps['margin'      ],
+        controlMarginMd  : spacers.md               as CssKnownProps['margin'      ],
+        controlMarginLg  : spacers.lg               as CssKnownProps['margin'      ],
     };
     
     
     
     const defaults = {
-        // spacings:
-        gapInline   : bases.gapInlineMd as CssKnownProps['gapInline'],
-        gapBlock    : bases.gapBlockMd  as CssKnownProps['gapBlock' ],
+        // icons:
+        iconMargin       : bases.iconMarginMd       as CssKnownProps['margin'      ],
+        
+        // controls:
+        controlMargin    : bases.controlMarginMd    as CssKnownProps['margin'      ],
     };
     
     

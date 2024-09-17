@@ -1,6 +1,7 @@
 // cssfn:
 import {
     // writes css in javascript:
+    rule,
     children,
     style,
     
@@ -41,7 +42,6 @@ import {
 import {
     // elements:
     iconElm,
-    bodyElm,
     controlElm,
 }                           from './elements.js'
 import {
@@ -56,82 +56,80 @@ import {
 export const onAlertStylesChange = watchChanges(onContentStylesChange, onPopupStylesChange, cssAlertConfig.onChange);
 
 export const usesAlertLayout = () => {
+    // hacks:
+    const positiveMarginTop   = `calc(min(${alerts.iconMargin}, ${alerts.controlMargin}))`;
+    const positiveMarginLeft  = alerts.iconMargin;
+    const positiveMarginRight = alerts.controlMargin;
+    
+    const negativeMarginTop   = `calc(0px - ${positiveMarginTop})`;
+    const negativeMarginLeft  = `calc(0px - ${positiveMarginLeft})`;
+    const negativeMarginRight = `calc(0px - ${positiveMarginRight})`;
+    
     return style({
         // layouts:
         ...usesPopupLayout(),
         ...usesContentLayout(),
         ...style({
             // layouts:
-            display          : 'grid',        // use css grid for layouting, so we can customize the desired area later.
+            display      : 'block',
             
-            // explicit areas:
-            /*
-                just one explicit area: `body`
-                `icon` & `control` rely on implicit area
-            */
-            gridTemplate     : [[
-                '"body" auto', // fluid height
-                '/',
-                ' auto'        // fluid width
-            ]],
             
-            // implicit areas:
-            gridAutoFlow     : 'column',      // if child's gridArea was not specified => place it automatically at horz direction
-            gridAutoRows     : 'min-content', // other areas than `body` should take the minimum required height
-            gridAutoColumns  : 'min-content', // other areas than `body` should take the minimum required width
-            // the gridArea's size configured as *minimum* content's size required => no free space left to distribute => so (justify|algin)Content is *not required*
             
-            // child default sizes:
-            justifyItems     : 'stretch',     // each section fills the entire area's width
-            alignItems       : 'stretch',     // each section fills the entire area's height
+            // typos:
+            overflow     : 'hidden',     // force to overflowWrap
+            overflowWrap : 'break-word', // break long word to the next line
             
             
             
             // children:
-            ...children(iconElm, {
-                // layouts:
-                gridArea     : '1 / -3', // the first row / the third column starting from the last
+            ...children('.wrapper', {
+                // hacks:
+                marginBlockStart  : negativeMarginTop,
+                marginInlineStart : negativeMarginLeft,
+                marginInlineEnd   : negativeMarginRight,
                 
                 
                 
-                // sizes:
-                justifySelf  : 'center', // align horizontally to center
-                alignSelf    : 'start',  // align vertically   to top
-                
-                
-                
-                // customize:
-                ...usesCssProps(usesPrefixedProps(alerts, 'icon')), // apply config's cssProps starting with icon***
-            }),
-            ...children(bodyElm, {
-                // layouts:
-                gridArea     : 'body',
-                
-                
-                
-                // scrolls:
-                overflow     : 'hidden',     // force to overflowWrap
-                overflowWrap : 'break-word', // break long word to the next line
-                
-                
-                
-                // customize:
-                ...usesCssProps(usesPrefixedProps(alerts, 'body')), // apply config's cssProps starting with body***
-            }),
-            ...children(controlElm, {
-                // layouts:
-                gridArea     : '1 / 2',  // the first row / the second column
-                
-                
-                
-                // sizes:
-                justifySelf  : 'center', // align horizontally to center
-                alignSelf    : 'start',  // align vertically   to top
-                
-                
-                
-                // customize:
-                ...usesCssProps(usesPrefixedProps(alerts, 'control')), // apply config's cssProps starting with control***
+                ...children(iconElm, {
+                    // positions:
+                    float            : 'inline-start',
+                    position         : 'relative',
+                    // insetBlockStart  : `calc(0px - ${alerts.iconMargin})`, // kill top margin  // DOESN'T WORK for the shape of surrounding text
+                    // insetInlineStart : `calc(0px - ${alerts.iconMargin})`, // kill left margin // DOESN'T WORK for the shape of surrounding text
+                    
+                    
+                    
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(alerts, 'icon')), // apply config's cssProps starting with icon***
+                }),
+                ...children(controlElm, {
+                    // positions:
+                    float            : 'inline-end',
+                    position         : 'relative',
+                    // insetBlockStart  : `calc(0px - ${alerts.controlMargin})`, // kill top margin   // DOESN'T WORK for the shape of surrounding text
+                    // insetInlineEnd   : `calc(0px - ${alerts.controlMargin})`, // kill right margin // DOESN'T WORK for the shape of surrounding text
+                    
+                    
+                    
+                    // customize:
+                    ...usesCssProps(usesPrefixedProps(alerts, 'control')), // apply config's cssProps starting with control***
+                }),
+                ...children('.content', {
+                    // hacks:
+                    paddingBlockStart  : positiveMarginTop,
+                    paddingInlineStart : positiveMarginLeft,
+                    paddingInlineEnd   : positiveMarginRight,
+                    
+                    
+                    
+                    // children:
+                    // kill top margin for the first paragraph/heading:
+                    ...children(['p', '.p', 'h1', '.h1', 'h2', '.h2', 'h3', '.h3', 'h4', '.h4', 'h5', '.h5', 'h6', '.h6'], {
+                        ...rule(':first-child', {
+                            marginBlockStart : '0px',
+                        }),
+                    }),
+                }),
             }),
             
             

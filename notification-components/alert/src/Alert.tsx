@@ -104,6 +104,9 @@ const getIconByTheme = <TElement extends Element = HTMLElement, TExpandedChangeE
 
 
 // react components:
+export type PartialNullable<T> = {
+    [P in keyof T]: T[P]|null
+};
 export interface AlertProps<TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // bases:
@@ -113,8 +116,8 @@ export interface AlertProps<TElement extends Element = HTMLElement, TExpandedCha
         ControllableCollapsibleProps<TExpandedChangeEvent>,
         
         // components:
-        IconComponentProps<Element>,
-        ControlComponentProps<Element>
+        PartialNullable<IconComponentProps<Element>>,
+        PartialNullable<ControlComponentProps<Element>>
 {
 }
 const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: AlertProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
@@ -163,7 +166,7 @@ const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
     });
     const handleControlClick         = useMergeEvents(
         // preserves the original `onClick` from `controlComponent`:
-        controlComponent.props.onClick,
+        controlComponent?.props.onClick,
         
         
         
@@ -196,42 +199,44 @@ const Alert = <TElement extends Element = HTMLElement, TExpandedChangeEvent exte
             // classes:
             mainClass={props.mainClass ?? styleSheet.main}
         >
-            {/* <Icon> */}
-            {React.cloneElement<IconProps<Element>>(iconComponent,
-                // props:
-                {
-                    // variants:
-                    size    : iconComponent.props.size    ?? _defaultIconSizes[size],
-                    
-                    
-                    
-                    // classes:
-                    classes : iconComponent.props.classes ?? _defaultIconClasses,
-                },
-            )}
-            
-            { children && <div className='body'>
-                { children }
-            </div> }
-            
-            {/* <Control> */}
-            {React.cloneElement<ControlProps<Element>>(controlComponent,
-                // props:
-                {
-                    // variants:
-                    size    : controlComponent.props.size    ?? (_defaultControlSizes[size] as ControlProps<Element>['size']),
-                    
-                    
-                    
-                    // classes:
-                    classes : controlComponent.props.classes ?? _defaultControlClasses,
-                    
-                    
-                    
-                    // handlers:
-                    onClick : handleControlClick,
-                },
-            )}
+            <div className='wrapper'>
+                {/* <Icon> */}
+                {!!iconComponent && React.cloneElement<IconProps<Element>>(iconComponent,
+                    // props:
+                    {
+                        // variants:
+                        size    : iconComponent.props.size    ?? _defaultIconSizes[size],
+                        
+                        
+                        
+                        // classes:
+                        classes : iconComponent.props.classes ?? _defaultIconClasses,
+                    },
+                )}
+                
+                {/* <Control> */}
+                {!!controlComponent && React.cloneElement<ControlProps<Element>>(controlComponent,
+                    // props:
+                    {
+                        // variants:
+                        size    : controlComponent.props.size    ?? (_defaultControlSizes[size] as ControlProps<Element>['size']),
+                        
+                        
+                        
+                        // classes:
+                        classes : controlComponent.props.classes ?? _defaultControlClasses,
+                        
+                        
+                        
+                        // handlers:
+                        onClick : handleControlClick,
+                    },
+                )}
+                
+                <div className='content'>
+                    { children }
+                </div>
+            </div>
         </Popup>
     );
 };
