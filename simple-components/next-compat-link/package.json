@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/next-compat-link",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "A next-js compatible Link for use with Reusable-UI components in harmony.",
   "keywords": [
     "link",

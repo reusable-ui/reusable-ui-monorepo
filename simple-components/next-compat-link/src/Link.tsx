@@ -9,7 +9,6 @@ import {
     
     // hooks:
     useState,
-    useMemo,
 }                           from 'react'
 
 // next-js:
@@ -38,8 +37,8 @@ export interface LinkProps
 }
 const Link = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => {
     // states:
-    const newPathName = usePathname(); // just to force to re-render when the url changes
-    const [latePathName, setLatePathName] = useState<string>(newPathName); // actually, force to re-render when the url is completely changed
+    const newPathName = usePathname();
+    const [latePathName, setLatePathName] = useState<string>(newPathName);
     
     
     
@@ -51,13 +50,13 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => {
         
         
         // actions:
-        setLatePathName(newPathName); // force to re-render for the SECOND_TIME when the url is completely changed
+        setLatePathName(newPathName); // an extra re-render: force to re-render for the SECOND_TIME when the current url is CHANGED
     }, [newPathName, latePathName]); // sync newPathName <==> latePathName
     
     
     
     // jsx:
-    return useMemo(() =>
+    return (
         <LinkOrigin
             // other props:
             {...props}
@@ -67,7 +66,7 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => {
             // refs:
             ref={ref}
         />
-    , [latePathName]); // only re-render when the `latePathName` changes -- ignore the `newPathName` changes
+    );
 });
 export {
     Link,
