@@ -51,7 +51,7 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => {
         
         
         // actions:
-        setLatePathName(newPathName); // force to re-render when the url is completely changed
+        setLatePathName(newPathName); // force to re-render for the SECOND_TIME when the url is completely changed
     }, [newPathName, latePathName]); // sync newPathName <==> latePathName
     
     
