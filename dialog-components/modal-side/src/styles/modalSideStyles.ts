@@ -151,7 +151,7 @@ export const usesModalSideLayout = () => {
                 
                 
                 // accessibilities:
-                pointerEvents : 'initial', // cancel out *inherited* ghost layer from <Popup>, *re-enabling* mouse_event on the <Card>
+                pointerEvents : 'auto', // cancel out *inherited* ghost layer from <Popup>, *re-enabling* mouse_event on the <Card>
                 
                 
                 

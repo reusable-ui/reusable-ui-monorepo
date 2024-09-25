@@ -259,9 +259,9 @@ export const usesBackdropVariants = memoizeStyle(() => {
                 
                 
                 // children:
-                ...children('*', { // <ModalUi>
+                ...rule(':where(&)>*', { // <ModalUi>, zeroed the specificity to be easily overriden
                     // accessibilities:
-                    pointerEvents : 'initial', // cancel out *inherited* ghost layer from <Backdrop>, *re-enabling* mouse_event on the <ModalUi>
+                    pointerEvents : 'auto', // cancel out *inherited* ghost layer from <Backdrop>, *re-enabling* mouse_event on the <ModalUi>
                 }),
             }),
         ]),
