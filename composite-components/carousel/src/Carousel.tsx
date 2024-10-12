@@ -1488,7 +1488,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
         
         // children:
         basicComponent.props.children ?? (<>
-            {!!itemsCount && <>
+            {/* !!itemsCount && // do not conditional render to preserve `elmRef` and `scrollRef` */ <>
                 {/* .list */}
                 <Generic<TElement>
                     // refs:
@@ -1507,7 +1507,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     
                     
                     // handlers:
-                    onScroll={listHandleScroll}
+                    onScroll={itemsCount ? listHandleScroll : undefined}
                 >
                     {wrappedChildren}
                 </Generic>
@@ -1563,7 +1563,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     
                     
                     // accessibilities:
-                    label       : prevButtonComponent.props.label ?? 'Previous',
+                    label       : prevButtonComponent.props.label       ?? 'Previous',
+                    
+                    
+                    
+                    // states:
+                    enabled     : prevButtonComponent.props.enabled     ?? !!itemsCount,
                     
                     
                     
@@ -1588,7 +1593,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     // variants:
                     size        : nextButtonComponent.props.size        ?? basicVariantProps.size     ?? 'lg',
                     gradient    : nextButtonComponent.props.gradient    ?? basicVariantProps.gradient ?? true,
-                    buttonStyle : prevButtonComponent.props.buttonStyle ?? 'ghost',
+                    buttonStyle : nextButtonComponent.props.buttonStyle ?? 'ghost',
                     
                     
                     
@@ -1598,7 +1603,12 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     
                     
                     // accessibilities:
-                    label       : nextButtonComponent.props.label ?? 'Next',
+                    label       : nextButtonComponent.props.label       ?? 'Next',
+                    
+                    
+                    
+                    // states:
+                    enabled     : nextButtonComponent.props.enabled     ?? !!itemsCount,
                     
                     
                     

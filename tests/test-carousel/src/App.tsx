@@ -88,6 +88,18 @@ function App() {
                     <img alt='lorem image' src='/images/lorem-img/water-500x800.jpg' />
                     <img alt='lorem image' src='/images/lorem-img/wood-700x600.jpg' />
                 </Carousel>
+                <hr />
+                <Carousel theme='primary' style={style2} infiniteLoop={true} scrollIndex={value} scrollMargin={0.25} onScrollIndexChange={({scrollIndex}) => {
+                    console.log('Carousel_2 set to: ', scrollIndex);
+                    // setValue(scrollIndex);
+                }}>
+                </Carousel>
+                <hr />
+                <Carousel theme='primary' style={style2} onScrollIndexChange={({scrollIndex}) => {
+                    console.log('Carousel_2 set to: ', scrollIndex);
+                    // setValue(scrollIndex);
+                }}>
+                </Carousel>
             </div>
         </>
     );
