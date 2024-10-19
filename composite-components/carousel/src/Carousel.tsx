@@ -1568,7 +1568,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     
                     
                     // states:
-                    enabled     : prevButtonComponent.props.enabled     ?? !!itemsCount,
+                    enabled     : prevButtonComponent.props.enabled     ?? (itemsCount > 1),
                     
                     
                     
@@ -1608,7 +1608,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                     
                     
                     // states:
-                    enabled     : nextButtonComponent.props.enabled     ?? !!itemsCount,
+                    enabled     : nextButtonComponent.props.enabled     ?? (itemsCount > 1),
                     
                     
                     

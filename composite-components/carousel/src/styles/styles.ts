@@ -322,7 +322,7 @@ export const usesCarouselLayout = (options?: ContentChildrenMediaOptions) => {
                 '"prevBtn main nextBtn" 1fr',
                 '"prevBtn nav  nextBtn" min-content',
                 '/',
-                '   15%   1fr    15%'
+                'minmax(min-content, 15%) 1fr minmax(min-content, 15%)'
             ]],
             
             // child default sizes:
