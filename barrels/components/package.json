@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/components",
-  "version": "6.13.3",
+  "version": "6.13.4",
   "description": "A set of official Reusable-UI components.",
   "keywords": [
     "component",
@@ -47,7 +47,7 @@
     "@reusable-ui/button": "^6.5.0",
     "@reusable-ui/button-icon": "^6.5.0",
     "@reusable-ui/card": "^6.5.0",
-    "@reusable-ui/carousel": "^6.5.3",
+    "@reusable-ui/carousel": "^6.5.4",
     "@reusable-ui/check": "^6.8.1",
     "@reusable-ui/close-button": "^6.5.0",
     "@reusable-ui/collapse": "^6.5.0",

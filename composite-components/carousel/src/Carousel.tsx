@@ -164,8 +164,7 @@ export interface CarouselProps<TElement extends HTMLElement = HTMLElement, TScro
         CarouselVariant,
         
         // components:
-        BasicComponentProps<TElement>,
-        NavscrollComponentProps<Element>
+        BasicComponentProps<TElement>
 {
     // scrolls:
     scrollRef            ?: React.Ref<TElement & Partial<ImperativeScroll>> // setter ref
@@ -176,8 +175,9 @@ export interface CarouselProps<TElement extends HTMLElement = HTMLElement, TScro
     
     
     // components:
-    prevButtonComponent  ?: ButtonComponentProps['buttonComponent']
-    nextButtonComponent  ?: ButtonComponentProps['buttonComponent']
+    prevButtonComponent  ?: ButtonComponentProps['buttonComponent'] | null
+    nextButtonComponent  ?: ButtonComponentProps['buttonComponent'] | null
+    navscrollComponent   ?: NavscrollComponentProps<Element>['navscrollComponent'] | null
     
     
     
@@ -740,7 +740,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     // classes:
     const mergedPrevButtonClasses = useMergeClasses(
         // preserves the original `classes` from `prevButtonComponent`:
-        prevButtonComponent.props.classes,
+        prevButtonComponent?.props.classes,
         
         
         
@@ -749,7 +749,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     );
     const mergedNextButtonClasses = useMergeClasses(
         // preserves the original `classes` from `nextButtonComponent`:
-        nextButtonComponent.props.classes,
+        nextButtonComponent?.props.classes,
         
         
         
@@ -758,7 +758,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     );
     const mergedNavscrollClasses  = useMergeClasses(
         // preserves the original `classes` from `navscrollComponent`:
-        navscrollComponent.props.classes,
+        navscrollComponent?.props.classes,
         
         
         
@@ -850,7 +850,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     });
     const handlePrevClick          = useMergeEvents(
         // preserves the original `onClick` from `prevButtonComponent`:
-        prevButtonComponent.props.onClick,
+        prevButtonComponent?.props.onClick,
         
         
         
@@ -904,7 +904,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
     });
     const handleNextClick          = useMergeEvents(
         // preserves the original `onClick` from `nextButtonComponent`:
-        nextButtonComponent.props.onClick,
+        nextButtonComponent?.props.onClick,
         
         
         
@@ -1537,7 +1537,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 </Generic>}
             </>}
             
-            {React.cloneElement<ButtonProps>(prevButtonComponent,
+            {!!prevButtonComponent && React.cloneElement<ButtonProps>(prevButtonComponent,
                 // props:
                 {
                     // basic variant props:
@@ -1577,7 +1577,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 },
             )}
             
-            {React.cloneElement<ButtonProps>(nextButtonComponent,
+            {!!nextButtonComponent && React.cloneElement<ButtonProps>(nextButtonComponent,
                 // props:
                 {
                     // basic variant props:
@@ -1617,7 +1617,7 @@ const Carousel = <TElement extends HTMLElement = HTMLElement, TScrollIndexChange
                 },
             )}
             
-            {React.cloneElement<NavscrollProps<Element>>(navscrollComponent,
+            {!!navscrollComponent && React.cloneElement<NavscrollProps<Element>>(navscrollComponent,
                 // props:
                 {
                     // basic variant props:
