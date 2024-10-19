@@ -83,7 +83,7 @@
     "@reusable-ui/nav": "^6.5.0",
     "@reusable-ui/nav-button": "^6.5.0",
     "@reusable-ui/navbar": "^6.6.0",
-    "@reusable-ui/navscroll": "^6.5.0",
+    "@reusable-ui/navscroll": "^6.5.1",
     "@reusable-ui/pagination": "^6.5.0",
     "@reusable-ui/popup": "^6.5.0",
     "@reusable-ui/progress": "^6.5.0",

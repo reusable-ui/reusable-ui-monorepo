@@ -13,11 +13,16 @@ import {
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
-import type {
-    // react components:
-    ListItemProps,
+import {
+    // states:
+    useListState,
     
-    ListItemComponentProps,
+    
+    
+    // react components:
+    type ListItemProps,
+    
+    type ListItemComponentProps,
 }                           from '@reusable-ui/list'            // represents a series of content
 
 
@@ -47,15 +52,10 @@ export interface ListItemWithNavigationProps<TElement extends Element = HTMLElem
     onNavigate ?: EventHandler<number[]>
 }
 export const ListItemWithNavigation = <TElement extends Element = HTMLElement>(props: ListItemWithNavigationProps<TElement>): JSX.Element|null => {
-    // rest props:
+    // props:
     const {
         // positions:
         deepLevels,
-        
-        
-        
-        // states:
-        active,
         
         
         
@@ -66,7 +66,20 @@ export const ListItemWithNavigation = <TElement extends Element = HTMLElement>(p
         
         // handlers:
         onNavigate,
-    ...restListItemProps} = props;
+        
+        
+        
+        // other props:
+        ...restListItemWithNavigationProps
+    } = props;
+    
+    
+    
+    // states:
+    const {
+        // behaviors:
+        defaultActionCtrl: listActionCtrl,
+    } = useListState();
     
     
     
@@ -74,6 +87,7 @@ export const ListItemWithNavigation = <TElement extends Element = HTMLElement>(p
     const handleClickInternal = useEvent<React.MouseEventHandler<TElement>>((event) => {
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
+        if (!listItemComponentActionCtrl) return;
         
         
         
@@ -90,9 +104,37 @@ export const ListItemWithNavigation = <TElement extends Element = HTMLElement>(p
         
         
         
-        // handlers:
+        // preserves the original `onClick` from `props`:
+        props.onClick,
+        
+        
+        
+        // actions:
         onNavigate && handleClickInternal,
     );
+    
+    
+    
+    // default props:
+    const {
+        // behaviors:
+        actionCtrl : listItemActionCtrl = listActionCtrl,
+        
+        
+        
+        // other props:
+        ...restListItemProps
+    } = restListItemWithNavigationProps;
+    
+    const {
+        // behaviors:
+        actionCtrl : listItemComponentActionCtrl = listItemActionCtrl,
+        
+        
+        
+        // other props:
+        ...restListItemComponentProps
+    } = listItemComponent.props;
     
     
     
@@ -103,17 +145,17 @@ export const ListItemWithNavigation = <TElement extends Element = HTMLElement>(p
         {
             // other props:
             ...restListItemProps,
-            ...listItemComponent.props, // overwrites restListItemProps (if any conflics)
+            ...restListItemComponentProps, // overwrites restListItemProps (if any conflics)
             
             
             
-            // states:
-            active  : listItemComponent.props.active ?? active,
+            // behaviors:
+            actionCtrl : listItemComponentActionCtrl,
             
             
             
             // handlers:
-            onClick : handleClick,
+            onClick    : handleClick,
         },
     );
 };

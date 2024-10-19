@@ -50,7 +50,7 @@
     "@reusable-ui/core": "^6.5.0",
     "@reusable-ui/generic": "^6.5.0",
     "@reusable-ui/list": "^6.5.0",
-    "@reusable-ui/navscroll": "^6.5.0"
+    "@reusable-ui/navscroll": "^6.5.1"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0",

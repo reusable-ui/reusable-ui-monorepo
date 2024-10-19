@@ -496,11 +496,6 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                 
                 
                 
-                // defaults:
-                const actionCtrl = listItemProps.actionCtrl ?? props.actionCtrl ?? true;
-                
-                
-                
                 // children:
                 const mutatedListItemChildren = (
                     flattenChildren(listItemProps.children)
@@ -538,19 +533,13 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                         
                         
                         
-                        // behaviors:
-                        actionCtrl={actionCtrl}
-                        
-                        
-                        
                         // states:
-                        title={`listIndex = ${listIndex} , activeIndices = ${activeIndices.join(', ')}`}
                         active={listItemProps.active ?? (listIndex === activeIndices[deepLevelsCurrent.length - 1])}
                         
                         
                         
                         // handlers:
-                        onNavigate={(actionCtrl || undefined) && handleNavigate}
+                        onNavigate={handleNavigate}
                         
                         
                         
@@ -566,7 +555,6 @@ const Navscroll = <TElement extends Element = HTMLElement>(props: NavscrollProps
                                 //#region restore conflicting props
                                 {...{
                                     ...(('deepLevels'        in listItemProps) ? { deepLevels        : listItemProps.deepLevels        } : undefined),
-                                    ...(('actionCtrl'        in listItemProps) ? { actionCtrl        : listItemProps.actionCtrl        } : undefined),
                                     ...(('active'            in listItemProps) ? { active            : listItemProps.active            } : undefined),
                                     ...(('onNavigate'        in listItemProps) ? { onNavigate        : listItemProps.onNavigate        } : undefined),
                                     ...(('listItemComponent' in listItemProps) ? { listItemComponent : listItemProps.listItemComponent } : undefined),
