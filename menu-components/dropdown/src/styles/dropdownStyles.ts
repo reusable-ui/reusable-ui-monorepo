@@ -52,23 +52,19 @@ export const usesDropdownLayout = (options?: OrientationableOptions) => {
         ...usesCollapseLayout(options),
         ...style({
             // layouts:
-            display        : 'flex',   // use block flexbox, so it takes the entire parent's width
-            flexDirection  : 'column', // items are stacked vertically
-            justifyContent : 'center', // center items (text, icon, etc) horizontally
-            alignItems     : 'center', // center items (text, icon, etc) vertically
-            flexWrap       : 'wrap',   // allows the items (text, icon, etc) to wrap to the next row if no sufficient width available
+            display : 'grid',
             
             
             
             // positions:
             ...rule('.overlay', {
-                zIndex: globalStacks.dropdown,
+                zIndex : globalStacks.dropdown,
             }),
             
             
             
             // sizes:
-            inlineSize     : 'fit-content',
+            inlineSize : 'fit-content',
             
             
             
