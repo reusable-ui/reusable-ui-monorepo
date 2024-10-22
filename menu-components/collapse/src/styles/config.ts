@@ -59,10 +59,13 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         }),
     });
     const frameExpandedBlock      = style({
-        maxBlockSize  : switchOf(
-            lastKnownExpandedSizeVars.blockSize,
-            '100vh',
-        ),
+        maxBlockSize : 'calc-size(fit-content, size)',
+        ...fallback({
+            maxBlockSize  : switchOf(
+                lastKnownExpandedSizeVars.blockSize,
+                '100vh',
+            ),
+        }),
         paddingBlock  : paddingVars.paddingBlock,
         
         overflowY     : 'unset',
@@ -98,10 +101,13 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         }),
     });
     const frameExpandedInline     = style({
-        maxInlineSize : switchOf(
-            lastKnownExpandedSizeVars.inlineSize,
-            '100vw',
-        ),
+        maxInlineSize : 'calc-size(fit-content, size)',
+        ...fallback({
+            maxInlineSize : switchOf(
+                lastKnownExpandedSizeVars.inlineSize,
+                '100vw',
+            ),
+        }),
         paddingInline : paddingVars.paddingInline,
         
         overflowX     : 'unset',
