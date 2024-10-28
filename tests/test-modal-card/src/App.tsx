@@ -15,6 +15,7 @@ import {
     Styles,
     HeadPortal,
 } from '@cssfn/cssfn-react'
+import { Container } from '@reusable-ui/container';
 import { Card, CardBody, CardFooter, CardHeader } from '@reusable-ui/card';
 import { Button } from '@reusable-ui/button';
 import CloseButton from '@reusable-ui/close-button';
@@ -54,7 +55,7 @@ function App() {
             <HeadPortal>
                 <Styles />
             </HeadPortal>
-            <div className="App">
+            <Container className="App">
                 <article className='actions'>
                     <button onClick={handleTriggerRerender}>
                         Trigger re-render whole app
@@ -93,7 +94,7 @@ function App() {
                         <p><Check theme='primary' checkStyle='switch' active={wideContent} onActiveChange={(e) => setWideContent(e.active)}>simulate wide content</Check></p>
                         <p><Check theme='primary' checkStyle='switch' active={tallContent} onActiveChange={(e) => setTallContent(e.active)}>simulate tall content</Check></p>
                         { wideContent &&
-                        <p>Lorem_ipsum_dolor_sit_amet_consectetur_adipisicing_elit._Cupiditate_ad_obcaecati_numquam?_Corporis_quas_consequuntur_consectetur_dolore_illo._Neque_id_quia,_et_vitae_a_excepturi_dignissimos_ab_tempora_temporibus_quo!</p> }
+                        <p style={{overflowWrap: 'normal', whiteSpace: 'nowrap'}}>Lorem_ipsum_dolor_sit_amet_consectetur_adipisicing_elit._Cupiditate_ad_obcaecati_numquam?_Corporis_quas_consequuntur_consectetur_dolore_illo._Neque_id_quia,_et_vitae_a_excepturi_dignissimos_ab_tempora_temporibus_quo!</p> }
                         { tallContent &&
                         <p>
                             Lorem,<br />ipsum<br />dolor<br />sit<br />amet<br />consectetur<br />adipisicing<br />elit.<br />Quaerat,<br />eaque<br />error<br />commodi<br />laboriosam<br />asperiores<br />iure<br />veniam<br />perferendis<br />consequuntur<br />nihil<br />quibusdam<br />necessitatibus<br />excepturi<br />sequi,<br />beatae<br />eligendi<br />rerum<br />consectetur,<br />debitis<br />expedita.<br />Dolor.
@@ -117,7 +118,7 @@ function App() {
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
-            </div>
+            </Container>
         </>
     );
 }

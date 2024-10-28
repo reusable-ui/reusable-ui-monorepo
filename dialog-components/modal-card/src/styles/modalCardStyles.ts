@@ -63,12 +63,18 @@ export const onModalCardStylesChange = watchChanges(cssModalConfig.onChange, css
 export const usesModalCardLayout = () => {
     return style({
         // layouts:
-        // the scrollable is not working with `display: 'grid'`, use `display: 'flex'` instead:
-        display        : 'flex',
-        flexDirection  : 'column',
-        justifyContent : 'center',  // center <Popup> vertically
-        alignItems     : 'center',  // center <Popup> horizontally
-        flexWrap       : 'nowrap',  // no wrapping
+        
+        // // the scrollable is not working with `display: 'grid'`, use `display: 'flex'` instead:
+        // display        : 'flex',
+        // flexDirection  : 'column',
+        // justifyContent : 'center',  // center <Popup> vertically
+        // alignItems     : 'center',  // center <Popup> horizontally
+        // flexWrap       : 'nowrap',  // no wrapping
+        
+        // now works with grid:
+        display      : 'grid',
+        justifyItems : 'center',
+        alignItems   : 'center',
         
         
         
@@ -209,6 +215,15 @@ export const usesModalCardVariants = () => {
                 boxSizing     : 'content-box',    // the final size is excluding borders & paddings
                 inlineSize    : 'max-content',    // forcing the <Card>'s width follows the <Card>'s items width
                 blockSize     : 'max-content',    // forcing the <Card>'s height follows the <Card>'s items height
+                
+                
+                
+                // children:
+                ...children('*', { // <Card>
+                    ...children('.body', { // <CardBody>
+                        overflow: 'visible',
+                    }, { specificityWeight: 0 }),
+                }),
             }),
             rule(':not(.scrollable).horzStretch>&', {
                 // children:
