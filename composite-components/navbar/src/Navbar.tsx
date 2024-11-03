@@ -27,6 +27,7 @@ import {
     useEvent,
     EventHandler,
     useMergeEvents,
+    useMergeRefs,
     useMergeClasses,
     
     
@@ -100,7 +101,7 @@ export const useNavbarStyleSheet = dynamicStyleSheet(
 
 // react components:
 export interface NavbarParams {
-    // basic variant props:
+    // variants:
     basicVariantProps       : BasicVariantProps
     
     
@@ -219,7 +220,7 @@ const NavbarWithResponsiveProvider = <TElement extends Element = HTMLElement, TE
 };
 
 const NavbarImplementation         = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
-    // basic variant props:
+    // variants:
     const basicVariantProps = useBasicVariantProps(props, { mild: false });
     
     
@@ -227,7 +228,7 @@ const NavbarImplementation         = <TElement extends Element = HTMLElement, TE
     // jsx:
     return (
         <NavbarStateProvider
-            // basic variant props:
+            // variants:
             basicVariantProps={basicVariantProps}
             
             
@@ -245,7 +246,12 @@ const NavbarImplementation         = <TElement extends Element = HTMLElement, TE
 const NavbarContextImplementation  = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: NavbarProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // states:
     const {
-        // basic variant props:
+        // refs:
+        navbarRef,
+        
+        
+        
+        // variants:
         basicVariantProps,
         
         
@@ -289,6 +295,23 @@ const NavbarContextImplementation  = <TElement extends Element = HTMLElement, TE
         // children:
         children,
     ...restBasicProps} = props;
+    
+    
+    
+    // refs:
+    const mergedOuterRef = useMergeRefs(
+        // preserves the original `outerRef` from `basicComponent`:
+        basicComponent.props.outerRef,
+        
+        
+        
+        // preserves the original `outerRef` from `props`:
+        props.outerRef,
+        
+        
+        
+        navbarRef as React.MutableRefObject<TElement|null>,
+    );
     
     
     
@@ -339,7 +362,7 @@ const NavbarContextImplementation  = <TElement extends Element = HTMLElement, TE
     return React.cloneElement<BasicProps<TElement>>(basicComponent,
         // props:
         {
-            // basic variant props:
+            // variants:
             ...basicVariantProps,
             
             
@@ -347,6 +370,11 @@ const NavbarContextImplementation  = <TElement extends Element = HTMLElement, TE
             // other props:
             ...restBasicProps,
             ...basicComponent.props, // overwrites restBasicProps (if any conflics)
+            
+            
+            
+            // refs:
+            outerRef     : mergedOuterRef,
             
             
             
@@ -370,7 +398,7 @@ const NavbarContextImplementation  = <TElement extends Element = HTMLElement, TE
         
         // children:
         basicComponent.props.children ?? ((typeof(children) !== 'function') ? children : children({
-            // basic variant props:
+            // variants:
             basicVariantProps,
             
             

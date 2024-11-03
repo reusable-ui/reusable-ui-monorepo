@@ -14,6 +14,7 @@ import {
     useContext,
     useState,
     useMemo,
+    useRef,
 }                           from 'react'
 
 // reusable-ui core:
@@ -44,7 +45,12 @@ import {
 // contexts:
 export interface NavbarState
 {
-    // basic variant props:
+    // refs:
+    navbarRef               : React.RefObject<HTMLElement> // getter ref
+    
+    
+    
+    // variants:
     basicVariantProps       : BasicVariantProps
     
     
@@ -63,7 +69,12 @@ export interface NavbarState
 
 const noopHandler = () => { throw Error('not inside <Navbar>'); };
 const NavbarStateContext = createContext<NavbarState>({
-    // basic variant props:
+    // refs:
+    navbarRef               : { current: null },
+    
+    
+    
+    // variants:
     basicVariantProps       : {},
     
     
@@ -90,7 +101,7 @@ export const useNavbarState = (): NavbarState => {
 // react components:
 export interface NavbarStateProps
 {
-    // basic variant props:
+    // variants:
     basicVariantProps       : BasicVariantProps
     
     
@@ -101,7 +112,7 @@ export interface NavbarStateProps
 const NavbarStateProvider = (props: React.PropsWithChildren<NavbarStateProps>): JSX.Element|null => {
     // props:
     const {
-        // basic variant props:
+        // variants:
         basicVariantProps,
         
         
@@ -114,6 +125,11 @@ const NavbarStateProvider = (props: React.PropsWithChildren<NavbarStateProps>): 
         // children:
         children,
     } = props;
+    
+    
+    
+    // refs:
+    const navbarRef = useRef<HTMLElement|null>(null);
     
     
     
@@ -151,7 +167,12 @@ const NavbarStateProvider = (props: React.PropsWithChildren<NavbarStateProps>): 
     
     // states:
     const tabState = useMemo<NavbarState>(() => ({
-        // basic variant props:
+        // refs:
+        navbarRef,                  // stable ref
+        
+        
+        
+        // variants:
         basicVariantProps,          // mutable value
         
         
@@ -167,7 +188,12 @@ const NavbarStateProvider = (props: React.PropsWithChildren<NavbarStateProps>): 
         handleActiveChange,         // stable ref
         handleClickToToggleList,    // stable ref
     }), [
-        // basic variant props:
+        // refs:
+        // navbarRef,               // stable ref
+        
+        
+        
+        // variants:
         basicVariantProps,
         
         
