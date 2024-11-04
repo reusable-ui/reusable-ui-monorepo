@@ -73,6 +73,11 @@ export const usesModalCardLayout = () => {
         
         // now works with grid:
         display      : 'grid',
+        gridTemplate : [[ // LIMITS the <Card> to NOT OVERSIZING outside the `card` area, when `horzAlign|vertAlign='start|end|center'`
+            '"card" 1fr',
+            '/',
+            '1fr'
+        ]],
         justifyItems : 'center',
         alignItems   : 'center',
         
@@ -85,7 +90,7 @@ export const usesModalCardLayout = () => {
         
         // animations:
         // a fix to overwrite <Popup>'s filter:
-        filter         : modals.modalUiFilter,
+        filter         : modals.modalUiFilter, // fix the drop shadow that has been overwritten by <Popup>, so the <Card> appears floating on top of document
         
         
         
@@ -98,6 +103,11 @@ export const usesModalCardLayout = () => {
             
             // layouts:
             ...style({
+                // positions:
+                gridArea: 'card',
+                
+                
+                
                 // accessibilities:
                 pointerEvents : 'auto', // cancel out *inherited* ghost layer from <Popup>, *re-enabling* mouse_event on the <Card>
                 

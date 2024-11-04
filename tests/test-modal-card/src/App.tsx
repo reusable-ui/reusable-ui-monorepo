@@ -76,10 +76,10 @@ function App() {
                     
                     autoFocusOn={buttonSaveRef}
                     horzAlign='stretch'
-                    vertAlign='stretch'
+                    vertAlign='center'
                     
                     
-                    cardComponent={<Card style={{maxInlineSize: '800px', maxBlockSize: '500px'}} />}
+                    // cardComponent={<Card style={{maxInlineSize: '800px', maxBlockSize: '500px'}} />}
                 >
                     <CardHeader>
                         <h1>Test Modal Card</h1>
