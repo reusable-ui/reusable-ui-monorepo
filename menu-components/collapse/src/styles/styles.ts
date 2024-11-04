@@ -47,6 +47,10 @@ import {
     defaultOrientationableOptions,
 }                           from '../defaults.js'
 import {
+    // features:
+    usesCollapse,
+}                           from '../features/collapse.js'
+import {
     // configs:
     collapses,
     cssCollapseConfig,
@@ -69,6 +73,7 @@ export const usesCollapseLayout = memoizeStyle((options?: OrientationableOptions
     // features:
     const {animationRule, animationVars} = usesAnimation(collapses as any);
     const {paddingRule  , paddingVars  } = usesPadding(collapses);
+    const {collapseRule , collapseVars } = usesCollapse(collapses);
     
     
     
@@ -93,6 +98,12 @@ export const usesCollapseLayout = memoizeStyle((options?: OrientationableOptions
             
             
             
+            // sizes:
+            inlineSize    : collapseVars.inlineSize,
+            blockSize     : collapseVars.blockSize,
+            
+            
+            
             // animations:
             anim          : animationVars.anim,
             
@@ -109,6 +120,7 @@ export const usesCollapseLayout = memoizeStyle((options?: OrientationableOptions
         // features:
         ...animationRule(), // must be placed at the last
         ...paddingRule(),   // must be placed at the last
+        ...collapseRule(),  // must be placed at the last
     });
 }, onCollapseStylesChange);
 

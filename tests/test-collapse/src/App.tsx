@@ -39,10 +39,17 @@ function App() {
                 <button onClick={() => setShowCollapse(!showCollapse)}>
                     I'm here
                 </button>
-                <Collapse expanded={showCollapse}>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum quibusdam totam tempore suscipit, molestiae libero eum nulla debitis, quos quam pariatur voluptas laudantium autem iusto maiores! Et consequuntur ratione delectus.</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum quibusdam totam tempore suscipit, molestiae libero eum nulla debitis, quos quam pariatur voluptas laudantium autem iusto maiores! Et consequuntur ratione delectus.</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum quibusdam totam tempore suscipit, molestiae libero eum nulla debitis, quos quam pariatur voluptas laudantium autem iusto maiores! Et consequuntur ratione delectus.</p>
+                <Collapse expanded={showCollapse} style={{
+                        backgroundColor: 'pink',
+                        height: '300px',
+                        // width: '100%',
+                        overflow: 'hidden',
+                        position: 'absolute',
+                        // insetInlineStart: '100px'
+                    }} orientation='inline'>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
                 </Collapse>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
             </div>

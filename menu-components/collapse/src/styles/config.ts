@@ -32,6 +32,13 @@ import {
     usesLastKnownExpandedSize,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
+// TODO: experimental
+// // internals:
+// import {
+//     // features:
+//     usesCollapse,
+// }                           from '../features/collapse.js'
+
 
 
 // configs:
@@ -39,89 +46,142 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
     // features:
     const {paddingVars              } = usesPadding();
     const {lastKnownExpandedSizeVars} = usesLastKnownExpandedSize();
+    // const {collapseVars             } = usesCollapse(); // TODO: experimental
     
     
     
     //#region keyframes
     const frameCollapsedBlock     = style({
-        maxBlockSize  : 0,
-        paddingBlock  : 0,
+        maxBlockSize       : 0,
+        paddingBlock       : 0,
         
-        overflowY     : 'clip',
+        overflowY          : 'clip',
         ...fallback({
-            overflowY : 'hidden',
+            overflowY      : 'hidden',
         }),
     });
     const frameIntermediateBlock  = style({
-        overflowY     : 'clip',
+        // blockSize       : `calc-size(${collapseVars.blockSize }, size * 1.05)`, // TODO: experimental
+        // maxBlockSize    : `calc-size(${collapseVars.blockSize }, size * 1.05)`, // TODO: experimental
         ...fallback({
-            overflowY : 'hidden',
+            blockSize      : `calc(${
+                switchOf(
+                    lastKnownExpandedSizeVars.blockSize,
+                    '100vh',
+                )
+            } * 1.05)`,
+            maxBlockSize   : `calc(${
+                switchOf(
+                    lastKnownExpandedSizeVars.blockSize,
+                    '100vh',
+                )
+            } * 1.05)`,
+        }),
+        paddingBlock       : `calc(${paddingVars.paddingBlock } * 1.05)`,
+    });
+    const frameFinalizingBlock    = style({
+        overflowY          : 'clip',
+        ...fallback({
+            overflowY      : 'hidden',
         }),
     });
     const frameExpandedBlock      = style({
-        maxBlockSize : 'calc-size(fit-content, size)',
+        // blockSize       : `calc-size(${collapseVars.blockSize }, size)`, // TODO: experimental
+        // maxBlockSize    : `calc-size(${collapseVars.blockSize }, size)`, // TODO: experimental
         ...fallback({
-            maxBlockSize  : switchOf(
+            blockSize      : switchOf(
+                lastKnownExpandedSizeVars.blockSize,
+                '100vh',
+            ),
+            maxBlockSize   : switchOf(
                 lastKnownExpandedSizeVars.blockSize,
                 '100vh',
             ),
         }),
-        paddingBlock  : paddingVars.paddingBlock,
+        paddingBlock       : paddingVars.paddingBlock,
         
-        overflowY     : 'unset',
+        overflowY          : 'unset',
     });
     const [keyframesExpandBlockRule   , keyframesExpandBlock   ] = keyframes({
-        from  : frameCollapsedBlock,
-        '99%' : frameIntermediateBlock,
-        to    : frameExpandedBlock,
+        from               : frameCollapsedBlock,
+        '70%'              : frameIntermediateBlock,
+        '99%'              : frameFinalizingBlock,
+        to                 : frameExpandedBlock,
     });
     keyframesExpandBlock.value    = 'expandBlock';    // the @keyframes name should contain 'expand'   in order to be recognized by `useCollapsible`
     const [keyframesCollapseBlockRule , keyframesCollapseBlock ] = keyframes({
-        from  : frameExpandedBlock,
-        '1%'  : frameIntermediateBlock,
-        to    : frameCollapsedBlock,
+        from               : frameExpandedBlock,
+        '30%'              : frameIntermediateBlock,
+        '1%'               : frameFinalizingBlock,
+        to                 : frameCollapsedBlock,
     });
     keyframesCollapseBlock.value  = 'collapseBlock';  // the @keyframes name should contain 'collapse' in order to be recognized by `useCollapsible`
     
     
     
     const frameCollapsedInline    = style({
-        maxInlineSize : 0,
-        paddingInline : 0,
+        maxInlineSize      : 0,
+        paddingInline      : 0,
         
-        overflowX     : 'clip',
+        overflowX          : 'clip',
         ...fallback({
-            overflowX : 'hidden',
+            overflowX      : 'hidden',
         }),
     });
     const frameIntermediateInline = style({
-        overflowX     : 'clip',
+        // inlineSize      : `calc-size(${collapseVars.inlineSize}, size * 1.05)`, // TODO: experimental
+        // maxInlineSize   : `calc-size(${collapseVars.inlineSize}, size * 1.05)`, // TODO: experimental
         ...fallback({
-            overflowX : 'hidden',
+            inlineSize     : `calc(${
+                switchOf(
+                    lastKnownExpandedSizeVars.inlineSize,
+                    '100vh',
+                )
+            } * 1.05)`,
+            maxInlineSize  : `calc(${
+                switchOf(
+                    lastKnownExpandedSizeVars.inlineSize,
+                    '100vh',
+                )
+            } * 1.05)`,
+        }),
+        paddingInline      : `calc(${paddingVars.paddingInline} * 1.05)`,
+    });
+    const frameFinalizingInline   = style({
+        overflowX          : 'clip',
+        ...fallback({
+            overflowX      : 'hidden',
         }),
     });
     const frameExpandedInline     = style({
-        maxInlineSize : 'calc-size(fit-content, size)',
+        // inlineSize      : `calc-size(${collapseVars.inlineSize}, size)`, // TODO: experimental
+        // maxInlineSize   : `calc-size(${collapseVars.inlineSize}, size)`, // TODO: experimental
         ...fallback({
-            maxInlineSize : switchOf(
+            inlineSize     : switchOf(
                 lastKnownExpandedSizeVars.inlineSize,
-                '100vw',
+                '100vh',
+            ),
+            maxInlineSize  : switchOf(
+                lastKnownExpandedSizeVars.inlineSize,
+                '100vh',
             ),
         }),
-        paddingInline : paddingVars.paddingInline,
+        paddingInline      : paddingVars.paddingInline,
         
-        overflowX     : 'unset',
+        overflowX          : 'unset',
     });
     const [keyframesExpandInlineRule  , keyframesExpandInline  ] = keyframes({
-        from  : frameCollapsedInline,
-        '99%' : frameIntermediateInline,
-        to    : frameExpandedInline,
+        from               : frameCollapsedInline,
+        '70%'              : frameIntermediateInline,
+        '99%'              : frameFinalizingInline,
+        to                 : frameExpandedInline,
     });
     keyframesExpandInline.value   = 'expandInline';   // the @keyframes name should contain 'expand'   in order to be recognized by `useCollapsible`
     const [keyframesCollapseInlineRule, keyframesCollapseInline] = keyframes({
-        from  : frameExpandedInline,
-        '1%'  : frameIntermediateInline,
-        to    : frameCollapsedInline,
+        from               : frameExpandedInline,
+        '30%'              : frameIntermediateInline,
+        '1%'               : frameFinalizingInline,
+        to                 : frameCollapsedInline,
     });
     keyframesCollapseInline.value = 'collapseInline'; // the @keyframes name should contain 'collapse' in order to be recognized by `useCollapsible`
     //#endregion keyframes
@@ -129,6 +189,12 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
     
     
     const bases = {
+        // sizes:
+        inlineSize         : 'fit-content'                          as CssKnownProps['inlineSize'   ],
+        blockSize          : 'fit-content'                          as CssKnownProps['blockSize'    ],
+        
+        
+        
         // animations:
         ...keyframesExpandBlockRule,
         ...keyframesCollapseBlockRule,
