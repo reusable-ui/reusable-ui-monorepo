@@ -44,7 +44,7 @@ function App() {
                         height: '300px',
                         // width: '100%',
                         overflow: 'hidden',
-                        position: 'absolute',
+                        // position: 'absolute',
                         // insetInlineStart: '100px'
                     }} orientation='inline'>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>

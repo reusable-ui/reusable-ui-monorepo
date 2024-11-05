@@ -52,10 +52,10 @@ export const usesCollapse = (config?: CollapseConfig): CollapseStuff => {
     return {
         collapseRule: () => style({
             // sizes:
-            // [collapseVars.inlineSize] : `calc-size(${config?.inlineSize ?? 'fit-content'}, size)`,
-            // [collapseVars.blockSize ] : `calc-size(${config?.blockSize  ?? 'fit-content'}, size)`,
-            [collapseVars.inlineSize]    : config?.inlineSize ?? 'fit-content',
-            [collapseVars.blockSize ]    : config?.blockSize  ?? 'fit-content',
+            // [collapseVars.inlineSize] : `calc-size(${config?.inlineSize ?? '100%'       })`, // in usual `block` layout, the width  is usually `100%`, except when `position: 'absolute'`
+            // [collapseVars.blockSize ] : `calc-size(${config?.blockSize  ?? 'fit-content'})`, // in usual `block` layout, the height is usually `fit-content`
+            [collapseVars.inlineSize]    : config?.inlineSize ?? '100%',                        // in usual `block` layout, the width  is usually `100%`, except when `position: 'absolute'`
+            [collapseVars.blockSize ]    : config?.blockSize  ?? 'fit-content',                 // in usual `block` layout, the height is usually `fit-content`
         }),
         collapseVars,
     };
