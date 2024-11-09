@@ -190,8 +190,8 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
     
     const bases = {
         // sizes:
-        inlineSize         : '100%'                                 as CssKnownProps['inlineSize'   ], // in usual `block` layout, the width  is usually `100%`, except when `position: 'absolute'`
-        blockSize          : 'fit-content'                          as CssKnownProps['blockSize'    ], // in usual `block` layout, the height is usually `fit-content`
+        inlineSize         : '100%'                                 as CssKnownProps['inlineSize'   ], // in usual `block` layout (regradless the <Collapse orientation='block|inline'>), the width  is usually `100%`, except when `position: 'absolute'`
+        blockSize          : 'fit-content'                          as CssKnownProps['blockSize'    ], // in usual `block` layout (regradless the <Collapse orientation='block|inline'>), the height is usually `fit-content`
         
         
         
