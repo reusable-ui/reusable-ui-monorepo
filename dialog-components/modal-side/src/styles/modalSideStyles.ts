@@ -86,13 +86,6 @@ export const usesModalSideLayout = () => {
     
     
     
-    // dependencies:
-    
-    // features:
-    const {collapseVars} = usesCollapse();
-    
-    
-    
     return style({
         // layouts:
         display      : 'grid',
@@ -102,34 +95,12 @@ export const usesModalSideLayout = () => {
             '1fr'
         ]],
         
-        // defines which part of <Card> REMAIN VISIBLE when sliding:
-        ...rule('.inlineStart>&', {
-            justifyContent : 'end',   // priority to show the RIGHT  part of <Card>, the LEFT   part may be CROPPED during collapsing
-        }),
-        ...rule('.inlineEnd>&', {
-            justifyContent : 'start', // priority to show the LEFT   part of <Card>, the RIGHT  part may be CROPPED during collapsing
-        }),
-        ...rule('.blockStart>&', {
-            alignContent   : 'end',   // priority to show the BOTTOM part of <Card>, the TOP    part may be CROPPED during collapsing
-        }),
-        ...rule('.blockEnd>&', {
-            alignContent   : 'start', // priority to show the TOP    part of <Card>, the BOTTOM part may be CROPPED during collapsing
-        }),
-        
         
         
         // sizes:
-        boxSizing                     : 'border-box',  // the final size is including borders & paddings
-        maxInlineSize                 : '100%',        // the <Collapse>'s size is|may `fit-content` but up to the maximum available <Backdrop>'s width
-        maxBlockSize                  : '100%',        // the <Collapse>'s size is|may `fit-content` but up to the maximum available <Backdrop>'s height
-        ...rule(['.inlineStart>&', '.inlineEnd>&'], {
-            [collapseVars.inlineSize] : 'fit-content', // follows content's width  but up to `maxInlineSize`
-            [collapseVars.blockSize ] : '100%',        // full height
-        }),
-        ...rule(['.blockStart>&', '.blockEnd>&'], {
-            [collapseVars.inlineSize] : '100%',        // full width
-            [collapseVars.blockSize ] : 'fit-content', // follows content's height but up to `maxBlockSize`
-        }),
+        boxSizing     : 'border-box',  // the final size is including borders & paddings
+        maxInlineSize : '100%',        // the <Collapse>'s size is|may `fit-content` but up to the maximum available <Backdrop>'s width
+        maxBlockSize  : '100%',        // the <Collapse>'s size is|may `fit-content` but up to the maximum available <Backdrop>'s height
         
         
         
@@ -153,26 +124,6 @@ export const usesModalSideLayout = () => {
             ...style({
                 // positions:
                 gridArea: 'card',
-                
-                
-                
-                // // layouts:
-                // // a fix for collapsing vertically, so the <CardBody> appears sliding:
-                // // ...rule(':is(.inlineStart, .blockStart)>&', {
-                // //     justifyContent : 'end', // if items are not growable, the excess space (if any) placed at the beginning, and if no sufficient space available => the last item should be visible first
-                // // }),
-                // // ...ifOrientationInline({...rule(':is(.inlineStart, .inlineEnd)>&', {
-                // //     ...children(bodyElm, {
-                // //         // sizes:
-                // //         flex : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
-                // //     }),
-                // // })}),
-                // // ...ifOrientationBlock({...rule(':is(.blockStart, .blockEnd)>&', {
-                // //     ...children(bodyElm, {
-                // //         // sizes:
-                // //         flex : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
-                // //     }),
-                // // })}),
                 
                 
                 
@@ -300,6 +251,7 @@ export const usesModalSideVariants = () => {
     
     // features:
     const {borderVars   } = usesBorder();
+    const {collapseVars } = usesCollapse();
     
     // capabilities:
     const {groupableVars} = usesGroupable();
@@ -308,7 +260,23 @@ export const usesModalSideVariants = () => {
     
     return style({
         ...variants([
+            rule(['.inlineStart>&', '.inlineEnd>&'], { // <Collapse>
+                // sizes:
+                [collapseVars.inlineSize] : 'fit-content', // follows content's width  but up to `maxInlineSize`
+                [collapseVars.blockSize ] : '100%',        // full height
+            }),
+            rule(['.blockStart>&', '.blockEnd>&'], {   // <Collapse>
+                // sizes:
+                [collapseVars.inlineSize] : '100%',        // full width
+                [collapseVars.blockSize ] : 'fit-content', // follows content's height but up to `maxBlockSize`
+            }),
+            
             rule('.inlineStart>&', { // <Collapse>
+                // layouts:
+                justifyContent : 'end',   // place the <Card> on the left
+                
+                
+                
                 // children:
                 ...children('*', { // <Card>
                     ...vars({
@@ -321,7 +289,12 @@ export const usesModalSideVariants = () => {
                     }),
                 }),
             }),
-            rule('.inlineEnd>&', {
+            rule('.inlineEnd>&', {   // <Collapse>
+                // layouts:
+                justifyContent : 'start', // place the <Card> on the right
+                
+                
+                
                 // children:
                 ...children('*', { // <Card>
                     ...vars({
@@ -334,7 +307,12 @@ export const usesModalSideVariants = () => {
                     }),
                 }),
             }),
-            rule('.blockStart>&', {
+            rule('.blockStart>&', {  // <Collapse>
+                // layouts:
+                alignContent   : 'end',   // place the <Card> on the top
+                
+                
+                
                 // children:
                 ...children('*', { // <Card>
                     ...vars({
@@ -347,7 +325,12 @@ export const usesModalSideVariants = () => {
                     }),
                 }),
             }),
-            rule('.blockEnd>&', {
+            rule('.blockEnd>&', {    // <Collapse>
+                // layouts:
+                alignContent   : 'start', // place the <Card> on the bottom
+                
+                
+                
                 // children:
                 ...children('*', { // <Card>
                     ...vars({
