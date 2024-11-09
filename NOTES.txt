@@ -517,3 +517,35 @@ contexts:
     DialogMessageApi            value={dialogMessageApi}
     Responsive(State)           value={responsiveState}
 
+
+=========================================================================================
+
+components based on <Collapse>
+
+collapsible		    maybe
+autoFocusable		no
+dialogMessage		maybe
+dimensions		    maybe
+modalStatus		    maybe
+
+Popup			    yes
+Badge			    yes
+Busy                maybe
+
+Alert			    yes
+Tooltip			    yes
+
+Dropdown		    yes
+DropdownButton		yes
+DropdownList		yes
+DropdownListButton	yes
+
+Modal			    yes
+ModalCard		    yes
+ModalSide		    yes
+
+Accordion   		yes
+ExclusiveAccordion	yes
+Tab			        yes
+Navbar			    yes
+Details			    yes
