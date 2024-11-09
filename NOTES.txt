@@ -523,15 +523,15 @@ contexts:
 components based on <Collapse>
 
 // reusable-ui capabilities:
-@reusable-ui/auto-focusable         unverified
+@reusable-ui/auto-focusable         watching for `expanded` change to perform `autoFocusOn` and `restoreFocusOn`
 
 // reusable-ui states:
-@reusable-ui/collapsible            unverified
+@reusable-ui/collapsible            provides states of `expanding`, `collapsing`, `expanded`, and `collapsed`
 
 // status-components:
-@reusable-ui/popup                  unverified
-@reusable-ui/badge                  unverified
-@reusable-ui/busy                   unverified
+@reusable-ui/popup                  implements states of `expanding`, `collapsing`, `expanded`, and `collapsed` from <Basic>; needs to change bumpy effect from 1.02 to 1.05
+@reusable-ui/badge                  extends <Popup>
+@reusable-ui/busy                   extends <Badge>
 
 // notification-components:
 @reusable-ui/alert                  unverified
