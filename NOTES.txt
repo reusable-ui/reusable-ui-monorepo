@@ -545,9 +545,9 @@ components based on <Collapse>
 @reusable-ui/dropdown-list-button   same as <DropdownList>, not having css
 
 // dialog-components:
-@reusable-ui/modal                  unverified
-@reusable-ui/modal-card             unverified
-@reusable-ui/modal-side             unverified
+@reusable-ui/modal                  NOT base <Collapse>
+@reusable-ui/modal-card             NOT base <Collapse>
+@reusable-ui/modal-side             fixed: the default width : `fit-content` (inline**) -or- `100%` (block**) ; height: `100%` (inline**) -or- `fit-content` (block**)
 
 // composite-components:
 @reusable-ui/accordion              unverified

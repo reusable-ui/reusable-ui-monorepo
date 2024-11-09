@@ -53,6 +53,10 @@ import {
 
 // reusable-ui components:
 import {
+    // features:
+    usesCollapse,
+}                           from '@reusable-ui/collapse'        // a base component
+import {
     // // defaults:
     // defaultOrientationableOptions as cardDefaultOrientationableOptions,
     
@@ -82,8 +86,21 @@ export const usesModalSideLayout = () => {
     
     
     
+    // dependencies:
+    
+    // features:
+    const {collapseVars} = usesCollapse();
+    
+    
+    
     return style({
-        display : 'grid',
+        // layouts:
+        display      : 'grid',
+        gridTemplate : [[ // FORCES the <Card> to RESIZE when the <Collapse> performing BUMPY effect
+            '"card" 1fr',
+            '/',
+            '1fr'
+        ]],
         
         // defines which part of <Card> REMAIN VISIBLE when sliding:
         ...rule('.inlineStart>&', {
@@ -101,6 +118,21 @@ export const usesModalSideLayout = () => {
         
         
         
+        // sizes:
+        boxSizing                     : 'border-box',  // the final size is including borders & paddings
+        maxInlineSize                 : '100%',        // the <Collapse>'s size is|may `fit-content` but up to the maximum available <Backdrop>'s width
+        maxBlockSize                  : '100%',        // the <Collapse>'s size is|may `fit-content` but up to the maximum available <Backdrop>'s height
+        ...rule(['.inlineStart>&', '.inlineEnd>&'], {
+            [collapseVars.inlineSize] : 'fit-content', // follows content's width  but up to `maxInlineSize`
+            [collapseVars.blockSize ] : '100%',        // full height
+        }),
+        ...rule(['.blockStart>&', '.blockEnd>&'], {
+            [collapseVars.inlineSize] : '100%',        // full width
+            [collapseVars.blockSize ] : 'fit-content', // follows content's height but up to `maxBlockSize`
+        }),
+        
+        
+        
         // accessibilities:
         pointerEvents  : 'none', // just a wrapper <Popup> element (ghost), which the size may bigger (when the user limits the size of <Card>) than the <Card>, thus causing to BLOCK the <Backdrop> INTERACTION, so we set 'none'
         
@@ -109,12 +141,7 @@ export const usesModalSideLayout = () => {
         // children:
         ...children(['&', '*'], { // <Collapse> & <Card>
             // sizes:
-            boxSizing     : 'border-box',     // the final size is including borders & paddings
-            inlineSize    : 'auto',           // follows the content's width, but
-            maxInlineSize : '100%',           // up to the maximum available parent's width
-            blockSize     : 'auto',           // follows the content's height, but
-            maxBlockSize  : '100%',           // up to the maximum available parent's height
-            overflow      : 'hidden',         // force the <Card> to scroll
+            overflow : 'hidden', // when both <Collapse> and <Card> are `overflow: 'hidden'` => forces the <CardBody> to scroll
         }),
         ...children('*', { // <Card>
             // resets:
@@ -124,6 +151,11 @@ export const usesModalSideLayout = () => {
             
             // layouts:
             ...style({
+                // positions:
+                gridArea: 'card',
+                
+                
+                
                 // // layouts:
                 // // a fix for collapsing vertically, so the <CardBody> appears sliding:
                 // // ...rule(':is(.inlineStart, .blockStart)>&', {
@@ -145,8 +177,14 @@ export const usesModalSideLayout = () => {
                 
                 
                 // sizes:
-                // maximum height of <Card> when side-left & side-right:
-                flex          : [[1, 1, '100%']], // growable, shrinkable, initial from parent's height
+                // the <Card>'s size follows `gridArea: 'card'`'s size
+                
+                
+                
+                // not needed `flex` anymore since we set the <Collapse> using `display: 'grid'` (see the code above)
+                // // sizes:
+                // // maximum height of <Card> when side-left & side-right:
+                // flex          : [[1, 1, '100%']], // growable, shrinkable, initial from parent's height
                 
                 
                 
