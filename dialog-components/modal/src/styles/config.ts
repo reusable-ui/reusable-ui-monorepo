@@ -89,7 +89,7 @@ export const [modals, modalValues, cssModalConfig] = cssConfig(() => {
      // modalUiBoxShadow    : [[0, 0, '10px', 'rgba(0,0,0,0.5)']]   as CssKnownProps['boxShadow' ],
         modalUiFilter: [
             ['drop-shadow(', 0, 0, '10px', 'rgba(0,0,0,0.5)', ')'],
-        ]                                                           as CssKnownProps['filter'    ],
+        ]                                                           as CssKnownProps['filter'    ], // create a shadow using `drop-shadow`, so that the SHAPE of the shadow follows the SHAPE of the <ModalUi>
         
         
         

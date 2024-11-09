@@ -104,8 +104,8 @@ export const [controls, controlValues, cssControlConfig] = cssConfig(() => {
             [0, 0, 0, '0.25rem'],
         ]                               as CssKnownProps['boxShadow'],
         filterArrive   : [[
-            'brightness(85%)',
-            'drop-shadow(0 0 0.01px rgba(0,0,0,0.4))',
+            'brightness(85%)',                         // doesn't work for TRANSPARENT <Component>
+            'drop-shadow(0 0 0.01px rgba(0,0,0,0.4))', // a brightness *hack* to make a TRANSPARENT <Component> appears DIMMER
         ]]                              as CssKnownProps['filter'   ],
         
         ...keyframesFocusRule,
