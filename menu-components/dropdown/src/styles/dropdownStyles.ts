@@ -28,6 +28,11 @@ import {
 
 // reusable-ui components:
 import {
+    // features:
+    usesCollapse,
+    
+    
+    
     // styles:
     onCollapseStylesChange,
     usesCollapseLayout,
@@ -47,6 +52,11 @@ import {
 export const onDropdownStylesChange = watchChanges(onCollapseStylesChange, cssDropdownConfig.onChange);
 
 export const usesDropdownLayout = (options?: OrientationableOptions) => {
+    // dependencies:
+    const {collapseRule , collapseVars } = usesCollapse(dropdowns);
+    
+    
+    
     return style({
         // layouts:
         ...usesCollapseLayout(options),
@@ -63,14 +73,20 @@ export const usesDropdownLayout = (options?: OrientationableOptions) => {
             
             
             
-            // sizes:
-            inlineSize : 'fit-content',
-            
-            
-            
             // customize:
             ...usesCssProps(dropdowns), // apply config's cssProps
+            
+            
+            
+            // sizes:
+            inlineSize : collapseVars.inlineSize,
+            blockSize  : collapseVars.blockSize,
         }),
+        
+        
+        
+        // features:
+        ...collapseRule(), // must be placed at the last
     });
 };
 

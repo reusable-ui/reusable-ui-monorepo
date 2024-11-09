@@ -41,7 +41,7 @@ function App() {
                     I'm here
                 </button>
                 <Dropdown floatingOn={btnRef} expanded={showDropdown} onExpandedChange={(event) => setShowDropdown(event.expanded)}>
-                    <div tabIndex={-1}>
+                    <div tabIndex={-1} style={{backgroundColor: 'pink'}}>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
                         <p>Lorem ipsum dolor sit amet consectetur</p>

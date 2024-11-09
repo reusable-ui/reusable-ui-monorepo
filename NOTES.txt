@@ -534,11 +534,12 @@ components based on <Collapse>
 @reusable-ui/busy                   extends <Badge>
 
 // notification-components:
-@reusable-ui/alert                  unverified
-@reusable-ui/tooltip                unverified
+@reusable-ui/alert                  extends <Popup>
+@reusable-ui/tooltip                extends <Popup>
 
 // menu-components:
-@reusable-ui/dropdown               unverified
+@reusable-ui/collapse               fixed: the default width : `100%`        ; height : `fit-content`
+@reusable-ui/dropdown               fixed: the default width : `fit-content` ; height : `fit-content`
 @reusable-ui/dropdown-button        unverified
 @reusable-ui/dropdown-list          unverified
 @reusable-ui/dropdown-list-button   unverified
