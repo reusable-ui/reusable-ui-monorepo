@@ -522,30 +522,40 @@ contexts:
 
 components based on <Collapse>
 
-collapsible		    maybe
-autoFocusable		no
-dialogMessage		maybe
-dimensions		    maybe
-modalStatus		    maybe
+// reusable-ui capabilities:
+@reusable-ui/auto-focusable         unverified
 
-Popup			    yes
-Badge			    yes
-Busy                maybe
+// reusable-ui states:
+@reusable-ui/collapsible            unverified
 
-Alert			    yes
-Tooltip			    yes
+// status-components:
+@reusable-ui/popup                  unverified
+@reusable-ui/badge                  unverified
+@reusable-ui/busy                   unverified
 
-Dropdown		    yes
-DropdownButton		yes
-DropdownList		yes
-DropdownListButton	yes
+// notification-components:
+@reusable-ui/alert                  unverified
+@reusable-ui/tooltip                unverified
 
-Modal			    yes
-ModalCard		    yes
-ModalSide		    yes
+// menu-components:
+@reusable-ui/dropdown               unverified
+@reusable-ui/dropdown-button        unverified
+@reusable-ui/dropdown-list          unverified
+@reusable-ui/dropdown-list-button   unverified
 
-Accordion   		yes
-ExclusiveAccordion	yes
-Tab			        yes
-Navbar			    yes
-Details			    yes
+// dialog-components:
+@reusable-ui/modal                  unverified
+@reusable-ui/modal-card             unverified
+@reusable-ui/modal-side             unverified
+
+// composite-components:
+@reusable-ui/accordion              unverified
+@reusable-ui/exclusive-accordion    unverified
+@reusable-ui/tab                    unverified
+@reusable-ui/navbar                 unverified
+@reusable-ui/details                unverified
+
+// utility-components:
+@reusable-ui/dimensions             unverified
+@reusable-ui/modal-status           unverified
+@reusable-ui/dialog-message         unverified
