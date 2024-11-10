@@ -25,6 +25,7 @@
     * step
     * pattern
 
+[med  prior] update @reusable-ui/collapsible :: useLastKnownExpandedSize() to refresh prior to expanding state
 [med  prior] update <ModalCard> using grid instead of flex, similar to <ModalSide>
 [med  prior] add <ProfileImage>
 [med  prior] add <Grip>
@@ -49,7 +50,9 @@
 onValidation remove customValidator() for InputValidator & FormValidator (overwrite invalidable::onValidation() with a more specific event arg)
 [low prior ] add useOnFocusOutside(excludesRef: Array) to reusable-ui/focusable
 [low prior ] add useOnClickOutside(excludesRef: Array) to reusable-ui/clickable
-[low prior ] update <Carousel> that similar bumpy effect to <Tab>
+[low prior ] develop <Slide> to support <Carousel> & <Tab> and supports scrollRef
+[low prior ] update <Carousel> that similar bumpy effect to <Tab> and rename scrollRef to scrollingRef
+[low prior ] update <Tab> having transition of height between <TabPanel> switch
 
 [low prior ] make a demo of showMessage() for replacing alert()
 
