@@ -42,7 +42,7 @@ function App() {
     }), []);
     
     const [isStatic, setStatic] = useState<boolean>(false);
-    const [scrollable, setScrollable] = useState<boolean>(false);
+    const [scrollable, setScrollable] = useState<boolean>(true);
     const [wideContent, setWideContent] = useState<boolean>(false);
     const [tallContent, setTallContent] = useState<boolean>(false);
     
@@ -75,7 +75,7 @@ function App() {
                     onExpandEnd={() => console.log('expanded')}
                     
                     autoFocusOn={buttonSaveRef}
-                    horzAlign='stretch'
+                    horzAlign='center'
                     vertAlign='center'
                     
                     

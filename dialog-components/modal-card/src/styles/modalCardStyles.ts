@@ -63,23 +63,12 @@ export const onModalCardStylesChange = watchChanges(cssModalConfig.onChange, css
 export const usesModalCardLayout = () => {
     return style({
         // layouts:
-        
-        // // the scrollable is not working with `display: 'grid'`, use `display: 'flex'` instead:
-        // display        : 'flex',
-        // flexDirection  : 'column',
-        // justifyContent : 'center',  // center <Popup> vertically
-        // alignItems     : 'center',  // center <Popup> horizontally
-        // flexWrap       : 'nowrap',  // no wrapping
-        
-        // now works with grid:
         display      : 'grid',
         gridTemplate : [[ // LIMITS the <Card> to NOT OVERSIZING outside the `card` area, when `horzAlign|vertAlign='start|end|center'`
             '"card" 1fr',
             '/',
             '1fr'
         ]],
-        justifyItems : 'center',
-        alignItems   : 'center',
         
         
         
@@ -220,52 +209,43 @@ export const usesModalCardVariants = () => {
         ...variants([
             rule(':not(.scrollable)>&', {
                 // sizes:
-                flex          : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
-                
                 boxSizing     : 'content-box',    // the final size is excluding borders & paddings
-                inlineSize    : 'max-content',    // forcing the <Card>'s width follows the <Card>'s items width
-                blockSize     : 'max-content',    // forcing the <Card>'s height follows the <Card>'s items height
+                inlineSize    : 'max-content',    // follows content's width  even if overflowing the <Backdrop>'s client width
+                blockSize     : 'max-content',    // follows content's height even if overflowing the <Backdrop>'s client height
                 
                 
                 
                 // children:
                 ...children('*', { // <Card>
+                    minInlineSize: 'fit-content', // do not limit the width of <Card>
                     ...children('.body', { // <CardBody>
-                        overflow: 'visible',
+                        overflow: 'visible',      // do not shrink the <CardBody> (prevents from having scrollbars)
                     }, { specificityWeight: 0 }),
                 }),
             }),
             rule(':not(.scrollable).horzStretch>&', {
                 // children:
-                ...children(['&', '*'], { // <Popup> & <Card>
-                    inlineSize    : '100%',
-                    /*
-                        NOTE:
-                        Side effect: the <CardBody> always scrollable because the whole <Card> is forced to stretch to maximum width
-                    */
-                }),
+                inlineSize    : '100%',           // follows <Backdrop>'s width
             }),
             rule(':not(.scrollable).vertStretch>&', {
                 // children:
-                ...children(['&', '*'], { // <Popup> & <Card>
-                    blockSize     : '100%',
-                    /*
-                        NOTE:
-                        Side effect: the <CardBody> always scrollable because the whole <Card> is forced to stretch to maximum height
-                    */
-                }),
+                blockSize     : '100%',           // follows <Backdrop>'s height
             }),
             
             rule('.scrollable>&', {
+                // sizes:
+                boxSizing     : 'border-box',     // the final size is including borders & paddings
+                maxInlineSize : '100%',           // the <Popup>'s size is|may `fit-content` but up to the maximum available <Backdrop>'s width
+                maxBlockSize  : '100%',           // the <Popup>'s size is|may `fit-content` but up to the maximum available <Backdrop>'s height
+                inlineSize    : 'fit-content',    // follows content's width  but up to `maxInlineSize`
+                blockSize     : 'fit-content',    // follows content's height but up to `maxBlockSize`
+                
+                
+                
                 // children:
                 ...children(['&', '*'], { // <Popup> & <Card>
                     // sizes:
-                    boxSizing     : 'border-box',     // the final size is including borders & paddings
-                    inlineSize    : 'auto',           // follows the content's width, but
-                    maxInlineSize : '100%',           // up to the maximum available parent's width
-                    blockSize     : 'auto',           // follows the content's height, but
-                    maxBlockSize  : '100%',           // up to the maximum available parent's height
-                    overflow      : 'hidden',         // force the <Card> to scroll
+                    overflow  : 'hidden',         // when both <Popup> and <Card> are `overflow: 'hidden'` => forces the <CardBody> to scroll
                 }),
             }),
             rule('.scrollable.horzStretch>&', {
