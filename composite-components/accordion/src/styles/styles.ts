@@ -37,6 +37,11 @@ import {
     usesListItemStates,
 }                           from '@reusable-ui/list'            // represents a series of content
 import {
+    // features:
+    usesCollapse,
+    
+    
+    
     // styles:
     onCollapseStylesChange,
     usesCollapseLayout,
@@ -94,6 +99,13 @@ export const usesAccordionItemLayout = (options?: OrientationableOptions) => {
     
     
     
+    // dependencies:
+    
+    // features:
+    const {collapseVars} = usesCollapse();
+    
+    
+    
     return style({
         // layouts:
         ...usesCollapseLayout(options2), // `usesCollapseLayout` first then `usesListItemLayout`, so any conflict the `usesListItemLayout` wins
@@ -108,6 +120,31 @@ export const usesAccordionItemLayout = (options?: OrientationableOptions) => {
             ...ifOrientationBlock({  // block
                 // overwrites propName = propName{Block}:
                 ...overwriteProps(accordions, usesSuffixedProps(accordions, 'block')),
+            }),
+            
+            
+            
+            // sizes:
+            boxSizing                 : 'border-box', // the final size is including borders & paddings
+            maxInlineSize             : '100%',       // the <AccordionItem>'s size is|may `fit-content` but up to the maximum available <Wrapper>'s width
+            maxBlockSize              : '100%',       // the <AccordionItem>'s size is|may `fit-content` but up to the maximum available <Wrapper>'s height
+            [collapseVars.inlineSize] : null,         // remove the custom prop definition from `usesCollapseLayout()`, because we redefined conditionally by 'inline|block' variants
+            [collapseVars.blockSize ] : null,         // remove the custom prop definition from `usesCollapseLayout()`, because we redefined conditionally by 'inline|block' variants
+            
+            
+            
+            // variants:
+            // we defined 'inline|block' variants here, instead of in `usesAccordionItemVariants`.
+            // but it's ok since we decided the 'inline|block' variants are the mandatory option that should be selected.
+            ...ifOrientationInline({ // inline
+                // sizes:
+                [collapseVars.inlineSize] : 'fit-content', // follows content's width  but up to `maxInlineSize`
+                [collapseVars.blockSize ] : '100%',        // full height
+            }),
+            ...ifOrientationBlock({  // block
+                // sizes:
+                [collapseVars.inlineSize] : '100%',        // full width
+                [collapseVars.blockSize ] : 'fit-content', // follows content's height but up to `maxBlockSize`
             }),
         }),
     });

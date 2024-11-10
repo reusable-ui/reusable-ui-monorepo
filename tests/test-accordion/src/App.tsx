@@ -19,7 +19,7 @@ interface ParagraphLoremProps {
     words? : number
 }
 const lorems = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem accusantium et ipsam, architecto cupiditate recusandae dolorem itaque tempore expedita commodi eos doloremque molestias. Impedit doloribus maxime rem, iste quia consequuntur?'.split(' ');
-const ParagraphLorem = ({ words }: ParagraphLoremProps) => (
+const ParagraphLorem = ({ words = 5 }: ParagraphLoremProps) => (
     <p>
         { (words ? lorems.slice(0, words) : lorems).join(' ') }
     </p>
@@ -49,13 +49,43 @@ function App() {
                 
                 <br />
                 
-                <Accordion theme='primary' orientation='inline'>
+                <Accordion theme='primary'>
                     <AccordionItem key={0} onExpandedChange={(event) => console.log(event)} label='A first item'>
                         <p>The detail of first item.</p>
                         <ParagraphLorem />
                         <ParagraphLorem />
                     </AccordionItem>
-                    <AccordionItem key={1} label='A second item' className='fluid'>
+                    <AccordionItem key={1} label='A second item'>
+                        <p>The detail of second item.</p>
+                        <ParagraphLorem />
+                        <ParagraphLorem />
+                    </AccordionItem>
+                    <AccordionItem key={2} label='A third item' theme='success'>
+                        <p>The detail of third item.</p>
+                        <ParagraphLorem />
+                        <ParagraphLorem />
+                    </AccordionItem>
+                    <AccordionItem key={3} label='A fourth item' defaultExpanded={true}>
+                        <p>The detail of fourth item.</p>
+                        <ParagraphLorem />
+                        <ParagraphLorem />
+                    </AccordionItem>
+                    <AccordionItem key={4} label='A fifth item' theme='danger'>
+                        <p>The detail of fifth item.</p>
+                        <ParagraphLorem />
+                        <ParagraphLorem />
+                    </AccordionItem>
+                </Accordion>
+                
+                <br />
+                
+                <Accordion theme='primary' orientation='inline' style={{height: '400px', overflow: 'clip'}}>
+                    <AccordionItem key={0} onExpandedChange={(event) => console.log(event)} label='A first item'>
+                        <p>The detail of first item.</p>
+                        <ParagraphLorem />
+                        <ParagraphLorem />
+                    </AccordionItem>
+                    <AccordionItem key={1} label='A second item'>
                         <p>The detail of second item.</p>
                         <ParagraphLorem />
                         <ParagraphLorem />

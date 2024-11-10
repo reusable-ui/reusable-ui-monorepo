@@ -102,7 +102,7 @@ export interface AccordionItemProps<TElement extends Element = HTMLElement, TExp
     // children:
     children      ?: React.ReactNode
 }
-export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: AccordionItemProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
+const AccordionItem = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: AccordionItemProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
     const styleSheet        = useAccordionItemStyleSheet();
     
@@ -398,6 +398,12 @@ export const AccordionItem = <TElement extends Element = HTMLElement, TExpandedC
         </>
     );
 };
+export {
+    AccordionItem,
+    AccordionItem as default,
+}
+
+
 
 export {
     ListSeparatorItemProps,
