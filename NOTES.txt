@@ -554,7 +554,7 @@ components based on <Collapse>
 @reusable-ui/exclusive-accordion    unverified
 @reusable-ui/tab                    unverified
 @reusable-ui/navbar                 unverified
-@reusable-ui/details                unverified
+@reusable-ui/details                fixed: the default width : `100%` ; height: `fit-content`
 
 // utility-components:
 @reusable-ui/dimensions             unverified

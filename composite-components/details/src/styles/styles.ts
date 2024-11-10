@@ -55,6 +55,11 @@ import {
     usesContentChildren,
 }                           from '@reusable-ui/content'         // a neighbor component
 import {
+    // features:
+    usesCollapse,
+    
+    
+    
     // styles:
     onCollapseStylesChange,
     usesCollapseLayout,
@@ -196,7 +201,8 @@ export const usesCollapsibleBodyLayout = () => {
     // dependencies:
     
     // features:
-    const {paddingVars} = usesPadding();
+    const {paddingVars } = usesPadding();
+    const {collapseVars} = usesCollapse();
     
     
     
@@ -211,6 +217,22 @@ export const usesCollapsibleBodyLayout = () => {
             [paddingVars.paddingInline] : null, // remove usesCollapseLayout's padding
             [paddingVars.paddingBlock ] : null, // remove usesCollapseLayout's padding
             [paddingVars.padding      ] : null, // remove usesCollapseLayout's padding
+            
+            
+            
+            // sizes:
+            boxSizing                 : 'border-box',  // the final size is including borders & paddings
+            maxInlineSize             : '100%',        // the <CollapsibleBody>'s size is|may `fit-content` but up to the maximum available <Wrapper>'s width
+            maxBlockSize              : '100%',        // the <CollapsibleBody>'s size is|may `fit-content` but up to the maximum available <Wrapper>'s height
+            // remove initial custom prop definitions (future feature):
+         // [collapseVars.inlineSize] : null,          // remove the custom prop definition from `usesCollapseLayout()`, because we redefined conditionally by 'inline|block' variants
+         // [collapseVars.blockSize ] : null,          // remove the custom prop definition from `usesCollapseLayout()`, because we redefined conditionally by 'inline|block' variants
+            // conditional inline variant (future feature):
+         // [collapseVars.inlineSize] : 'fit-content', // follows content's width  but up to `maxInlineSize`
+         // [collapseVars.blockSize ] : '100%',        // full height
+            // conditional block variant (current feature):
+            [collapseVars.inlineSize] : '100%',        // full width
+            [collapseVars.blockSize ] : 'fit-content', // follows content's height but up to `maxBlockSize`
             
             
             
