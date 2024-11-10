@@ -49,7 +49,7 @@ function App() {
                 
                 <br />
                 
-                <Accordion theme='primary'>
+                <Accordion theme='primary' orientation='inline'>
                     <AccordionItem key={0} onExpandedChange={(event) => console.log(event)} label='A first item'>
                         <p>The detail of first item.</p>
                         <ParagraphLorem />

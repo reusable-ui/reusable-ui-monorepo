@@ -135,13 +135,13 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
             inlineSize     : `calc(${
                 switchOf(
                     lastKnownExpandedSizeVars.inlineSize,
-                    '100vh',
+                    '100vw',
                 )
             } * 1.05)`,
             maxInlineSize  : `calc(${
                 switchOf(
                     lastKnownExpandedSizeVars.inlineSize,
-                    '100vh',
+                    '100vw',
                 )
             } * 1.05)`,
         }),
@@ -159,11 +159,11 @@ export const [collapses, collapseValues, cssCollapseConfig] = cssConfig(() => {
         ...fallback({
             inlineSize     : switchOf(
                 lastKnownExpandedSizeVars.inlineSize,
-                '100vh',
+                '100vw',
             ),
             maxInlineSize  : switchOf(
                 lastKnownExpandedSizeVars.inlineSize,
-                '100vh',
+                '100vw',
             ),
         }),
         paddingInline      : paddingVars.paddingInline,
