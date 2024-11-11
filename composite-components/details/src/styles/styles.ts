@@ -64,7 +64,7 @@ import {
     onCollapseStylesChange,
     usesCollapseLayout,
     usesCollapseStates,
-}                           from '@reusable-ui/collapse'        // a base component
+}                           from '@reusable-ui/collapse'        // a generic element with dynamic visibility (show/hide)
 
 // internals:
 import {
