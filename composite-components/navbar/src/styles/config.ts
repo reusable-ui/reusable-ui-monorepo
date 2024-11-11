@@ -52,7 +52,7 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
         
         
         // sizes:
-        boxSizing                   : 'content-box'                     as CssKnownProps['boxSizing'       ],
+        boxSizing                   : 'content-box'                     as CssKnownProps['boxSizing'       ], // the final size is excluding borders & paddings
         blockSize                   : 'auto'                            as CssKnownProps['blockSize'       ],
         
         
@@ -78,11 +78,19 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
         listGridAreaCollapse        : '2/1/2/3'                         as CssKnownProps['gridArea'        ],
         listGridAreaExpand          : 'unset'                           as CssKnownProps['gridArea'        ],
         
-        listDisplay                 : 'flex'                            as CssKnownProps['display'         ],
-        listFlexDirectionCollapse   : 'column'                          as CssKnownProps['flexDirection'   ],
-        listFlexDirectionExpand     : 'row'                             as CssKnownProps['flexDirection'   ],
-        listJustifySelf             : 'stretch'                         as CssKnownProps['justifySelf'     ],
-        listAlignSelf               : 'stretch'                         as CssKnownProps['alignSelf'       ],
+        listDisplay                 : 'grid'                            as CssKnownProps['display'         ],
+        listJustifySelf             : 'stretch'                         as CssKnownProps['justifySelf'     ], // full width
+        listAlignSelf               : 'stretch'                         as CssKnownProps['alignSelf'       ], // full height
+        
+        listBoxSizing               : 'border-box'                      as CssKnownProps['boxSizing'       ], // the final size is including borders & paddings
+        listInlineSizeCollapse      : [[
+            'calc(100% + (', containers.paddingInline, ' * 2))',
+        ]]                                                              as CssKnownProps['inlineSize'      ], // full available width  including negative_margins
+        listBlockSizeCollapse       : 'fit-content'                     as CssKnownProps['blockSize'       ], // auto height depends on the content
+        listInlineSizeExpand        : 'fit-content'                     as CssKnownProps['inlineSize'      ], // auto width  depends on the content
+        listBlockSizeExpand         : [[
+            'calc(100% + (', basics.paddingBlock, ' * 2))',
+        ]]                                                              as CssKnownProps['blockSize'       ], // full available height including negative_margins
         
         listMarginInlineCollapse    : [[
             'calc(0px - ', containers.paddingInline, ')',
@@ -104,11 +112,10 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
         
         
         // menus:
-        menuDisplay                 : 'flex'                            as CssKnownProps['display'         ],
-        menuFlexDirection           : 'row'                             as CssKnownProps['flexDirection'   ],
-        menuJustifyContent          : 'center'                          as CssKnownProps['justifyContent'  ],
+        menuDisplay                 : 'grid'                            as CssKnownProps['display'         ],
+        menuJustifyItems            : 'center'                          as CssKnownProps['justifyItems'    ],
         menuAlignItems              : 'center'                          as CssKnownProps['alignItems'      ],
-        menuFlexWrap                : 'nowrap'                          as CssKnownProps['flexWrap'        ],
+        
         menuWhiteSpace              : 'nowrap'                          as CssKnownProps['whiteSpace'      ],
     };
     
@@ -118,7 +125,8 @@ export const [navbars, navbarValues, cssNavbarConfig] = cssConfig(() => {
         // lists:
         listGridArea                : bases.listGridAreaCollapse        as CssKnownProps['gridArea'        ],
         
-        listFlexDirection           : bases.listFlexDirectionCollapse   as CssKnownProps['flexDirection'   ],
+        listInlineSize              : bases.listInlineSizeCollapse      as CssKnownProps['inlineSize'      ],
+        listBlockSize               : bases.listBlockSizeCollapse       as CssKnownProps['blockSize'       ],
         
         listMarginInline            : bases.listMarginInlineCollapse    as CssKnownProps['marginInline'    ],
         listMarginBlock             : bases.listMarginBlockCollapse     as CssKnownProps['marginBlock'     ],

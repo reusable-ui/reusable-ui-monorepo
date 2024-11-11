@@ -1,13 +1,13 @@
 {
   "name": "test-navbar-react-router",
-  "version": "6.7.0",
+  "version": "6.7.1",
   "private": true,
   "dependencies": {
     "@cssfn/cssfn-dom": "^3.2.0",
     "@reusable-ui/collapse": "^6.5.0",
     "@reusable-ui/hamburger-menu-button": "^6.5.0",
     "@reusable-ui/nav": "^6.5.0",
-    "@reusable-ui/navbar": "^6.7.0",
+    "@reusable-ui/navbar": "^6.7.1",
     "@reusable-ui/react-router-compat-link": "^6.5.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",

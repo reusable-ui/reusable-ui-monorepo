@@ -44,6 +44,10 @@ import {
     usesContainerLayout,
     usesContainerVariants,
 }                           from '@reusable-ui/container'       // a base container UI of Reusable-UI components
+import {
+    // features:
+    usesCollapse,
+}                           from '@reusable-ui/collapse'        // a generic element with dynamic visibility (show/hide)
 
 // internals:
 import {
@@ -68,8 +72,9 @@ export const usesNavbarLayout = () => {
     // dependencies:
     
     // features:
-    const {borderRule , borderVars } = usesBorder(navbars);
-    const {paddingRule, paddingVars} = usesPadding(navbars);
+    const {borderRule , borderVars  } = usesBorder(navbars);
+    const {paddingRule, paddingVars } = usesPadding(navbars);
+    const {             collapseVars} = usesCollapse();
     
     
     
@@ -89,6 +94,16 @@ export const usesNavbarLayout = () => {
             ...descendants(listElm, {
                 // customize:
                 ...usesCssProps(usesPrefixedProps(navbars, 'list')), // apply config's cssProps starting with list***
+                // inlineSize : null, // remove the custom prop definition from config's cssProps, because it's a special prop for `collapseVars.inlineSize`
+                // blockSize  : null, // remove the custom prop definition from config's cssProps, because it's a special prop for `collapseVars.blockSize`
+                
+                
+                
+                // sizes:
+                [collapseVars.inlineSize] : navbars.listInlineSize,
+                [collapseVars.blockSize ] : navbars.listBlockSize,
+                inlineSize                : collapseVars.inlineSize, // re-write this prop again in order the `list` is swapped out from existance <Collapse mainClass={'' /* empty string */}>
+                blockSize                 : collapseVars.blockSize,
             }),
             ...descendants(menuElm, {
                 // customize:
