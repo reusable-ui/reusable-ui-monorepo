@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/responsives",
-  "version": "6.5.0",
+  "version": "6.5.1",
   "description": "A responsive management system for react web components.",
   "keywords": [
     "responsive",

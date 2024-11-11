@@ -110,11 +110,11 @@ const hasOverflowedDescendant = (element: Element, minLeft: number|null, minTop:
             right  : childRight,
             bottom : childBottom,
         } = child.getBoundingClientRect(); // warning: force reflow => major performance bottleneck!
-        // snap fractional css_pixel to nearest integer device_pixel:
-        childLeft   = Math.round(childLeft   * pixelScale);
-        childTop    = Math.round(childTop    * pixelScale);
-        childRight  = Math.round(childRight  * pixelScale);
-        childBottom = Math.round(childBottom * pixelScale);
+        // calculates the physical pixels:
+        childLeft   = (childLeft   * pixelScale);
+        childTop    = (childTop    * pixelScale);
+        childRight  = (childRight  * pixelScale);
+        childBottom = (childBottom * pixelScale);
         
         
         
@@ -124,45 +124,55 @@ const hasOverflowedDescendant = (element: Element, minLeft: number|null, minTop:
             marginRight  : marginRightStr,
             marginBottom : marginBottomStr,
         } = getComputedStyle(child); // warning: force reflow => major performance bottleneck!
-        // snap fractional css_pixel to nearest integer device_pixel:
+        // calculates the physical pixels:
         const marginLeft     = ((parseFloat(marginLeftStr  ) || 0) * pixelScale);
         const marginTop      = ((parseFloat(marginTopStr   ) || 0) * pixelScale);
         const marginRight    = ((parseFloat(marginRightStr ) || 0) * pixelScale);
         const marginBottom   = ((parseFloat(marginBottomStr) || 0) * pixelScale);
         // add cummulative shifts from ancestor:
-        const minLeftShift   = (minLeft   === null) ? null : Math.round(minLeft   + marginLeft  );
-        const minTopShift    = (minTop    === null) ? null : Math.round(minTop    + marginTop   );
-        const maxRightShift  = (maxRight  === null) ? null : Math.round(maxRight  - marginRight );
-        const maxBottomShift = (maxBottom === null) ? null : Math.round(maxBottom - marginBottom);
+        const minLeftShift   = (minLeft   === null) ? null : (minLeft   + marginLeft  );
+        const minTopShift    = (minTop    === null) ? null : (minTop    + marginTop   );
+        const maxRightShift  = (maxRight  === null) ? null : (maxRight  - marginRight );
+        const maxBottomShift = (maxBottom === null) ? null : (maxBottom - marginBottom);
         
         
         
         // compares child's boundaries vs max boundaries:
+        const inaccuracyMargin = 0.4; // decreases the border_minimum and increases the border_maximum to compensate inaccurracy problem
         if (
             (
-                (minLeftShift !== null)
+                (minLeftShift   !== null)
                 &&
-                (childLeft  < minLeftShift)    // smaller than minimum => overflowed
+                (childLeft   < (minLeftShift   - inaccuracyMargin)) // smaller than border_minimum => overflowed
             )
             ||
             (
-                (minTopShift !== null)
+                (minTopShift    !== null)
                 &&
-                (childTop  < minTopShift)      // smaller than minimum => overflowed
+                (childTop    < (minTopShift    - inaccuracyMargin)) // smaller than border_minimum => overflowed
             )
             ||
             (
-                (maxRightShift !== null)
+                (maxRightShift  !== null)
                 &&
-                (childRight  > maxRightShift)  // bigger than maximum => overflowed
+                (childRight  > (maxRightShift  + inaccuracyMargin)) // bigger than border_maximum => overflowed
             )
             ||
             (
                 (maxBottomShift !== null)
                 &&
-                (childBottom > maxBottomShift) // bigger than maximum => overflowed
+                (childBottom > (maxBottomShift + inaccuracyMargin)) // bigger than border_maximum => overflowed
             )
         ) {
+            // just for debugging purpose:
+            // console.log('overflowed by: ', child, {
+            //     pixelScale,
+            //     left   : { test : (minLeftShift   !== null) && (childLeft   < (minLeftShift   - inaccuracyMargin)), childLeft  , minLeftShift   },
+            //     top    : { test : (minTopShift    !== null) && (childTop    < (minTopShift    - inaccuracyMargin)), childTop   , minTopShift    },
+            //     right  : { test : (maxRightShift  !== null) && (childRight  > (maxRightShift  + inaccuracyMargin)), childRight , maxRightShift  },
+            //     bottom : { test : (maxBottomShift !== null) && (childBottom > (maxBottomShift + inaccuracyMargin)), childBottom, maxBottomShift },
+            // });
+            
             return true; // found
         } // if
         
@@ -208,7 +218,7 @@ export const isOverflowed = (element: Element): boolean => {
         paddingRight  : paddingRightStr,
         paddingBottom : paddingBottomStr,
     } = getComputedStyle(element); // warning: force reflow => major performance bottleneck!
-    // snap fractional css_pixel to nearest integer device_pixel:
+    // calculates the physical pixels:
     const paddingLeft   = ((parseFloat(paddingLeftStr  ) || 0) * pixelScale);
     const paddingTop    = ((parseFloat(paddingTopStr   ) || 0) * pixelScale);
     const paddingRight  = ((parseFloat(paddingRightStr ) || 0) * pixelScale);
@@ -222,10 +232,10 @@ export const isOverflowed = (element: Element): boolean => {
         right  : elmRight,
         bottom : elmBottom,
     } = element.getBoundingClientRect(); // warning: force reflow => major performance bottleneck!
-    const minLeft   = Math.round((elmLeft   * pixelScale) + paddingLeft  );
-    const minTop    = Math.round((elmTop    * pixelScale) + paddingTop   );
-    const maxRight  = Math.round((elmRight  * pixelScale) - paddingRight );
-    const maxBottom = Math.round((elmBottom * pixelScale) - paddingBottom);
+    const minLeft   = ((elmLeft   * pixelScale) + paddingLeft  );
+    const minTop    = ((elmTop    * pixelScale) + paddingTop   );
+    const maxRight  = ((elmRight  * pixelScale) - paddingRight );
+    const maxBottom = ((elmBottom * pixelScale) - paddingBottom);
     
     
     
