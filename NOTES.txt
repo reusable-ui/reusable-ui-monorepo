@@ -553,7 +553,7 @@ components based on <Collapse>
 @reusable-ui/accordion              fixed: the default width : `fit-content` (inline) -or- `100%` (block) ; height: `100%` (inline) -or- `fit-content` (block)
 @reusable-ui/exclusive-accordion    same as <Accordion>, not having css
 @reusable-ui/tab                    NOT based <Collapse>
-@reusable-ui/navbar                 unverified
+@reusable-ui/navbar                 fixed: the default width : `fit-content` (desktop) -or- `fill-available` (mobile) ; height: `fill-available` (desktop) -or- `fit-content` (mobile)
 @reusable-ui/details                fixed: the default width : `100%` ; height: `fit-content`
 
 // utility-components:
