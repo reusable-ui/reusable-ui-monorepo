@@ -7,7 +7,6 @@ import {
     
     // hooks:
     useRef,
-    useEffect,
     useState,
     useMemo,
 }                           from 'react'
@@ -33,38 +32,18 @@ import {
 
 
 // hooks:
-export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>(collapsibleApi: CollapsibleApi<TElement>) => {
+
+// states:
+
+//#region lastKnownExpandedSize
+export interface LastKnownExpandedSizeApi<TElement extends Element = HTMLElement> {
+    setRef : React.Ref<TElement> // setter ref
+    style  : React.CSSProperties
+}
+
+export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>(collapsibleApi: CollapsibleApi<TElement>): LastKnownExpandedSizeApi<TElement> => {
     // states:
-    const {state}                = collapsibleApi;
-    const isFullyExpanded        = (state === CollapsibleState.Expanded);
-    const isFullyCollapsed       = (state === CollapsibleState.Collapsed);
-    const lastKnownSize          = useRef<ResizeObserverSize|undefined>(undefined);
-    const [lastKnownExpandedSize, setLastKnownExpandedSize] = useState<ResizeObserverSize|undefined>(undefined);
-    
-    
-    
-    // features:
-    const {lastKnownExpandedSizeVars} = usesLastKnownExpandedSize();
-    
-    
-    
-    // handlers:
-    const handleCollapseResize = useEvent<ResizeObserverCallback>((entries) => {
-        // conditions:
-        const size = entries[0].borderBoxSize[0];
-        if ((size.inlineSize === 0) && (size.blockSize === 0)) return; // <Collapse> is *fully collapsed* => ignore
-        if (lastKnownSize.current && (lastKnownSize.current.inlineSize === size.inlineSize) && (lastKnownSize.current.blockSize === size.blockSize)) return; // already the same => ignore
-        
-        
-        
-        // update:
-        lastKnownSize.current = size;
-        
-        // re-render (if necessary):
-        if (isFullyExpanded || isFullyCollapsed) { // not being animating => update the final known size
-            setLastKnownExpandedSize(lastKnownSize.current);
-        } // if
-    });
+    const {state} = collapsibleApi;
     
     
     
@@ -73,7 +52,98 @@ export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>
     
     
     
-    // dom effects:
+    // utilities:
+    /**
+     * The last known size of `<ComponentElement>` when the collapsible state is `expanded`.
+     */
+    let   [lastKnownExpandedSize, setLastKnownExpandedSize] = useState<ResizeObserverSize|undefined>(undefined);
+    const updateSize          = useEvent((size: ResizeObserverSize): void => {
+        // conditions:
+        if (
+            lastKnownExpandedSize
+            &&
+            (lastKnownExpandedSize.inlineSize === size.inlineSize)
+            &&
+            (lastKnownExpandedSize.blockSize  === size.blockSize )
+        ) return;                 // no change => ignore
+        
+        
+        
+        // updates:
+        setLastKnownExpandedSize( // sync
+            lastKnownExpandedSize = size
+        );
+    });
+    const measureExpandedSize = useEvent((): void => {
+        // conditions:
+        if (!ref) return; // the ref is not ready yet
+        
+        
+        
+        // measures:
+        const hasInitialExpandingClass = ref.classList.contains('expanding');
+        const hasInitialExpandedClass  = ref.classList.contains('expanded');
+        try {
+            if (hasInitialExpandingClass) {
+                ref.classList.remove('expanding'); // a *hack* temporary hide `.expanding` class
+            } // if
+            
+            if (!hasInitialExpandedClass) {
+                ref.classList.add('expanded');     // a *hack* temporary add  `.expanded`  class
+            } // if
+            
+            
+            
+            const style = getComputedStyle(ref);
+            if (style.display !== 'none') { // the <ComponentElement> is rendered
+                const size : ResizeObserverSize = {
+                    inlineSize : Number.parseFloat(style.inlineSize),
+                    blockSize  : Number.parseFloat(style.blockSize),
+                };
+                updateSize(size);
+            } // if
+        }
+        finally {
+            if (hasInitialExpandingClass) ref.classList.add('expanding');   // a *hack* restore `.expanding` class
+            if (!hasInitialExpandedClass) ref.classList.remove('expanded'); // a *hack* remove  `.expanded`  class
+        } // try
+    });
+    
+    
+    
+    // handlers:
+    const observerHandleResize = useEvent<ResizeObserverCallback>((entries) => {
+        // conditions:
+        if (state !== CollapsibleState.Expanded) return; // only interested of fully_expanded state, ignore the size when fully_collapsed|collapsing|expanding
+        
+        const size : ResizeObserverSize|null|undefined = entries[0]?.borderBoxSize?.[0];
+        if (!size) return;
+        
+        
+        
+        // actions:
+        updateSize(size);
+    });
+    
+    
+    
+    // effects:
+    
+    // force to perform size measurement prior to expanding event (before the browser has chance to perform animation):
+    const prevStateRef = useRef<CollapsibleState>(state);
+    useIsomorphicLayoutEffect(() => {
+        // conditions:
+        if (prevStateRef.current === state) return; // no change => ignore
+        prevStateRef.current = state;               // sync
+        if (state !== CollapsibleState.Expanding) return; // only interested of expanding event
+        
+        
+        
+        // actions:
+        measureExpandedSize();
+    }, [state]);
+    
+    // while the <ComponentElement> is still on expanded state, continously monitors the size of the inspecting element:
     useIsomorphicLayoutEffect(() => {
         // conditions:
         if (!ref) return; // the ref is not set => ignore
@@ -81,7 +151,7 @@ export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>
         
         
         // setups:
-        const observer = new ResizeObserver(handleCollapseResize);
+        const observer = new ResizeObserver(observerHandleResize);
         observer.observe(ref, { box: 'border-box'  });
         
         
@@ -92,57 +162,11 @@ export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>
         };
     }, [ref]);
     
-    useEffect(() => {
-        // conditions:
-        if (!isFullyExpanded)       return; // <Collapse> is NOT *fully expanded* => ignore
-        if (!lastKnownSize.current) return; // not already calculated => ignore
-        if (lastKnownExpandedSize && (lastKnownExpandedSize.inlineSize === lastKnownSize.current.inlineSize) && (lastKnownExpandedSize.blockSize === lastKnownSize.current.blockSize)) return; // already the same => ignore
-        
-        
-        
-        // sync:
-        setLastKnownExpandedSize(lastKnownSize.current);
-    }, [lastKnownExpandedSize, isFullyExpanded]);
     
-    const hasTweakedRef = useRef<boolean>(false);
-    useIsomorphicLayoutEffect(() => {
-        // conditions:
-        if (hasTweakedRef.current) return; // already been tweaked     => ignore permanently
-        if (!ref)                  return; // the ref is not ready yet => ignore temporarily => watch for future changes
-        
-        
-        
-        // tweak:
-        if (
-            !lastKnownSize.current // the <Collapse>'s size has never been calculated
-            &&
-            isFullyCollapsed       // the <Collapse> is *fully collapsed* (hidden)
-        ) {
-            try {
-                ref.classList.add('expanded');
-                
-                const style = getComputedStyle(ref);
-                if (style.display !== 'none') { // the <Collapse> is rendered
-                    const size : ResizeObserverSize = {
-                        inlineSize : Number.parseFloat(style.inlineSize),
-                        blockSize  : Number.parseFloat(style.blockSize),
-                    };
-                    if ((size.inlineSize !== 0) || (size.blockSize !== 0)) { // check if the <Collapse> is alive (has width and/or height)
-                        lastKnownSize.current = size;                    // update
-                        setLastKnownExpandedSize(lastKnownSize.current); // trigger to re-render with the update
-                    } // if
-                } // if
-            }
-            finally {
-                ref.classList.remove('expanded');
-            } // try
-        } // if
-        
-        
-        
-        // finalize:
-        hasTweakedRef.current = true; // prevents to tweak multiple times
-    }, [ref, isFullyCollapsed]);
+    
+    // features:
+    const {lastKnownExpandedSizeVars} = usesLastKnownExpandedSize();
+    
     
     
     // styles:
@@ -156,13 +180,15 @@ export const useLastKnownExpandedSize = <TElement extends Element = HTMLElement>
         [
             lastKnownExpandedSizeVars.blockSize
             .slice(4, -1) // fix: var(--customProp) => --customProp
-        ] : (lastKnownExpandedSize?.blockSize  !== undefined) ? `${lastKnownExpandedSize.blockSize}px`  : undefined,
+        ] : (lastKnownExpandedSize?.blockSize  !== undefined) ? `${lastKnownExpandedSize.blockSize }px` : undefined,
     }), [lastKnownExpandedSizeVars.inlineSize, lastKnownExpandedSizeVars.blockSize, lastKnownExpandedSize]);
     
     
     
+    // api:
     return {
         setRef,
         style,
     };
 };
+//#endregion lastKnownExpandedSize
