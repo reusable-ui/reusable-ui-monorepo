@@ -14,7 +14,7 @@ import {
     Styles,
     HeadPortal,
 } from '@cssfn/cssfn-react'
-import { CardBody, CardFooter, CardHeader } from '@reusable-ui/card';
+import { Card, CardBody, CardFooter, CardHeader } from '@reusable-ui/card';
 import { Button } from '@reusable-ui/button';
 import CloseButton from '@reusable-ui/close-button';
 import Check from '@reusable-ui/check';
@@ -70,7 +70,16 @@ function App() {
                 <p>
                     Modal is {showModal ? 'shown' : 'hidden'}
                 </p>
-                <ModalSide expanded={showModal} onExpandedChange={handleExpandedChange} modalSideStyle='inlineStart' backdropStyle={(isStatic || undefined) && 'static'} theme='primary' viewport={inContainer ? containerRef : null}>
+                <ModalSide
+                    expanded={showModal}
+                    onExpandedChange={handleExpandedChange}
+                    modalSideStyle='inlineStart'
+                    backdropStyle={(isStatic || undefined) && 'static'}
+                    theme='primary'
+                    viewport={inContainer ? containerRef : null}
+                    
+                    // cardComponent={<Card style={{maxInlineSize: '800px', maxBlockSize: '500px'}} />}
+                >
                     <CardHeader>
                         <h1>Test Modal Side</h1>
                         <CloseButton onClick={handleClose} size='xs' />

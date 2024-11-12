@@ -94,6 +94,8 @@ export const usesModalSideLayout = () => {
             '/',
             '1fr'
         ]],
+        justifyItems : 'center', // center the <Card> horizontally if the <Card> limits its width  by `maxInlineSize : '123px'`
+        alignItems   : 'center', // center the <Card> vertically   if the <Card> limits its height by `maxBlockSize  : '123px'`
         
         
         
@@ -105,7 +107,7 @@ export const usesModalSideLayout = () => {
         
         
         // accessibilities:
-        pointerEvents  : 'none', // just a wrapper <Popup> element (ghost), which the size may bigger (when the user limits the size of <Card>) than the <Card>, thus causing to BLOCK the <Backdrop> INTERACTION, so we set 'none'
+        pointerEvents  : 'none', // just a wrapper <Collapse> element (ghost), which the size may bigger (when the user limits the size of <Card>) than the <Card>, thus causing to BLOCK the <Backdrop> INTERACTION, so we set 'none'
         
         
         
@@ -140,7 +142,7 @@ export const usesModalSideLayout = () => {
                 
                 
                 // accessibilities:
-                pointerEvents : 'auto', // cancel out *inherited* ghost layer from <Popup>, *re-enabling* mouse_event on the <Card>
+                pointerEvents : 'auto', // cancel out *inherited* ghost layer from <Collapse>, *re-enabling* mouse_event on the <Card>
                 
                 
                 
@@ -264,11 +266,25 @@ export const usesModalSideVariants = () => {
                 // sizes:
                 [collapseVars.inlineSize] : 'fit-content', // follows content's width  but up to `maxInlineSize`
                 [collapseVars.blockSize ] : '100%',        // full height
+                
+                
+                
+                // children:
+                ...children('*', { // <Card>
+                    blockSize  : '100%', // stretch to maximum height and also kills <Collapse>'s `alignItems   : 'center'` while also preserving centering of limited height of <Card> by `maxBlockSize  : '123px'`
+                }),
             }),
             rule(['.blockStart>&', '.blockEnd>&'], {   // <Collapse>
                 // sizes:
                 [collapseVars.inlineSize] : '100%',        // full width
                 [collapseVars.blockSize ] : 'fit-content', // follows content's height but up to `maxBlockSize`
+                
+                
+                
+                // children:
+                ...children('*', { // <Card>
+                    inlineSize : '100%', // stretch to maximum width  and also kills <Collapse>'s `justifyItems : 'center'` while also preserving centering of limited width  of <Card> by `maxInlineSize : '123px'`
+                }),
             }),
             
             rule('.inlineStart>&', { // <Collapse>
