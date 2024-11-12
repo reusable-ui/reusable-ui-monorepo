@@ -25,7 +25,7 @@
     * step
     * pattern
 
-[med  prior] update @reusable-ui/collapsible :: useLastKnownExpandedSize() to refresh prior to expanding state
+[med  prior] update @reusable-ui/popup : needs to change bumpy effect from 1.02 to 1.05
 [med  prior] update <ModalCard> using grid instead of flex, similar to <ModalSide>
 [med  prior] add <ProfileImage>
 [med  prior] add <Grip>

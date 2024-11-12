@@ -522,21 +522,6 @@ contexts:
 
 components based on <Collapse>
 
-// reusable-ui capabilities:
-@reusable-ui/auto-focusable         watching for `expanded` change to perform `autoFocusOn` and `restoreFocusOn`
-
-// reusable-ui states:
-@reusable-ui/collapsible            provides states of `expanding`, `collapsing`, `expanded`, and `collapsed`
-
-// status-components:
-@reusable-ui/popup                  implements states of `expanding`, `collapsing`, `expanded`, and `collapsed` from <Basic>; needs to change bumpy effect from 1.02 to 1.05
-@reusable-ui/badge                  extends <Popup>
-@reusable-ui/busy                   extends <Badge>
-
-// notification-components:
-@reusable-ui/alert                  extends <Popup>
-@reusable-ui/tooltip                extends <Popup>
-
 // menu-components:
 @reusable-ui/collapse               fixed: the default width : `100%`        ; height : `fit-content`
 @reusable-ui/dropdown               fixed: the default width : `fit-content` ; height : `fit-content`
@@ -545,18 +530,18 @@ components based on <Collapse>
 @reusable-ui/dropdown-list-button   same as <DropdownList>, not having css
 
 // dialog-components:
-@reusable-ui/modal                  NOT based <Collapse>
-@reusable-ui/modal-card             NOT based <Collapse>
+@reusable-ui/modal                  NOT based on <Collapse>
+@reusable-ui/modal-card             NOT based on <Collapse>
 @reusable-ui/modal-side             fixed: the default width : `fit-content` (inline**) -or- `100%` (block**) ; height: `100%` (inline**) -or- `fit-content` (block**)
 
 // composite-components:
 @reusable-ui/accordion              fixed: the default width : `fit-content` (inline) -or- `100%` (block) ; height: `100%` (inline) -or- `fit-content` (block)
 @reusable-ui/exclusive-accordion    same as <Accordion>, not having css
-@reusable-ui/tab                    NOT based <Collapse>
+@reusable-ui/tab                    NOT based on <Collapse>
 @reusable-ui/navbar                 fixed: the default width : `fit-content` (desktop) -or- `fill-available` (mobile) ; height: `fill-available` (desktop) -or- `fit-content` (mobile)
 @reusable-ui/details                fixed: the default width : `100%` ; height: `fit-content`
 
 // utility-components:
-@reusable-ui/dimensions             unverified
-@reusable-ui/modal-status           unverified
+@reusable-ui/dimensions             NOT based on <Collapse>
+@reusable-ui/modal-status           NOT based on <Collapse>
 @reusable-ui/dialog-message         unverified
