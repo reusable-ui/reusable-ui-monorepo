@@ -69,6 +69,8 @@ export const usesModalCardLayout = () => {
             '/',
             '1fr'
         ]],
+        justifyItems : 'center', // center the <Card> horizontally if the <Card> limits its width  by `maxInlineSize : '123px'`
+        alignItems   : 'center', // center the <Card> vertically   if the <Card> limits its height by `maxBlockSize  : '123px'`
         
         
         
@@ -251,13 +253,13 @@ export const usesModalCardVariants = () => {
             rule('.scrollable.horzStretch>&', {
                 // children:
                 ...children(['&', '*'], { // <Popup> & <Card>
-                    inlineSize    : '100%',
+                    inlineSize    : '100%',       // stretch to maximum width  and also kills <Popup>'s `justifyItems : 'center'` while also preserving centering of limited width  of <Card> by `maxInlineSize : '123px'`
                 }),
             }),
             rule('.scrollable.vertStretch>&', {
                 // children:
                 ...children(['&', '*'], { // <Popup> & <Card>
-                    blockSize     : '100%',
+                    blockSize     : '100%',       // stretch to maximum height and also kills <Popup>'s `alignItems   : 'center'` while also preserving centering of limited height of <Card> by `maxBlockSize  : '123px'`
                 }),
             }),
         ]),

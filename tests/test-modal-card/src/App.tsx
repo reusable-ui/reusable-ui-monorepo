@@ -75,11 +75,11 @@ function App() {
                     onExpandEnd={() => console.log('expanded')}
                     
                     autoFocusOn={buttonSaveRef}
-                    horzAlign='center'
+                    horzAlign='stretch'
                     vertAlign='center'
                     
                     
-                    // cardComponent={<Card style={{maxInlineSize: '800px', maxBlockSize: '500px'}} />}
+                    cardComponent={<Card style={{maxInlineSize: '800px', maxBlockSize: '500px'}} />}
                 >
                     <CardHeader>
                         <h1>Test Modal Card</h1>
