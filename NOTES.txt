@@ -540,8 +540,3 @@ components based on <Collapse>
 @reusable-ui/tab                    NOT based on <Collapse>
 @reusable-ui/navbar                 fixed: the default width : `fit-content` (desktop) -or- `fill-available` (mobile) ; height: `fill-available` (desktop) -or- `fit-content` (mobile)
 @reusable-ui/details                fixed: the default width : `100%` ; height: `fit-content`
-
-// utility-components:
-@reusable-ui/dimensions             NOT based on <Collapse>
-@reusable-ui/modal-status           NOT based on <Collapse>
-@reusable-ui/dialog-message         unverified
