@@ -71,9 +71,9 @@
 [modularized] [documented  ] [          atomic] @reusable-ui/indicator                          [updated config]
 [modularized] [documented  ] [          atomic] @reusable-ui/control                            [updated config]
 [modularized] [documented  ] [          atomic] @reusable-ui/action-control                     [updated config]
-[modularized] [documented  ] [          atomic] @reusable-ui/editable-control                   [updated config]
-[modularized] [documented  ] [          atomic] @reusable-ui/editable-text-control   *icon      [updated config]
-[modularized] [documented  ] [          atomic] @reusable-ui/editable-action-control            [no      config]
+[modularized] [documented  ] [          atomic] @reusable-ui/editable-control                   [updated config]                                invalidable_updated
+[modularized] [documented  ] [          atomic] @reusable-ui/editable-text-control   *icon      [updated config]                                invalidable
+[modularized] [documented  ] [          atomic] @reusable-ui/editable-action-control            [no      config]                                invalidable
 
 // base-content-components:
 [modularized] [documented  ] [          atomic] @reusable-ui/container                          [updated config]    [Xs|Sm|Md|Lg|Xl|Xxl|Xxxl]
@@ -83,17 +83,19 @@
 [modularized] [documented  ] [          atomic] @reusable-ui/icon                               [updated config]    [Xs|Sm|Md|Lg|Xl|1em]
 [slimmodular] [documented  ] [          atomic] @reusable-ui/label                              [updated config]
 [modularized] [documented  ] [          atomic] @reusable-ui/button                             [updated config]    [Sm|Md|Lg]
-[slimmodular] [new         ] [full    compound] @reusable-ui/editable-button                    [no      config]
 [no css     ] [new         ] [full    compound] @reusable-ui/toggle-button                      [no      config]
 [no css     ] [documented  ] [full    compound] @reusable-ui/nav-button                         [no      config]
 [modularized] [documented  ] [full    compound] @reusable-ui/button-icon                        [updated config]    [Xs|Sm|Md|Lg|Xl]
 [no css     ] [documented  ] [full    compound] @reusable-ui/close-button                       [no      config]
 [slimmodular] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button              [updated config]
-[slimmodular] [documented  ] [          atomic] @reusable-ui/form                               [updated config]
-[modularized] [documented  ] [          atomic] @reusable-ui/input                              [updated config]
-[slimmodular] [documented  ] [full    compound] @reusable-ui/range                              [updated config]    [Inline|Block]
-[modularized] [documented  ] [          atomic] @reusable-ui/check                              [updated config]
-[modularized] [documented  ] [          atomic] @reusable-ui/radio                              [updated config]
+
+// editor-components:
+[slimmodular] [new         ] [full    compound] @reusable-ui/editable-button                    [no      config]                                invalidable_updated
+[slimmodular] [documented  ] [          atomic] @reusable-ui/form                               [updated config]                                invalidable_updated
+[modularized] [documented  ] [          atomic] @reusable-ui/input                              [updated config]                                invalidable
+[slimmodular] [documented  ] [full    compound] @reusable-ui/range                              [updated config]    [Inline|Block]              invalidable
+[modularized] [documented  ] [          atomic] @reusable-ui/check                              [updated config]                                invalidable
+[modularized] [documented  ] [          atomic] @reusable-ui/radio                              [updated config]                                invalidable
 
 // layout-components:
 [slimmodular] [documented  ] [          atomic] @reusable-ui/list                               [updated config]    [Sm|Md|Lg]  [Inline|Block]
