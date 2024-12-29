@@ -6,6 +6,7 @@
 /*peer*/ export * from '@reusable-ui/typos'                 // a typography management system
 
 // reusable-ui utilities:
+export * from '@reusable-ui/types'                          // a collection of TypeScript type utilities, assertions, and validations for ensuring type safety in reusable UI components
 export * from '@reusable-ui/numbers'                        // a set of numeric utility functions
 export * from '@reusable-ui/nodes'                          // a set of React node utility functions
 export * from '@reusable-ui/stripouts'                      // removes browser's default stylesheet
