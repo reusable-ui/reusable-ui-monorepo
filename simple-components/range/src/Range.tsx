@@ -26,6 +26,11 @@ import {
 
 // reusable-ui core:
 import {
+    // a collection of TypeScript type utilities, assertions, and validations for ensuring type safety in reusable UI components:
+    type NoForeignProps,
+    
+    
+    
     // a set of numeric utility functions:
     clamp,
     
@@ -54,7 +59,7 @@ import {
     
     
     // a capability of UI to rotate its layout:
-    OrientationableProps,
+    type OrientationableProps,
     useOrientationable,
     
     
@@ -71,6 +76,11 @@ import {
     
     // a capability of UI to be clicked:
     useClickable,
+    
+    
+    
+    // a possibility of UI having an invalid state:
+    type ValidationDeps,
 }                           from '@reusable-ui/core'                    // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -168,6 +178,9 @@ export interface RangeProps<TElement extends Element = HTMLDivElement>
             |'defaultValue'|'value'  // only supports numeric value
             |'onChange'              // moved to <input>
             
+            // validations:
+            |'required'              // never blank value => not supported
+            
             // children:
             |'children'              // no nested children
         >,
@@ -197,8 +210,8 @@ export interface RangeProps<TElement extends Element = HTMLDivElement>
             |'pattern'               // text regex is not supported
             
             // formats:
-            |'type'                              // always [type="range"]
-            |'placeholder'|'autoComplete'|'list' // text hints are not supported
+            |'type'                  // always [type="range"]
+            |'placeholder'|'autoComplete'|'autoCapitalize'|'list' // text hints are not supported
             
             // values:
             |'defaultValue'|'value'  // only supports numeric value
@@ -211,9 +224,9 @@ export interface RangeProps<TElement extends Element = HTMLDivElement>
         RangeSubComponentProps
 {
     // validations:
-    min               ?: number
-    max               ?: number
-    step              ?: number|'any'
+    min               ?: number       // redefine `min` to support `number` type only
+    max               ?: number       // redefine `max` to support `number` type only
+    step              ?: number|'any' // redefine `step` to support `number` type and 'any' string only
     
     
     
@@ -222,37 +235,7 @@ export interface RangeProps<TElement extends Element = HTMLDivElement>
     value             ?: number
 }
 const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TElement>): JSX.Element|null => {
-    // styles:
-    const styleSheet             = useRangeStyleSheet();
-    
-    
-    
-    // variants:
-    const orientationableVariant = useOrientationable(props, defaultOrientationableOptions);
-    const isOrientationBlock     = orientationableVariant.isOrientationBlock;
-    const isOrientationVertical  = orientationableVariant.isOrientationVertical;
-    
-    
-    
-    // states:
-    const focusableState         = useFocusable<TElement>(props);
-    const interactableState      = useInteractable<TElement>(props, focusableState);
-    const clickableState         = useClickable<TElement>({
-        enabled           : props.enabled,
-        inheritEnabled    : props.inheritEnabled,
-        
-        readOnly          : props.readOnly,
-        inheritReadOnly   : props.inheritReadOnly,
-        
-        pressed           : props.pressed,
-        actionMouses      : (props.actionMouses  !== undefined) ? props.actionMouses  : null, // handled manually
-        actionTouches     : (props.actionTouches !== undefined) ? props.actionTouches : null, // handled manually
-        actionKeys        : (props.actionKeys    !== undefined) ? props.actionKeys    : null, // handled manually
-    });
-    
-    
-    
-    // rest props:
+    // props:
     const {
         // refs:
         outerRef,
@@ -262,6 +245,17 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         
         // variants:
         orientation : _orientation,  // remove
+        
+        
+        
+        // classes:
+        variantClasses,
+        stateClasses,
+        
+        
+        
+        // styles:
+        style,
         
         
         
@@ -290,8 +284,8 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         
         
         // values:
-        defaultValue,
-        value,
+        defaultValue : defaultUncontrollableValueRaw,
+        value        : controllableValueRaw,
         onChange, // forwards to `input[type]`
         
         
@@ -301,9 +295,11 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         isValid,
         inheritValidation,
         
-        min,
-        max,
-        step,
+        validationDeps      : validationDepsOverwrite,
+        
+        min                 = 0,
+        max                 = 100,
+        step : stepRaw      = 1,
         
         
         
@@ -327,7 +323,81 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         trackLowerStyle,
         trackUpperStyle,
         thumbStyle,
-    ...restEditableControlProps} = props;
+        
+        
+        
+        // handlers:
+        onFocus,
+        onBlur,
+        onMouseEnter,
+        onMouseLeave,
+        onAnimationStart,
+        onAnimationEnd,
+        onMouseDown,
+        onTouchStart,
+        onKeyDown,
+        
+        
+        
+        // other props:
+        ...restRangeProps
+    } = props;
+    
+    const step            : number  = (stepRaw === 'any') ? 0 : Math.abs(stepRaw);
+    const isReversedRange : boolean = (max < min);
+    
+    const appendValidationDeps   = useEvent<ValidationDeps>((bases) => [
+        ...bases,
+        
+        /*
+            Since we use <EditableControl> as a wrapper,
+            and we don't pass the `required` prop to the <EditableControl>,
+            and the <Range> doesn't support the `required` prop,
+            we don't need to apply the `required` prop here.
+        */
+        
+        // additional props that influences the validityState (for <Range>):
+        
+        // validations:
+        min,
+        max,
+        step,
+    ]);
+    const mergedValidationDeps   = useEvent<ValidationDeps>((bases) => {
+        // conditions:
+        if (validationDepsOverwrite) return validationDepsOverwrite(appendValidationDeps(bases));
+        return appendValidationDeps(bases);
+    });
+    
+    
+    
+    // styles:
+    const styles                 = useRangeStyleSheet();
+    
+    
+    
+    // variants:
+    const orientationableVariant = useOrientationable(props, defaultOrientationableOptions);
+    const isOrientationBlock     = orientationableVariant.isOrientationBlock;
+    const isOrientationVertical  = orientationableVariant.isOrientationVertical;
+    
+    
+    
+    // states:
+    const focusableState         = useFocusable<TElement>(props);
+    const interactableState      = useInteractable<TElement>(props, focusableState);
+    const clickableState         = useClickable<TElement>({
+        enabled           : props.enabled,
+        inheritEnabled    : props.inheritEnabled,
+        
+        readOnly          : props.readOnly,
+        inheritReadOnly   : props.inheritReadOnly,
+        
+        pressed           : props.pressed,
+        actionMouses      : (props.actionMouses  !== undefined) ? props.actionMouses  : null, // handled manually
+        actionTouches     : (props.actionTouches !== undefined) ? props.actionTouches : null, // handled manually
+        actionKeys        : (props.actionKeys    !== undefined) ? props.actionKeys    : null, // handled manually
+    });
     
     
     
@@ -335,11 +405,6 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     const propEnabled    = usePropEnabled(props);
     const propReadOnly   = usePropReadOnly(props);
     const propEditable   = propEnabled && !propReadOnly;
-    
-    const nude           = props.nude  ?? true;
-    const theme          = props.theme ?? 'primary';
-    const mild           = props.mild  ?? false;
-    const mildAlternate  = !mild;
     
     
     
@@ -400,7 +465,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     const thumbRefInternal    = useRef<HTMLElement|null>(null);
     
     const mergedRangeRef      = useMergeRefs(
-        // preserves the original `outerRef`:
+        // preserves the original `outerRef` from `props`:
         outerRef,
         
         
@@ -408,7 +473,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         rangeRefInternal,
     );
     const mergedInputRef      = useMergeRefs(
-        // preserves the original `elmRef`:
+        // preserves the original `elmRef` from `props`:
         elmRef,
         
         
@@ -463,20 +528,15 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     
     
     // utilities:
-    const minFn      : number  = min ?? 0;
-    const maxFn      : number  = max ?? 100;
-    const stepFn     : number  = (step === 'any') ? 0 : Math.abs(step ?? 1);
-    const negativeFn : boolean = (maxFn < minFn);
-    
     const trimValue = useEvent(<TOpt extends number|null|undefined>(value: number|TOpt): number|TOpt => {
-        return clamp(minFn, value, maxFn, stepFn);
+        return clamp(min, value, max, step);
     });
     
     
     
     // fn props:
-    const valueFn        : number|undefined = trimValue(value);
-    const defaultValueFn : number|undefined = trimValue(defaultValue);
+    const controllableValue          : number|undefined = trimValue(controllableValueRaw);
+    const defaultUncontrollableValue : number|undefined = trimValue(defaultUncontrollableValueRaw);
     
     
     
@@ -486,10 +546,10 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     
     
     // source of truth:
-    const valueRef         = useRef<number>(/*initialState: */valueFn ?? defaultValueFn ?? (minFn + ((maxFn - minFn) * 0.5)));
-    if (valueFn !== undefined) valueRef.current = valueFn;  //   controllable component mode: update the source_of_truth on every_re_render -- on every [value] prop changes
-    const [triggerRender]  = useTriggerRender();            // uncontrollable component mode: update the source_of_truth when modified internally by internal component(s)
-    const valueRatio       : number = (valueRef.current - minFn) / (maxFn - minFn);
+    const valueRef         = useRef<number>(/*initialState: */controllableValue ?? defaultUncontrollableValue ?? (min + ((max - min) * 0.5)));
+    if (controllableValue !== undefined) valueRef.current = controllableValue; //   controllable component mode: update the source_of_truth on every_re_render -- on every [value] prop changes
+    const [triggerRender]  = useTriggerRender();                               // uncontrollable component mode: update the source_of_truth when modified internally by internal component(s)
+    const valueRatio       : number = (valueRef.current - min) / (max - min);
     
     type ChangeValueAction = 'setValue'|'setValueRatio'|'decrease'|'increase'
     const changeValue      = useEvent((action: ChangeValueAction, amount: number): void => {
@@ -506,14 +566,14 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
                     valueRatio
                 , 0), 1);
                 
-                value = trimValue(minFn + ((maxFn - minFn) * valueRatio));
+                value = trimValue(min + ((max - min) * valueRatio));
             } break;
             
             case 'decrease' : {
-                value = trimValue(value - ((stepFn || 1) * (negativeFn ? -1 : 1) * amount));
+                value = trimValue(value - ((step || 1) * (isReversedRange ? -1 : 1) * amount));
             } break;
             case 'increase' : {
-                value = trimValue(value + ((stepFn || 1) * (negativeFn ? -1 : 1) * amount));
+                value = trimValue(value + ((step || 1) * (isReversedRange ? -1 : 1) * amount));
             } break;
         } // switch
         
@@ -525,7 +585,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             
             
             
-            if (valueFn === undefined) { // uncontrollable component mode: update the source_of_truth when modified internally by internal component(s)
+            if (controllableValue === undefined) { // uncontrollable component mode: update the source_of_truth when modified internally by internal component(s)
                 valueRef.current = value; // update
                 triggerRender();          // sync the UI to `valueRef.current`
             }
@@ -554,18 +614,18 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     
     
     // classes:
-    const variantClasses          = useMergeClasses(
-        // preserves the original `variantClasses`:
-        props.variantClasses,
+    const mergedVariantClasses    = useMergeClasses(
+        // preserves the original `variantClasses` from `props`:
+        variantClasses,
         
         
         
         // variants:
         orientationableVariant.class,
     );
-    const stateClasses            = useMergeClasses(
-        // preserves the original `stateClasses`:
-        props.stateClasses,
+    const mergedStateClasses      = useMergeClasses(
+        // preserves the original `stateClasses` from `props`:
+        stateClasses,
         
         
         
@@ -651,8 +711,8 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         
         
         
-        // preserves the original `style` (can overwrite the `valueRatioStyle`):
-        props.style,
+        // preserves the original `style` (can overwrite the `valueRatioStyle`) from `props`:
+        style,
     );
     const mergedTrackStyle        = useMergeStyles(
         // preserves the original `trackStyle` from `props`:
@@ -695,8 +755,8 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     
     // handlers:
     const handleFocus             = useMergeEvents(
-        // preserves the original `onFocus`:
-        props.onFocus,
+        // preserves the original `onFocus` from `props`:
+        onFocus,
         
         
         
@@ -704,8 +764,8 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         focusableState.handleFocus,
     );
     const handleBlur              = useMergeEvents(
-        // preserves the original `onBlur`:
-        props.onBlur,
+        // preserves the original `onBlur` from `props`:
+        onBlur,
         
         
         
@@ -713,8 +773,8 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         focusableState.handleBlur,
     );
     const handleMouseEnter        = useMergeEvents(
-        // preserves the original `onMouseEnter`:
-        props.onMouseEnter,
+        // preserves the original `onMouseEnter` from `props`:
+        onMouseEnter,
         
         
         
@@ -722,8 +782,8 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         interactableState.handleMouseEnter,
     );
     const handleMouseLeave        = useMergeEvents(
-        // preserves the original `onMouseLeave`:
-        props.onMouseLeave,
+        // preserves the original `onMouseLeave` from `props`:
+        onMouseLeave,
         
         
         
@@ -731,8 +791,8 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         interactableState.handleMouseLeave,
     );
     const handleAnimationStart    = useMergeEvents(
-        // preserves the original `onAnimationStart`:
-        props.onAnimationStart,
+        // preserves the original `onAnimationStart` from `props`:
+        onAnimationStart,
         
         
         
@@ -742,8 +802,8 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         clickableState.handleAnimationStart,
     );
     const handleAnimationEnd      = useMergeEvents(
-        // preserves the original `onAnimationEnd`:
-        props.onAnimationEnd,
+        // preserves the original `onAnimationEnd` from `props`:
+        onAnimationEnd,
         
         
         
@@ -770,20 +830,20 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             
             
             
-                 if (                                    (keyCode === 'pagedown'  )) changeValue('decrease', 1    );
-            else if (                                    (keyCode === 'pageup'    )) changeValue('increase', 1    );
+                 if (                                    (keyCode === 'pagedown'  )) changeValue('decrease', 1  );
+            else if (                                    (keyCode === 'pageup'    )) changeValue('increase', 1  );
             
-            else if (                                    (keyCode === 'home'      )) changeValue('setValue', minFn);
-            else if (                                    (keyCode === 'end'       )) changeValue('setValue', maxFn);
+            else if (                                    (keyCode === 'home'      )) changeValue('setValue', min);
+            else if (                                    (keyCode === 'end'       )) changeValue('setValue', max);
             
-            else if ( isOrientationVertical &&           (keyCode === 'arrowdown' )) changeValue('decrease', 1    );
-            else if ( isOrientationVertical &&           (keyCode === 'arrowup'   )) changeValue('increase', 1    );
+            else if ( isOrientationVertical &&           (keyCode === 'arrowdown' )) changeValue('decrease', 1  );
+            else if ( isOrientationVertical &&           (keyCode === 'arrowup'   )) changeValue('increase', 1  );
             
-            else if (!isOrientationVertical && !isRtl && (keyCode === 'arrowleft' )) changeValue('decrease', 1    );
-            else if (!isOrientationVertical && !isRtl && (keyCode === 'arrowright')) changeValue('increase', 1    );
+            else if (!isOrientationVertical && !isRtl && (keyCode === 'arrowleft' )) changeValue('decrease', 1  );
+            else if (!isOrientationVertical && !isRtl && (keyCode === 'arrowright')) changeValue('increase', 1  );
             
-            else if (!isOrientationVertical &&  isRtl && (keyCode === 'arrowright')) changeValue('decrease', 1    );
-            else if (!isOrientationVertical &&  isRtl && (keyCode === 'arrowleft' )) changeValue('increase', 1    );
+            else if (!isOrientationVertical &&  isRtl && (keyCode === 'arrowright')) changeValue('decrease', 1  );
+            else if (!isOrientationVertical &&  isRtl && (keyCode === 'arrowleft' )) changeValue('increase', 1  );
             else return false; // not handled
             
             
@@ -796,8 +856,8 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     });
     
     const handleMouseDown         = useMergeEvents(
-        // preserves the original `onMouseDown`:
-        props.onMouseDown,
+        // preserves the original `onMouseDown` from `props`:
+        onMouseDown,
         
         
         
@@ -805,8 +865,8 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         pointerCapturable.handleMouseDown,
     );
     const handleTouchStart        = useMergeEvents(
-        // preserves the original `onTouchStart`:
-        props.onTouchStart,
+        // preserves the original `onTouchStart` from `props`:
+        onTouchStart,
         
         
         
@@ -814,8 +874,8 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         pointerCapturable.handleTouchStart,
     );
     const handleKeyDown           = useMergeEvents(
-        // preserves the original `onKeyDown`:
-        props.onKeyDown,
+        // preserves the original `onKeyDown` from `props`:
+        onKeyDown,
         
         
         
@@ -829,7 +889,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     );
     
     const handleChange            = useMergeEvents(
-        // preserves the original `onChange`:
+        // preserves the original `onChange` from `props`:
         onChange,
         
         
@@ -840,7 +900,66 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     
     
     
-    // jsx:
+    // default props:
+    const {
+        // semantics:
+        tag                                  = 'div',
+        role                                 = 'slider',
+        
+        'aria-orientation' : ariaOrientation = orientationableVariant['aria-orientation'],
+        'aria-valuenow'    : ariaValueNow    = valueRef.current,
+        'aria-valuemin'    : ariaValueMin    = (isReversedRange ? max : min),
+        'aria-valuemax'    : ariaValueMax    = (isReversedRange ? min : max),
+        
+        
+        
+        // variants:
+        nude                                 = true,
+        theme                                = 'primary',
+        mild                                 = false,
+        
+        
+        
+        // classes:
+        mainClass                            = styles.main,
+        
+        
+        
+        // other props:
+        ...restEditableControlProps
+    } = restRangeProps satisfies NoForeignProps<typeof restRangeProps, EditableControlProps<TElement>>;
+    
+    const mildAlternate  = !mild;
+    
+    const {
+        // variants:
+        theme             : thumbComponentTheme             = theme,
+        mild              : thumbComponentMild              = mildAlternate,
+        
+        
+        
+        // accessibilities:
+        inheritEnabled    : thumbComponentInheritEnabled    = true,
+        inheritReadOnly   : thumbComponentInheritReadOnly   = true,
+        inheritActive     : thumbComponentInheritActive     = true,
+        
+        focused           : thumbComponentFocused           = focusableState.focused, // if the <Range> got focus => the <Thumb> has focus indicator too
+        tabIndex          : thumbComponentTabIndex          = -1,                     // focus on the whole <Range>, not the <Thumb>
+        
+        
+        
+        // states:
+        arrived           : thumbComponentArrived           = interactableState.arrived,
+        pressed           : thumbComponentPressed           = clickableState.pressed,
+        
+        
+        
+        // validations:
+        enableValidation  : thumbComponentEnableValidation  = enableValidation,
+        isValid           : thumbComponentIsValid           = isValid,
+        inheritValidation : thumbComponentInheritValidation = inheritValidation,
+    } = thumbComponent.props;
+    
     const trackLower = React.cloneElement<GenericProps<Element>>(trackLowerComponent,
         // props:
         {
@@ -886,8 +1005,8 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             
             
             // variants:
-            theme             : thumbComponent.props.theme ?? theme,
-            mild              : thumbComponent.props.mild  ?? mildAlternate,
+            theme             : thumbComponentTheme,
+            mild              : thumbComponentMild,
             
             
             
@@ -902,27 +1021,62 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             
             
             // accessibilities:
-            inheritEnabled    : thumbComponent.props.inheritEnabled  ?? true,
-            inheritReadOnly   : thumbComponent.props.inheritReadOnly ?? true,
-            inheritActive     : thumbComponent.props.inheritActive   ?? true,
+            inheritEnabled    : thumbComponentInheritEnabled,
+            inheritReadOnly   : thumbComponentInheritReadOnly,
+            inheritActive     : thumbComponentInheritActive,
             
-            focused           : thumbComponent.props.focused  ?? focusableState.focused, // if the <Range> got focus => the <Thumb> has focus indicator too
-            tabIndex          : thumbComponent.props.tabIndex ?? -1,                     // focus on the whole <Range>, not the <Thumb>
+            focused           : thumbComponentFocused,
+            tabIndex          : thumbComponentTabIndex,                     
             
             
             
             // states:
-            arrived           : thumbComponent.props.arrived ?? interactableState.arrived,
-            pressed           : thumbComponent.props.pressed ?? clickableState.pressed,
+            arrived           : thumbComponentArrived,
+            pressed           : thumbComponentPressed,
             
             
             
             // validations:
-            enableValidation  : thumbComponent.props.enableValidation  ?? enableValidation,
-            isValid           : thumbComponent.props.isValid           ?? isValid,
-            inheritValidation : thumbComponent.props.inheritValidation ?? inheritValidation,
+            enableValidation  : thumbComponentEnableValidation,
+            isValid           : thumbComponentIsValid,
+            inheritValidation : thumbComponentInheritValidation,
         },
     );
+    
+    const {
+        // variants:
+        mild              : trackComponentMild              = mild,
+        
+        
+        
+        // accessibilities:
+        inheritEnabled    : trackComponentInheritEnabled    = true,
+        inheritReadOnly   : trackComponentInheritReadOnly   = true,
+        inheritActive     : trackComponentInheritActive     = true,
+        
+        tabIndex          : trackComponentTabIndex          = -1,   // focus on the whole <Range>, not the <Track>
+        
+        
+        
+        // states:
+        arrived           : trackComponentArrived           = interactableState.arrived,
+        
+        
+        
+        // validations:
+        enableValidation  : trackComponentEnableValidation  = enableValidation,
+        isValid           : trackComponentIsValid           = isValid,
+        inheritValidation : trackComponentInheritValidation = inheritValidation,
+        
+        
+        
+        // children:
+        children          : trackComponentChildren          = <>
+            { isOrientationBlock ? trackUpper : trackLower }
+            { thumb }
+            { isOrientationBlock ? trackLower : trackUpper }
+        </>,
+    } = trackComponent.props;
     
     const track      = React.cloneElement<EditableControlProps<Element>>(trackComponent,
         // props:
@@ -933,7 +1087,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             
             
             // variants:
-            mild              : trackComponent.props.mild ?? mild,
+            mild              : trackComponentMild,
             
             
             
@@ -948,35 +1102,34 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             
             
             // accessibilities:
-            inheritEnabled    : trackComponent.props.inheritEnabled  ?? true,
-            inheritReadOnly   : trackComponent.props.inheritReadOnly ?? true,
-            inheritActive     : trackComponent.props.inheritActive   ?? true,
+            inheritEnabled    : trackComponentInheritEnabled,
+            inheritReadOnly   : trackComponentInheritReadOnly,
+            inheritActive     : trackComponentInheritActive,
             
-            tabIndex          : trackComponent.props.tabIndex        ?? -1, // focus on the whole <Range>, not the <Track>
+            tabIndex          : trackComponentTabIndex,
             
             
             
             // states:
-            arrived           : trackComponent.props.arrived ?? interactableState.arrived,
+            arrived           : trackComponentArrived,
             
             
             
             // validations:
-            enableValidation  : trackComponent.props.enableValidation  ?? enableValidation,
-            isValid           : trackComponent.props.isValid           ?? isValid,
-            inheritValidation : trackComponent.props.inheritValidation ?? inheritValidation,
+            enableValidation  : trackComponentEnableValidation,
+            isValid           : trackComponentIsValid,
+            inheritValidation : trackComponentInheritValidation,
         },
         
         
         
         // children:
-        trackComponent.props.children ?? (<>
-            { isOrientationBlock ? trackUpper : trackLower }
-            { thumb }
-            { isOrientationBlock ? trackLower : trackUpper }
-        </>),
+        trackComponentChildren,
     );
     
+    
+    
+    // jsx:
     return (
         <EditableControl<TElement>
             // other props:
@@ -990,13 +1143,13 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             
             
             // semantics:
-            tag ={props.tag  ?? 'div'   }
-            role={props.role ?? 'slider'}
+            tag ={tag}
+            role={role}
             
-            aria-orientation={props['aria-orientation'] ?? orientationableVariant['aria-orientation']}
-            aria-valuenow   ={props['aria-valuenow'   ] ?? valueRef.current}
-            aria-valuemin   ={props['aria-valuemin'   ] ?? (negativeFn ? maxFn : minFn)}
-            aria-valuemax   ={props['aria-valuemax'   ] ?? (negativeFn ? minFn : maxFn)}
+            aria-orientation={ariaOrientation}
+            aria-valuenow   ={ariaValueNow}
+            aria-valuemin   ={ariaValueMin}
+            aria-valuemax   ={ariaValueMax}
             
             
             
@@ -1008,9 +1161,9 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             
             
             // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
-            variantClasses={variantClasses}
-            stateClasses={stateClasses}
+            mainClass={mainClass}
+            variantClasses={mergedVariantClasses}
+            stateClasses={mergedStateClasses}
             
             
             
@@ -1023,6 +1176,8 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             enableValidation={enableValidation}
             isValid={isValid}
             inheritValidation={inheritValidation}
+            
+            validationDeps={mergedValidationDeps}
             
             
             
@@ -1072,8 +1227,8 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
                 
                 // values:
                 {...{
-                 // defaultValue : defaultValueFn,   // fully controllable, no defaultValue
-                    value        : valueRef.current, // fully controllable
+                 // defaultValue : defaultUncontrollableValue, // fully controllable, no defaultValue
+                    value        : valueRef.current,           // fully controllable
                     onChange     : handleChange,
                 }}
                 
@@ -1081,9 +1236,9 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
                 
                 // validations:
                 {...{
-                    min  : negativeFn ? maxFn : minFn,
-                    max  : negativeFn ? minFn : maxFn,
-                    step : stepFn,
+                    min  : isReversedRange ? max : min,
+                    max  : isReversedRange ? min : max,
+                    step : step,
                 }}
                 
                 
@@ -1098,6 +1253,6 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     );
 };
 export {
-    Range,
-    Range as default,
+    Range,            // named export for readibility
+    Range as default, // default export to support React.lazy
 }

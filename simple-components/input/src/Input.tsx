@@ -11,7 +11,13 @@ import {
 
 // reusable-ui core:
 import {
+    // a collection of TypeScript type utilities, assertions, and validations for ensuring type safety in reusable UI components:
+    type NoForeignProps,
+    
+    
+    
     // react helper hooks:
+    useEvent,
     useMergeEvents,
     useMergeRefs,
     
@@ -20,6 +26,11 @@ import {
     // an accessibility management system:
     usePropEnabled,
     usePropReadOnly,
+    
+    
+    
+    // a possibility of UI having an invalid state:
+    type ValidationDeps,
 }                           from '@reusable-ui/core'                    // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -52,7 +63,7 @@ export type InputType                     = InputTextLike | 'color'|'file'|'rang
 /**
  * Removed support for `<input type="image">` and `<input type="submit">`
  */
-export type InputHTMLAttributes<TElement> = Omit<React.InputHTMLAttributes<TElement>, 'size'|'src'|'alt'|'width'|'height'|'crossOrigin'|'checked'|'multiple'|'accept'|'capture'|'formAction'|'formEncType'|'formMethod'|'formNoValidate'|'formTarget'|keyof React.HTMLAttributes<TElement>>
+export type InputHTMLAttributes<TElement> = Omit<React.InputHTMLAttributes<TElement>, 'size'|'src'|'alt'|'width'|'height'|'crossOrigin'|'checked'|'multiple'|'accept'|'capture'|'formAction'|'formEncType'|'formMethod'|'formNoValidate'|'formTarget'|keyof Omit<React.HTMLAttributes<TElement>, 'placeholder'|'autoCapitalize'>>
 
 export interface InputProps<TElement extends Element = HTMLSpanElement>
     extends
@@ -91,20 +102,9 @@ export interface InputProps<TElement extends Element = HTMLSpanElement>
         >,
         Pick<React.HTMLAttributes<TElement>, 'inputMode'>
 {
-    // validations:
-    min                  ?: number|string
-    max                  ?: number|string
-    step                 ?: number|string
-    pattern              ?: string
-    
-    
-    
     // formats:
-    type                 ?: InputType
-    placeholder          ?: string
-    autoComplete         ?: string
-    autoCapitalize       ?: 'off'|'none'|'on'|'sentences'|'words'|'characters'|(string & {})
-    list                 ?: string
+    type                 ?: InputType // partially implemented <input>'s props because <EditableTextControl> is a base text control component
+    autoCapitalize       ?: 'off'|'none'|'on'|'sentences'|'words'|'characters'|(string & {}) // redefine the possible values of `autoCapitalize`
     
     
     
@@ -156,11 +156,6 @@ const Input         = <TElement extends Element = HTMLSpanElement>(props: InputP
     return inputInternal;
 };
 const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>): JSX.Element|null => {
-    // styles:
-    const styleSheet = useInputStyleSheet();
-    
-    
-    
     // rest props:
     const {
         // refs:
@@ -182,13 +177,15 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
         
         
         // values:
-        defaultValue,
-        value,
+        defaultValue : defaultUncontrollableValue,
+        value        : controllableValue,
         onChange, // forwards to `input[type]`
         
         
         
         // validations:
+        validationDeps : validationDepsOverwrite,
+        
         required,
         
         minLength,
@@ -213,7 +210,17 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
         
         // components:
         nativeInputComponent = (<input /> as React.ReactComponentElement<any, React.InputHTMLAttributes<HTMLInputElement> & React.RefAttributes<HTMLInputElement>>),
-    ...restEditableTextControlProps}  = props;
+        
+        
+        
+        // other props:
+        ...restInputProps
+    } = props;
+    
+    
+    
+    // styles:
+    const styles = useInputStyleSheet();
     
     
     
@@ -256,6 +263,21 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
     
     // default props:
     const {
+        // semantics:
+        tag       = 'span',
+        
+        
+        
+        // classes:
+        mainClass = styles.main,
+        
+        
+        
+        // other props:
+        ...restEditableTextControlProps
+    } = restInputProps satisfies NoForeignProps<typeof restInputProps, EditableTextControlProps<TElement>>;
+    
+    const {
         // accessibilities:
         autoFocus         : nativeInputAutoFocus      = autoFocus,
         tabIndex          : nativeInputTabIndex       = tabIndex,
@@ -273,8 +295,8 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
         
         
         // values:
-        defaultValue      : nativeInputDefaultValue   = defaultValue,
-        value             : nativeInputValue          = value,
+        defaultValue      : nativeInputDefaultValue   = defaultUncontrollableValue,
+        value             : nativeInputValue          = controllableValue,
         
         
         
@@ -305,6 +327,35 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
         ...restNativeInputComponentProps
     } = nativeInputComponent.props;
     
+    const appendValidationDeps = useEvent<ValidationDeps>((bases) => [
+        ...bases,
+        
+        /*
+            Since we use <EditableTextControl> as a wrapper,
+            and we don't pass the `required`, `minLength`, `maxLength` props to the <EditableTextControl>,
+            we need to re-apply theses props here.
+        */
+        nativeInputRequired,
+        nativeInputMinLength,
+        nativeInputMaxLength,
+        
+        // additional props that influences the validityState (for <Input>):
+        
+        // validations:
+        nativeInputMin,
+        nativeInputMax,
+        nativeInputStep,
+        nativeInputPattern,
+        
+        // formats:
+        nativeInputType,
+    ]);
+    const mergedValidationDeps = useEvent<ValidationDeps>((bases) => {
+        // conditions:
+        if (validationDepsOverwrite) return validationDepsOverwrite(appendValidationDeps(bases));
+        return appendValidationDeps(bases);
+    });
+    
     
     
     // jsx:
@@ -316,17 +367,22 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
             
             
             // semantics:
-            tag={props.tag ?? 'span'}
+            tag={tag}
             
             
             
             // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
+            mainClass={mainClass}
             
             
             
             // accessibilities:
             tabIndex={-1} // negative [tabIndex] => act as *wrapper* element, if input is `:focus-visible-within` (pseudo) => the wrapper is also `.focus` (synthetic)
+            
+            
+            
+            // validations:
+            validationDeps={mergedValidationDeps}
         >
             {/* <input> */}
             {React.cloneElement<React.InputHTMLAttributes<HTMLInputElement> & React.RefAttributes<HTMLInputElement>>(nativeInputComponent,
@@ -391,8 +447,8 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
     );
 };
 export {
-    Input,
-    Input as default,
+    Input,            // named export for readibility
+    Input as default, // default export to support React.lazy
 }
 
 

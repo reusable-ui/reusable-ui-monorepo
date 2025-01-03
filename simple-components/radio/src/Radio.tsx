@@ -8,6 +8,7 @@ import {
     // hooks:
     useRef,
     useEffect,
+    useState,
 }                           from 'react'
 
 // cssfn:
@@ -22,6 +23,11 @@ import {
 
 // reusable-ui core:
 import {
+    // a collection of TypeScript type utilities, assertions, and validations for ensuring type safety in reusable UI components:
+    type NoForeignProps,
+    
+    
+    
     // react helper hooks:
     useEvent,
     useMergeEvents,
@@ -32,6 +38,11 @@ import {
     // a capability of UI to be highlighted/selected/activated:
     ActiveChangeEvent,
     useUncontrollableActivatable,
+    
+    
+    
+    // a possibility of UI having an invalid state:
+    type ValidationDeps,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -46,6 +57,11 @@ import {
     CheckProps,
     Check,
 }                           from '@reusable-ui/check'           // a base component
+
+// internals:
+import {
+    broadcastClearEvent,
+}                           from './utilities.js'               // local utilities
 
 
 
@@ -67,37 +83,54 @@ export interface RadioProps<TElement extends Element = HTMLSpanElement>
 {
 }
 const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TElement>): JSX.Element|null => {
-    // styles:
-    const styleSheet   = useRadioStyleSheet();
-    
-    
-    
-    // rest props:
+    // props:
     const {
         // refs:
         elmRef,
         
         
         
-        // states:
-        defaultActive,  // take, to be handled by `useUncontrollableActivatable`
-        active,         // take, to be handled by `useUncontrollableActivatable`
-        inheritActive,  // take, to be handled by `useUncontrollableActivatable`
-        onActiveChange, // take, to be handled by `useUncontrollableActivatable`
-        
-        
-        
         // values:
-        defaultChecked, // take, to be aliased to `defaultActive`
-        checked,        // take, to be aliased to `active`
-    ...restCheckProps} = props;
+        defaultChecked : fallbackDefaultActive, // take, to be aliased to `defaultActive`
+        checked        : fallbackActive,        // take, to be aliased to `active`
+        
+        
+        
+        // validations:
+        validationDeps : validationDepsOverwrite,
+        
+        
+        
+        // states:
+        defaultActive = fallbackDefaultActive, // take, to be handled by `useUncontrollableActivatable` // if the `defaultActive` is not provided, fallback to `defaultChecked`
+        active        = fallbackActive,        // take, to be handled by `useUncontrollableActivatable` // if the `active` is not provided, fallback to `checked`
+        inheritActive,                         // take, to be handled by `useUncontrollableActivatable`
+        onActiveChange,                        // take, to be handled by `useUncontrollableActivatable`
+        
+        
+        
+        // handlers:
+        onClick,
+        onKeyUp,
+        onChange,
+        
+        
+        
+        // other props:
+        ...restRadioProps
+    } = props;
+    
+    
+    
+    // styles:
+    const styles           = useRadioStyleSheet();
     
     
     
     // refs:
     const inputRefInternal = useRef<HTMLInputElement|null>(null);
     const mergedInputRef   = useMergeRefs(
-        // preserves the original `elmRef`:
+        // preserves the original `elmRef` from `props`:
         elmRef,
         
         
@@ -114,11 +147,23 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
         readOnly        : props.readOnly,
         inheritReadOnly : props.inheritReadOnly,
         
-        defaultActive   : defaultActive ?? defaultChecked, // aliased `defaultChecked` to `defaultActive`
-        active          : active        ?? checked,        // aliased `checked`        to `active`
+        defaultActive,
+        active,
         inheritActive,
         onActiveChange,
     }, /*changeEventTarget :*/inputRefInternal);
+    const [activeBuddyRadio, setActiveBuddyRadio] = useState<HTMLInputElement|null>(null);
+    const setActiveRadio = useEvent((activeOrOtherRadio: true|HTMLInputElement|null) => {
+        if (activeOrOtherRadio === true) {
+            setActive(true);
+            setActiveBuddyRadio(null);
+        }
+        else {
+            setActive(false);
+            setActiveBuddyRadio(activeOrOtherRadio);
+        } // if
+    });
+    const collectiveRadioIsActive = (isActive ? true : !!activeBuddyRadio?.parentElement /* the buddyRadio still exists in DOM */);
     
     
     
@@ -130,12 +175,12 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
         
         
         // actions:
-        setActive(true);        // handle click as selecting [active]
+        setActiveRadio(true);   // handle click as selecting [active]
         event.preventDefault(); // handled
     });
     const handleClick           = useMergeEvents(
-        // preserves the original `onClick`:
-        props.onClick,
+        // preserves the original `onClick` from `props`:
+        onClick,
         
         
         
@@ -151,13 +196,13 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
         
         // actions:
         if ((event.key === ' ') || (event.code === 'Space')) {
-            setActive(true);        // handle click as selecting [active]
+            setActiveRadio(true);   // handle click as selecting [active]
             event.preventDefault(); // handled
         } // if
     });
     const handleKeyUp           = useMergeEvents(
-        // preserves the original `onKeyUp`:
-        props.onKeyUp,
+        // preserves the original `onKeyUp` from `props`:
+        onKeyUp,
         
         
         
@@ -169,51 +214,22 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         
-        const currentRadio = event.target as (EventTarget & Element) as (EventTarget & HTMLInputElement);
-        const name = currentRadio.name;
+        const currentRadioElm = event.target as (EventTarget & Element) as (EventTarget & HTMLInputElement);
+        const name = currentRadioElm.name;
         if (!name)                  return; // the <Radio> must have a name
         
-        const isChecked = currentRadio.checked;
+        const isChecked = currentRadioElm.checked;
         if (!isChecked)             return; // the <Radio> is checked not cleared
         
         
         
         // actions:
-        
-        let parentGroup = currentRadio.parentElement;
-        //#region find nearest <form> or <grandGrandParent>
-        while (parentGroup) {
-            if (parentGroup.tagName === 'FORM') break; // found nearest <form>
-            
-            // find next:
-            const grandParent = parentGroup.parentElement;
-            if (!grandParent) break; // nothing more to search
-            parentGroup = grandParent;
-        } // while
-        //#endregion find nearest <form> or <grandGrandParent>
-        
-        
-        if (parentGroup) {
-            // after <currentRadio> finishes rendering => un-check (clear) the other checked radio (within the same name at the same <form>):
-            Promise.resolve(parentGroup).then((parentGroup) => { // trigger the event after the <Radio> has finished rendering (for controllable <Radio>)
-                for (const radio of (Array.from(parentGroup.querySelectorAll('input[type="radio"]')) as HTMLInputElement[])) {
-                    if (radio === currentRadio) continue; // <radio> is self => skip
-                    if (radio.name !== name)    continue; // <radio>'s name is different to us => skip
-                    
-                    
-                    
-                    // fire a custom `onClear` event to notify other <Radio>(s) to *uncheck*:
-                    radio.dispatchEvent(new CustomEvent('clear', { bubbles: true })); // needs to bubble to support <EditableControl> => `inputValidator.handleChange()`
-                } // for
-            });
-        } // if
-        
-        
+        broadcastClearEvent(currentRadioElm); // notify other budy <Radio>s that this <Radio> is selected
         event.preventDefault(); // handled
     });
     const handleChange          = useMergeEvents(
-        // preserves the original `onChange`:
-        props.onChange,
+        // preserves the original `onChange` from `props`:
+        onChange,
         
         
         
@@ -223,31 +239,109 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
     
     
     
-    // dom effects:
+    // effects:
+    
+    // listens to the `clear` event to un-select this <Radio> when another <Radio> is selected or no longer selected:
     useEffect(() => {
         // conditions:
-        const currentRadio = inputRefInternal.current;
-        if (!currentRadio) return; // radio was unmounted => nothing to do
+        const currentRadioElm = inputRefInternal.current;
+        if (!currentRadioElm) return; // radio was unmounted => nothing to do
         
         
         
         // handlers:
-        const handleClear = (): void => {
-            setActive(false); // handle clear as de-selecting [active]
+        const handleClear = (event: CustomEvent<{ selected: HTMLInputElement|null }>): void => {
+            setActiveRadio(event.detail.selected); // handle clear as de-selecting [active]
         };
         
         
         
         // setups:
-        currentRadio.addEventListener('clear', handleClear);
+        currentRadioElm.addEventListener('clear', handleClear as EventListener); // when another <Radio> is selected, this <Radio> should be un-selected
         
         
         
         // cleanups:
         return () => {
-            currentRadio.removeEventListener('clear', handleClear);
+            currentRadioElm.removeEventListener('clear', handleClear as EventListener);
         };
     }, []); // runs once on startup
+    
+    // when the <Radio> is unmounted and it's currently selected, it should notify other budy <Radio>s to update their `validityState`:
+    const isActiveRef = useRef<boolean>(isActive);
+    isActiveRef.current = isActive; // sync
+    useEffect(() => {
+        // conditions:
+        const currentRadioElm = inputRefInternal.current; // take a snapshot of the current radio element before unmounting later
+        if (!currentRadioElm) return; // radio was unmounted => nothing to do
+        
+        
+        
+        // setups:
+        // no need setup, just cleanup
+        
+        
+        
+        // cleanups:
+        return () => {
+            // conditions:
+            if (!isActiveRef.current) return; // get the most recent of the `isActive` state before unmounting, if it's not selected now => nothing to do
+            
+            
+            
+            // actions:
+            broadcastClearEvent(currentRadioElm, null); // notify other budy <Radio>s that this <Radio> is unselected because it was unmounted
+        };
+    }, []); // runs once on startup
+    
+    
+    
+    // default props:
+    const {
+        // semantics:
+        tag               = 'span',
+        semanticTag       = '',      // no corresponding semantic tag => defaults to <div> (overwritten to <span>)
+        semanticRole      = 'radio', // uses [role="radio"] as the default semantic role
+        
+        
+        
+        // classes:
+        mainClass         = styles.main,
+        
+        
+        
+        // values:
+        controllableValue = collectiveRadioIsActive,
+        
+        
+        
+        // formats:
+        type              = 'radio',
+        
+        
+        
+        // other props:
+        ...restCheckProps
+    } = restRadioProps satisfies NoForeignProps<typeof restRadioProps, CheckProps<TElement>>;
+    
+    const appendValidationDeps = useEvent<ValidationDeps>((bases) => [
+        ...bases,
+        
+        // additional props that influences the validityState (for <Radio>):
+        /*
+            Since we redefined the `isActive` to `active` in <Radio> component,
+            we need to add the checked state of current|buddyRadios.
+        */
+        collectiveRadioIsActive,
+        
+        // validations:
+        // no more validation props, still the same as <Check>
+    ]);
+    const mergedValidationDeps = useEvent<ValidationDeps>((bases) => {
+        // conditions:
+        if (validationDepsOverwrite) return validationDepsOverwrite(appendValidationDeps(bases));
+        return appendValidationDeps(bases);
+    });
     
     
     
@@ -265,24 +359,34 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
             
             
             // semantics:
-            tag          = {props.tag           ?? 'span' }
-            semanticTag  = {props.semanticTag   ??   ''   } // no corresponding semantic tag => defaults to <div> (overwritten to <span>)
-            semanticRole = {props.semanticRole  ?? 'radio'} // uses [role="radio"] as the default semantic role
+            tag          = {tag}
+            semanticTag  = {semanticTag}
+            semanticRole = {semanticRole}
             
             
             
             // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
+            mainClass={mainClass}
             
             
             
-            // accessibilities:
-            active={isActive}
+            // values:
+            controllableValue={controllableValue}
+            
+            
+            
+            // validations:
+            validationDeps={mergedValidationDeps}
             
             
             
             // formats:
-            type={props.type ?? 'radio'}
+            type={type}
+            
+            
+            
+            // states:
+            active={isActive}
             
             
             
@@ -294,8 +398,8 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
     );
 };
 export {
-    Radio,
-    Radio as default,
+    Radio,            // named export for readibility
+    Radio as default, // default export to support React.lazy
 }
 
 export type { CheckStyle, CheckVariant }

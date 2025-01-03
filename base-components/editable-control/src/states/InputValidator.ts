@@ -7,30 +7,23 @@ import {
     
     // hooks:
     useRef,
-    useEffect,
-    
-    
-    
-    // utilities:
-    startTransition,
 }                           from 'react'
 
 // reusable-ui core:
 import {
     // react helper hooks:
-    useTriggerRender,
     useEvent,
-    EventHandler,
     
     
     
     // a validation management system:
-    Result as ValResult,
+    type Result as ValResult,
     
     
     
     // a possibility of UI having an invalid state:
-    ValidityChangeEvent,
+    type ValidityChangeEvent,
+    type ValidationEventHandler,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 
@@ -52,71 +45,21 @@ export const isEditableControlElement = (element: Element): element is EditableC
 };
 
 export interface InputValidatorApi<TElement extends EditableControlElement = EditableControlElement> {
-    handleValidation : EventHandler<ValidityChangeEvent>
-    handleInit       : EventHandler<TElement>
-    handleChange     : React.ChangeEventHandler<TElement>
-}
-export const useInputValidator     = <TElement extends EditableControlElement = EditableControlElement>(customValidator?: CustomValidatorHandler): InputValidatorApi<TElement> => {
-    // states:
-    // we stores the `isValid` in `useRef` instead of `useState` because we need to *real-time export* of its value:
-    const isValid = useRef<ValResult>(null); // initially unchecked (neither valid nor invalid)
-    
-    // manually controls the (re)render event:
-    const [triggerRender] = useTriggerRender();
-    
-    
-    
-    // functions:
-    
-    const asyncPerformUpdate = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
-    useEffect(() => {
-        // cleanups:
-        return () => {
-            // cancel out previously performUpdate (if any):
-            if (asyncPerformUpdate.current) clearTimeout(asyncPerformUpdate.current);
-        };
-    }, []); // runs once on startup
-    
-    const validate = (element: TElement, immediately = false) => {
-        const performUpdate = async (): Promise<void> => {
-            // remember the validation result:
-            const currentValidity = element.validity;
-            const newIsValid : ValResult = (customValidator ? (await customValidator(currentValidity, element.value)) : currentValidity.valid);
-            if (isValid.current !== newIsValid) {
-                isValid.current = newIsValid;
-                
-                // lazy responsives => a bit delayed of responsives is ok:
-                startTransition(() => {
-                    triggerRender(); // notify to react runtime to re-render with a new validity state, causing `useInvalidable()` runs the effect => calls `onValidation` => `handleValidation()`
-                });
-            } // if
-        };
-        
-        
-        
-        if (immediately) {
-            // instant validating:
-            performUpdate();
-        }
-        else {
-            // cancel out previously performUpdate (if any):
-            if (asyncPerformUpdate.current) clearTimeout(asyncPerformUpdate.current);
-            
-            
-            
-            // delaying the validation, to avoid unpleasant splash effect during editing
-            const currentIsValid = element.validity.valid;
-            asyncPerformUpdate.current = setTimeout(
-                performUpdate,
-                (currentIsValid !== false) ? 300 : 600
-            );
-        } // if
-    };
+    // refs:
+    inputRef         : React.MutableRefObject<TElement|null> // getter and setter ref
     
     
     
     // handlers:
+    handleValidation : ValidationEventHandler<ValidityChangeEvent>
+}
+export const useInputValidator     = <TElement extends EditableControlElement = EditableControlElement>(customValidator?: CustomValidatorHandler): InputValidatorApi<TElement> => {
+    // refs:
+    const inputRef = useRef<TElement|null>(null);
     
+    
+    
+    // handlers:
     /**
      * Handles the validation result.
      * @returns  
@@ -124,31 +67,35 @@ export const useInputValidator     = <TElement extends EditableControlElement = 
      * `true`  = valid.  
      * `false` = invalid.
      */
-    const handleValidation = useEvent<EventHandler<ValidityChangeEvent>>((event) => {
+    const handleValidation = useEvent<ValidationEventHandler<ValidityChangeEvent>>(async (event) => {
         // conditions:
         if (event.isValid !== true) return; // ignore if was *invalid*|*uncheck* (only perform a further_validation if was *valid*)
         
         
         
         // further validations:
-        event.isValid = isValid.current;
-    });
-    
-    const handleInit       = useEvent<EventHandler<TElement>>((element) => {
-        validate(element, /*immediately =*/true);
-    });
-    
-    const handleChange     = useEvent<React.ChangeEventHandler<TElement>>(({target}) => {
-        validate(target); // use `target` instead of `currentTarget` for supporting a wrapper of <input> (bubbling up to <wrapper>)
+        const inputElm = inputRef.current;
+        if (!inputElm) return; // the input element was unmounted => do nothing
+        
+        // get validation result:
+        const validityState = inputElm.validity;
+        if (validityState === undefined) return; // the input element was not a valid `EditableControlElement` => do nothing
+        const newIsValid : ValResult = (customValidator ? (await customValidator(validityState, ((inputElm as HTMLInputElement)?.checked !== undefined) ? `${(inputElm as HTMLInputElement).checked}` : inputElm?.value)) : validityState.valid);
+        
+        event.isValid = newIsValid; // update the validation result
     });
     
     
     
     // api:
     return {
+        // refs:
+        inputRef,
+        
+        
+        
+        // handlers:
         handleValidation,
-        handleInit,
-        handleChange,
     };
 };
 //#endregion InputValidator

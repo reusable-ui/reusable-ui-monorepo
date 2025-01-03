@@ -22,6 +22,7 @@ const handleChange : React.ChangeEventHandler<HTMLInputElement> = (event) => {
 
 function App() {
     const [value, setValue] = useState(0);
+    const [renderRadio1, setRenderRadio1] = useState(true);
     const handleTriggerRerender = () => {
         setValue(value + 1);
     };
@@ -39,15 +40,17 @@ function App() {
                     </button>
                 </article>
                 <article className='actions'>
-                    <Radio name='the-value' theme='primary' onChange={handleChange}>
+                    {renderRadio1 && <Radio id='radio1' name='the-value' theme='primary' onChange={handleChange} enableValidation required>
+                        test &lt;Radio&gt;
+                    </Radio>}
+                    <Radio id='radio2' name='the-value' theme='success' checkStyle='button' nude={false} enableValidation required>
                         test &lt;Radio&gt;
                     </Radio>
-                    <Radio name='the-value' theme='success' checkStyle='button' nude={false}>
+                    <Radio id='radio3' name='the-value' theme='danger' checkStyle='switch' nude={false} enableValidation required>
                         test &lt;Radio&gt;
                     </Radio>
-                    <Radio name='the-value' theme='danger' checkStyle='switch' nude={false}>
-                        test &lt;Radio&gt;
-                    </Radio>
+                    <hr />
+                    <label><input type='checkbox' checked={renderRadio1} onChange={({currentTarget: { checked }}) => setRenderRadio1(checked)} /> Render radio1</label>
                 </article>
             </div>
         </>

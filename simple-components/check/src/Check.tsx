@@ -21,6 +21,11 @@ import {
 
 // reusable-ui core:
 import {
+    // a collection of TypeScript type utilities, assertions, and validations for ensuring type safety in reusable UI components:
+    type NoForeignProps,
+    
+    
+    
     // react helper hooks:
     useEvent,
     useMergeEvents,
@@ -36,10 +41,15 @@ import {
     
     
     // a capability of UI to be highlighted/selected/activated:
-    ActiveChangeEvent,
-    ControllableActivatableProps,
+    type ActiveChangeEvent,
+    type ControllableActivatableProps,
     UncontrollableActivatableProps,
     useUncontrollableActivatable,
+    
+    
+    
+    // a possibility of UI having an invalid state:
+    type ValidationDeps,
 }                           from '@reusable-ui/core'                    // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -122,8 +132,8 @@ export interface CheckProps<TElement extends Element = HTMLSpanElement>
             |'pattern'               // text regex is not supported
             
             // formats:
-            |'type'                              // always [type="checkbox"] or [type="radio"]
-            |'placeholder'|'autoComplete'|'list' // text hints are not supported
+            |'type'                  // always [type="checkbox"] or [type="radio"]
+            |'placeholder'|'autoComplete'|'autoCapitalize'|'list' // text hints are not supported
         >,
         
         // variants:
@@ -158,17 +168,7 @@ export interface CheckProps<TElement extends Element = HTMLSpanElement>
     children             ?: React.ReactNode
 }
 const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TElement>): JSX.Element|null => {
-    // styles:
-    const styleSheet   = useCheckStyleSheet();
-    
-    
-    
-    // variants:
-    const checkVariant = useCheckVariant(props);
-    
-    
-    
-    // rest props:
+    // props:
     const {
         // refs:
         elmRef,
@@ -177,6 +177,11 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         
         // variants:
         checkStyle : checkStyle, // use
+        
+        
+        
+        // classes:
+        variantClasses,
         
         
         
@@ -200,12 +205,14 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         value,
         onChange, // forwards to `input[type]`
         
-        defaultChecked, // take, to be aliased to `defaultActive`
-        checked,        // take, to be aliased to `active`
+        defaultChecked : fallbackDefaultActive, // take, to be aliased to `defaultActive`
+        checked        : fallbackActive,        // take, to be aliased to `active`
         
         
         
         // validations:
+        validationDeps : validationDepsOverwrite,
+        
         required,
         
         
@@ -216,12 +223,10 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         
         
         // states:
-        // aliased `defaultChecked` to `defaultActive`:
-        defaultActive = defaultChecked,   // take, to be handled by `useUncontrollableActivatable`
-        // aliased `checked` to `active`:
-        active        = checked,          // take, to be handled by `useUncontrollableActivatable`
-        inheritActive,                    // take, to be handled by `useUncontrollableActivatable`
-        onActiveChange,                   // take, to be handled by `useUncontrollableActivatable`
+        defaultActive = fallbackDefaultActive, // take, to be handled by `useUncontrollableActivatable` // if the `defaultActive` is not provided, fallback to `defaultChecked`
+        active        = fallbackActive,        // take, to be handled by `useUncontrollableActivatable` // if the `active` is not provided, fallback to `checked`
+        inheritActive,                         // take, to be handled by `useUncontrollableActivatable`
+        onActiveChange,                        // take, to be handled by `useUncontrollableActivatable`
         
         
         
@@ -232,7 +237,51 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         
         // children:
         children,
-    ...restEditableActionControlProps} = props;
+        
+        
+        
+        // handlers:
+        onClick,
+        onKeyDown,
+        onKeyUp,
+        
+        
+        
+        // other props:
+        ...restCheckProps
+    } = props;
+    
+    const appendValidationDeps = useEvent<ValidationDeps>((bases) => [
+        ...bases,
+        
+        /*
+            Since we use <EditableActionControl> as a wrapper,
+            and we don't pass the `required` prop to the <EditableActionControl>,
+            we need to re-apply theses props here.
+        */
+        nativeInputRequired,
+        
+        // additional props that influences the validityState (for <Input>):
+        isActive,
+        
+        // validations:
+        // no more validation props, only `required` is supported in <Check>
+    ]);
+    const mergedValidationDeps = useEvent<ValidationDeps>((bases) => {
+        // conditions:
+        if (validationDepsOverwrite) return validationDepsOverwrite(appendValidationDeps(bases));
+        return appendValidationDeps(bases);
+    });
+    
+    
+    
+    // styles:
+    const styles       = useCheckStyleSheet();
+    
+    
+    
+    // variants:
+    const checkVariant = useCheckVariant(props);
     
     
     
@@ -276,9 +325,9 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
     
     
     // classes:
-    const variantClasses = useMergeClasses(
-        // preserves the original `variantClasses`:
-        props.variantClasses,
+    const mergedVariantClasses = useMergeClasses(
+        // preserves the original `variantClasses` from `props`:
+        variantClasses,
         
         
         
@@ -300,8 +349,8 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         event.preventDefault(); // handled
     });
     const handleClick            = useMergeEvents(
-        // preserves the original `onClick`:
-        props.onClick,
+        // preserves the original `onClick` from `props`:
+        onClick,
         
         
         
@@ -321,8 +370,8 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         } // if
     });
     const handleKeyDown          = useMergeEvents(
-        // preserves the original `onKeyDown`:
-        props.onKeyDown,
+        // preserves the original `onKeyDown` from `props`:
+        onKeyDown,
         
         
         
@@ -343,8 +392,8 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         } // if
     });
     const handleKeyUp            = useMergeEvents(
-        // preserves the original `onKeyUp`:
-        props.onKeyUp,
+        // preserves the original `onKeyUp` from `props`:
+        onKeyUp,
         
         
         
@@ -380,6 +429,42 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
     
     
     // default props:
+    const {
+        // semantics:
+        tag                      = 'span',
+        semanticTag              = '', // no corresponding semantic tag => defaults to <div> (overwritten to <span>)
+        semanticRole             = 'checkbox', // uses [role="checkbox"] as the default semantic role
+        
+        'aria-label' : ariaLabel = label,
+        
+        
+        
+        // variants:
+        nude                     = (
+            ((checkStyle === 'button') || (checkStyle === 'toggleButton'))
+            ?
+            false // filled : <Check checkStyle='button'> | <Check checkStyle='toggleButton'>
+            :
+            true  // nude   : <Check> | <Check checkStyle='switch'>
+        ),
+        mild                     = false, // bold <Check>
+        
+        
+        
+        // classes:
+        mainClass                = styles.main,
+        
+        
+        
+        // values:
+        controllableValue        = isActive,
+        
+        
+        
+        // other props:
+        ...restEditableActionControlProps
+    } = restCheckProps satisfies NoForeignProps<typeof restCheckProps, EditableActionControlProps<TElement>>;
+    
     const {
         // accessibilities:
         // autoFocus      : nativeInputAutoFocus      = autoFocus,    // still on <EditableActionControl> element
@@ -431,34 +516,38 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
             
             
             // semantics:
-            tag          = {props.tag           ??   'span'  }
-            semanticTag  = {props.semanticTag   ??     ''    } // no corresponding semantic tag => defaults to <div> (overwritten to <span>)
-            semanticRole = {props.semanticRole  ?? 'checkbox'} // uses [role="checkbox"] as the default semantic role
+            tag          = {tag}
+            semanticTag  = {semanticTag}
+            semanticRole = {semanticRole}
             
-            aria-label   = {props['aria-label'] ?? label}
+            aria-label   = {ariaLabel}
             
             
             
             // variants:
-            nude={props.nude ?? (
-                ((checkStyle === 'button') || (checkStyle === 'toggleButton'))
-                ?
-                false // filled : <Check checkStyle='button'> | <Check checkStyle='toggleButton'>
-                :
-                true  // nude   : <Check> | <Check checkStyle='switch'>
-            )}
-            mild={props.mild ?? false} // bold <Check>
+            nude={nude}
+            mild={mild}
+            
+            
+            
+            // classes:
+            mainClass={mainClass}
+            variantClasses={mergedVariantClasses}
+            
+            
+            
+            // values:
+            controllableValue={controllableValue}
+            
+            
+            
+            // validations:
+            validationDeps={mergedValidationDeps}
             
             
             
             // states:
             active={isActive}
-            
-            
-            
-            // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
-            variantClasses={variantClasses}
             
             
             
@@ -532,6 +621,6 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
     );
 };
 export {
-    Check,
-    Check as default,
+    Check,            // named export for readibility
+    Check as default, // default export to support React.lazy
 }

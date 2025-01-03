@@ -12,6 +12,11 @@ import {
 
 // reusable-ui core:
 import {
+    // a collection of TypeScript type utilities, assertions, and validations for ensuring type safety in reusable UI components:
+    type NoForeignProps,
+    
+    
+    
     // react helper hooks:
     useMergeEvents,
     useMergeRefs,
@@ -20,7 +25,7 @@ import {
     
     
     // a possibility of UI having an invalid state:
-    InvalidableProps,
+    type InvalidableProps,
     useInvalidable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
@@ -73,29 +78,64 @@ export interface EditableButtonProps
 {
 }
 const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
-    // styles:
-    const styleSheet       = useEditableButtonStyleSheet();
-    
-    
-    
-    // states:
-    const invalidableState = useInvalidable<HTMLButtonElement>(props);
-    
-    
-    
-    // rest props:
+    // props:
     const {
+        // refs:
+        elmRef,
+        outerRef,
+        
+        
+        
+        // classes:
+        classes,
+        stateClasses,
+        
+        
+        
         // validations:
-        enableValidation  : _enableValidation,  // remove
-        isValid           : _isValid,           // remove
-        inheritValidation : _inheritValidation, // remove
-        onValidation      : _onValidation,      // remove
+        enableValidation,  // take to `useInvalidable`
+        isValid,           // take to `useInvalidable`
+        inheritValidation, // take to `useInvalidable`
+        validationDeps,    // take to `useInvalidable`
+        onValidation,      // take to `useInvalidable`
         
         
         
         // components:
         buttonComponent = (<Button /> as React.ReactComponentElement<any, ButtonProps>),
-    ...restButtonProps} = props;
+        
+        
+        
+        // handlers:
+        onAnimationStart,
+        onAnimationEnd,
+        
+        
+        
+        // other props:
+        ...restEditableButtonProps
+    } = props;
+    
+    
+    
+    // styles:
+    const styles           = useEditableButtonStyleSheet();
+    
+    
+    
+    // states:
+    const invalidableState = useInvalidable<HTMLButtonElement>({
+        enabled           : props.enabled,
+        inheritEnabled    : props.inheritEnabled,
+        readOnly          : props.readOnly,
+        inheritReadOnly   : props.inheritReadOnly,
+        
+        enableValidation  : enableValidation,
+        isValid           : isValid,
+        inheritValidation : inheritValidation,
+        validationDeps    : validationDeps,
+        onValidation      : onValidation,
+    });
     
     
     
@@ -107,7 +147,7 @@ const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
         
         
         // preserves the original `elmRef` from `props`:
-        props.elmRef,
+        elmRef,
     );
     const mergedOuterRef = useMergeRefs(
         // preserves the original `outerRef` from `buttonComponent`:
@@ -116,34 +156,34 @@ const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
         
         
         // preserves the original `outerRef` from `props`:
-        props.outerRef,
+        outerRef,
     );
     
     
     
     // classes:
-    const classes      = useMergeClasses(
+    const mergedClasses      = useMergeClasses(
         // preserves the original `classes` from `buttonComponent`:
         buttonComponent.props.classes,
         
         
         
         // preserves the original `classes` from `props`:
-        props.classes,
+        classes,
         
         
         
         // classes:
-        styleSheet.main, // additional styleSheet
+        styles.main, // additional styles
     );
-    const stateClasses = useMergeClasses(
+    const mergedStateClasses = useMergeClasses(
         // preserves the original `stateClasses` from `buttonComponent`:
         buttonComponent.props.stateClasses,
         
         
         
         // preserves the original `stateClasses` from `props`:
-        props.stateClasses,
+        stateClasses,
         
         
         
@@ -161,7 +201,7 @@ const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
         
         
         // preserves the original `onAnimationStart` from `props`:
-        props.onAnimationStart,
+        onAnimationStart,
         
         
         
@@ -175,13 +215,36 @@ const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
         
         
         // preserves the original `onAnimationEnd` from `props`:
-        props.onAnimationEnd,
+        onAnimationEnd,
         
         
         
         // states:
         invalidableState.handleAnimationEnd,
     );
+    
+    
+    
+    // default props:
+    const {
+        // children:
+        children,
+        
+        
+        
+        // other props:
+        ...restButtonProps
+    } = restEditableButtonProps satisfies NoForeignProps<typeof restEditableButtonProps, ButtonProps>;
+    
+    const {
+        // children:
+        children : buttonComponentChildren = children,
+        
+        
+        
+        // other props:
+        ...restButtonComponentProps
+    } = buttonComponent.props;
     
     
     
@@ -192,7 +255,7 @@ const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
         {
             // other props:
             ...restButtonProps,
-            ...buttonComponent.props, // overwrites restButtonProps (if any conflics)
+            ...restButtonComponentProps, // overwrites restButtonProps (if any conflics)
             
             
             
@@ -203,8 +266,8 @@ const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
             
             
             // classes:
-            classes          : classes,
-            stateClasses     : stateClasses,
+            classes          : mergedClasses,
+            stateClasses     : mergedStateClasses,
             
             
             
@@ -216,12 +279,12 @@ const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
         
         
         // children:
-        buttonComponent.props.children ?? props.children,
+        buttonComponentChildren,
     );
 };
 export {
-    EditableButton,
-    EditableButton as default,
+    EditableButton,            // named export for readibility
+    EditableButton as default, // default export to support React.lazy
 }
 
 export type { ButtonType, ButtonStyle, ButtonVariant }

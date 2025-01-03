@@ -22,6 +22,11 @@ import {
 
 // reusable-ui core:
 import {
+    // a collection of TypeScript type utilities, assertions, and validations for ensuring type safety in reusable UI components:
+    type NoForeignProps,
+    
+    
+    
     // react helper hooks:
     useEvent,
     useMergeEvents,
@@ -31,25 +36,31 @@ import {
     
     
     // a possibility of UI having an invalid state:
-    InvalidableProps,
+    type ValidityChangeEvent,
+    type ValidationDeps,
+    type ValidationEventHandler,
+    type InvalidableProps,
     useInvalidable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
     // react components:
-    ControlProps,
+    type ControlProps,
     Control,
 }                           from '@reusable-ui/control'         // a base component
 
 // internals:
 import {
     // states:
-    EditableControlElement,
-    CustomValidatorHandler,
+    type EditableControlElement,
+    type CustomValidatorHandler,
     isEditableControlElement,
     useInputValidator,
 }                           from './states/InputValidator.js'
+import {
+    getControllableValue,
+}                           from './utilities.js'
 
 
 
@@ -67,13 +78,37 @@ export const useEditableControlStyleSheet = dynamicStyleSheet(
 export interface EditableControlProps<TElement extends Element = HTMLElement>
     extends
         // bases:
-        ControlProps<TElement>,
+        Omit<ControlProps<TElement>,
+            // values:
+            |'onChange' // use `onChange` from `EditableControlProps` instead of `ControlProps`
+        >,
+        
+        // input:
+        // partially implemented <input>'s props because <EditableControl> is a base control component:
+        Pick<React.InputHTMLAttributes<TElement>,
+            // accessibilities:
+            |'autoFocus'
+            
+            // validations:
+            |'required'
+            
+            // forms:
+            |'name'|'form'
+            
+            // values:
+            |'defaultValue'
+            |'value'
+            |'onChange' // use `onChange` from `EditableControlProps` instead of `ControlProps`
+        >,
         
         // states:
         InvalidableProps
 {
-    // accessibilities:
-    autoFocus       ?: boolean
+    // values:
+    /**
+     * A helper prop to detect the controllable value changes.
+     */
+    controllableValue ?: unknown
     
     
     
@@ -82,87 +117,130 @@ export interface EditableControlProps<TElement extends Element = HTMLElement>
      * @deprecated use `onValidation` for watching and/or modifying the validation.
      */
     customValidator ?: CustomValidatorHandler
-    required        ?: boolean
-    
-    
-    
-    // forms:
-    name            ?: string
-    form            ?: string
-    
-    
-    
-    // values:
-    defaultValue    ?: number|string
-    value           ?: number|string
-    onChange        ?: React.ChangeEventHandler<TElement>
 }
 const EditableControl = <TElement extends Element = HTMLElement>(props: EditableControlProps<TElement>): JSX.Element|null => {
+    // props:
+    const {
+        // refs:
+        elmRef,
+        
+        
+        
+        // classes:
+        stateClasses,
+        
+        
+        
+        // values:
+        controllableValue : controllableValueOverwrite, // take to `getControllableValue`
+        onChange,
+        
+        
+        
+        // validations:
+        enableValidation,                               // take to `useInvalidable`
+        isValid,                                        // take to `useInvalidable`
+        inheritValidation,                              // take to `useInvalidable`
+        validationDeps     : validationDepsOverwrite,   // take to `useInvalidable`
+        onValidation,                                   // take to `useInvalidable`
+        customValidator,                                // take to `useInputValidator`
+        
+        
+        
+        // handlers:
+        onAnimationStart,
+        onAnimationEnd,
+        
+        
+        
+        // other props:
+        ...restEditableControlProps
+    } = props;
+    
+    const controllableValue    = getControllableValue(props, controllableValueOverwrite);
+    
+    
+    
     // styles:
-    const styleSheet       = useEditableControlStyleSheet();
+    const styles               = useEditableControlStyleSheet();
     
     
     
     // states:
-    const inputValidator   = useInputValidator<EditableControlElement>(props.customValidator);
-    const handleValidation = useMergeEvents(
+    const [uncontrollableValueFingerprint, setUncontrollableValueFingerprint] = React.useState<{}>({});
+    
+    
+    
+    // states:
+    const inputValidator       = useInputValidator<EditableControlElement>(customValidator);
+    const appendValidationDeps = useEvent<ValidationDeps>((bases) => [
+        ...bases,
+        
+        // additional props that influences the validityState (for <EditableControl>):
+        
+        // validations:
+        (props.required ?? false),
+        
+        // values:
+        controllableValue,              // detects the controllable   value changes
+        uncontrollableValueFingerprint, // detects the uncontrollable value changes
+    ]);
+    const mergedValidationDeps = useEvent<ValidationDeps>((bases) => {
+        // conditions:
+        if (validationDepsOverwrite) return validationDepsOverwrite(appendValidationDeps(bases));
+        return appendValidationDeps(bases);
+    });
+    const handleValidation     = useEvent<ValidationEventHandler<ValidityChangeEvent>>(async (event) => {
         /* sequentially runs validators from `inputValidator.handleValidation()` then followed by `props.onValidation()` */
         
         
         
         // states:
-        inputValidator.handleValidation,
+        await inputValidator.handleValidation(event);
         
         
         
-        // preserves the original `onValidation`:
-        props.onValidation,
-    );
-    const invalidableState = useInvalidable<TElement>({
+        // preserves the original `onValidation` from `props`:
+        await onValidation?.(event);
+    });
+    const invalidableState     = useInvalidable<TElement>({
         enabled           : props.enabled,
         inheritEnabled    : props.inheritEnabled,
         readOnly          : props.readOnly,
         inheritReadOnly   : props.inheritReadOnly,
         
-        enableValidation  : props.enableValidation,
-        isValid           : props.isValid,
-        inheritValidation : props.inheritValidation,
+        enableValidation  : enableValidation,
+        isValid           : isValid,
+        inheritValidation : inheritValidation,
+        validationDeps    : mergedValidationDeps,
         onValidation      : handleValidation,
     });
     
     
     
-    // rest props:
-    const {
-        // validations:
-        enableValidation  : _enableValidation,  // remove
-        isValid           : _isValid,           // remove
-        inheritValidation : _inheritValidation, // remove
-        onValidation      : _onValidation,      // remove
-        customValidator   : _customValidator,   // remove
-    ...restControlProps} = props;
-    
-    
-    
     // refs:
-    const inputRefInternal = useRef<TElement|null>(null);
-    const setInputRef      = useEvent<React.RefCallback<TElement>>((element) => {
-        // conditions:
-        if (!element) return;
-        
-        
-        
-        if (isEditableControlElement(element)) {
-            inputValidator.handleInit(element);
+    const inputRefInternal     = useRef<TElement|null>(null);
+    const setInputRef          = useEvent<React.RefCallback<TElement>>((element) => {
+        if (!element) {
+            inputValidator.inputRef.current = null; // the input element is unmounted => do nothing
         }
-        else {
+        else if (isEditableControlElement(element)) { // case of the <EditableControl> is the input element
+            inputValidator.inputRef.current = element; // the input element is mounted => set the input element
+        }
+        else { // case of the <EditableControl> is a wrapper of the input element
+            // assumes the first input element is the inner input element:
             const firstInput = element.querySelector(':is(input, select, textarea)') as (EditableControlElement|null);
-            if (firstInput) inputValidator.handleInit(firstInput);
+            if (firstInput) {
+                inputValidator.inputRef.current = firstInput; // the inner input element is mounted => set the input element
+            }
+            else {
+                inputValidator.inputRef.current = null; // the inner input element is not found => do nothing
+            } // if
         } // if
     });
-    const elmRef           = useMergeRefs(
-        // preserves the original `elmRef`:
-        props.elmRef,
+    const mergedElmRef         = useMergeRefs(
+        // preserves the original `elmRef` from `props`:
+        elmRef,
         
         
         
@@ -173,9 +251,9 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
     
     
     // classes:
-    const stateClasses = useMergeClasses(
-        // preserves the original `stateClasses`:
-        props.stateClasses,
+    const mergedStateClasses   = useMergeClasses(
+        // preserves the original `stateClasses` from `props`:
+        stateClasses,
         
         
         
@@ -186,20 +264,27 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
     
     
     // handlers:
+    const handleChangeInternal = useEvent(() => {
+        // conditions:
+        if (controllableValue !== undefined) return; // controllable component mode => ignore the value changes from the props
+        
+        
+        
+        // actions:
+        setUncontrollableValueFingerprint({}); // signal the uncontrollable value changes
+    });
     const handleChange         = useMergeEvents(
-        // preserves the original `onChange`:
-        props.onChange,
+        // preserves the original `onChange` from `props`:
+        onChange,
         
         
         
         // states:
-        
-        // validations:
-        inputValidator.handleChange as unknown as React.ChangeEventHandler<TElement>,
+        handleChangeInternal,
     );
     const handleAnimationStart = useMergeEvents(
-        // preserves the original `onAnimationStart`:
-        props.onAnimationStart,
+        // preserves the original `onAnimationStart` from `props`:
+        onAnimationStart,
         
         
         
@@ -207,8 +292,8 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
         invalidableState.handleAnimationStart,
     );
     const handleAnimationEnd   = useMergeEvents(
-        // preserves the original `onAnimationEnd`:
-        props.onAnimationEnd,
+        // preserves the original `onAnimationEnd` from `props`:
+        onAnimationEnd,
         
         
         
@@ -223,21 +308,34 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
     // supports for <Radio> or <Radio>-like:
     useEffect(() => {
         // conditions:
-        const currentRadio = inputRefInternal.current;
-        if (!currentRadio) return; // radio was unmounted => nothing to do
+        const currentRadioElm = inputRefInternal.current;
+        if (!currentRadioElm) return; // radio was unmounted => nothing to do
         
         
         
         // setups:
-        currentRadio.addEventListener('clear', inputValidator.handleChange as unknown as EventListener);
+        currentRadioElm.addEventListener('clear', handleChangeInternal); // when another <Radio> is selected, it affects the current <Radio>'s validityState, so we need to re-validate the current <Radio>
         
         
         
         // cleanups:
         return () => {
-            currentRadio.removeEventListener('clear', inputValidator.handleChange as unknown as EventListener);
+            currentRadioElm.removeEventListener('clear', handleChangeInternal);
         };
-    }, []);
+    }, []); // lifecycle: mount and unmount
+    
+    
+    
+    // default props:
+    const {
+        // classes:
+        mainClass = styles.main,
+        
+        
+        
+        // other props:
+        ...restControlProps
+    } = restEditableControlProps satisfies NoForeignProps<typeof restEditableControlProps, ControlProps<TElement>, Pick<React.InputHTMLAttributes<TElement>, 'autoFocus'|'required'|'name'|'form'|'defaultValue'|'value'|'onChange'>>;
     
     
     
@@ -250,24 +348,28 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
             
             
             // refs:
-            elmRef={elmRef}
+            elmRef={mergedElmRef}
             
             
             
             // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
-            stateClasses={stateClasses}
+            mainClass={mainClass}
+            stateClasses={mergedStateClasses}
+            
+            
+            
+            // values:
+            onChange={handleChange}
             
             
             
             // handlers:
-            onChange         = {handleChange        }
             onAnimationStart = {handleAnimationStart}
             onAnimationEnd   = {handleAnimationEnd  }
         />
     );
 };
 export {
-    EditableControl,
-    EditableControl as default,
+    EditableControl,            // named export for readibility
+    EditableControl as default, // default export to support React.lazy
 }

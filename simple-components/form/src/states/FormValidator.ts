@@ -7,31 +7,24 @@ import {
     
     // hooks:
     useRef,
-    useEffect,
-    
-    
-    
-    // utilities:
-    startTransition,
 }                           from 'react'
 
 // reusable-ui core:
 import {
     // react helper hooks:
-    useTriggerRender,
     useEvent,
-    EventHandler,
     
     
     
     // a validation management system:
-    Result as ValResult,
+    type Result as ValResult,
     
     
     
     // a possibility of UI having an invalid state:
-    ValidityChangeEvent,
-}                           from '@reusable-ui/core'                // a set of reusable-ui packages which are responsible for building any component
+    type ValidityChangeEvent,
+    type ValidationEventHandler,
+}                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 
 
@@ -45,78 +38,69 @@ import {
  */
 export type CustomValidatorHandler = (isValid: ValResult) => ValResult|Promise<ValResult>
 
-const isFormValid = (element: HTMLFormElement): ValResult => {
-    if (element.matches(':valid'  )) return true;  // valid
-    if (element.matches(':invalid')) return false; // invalid
-    return null; // uncheck
+// const isFormValid = (element: HTMLFormElement): ValResult => {
+//     if (element.matches(':valid'  )) return true;  // valid
+//     if (element.matches(':invalid')) return false; // invalid
+//     return null; // uncheck
+// };
+const getControlsValidity = (element: HTMLFormElement): ValidityState[] => {
+    const validityStates: ValidityState[] = [];
+    
+    // Collect validity states of elements within the form
+    const elements = element.elements;
+    for (let i = 0; i < elements.length; i++) {
+        const el = elements[i] as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+        if (el.validity && !el.disabled && !el.closest('fieldset[disabled]')) {
+            validityStates.push(el.validity);
+        }
+    } // for
+    
+    // Collect validity states of elements with a form attribute pointing to this form
+    const formId = element.id;
+    if (formId) {
+        const externalElements = document.querySelectorAll(`[form="${formId}"]`);
+        externalElements.forEach((el) => {
+            if (element.contains(el)) return; // Skip elements within the form because they were already checked
+            if ((el instanceof HTMLInputElement || el instanceof HTMLSelectElement || el instanceof HTMLTextAreaElement) && !el.disabled && !el.closest('fieldset[disabled]')) {
+                if (el.validity) {
+                    validityStates.push(el.validity);
+                }
+            } // if
+        });
+    } // if
+    
+    return validityStates;
 };
+// const checkValidityStates = (validityStates: ValidityState[]): ValidityState|undefined => {
+//     if (validityStates.length === 0) return undefined;
+//     
+//     let lastValidityState: ValidityState|undefined = undefined;
+//     for (const validityState of validityStates) {
+//         lastValidityState = validityState;
+//         if (!validityState.valid) {
+//             return validityState; // Return early if an invalid state is found
+//         }
+//     } // for
+//     
+//     return lastValidityState; // Return the last validity state if all are valid
+// };
 
 export interface FormValidatorApi {
-    handleValidation : EventHandler<ValidityChangeEvent>
-    handleInit       : EventHandler<HTMLFormElement>
-    handleChange     : React.FormEventHandler<HTMLFormElement>
-}
-export const useFormValidator      = (customValidator?: CustomValidatorHandler): FormValidatorApi => {
-    // states:
-    // we stores the `isValid` in `useRef` instead of `useState` because we need to *real-time export* of its value:
-    const isValid = useRef<ValResult>(null); // initially unchecked (neither valid nor invalid)
-    
-    // manually controls the (re)render event:
-    const [triggerRender] = useTriggerRender();
-    
-    
-    
-    // functions:
-    
-    const asyncPerformUpdate = useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
-    useEffect(() => {
-        // cleanups:
-        return () => {
-            // cancel out previously performUpdate (if any):
-            if (asyncPerformUpdate.current) clearTimeout(asyncPerformUpdate.current);
-        };
-    }, []); // runs once on startup
-    
-    const validate = (element: HTMLFormElement, immediately = false) => {
-        const performUpdate = async (): Promise<void> => {
-            // remember the validation result:
-            const currentIsValid = isFormValid(element);
-            const newIsValid : ValResult = (customValidator ? (await customValidator(currentIsValid)) : currentIsValid);
-            if (isValid.current !== newIsValid) {
-                isValid.current = newIsValid;
-                
-                // lazy responsives => a bit delayed of responsives is ok:
-                startTransition(() => {
-                    triggerRender(); // notify to react runtime to re-render with a new validity state, causing `useInvalidable()` runs the effect => calls `onValidation` => `handleValidation()`
-                });
-            } // if
-        };
-        
-        
-        
-        if (immediately) {
-            // instant validating:
-            performUpdate();
-        }
-        else {
-            // cancel out previously performUpdate (if any):
-            if (asyncPerformUpdate.current) clearTimeout(asyncPerformUpdate.current);
-            
-            
-            
-            // delaying the validation, to avoid unpleasant splash effect during editing
-            const currentIsValid = isFormValid(element);
-            asyncPerformUpdate.current = setTimeout(
-                performUpdate,
-                (currentIsValid !== false) ? 300 : 600
-            );
-        } // if
-    };
+    // refs:
+    formRef          : React.MutableRefObject<HTMLFormElement|null> // getter and setter ref
     
     
     
     // handlers:
+    handleValidation : ValidationEventHandler<ValidityChangeEvent>
+}
+export const useFormValidator      = (customValidator?: CustomValidatorHandler): FormValidatorApi => {
+    // refs:
+    const formRef = useRef<HTMLFormElement|null>(null);
     
+    
+    
+    // handlers:
     /**
      * Handles the validation result.
      * @returns  
@@ -124,31 +108,35 @@ export const useFormValidator      = (customValidator?: CustomValidatorHandler):
      * `true`  = valid.  
      * `false` = invalid.
      */
-    const handleValidation = useEvent<EventHandler<ValidityChangeEvent>>((event) => {
+    const handleValidation = useEvent<ValidationEventHandler<ValidityChangeEvent>>(async (event) => {
         // conditions:
         if (event.isValid !== true) return; // ignore if was *invalid*|*uncheck* (only perform a further_validation if was *valid*)
         
         
         
         // further validations:
-        event.isValid = isValid.current;
-    });
-    
-    const handleInit       = useEvent<EventHandler<HTMLFormElement>>((element) => {
-        validate(element, /*immediately =*/true);
-    });
-    
-    const handleChange     = useEvent<React.FormEventHandler<HTMLFormElement>>(({currentTarget}) => {
-        validate(currentTarget);
+        const formElm = formRef.current;
+        if (!formElm) return; // form element element was unmounted => do nothing
+        
+        // get validation results:
+        const validityStates = getControlsValidity(formElm);
+        const calculatedIsValid = validityStates.every((validityState) => validityState.valid);
+        const newIsValid : ValResult = (customValidator ? (await customValidator(calculatedIsValid)) : calculatedIsValid);
+        
+        event.isValid = newIsValid; // update the validation result
     });
     
     
     
     // api:
     return {
+        // refs:
+        formRef,
+        
+        
+        
+        // handlers:
         handleValidation,
-        handleInit,
-        handleChange,
     };
 };
 //#endregion FormValidator

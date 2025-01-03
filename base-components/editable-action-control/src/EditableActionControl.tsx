@@ -16,6 +16,11 @@ import {
 
 // reusable-ui core:
 import {
+    // a collection of TypeScript type utilities, assertions, and validations for ensuring type safety in reusable UI components:
+    type NoForeignProps,
+    
+    
+    
     // react helper hooks:
     useMergeEvents,
     useMergeClasses,
@@ -58,36 +63,66 @@ export interface EditableActionControlProps<TElement extends Element = HTMLEleme
 {
 }
 const EditableActionControl = <TElement extends Element = HTMLElement>(props: EditableActionControlProps<TElement>): JSX.Element|null => {
-    // styles:
-    const styleSheet     = useEditableActionControlStyleSheet();
-    
-    
-    
-    // states:
-    const clickableState = useClickable<TElement>(props);
-    
-    
-    
-    // rest props:
+    // props:
     const {
+        // classes:
+        stateClasses,
+        
+        
+        
         // states:
-        pressed      : _pressed,      // remove
+        pressed,       // take to `useClickable`
         
         
         
         // behaviors:
-        actionMouses  : _actionMouses,  // remove
-        actionTouches : _actionTouches, // remove
-        actionKeys    : _actionKeys,    // remove
-        releaseDelay  : _releaseDelay,  // remove
-    ...restEditableControlProps} = props;
+        actionMouses,  // take to `useClickable`
+        actionTouches, // take to `useClickable`
+        actionKeys,    // take to `useClickable`
+        releaseDelay,  // take to `useClickable`
+        
+        
+        
+        // handlers:
+        onMouseDown,
+        onTouchStart,
+        onKeyDown,
+        onAnimationStart,
+        onAnimationEnd,
+        
+        
+        
+        // other props:
+        ...restEditableActionControlProps
+    } = props;
+    
+    
+    
+    // styles:
+    const styles         = useEditableActionControlStyleSheet();
+    
+    
+    
+    // states:
+    const clickableState = useClickable<TElement>({
+        // states:
+        pressed,
+        
+        
+        
+        // behaviors:
+        actionMouses,
+        actionTouches,
+        actionKeys,
+        releaseDelay,
+    });
     
     
     
     // classes:
-    const stateClasses = useMergeClasses(
-        // preserves the original `stateClasses`:
-        props.stateClasses,
+    const mergedStateClasses = useMergeClasses(
+        // preserves the original `stateClasses` from `props`:
+        stateClasses,
         
         
         
@@ -99,8 +134,8 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
     
     // handlers:
     const handleMouseDown      = useMergeEvents(
-        // preserves the original `onMouseDown`:
-        props.onMouseDown,
+        // preserves the original `onMouseDown` from `props`:
+        onMouseDown,
         
         
         
@@ -108,8 +143,8 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
         clickableState.handleMouseDown,
     );
     const handleTouchStart     = useMergeEvents(
-        // preserves the original `onTouchStart`:
-        props.onTouchStart,
+        // preserves the original `onTouchStart` from `props`:
+        onTouchStart,
         
         
         
@@ -117,8 +152,8 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
         clickableState.handleTouchStart,
     );
     const handleKeyDown        = useMergeEvents(
-        // preserves the original `onKeyDown`:
-        props.onKeyDown,
+        // preserves the original `onKeyDown` from `props`:
+        onKeyDown,
         
         
         
@@ -127,8 +162,8 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
     );
     // const handleClick          = clickableState.handleClick; // not a <button>, no need to handle `onClick` for [space] & [enter] key
     const handleAnimationStart = useMergeEvents(
-        // preserves the original `onAnimationStart`:
-        props.onAnimationStart,
+        // preserves the original `onAnimationStart` from `props`:
+        onAnimationStart,
         
         
         
@@ -136,14 +171,27 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
         clickableState.handleAnimationStart,
     );
     const handleAnimationEnd   = useMergeEvents(
-        // preserves the original `onAnimationEnd`:
-        props.onAnimationEnd,
+        // preserves the original `onAnimationEnd` from `props`:
+        onAnimationEnd,
         
         
         
         // states:
         clickableState.handleAnimationEnd,
     );
+    
+    
+    
+    // default props:
+    const {
+        // classes:
+        mainClass = styles.main,
+        
+        
+        
+        // other props:
+        ...restEditableControlProps
+    } = restEditableActionControlProps satisfies NoForeignProps<typeof restEditableActionControlProps, EditableControlProps<TElement>>;
     
     
     
@@ -156,8 +204,8 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
             
             
             // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
-            stateClasses={stateClasses}
+            mainClass={mainClass}
+            stateClasses={mergedStateClasses}
             
             
             
@@ -172,6 +220,6 @@ const EditableActionControl = <TElement extends Element = HTMLElement>(props: Ed
     );
 };
 export {
-    EditableActionControl,
-    EditableActionControl as default,
+    EditableActionControl,            // named export for readibility
+    EditableActionControl as default, // default export to support React.lazy
 }

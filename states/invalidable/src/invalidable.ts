@@ -41,7 +41,6 @@ import {
 import {
     // hooks:
     useIsomorphicLayoutEffect,
-    EventHandler,
     useMountedFlag,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
@@ -228,13 +227,16 @@ export interface ValidityChangeEvent
         >>
 {
 }
+export type ValidationDeps = (bases: unknown[]) => unknown[]
+export type ValidationEventHandler<TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent> = (event: TValidityChangeEvent) => void|Promise<void>
 export interface InvalidableProps<TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>
     extends
         // validations:
         Partial<ValidationProps>
 {
     // validations:
-    onValidation ?: EventHandler<TValidityChangeEvent>
+    validationDeps ?: ValidationDeps
+    onValidation   ?: ValidationEventHandler<TValidityChangeEvent>
 }
 
 export const enum InvalidableState {
@@ -262,67 +264,110 @@ export interface InvalidableApi<TElement extends Element = HTMLElement> {
 }
 
 export const useInvalidable = <TElement extends Element = HTMLElement, TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>(props: InvalidableProps<TValidityChangeEvent> & Pick<AccessibilityProps, 'enabled'|'inheritEnabled'|'readOnly'|'inheritReadOnly'>): InvalidableApi<TElement> => {
-    // fn props:
-    const propEnabled    = usePropEnabled(props);
-    const propReadOnly   = usePropReadOnly(props);
-    const propEditable   = propEnabled && !propReadOnly;
-    const propIsValid    = usePropIsValid(props);
-    const onValidation   = props.onValidation;
+    // props:
+    const {
+        validationDeps,
+        onValidation,
+    } = props;
     
+    const propEnabled      = usePropEnabled(props);
+    const propReadOnly     = usePropReadOnly(props);
+    const propEditable     = propEnabled && !propReadOnly; // the component is editable if it is enabled and not read-only
     
-    
-    // fn states:
-    
-    /*
-     * state is always uncheck if not editable
-     * state is valid/invalid/uncheck based on [controllable isValid] (if set) and forwarded to [onValidation] callback (if specified)
+    /**
+     * `undefined` : *automatic* detect valid/invalid state.  
+     * `null`      : force validation state to *uncheck*.  
+     * `true`      : force validation state to *valid*.  
+     * `false`     : force validation state to *invalid*.
      */
-    const isValidPhase1Fn : ValResult|undefined = ((): ValResult|undefined => {
+    const propIsValid      = usePropIsValid(props);        // the computed validation result based on the props and the context
+    
+    /**
+     * Determines whether the validation is disabled (always *uncheck*).
+     */
+    const propNoValidation = (
+        // conditions that disable the validation:
+        !propEditable           // the component is not editable      => force validation result to *uncheck*
+        ||
+        (propIsValid === null)  // `isValid` is provided as *uncheck* => force validation result to *uncheck*
+    );
+    
+    
+    
+    // computed props:
+    
+    /**
+     * The result is forced to *uncheck* if the component is not editable.
+     * The result is forced to *uncheck*|*valid*|*invalid* if `isValid` is provided (not `undefined`).
+     * Otherwise, the dynamic validation is needed by returning `undefined`.
+     */
+    const staticValidationResult : ValResult|undefined = ((): ValResult|undefined => {
         // if control is not editable => no validation
-        if (!propEditable)             return null; // defined as *uncheck*
+        if (propNoValidation)          return null; // if the component validation is disabled => force validation result to *uncheck*
         
         
         
         /*controllable*/
-        // if [isValid] was set => use [isValid] as the final result:
-        if (propIsValid !== undefined) return propIsValid; // defined as *uncheck*|*valid*|*invalid*
+        if (propIsValid !== undefined) return propIsValid; // if `isValid` is provided (not `undefined`) => force validation result to *uncheck*|*valid*|*invalid*
         
         
         
-        // the result is NOT_YET_defined:
-        return undefined;
+        return undefined; // if all above is skipped => *automatic* detect valid/invalid state => continue to the dynamic validation
     })();
     
-    const [isValidPhase2Fn, setIsValidPhase2Fn] = useState<ValResult|undefined>(isValidPhase1Fn);
+    /**
+     * Determines if dynamic validation is needed.
+     * Dynamic validation is needed only if `staticValidationResult` is not forced to *uncheck*|*valid*|*invalid* and `onValidation` is provided.
+     */
+    const isDynamicValidationResultNeeded = (
+        (staticValidationResult === undefined) // the dynamic validation is needed only if the `staticValidationResult` is not forced to *uncheck*|*valid*|*invalid*
+        &&
+        !!onValidation                         // the dynamic validation is needed only if the `onValidation` is provided
+    );
+    
+    const [dynamicValidationResult, setDynamicValidationResult] = useState<ValResult>(null); // initially *uncheck* (null)
+    
     const isMounted = useMountedFlag();
+    const baseValidationDeps : unknown[] = [];
+    const dynamicValidationDeps = [
+        ...(validationDeps ? validationDeps(baseValidationDeps) : baseValidationDeps),
+        
+        isDynamicValidationResultNeeded, // whether the dynamic validation is needed
+    ];
+    
+    /**
+     * We call `onValidation()` inside `useIsomorphicLayoutEffect()` to ensure that the `onValidation()` is called during the render phase,
+     * in case the `onValidation()` callback is used to update the state of the component.
+     */
     useIsomorphicLayoutEffect(() => {
         // conditions:
-        if (!onValidation) return; // onValidation() is not specified => ignore
+        if (!isDynamicValidationResultNeeded) return; // the dynamic validation is not needed => do nothing
         
         
         
-        // actions:
-        const isValidPhase1 : ValResult = (isValidPhase1Fn !== undefined) ? isValidPhase1Fn : true; // if was NOT_YET_defined => assumes as *valid*
+        // validating:
+        const event : ValidityChangeEvent = { isValid: true }; // set the initial dynamic validation to *valid*
+        Promise.resolve<void>(onValidation(event as TValidityChangeEvent)).then(() => { // waiting for mutation to be done
+            // conditions:
+            if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
+            
+            
+            
+            const newDynamicValidationResult = event.isValid; // get the result of the dynamic validation
+            setDynamicValidationResult(newDynamicValidationResult); // remember the last change
+        });
         
         
         
-        const event : ValidityChangeEvent = { isValid: isValidPhase1 };
-        onValidation(event as TValidityChangeEvent); // waiting for mutation
-        if (!isMounted.current) return; // the component was unloaded before awaiting returned => do nothing
-        const newIsValidPhase2Fn = event.isValid;
-        
-        
-        
-        if (isValidPhase2Fn === newIsValidPhase2Fn) return; // already in sync => ignore
-        setIsValidPhase2Fn(newIsValidPhase2Fn); // sync and then re-render
-    }); // runs on every re-render
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [...dynamicValidationDeps, onValidation]);
     
     const wasValid = useRef<boolean>(true); // assumes initially was *valid*
-    const isValidFn : boolean|0|-0 = (
+    const finalValidationResult : boolean|0|-0 = (
         (
-            !onValidation // onValidation() is not specified => setIsValidPhase2Fn() is never called => isValidPhase2Fn is never mutated => use isValidPhase1Fn
-            ? isValidPhase1Fn
-            : isValidPhase2Fn
+            isDynamicValidationResultNeeded
+            ? dynamicValidationResult // if the dynamic validation is needed => use the result of the dynamic validation
+            : staticValidationResult  // otherwise                           => use the result of the static  validation
         )
         ??
         // if above is null|undefined => use 0 (positive 0 -or- negative 0) in which indicating as *uncheck*
@@ -335,14 +380,14 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     
     // states:
     const [isValid, setIsValid, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<boolean|0|-0, TElement>({
-        initialState  : isValidFn,
+        initialState  : finalValidationResult,
         animationName : /((^|[^a-z])(valid|unvalid|invalid|uninvalid)|([a-z])(Valid|Unvalid|Invalid|Uninvalid))(?![a-z])/,
     });
     
     
     
     // update state:
-    if (isValid !== isValidFn) { // change detected => apply the change & start animating
+    if (isValid !== finalValidationResult) { // change detected => apply the change & start animating
         if (isValid !== 0) { // was `valid` (true) or was `invalid` (false) => need to apply `un-valid` or `un-invalid` *before* applying other states
             setIsValid(wasValid.current ? +0 : -0);
             /*
@@ -351,7 +396,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
             */
         }
         else {
-            setIsValid(isValidFn); // remember the last change
+            setIsValid(finalValidationResult); // remember the last change
         } // if
     } // if
     
@@ -380,13 +425,6 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         // fully neutralized:
         return InvalidableState.Neutralized;
     })();
-    const isNoValidation = ( // things makes `isValidFn` *always 0*
-        !propEditable           // the <control> is not editable      => no validation
-        ||
-        (propIsValid === null)  // the <ancestor> forced to *uncheck* => no validation
-        ||
-        !onValidation           // no validation callback provided    => no validation
-    );
     const stateClass = ((): string|null => {
         switch (state) {
             // validating:
@@ -413,7 +451,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
                 return 'invalidated';
             // fully neutralized:
             default:
-                if (isNoValidation) {
+                if (propNoValidation) {
                     return 'noval';
                 }
                 else {
@@ -432,7 +470,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
          * `null`  : uncheck/unvalidating/uninvalidating
         */
         isValid : ((typeof(isValid) === 'boolean') ? isValid : null),
-        isNoValidation,
+        isNoValidation: propNoValidation,
         
         state   : state,
         class   : stateClass,

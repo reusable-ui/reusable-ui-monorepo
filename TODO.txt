@@ -1,5 +1,4 @@
 [high prior] fix <List> breadcrumb on very narrow sreen, if the width is not sufficient, the left part should be clipped
-[high prior] <EditableTextControl isValid={true}> doesn't work with empty value
 [high prior] .static class conflics with tailwind class
 [high prior] restore themes & basic variants to portal (global stackable)
 [high prior] added @reusable-ui/events, @reusable-ui/drag-n-drop, @reusable-ui/draggable, @reusable-ui/droppable, @reusable-ui/orderable-list
@@ -16,15 +15,9 @@
 [high prior] passing React.context to useDialogMessage::showDialog(...)
 [high prior] ignores keyCode bubbling from <portal> of <Modal> & <Dropdown>
 [high prior] standardize coding formatting like <Grip>
+[high prior] add '1lh' for the sizeOptions of <Icon>
 
-[high prior] InputValidator::handleChange(), FormValidator::handleChange(), SelectValidator::handleChange() are not aware of validation property change, such as:
-    * required
-    * minLength
-    * maxLength
-    * min
-    * max
-    * step
-    * pattern
+[high prior] move delayed valid|invalid from InputValidator, FormValidator to useInvalidable
 
 [med  prior] update @reusable-ui/popup : needs to change bumpy effect from 1.02 to 1.05
 [med  prior] update <ModalCard> using grid instead of flex, similar to <ModalSide>
@@ -36,7 +29,6 @@
 [med  prior] fix clipped focus box shadow of child on TabPanel overflow: 'auto' and TabBody overflow: 'hidden'
 [med  prior] // one degree specificity => // zero degree specificity (combined with .parent, the descendants are always 1 degree specificity)
 [med  prior] auto close <Navbar>'s menu when click outside, without distracting/sudden_closing sub menu (if any)
-[breaking  ] modify useInputValidator & useFormValidator to use object props as the input parameters
 [breaking  ] rename Modal => Dialog, ModalCard => CardDialog, ModalSide => SideDialog
 [low prior ] obsoleting ModalStatus
 [breaking  ] rename DialogMessage => <DialogProvider> & useDialogManager
@@ -45,10 +37,10 @@
 [low  prior] add BlankSection, BlankPage
 [low prior ] convert <Carousel> to context-state-based, similar to TabState, ExclusiveAccordionState, SignInState
 [low prior ] add 'use client' for all interactive components
-[low prior ] onValidation & customValidator seem do the same thing, remove customValidator & upgrade ValidityChangeEvent to support preventDefault();
 [low prior ] create a polyfill <DateTime> editor
+[low prior ] onValidation & customValidator seem do the same thing, remove customValidator & upgrade ValidityChangeEvent to support preventDefault();
+[low prior ] onValidation remove customValidator() for InputValidator & FormValidator (overwrite invalidable::onValidation() with a more specific event arg)
 [low prior ] rename Result to ValidationResult
-onValidation remove customValidator() for InputValidator & FormValidator (overwrite invalidable::onValidation() with a more specific event arg)
 [low prior ] add useOnFocusOutside(excludesRef: Array) to reusable-ui/focusable
 [low prior ] add useOnClickOutside(excludesRef: Array) to reusable-ui/clickable
 [low prior ] develop <Slide> to support <Carousel> & <Tab> and supports scrollRef

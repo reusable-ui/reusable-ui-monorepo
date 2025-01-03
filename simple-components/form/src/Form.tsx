@@ -2,6 +2,12 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useRef,
+    useEffect,
 }                           from 'react'
 
 // cssfn:
@@ -12,6 +18,11 @@ import {
 
 // reusable-ui core:
 import {
+    // a collection of TypeScript type utilities, assertions, and validations for ensuring type safety in reusable UI components:
+    type NoForeignProps,
+    
+    
+    
     // react helper hooks:
     useEvent,
     useMergeEvents,
@@ -26,21 +37,24 @@ import {
     
     
     // a possibility of UI having an invalid state:
-    InvalidableProps,
+    type ValidityChangeEvent,
+    type ValidationDeps,
+    type ValidationEventHandler,
+    type InvalidableProps,
     useInvalidable,
 }                           from '@reusable-ui/core'                // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
 import {
     // react components:
-    ContentProps,
+    type ContentProps,
     Content,
 }                           from '@reusable-ui/content'             // a base component
 
 // internals:
 import {
     // states:
-    CustomValidatorHandler,
+    type CustomValidatorHandler,
     useFormValidator,
 }                           from './states/FormValidator.js'
 
@@ -73,16 +87,12 @@ export interface FormProps
      * @deprecated use `onValidation` for watching and/or modifying the validation.
      */
     customValidator ?: CustomValidatorHandler
-    
-    
-    
-    // children:
-    children        ?: React.ReactNode
 }
-const Form = (props: FormProps): JSX.Element|null => {
+const Form         = (props: FormProps): JSX.Element|null => {
     // jsx:
-    // wrap the actual <FormInternal> into <ValidationProvider>,
-    // so the hooks are controlled by <ValidationProvider>
+    // Wrap the actual <FormInternal> into <ValidationProvider>,
+    // so the <FormInternal> itself and the nested controls governed by <ValidationProvider> in case the `inheritValidation` is turned on.
+    // The <FormInternal> needs to be inside <ValidationProvider> because it uses the `useInvalidable` hook that internally uses the `usePropIsValid` hook that requires the <ValidationProvider> context.
     return (
         <ValidationProvider {...props}>
             <FormInternal {...props} />
@@ -90,76 +100,119 @@ const Form = (props: FormProps): JSX.Element|null => {
     );
 };
 const FormInternal = (props: FormProps): JSX.Element|null => {
+    // props:
+    const {
+        // refs:
+        elmRef,
+        
+        
+        
+        // classes:
+        stateClasses,
+        
+        
+        
+        // values:
+        onChange,
+        
+        
+        
+        // validations:
+        enableValidation,                             // take to `useInvalidable`
+        isValid,                                      // take to `useInvalidable`
+        inheritValidation,                            // take to `useInvalidable`
+        validationDeps     : validationDepsOverwrite, // take to `useInvalidable`
+        onValidation,                                 // take to `useInvalidable`
+        customValidator,                              // take to `useFormValidator`
+        
+        
+        
+        // handlers:
+        onAnimationStart,
+        onAnimationEnd,
+        
+        
+        
+        // other props:
+        ...restFormProps
+    } = props;
+    
+    
+    
     // styles:
-    const styleSheet       = useFormStyleSheet();
+    const styles               = useFormStyleSheet();
     
     
     
     // states:
-    const formValidator    = useFormValidator(props.customValidator);
-    const handleValidation = useMergeEvents(
+    const [inputValueFingerprint, setInputValueFingerprint] = React.useState<{}>({});
+    
+    
+    
+    // states:
+    const formValidator        = useFormValidator(customValidator);
+    const appendValidationDeps = useEvent<ValidationDeps>((bases) => [
+        ...bases,
+        
+        // additional props that influences the validityState (for <Form>):
+        
+        // validations:
+        // none
+        
+        // values:
+        inputValueFingerprint, // detects changes in the form's input values or validation props
+    ]);
+    const mergedValidationDeps = useEvent<ValidationDeps>((bases) => {
+        // conditions:
+        if (validationDepsOverwrite) return validationDepsOverwrite(appendValidationDeps(bases));
+        return appendValidationDeps(bases);
+    });
+    const handleValidation     = useEvent<ValidationEventHandler<ValidityChangeEvent>>(async (event) => {
         /* sequentially runs validators from `formValidator.handleValidation()` then followed by `props.onValidation()` */
         
         
         
         // states:
-        formValidator.handleValidation,
+        await formValidator.handleValidation(event);
         
         
         
-        // preserves the original `onValidation`:
-        props.onValidation,
-    );
-    const invalidableState = useInvalidable<HTMLFormElement>({
+        // preserves the original `onValidation` from `props`:
+        await onValidation?.(event);
+    });
+    const invalidableState     = useInvalidable<HTMLFormElement>({
      // enabled           : props.enabled,         // the <Form> can't be disabled
      // inheritEnabled    : props.inheritEnabled,  // the <Form> can't be disabled
      // readOnly          : props.readOnly,        // the <Form> can't be readOnly
      // inheritReadOnly   : props.inheritReadOnly, // the <Form> can't be readOnly
         
-        enableValidation  : props.enableValidation,
-        isValid           : props.isValid,
-        inheritValidation : props.inheritValidation,
+        enableValidation  : enableValidation,
+        isValid           : isValid,
+        inheritValidation : inheritValidation,
+        validationDeps    : mergedValidationDeps,
         onValidation      : handleValidation,
     });
     
     
     
-    // rest props:
-    const {
-        // validations:
-        enableValidation  : _enableValidation,  // remove
-        isValid           : _isValid,           // remove
-        inheritValidation : _inheritValidation, // remove
-        onValidation      : _onValidation,      // remove
-        customValidator   : _customValidator,   // remove
-    ...restContentProps} = props;
-    
-    
-    
     // refs:
-    const setFormRef = useEvent<React.RefCallback<HTMLFormElement>>((element) => {
-        // conditions:
-        if (!element) return;
+    const formRefInternal      = useRef<HTMLFormElement|null>(null);
+    const mergedElmRef         = useMergeRefs(
+        // preserves the original `elmRef` from `props`:
+        elmRef,
         
         
         
-        formValidator.handleInit(element);
-    });
-    const elmRef = useMergeRefs(
-        // preserves the original `elmRef`:
-        props.elmRef,
-        
-        
-        
-        setFormRef,
+        formRefInternal,
+        formValidator.formRef,
     );
     
     
     
     // classes:
-    const stateClasses = useMergeClasses(
-        // preserves the original `stateClasses`:
-        props.stateClasses,
+    const mergedStateClasses   = useMergeClasses(
+        // preserves the original `stateClasses` from `props`:
+        stateClasses,
         
         
         
@@ -170,20 +223,22 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
     
     
     // handlers:
+    const handleChangeInternal = useEvent(() => {
+        // actions:
+        setInputValueFingerprint({}); // signal the form's input values have changed
+    });
     const handleChange         = useMergeEvents(
-        // preserves the original `onChange`:
-        props.onChange,
+        // preserves the original `onChange` from `props`:
+        onChange,
         
         
         
         // states:
-        
-        // validations:
-        formValidator.handleChange,
+        handleChangeInternal,
     );
     const handleAnimationStart = useMergeEvents(
-        // preserves the original `onAnimationStart`:
-        props.onAnimationStart,
+        // preserves the original `onAnimationStart` from `props`:
+        onAnimationStart,
         
         
         
@@ -191,14 +246,68 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
         invalidableState.handleAnimationStart,
     );
     const handleAnimationEnd   = useMergeEvents(
-        // preserves the original `onAnimationEnd`:
-        props.onAnimationEnd,
+        // preserves the original `onAnimationEnd` from `props`:
+        onAnimationEnd,
         
         
         
         // states:
         invalidableState.handleAnimationEnd,
     );
+    
+    
+    
+    // effects:
+    
+    // supports for controls' validation props changes:
+    useEffect(() => {
+        // conditions:
+        const formElm = formRefInternal.current;
+        if (!formElm) return; // form element is unmounted => nothing to do
+        
+        
+        
+        // setups:
+        const observer = new MutationObserver((mutations) => {
+            const relevantMutations = mutations.filter((mutation) => {
+                return (mutation.type === 'attributes') && (mutation.target instanceof HTMLElement);
+            });
+            if (relevantMutations.length > 0) {
+                handleChangeInternal(); // signal the form's input validation props have changed
+            } // if
+        });
+        observer.observe(formElm, {
+            attributes      : true,
+            subtree         : true,
+            attributeFilter : ['required', 'minLength', 'maxLength', 'min', 'max', 'step', 'pattern', 'type'], // validation props
+        });
+        
+        
+        
+        // cleanups:
+        return () => {
+            observer.disconnect();
+        };
+    }, []); // lifecycle: mount and unmount
+    
+    
+    
+    // default props:
+    const {
+        // semantics:
+        semanticTag  = 'form', // uses <form>        as the default semantic tag
+        semanticRole = 'form', // uses [role="form"] as the default semantic role
+        
+        
+        
+        // classes:
+        mainClass    = styles.main,
+        
+        
+        
+        // other props:
+        ...restContentProps
+    } = restFormProps satisfies NoForeignProps<typeof restFormProps, ContentProps<HTMLFormElement>, React.FormHTMLAttributes<HTMLFormElement>>;
     
     
     
@@ -211,30 +320,34 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
             
             
             // refs:
-            elmRef={elmRef}
+            elmRef={mergedElmRef}
             
             
             
             // semantics:
-            semanticTag ={props.semanticTag  ?? 'form'} // uses <form>        as the default semantic tag
-            semanticRole={props.semanticRole ?? 'form'} // uses [role="form"] as the default semantic role
+            semanticTag ={semanticTag}
+            semanticRole={semanticRole}
             
             
             
             // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
-            stateClasses={stateClasses}
+            mainClass={mainClass}
+            stateClasses={mergedStateClasses}
+            
+            
+            
+            // values:
+            onChange={handleChange}
             
             
             
             // handlers:
-            onChange         = {handleChange        }
             onAnimationStart = {handleAnimationStart}
             onAnimationEnd   = {handleAnimationEnd  }
         />
     );
 };
 export {
-    Form,
-    Form as default,
+    Form,            // named export for readibility
+    Form as default, // default export to support React.lazy
 }

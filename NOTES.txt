@@ -540,3 +540,22 @@ components based on <Collapse>
 @reusable-ui/tab                    NOT based on <Collapse>
 @reusable-ui/navbar                 fixed: the default width : `fit-content` (desktop) -or- `fill-available` (mobile) ; height: `fill-available` (desktop) -or- `fit-content` (mobile)
 @reusable-ui/details                fixed: the default width : `100%` ; height: `fit-content`
+
+
+=========================================================================================
+
+List of components that directly/indirectly implements InvalidableProps & useInvalidable:
+
+-------------------------------------------------------------------
+    CONTROLS                     |    VALIDATION PROPS
+-------------------------------------------------------------------
+invalidable                      |
+    EditableControl              |    required
+        EditableTextControl      |    minLength, maxLength
+            Input                |    min, max, step, pattern, type
+        EditableActionControl    |    -
+            Check                |    -
+                Radio            |    -
+        Range                    |    min, max, step
+    EditableButton               |    -
+    Form                         |    -
