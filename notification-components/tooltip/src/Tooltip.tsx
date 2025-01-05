@@ -134,14 +134,14 @@ export interface TooltipProps<TElement extends Element = HTMLElement, TExpandedC
         // components:
         ArrowComponentProps<Element>
 {
-    // floatable:
-    unsafe_calculateArrowSize ?: CalculateArrowSize
-    
-    
-    
-    // debounces:
+    // behaviors:
     expandDelay               ?: number
     collapseDelay             ?: number
+    
+    
+    
+    // floatable:
+    unsafe_calculateArrowSize ?: CalculateArrowSize
 }
 const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: TooltipProps<TElement, TExpandedChangeEvent>): JSX.Element|null => {
     // styles:
@@ -161,6 +161,12 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
     
     // rest props:
     const {
+        // behaviors:
+        expandDelay    = _defaultExpandDelay,   // remove
+        collapseDelay  = _defaultCollapseDelay, // remove
+        
+        
+        
         // states:
         expanded,
         
@@ -174,12 +180,6 @@ const Tooltip = <TElement extends Element = HTMLElement, TExpandedChangeEvent ex
         
         // global stackable:
         viewport       : _viewport,             // remove
-        
-        
-        
-        // debounces:
-        expandDelay    = _defaultExpandDelay,   // remove
-        collapseDelay  = _defaultCollapseDelay, // remove
         
         
         
