@@ -340,8 +340,13 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
     
     // default props:
     const {
+        // semantics:
+        'aria-invalid' : ariaInvalid = invalidableState.ariaInvalid,
+        
+        
+        
         // classes:
-        mainClass = styles.main,
+        mainClass                    = styles.main,
         
         
         
@@ -361,6 +366,11 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
             
             // refs:
             elmRef={mergedElmRef}
+            
+            
+            
+            // semantics:
+            aria-invalid={ariaInvalid}
             
             
             

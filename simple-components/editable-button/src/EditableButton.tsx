@@ -239,6 +239,11 @@ const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
     
     // default props:
     const {
+        // semantics:
+        'aria-invalid' : ariaInvalid = invalidableState.ariaInvalid,
+        
+        
+        
         // children:
         children,
         
@@ -249,8 +254,13 @@ const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
     } = restEditableButtonProps satisfies NoForeignProps<typeof restEditableButtonProps, ButtonProps>;
     
     const {
+        // semantics:
+        'aria-invalid' : buttonComponentAriaInvalid = ariaInvalid,
+        
+        
+        
         // children:
-        children : buttonComponentChildren = children,
+        children       : buttonComponentChildren    = children,
         
         
         
@@ -274,6 +284,11 @@ const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
             // refs:
             elmRef           : mergedElmRef,
             outerRef         : mergedOuterRef,
+            
+            
+            
+            // semantics:
+            'aria-invalid'   : buttonComponentAriaInvalid,
             
             
             

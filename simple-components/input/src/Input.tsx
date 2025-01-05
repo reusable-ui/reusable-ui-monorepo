@@ -2,6 +2,11 @@
 import {
     // react:
     default as React,
+    
+    
+    
+    // hooks:
+    useState,
 }                           from 'react'
 
 // styles:
@@ -30,7 +35,9 @@ import {
     
     
     // a possibility of UI having an invalid state:
+    type ValidityChangeEvent,
     type ValidationDeps,
+    type ValidationEventHandler,
 }                           from '@reusable-ui/core'                    // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -156,6 +163,11 @@ const Input         = <TElement extends Element = HTMLSpanElement>(props: InputP
     return inputInternal;
 };
 const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputProps<TElement>): JSX.Element|null => {
+    // states:
+    const [ariaInvalidComputed, setAriaInvalidComputed] = useState<boolean>(false);
+    
+    
+    
     // rest props:
     const {
         // refs:
@@ -164,6 +176,7 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
         
         
         // accessibilities:
+        'aria-invalid' : ariaInvalid = ariaInvalidComputed, // since the inner native <input> is visible, focusable and fully functional, the `aria-invalid` should be moved to the <input> itself
         autoFocus,
         tabIndex,
         enterKeyHint,
@@ -185,6 +198,7 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
         
         // validations:
         validationDeps : validationDepsOverwrite,
+        onValidation,
         
         required,
         
@@ -259,6 +273,19 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
         handleChangeDummy, // just for satisfying React of controllable <input>
     );
     
+    const handleValidationInternal = useEvent<ValidationEventHandler<ValidityChangeEvent>>((event) => {
+        setAriaInvalidComputed(event.isValid === false);
+    });
+    const handleValidation = useMergeEvents(
+        // preserves the original `onChange` from `props`:
+        onValidation,
+        
+        
+        
+        // states:
+        handleValidationInternal,
+    );
+    
     
     
     // default props:
@@ -279,6 +306,8 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
     
     const {
         // accessibilities:
+        'aria-invalid'    : nativeInputAriaInvalid    = ariaInvalid,
+        
         autoFocus         : nativeInputAutoFocus      = autoFocus,
         tabIndex          : nativeInputTabIndex       = tabIndex,
         enterKeyHint      : nativeInputEnterKeyHint   = enterKeyHint,
@@ -368,6 +397,7 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
             
             // semantics:
             tag={tag}
+            aria-invalid={false}
             
             
             
@@ -383,6 +413,7 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
             
             // validations:
             validationDeps={mergedValidationDeps}
+            onValidation={handleValidation}
         >
             {/* <input> */}
             {React.cloneElement<React.InputHTMLAttributes<HTMLInputElement> & React.RefAttributes<HTMLInputElement>>(nativeInputComponent,
@@ -399,6 +430,8 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
                     
                     
                     // accessibilities:
+                    'aria-invalid'    : nativeInputAriaInvalid,
+                    
                     autoFocus         : nativeInputAutoFocus,
                     tabIndex          : nativeInputTabIndex,
                     enterKeyHint      : nativeInputEnterKeyHint,
