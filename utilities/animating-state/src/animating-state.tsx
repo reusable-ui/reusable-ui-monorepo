@@ -57,20 +57,32 @@ type AnimatingStateAction<TState extends ({}|null)> =
     |AnimatingStateChangeAction<TState>
     |AnimatingStateDoneAction
 
+/**
+ * Reducer function to manage the state of an animation.
+ * 
+ * @template TState - The type of the state, which can be an object or null.
+ * @param {AnimatingState<TState>} oldState - The previous state of the animation.
+ * @param {AnimatingStateAction<TState>} action - The action to be performed on the state.
+ * @returns {AnimatingState<TState>} - The new state of the animation.
+ */
 const animatingStateReducer = <TState extends ({}|null)>(oldState: AnimatingState<TState>, action: AnimatingStateAction<TState>): AnimatingState<TState> => {
     switch (action.type) {
         case AnimatingStateActionType.Change:
+            /*
+                * It checks if the new state is different from the old state.
+                * If they are different, it updates the state and decides whether to start a new animation immediately or continue running the current animation until it finishes.
+            */
             {
                 const newState = (typeof(action.newState) !== 'function') ? action.newState : (action.newState as ((prevState: TState) => TState))(oldState.state);
-                if (!Object.is(oldState.state, newState)) {    // the newState is **different** than oldState
+                if (!Object.is(oldState.state, newState)) {    // the newly *incoming* animation is *different* from the *previous* one
                     return {
-                        state     : newState,                  // remember the new state
+                        state     : newState,                  // remember the newly *incoming* animation
                         animation : (
-                            (oldState.animation === undefined) // if not **being** animated
+                            (oldState.animation === undefined) // if not currently *being* animated
                             ?
-                            newState                           // start animation of **new** state
+                            newState                           // immediately start the newly *incoming* animation
                             :
-                            oldState.animation                 // continue unfinished animation of **old** state
+                            oldState.animation                 // continue running the unfinished *previous* animation, once it finishes, we plan to start the newly *incoming* animation
                         ),
                     };
                 } // if
@@ -78,17 +90,22 @@ const animatingStateReducer = <TState extends ({}|null)>(oldState: AnimatingStat
             break;
         
         case AnimatingStateActionType.Done:
-            if (oldState.animation !== undefined) { // **has** a running animation
+            /*
+                * It checks if there is a running animation.
+                * If the current animation has finished, it marks that there is no running animation.
+                * If there is a pending new animation, it starts the new animation.
+            */
+            if (oldState.animation !== undefined) { // there is a *remaining* running animation
                 return {
                     state     : oldState.state,
                     animation : (
                         Object.is(oldState.animation, oldState.state)
                         
-                        ?              // the current state **was animated**
-                        undefined      // => stop animation of **current** state
+                        ?              // the current animation has *finished*
+                        undefined      // => mark that there is *no running* animation
                         
-                        :              // the current state **was changed** during the animation
-                        oldState.state // => start animation of **another** state
+                        :              // there is a pending newly *incoming* animation
+                        oldState.state // => start the newly *incoming* animation
                     ),
                 };
             } // if
