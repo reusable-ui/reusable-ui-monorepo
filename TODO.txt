@@ -46,6 +46,7 @@
 [low prior ] develop <Slide> to support <Carousel> & <Tab> and supports scrollRef
 [low prior ] update <Carousel> that similar bumpy effect to <Tab> and rename scrollRef to scrollingRef
 [low prior ] update <Tab> having transition of height between <TabPanel> switch
+[low  prior] rename useAnimatingState to useAnimationState
 
 [low prior ] make a demo of showMessage() for replacing alert()
 
