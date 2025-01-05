@@ -17,8 +17,6 @@
 [high prior] standardize coding formatting like <Grip>
 [high prior] add '1lh' for the sizeOptions of <Icon>
 
-[high prior] move delayed valid|invalid from InputValidator, FormValidator to useInvalidable
-
 [med  prior] update @reusable-ui/popup : needs to change bumpy effect from 1.02 to 1.05
 [med  prior] update <ModalCard> using grid instead of flex, similar to <ModalSide>
 [med  prior] add <ProfileImage>
