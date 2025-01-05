@@ -276,15 +276,19 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
     const handleValidationInternal = useEvent<ValidationEventHandler<ValidityChangeEvent>>((event) => {
         setAriaInvalidComputed(event.isValid === false);
     });
-    const handleValidation = useMergeEvents(
-        // preserves the original `onChange` from `props`:
-        onValidation,
+    const handleValidation = useEvent<ValidationEventHandler<ValidityChangeEvent>>(async (event) => {
+        /* sequentially runs validators from `onValidation()` then followed by `handleValidationInternal()` */
+        
+        
+        
+        // preserves the original `onValidation` from `props`:
+        await onValidation?.(event);
         
         
         
         // states:
-        handleValidationInternal,
-    );
+        handleValidationInternal(event);
+    });
     
     
     
