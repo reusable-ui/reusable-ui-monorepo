@@ -294,8 +294,11 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         enableValidation,
         isValid,
         inheritValidation,
-        
         validationDeps      : validationDepsOverwrite,
+        
+        validDelay,
+        invalidDelay,
+        noValidationDelay,
         
         min                 = 0,
         max                 = 100,
@@ -958,6 +961,10 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         enableValidation  : thumbComponentEnableValidation  = enableValidation,
         isValid           : thumbComponentIsValid           = isValid,
         inheritValidation : thumbComponentInheritValidation = inheritValidation,
+        
+        validDelay        : thumbComponentValidDelay        = validDelay,
+        invalidDelay      : thumbComponentInvalidDelay      = invalidDelay,
+        noValidationDelay : thumbComponentNoValidationDelay = noValidationDelay,
     } = thumbComponent.props;
     
     const trackLower = React.cloneElement<GenericProps<Element>>(trackLowerComponent,
@@ -1040,6 +1047,10 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             enableValidation  : thumbComponentEnableValidation,
             isValid           : thumbComponentIsValid,
             inheritValidation : thumbComponentInheritValidation,
+            
+            validDelay        : thumbComponentValidDelay,
+            invalidDelay      : thumbComponentInvalidDelay,
+            noValidationDelay : thumbComponentNoValidationDelay,
         },
     );
     
@@ -1067,6 +1078,10 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         enableValidation  : trackComponentEnableValidation  = enableValidation,
         isValid           : trackComponentIsValid           = isValid,
         inheritValidation : trackComponentInheritValidation = inheritValidation,
+        
+        validDelay        : trackComponentValidDelay        = validDelay,
+        invalidDelay      : trackComponentInvalidDelay      = invalidDelay,
+        noValidationDelay : trackComponentNoValidationDelay = noValidationDelay,
         
         
         
@@ -1119,6 +1134,10 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             enableValidation  : trackComponentEnableValidation,
             isValid           : trackComponentIsValid,
             inheritValidation : trackComponentInheritValidation,
+            
+            validDelay        : trackComponentValidDelay,
+            invalidDelay      : trackComponentInvalidDelay,
+            noValidationDelay : trackComponentNoValidationDelay,
         },
         
         
@@ -1176,8 +1195,11 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             enableValidation={enableValidation}
             isValid={isValid}
             inheritValidation={inheritValidation}
-            
             validationDeps={mergedValidationDeps}
+            
+            validDelay={validDelay}
+            invalidDelay={invalidDelay}
+            noValidationDelay={noValidationDelay}
             
             
             

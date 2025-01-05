@@ -41,7 +41,10 @@ import {
 import {
     // hooks:
     useIsomorphicLayoutEffect,
+    useEvent,
     useMountedFlag,
+    type TimerPromise,
+    useSetTimeout,
 }                           from '@reusable-ui/hooks'           // react helper hooks
 import {
     // hooks:
@@ -235,8 +238,12 @@ export interface InvalidableProps<TValidityChangeEvent extends ValidityChangeEve
         Partial<ValidationProps>
 {
     // validations:
-    validationDeps ?: ValidationDeps
-    onValidation   ?: ValidationEventHandler<TValidityChangeEvent>
+    validationDeps    ?: ValidationDeps
+    onValidation      ?: ValidationEventHandler<TValidityChangeEvent>
+    
+    validDelay        ?: number
+    invalidDelay      ?: number
+    noValidationDelay ?: number
 }
 
 export const enum InvalidableState {
@@ -252,8 +259,23 @@ export const enum InvalidableState {
 }
 
 export interface InvalidableApi<TElement extends Element = HTMLElement> {
-    isValid               : ValResult
+    /**
+     * Determines whether the validation is statically disabled.
+     */
     isNoValidation        : boolean
+    /**
+     * `true`  : validating/validated  
+     * `false` : invalidating/invalidated  
+     * `null`  : uncheck/unvalidating/uninvalidating
+    */
+    isValid               : ValResult
+    /**
+     * `true`  : validating/validated  
+     * `false` : invalidating/invalidated  
+     * `null`  : uncheck/unvalidating/uninvalidating
+    */
+    isValidDelayed        : ValResult
+    ariaInvalid           : boolean
     
     state                 : InvalidableState
     class                 : string|null
@@ -266,8 +288,13 @@ export interface InvalidableApi<TElement extends Element = HTMLElement> {
 export const useInvalidable = <TElement extends Element = HTMLElement, TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>(props: InvalidableProps<TValidityChangeEvent> & Pick<AccessibilityProps, 'enabled'|'inheritEnabled'|'readOnly'|'inheritReadOnly'>): InvalidableApi<TElement> => {
     // props:
     const {
+        // validations:
         validationDeps,
         onValidation,
+        
+        validDelay         = 300,
+        invalidDelay       = 600,
+        noValidationDelay  = 0,
     } = props;
     
     const propEnabled      = usePropEnabled(props);
@@ -283,10 +310,10 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     const propIsValid      = usePropIsValid(props);        // the computed validation result based on the props and the context
     
     /**
-     * Determines whether the validation is disabled (always *uncheck*).
+     * Determines whether the validation is statically disabled (always *uncheck*).
      */
     const propNoValidation = (
-        // conditions that disable the validation:
+        // conditions that statically disable the validation:
         !propEditable           // the component is not editable      => force validation result to *uncheck*
         ||
         (propIsValid === null)  // `isValid` is provided as *uncheck* => force validation result to *uncheck*
@@ -336,9 +363,10 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     ];
     
     /**
-     * We call `onValidation()` inside `useIsomorphicLayoutEffect()` to ensure that the `onValidation()` is called during the render phase,
-     * in case the `onValidation()` callback is used to update the state of the component.
+     * We call `onValidation` inside `useIsomorphicLayoutEffect` to ensure that the `onValidation` is called during the render phase,
+     * in case the `onValidation` callback is used to update the state of the component.
      */
+    // We use `useIsomorphicLayoutEffect` instead of `useEffect` to update `dynamicValidationResult` as quickly as possible before the browser has a chance to repaint the page.
     useIsomorphicLayoutEffect(() => {
         // conditions:
         if (!isDynamicValidationResultNeeded) return; // the dynamic validation is not needed => do nothing
@@ -362,45 +390,120 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [...dynamicValidationDeps, onValidation]);
     
-    const wasValid = useRef<boolean>(true); // assumes initially was *valid*
-    const finalValidationResult : boolean|0|-0 = (
-        (
-            isDynamicValidationResultNeeded
-            ? dynamicValidationResult // if the dynamic validation is needed => use the result of the dynamic validation
-            : staticValidationResult  // otherwise                           => use the result of the static  validation
-        )
-        ??
-        // if above is null|undefined => use 0 (positive 0 -or- negative 0) in which indicating as *uncheck*
-        // positive 0: now is *uncheck* and was *valid*
-        // negative 0: now is *uncheck* and was *invalid*
-        (wasValid.current ? +0 : -0)
+    const finalValidationResult : ValResult = (
+        isDynamicValidationResultNeeded
+        ? dynamicValidationResult          // if the dynamic validation is needed => use the result of the dynamic validation
+        : (staticValidationResult ?? null) // otherwise                           => use the result of the static  validation
     );
     
     
     
+    const [delayedValidationResult, setDelayedValidationResult] = useState<ValResult>(finalValidationResult); // initially same as `finalValidationResult`
+    const setTimeoutAsync = useSetTimeout();
+    const delayedPromise  = useRef<TimerPromise<boolean>|null>(null);
+    const syncDelayedValidationResult = useEvent((): void => {
+        // abort the previous delayed validation (if any):
+        delayedPromise.current?.abort();
+        delayedPromise.current = null;
+        
+        
+        
+        // start a new delayed validation:
+        const delay = (
+            (finalValidationResult === true)
+            ? validDelay            // *valid*
+            : (
+                (finalValidationResult === false)
+                ? invalidDelay      // *invalid*
+                : noValidationDelay // *uncheck*
+            )
+        );
+        if (delay <= 0) {
+            // actions:
+            setDelayedValidationResult(finalValidationResult); // apply the (un)delayed validation result
+        }
+        else {
+            (delayedPromise.current = setTimeoutAsync(delay)).then((isDone) => {
+                // conditions:
+                if (!isDone) return; // the component was unloaded before the timer runs => do nothing
+                
+                
+                
+                // actions:
+                setDelayedValidationResult(finalValidationResult); // apply the delayed validation result
+            });
+        } // if
+    });
+    // We use `useIsomorphicLayoutEffect` instead of `useEffect` to update `delayedValidationResult` as quickly as possible (if the delay is 0) before the browser has a chance to repaint the page.
+    useIsomorphicLayoutEffect(syncDelayedValidationResult, [finalValidationResult]); // auto-sync the delayed validation result when the `finalValidationResult` changes
+    
+    
+    
     // states:
-    const [isValid, setIsValid, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<boolean|0|-0, TElement>({
-        initialState  : finalValidationResult,
+    type UndoAnimationState =
+        |0     // positive 0 => represents *unvalid*   (undoing *valid*)
+        |-0    // negative 0 => represents *uninvalid* (undoing *invalid*)
+    type AnimationState     =
+        |true  // represents *valid*
+        |false // represents *invalid*
+        |UndoAnimationState
+    const undoAnimationStateRef = useRef<UndoAnimationState>(0); // Assumes the initial value was *unvalid* (positive 0). Whether the initial value is *unvalid* (positive 0) or *uninvalid* (negative 0) is not matter for `useAnimatingState`, the `animation` is always initially `undefined`.
+    const newAnimationState : AnimationState = ( // converts `ValResult` to `AnimationState`
+        delayedValidationResult
+        ??
+        // Converts *uncheck* to *unvalid* (positive 0) or *uninvalid* (negative 0), depending on the last *undo*.
+        undoAnimationStateRef.current
+    );
+    
+    const [animationState, setAnimationState, animation, {handleAnimationStart, handleAnimationEnd, handleAnimationCancel}] = useAnimatingState<AnimationState, TElement>({
+        initialState  : newAnimationState,
         animationName : /((^|[^a-z])(valid|unvalid|invalid|uninvalid)|([a-z])(Valid|Unvalid|Invalid|Uninvalid))(?![a-z])/,
     });
     
     
     
     // update state:
-    if (isValid !== finalValidationResult) { // change detected => apply the change & start animating
-        if (isValid !== 0) { // was `valid` (true) or was `invalid` (false) => need to apply `un-valid` or `un-invalid` *before* applying other states
-            setIsValid(wasValid.current ? +0 : -0);
-            /*
-                then the `setIsValid` above causing to re-render,
-                and at the next-render the `setIsValid` below will be executed
-            */
-        }
-        else {
-            setIsValid(finalValidationResult); // remember the last change
-        } // if
-    } // if
-    
-    wasValid.current = (typeof(isValid) === 'boolean') ? isValid : Object.is(isValid, +0);
+    // We use `useIsomorphicLayoutEffect` instead of `useEffect` to update `animationState` as quickly as possible before the browser has a chance to repaint the page.
+    useIsomorphicLayoutEffect(() => {
+        setAnimationState((currentAnimationState) => {
+            // conditions:
+            if (currentAnimationState === newAnimationState) return currentAnimationState; // already the same => ignore
+            
+            
+            
+            // update the state and start animating:
+            if (currentAnimationState !== 0) { // when already *valid* (true) or *invalid* (false)
+                /*
+                    When the `currentAnimationState` is *already* in *valid* or *invalid* state,
+                    do *not instantly* change from *valid* to *invalid* or vice versa,
+                    we need to *undo* the *valid* to *unvalid* or *invalid* to *uninvalid* *before* applying the new state.
+                */
+                const undoAnimationState : UndoAnimationState = (
+                    currentAnimationState
+                    ? +0 // if *valid*   (true)  => undo to *unvalid*   (positive 0)
+                    : -0 // if *invalid* (false) => undo to *uninvalid* (negative 0)
+                );
+                undoAnimationStateRef.current = undoAnimationState; // remember the last change
+                return undoAnimationState;
+                /*
+                    then the `setAnimationState` above causes `useAnimatingState` to re-render with `animationState` as *unvalid* or *uninvalid* and the `animation` as *unvalid* or *uninvalid* (if having running animation) or `undefined` (if no animation),
+                    At the next render the `else` code below will be executed.
+                */
+            }
+            else { // when *unvalid* (positive 0) or *uninvalid* (negative 0)
+                if (animation === 0) { // when there is an ongoing animation of *unvalid* or *uninvalid*
+                    return currentAnimationState; // keep the animation running
+                }
+                else { // when there is no animation or there is an ongoing animation other than *unvalid* or *uninvalid*
+                    /*
+                        When the `currentAnimationState` is *unvalid* or *uninvalid*,
+                        We can directly set the new state, no matter if the animation of *valid* (true) or *invalid* (false) is running or not running (undefined).
+                    */
+                    return newAnimationState; // apply the new state
+                } // if
+            } // if
+        });
+    }, [newAnimationState, animation]); // auto-sync the `animationState` when the `newAnimationState` or `animation` changes
     
     
     
@@ -419,9 +522,9 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         
         
         // fully validated:
-        if (isValid === true)         return InvalidableState.Validated;
+        if (animationState === true)  return InvalidableState.Validated;
         // fully invalidated:
-        if (isValid === false)        return InvalidableState.Invalidated;
+        if (animationState === false) return InvalidableState.Invalidated;
         // fully neutralized:
         return InvalidableState.Neutralized;
     })();
@@ -452,7 +555,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
             // fully neutralized:
             default:
                 if (propNoValidation) {
-                    return 'noval';
+                    return 'noval'; // statically disabled (always *uncheck*)
                 }
                 else {
                     return null; // discard all classes above
@@ -464,16 +567,13 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     
     // api:
     return {
-        /**
-         * `true`  : validating/validated
-         * `false` : invalidating/invalidated
-         * `null`  : uncheck/unvalidating/uninvalidating
-        */
-        isValid : ((typeof(isValid) === 'boolean') ? isValid : null),
-        isNoValidation: propNoValidation,
+        isNoValidation : propNoValidation,
+        isValid        : finalValidationResult,
+        isValidDelayed : delayedValidationResult,
+        ariaInvalid    : (finalValidationResult === false),
         
-        state   : state,
-        class   : stateClass,
+        state          : state,
+        class          : stateClass,
         
         handleAnimationStart,
         handleAnimationEnd,

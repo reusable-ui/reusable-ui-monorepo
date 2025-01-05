@@ -99,6 +99,10 @@ const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
         validationDeps,    // take to `useInvalidable`
         onValidation,      // take to `useInvalidable`
         
+        validDelay,        // take to `useInvalidable`
+        invalidDelay,      // take to `useInvalidable`
+        noValidationDelay, // take to `useInvalidable`
+        
         
         
         // components:
@@ -125,16 +129,24 @@ const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
     
     // states:
     const invalidableState = useInvalidable<HTMLButtonElement>({
-        enabled           : props.enabled,
-        inheritEnabled    : props.inheritEnabled,
-        readOnly          : props.readOnly,
-        inheritReadOnly   : props.inheritReadOnly,
-        
+        // validations:
         enableValidation  : enableValidation,
         isValid           : isValid,
         inheritValidation : inheritValidation,
         validationDeps    : validationDeps,
         onValidation      : onValidation,
+        
+        validDelay,
+        invalidDelay,
+        noValidationDelay,
+        
+        
+        
+        // states:
+        enabled           : props.enabled,
+        inheritEnabled    : props.inheritEnabled,
+        readOnly          : props.readOnly,
+        inheritReadOnly   : props.inheritReadOnly,
     });
     
     

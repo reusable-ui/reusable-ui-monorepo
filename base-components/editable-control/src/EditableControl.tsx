@@ -145,6 +145,10 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
         onValidation,                                   // take to `useInvalidable`
         customValidator,                                // take to `useInputValidator`
         
+        validDelay,                                     // take to `useInvalidable`
+        invalidDelay,                                   // take to `useInvalidable`
+        noValidationDelay,                              // take to `useInvalidable`
+        
         
         
         // handlers:
@@ -204,16 +208,24 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
         await onValidation?.(event);
     });
     const invalidableState     = useInvalidable<TElement>({
-        enabled           : props.enabled,
-        inheritEnabled    : props.inheritEnabled,
-        readOnly          : props.readOnly,
-        inheritReadOnly   : props.inheritReadOnly,
-        
+        // validations:
         enableValidation  : enableValidation,
         isValid           : isValid,
         inheritValidation : inheritValidation,
         validationDeps    : mergedValidationDeps,
         onValidation      : handleValidation,
+        
+        validDelay,
+        invalidDelay,
+        noValidationDelay,
+        
+        
+        
+        // states:
+        enabled           : props.enabled,
+        inheritEnabled    : props.inheritEnabled,
+        readOnly          : props.readOnly,
+        inheritReadOnly   : props.inheritReadOnly,
     });
     
     
