@@ -106,9 +106,9 @@ export interface EditableControlProps<TElement extends Element = HTMLElement>
 {
     // values:
     /**
-     * A helper prop to detect the controllable value changes.
+     * A helper prop to notify the component that the value has changed and needs validation.
      */
-    controllableValue ?: unknown
+    notifyValueChange ?: unknown
     
     
     
@@ -132,22 +132,22 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
         
         
         // values:
-        controllableValue : controllableValueOverwrite, // take to `getControllableValue`
+        notifyValueChange = getControllableValue(props), // take to `useInvalidable`
         onChange,
         
         
         
         // validations:
-        enableValidation,                               // take to `useInvalidable`
-        isValid,                                        // take to `useInvalidable`
-        inheritValidation,                              // take to `useInvalidable`
-        validationDeps     : validationDepsOverwrite,   // take to `useInvalidable`
-        onValidation,                                   // take to `useInvalidable`
-        customValidator,                                // take to `useInputValidator`
+        enableValidation,                                // take to `useInvalidable`
+        isValid,                                         // take to `useInvalidable`
+        inheritValidation,                               // take to `useInvalidable`
+        validationDeps     : validationDepsOverwrite,    // take to `useInvalidable`
+        onValidation,                                    // take to `useInvalidable`
+        customValidator,                                 // take to `useInputValidator`
         
-        validDelay,                                     // take to `useInvalidable`
-        invalidDelay,                                   // take to `useInvalidable`
-        noValidationDelay,                              // take to `useInvalidable`
+        validDelay,                                      // take to `useInvalidable`
+        invalidDelay,                                    // take to `useInvalidable`
+        noValidationDelay,                               // take to `useInvalidable`
         
         
         
@@ -161,8 +161,6 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
         ...restEditableControlProps
     } = props;
     
-    const controllableValue    = getControllableValue(props, controllableValueOverwrite);
-    
     
     
     // styles:
@@ -171,7 +169,7 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
     
     
     // states:
-    const [uncontrollableValueFingerprint, setUncontrollableValueFingerprint] = React.useState<{}>({});
+    const [senseValueChange, setSenseValueChange] = React.useState<{}>({});
     
     
     
@@ -180,14 +178,12 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
     const appendValidationDeps = useEvent<ValidationDeps>((bases) => [
         ...bases,
         
-        // additional props that influences the validityState (for <EditableControl>):
-        
         // validations:
         (props.required ?? false),
         
         // values:
-        controllableValue,              // detects the controllable   value changes
-        uncontrollableValueFingerprint, // detects the uncontrollable value changes
+        notifyValueChange, // detects the controllable   value has changed
+        senseValueChange,  // detects the uncontrollable value has changed
     ]);
     const mergedValidationDeps = useEvent<ValidationDeps>((bases) => {
         // conditions:
@@ -278,12 +274,12 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
     // handlers:
     const handleChangeInternal = useEvent(() => {
         // conditions:
-        if (controllableValue !== undefined) return; // controllable component mode => ignore the value changes from the props
+        if (notifyValueChange !== undefined) return; // controllable component mode => ignore value changes from the `onChange` event
         
         
         
         // actions:
-        setUncontrollableValueFingerprint({}); // signal the uncontrollable value changes
+        setSenseValueChange({}); // signal that the uncontrollable value has changed
     });
     const handleChange         = useMergeEvents(
         // preserves the original `onChange` from `props`:

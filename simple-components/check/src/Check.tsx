@@ -254,17 +254,13 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
     const appendValidationDeps = useEvent<ValidationDeps>((bases) => [
         ...bases,
         
+        // validations:
         /*
             Since we use <EditableActionControl> as a wrapper,
             and we don't pass the `required` prop to the <EditableActionControl>,
-            we need to re-apply theses props here.
+            we need to re-apply that prop here.
         */
         nativeInputRequired,
-        
-        // additional props that influences the validityState (for <Input>):
-        isActive,
-        
-        // validations:
         // no more validation props, only `required` is supported in <Check>
     ]);
     const mergedValidationDeps = useEvent<ValidationDeps>((bases) => {
@@ -457,7 +453,7 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         
         
         // values:
-        controllableValue        = isActive,
+        notifyValueChange        = isActive,
         
         
         
@@ -537,7 +533,7 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
             
             
             // values:
-            controllableValue={controllableValue}
+            notifyValueChange={notifyValueChange}
             
             
             

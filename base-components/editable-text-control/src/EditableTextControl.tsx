@@ -78,8 +78,6 @@ const EditableTextControl = <TElement extends Element = HTMLElement>(props: Edit
     const appendValidationDeps = useEvent<ValidationDeps>((bases) => [
         ...bases,
         
-        // additional props that influences the validityState (for <EditableTextControl>):
-        
         // validations:
         (props.minLength ?? 0),
         (props.maxLength ?? Infinity),

@@ -352,16 +352,13 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     const appendValidationDeps   = useEvent<ValidationDeps>((bases) => [
         ...bases,
         
+        // validations:
         /*
             Since we use <EditableControl> as a wrapper,
             and we don't pass the `required` prop to the <EditableControl>,
             and the <Range> doesn't support the `required` prop,
-            we don't need to apply the `required` prop here.
+            we don't need to re-apply that prop here.
         */
-        
-        // additional props that influences the validityState (for <Range>):
-        
-        // validations:
         min,
         max,
         step,

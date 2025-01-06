@@ -552,10 +552,10 @@ List of components that directly/indirectly implements InvalidableProps & useInv
 invalidable                      |
     EditableControl              |    required
         EditableTextControl      |    minLength, maxLength
-            Input                |    min, max, step, pattern, type
+            Input                |    min, max, step, pattern, type        wrapper of EditableTextControl
         EditableActionControl    |    -
-            Check                |    -
+            Check                |    -                                    wrapper of EditableActionControl
                 Radio            |    -
-        Range                    |    min, max, step
+        Range                    |    min, max, step                       wrapper of EditableControl
     EditableButton               |    -
     Form                         |    -

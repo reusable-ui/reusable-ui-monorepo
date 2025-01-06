@@ -149,7 +149,7 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
     
     
     // states:
-    const [inputValueFingerprint, setInputValueFingerprint] = React.useState<{}>({});
+    const [senseValueChange, setSenseValueChange] = React.useState<{}>({});
     
     
     
@@ -158,13 +158,11 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
     const appendValidationDeps = useEvent<ValidationDeps>((bases) => [
         ...bases,
         
-        // additional props that influences the validityState (for <Form>):
-        
         // validations:
-        // none
+        /* none */
         
         // values:
-        inputValueFingerprint, // detects changes in the form's input values or validation props
+        senseValueChange, // detects the form's input value has changed
     ]);
     const mergedValidationDeps = useEvent<ValidationDeps>((bases) => {
         // conditions:
@@ -237,7 +235,7 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
     // handlers:
     const handleChangeInternal = useEvent(() => {
         // actions:
-        setInputValueFingerprint({}); // signal the form's input values have changed
+        setSenseValueChange({}); // signal that the form's input value has changed
     });
     const handleChange         = useMergeEvents(
         // preserves the original `onChange` from `props`:

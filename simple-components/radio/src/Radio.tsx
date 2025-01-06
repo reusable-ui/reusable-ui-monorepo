@@ -38,11 +38,6 @@ import {
     // a capability of UI to be highlighted/selected/activated:
     ActiveChangeEvent,
     useUncontrollableActivatable,
-    
-    
-    
-    // a possibility of UI having an invalid state:
-    type ValidationDeps,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
 
 // reusable-ui components:
@@ -93,11 +88,6 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
         // values:
         defaultChecked : fallbackDefaultActive, // take, to be aliased to `defaultActive`
         checked        : fallbackActive,        // take, to be aliased to `active`
-        
-        
-        
-        // validations:
-        validationDeps : validationDepsOverwrite,
         
         
         
@@ -311,7 +301,7 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
         
         
         // values:
-        controllableValue = collectiveRadioIsActive,
+        notifyValueChange = collectiveRadioIsActive,
         
         
         
@@ -323,25 +313,6 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
         // other props:
         ...restCheckProps
     } = restRadioProps satisfies NoForeignProps<typeof restRadioProps, CheckProps<TElement>>;
-    
-    const appendValidationDeps = useEvent<ValidationDeps>((bases) => [
-        ...bases,
-        
-        // additional props that influences the validityState (for <Radio>):
-        /*
-            Since we redefined the `isActive` to `active` in <Radio> component,
-            we need to add the checked state of current|buddyRadios.
-        */
-        collectiveRadioIsActive,
-        
-        // validations:
-        // no more validation props, still the same as <Check>
-    ]);
-    const mergedValidationDeps = useEvent<ValidationDeps>((bases) => {
-        // conditions:
-        if (validationDepsOverwrite) return validationDepsOverwrite(appendValidationDeps(bases));
-        return appendValidationDeps(bases);
-    });
     
     
     
@@ -371,12 +342,7 @@ const Radio = <TElement extends Element = HTMLSpanElement>(props: RadioProps<TEl
             
             
             // values:
-            controllableValue={controllableValue}
-            
-            
-            
-            // validations:
-            validationDeps={mergedValidationDeps}
+            notifyValueChange={notifyValueChange}
             
             
             

@@ -363,18 +363,16 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
     const appendValidationDeps = useEvent<ValidationDeps>((bases) => [
         ...bases,
         
+        // validations:
         /*
             Since we use <EditableTextControl> as a wrapper,
             and we don't pass the `required`, `minLength`, `maxLength` props to the <EditableTextControl>,
-            we need to re-apply theses props here.
+            we need to re-apply those props here.
         */
         nativeInputRequired,
         nativeInputMinLength,
         nativeInputMaxLength,
         
-        // additional props that influences the validityState (for <Input>):
-        
-        // validations:
         nativeInputMin,
         nativeInputMax,
         nativeInputStep,

@@ -18,6 +18,7 @@ import {
     
     
     // react helper hooks:
+    useEvent,
     useMergeEvents,
     useMergeRefs,
     useMergeClasses,
@@ -25,6 +26,7 @@ import {
     
     
     // a possibility of UI having an invalid state:
+    type ValidationDeps,
     type InvalidableProps,
     useInvalidable,
 }                           from '@reusable-ui/core'            // a set of reusable-ui packages which are responsible for building any component
@@ -76,6 +78,11 @@ export interface EditableButtonProps
             |'buttonChildren'
         >
 {
+    // values:
+    /**
+     * A helper prop to notify the component that the value has changed and needs validation.
+     */
+    notifyValueChange ?: unknown
 }
 const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
     // props:
@@ -92,21 +99,26 @@ const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
         
         
         
-        // validations:
-        enableValidation,  // take to `useInvalidable`
-        isValid,           // take to `useInvalidable`
-        inheritValidation, // take to `useInvalidable`
-        validationDeps,    // take to `useInvalidable`
-        onValidation,      // take to `useInvalidable`
+        // values:
+        notifyValueChange,                            // take to `useInvalidable`
         
-        validDelay,        // take to `useInvalidable`
-        invalidDelay,      // take to `useInvalidable`
-        noValidationDelay, // take to `useInvalidable`
+        
+        
+        // validations:
+        enableValidation,                             // take to `useInvalidable`
+        isValid,                                      // take to `useInvalidable`
+        inheritValidation,                            // take to `useInvalidable`
+        validationDeps     : validationDepsOverwrite, // take to `useInvalidable`
+        onValidation,                                 // take to `useInvalidable`
+        
+        validDelay,                                   // take to `useInvalidable`
+        invalidDelay,                                 // take to `useInvalidable`
+        noValidationDelay,                            // take to `useInvalidable`
         
         
         
         // components:
-        buttonComponent = (<Button /> as React.ReactComponentElement<any, ButtonProps>),
+        buttonComponent    = (<Button /> as React.ReactComponentElement<any, ButtonProps>),
         
         
         
@@ -128,12 +140,26 @@ const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
     
     
     // states:
+    const appendValidationDeps = useEvent<ValidationDeps>((bases) => [
+        ...bases,
+        
+        // validations:
+        /* none */
+        
+        // values:
+        notifyValueChange, // detects the controllable value has changed
+    ]);
+    const mergedValidationDeps = useEvent<ValidationDeps>((bases) => {
+        // conditions:
+        if (validationDepsOverwrite) return validationDepsOverwrite(appendValidationDeps(bases));
+        return appendValidationDeps(bases);
+    });
     const invalidableState = useInvalidable<HTMLButtonElement>({
         // validations:
         enableValidation  : enableValidation,
         isValid           : isValid,
         inheritValidation : inheritValidation,
-        validationDeps    : validationDeps,
+        validationDeps    : mergedValidationDeps,
         onValidation      : onValidation,
         
         validDelay,

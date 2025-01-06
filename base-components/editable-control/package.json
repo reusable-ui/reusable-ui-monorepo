@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/editable-control",
-  "version": "6.14.1",
+  "version": "6.14.2",
   "description": "A base editable UI (with validation indicator) of Reusable-UI components.",
   "keywords": [
     "control",
