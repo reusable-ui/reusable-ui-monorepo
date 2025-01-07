@@ -264,9 +264,10 @@ const Check = <TElement extends Element = HTMLSpanElement>(props: CheckProps<TEl
         // no more validation props, only `required` is supported in <Check>
     ]);
     const mergedValidationDeps = useEvent<ValidationDeps>((bases) => {
-        // conditions:
-        if (validationDepsOverwrite) return validationDepsOverwrite(appendValidationDeps(bases));
-        return appendValidationDeps(bases);
+        const basesStage2 = appendValidationDeps(bases);
+        const basesStage3 = validationDepsOverwrite ? validationDepsOverwrite(basesStage2) : basesStage2;
+        
+        return basesStage3;
     });
     
     

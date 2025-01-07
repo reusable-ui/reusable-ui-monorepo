@@ -150,9 +150,10 @@ const EditableButton = (props: EditableButtonProps): JSX.Element|null => {
         notifyValueChange, // detects the controllable value has changed
     ]);
     const mergedValidationDeps = useEvent<ValidationDeps>((bases) => {
-        // conditions:
-        if (validationDepsOverwrite) return validationDepsOverwrite(appendValidationDeps(bases));
-        return appendValidationDeps(bases);
+        const basesStage2 = appendValidationDeps(bases);
+        const basesStage3 = validationDepsOverwrite ? validationDepsOverwrite(basesStage2) : basesStage2;
+        
+        return basesStage3;
     });
     const invalidableState = useInvalidable<HTMLButtonElement>({
         // validations:

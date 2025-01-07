@@ -382,9 +382,10 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
         nativeInputType,
     ]);
     const mergedValidationDeps = useEvent<ValidationDeps>((bases) => {
-        // conditions:
-        if (validationDepsOverwrite) return validationDepsOverwrite(appendValidationDeps(bases));
-        return appendValidationDeps(bases);
+        const basesStage2 = appendValidationDeps(bases);
+        const basesStage3 = validationDepsOverwrite ? validationDepsOverwrite(basesStage2) : basesStage2;
+        
+        return basesStage3;
     });
     
     

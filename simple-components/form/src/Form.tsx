@@ -165,9 +165,10 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
         senseValueChange, // detects the form's input value has changed
     ]);
     const mergedValidationDeps = useEvent<ValidationDeps>((bases) => {
-        // conditions:
-        if (validationDepsOverwrite) return validationDepsOverwrite(appendValidationDeps(bases));
-        return appendValidationDeps(bases);
+        const basesStage2 = appendValidationDeps(bases);
+        const basesStage3 = validationDepsOverwrite ? validationDepsOverwrite(basesStage2) : basesStage2;
+        
+        return basesStage3;
     });
     const handleValidation     = useEvent<ValidationEventHandler<ValidityChangeEvent>>(async (event) => {
         /* sequentially runs validators from `formValidator.handleValidation()` then followed by `props.onValidation()` */
