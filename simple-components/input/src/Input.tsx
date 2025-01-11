@@ -282,11 +282,13 @@ const InputInternal = <TElement extends Element = HTMLSpanElement>(props: InputP
         
         
         // preserves the original `onValidation` from `props`:
+        // *props*Validator (if any) is the external supplement validator, so it should be the last validation check:
         await onValidation?.(event);
         
         
         
         // states:
+        // `handleValidationInternal` reads the validation result, so it should be placed at the end:
         handleValidationInternal(event);
     });
     

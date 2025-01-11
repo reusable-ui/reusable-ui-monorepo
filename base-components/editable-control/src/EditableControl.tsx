@@ -197,11 +197,13 @@ const EditableControl = <TElement extends Element = HTMLElement>(props: Editable
         
         
         // states:
+        // `inputValidator` is the primary validator, so it should be the first validation check:
         await inputValidator.handleValidation(event);
         
         
         
         // preserves the original `onValidation` from `props`:
+        // *props*Validator (if any) is the external supplement validator, so it should be the last validation check:
         await onValidation?.(event);
     });
     const invalidableState     = useInvalidable<TElement>({

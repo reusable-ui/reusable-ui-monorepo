@@ -176,11 +176,13 @@ const FormInternal = (props: FormProps): JSX.Element|null => {
         
         
         // states:
+        // `formValidator` is the primary validator, so it should be the first validation check:
         await formValidator.handleValidation(event);
         
         
         
         // preserves the original `onValidation` from `props`:
+        // *props*Validator (if any) is the external supplement validator, so it should be the last validation check:
         await onValidation?.(event);
     });
     const invalidableState     = useInvalidable<HTMLFormElement>({
