@@ -30,6 +30,7 @@
 [breaking  ] rename Modal => Dialog, ModalCard => CardDialog, ModalSide => SideDialog
 [low prior ] obsoleting ModalStatus
 [breaking  ] rename DialogMessage => <DialogProvider> & useDialogManager
+[low  prior] Add shared utilities: getValidityTheme & getValidityIcon
 [low  prior] add PrintDialog
 [low  prior] add CaptchaDialog
 [low  prior] add BlankSection, BlankPage
