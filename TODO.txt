@@ -1,3 +1,4 @@
+[high prior] PointerCapturableProps: update MouseEvent to MouseEvent|TouchEvent so it works correctly with <ListEditor>
 [high prior] fix <List> breadcrumb on very narrow sreen, if the width is not sufficient, the left part should be clipped
 [high prior] .static class conflics with tailwind class
 [high prior] restore themes & basic variants to portal (global stackable)
