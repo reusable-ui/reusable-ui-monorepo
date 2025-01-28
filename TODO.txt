@@ -95,6 +95,8 @@ export type *       from './types.js'
 // values:
 |'defaultChecked'
 
+[low prior ] Omit 'dangerouslySetInnerHTML' of all components omitting 'children'
+
 [unresolved] <Input>'s validation icon swap to left if the text aligned on right
 [unresolved] remove calendar icon on Input type='date' on Firefox
 [no err det] replace fill-available => 100% on <Carousel> to fix image shrinking on Chrome
