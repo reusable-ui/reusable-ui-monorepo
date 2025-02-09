@@ -200,6 +200,52 @@ function App() {
                     A seventh item
                 </ListItem>
             </List>
+            <List theme='primary' listStyle='bullet' orientation='inline'>
+                <ListItem>
+                    product
+                </ListItem>
+                <ListItem>
+                    for men
+                </ListItem>
+                <ListItem>
+                    featured
+                </ListItem>
+                <ListItem theme='danger'>
+                    red
+                </ListItem>
+                <ListItem>
+                    t-shirt
+                </ListItem>
+                <ListItem>
+                    vacation
+                </ListItem>
+                <ListItem>
+                    holiday
+                </ListItem>
+            </List>
+            <List theme='primary' listStyle='island' orientation='inline'>
+                <ListItem>
+                    product
+                </ListItem>
+                <ListItem>
+                    for men
+                </ListItem>
+                <ListItem>
+                    featured
+                </ListItem>
+                <ListItem theme='danger'>
+                    red
+                </ListItem>
+                <ListItem>
+                    t-shirt
+                </ListItem>
+                <ListItem>
+                    vacation
+                </ListItem>
+                <ListItem>
+                    holiday
+                </ListItem>
+            </List>
         </div>
     );
 }

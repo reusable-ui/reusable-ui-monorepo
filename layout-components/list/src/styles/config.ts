@@ -95,6 +95,20 @@ export const [lists, listValues, cssListConfig] = cssConfig(() => {
         
         
         
+        // islands:
+        islandSpacingSm                       : spacers.xs                                  as CssKnownProps['gapInline'    ],
+        islandSpacingMd                       : spacers.sm                                  as CssKnownProps['gapInline'    ],
+        islandSpacingLg                       : spacers.md                                  as CssKnownProps['gapInline'    ],
+        
+        islandPaddingInlineSm                 : basics.paddingInlineSm                      as CssKnownProps['paddingInline'],
+        islandPaddingBlockSm                  : basics.paddingInlineSm                      as CssKnownProps['paddingInline'],
+        islandPaddingInlineMd                 : basics.paddingInlineMd                      as CssKnownProps['paddingInline'],
+        islandPaddingBlockMd                  : basics.paddingInlineMd                      as CssKnownProps['paddingInline'],
+        islandPaddingInlineLg                 : basics.paddingInlineLg                      as CssKnownProps['paddingInline'],
+        islandPaddingBlockLg                  : basics.paddingInlineLg                      as CssKnownProps['paddingInline'],
+        
+        
+        
         // numbered:
         /* a non_nested counter */
         numberedContent                       : [[
@@ -138,6 +152,14 @@ export const [lists, listValues, cssListConfig] = cssConfig(() => {
         bulletSpacing                         : bases.bulletSpacingMd                       as CssKnownProps['gapInline'    ],
         
         bulletPadding                         : bases.bulletPaddingMd                       as CssKnownProps['paddingInline'],
+        
+        
+        
+        // islands:
+        islandSpacing                         : bases.islandSpacingMd                       as CssKnownProps['gapInline'    ],
+        
+        islandPaddingInline                   : bases.islandPaddingInlineMd                 as CssKnownProps['paddingInline'],
+        islandPaddingBlock                    : bases.islandPaddingBlockMd                  as CssKnownProps['paddingInline'],
     };
     
     

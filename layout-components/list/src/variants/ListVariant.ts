@@ -4,7 +4,7 @@
 
 //#region ListVariant
 export type ListBasicStyle    = 'regular'|'flat'|'flush'|'joined';
-export type ListSpecificStyle = 'content'|'button'|'tab'|'breadcrumb'|'bullet'|'numbered' // might be added more styles in the future
+export type ListSpecificStyle = 'content'|'button'|'tab'|'breadcrumb'|'bullet'|'island'|'numbered' // might be added more styles in the future
 export type ListCompositeStyle<TListBasicStyle extends string, TListSpecificStyle extends string> =
     |TListBasicStyle
     |TListSpecificStyle

@@ -455,8 +455,8 @@ export const usesListVariants = (options?: OrientationableOptions) => {
         
         /* a more specific variants: */
         ...usesListBasicVariants({
-            additionRemoveBorderSelector    : ['.button', '.tab', '.breadcrumb', '.bullet'],
-            additionRemoveSeparatorSelector : ['.button', '.tab', '.breadcrumb', '.bullet'],
+            additionRemoveBorderSelector    : ['.button', '.tab', '.breadcrumb', '.bullet'           ],
+            additionRemoveSeparatorSelector : ['.button', '.tab', '.breadcrumb', '.bullet', '.island'],
             // specificityWeight            : 1, // not needed
         }),
         
@@ -783,6 +783,68 @@ export const usesListVariants = (options?: OrientationableOptions) => {
                         
                         // features:
                         ...borderRule(), // must be placed at the last // restore border stripped out by `inheritBorderFromParent`
+                    }),
+                }),
+            }),
+            rule('.island', {
+                // layouts:
+                justifyContent : 'start', // groups all islands from the start of writting direction
+                flexWrap       : 'wrap',  // wraps to the new line if the islands are too much
+                
+                
+                
+                // spacings:
+                // add space between bullets:
+                ...rule(':not(.joined)', {
+                    gap            : lists.bulletSpacing,
+                }),
+                
+                // add padding to the container:
+                ...rule(':not(:is(.flat, .flush))', {
+                    paddingInline  : lists.islandPaddingInline,
+                    paddingBlock   : lists.islandPaddingBlock,
+                }),
+                
+                
+                
+                // children:
+                ...children(wrapperElm, {
+                    // sizes:
+                    flex       : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height (for variant `.oBlock`) or width (for variant `.oInline`)
+                    
+                    
+                    
+                    // children:
+                    ...children(listItemElm, {
+                        // layouts:
+                        ...style({
+                            // customize:
+                            ...usesCssProps(usesPrefixedProps(lists, 'island')), // apply config's cssProps starting with island***
+                            paddingInline  : undefined, // we moved island's paddingInline to the container
+                            paddingBlock   : undefined, // we moved island's paddingBlock  to the container
+                        }),
+                    }),
+                }),
+                ...rule(':not(.flat)', {
+                    ...children(wrapperElm, {
+                        // children:
+                        ...children(listItemElm, {
+                            // layouts:
+                            ...style({
+                                // borders:
+                                border                 : borderVars.border,       // restore border stripped out by `inheritBorderFromParent`
+                             // borderRadius           : borderVars.borderRadius, // restore border stripped out by `inheritBorderFromParent`
+                                borderStartStartRadius : borderVars.borderStartStartRadius,
+                                borderStartEndRadius   : borderVars.borderStartEndRadius,
+                                borderEndStartRadius   : borderVars.borderEndStartRadius,
+                                borderEndEndRadius     : borderVars.borderEndEndRadius,
+                            }),
+                            
+                            
+                            
+                            // features:
+                            ...borderRule(), // must be placed at the last // restore border stripped out by `inheritBorderFromParent`
+                        }),
                     }),
                 }),
             }),
