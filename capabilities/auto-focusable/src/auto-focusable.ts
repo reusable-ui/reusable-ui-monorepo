@@ -25,8 +25,8 @@ import type {
 //#region auto focusable
 export interface AutoFocusableProps {
     // auto focusable:
-    autoFocusOn        ?: React.RefObject<Element>|Element|null // getter ref
-    restoreFocusOn     ?: React.RefObject<Element>|Element|null // getter ref
+    autoFocusOn        ?: React.RefObject<Element>|Element|null          // getter ref
+    restoreFocusOn     ?: React.RefObject<Element>|Element|null | 'auto' // getter ref
     autoFocus          ?: boolean
     restoreFocus       ?: boolean
     autoFocusScroll    ?: boolean
@@ -36,8 +36,8 @@ export const useAutoFocusable = <TElement extends Element = HTMLElement>(props: 
     // rest props:
     const {
         // auto focusable:
-        autoFocusOn,
-        restoreFocusOn,
+        autoFocusOn        = null,
+        restoreFocusOn     = 'auto',
         autoFocus          = true,
         restoreFocus       = true,
         autoFocusScroll    = false,
@@ -85,7 +85,7 @@ export const useAutoFocusable = <TElement extends Element = HTMLElement>(props: 
         else { // isCollapsed
             // if current_focused_element is inside the <Component> or inside the <RestoreFocusElm> => back focus to <RestoreFocusElm> ?? <PrevFocusElm>:
             const restoreFocusElm = (
-                (restoreFocusOn !== undefined)
+                (restoreFocusOn !== 'auto')
                 
                 // use custom restore elm:
                 ? ((restoreFocusOn instanceof Element) ? restoreFocusOn : restoreFocusOn?.current)
