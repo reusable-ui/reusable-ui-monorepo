@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/core",
-  "version": "6.15.0",
+  "version": "6.15.1",
   "description": "A set of reusable-ui packages which are responsible for building any component.",
   "keywords": [
     "core",
@@ -39,7 +39,7 @@
   "dependencies": {
     "@reusable-ui/active-as-click": "^6.5.0",
     "@reusable-ui/animating-state": "^6.5.0",
-    "@reusable-ui/auto-focusable": "^6.6.0",
+    "@reusable-ui/auto-focusable": "^6.6.1",
     "@reusable-ui/client-sides": "^6.5.0",
     "@reusable-ui/collapsible": "^6.5.1",
     "@reusable-ui/colorable": "^6.5.0",
