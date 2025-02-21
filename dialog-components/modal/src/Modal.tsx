@@ -186,7 +186,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         // auto focusable:
         autoFocusOn        = modalUiRefInternal.current, // take
-        restoreFocusOn     = null,                       // take
+        restoreFocusOn     = 'auto',                     // take
         autoFocus          = true,                       // take
         restoreFocus       = true,                       // take
         autoFocusScroll    = false,                      // take
