@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/auto-focusable",
-  "version": "6.5.0",
+  "version": "6.5.1",
   "description": "A capability of UI to be focused within itself or its content (when expanded), and re-focus back to previous element (when collapsed).",
   "keywords": [
     "focusable",

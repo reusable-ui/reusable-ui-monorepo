@@ -85,8 +85,12 @@ export const useAutoFocusable = <TElement extends Element = HTMLElement>(props: 
         else { // isCollapsed
             // if current_focused_element is inside the <Component> or inside the <RestoreFocusElm> => back focus to <RestoreFocusElm> ?? <PrevFocusElm>:
             const restoreFocusElm = (
-                !!restoreFocusOn
+                (restoreFocusOn !== undefined)
+                
+                // use custom restore elm:
                 ? ((restoreFocusOn instanceof Element) ? restoreFocusOn : restoreFocusOn?.current)
+                
+                // use default restore elm:
                 : prevFocusRef.current
             );
             if (restoreFocus && restoreFocusElm && (restoreFocusElm as HTMLElement|SVGElement).focus) {
@@ -97,11 +101,11 @@ export const useAutoFocusable = <TElement extends Element = HTMLElement>(props: 
                         if (!focusedElm) return; // nothing was focused => nothing to re_focus_back
                         
                         const autoFocusElm = ((autoFocusOn instanceof Element) ? autoFocusOn : autoFocusOn?.current);
-                        if (                                                               // neither
-                            !(autoFocusElm?.contains?.(focusedElm))                        // the current_focused_element is inside the <Component> or the <Component> itself
-                            &&                                                             // nor
-                            (!!restoreFocusOn && !restoreFocusElm?.contains?.(focusedElm)) // the current_focused_element is inside the <RestoreFocusElm> or the <RestoreFocusElm> itself
-                        ) return;                                                          // => nothing to re_focus_back
+                        if (                                        // neither
+                            !(autoFocusElm?.contains?.(focusedElm)) // the current_focused_element is inside the <Component> or the <Component> itself
+                            &&                                      // nor
+                            !restoreFocusElm.contains(focusedElm)   // the current_focused_element is inside the <RestoreFocusElm> or the <RestoreFocusElm> itself
+                        ) return;                                   // => nothing to re_focus_back because the current_focused_element is *already* switched out from <Component>|<RestoreFocusElm> to somewhere by *user action*
                         
                         
                         
