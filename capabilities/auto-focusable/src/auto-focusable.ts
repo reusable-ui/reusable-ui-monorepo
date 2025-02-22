@@ -77,9 +77,19 @@ export const useAutoFocusable = <TElement extends Element = HTMLElement>(props: 
             if (autoFocus && autoFocusElm && (autoFocusElm as HTMLElement|SVGElement).focus) {
                 setTimeout(() => {
                     requestAnimationFrame(() => {
+                        // conditions:
+                        const focusedElm               = document.activeElement;
+                        
+                        const isAlreadyHaveAutoedFocus = autoFocusElm.contains(focusedElm);
+                        if (isAlreadyHaveAutoedFocus) return; // the focus is already been auto-ed => nothing to auto the focus
+                        
+                        
+                        
+                        // actions:
+                        // set focus to the configured `autoFocusOn`, no matter the `restoreFocusOn` is configured or not:
                         (autoFocusElm as HTMLElement|SVGElement).focus({ preventScroll: !autoFocusScroll });
                     }); // wait until mouseup|keyup fired of the <TriggerButton> (if any)
-                }, 0); // wait until mouseup|keyup fired of the <TriggerButton> (if any)
+                }, 0);  // wait until mouseup|keyup fired of the <TriggerButton> (if any)
             } // if
         }
         else { // isCollapsed
@@ -97,42 +107,32 @@ export const useAutoFocusable = <TElement extends Element = HTMLElement>(props: 
                 setTimeout(() => {
                     requestAnimationFrame(() => {
                         // conditions:
-                        const focusedElm                = document.activeElement;
+                        const focusedElm                        = document.activeElement;
                         
-                        const isAlreadyRestored         = restoreFocusElm.contains(focusedElm);
-                        if (isAlreadyRestored) return; // the focus is already restored => nothing to restore the focus
+                        const isAlreadyHaveRestoredFocus        = restoreFocusElm.contains(focusedElm);
+                        if (isAlreadyHaveRestoredFocus) return;        // the focus is already been restored => nothing to restore the focus
                         
-                        
-                        
-                        // tests:
-                        const autoFocusElm              = ((autoFocusOn instanceof Element) ? autoFocusOn : autoFocusOn?.current);
-                        const isStillInFocus            = !!autoFocusElm?.contains(focusedElm);
-                        
-                        const isAlreadyHaveAnotherFocus = (
-                            // !isAlreadyRestored // `isAlreadyRestored` is always false
-                            // &&
-                            !isStillInFocus
+                        const autoFocusElm                      = ((autoFocusOn instanceof Element) ? autoFocusOn : autoFocusOn?.current);
+                        const isAlreadyHaveAnotherRestoredFocus = (
+                            !!focusedElm                               // has any focus
                             &&
-                            !!focusedElm                              // has any focus
+                            (focusedElm !== document.body)             // ignore focus on *body*     because it's a global focus element (always in focus)
                             &&
-                            (focusedElm !== document.documentElement) // ignore focus in document because it's a global focus element
+                            (focusedElm !== document.documentElement)  // ignore focus on *document* because it's a global focus element (always in focus)
                             &&
-                            (focusedElm !== document.body)            // ignore focus on body     because it's a global focus element
+                            !restoreFocusElm.contains(focusedElm)      // ignore focus on/inside *ongoing*      `restoreFocusElm`
+                            &&
+                            !autoFocusElm?.contains(focusedElm)        // ignore focus on/inside *disappearing* `autoFocusElm`
                         );
-                        
-                        const needsToBeRestored         = (
-                            isStillInFocus             // still in focus
-                            ||
-                            !isAlreadyHaveAnotherFocus // not already have another focus by user interaction
-                        );
+                        if (isAlreadyHaveAnotherRestoredFocus) return; // the focus is already been done by user interaction => nothing to restore the focus
                         
                         
                         
                         // actions:
-                        // restore the previously focused element (if condition meets):
-                        if (needsToBeRestored) (restoreFocusElm as HTMLElement|SVGElement).focus({ preventScroll: !restoreFocusScroll });
+                        // restore focus to the configured `restoreFocusOn`, no matter the `autoFocusOn` is configured or not:
+                        (restoreFocusElm as HTMLElement|SVGElement).focus({ preventScroll: !restoreFocusScroll });
                     }); // wait until the user decided to change the focus to another <Element>
-                }, 0); // wait until the user decided to change the focus to another <Element>
+                }, 0);  // wait until the user decided to change the focus to another <Element>
             } // if
             
             

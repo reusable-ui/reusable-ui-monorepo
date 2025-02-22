@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/dialog-message",
-  "version": "6.7.5",
+  "version": "6.7.6",
   "description": "Displays a modal dialog to notify the user that something has happened.",
   "keywords": [
     "message",
@@ -52,7 +52,7 @@
     "@reusable-ui/card": "^6.5.0",
     "@reusable-ui/close-button": "^6.5.0",
     "@reusable-ui/collapsible": "^6.5.0",
-    "@reusable-ui/core": "^6.15.1",
+    "@reusable-ui/core": "^6.15.2",
     "@reusable-ui/icon": "^6.5.0",
     "@reusable-ui/list": "^6.5.0",
     "@reusable-ui/modal": "^6.6.0",
