@@ -88,7 +88,7 @@ const Busy = <TElement extends Element = HTMLElement, TExpandedChangeEvent exten
     // rest props:
     const {
         // accessibilities:
-        label,
+        label : providedLabel,
         
         
         
@@ -100,15 +100,20 @@ const Busy = <TElement extends Element = HTMLElement, TExpandedChangeEvent exten
         
         // children:
         children,
-    ...restBadgeProps} = props;
+        
+        
+        
+        // other props:
+        ...restBusyProps
+    } = props;
     
     
     
-    // if necessary, geneate auto label from [children]:
-    const autoLabel = useMemo<string|null>(() => {
+    // Geneate label from provided `label` prop or auto generate from [children]:
+    const label = useMemo<string|undefined>(() => {
         // conditions:
-        if (label !== undefined)     return null; // the [label] is explicitly defined => no need to generate auto label
-        if (!isTruthyNode(children)) return null; // the [children] is not defined     =>  unable to generate auto label
+        if (providedLabel !== undefined) return providedLabel; // the [label] is explicitly defined => no need to generate auto label
+        if (!isTruthyNode(children))     return undefined;     // the [children] is not defined     =>  unable to generate auto label
         
         
         
@@ -121,13 +126,39 @@ const Busy = <TElement extends Element = HTMLElement, TExpandedChangeEvent exten
         
         
         // conditions:
-        if (flattenedChildren.some((child) => (typeof(child) !== 'string') && (typeof(child) !== 'number'))) return null; // contains one/more non_stringable node(s) => unable to generate auto label
+        if (flattenedChildren.some((child) => (typeof(child) !== 'string') && (typeof(child) !== 'number'))) return undefined; // contains one/more non_stringable node(s) => unable to generate auto label
         
         
         
         // merge all stringable children to single string:
         return flattenedChildren.join('');
-    }, [label, children]);
+    }, [providedLabel, children]);
+    
+    
+    
+    // default props:
+    const {
+        // accessibilities:
+        'aria-busy' : ariaBusy = true,
+        'aria-live' : ariaLive = 'off',
+        
+        
+        
+        // variants:
+        nude                   = true,
+        outlined               = true,
+        badgeStyle             = 'circle',
+        
+        
+        
+        // classes:
+        mainClass              = styleSheet.main,
+        
+        
+        
+        // other props:
+        ...restBadgeProps
+    } = restBusyProps;
     
     
     
@@ -139,20 +170,22 @@ const Busy = <TElement extends Element = HTMLElement, TExpandedChangeEvent exten
             
             
             
+            // accessibilities:
+            label={label}
+            aria-busy={ariaBusy}
+            aria-live={ariaLive}
+            
+            
+            
             // variants:
-            nude={props.nude ?? true}
-            outlined={props.outlined ?? true}
-            badgeStyle={props.badgeStyle ?? 'circle'}
+            nude={nude}
+            outlined={outlined}
+            badgeStyle={badgeStyle}
             
             
             
             // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
-            
-            
-            
-            // accessibilities:
-            label={label ?? autoLabel ?? 'Loading...'}
+            mainClass={mainClass}
         >
             {/* <Icon> */}
             {React.cloneElement<IconProps<Element>>(iconComponent,
@@ -163,7 +196,7 @@ const Busy = <TElement extends Element = HTMLElement, TExpandedChangeEvent exten
                 },
             )}
             
-            { (autoLabel === null) && !!children && <VisuallyHidden>
+            { (label === undefined) && !!children && <VisuallyHidden>
                 {children}
             </VisuallyHidden> }
         </Badge>

@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/busy",
-  "version": "6.5.0",
+  "version": "6.5.1",
   "description": "Indicates a loading state of page.",
   "keywords": [
     "busy",
