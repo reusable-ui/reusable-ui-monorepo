@@ -529,8 +529,8 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     
     
     // utilities:
-    const trimValue = useEvent(<TOpt extends number|null|undefined>(value: number|TOpt): number|TOpt => {
-        return clamp(min, value, max, step);
+    const trimValue = useEvent(<TOpt extends number|null|undefined>(value: TOpt): TOpt => {
+        return clamp(min, value, max, step) as TOpt;
     });
     
     
@@ -546,18 +546,32 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
     
     
     
-    // source of truth:
-    const valueRef         = useRef<number>(/*initialState: */controllableValue ?? defaultUncontrollableValue ?? (min + ((max - min) * 0.5)));
-    if (controllableValue !== undefined) valueRef.current = controllableValue; //   controllable component mode: update the source_of_truth on every_re_render -- on every [value] prop changes
-    const [triggerRender]  = useTriggerRender();                               // uncontrollable component mode: update the source_of_truth when modified internally by internal component(s)
-    const valueRatio       : number = (valueRef.current - min) / (max - min);
+    // Tracks the value changes for both controllable and uncontrollable value:
+    const valueTrackerRef  = useRef<number>(/*initialState: */
+        controllableValue
+        ??
+        defaultUncontrollableValue
+        ??
+        (min + ((max - min) * 0.5))
+    );
     
+    // Updates the value tracker when the controllable value changed:
+    if (controllableValue !== undefined) valueTrackerRef.current = controllableValue; //   controllable component mode: update the source_of_truth on every_re_render -- on every [value] prop changes
+    
+    // Re-render the component and re-evaluate the value tracker:
+    const [triggerRender]  = useTriggerRender();                                      // uncontrollable component mode: update the source_of_truth when modified internally by internal component(s)
+    
+    // Re-evaluate the value tracker (must be placed after "Updates the value tracker"):
+    const value            : number = valueTrackerRef.current;
+    const valueRatio       : number = (value - min) / (max - min);
+    
+    // Updates the value and tracks for value changes and fire `onChange` event:
     type ChangeValueAction = 'setValue'|'setValueRatio'|'decrease'|'increase'
     const changeValue      = useEvent((action: ChangeValueAction, amount: number): void => {
-        let value = valueRef.current;
+        let newValue = valueTrackerRef.current;
         switch (action) {
             case 'setValue': {
-                value = trimValue(amount);
+                newValue = trimValue(amount);
             } break;
             case 'setValueRatio': {
                 let valueRatio = amount;
@@ -567,31 +581,31 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
                     valueRatio
                 , 0), 1);
                 
-                value = trimValue(min + ((max - min) * valueRatio));
+                newValue = trimValue(min + ((max - min) * valueRatio));
             } break;
             
             case 'decrease' : {
-                value = trimValue(value - ((step || 1) * (isReversedRange ? -1 : 1) * amount));
+                newValue = trimValue(newValue - ((step || 1) * (isReversedRange ? -1 : 1) * amount));
             } break;
             case 'increase' : {
-                value = trimValue(value + ((step || 1) * (isReversedRange ? -1 : 1) * amount));
+                newValue = trimValue(newValue + ((step || 1) * (isReversedRange ? -1 : 1) * amount));
             } break;
         } // switch
         
         
         
-        // trigger `onChange` if the value changed:
-        if (valueRef.current !== value) {
-            const oldValue = valueRef.current; // react *hack* get_prev_value *before* modifying (by any re-render => fully controllable `value = valueRef.current`)
+        // trigger `onChange` event if the newValue is different from the current value:
+        if (valueTrackerRef.current !== newValue) {
+            const oldValue = valueTrackerRef.current; // react *hack* get_prev_value *before* modifying the value
             
             
             
-            if (controllableValue === undefined) { // uncontrollable component mode: update the source_of_truth when modified internally by internal component(s)
-                valueRef.current = value; // update
-                triggerRender();          // sync the UI to `valueRef.current`
+            if (controllableValue === undefined) {  // uncontrollable component mode: update the source_of_truth when modified internally by internal component(s)
+                valueTrackerRef.current = newValue; // update
+                triggerRender();                    // re-render the component and re-evaluate the value tracker
             }
             // else {
-            //     // for controllable component mode: the update of [value] prop and the source_of_truth are decided by <Parent> component (on every_re_render).
+            //     // for controllable component mode: the update of value prop and the source_of_truth are decided by <Parent> component (on every_re_render).
             // }
             
             
@@ -600,7 +614,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
             if (inputElm) {
                 // react *hack*: trigger `onChange` event:
                 scheduleTriggerEvent(() => { // runs the `input` event *next after* current macroTask completed
-                    inputElm.valueAsNumber = value;                           // react *hack* set_value *before* firing `input` event
+                    inputElm.valueAsNumber = newValue;                           // react *hack* set_value *before* firing `input` event
                     (inputElm as any)._valueTracker?.setValue(`${oldValue}`); // react *hack* in order to React *see* the changes when `input` event fired
                     
                     
@@ -908,7 +922,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
         role                                 = 'slider',
         
         'aria-orientation' : ariaOrientation = orientationableVariant['aria-orientation'],
-        'aria-valuenow'    : ariaValueNow    = valueRef.current,
+        'aria-valuenow'    : ariaValueNow    = value,
         'aria-valuemin'    : ariaValueMin    = (isReversedRange ? max : min),
         'aria-valuemax'    : ariaValueMax    = (isReversedRange ? min : max),
         
@@ -1248,7 +1262,7 @@ const Range = <TElement extends Element = HTMLDivElement>(props: RangeProps<TEle
                 // values:
                 {...{
                  // defaultValue : defaultUncontrollableValue, // fully controllable, no defaultValue
-                    value        : valueRef.current,           // fully controllable
+                    value        : value,                      // fully controllable
                     onChange     : handleChange,
                 }}
                 
