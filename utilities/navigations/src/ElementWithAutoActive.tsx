@@ -49,31 +49,66 @@ const ElementWithAutoActive = (props: ElementWithAutoActiveProps): JSX.Element|n
         
         // components:
         elementComponent,
-    } = props;
+    ...restElementProps} = props;
+    
+    
+    
+    // props:
+    const elementComponentProps : typeof elementComponent.props = {
+        // other props:
+        ...restElementProps,
+        ...elementComponent.props, // overwrites restElementProps (if any conflics)
+    };
     
     
     
     // jsx:
+    const elementWithAutoActiveImpl = (
+        <ElementWithAutoActiveImpl
+            // other props:
+            {...elementComponentProps} // steals all elementComponent's props, so the <ElementWithMaybeLink> can recognize the <ElementWithAutoActiveImpl> having a/some <Link> component
+            
+            
+            
+            // navigations:
+            caseSensitive={caseSensitive}
+            end={end}
+            
+            
+            
+            // components:
+            elementComponent={ // the underlying `<Element>` to be manipulated of `[active]` & `[aria-current]` props, based on the current page url
+                // clone elementComponent element with (almost) blank props:
+                <elementComponent.type
+                    // identifiers:
+                    key={elementComponent.key}
+                    
+                    
+                    
+                    //#region restore conflicting props
+                    {...{
+                        ...(('caseSensitive'    in elementComponentProps) ? { caseSensitive    : elementComponentProps.caseSensitive    } : undefined),
+                        ...(('end'              in elementComponentProps) ? { end              : elementComponentProps.end              } : undefined),
+                        ...(('elementComponent' in elementComponentProps) ? { elementComponent : elementComponentProps.elementComponent } : undefined),
+                        ...(('childrenOrigin'   in elementComponentProps) ? { childrenOrigin   : elementComponentProps.childrenOrigin   } : undefined),
+                    }}
+                    //#endregion restore conflicting props
+                />
+            }
+            
+            
+            
+            // children:
+            /* detect for `<Link>` component for `[to]`/`[href]` prop, for determining the current page */
+            childrenOrigin={elementComponentProps.children} // copy the children before will be mutated by another <SomeWithSomething>
+        />
+    );
+    
     return (
         <ElementWithMaybeLink
             // components:
             elementComponent={
-                <ElementWithAutoActiveImpl
-                    // navigations:
-                    caseSensitive={caseSensitive}
-                    end={end}
-                    
-                    
-                    
-                    // components:
-                    elementComponent={elementComponent}
-                    
-                    
-                    
-                    // children:
-                    /* detect for `<Link>` component for `[to]`/`[href]` prop, for determining the current page */
-                    childrenOrigin={elementComponent.props.children} // copy the children before will be mutated by another <SomeWithSomething>
-                />
+                elementWithAutoActiveImpl
             }
         />
     );
