@@ -185,62 +185,40 @@ const ActionControl = <TElement extends Element = HTMLElement>(props: ActionCont
     
     
     // jsx:
-    const actionControl = (
-        <Control<TElement>
-            // other props:
-            {...restControlProps}
-            
-            
-            
-            // semantics:
-            semanticTag  = {props.semanticTag  ?? _defaultSemanticTag }
-            semanticRole = {props.semanticRole ?? _defaultSemanticRole}
-            
-            
-            
-            // classes:
-            mainClass={props.mainClass ?? styleSheet.main}
-            stateClasses={stateClasses}
-            
-            
-            
-            // link:
-            {...(!propEnabled ? { href: undefined } : null)} // remove [href] if <ActionControl> is disabled
-            
-            
-            
-            // handlers:
-            onMouseDown      = {handleMouseDown     }
-            onTouchStart     = {handleTouchStart    }
-            onKeyDown        = {handleKeyDown       }
-            onClick          = {handleClick         }
-            onAnimationStart = {handleAnimationStart}
-            onAnimationEnd   = {handleAnimationEnd  }
-        />
-    );
-    const actionControlProps = actionControl.props;
-    
     return (
         <ElementWithMaybeLink
-            // other props:
-            {...actionControlProps} // steals all actionControl's props, so the <Owner> can recognize the <ElementWithMaybeLink> as <TheirChild>
-            
-            
-            
             // components:
-            elementComponent={ // the underlying `<Element>` to be `<Link>`-ed
-                // clone actionControl element with (almost) blank props:
-                <actionControl.type
-                    // identifiers:
-                    key={actionControl.key}
+            elementComponent={
+                <Control<TElement>
+                    // other props:
+                    {...restControlProps}
                     
                     
                     
-                    //#region restore conflicting props
-                    {...{
-                        ...(('elementComponent' in actionControlProps) ? { elementComponent : actionControlProps.elementComponent } : undefined),
-                    }}
-                    //#endregion restore conflicting props
+                    // semantics:
+                    semanticTag  = {props.semanticTag  ?? _defaultSemanticTag }
+                    semanticRole = {props.semanticRole ?? _defaultSemanticRole}
+                    
+                    
+                    
+                    // classes:
+                    mainClass={props.mainClass ?? styleSheet.main}
+                    stateClasses={stateClasses}
+                    
+                    
+                    
+                    // link:
+                    {...(!propEnabled ? { href: undefined } : null)} // remove [href] if <ActionControl> is disabled
+                    
+                    
+                    
+                    // handlers:
+                    onMouseDown      = {handleMouseDown     }
+                    onTouchStart     = {handleTouchStart    }
+                    onKeyDown        = {handleKeyDown       }
+                    onClick          = {handleClick         }
+                    onAnimationStart = {handleAnimationStart}
+                    onAnimationEnd   = {handleAnimationEnd  }
                 />
             }
         />
