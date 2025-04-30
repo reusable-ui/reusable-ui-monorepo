@@ -15,6 +15,7 @@
 [high prior] add more size variants for <Icon>
 [high prior] passing React.context to useDialogMessage::showDialog(...)
 [high prior] ignores keyCode bubbling from <portal> of <Modal> & <Dropdown>
+[high prior] fix [esc] handling when multiple <Modal> shown at the same time
 [high prior] standardize coding formatting like <Grip>
 [high prior] add '1lh' for the sizeOptions of <Icon>
 
