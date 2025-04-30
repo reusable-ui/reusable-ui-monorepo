@@ -18,6 +18,7 @@ import {
 import {
     // style sheets:
     dynamicStyleSheet,
+    dynamicStyleSheets,
 }                           from '@cssfn/cssfn-react'           // writes css in react hook
 
 // reusable-ui core:
@@ -95,6 +96,10 @@ export const useBackdropStyleSheet = dynamicStyleSheet(
     () => import(/* webpackPrefetch: true */ './styles/backdropStyles.js')
 , { id: 'z26pqrin5i' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 
+export const useNoScrollbarStyleSheet = dynamicStyleSheets(
+    () => import(/* webpackPrefetch: true */ './styles/noScrollbarStyles.js')
+, { id: 'cys5kcu257' }); // a unique salt for SSR support, ensures the server-side & client-side have the same generated class names
+
 
 
 // react components:
@@ -144,6 +149,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     // styles:
     const styleSheet               = useBackdropStyleSheet();
     const uiStyleSheet             = useModalUiStyleSheet();
+    const noScrollbarStyleSheet    = useNoScrollbarStyleSheet();
     
     
     
@@ -253,7 +259,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         modalUiRefInternal,
     );
-    const noParentScrollRefInternal = useRef<HTMLDivElement|null>(null);
+    // const noParentScrollRefInternal = useRef<HTMLDivElement|null>(null);
     
     
     
@@ -418,21 +424,21 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         // conditions:
         if (event.defaultPrevented) return; // the event was already handled by user => nothing to do
         if (
-            // ignore bubbling from <Backdrop>:
+            // ignore bubbling from NON <Backdrop>:
             (event.target !== event.currentTarget)
             
-            &&
+            // &&
+            // 
+            // // ignore bubbling from NON <NoParentScroll> (if PRESENT):
+            // (
+            //     // <NoParentScroll> is NOT PRESENT (NO modal (blocking) mode) => nothing to ignore:
+            //     !noParentScrollRefInternal.current
+            //     ||
+            //     // <NoParentScroll> is PRESENT and MATCH to target event => ignore bubbling from <NoParentScroll>
+            //     (event.target !== noParentScrollRefInternal.current)
+            // )
             
-            // ignore bubbling from <NoParentScroll> (if PRESENT):
-            (
-                // <NoParentScroll> is NOT PRESENT (NO modal (blocking) mode) => nothing to ignore:
-                !noParentScrollRefInternal.current
-                ||
-                // <NoParentScroll> is PRESENT and MATCH to target event => ignore bubbling from <NoParentScroll>
-                (event.target !== noParentScrollRefInternal.current)
-            )
-            
-        ) return; // ignore bubbling from <ModalUi> and <NoParentScroll>, assumes the elements other than <Backdrop>|<NoParentScroll> are <ModalUi>(s)
+        ) return; // ignore bubbling from NON <Backdrop> and NON <NoParentScroll>, assumes the elements OTHER THAN <Backdrop>|<NoParentScroll> is <ModalUi>
         
         
         
@@ -547,7 +553,39 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         ensureTopMost();
     }, [isExpanded]);
     
-    // prevent the <viewport> from scrolling when in modal (blocking) mode:
+    // OBSOLETE: NOT RELIABLE:
+    // // prevent the <viewport> from scrolling when in modal (blocking) mode:
+    // useEffect(() => {
+    //     // conditions:
+    //     if (!viewportElm) return; // if undefined => server side => ignore
+    //     if (!isModal)     return; // only modal (blocking) mode
+    //     
+    //     
+    //     
+    //     // setups:
+    //     const scrollableElm       = (viewportElm === document.body) ? (document.scrollingElement as HTMLElement) : viewportElm;
+    //     const scrollableEvent     = (viewportElm === document.body) ? document                                   : viewportElm;
+    //     const currentScrollTop    = scrollableElm.scrollTop;
+    //     const currentScrollLeft   = scrollableElm.scrollLeft;
+    //     
+    //     const handlePreventScroll = (event: Event) => {
+    //         if (event.target === scrollableEvent) { // only handle scroll on the viewport, ignores scroll bubbling from the children
+    //             scrollableElm.scrollTop  = currentScrollTop;  // prevent from scrolling by keeping the initial scroll position
+    //             scrollableElm.scrollLeft = currentScrollLeft; // prevent from scrolling by keeping the initial scroll position
+    //         } // if
+    //     };
+    //     
+    //     scrollableEvent.addEventListener('scroll', handlePreventScroll);
+    //     
+    //     
+    //     
+    //     // cleanups:
+    //     return () => {
+    //         scrollableEvent.removeEventListener('scroll', handlePreventScroll);
+    //     };
+    // }, [isModal, viewportElm]);
+    
+    // UPDATE: MORE RELIABLE:
     useEffect(() => {
         // conditions:
         if (!viewportElm) return; // if undefined => server side => ignore
@@ -556,25 +594,29 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         
         // setups:
-        const scrollableElm       = (viewportElm === document.body) ? (document.scrollingElement as HTMLElement) : viewportElm;
-        const scrollableEvent     = (viewportElm === document.body) ? document                                   : viewportElm;
-        const currentScrollTop    = scrollableElm.scrollTop;
-        const currentScrollLeft   = scrollableElm.scrollLeft;
-        
-        const handlePreventScroll = (event: Event) => {
-            if (event.target === scrollableEvent) { // only handle scroll on the viewport, ignores scroll bubbling from the children
-                scrollableElm.scrollTop  = currentScrollTop;  // prevent from scrolling by keeping the initial scroll position
-                scrollableElm.scrollLeft = currentScrollLeft; // prevent from scrolling by keeping the initial scroll position
+        const scrollableElm = (viewportElm === document.body) ? (document.scrollingElement as HTMLElement) : viewportElm;
+        const [isScrollableInline, isScrollableBlock] = (() => {
+            if (scrollableElm === document.scrollingElement) {
+                return [true, true];
+            }
+            else {
+                const computedStyle = getComputedStyle(scrollableElm);
+                return [
+                    ['auto', 'scroll'].includes(computedStyle.overflowX),
+                    ['auto', 'scroll'].includes(computedStyle.overflowY),
+                ];
             } // if
-        };
-        
-        scrollableEvent.addEventListener('scroll', handlePreventScroll);
+        })();
+        const classList = scrollableElm.classList;
+        if (isScrollableInline) classList.add(noScrollbarStyleSheet.noScrollbarInline);
+        if (isScrollableBlock ) classList.add(noScrollbarStyleSheet.noScrollbarBlock );
         
         
         
         // cleanups:
         return () => {
-            scrollableEvent.removeEventListener('scroll', handlePreventScroll);
+            if (isScrollableInline) classList.remove(noScrollbarStyleSheet.noScrollbarInline);
+            if (isScrollableBlock ) classList.remove(noScrollbarStyleSheet.noScrollbarBlock );
         };
     }, [isModal, viewportElm]);
     
@@ -662,8 +704,10 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             onAnimationStart = {handleAnimationStart}
             onAnimationEnd   = {handleAnimationEnd  }
         >
-            {/* *hack*: <NoParentScroll> */}
-            {isModal /* only modal (blocking) mode */ && <div ref={noParentScrollRefInternal} aria-hidden='true' className='noParentScroll'></div>}
+            {
+                // {/* *hack*: <NoParentScroll> */}
+                // {isModal /* only modal (blocking) mode */ && <div ref={noParentScrollRefInternal} aria-hidden='true' className='noParentScroll'></div>}
+            }
             
             {/* <ModalUi> */}
             {(!lazy || isVisible) && React.cloneElement<GenericProps<Element> & React.RefAttributes<Element> & React.HTMLAttributes<Element>>(modalUiComponent,

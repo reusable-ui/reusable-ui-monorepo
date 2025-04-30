@@ -1,5 +1,11 @@
 .App {
   text-align: center;
+  overflow: auto;
+  /* overflow-x: hidden; overflow-y: auto; */
+  /* overflow-x: hidden; overflow-y: scroll; */
+  max-height: 90svh;
+  position: relative;
+  background-color: beige;
 }
 
 .App-logo {
