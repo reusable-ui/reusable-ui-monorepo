@@ -18,6 +18,7 @@
 [high prior] standardize coding formatting like <Grip>
 [high prior] add '1lh' for the sizeOptions of <Icon>
 
+[med  prior] fix backdrop border radius issue in <Modal> when the container having scrollbar
 [med  prior] update @reusable-ui/popup : needs to change bumpy effect from 1.02 to 1.05
 [med  prior] update <ModalCard> using grid instead of flex, similar to <ModalSide>
 [med  prior] add <ProfileImage>
