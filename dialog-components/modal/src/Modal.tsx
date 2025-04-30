@@ -554,7 +554,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     }, [isExpanded]);
     
     // OBSOLETE: NOT RELIABLE:
-    // // prevent the <viewport> from scrolling when in modal (blocking) mode:
+    // // prevents the <viewport> from scrolling when in modal (blocking) mode:
     // useEffect(() => {
     //     // conditions:
     //     if (!viewportElm) return; // if undefined => server side => ignore
@@ -586,6 +586,7 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     // }, [isModal, viewportElm]);
     
     // UPDATE: MORE RELIABLE:
+    // prevents the <viewport> from scrolling when in modal (blocking) mode:
     useEffect(() => {
         // conditions:
         if (!viewportElm) return; // if undefined => server side => ignore
