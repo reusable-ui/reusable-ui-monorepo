@@ -88,6 +88,10 @@ import {
     BackdropVariant,
     useBackdropVariant,
 }                           from './variants/BackdropVariant.js'
+import {
+    type BackdropCounter,
+    backdropCounterMap,
+}                           from './backdrop-counter.js'
 
 
 
@@ -631,15 +635,31 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
             } // if
         })();
         const classList = scrollableElm.classList;
-        if (isScrollableInline) classList.add(noScrollbarStyleSheet.noScrollbarInline);
-        if (isScrollableBlock ) classList.add(noScrollbarStyleSheet.noScrollbarBlock );
+        const backdropCounter : BackdropCounter = backdropCounterMap.get(scrollableElm) ?? (() => {
+            const newBackdropCounter : BackdropCounter = { inline: 0, block: 0 };
+            backdropCounterMap.set(scrollableElm, newBackdropCounter);
+            return newBackdropCounter;
+        })();
+        
+        // register the backdrop existance of current scrollableElm:
+        if (isScrollableInline) backdropCounter.inline++;
+        if (isScrollableBlock ) backdropCounter.block++;
+        
+        // applies the stylesheets when the counter is exactly 1:
+        if (backdropCounter.inline === 1) classList.add(noScrollbarStyleSheet.noScrollbarInline, 'no-scrollbar-inline');
+        if (backdropCounter.block  === 1) classList.add(noScrollbarStyleSheet.noScrollbarBlock , 'no-scrollbar-block' );
         
         
         
         // cleanups:
         return () => {
-            if (isScrollableInline) classList.remove(noScrollbarStyleSheet.noScrollbarInline);
-            if (isScrollableBlock ) classList.remove(noScrollbarStyleSheet.noScrollbarBlock );
+            // un-register the backdrop existance of current scrollableElm:
+            if (isScrollableInline && (backdropCounter.inline >= 1)) backdropCounter.inline--;
+            if (isScrollableBlock  && (backdropCounter.block  >= 1)) backdropCounter.block--;
+            
+            // un-applies the stylesheets when the counter is exactly 0:
+            if (backdropCounter.inline === 0) classList.remove(noScrollbarStyleSheet.noScrollbarInline, 'no-scrollbar-inline');
+            if (backdropCounter.block  === 0) classList.remove(noScrollbarStyleSheet.noScrollbarBlock , 'no-scrollbar-block' );
         };
     }, [isModal, viewportElm]);
     
