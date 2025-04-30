@@ -1,3 +1,4 @@
+export *            from './features/backdrop.js'
 export *            from './variants/BackdropVariant.js'
 
 export *            from './styles/elements.js'

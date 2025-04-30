@@ -49,6 +49,10 @@ import {
 
 // internals:
 import {
+    // features:
+    usesBackdrop,
+}                           from '../features/backdrop.js'
+import {
     // utilities:
     ifGlobalModal,
 }                           from '../utilities.js'
@@ -77,6 +81,7 @@ export const usesBackdropLayout = memoizeStyle(() => {
         borderRadius : 'inherit',
     });
     const {animationRule , animationVars} = usesAnimation();
+    const {backdropRule  , backdropVars } = usesBackdrop();
     
     // capabilities:
     const {                groupableVars} = usesGroupable();
@@ -102,6 +107,8 @@ export const usesBackdropLayout = memoizeStyle(() => {
             }),
             inset        : 0,          // span the <Modal> to the edges of <container>
             zIndex       : globalStacks.modalBackdrop,
+            translate    : `${backdropVars.scrollLeft} ${backdropVars.scrollTop}`,
+            willChange   : 'translate', // Forces Chrome to update the translate when we update the corresponding variables.
             
             
             
@@ -202,6 +209,7 @@ export const usesBackdropLayout = memoizeStyle(() => {
         // features:
         ...borderRule(),    // must be placed at the last
         ...animationRule(), // must be placed at the last
+        ...backdropRule(),
         
         
         

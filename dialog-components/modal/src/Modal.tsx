@@ -80,6 +80,10 @@ import {
 
 // internals:
 import {
+    // features:
+    usesBackdrop,
+}                           from './features/backdrop.js'
+import {
     // variants:
     BackdropVariant,
     useBackdropVariant,
@@ -165,6 +169,11 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     // rest props:
     const {
+        // refs:
+        elmRef,
+        
+        
+        
         // variants:
         backdropStyle      = 'regular',
         
@@ -245,6 +254,15 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     
     
     // refs:
+    const backdropRefInternal       = useRef<TElement|null>(null);
+    const mergedBackdropRef         = useMergeRefs(
+        // preserves the original `elmRef` from `props`:
+        elmRef,
+        
+        
+        
+        backdropRefInternal,
+    );
     const mergedModalUiRef          = useMergeRefs(
         // preserves the original `ref` from `modalUiComponent`:
         (
@@ -563,10 +581,12 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
     //     
     //     
     //     // setups:
-    //     const scrollableElm       = (viewportElm === document.body) ? (document.scrollingElement as HTMLElement) : viewportElm;
-    //     const scrollableEvent     = (viewportElm === document.body) ? document                                   : viewportElm;
-    //     const currentScrollTop    = scrollableElm.scrollTop;
-    //     const currentScrollLeft   = scrollableElm.scrollLeft;
+    //     const normalizedViewportElm = (viewportElm === document.body) ? (document.scrollingElement ?? document.documentElement) : viewportElm;
+    //     const scrollableElm         = normalizedViewportElm;
+    //     const scrollableEvent       = (normalizedViewportElm === document.scrollingElement) ? document : normalizedViewportElm;
+    //     
+    //     const currentScrollTop      = scrollableElm.scrollTop;
+    //     const currentScrollLeft     = scrollableElm.scrollLeft;
     //     
     //     const handlePreventScroll = (event: Event) => {
     //         if (event.target === scrollableEvent) { // only handle scroll on the viewport, ignores scroll bubbling from the children
@@ -595,7 +615,9 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         
         
         // setups:
-        const scrollableElm = (viewportElm === document.body) ? (document.scrollingElement as HTMLElement) : viewportElm;
+        const normalizedViewportElm = (viewportElm === document.body) ? (document.scrollingElement ?? document.documentElement) : viewportElm;
+        const scrollableElm         = normalizedViewportElm;
+        
         const [isScrollableInline, isScrollableBlock] = (() => {
             if (scrollableElm === document.scrollingElement) {
                 return [true, true];
@@ -618,6 +640,68 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         return () => {
             if (isScrollableInline) classList.remove(noScrollbarStyleSheet.noScrollbarInline);
             if (isScrollableBlock ) classList.remove(noScrollbarStyleSheet.noScrollbarBlock );
+        };
+    }, [isModal, viewportElm]);
+    
+    
+    
+    // watchdog update of <viewport>'s scrolling position to compensate <Backdrop> shifting:
+    // TODO: the backdrop having a "jitter effect" when the <viewport> is scrolled quickly, it need to be fixed.
+    
+    // features:
+    const {backdropVars} = usesBackdrop();
+    
+    useEffect(() => {
+        // conditions:
+        if (!viewportElm) return; // if undefined => server side => ignore
+        if (!isModal)     return; // only modal (blocking) mode
+        const backdropElm = backdropRefInternal.current as HTMLElement|null;
+        if (!backdropElm) return; // no backdrop => ignore
+        
+        
+        
+        // setups:
+        const normalizedViewportElm = (viewportElm === document.body) ? (document.scrollingElement ?? document.documentElement) : viewportElm;
+        const scrollableElm         = normalizedViewportElm;
+        const scrollableEvent       = (normalizedViewportElm === document.scrollingElement) ? document : normalizedViewportElm;
+        
+        const isLocalBackdrop       = (scrollableElm !== document.scrollingElement);
+        
+        const backdropStyle         = backdropElm.style;
+        
+        const handleUpdateScroll = (event?: Event) => {
+            // conditions:
+            if (event && (event.target !== scrollableEvent)) return; // ignores scroll bubbling from the children
+            
+            
+            
+            // actions:
+            const scrollTop  = isLocalBackdrop ? scrollableElm.scrollTop  : 0;
+            const scrollLeft = isLocalBackdrop ? scrollableElm.scrollLeft : 0;
+            
+            
+            backdropStyle.setProperty(
+                backdropVars.scrollTop
+                .slice(4, -1) // fix: var(--customProp) => --customProp
+                ,
+                `${scrollTop}px`
+            );
+            backdropStyle.setProperty(
+                backdropVars.scrollLeft
+                .slice(4, -1) // fix: var(--customProp) => --customProp
+                ,
+                `${scrollLeft}px`
+            );
+        };
+        handleUpdateScroll(); // the initial update
+        
+        if (isLocalBackdrop) scrollableEvent.addEventListener('scroll', handleUpdateScroll);
+        
+        
+        
+        // cleanups:
+        return () => {
+            if (isLocalBackdrop) scrollableEvent.removeEventListener('scroll', handleUpdateScroll);
         };
     }, [isModal, viewportElm]);
     
@@ -679,6 +763,11 @@ const Modal = <TElement extends Element = HTMLElement, TModalExpandedChangeEvent
         <Generic<TElement>
             // other props:
             {...restGenericProps}
+            
+            
+            
+            // refs:
+            elmRef={mergedBackdropRef}
             
             
             

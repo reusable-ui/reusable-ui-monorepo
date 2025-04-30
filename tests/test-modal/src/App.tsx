@@ -19,10 +19,7 @@ import {
 
 function App() {
     const divRef = useRef<HTMLDivElement|null>(null);
-    const [value, setValue] = useState(0);
-    const handleTriggerRerender = () => {
-        setValue(value + 1);
-    };
+    const [localMode, setLocalMode] = useState<boolean>(false);
     
     const [showModal, setShowModal] = useState<boolean>(false);
     const handleExpandedChange = useCallback((event: ModalExpandedChangeEvent<any>) => {
@@ -40,21 +37,20 @@ function App() {
             <HeadPortal>
                 <Styles />
             </HeadPortal>
-            <div className="App" ref={divRef}>
-                <article className='actions'>
-                    <button onClick={handleTriggerRerender}>
-                        Trigger re-render whole app
-                    </button>
-                </article>
+            <div className={`App ${localMode ? 'AppScrollable' : ''}`} ref={divRef}>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea inventore debitis, tempore sapiente possimus ratione velit voluptatibus quidem accusamus odio illo voluptate esse delectus et fugiat voluptatum voluptatem. Fuga, provident.</p>
-                <button onClick={() => setShowModal(!showModal)}>
-                    Show modal
-                </button>
+                <label>
+                    <input type='checkbox' checked={localMode} onChange={({target: {checked}}) => setLocalMode(checked)} />
+                    Local mode
+                </label>
                 <p>
                     Modal is {showModal ? 'shown' : 'hidden'}
                 </p>
+                <button onClick={() => setShowModal(!showModal)}>
+                    Show modal
+                </button>
                 <Modal expanded={showModal} onExpandedChange={handleExpandedChange} backdropStyle='static'
-                    viewport={divRef}
+                    viewport={localMode ? divRef : undefined}
                 >
                     <div tabIndex={-1} style={modalUiStyle}>
                         <p>Lorem ipsum dolor sit amet consectetur</p>
