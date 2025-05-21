@@ -975,46 +975,56 @@ const config = cssConfig(() => {
  * ---
  * 
  * ### **Usage**
- * - **Getter:** Retrieves the CSS variable reference.
- *   ```ts
- *   const value = colorVars.blue; // → "var(--col-blue)"
- *   ```
- * - **Setter:** Assigns a value (bare or expression).
- *   ```ts
- *   colorVars.myColor = "oklch(0.45 0.30 264)"; // Generates → "--col-myColor: oklch(0.45 0.30 264);"
- *   ```
- *   ```ts
- *   colorVars.myExpression = [[
- *      "oklch(from", colorVars.blue, " l c h / clamp(0.05, alpha * (1 + ", colorParamVars.soft, "), 1))"
- *   ]]; // Generates → "--col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));"
- *   ```
- * - **Deleting a Variable:**  
- *   Can be removed using any of the following:
- *   ```ts
- *   delete colorVars.myColor;
- *   colorVars.myColor = null;
- *   colorVars.myColor = undefined;
- *   ```
- * - **Expression Handling:**  
- *   The **cssfn library** processes values inside **single square brackets** (`[...]`) using `.join(', ')`,  
- *   and processes **double square brackets** (`[[...]]`) using `.join('')`.  
- *   In this case, we use **double brackets** for color-related expressions.
- * - **Example Rendered CSS Variables:**
- *   ```css
- *   :root {
- *       --col-blue: oklch(0.58 0.228 260);
- *       --col-indigo: oklch(0.49 0.278 287);
- *       --col-purple: oklch(0.50 0.188 295);
- *       --col-pink: oklch(0.60 0.209 355);
- *       ............
- *       --col-warningSoft: oklch(from var(--col-warning) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
- *       --col-dangerSoft: oklch(from var(--col-danger) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
- *       --col-lightSoft: oklch(from var(--col-light) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
- *       --col-darkSoft: oklch(from var(--col-dark) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
- *       --col-myColor: oklch(0.45 0.30 264);
- *       --col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
- *   }
- *   ```
+ * #### **Retrieving a CSS Variable (Getter)**
+ * Access the CSS variable reference:
+ * ```ts
+ * const value = colorVars.blue; // Resolves to "var(--col-blue)"
+ * ```
+ * 
+ * #### **Assigning a Custom Value (Setter)**
+ * Assigning a value directly:
+ * ```ts
+ * colorVars.myColor = "oklch(0.45 0.30 264)"; // Generates "--col-myColor: oklch(0.45 0.30 264);"
+ * ```
+ * Using an expression:
+ * ```ts
+ * colorVars.myExpression = [[
+ *    "oklch(from", colorVars.blue, " l c h / clamp(0.05, alpha * (1 + ", colorParamVars.soft, "), 1))"
+ * ]]; // Generates "--col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));"
+ * ```
+ * 
+ * #### **Removing a CSS Variable**
+ * A variable can be removed using any of the following:
+ * ```ts
+ * delete colorVars.myColor;
+ * colorVars.myColor = null;
+ * colorVars.myColor = undefined;
+ * ```
+ * 
+ * #### **Expression Handling**
+ * The **cssfn library** processes:
+ * - **Single brackets (`[...]`)** using `.join(', ')`  
+ * - **Double brackets (`[[...]]`)** using `.join('')`  
+ * 
+ * In this case, we use **double brackets** for color-related expressions.
+ * 
+ * #### **Rendered CSS Variables Example**
+ * Example of CSS variables generated:
+ * ```css
+ * :root {
+ *     --col-blue: oklch(0.58 0.228 260);
+ *     --col-indigo: oklch(0.49 0.278 287);
+ *     --col-purple: oklch(0.50 0.188 295);
+ *     --col-pink: oklch(0.60 0.209 355);
+ *     ............
+ *     --col-warningSoft: oklch(from var(--col-warning) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *     --col-dangerSoft: oklch(from var(--col-danger) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *     --col-lightSoft: oklch(from var(--col-light) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *     --col-darkSoft: oklch(from var(--col-dark) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *     --col-myColor: oklch(0.45 0.30 264);
+ *     --col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ * }
+ * ```
  */
 export const colorVars        = config[0];
 
@@ -1028,45 +1038,54 @@ export const colorVars        = config[0];
  * 
  * ### **Usage**
  * - **Getter:** Retrieves the assembled CSS expression.
- *   ```ts
- *   const expression = colorExpressions.primaryBase; // →  [[ "oklch(from ", "var(--col-primary)", " calc(((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * l) + (1 - min(1, (1 - (", "var(--col-p-base)", " * ", "var(--col-p-mode)", "))))) calc((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * c) h / alpha)" ]]
- *   ```
- * - **Setter:** Assigns a value (bare or expression).
- *   ```ts
- *   colorExpressions.myColor = "oklch(0.45 0.30 264)"; // Generates → "--col-myColor: oklch(0.45 0.30 264);"
- *   ```
- *   ```ts
- *   colorExpressions.myExpression = [[
- *      "oklch(from", colorVars.blue, " l c h / clamp(0.05, alpha * (1 + ", colorParamVars.soft, "), 1))"
- *   ]]; // Generates → "--col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));"
- *   ```
- * - **Deleting a Variable:**  
- *   Can be removed using any of the following:
- *   ```ts
- *   delete colorExpressions.myColor;
- *   colorExpressions.myColor = null;
- *   colorExpressions.myColor = undefined;
- *   ```
- * - **Expression Handling:**  
- *   The **cssfn library** processes values inside **single square brackets** (`[...]`) using `.join(', ')`,  
- *   and processes **double square brackets** (`[[...]]`) using `.join('')`.  
- *   In this case, we use **double brackets** for color-related expressions.
- * - **Example Rendered CSS Variables:**
- *   ```css
- *   :root {
- *       --col-blue: oklch(0.58 0.228 260);
- *       --col-indigo: oklch(0.49 0.278 287);
- *       --col-purple: oklch(0.50 0.188 295);
- *       --col-pink: oklch(0.60 0.209 355);
- *       ............
- *       --col-warningSoft: oklch(from var(--col-warning) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
- *       --col-dangerSoft: oklch(from var(--col-danger) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
- *       --col-lightSoft: oklch(from var(--col-light) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
- *       --col-darkSoft: oklch(from var(--col-dark) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
- *       --col-myColor: oklch(0.45 0.30 264);
- *       --col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
- *   }
- *   ```
+ * ```ts
+ * const expression = colorExpressions.primaryBase; // Resolves to  [[ "oklch(from ", "var(--col-primary)", " calc(((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * l) + (1 - min(1, (1 - (", "var(--col-p-base)", " * ", "var(--col-p-mode)", "))))) calc((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * c) h / alpha)" ]]
+ * ```
+ * 
+ * #### **Assigning a Custom Value (Setter)**
+ * Assigning a value directly:
+ * ```ts
+ * colorExpressions.myColor = "oklch(0.45 0.30 264)"; // Generates "--col-myColor: oklch(0.45 0.30 264);"
+ * ```
+ * Using an expression:
+ * ```ts
+ * colorExpressions.myExpression = [[
+ *    "oklch(from", colorVars.blue, " l c h / clamp(0.05, alpha * (1 + ", colorParamVars.soft, "), 1))"
+ * ]]; // Generates "--col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));"
+ * ```
+ * 
+ * #### **Removing a CSS Variable**
+ * A variable can be removed using any of the following:
+ * ```ts
+ * delete colorExpressions.myColor;
+ * colorExpressions.myColor = null;
+ * colorExpressions.myColor = undefined;
+ * ```
+ * 
+ * #### **Expression Handling**
+ * The **cssfn library** processes:
+ * - **Single brackets (`[...]`)** using `.join(', ')`  
+ * - **Double brackets (`[[...]]`)** using `.join('')`  
+ * 
+ * In this case, we use **double brackets** for color-related expressions.
+ * 
+ * #### **Rendered CSS Variables Example**
+ * Example of CSS variables generated:
+ * ```css
+ * :root {
+ *     --col-blue: oklch(0.58 0.228 260);
+ *     --col-indigo: oklch(0.49 0.278 287);
+ *     --col-purple: oklch(0.50 0.188 295);
+ *     --col-pink: oklch(0.60 0.209 355);
+ *     ............
+ *     --col-warningSoft: oklch(from var(--col-warning) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *     --col-dangerSoft: oklch(from var(--col-danger) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *     --col-lightSoft: oklch(from var(--col-light) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *     --col-darkSoft: oklch(from var(--col-dark) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *     --col-myColor: oklch(0.45 0.30 264);
+ *     --col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ * }
+ * ```
  */
 export const colorExpressions = config[1];
 
@@ -1075,38 +1094,40 @@ export const colorExpressions = config[1];
  * It provides control over prefixes, selectors, and dynamic updates.
  * 
  * - **Prefix Management:**  
- *   Defines the prefix used for all color parameter variables.
- *   ```ts
- *   colorSettings.prefix = 'col';
- *   ```
+ * Defines the prefix used for all color parameter variables.
+ * ```ts
+ * colorSettings.prefix = 'col';
+ * ```
  * - **Selector Scope:**  
- *   Ensures all parameters are applied inside `:root`.
- *   ```ts
- *   colorSettings.selector = ':root';
- *   ```
+ * Ensures all parameters are applied inside `:root`.
+ * ```ts
+ * colorSettings.selector = ':root';
+ * ```
  * - **Change Listener:**  
- *   Detects updates and responds dynamically.
- *   ```ts
- *   colorSettings.onChange.subscribe({
- *       next: () => {
- *           console.log("Color system updated!");
- *       },
- *   });
- *   ```
- * - **Example Rendered CSS Variables:**
- *   ```css
- *   :root {
- *       --col-blue: oklch(0.58 0.228 260);
- *       --col-indigo: oklch(0.49 0.278 287);
- *       --col-purple: oklch(0.50 0.188 295);
- *       --col-pink: oklch(0.60 0.209 355);
- *       ............
- *       --col-warningSoft: oklch(from var(--col-warning) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
- *       --col-dangerSoft: oklch(from var(--col-danger) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
- *       --col-lightSoft: oklch(from var(--col-light) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
- *       --col-darkSoft: oklch(from var(--col-dark) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
- *   }
- *   ```
+ * Detects updates and responds dynamically.
+ * ```ts
+ * colorSettings.onChange.subscribe({
+ *     next: () => {
+ *         console.log("Color system updated!");
+ *     },
+ * });
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * Example of CSS variables generated:
+ * ```css
+ * :root {
+ *     --col-blue: oklch(0.58 0.228 260);
+ *     --col-indigo: oklch(0.49 0.278 287);
+ *     --col-purple: oklch(0.50 0.188 295);
+ *     --col-pink: oklch(0.60 0.209 355);
+ *     ............
+ *     --col-warningSoft: oklch(from var(--col-warning) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *     --col-dangerSoft: oklch(from var(--col-danger) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *     --col-lightSoft: oklch(from var(--col-light) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *     --col-darkSoft: oklch(from var(--col-dark) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ * }
+ * ```
  */
 export const colorSettings    = config[2];
 

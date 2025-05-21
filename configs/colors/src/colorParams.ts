@@ -178,42 +178,58 @@ const config = cssConfig(() => {
  * ---
  * 
  * ### **Usage**
- * - **Getter:** Retrieves the CSS variable reference.
- *   ```ts
- *   const value = colorParamVars.mild; // → "var(--col-p-mild)"
- *   ```
- * - **Setter:** Assigns a value (bare or expression).
- *   ```ts
- *   colorParamVars.myParam = "3rem"; // Generates → "--col-p-myParam: 3rem;"
- *   ```
- *   ```ts
- *   colorParamVars.myExpression = [[
- *      "calc(", colorParamVars.mild, " * 2)"
- *   ]]; // Generates → "--col-p-myExpression: calc(var(--col-p-mild) * 2);"
- *   ```
- * - **Deleting a Variable:**  
- *   Can be removed using any of the following:
- *   ```ts
- *   delete colorParamVars.myParam;
- *   colorParamVars.myParam = null;
- *   colorParamVars.myParam = undefined;
- *   ```
- * - **Example Rendered CSS Variables:**
- *   ```css
- *   :root {
- *       --col-p-mode: 1;
- *       --col-p-base: -0.05;
- *       --col-p-mild: 0.6;
- *       --col-p-flip: 0.9;
- *       --col-p-text: -0.9;
- *       --col-p-bold: -0.8;
- *       --col-p-thin: -0.6;
- *       --col-p-edge: -0.05;
- *       --col-p-soft: -0.5;
- *       --col-p-myParam: 3rem;
- *       --col-p-myExpression: calc(var(--col-p-mild) * 2);
- *   }
- *   ```
+ * #### **Retrieving a CSS Variable (Getter)**
+ * Access the CSS variable reference:
+ * ```ts
+ * const value = colorParamVars.mild; // Resolves to "var(--col-p-mild)"
+ * ```
+ * 
+ * #### **Assigning a Custom Value (Setter)**
+ * Assigning a value directly:
+ * ```ts
+ * colorParamVars.myParam = "3rem"; // Generates "--col-p-myParam: 3rem;"
+ * ```
+ * Using an expression:
+ * ```ts
+ * colorParamVars.myExpression = [[
+ *    "calc(", colorParamVars.mild, " * 2)"
+ * ]]; // Generates "--col-p-myExpression: calc(var(--col-p-mild) * 2);"
+ * ```
+ * 
+ * #### **Removing a CSS Variable**
+ * A variable can be removed using any of the following:
+ * ```ts
+ * delete colorParamVars.myParam;
+ * colorParamVars.myParam = null;
+ * colorParamVars.myParam = undefined;
+ * ```
+ * 
+ * #### **Expression Handling**
+ * The **cssfn library** processes:
+ * - **Single brackets (`[...]`)** using `.join(', ')`  
+ * - **Double brackets (`[[...]]`)** using `.join('')`  
+ * 
+ * In this case, we use **double brackets** for color-param-related expressions.
+ * 
+ * #### **Rendered CSS Variables Example**
+ * Example of CSS variables generated:
+ * ```css
+ * :root {
+ *     --col-p-mode: 1;
+ *     --col-p-base: -0.05;
+ *     --col-p-mild: 0.7;
+ *     --col-p-flip: 0.9;
+ *     --col-p-flipThreshold: 0.75;
+ *     --col-p-text: -0.9;
+ *     --col-p-face: -0.05;
+ *     --col-p-bold: -0.6;
+ *     --col-p-thin: -0.5;
+ *     --col-p-edge: -0.05;
+ *     --col-p-soft: -0.5;
+ *     --col-p-myParam: 3rem;
+ *     --col-p-myExpression: calc(var(--col-p-mild) * 2);
+ * }
+ * ```
  */
 export const colorParamVars        = config[0];
 
@@ -227,45 +243,56 @@ export const colorParamVars        = config[0];
  * 
  * ### **Usage**
  * - **Getter:** Retrieves the assembled CSS expression.
- *   ```ts
- *   const expression = colorParamExpressions.mild; // → 0.7
- *   ```
- * - **Setter:** Assigns a value (bare or expression).
- *   ```ts
- *   colorParamExpressions.myParam = "3rem"; // Generates → "--col-p-myParam: 3rem;"
- *   ```
- *   ```ts
- *   colorParamExpressions.myExpression = [[
- *      "calc(", colorParamVars.mild, " * 2)"
- *   ]]; // Generates → "--col-p-myExpression: calc(var(--col-p-mild) * 2);"
- *   ```
- * - **Deleting a Variable:**  
- *   Can be removed using any of the following:
- *   ```ts
- *   delete colorParamExpressions.myParam;
- *   colorParamExpressions.myParam = null;
- *   colorParamExpressions.myParam = undefined;
- *   ```
- * - **Expression Handling:**  
- *   The **cssfn library** processes values inside **double square brackets** (`[[...]]`) using `.join('')`,  
- *   and processes **single brackets** (`[...]`) with `.join(', ')`.  
- *   In this case, we use **double brackets** for color-related expressions.
- * - **Example Rendered CSS Variables:**
- *   ```css
- *   :root {
- *       --col-p-mode: 1;
- *       --col-p-base: -0.05;
- *       --col-p-mild: 0.7;
- *       --col-p-flip: 0.9;
- *       --col-p-text: -0.9;
- *       --col-p-bold: -0.8;
- *       --col-p-thin: -0.6;
- *       --col-p-edge: -0.05;
- *       --col-p-soft: -0.5;
- *       --col-p-myParam: 3rem;
- *       --col-p-myExpression: calc(var(--col-p-mild) * 2);
- *   }
- *   ```
+ * ```ts
+ * const expression = colorParamExpressions.mild; // Resolves to 0.7
+ * ```
+ * 
+ * #### **Assigning a Custom Value (Setter)**
+ * Assigning a value directly:
+ * ```ts
+ * colorParamExpressions.myParam = "3rem"; // Generates "--col-p-myParam: 3rem;"
+ * ```
+ * Using an expression:
+ * ```ts
+ * colorParamExpressions.myExpression = [[
+ *    "calc(", colorParamVars.mild, " * 2)"
+ * ]]; // Generates "--col-p-myExpression: calc(var(--col-p-mild) * 2);"
+ * ```
+ * 
+ * #### **Removing a CSS Variable**
+ * A variable can be removed using any of the following:
+ * ```ts
+ * delete colorParamExpressions.myParam;
+ * colorParamExpressions.myParam = null;
+ * colorParamExpressions.myParam = undefined;
+ * ```
+ * 
+ * #### **Expression Handling**
+ * The **cssfn library** processes:
+ * - **Single brackets (`[...]`)** using `.join(', ')`  
+ * - **Double brackets (`[[...]]`)** using `.join('')`  
+ * 
+ * In this case, we use **double brackets** for color-param-related expressions.
+ * 
+ * #### **Rendered CSS Variables Example**
+ * Example of CSS variables generated:
+ * ```css
+ * :root {
+ *     --col-p-mode: 1;
+ *     --col-p-base: -0.05;
+ *     --col-p-mild: 0.7;
+ *     --col-p-flip: 0.9;
+ *     --col-p-flipThreshold: 0.75;
+ *     --col-p-text: -0.9;
+ *     --col-p-face: -0.05;
+ *     --col-p-bold: -0.6;
+ *     --col-p-thin: -0.5;
+ *     --col-p-edge: -0.05;
+ *     --col-p-soft: -0.5;
+ *     --col-p-myParam: 3rem;
+ *     --col-p-myExpression: calc(var(--col-p-mild) * 2);
+ * }
+ * ```
  */
 export const colorParamExpressions = config[1];
 
@@ -274,38 +301,40 @@ export const colorParamExpressions = config[1];
  * It provides control over prefixes, selectors, and dynamic updates.
  * 
  * - **Prefix Management:**  
- *   Defines the prefix used for all color parameter variables.
- *   ```ts
- *   colorParamSettings.prefix = 'col-p';
- *   ```
+ * Defines the prefix used for all color parameter variables.
+ * ```ts
+ * colorParamSettings.prefix = 'col-p';
+ * ```
  * - **Selector Scope:**  
- *   Ensures all parameters are applied inside `:root`.
- *   ```ts
- *   colorParamSettings.selector = ':root';
- *   ```
+ * Ensures all parameters are applied inside `:root`.
+ * ```ts
+ * colorParamSettings.selector = ':root';
+ * ```
  * - **Change Listener:**  
- *   Detects updates and responds dynamically.
- *   ```ts
- *   colorParamSettings.onChange.subscribe({
- *       next: () => {
- *           console.log("Color parameters updated!");
- *       },
- *   });
- *   ```
- * - **Example Rendered CSS Variables:**
- *   ```css
- *   :root {
- *       --col-p-mode: 1;
- *       --col-p-base: -0.05;
- *       --col-p-mild: 0.6;
- *       --col-p-flip: 0.9;
- *       --col-p-text: -0.9;
- *       --col-p-bold: -0.8;
- *       --col-p-thin: -0.6;
- *       --col-p-edge: -0.05;
- *       --col-p-soft: -0.5;
- *   }
- *   ```
+ * Detects updates and responds dynamically.
+ * ```ts
+ * colorParamSettings.onChange.subscribe({
+ *     next: () => {
+ *         console.log("Color parameters updated!");
+ *     },
+ * });
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * Example of CSS variables generated:
+ * ```css
+ * :root {
+ *     --col-p-mode: 1;
+ *     --col-p-base: -0.05;
+ *     --col-p-mild: 0.6;
+ *     --col-p-flip: 0.9;
+ *     --col-p-text: -0.9;
+ *     --col-p-bold: -0.8;
+ *     --col-p-thin: -0.6;
+ *     --col-p-edge: -0.05;
+ *     --col-p-soft: -0.5;
+ * }
+ * ```
  */
 export const colorParamSettings    = config[2];
 
