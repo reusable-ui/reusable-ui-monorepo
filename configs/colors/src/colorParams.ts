@@ -179,16 +179,16 @@ const config = cssConfig(() => {
  * ### **Usage**
  * - **Getter:** Retrieves the CSS variable reference.
  *   ```ts
- *   const value = colorParamVars.mild; // → "var(--colparam-mild)"
+ *   const value = colorParamVars.mild; // → "var(--col-p-mild)"
  *   ```
  * - **Setter:** Assigns a value (bare or expression).
  *   ```ts
- *   colorParamVars.myParam = "3rem"; // Generates → "--colparam-myParam: 3rem;"
+ *   colorParamVars.myParam = "3rem"; // Generates → "--col-p-myParam: 3rem;"
  *   ```
  *   ```ts
  *   colorParamVars.myExpression = [[
  *      "calc(", colorParamVars.mild, " * 2)"
- *   ]]; // Generates → "--colparam-myExpression: calc(var(--colparam-mild) * 2);"
+ *   ]]; // Generates → "--col-p-myExpression: calc(var(--col-p-mild) * 2);"
  *   ```
  * - **Deleting a Variable:**  
  *   Can be removed using any of the following:
@@ -200,17 +200,17 @@ const config = cssConfig(() => {
  * - **Example Rendered CSS Variables:**
  *   ```css
  *   :root {
- *       --colparam-mode: 1;
- *       --colparam-base: -0.05;
- *       --colparam-mild: 0.6;
- *       --colparam-flip: 0.9;
- *       --colparam-text: -0.9;
- *       --colparam-bold: -0.8;
- *       --colparam-thin: -0.6;
- *       --colparam-edge: -0.05;
- *       --colparam-soft: -0.5;
- *       --colparam-myParam: 3rem;
- *       --colparam-myExpression: calc(var(--colparam-mild) * 2);
+ *       --col-p-mode: 1;
+ *       --col-p-base: -0.05;
+ *       --col-p-mild: 0.6;
+ *       --col-p-flip: 0.9;
+ *       --col-p-text: -0.9;
+ *       --col-p-bold: -0.8;
+ *       --col-p-thin: -0.6;
+ *       --col-p-edge: -0.05;
+ *       --col-p-soft: -0.5;
+ *       --col-p-myParam: 3rem;
+ *       --col-p-myExpression: calc(var(--col-p-mild) * 2);
  *   }
  *   ```
  */
@@ -230,12 +230,12 @@ export const colorParamVars        = config[0];
  *   ```
  * - **Setter:** Assigns a value (bare or expression).
  *   ```ts
- *   colorParamExpressions.myParam = "3rem"; // Generates → "--colparam-myParam: 3rem;"
+ *   colorParamExpressions.myParam = "3rem"; // Generates → "--col-p-myParam: 3rem;"
  *   ```
  *   ```ts
  *   colorParamExpressions.myExpression = [[
  *      "calc(", colorParamVars.mild, " * 2)"
- *   ]]; // Generates → "--colparam-myExpression: calc(var(--colparam-mild) * 2);"
+ *   ]]; // Generates → "--col-p-myExpression: calc(var(--col-p-mild) * 2);"
  *   ```
  * - **Deleting a Variable:**  
  *   Can be removed using any of the following:
@@ -251,17 +251,17 @@ export const colorParamVars        = config[0];
  * - **Example Rendered CSS Variables:**
  *   ```css
  *   :root {
- *       --colparam-mode: 1;
- *       --colparam-base: -0.05;
- *       --colparam-mild: 0.7;
- *       --colparam-flip: 0.9;
- *       --colparam-text: -0.9;
- *       --colparam-bold: -0.8;
- *       --colparam-thin: -0.6;
- *       --colparam-edge: -0.05;
- *       --colparam-soft: -0.5;
- *       --colparam-myParam: 3rem;
- *       --colparam-myExpression: calc(var(--colparam-mild) * 2);
+ *       --col-p-mode: 1;
+ *       --col-p-base: -0.05;
+ *       --col-p-mild: 0.7;
+ *       --col-p-flip: 0.9;
+ *       --col-p-text: -0.9;
+ *       --col-p-bold: -0.8;
+ *       --col-p-thin: -0.6;
+ *       --col-p-edge: -0.05;
+ *       --col-p-soft: -0.5;
+ *       --col-p-myParam: 3rem;
+ *       --col-p-myExpression: calc(var(--col-p-mild) * 2);
  *   }
  *   ```
  */
@@ -274,7 +274,7 @@ export const colorParamExpressions = config[1];
  * - **Prefix Management:**  
  *   Defines the prefix used for all color parameter variables.
  *   ```ts
- *   colorParamSettings.prefix = 'colparam';
+ *   colorParamSettings.prefix = 'col-p';
  *   ```
  * - **Selector Scope:**  
  *   Ensures all parameters are applied inside `:root`.
@@ -293,15 +293,15 @@ export const colorParamExpressions = config[1];
  * - **Example Rendered CSS Variables:**
  *   ```css
  *   :root {
- *       --colparam-mode: 1;
- *       --colparam-base: -0.05;
- *       --colparam-mild: 0.6;
- *       --colparam-flip: 0.9;
- *       --colparam-text: -0.9;
- *       --colparam-bold: -0.8;
- *       --colparam-thin: -0.6;
- *       --colparam-edge: -0.05;
- *       --colparam-soft: -0.5;
+ *       --col-p-mode: 1;
+ *       --col-p-base: -0.05;
+ *       --col-p-mild: 0.6;
+ *       --col-p-flip: 0.9;
+ *       --col-p-text: -0.9;
+ *       --col-p-bold: -0.8;
+ *       --col-p-thin: -0.6;
+ *       --col-p-edge: -0.05;
+ *       --col-p-soft: -0.5;
  *   }
  *   ```
  */

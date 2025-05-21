@@ -985,7 +985,7 @@ const config = cssConfig(() => {
  *   ```ts
  *   colorVars.myExpression = [[
  *      "oklch(from", colorVars.blue, " l c h / clamp(0.05, alpha * (1 + ", colorParamVars.soft, "), 1))"
- *   ]]; // Generates → "--col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--colparam-soft)), 1));"
+ *   ]]; // Generates → "--col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));"
  *   ```
  * - **Deleting a Variable:**  
  *   Can be removed using any of the following:
@@ -1002,12 +1002,12 @@ const config = cssConfig(() => {
  *       --col-purple: oklch(0.50 0.188 295);
  *       --col-pink: oklch(0.60 0.209 355);
  *       ............
- *       --col-warningSoft: oklch(from var(--col-warning) l c h / clamp(0.05, alpha * (1 + var(--colparam-soft)), 1));
- *       --col-dangerSoft: oklch(from var(--col-danger) l c h / clamp(0.05, alpha * (1 + var(--colparam-soft)), 1));
- *       --col-lightSoft: oklch(from var(--col-light) l c h / clamp(0.05, alpha * (1 + var(--colparam-soft)), 1));
- *       --col-darkSoft: oklch(from var(--col-dark) l c h / clamp(0.05, alpha * (1 + var(--colparam-soft)), 1));
+ *       --col-warningSoft: oklch(from var(--col-warning) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *       --col-dangerSoft: oklch(from var(--col-danger) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *       --col-lightSoft: oklch(from var(--col-light) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *       --col-darkSoft: oklch(from var(--col-dark) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
  *       --col-myColor: oklch(0.45 0.30 264);
- *       --col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--colparam-soft)), 1));
+ *       --col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
  *   }
  *   ```
  */
@@ -1023,7 +1023,7 @@ export const colorVars        = config[0];
  * ### **Usage**
  * - **Getter:** Retrieves the assembled CSS expression.
  *   ```ts
- *   const expression = colorExpressions.primaryBase; // →  [[ "oklch(from ", "var(--col-primary)", " calc(((1 - max(", "var(--colparam-base)", ", (0 - ", "var(--colparam-base)", "))) * l) + (1 - min(1, (1 - (", "var(--colparam-base)", " * ", "var(--colparam-mode)", "))))) calc((1 - max(", "var(--colparam-base)", ", (0 - ", "var(--colparam-base)", "))) * c) h / alpha)" ]]
+ *   const expression = colorExpressions.primaryBase; // →  [[ "oklch(from ", "var(--col-primary)", " calc(((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * l) + (1 - min(1, (1 - (", "var(--col-p-base)", " * ", "var(--col-p-mode)", "))))) calc((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * c) h / alpha)" ]]
  *   ```
  * - **Setter:** Assigns a value (bare or expression).
  *   ```ts
@@ -1032,7 +1032,7 @@ export const colorVars        = config[0];
  *   ```ts
  *   colorExpressions.myExpression = [[
  *      "oklch(from", colorVars.blue, " l c h / clamp(0.05, alpha * (1 + ", colorParamVars.soft, "), 1))"
- *   ]]; // Generates → "--col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--colparam-soft)), 1));"
+ *   ]]; // Generates → "--col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));"
  *   ```
  * - **Deleting a Variable:**  
  *   Can be removed using any of the following:
@@ -1053,12 +1053,12 @@ export const colorVars        = config[0];
  *       --col-purple: oklch(0.50 0.188 295);
  *       --col-pink: oklch(0.60 0.209 355);
  *       ............
- *       --col-warningSoft: oklch(from var(--col-warning) l c h / clamp(0.05, alpha * (1 + var(--colparam-soft)), 1));
- *       --col-dangerSoft: oklch(from var(--col-danger) l c h / clamp(0.05, alpha * (1 + var(--colparam-soft)), 1));
- *       --col-lightSoft: oklch(from var(--col-light) l c h / clamp(0.05, alpha * (1 + var(--colparam-soft)), 1));
- *       --col-darkSoft: oklch(from var(--col-dark) l c h / clamp(0.05, alpha * (1 + var(--colparam-soft)), 1));
+ *       --col-warningSoft: oklch(from var(--col-warning) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *       --col-dangerSoft: oklch(from var(--col-danger) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *       --col-lightSoft: oklch(from var(--col-light) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *       --col-darkSoft: oklch(from var(--col-dark) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
  *       --col-myColor: oklch(0.45 0.30 264);
- *       --col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--colparam-soft)), 1));
+ *       --col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
  *   }
  *   ```
  */
@@ -1095,10 +1095,10 @@ export const colorExpressions = config[1];
  *       --col-purple: oklch(0.50 0.188 295);
  *       --col-pink: oklch(0.60 0.209 355);
  *       ............
- *       --col-warningSoft: oklch(from var(--col-warning) l c h / clamp(0.05, alpha * (1 + var(--colparam-soft)), 1));
- *       --col-dangerSoft: oklch(from var(--col-danger) l c h / clamp(0.05, alpha * (1 + var(--colparam-soft)), 1));
- *       --col-lightSoft: oklch(from var(--col-light) l c h / clamp(0.05, alpha * (1 + var(--colparam-soft)), 1));
- *       --col-darkSoft: oklch(from var(--col-dark) l c h / clamp(0.05, alpha * (1 + var(--colparam-soft)), 1));
+ *       --col-warningSoft: oklch(from var(--col-warning) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *       --col-dangerSoft: oklch(from var(--col-danger) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *       --col-lightSoft: oklch(from var(--col-light) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *       --col-darkSoft: oklch(from var(--col-dark) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
  *   }
  *   ```
  */
