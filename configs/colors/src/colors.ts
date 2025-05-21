@@ -994,6 +994,10 @@ const config = cssConfig(() => {
  *   colorVars.myColor = null;
  *   colorVars.myColor = undefined;
  *   ```
+ * - **Expression Handling:**  
+ *   The **cssfn library** processes values inside **double square brackets** (`[[...]]`) using `.join('')`,  
+ *   and processes **single brackets** (`[...]`) with `.join(', ')`.  
+ *   In this case, we use **double brackets** for color-related expressions.
  * - **Example Rendered CSS Variables:**
  *   ```css
  *   :root {
