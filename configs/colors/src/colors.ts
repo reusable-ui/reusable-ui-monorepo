@@ -968,7 +968,8 @@ const config = cssConfig(() => {
 }, { prefix: 'col' });
 
 /**
- * A `Refs<>` object represents CSS variables mapped to a color system, allowing dynamic adjustments through JavaScript.
+ * A `Refs<>` object represents CSS variables mapped to a **color system**, allowing dynamic adjustments through JavaScript.
+ * 
  * These values should **not be manually modified outside this system**, as they are managed by `cssConfig()`.
  * 
  * ---
@@ -1020,6 +1021,7 @@ export const colorVars        = config[0];
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
  * These values are **not precomputed** but instead represent formula-driven expressions.
+ * 
  * These values should **not be manually modified outside this system**, as they are managed by `cssConfig()`.
  * 
  * ---
