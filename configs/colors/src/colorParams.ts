@@ -327,3 +327,8 @@ export const colorParamValues = colorParamExpressions;
  * @deprecated Use `colorParamSettings` instead.
  */
 export const colorParamConfig = colorParamSettings;
+
+/**
+ * @deprecated Use `colorParamSettings` instead.
+ */
+export const cssColorParamConfig = colorParamSettings;

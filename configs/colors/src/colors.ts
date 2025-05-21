@@ -1124,3 +1124,8 @@ export const colorValues = colorExpressions;
  * @deprecated Use `colorSettings` instead.
  */
 export const colorConfig = colorSettings;
+
+/**
+ * @deprecated Use `colorSettings` instead.
+ */
+export const cssColorConfig = colorSettings;
