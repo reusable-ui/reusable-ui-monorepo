@@ -55,7 +55,7 @@ const basicVariants = () => style({
                 // Foreground:
                 '--fg-base': colorVars[`${themeName}Flip`],
                 '--fg-mild': colorVars[`${themeName}Text`],
-                '--fg-edge': colorVars[`${themeName}Edge`],
+                '--fg-edge': colorVars[`${themeName}Face`],
                 
                 // Border:
                 '--bd-base': colorVars[`${themeName}Bold`],
