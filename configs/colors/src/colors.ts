@@ -934,7 +934,7 @@ const config = cssConfig(() => {
     
     
     
-    // Combine all colors:
+    // Merge all colors definitions:
     return {
         // Constants:
         ...commonColors,
