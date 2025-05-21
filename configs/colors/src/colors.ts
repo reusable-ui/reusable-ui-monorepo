@@ -995,8 +995,8 @@ const config = cssConfig(() => {
  *   colorVars.myColor = undefined;
  *   ```
  * - **Expression Handling:**  
- *   The **cssfn library** processes values inside **double square brackets** (`[[...]]`) using `.join('')`,  
- *   and processes **single brackets** (`[...]`) with `.join(', ')`.  
+ *   The **cssfn library** processes values inside **single square brackets** (`[...]`) using `.join(', ')`,  
+ *   and processes **double square brackets** (`[[...]]`) using `.join('')`.  
  *   In this case, we use **double brackets** for color-related expressions.
  * - **Example Rendered CSS Variables:**
  *   ```css
@@ -1046,8 +1046,8 @@ export const colorVars        = config[0];
  *   colorExpressions.myColor = undefined;
  *   ```
  * - **Expression Handling:**  
- *   The **cssfn library** processes values inside **double square brackets** (`[[...]]`) using `.join('')`,  
- *   and processes **single brackets** (`[...]`) with `.join(', ')`.  
+ *   The **cssfn library** processes values inside **single square brackets** (`[...]`) using `.join(', ')`,  
+ *   and processes **double square brackets** (`[[...]]`) using `.join('')`.  
  *   In this case, we use **double brackets** for color-related expressions.
  * - **Example Rendered CSS Variables:**
  *   ```css
