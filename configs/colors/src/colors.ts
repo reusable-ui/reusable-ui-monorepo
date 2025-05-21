@@ -1113,17 +1113,17 @@ export {
 /**
  * @deprecated Use `colorVars` instead.
  */
-export const colors      = colorVars;
+export const colors         = colorVars;
 
 /**
  * @deprecated Use `colorExpressions` instead.
  */
-export const colorValues = colorExpressions;
+export const colorValues    = colorExpressions;
 
 /**
  * @deprecated Use `colorSettings` instead.
  */
-export const colorConfig = colorSettings;
+export const colorConfig    = colorSettings;
 
 /**
  * @deprecated Use `colorSettings` instead.

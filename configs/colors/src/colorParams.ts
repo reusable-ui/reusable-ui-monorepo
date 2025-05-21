@@ -316,17 +316,17 @@ export {
 /**
  * @deprecated Use `colorParamVars` instead.
  */
-export const colorParams      = colorParamVars;
+export const colorParams         = colorParamVars;
 
 /**
  * @deprecated Use `colorParamExpressions` instead.
  */
-export const colorParamValues = colorParamExpressions;
+export const colorParamValues    = colorParamExpressions;
 
 /**
  * @deprecated Use `colorParamSettings` instead.
  */
-export const colorParamConfig = colorParamSettings;
+export const colorParamConfig    = colorParamSettings;
 
 /**
  * @deprecated Use `colorParamSettings` instead.
