@@ -1,31 +1,35 @@
 {
   "name": "@reusable-ui/colors",
-  "version": "6.5.0",
-  "description": "A color management system for web components using css variables (css custom properties).",
+  "version": "7.0.0",
+  "description": "A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.",
   "keywords": [
-    "colors",
-    "themes",
-    "css",
-    "stylesheet",
-    "config",
-    "configuration",
-    "variables",
-    "property"
+    "color system",
+    "themeable",
+    "dynamic styling",
+    "CSS custom properties",
+    "CSS variables",
+    "UI design",
+    "web components",
+    "customizable colors"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "configs/colors"
   },
-  "main": "dist/colors.js",
-  "types": "dist/colors.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/colors.js",
-    "./index": "./dist/colors.js",
-    "./index.js": "./dist/colors.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -39,12 +43,6 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.2.0",
-    "@types/color": "^3.0.3",
-    "color": "^4.2.3"
-  },
-  "devDependencies": {
-    "@types/jsdom": "^21.1.1",
-    "jsdom": "^22.0.0"
+    "@cssfn/core": "^4.0.0"
   }
 }
