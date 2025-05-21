@@ -168,7 +168,7 @@ const config = cssConfig(() => {
          */
         soft            : -0.5      as number,
     };
-}, { prefix: 'colparam' });
+}, { prefix: 'col-p' });
 
 /**
  * A `Refs<>` object represents CSS variables mapped to color parameters, allowing dynamic adjustments through JavaScript.
