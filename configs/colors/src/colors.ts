@@ -982,11 +982,11 @@ const config = cssConfig(() => {
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
- * Assigning a value directly:
+ * **Direct Assignment:**
  * ```ts
  * colorVars.myColor = "oklch(0.45 0.30 264)"; // Generates "--col-myColor: oklch(0.45 0.30 264);"
  * ```
- * Using an expression:
+ * **Expression Assignment:**
  * ```ts
  * colorVars.myExpression = [[
  *    "oklch(from", colorVars.blue, " l c h / clamp(0.05, alpha * (1 + ", colorParamVars.soft, "), 1))"
@@ -1003,8 +1003,8 @@ const config = cssConfig(() => {
  * 
  * #### **Expression Handling**
  * The **cssfn library** processes:
- * - **Single brackets (`[...]`)** using `.join(', ')`  
- * - **Double brackets (`[[...]]`)** using `.join('')`  
+ * - **Single brackets (`[...]`)** → `.join(', ')`  
+ * - **Double brackets (`[[...]]`)** → `.join('')`  
  * 
  * In this case, we use **double brackets** for color-related expressions.
  * 
@@ -1037,17 +1037,18 @@ export const colorVars        = config[0];
  * ---
  * 
  * ### **Usage**
- * - **Getter:** Retrieves the assembled CSS expression.
+ * #### **Retrieving a CSS Expression (Getter)**
+ * Access the assembled CSS expression.
  * ```ts
- * const expression = colorExpressions.primaryBase; // Resolves to  [[ "oklch(from ", "var(--col-primary)", " calc(((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * l) + (1 - min(1, (1 - (", "var(--col-p-base)", " * ", "var(--col-p-mode)", "))))) calc((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * c) h / alpha)" ]]
+ * const expression = colorExpressions.primaryBase; // Resolves to [[ "oklch(from ", "var(--col-primary)", " calc(((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * l) + (1 - min(1, (1 - (", "var(--col-p-base)", " * ", "var(--col-p-mode)", "))))) calc((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * c) h / alpha)" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
- * Assigning a value directly:
+ * **Direct Assignment:**
  * ```ts
  * colorExpressions.myColor = "oklch(0.45 0.30 264)"; // Generates "--col-myColor: oklch(0.45 0.30 264);"
  * ```
- * Using an expression:
+ * **Expression Assignment:**
  * ```ts
  * colorExpressions.myExpression = [[
  *    "oklch(from", colorVars.blue, " l c h / clamp(0.05, alpha * (1 + ", colorParamVars.soft, "), 1))"
@@ -1064,8 +1065,8 @@ export const colorVars        = config[0];
  * 
  * #### **Expression Handling**
  * The **cssfn library** processes:
- * - **Single brackets (`[...]`)** using `.join(', ')`  
- * - **Double brackets (`[[...]]`)** using `.join('')`  
+ * - **Single brackets (`[...]`)** → `.join(', ')`  
+ * - **Double brackets (`[[...]]`)** → `.join('')`  
  * 
  * In this case, we use **double brackets** for color-related expressions.
  * 

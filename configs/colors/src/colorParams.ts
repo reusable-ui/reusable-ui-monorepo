@@ -185,11 +185,11 @@ const config = cssConfig(() => {
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
- * Assigning a value directly:
+ * **Direct Assignment:**
  * ```ts
  * colorParamVars.myParam = "3rem"; // Generates "--col-p-myParam: 3rem;"
  * ```
- * Using an expression:
+ * **Expression Assignment:**
  * ```ts
  * colorParamVars.myExpression = [[
  *    "calc(", colorParamVars.mild, " * 2)"
@@ -206,8 +206,8 @@ const config = cssConfig(() => {
  * 
  * #### **Expression Handling**
  * The **cssfn library** processes:
- * - **Single brackets (`[...]`)** using `.join(', ')`  
- * - **Double brackets (`[[...]]`)** using `.join('')`  
+ * - **Single brackets (`[...]`)** → `.join(', ')`  
+ * - **Double brackets (`[[...]]`)** → `.join('')`  
  * 
  * In this case, we use **double brackets** for color-param-related expressions.
  * 
@@ -242,17 +242,18 @@ export const colorParamVars        = config[0];
  * ---
  * 
  * ### **Usage**
- * - **Getter:** Retrieves the assembled CSS expression.
+ * #### **Retrieving a CSS Expression (Getter)**
+ * Access the assembled CSS expression.
  * ```ts
  * const expression = colorParamExpressions.mild; // Resolves to 0.7
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
- * Assigning a value directly:
+ * **Direct Assignment:**
  * ```ts
  * colorParamExpressions.myParam = "3rem"; // Generates "--col-p-myParam: 3rem;"
  * ```
- * Using an expression:
+ * **Expression Assignment:**
  * ```ts
  * colorParamExpressions.myExpression = [[
  *    "calc(", colorParamVars.mild, " * 2)"
@@ -269,8 +270,8 @@ export const colorParamVars        = config[0];
  * 
  * #### **Expression Handling**
  * The **cssfn library** processes:
- * - **Single brackets (`[...]`)** using `.join(', ')`  
- * - **Double brackets (`[[...]]`)** using `.join('')`  
+ * - **Single brackets (`[...]`)** → `.join(', ')`  
+ * - **Double brackets (`[[...]]`)** → `.join('')`  
  * 
  * In this case, we use **double brackets** for color-param-related expressions.
  * 
