@@ -307,7 +307,7 @@ export const colorParamExpressions = config[1];
  * colorParamSettings.prefix = 'col-p';
  * ```
  * - **Selector Scope:**  
- * Ensures all parameters are applied inside `:root`.
+ * Ensures all color parameter variables are declared inside `:root`.
  * ```ts
  * colorParamSettings.selector = ':root';
  * ```

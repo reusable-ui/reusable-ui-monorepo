@@ -1095,12 +1095,12 @@ export const colorExpressions = config[1];
  * It provides control over prefixes, selectors, and dynamic updates.
  * 
  * - **Prefix Management:**  
- * Defines the prefix used for all color parameter variables.
+ * Defines the prefix used for all color variables.
  * ```ts
  * colorSettings.prefix = 'col';
  * ```
  * - **Selector Scope:**  
- * Ensures all parameters are applied inside `:root`.
+ * Ensures all all color variables are declared inside `:root`.
  * ```ts
  * colorSettings.selector = ':root';
  * ```
