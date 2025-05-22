@@ -6,11 +6,15 @@
     "color system",
     "themeable",
     "dynamic styling",
-    "CSS custom properties",
+    "customizable colors",
+    "css",
     "CSS variables",
+    "custom-properties",
+    "variables",
+    "configuration",
+    "stylesheet",
     "UI design",
-    "web components",
-    "customizable colors"
+    "web components"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
   "homepage": "https://reusableui.com",
