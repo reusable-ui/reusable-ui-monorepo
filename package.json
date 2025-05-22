@@ -23,6 +23,7 @@
     "configs/colors",
     "tests/test-colors",
     "configs/borders",
+    "tests/test-borders",
     "__configs/*",
     "__utilities/*",
     "__features/*",
