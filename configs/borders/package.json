@@ -1,30 +1,42 @@
 {
   "name": "@reusable-ui/borders",
-  "version": "6.5.0",
-  "description": "A border (stroke) management system for web components using css variables (css custom properties).",
+  "version": "7.0.0",
+  "description": "A flexible and themeable border management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.",
   "keywords": [
     "borders",
+    "border-radius",
+    "border-width",
+    "border-style",
+    "themeable",
+    "dynamic styling",
+    "customizable colors",
     "css",
-    "stylesheet",
-    "config",
-    "configuration",
+    "CSS variables",
+    "custom-properties",
     "variables",
-    "property"
+    "configuration",
+    "stylesheet",
+    "UI design",
+    "web components"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "configs/borders"
   },
-  "main": "dist/borders.js",
-  "types": "dist/borders.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/borders.js",
-    "./index": "./dist/borders.js",
-    "./index.js": "./dist/borders.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -38,6 +50,6 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.2.0"
+    "@cssfn/core": "^4.0.0"
   }
 }

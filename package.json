@@ -22,6 +22,7 @@
   "workspaces": [
     "configs/colors",
     "tests/test-colors-next",
+    "configs/borders",
     "__configs/*",
     "__utilities/*",
     "__features/*",
