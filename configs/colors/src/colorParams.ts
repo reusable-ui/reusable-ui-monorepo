@@ -207,7 +207,7 @@ const config = cssConfig(() => {
  * #### **Expression Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
- * - **Double brackets (`[[...]]`)** → `.join('')`  
+ * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
  * In this case, we use **double brackets** for color-param-related expressions.
  * 
@@ -271,7 +271,7 @@ export const colorParamVars        = config[0];
  * #### **Expression Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
- * - **Double brackets (`[[...]]`)** → `.join('')`  
+ * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
  * In this case, we use **double brackets** for color-param-related expressions.
  * 
