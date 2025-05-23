@@ -24,6 +24,7 @@
     "tests/test-colors",
     "configs/borders",
     "tests/test-borders",
+    "configs/spacers",
     "__configs/*",
     "__utilities/*",
     "__features/*",
