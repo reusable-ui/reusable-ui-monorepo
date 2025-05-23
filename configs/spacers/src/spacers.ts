@@ -118,7 +118,7 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = spacerVars.lg; // Resolves to "calc(var(--spc-md) * 1.5)"
+ * const value = spacerVars.lg; // Resolves to "var(--spc-lg)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
