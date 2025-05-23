@@ -14,8 +14,7 @@ A **flexible and themeable color system** designed for UI components, seamlessly
 ## 📦 Installation & Setup  
 Install **@reusable-ui/colors** via npm or yarn:
 
-```
-sh
+```sh
 npm install @reusable-ui/colors
 # or
 yarn add @reusable-ui/colors

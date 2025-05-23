@@ -14,8 +14,7 @@ A **flexible and themeable border system** designed for UI components, seamlessl
 ## 📦 Installation & Setup  
 Install **@reusable-ui/borders** via npm or yarn:
 
-```
-sh
+```sh
 npm install @reusable-ui/borders
 # or
 yarn add @reusable-ui/borders
