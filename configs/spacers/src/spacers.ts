@@ -126,6 +126,7 @@ const config = cssConfig(() => {
  * ```ts
  * spacerVars.customSpacer = "50px"; // Generates "--spc-customSpacer: 50px;"
  * ```
+ * 
  * **Expression Assignment:**
  * ```ts
  * spacerVars.myExpression = [[
@@ -189,6 +190,7 @@ export const spacerVars        = config[0];
  * ```ts
  * spacerExpressions.customSpacer = "50px"; // Generates "--spc-customSpacer: 50px;"
  * ```
+ * 
  * **Expression Assignment:**
  * ```ts
  * spacerExpressions.myExpression = [[
