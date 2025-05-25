@@ -26,6 +26,7 @@
     "tests/test-borders",
     "configs/spacers",
     "tests/test-spacers",
+    "configs/breakpoints",
     "__configs/*",
     "__utilities/*",
     "__features/*",

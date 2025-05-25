@@ -1,33 +1,43 @@
 {
   "name": "@reusable-ui/breakpoints",
-  "version": "6.5.0",
-  "description": "A responsive management system based on screen width.",
+  "version": "7.0.0",
+  "description": "A flexible and themeable breakpoint system for responsive UI layouts.",
   "keywords": [
     "responsive",
     "breakpoints",
-    "design",
     "layouts",
+    "adaptive",
+    "theme",
+    "media queries",
+    "container queries",
+    "flexible",
     "css",
-    "stylesheet",
-    "config",
-    "configuration",
+    "CSS variables",
+    "custom-properties",
     "variables",
-    "property"
+    "configuration",
+    "stylesheet",
+    "UI design",
+    "web components"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "configs/breakpoints"
   },
-  "main": "dist/breakpoints.js",
-  "types": "dist/breakpoints.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/breakpoints.js",
-    "./index": "./dist/breakpoints.js",
-    "./index.js": "./dist/breakpoints.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -41,6 +51,6 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.2.0"
+    "@cssfn/core": "^4.0.0"
   }
 }
