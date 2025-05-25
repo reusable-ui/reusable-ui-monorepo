@@ -46,6 +46,7 @@ const config = cssConfig<BreakpointConfig>(() => {
  * ```ts
  * breakpointVars.customBreakpoint = "2560px"; // Generates "--brp-customBreakpoint: 2560px;"
  * ```
+ * 
  * **Expression Assignment:**
  * ❌ **Not supported** for breakpoint values.
  * 
@@ -94,6 +95,7 @@ export const breakpointVars        = config[0];
  * ```ts
  * breakpointExpressions.customBreakpoint = "2560px"; // Generates "--brp-customBreakpoint: 2560px;"
  * ```
+ * 
  * **Expression Assignment:**
  * ❌ **Not supported** for breakpoint values.
  * 
