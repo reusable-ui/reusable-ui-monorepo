@@ -1,8 +1,8 @@
 // Cssfn:
 import {
     // Cssfn css specific types:
-    CssComplexValueOf,
-    CssKnownValueOf,
+    type CssComplexValueOf,
+    type CssKnownValueOf,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
 
