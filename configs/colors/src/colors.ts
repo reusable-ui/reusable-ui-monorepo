@@ -986,6 +986,7 @@ const config = cssConfig(() => {
  * ```ts
  * colorVars.myColor = "oklch(0.45 0.30 264)"; // Generates "--col-myColor: oklch(0.45 0.30 264);"
  * ```
+ * 
  * **Expression Assignment:**
  * ```ts
  * colorVars.myExpression = [[
@@ -1048,6 +1049,7 @@ export const colorVars        = config[0];
  * ```ts
  * colorExpressions.myColor = "oklch(0.45 0.30 264)"; // Generates "--col-myColor: oklch(0.45 0.30 264);"
  * ```
+ * 
  * **Expression Assignment:**
  * ```ts
  * colorExpressions.myExpression = [[

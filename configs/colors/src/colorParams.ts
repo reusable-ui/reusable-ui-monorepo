@@ -189,6 +189,7 @@ const config = cssConfig(() => {
  * ```ts
  * colorParamVars.myParam = "3rem"; // Generates "--col-p-myParam: 3rem;"
  * ```
+ * 
  * **Expression Assignment:**
  * ```ts
  * colorParamVars.myExpression = [[
@@ -253,6 +254,7 @@ export const colorParamVars        = config[0];
  * ```ts
  * colorParamExpressions.myParam = "3rem"; // Generates "--col-p-myParam: 3rem;"
  * ```
+ * 
  * **Expression Assignment:**
  * ```ts
  * colorParamExpressions.myExpression = [[
