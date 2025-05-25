@@ -120,6 +120,7 @@ const config = cssConfig(() => {
  * ```ts
  * borderRadiusVars.myRadius = "10px"; // Generates "--bor-r-myRadius: 10px;"
  * ```
+ * 
  * **Expression Assignment:**
  * ```ts
  * borderRadiusVars.myExpression = [[
@@ -181,6 +182,7 @@ export const borderRadiusVars        = config[0];
  * ```ts
  * borderRadiusExpressions.myRadius = "10px"; // Generates "--bor-r-myRadius: 10px;"
  * ```
+ * 
  * **Expression Assignment:**
  * ```ts
  * borderRadiusExpressions.myExpression = [[

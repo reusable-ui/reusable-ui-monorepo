@@ -113,6 +113,7 @@ const config = cssConfig(() => {
  * ```ts
  * borderVars.myBorder = "10px"; // Generates "--bor-myBorder: 10px;"
  * ```
+ * 
  * **Expression Assignment:**
  * ```ts
  * borderVars.myExpression = [[
@@ -174,6 +175,7 @@ export const borderVars        = config[0];
  * ```ts
  * borderExpressions.myBorder = "10px"; // Generates "--bor-myBorder: 10px;"
  * ```
+ * 
  * **Expression Assignment:**
  * ```ts
  * borderExpressions.myExpression = [[
