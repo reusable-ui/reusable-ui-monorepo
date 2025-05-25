@@ -1,4 +1,4 @@
-# Contributing to @reusable-ui/borders 🎨  
+# Contributing to @reusable-ui/borders 🚧  
 
 Thank you for your interest in contributing! 🚀  
 This project thrives on community collaboration, and we welcome contributions of all kinds.  

@@ -1,4 +1,4 @@
-# Contributing to @reusable-ui/spacers 🎨  
+# Contributing to @reusable-ui/spacers 📏  
 
 Thank you for your interest in contributing! 🚀  
 This project thrives on community collaboration, and we welcome contributions of all kinds.  
