@@ -179,7 +179,7 @@ export const spacerVars        = config[0];
  * ---
  * 
  * ### **Usage**
- * #### **Retrieving a CSS Expression (Getter)**  
+ * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
  * const expression = spacerExpressions.lg; // Resolves to [[ "calc(", spacerVars.md, " * 1.5)" ]]

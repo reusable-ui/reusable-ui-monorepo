@@ -84,7 +84,7 @@ export const breakpointVars        = config[0];
  * ---
  * 
  * ### **Usage**
- * #### **Retrieving a CSS Expression (Getter)**  
+ * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
  * const expression = breakpointExpressions.lg; // Resolves to "992px"

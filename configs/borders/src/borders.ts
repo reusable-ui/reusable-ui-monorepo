@@ -164,7 +164,7 @@ export const borderVars        = config[0];
  * ---
  * 
  * ### **Usage**
- * #### **Retrieving a CSS Expression (Getter)**  
+ * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
  * const expression = borderExpressions.myExpression; // Resolves to [[ "clamp(", borderVars.sm, ", ", "0.25%", ", ", borderVars.lg, ")" ]]

@@ -171,7 +171,7 @@ export const borderRadiusVars        = config[0];
  * ---
  * 
  * ### **Usage**
- * #### **Retrieving a CSS Expression (Getter)**  
+ * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
  * const expression = borderRadiusExpressions.myExpression; // Resolves to [[ "clamp(", borderRadiusVars.sm, ", ", "0.25%", ", ", borderRadiusVars.lg, ")" ]]
