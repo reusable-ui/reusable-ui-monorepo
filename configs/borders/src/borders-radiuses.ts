@@ -277,6 +277,11 @@ export {
 export const radiuses              = borderRadiusVars;
 
 /**
+ * @deprecated Use `borderRadiusVars` instead.
+ */
+export const borderRadiuses        = borderRadiusVars;
+
+/**
  * @deprecated Use `borderRadiusExpressions` instead.
  */
 export const radiusValues          = borderRadiusExpressions;
