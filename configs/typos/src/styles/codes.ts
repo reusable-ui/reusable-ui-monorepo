@@ -1,34 +1,36 @@
-// cssfn:
+// Cssfn:
 import {
-    // writes css in javascript:
-    rule,
+    // Writes css in javascript:
     globalScope,
-    
-    
-    
-    // reads/writes css variables configuration:
-    usesCssProps,
-}                           from '@cssfn/core'          // writes css in javascript
+}                           from '@cssfn/core'          // Writes css in javascript.
 
-// internals:
+// Utilities:
 import {
-    // configs:
-    codes,
+    markRule,
+}                           from '../style-rules.js'
+import {
+    getCodeFilter,
+    
+    
+    
+    getTextInlineFilter,
+}                           from '../style-filters.js'
+
+// Settings:
+import {
+    codeVars,
 }                           from '../configs/codes.js'
 
 
 
-// styles:
-export default () => [
+// Styles:
+
+export default [
     globalScope({
-        ...rule(['code', '.code', 'var', '.var', 'samp', '.samp'], {
-            // layouts:
-            display : 'inline',
-            
-            
-            
-            // customize:
-            ...usesCssProps(codes),
+        ...markRule({
+            elementFilter    : getCodeFilter(),
+            spacingFilters   : getTextInlineFilter(),
+            elementVars      : codeVars,
         }),
     }),
 ];

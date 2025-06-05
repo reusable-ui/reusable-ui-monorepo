@@ -1,7 +1,7 @@
 // Cssfn:
 import {
     // Writes css in javascript:
-    rule,
+    atRoot,
     globalScope,
     
     
@@ -12,8 +12,8 @@ import {
 
 // Settings:
 import {
-    secondaryVars,
-}                           from '../configs/secondaries.js'
+    typoVars,
+}                           from '../configs/typography.js'
 
 
 
@@ -21,9 +21,9 @@ import {
 
 export default [
     globalScope({
-        ...rule(['small', '.secondary', '.txt-sec'], {
+        ...atRoot({
             // Settings:
-            ...usesCssProps(secondaryVars),
+            ...usesCssProps(typoVars),
         }),
     }),
 ];

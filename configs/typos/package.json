@@ -1,19 +1,25 @@
 {
   "name": "@reusable-ui/typos",
-  "version": "6.5.1",
-  "description": "Texts, paragraphs, fonts and more.",
+  "version": "7.0.0",
+  "description": "A versatile typography system for handling text styles, paragraphs, fonts, and structured layouts.",
   "keywords": [
-    "texts",
-    "paragraphs",
+    "typography",
     "fonts",
-    "typography"
+    "text styles",
+    "paragraphs",
+    "headings",
+    "UI design"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "configs/typos"
+  },
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,24 +27,9 @@
   "exports": {
     ".": "./dist/index.js",
     "./index": "./dist/index.js",
-    "./index.js": "./dist/index.js",
-    "./configs": "./dist/configs/index.js",
-    "./configs.js": "./dist/configs/index.js",
-    "./configs/index": "./dist/configs/index.js",
-    "./configs/index.js": "./dist/configs/index.js",
-    "./styles": "./dist/styles/index.js",
-    "./styles.js": "./dist/styles/index.js",
-    "./styles/index": "./dist/styles/index.js",
-    "./styles/index.js": "./dist/styles/index.js",
-    "./effects": "./dist/effects/index.js",
-    "./effects.js": "./dist/effects/index.js",
-    "./effects/index": "./dist/effects/index.js",
-    "./effects/index.js": "./dist/effects/index.js",
-    "./package.json": "./package.json"
+    "./index.js": "./dist/index.js"
   },
-  "sideEffects": [
-    "dist/effects/*.js"
-  ],
+  "sideEffects": false,
   "publishConfig": {
     "access": "public"
   },
@@ -50,12 +41,11 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.2.0"
+    "@cssfn/core": "^4.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/background": "^6.5.0",
-    "@reusable-ui/borders": "^6.5.0",
-    "@reusable-ui/colors": "^6.5.0",
-    "@reusable-ui/spacers": "^6.5.0"
+    "@reusable-ui/borders": "^7.0.0",
+    "@reusable-ui/colors": "^7.0.0",
+    "rxjs": "^7.8.0"
   }
 }

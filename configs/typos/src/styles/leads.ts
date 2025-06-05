@@ -1,46 +1,36 @@
-// cssfn:
+// Cssfn:
 import {
-    // writes css in javascript:
-    rule,
-    ifFirstChild,
-    ifLastChild,
+    // Writes css in javascript:
     globalScope,
-    
-    
-    
-    // reads/writes css variables configuration:
-    usesCssProps,
-}                           from '@cssfn/core'          // writes css in javascript
+}                           from '@cssfn/core'          // Writes css in javascript.
 
-// internals:
+// Utilities:
 import {
-    // configs:
-    leads,
+    paragraphRule,
+}                           from '../style-rules.js'
+import {
+    getLeadFilter,
+    
+    
+    
+    getTextBlockFilter,
+}                           from '../style-filters.js'
+
+// Settings:
+import {
+    leadVars,
 }                           from '../configs/leads.js'
 
 
 
-// styles:
-export default () => [
+// Styles:
+
+export default [
     globalScope({
-        ...rule('.lead', {
-            // layouts:
-            display : 'block',
-            
-            
-            
-            // spacings:
-            ...ifFirstChild({
-                marginBlockStart : 0, // kill the top_margin at the first lead
-            }),
-            ...ifLastChild({
-                marginBlockEnd   : 0, // kill the bottom_margin at the last lead
-            }),
-            
-            
-            
-            // customize:
-            ...usesCssProps(leads),
+        ...paragraphRule({
+            elementFilter    : getLeadFilter(),
+            spacingFilters   : getTextBlockFilter(),
+            elementVars      : leadVars,
         }),
     }),
 ];

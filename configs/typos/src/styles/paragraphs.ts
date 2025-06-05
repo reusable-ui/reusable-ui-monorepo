@@ -1,48 +1,36 @@
-// cssfn:
+// Cssfn:
 import {
-    // writes css in javascript:
-    rule,
-    ifFirstChild,
-    ifLastChild,
+    // Writes css in javascript:
     globalScope,
-    
-    
-    
-    // reads/writes css variables configuration:
-    usesCssProps,
-}                           from '@cssfn/core'          // writes css in javascript
+}                           from '@cssfn/core'          // Writes css in javascript.
 
-// internals:
+// Utilities:
 import {
-    // configs:
-    paragraphs,
+    paragraphRule,
+}                           from '../style-rules.js'
+import {
+    getParagraphFilter,
+    
+    
+    
+    getTextBlockFilter,
+}                           from '../style-filters.js'
+
+// Settings:
+import {
+    paragraphVars,
 }                           from '../configs/paragraphs.js'
 
 
 
-// styles:
-export default () => [
+// Styles:
+
+export default [
     globalScope({
-        ...rule(['p', '.p'], {
-            ...rule(`:not(:where(${[1,2,3,4,5,6].map((level) => `.display-${level}`).join(', ')}, .lead))`, {
-                // layouts:
-                display : 'block',
-                
-                
-                
-                // spacings:
-                ...ifFirstChild({
-                    marginBlockStart : 0, // kill the top_margin at the first paragraph
-                }),
-                ...ifLastChild({
-                    marginBlockEnd   : 0, // kill the bottom_margin at the last paragraph
-                }),
-                
-                
-                
-                // customize:
-                ...usesCssProps(paragraphs),
-            }, { specificityWeight: 0 }),
+        ...paragraphRule({
+            elementFilter    : getParagraphFilter(),
+            spacingFilters   : getTextBlockFilter(),
+            elementVars      : paragraphVars,
         }),
     }),
 ];

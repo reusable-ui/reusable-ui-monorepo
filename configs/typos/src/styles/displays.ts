@@ -1,24 +1,57 @@
-// cssfn:
+// Cssfn:
 import {
-    // writes css in javascript:
+    // Writes css in javascript:
     globalScope,
-}                           from '@cssfn/core'          // writes css in javascript
+}                           from '@cssfn/core'          // Writes css in javascript.
 
-// internals:
+// Utilities:
 import {
-    // configs:
-    displays,
+    headingRule,
+    headingLevelRule,
+}                           from '../style-rules.js'
+import {
+    // Utilities:
+    getDefaultLevels,
+    
+    
+    
+    // Display headings:
+    getTagDisplaySelectors,
+    getClassDisplaySelectors,
+}                           from '../style-selectors.js'
+import {
+    getDisplayFilter,
+    
+    
+    
+    getNonHeadingTextBlockFilter,
+    getHeadingCompanionFilter,
+}                           from '../style-filters.js'
+
+// Settings:
+import {
+    displayVars,
 }                           from '../configs/displays.js'
-import {
-    // styles:
-    usesHeadingRule,
-}                           from './headings.js'
 
 
 
-// styles:
-export default () => [
+// Styles:
+
+export default [
     globalScope({
-        ...usesHeadingRule(displays, ['.display-']),
+        ...headingRule({
+            elementFilter    : getDisplayFilter(),
+            companionFilters : getHeadingCompanionFilter(),
+            spacingFilters   : getNonHeadingTextBlockFilter(),
+            elementVars      : displayVars,
+        }),
+        ...headingLevelRule({
+            levels           : getDefaultLevels(),
+            selectorFactory  : (level) => [
+                getTagDisplaySelectors([level]),
+                getClassDisplaySelectors([level]),
+            ],
+            elementVars      : displayVars,
+        }),
     }),
 ];

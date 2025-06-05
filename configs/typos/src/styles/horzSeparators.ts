@@ -6,10 +6,10 @@ import {
 
 // Utilities:
 import {
-    blockquoteRule,
+    horzSeparatorRule,
 }                           from '../style-rules.js'
 import {
-    getBlockquoteFilter,
+    getHorzSeparatorFilter,
     
     
     
@@ -18,8 +18,8 @@ import {
 
 // Settings:
 import {
-    blockquoteVars,
-}                           from '../configs/blockquotes.js'
+    horzSeparatorVars,
+}                           from '../configs/horzSeparators.js'
 
 
 
@@ -27,10 +27,10 @@ import {
 
 export default [
     globalScope({
-        ...blockquoteRule({
-            elementFilter    : getBlockquoteFilter(),
+        ...horzSeparatorRule({
+            elementFilter    : getHorzSeparatorFilter(),
             spacingFilters   : getTextBlockFilter(),
-            elementVars      : blockquoteVars,
+            elementVars      : horzSeparatorVars,
         }),
     }),
 ];

@@ -1,34 +1,36 @@
-// cssfn:
+// Cssfn:
 import {
-    // writes css in javascript:
-    rule,
+    // Writes css in javascript:
     globalScope,
-    
-    
-    
-    // reads/writes css variables configuration:
-    usesCssProps,
-}                           from '@cssfn/core'          // writes css in javascript
+}                           from '@cssfn/core'          // Writes css in javascript.
 
-// internals:
+// Utilities:
 import {
-    // configs:
-    kbds,
+    markRule,
+}                           from '../style-rules.js'
+import {
+    getKbdFilter,
+    
+    
+    
+    getTextInlineFilter,
+}                           from '../style-filters.js'
+
+// Settings:
+import {
+    kbdVars,
 }                           from '../configs/kbds.js'
 
 
 
-// styles:
-export default () => [
+// Styles:
+
+export default [
     globalScope({
-        ...rule(['kbd', '.kbd'], {
-            // layouts:
-            display : 'inline',
-            
-            
-            
-            // customize:
-            ...usesCssProps(kbds),
+        ...markRule({
+            elementFilter    : getKbdFilter(),
+            spacingFilters   : getTextInlineFilter(),
+            elementVars      : kbdVars,
         }),
     }),
 ];

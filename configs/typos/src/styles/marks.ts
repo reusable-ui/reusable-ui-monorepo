@@ -1,34 +1,36 @@
-// cssfn:
+// Cssfn:
 import {
-    // writes css in javascript:
-    rule,
+    // Writes css in javascript:
     globalScope,
-    
-    
-    
-    // reads/writes css variables configuration:
-    usesCssProps,
-}                           from '@cssfn/core'          // writes css in javascript
+}                           from '@cssfn/core'          // Writes css in javascript.
 
-// internals:
+// Utilities:
 import {
-    // configs:
-    marks,
+    markRule,
+}                           from '../style-rules.js'
+import {
+    getMarkFilter,
+    
+    
+    
+    getTextInlineFilter,
+}                           from '../style-filters.js'
+
+// Settings:
+import {
+    markVars,
 }                           from '../configs/marks.js'
 
 
 
-// styles:
-export default () => [
+// Styles:
+
+export default [
     globalScope({
-        ...rule(['mark', '.mark'], {
-            // layouts:
-            display : 'inline',
-            
-            
-            
-            // customize:
-            ...usesCssProps(marks),
+        ...markRule({
+            elementFilter    : getMarkFilter(),
+            spacingFilters   : getTextInlineFilter(),
+            elementVars      : markVars,
         }),
     }),
 ];
