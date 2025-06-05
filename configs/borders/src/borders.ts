@@ -218,23 +218,23 @@ export const borderVars        = config[0];
 export const borderExpressions = config[1];
 
 /**
- * A `LiveCssConfigOptions` object manages settings related to **CSS variables for border system**.
+ * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for border system**.
  * It provides control over prefixes, selectors, and dynamic updates.
  * 
  * - **Prefix Management:**  
  * Defines the prefix used for all border variables.
  * ```ts
- * borderSettings.prefix = 'bor';
+ * borderConfig.prefix = 'bor';
  * ```
  * - **Selector Scope:**  
  * Ensures all border variables are declared inside `:root`.
  * ```ts
- * borderSettings.selector = ':root';
+ * borderConfig.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * borderSettings.onChange.subscribe({
+ * borderConfig.onChange.subscribe({
  *     next: () => {
  *         console.log("Border system updated!");
  *     },
@@ -256,7 +256,7 @@ export const borderExpressions = config[1];
  * }
  * ```
  */
-export const borderSettings    = config[2];
+export const borderConfig    = config[2];
 
 
 
@@ -275,11 +275,6 @@ export const borders         = borderVars;
 export const borderValues    = borderExpressions;
 
 /**
- * @deprecated Use `borderSettings` instead.
+ * @deprecated Use `borderConfig` instead.
  */
-export const borderConfig    = borderSettings;
-
-/**
- * @deprecated Use `borderSettings` instead.
- */
-export const cssBorderConfig = borderSettings;
+export const cssBorderConfig = borderConfig;

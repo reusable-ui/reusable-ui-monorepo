@@ -225,23 +225,23 @@ export const borderRadiusVars        = config[0];
 export const borderRadiusExpressions = config[1];
 
 /**
- * A `LiveCssConfigOptions` object manages settings related to **CSS variables for border radius system**.
+ * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for border radius system**.
  * It provides control over prefixes, selectors, and dynamic updates.
  * 
  * - **Prefix Management:**  
  * Defines the prefix used for all border radius variables.
  * ```ts
- * borderRadiusSettings.prefix = 'bor-r';
+ * borderRadiusConfig.prefix = 'bor-r';
  * ```
  * - **Selector Scope:**  
  * Ensures all border radius variables are declared inside `:root`.
  * ```ts
- * borderRadiusSettings.selector = ':root';
+ * borderRadiusConfig.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * borderRadiusSettings.onChange.subscribe({
+ * borderRadiusConfig.onChange.subscribe({
  *     next: () => {
  *         console.log("Border radius system updated!");
  *     },
@@ -263,7 +263,7 @@ export const borderRadiusExpressions = config[1];
  * }
  * ```
  */
-export const borderRadiusSettings    = config[2];
+export const borderRadiusConfig    = config[2];
 
 
 
@@ -287,11 +287,6 @@ export const borderRadiuses        = borderRadiusVars;
 export const radiusValues          = borderRadiusExpressions;
 
 /**
- * @deprecated Use `borderRadiusSettings` instead.
+ * @deprecated Use `borderRadiusConfig` instead.
  */
-export const borderRadiusConfig    = borderRadiusSettings;
-
-/**
- * @deprecated Use `borderRadiusSettings` instead.
- */
-export const cssBorderRadiusConfig = borderRadiusSettings;
+export const cssBorderRadiusConfig = borderRadiusConfig;
