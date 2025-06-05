@@ -300,23 +300,23 @@ export const colorParamVars        = config[0];
 export const colorParamExpressions = config[1];
 
 /**
- * A `LiveCssConfigOptions` object manages settings related to **CSS variables for color parameters**.
+ * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for color parameters**.
  * It provides control over prefixes, selectors, and dynamic updates.
  * 
  * - **Prefix Management:**  
  * Defines the prefix used for all color parameter variables.
  * ```ts
- * colorParamSettings.prefix = 'col-p';
+ * colorParamConfig.prefix = 'col-p';
  * ```
  * - **Selector Scope:**  
  * Ensures all color parameter variables are declared inside `:root`.
  * ```ts
- * colorParamSettings.selector = ':root';
+ * colorParamConfig.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * colorParamSettings.onChange.subscribe({
+ * colorParamConfig.onChange.subscribe({
  *     next: () => {
  *         console.log("Color parameters updated!");
  *     },
@@ -339,7 +339,7 @@ export const colorParamExpressions = config[1];
  * }
  * ```
  */
-export const colorParamSettings    = config[2];
+export const colorParamConfig    = config[2];
 
 
 
@@ -358,11 +358,6 @@ export const colorParams         = colorParamVars;
 export const colorParamValues    = colorParamExpressions;
 
 /**
- * @deprecated Use `colorParamSettings` instead.
+ * @deprecated Use `colorParamConfig` instead.
  */
-export const colorParamConfig    = colorParamSettings;
-
-/**
- * @deprecated Use `colorParamSettings` instead.
- */
-export const cssColorParamConfig = colorParamSettings;
+export const cssColorParamConfig = colorParamConfig;

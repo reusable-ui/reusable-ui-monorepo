@@ -1093,23 +1093,23 @@ export const colorVars        = config[0];
 export const colorExpressions = config[1];
 
 /**
- * A `LiveCssConfigOptions` object manages settings related to **CSS variables for color system**.
+ * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for color system**.
  * It provides control over prefixes, selectors, and dynamic updates.
  * 
  * - **Prefix Management:**  
  * Defines the prefix used for all color variables.
  * ```ts
- * colorSettings.prefix = 'col';
+ * colorConfig.prefix = 'col';
  * ```
  * - **Selector Scope:**  
  * Ensures all all color variables are declared inside `:root`.
  * ```ts
- * colorSettings.selector = ':root';
+ * colorConfig.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * colorSettings.onChange.subscribe({
+ * colorConfig.onChange.subscribe({
  *     next: () => {
  *         console.log("Color system updated!");
  *     },
@@ -1132,7 +1132,7 @@ export const colorExpressions = config[1];
  * }
  * ```
  */
-export const colorSettings    = config[2];
+export const colorConfig    = config[2];
 
 
 
@@ -1151,11 +1151,6 @@ export const colors         = colorVars;
 export const colorValues    = colorExpressions;
 
 /**
- * @deprecated Use `colorSettings` instead.
+ * @deprecated Use `colorConfig` instead.
  */
-export const colorConfig    = colorSettings;
-
-/**
- * @deprecated Use `colorSettings` instead.
- */
-export const cssColorConfig = colorSettings;
+export const cssColorConfig = colorConfig;
