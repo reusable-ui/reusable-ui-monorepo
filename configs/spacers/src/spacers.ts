@@ -235,23 +235,23 @@ export const spacerVars        = config[0];
 export const spacerExpressions = config[1];
 
 /**
- * A `LiveCssConfigOptions` object manages settings related to **CSS variables for spacer system**.
+ * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for spacer system**.
  * It provides control over prefixes, selectors, and dynamic updates.
  * 
  * - **Prefix Management:**  
  * Defines the prefix used for all spacer variables.
  * ```ts
- * spacerSettings.prefix = 'spc';
+ * spacerConfig.prefix = 'spc';
  * ```
  * - **Selector Scope:**  
  * Ensures all spacer variables are declared inside `:root`.
  * ```ts
- * spacerSettings.selector = ':root';
+ * spacerConfig.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * spacerSettings.onChange.subscribe({
+ * spacerConfig.onChange.subscribe({
  *     next: () => {
  *         console.log("Spacer system updated!");
  *     },
@@ -275,7 +275,7 @@ export const spacerExpressions = config[1];
  * }
  * ```
  */
-export const spacerSettings    = config[2];
+export const spacerConfig    = config[2];
 
 
 
@@ -294,11 +294,6 @@ export const spacers         = spacerVars;
 export const spacerValues    = spacerExpressions;
 
 /**
- * @deprecated Use `spacerSettings` instead.
+ * @deprecated Use `spacerConfig` instead.
  */
-export const spacerConfig    = spacerSettings;
-
-/**
- * @deprecated Use `spacerSettings` instead.
- */
-export const cssSpacerConfig = spacerSettings;
+export const cssSpacerConfig = spacerConfig;
