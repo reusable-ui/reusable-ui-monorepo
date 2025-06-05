@@ -125,23 +125,23 @@ export const breakpointVars        = config[0];
 export const breakpointExpressions = config[1];
 
 /**
- * A `LiveCssConfigOptions` object manages settings related to **CSS variables for breakpoint system**.
+ * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for breakpoint system**.
  * It provides control over prefixes, selectors, and dynamic updates.
  * 
  * - **Prefix Management:**  
  * Defines the prefix used for all breakpoint variables.
  * ```ts
- * breakpointSettings.prefix = 'brp';
+ * breakpointConfig.prefix = 'brp';
  * ```
  * - **Selector Scope:**  
  * Ensures all breakpoint variables are declared inside `:root`.
  * ```ts
- * breakpointSettings.selector = ':root';
+ * breakpointConfig.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * breakpointSettings.onChange.subscribe({
+ * breakpointConfig.onChange.subscribe({
  *     next: () => {
  *         console.log("Breakpoint system updated!");
  *     },
@@ -162,7 +162,7 @@ export const breakpointExpressions = config[1];
  * }
  * ```
  */
-export const breakpointSettings    = config[2];
+export const breakpointConfig    = config[2];
 
 
 
@@ -181,11 +181,6 @@ export const breakpoints         = breakpointVars;
 export const breakpointValues    = breakpointExpressions;
 
 /**
- * @deprecated Use `breakpointSettings` instead.
+ * @deprecated Use `breakpointConfig` instead.
  */
-export const breakpointConfig    = breakpointSettings;
-
-/**
- * @deprecated Use `breakpointSettings` instead.
- */
-export const cssBreakpointConfig = breakpointSettings;
+export const cssBreakpointConfig = breakpointConfig;
