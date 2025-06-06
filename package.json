@@ -30,6 +30,7 @@
     "tests/test-breakpoints",
     "configs/typos",
     "tests/test-typos",
+    "utilities/numbers",
     "__configs/*",
     "__utilities/*",
     "__features/*",

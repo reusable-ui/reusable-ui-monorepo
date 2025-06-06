@@ -1,27 +1,35 @@
 {
   "name": "@reusable-ui/numbers",
-  "version": "6.5.0",
-  "description": "A set of numeric utility functions.",
+  "version": "7.0.0",
+  "description": "A lightweight JavaScript library for precise numeric operations.",
   "keywords": [
     "numbers",
     "numeric",
+    "math",
+    "decimal",
+    "precision",
     "utility",
-    "common"
+    "clamp",
+    "format"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "utilities/numbers"
   },
-  "main": "dist/numbers.js",
-  "types": "dist/numbers.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/numbers.js",
-    "./index": "./dist/numbers.js",
-    "./index.js": "./dist/numbers.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -33,5 +41,8 @@
     "ncu": "ncu --peer",
     "ncu:upgrade": "ncu --peer --upgrade",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "devDependencies": {
+    "decimal.js": "^10.5.0"
   }
 }

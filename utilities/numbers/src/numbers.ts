@@ -1,70 +1,84 @@
-// utilities:
-const isSingleValue = (expression: string|ReadonlyArray<string>): expression is string => (typeof(expression) === 'string') || (Array.isArray(expression) && (expression.length === 1));
-export const parseNumber = (expression: number|string|ReadonlyArray<string>|null|undefined): number|null => {
-    if (typeof(expression) === 'number') {
-        if (isNaN(expression)) return null;
-        return expression;
-    } // if
-    if (!expression) return null;
+// Utilities:
+
+/**
+ * Formats a floating-point number into a more human-friendly form, 
+ * reducing excessive decimal places caused by floating-point precision errors.
+ *
+ * @template TNumber - The input type (`number`, `null`, or `undefined`).
+ * @param value - The number to clean. Returns `null`, `undefined`, `NaN`, `Infinity`, or `-Infinity` unchanged.
+ * @returns The formatted number with up to 11 decimal places, or the original input if special cases apply.
+ */
+export const decimalify = <TNumber extends number|null|undefined>(value: TNumber) : TNumber => {
+    // Preserve special cases:
+    if (typeof value !== 'number') return value;
+    if (!Number.isFinite(value))   return value;
     
     
     
-    if (!isSingleValue(expression)) return null;
-    
-    
-    
-    const result = Number.parseFloat(expression);
-    if (isNaN(result)) return null;
-    return result;
+    // Round to 11 decimal places:
+    const roundedNumber = Math.round(value * 1e11) / 1e11;
+    return Number.parseFloat((roundedNumber).toFixed(11)) as TNumber;
 };
 
-export const decimalify = <TNumber extends number|null|undefined>(number: TNumber) : TNumber => {
-    // conditions:
-    if (typeof(number) !== 'number') return number;
-    if (!Number.isFinite(number))    return number;
-    
-    
-    
-    const roundedNumber = Math.round(number * 1000000000000000) / 1000000000000000;
-    return Number.parseFloat(roundedNumber.toFixed(11)) as TNumber;
-};
 
-export const clamp = <TOpt extends number|null|undefined>(min: number|null|undefined, value: number|TOpt, max: number|null|undefined, step?: number|null|undefined): number|TOpt => {
-    // conditions:
-    if (value === null     ) return value;
-    if (value === undefined) return value;
+
+/**
+ * Clamps a number within a given range, optionally applying stepping increments.
+ *
+ * @template TNumber - The input type (`number`, `null`, or `undefined`).
+ * @param min - The minimum allowed value. Defaults to `Number.MIN_SAFE_INTEGER` if not provided.
+ * @param value - The number to clamp. Returns `null`, `undefined`, `NaN`, `Infinity`, or `-Infinity` unchanged.
+ * @param max - The maximum allowed value. Defaults to `Number.MAX_SAFE_INTEGER` if not provided.
+ * @param step - Optional stepping interval. If defined, the output is aligned to the nearest step.
+ * @returns The clamped number, adjusted to the nearest valid step if applicable.
+ */
+export const clamp = <TNumber extends number|null|undefined>(min: number|TNumber, value: TNumber, max: number|TNumber, step?: number|TNumber): TNumber => {
+    // Preserve special cases:
+    if (typeof value !== 'number') return value;
+    if (!Number.isFinite(value))   return value;
     
     
     
-    // defaults:
+    // Set defaults:
     min  ??= Number.MIN_SAFE_INTEGER;
     max  ??= Number.MAX_SAFE_INTEGER;
     step ??= 0;
-    const negative : boolean = (max < min);
     
     
     
-    // make sure the requested value is between the min value & max value:
-    value = Math.min(Math.max(
+    // Clamp value within bounds:
+    const isReversed : boolean = (typeof min === 'number') && (typeof max === 'number') && (min > max);
+    let processedValue = Math.min(Math.max(
         value
-    , (negative ? max : min)), (negative ? min : max));
+    , (isReversed ? max : min)), (isReversed ? min : max));
     
-    // if step was specified => stepping the value starting from min value:
+    
+    
+    // Apply stepping if defined:
     if (step > 0) {
-        let steps    = Math.round((value - min) / step); // get the_nearest_stepped_value
+        // Calculate nearest stepped value:
+        let steps      = Math.round((processedValue - min) / step);
         
-        // make sure the_nearest_stepped_value is not exceeded the max value:
-        let maxSteps = (max - min) / step;
-        maxSteps     = negative ? Math.ceil(maxSteps) : Math.floor(maxSteps); // remove the decimal fraction
         
-        // re-align the steps:
-        steps        = negative ? Math.max(steps, maxSteps) : Math.min(steps, maxSteps);
         
-        // calculate the new value:
-        value        = min + (steps * step);
+        // Ensure step count does not exceed max boundary:
+        let maxSteps   = (max - min) / step;
+        // Remove the decimal fractions:
+        maxSteps       = isReversed ? Math.ceil(maxSteps) : Math.floor(maxSteps);
+        
+        
+        
+        // Adjust step alignment:
+        steps          = isReversed ? Math.max(steps, maxSteps) : Math.min(steps, maxSteps);
+        
+        
+        
+        // Compute final stepped value:
+        processedValue = min + (steps * step);
     } // if
     
     
     
-    return decimalify(value);
+    // Format decimal places to avoid precision errors:
+    return decimalify(processedValue) as TNumber;
 };
