@@ -16,7 +16,7 @@ import {
     getTextBlockFilter,
 }                           from '../style-filters.js'
 
-// Settings:
+// Configs:
 import {
     horzSeparatorVars,
 }                           from '../configs/horzSeparators.js'

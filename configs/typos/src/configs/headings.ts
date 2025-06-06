@@ -9,14 +9,14 @@ import {
     cssConfig,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
-// Settings:
+// Configs:
 import {
     typoVars,
 }                           from './typography.js'
 
 
 
-// Settings:
+// Configs:
 
 const config = cssConfig(() => {
     // Static heading definitions:

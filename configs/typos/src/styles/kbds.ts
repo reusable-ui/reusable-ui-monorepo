@@ -16,7 +16,7 @@ import {
     getTextInlineFilter,
 }                           from '../style-filters.js'
 
-// Settings:
+// Configs:
 import {
     kbdVars,
 }                           from '../configs/kbds.js'

@@ -5,7 +5,7 @@ import {
     globalScope,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
-// Settings:
+// Configs:
 import {
     typoVars,
 }                           from '../configs/typography.js'

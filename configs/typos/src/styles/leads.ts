@@ -16,7 +16,7 @@ import {
     getTextBlockFilter,
 }                           from '../style-filters.js'
 
-// Settings:
+// Configs:
 import {
     leadVars,
 }                           from '../configs/leads.js'

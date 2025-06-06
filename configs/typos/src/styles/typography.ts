@@ -10,7 +10,7 @@ import {
     usesCssProps,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
-// Settings:
+// Configs:
 import {
     typoVars,
 }                           from '../configs/typography.js'
@@ -22,7 +22,7 @@ import {
 export default [
     globalScope({
         ...atRoot({
-            // Settings:
+            // Configs:
             ...usesCssProps(typoVars),
         }),
     }),

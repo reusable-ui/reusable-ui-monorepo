@@ -28,7 +28,7 @@ import {
     getHeadingCompanionFilter,
 }                           from '../style-filters.js'
 
-// Settings:
+// Configs:
 import {
     headingVars,
 }                           from '../configs/headings.js'

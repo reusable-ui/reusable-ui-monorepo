@@ -11,7 +11,7 @@ import {
 
 
 
-// Settings:
+// Configs:
 
 const config = cssConfig(() => {
     return {

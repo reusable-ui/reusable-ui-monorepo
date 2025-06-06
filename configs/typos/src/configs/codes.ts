@@ -9,7 +9,7 @@ import {
     cssConfig,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
-// Settings:
+// Configs:
 import {
     colorVars,
 }                           from '@reusable-ui/colors'  // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
@@ -22,7 +22,7 @@ import {
 
 
 
-// Settings:
+// Configs:
 
 const config = cssConfig(() => {
     return {

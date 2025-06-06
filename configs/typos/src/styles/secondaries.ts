@@ -10,7 +10,7 @@ import {
     usesCssProps,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
-// Settings:
+// Configs:
 import {
     secondaryVars,
 }                           from '../configs/secondaries.js'
@@ -22,7 +22,7 @@ import {
 export default [
     globalScope({
         ...rule(['small', '.secondary', '.txt-sec'], {
-            // Settings:
+            // Configs:
             ...usesCssProps(secondaryVars),
         }),
     }),

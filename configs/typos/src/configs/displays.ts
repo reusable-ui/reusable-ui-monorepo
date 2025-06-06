@@ -9,7 +9,7 @@ import {
     cssConfig,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
-// Settings:
+// Configs:
 import {
     typoVars,
 }                           from './typography.js'
@@ -19,7 +19,7 @@ import {
 
 
 
-// Settings:
+// Configs:
 
 const config = cssConfig(() => {
     // Static display heading definitions:

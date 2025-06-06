@@ -186,7 +186,7 @@ const elementRule = (isBlock: boolean, options: ElementRuleOptions, extendedLayo
             
             
             
-            // Settings:
+            // Configs:
             ...usesCssProps(elementVars),
             
             
@@ -415,7 +415,7 @@ export const headingLevelRule = (options: HeadingLevelRuleOptions): CssRule => {
         levels
         .map((level) =>
             rule(selectorFactory(level), {
-                // Settings:
+                // Configs:
                 ...overwriteProps(elementVars, usesSuffixedProps(elementVars, `${level}`)), // Apply the corresponding font size for each heading level.
                 // Example: `--h-fontSize : var(--h-fontSize1);`
             }, { specificityWeight: 1 }), // One specificity to allow easy overrides and sync specificity with main styling.
@@ -499,7 +499,7 @@ export const blockquoteRule = (options: BlockquoteRuleOptions): CssRule => {
             
             
             
-            // Settings:
+            // Configs:
             ...usesCssProps(usesPrefixedProps(elementVars, 'quote')), // Apply config's cssProps starting with `quote**`.
         }),
     });
@@ -551,13 +551,13 @@ export const plainListRule = (options: PlainListRuleOptions): CssRule => {
             
             
             
-            // Settings:
+            // Configs:
             ...usesCssProps(usesPrefixedProps(elementVars, 'li')), // Apply config's cssProps starting with `li**`.
         }),
         
         
         
-        // Settings:
+        // Configs:
         ...rule(['ul', '.ul'], {
             ...usesCssProps(usesPrefixedProps(elementVars, 'ul')), // Apply config's cssProps starting with `ul**`.
         }, { specificityWeight: 0 }), // Zero specificity to allow easy overrides.

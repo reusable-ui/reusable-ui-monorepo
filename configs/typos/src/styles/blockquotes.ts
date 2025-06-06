@@ -16,7 +16,7 @@ import {
     getTextBlockFilter,
 }                           from '../style-filters.js'
 
-// Settings:
+// Configs:
 import {
     blockquoteVars,
 }                           from '../configs/blockquotes.js'

@@ -16,7 +16,7 @@ import {
     getTextBlockFilter,
 }                           from '../style-filters.js'
 
-// Settings:
+// Configs:
 import {
     plainListVars,
 }                           from '../configs/plainLists.js'

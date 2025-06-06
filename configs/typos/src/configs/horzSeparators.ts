@@ -9,14 +9,14 @@ import {
     cssConfig,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
-// Settings:
+// Configs:
 import {
     borderVars,
 }                           from '@reusable-ui/borders' // A flexible and themeable border management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 
 
 
-// Settings:
+// Configs:
 
 const config = cssConfig(() => {
     return {

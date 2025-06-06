@@ -28,7 +28,7 @@ import {
     getHeadingCompanionFilter,
 }                           from '../style-filters.js'
 
-// Settings:
+// Configs:
 import {
     displayVars,
 }                           from '../configs/displays.js'
