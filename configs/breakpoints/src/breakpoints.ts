@@ -162,7 +162,7 @@ export const breakpointExpressions = config[1];
  * }
  * ```
  */
-export const breakpointConfig    = config[2];
+export const breakpointConfig      = config[2];
 
 
 
