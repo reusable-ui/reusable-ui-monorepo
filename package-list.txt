@@ -1,146 +1,146 @@
-// reusable-ui configs:
-[published  ] [documented  ] @reusable-ui/colors            [updated config]
-[published  ] [documented  ] @reusable-ui/borders           [updated config]
-[published  ] [documented  ] @reusable-ui/spacers           [updated config]
-[published  ] [documented  ] @reusable-ui/breakpoints       [updated config]
-[modularized] [documented  ] @reusable-ui/typos             [updated config]
+// Reusable-ui configs:
+@reusable-ui/colors
+@reusable-ui/borders
+@reusable-ui/spacers
+@reusable-ui/breakpoints
+@reusable-ui/typos
 
-// reusable-ui utilities:
-[published  ] @reusable-ui/numbers
-[published  ] [documented  ] @reusable-ui/nodes
-[published  ] [documented  ] @reusable-ui/stripouts
-[published  ] [documented  ] @reusable-ui/layouts
-[published  ] [documented  ] @reusable-ui/hooks
-[published  ] [documented  ] @reusable-ui/semantics
-[published  ] [documented  ] @reusable-ui/accessibilities
-[published  ] [documented  ] @reusable-ui/validations
-[published  ] @reusable-ui/focuses
-[published  ] [undocumented] @reusable-ui/client-sides
-[published  ] [undocumented] @reusable-ui/navigations
-[published  ] [undocumented] @reusable-ui/animating-state
+// Reusable-ui utilities:
+@reusable-ui/numbers
+@reusable-ui/nodes
+@reusable-ui/stripouts
+@reusable-ui/layouts
+@reusable-ui/hooks
+@reusable-ui/semantics
+@reusable-ui/accessibilities
+@reusable-ui/validations
+@reusable-ui/focuses
+@reusable-ui/client-sides
+@reusable-ui/navigations
+@reusable-ui/animating-state
 
-// reusable-ui features:
-[published  ] @reusable-ui/background
-[published  ] @reusable-ui/foreground
-[published  ] @reusable-ui/border
-[published  ] @reusable-ui/ring
-[optimized  ] @reusable-ui/animation
-[published  ] @reusable-ui/padding
+// Reusable-ui features:
+@reusable-ui/background
+@reusable-ui/foreground
+@reusable-ui/border
+@reusable-ui/ring
+@reusable-ui/animation
+@reusable-ui/padding
 
-// reusable-ui capabilities:
-[published  ] @reusable-ui/floatable
-[published  ] @reusable-ui/global-stackable
-[published  ] @reusable-ui/auto-focusable
-[published  ] @reusable-ui/groupable
-[published  ] @reusable-ui/pointer-capturable
+// Reusable-ui capabilities:
+@reusable-ui/floatable
+@reusable-ui/global-stackable
+@reusable-ui/auto-focusable
+@reusable-ui/groupable
+@reusable-ui/pointer-capturable
 
-// reusable-ui variants:
-[published  ] @reusable-ui/orientationable
-[published  ] @reusable-ui/resizable
-[published  ] @reusable-ui/themeable
-[published  ] @reusable-ui/gradientable
-[published  ] @reusable-ui/outlineable
-[modularized] @reusable-ui/mildable
-[published  ] @reusable-ui/nudible
-[published  ] @reusable-ui/colorable
-[published  ] @reusable-ui/basic-variants
+// Reusable-ui variants:
+@reusable-ui/orientationable
+@reusable-ui/resizable
+@reusable-ui/themeable
+@reusable-ui/gradientable
+@reusable-ui/outlineable
+@reusable-ui/mildable
+@reusable-ui/nudible
+@reusable-ui/colorable
+@reusable-ui/basic-variants
 
-// reusable-ui states:
-[published  ] @reusable-ui/excitable        [updated api]
-[published  ] @reusable-ui/collapsible      [updated api]
-[published  ] @reusable-ui/scrollable       [no      api]
-[published  ] @reusable-ui/disableable      [updated api]
-[published  ] @reusable-ui/activatable      [updated api]
-[published  ] @reusable-ui/focusable        [updated api]
-[published  ] @reusable-ui/interactable     [updated api]
-[published  ] @reusable-ui/clickable        [updated api]
-[published  ] @reusable-ui/active-as-click  [no      api]
-[published  ] @reusable-ui/invalidable      [updated api]
-[published  ] @reusable-ui/checkable        [no      api]
-[published  ] @reusable-ui/validation-icon  [no      api]
+// Reusable-ui states:
+@reusable-ui/excitable
+@reusable-ui/collapsible
+@reusable-ui/scrollable
+@reusable-ui/disableable
+@reusable-ui/activatable
+@reusable-ui/focusable
+@reusable-ui/interactable
+@reusable-ui/clickable
+@reusable-ui/active-as-click
+@reusable-ui/invalidable
+@reusable-ui/checkable
+@reusable-ui/validation-icon
 
-[published  ] @reusable-ui/core
+@reusable-ui/core
 
 // supports:
-[published  ] [undocumented] [full    compound] @reusable-ui/react-router-compat-link
-[published  ] [undocumented] [full    compound] @reusable-ui/next-compat-link
+@reusable-ui/react-router-compat-link
+@reusable-ui/next-compat-link
 
 // base-components:
-[no css     ] [documented  ] [          atomic] @reusable-ui/generic
-[modularized] [documented  ] [          atomic] @reusable-ui/basic                              [updated config]    [Sm|Md|Lg]
-[modularized] [documented  ] [          atomic] @reusable-ui/indicator                          [updated config]
-[modularized] [documented  ] [          atomic] @reusable-ui/control                            [updated config]
-[modularized] [documented  ] [          atomic] @reusable-ui/action-control                     [updated config]
-[modularized] [documented  ] [          atomic] @reusable-ui/editable-control                   [updated config]
-[modularized] [documented  ] [          atomic] @reusable-ui/editable-text-control   *icon      [updated config]
-[modularized] [documented  ] [          atomic] @reusable-ui/editable-action-control            [no      config]
+@reusable-ui/generic
+@reusable-ui/basic
+@reusable-ui/indicator
+@reusable-ui/control
+@reusable-ui/action-control
+@reusable-ui/editable-control
+@reusable-ui/editable-text-control   *icon
+@reusable-ui/editable-action-control
 
 // base-content-components:
-[modularized] [documented  ] [          atomic] @reusable-ui/container                          [updated config]    [Xs|Sm|Md|Lg|Xl|Xxl|Xxxl]
-[modularized] [documented  ] [          atomic] @reusable-ui/content    *button                 [updated config]    [Sm|Md|Lg]
+@reusable-ui/container
+@reusable-ui/content    *button
 
 // simple-components:
-[modularized] [documented  ] [          atomic] @reusable-ui/icon                               [updated config]    [Xs|Sm|Md|Lg|Xl|1em]
-[slimmodular] [documented  ] [          atomic] @reusable-ui/label                              [updated config]
-[modularized] [documented  ] [          atomic] @reusable-ui/button                             [updated config]    [Sm|Md|Lg]
-[no css     ] [new         ] [full    compound] @reusable-ui/toggle-button                      [no      config]
-[no css     ] [documented  ] [full    compound] @reusable-ui/nav-button                         [no      config]
-[modularized] [documented  ] [full    compound] @reusable-ui/button-icon                        [updated config]    [Xs|Sm|Md|Lg|Xl]
-[no css     ] [documented  ] [full    compound] @reusable-ui/close-button                       [no      config]
-[slimmodular] [documented  ] [full    compound] @reusable-ui/hamburger-menu-button              [updated config]
+@reusable-ui/icon
+@reusable-ui/label
+@reusable-ui/button
+@reusable-ui/toggle-button
+@reusable-ui/nav-button
+@reusable-ui/button-icon
+@reusable-ui/close-button
+@reusable-ui/hamburger-menu-button
 
 // editor-components:
-[slimmodular] [new         ] [full    compound] @reusable-ui/editable-button                    [no      config]
-[slimmodular] [documented  ] [          atomic] @reusable-ui/form                               [updated config]
-[modularized] [documented  ] [          atomic] @reusable-ui/input                              [updated config]
-[slimmodular] [documented  ] [full    compound] @reusable-ui/range                              [updated config]    [Inline|Block]
-[modularized] [documented  ] [          atomic] @reusable-ui/check                              [updated config]
-[modularized] [documented  ] [          atomic] @reusable-ui/radio                              [updated config]
+@reusable-ui/editable-button
+@reusable-ui/form
+@reusable-ui/input
+@reusable-ui/range
+@reusable-ui/check
+@reusable-ui/radio
 
 // layout-components:
-[slimmodular] [documented  ] [          atomic] @reusable-ui/list                               [updated config]    [Sm|Md|Lg]  [Inline|Block]
-[slimmodular] [documented  ] [          atomic] @reusable-ui/card                               [updated config]    [Sm|Md|Lg]
-[slimmodular] [documented  ] [          atomic] @reusable-ui/masonry                            [updated config]    [Sm|Md|Lg]
+@reusable-ui/list
+@reusable-ui/card
+@reusable-ui/masonry
 
 // status-components:
-[modularized] [documented  ] [          atomic] @reusable-ui/popup                              [updated config]
-[modularized] [documented  ] [          atomic] @reusable-ui/badge                              [updated config]    [Sm|Md|Lg]
-[modularized] [documented  ] [partial compound] @reusable-ui/busy                               [updated config]    [Sm|Md|Lg]
+@reusable-ui/popup
+@reusable-ui/badge
+@reusable-ui/busy
 
 // notification-components:
-[slimmodular] [documented  ] [partial compound] @reusable-ui/alert                              [updated config]    [Sm|Md|Lg]
-[slimmodular] [documented  ] [partial compound] @reusable-ui/tooltip                            [updated config]    [Sm|Md|Lg]
+@reusable-ui/alert
+@reusable-ui/tooltip
 
 // menu-components:
-[modularized] [documented  ] [          atomic] @reusable-ui/collapse                           [updated config]    [Inline|Block]
-[slimmodular] [documented  ] [partial compound] @reusable-ui/dropdown                           [updated config]
-[not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-button                    [no      config]
-[not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-list                      [updated config]    [Inline|Block]
-[not needopt] [documented  ] [full    compound] @reusable-ui/dropdown-list-button               [no      config]
+@reusable-ui/collapse
+@reusable-ui/dropdown
+@reusable-ui/dropdown-button
+@reusable-ui/dropdown-list
+@reusable-ui/dropdown-list-button
 
 // dialog-components:
-[modularized] [documented  ] [          atomic] @reusable-ui/modal                              [updated config]
-[slimmodular] [documented  ] [full    compound] @reusable-ui/modal-card                         [updated config]
-[slimmodular] [documented  ] [full    compound] @reusable-ui/modal-side                         [updated config]
+@reusable-ui/modal
+@reusable-ui/modal-card
+@reusable-ui/modal-side
 
 // composite-components:
-[slimmodular] [documented  ] [          atomic] @reusable-ui/progress                           [updated config]    [Sm|Md|Lg]  [Inline|Block]
-[slimmodular] [documented  ] [          atomic] @reusable-ui/group                              [updated config]
-[not needopt] [documented  ] [full    compound] @reusable-ui/nav                                [no      config]
-[not needopt] [documented  ] [full    compound] @reusable-ui/navscroll                          [no      config]
-[not needopt] [documented  ] [full    compound] @reusable-ui/pagination                         [no      config]
-[slimmodular] [documented  ] [full    compound] @reusable-ui/accordion                          [updated config]
-[not needopt] [documented  ] [full    compound] @reusable-ui/exclusive-accordion                [no      config]
-[slimmodular] [documented  ] [full    compound] @reusable-ui/tab                                [updated config]
-[slimmodular] [documented  ] [full    compound] @reusable-ui/carousel                           [updated config]    [Sm|Md|Lg]
-[slimmodular] [documented  ] [          atomic] @reusable-ui/navbar                             [updated config]    [Expand|Collapse]
-[slimmodular] [undocumented] [full    compound] @reusable-ui/details                            [updated config]    [Sm|Md|Lg]
+@reusable-ui/progress
+@reusable-ui/group
+@reusable-ui/nav
+@reusable-ui/navscroll
+@reusable-ui/pagination
+@reusable-ui/accordion
+@reusable-ui/exclusive-accordion
+@reusable-ui/tab
+@reusable-ui/carousel
+@reusable-ui/navbar
+@reusable-ui/details
 
 // utility-components:
-[slimmodular] [documented  ] [          atomic] @reusable-ui/visually-hidden                    [no      config]
-[not needopt] [undocumented] @reusable-ui/dimensions                                            [no      config]
-[not needopt] [undocumented] @reusable-ui/responsives                                           [no      config]
-[not needopt] [undocumented] @reusable-ui/modal-status                                          [no      config]
-[not needopt] [undocumented] @reusable-ui/dialog-message                                        [no      config]
+@reusable-ui/visually-hidden
+@reusable-ui/dimensions
+@reusable-ui/responsives
+@reusable-ui/modal-status
+@reusable-ui/dialog-message
 
-[published  ] @reusable-ui/components
+@reusable-ui/components
