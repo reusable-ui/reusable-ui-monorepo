@@ -263,7 +263,7 @@ export const borderRadiusExpressions = config[1];
  * }
  * ```
  */
-export const borderRadiusConfig    = config[2];
+export const borderRadiusConfig      = config[2];
 
 
 

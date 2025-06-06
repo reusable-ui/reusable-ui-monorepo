@@ -256,7 +256,7 @@ export const borderExpressions = config[1];
  * }
  * ```
  */
-export const borderConfig    = config[2];
+export const borderConfig      = config[2];
 
 
 
