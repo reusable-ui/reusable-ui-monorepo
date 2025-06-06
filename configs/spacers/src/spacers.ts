@@ -275,7 +275,7 @@ export const spacerExpressions = config[1];
  * }
  * ```
  */
-export const spacerConfig    = config[2];
+export const spacerConfig      = config[2];
 
 
 
