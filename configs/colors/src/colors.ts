@@ -1132,7 +1132,7 @@ export const colorExpressions = config[1];
  * }
  * ```
  */
-export const colorConfig    = config[2];
+export const colorConfig      = config[2];
 
 
 

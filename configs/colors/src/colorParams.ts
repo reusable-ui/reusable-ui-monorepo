@@ -339,7 +339,7 @@ export const colorParamExpressions = config[1];
  * }
  * ```
  */
-export const colorParamConfig    = config[2];
+export const colorParamConfig      = config[2];
 
 
 
