@@ -105,7 +105,7 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = borderVars.default; // Resolves to "var(--bor-style) var(--bor-hair) var(--bor-color)"
+ * const value = borderVars.default; // Resolves to "var(--bor-default)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
