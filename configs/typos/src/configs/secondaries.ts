@@ -303,7 +303,7 @@ export const secondaryExpressions = config[1];
  * }
  * ```
  */
-export const secondaryConfig    = config[2];
+export const secondaryConfig      = config[2];
 
 
 

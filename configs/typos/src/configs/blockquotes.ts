@@ -487,7 +487,7 @@ export const blockquoteExpressions = config[1];
  * }
  * ```
  */
-export const blockquoteConfig    = config[2];
+export const blockquoteConfig      = config[2];
 
 
 

@@ -468,7 +468,7 @@ export const typoExpressions = config[1];
  * }
  * ```
  */
-export const typoConfig    = config[2];
+export const typoConfig      = config[2];
 
 
 

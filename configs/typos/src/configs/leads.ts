@@ -335,7 +335,7 @@ export const leadExpressions = config[1];
  * }
  * ```
  */
-export const leadConfig    = config[2];
+export const leadConfig      = config[2];
 
 
 

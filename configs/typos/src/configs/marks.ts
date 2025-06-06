@@ -433,7 +433,7 @@ export const markExpressions = config[1];
  * }
  * ```
  */
-export const markConfig    = config[2];
+export const markConfig      = config[2];
 
 
 

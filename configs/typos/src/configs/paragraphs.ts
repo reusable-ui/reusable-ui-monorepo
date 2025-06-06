@@ -321,7 +321,7 @@ export const paragraphExpressions = config[1];
  * }
  * ```
  */
-export const paragraphConfig    = config[2];
+export const paragraphConfig      = config[2];
 
 
 

@@ -326,7 +326,7 @@ export const horzSeparatorExpressions = config[1];
  * }
  * ```
  */
-export const horzSeparatorConfig    = config[2];
+export const horzSeparatorConfig      = config[2];
 
 
 

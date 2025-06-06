@@ -438,7 +438,7 @@ export const codeExpressions = config[1];
  * }
  * ```
  */
-export const codeConfig    = config[2];
+export const codeConfig      = config[2];
 
 
 

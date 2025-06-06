@@ -397,7 +397,7 @@ export const plainListExpressions = config[1];
  * }
  * ```
  */
-export const plainListConfig    = config[2];
+export const plainListConfig      = config[2];
 
 
 

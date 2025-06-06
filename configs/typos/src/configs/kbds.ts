@@ -432,7 +432,7 @@ export const kbdExpressions = config[1];
  * }
  * ```
  */
-export const kbdConfig    = config[2];
+export const kbdConfig      = config[2];
 
 
 

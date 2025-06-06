@@ -441,7 +441,7 @@ export const headingExpressions = config[1];
  * }
  * ```
  */
-export const headingConfig    = config[2];
+export const headingConfig      = config[2];
 
 
 

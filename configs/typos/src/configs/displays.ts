@@ -444,7 +444,7 @@ export const displayExpressions = config[1];
  * }
  * ```
  */
-export const displayConfig    = config[2];
+export const displayConfig      = config[2];
 
 
 
