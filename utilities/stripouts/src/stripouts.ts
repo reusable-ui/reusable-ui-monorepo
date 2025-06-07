@@ -1,364 +1,129 @@
-// cssfn:
+// Reusable-ui utilities:
 import {
-    // cssfn css specific types:
-    CssSelectorCollection,
-    
-    
-    
-    // writes css in javascript:
-    rule,
-    fallback,
-    ifActive,
-    children,
-    style,
-}                           from '@cssfn/core'          // writes css in javascript
-
-
-
-const unset = 'unset';
-const none  = 'none';
+    resetFocusableElement,
+    resetControl,
+    resetLink,
+    resetTextbox,
+    resetRange,
+    resetList,
+    resetScrollbar,
+    resetImage,
+    resetFigure,
+    resetMedia,
+    resetDialog,
+}                       from '@reusable-ui/resets'   // A utility for resetting default browser styles, ensuring a clean and customizable foundation for UI design.
 
 
 
 /**
- * Removes browser's default style on focusable element.
+ * @deprecated - Use `resetFocusableElement` instead.
+ * 
+ * **Resets browser styling for focusable elements** (`:focus`, `:focus-visible`).
+ *
+ * - Removes default focus outline, allowing full customization.
  */
-export const stripoutFocusableElement = () => style({
-    ...rule([':focus', ':focus-visible'], {
-        // borders:
-        outline       : unset, // removes focus outline
-        outlineOffset : unset, // removes focus outline
-    }),
-});
+export const stripoutFocusableElement = resetFocusableElement;
 
 /**
- * Removes browser's default style on control (`<input>`, `<textarea>`, `<button>`, etc).
+ * @deprecated - Use `resetControl` instead.
+ * 
+ * **Resets browser styling for form controls** (`<input>`, `<textarea>`, `<button>`, etc.).
+ *
+ * - Removes default styling for text fields, buttons, and other interactive elements.
+ * - Applies a neutral base for custom UI components.
  */
-export const stripoutControl = () => style({
-    // resets:
-    ...stripoutFocusableElement(),
-    
-    
-    
-    // layouts:
-    ...style({
-        // layouts:
-        appearance      : none,
-        
-        
-        
-        // sizes:
-        boxSizing       : unset,
-        
-        
-        
-        // accessibilities:
-        cursor          : unset,
-        
-        
-        
-        // backgrounds:
-        backgroundColor : unset,
-        
-        
-        
-        // foregrounds:
-        color           : unset,
-        
-        
-        
-        // borders:
-        border          : unset,
-        borderRadius    : unset,
-        
-        
-        
-        // spacings:
-        margin          : unset,
-        padding         : unset,
-        
-        
-        
-        // typos:
-        font            : unset,
-        textRendering   : unset,
-        textTransform   : unset,
-        textIndent      : unset,
-        textShadow      : unset,
-        textAlign       : unset,
-        letterSpacing   : unset,
-        wordSpacing     : unset,
-    }),
-});
+export const stripoutControl = resetControl;
 
 /**
- * Removes browser's default style on hyperlink (`<a>`).
+ * @deprecated - Use `resetLink` instead.
+ * 
+ * **Resets browser styling for hyperlinks** (`<a>`).
+ *
+ * - Prevents default styles for links, ensuring full customization.
  */
-export const stripoutLink = () => style({
-    // resets:
-    ...stripoutFocusableElement(),
-    
-    
-    
-    // layouts:
-    ...style({
-        // accessibilities:
-        cursor         : unset, // removes hand pointer
-        
-        
-        
-        // foregrounds:
-        color          : unset, // removes blue color
-        
-        
-        
-        // typos:
-        textDecoration : unset, // removes underline
-        
-        
-        
-        // states:
-        ...ifActive({
-            // foregrounds:
-            color      : unset, // removes blue color
-        }),
-    }),
-});
+export const stripoutLink = resetLink;
 
 /**
- * Removes browser's default style on `<input type=*textLike*>`.  
- * `*textLike*` = `text`|`search`|`password`|`email`|`tel`|`url`|`number`|`time`|`week`|`date`|`datetime-local`|`month`
+ * @deprecated - Use `resetTextbox` instead.
+ * 
+ * **Resets browser styling for `<input>` fields with text-like behavior**.
+ * 
+ * Supports:  
+ * `text`, `search`, `password`, `email`, `tel`, `url`, `number`, `time`, `week`, `date`, `datetime-local`, `month`
+ * 
+ * - Standardizes input rendering across browsers.
+ * - Removes unnecessary UI elements (search cancel button, spin buttons).
  */
-export const stripoutTextbox = () => style({
-    // resets:
-    ...stripoutControl(),
-    
-    
-    
-    // layouts:
-    ...style({
-        // layouts:
-        MozAppearance  : 'textfield',
-        
-        
-        
-        // states:
-        ...rule([':valid', ':invalid'], {
-            // borders:
-            boxShadow  : unset,
-        }),
-        
-        
-        
-        // children:
-        ...children(['::-webkit-calendar-picker-indicator', '::-webkit-inner-spin-button', '::-webkit-search-cancel-button'], {
-            // layouts:
-            appearance : none,
-            display    : none,
-        }),
-    }),
-});
-
-export const rangeTrackElm : CssSelectorCollection = ['::-webkit-slider-runnable-track', '::-moz-range-track', '::-ms-track'];
-export const rangeThumbElm : CssSelectorCollection = ['::-webkit-slider-thumb'         , '::-moz-range-thumb', '::-ms-thumb'];
-/**
- * Removes browser's default style on `<input type="range">`.
- */
-export const stripoutRange = () => style({
-    // resets:
-    ...stripoutControl(),
-    
-    
-    
-    // layouts:
-    ...style({
-        // children:
-        ...children([rangeTrackElm, rangeThumbElm], {
-            // resets:
-            ...stripoutControl(),
-        }, { performGrouping: false }), // any invalid selector does not cause the whole selectors to fail
-    }),
-});
+export const stripoutTextbox = resetTextbox;
 
 /**
- * Removes browser's default style on list (`<ul> > <li>` & `<ol> > <li>`).
+ * @deprecated - Use `resetRange` instead.
+ * 
+ * **Resets browser styling for `<input type="range">`**.
+ * 
+ * - Standardizes track & thumb styling across browsers.
+ * - Ensures consistent behavior and appearance.
  */
-export const stripoutList = () => style({
-    // layouts:
-    listStyleType      : none,
-    
-    
-    
-    // spacings:
-    margin             : unset,
-    paddingInlineStart : unset,
-    
-    
-    
-    // children:
-    ...children(':where(li)', {
-        // layouts:
-        display        : unset,
-        
-        
-        
-        // typos:
-        textAlign      : unset,
-    }),
-});
+export const stripoutRange = resetRange;
 
 /**
- * Hides browser's default scrollbar.
+ * @deprecated - Use `resetList` instead.
+ * 
+ * **Resets browser styling for lists** (`<ul>`, `<ol>`, `<li>`).
+ * 
+ * - Removes default bullet points and list item spacing.
+ * - Allows for full customization of list styles.
  */
-export const stripoutScrollbar = () => style({
-    // layouts:
-    scrollbarWidth  : none,
-    msOverflowStyle : none,
-    
-    
-    
-    // children:
-    ...children('::-webkit-scrollbar', {
-        // layouts:
-        display     : none,
-    }),
-});
+export const stripoutList = resetList;
 
 /**
- * Removes browser's default style on `<img>`.
+ * @deprecated - Use `resetScrollbar` instead.
+ * 
+ * **Hides the browser’s default scrollbar styling**.
+ *
+ * - Removes scrollbar width for Firefox (`scrollbarWidth: none`).
+ * - Prevents overflow styling in IE/Edge (`msOverflowStyle: none`).
+ * - Hides the scrollbar in WebKit browsers (`display: none` for `::-webkit-scrollbar`).
  */
-export const stripoutImage = () => style({
-    // layouts:
-    display: 'block', // fills the entire parent's width
-    
-    
-    
-    // sizes:
-    // fix the abnormal `display=block` sizing:
-    // span to maximum width:
-    boxSizing : 'border-box', // the final size is including borders & paddings
-    width     : 'fill-available',
-    ...fallback({
-        width : '-webkit-fill-available',
-    }),
-    ...fallback({
-        width : '-moz-available',
-    }),
-    ...fallback({
-        width : '100%',
-    }),
-    
-    
-    
-    // spacings:
-    overflow           : unset,
-    overflowClipMargin : unset,
-});
+export const stripoutScrollbar = resetScrollbar;
 
 /**
- * Removes browser's default style on `<figure>`.
+ * @deprecated - Use `resetImage` instead.
+ * 
+ * **Resets browser styling for `<img>` elements**.
+ *
+ * - Ensures images fill their container properly.
+ * - Standardizes rendering behavior across browsers.
  */
-export const stripoutFigure = () => style({
-    // spacings:
-    margin  : unset,
-});
+export const stripoutImage = resetImage;
 
 /**
- * Removes browser's default style on `<figure>`, `<img>`, `<svg>`, `<video>`, `<picture>`, `<embed>`, and `<object>`.
+ * @deprecated - Use `resetFigure` instead.
+ * 
+ * **Resets browser styling for `<figure>` elements**.
+ *
+ * - Removes unwanted margins.
  */
-export const stripoutMedia = () => style({
-    // layouts:
-    ...rule(':where(img, svg, video, picture, object)', {
-        display: 'block', // fills the entire parent's width
-    }),
-    
-    
-    
-    // sizes:
-    ...rule(':where(img, svg, video, object)', {
-        // fix the abnormal `display=block` sizing:
-        // span to maximum width:
-        boxSizing : 'border-box', // the final size is including borders & paddings
-        width     : 'fill-available',
-        ...fallback({
-            width : '-webkit-fill-available',
-        }),
-        ...fallback({
-            width : '-moz-available',
-        }),
-        ...fallback({
-            width : '100%',
-        }),
-    }),
-    
-    
-    
-    // spacings:
-    ...rule(':where(figure)', {
-        margin : unset,
-    }),
-    ...rule(':where(img, svg:not(:root), video)', {
-        overflow           : unset,
-        overflowClipMargin : unset,
-    }),
-});
+export const stripoutFigure = resetFigure;
 
 /**
- * Removes browser's default style on `<dialog>`.
+ * @deprecated - Use `resetMedia` instead.
+ * 
+ * **Resets default browser styling for media-related elements**.
+ *
+ * Applies to: `<figure>`, `<img>`, `<svg>`, `<video>`, `<picture>`, `<embed>`, `<object>`
+ * 
+ * - Ensures media elements **properly fill their container**.
+ * - Standardizes rendering behavior across browsers.
  */
-export const stripoutDialog = () => style({
-    // layouts:
-    display     : unset,
-    
-    
-    
-    // positions:
-    position    : unset,
-    inset       : unset,
-    
-    
-    
-    // sizes:
-    inlineSize  : unset,
-    blockSize   : unset,
-    
-    
-    
-    // backgrounds:
-    background  : unset,
-    
-    
-    
-    // foregrounds:
-    color       : unset,
-    
-    
-    
-    // borders:
-    border      : unset,
-    
-    
-    
-    // spacings:
-    margin      : unset,
-    padding     : unset,
-    
-    
-    
-    // children:
-    ...children('::backdrop', {
-        // layouts:
-        display    : none,
-        
-        
-        
-        // positions:
-        position   : unset,
-        inset      : unset,
-        
-        
-        
-        // backgrounds:
-        background : unset,
-    }),
-});
+export const stripoutMedia = resetMedia;
+
+/**
+ * @deprecated - Use `resetDialog` instead.
+ * 
+ * **Resets default browser styling for `<dialog>`**.
+ * 
+ * - Removes browser-imposed positioning and background styles.
+ * - Ensures proper customization for modal dialogs.
+ */
+export const stripoutDialog = resetDialog;

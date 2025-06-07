@@ -1,30 +1,37 @@
 {
   "name": "@reusable-ui/stripouts",
-  "version": "6.5.0",
-  "description": "Removes browser's default stylesheet.",
+  "version": "7.0.0",
+  "description": "A utility for resetting default browser styles, ensuring a clean and customizable foundation for UI design.",
   "keywords": [
-    "clear",
-    "remove",
+    "deprecated",
     "reset",
-    "browser",
-    "default",
-    "css",
-    "stylesheet"
+    "browser styles",
+    "default styles",
+    "css reset",
+    "remove",
+    "clean",
+    "unstyled",
+    "normalize",
+    "UI consistency"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "configs/stripouts"
   },
-  "main": "dist/stripouts.js",
-  "types": "dist/stripouts.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/stripouts.js",
-    "./index": "./dist/stripouts.js",
-    "./index.js": "./dist/stripouts.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -38,6 +45,6 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.2.0"
+    "@reusable-ui/resets": "^7.0.0"
   }
 }

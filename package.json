@@ -33,6 +33,7 @@
     "utilities/numbers",
     "utilities/nodes",
     "utilities/resets",
+    "utilities/stripouts",
     "__configs/*",
     "__utilities/*",
     "__features/*",
