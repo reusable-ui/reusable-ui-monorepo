@@ -8,7 +8,8 @@
 // Reusable-ui utilities:
 @reusable-ui/numbers
 @reusable-ui/nodes
-@reusable-ui/stripouts
+@reusable-ui/resets
+@reusable-ui/stripouts      DEPRECATED
 @reusable-ui/layouts
 @reusable-ui/hooks
 @reusable-ui/semantics
