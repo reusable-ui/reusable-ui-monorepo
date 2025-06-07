@@ -34,6 +34,7 @@
     "utilities/nodes",
     "utilities/resets",
     "utilities/stripouts",
+    "utilities/layouts",
     "__configs/*",
     "__utilities/*",
     "__features/*",

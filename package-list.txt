@@ -10,7 +10,7 @@
 @reusable-ui/nodes
 @reusable-ui/resets
 @reusable-ui/stripouts      DEPRECATED
-@reusable-ui/layouts
+@reusable-ui/layouts        DEPRECATED
 @reusable-ui/hooks
 @reusable-ui/semantics
 @reusable-ui/accessibilities

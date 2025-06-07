@@ -1,28 +1,35 @@
 {
   "name": "@reusable-ui/layouts",
-  "version": "6.5.0",
-  "description": "Mixins of reusable common layout.",
+  "version": "7.0.0",
+  "description": "Deprecated mixins for common layout utilities. Use CSS `lh` units instead.",
   "keywords": [
+    "deprecated",
     "layouts",
-    "design",
-    "commons",
-    "css",
-    "stylesheet"
+    "css layout",
+    "design utilities",
+    "flexbox",
+    "typography",
+    "responsive",
+    "UI alignment"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "utilities/layouts"
   },
-  "main": "dist/layouts.js",
-  "types": "dist/layouts.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/layouts.js",
-    "./index": "./dist/layouts.js",
-    "./index.js": "./dist/layouts.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -36,6 +43,6 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.2.0"
+    "@cssfn/core": "^4.0.0"
   }
 }

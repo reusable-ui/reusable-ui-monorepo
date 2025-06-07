@@ -6,40 +6,50 @@ import {
 
 
 /**
- * A dummy text content, for making parent's height as tall as current text line-height.  
- * The dummy is also used for calibrating the flex's vertical position.
+ * @deprecated - Use `blockSize: '1lh'` instead.
+ * 
+ * Ensures a **container’s height matches the text's line-height** using a hidden dummy element.  
+ *
+ * - Historically used for aligning inline elements (e.g., `<Check>`, `<Badge>`) with surrounding text.
+ * - Relies on an invisible `&nbsp;` character to force correct height calculation.
+ * - Now replaced by `blockSize: '1lh'`, which directly sets height to line-height.
  */
 export const fillTextLineHeightLayout = () => style({
-    // layouts:
-    content    : '"\xa0"',       // &nbsp;
-    display    : 'inline-block', // use inline-block, so we can kill the width
+    // Layouts:
+    content    : '"\xa0"',       // Hidden non-breaking space (`&nbsp;`).
+    display    : 'inline-block', // Ensures proper height calculation.
     
     
     
-    // appearances:
-    overflow   : 'hidden',       // crop the text width (&nbsp;)
-    visibility : 'hidden',       // hide the element, but still consumes the dimension
+    // Appearances:
+    overflow   : 'hidden',       // Prevents unintended width expansion.
+    visibility : 'hidden',       // Keeps it invisible while maintaining its effect.
     
     
     
-    // sizes:
-    inlineSize : 0,              // kill the width, we just need the height
+    // Sizes:
+    inlineSize : 0,              // Width is unnecessary; height is the only requirement.
 });
 
 /**
- * A dummy text content, for making parent's width as wide as current text line-height (rotated 90°).  
- * The dummy is also used for calibrating the flex's vertical position.
+ * @deprecated - Use `inlineSize: '1lh'` instead.
+ * 
+ * Ensures a **container’s width matches the text’s line-height** using a rotated dummy element.  
+ *
+ * - Previously used for aligning inline elements horizontally when rotated (e.g., vertical badges).
+ * - Uses a rotated `&nbsp;` to force correct width calculation based on line-height.
+ * - Now replaced by `inlineSize: '1lh'`, which directly applies width equivalent to line-height.
  */
 export const fillTextLineWidthLayout = () => style({
-    // layouts:
+    // Layouts:
     ...fillTextLineHeightLayout(),
     ...style({
-        // layouts:
-        writingMode : 'vertical-lr', // rotate the element 90°
+        // Layouts:
+        writingMode : 'vertical-lr', // Rotates element 90° to force width alignment.
         
         
         
-        // appearances:
-        overflow    : 'unset',       // fix Firefox bug
+        // Appearances:
+        overflow    : 'unset',       // Fixes Firefox rendering inconsistencies.
     }),
 });
