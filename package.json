@@ -32,6 +32,7 @@
     "tests/test-typos",
     "utilities/numbers",
     "utilities/nodes",
+    "utilities/resets",
     "__configs/*",
     "__utilities/*",
     "__features/*",
