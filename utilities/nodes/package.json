@@ -1,19 +1,29 @@
 {
   "name": "@reusable-ui/nodes",
-  "version": "6.5.0",
-  "description": "A set of React node utility functions.",
+  "version": "7.0.0",
+  "description": "A comprehensive utility library for efficiently managing React nodes, including fragments, forward refs, and nested structures.",
   "keywords": [
-    "nodes",
     "react",
+    "nodes",
+    "components",
     "utilities",
-    "common"
+    "rendering",
+    "jsx",
+    "fragments",
+    "forwardRef",
+    "flatten",
+    "children"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "utilities/nodes"
+  },
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,7 +45,7 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "peerDependencies": {
-    "@types/react": "^18.0.0",
-    "react": "^18.0.0"
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0"
   }
 }
