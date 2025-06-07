@@ -1,0 +1,49 @@
+{
+  "name": "@reusable-ui/runtime-checks",
+  "version": "7.0.0",
+  "description": "Detects whether JavaScript is running on the client-side or server-side, including JSDOM environments.",
+  "keywords": [
+    "runtime detection",
+    "client-side",
+    "server-side",
+    "environment check",
+    "isomorphic",
+    "browser detection",
+    "jsdom",
+    "node.js",
+    "execution context"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "utilities/runtime-checks"
+  },
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "is-in-browser": "^2.0.0"
+  }
+}
