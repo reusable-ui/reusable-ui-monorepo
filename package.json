@@ -36,6 +36,7 @@
     "utilities/stripouts",
     "utilities/layouts",
     "utilities/runtime-checks",
+    "utilities/callbacks",
     "__configs/*",
     "__utilities/*",
     "__features/*",

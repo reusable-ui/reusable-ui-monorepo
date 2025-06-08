@@ -12,7 +12,7 @@
 @reusable-ui/stripouts      DEPRECATED
 @reusable-ui/layouts        DEPRECATED
 @reusable-ui/runtime-checks
-@reusable-ui/callbacks      PLANNED     deps: none, foundational for stable API functions.
+@reusable-ui/callbacks                  deps: none, foundational for stable API functions.
 @reusable-ui/lifecycles     PLANNED     deps: none, lifecycle-related hooks.
 @reusable-ui/styles         PLANNED     deps: none, manages styling utilities.
 @reusable-ui/references     PLANNED     deps: @reusable-ui/callbacks (for stable API functions).
