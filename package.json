@@ -37,6 +37,7 @@
     "utilities/layouts",
     "utilities/runtime-checks",
     "utilities/callbacks",
+    "utilities/lifecycles",
     "__configs/*",
     "__utilities/*",
     "__features/*",
