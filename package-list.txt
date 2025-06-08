@@ -12,7 +12,14 @@
 @reusable-ui/stripouts      DEPRECATED
 @reusable-ui/layouts        DEPRECATED
 @reusable-ui/runtime-checks
-@reusable-ui/hooks
+@reusable-ui/callbacks      PLANNED     deps: none, foundational for stable API functions.
+@reusable-ui/lifecycles     PLANNED     deps: none, lifecycle-related hooks.
+@reusable-ui/styles         PLANNED     deps: none, manages styling utilities.
+@reusable-ui/references     PLANNED     deps: @reusable-ui/callbacks (for stable API functions).
+@reusable-ui/directionality PLANNED     deps: @reusable-ui/lifecycles (depends on lifecycle updates).
+@reusable-ui/timers         PLANNED     deps: none, **likely to use @reusable-ui/lifecycles later** for cleanup.
+@reusable-ui/events         PLANNED     deps: @reusable-ui/callbacks, @reusable-ui/lifecycles, **likely to use @reusable-ui/timers later** for delay management.
+@reusable-ui/hooks          DEPRECATING
 @reusable-ui/semantics
 @reusable-ui/accessibilities
 @reusable-ui/validations
