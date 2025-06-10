@@ -14,7 +14,7 @@
 @reusable-ui/runtime-checks
 @reusable-ui/callbacks                  deps: none, foundational for stable API functions.
 @reusable-ui/lifecycles                 deps: none, lifecycle-related hooks.
-@reusable-ui/styles         PLANNED     deps: none, manages styling utilities.
+@reusable-ui/styles                     deps: none, manages styling utilities.
 @reusable-ui/references     PLANNED     deps: @reusable-ui/callbacks (for stable API functions).
 @reusable-ui/directionality PLANNED     deps: @reusable-ui/lifecycles (depends on lifecycle updates).
 @reusable-ui/timers         PLANNED     deps: none, **likely to use @reusable-ui/lifecycles later** for cleanup.

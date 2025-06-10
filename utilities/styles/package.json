@@ -1,0 +1,57 @@
+{
+  "name": "@reusable-ui/styles",
+  "version": "7.0.0",
+  "description": "A utility package for merging and optimizing styles and class names in React applications.",
+  "keywords": [
+    "styles",
+    "class names",
+    "React",
+    "CSS properties",
+    "merge styles",
+    "utility functions",
+    "performance"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "utilities/styles"
+  },
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest",
+    "bench-1": "cross-env NODE_ENV=benchmark node __benchmarks__/styles.useMergeClasses.benchmark.js",
+    "bench-2": "cross-env NODE_ENV=benchmark node __benchmarks__/styles.mergeClasses.benchmark.js",
+    "bench-3": "cross-env NODE_ENV=benchmark node __benchmarks__/styles.useMergeStyles.benchmark.js"
+  },
+  "dependencies": {
+    "@cssfn/core": "^4.0.0"
+  },
+  "peerDependencies": {
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "classnames": "^2.5.1"
+  }
+}
