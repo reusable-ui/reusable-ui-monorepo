@@ -42,6 +42,7 @@
     "utilities/callbacks",
     "utilities/lifecycles",
     "utilities/styles",
+    "utilities/references",
     "__configs/*",
     "__utilities/*",
     "__features/*",
