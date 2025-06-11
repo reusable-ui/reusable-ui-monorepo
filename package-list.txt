@@ -16,7 +16,7 @@
 @reusable-ui/lifecycles                 deps: none, lifecycle-related hooks.
 @reusable-ui/styles                     deps: none, manages styling utilities.
 @reusable-ui/references                 deps: @reusable-ui/callbacks (for stable API functions).
-@reusable-ui/directionality PLANNED     deps: @reusable-ui/lifecycles (depends on lifecycle updates).
+@reusable-ui/directionality             deps: @reusable-ui/lifecycles (depends on lifecycle updates).
 @reusable-ui/timers         PLANNED     deps: none, **likely to use @reusable-ui/lifecycles later** for cleanup.
 @reusable-ui/events         PLANNED     deps: @reusable-ui/callbacks, @reusable-ui/lifecycles, **likely to use @reusable-ui/timers later** for delay management.
 @reusable-ui/hooks          DEPRECATING

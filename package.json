@@ -43,6 +43,7 @@
     "utilities/lifecycles",
     "utilities/styles",
     "utilities/references",
+    "utilities/directionality",
     "__configs/*",
     "__utilities/*",
     "__features/*",
