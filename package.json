@@ -44,6 +44,7 @@
     "utilities/styles",
     "utilities/references",
     "utilities/directionality",
+    "utilities/timers",
     "__configs/*",
     "__utilities/*",
     "__features/*",
