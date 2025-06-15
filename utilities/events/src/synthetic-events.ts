@@ -5,6 +5,7 @@ import {
     type UIEvent         as ReactUIEvent,
     type MouseEvent      as ReactMouseEvent,
     type KeyboardEvent   as ReactKeyboardEvent,
+    type AbstractView    as ReactAbstractView,
 }                           from 'react'
 
 
@@ -247,7 +248,7 @@ export const createSyntheticUIEvent    = <TElement extends Element, TEvent exten
         
         // UIs:
         detail,
-        view : view as unknown as React.AbstractView,
+        view : view as unknown as ReactAbstractView,
     } satisfies ReactUIEvent<TElement, TEvent>;
 };
 
