@@ -19,7 +19,7 @@
 @reusable-ui/directionality             deps: @reusable-ui/lifecycles (depends on lifecycle updates).
 @reusable-ui/timers                     deps: none, **likely to use @reusable-ui/lifecycles later** for cleanup.
 @reusable-ui/events                     deps: @reusable-ui/callbacks, @reusable-ui/lifecycles, **likely to use @reusable-ui/timers later** for delay management.
-@reusable-ui/hooks          DEPRECATING
+@reusable-ui/hooks          DEPRECATED
 @reusable-ui/semantics
 @reusable-ui/accessibilities
 @reusable-ui/validations

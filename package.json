@@ -46,6 +46,7 @@
     "utilities/directionality",
     "utilities/timers",
     "utilities/events",
+    "utilities/hooks",
     "__configs/*",
     "__utilities/*",
     "__features/*",
