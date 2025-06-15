@@ -1,3 +1,14 @@
+// React:
+import {
+    // Types:
+    type SyntheticEvent  as ReactSyntheticEvent,
+    type UIEvent         as ReactUIEvent,
+    type MouseEvent      as ReactMouseEvent,
+    type KeyboardEvent   as ReactKeyboardEvent,
+}                           from 'react'
+
+
+
 /**
  * A function that always returns `true`.
  * 
@@ -84,7 +95,7 @@ export interface CreateSyntheticEventOptions<out TElement extends Element, out T
  * @param options - Configuration options for constructing the synthetic event.
  * @returns A React-compatible `SyntheticEvent`.
  */
-export const createSyntheticEvent      = <TElement extends Element, TEvent extends Event>(options: CreateSyntheticEventOptions<TElement, TEvent>): React.SyntheticEvent<TElement, TEvent> => {
+export const createSyntheticEvent      = <TElement extends Element, TEvent extends Event>(options: CreateSyntheticEventOptions<TElement, TEvent>): ReactSyntheticEvent<TElement, TEvent> => {
     // Extract options:
     const {
         // Standards:
@@ -113,7 +124,7 @@ export const createSyntheticEvent      = <TElement extends Element, TEvent exten
     
     
     // Construct synthetic event:
-    const syntheticEvent : React.SyntheticEvent<TElement, TEvent> = {
+    const syntheticEvent : ReactSyntheticEvent<TElement, TEvent> = {
         // Rests:
         ...restOptions,
         
@@ -217,7 +228,7 @@ export interface CreateSyntheticUIEventOptions<out TElement extends Element, out
  * @param options - Configuration options for constructing the synthetic UI event.
  * @returns A React-compatible `UIEvent`.
  */
-export const createSyntheticUIEvent    = <TElement extends Element, TEvent extends UIEvent>(options: CreateSyntheticUIEventOptions<TElement, TEvent>): React.UIEvent<TElement, TEvent> => {
+export const createSyntheticUIEvent    = <TElement extends Element, TEvent extends UIEvent>(options: CreateSyntheticUIEventOptions<TElement, TEvent>): ReactUIEvent<TElement, TEvent> => {
     // Extract options:
     const {
         // UIs:
@@ -237,7 +248,7 @@ export const createSyntheticUIEvent    = <TElement extends Element, TEvent exten
         // UIs:
         detail,
         view : view as unknown as React.AbstractView,
-    } satisfies React.UIEvent<TElement, TEvent>;
+    } satisfies ReactUIEvent<TElement, TEvent>;
 };
 
 
@@ -273,7 +284,7 @@ export interface CreateSyntheticMouseEventOptions<out TElement extends Element, 
  * @param options - Configuration options for constructing the synthetic mouse event.
  * @returns A React-compatible `MouseEvent`.
  */
-export const createSyntheticMouseEvent = <TElement extends Element, TEvent extends MouseEvent>(options: CreateSyntheticMouseEventOptions<TElement, TEvent>): React.MouseEvent<TElement, TEvent> => {
+export const createSyntheticMouseEvent = <TElement extends Element, TEvent extends MouseEvent>(options: CreateSyntheticMouseEventOptions<TElement, TEvent>): ReactMouseEvent<TElement, TEvent> => {
     // Extract options:
     const {
         // Standards:
@@ -361,7 +372,7 @@ export const createSyntheticMouseEvent = <TElement extends Element, TEvent exten
         
         // Ensures function binding:
         getModifierState : (key: string): boolean => getModifierState.call(options.nativeEvent, key),
-    } satisfies React.MouseEvent<TElement, TEvent>;
+    } satisfies ReactMouseEvent<TElement, TEvent>;
 };
 
 
@@ -388,7 +399,7 @@ export interface CreateSyntheticKeyboardEventOptions<out TElement extends Elemen
  * @param options - Configuration options for constructing the synthetic keyboard event.
  * @returns A React-compatible `KeyboardEvent`.
  */
-export const createSyntheticKeyboardEvent = <TElement extends Element, TEvent extends KeyboardEvent>(options: CreateSyntheticKeyboardEventOptions<TElement, TEvent>): React.KeyboardEvent<TElement> => {
+export const createSyntheticKeyboardEvent = <TElement extends Element, TEvent extends KeyboardEvent>(options: CreateSyntheticKeyboardEventOptions<TElement, TEvent>): ReactKeyboardEvent<TElement> => {
     // Extract options:
     const {
         // Buttons:
@@ -442,5 +453,5 @@ export const createSyntheticKeyboardEvent = <TElement extends Element, TEvent ex
         
         // Ensures function binding:
         getModifierState : (key: string): boolean => getModifierState.call(options.nativeEvent, key),
-    } satisfies React.KeyboardEvent<TElement>;
+    } satisfies ReactKeyboardEvent<TElement>;
 };
