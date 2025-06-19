@@ -10,6 +10,7 @@
     "publish": "npm run build && npx lerna publish from-package"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@types/jest": "^29.5.1",
     "@types/node": "^20.1.0",
@@ -47,6 +48,7 @@
     "utilities/timers",
     "utilities/events",
     "utilities/hooks",
+    "utilities/semantics",
     "__configs/*",
     "__utilities/*",
     "__features/*",

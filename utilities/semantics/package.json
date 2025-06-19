@@ -1,27 +1,34 @@
 {
   "name": "@reusable-ui/semantics",
-  "version": "6.5.0",
-  "description": "A semantic management system for react web components.",
+  "version": "7.0.0",
+  "description": "Semantic utility for resolving tag and role behaviors in reusable UI components.",
   "keywords": [
-    "semantics",
-    "accessibilities",
-    "design",
-    "layouts"
+    "accessibility",
+    "semantic",
+    "aria",
+    "html roles",
+    "react components",
+    "ui semantics",
+    "reusable components"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "utilities/semantics"
   },
-  "main": "dist/semantics.js",
-  "types": "dist/semantics.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/semantics.js",
-    "./index": "./dist/semantics.js",
-    "./index.js": "./dist/semantics.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -35,10 +42,10 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.2.0"
+    "@cssfn/core": "^4.0.0"
   },
   "peerDependencies": {
-    "@types/react": "^18.0.0",
-    "react": "^18.0.0"
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0"
   }
 }
