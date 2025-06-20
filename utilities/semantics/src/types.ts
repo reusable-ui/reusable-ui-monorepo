@@ -150,7 +150,7 @@ export interface ResolvedSemanticAttributes {
      * - `null` indicates either the absence of a role or that `computedTag` inherently provides enough semantic meaning.
      *   In cases where `computedTag` fully conveys the intended role, explicit role assignment may be unnecessary.
      */
-    computedRole   : Role | null
+    role           : Role | null
     
     /**
      * The resolved HTML or SVG tag for the component.
@@ -158,7 +158,8 @@ export interface ResolvedSemanticAttributes {
      * - A valid `Tag` explicitly defines the HTML or SVG element type.
      * - `null` indicates the absence of a predefined tag, potentially leading to fragment rendering or fallback behavior.
      */
-    computedTag    : Tag  | null
+    tag            : Tag  | null
+    
     
     
     // Tests:

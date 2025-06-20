@@ -45,16 +45,16 @@ const Button = (props: ButtonProps) => {
         tag,
     });
     const {
-        computedTag,
-        computedRole,
+        tag  : resolvedTag,
+        role : resolvedRole,
     } = resolvedSemanticAttributes;
     if (resultRef) resultRef.current = resolvedSemanticAttributes;
     
     
     
-    const DynamicTag : Tag = computedTag ?? 'div';
+    const DynamicTag : Tag = resolvedTag ?? 'div';
     return (
-        <DynamicTag {...restProps} role={computedRole ?? undefined}>
+        <DynamicTag {...restProps} role={resolvedRole ?? undefined}>
             {props.children}
         </DynamicTag>
     );
@@ -70,8 +70,8 @@ describe('Resolved semantics rendering in <Button>', () => {
         expect(element).not.toHaveAttribute('role');
         expect(element.tagName).toBe('BUTTON');
         expect(resultRef.current).toMatchObject({
-            computedRole   : null,
-            computedTag    : 'button',
+            role           : null,
+            tag            : 'button',
             isExpectedRole : true,
             isExpectedTag  : true,
         } satisfies ResolvedSemanticAttributes);
@@ -84,8 +84,8 @@ describe('Resolved semantics rendering in <Button>', () => {
         expect(element).toHaveAttribute('role', 'button');
         expect(element.tagName).toBe('DIV');
         expect(resultRef.current).toMatchObject({
-            computedRole   : 'button',
-            computedTag    : 'div',
+            role           : 'button',
+            tag            : 'div',
             isExpectedRole : true,
             isExpectedTag  : false,
         } satisfies ResolvedSemanticAttributes);
@@ -98,8 +98,8 @@ describe('Resolved semantics rendering in <Button>', () => {
         expect(element).toHaveAttribute('role', 'button');
         expect(element.tagName).toBe('DIV'); // fallback tag
         expect(resultRef.current).toMatchObject({
-            computedRole   : 'button',
-            computedTag    : null,
+            role           : 'button',
+            tag            : null,
             isExpectedRole : true,
             isExpectedTag  : false,
         } satisfies ResolvedSemanticAttributes);
@@ -112,8 +112,8 @@ describe('Resolved semantics rendering in <Button>', () => {
         expect(element).not.toHaveAttribute('role');
         expect(element.tagName).toBe('A');
         expect(resultRef.current).toMatchObject({
-            computedRole   : null,
-            computedTag    : 'a',
+            role           : null,
+            tag            : 'a',
             isExpectedRole : true,
             isExpectedTag  : true,
         } satisfies ResolvedSemanticAttributes);
@@ -126,8 +126,8 @@ describe('Resolved semantics rendering in <Button>', () => {
         expect(element).not.toHaveAttribute('role');
         expect(element.tagName).toBe('A');
         expect(resultRef.current).toMatchObject({
-            computedRole   : null,
-            computedTag    : 'a',
+            role           : null,
+            tag            : 'a',
             isExpectedRole : true,
             isExpectedTag  : true,
         } satisfies ResolvedSemanticAttributes);
@@ -140,8 +140,8 @@ describe('Resolved semantics rendering in <Button>', () => {
         expect(element).toHaveAttribute('role', 'button');
         expect(element.tagName).toBe('SPAN');
         expect(resultRef.current).toMatchObject({
-            computedRole   : 'button',
-            computedTag    : 'span',
+            role           : 'button',
+            tag            : 'span',
             isExpectedRole : true,
             isExpectedTag  : false,
         } satisfies ResolvedSemanticAttributes);
@@ -154,8 +154,8 @@ describe('Resolved semantics rendering in <Button>', () => {
         expect(element).toHaveAttribute('role', 'menuitem');
         expect(element.tagName).toBe('DIV'); // fallback tag
         expect(resultRef.current).toMatchObject({
-            computedRole   : 'menuitem',
-            computedTag    : null,
+            role           : 'menuitem',
+            tag            : null,
             isExpectedRole : false,
             isExpectedTag  : false,
         } satisfies ResolvedSemanticAttributes);
@@ -168,8 +168,8 @@ describe('Resolved semantics rendering in <Button>', () => {
         expect(element).toHaveAttribute('role', 'menuitem');
         expect(element.tagName).toBe('SPAN');
         expect(resultRef.current).toMatchObject({
-            computedRole   : 'menuitem',
-            computedTag    : 'span',
+            role           : 'menuitem',
+            tag            : 'span',
             isExpectedRole : false,
             isExpectedTag  : false,
         } satisfies ResolvedSemanticAttributes);
@@ -186,8 +186,8 @@ describe('Semantic priority handling in <Button>', () => {
         expect(element).not.toHaveAttribute('role');
         expect(element.tagName).toBe('DIV'); // fallback tag
         expect(resultRef.current).toMatchObject({
-            computedRole   : null,
-            computedTag    : null,
+            role           : null,
+            tag            : null,
             isExpectedRole : false,
             isExpectedTag  : false,
         } satisfies ResolvedSemanticAttributes);
@@ -200,8 +200,8 @@ describe('Semantic priority handling in <Button>', () => {
         expect(element).not.toHaveAttribute('role');
         expect(element.tagName).toBe('DIV'); // fallback tag
         expect(resultRef.current).toMatchObject({
-            computedRole   : null,
-            computedTag    : null,
+            role           : null,
+            tag            : null,
             isExpectedRole : false,
             isExpectedTag  : false,
         } satisfies ResolvedSemanticAttributes);
@@ -214,8 +214,8 @@ describe('Semantic priority handling in <Button>', () => {
         expect(element).not.toHaveAttribute('role');
         expect(element.tagName).toBe('DIV'); // fallback tag
         expect(resultRef.current).toMatchObject({
-            computedRole   : null,
-            computedTag    : null,
+            role           : null,
+            tag            : null,
             isExpectedRole : false,
             isExpectedTag  : false,
         } satisfies ResolvedSemanticAttributes);
@@ -228,8 +228,8 @@ describe('Semantic priority handling in <Button>', () => {
         expect(element).not.toHaveAttribute('role');
         expect(element.tagName).toBe('DIV'); // fallback tag
         expect(resultRef.current).toMatchObject({
-            computedRole   : null,
-            computedTag    : null,
+            role           : null,
+            tag            : null,
             isExpectedRole : false,
             isExpectedTag  : false,
         } satisfies ResolvedSemanticAttributes);
@@ -242,8 +242,8 @@ describe('Semantic priority handling in <Button>', () => {
         expect(element).not.toHaveAttribute('role');
         expect(element.tagName).toBe('DIV'); // fallback tag
         expect(resultRef.current).toMatchObject({
-            computedRole   : null,
-            computedTag    : null,
+            role           : null,
+            tag            : null,
             isExpectedRole : false,
             isExpectedTag  : false,
         } satisfies ResolvedSemanticAttributes);
@@ -256,8 +256,8 @@ describe('Semantic priority handling in <Button>', () => {
         expect(element).toHaveAttribute('role', 'menuitem');
         expect(element.tagName).toBe('DIV'); // fallback tag
         expect(resultRef.current).toMatchObject({
-            computedRole   : 'menuitem',
-            computedTag    : null,
+            role           : 'menuitem',
+            tag            : null,
             isExpectedRole : true,
             isExpectedTag  : true,
         } satisfies ResolvedSemanticAttributes);
@@ -270,8 +270,8 @@ describe('Semantic priority handling in <Button>', () => {
         expect(element).toHaveAttribute('role', 'menuitem');
         expect(element.tagName).toBe('DIV'); // fallback tag
         expect(resultRef.current).toMatchObject({
-            computedRole   : 'menuitem',
-            computedTag    : null,
+            role           : 'menuitem',
+            tag            : null,
             isExpectedRole : true,
             isExpectedTag  : true,
         } satisfies ResolvedSemanticAttributes);
@@ -284,8 +284,8 @@ describe('Semantic priority handling in <Button>', () => {
         expect(element).toHaveAttribute('role', 'menuitem');
         expect(element.tagName).toBe('DIV'); // fallback tag
         expect(resultRef.current).toMatchObject({
-            computedRole   : 'menuitem',
-            computedTag    : null,
+            role           : 'menuitem',
+            tag            : null,
             isExpectedRole : true,
             isExpectedTag  : true,
         } satisfies ResolvedSemanticAttributes);
@@ -298,8 +298,8 @@ describe('Semantic priority handling in <Button>', () => {
         expect(element).not.toHaveAttribute('role');
         expect(element.tagName).toBe('A');
         expect(resultRef.current).toMatchObject({
-            computedRole   : null,
-            computedTag    : 'a',
+            role           : null,
+            tag            : 'a',
             isExpectedRole : true,
             isExpectedTag  : true,
         } satisfies ResolvedSemanticAttributes);

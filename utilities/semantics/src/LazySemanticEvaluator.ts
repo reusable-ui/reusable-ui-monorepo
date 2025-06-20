@@ -141,7 +141,7 @@ export class LazySemanticEvaluator implements ResolvedSemanticAttributes {
     
     
     
-    get computedTag(): Tag | null {
+    get tag(): Tag | null {
         return this.#getCachedValue(
             CacheKey.Tag,
             () => computeTag(this.#preferredTag, () => this.#computedExpectedTags)
@@ -162,16 +162,16 @@ export class LazySemanticEvaluator implements ResolvedSemanticAttributes {
     get isExpectedTag(): boolean {
         return this.#getCachedValue(
             CacheKey.IsExpectedTag,
-            () => computeIsExpectedTag(this.#computedExpectedTags, () => this.computedTag)
+            () => computeIsExpectedTag(this.#computedExpectedTags, () => this.tag)
         );
     }
     
     
     
-    get computedRole(): Role | null {
+    get role(): Role | null {
         return this.#getCachedValue(
             CacheKey.ImplicitRole,
-            () => computeImplicitRole(this.computedTag, () => this.isExpectedTag, () => this.#computedRole)
+            () => computeImplicitRole(this.tag, () => this.isExpectedTag, () => this.#computedRole)
         );
     }
 }
