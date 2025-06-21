@@ -49,6 +49,7 @@
     "utilities/events",
     "utilities/hooks",
     "utilities/semantics",
+    "utilities/accessibilities",
     "__configs/*",
     "__utilities/*",
     "__features/*",

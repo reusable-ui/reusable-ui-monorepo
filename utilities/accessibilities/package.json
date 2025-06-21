@@ -1,26 +1,37 @@
 {
   "name": "@reusable-ui/accessibilities",
-  "version": "6.5.0",
-  "description": "An accessibility management system for react web components.",
+  "version": "7.0.0",
+  "description": "Composable React utilities for resolving enabled, readOnly, and active state with optional cascading context.",
   "keywords": [
-    "accessibilities",
-    "design",
-    "layouts"
+    "accessibility",
+    "react",
+    "hooks",
+    "context",
+    "cascade",
+    "disabled",
+    "readOnly",
+    "active",
+    "state-management",
+    "reusable-ui"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "utilities/accessibilities"
   },
-  "main": "dist/accessibilities.js",
-  "types": "dist/accessibilities.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/accessibilities.js",
-    "./index": "./dist/accessibilities.js",
-    "./index.js": "./dist/accessibilities.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -34,7 +45,7 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "peerDependencies": {
-    "@types/react": "^18.0.0",
-    "react": "^18.0.0"
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0"
   }
 }
