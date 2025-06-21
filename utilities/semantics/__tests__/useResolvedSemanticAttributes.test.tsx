@@ -10,7 +10,7 @@ import {
     type SemanticPriority,
     type SemanticProps,
     type ResolvedSemanticAttributes,
-    useResolvedSemantics,
+    useResolvedSemanticAttributes,
 } from '../dist/index.js'
 import { render, renderHook, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
@@ -39,7 +39,7 @@ const Button = (props: ButtonProps) => {
         ...restProps
     } = props;
     
-    const resolvedSemanticAttributes = useResolvedSemantics({
+    const resolvedSemanticAttributes = useResolvedSemanticAttributes({
         semanticPriority,
         role,
         tag,

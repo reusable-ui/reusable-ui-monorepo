@@ -50,7 +50,7 @@ import {
  *     ...restProps
  *   } = props;
  * 
- *   const { computedTag, computedRole } = useResolvedSemantics({
+ *   const { computedTag, computedRole } = useResolvedSemanticAttributes({
  *     semanticPriority,
  *     role,
  *     tag,
@@ -65,7 +65,7 @@ import {
  * };
  * ```
  */
-export const useResolvedSemantics = (props: SemanticProps, options: SemanticOptions = props): ResolvedSemanticAttributes => {
+export const useResolvedSemanticAttributes = (props: SemanticProps, options: SemanticOptions = props): ResolvedSemanticAttributes => {
     // Extract props:
     const {
         role : preferredRole = 'auto',

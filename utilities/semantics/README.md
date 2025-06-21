@@ -1,7 +1,7 @@
 # @reusable-ui/semantics 🧠  
 
 A lightweight, type-safe utility for managing **semantic tag/role resolution** in reusable React components.  
-This package provides tools like `useResolvedSemantics()` to determine the correct HTML tag and ARIA role — supporting both **accessibility best practices** and **developer-friendly abstractions**.
+This package provides tools like `useResolvedSemanticAttributes()` to determine the correct HTML tag and ARIA role — supporting both **accessibility best practices** and **developer-friendly abstractions**.
 
 ## ✨ Features
 ✔ Declarative semantic resolution based on priority hints  
@@ -20,11 +20,11 @@ yarn add @reusable-ui/semantics
 
 ## 🔁 Exported Hooks & Functions
 
-### `useResolvedSemantics(props, [options])`
+### `useResolvedSemanticAttributes(props, [options])`
 Resolves the correct semantic `role` and `tag` for a component based on input preferences and prioritized expectations. Handles fallback logic, lazy evaluation, and implicit role removal (e.g. `<a role='link'>` ➝ `<a>`).
 
 ```tsx
-import { useResolvedSemantics, SemanticPriority, Role, Tag, SemanticProps } from '@reusable-ui/semantics';
+import { useResolvedSemanticAttributes, SemanticPriority, Role, Tag, SemanticProps } from '@reusable-ui/semantics';
 
 const defaultButtonSemanticPriority: SemanticPriority = [
   ['button', 'button'],
@@ -45,7 +45,7 @@ const Button = (props: ButtonProps) => {
         ...restProps
     } = props;
     
-    const { computedTag, computedRole } = useResolvedSemantics({
+    const { computedTag, computedRole } = useResolvedSemanticAttributes({
         semanticPriority,
         role,
         tag,
