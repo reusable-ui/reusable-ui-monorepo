@@ -106,9 +106,9 @@ export const useResolvedAccessibilities = (props: AccessibilityProps): ResolvedA
     
     
     // Compute final resolved accessibilities:
-    const computedEnabled  : boolean = (cascadeEnabled  ? ancestorEnabled  : DEFAULT_ENABLED  ) && enabled;
-    const computedReadOnly : boolean = (cascadeReadOnly ? ancestorReadOnly : DEFAULT_READ_ONLY) || readOnly;
-    const computedActive   : boolean = (cascadeActive   ? ancestorActive   : DEFAULT_ACTIVE   ) || active;
+    const computedEnabled  : boolean = (cascadeEnabled  ? ancestorEnabled  : true ) && enabled;
+    const computedReadOnly : boolean = (cascadeReadOnly ? ancestorReadOnly : false) || readOnly;
+    const computedActive   : boolean = (cascadeActive   ? ancestorActive   : false) || active;
     
     
     
