@@ -1,7 +1,7 @@
 # @reusable-ui/accessibilities ♿  
 
 A lightweight, type-safe utility for managing **cascading accessibility state** (`enabled`, `readOnly`, `active`) in reusable React components.  
-This package provides tools like `useResolvedAccessibilities()` to handle both **local props** and **contextual inheritance** — ensuring consistent behavior and accessibility compliance across component hierarchies.
+This package provides tools like `useResolvedAccessibilityState()` to handle both **local props** and **contextual inheritance** — ensuring consistent behavior and accessibility compliance across component hierarchies.
 
 ## ✨ Features
 ✔ Declarative resolution of `enabled`, `readOnly`, and `active` state  
@@ -20,13 +20,13 @@ yarn add @reusable-ui/accessibilities
 
 ## 🔁 Exported Hooks & Components
 
-### `useResolvedAccessibilities(props)`
+### `useResolvedAccessibilityState(props)`
 Resolves the final `enabled`, `readOnly`, and `active` state by combining local props with context (if cascading is enabled).
 
 ```tsx
 import {
   type AccessibilityProps,
-  useResolvedAccessibilities,
+  useResolvedAccessibilityState,
   AccessibilityProvider,
 } from '@reusable-ui/accessibilities';
 
@@ -51,7 +51,7 @@ const ToggleButton = (props: ToggleButtonProps) => {
         enabled  : computedEnabled,
         readOnly : computedReadOnly,
         active   : computedActive,
-    } = useResolvedAccessibilities({
+    } = useResolvedAccessibilityState({
         enabled,
         readOnly,
         active,

@@ -55,7 +55,7 @@ export interface AccessibilityProviderProps
  * Provides accessibility context to descendant components,
  * enabling cascading resolution of `enabled`, `readOnly`, and `active` states.
  * 
- * Should wrap components that rely on `useResolvedAccessibilities`.
+ * Should wrap components that rely on `useResolvedAccessibilityState`.
  * 
  * @example
  * ```ts

@@ -48,7 +48,7 @@ export interface AccessibilityProps {
  * These values reflect the computed `enabled`, `readOnly`, and `active` states
  * after evaluating local props in combination with cascading context constraints.
  */
-export interface ResolvedAccessibilities {
+export interface ResolvedAccessibilityState {
     /**
      * Indicates whether the component is enabled and responsive to user interaction.
      */

@@ -7,8 +7,8 @@ import {
 
 import {
     type AccessibilityProps,
-    type ResolvedAccessibilities,
-    useResolvedAccessibilities,
+    type ResolvedAccessibilityState,
+    useResolvedAccessibilityState,
     AccessibilityProvider,
 } from '../dist/index.js'
 
@@ -19,7 +19,7 @@ import '@testing-library/jest-dom'
 
 interface ControlProps extends AccessibilityProps {
     children ?: ReactNode
-    resultRef ?: RefObject<ResolvedAccessibilities | null>
+    resultRef ?: RefObject<ResolvedAccessibilityState | null>
 }
 const Control = (props: ControlProps) => {
     const {
@@ -38,7 +38,7 @@ const Control = (props: ControlProps) => {
         ...restProps
     } = props;
     
-    const resolvedAccessibilities = useResolvedAccessibilities({
+    const resolvedAccessibilityState = useResolvedAccessibilityState({
         enabled,
         readOnly,
         active,
@@ -51,8 +51,8 @@ const Control = (props: ControlProps) => {
         enabled  : resolvedEnabled,
         readOnly : resolvedReadOnly,
         active   : resolvedActive,
-    } = resolvedAccessibilities;
-    if (resultRef) resultRef.current = resolvedAccessibilities;
+    } = resolvedAccessibilityState;
+    if (resultRef) resultRef.current = resolvedAccessibilityState;
     
     
     
@@ -78,7 +78,7 @@ const Control = (props: ControlProps) => {
 
 
 describe('Accessibility resolution across nesting levels', () => {
-    const createResultRef = () => renderHook(() => useRef<ResolvedAccessibilities | null>(null)).result.current;
+    const createResultRef = () => renderHook(() => useRef<ResolvedAccessibilityState | null>(null)).result.current;
     
     test("'single level: no accessibility props'", () => {
         const resultRef = createResultRef();
@@ -94,7 +94,7 @@ describe('Accessibility resolution across nesting levels', () => {
             enabled  : true,
             readOnly : false,
             active   : false,
-        } satisfies ResolvedAccessibilities);
+        } satisfies ResolvedAccessibilityState);
     });
     
     test('dual nested: outer disabled=true, inner enabled=true + cascadeEnabled=true → resolved enabled=false', () => {
@@ -296,7 +296,7 @@ describe('Accessibility resolution across nesting levels', () => {
     });
     
     test('leaf active + cascadeActive=false → resolves locally, ignores parent', () => {
-        const ref = renderHook(() => useRef<ResolvedAccessibilities | null>(null)).result.current;
+        const ref = renderHook(() => useRef<ResolvedAccessibilityState | null>(null)).result.current;
         render(
             <Control active={true}>
                 <Control active={false} cascadeActive={false}>
@@ -311,7 +311,7 @@ describe('Accessibility resolution across nesting levels', () => {
     });
     
     test('middle disables cascadeEnabled → leaf breaks from ancestor disabled', () => {
-        const ref = renderHook(() => useRef<ResolvedAccessibilities | null>(null)).result.current;
+        const ref = renderHook(() => useRef<ResolvedAccessibilityState | null>(null)).result.current;
         render(
             <Control enabled={false}>
                 <Control cascadeEnabled={false}>
@@ -324,7 +324,7 @@ describe('Accessibility resolution across nesting levels', () => {
     });
     
     test('readOnly cascade confirmed even if both parent and self are readOnly=true', () => {
-        const ref = renderHook(() => useRef<ResolvedAccessibilities | null>(null)).result.current;
+        const ref = renderHook(() => useRef<ResolvedAccessibilityState | null>(null)).result.current;
         render(
             <Control readOnly={true}>
                 <Control readOnly={true} data-testid="inner" resultRef={ref}>
@@ -337,7 +337,7 @@ describe('Accessibility resolution across nesting levels', () => {
     });
     
     test('child with no props inside disabled+readOnly parent → inherits all', () => {
-        const ref = renderHook(() => useRef<ResolvedAccessibilities | null>(null)).result.current;
+        const ref = renderHook(() => useRef<ResolvedAccessibilityState | null>(null)).result.current;
         render(
             <Control enabled={false} readOnly={true}>
                 <Control data-testid="child" resultRef={ref}>child</Control>

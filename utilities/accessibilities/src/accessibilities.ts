@@ -8,7 +8,7 @@ import {
 // Types:
 import {
     type AccessibilityProps,
-    type ResolvedAccessibilities,
+    type ResolvedAccessibilityState,
 }                           from './types.js'
 
 // Defaults:
@@ -56,7 +56,7 @@ import {
  *         enabled  : computedEnabled,
  *         readOnly : computedReadOnly,
  *         active   : computedActive,
- *     } = useResolvedAccessibilities({
+ *     } = useResolvedAccessibilityState({
  *         enabled,
  *         readOnly,
  *         active,
@@ -82,7 +82,7 @@ import {
  * };
  * ```
  */
-export const useResolvedAccessibilities = (props: AccessibilityProps): ResolvedAccessibilities => {
+export const useResolvedAccessibilityState = (props: AccessibilityProps): ResolvedAccessibilityState => {
     // Extract props and assign defaults:
     const {
         enabled         = DEFAULT_ENABLED,
@@ -117,7 +117,7 @@ export const useResolvedAccessibilities = (props: AccessibilityProps): ResolvedA
         enabled  : computedEnabled,
         readOnly : computedReadOnly,
         active   : computedActive,
-    } satisfies ResolvedAccessibilities), [
+    } satisfies ResolvedAccessibilityState), [
         computedEnabled,
         computedReadOnly,
         computedActive,
