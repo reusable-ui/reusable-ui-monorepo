@@ -50,6 +50,7 @@
     "utilities/hooks",
     "utilities/semantics",
     "utilities/accessibilities",
+    "tests/test-accessibilities",
     "__configs/*",
     "__utilities/*",
     "__features/*",
