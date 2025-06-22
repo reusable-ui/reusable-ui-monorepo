@@ -31,6 +31,7 @@ import {
 
 // Contexts:
 import {
+    type AccessibilityContextValue,
     AccessibilityContext,
 }                           from './contexts.js'
 
@@ -80,7 +81,7 @@ const AccessibilityProvider = (props: AccessibilityProviderProps): ReactElement 
         enabled,
         readOnly,
         active,
-    } satisfies Required<Pick<AccessibilityProps, 'enabled' | 'readOnly' | 'active'>>), [
+    } satisfies AccessibilityContextValue), [
         enabled,
         readOnly,
         active,
