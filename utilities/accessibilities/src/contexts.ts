@@ -1,4 +1,4 @@
-'use client' // The exported `AccessibilityContext` object is client side only.
+'use client' // Prevents `createContext` from being invoked on server side.
 
 // React:
 import {
