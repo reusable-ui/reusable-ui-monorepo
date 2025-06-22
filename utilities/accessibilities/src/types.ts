@@ -4,19 +4,19 @@
  */
 export interface AccessibilityProps {
     /**
-     * Whether the component is enabled (responds to user interactions) or disabled (ignores them).
+     * Controls whether the component is enabled (responds to user interactions) or disabled (ignores them).
      * Defaults to `true`.
      */
     enabled          ?: boolean
     
     /**
-     * Whether the component is read-only (prevents user editing) or editable.
+     * Controls whether the component is read-only (prevents user editing) or editable.
      * Defaults to `false`.
      */
     readOnly         ?: boolean
     
     /**
-     * Whether the component is in the active state (e.g., checked, selected, toggled, or chosen).
+     * Controls whether the component is in the active state (e.g., checked, selected, toggled, or chosen).
      * Defaults to `false`.
      */
     active           ?: boolean
@@ -24,20 +24,44 @@ export interface AccessibilityProps {
     
     
     /**
-     * Whether to cascade the `enabled` state from an ancestor context.
-     * Defaults to `true`.
+     * Controls how the component's `enabled` value is influenced by an ancestor `<AccessibilityProvider>`.
+     * 
+     * - If `true` (default), the component inherits the ancestor’s `enabled` state.
+     *   ```ts
+     *   computedEnabled = ancestorEnabled && enabled;
+     *   ```
+     * - If `false`, the component uses its own `enabled` independently:
+     *   ```ts
+     *   computedEnabled = enabled;
+     *   ```
      */
     cascadeEnabled   ?: boolean
     
     /**
-     * Whether to cascade the `readOnly` state from an ancestor context.
-     * Defaults to `true`.
+     * Controls how the component's `readOnly` value is influenced by an ancestor `<AccessibilityProvider>`.
+     * 
+     * - If `true` (default), the component inherits the ancestor’s `readOnly` state.
+     *   ```ts
+     *   computedReadOnly = ancestorReadOnly || readOnly;
+     *   ```
+     * - If `false`, the component uses its own `readOnly` independently:
+     *   ```ts
+     *   computedReadOnly = readOnly;
+     *   ```
      */
     cascadeReadOnly  ?: boolean
     
     /**
-     * Whether to cascade the `active` state from an ancestor context.
-     * Defaults to `false`.
+     * Controls how the component's `active` value is influenced by an ancestor `<AccessibilityProvider>`.
+     * 
+     * - If `true`, the component inherits the ancestor’s `active` state.
+     *   ```ts
+     *   computedActive = ancestorActive || active;
+     *   ```
+     * - If `false` (default), the component uses its own `active` independently:
+     *   ```ts
+     *   computedActive = active;
+     *   ```
      */
     cascadeActive    ?: boolean
 }
