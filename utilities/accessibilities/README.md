@@ -31,7 +31,6 @@ import {
 } from '@reusable-ui/accessibilities';
 
 interface ToggleButtonProps extends AccessibilityProps {
-    checked?: boolean;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -44,6 +43,7 @@ const ToggleButton = (props: ToggleButtonProps) => {
         cascadeEnabled,
         cascadeReadOnly,
         cascadeActive,
+        
         onClick,
     } = props;
     

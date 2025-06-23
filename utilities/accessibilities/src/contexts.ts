@@ -1,4 +1,4 @@
-'use client' // Prevents `createContext` from being invoked on server side.
+'use client' // Prevents `createContext()` from being invoked on server side.
 
 // React:
 import {

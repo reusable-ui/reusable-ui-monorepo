@@ -1,4 +1,4 @@
-'use client' // The exported `AccessibilityProvider` component is client side only.
+'use client' // The exported `<AccessibilityProvider>` component is client side only.
 
 // React:
 import {
@@ -56,11 +56,11 @@ export interface AccessibilityProviderProps
  * Provides accessibility context to descendant components,
  * enabling cascading resolution of `enabled`, `readOnly`, and `active` states.
  * 
- * Should wrap components that rely on `useResolvedAccessibilityState`.
+ * Should wrap components that rely on `useResolvedAccessibilityState()`.
  * 
  * @example
  * ```ts
- * // Will inherit disabled state:
+ * // The child will inherit `enabled = false`:
  * <AccessibilityProvider enabled={false}>
  *     <ToggleButton />
  * </AccessibilityProvider>
@@ -76,7 +76,7 @@ const AccessibilityProvider = (props: AccessibilityProviderProps): ReactElement 
     
     
     
-    // Create a stable value reference:
+    // Memoize context value to prevent unnecessary re-renders:
     const accessibilityContextValue = useMemo(() => ({
         enabled,
         readOnly,

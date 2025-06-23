@@ -31,12 +31,11 @@ import {
 
 /**
  * Resolves the final accessibility states (`enabled`, `readOnly`, `active`) by
- * combining local props with optional cascading from ancestor context.
+ * combining local props with optional cascading from an `<AccessibilityProvider>`.
  * 
  * @example
  * ```ts
  * interface ToggleButtonProps extends AccessibilityProps {
- *     checked?: boolean;
  *     onClick?: React.MouseEventHandler<HTMLButtonElement>;
  * }
  * 
@@ -49,6 +48,7 @@ import {
  *         cascadeEnabled,
  *         cascadeReadOnly,
  *         cascadeActive,
+ *         
  *         onClick,
  *     } = props;
  * 
@@ -112,7 +112,7 @@ export const useResolvedAccessibilityState = (props: AccessibilityProps): Resolv
     
     
     
-    // Return a stable reference:
+    // Return stable resolved state:
     return useMemo(() => ({
         enabled  : computedEnabled,
         readOnly : computedReadOnly,
