@@ -82,7 +82,7 @@ Wraps part of your component tree to provide accessibility context (`enabled`, `
 
 ```tsx
 <AccessibilityProvider enabled={false}>
-    <ToggleButton /> {/* Will inherit disabled state */}
+    <ToggleButton /> {/* The child will inherit `enabled = false` */}
 </AccessibilityProvider>
 ```
 
