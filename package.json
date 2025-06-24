@@ -51,6 +51,7 @@
     "utilities/semantics",
     "utilities/accessibilities",
     "tests/test-accessibilities",
+    "utilities/validations",
     "__configs/*",
     "__utilities/*",
     "__features/*",

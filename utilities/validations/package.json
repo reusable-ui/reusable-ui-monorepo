@@ -1,26 +1,34 @@
 {
   "name": "@reusable-ui/validations",
-  "version": "6.5.0",
-  "description": "A validation management system for react web components.",
+  "version": "7.0.0",
+  "description": "Declarative validation logic for reusable React components.",
   "keywords": [
-    "validations",
-    "design",
-    "layouts"
+    "validation",
+    "react",
+    "context",
+    "form",
+    "state-management",
+    "reusable-ui",
+    "react-hooks"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "utilities/validations"
   },
-  "main": "dist/validations.js",
-  "types": "dist/validations.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/validations.js",
-    "./index": "./dist/validations.js",
-    "./index.js": "./dist/validations.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -34,7 +42,7 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "peerDependencies": {
-    "@types/react": "^18.0.0",
-    "react": "^18.0.0"
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0"
   }
 }
