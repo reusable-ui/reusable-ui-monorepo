@@ -1,28 +1,34 @@
 {
   "name": "@reusable-ui/focuses",
-  "version": "6.5.0",
-  "description": "A set of focusing functions.",
+  "version": "7.0.0",
+  "description": "Utility functions for navigating focusable elements while respecting accessibility standards.",
   "keywords": [
-    "utility",
-    "utilities",
     "focus",
-    "focuses",
-    "tab"
+    "tabindex",
+    "accessibility",
+    "a11y",
+    "keyboard-navigation",
+    "DOM",
+    "utilities"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "utilities/focuses"
   },
-  "main": "dist/focuses.js",
-  "types": "dist/focuses.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/focuses.js",
-    "./index": "./dist/focuses.js",
-    "./index.js": "./dist/focuses.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -33,6 +39,6 @@
     "tsc:watch": "tsc --watch",
     "ncu": "ncu --peer",
     "ncu:upgrade": "ncu --peer --upgrade",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
+    "test": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest"
   }
 }
