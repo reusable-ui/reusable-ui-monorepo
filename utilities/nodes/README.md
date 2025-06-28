@@ -1,10 +1,10 @@
 # @reusable-ui/nodes 📦  
 
-A **utility library** for handling React nodes efficiently. This package provides functions to identify, manipulate, and flatten React elements, including `forwardRef` components, fragments, and deeply nested structures.
+A **utility library** for handling React nodes efficiently. This package provides functions to identify, manipulate, and flatten React elements, including `forwardRef` elements, fragments, and deeply nested structures.
 
 ## ✨ Features
 ✔ **Handles deeply nested fragments and arrays**  
-✔ **Processes forwardRef components correctly**  
+✔ **Processes forwardRef elements correctly**  
 ✔ **Filters truthy and falsy nodes effectively**  
 ✔ **Optimizes React children flattening**  
 
@@ -19,39 +19,39 @@ yarn add @reusable-ui/nodes
 
 ## 📦 Exported Functions
 
-### `isForwardRef(node: ReactNode): boolean`
-Determines if a given React node is a **forward ref component**.
+### `isForwardRefElement(node: ReactNode): boolean`
+Determines if a given React node is a **forward ref element**.
 
 ```tsx
-import { isForwardRef } from '@reusable-ui/nodes';
+import { isForwardRefElement } from '@reusable-ui/nodes';
 
 const ForwardComponent = React.forwardRef((props, ref) => <input ref={ref} {...props} />);
-console.log(isForwardRef(<ForwardComponent />)); // true
+console.log(isForwardRefElement(<ForwardComponent />)); // true
 ```
 
 ---
 
-### `isFragment(node: ReactNode): boolean`
+### `isFragmentElement(node: ReactNode): boolean`
 Determines if a given React node is a **React fragment** (`<>...</>`).
 
 ```tsx
-import { isFragment } from '@reusable-ui/nodes';
+import { isFragmentElement } from '@reusable-ui/nodes';
 
-console.log(isFragment(<></>)); // true
-console.log(isFragment(<div />)); // false
+console.log(isFragmentElement(<></>)); // true
+console.log(isFragmentElement(<div />)); // false
 ```
 
 ---
 
-### `isReusableUiComponent(node: ReactNode): boolean`
-Determines if a given React node is **a Reusable UI component**, excluding **native HTML elements**.
+### `isReusableUiElement(node: ReactNode): boolean`
+Determines if a given React node is **a Reusable UI element**, excluding **native HTML elements**.
 
 ```tsx
-import { isReusableUiComponent } from '@reusable-ui/nodes';
+import { isReusableUiElement } from '@reusable-ui/nodes';
 
 const CustomComponent = () => <div>Reusable UI</div>;
-console.log(isReusableUiComponent(<CustomComponent />)); // true
-console.log(isReusableUiComponent(<button />)); // false
+console.log(isReusableUiElement(<CustomComponent />)); // true
+console.log(isReusableUiElement(<button />)); // false
 ```
 
 ---

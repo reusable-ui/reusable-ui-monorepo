@@ -1,5 +1,5 @@
 import {
-    isFragment,
+    isFragmentElement,
 } from '../dist/index.js'
 import {
     // Types:
@@ -16,37 +16,37 @@ import {
 
 
 
-test('should return true for React Fragment', () => {
-    expect(isFragment(<></>)).toBe(true);
+test('should return true for React Fragment element', () => {
+    expect(isFragmentElement(<></>)).toBe(true);
     
     
     
     // TypeScript type guard test:
-    const anyComponent = <></> as unknown as ReactNode;
-    if (isFragment(anyComponent)) {
+    const anyElement = <></> as unknown as ReactNode;
+    if (isFragmentElement(anyElement)) {
         // @ts-ignore
         const test =
-            anyComponent satisfies ReactElement<FragmentProps, JSXElementConstructor<FragmentProps>>;
+            anyElement satisfies ReactElement<FragmentProps, JSXElementConstructor<FragmentProps>>;
     } // if
 });
 
 test('should return false for normal functional component', () => {
     const NormalComponent = () => <div>Hello</div>;
-    expect(isFragment(<NormalComponent />)).toBe(false);
+    expect(isFragmentElement(<NormalComponent />)).toBe(false);
 });
 
 test('should return false for native HTML element', () => {
-    expect(isFragment(<div />)).toBe(false);
+    expect(isFragmentElement(<div />)).toBe(false);
 });
 
-test('should return false for forwardRef component', () => {
+test('should return false for forwardRef element', () => {
     const ForwardRefComponent = React.forwardRef<HTMLInputElement | null>((props, ref) => <input {...props} ref={ref} />);
-    expect(isFragment(<ForwardRefComponent />)).toBe(false);
+    expect(isFragmentElement(<ForwardRefComponent />)).toBe(false);
 });
 
 test('should return false for null, undefined, and boolean values', () => {
-    expect(isFragment(null)).toBe(false);
-    expect(isFragment(undefined)).toBe(false);
-    expect(isFragment(true)).toBe(false);
-    expect(isFragment(false)).toBe(false);
+    expect(isFragmentElement(null)).toBe(false);
+    expect(isFragmentElement(undefined)).toBe(false);
+    expect(isFragmentElement(true)).toBe(false);
+    expect(isFragmentElement(false)).toBe(false);
 });

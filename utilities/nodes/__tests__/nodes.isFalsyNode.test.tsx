@@ -22,32 +22,32 @@ test('should return true for null, undefined, and boolean values', () => {
     
     
     // TypeScript type guard test:
-    const anyComponent1 = null as unknown as ReactNode;
-    if (isFalsyNode(anyComponent1)) {
+    const anyElement1 = null as unknown as ReactNode;
+    if (isFalsyNode(anyElement1)) {
         // @ts-ignore
         const test =
-            anyComponent1 satisfies Extract<typeof anyComponent1, undefined | null | boolean>;
+            anyElement1 satisfies Extract<typeof anyElement1, undefined | null | boolean>;
     } // if
     
-    const anyComponent2 = undefined as unknown as ReactNode;
-    if (isFalsyNode(anyComponent2)) {
+    const anyElement2 = undefined as unknown as ReactNode;
+    if (isFalsyNode(anyElement2)) {
         // @ts-ignore
         const test =
-            anyComponent2 satisfies Extract<typeof anyComponent2, undefined | null | boolean>;
+            anyElement2 satisfies Extract<typeof anyElement2, undefined | null | boolean>;
     } // if
     
-    const anyComponent3 = true as unknown as ReactNode;
-    if (isFalsyNode(anyComponent3)) {
+    const anyElement3 = true as unknown as ReactNode;
+    if (isFalsyNode(anyElement3)) {
         // @ts-ignore
         const test =
-            anyComponent3 satisfies Extract<typeof anyComponent3, undefined | null | boolean>;
+            anyElement3 satisfies Extract<typeof anyElement3, undefined | null | boolean>;
     } // if
     
-    const anyComponent4 = false as unknown as ReactNode;
-    if (isFalsyNode(anyComponent4)) {
+    const anyElement4 = false as unknown as ReactNode;
+    if (isFalsyNode(anyElement4)) {
         // @ts-ignore
         const test =
-            anyComponent4 satisfies Extract<typeof anyComponent4, undefined | null | boolean>;
+            anyElement4 satisfies Extract<typeof anyElement4, undefined | null | boolean>;
     } // if
 });
 

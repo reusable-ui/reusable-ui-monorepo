@@ -6,6 +6,7 @@
     "react",
     "nodes",
     "components",
+    "elements",
     "utilities",
     "rendering",
     "jsx",

@@ -20,11 +20,11 @@ test('should return true for valid React elements', () => {
     
     
     // TypeScript type guard test:
-    const anyComponent = <div>Hello</div> as unknown as ReactNode;
-    if (isTruthyNode(anyComponent)) {
+    const anyElement = <div>Hello</div> as unknown as ReactNode;
+    if (isTruthyNode(anyElement)) {
         // @ts-ignore
         const test =
-            anyComponent satisfies Exclude<typeof anyComponent, undefined | null | boolean>;
+            anyElement satisfies Exclude<typeof anyElement, undefined | null | boolean>;
     } // if
 });
 
@@ -35,11 +35,11 @@ test('should return true for functional components', () => {
     
     
     // TypeScript type guard test:
-    const anyComponent = NormalComponent as unknown as ReactNode;
-    if (isTruthyNode(anyComponent)) {
+    const anyElement = NormalComponent as unknown as ReactNode;
+    if (isTruthyNode(anyElement)) {
         // @ts-ignore
         const test =
-            anyComponent satisfies Exclude<typeof anyComponent, undefined | null | boolean>;
+            anyElement satisfies Exclude<typeof anyElement, undefined | null | boolean>;
     } // if
 });
 
@@ -50,18 +50,18 @@ test('should return true for text nodes', () => {
     
     
     // TypeScript type guard test:
-    const anyComponent1 = 'Hello' as unknown as ReactNode;
-    if (isTruthyNode(anyComponent1)) {
+    const anyElement1 = 'Hello' as unknown as ReactNode;
+    if (isTruthyNode(anyElement1)) {
         // @ts-ignore
         const test =
-            anyComponent1 satisfies Exclude<typeof anyComponent1, undefined | null | boolean>;
+            anyElement1 satisfies Exclude<typeof anyElement1, undefined | null | boolean>;
     } // if
     
-    const anyComponent2 = 123 as unknown as ReactNode;
-    if (isTruthyNode(anyComponent2)) {
+    const anyElement2 = 123 as unknown as ReactNode;
+    if (isTruthyNode(anyElement2)) {
         // @ts-ignore
         const test =
-            anyComponent2 satisfies Exclude<typeof anyComponent2, undefined | null | boolean>;
+            anyElement2 satisfies Exclude<typeof anyElement2, undefined | null | boolean>;
     } // if
 });
 
@@ -71,11 +71,11 @@ test('should return true for empty fragments', () => {
     
     
     // TypeScript type guard test:
-    const anyComponent = <></> as unknown as ReactNode;
-    if (isTruthyNode(anyComponent)) {
+    const anyElement = <></> as unknown as ReactNode;
+    if (isTruthyNode(anyElement)) {
         // @ts-ignore
         const test =
-            anyComponent satisfies Exclude<typeof anyComponent, undefined | null | boolean>;
+            anyElement satisfies Exclude<typeof anyElement, undefined | null | boolean>;
     } // if
 });
 

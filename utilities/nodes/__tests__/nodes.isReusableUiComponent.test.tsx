@@ -1,5 +1,5 @@
 import {
-    isReusableUiComponent,
+    isReusableUiElement,
 } from '../dist/index.js'
 import {
     // Types:
@@ -17,37 +17,37 @@ import {
 
 test('should return true for normal functional component', () => {
     const NormalComponent = () => <div>Hello</div>;
-    expect(isReusableUiComponent(<NormalComponent />)).toBe(true);
+    expect(isReusableUiElement(<NormalComponent />)).toBe(true);
     
     
     
     // TypeScript type guard test:
-    const anyComponent = NormalComponent as unknown as ReactNode;
-    if (isReusableUiComponent(anyComponent)) {
+    const anyElement = NormalComponent as unknown as ReactNode;
+    if (isReusableUiElement(anyElement)) {
         // @ts-ignore
         const test =
-            anyComponent satisfies ReactElement<unknown, JSXElementConstructor<unknown>>;
+            anyElement satisfies ReactElement<unknown, JSXElementConstructor<unknown>>;
     } // if
 });
 
 test('should return false for native HTML elements', () => {
-    expect(isReusableUiComponent(<div />)).toBe(false);
-    expect(isReusableUiComponent(<input type='text' aria-label='Name' />)).toBe(false);
-    expect(isReusableUiComponent(<button type='button' aria-label='Button' />)).toBe(false);
+    expect(isReusableUiElement(<div />)).toBe(false);
+    expect(isReusableUiElement(<input type='text' aria-label='Name' />)).toBe(false);
+    expect(isReusableUiElement(<button type='button' aria-label='Button' />)).toBe(false);
 });
 
-test('should return false for forwardRef component', () => {
+test('should return false for forwardRef element', () => {
     const ForwardRefComponent = React.forwardRef<HTMLInputElement | null>((props, ref) => <input {...props} ref={ref} />);
-    expect(isReusableUiComponent(<ForwardRefComponent />)).toBe(false);
+    expect(isReusableUiElement(<ForwardRefComponent />)).toBe(false);
 });
 
-test('should return false for React Fragment', () => {
-    expect(isReusableUiComponent(<></>)).toBe(false);
+test('should return false for React Fragment element', () => {
+    expect(isReusableUiElement(<></>)).toBe(false);
 });
 
 test('should return false for null, undefined, and boolean values', () => {
-    expect(isReusableUiComponent(null)).toBe(false);
-    expect(isReusableUiComponent(undefined)).toBe(false);
-    expect(isReusableUiComponent(true)).toBe(false);
-    expect(isReusableUiComponent(false)).toBe(false);
+    expect(isReusableUiElement(null)).toBe(false);
+    expect(isReusableUiElement(undefined)).toBe(false);
+    expect(isReusableUiElement(true)).toBe(false);
+    expect(isReusableUiElement(false)).toBe(false);
 });

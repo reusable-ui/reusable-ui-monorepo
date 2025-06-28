@@ -1,5 +1,5 @@
 import {
-    isForwardRef,
+    isForwardRefElement,
 } from '../dist/index.js'
 import {
     // Types:
@@ -22,37 +22,37 @@ import {
 
 
 
-test('should return true for forwardRef component', () => {
+test('should return true for forwardRef element', () => {
     const ForwardRefComponent = forwardRef<HTMLInputElement | null>((props, ref) => <input {...props} ref={ref} />);
-    expect(isForwardRef(<ForwardRefComponent />)).toBe(true);
+    expect(isForwardRefElement(<ForwardRefComponent />)).toBe(true);
     
     
     
     // TypeScript type guard test:
-    const anyComponent = ForwardRefComponent as unknown as ReactNode;
-    if (isForwardRef(anyComponent)) {
+    const anyElement = ForwardRefComponent as unknown as ReactNode;
+    if (isForwardRefElement(anyElement)) {
         // @ts-ignore
         const test =
-            anyComponent satisfies ReactElement<PropsWithoutRef<unknown> & RefAttributes<unknown>, JSXElementConstructor<PropsWithoutRef<unknown> & RefAttributes<unknown>>>;
+            anyElement satisfies ReactElement<PropsWithoutRef<unknown> & RefAttributes<unknown>, JSXElementConstructor<PropsWithoutRef<unknown> & RefAttributes<unknown>>>;
     } // if
 });
 
 test('should return false for normal functional component', () => {
     const NormalComponent = () => <div>Hello</div>;
-    expect(isForwardRef(<NormalComponent />)).toBe(false);
+    expect(isForwardRefElement(<NormalComponent />)).toBe(false);
 });
 
 test('should return false for native HTML element', () => {
-    expect(isForwardRef(<div />)).toBe(false);
+    expect(isForwardRefElement(<div />)).toBe(false);
 });
 
-test('should return false for React Fragment', () => {
-    expect(isForwardRef(<></>)).toBe(false);
+test('should return false for React Fragment element', () => {
+    expect(isForwardRefElement(<></>)).toBe(false);
 });
 
 test('should return false for null, undefined, and boolean values', () => {
-    expect(isForwardRef(null)).toBe(false);
-    expect(isForwardRef(undefined)).toBe(false);
-    expect(isForwardRef(true)).toBe(false);
-    expect(isForwardRef(false)).toBe(false);
+    expect(isForwardRefElement(null)).toBe(false);
+    expect(isForwardRefElement(undefined)).toBe(false);
+    expect(isForwardRefElement(true)).toBe(false);
+    expect(isForwardRefElement(false)).toBe(false);
 });
