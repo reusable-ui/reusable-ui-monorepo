@@ -19,7 +19,7 @@ import {
 
 
 /**
- * @deprecated - Use `ScheduledPromise` from '@reusable-ui/callbacks' instead.
+ * @deprecated - Use `ScheduledPromise` from '@reusable-ui/timers' instead.
  * 
  * An abortable scheduled promise.
  */
@@ -29,7 +29,7 @@ export class ScheduledPromise<T> extends ImportedScheduledPromise<T> {
 
 
 /**
- * @deprecated - Use `useSetTimeout` from '@reusable-ui/callbacks' instead.
+ * @deprecated - Use `useSetTimeout` from '@reusable-ui/timers' instead.
  * 
  * A React hook for creating timeout-based promises.
  * 
@@ -59,7 +59,7 @@ export const useSetTimeout = (): CreateScheduledTimeout => importedUseSetTimeout
 
 
 /**
- * @deprecated - Use `useRequestAnimationFrame` from '@reusable-ui/callbacks' instead.
+ * @deprecated - Use `useRequestAnimationFrame` from '@reusable-ui/timers' instead.
  * 
  * A React hook for creating animation-frame-based promises.
  * 

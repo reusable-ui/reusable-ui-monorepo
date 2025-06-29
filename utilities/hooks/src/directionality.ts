@@ -13,7 +13,7 @@ import {
 
 
 /**
- * @deprecated - Use `useIsRtl` from '@reusable-ui/callbacks' instead.
+ * @deprecated - Use `useIsRtl` from '@reusable-ui/directionality' instead.
  * 
  * Determines if an element uses **right-to-left (RTL)** direction.
  * 

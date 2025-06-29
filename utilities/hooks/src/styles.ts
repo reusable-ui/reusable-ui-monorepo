@@ -21,7 +21,7 @@ import {
 
 
 /**
- * @deprecated - Use `mergeClasses` from '@reusable-ui/callbacks' instead.
+ * @deprecated - Use `mergeClasses` from '@reusable-ui/styles' instead.
  * 
  * Merges multiple class names into a **memoized array**, preserving stability where possible.
  * 
@@ -76,7 +76,7 @@ export const useMergeClasses = (...classes: MaybeDeepArray<Optional<string>>[]):
 
 
 /**
- * @deprecated - Use `useMergeStyles` from '@reusable-ui/callbacks' instead.
+ * @deprecated - Use `useMergeStyles` from '@reusable-ui/styles' instead.
  * 
  * Merges multiple style objects into a **single optimized style object**.
  * 

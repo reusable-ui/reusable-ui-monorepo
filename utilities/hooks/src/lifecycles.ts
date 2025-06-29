@@ -20,7 +20,7 @@ import {
 
 
 /**
- * @deprecated - Use `useIsomorphicLayoutEffect` from '@reusable-ui/callbacks' instead.
+ * @deprecated - Use `useIsomorphicLayoutEffect` from '@reusable-ui/lifecycles' instead.
  * 
  * A React hook that intelligently switches between `useLayoutEffect` and a no-op function
  * based on the execution environment.
@@ -41,7 +41,7 @@ export const useIsomorphicLayoutEffect : typeof useLayoutEffect = importedUseIso
 
 
 /**
- * @deprecated - Use `useTriggerRender` from '@reusable-ui/callbacks' instead.
+ * @deprecated - Use `useTriggerRender` from '@reusable-ui/lifecycles' instead.
  * 
  * Custom React hook to manually trigger a component re-render.
  * 
@@ -65,7 +65,7 @@ export const useTriggerRender = importedUseTriggerRender;
 
 
 /**
- * @deprecated - Use `useMountedFlag` from '@reusable-ui/callbacks' instead.
+ * @deprecated - Use `useMountedFlag` from '@reusable-ui/lifecycles' instead.
  * 
  * Tracks the mounted status of a React component.
  * 

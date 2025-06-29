@@ -20,7 +20,7 @@ import {
 
 
 /**
- * @deprecated - Use `useMergeRefs` from '@reusable-ui/callbacks' instead.
+ * @deprecated - Use `useMergeRefs` from '@reusable-ui/references' instead.
  * 
  * Merges multiple React refs into a single stable ref function.
  * 

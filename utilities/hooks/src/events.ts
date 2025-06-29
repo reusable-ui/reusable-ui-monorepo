@@ -10,7 +10,7 @@ export type ScheduledTriggerEventCallback = () => void
 export type ScheduleTriggerEventFunction  = (scheduledTriggerEventCallback: ScheduledTriggerEventCallback) => void
 
 /**
- * @deprecated - Use `useSetTimeout` from '@reusable-ui/callbacks' instead.
+ * @deprecated - Use `useSetTimeout` from '@reusable-ui/timers' instead.
  */
 export const useScheduleTriggerEvent = (): ScheduleTriggerEventFunction => {
     const setTimeoutAsync = useSetTimeout();
