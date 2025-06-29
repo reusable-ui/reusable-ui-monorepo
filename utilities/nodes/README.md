@@ -43,15 +43,29 @@ console.log(isFragmentElement(<div />)); // false
 
 ---
 
-### `isReusableUiElement(node: ReactNode): boolean`
-Determines if a given React node is **a Reusable UI element**, excluding **native HTML elements**.
+### `isComponentElement(node: ReactNode): boolean`
+Determines if a given React node is a **component element** created from a function or class component.
 
 ```tsx
-import { isReusableUiElement } from '@reusable-ui/nodes';
+import { isComponentElement } from '@reusable-ui/nodes';
 
-const CustomComponent = () => <div>Reusable UI</div>;
-console.log(isReusableUiElement(<CustomComponent />)); // true
-console.log(isReusableUiElement(<button />)); // false
+const MyComponent = () => <div>Custom UI</div>;
+console.log(isComponentElement(<MyComponent />)); // true
+console.log(isComponentElement(<button />)); // false
+```
+
+---
+
+### `isDOMElement(node: ReactNode): boolean`
+Determines if a given React node is a **native DOM element**, such as `<div>`, `<span>`, or `<button>`.
+
+```tsx
+import { isDOMElement } from '@reusable-ui/nodes';
+
+const MyComponent = () => <div>Custom UI</div>;
+console.log(isDOMElement(<div />)); // true
+console.log(isDOMElement(<button />)); // true
+console.log(isDOMElement(<MyComponent />)); // false
 ```
 
 ---

@@ -28,14 +28,16 @@ const forwardRefType = Symbol.for('react.forward_ref');
 /**
  * @deprecated - This utility is no longer used and will be removed in future versions.
  * Determines whether the given `node` is a React forward ref element.
- *
+ * 
  * This function acts as a **type guard**, meaning if it returns `true`,
- * TypeScript will refine the type of `node` to `ReactElement<PropsWithoutRef<unknown> & RefAttributes<unknown>, JSXElementConstructor<PropsWithoutRef<unknown> & RefAttributes<unknown>>>`.
- *
+ * TypeScript will refine the type of `node` to `node is ReactElement<PropsWithoutRef<TProps> & RefAttributes<TRef>, JSXElementConstructor<PropsWithoutRef<TProps> & RefAttributes<TRef>>>`.
+ * 
+ * @template TProps - The props type expected by the component element.
+ * @template TRef - The ref type expected by the component element.
  * @param node - The React node to inspect.
- * @returns {node is ReactElement<PropsWithoutRef<unknown> & RefAttributes<unknown>, JSXElementConstructor<PropsWithoutRef<unknown> & RefAttributes<unknown>>>} `true` if the node is a React forward ref element, otherwise `false`.
+ * @returns {node is node is ReactElement<PropsWithoutRef<TProps> & RefAttributes<TRef>, JSXElementConstructor<PropsWithoutRef<TProps> & RefAttributes<TRef>>>} `true` if the node is a React forward ref element, otherwise `false`.
  */
-export const isForwardRefElement = (node: ReactNode): node is ReactElement<PropsWithoutRef<unknown> & RefAttributes<unknown>, JSXElementConstructor<PropsWithoutRef<unknown> & RefAttributes<unknown>>> => {
+export const isForwardRefElement = <TProps extends unknown = unknown, TRef extends unknown = unknown>(node: ReactNode): node is ReactElement<PropsWithoutRef<TProps> & RefAttributes<TRef>, JSXElementConstructor<PropsWithoutRef<TProps> & RefAttributes<TRef>>> => {
     return (
         // Ensure the node is a valid React element:
         isValidElement(node)
@@ -62,10 +64,10 @@ const fragmentType = Symbol.for('react.fragment');
 
 /**
  * Determines whether the given `node` is a React fragment element.
- *
+ * 
  * This function acts as a **type guard**, meaning if it returns `true`,
  * TypeScript will refine the type of `node` to `ReactElement<FragmentProps, JSXElementConstructor<FragmentProps>>`.
- *
+ * 
  * @param node - The React node to inspect.
  * @returns {node is ReactElement<FragmentProps, JSXElementConstructor<FragmentProps>>} `true` if the node is a React fragment element, otherwise `false`.
  */
@@ -89,51 +91,65 @@ export const isFragment = isFragmentElement;
 
 
 /**
- * Determines whether the given `node` is a Reusable UI element.
- *
+ * Determines whether the given `node` is a React component element.
+ * 
  * This function acts as a **type guard**, meaning if it returns `true`,
  * TypeScript will refine the type of `node` to `ReactElement<TProps, TConstructor>`.
- *
- * Any valid non-native React element is assumed to be a Reusable UI element.
- *
+ * 
+ * @template TProps - The props type expected by the component element.
+ * @template TConstructor - The component type constructor.
  * @param node - The React node to inspect.
- * @returns {node is ReactElement<TProps, TConstructor>} `true` if the node is a valid Reusable UI element, otherwise `false`.
+ * @returns {node is ReactElement<TProps, TConstructor>} `true` if the node is a valid component element, otherwise `false`.
  */
-export const isReusableUiElement = <TProps extends unknown = unknown, TConstructor extends JSXElementConstructor<unknown> = JSXElementConstructor<unknown>>(node: ReactNode): node is ReactElement<TProps, TConstructor> => {
+export const isComponentElement = <TProps extends unknown = unknown, TConstructor extends JSXElementConstructor<TProps> = JSXElementConstructor<TProps>>(node: ReactNode): node is ReactElement<TProps, TConstructor> => {
     return (
         // Ensure the node is a valid React element:
         isValidElement(node)
         
         &&
         
-        // Exclude native HTML elements:
-        (typeof node.type !== 'string')
-        
-        &&
-        
-        // Ensure it's not a React fragment:
-        !isFragment(node)
-        
-        &&
-        
-        // Ensure it's not a React forward ref:
-        !isForwardRef(node)
+        // Ensure the element is a functional or class component:
+        (typeof node.type === 'function')
     );
 };
 
 /**
- * @deprecated - Use `isReusableUiElement` instead.
+ * @deprecated - Use `isComponentElement` instead.
  */
-export const isReusableUiComponent = isReusableUiElement;
+export const isReusableUiComponent = isComponentElement;
+
+
+
+/**
+ * Determines whether the given `node` is a native DOM element (e.g., `<div>`, `<a>`, `<button>`).
+ * 
+ * This function acts as a **type guard**, meaning if it returns `true`,
+ * TypeScript will refine the type of `node` to `ReactElement<TProps, string>`.
+ * 
+ * @template TProps - The props type expected by the DOM element.
+ * @param node - The React node to inspect.
+ * @returns {node is ReactElement<TProps, string>} `true` if the node is a native DOM element, otherwise `false`.
+ */
+export const isDOMElement = <TProps extends unknown = unknown>(node: ReactNode): node is ReactElement<TProps, string> => {
+    return (
+        // Ensure the node is a valid React element:
+        isValidElement(node)
+        
+        &&
+        
+        // Ensure the element is a DOM component:
+        (typeof node.type === 'string')
+    );
+};
 
 
 
 /**
  * Determines whether the given `node` is a renderable React node.
- *
+ * 
  * This function acts as a **type guard**, meaning if it returns `true`,
  * TypeScript will refine the type of `node` to exclude `undefined`, `null`, and `boolean`.
- *
+ * 
  * @param node - The React node to inspect.
  * @returns {node is Exclude<typeof node, undefined | null | boolean>} `true` if the node is renderable, otherwise `false`.
  */
@@ -156,10 +172,10 @@ export const isTruthyNode = (node: ReactNode): node is Exclude<typeof node, unde
 
 /**
  * Determines whether the given `node` is a non-renderable React node.
- *
+ * 
  * This function acts as a **type guard**, meaning if it returns `true`,
  * TypeScript will refine the type of `node` to `undefined | null | boolean`.
- *
+ * 
  * @param node - The React node to inspect.
  * @returns {node is Extract<typeof node, undefined | null | boolean>} `true` if the node is non-renderable, otherwise `false`.
  */
