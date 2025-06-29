@@ -50,7 +50,7 @@ export const flattenChildren = (children: ReactNode): ReactNode[] => {
         
         
         // Handle non-element nodes:
-        if (!isValidElement<PropsWithChildren<{}>>(child)) {
+        if (!isValidElement<PropsWithChildren<unknown>>(child)) {
             flattenedChildren.push(child);
             continue; // Skip further processing.
         } // if
@@ -67,7 +67,7 @@ export const flattenChildren = (children: ReactNode): ReactNode[] => {
             // Iterate over each grandchild in the fragment:
             for (const grandChild of flattenChildren(child.props.children)) {
                 // Handle non-element grandchild:
-                if (!isValidElement<PropsWithChildren<{}>>(grandChild)) {
+                if (!isValidElement<PropsWithChildren<unknown>>(grandChild)) {
                     flattenedChildren.push(grandChild);
                     continue; // Skip further processing.
                 } // if
@@ -75,7 +75,7 @@ export const flattenChildren = (children: ReactNode): ReactNode[] => {
                 
                 
                 // Clone grandchild with adjusted key to prevent collisions:
-                flattenedChildren.push(cloneElement<PropsWithChildren<{}>>(grandChild,
+                flattenedChildren.push(cloneElement<PropsWithChildren<unknown>>(grandChild,
                     // Props:
                     {
                         // Ensure the grandchild has a unique key:
