@@ -40,7 +40,7 @@ const forwardRefType = Symbol.for('react.forward_ref');
 export const isForwardRefElement = <TProps extends unknown = unknown, TRef extends unknown = unknown>(node: ReactNode): node is ReactElement<PropsWithoutRef<TProps> & RefAttributes<TRef>, JSXElementConstructor<PropsWithoutRef<TProps> & RefAttributes<TRef>>> => {
     return (
         // Ensure the node is a valid React element:
-        isValidElement(node)
+        isValidElement<unknown>(node)
         
         &&
         
@@ -74,7 +74,7 @@ const fragmentType = Symbol.for('react.fragment');
 export const isFragmentElement = (node: ReactNode): node is ReactElement<FragmentProps, JSXElementConstructor<FragmentProps>> => {
     return (
         // Ensure the node is a valid React element:
-        isValidElement(node)
+        isValidElement<unknown>(node)
         
         &&
         
@@ -104,7 +104,7 @@ export const isFragment = isFragmentElement;
 export const isComponentElement = <TProps extends unknown = unknown, TConstructor extends JSXElementConstructor<TProps> = JSXElementConstructor<TProps>>(node: ReactNode): node is ReactElement<TProps, TConstructor> => {
     return (
         // Ensure the node is a valid React element:
-        isValidElement(node)
+        isValidElement<unknown>(node)
         
         &&
         
@@ -133,7 +133,7 @@ export const isReusableUiComponent = isComponentElement;
 export const isDOMElement = <TProps extends unknown = unknown>(node: ReactNode): node is ReactElement<TProps, string> => {
     return (
         // Ensure the node is a valid React element:
-        isValidElement(node)
+        isValidElement<unknown>(node)
         
         &&
         

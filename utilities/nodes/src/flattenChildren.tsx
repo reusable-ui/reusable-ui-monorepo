@@ -2,7 +2,6 @@
 import {
     // Types:
     type ReactNode,
-    type PropsWithChildren,
     
     
     
@@ -50,7 +49,7 @@ export const flattenChildren = (children: ReactNode): ReactNode[] => {
         
         
         // Handle non-element nodes:
-        if (!isValidElement<PropsWithChildren<unknown>>(child)) {
+        if (!isValidElement<unknown>(child)) {
             flattenedChildren.push(child);
             continue; // Skip further processing.
         } // if
@@ -67,7 +66,7 @@ export const flattenChildren = (children: ReactNode): ReactNode[] => {
             // Iterate over each grandchild in the fragment:
             for (const grandChild of flattenChildren(child.props.children)) {
                 // Handle non-element grandchild:
-                if (!isValidElement<PropsWithChildren<unknown>>(grandChild)) {
+                if (!isValidElement<unknown>(grandChild)) {
                     flattenedChildren.push(grandChild);
                     continue; // Skip further processing.
                 } // if
@@ -75,7 +74,7 @@ export const flattenChildren = (children: ReactNode): ReactNode[] => {
                 
                 
                 // Clone grandchild with adjusted key to prevent collisions:
-                flattenedChildren.push(cloneElement<PropsWithChildren<unknown>>(grandChild,
+                flattenedChildren.push(cloneElement<unknown>(grandChild,
                     // Props:
                     {
                         // Ensure the grandchild has a unique key:

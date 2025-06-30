@@ -18,7 +18,7 @@ const compareNodes = (result: React.ReactNode[], expected: React.ReactNode[]) =>
         // Recursively compare arrays
         if (Array.isArray(node) && Array.isArray(expectedNode)) {
             compareNodes(node, expectedNode);
-        } else if (React.isValidElement(node) && React.isValidElement(expectedNode)) {
+        } else if (React.isValidElement<unknown>(node) && React.isValidElement<unknown>(expectedNode)) {
             // Compare `type` directly
             expect(node.type).toEqual(expectedNode.type);
             
