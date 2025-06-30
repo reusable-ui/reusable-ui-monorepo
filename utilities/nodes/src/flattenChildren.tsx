@@ -36,6 +36,8 @@ export const flattenChildren = (children: ReactNode): ReactNode[] => {
     // Initialize the array to hold flattened children:
     const flattenedChildren : ReactNode[] = [];
     
+    
+    
     // Initialize the child index counter:
     let childIndex = -1;
     
@@ -63,8 +65,18 @@ export const flattenChildren = (children: ReactNode): ReactNode[] => {
             
             
             
+            // Initialize the grand-child index counter:
+            let grandChildIndex = -1;
+            
+            
+            
             // Iterate over each grandchild in the fragment:
             for (const grandChild of flattenChildren(child.props.children)) {
+                // Increment grand-child index:
+                grandChildIndex++;
+                
+                
+                
                 // Handle non-element grandchild:
                 if (!isValidElement<unknown>(grandChild)) {
                     flattenedChildren.push(grandChild);
@@ -78,7 +90,7 @@ export const flattenChildren = (children: ReactNode): ReactNode[] => {
                     // Props:
                     {
                         // Ensure the grandchild has a unique key:
-                        key : `${fragmentKey}/${grandChild.key}`,
+                        key : `${fragmentKey}/${grandChild.key ?? grandChildIndex}`,
                     },
                 ));
             } // for
