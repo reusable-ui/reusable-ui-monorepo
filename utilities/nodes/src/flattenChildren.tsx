@@ -60,7 +60,7 @@ export const flattenChildren = (children: ReactNode): ReactNode[] => {
         
         // Handle React fragments:
         if (isFragmentElement(child)) {
-            // Generate a unique key for the fragment:
+            // Use existing key (if any) or fallback to its position:
             const fragmentKey = child.key ?? `.${childIndex}`;
             
             
