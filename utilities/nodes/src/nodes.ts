@@ -8,6 +8,7 @@ import {
     type PropsWithoutRef,
     type RefAttributes,
     type FragmentProps,
+    type ProviderProps,
     
     
     
@@ -87,6 +88,35 @@ export const isFragmentElement = (node: ReactNode): node is ReactElement<Fragmen
  * @deprecated - Use `isFragmentElement` instead.
  */
 export const isFragment = isFragmentElement;
+
+
+
+/**
+ * Symbol used to identify React context elements.
+ * This is used to check if an element is a React context element.
+ */
+const contextType = Symbol.for('react.context');
+
+/**
+ * Determines whether the given `node` is a React context element.
+ * 
+ * This function acts as a **type guard**, meaning if it returns `true`,
+ * TypeScript will refine the type of `node` to `ReactElement<TProps, JSXElementConstructor<TProps>>`.
+ * 
+ * @param node - The React node to inspect.
+ * @returns {node is ReactElement<TProps, JSXElementConstructor<TProps>>} `true` if the node is a React context element, otherwise `false`.
+ */
+export const isContextElement = <TProps extends ProviderProps<unknown> = ProviderProps<unknown>>(node: ReactNode): node is ReactElement<TProps, JSXElementConstructor<TProps>> => {
+    return (
+        // Ensure the node is a valid React element:
+        isValidElement<unknown>(node)
+        
+        &&
+        
+        // Check if the node type is a React context object:
+        ((typeof node.type === 'object') && ('$$typeof' in node.type) && ((node.type as any).$$typeof === contextType))
+    );
+};
 
 
 

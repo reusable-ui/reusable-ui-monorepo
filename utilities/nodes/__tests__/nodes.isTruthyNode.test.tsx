@@ -9,7 +9,21 @@ import {
     
     // React:
     default as React,
+    
+    
+    
+    // Utilities:
+    createContext,
 } from 'react'
+
+
+
+interface FooContextValue {
+    booh: number
+}
+const FooContext = createContext<FooContextValue>({
+    booh: 123,
+});
 
 
 
@@ -77,6 +91,10 @@ test('should return true for empty fragments', () => {
         const test =
             anyElement satisfies Exclude<typeof anyElement, undefined | null | boolean>;
     } // if
+});
+
+test('should return true for React Context element', () => {
+    expect(isTruthyNode(<FooContext.Provider value={{ booh: 456 }}>foo</FooContext.Provider>)).toBe(true);
 });
 
 test('should return false for null, undefined, and boolean values', () => {

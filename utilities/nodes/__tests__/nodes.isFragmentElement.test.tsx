@@ -12,7 +12,21 @@ import {
     
     // React:
     default as React,
+    
+    
+    
+    // Utilities:
+    createContext,
 } from 'react'
+
+
+
+interface FooContextValue {
+    booh: number
+}
+const FooContext = createContext<FooContextValue>({
+    booh: 123,
+});
 
 
 
@@ -42,6 +56,10 @@ test('should return false for native HTML element', () => {
 test('should return false for forwardRef element', () => {
     const ForwardRefComponent = React.forwardRef<HTMLInputElement | null>((props, ref) => <input {...props} ref={ref} />);
     expect(isFragmentElement(<ForwardRefComponent />)).toBe(false);
+});
+
+test('should return false for React Context element', () => {
+    expect(isFragmentElement(<FooContext.Provider value={{ booh: 456 }}>foo</FooContext.Provider>)).toBe(false);
 });
 
 test('should return false for null, undefined, and boolean values', () => {

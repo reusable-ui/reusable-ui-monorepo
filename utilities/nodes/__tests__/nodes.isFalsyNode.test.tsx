@@ -9,7 +9,21 @@ import {
     
     // React:
     default as React,
+    
+    
+    
+    // Utilities:
+    createContext,
 } from 'react'
+
+
+
+interface FooContextValue {
+    booh: number
+}
+const FooContext = createContext<FooContextValue>({
+    booh: 123,
+});
 
 
 
@@ -68,4 +82,8 @@ test('should return false for text nodes', () => {
 
 test('should return false for non-empty fragments', () => {
     expect(isFalsyNode(<><div>Fragment Content</div></>)).toBe(false);
+});
+
+test('should return false for React Context element', () => {
+    expect(isFalsyNode(<FooContext.Provider value={{ booh: 456 }}>foo</FooContext.Provider>)).toBe(false);
 });

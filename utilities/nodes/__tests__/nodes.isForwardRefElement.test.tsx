@@ -18,7 +18,17 @@ import {
     
     // Utilities:
     forwardRef,
+    createContext,
 } from 'react'
+
+
+
+interface FooContextValue {
+    booh: number
+}
+const FooContext = createContext<FooContextValue>({
+    booh: 123,
+});
 
 
 
@@ -48,6 +58,10 @@ test('should return false for native HTML element', () => {
 
 test('should return false for React Fragment element', () => {
     expect(isForwardRefElement(<></>)).toBe(false);
+});
+
+test('should return false for React Context element', () => {
+    expect(isForwardRefElement(<FooContext.Provider value={{ booh: 456 }}>foo</FooContext.Provider>)).toBe(false);
 });
 
 test('should return false for null, undefined, and boolean values', () => {

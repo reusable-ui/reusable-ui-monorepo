@@ -11,7 +11,21 @@ import {
     
     // React:
     default as React,
+    
+    
+    
+    // Utilities:
+    createContext,
 } from 'react'
+
+
+
+interface FooContextValue {
+    booh: number
+}
+const FooContext = createContext<FooContextValue>({
+    booh: 123,
+});
 
 
 
@@ -43,6 +57,10 @@ test('should return false for forwardRef element', () => {
 
 test('should return false for React Fragment element', () => {
     expect(isComponentElement(<></>)).toBe(false);
+});
+
+test('should return false for React Context element', () => {
+    expect(isComponentElement(<FooContext.Provider value={{ booh: 456 }}>foo</FooContext.Provider>)).toBe(false);
 });
 
 test('should return false for null, undefined, and boolean values', () => {

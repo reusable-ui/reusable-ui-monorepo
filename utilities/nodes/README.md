@@ -5,6 +5,7 @@ A **utility library** for handling React nodes efficiently. This package provide
 ## ✨ Features
 ✔ **Handles deeply nested fragments and arrays**  
 ✔ **Processes forwardRef elements correctly**  
+✔ **Processes React context elements correctly**  
 ✔ **Filters truthy and falsy nodes effectively**  
 ✔ **Optimizes React children flattening**  
 
@@ -39,6 +40,18 @@ import { isFragmentElement } from '@reusable-ui/nodes';
 
 console.log(isFragmentElement(<></>)); // true
 console.log(isFragmentElement(<div />)); // false
+```
+
+---
+
+### `isContextElement(node: ReactNode): boolean`
+Determines if a given React node is a **React context** (`<FooContext.Provider>...</FooContext.Provider>`).
+
+```tsx
+import { isContextElement } from '@reusable-ui/nodes';
+
+console.log(isContextElement(<FooContext.Provider value={{ booh: 456 }}>foo</FooContext.Provider>)); // true
+console.log(isContextElement(<div />)); // false
 ```
 
 ---
