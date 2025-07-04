@@ -25,6 +25,7 @@
 @reusable-ui/validations
 @reusable-ui/focuses
 @reusable-ui/link-compat
+@reusable-ui/next-link-compat
 @reusable-ui/client-sides
 @reusable-ui/navigations
 @reusable-ui/animating-state

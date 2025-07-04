@@ -54,6 +54,7 @@
     "utilities/validations",
     "utilities/focuses",
     "utilities/link-compat",
+    "utilities/next-link-compat",
     "__configs/*",
     "__utilities/*",
     "__features/*",
