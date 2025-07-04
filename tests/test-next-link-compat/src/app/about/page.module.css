@@ -1,0 +1,41 @@
+.main {
+    display: grid;
+    gap: 2rem;
+    padding: 1rem;
+}
+.section {
+    display: grid;
+    gap: 1rem;
+}
+
+
+.testResponsive {
+    display: flex;
+    flex-direction: column;
+    border: solid 1px black;
+    padding: 0;
+    gap: 0;
+    margin: 2rem;
+    padding: 0.5rem;
+    gap: 0.5rem;
+    
+    
+    >div {
+        display: block;
+    }
+    >div:nth-child(1n) {
+        background: hsl(0, 50%, 85%);
+    }
+    >div:nth-child(2n) {
+        background: hsl(46, 50%, 85%);
+    }
+    >div:nth-child(3n) {
+        background: hsl(101, 50%, 85%);
+    }
+    >div:nth-child(4n) {
+        background: hsl(175, 50%, 85%);
+    }
+    >div:nth-child(5n) {
+        background: hsl(277, 50%, 85%);
+    }
+}
