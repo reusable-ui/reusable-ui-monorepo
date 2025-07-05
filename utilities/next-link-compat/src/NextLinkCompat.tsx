@@ -35,12 +35,12 @@ import {
 // React components:
 
 /**
- * Props for `<NextLinkCompat>`, extending Next.js's `<Link>` with optional anchor-stripping behavior.
+ * Props for `<NextLinkCompat>`, extending Next.js’s `<Link>` with optional anchorless behavior.
  * 
- * - `anchorless`: If `true`, renders the link without an extra `<a>` wrapper.
+ * - `anchorless`: If `true`, renders the link without an extra `<a>` element.
  * - `passHref`: If `true`, explicitly forwards the `href` prop to the child component.
  * 
- * Note: These flags are handled internally and will not be passed to Next.js's `<Link>`.
+ * Note: These flags are handled internally and will not be passed to Next.js’s `<Link>`.
  */
 interface NextLinkCompatProps
     extends
@@ -51,7 +51,8 @@ interface NextLinkCompatProps
     // Refs:
     
     /**
-     * An optional React ref pointing to the final interactive element:
+     * An optional React ref to the final interactive element.
+     * 
      * - If `anchorless` is `false` (default), the ref targets the internal `<a>` element rendered by Next.js.
      * - If `anchorless` is `true`, the ref is forwarded to the interactive child component instead.
      *
@@ -78,7 +79,7 @@ interface NextLinkCompatProps
 }
 
 /**
- * A Next.js-compatible `<Link>` that supports anchorless rendering.
+ * A Next.js-compatible `<Link>` component that supports anchorless rendering.
  */
 const NextLinkCompat = (props: NextLinkCompatProps): ReactElement => {
     // Transform the `<Link>` element into an "anchorless" structure (if applicable):
