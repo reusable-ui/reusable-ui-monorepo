@@ -16,6 +16,7 @@ import {
 
 // Reusable-ui utilities:
 import {
+    isForwardRef,
     isFragmentElement,
     isContextElement,
 }                           from '@reusable-ui/nodes'           // A comprehensive utility library for efficiently managing React nodes, including fragments, forward refs, and nested structures.
@@ -51,7 +52,7 @@ const isAnchorElement = (node: ReactNode): node is ReactElement<ComponentProps<'
  */
 export interface AnchorExtractionResult {
     /**
-     * The wrapping context provider (e.g., `<Context.Provider>`), if present.
+     * The wrapping context provider (e.g., `<ContextProvider>`), if present.
      * If no context wrapper is detected, this will be `null`.
      */
     context : ReactElement<ProviderProps<unknown>, JSXElementConstructor<ProviderProps<unknown>>> | null
@@ -62,35 +63,46 @@ export interface AnchorExtractionResult {
     anchor  : ReactElement<ComponentProps<'a'>, 'a'>
     
     /**
-     * The sibling nodes adjacent to the `<a>` element (e.g., prefetch helpers or fragments).
+     * The side elements adjacent to the `<a>` element (e.g., prefetch helpers or fragments).
      */
-    rest    : ReactNode
+    sides   : ReactNode
 }
 
 /**
  * Attempts to extract the first native `<a>` element from a React node,
- * along with any surrounding structure (context providers and sibling elements).
+ * along with any surrounding structure (context providers and side elements).
  * 
  * @param rootNode - The composite React node to inspect.
- * @returns An `AnchorExtractionResult` containing the detected anchor, optional context provider, and remaining siblings — or `null` if no anchor is found.
+ * @returns An `AnchorExtractionResult` containing the detected anchor, optional context provider, and additional side elements — or `null` if no anchor is found.
  */
 export const extractFirstAnchor = (rootNode: ReactNode): AnchorExtractionResult | null => {
-    // Unwrap `<Context.Provider>`, if present:
-    let context   : ReactElement<ProviderProps<unknown>, JSXElementConstructor<ProviderProps<unknown>>> | null;
-    let candidate : ReactNode;
-    if (isContextElement(rootNode)) {
-        context = rootNode;
-        candidate = rootNode.props.children;
-    }
-    else {
-        context = null;
-        candidate = rootNode;
+    // Ensure the rootNode is a valid React element, otherwise return `null`:
+    if (!isValidElement<unknown>(rootNode)) return null;
+    
+    
+    
+    // Start with the root node as the candidate for extraction:
+    let candidate : ReactNode = rootNode;
+    
+    
+    
+    // Unwrap `<ForwardRef>`, if present:
+    if (isForwardRef(candidate)) {
+        // Render `<FunctionComponent>` wrapped in `<ForwardRef>`:
+        candidate = (candidate.type as any).render(candidate.props, candidate.props.ref);
     } // if
     
     
     
-    // Ensure the candidate is a valid React element, otherwise return `null`:
-    if (!isValidElement<unknown>(candidate)) return null;
+    // Unwrap `<ContextProvider>`, if present:
+    let context   : ReactElement<ProviderProps<unknown>, JSXElementConstructor<ProviderProps<unknown>>> | null;
+    if (isContextElement(candidate)) {
+        context   = candidate;
+        candidate = candidate.props.children;
+    }
+    else {
+        context   = null;
+    } // if
     
     
     
@@ -119,7 +131,7 @@ export const extractFirstAnchor = (rootNode: ReactNode): AnchorExtractionResult 
     
     
     
-    // Remove the anchor from the array to isolate the remaining siblings:
+    // Remove the anchor from the array to isolate the additional side elements:
     children.splice(anchorIndex, 1);
     
     
@@ -128,6 +140,6 @@ export const extractFirstAnchor = (rootNode: ReactNode): AnchorExtractionResult 
     return {
         context,
         anchor,
-        rest : children.length ? children : null,
+        sides : children.length ? children : null,
     } satisfies AnchorExtractionResult;
 };

@@ -108,31 +108,35 @@ export const useAnchorlessLink = (linkElement: ReactElement<CompatLinkProps, str
     /**
      * Expected JSX structure:
      * 
-     * <ForwardRef>                              // Optional
-     *      <ContextProvider>                    // Optional
-     *          <Fragment>                       // Optional
-     *              <a>                          // Target anchor to unwrap
-     *                  <InteractiveElement />   // Interactive element to enhance
-     *              </a>
-     *              
-     *              <Rest />                     // Siblings to preserve
-     *              <Rest />
-     *              <Rest />
-     *          </Fragment>
-     *      </ContextProvider>
-     *  </ForwardRef>
+     * <FunctionComponent | ForwardRefOfFunctionComponent>        // Required — the `linkElement` passed to `useAnchorlessLink()`
+     *     <ForwardRefOfFunctionComponent>                        // Optional — e.g. nested <Link> inside a <NavLink> wrapper
+     *         <ContextProvider>                                  // Optional — supplies routing or layout context
+     *             <Fragment>                                     // Optional — groups anchor and side elements
+     *                 
+     *                 <a>                                        // ✅ Target anchor to unwrap
+     *                     <InteractiveElement />                 // Interactive child (e.g. <button>, <Card />)
+     *                 </a>
+     *                 
+     *                 <Side />                                   // Optional side elements to preserve (e.g. <Prefetch>)
+     *                 <Side />
+     *                 <Side />
+     *                 
+     *             </Fragment>
+     *         </ContextProvider>
+     *     </ForwardRefOfFunctionComponent>
+     * </FunctionComponent | ForwardRefOfFunctionComponent>
      */
     
     
     
-    // Invoke the rendered content of `<LinkComponent>`:
+    // Invoke the top-most rendered content of `<LinkComponent>`:
     const renderedNode : ReactNode = (
         isForwardRefElement(linkElement)
         
-        // Handle `<ForwardRef>`:
+        // Render `<FunctionComponent>` wrapped in `<ForwardRef>`:
         ? (linkElement.type as any).render(linkProps, linkElement.props.ref)
         
-        // Handle function component:
+        // Render `<FunctionComponent>`:
         : (linkElement.type as any)(linkProps)
     );
     
@@ -162,7 +166,7 @@ export const useAnchorlessLink = (linkElement: ReactElement<CompatLinkProps, str
     const {
         context,
         anchor,
-        rest,
+        sides,
     } = extraction;
     
     
@@ -268,15 +272,15 @@ export const useAnchorlessLink = (linkElement: ReactElement<CompatLinkProps, str
     
     // Rebuild the component tree, preserving original structure:
     const mergedChildren = (
-        rest
+        sides
         
         ? <>
             {/* The interactive element: */}
             {updatedInteractiveElement}
             
-            {/* Wrap `rest` in a fragment to isolate key space from `updatedInteractiveElement`: */}
+            {/* Wrap `sides` in a fragment to isolate key space from `updatedInteractiveElement`: */}
             <>
-                {rest}
+                {sides}
             </>
         </>
         

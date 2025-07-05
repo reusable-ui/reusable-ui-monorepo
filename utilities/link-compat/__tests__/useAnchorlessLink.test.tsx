@@ -82,7 +82,7 @@ interface BareLinkProps {
  * ```
  */
 const BasicLink = (props: BareLinkProps) => {
-    // Ensures the `anchorless` and `passHref` are managed correctly:
+    // Guard unexpected usage — these props must not propagate downstream:
     if ('anchorless' in props) throw Error('invalid `anchorless` prop.');
     if ('passHref'   in props) throw Error('invalid `passHref` prop.');
     
@@ -102,7 +102,7 @@ const BasicLink = (props: BareLinkProps) => {
  * ```
  */
 const ForwardedLink = forwardRef<HTMLAnchorElement | null, BareLinkProps>((props, ref) => {
-    // Ensures the `anchorless` and `passHref` are managed correctly:
+    // Guard unexpected usage — these props must not propagate downstream:
     if ('anchorless' in props) throw Error('invalid `anchorless` prop.');
     if ('passHref'   in props) throw Error('invalid `passHref` prop.');
     
@@ -124,7 +124,7 @@ const ForwardedLink = forwardRef<HTMLAnchorElement | null, BareLinkProps>((props
  * ```
  */
 const ForwardedContextedLink = forwardRef<HTMLAnchorElement | null, BareLinkProps>((props, ref) => {
-    // Ensures the `anchorless` and `passHref` are managed correctly:
+    // Guard unexpected usage — these props must not propagate downstream:
     if ('anchorless' in props) throw Error('invalid `anchorless` prop.');
     if ('passHref'   in props) throw Error('invalid `passHref` prop.');
     
@@ -150,7 +150,7 @@ const ForwardedContextedLink = forwardRef<HTMLAnchorElement | null, BareLinkProp
  * ```
  */
 const ForwardedContextedFragmentedLink = forwardRef<HTMLAnchorElement | null, BareLinkProps>((props, ref) => {
-    // Ensures the `anchorless` and `passHref` are managed correctly:
+    // Guard unexpected usage — these props must not propagate downstream:
     if ('anchorless' in props) throw Error('invalid `anchorless` prop.');
     if ('passHref'   in props) throw Error('invalid `passHref` prop.');
     
@@ -163,6 +163,32 @@ const ForwardedContextedFragmentedLink = forwardRef<HTMLAnchorElement | null, Ba
                 <AssertExist identifier='three' />
             </>
         </TestContext.Provider>
+    );
+});
+
+/**
+ * @returns
+ * ```jsx
+ * <ForwardRef>
+ *      <ForwardRef>
+ *          <ContextProvider>
+ *              <Fragment>
+ *                  <a>
+ *                      <InteractiveElement />
+ *                  </a>
+ *              </Fragment>
+ *          </ContextProvider>
+ *       </ForwardRef>
+ *  </ForwardRef>
+ * ```
+ */
+const DoubleForwardedContextedFragmentedLink = forwardRef<HTMLAnchorElement | null, BareLinkProps>((props, ref) => {
+    // Guard unexpected usage — these props must not propagate downstream:
+    if ('anchorless' in props) throw Error('invalid `anchorless` prop.');
+    if ('passHref'   in props) throw Error('invalid `passHref` prop.');
+    
+    return (
+        <ForwardedContextedFragmentedLink {...props} ref={ref} />
     );
 });
 
@@ -349,9 +375,9 @@ interface AnchorlessLinkTestCase {
     expectRefTarget       : 'built-in-anchor' | 'interactive-element'
     
     /**
-     * Identifiers for any additional sibling elements expected in the output.
+     * Identifiers for any additional side elements expected in the output.
      */
-    expectSiblings        : string[]
+    expectSides           : string[]
 }
 
 describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', () => {
@@ -375,7 +401,7 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
             expectHref            : 'NO_HREF_PASSED',
             expectInContext       : false,
             expectRefTarget       : 'built-in-anchor',
-            expectSiblings        : [],
+            expectSides           : [],
         },
         {
             // Tests:
@@ -394,7 +420,7 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
             expectHref            : 'NO_HREF_PASSED',
             expectInContext       : false,
             expectRefTarget       : 'interactive-element',
-            expectSiblings        : [],
+            expectSides           : [],
         },
         {
             // Tests:
@@ -413,7 +439,7 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
             expectHref            : '/about',
             expectInContext       : false,
             expectRefTarget       : 'interactive-element',
-            expectSiblings        : [],
+            expectSides           : [],
         },
         
         
@@ -435,7 +461,7 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
             expectHref            : 'NO_HREF_PASSED',
             expectInContext       : false,
             expectRefTarget       : 'built-in-anchor',
-            expectSiblings        : [],
+            expectSides           : [],
         },
         {
             // Tests:
@@ -454,7 +480,7 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
             expectHref            : 'NO_HREF_PASSED',
             expectInContext       : false,
             expectRefTarget       : 'interactive-element',
-            expectSiblings        : [],
+            expectSides           : [],
         },
         {
             // Tests:
@@ -473,7 +499,7 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
             expectHref            : '/about',
             expectInContext       : false,
             expectRefTarget       : 'interactive-element',
-            expectSiblings        : [],
+            expectSides           : [],
         },
         
         
@@ -495,7 +521,7 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
             expectHref            : 'NO_HREF_PASSED',
             expectInContext       : true,
             expectRefTarget       : 'built-in-anchor',
-            expectSiblings        : [],
+            expectSides           : [],
         },
         {
             // Tests:
@@ -514,7 +540,7 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
             expectHref            : 'NO_HREF_PASSED',
             expectInContext       : true,
             expectRefTarget       : 'interactive-element',
-            expectSiblings        : [],
+            expectSides           : [],
         },
         {
             // Tests:
@@ -533,14 +559,14 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
             expectHref            : '/about',
             expectInContext       : true,
             expectRefTarget       : 'interactive-element',
-            expectSiblings        : [],
+            expectSides           : [],
         },
         
         
         
         {
             // Tests:
-            title                 : 'ForwardRef + Context + Fragment - nested <a> with siblings, no anchorless',
+            title                 : 'ForwardRef + Context + Fragment - nested <a> with side elements, no anchorless',
             LinkComponent         : ForwardedContextedFragmentedLink,
             anchorless            : false,
             passHref              : false,
@@ -555,7 +581,7 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
             expectHref            : 'NO_HREF_PASSED',
             expectInContext       : true,
             expectRefTarget       : 'built-in-anchor',
-            expectSiblings        : [
+            expectSides           : [
                 'ensured-existence-one',
                 'ensured-existence-two',
                 'ensured-existence-three',
@@ -563,7 +589,7 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
         },
         {
             // Tests:
-            title                 : 'ForwardRef + Context + Fragment - unwrap anchorless link with siblings (no href)',
+            title                 : 'ForwardRef + Context + Fragment - unwrap anchorless link with side elements (no href)',
             LinkComponent         : ForwardedContextedFragmentedLink,
             anchorless            : true,
             passHref              : false,
@@ -578,7 +604,7 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
             expectHref            : 'NO_HREF_PASSED',
             expectInContext       : true,
             expectRefTarget       : 'interactive-element',
-            expectSiblings        : [
+            expectSides           : [
                 'ensured-existence-one',
                 'ensured-existence-two',
                 'ensured-existence-three',
@@ -586,7 +612,7 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
         },
         {
             // Tests:
-            title                 : 'ForwardRef + Context + Fragment - unwrap anchorless link with siblings and href',
+            title                 : 'ForwardRef + Context + Fragment - unwrap anchorless link with side elements and href',
             LinkComponent         : ForwardedContextedFragmentedLink,
             anchorless            : true,
             passHref              : true,
@@ -601,7 +627,79 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
             expectHref            : '/about',
             expectInContext       : true,
             expectRefTarget       : 'interactive-element',
-            expectSiblings        : [
+            expectSides           : [
+                'ensured-existence-one',
+                'ensured-existence-two',
+                'ensured-existence-three',
+            ],
+        },
+        
+        
+        
+        {
+            // Tests:
+            title                 : 'ForwardRef + ForwardRef + Context + Fragment - nested <a> with side elements, no anchorless',
+            LinkComponent         : DoubleForwardedContextedFragmentedLink,
+            anchorless            : false,
+            passHref              : false,
+            childElement          : <Button />,
+            
+            
+            
+            // Expects:
+            expectTag             : 'BUTTON',
+            expectParentId        : 'built-in-anchor',
+            expectNavigationProps : false,
+            expectHref            : 'NO_HREF_PASSED',
+            expectInContext       : true,
+            expectRefTarget       : 'built-in-anchor',
+            expectSides           : [
+                'ensured-existence-one',
+                'ensured-existence-two',
+                'ensured-existence-three',
+            ],
+        },
+        {
+            // Tests:
+            title                 : 'ForwardRef + ForwardRef + Context + Fragment - unwrap anchorless link with side elements (no href)',
+            LinkComponent         : DoubleForwardedContextedFragmentedLink,
+            anchorless            : true,
+            passHref              : false,
+            childElement          : <Button />,
+            
+            
+            
+            // Expects:
+            expectTag             : 'BUTTON',
+            expectParentId        : 'body',
+            expectNavigationProps : true,
+            expectHref            : 'NO_HREF_PASSED',
+            expectInContext       : true,
+            expectRefTarget       : 'interactive-element',
+            expectSides           : [
+                'ensured-existence-one',
+                'ensured-existence-two',
+                'ensured-existence-three',
+            ],
+        },
+        {
+            // Tests:
+            title                 : 'ForwardRef + ForwardRef + Context + Fragment - unwrap anchorless link with side elements and href',
+            LinkComponent         : DoubleForwardedContextedFragmentedLink,
+            anchorless            : true,
+            passHref              : true,
+            childElement          : <Button />,
+            
+            
+            
+            // Expects:
+            expectTag             : 'A',
+            expectParentId        : 'body',
+            expectNavigationProps : true,
+            expectHref            : '/about',
+            expectInContext       : true,
+            expectRefTarget       : 'interactive-element',
+            expectSides           : [
                 'ensured-existence-one',
                 'ensured-existence-two',
                 'ensured-existence-three',
@@ -626,7 +724,7 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
             expectHref,
             expectInContext,
             expectRefTarget,
-            expectSiblings,
+            expectSides,
         }) => {
             const refAnchor      = createAnchorRef(); // ref for AnchorlessTestLink.
             const refInteractive = createAnchorRef(); // ref for child Button.
@@ -694,9 +792,9 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
             // Context presence:
             if (expectInContext) screen.getByTestId('context-verified');
             
-            // Fragment siblings:
-            for (const siblingId of expectSiblings) {
-                screen.getByTestId(siblingId);
+            // Side elements:
+            for (const sideId of expectSides) {
+                screen.getByTestId(sideId);
             } // for
             
             // Navigation event merging:
