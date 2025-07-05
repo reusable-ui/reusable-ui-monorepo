@@ -331,14 +331,6 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
             // Navigation event merging:
             const anchorOrInteractive = refAnchor.current!;
             
-            fireEvent.click(anchorOrInteractive);
-            expect(handleAnchorClick).toHaveBeenCalledTimes(1); // Has anchor: clicked from the anchor itself, otherwise clicked from the interactive.
-            expect(handleInteractiveClick).toHaveBeenCalledTimes(
-                !anchorless
-                ? 0 // Has anchor : clicked from the anchor, no click from interactive.
-                : 1 // No anchor  : clicked from the interactive.
-            );
-            
             fireEvent.mouseEnter(anchorOrInteractive);
             expect(handleAnchorMouseEnter).toHaveBeenCalledTimes(1); // Has anchor: clicked from the anchor itself, otherwise clicked from the interactive.
             expect(handleInteractiveMouseEnter).toHaveBeenCalledTimes(
@@ -350,6 +342,16 @@ describe('useAnchorlessLink - preserves behavior across JSX nesting scenarios', 
             fireEvent.touchStart(anchorOrInteractive);
             expect(handleAnchorTouchStart).toHaveBeenCalledTimes(1); // Has anchor: clicked from the anchor itself, otherwise clicked from the interactive.
             expect(handleInteractiveTouchStart).toHaveBeenCalledTimes(
+                !anchorless
+                ? 0 // Has anchor : clicked from the anchor, no click from interactive.
+                : 1 // No anchor  : clicked from the interactive.
+            );
+            
+            // Trigger the click event after testing mouseEnter and touchStart,
+            // so that any navigation side-effects don't interfere with the previous assertions:
+            fireEvent.click(anchorOrInteractive);
+            expect(handleAnchorClick).toHaveBeenCalledTimes(1); // Has anchor: clicked from the anchor itself, otherwise clicked from the interactive.
+            expect(handleInteractiveClick).toHaveBeenCalledTimes(
                 !anchorless
                 ? 0 // Has anchor : clicked from the anchor, no click from interactive.
                 : 1 // No anchor  : clicked from the interactive.
