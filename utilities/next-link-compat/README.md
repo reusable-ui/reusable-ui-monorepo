@@ -1,12 +1,13 @@
 # @reusable-ui/next-link-compat 📦  
 
-A **Next.js-compatible `<Link>` alternative** with anchorless support — ensuring clean semantics and accessible markup.
+A **Next.js-compatible `<Link>` alternative** with optional anchorless rendering — ensuring clean semantics, accessible markup, and compatibility with custom interactive components.
 
 ## ✨ Features
 ✔️ Drop-in replacement for Next.js’s `<Link>` with anchorless support  
-✔️ Eliminates invalid nested anchors like `<a><button>...</button></a>`  
-✔️ Forwards `href`, `ref`, and `onClick` to the intended interactive child  
-✔️ Seamlessly integrates with Reusable UI or standalone components  
+✔️ Prevents invalid nested anchors (like `<a><button>...</button></a>`)  
+✔️ Forwards `href`, `ref`, and handlers to the actual interactive child  
+✔️ Seamlessly integrates with Reusable UI or standalone design systems  
+✔️ Works with **Next.js** v15+ (React 19-ready)  
 
 ## 📦 Installation
 Install **@reusable-ui/next-link-compat** via npm or yarn:
@@ -45,9 +46,9 @@ Whether you're using the App Router or Pages Router — this just works. No nest
 
 ---
 
-## 🧩 Props
+## ⚙ API
 
-`NextLinkCompatProps` includes all props from Next.js’s native [`<Link>`](https://nextjs.org/docs/app/api-reference/components/link) component — such as `href`, `prefetch`, `replace`, etc. — plus two additional compatibility flags:
+`<NextLinkCompat>` accepts all props from [`<Link>`](https://nextjs.org/docs/app/api-reference/components/link) plus two extra flags:
 
 ```ts
 interface CompatLinkProps {
@@ -66,15 +67,13 @@ interface CompatLinkProps {
 
 ## ⚙ Behavior Summary
 
-When `anchorless` is enabled:
-
-| Condition              | Result                                                                 |
-|------------------------|------------------------------------------------------------------------|
-| Anchor is found        | It is removed, and its props are hoisted to the interactive child      |
-| No anchor is found     | The node is returned unchanged with a dev-only warning                 |
-| `passHref` is `true`   | `href` is forwarded manually to the child (in anchorless mode)         |
-
-Otherwise, the component behaves identically to the original Next.js `<Link>`.
+| Feature                     | anchorless = false (default)  | anchorless = true                  |
+|-----------------------------|-------------------------------|------------------------------------|
+| Anchor rendering            | Rendered with `<a>` element   | Rendered without `<a>` element     |
+| Ref target                  | `<a>` element                 | Interactive child element          |
+| `href` forwarding           | Automatic                     | Manual via `passHref`              |
+| Event handling              | From `<a>`                    | Hoisted to interactive child       |
+| Accessibility               | Native anchor                 | Fully customizable                 |
 
 ---
 
@@ -82,6 +81,13 @@ Otherwise, the component behaves identically to the original Next.js `<Link>`.
 
 Found an edge case or unexpected behavior? File an issue here:  
 👉 [https://github.com/reusable-ui/reusable-ui-monorepo/issues](https://github.com/reusable-ui/reusable-ui-monorepo/issues)
+
+---
+
+## 🌍 Related Packages
+
+- [`@reusable-ui/link-compat`](https://www.npmjs.com/package/@reusable-ui/link-compat) – core anchorless utilities  
+- [`@reusable-ui/router-link-compat`](https://www.npmjs.com/package/@reusable-ui/router-link-compat) – React Router-compatible version  
 
 ---
 
@@ -97,5 +103,5 @@ Licensed under the **MIT License** – see the [LICENSE](./LICENSE) file for det
 
 ---
 
-🚀 **@reusable-ui/next-link-compat brings clarity and control to routing, so your UI stays semantic, accessible, and composable.**  
+🚀 **@reusable-ui/next-link-compat helps you build semantic links that play well with design systems and routing libraries alike.**  
 Give it a ⭐ on GitHub if you find it useful!  
