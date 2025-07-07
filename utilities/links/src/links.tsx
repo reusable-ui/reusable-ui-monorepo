@@ -39,7 +39,7 @@ import {
 }                           from '@reusable-ui/semantics'       // Semantic utility for resolving tag and role behaviors in reusable UI components.
 import {
     // Types:
-    AccessibilityProps,
+    type AccessibilityProps,
     
     
     
