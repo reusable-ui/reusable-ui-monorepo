@@ -60,6 +60,7 @@
     "tests/test-next-link-compat",
     "utilities/router-link-compat",
     "utilities/links",
+    "utilities/client-sides",
     "__configs/*",
     "__utilities/*",
     "__features/*",

@@ -28,7 +28,7 @@
 @reusable-ui/next-link-compat
 @reusable-ui/router-link-compat
 @reusable-ui/links
-@reusable-ui/client-sides
+@reusable-ui/client-sides   DEPRECATED
 @reusable-ui/navigations
 @reusable-ui/animating-state
 
