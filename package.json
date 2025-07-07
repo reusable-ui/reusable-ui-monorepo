@@ -57,6 +57,7 @@
     "utilities/next-link-compat",
     "tests/test-next-link-compat",
     "utilities/router-link-compat",
+    "utilities/links",
     "__configs/*",
     "__utilities/*",
     "__features/*",
