@@ -51,6 +51,9 @@ import {
 import {
     // Types:
     type ClientLinkElement,
+}                           from './utilities.js'
+import {
+    // Types:
     type LinkExtractionResult,
     
     

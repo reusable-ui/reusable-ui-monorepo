@@ -54,7 +54,7 @@ const SmartButton = (props: SmartButtonProps) => {
 
 This keeps the visual layout unchanged and preserves accessibility while deferring navigation to a client-side router.
 
-## 🧠 How It Works
+#### 🧠 How It Works
 
 Internally, `useOptionalLinkWrapper()`:
 - Scans children of the provided base element for a supported `<Link>`
@@ -62,7 +62,7 @@ Internally, `useOptionalLinkWrapper()`:
 - Re-wraps the updated element inside the detected `<Link>` with proper semantics.
 - Produces a **stable** JSX identity so you can safely `cloneElement()` or override props further
 
-## 🧱 Designed for Integration
+#### 🧱 Designed for Integration
 
 This hook powers the magic behind components like:
 
@@ -70,11 +70,27 @@ This hook powers the magic behind components like:
 - `<NavButton>`, `<NavItem>` — anything clickable with optional `<Link>`s
 - Design systems that want `<Link>`-aware components without forcing a router choice
 
-## 🌐 Works with:
+#### 🌐 Works with:
 
 - ✅ `@reusable-ui/next-link-compat`
 - ✅ `@reusable-ui/router-link-compat`
 - ✅ `@reusable-ui/link-compat` (for raw detection)
+
+### `isClientLinkElement(node: ReactNode): node is ClientLinkElement`
+
+A runtime type guard that checks whether a given React node qualifies as a client-side `<Link>` element.
+
+#### 🔧 Usage Example
+
+```tsx
+import { isClientLinkElement } from '@reusable-ui/links';
+
+const maybeLink = children.find(child => isClientLinkElement(child));
+```
+
+Use this to filter or validate components before conditionally wrapping them in semantic navigators.
+
+---
 
 ## 📖 Part of the Reusable-UI Framework  
 **@reusable-ui/links** is a core logic module within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
