@@ -61,6 +61,7 @@
     "utilities/router-link-compat",
     "utilities/links",
     "utilities/client-sides",
+    "utilities/navigations",
     "__configs/*",
     "__utilities/*",
     "__features/*",
