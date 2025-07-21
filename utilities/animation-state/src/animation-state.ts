@@ -425,23 +425,43 @@ export const useAnimationState = <TState extends {} | null, TElement extends Ele
     
     
     
-    // Return structured animation API:
+    // Handlers for animation lifecycle events:
     const animationHandlers : AnimationStateHandlers<TElement> = {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel : handleAnimationEnd, // Reuse the end handler for cancellation.
     };
-    const animationStateApi = [ // Tuple-style accessors for array destructuring.
+    
+    // List of named accessors for the animation state API:
+    type NamedAccessorKeys = keyof Pick<AnimationStateApi<TState, TElement>,
+        | 'intent'
+        | 'setIntent'
+        | 'running'
+        
+        | 'handleAnimationStart'
+        | 'handleAnimationEnd'
+        | 'handleAnimationCancel'
+    >
+    
+    // Tuple-style accessors for array destructuring:
+    const animationStateTuple : Omit<AnimationStateApi<TState, TElement>, NamedAccessorKeys> = [
         state.intent,
         setIntent,
         state.running,
         animationHandlers,
-    ] as unknown as AnimationStateApi<TState, TElement>;
-    Object.assign(animationStateApi, { // Named-property accessors for direct property usage.
+    ];
+    
+    // Named-property accessors for direct property usage:
+    const animationStateNamed : Pick<AnimationStateApi<TState, TElement>, NamedAccessorKeys> = {
         intent    : state.intent,
         setIntent : setIntent,
         running   : state.running,
         ...animationHandlers,
-    });
+    }
+    
+    // Combine both tuple and named accessors into a single API object:
+    const animationStateApi = Object.assign(animationStateTuple, animationStateNamed) as AnimationStateApi<TState, TElement>;
+    
+    // Return the complete API object:
     return animationStateApi;
 };
