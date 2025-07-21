@@ -30,6 +30,7 @@
 @reusable-ui/links
 @reusable-ui/client-sides   DEPRECATED
 @reusable-ui/navigations
+@reusable-ui/animation-state
 @reusable-ui/animating-state
 
 // Reusable-ui features:

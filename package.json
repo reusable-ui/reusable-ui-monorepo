@@ -62,6 +62,7 @@
     "utilities/links",
     "utilities/client-sides",
     "utilities/navigations",
+    "utilities/animation-state",
     "__configs/*",
     "__utilities/*",
     "__features/*",

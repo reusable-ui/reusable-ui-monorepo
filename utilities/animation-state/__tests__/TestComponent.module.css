@@ -1,0 +1,87 @@
+/* Base Styles */
+.main {
+    background-color: white;
+    interpolate-size: allow-keywords; /* Enables height transitions */
+    width: 200px;
+}
+
+
+
+/* Expansion & Collapse Animations */
+
+/* Animation triggers */
+.expanding {
+    animation: expand 1s ease-in-out forwards;
+}
+.collapsing {
+    animation: collapse 1s ease-in-out forwards;
+}
+
+/* Target states */
+.expanded {
+    height: 100px;
+}
+.collapsed {
+    height: 0;
+}
+
+/* Keyframes */
+@keyframes expand {
+    from { height: 0; }
+    to   { height: 100px; }
+}
+
+@keyframes collapse {
+    from { height: 100px; }
+    to   { height: 0; }
+}
+
+
+
+/* Validity Animations (Valid ↔ Neutral ↔ Invalid) */
+
+/* Animation triggers */
+.validating {
+    animation: validate 1s ease-in-out forwards;
+}
+.unvalidating {
+    animation: unvalidate 1s ease-in-out forwards;
+}
+.invalidating {
+    animation: invalidate 1s ease-in-out forwards;
+}
+.uninvalidating {
+    animation: uninvalidate 1s ease-in-out forwards;
+}
+
+/* Target states */
+.validated {
+    background-color: green;
+}
+.invalidated {
+    background-color: red;
+}
+.novalidity {
+    background-color: white;
+}
+
+/* Keyframes */
+@keyframes validate {
+    from { background-color: white; }
+    to   { background-color: green; }
+}
+
+@keyframes unvalidate {
+    from { background-color: green; }
+    to   { background-color: white; }
+}
+
+@keyframes invalidate {
+    from { background-color: white; }
+    to   { background-color: red; }
+}
+
+@keyframes uninvalidate {
+    from { background-color: red; }
+    to   { background-color: white; }
+}
