@@ -33,6 +33,17 @@
 @reusable-ui/animation-state
 @reusable-ui/animating-state DEPRECATED
 
+// Reusable-ui variants:
+@reusable-ui/orientationable
+@reusable-ui/resizable
+@reusable-ui/themeable
+@reusable-ui/gradientable
+@reusable-ui/outlineable
+@reusable-ui/mildable
+@reusable-ui/nudible
+@reusable-ui/colorable
+@reusable-ui/basic-variants
+
 // Reusable-ui features:
 @reusable-ui/background
 @reusable-ui/foreground
@@ -47,17 +58,6 @@
 @reusable-ui/auto-focusable
 @reusable-ui/groupable
 @reusable-ui/pointer-capturable
-
-// Reusable-ui variants:
-@reusable-ui/orientationable
-@reusable-ui/resizable
-@reusable-ui/themeable
-@reusable-ui/gradientable
-@reusable-ui/outlineable
-@reusable-ui/mildable
-@reusable-ui/nudible
-@reusable-ui/colorable
-@reusable-ui/basic-variants
 
 // Reusable-ui states:
 @reusable-ui/excitable
