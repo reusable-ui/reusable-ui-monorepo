@@ -31,7 +31,7 @@
 @reusable-ui/client-sides   DEPRECATED
 @reusable-ui/navigations
 @reusable-ui/animation-state
-@reusable-ui/animating-state
+@reusable-ui/animating-state DEPRECATED
 
 // Reusable-ui features:
 @reusable-ui/background
