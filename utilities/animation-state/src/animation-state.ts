@@ -199,10 +199,10 @@ export interface AnimationStateOptions<TState extends {} | null> {
      * Used to identify animations that should trigger immediately
      * after the new intent has been applied. (e.g. `'expand'`, `'collapse'`).
      * 
-    * Supports regular expression and string suffix matching with word-boundary awareness:
-    * - Use a string to match suffixes with word-boundary awareness.
-    * - Use an array of strings to match multiple suffixes.
-    * - Use a RegExp for custom or complex matching logic.
+     * Supports regular expression and string suffix matching with word-boundary awareness:
+     * - Use a string to match suffixes with word-boundary awareness.
+     * - Use an array of strings to match multiple suffixes.
+     * - Use a RegExp for custom or complex matching logic.
      */
     animationPattern   : string | string[] | RegExp
     
