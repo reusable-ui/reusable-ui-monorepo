@@ -33,7 +33,22 @@
 @reusable-ui/animation-state
 @reusable-ui/animating-state DEPRECATED
 
-// Reusable-ui variants:
+// Reusable-ui variants: (planned):
+|-------------------------------|-------------------|----------------------------------------------------|---------------------------------------------------------------|
+|  Interface Name               |  Prop Name        |  Values                                            |  Description                                                  |
+|-------------------------------|-------------------|----------------------------------------------------|---------------------------------------------------------------|
+| `OrientationVariantProps`     | `orientation`     | `'inline'` | `'block'`                             | Controls layout direction — typically horizontal vs. vertical |
+| `SizeVariantProps`            | `size`            | `'sm'` | `'md'` | `'lg'` | `string`                | Sets component sizing, including custom token or value        |
+| `ThemeVariantProps`           | `theme`           | `'primary'` | `'secondary'` | ... | `'inherit'`    | Applies themed visual identity from palette or context        |
+| `GradientVariantProps`        | `gradient`        | `boolean` | `'inherit'`                            | Enables gradient background styling                           |
+| `OutlineVariantProps`         | `outlined`        | `boolean` | `'inherit'`                            | Enables outlined style (border-only, no fill)                 |
+| `MildVariantProps`            | `mild`            | `boolean` | `'inherit'`                            | Enables soft-tone background styling                          |
+| `BareVariantProps`            | `bare`            | `boolean` | `'inherit'`                            | Strips padding, background, border — minimal appearance       |
+| `ColorVariantUtils` (utility) | *(varies)*        | *(computed from theme or context)*                 | Provides contextual text and icon coloring behavior           |
+| `BasicVariantProps`           | *(extends above)* | *(all above props unified)*                        | Provides bundled variant props for common component usage     |
+|-------------------------------|-------------------|----------------------------------------------------|---------------------------------------------------------------|
+
+// Reusable-ui variants (deprecated):
 @reusable-ui/orientationable
 @reusable-ui/resizable
 @reusable-ui/themeable
