@@ -33,6 +33,9 @@
 @reusable-ui/animation-state
 @reusable-ui/animating-state DEPRECATED
 
+// Reusable-ui variants: (refactored):
+@reusable-ui/orientation-variant
+
 // Reusable-ui variants: (planned):
 |-------------------------------|-------------------|----------------------------------------------------|---------------------------------------------------------------|
 |  Interface Name               |  Prop Name        |  Values                                            |  Description                                                  |
