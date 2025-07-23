@@ -148,10 +148,10 @@ const fancyComponentStyle = () => style({
     ...ifOrientationBlock({
         flexDirection: 'column',
         
-        ...rule(ifOrientationStart, {
+        ...rule(orientationStartSelector, {
             textAlign: 'start',
         }),
-        ...rule(ifOrientationEnd, {
+        ...rule(orientationEndSelector, {
             textAlign: 'end',
         }),
     }),
