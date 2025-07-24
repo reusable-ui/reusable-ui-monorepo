@@ -1,5 +1,5 @@
 /**
- * Represents the orientation of primary axis for component's appearance:
+ * Represents the orientation of primary axis of the component:
  * - `'inline'`: horizontal direction (e.g. left to right)
  * - `'block'` : vertical direction (e.g. top to bottom)
  */
@@ -8,7 +8,7 @@ export type AxisOrientation =
     | 'block'
 
 /**
- * Represents the orientation of direction for component's appearance:
+ * Represents the orientation of direction of the component:
  * - `'inline-start'`: horizontal direction, start of inline axis (e.g. left in LTR, right in RTL)
  * - `'inline-end'`  : horizontal direction, end of inline axis (e.g. right in LTR, left in RTL)
  * - `'block-start'` : vertical direction, start of block axis (e.g. top in horizontal writing modes)

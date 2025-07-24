@@ -43,6 +43,16 @@ export const orientationEndSelector    : CssSelectorCollection = ':is(.o-inline-
  * 
  * @param styles The styles to apply when horizontal (inline) orientation is detected.
  * @returns A `CssRule` that applies the given `styles` for horizontal (inline) orientation.
+ * 
+ * @example
+ * ```ts
+ * export const componentStyle = () => style({
+ *     display: 'flex',
+ *     ...ifOrientationInline({
+ *         flexDirection: 'row',
+ *     }),
+ * });
+ * ```
  */
 export const ifOrientationInline = (styles: CssStyleCollection): CssRule => rule(orientationInlineSelector , styles);
 
@@ -52,6 +62,16 @@ export const ifOrientationInline = (styles: CssStyleCollection): CssRule => rule
  * 
  * @param styles The styles to apply when vertical (block) orientation is detected.
  * @returns A `CssRule` that applies the given `styles` for vertical (block) orientation.
+ * 
+ * @example
+ * ```ts
+ * export const componentStyle = () => style({
+ *     display: 'flex',
+ *     ...ifOrientationBlock({
+ *         flexDirection: 'column',
+ *     }),
+ * });
+ * ```
  */
 export const ifOrientationBlock  = (styles: CssStyleCollection): CssRule => rule(orientationBlockSelector  , styles);
 
@@ -60,6 +80,16 @@ export const ifOrientationBlock  = (styles: CssStyleCollection): CssRule => rule
  * 
  * @param styles The styles to apply when start edge alignment is detected.
  * @returns A `CssRule` that applies the given `styles` for start edge alignment.
+ * 
+ * @example
+ * ```ts
+ * export const componentStyle = () => style({
+ *     display: 'flex',
+ *     ...ifOrientationStart({
+ *         textAlign: 'start',
+ *     }),
+ * });
+ * ```
  */
 export const ifOrientationStart  = (styles: CssStyleCollection): CssRule => rule(orientationStartSelector  , styles);
 
@@ -68,5 +98,15 @@ export const ifOrientationStart  = (styles: CssStyleCollection): CssRule => rule
  * 
  * @param styles The styles to apply when end edge alignment is detected.
  * @returns A `CssRule` that applies the given `styles` for end edge alignment.
+ * 
+ * @example
+ * ```ts
+ * export const componentStyle = () => style({
+ *     display: 'flex',
+ *     ...ifOrientationEnd({
+ *         textAlign: 'end',
+ *     }),
+ * });
+ * ```
  */
 export const ifOrientationEnd    = (styles: CssStyleCollection): CssRule => rule(orientationEndSelector    , styles);

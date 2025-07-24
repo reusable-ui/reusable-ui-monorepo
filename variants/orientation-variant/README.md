@@ -33,7 +33,7 @@ import {
     useAxisOrientationVariant,
     AxisOrientationVariantProps,
 } from '@reusable-ui/orientation-variant';
-import styles from 'OrientationBox.module.css';
+import styles from './OrientationBox.module.css';
 
 export interface OrientationBoxProps extends AxisOrientationVariantProps {}
 
@@ -48,7 +48,7 @@ export const OrientationBox : FC<OrientationBoxProps> = (props) => {
         isOrientationBlock,
         ariaOrientation,
     } = useAxisOrientationVariant(props, {
-        defaultOrientation: 'block', // fallback orientation
+        defaultOrientation: 'block', // fallback if not provided
     });
     
     return (
@@ -100,7 +100,7 @@ export const PlacementArrow: FC<PlacementArrowProps> = (props) => {
         isOrientationBlock,
         ariaOrientation,
     } = useDirectionalOrientationVariant(props, {
-        defaultOrientation: 'inline-end', // fallback direction
+        defaultOrientation: 'inline-end', // fallback if not provided
     });
     
     return (
@@ -142,7 +142,7 @@ import {
 } from '@reusable-ui/orientation-variant';
 import { style, rule } from '@cssfn/core';
 
-const fancyComponentStyle = () => style({
+export const componentStyle = () => style({
     display: 'flex',
     ...ifOrientationInline({
         flexDirection: 'row',
