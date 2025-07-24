@@ -1,13 +1,13 @@
 # @reusable-ui/orientation-variant 📦  
 
-A utility for managing UI orientation consistently across React components.  
-This package provides hooks and CSS helpers for handling axis direction, placement flow, and conditional styling — ideal for dropdowns, lists, cards, tooltips, and other flow-aware UI elements.
+A utility for managing component orientations consistently across React projects.  
+This package provides hooks and CSS helpers for handling orientations, placement flow, and conditional styling — ideal for dropdowns, lists, cards, tooltips, and other flow-aware UI elements.
 
 ## ✨ Features
 ✔ Axis-aware layout primitives (`inline` / `block`)  
 ✔ Directional placement support (`start` / `end`)  
 ✔ ARIA-compliant orientation attributes  
-✔ CSS selectors and rule helpers for conditional styling  
+✔ CSS selectors and conditional rule helpers for orientation-aware styling  
 ✔ Reusable across layout, placement, and alignment systems
 
 ## 📦 Installation
@@ -23,7 +23,7 @@ yarn add @reusable-ui/orientation-variant
 
 ### `useAxisOrientationVariant(props, options)`
 
-Resolves axis orientation, corresponding class name, and accessibility attribute of a component based on its props and system defaults.
+Resolves the axis orientation value along with its associated CSS class name and accessibility metadata, based on component props and optional system defaults.
 
 #### 💡 Usage Example
 
@@ -40,7 +40,7 @@ export interface OrientationBoxProps extends AxisOrientationVariantProps {}
 /**
  * Layout-aware box that adapts its flow direction.
  */
-export const OrientationBox : FC<OrientationBoxProps> = (props) => {
+export const OrientationBox: FC<OrientationBoxProps> = (props) => {
     const {
         orientation,
         orientationClassname,
@@ -73,7 +73,7 @@ export const OrientationBox : FC<OrientationBoxProps> = (props) => {
 
 ### `useDirectionalOrientationVariant(props, options)`
 
-Resolves directional orientation, corresponding class name, and accessibility attribute of a component based on its props and system defaults.
+Resolves the directional orientation value along with its associated CSS class name and accessibility metadata, based on component props and optional system defaults.
 
 #### 💡 Usage Example
 
@@ -127,12 +127,12 @@ export const PlacementArrow: FC<PlacementArrowProps> = (props) => {
 ```ts
 import {
     // Axis Selectors:
-    orientationInlineSelector, // ':is(.o-inline, .o-inline-start, .o-inline-end)'
-    orientationBlockSelector,  // ':is(.o-block, .o-block-start, .o-block-end)'
+    orientationInlineSelector, // Targets `:is(.o-inline, .o-inline-start, .o-inline-end)` classes
+    orientationBlockSelector,  // Targets `:is(.o-block, .o-block-start, .o-block-end)` classes
     
     // Directional Selectors:
-    orientationStartSelector,  // ':is(.o-inline-start, .o-block-start)'
-    orientationEndSelector,    // ':is(.o-inline-end, .o-block-end)'
+    orientationStartSelector,  // Targets `:is(.o-inline-start, .o-block-start)` classes
+    orientationEndSelector,    // Targets `:is(.o-inline-end, .o-block-end)` classes
     
     // Conditional Rule Helpers:
     ifOrientationInline,       // Applies styles for inline axis

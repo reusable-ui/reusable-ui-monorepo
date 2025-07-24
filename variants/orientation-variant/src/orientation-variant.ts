@@ -85,10 +85,10 @@ export interface ResolvedAxisOrientationVariant {
 
 /**
  * Resolves the axis orientation value along with its associated CSS class name and accessibility metadata,
- * based on component props and optional system fallback.
+ * based on component props and optional system defaults.
  * 
  * @param {AxisOrientationVariantProps} props - The component props that may include an `orientation` value.
- * @param {AxisOrientationVariantOptions} options - An optional configuration specifying a fallback orientation when `props.orientation` is not provided.
+ * @param {AxisOrientationVariantOptions} options - An optional configuration specifying a default orientation when `props.orientation` is not provided.
  * @returns {ResolvedAxisOrientationVariant} - The resolved orientation value along with its associated CSS class name and accessibility metadata.
  * 
  * @example
@@ -103,7 +103,7 @@ export interface ResolvedAxisOrientationVariant {
  * export interface OrientationBoxProps extends AxisOrientationVariantProps {}
  * 
  * // Layout-aware box that adapts its flow direction:
- * export const OrientationBox : FC<OrientationBoxProps> = (props) => {
+ * export const OrientationBox: FC<OrientationBoxProps> = (props) => {
  *     const {
  *         orientation,
  *         orientationClassname,
@@ -230,10 +230,10 @@ export interface ResolvedDirectionalOrientationVariant {
 
 /**
  * Resolves the directional orientation value along with its associated CSS class name and accessibility metadata,
- * based on component props and optional system fallback.
+ * based on component props and optional system defaults.
  * 
  * @param {DirectionalOrientationVariantProps} props - The component props that may include an `orientation` value.
- * @param {DirectionalOrientationVariantOptions} options - An optional configuration specifying a fallback orientation when `props.orientation` is not provided.
+ * @param {DirectionalOrientationVariantOptions} options - An optional configuration specifying a default orientation when `props.orientation` is not provided.
  * @returns {ResolvedDirectionalOrientationVariant} - The resolved orientation value along with its associated CSS class name and accessibility metadata.
  * 
  * @example
