@@ -35,6 +35,7 @@
 
 // Reusable-ui variants: (refactored):
 @reusable-ui/orientation-variant
+@reusable-ui/size-variant
 
 // Reusable-ui variants: (planned):
 |-------------------------------|-------------------|----------------------------------------------------|---------------------------------------------------------------|
