@@ -29,7 +29,7 @@ export interface AxisOrientationVariantProps {
      * - `'inline'`: horizontal direction (e.g. left to right)
      * - `'block'` : vertical direction (e.g. top to bottom)
      */
-    orientation        ?: AxisOrientation
+    orientation         ?: AxisOrientation
 }
 
 /**
@@ -41,13 +41,20 @@ export interface AxisOrientationVariantOptions {
     /**
      * The default orientation to apply when the `orientation` property is not provided.
      */
-    defaultOrientation ?: AxisOrientation
+    defaultOrientation  ?: AxisOrientation
 }
 
 /**
  * Represents the final resolved axis orientation, an associated class name, and accessibility metadata.
  */
 export interface ResolvedAxisOrientationVariant {
+    /**
+     * The resolved axis orientation for the component.
+     * - `'inline'`: horizontal direction (e.g. left to right)
+     * - `'block'` : vertical direction (e.g. top to bottom)
+     */
+    orientation          : AxisOrientation
+    
     /**
      * CSS class name that reflects the primary axis orientation.
      * e.g. `'o-inline'` or `'o-block'`
@@ -93,6 +100,7 @@ export interface ResolvedAxisOrientationVariant {
  * // Layout-aware box that adapts its flow direction:
  * export const OrientationBox : FC<OrientationBoxProps> = (props) => {
  *     const {
+ *         orientation,
  *         orientationClassname,
  *         isOrientationInline,
  *         isOrientationBlock,
@@ -136,6 +144,7 @@ export const useAxisOrientationVariant = (props: AxisOrientationVariantProps, op
     
     // Return resolved orientation attributes:
     return {
+        orientation,
         orientationClassname : axisOrientationClassnameMap[orientation],
         isOrientationInline,
         isOrientationBlock   : !isOrientationInline,
@@ -158,7 +167,7 @@ export interface DirectionalOrientationVariantProps {
      * - `'block-start'` : vertical direction, start of block axis (e.g. top in horizontal writing modes)
      * - `'block-end'`   : vertical direction, end of block axis (e.g. bottom in horizontal writing modes)
      */
-    orientation        ?: DirectionalOrientation
+    orientation         ?: DirectionalOrientation
 }
 
 /**
@@ -170,13 +179,22 @@ export interface DirectionalOrientationVariantOptions {
     /**
      * The default orientation to apply when the `orientation` property is not provided.
      */
-    defaultOrientation ?: DirectionalOrientation
+    defaultOrientation  ?: DirectionalOrientation
 }
 
 /**
  * Represents the final resolved directional orientation, an associated class name, and accessibility metadata.
  */
 export interface ResolvedDirectionalOrientationVariant {
+    /**
+     * The resolved directional orientation for the component.
+     * - `'inline-start'`: horizontal direction, start of inline axis (e.g. left in LTR, right in RTL)
+     * - `'inline-end'`  : horizontal direction, end of inline axis (e.g. right in LTR, left in RTL)
+     * - `'block-start'` : vertical direction, start of block axis (e.g. top in horizontal writing modes)
+     * - `'block-end'`   : vertical direction, end of block axis (e.g. bottom in horizontal writing modes)
+     */
+    orientation          : DirectionalOrientation
+    
     /**
      * CSS class name that reflects the directional orientation.
      * e.g. `'o-inline-end'`, `'o-block-start'`
@@ -224,6 +242,7 @@ export interface ResolvedDirectionalOrientationVariant {
  * // Flow-aware placement arrow component:
  * export const PlacementArrow: FC<PlacementArrowProps> = (props) => {
  *     const {
+ *         orientation,
  *         orientationClassname,
  *         isOrientationInline,
  *         isOrientationBlock,
@@ -264,6 +283,7 @@ export const useDirectionalOrientationVariant = (props: DirectionalOrientationVa
     
     // Return resolved orientation attributes:
     return {
+        orientation,
         orientationClassname : directionalOrientationClassnameMap[orientation],
         isOrientationInline,
         isOrientationBlock   : !isOrientationInline,

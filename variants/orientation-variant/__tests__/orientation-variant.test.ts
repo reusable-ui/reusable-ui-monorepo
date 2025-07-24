@@ -1,10 +1,12 @@
 import {
     type AxisOrientationVariantProps,
     type AxisOrientationVariantOptions,
+    type ResolvedAxisOrientationVariant,
     useAxisOrientationVariant,
     
     type DirectionalOrientationVariantProps,
     type DirectionalOrientationVariantOptions,
+    type ResolvedDirectionalOrientationVariant,
     useDirectionalOrientationVariant,
 } from '../dist/index.js'
 import {
@@ -20,11 +22,12 @@ describe('useAxisOrientationVariant()', () => {
         const result = useAxisOrientationVariant(props);
         
         expect(result).toEqual({
+            orientation: 'inline',
             orientationClassname: 'o-inline',
             isOrientationInline: true,
             isOrientationBlock: false,
             ariaOrientation: 'horizontal',
-        });
+        } satisfies ResolvedAxisOrientationVariant);
     });
     
     test('resolves block orientation from props', () => {
@@ -32,11 +35,12 @@ describe('useAxisOrientationVariant()', () => {
         const result = useAxisOrientationVariant(props);
         
         expect(result).toEqual({
+            orientation: 'block',
             orientationClassname: 'o-block',
             isOrientationInline: false,
             isOrientationBlock: true,
             ariaOrientation: 'vertical',
-        });
+        } satisfies ResolvedAxisOrientationVariant);
     });
     
     test('uses default orientation when prop is missing', () => {
@@ -45,14 +49,18 @@ describe('useAxisOrientationVariant()', () => {
         
         const result = useAxisOrientationVariant(props, options);
         
-        expect(result.orientationClassname).toBe('o-inline');
-        expect(result.isOrientationInline).toBe(true);
-        expect(result.isOrientationBlock).toBe(false);
-        expect(result.ariaOrientation).toBe('horizontal');
+        expect(result).toEqual({
+            orientation: 'inline',
+            orientationClassname: 'o-inline',
+            isOrientationInline: true,
+            isOrientationBlock: false,
+            ariaOrientation: 'horizontal',
+        } satisfies ResolvedAxisOrientationVariant);
     });
     
     test('falls back to system default when prop and option are missing', () => {
         const result = useAxisOrientationVariant({});
+        expect(result.orientation).toBe(defaultAxisOrientation);
         expect(result.orientationClassname).toBe(`o-${defaultAxisOrientation}`);
     });
 });
@@ -65,11 +73,12 @@ describe('useDirectionalOrientationVariant()', () => {
         const result = useDirectionalOrientationVariant(props);
         
         expect(result).toEqual({
+            orientation: 'inline-start',
             orientationClassname: 'o-inline-start',
             isOrientationInline: true,
             isOrientationBlock: false,
             ariaOrientation: 'horizontal',
-        });
+        } satisfies ResolvedDirectionalOrientationVariant);
     });
     
     test('resolves block orientation from props', () => {
@@ -77,11 +86,12 @@ describe('useDirectionalOrientationVariant()', () => {
         const result = useDirectionalOrientationVariant(props);
         
         expect(result).toEqual({
+            orientation: 'block-end',
             orientationClassname: 'o-block-end',
             isOrientationInline: false,
             isOrientationBlock: true,
             ariaOrientation: 'vertical',
-        });
+        } satisfies ResolvedDirectionalOrientationVariant);
     });
     
     test('uses default orientation when prop is missing', () => {
@@ -90,14 +100,18 @@ describe('useDirectionalOrientationVariant()', () => {
         
         const result = useDirectionalOrientationVariant(props, options);
         
-        expect(result.orientationClassname).toBe('o-inline-end');
-        expect(result.isOrientationInline).toBe(true);
-        expect(result.isOrientationBlock).toBe(false);
-        expect(result.ariaOrientation).toBe('horizontal');
+        expect(result).toEqual({
+            orientation: 'inline-end',
+            orientationClassname: 'o-inline-end',
+            isOrientationInline: true,
+            isOrientationBlock: false,
+            ariaOrientation: 'horizontal',
+        } satisfies ResolvedDirectionalOrientationVariant);
     });
     
     test('falls back to system default when prop and option are missing', () => {
         const result = useDirectionalOrientationVariant({});
+        expect(result.orientation).toBe(defaultDirectionalOrientation);
         expect(result.orientationClassname).toBe(`o-${defaultDirectionalOrientation}`);
     });
 });

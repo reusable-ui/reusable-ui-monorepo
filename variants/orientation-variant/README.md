@@ -42,6 +42,7 @@ export interface OrientationBoxProps extends AxisOrientationVariantProps {}
  */
 export const OrientationBox : FC<OrientationBoxProps> = (props) => {
     const {
+        orientation,
         orientationClassname,
         isOrientationInline,
         isOrientationBlock,
@@ -93,6 +94,7 @@ export interface PlacementArrowProps extends DirectionalOrientationVariantProps 
  */
 export const PlacementArrow: FC<PlacementArrowProps> = (props) => {
     const {
+        orientation,
         orientationClassname,
         isOrientationInline,
         isOrientationBlock,
