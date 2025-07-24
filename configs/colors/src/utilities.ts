@@ -12,7 +12,7 @@ import {
 // Configs:
 import {
     colorParamVars,
-}                           from './colorParams.js'
+}                           from './color-params.js'
 
 
 
