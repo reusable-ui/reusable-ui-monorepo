@@ -45,11 +45,11 @@
 | OrientationVariantProps     | orientation     | inline, block                    |    Yes    |    inline, block    |       block       | Controls layout direction — typically horizontal vs. vertical |
 | SizeVariantProps            | size            | sm, md, lg, custom               |    Yes    |       inherit       |        md         | Sets component sizing, including custom token or value        |
 | ThemeVariantProps           | theme           | primary, secondary, ..., custom  |    Yes    |       inherit       |      primary      | Applies themed visual identity from palette or context        |
-| GradientVariantProps        | gradient        | boolean -----------              |   Maybe   |       inherit       |       false       | Enables gradient background styling                           |
-| OutlineVariantProps         | outlined        | boolean -----------              |    Yes    |       inherit       |       false       | Enables outlined style (border-only, no fill)                 |
-| MildVariantProps            | mild            | boolean -----------              |    Yes    |       inherit       |       false       | Enables soft-tone background styling                          |
+| GradientVariantProps        | gradient        | boolean                          |   Maybe   |       inherit       |       false       | Enables gradient background styling                           |
+| OutlineVariantProps         | outlined        | boolean                          |    Yes    |       inherit       |       false       | Enables outlined style (border-only, no fill)                 |
+| MildVariantProps            | mild            | boolean                          |    Yes    |       inherit       |       false       | Enables soft-tone background styling                          |
 |                             |                 |                                  |           |                     |                   |                                                               |
-| BareVariantProps            | bare            | boolean -----------              |     No    |                     |                   | Strips padding, background, border — minimal appearance       |
+| BareVariantProps            | bare            | boolean                          |     No    |                     |                   | Strips padding, background, border — minimal appearance       |
 | ColorVariantUtils (utility) | (varies)        | (computed from theme or context) |     -     |                     |                   | Provides contextual text and icon coloring behavior           |
 | BasicVariantProps           | (extends above) | (all above props unified)        |     -     |                     |                   | Provides bundled variant props for common component usage     |
 |-----------------------------|-----------------|----------------------------------|-----------|---------------------|-------------------|---------------------------------------------------------------|
