@@ -28,26 +28,27 @@ export interface SizeVariantProps<TSize extends string = BasicSize> {
      * - `'sm'`: small size
      * - `'md'`: medium size (default)
      * - `'lg'`: large size
+     * - Or any custom size token defined by the design system
      */
     size          ?: TSize
 }
 
 /**
- * Optional configuration options for assigning the default size.
+ * Optional configuration options for specifying the default size.
  * 
- * Used when a component does not explicitly provide a `size` prop.
+ * Applied when the component does not explicitly provide the `size` prop.
  * 
  * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
  */
 export interface SizeVariantOptions<TSize extends string = BasicSize> {
     /**
-     * The default size to apply when the `size` is not specified.
+     * The default size to apply when no `size` prop is explicitly provided.
      */
     defaultSize   ?: TSize
 }
 
 /**
- * Represents the final resolved size of a component, along with its associated CSS class name.
+ * Represents the final resolved size for the component, along with its associated CSS class name.
  * 
  * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
  */
@@ -55,31 +56,33 @@ export interface ResolvedSizeVariant<TSize extends string = BasicSize> {
     /**
      * The resolved size value.
      * 
-     * Example:
+     * Example values:
      * - `'sm'`: small size
      * - `'md'`: medium size (default)
      * - `'lg'`: large size
+     * - Or any custom size token defined by the design system
      */
     size           : TSize
     
     /**
      * CSS class name corresponding to the resolved size.
      * 
-     * Example:
+     * Example values:
      * - `'s-sm'`
      * - `'s-md'`
+     * - Or any custom size class name in the format `s-${size}`
      */
     sizeClassname  : `s-${TSize}`
 }
 
 /**
  * Resolves the size value along with its associated CSS class name,
- * based on component props and optional system defaults.
+ * based on component props and optional default configuration.
  * 
  * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
  * 
  * @param {SizeVariantProps} props - The component props that may include a `size` value.
- * @param {SizeVariantOptions} options - An optional configuration specifying a default size when `props.size` is not provided.
+ * @param {SizeVariantOptions} options - An optional configuration specifying a default size when no `size` prop is explicitly provided.
  * @returns {ResolvedSizeVariant} - The resolved size value along with its associated CSS class name.
  * 
  * @example

@@ -6,7 +6,7 @@ import {
 
 
 /**
- * Defines the default component size used when no size is explicitly specified.
+ * Defines the default component size applied when no `size` prop is explicitly provided.
  * 
  * - `'md'`: medium — commonly used as the regular or baseline size.
  */

@@ -19,25 +19,25 @@ import {
 
 
 /**
- * Generates a CSS selector that matches target elements with a given `size`.
+ * Generates a CSS selector targeting elements with a given `size`.
  * 
  * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
  * 
  * @param {TSize} size - The size token to match, e.g. `'sm'`, `'md'`, `'lg'`, or custom value.
- * @returns {CssSelectorCollection} - A `CssSelectorCollection` string for use in conditional rules.
+ * @returns {CssSelectorCollection} - A `CssSelectorCollection` string for use in conditional styling rules.
  */
 export const sizeSelector = <TSize extends string = BasicSize>(size: TSize): CssSelectorCollection => `.s-${size}`;
 
 
 
 /**
- * Applies the given `styles` to elements with the specified `size`.
+ * Applies the given `styles` to elements matching the specified `size`.
  * 
  * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
  * 
  * @param {TSize} size - The size token to match, e.g. `'sm'`, `'md'`, `'lg'`, or custom value.
- * @param styles The styles to apply when the `size` matches the size class.
- * @returns A `CssRule` that applies the given `styles` for the specified size.
+ * @param styles The styles applied to elements matching the specified `size`.
+ * @returns A `CssRule` that applies the given `styles` for the specified `size`.
  * 
  * @example
  * ```ts

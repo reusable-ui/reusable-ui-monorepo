@@ -1,14 +1,14 @@
 # @reusable-ui/size-variant 📦  
 
 A utility for managing component sizes consistently across React projects.  
-This package provides hooks and CSS helpers for handling sizes, and conditional styling — ideal for buttons, cards, badges, input fields, and any scalable UI elements.
+Provides hooks and CSS helpers for size resolution and conditional styling — ideal for buttons, cards, badges, input fields, and any scalable UI elements.
 
 ## ✨ Features
-✔ Declarative size tokens (`sm` / `md` / `lg`, with support for custom values)  
-✔ CSS class generation (`s-sm`, `s-md`, `s-lg`, etc.)  
-✔ Fallback mechanism for default sizing  
+✔ Declarative size tokens (`sm`, `md`, `lg`) with support for custom values  
+✔ Automatic CSS class generation (`s-sm`, `s-md`, `s-lg`, etc.)  
+✔ Fallback mechanism for default size resolution  
 ✔ CSS selectors and conditional rule helpers for size-aware styling  
-✔ Reusable across layout, appearance, and spacing systems
+✔ Seamless integration across layout, appearance, and spacing systems
 
 ## 📦 Installation
 Install **@reusable-ui/size-variant** via npm or yarn:
@@ -23,7 +23,7 @@ yarn add @reusable-ui/size-variant
 
 ### `useSizeVariant(props, options)`
 
-Resolves the size value along with its associated CSS class name, based on component props and optional system defaults.
+Resolves the size value along with its associated CSS class name, based on component props and optional default configuration.
 
 #### 💡 Usage Example
 
@@ -103,5 +103,5 @@ Licensed under the **MIT License** – see the [LICENSE](./LICENSE) file for det
 
 ---
 
-🚀 **@reusable-ui/size-variant enables scalable, size-aware styling with ergonomic React hooks.**  
+🚀 **@reusable-ui/size-variant enables scalable-aware styling with ergonomic React hooks.**  
 Give it a ⭐ on GitHub if you find it useful!  
