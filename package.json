@@ -66,6 +66,7 @@
     "utilities/animating-state",
     "variants/orientation-variant",
     "variants/size-variant",
+    "variants/theme-variant",
     "__configs/*",
     "__utilities/*",
     "__features/*",
