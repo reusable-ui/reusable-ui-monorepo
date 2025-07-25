@@ -42,7 +42,8 @@
 |-----------------------------|-----------------|----------------------------------|-----------|----------|---------------------|-------------------|---------------------------------------------------------------|
 |  Interface Name             |  Prop Name      |  Values                          |  Inherit  |  Invert  |  Component Default  |  Context Default  |  Description                                                  |
 |-----------------------------|-----------------|----------------------------------|-----------|----------|---------------------|-------------------|---------------------------------------------------------------|
-| OrientationVariantProps     | orientation     | inline, block                    |    Yes    |   Yes    |    inline, block    |       block       | Controls layout direction — typically horizontal vs. vertical |
+| OrientationVariantProps     | orientation     | inline, block                    |    Yes    |   Yes    |    inline, block    |       block       | Controls horizontal/vertical orientation                      |
+| FlowDirectionVariantProps   | flowDirection   | start, end                       |    Yes    |   Yes    |    start, end       |        end        | Controls the direction on main axis                           |
 | SizeVariantProps            | size            | sm, md, lg, custom               |    Yes    |          |       inherit       |        md         | Sets component sizing, including custom token or value        |
 | ThemeVariantProps           | theme           | primary, secondary, ..., custom  |    Yes    |          |       inherit       |      primary      | Applies themed visual identity from palette or context        |
 | GradientVariantProps        | gradient        | boolean                          |   Maybe   |   Yes    |       inherit       |       false       | Enables gradient background styling                           |
