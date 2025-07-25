@@ -1,14 +1,14 @@
 # @reusable-ui/orientation-variant 📦  
 
 A utility for managing component orientations consistently across React projects.  
-This package provides hooks and CSS helpers for handling orientations, placement flow, and conditional styling — ideal for dropdowns, lists, cards, tooltips, and other flow-aware UI elements.
+Provides hooks and CSS helpers for orientation resolution, placement flow, and conditional styling — ideal for dropdowns, lists, cards, tooltips, and other flow-aware UI elements.
 
 ## ✨ Features
-✔ Axis-aware layout primitives (`inline` / `block`)  
-✔ Directional placement support (`start` / `end`)  
+✔ Axis-aware layout primitives (`inline`, `block`)  
+✔ Directional placement support (`start`, `end`)  
 ✔ ARIA-compliant orientation attributes  
 ✔ CSS selectors and conditional rule helpers for orientation-aware styling  
-✔ Reusable across layout, placement, and alignment systems
+✔ Seamless integration across layout, appearance, and alignment systems
 
 ## 📦 Installation
 Install **@reusable-ui/orientation-variant** via npm or yarn:
@@ -23,7 +23,7 @@ yarn add @reusable-ui/orientation-variant
 
 ### `useAxisOrientationVariant(props, options)`
 
-Resolves the axis orientation value along with its associated CSS class name and accessibility metadata, based on component props and optional system defaults.
+Resolves the axis orientation value along with its associated CSS class name and accessibility metadata, based on component props and optional default configuration.
 
 #### 💡 Usage Example
 
@@ -73,7 +73,7 @@ export const OrientationBox: FC<OrientationBoxProps> = (props) => {
 
 ### `useDirectionalOrientationVariant(props, options)`
 
-Resolves the directional orientation value along with its associated CSS class name and accessibility metadata, based on component props and optional system defaults.
+Resolves the directional orientation value along with its associated CSS class name and accessibility metadata, based on component props and optional default configuration.
 
 #### 💡 Usage Example
 

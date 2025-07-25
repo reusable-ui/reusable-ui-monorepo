@@ -33,25 +33,25 @@ export interface AxisOrientationVariantProps {
 }
 
 /**
- * Optional configuration options for assigning the default axis orientation.
+ * Optional configuration options for specifying the default axis orientation.
  * 
- * Used when a component does not explicitly provide an `orientation` prop.
+ * Applied when the component does not explicitly provide the `orientation` prop.
  */
 export interface AxisOrientationVariantOptions {
     /**
-     * The default orientation to apply when the `orientation` is not specified.
+     * The default orientation to apply when no `orientation` prop is explicitly provided.
      */
     defaultOrientation  ?: AxisOrientation
 }
 
 /**
- * Represents the final resolved axis orientation of a component, along with its associated CSS class name and accessibility metadata.
+ * Represents the final resolved axis orientation for the component, along with its associated CSS class name and accessibility metadata.
  */
 export interface ResolvedAxisOrientationVariant {
     /**
      * The resolved axis orientation value.
      * 
-     * Example:
+     * Example values:
      * - `'inline'`: horizontal direction (e.g. left to right)
      * - `'block'` : vertical direction (e.g. top to bottom)
      */
@@ -60,7 +60,7 @@ export interface ResolvedAxisOrientationVariant {
     /**
      * CSS class name corresponding to the resolved orientation.
      * 
-     * Example:
+     * Example values:
      * - `'o-inline'`
      * - `'o-block'`
      */
@@ -85,10 +85,10 @@ export interface ResolvedAxisOrientationVariant {
 
 /**
  * Resolves the axis orientation value along with its associated CSS class name and accessibility metadata,
- * based on component props and optional system defaults.
+ * based on component props and optional default configuration.
  * 
  * @param {AxisOrientationVariantProps} props - The component props that may include an `orientation` value.
- * @param {AxisOrientationVariantOptions} options - An optional configuration specifying a default orientation when `props.orientation` is not provided.
+ * @param {AxisOrientationVariantOptions} options - An optional configuration specifying a default orientation when no `orientation` prop is explicitly provided.
  * @returns {ResolvedAxisOrientationVariant} - The resolved orientation value along with its associated CSS class name and accessibility metadata.
  * 
  * @example
@@ -176,25 +176,25 @@ export interface DirectionalOrientationVariantProps {
 }
 
 /**
- * Optional configuration options for assigning the default directional orientation.
+ * Optional configuration options for specifying the default directional orientation.
  * 
- * Used when a component does not explicitly provide an `orientation` prop.
+ * Applied when the component does not explicitly provide the `orientation` prop.
  */
 export interface DirectionalOrientationVariantOptions {
     /**
-     * The default orientation to apply when the `orientation` is not specified.
+     * The default orientation to apply when no `orientation` prop is explicitly provided.
      */
     defaultOrientation  ?: DirectionalOrientation
 }
 
 /**
- * Represents the final resolved directional orientation of a component, along with its associated CSS class name and accessibility metadata.
+ * Represents the final resolved directional orientation for the component, along with its associated CSS class name and accessibility metadata.
  */
 export interface ResolvedDirectionalOrientationVariant {
     /**
      * The resolved directional orientation value.
      * 
-     * Example:
+     * Example values:
      * - `'inline-start'`: horizontal direction, start of inline axis (e.g. left in LTR, right in RTL)
      * - `'inline-end'`  : horizontal direction, end of inline axis (e.g. right in LTR, left in RTL)
      * - `'block-start'` : vertical direction, start of block axis (e.g. top in horizontal writing modes)
@@ -205,7 +205,7 @@ export interface ResolvedDirectionalOrientationVariant {
     /**
      * CSS class name corresponding to the resolved orientation.
      * 
-     * Example:
+     * Example values:
      * - `'o-inline-end'`
      * - `'o-block-start'`
      */
@@ -230,10 +230,10 @@ export interface ResolvedDirectionalOrientationVariant {
 
 /**
  * Resolves the directional orientation value along with its associated CSS class name and accessibility metadata,
- * based on component props and optional system defaults.
+ * based on component props and optional default configuration.
  * 
  * @param {DirectionalOrientationVariantProps} props - The component props that may include an `orientation` value.
- * @param {DirectionalOrientationVariantOptions} options - An optional configuration specifying a default orientation when `props.orientation` is not provided.
+ * @param {DirectionalOrientationVariantOptions} options - An optional configuration specifying a default orientation when no `orientation` prop is explicitly provided.
  * @returns {ResolvedDirectionalOrientationVariant} - The resolved orientation value along with its associated CSS class name and accessibility metadata.
  * 
  * @example

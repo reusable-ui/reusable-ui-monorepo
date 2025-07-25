@@ -7,14 +7,14 @@ import {
 
 
 /**
- * Defines the default axis orientation used when no orientation is explicitly specified.
+ * Defines the default axis orientation applied when no `orientation` prop is explicitly provided.
  * 
  * - `'block'`: vertical axis — suitable for stacking elements top-to-bottom.
  */
 export const defaultAxisOrientation        : AxisOrientation        = 'block';
 
 /**
- * Defines the default directional orientation used when no orientation is explicitly specified.
+ * Defines the default directional orientation applied when no `orientation` prop is explicitly provided.
  * 
  * - `'block-end'`: aligns elements toward the bottom edge of the vertical axis — 
  *   typically used for dropdowns or anchored overlays.
