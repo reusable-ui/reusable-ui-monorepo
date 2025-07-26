@@ -1,22 +1,14 @@
 // Types:
 import {
-    type AxisOrientation,
-    type DirectionalOrientation,
+    type Orientation,
 }                           from './types.js'
 
 
 
 /**
- * Defines the default axis orientation applied when no `orientation` prop is explicitly provided.
+ * Defines the default orientation applied when no `orientation` prop is explicitly provided.
  * 
- * - `'block'`: vertical axis — suitable for stacking elements top-to-bottom.
+ * - `'block'`: vertical orientation, aligns along the block axis — commonly used for stacking elements top-to-bottom.
+ *   Ideal for vertical layouts such as form fields, lists, or column-based arrangements.
  */
-export const defaultAxisOrientation        : AxisOrientation        = 'block';
-
-/**
- * Defines the default directional orientation applied when no `orientation` prop is explicitly provided.
- * 
- * - `'block-end'`: aligns elements toward the bottom edge of the vertical axis — 
- *   typically used for dropdowns or anchored overlays.
- */
-export const defaultDirectionalOrientation : DirectionalOrientation = 'block-end';
+export const defaultOrientation : Orientation = 'block';
