@@ -41,7 +41,7 @@ import {
  * Props for `<ValidationProvider>`.
  * 
  * Accepts optional `enableValidation` and `isValid` states,
- * along with child components to propagate context to.
+ * along with children to receive the propagated validation state.
  */
 export interface ValidationProviderProps
     extends
