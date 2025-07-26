@@ -79,6 +79,7 @@ const ValidationProvider = (props: ValidationProviderProps): ReactElement | null
     const {
         enableValidation = DEFAULT_ENABLE_VALIDATION,
         isValid          = null,
+        children,
     } = props;
     
     
@@ -98,9 +99,9 @@ const ValidationProvider = (props: ValidationProviderProps): ReactElement | null
     
     // React elements:
     return (
-        <ValidationContext.Provider value={validationContextValue}>
-            {props.children}
-        </ValidationContext.Provider>
+        <ValidationContext value={validationContextValue}>
+            {children}
+        </ValidationContext>
     );
 };
 
