@@ -16,7 +16,7 @@ import {
 
 
 /**
- * Props for controlling the size of the component.
+ * Props for specifying the size of the component.
  * 
  * Accepts an optional `size`, falling back to a default when not provided.
  * 

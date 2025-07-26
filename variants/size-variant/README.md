@@ -92,7 +92,7 @@ export const componentStyle = () => style({
 ---
 
 ## 📖 Part of the Reusable-UI Framework  
-**@reusable-ui/size-variant** is a styling utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
+**@reusable-ui/size-variant** is a variant utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
 
 ## 🤝 Contributing  
