@@ -149,13 +149,14 @@ export const componentStyle = () => style({
     }),
     ...ifOrientationBlock({
         flexDirection: 'column',
-        
-        ...rule(orientationStartSelector, {
-            textAlign: 'start',
-        }),
-        ...rule(orientationEndSelector, {
-            textAlign: 'end',
-        }),
+    }),
+    
+    // Alternative approach using explicit selectors:
+    ...rule(orientationInlineSelector, { // equivalent to `ifOrientationInline`
+        textAlign: 'start',
+    }),
+    ...rule(orientationBlockSelector, { // equivalent to `ifOrientationBlock`
+        textAlign: 'center',
     }),
 });
 ```
@@ -163,7 +164,7 @@ export const componentStyle = () => style({
 ---
 
 ## 📖 Part of the Reusable-UI Framework  
-**@reusable-ui/orientation-variant** is a styling utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
+**@reusable-ui/orientation-variant** is a variant utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
 
 ## 🤝 Contributing  

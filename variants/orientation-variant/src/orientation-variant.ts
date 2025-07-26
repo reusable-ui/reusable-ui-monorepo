@@ -19,17 +19,17 @@ import {
 
 
 /**
- * Props for controlling the primary axis orientation of the component.
+ * Props for specifying the primary axis orientation of the component.
  * 
  * Accepts an optional `orientation`, falling back to a default when not provided.
  */
 export interface AxisOrientationVariantProps {
     /**
-     * Specifies the desired orientation of primary axis of the component:
+     * Specifies the desired orientation of the component:
      * - `'inline'`: horizontal direction (e.g. left to right)
      * - `'block'` : vertical direction (e.g. top to bottom)
      */
-    orientation         ?: AxisOrientation
+    orientation          ?: AxisOrientation
 }
 
 /**
@@ -39,9 +39,9 @@ export interface AxisOrientationVariantProps {
  */
 export interface AxisOrientationVariantOptions {
     /**
-     * The default orientation to apply when no `orientation` prop is explicitly provided.
+     * The default axis orientation to apply when no `orientation` prop is explicitly provided.
      */
-    defaultOrientation  ?: AxisOrientation
+    defaultOrientation   ?: AxisOrientation
 }
 
 /**
@@ -55,32 +55,32 @@ export interface ResolvedAxisOrientationVariant {
      * - `'inline'`: horizontal direction (e.g. left to right)
      * - `'block'` : vertical direction (e.g. top to bottom)
      */
-    orientation          : AxisOrientation
+    orientation           : AxisOrientation
     
     /**
-     * CSS class name corresponding to the resolved orientation.
+     * CSS class name corresponding to the resolved axis orientation.
      * 
      * Example values:
      * - `'o-inline'`
      * - `'o-block'`
      */
-    orientationClassname : `o-${AxisOrientation}`
+    orientationClassname  : `o-${AxisOrientation}`
     
     /**
      * `true` if the orientation is horizontal (inline).
      */
-    isOrientationInline  : boolean
+    isOrientationInline   : boolean
     
     /**
      * `true` if the orientation is vertical (block).
      */
-    isOrientationBlock   : boolean
+    isOrientationBlock    : boolean
     
     /**
      * ARIA-compatible orientation attribute:
      * `'horizontal'` for inline, `'vertical'` for block.
      */
-    ariaOrientation      : 'horizontal' | 'vertical'
+    ariaOrientation       : 'horizontal' | 'vertical'
 }
 
 /**
@@ -88,8 +88,8 @@ export interface ResolvedAxisOrientationVariant {
  * based on component props and optional default configuration.
  * 
  * @param {AxisOrientationVariantProps} props - The component props that may include an `orientation` value.
- * @param {AxisOrientationVariantOptions} options - An optional configuration specifying a default orientation when no `orientation` prop is explicitly provided.
- * @returns {ResolvedAxisOrientationVariant} - The resolved orientation value along with its associated CSS class name and accessibility metadata.
+ * @param {AxisOrientationVariantOptions} options - An optional configuration specifying a default axis orientation when no `orientation` prop is explicitly provided.
+ * @returns {ResolvedAxisOrientationVariant} - The resolved axis orientation value along with its associated CSS class name and accessibility metadata.
  * 
  * @example
  * ```ts
@@ -147,7 +147,7 @@ export const useAxisOrientationVariant = (props: AxisOrientationVariantProps, op
     
     
     
-    // Return resolved orientation attributes:
+    // Return resolved axis orientation attributes:
     return {
         orientation,
         orientationClassname : axisOrientationClassnameMap[orientation],
@@ -160,19 +160,19 @@ export const useAxisOrientationVariant = (props: AxisOrientationVariantProps, op
 
 
 /**
- * Props for controlling the directional orientation of the component.
+ * Props for specifying the directional orientation of the component.
  * 
  * Accepts an optional `orientation`, falling back to a default when not provided.
  */
 export interface DirectionalOrientationVariantProps {
     /**
-     * Specifies the desired orientation of direction of the component:
+     * Specifies the desired orientation of the component:
      * - `'inline-start'`: horizontal direction, start of inline axis (e.g. left in LTR, right in RTL)
      * - `'inline-end'`  : horizontal direction, end of inline axis (e.g. right in LTR, left in RTL)
      * - `'block-start'` : vertical direction, start of block axis (e.g. top in horizontal writing modes)
      * - `'block-end'`   : vertical direction, end of block axis (e.g. bottom in horizontal writing modes)
      */
-    orientation         ?: DirectionalOrientation
+    orientation          ?: DirectionalOrientation
 }
 
 /**
@@ -182,9 +182,9 @@ export interface DirectionalOrientationVariantProps {
  */
 export interface DirectionalOrientationVariantOptions {
     /**
-     * The default orientation to apply when no `orientation` prop is explicitly provided.
+     * The default directional orientation to apply when no `orientation` prop is explicitly provided.
      */
-    defaultOrientation  ?: DirectionalOrientation
+    defaultOrientation   ?: DirectionalOrientation
 }
 
 /**
@@ -200,32 +200,32 @@ export interface ResolvedDirectionalOrientationVariant {
      * - `'block-start'` : vertical direction, start of block axis (e.g. top in horizontal writing modes)
      * - `'block-end'`   : vertical direction, end of block axis (e.g. bottom in horizontal writing modes)
      */
-    orientation          : DirectionalOrientation
+    orientation           : DirectionalOrientation
     
     /**
-     * CSS class name corresponding to the resolved orientation.
+     * CSS class name corresponding to the resolved directional orientation.
      * 
      * Example values:
      * - `'o-inline-end'`
      * - `'o-block-start'`
      */
-    orientationClassname : `o-${DirectionalOrientation}`
+    orientationClassname  : `o-${DirectionalOrientation}`
     
     /**
      * `true` if the orientation is horizontal (inline).
      */
-    isOrientationInline  : boolean
+    isOrientationInline   : boolean
     
     /**
      * `true` if the orientation is vertical (block).
      */
-    isOrientationBlock   : boolean
+    isOrientationBlock    : boolean
     
     /**
      * ARIA-compatible orientation attribute:
      * `'horizontal'` for inline, `'vertical'` for block.
      */
-    ariaOrientation      : 'horizontal' | 'vertical'
+    ariaOrientation       : 'horizontal' | 'vertical'
 }
 
 /**
@@ -233,8 +233,8 @@ export interface ResolvedDirectionalOrientationVariant {
  * based on component props and optional default configuration.
  * 
  * @param {DirectionalOrientationVariantProps} props - The component props that may include an `orientation` value.
- * @param {DirectionalOrientationVariantOptions} options - An optional configuration specifying a default orientation when no `orientation` prop is explicitly provided.
- * @returns {ResolvedDirectionalOrientationVariant} - The resolved orientation value along with its associated CSS class name and accessibility metadata.
+ * @param {DirectionalOrientationVariantOptions} options - An optional configuration specifying a default directional orientation when no `orientation` prop is explicitly provided.
+ * @returns {ResolvedDirectionalOrientationVariant} - The resolved directional orientation value along with its associated CSS class name and accessibility metadata.
  * 
  * @example
  * ```ts
@@ -291,7 +291,7 @@ export const useDirectionalOrientationVariant = (props: DirectionalOrientationVa
     
     
     
-    // Return resolved orientation attributes:
+    // Return resolved directional orientation attributes:
     return {
         orientation,
         orientationClassname : directionalOrientationClassnameMap[orientation],

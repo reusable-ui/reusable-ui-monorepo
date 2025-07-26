@@ -26,12 +26,12 @@ export const orientationInlineSelector : CssSelectorCollection = ':is(.o-inline,
 export const orientationBlockSelector  : CssSelectorCollection = ':is(.o-block, .o-block-start, .o-block-end)';
 
 /**
- * A CSS selector targeting elements which aligned toward the start edge of either the horizontal or vertical axis.
+ * A CSS selector targeting elements aligned toward the start edge of either the horizontal or vertical axis.
  */
 export const orientationStartSelector  : CssSelectorCollection = ':is(.o-inline-start, .o-block-start)';
 
 /**
- * A CSS selector targeting elements which aligned toward the end edge of either the horizontal or vertical axis.
+ * A CSS selector targeting elements aligned toward the end edge of either the horizontal or vertical axis.
  */
 export const orientationEndSelector    : CssSelectorCollection = ':is(.o-inline-end, .o-block-end)';
 
