@@ -16,7 +16,7 @@ import {
 
 
 /**
- * Props for controlling the theme of the component.
+ * Props for specifying the theme of the component.
  * 
  * Accepts an optional `theme`, falling back to a default when not provided.
  * 
