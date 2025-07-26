@@ -72,6 +72,7 @@ const AccessibilityProvider = (props: AccessibilityProviderProps): ReactElement 
         enabled  = DEFAULT_ENABLED,
         readOnly = DEFAULT_READ_ONLY,
         active   = DEFAULT_ACTIVE,
+        children,
     } = props;
     
     
@@ -91,9 +92,9 @@ const AccessibilityProvider = (props: AccessibilityProviderProps): ReactElement 
     
     // React elements:
     return (
-        <AccessibilityContext.Provider value={accessibilityContextValue}>
-            {props.children}
-        </AccessibilityContext.Provider>
+        <AccessibilityContext value={accessibilityContextValue}>
+            {children}
+        </AccessibilityContext>
     );
 };
 
