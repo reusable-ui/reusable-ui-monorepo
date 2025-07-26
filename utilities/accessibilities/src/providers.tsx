@@ -43,7 +43,7 @@ import {
  * Props for `<AccessibilityProvider>`.
  * 
  * Accepts optional `enabled`, `readOnly`, and `active` states,
- * along with child components to propagate context to.
+ * along with children to receive the propagated accessibility state.
  */
 export interface AccessibilityProviderProps
     extends
