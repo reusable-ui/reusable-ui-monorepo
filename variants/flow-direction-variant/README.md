@@ -22,7 +22,7 @@ yarn add @reusable-ui/flow-direction-variant
 
 ### `useFlowDirectionVariant(props, options)`
 
-Resolves the flow direction value along with its associated CSS class name, based on component props and optional default configuration.
+Resolves the flow direction value along with its associated CSS class name, based on component props, optional default configuration, and parent context.
 
 #### 💡 Usage Example
 
@@ -60,6 +60,41 @@ export const PlacementArrow: FC<PlacementArrowProps> = (props) => {
             </div>
         </div>
     );
+};
+```
+
+#### 🧠 Flow Direction Resolution Strategy
+
+The hook evaluates the effective flow direction using a tiered approach:
+1. **Explicit Prop Override**  
+   - If `props.flowDirection` is set to `'start'` or `'end'`, it takes precedence.
+2. **Relative Resolution**  
+   - If set to `'inherit'`, it adopts flow direction from a parent context (`FlowDirectionVariantProvider`).
+   - If set to `'invert'`, it flips the parent flow direction (`'start' ↔︎ 'end'`).
+3. **Fallback Options**  
+   - Uses `options.defaultFlowDirection` if provided.
+   - Falls back to system default if all else fails.
+
+#### 🧬 Example with `inherit` and `invert`
+
+```tsx
+import {
+    FlowDirectionVariantProvider,
+    useFlowDirectionVariant,
+} from '@reusable-ui/flow-direction-variant';
+
+const ParentComponent = () => (
+    <FlowDirectionVariantProvider flowDirection='start'>
+        <ChildComponent />
+    </FlowDirectionVariantProvider>
+);
+
+const ChildComponent = () => {
+    const { flowDirection, flowDirectionClassname } = useFlowDirectionVariant({
+        flowDirection: 'inherit', // or 'invert'
+    });
+    
+    return <div className={flowDirectionClassname}>I'm {flowDirection}</div>;
 };
 ```
 

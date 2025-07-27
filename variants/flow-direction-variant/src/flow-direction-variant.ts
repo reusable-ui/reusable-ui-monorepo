@@ -1,11 +1,22 @@
+'use client' // The exported `useFlowDirectionVariant()` hook is client side only.
+
+// React:
+import {
+    // Hooks:
+    use,
+}                           from 'react'
+
 // Types:
 import {
     type FlowDirection,
+    type FlowDirectionVariantProps,
+    type FlowDirectionVariantOptions,
+    type ResolvedFlowDirectionVariant,
 }                           from './types.js'
 
 // Defaults:
 import {
-    defaultFlowDirection,
+    systemDefaultFlowDirection,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -13,60 +24,43 @@ import {
     flowDirectionClassnameMap,
 }                           from './internal-utilities.js'
 
+// Contexts:
+import {
+    FlowDirectionVariantContext,
+}                           from './contexts.js'
+
 
 
 /**
- * Props for specifying the flow direction of the component.
+ * Resolves the effective flow direction value based on props and context.
  * 
- * Accepts an optional `flowDirection`, falling back to a default when not provided.
- */
-export interface FlowDirectionVariantProps {
-    /**
-     * Specifies the desired flow direction of the component:
-     * - `'start'`: aligns to the logical start edge (e.g. left in LTR, top in top-down modes)
-     * - `'end'`  : aligns to the logical end edge (e.g. right in LTR, bottom in top-down modes)
-     */
-    flowDirection          ?: FlowDirection
-}
-
-/**
- * Optional configuration options for specifying the default flow direction.
+ * - `'inherit'` retrieves the flow direction from context.
+ * - `'invert'` reverses the contextual flow direction (`'start'` ⇄ `'end'`).
+ * - Otherwise, returns the provided flow direction value as-is.
  * 
- * Applied when the component does not explicitly provide the `flowDirection` prop.
+ * @param {Required<FlowDirectionVariantProps>['flowDirection']} flowDirection - The pre-resolved flow direction value derived from props.
+ * @returns {FlowDirection} - The resolved flow direction value.
  */
-export interface FlowDirectionVariantOptions {
-    /**
-     * The default flow direction to apply when no `flowDirection` prop is explicitly provided.
-     */
-    defaultFlowDirection   ?: FlowDirection
-}
-
-/**
- * Represents the final resolved flow direction for the component, along with its associated CSS class name.
- */
-export interface ResolvedFlowDirectionVariant {
-    /**
-     * The resolved flow direction value.
-     * 
-     * Example values:
-     * - `'start'`: aligns to the logical start edge (e.g. left in LTR, top in top-down modes)
-     * - `'end'`  : aligns to the logical end edge (e.g. right in LTR, bottom in top-down modes)
-     */
-    flowDirection           : FlowDirection
-    
-    /**
-     * CSS class name corresponding to the resolved flow direction.
-     * 
-     * Example values:
-     * - `'f-start'`
-     * - `'f-end'`
-     */
-    flowDirectionClassname  : `f-${FlowDirection}`
-}
+const useEffectiveFlowDirectionVariant = (flowDirection: Required<FlowDirectionVariantProps>['flowDirection']): FlowDirection => {
+    switch (flowDirection) {
+        // If the flow direction is 'inherit', use the context value:
+        case 'inherit' : return use(FlowDirectionVariantContext);
+        
+        
+        
+        // If the flow direction is 'invert', return the opposite of the context value:
+        case 'invert'  : return use(FlowDirectionVariantContext) === 'start' ? 'end' : 'start';
+        
+        
+        
+        // Otherwise, return the already resolved effective flow direction:
+        default        : return flowDirection;
+    } // switch
+};
 
 /**
  * Resolves the flow direction value along with its associated CSS class name,
- * based on component props and optional default configuration.
+ * based on component props, optional default configuration, and parent context.
  * 
  * @param {FlowDirectionVariantProps} props - The component props that may include a `flowDirection` value.
  * @param {FlowDirectionVariantOptions} options - An optional configuration specifying a default flow direction when no `flowDirection` prop is explicitly provided.
@@ -111,14 +105,19 @@ export interface ResolvedFlowDirectionVariant {
 export const useFlowDirectionVariant = (props: FlowDirectionVariantProps, options?: FlowDirectionVariantOptions): ResolvedFlowDirectionVariant => {
     // Extract props and assign defaults:
     const {
-        flowDirection = options?.defaultFlowDirection ?? defaultFlowDirection,
+        flowDirection = options?.defaultFlowDirection ?? systemDefaultFlowDirection,
     } = props;
+    
+    
+    
+    // Resolve the effective flow direction value:
+    const effectiveFlowDirection = useEffectiveFlowDirectionVariant(flowDirection);
     
     
     
     // Return resolved flow direction attributes:
     return {
-        flowDirection,
-        flowDirectionClassname : flowDirectionClassnameMap[flowDirection],
+        flowDirection          : effectiveFlowDirection,
+        flowDirectionClassname : flowDirectionClassnameMap[effectiveFlowDirection],
     } satisfies ResolvedFlowDirectionVariant;
 };
