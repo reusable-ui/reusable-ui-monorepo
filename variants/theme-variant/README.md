@@ -23,7 +23,7 @@ yarn add @reusable-ui/theme-variant
 
 ### `useThemeVariant(props, options)`
 
-Resolves the theme value along with its associated CSS class name, based on component props and optional default configuration.
+Resolves the theme value along with its associated CSS class name, based on component props, optional default configuration, and parent context.
 
 #### 💡 Usage Example
 
@@ -56,6 +56,40 @@ export const ThemeableCard : FC<ThemeableCardProps> = (props) => {
             <strong>Resolved theme:</strong> {theme}
         </div>
     );
+};
+```
+
+#### 🧠 Theme Resolution Strategy
+
+The hook evaluates the effective theme using a tiered approach:
+1. **Explicit Prop Override**  
+   - If `props.theme` is set to a value other than `'inherit'`, it takes precedence.
+2. **Relative Resolution**  
+   - If set to `'inherit'`, it adopts theme from a parent context (`ThemeVariantProvider`).
+3. **Fallback Options**  
+   - Uses `options.defaultTheme` if provided.
+   - Falls back to system default if all else fails.
+
+#### 🧬 Example with `inherit`
+
+```tsx
+import {
+    ThemeVariantProvider,
+    useThemeVariant,
+} from '@reusable-ui/theme-variant';
+
+const ParentComponent = () => (
+    <ThemeVariantProvider theme='danger'>
+        <ChildComponent />
+    </ThemeVariantProvider>
+);
+
+const ChildComponent = () => {
+    const { theme, themeClassname } = useThemeVariant({
+        theme: 'inherit',
+    });
+    
+    return <div className={themeClassname}>I'm {theme}</div>;
 };
 ```
 

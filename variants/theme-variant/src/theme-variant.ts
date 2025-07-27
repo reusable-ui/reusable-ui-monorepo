@@ -1,11 +1,22 @@
+'use client' // The exported `useThemeVariant()` hook is client side only.
+
+// React:
+import {
+    // Hooks:
+    use,
+}                           from 'react'
+
 // Types:
 import {
     type BasicTheme,
+    type ThemeVariantProps,
+    type ThemeVariantOptions,
+    type ResolvedThemeVariant,
 }                           from './types.js'
 
 // Defaults:
 import {
-    defaultTheme,
+    systemDefaultTheme,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -13,87 +24,37 @@ import {
     getThemeClassname,
 }                           from './internal-utilities.js'
 
+// Contexts:
+import {
+    ThemeVariantContext,
+}                           from './contexts.js'
 
 
-/**
- * Props for specifying the theme of the component.
- * 
- * Accepts an optional `theme`, falling back to a default when not provided.
- * 
- * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
- */
-export interface ThemeVariantProps<TTheme extends string = BasicTheme> {
-    /**
-     * Specifies the desired theme of the component:
-     * - `'primary'`   — core branding or primary site identity
-     * - `'secondary'` — muted accent or complementary variant
-     * - `'success'`   — positive actions and confirmations
-     * - `'info'`      — neutral messages or informative context
-     * - `'warning'`   — cautionary states and potential issues
-     * - `'danger'`    — destructive actions or error indicators
-     * - `'light'`     — suitable for overlaying dark backgrounds (e.g. over images)
-     * - `'dark'`      — suitable for overlaying light backgrounds
-     * - Or any custom theme token defined by the design system
-     */
-    theme          ?: TTheme
-}
 
 /**
- * Optional configuration options for specifying the default theme.
+ * Resolves the effective theme value based on props and context.
  * 
- * Applied when the component does not explicitly provide the `theme` prop.
- * 
- * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
- */
-export interface ThemeVariantOptions<TTheme extends string = BasicTheme> {
-    /**
-     * The default theme to apply when no `theme` prop is explicitly provided.
-     */
-    defaultTheme   ?: TTheme
-}
-
-/**
- * Represents the final resolved theme for the component, along with its associated CSS class name.
+ * - `'inherit'` retrieves the theme from context.
+ * - Otherwise, returns the provided theme value as-is.
  * 
  * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
+ * 
+ * @param {Required<ThemeVariantProps<TTheme>>['theme']} theme - The pre-resolved theme value derived from props.
+ * @returns {TTheme} - The resolved theme value.
  */
-export interface ResolvedThemeVariant<TTheme extends string = BasicTheme> {
-    /**
-     * The resolved theme value.
-     * 
-     * Example values:
-     * - `'primary'`   — core branding or primary site identity
-     * - `'secondary'` — muted accent or complementary variant
-     * - `'success'`   — positive actions and confirmations
-     * - `'info'`      — neutral messages or informative context
-     * - `'warning'`   — cautionary states and potential issues
-     * - `'danger'`    — destructive actions or error indicators
-     * - `'light'`     — suitable for overlaying dark backgrounds (e.g. over images)
-     * - `'dark'`      — suitable for overlaying light backgrounds
-     * - Or any custom theme token defined by the design system
-     */
-    theme           : TTheme
+const useEffectiveThemeVariant = <TTheme extends string = BasicTheme>(theme: Required<ThemeVariantProps<TTheme>>['theme']): TTheme => {
+    // If the theme is 'inherit', use the context value:
+    if (theme === 'inherit') return use(ThemeVariantContext) as TTheme;
     
-    /**
-     * CSS class name corresponding to the resolved theme.
-     * 
-     * Example values:
-     * - `'t-primary'`
-     * - `'t-secondary'`
-     * - `'t-success'`
-     * - `'t-info'`
-     * - `'t-warning'`
-     * - `'t-danger'`
-     * - `'t-light'`
-     * - `'t-dark'`
-     * - Or any custom theme class name in the format `t-${theme}`
-     */
-    themeClassname  : `t-${TTheme}`
-}
+    
+    
+    // Otherwise, return the already resolved effective theme:
+    return theme;
+};
 
 /**
  * Resolves the theme value along with its associated CSS class name,
- * based on component props and optional default configuration.
+ * based on component props, optional default configuration, and parent context.
  * 
  * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
@@ -135,14 +96,19 @@ export interface ResolvedThemeVariant<TTheme extends string = BasicTheme> {
 export const useThemeVariant = <TTheme extends string = BasicTheme>(props: ThemeVariantProps<TTheme>, options?: ThemeVariantOptions<TTheme>): ResolvedThemeVariant<TTheme> => {
     // Extract props and assign defaults:
     const {
-        theme = options?.defaultTheme ?? (defaultTheme as TTheme),
+        theme = options?.defaultTheme ?? (systemDefaultTheme as TTheme),
     } = props;
+    
+    
+    
+    // Resolve the effective theme value:
+    const effectiveTheme = useEffectiveThemeVariant<TTheme>(theme);
     
     
     
     // Return resolved theme attributes:
     return {
-        theme,
-        themeClassname : getThemeClassname<TTheme>(theme),
+        theme          : effectiveTheme,
+        themeClassname : getThemeClassname<TTheme>(effectiveTheme),
     } satisfies ResolvedThemeVariant<TTheme>;
 };

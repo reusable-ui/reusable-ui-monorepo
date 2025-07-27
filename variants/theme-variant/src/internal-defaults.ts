@@ -6,8 +6,8 @@ import {
 
 
 /**
- * Defines the default component theme applied when no `theme` prop is explicitly provided.
+ * Defines a system default theme applied when no `theme` prop is explicitly provided.
  * 
  * - `'primary'`: Typically used as the baseline or main theme style.
  */
-export const defaultTheme : BasicTheme = 'primary';
+export const systemDefaultTheme : BasicTheme = 'primary';
