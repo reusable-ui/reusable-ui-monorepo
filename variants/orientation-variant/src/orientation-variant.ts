@@ -1,11 +1,22 @@
+'use client' // The exported `useOrientationVariant()` hook is client side only.
+
+// React:
+import {
+    // Hooks:
+    use,
+}                           from 'react'
+
 // Types:
 import {
     type Orientation,
+    type OrientationVariantProps,
+    type OrientationVariantOptions,
+    type ResolvedOrientationVariant,
 }                           from './types.js'
 
 // Defaults:
 import {
-    defaultOrientation,
+    systemDefaultOrientation,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -13,76 +24,43 @@ import {
     orientationClassnameMap,
 }                           from './internal-utilities.js'
 
+// Contexts:
+import {
+    OrientationVariantContext,
+}                           from './contexts.js'
+
 
 
 /**
- * Props for specifying the orientation of the component.
+ * Resolves the effective orientation value based on props and context.
  * 
- * Accepts an optional `orientation`, falling back to a default when not provided.
- */
-export interface OrientationVariantProps {
-    /**
-     * Specifies the desired orientation of the component:
-     * - `'inline'`: horizontal orientation, aligns along the inline axis (e.g., left-to-right or right-to-left)
-     * - `'block'` : vertical orientation, aligns along the block axis (e.g., top-to-bottom)
-     */
-    orientation          ?: Orientation
-}
-
-/**
- * Optional configuration options for specifying the default orientation.
+ * - `'inherit'` retrieves the orientation from context.
+ * - `'invert'` reverses the contextual orientation (`'inline'` ⇄ `'block'`).
+ * - Otherwise, returns the provided orientation value as-is.
  * 
- * Applied when the component does not explicitly provide the `orientation` prop.
+ * @param {Required<OrientationVariantProps>['orientation']} orientation - The pre-resolved orientation value derived from props.
+ * @returns {Orientation} - The resolved orientation value.
  */
-export interface OrientationVariantOptions {
-    /**
-     * The default orientation to apply when no `orientation` prop is explicitly provided.
-     */
-    defaultOrientation   ?: Orientation
-}
-
-/**
- * Represents the final resolved orientation for the component, along with its associated CSS class name and accessibility metadata.
- */
-export interface ResolvedOrientationVariant {
-    /**
-     * The resolved orientation value.
-     * 
-     * Example values:
-     * - `'inline'`: horizontal orientation, aligns along the inline axis (e.g., left-to-right or right-to-left)
-     * - `'block'` : vertical orientation, aligns along the block axis (e.g., top-to-bottom)
-     */
-    orientation           : Orientation
-    
-    /**
-     * CSS class name corresponding to the resolved orientation.
-     * 
-     * Example values:
-     * - `'o-inline'`
-     * - `'o-block'`
-     */
-    orientationClassname  : `o-${Orientation}`
-    
-    /**
-     * Indicates whether the resolved orientation is horizontal (inline).
-     */
-    isOrientationInline   : boolean
-    
-    /**
-     * Indicates whether the resolved orientation is vertical (block).
-     */
-    isOrientationBlock    : boolean
-    
-    /**
-     * ARIA-compatible orientation attribute:
-     * `'horizontal'` for inline, `'vertical'` for block.
-     */
-    ariaOrientation       : 'horizontal' | 'vertical'
-}
+const useEffectiveOrientationVariant = (orientation: Required<OrientationVariantProps>['orientation']): Orientation => {
+    switch (orientation) {
+        // If the orientation is 'inherit', use the context value:
+        case 'inherit' : return use(OrientationVariantContext);
+        
+        
+        
+        // If the orientation is 'invert', return the opposite of the context value:
+        case 'invert'  : return use(OrientationVariantContext) === 'inline' ? 'block' : 'inline';
+        
+        
+        
+        // Otherwise, return the already resolved effective orientation:
+        default        : return orientation;
+    } // switch
+};
 
 /**
  * Resolves the orientation value along with its associated CSS class name and accessibility metadata,
- * based on component props and optional default configuration.
+ * based on component props, optional default configuration, and parent context.
  * 
  * @param {OrientationVariantProps} props - The component props that may include an `orientation` value.
  * @param {OrientationVariantOptions} options - An optional configuration specifying a default orientation when no `orientation` prop is explicitly provided.
@@ -136,20 +114,25 @@ export interface ResolvedOrientationVariant {
 export const useOrientationVariant = (props: OrientationVariantProps, options?: OrientationVariantOptions): ResolvedOrientationVariant => {
     // Extract props and assign defaults:
     const {
-        orientation = options?.defaultOrientation ?? defaultOrientation,
+        orientation = options?.defaultOrientation ?? systemDefaultOrientation,
     } = props;
     
     
     
+    // Resolve the effective orientation value:
+    const effectiveOrientation = useEffectiveOrientationVariant(orientation);
+    
+    
+    
     // Determine orientation flags:
-    const isOrientationInline = (orientation === 'inline');
+    const isOrientationInline = (effectiveOrientation === 'inline');
     
     
     
     // Return resolved orientation attributes:
     return {
-        orientation,
-        orientationClassname : orientationClassnameMap[orientation],
+        orientation          : effectiveOrientation,
+        orientationClassname : orientationClassnameMap[effectiveOrientation],
         isOrientationInline,
         isOrientationBlock   : !isOrientationInline,
         ariaOrientation      : isOrientationInline ? 'horizontal' : 'vertical',

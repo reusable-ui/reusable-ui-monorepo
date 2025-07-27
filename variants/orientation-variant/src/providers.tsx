@@ -1,0 +1,81 @@
+'use client' // The exported `<OrientationVariantProvider>` component is client side only.
+
+// React:
+import {
+    // React:
+    default as React,
+    
+    
+    
+    // Types:
+    type PropsWithChildren,
+    type ReactElement,
+}                           from 'react'
+
+// Types:
+import {
+    type ResolvedOrientationVariant,
+}                           from './types.js'
+
+// Contexts:
+import {
+    OrientationVariantContext,
+}                           from './contexts.js'
+
+
+
+// React components:
+
+/**
+ * Props for `<OrientationVariantProvider>`.
+ * 
+ * Requires an `orientation` prop to set the context value,
+ * along with children to receive the propagated orientation value.
+ */
+export interface OrientationVariantProviderProps
+    extends
+        // Bases:
+        PropsWithChildren<Pick<ResolvedOrientationVariant, 'orientation'>>
+{
+}
+
+/**
+ * Provides an orientation value to descendant components,
+ * enabling inheritance of the value.
+ * 
+ * @example
+ * ```ts
+ * // Resolve orientation from props:
+ * const { orientation } = useOrientationVariant(props, {
+ *     defaultOrientation: 'block',
+ * });
+ * 
+ * // Provide orientation value to descendants:
+ * return (
+ *     <OrientationVariantProvider orientation={orientation}>
+ *         {props.children}
+ *     </OrientationVariantProvider>
+ * );
+ * ```
+ */
+const OrientationVariantProvider = (props: OrientationVariantProviderProps): ReactElement | null => {
+    // Extract props:
+    const {
+        orientation,
+        children,
+    } = props;
+    
+    
+    
+    // React elements:
+    return (
+        <OrientationVariantContext value={orientation}>
+            {children}
+        </OrientationVariantContext>
+    );
+};
+
+export {
+    OrientationVariantProvider,            // Named export for readability.
+    OrientationVariantProvider as default, // Default export to support React.lazy.
+}

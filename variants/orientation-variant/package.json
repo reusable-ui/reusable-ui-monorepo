@@ -53,5 +53,9 @@
   },
   "dependencies": {
     "@cssfn/core": "^4.0.0"
+  },
+  "peerDependencies": {
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0"
   }
 }

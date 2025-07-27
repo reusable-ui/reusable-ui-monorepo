@@ -22,7 +22,7 @@ yarn add @reusable-ui/orientation-variant
 
 ### `useOrientationVariant(props, options)`
 
-Resolves the orientation value along with its associated CSS class name and accessibility metadata, based on component props and optional default configuration.
+Resolves the orientation value along with its associated CSS class name and accessibility metadata, based on component props, optional default configuration, and parent context.
 
 #### 💡 Usage Example
 
@@ -69,6 +69,41 @@ export const OrientationBox: FC<OrientationBoxProps> = (props) => {
             )}
         </div>
     );
+};
+```
+
+#### 🧠 Orientation Resolution Strategy
+
+The hook evaluates the effective orientation using a tiered approach:
+1. **Explicit Prop Override**  
+   - If `props.orientation` is set to `'inline'` or `'block'`, it takes precedence.
+2. **Relative Resolution**  
+   - If set to `'inherit'`, it adopts orientation from a parent context (`OrientationVariantProvider`).
+   - If set to `'invert'`, it flips the parent orientation (`'inline' ↔︎ 'block'`).
+3. **Fallback Options**  
+   - Uses `options.defaultOrientation` if provided.
+   - Falls back to system default if all else fails.
+
+#### 🧬 Example with `inherit` and `invert`
+
+```tsx
+import {
+    OrientationVariantProvider,
+    useOrientationVariant,
+} from '@reusable-ui/orientation-variant';
+
+const ParentComponent = () => (
+    <OrientationVariantProvider orientation='inline'>
+        <ChildComponent />
+    </OrientationVariantProvider>
+);
+
+const ChildComponent = () => {
+    const { orientation, orientationClassname } = useOrientationVariant({
+        orientation: 'inherit', // or 'invert'
+    });
+    
+    return <div className={orientationClassname}>I'm {orientation}</div>;
 };
 ```
 
