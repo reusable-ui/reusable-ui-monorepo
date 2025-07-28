@@ -11,20 +11,12 @@ import {
     type BasicTheme,
 }                           from './types.js'
 
-// Defaults:
-import {
-    systemDefaultTheme,
-}                           from './internal-defaults.js'
-
 
 
 /**
  * A React context for propagating theme value across the component tree.
- * 
- * Provides a system default theme when the component
- * is not nested within an ancestor implementing `<ThemeVariantContext>`.
  */
-export const ThemeVariantContext = createContext<BasicTheme | (string & {})>(/* defaultValue : */systemDefaultTheme);
+export const ThemeVariantContext = createContext<BasicTheme | (string & {}) | undefined>(/* defaultValue : */undefined);
 
 // Sets a readable name for debugging in React DevTools:
 if (process.env.NODE_ENV === 'development') {

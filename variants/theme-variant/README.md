@@ -65,6 +65,7 @@ The hook evaluates the effective theme using a tiered approach:
 1. **Explicit Prop Override**  
    - If `props.theme` is set to a value other than `'inherit'`, it takes precedence.
 2. **Relative Resolution**  
+   - If no parent context found, skip to next step.
    - If set to `'inherit'`, it adopts theme from a parent context (`ThemeVariantProvider`).
 3. **Fallback Options**  
    - Uses `options.defaultTheme` if provided.

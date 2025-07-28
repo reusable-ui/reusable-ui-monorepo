@@ -16,7 +16,7 @@ import {
 
 // Defaults:
 import {
-    systemDefaultTheme,
+    defaultTheme,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -34,22 +34,45 @@ import {
 /**
  * Resolves the effective theme value based on props and context.
  * 
- * - `'inherit'` retrieves the theme from context.
- * - Otherwise, returns the provided theme value as-is.
+ * Resolution order:
+ * - `'inherit'` : retrieves the theme from context, if available.
+ * - `undefined` : falls back to the default theme.
+ * - Otherwise   : returns the provided theme value as-is.
  * 
  * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
- * @param {Required<ThemeVariantProps<TTheme>>['theme']} theme - The pre-resolved theme value derived from props.
+ * @param {ThemeVariantProps['theme']} theme - The pre-resolved theme value derived from props.
+ * @param {TTheme} defaultTheme - Fallback theme when context is unavailable.
  * @returns {TTheme} - The resolved theme value.
  */
-const useEffectiveThemeVariant = <TTheme extends string = BasicTheme>(theme: Required<ThemeVariantProps<TTheme>>['theme']): TTheme => {
-    // If the theme is 'inherit', use the context value:
-    if (theme === 'inherit') return use(ThemeVariantContext) as TTheme;
-    
-    
-    
-    // Otherwise, return the already resolved effective theme:
-    return theme;
+const useEffectiveThemeValue = <TTheme extends string = BasicTheme>(theme: ThemeVariantProps<TTheme>['theme'], defaultTheme: TTheme): TTheme => {
+    switch (theme) {
+        // If the theme is 'inherit', use the context value:
+        case 'inherit' : {
+            // Get the inherited theme from context:
+            const inheritedTheme = use(ThemeVariantContext) as TTheme | undefined;
+            
+            
+            
+            // If the context provides an theme, return it:
+            if (inheritedTheme !== undefined) return inheritedTheme;
+            
+            
+            
+            // Otherwise, fallback to the default theme:
+            return defaultTheme;
+        }
+        
+        
+        
+        // If the theme is undefined, return the default theme:
+        case undefined : return defaultTheme;
+        
+        
+        
+        // The theme is explicitly defined, return it as-is:
+        default        : return theme;
+    } // switch
 };
 
 /**
@@ -96,13 +119,13 @@ const useEffectiveThemeVariant = <TTheme extends string = BasicTheme>(theme: Req
 export const useThemeVariant = <TTheme extends string = BasicTheme>(props: ThemeVariantProps<TTheme>, options?: ThemeVariantOptions<TTheme>): ResolvedThemeVariant<TTheme> => {
     // Extract props and assign defaults:
     const {
-        theme = options?.defaultTheme ?? (systemDefaultTheme as TTheme),
+        theme,
     } = props;
     
     
     
     // Resolve the effective theme value:
-    const effectiveTheme = useEffectiveThemeVariant<TTheme>(theme);
+    const effectiveTheme = useEffectiveThemeValue<TTheme>(theme, options?.defaultTheme ?? (defaultTheme as TTheme));
     
     
     

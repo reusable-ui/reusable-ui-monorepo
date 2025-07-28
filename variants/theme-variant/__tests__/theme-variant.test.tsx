@@ -11,7 +11,7 @@ import {
     type ResolvedThemeVariant,
 } from '../dist/types.js'
 import {
-    systemDefaultTheme,
+    defaultTheme,
 } from '../dist/internal-defaults.js'
 import {
     useThemeVariant,
@@ -188,8 +188,19 @@ describe('useThemeVariant()', () => {
         {
             title              : 'falls back to system default when prop and option are missing',
             expectedResult     : {
-                theme          : systemDefaultTheme,
-                themeClassname : `t-${systemDefaultTheme}`,
+                theme          : defaultTheme,
+                themeClassname : `t-${defaultTheme}`,
+            },
+        },
+        {
+            title              : 'falls back to system default when inheritance is missing',
+            parentTheme        : undefined,
+            props              : {
+                theme          : 'inherit',
+            },
+            expectedResult     : {
+                theme          : defaultTheme,
+                themeClassname : `t-${defaultTheme}`,
             },
         },
         
