@@ -11,7 +11,7 @@ import {
     type ResolvedOrientationVariant,
 } from '../dist/types.js'
 import {
-    systemDefaultOrientation,
+    defaultOrientation,
 } from '../dist/internal-defaults.js'
 import {
     useOrientationVariant,
@@ -162,11 +162,25 @@ describe('useOrientationVariant()', () => {
         {
             title                    : 'falls back to system default when prop and option are missing',
             expectedResult           : {
-                orientation          : systemDefaultOrientation,
-                orientationClassname : `o-${systemDefaultOrientation}`,
-                isOrientationInline  : systemDefaultOrientation === 'inline',
-                isOrientationBlock   : systemDefaultOrientation === 'block',
-                ariaOrientation      : systemDefaultOrientation === 'inline' ? 'horizontal' : 'vertical',
+                orientation          : defaultOrientation,
+                orientationClassname : `o-${defaultOrientation}`,
+                isOrientationInline  : defaultOrientation === 'inline',
+                isOrientationBlock   : defaultOrientation === 'block',
+                ariaOrientation      : defaultOrientation === 'inline' ? 'horizontal' : 'vertical',
+            },
+        },
+        {
+            title                    : 'falls back to system default when inheritance is missing',
+            parentOrientation        : undefined,
+            props                    : {
+                orientation          : 'inherit',
+            },
+            expectedResult           : {
+                orientation          : defaultOrientation,
+                orientationClassname : `o-${defaultOrientation}`,
+                isOrientationInline  : defaultOrientation === 'inline',
+                isOrientationBlock   : defaultOrientation === 'block',
+                ariaOrientation      : defaultOrientation === 'inline' ? 'horizontal' : 'vertical',
             },
         },
         {
