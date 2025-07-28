@@ -16,7 +16,7 @@ import {
 
 // Defaults:
 import {
-    systemDefaultFlowDirection,
+    defaultFlowDirection,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -34,26 +34,60 @@ import {
 /**
  * Resolves the effective flow direction value based on props and context.
  * 
- * - `'inherit'` retrieves the flow direction from context.
- * - `'invert'` reverses the contextual flow direction (`'start'` ⇄ `'end'`).
- * - Otherwise, returns the provided flow direction value as-is.
+ * Resolution order:
+ * - `'inherit'` : retrieves the flow direction from context, if available.
+ * - `'invert'`  : reverses the contextual flow direction (`'start'` ⇄ `'end'`), if available.
+ * - `undefined` : falls back to the default flow direction.
+ * - Otherwise   : returns the provided flow direction value as-is.
  * 
- * @param {Required<FlowDirectionVariantProps>['flowDirection']} flowDirection - The pre-resolved flow direction value derived from props.
+ * @param {FlowDirectionVariantProps['flowDirection']} flowDirection - The pre-resolved flow direction value derived from props.
+ * @param {FlowDirection} defaultFlowDirection - Fallback flow direction when context is unavailable.
  * @returns {FlowDirection} - The resolved flow direction value.
  */
-const useEffectiveFlowDirectionVariant = (flowDirection: Required<FlowDirectionVariantProps>['flowDirection']): FlowDirection => {
+const useEffectiveFlowDirectionValue = (flowDirection: FlowDirectionVariantProps['flowDirection'], defaultFlowDirection: FlowDirection): FlowDirection => {
     switch (flowDirection) {
         // If the flow direction is 'inherit', use the context value:
-        case 'inherit' : return use(FlowDirectionVariantContext);
+        case 'inherit' : {
+            // Get the inherited flow direction from context:
+            const inheritedFlowDirection = use(FlowDirectionVariantContext);
+            
+            
+            
+            // If the context provides a flow direction, return it:
+            if (inheritedFlowDirection !== undefined) return inheritedFlowDirection;
+            
+            
+            
+            // Otherwise, fallback to the default flow direction:
+            return defaultFlowDirection;
+        }
         
         
         
         // If the flow direction is 'invert', return the opposite of the context value:
-        case 'invert'  : return use(FlowDirectionVariantContext) === 'start' ? 'end' : 'start';
+        case 'invert'  : {
+            // Get the inherited flow direction from context:
+            const inheritedFlowDirection = use(FlowDirectionVariantContext);
+            
+            
+            
+            // If the context provides a flow direction, invert it:
+            if (inheritedFlowDirection !== undefined) return inheritedFlowDirection === 'start' ? 'end' : 'start';
+            
+            
+            
+            // Otherwise, fallback to the default flow direction:
+            return defaultFlowDirection;
+        }
         
         
         
-        // Otherwise, return the already resolved effective flow direction:
+        // If the flow direction is undefined, return the default flow direction:
+        case undefined : return defaultFlowDirection;
+        
+        
+        
+        // The flow direction is explicitly defined, return it as-is:
         default        : return flowDirection;
     } // switch
 };
@@ -105,13 +139,13 @@ const useEffectiveFlowDirectionVariant = (flowDirection: Required<FlowDirectionV
 export const useFlowDirectionVariant = (props: FlowDirectionVariantProps, options?: FlowDirectionVariantOptions): ResolvedFlowDirectionVariant => {
     // Extract props and assign defaults:
     const {
-        flowDirection = options?.defaultFlowDirection ?? systemDefaultFlowDirection,
+        flowDirection,
     } = props;
     
     
     
     // Resolve the effective flow direction value:
-    const effectiveFlowDirection = useEffectiveFlowDirectionVariant(flowDirection);
+    const effectiveFlowDirection = useEffectiveFlowDirectionValue(flowDirection, options?.defaultFlowDirection ?? defaultFlowDirection);
     
     
     

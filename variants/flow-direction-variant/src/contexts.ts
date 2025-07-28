@@ -11,20 +11,12 @@ import {
     type FlowDirection,
 }                           from './types.js'
 
-// Defaults:
-import {
-    systemDefaultFlowDirection,
-}                           from './internal-defaults.js'
-
 
 
 /**
  * A React context for propagating flow direction value across the component tree.
- * 
- * Provides a system default flow direction when the component
- * is not nested within an ancestor implementing `<FlowDirectionVariantContext>`.
  */
-export const FlowDirectionVariantContext = createContext<FlowDirection>(/* defaultValue : */systemDefaultFlowDirection);
+export const FlowDirectionVariantContext = createContext<FlowDirection | undefined>(/* defaultValue : */undefined);
 
 // Sets a readable name for debugging in React DevTools:
 if (process.env.NODE_ENV === 'development') {

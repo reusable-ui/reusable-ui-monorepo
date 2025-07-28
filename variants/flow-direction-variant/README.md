@@ -69,8 +69,9 @@ The hook evaluates the effective flow direction using a tiered approach:
 1. **Explicit Prop Override**  
    - If `props.flowDirection` is set to `'start'` or `'end'`, it takes precedence.
 2. **Relative Resolution**  
+   - If no parent context found, skip to next step.
    - If set to `'inherit'`, it adopts flow direction from a parent context (`FlowDirectionVariantProvider`).
-   - If set to `'invert'`, it flips the parent flow direction (`'start' ↔︎ 'end'`).
+   - If set to `'invert'`, it flips the parent flow direction (`'start' ⇄ 'end'`).
 3. **Fallback Options**  
    - Uses `options.defaultFlowDirection` if provided.
    - Falls back to system default if all else fails.

@@ -11,7 +11,7 @@ import {
     type ResolvedFlowDirectionVariant,
 } from '../dist/types.js'
 import {
-    systemDefaultFlowDirection,
+    defaultFlowDirection,
 } from '../dist/internal-defaults.js'
 import {
     useFlowDirectionVariant,
@@ -150,8 +150,19 @@ describe('useFlowDirectionVariant()', () => {
         {
             title                      : 'falls back to system default when prop and option are missing',
             expectedResult             : {
-                flowDirection          : systemDefaultFlowDirection,
-                flowDirectionClassname : `f-${systemDefaultFlowDirection}`,
+                flowDirection          : defaultFlowDirection,
+                flowDirectionClassname : `f-${defaultFlowDirection}`,
+            },
+        },
+        {
+            title                      : 'falls back to system default when inheritance is missing',
+            parentFlowDirection        : undefined,
+            props                      : {
+                flowDirection          : 'inherit',
+            },
+            expectedResult             : {
+                flowDirection          : defaultFlowDirection,
+                flowDirectionClassname : `f-${defaultFlowDirection}`,
             },
         },
         {
