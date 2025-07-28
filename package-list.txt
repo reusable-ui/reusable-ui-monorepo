@@ -47,7 +47,7 @@
 | FlowDirectionVariantProps   | flowDirection   | start, end                       |    Yes    |   Yes    |      end       |       end        | Controls the direction on main axis                           |
 | SizeVariantProps            | size            | sm, md, lg, custom               |    Yes    |          |    inherit     |        md        | Sets component sizing, including custom token or value        |
 | ThemeVariantProps           | theme           | primary, secondary, ..., custom  |    Yes    |          |    inherit     |     primary      | Applies themed visual identity from palette or context        |
-| GradientVariantProps        | gradient        | boolean                          |   Maybe   |   Yes    |    inherit     |      false       | Enables gradient background styling                           |
+| EmphasizeVariantProps       | emphasized      | boolean                          |    Yes    |   Yes    |    inherit     |      false       | Enables gradient background styling                           |
 | OutlineVariantProps         | outlined        | boolean                          |    Yes    |   Yes    |    inherit     |      false       | Enables outlined style (border-only, no fill)                 |
 | MildVariantProps            | mild            | boolean                          |    Yes    |   Yes    |    inherit     |      false       | Enables soft-tone background styling                          |
 |                             |                 |                                  |           |          |                |                  |                                                               |
