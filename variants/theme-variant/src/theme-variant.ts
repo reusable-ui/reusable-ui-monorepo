@@ -35,14 +35,14 @@ import {
  * Resolves the effective theme value based on props and context.
  * 
  * Resolution order:
- * - `'inherit'` : retrieves the theme from context, if available.
+ * - `'inherit'` : retrieves the theme value from context, if available.
  * - `undefined` : falls back to the default theme.
  * - Otherwise   : returns the provided theme value as-is.
  * 
  * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
- * @param {ThemeVariantProps['theme']} theme - The pre-resolved theme value derived from props.
- * @param {TTheme} defaultTheme - Fallback theme when context is unavailable.
+ * @param {ThemeVariantProps['theme']} theme - The pre-resolved theme value provided from props.
+ * @param {TTheme} defaultTheme - Fallback theme value when context is unavailable.
  * @returns {TTheme} - The resolved theme value.
  */
 const useEffectiveThemeValue = <TTheme extends string = BasicTheme>(theme: ThemeVariantProps<TTheme>['theme'], defaultTheme: TTheme): TTheme => {
@@ -54,7 +54,7 @@ const useEffectiveThemeValue = <TTheme extends string = BasicTheme>(theme: Theme
             
             
             
-            // If the context provides an theme, return it:
+            // If context value exists, return it:
             if (inheritedTheme !== undefined) return inheritedTheme;
             
             

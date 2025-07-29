@@ -69,7 +69,7 @@ export interface ResolvedThemeVariant<TTheme extends string = BasicTheme> {
     /**
      * The resolved theme value.
      * 
-     * Example values:
+     * Possible values:
      * - `'primary'`   : core branding or primary site identity
      * - `'secondary'` : muted accent or complementary variant
      * - `'success'`   : positive actions and confirmations
@@ -85,7 +85,7 @@ export interface ResolvedThemeVariant<TTheme extends string = BasicTheme> {
     /**
      * CSS class name corresponding to the resolved theme.
      * 
-     * Example values:
+     * Possible values:
      * - `'t-primary'`
      * - `'t-secondary'`
      * - `'t-success'`

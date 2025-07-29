@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/theme-variant",
   "version": "7.0.0",
-  "description": "A utility for managing component themes consistently across React projects.",
+  "description": "A utility for managing themes consistently across React components.",
   "keywords": [
     "theme",
     "variant",

@@ -42,23 +42,37 @@ export interface ThemeVariantProviderProps<TTheme extends string = BasicTheme>
 
 /**
  * Provides a theme value to descendant components,
- * enabling inheritance of the value.
+ * enables descendant components to inherit the value.
  * 
  * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
  * @example
  * ```ts
- * // Resolve theme from props:
- * const { theme } = useThemeVariant(props, {
- *     defaultTheme: 'danger',
- * });
+ * import React, { ReactNode, FC } from 'react';
+ * import {
+ *     ThemeVariantProps,
+ *     ThemeVariantProvider,
+ *     useThemeVariant,
+ * } from '@reusable-ui/theme-variant';
  * 
- * // Provide theme value to descendants:
- * return (
- *     <ThemeVariantProvider theme={theme}>
- *         {props.children}
- *     </ThemeVariantProvider>
- * );
+ * export interface ParentComponentProps extends ThemeVariantProps {
+ *     children ?: ReactNode
+ * }
+ * 
+ * // A component that share theme with child components.
+ * export const ParentComponent: FC<ParentComponentProps> = (props) => {
+ *     // Resolve theme value from props:
+ *     const { theme } = useThemeVariant(props, {
+ *         defaultTheme: 'primary', // fallback if not provided
+ *     });
+ *     
+ *     // Propagate theme value to descendants:
+ *     return (
+ *         <ThemeVariantProvider theme={theme}>
+ *             {props.children}
+ *         </ThemeVariantProvider>
+ *     );
+ * };
  * ```
  */
 const ThemeVariantProvider = <TTheme extends string = BasicTheme>(props: ThemeVariantProviderProps<TTheme>): ReactElement | null => {

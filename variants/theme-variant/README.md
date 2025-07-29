@@ -1,6 +1,6 @@
 # @reusable-ui/theme-variant 📦  
 
-A utility for managing component themes consistently across React projects.  
+A utility for managing themes consistently across React components.  
 Provides hooks and CSS helpers for theme resolution and conditional styling — ideal for buttons, cards, badges, input fields, and any themeable UI elements.
 
 ## ✨ Features
@@ -63,34 +63,44 @@ export const ThemeableCard : FC<ThemeableCardProps> = (props) => {
 
 The hook evaluates the effective theme using a tiered approach:
 1. **Explicit Prop Override**  
-   - If `props.theme` is set to a value other than `'inherit'`, it takes precedence.
+   - If `props.theme` is a value other than `'inherit'`, it takes precedence.
 2. **Relative Resolution**  
-   - If no parent context found, skip to next step.
-   - If set to `'inherit'`, it adopts theme from a parent context (`ThemeVariantProvider`).
+   - If set to `'inherit'`, pulls value from context if provided (`ThemeVariantProvider`).
 3. **Fallback Options**  
    - Uses `options.defaultTheme` if provided.
    - Falls back to system default if all else fails.
 
-#### 🧬 Example with `inherit`
+#### 🧬 Context Propagation
+
+Use `<ThemeVariantProvider>` to share theme with child components:
 
 ```tsx
+import React, { ReactNode, FC } from 'react';
 import {
+    ThemeVariantProps,
     ThemeVariantProvider,
     useThemeVariant,
 } from '@reusable-ui/theme-variant';
 
-const ParentComponent = () => (
-    <ThemeVariantProvider theme='danger'>
-        <ChildComponent />
-    </ThemeVariantProvider>
-);
+export interface ParentComponentProps extends ThemeVariantProps {
+    children ?: ReactNode
+}
 
-const ChildComponent = () => {
-    const { theme, themeClassname } = useThemeVariant({
-        theme: 'inherit',
+/**
+ * A component that share theme with child components.
+ */
+export const ParentComponent: FC<ParentComponentProps> = (props) => {
+    // Resolve theme value from props:
+    const { theme } = useThemeVariant(props, {
+        defaultTheme: 'primary', // fallback if not provided
     });
     
-    return <div className={themeClassname}>I'm {theme}</div>;
+    // Propagate theme value to descendants:
+    return (
+        <ThemeVariantProvider theme={theme}>
+            {props.children}
+        </ThemeVariantProvider>
+    );
 };
 ```
 
@@ -100,11 +110,11 @@ const ChildComponent = () => {
 
 ```ts
 import {
-    // Selector:
+    // Theme Selectors:
     themeSelector, // Targets `.t-${theme}` class
     
-    // Conditional Rule Helper:
-    ifTheme,       // Applies styles for a specific theme
+    // Conditional styling helpers:
+    ifTheme,       // Applies styles to a specific theme
 } from '@reusable-ui/theme-variant';
 import { style, rule } from '@cssfn/core';
 
