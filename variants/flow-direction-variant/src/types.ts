@@ -63,7 +63,7 @@ export interface ResolvedFlowDirectionVariant {
     /**
      * The resolved flow direction value.
      * 
-     * Example values:
+     * Possible values:
      * - `'start'`: aligns to the logical start edge (e.g. left in LTR, top in top-down modes)
      * - `'end'`  : aligns to the logical end edge (e.g. right in LTR, bottom in top-down modes)
      */
@@ -72,7 +72,7 @@ export interface ResolvedFlowDirectionVariant {
     /**
      * CSS class name corresponding to the resolved flow direction.
      * 
-     * Example values:
+     * Possible values:
      * - `'f-start'`
      * - `'f-end'`
      */

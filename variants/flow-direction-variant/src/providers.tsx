@@ -41,21 +41,35 @@ export interface FlowDirectionVariantProviderProps
 
 /**
  * Provides a flow direction value to descendant components,
- * enabling inheritance of the value.
+ * enables descendant components to inherit the value.
  * 
  * @example
  * ```ts
- * // Resolve flow direction from props:
- * const { flowDirection } = useFlowDirectionVariant(props, {
- *     defaultFlowDirection: 'end',
- * });
+ * import React, { ReactNode, FC } from 'react';
+ * import {
+ *     FlowDirectionVariantProps,
+ *     FlowDirectionVariantProvider,
+ *     useFlowDirectionVariant,
+ * } from '@reusable-ui/flow-direction-variant';
  * 
- * // Provide flow direction value to descendants:
- * return (
- *     <FlowDirectionVariantProvider flowDirection={flowDirection}>
- *         {props.children}
- *     </FlowDirectionVariantProvider>
- * );
+ * export interface ParentComponentProps extends FlowDirectionVariantProps {
+ *     children ?: ReactNode
+ * }
+ * 
+ * // A component that share flow direction with child components.
+ * export const ParentComponent: FC<ParentComponentProps> = (props) => {
+ *     // Resolve flow direction value from props:
+ *     const { flowDirection } = useFlowDirectionVariant(props, {
+ *         defaultFlowDirection: 'end', // fallback if not provided
+ *     });
+ *     
+ *     // Propagate flow direction value to descendants:
+ *     return (
+ *         <FlowDirectionVariantProvider flowDirection={flowDirection}>
+ *             {props.children}
+ *         </FlowDirectionVariantProvider>
+ *     );
+ * };
  * ```
  */
 const FlowDirectionVariantProvider = (props: FlowDirectionVariantProviderProps): ReactElement | null => {

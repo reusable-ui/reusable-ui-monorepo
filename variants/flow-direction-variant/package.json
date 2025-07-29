@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/flow-direction-variant",
   "version": "7.0.0",
-  "description": "A utility for managing component flow directions consistently across React projects.",
+  "description": "A utility for managing flow directions consistently across React components.",
   "keywords": [
     "direction",
     "placement",

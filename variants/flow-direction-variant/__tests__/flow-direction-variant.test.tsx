@@ -166,6 +166,17 @@ describe('useFlowDirectionVariant()', () => {
             },
         },
         {
+            title                      : 'falls back to system default when inverting is missing',
+            parentFlowDirection        : undefined,
+            props                      : {
+                flowDirection          : 'invert',
+            },
+            expectedResult             : {
+                flowDirection          : defaultFlowDirection,
+                flowDirectionClassname : `f-${defaultFlowDirection}`,
+            },
+        },
+        {
             title                      : 'resolves start flow direction from props ignoring option',
             props                      : {
                 flowDirection          : 'start',
@@ -277,7 +288,7 @@ describe('useFlowDirectionVariant()', () => {
                 flowDirection          : 'invert',
             },
             options                    : {
-                defaultFlowDirection   : 'start',
+                defaultFlowDirection   : 'end',
             },
             expectedResult             : {
                 flowDirection          : 'start',
@@ -291,7 +302,7 @@ describe('useFlowDirectionVariant()', () => {
                 flowDirection          : 'invert',
             },
             options                    : {
-                defaultFlowDirection   : 'end',
+                defaultFlowDirection   : 'start',
             },
             expectedResult             : {
                 flowDirection          : 'end',

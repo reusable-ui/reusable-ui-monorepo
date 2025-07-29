@@ -1,6 +1,6 @@
 # @reusable-ui/flow-direction-variant 📦  
 
-A utility for managing component flow directions consistently across React projects.  
+A utility for managing flow directions consistently across React components.  
 Provides hooks and CSS helpers for flow direction resolution, placement flow, and conditional styling — ideal for dropdowns, tooltips, and other flow-aware UI elements.
 
 ## ✨ Features
@@ -67,35 +67,45 @@ export const PlacementArrow: FC<PlacementArrowProps> = (props) => {
 
 The hook evaluates the effective flow direction using a tiered approach:
 1. **Explicit Prop Override**  
-   - If `props.flowDirection` is set to `'start'` or `'end'`, it takes precedence.
+   - If `props.flowDirection` is `'start'` or `'end'`, it takes precedence.
 2. **Relative Resolution**  
-   - If no parent context found, skip to next step.
-   - If set to `'inherit'`, it adopts flow direction from a parent context (`FlowDirectionVariantProvider`).
-   - If set to `'invert'`, it flips the parent flow direction (`'start' ⇄ 'end'`).
+   - If set to `'inherit'`, pulls value from context if provided (`FlowDirectionVariantProvider`).
+   - If set to `'invert'`, reverses the inherited value (`'start' ⇄ 'end'`).
 3. **Fallback Options**  
    - Uses `options.defaultFlowDirection` if provided.
    - Falls back to system default if all else fails.
 
-#### 🧬 Example with `inherit` and `invert`
+#### 🧬 Context Propagation
+
+Use `<FlowDirectionVariantProvider>` to share flow direction with child components:
 
 ```tsx
+import React, { ReactNode, FC } from 'react';
 import {
+    FlowDirectionVariantProps,
     FlowDirectionVariantProvider,
     useFlowDirectionVariant,
 } from '@reusable-ui/flow-direction-variant';
 
-const ParentComponent = () => (
-    <FlowDirectionVariantProvider flowDirection='start'>
-        <ChildComponent />
-    </FlowDirectionVariantProvider>
-);
+export interface ParentComponentProps extends FlowDirectionVariantProps {
+    children ?: ReactNode
+}
 
-const ChildComponent = () => {
-    const { flowDirection, flowDirectionClassname } = useFlowDirectionVariant({
-        flowDirection: 'inherit', // or 'invert'
+/**
+ * A component that share flow direction with child components.
+ */
+export const ParentComponent: FC<ParentComponentProps> = (props) => {
+    // Resolve flow direction value from props:
+    const { flowDirection } = useFlowDirectionVariant(props, {
+        defaultFlowDirection: 'end', // fallback if not provided
     });
     
-    return <div className={flowDirectionClassname}>I'm {flowDirection}</div>;
+    // Propagate flow direction value to descendants:
+    return (
+        <FlowDirectionVariantProvider flowDirection={flowDirection}>
+            {props.children}
+        </FlowDirectionVariantProvider>
+    );
 };
 ```
 
@@ -109,9 +119,9 @@ import {
     flowDirectionStartSelector,  // Targets `.f-start` classes
     flowDirectionEndSelector,    // Targets `.f-end` classes
     
-    // Conditional Rule Helpers:
-    ifFlowDirectionStart,        // Applies styles for start placement
-    ifFlowDirectionEnd,          // Applies styles for end placement
+    // Conditional styling helpers:
+    ifFlowDirectionStart,        // Applies styles to start edge aligned elements
+    ifFlowDirectionEnd,          // Applies styles to end edge aligned elements
 } from '@reusable-ui/flow-direction-variant';
 import { style, rule } from '@cssfn/core';
 

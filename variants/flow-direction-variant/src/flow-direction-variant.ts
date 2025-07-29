@@ -35,13 +35,13 @@ import {
  * Resolves the effective flow direction value based on props and context.
  * 
  * Resolution order:
- * - `'inherit'` : retrieves the flow direction from context, if available.
- * - `'invert'`  : reverses the contextual flow direction (`'start'` ⇄ `'end'`), if available.
+ * - `'inherit'` : retrieves the flow direction value from context, if available.
+ * - `'invert'`  : reverses the flow direction value from context (`'start'` ⇄ `'end'`), if available.
  * - `undefined` : falls back to the default flow direction.
  * - Otherwise   : returns the provided flow direction value as-is.
  * 
- * @param {FlowDirectionVariantProps['flowDirection']} flowDirection - The pre-resolved flow direction value derived from props.
- * @param {FlowDirection} defaultFlowDirection - Fallback flow direction when context is unavailable.
+ * @param {FlowDirectionVariantProps['flowDirection']} flowDirection - The pre-resolved flow direction value provided from props.
+ * @param {FlowDirection} defaultFlowDirection - Fallback flow direction value when context is unavailable.
  * @returns {FlowDirection} - The resolved flow direction value.
  */
 const useEffectiveFlowDirectionValue = (flowDirection: FlowDirectionVariantProps['flowDirection'], defaultFlowDirection: FlowDirection): FlowDirection => {
@@ -53,7 +53,7 @@ const useEffectiveFlowDirectionValue = (flowDirection: FlowDirectionVariantProps
             
             
             
-            // If the context provides a flow direction, return it:
+            // If context value exists, return it:
             if (inheritedFlowDirection !== undefined) return inheritedFlowDirection;
             
             
@@ -64,14 +64,14 @@ const useEffectiveFlowDirectionValue = (flowDirection: FlowDirectionVariantProps
         
         
         
-        // If the flow direction is 'invert', return the opposite of the context value:
+        // If the flow direction is 'invert', flip the context value:
         case 'invert'  : {
             // Get the inherited flow direction from context:
             const inheritedFlowDirection = use(FlowDirectionVariantContext);
             
             
             
-            // If the context provides a flow direction, invert it:
+            // If context value exists, flip it:
             if (inheritedFlowDirection !== undefined) return inheritedFlowDirection === 'start' ? 'end' : 'start';
             
             
