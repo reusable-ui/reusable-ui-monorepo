@@ -38,6 +38,7 @@
 @reusable-ui/flow-direction-variant
 @reusable-ui/size-variant
 @reusable-ui/theme-variant
+@reusable-ui/emphasize-variant
 
 // Reusable-ui variants: (planned):
 |-----------------------------|-----------------|----------------------------------|-----------|----------|----------------|------------------|---------------------------------------------------------------|

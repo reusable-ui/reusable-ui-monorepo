@@ -68,6 +68,7 @@
     "variants/flow-direction-variant",
     "variants/size-variant",
     "variants/theme-variant",
+    "variants/emphasize-variant",
     "__configs/*",
     "__utilities/*",
     "__features/*",
