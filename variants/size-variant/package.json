@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/size-variant",
   "version": "7.0.0",
-  "description": "A utility for managing component sizes consistently across React projects.",
+  "description": "A utility for managing sizes consistently across React components.",
   "keywords": [
     "size",
     "variant",

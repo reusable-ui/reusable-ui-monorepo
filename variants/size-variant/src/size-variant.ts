@@ -56,7 +56,7 @@ export interface ResolvedSizeVariant<TSize extends string = BasicSize> {
     /**
      * The resolved size value.
      * 
-     * Example values:
+     * Possible values:
      * - `'sm'`: small size
      * - `'md'`: medium size (default)
      * - `'lg'`: large size
@@ -67,7 +67,7 @@ export interface ResolvedSizeVariant<TSize extends string = BasicSize> {
     /**
      * CSS class name corresponding to the resolved size.
      * 
-     * Example values:
+     * Possible values:
      * - `'s-sm'`
      * - `'s-md'`
      * - Or any custom size class name in the format `s-${size}`

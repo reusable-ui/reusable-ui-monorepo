@@ -1,6 +1,6 @@
 # @reusable-ui/size-variant 📦  
 
-A utility for managing component sizes consistently across React projects.  
+A utility for managing sizes consistently across React components.  
 Provides hooks and CSS helpers for size resolution and conditional styling — ideal for buttons, cards, badges, input fields, and any scalable UI elements.
 
 ## ✨ Features
@@ -69,7 +69,7 @@ import {
     sizeSelector, // Targets `.s-${size}` class
     
     // Conditional Rule Helper:
-    ifSize,       // Applies styles for a specific size
+    ifSize,       // Applies styles to a specific size
 } from '@reusable-ui/size-variant';
 import { style, rule } from '@cssfn/core';
 
