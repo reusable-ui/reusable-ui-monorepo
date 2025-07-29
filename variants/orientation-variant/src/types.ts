@@ -46,7 +46,7 @@ export interface ResolvedOrientationVariant {
     /**
      * The resolved orientation value.
      * 
-     * Example values:
+     * Possible values:
      * - `'inline'`: horizontal orientation, aligns along the inline axis (e.g., left-to-right or right-to-left)
      * - `'block'` : vertical orientation, aligns along the block axis (e.g., top-to-bottom)
      */
@@ -55,7 +55,7 @@ export interface ResolvedOrientationVariant {
     /**
      * CSS class name corresponding to the resolved orientation.
      * 
-     * Example values:
+     * Possible values:
      * - `'o-inline'`
      * - `'o-block'`
      */

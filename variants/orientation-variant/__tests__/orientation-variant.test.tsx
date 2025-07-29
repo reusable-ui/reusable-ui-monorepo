@@ -184,6 +184,20 @@ describe('useOrientationVariant()', () => {
             },
         },
         {
+            title                    : 'falls back to system default when inverting is missing',
+            parentOrientation        : undefined,
+            props                    : {
+                orientation          : 'invert',
+            },
+            expectedResult           : {
+                orientation          : defaultOrientation,
+                orientationClassname : `o-${defaultOrientation}`,
+                isOrientationInline  : defaultOrientation === 'inline',
+                isOrientationBlock   : defaultOrientation === 'block',
+                ariaOrientation      : defaultOrientation === 'inline' ? 'horizontal' : 'vertical',
+            },
+        },
+        {
             title                    : 'resolves inline orientation from props ignoring option',
             props                    : {
                 orientation          : 'inline',
@@ -319,7 +333,7 @@ describe('useOrientationVariant()', () => {
                 orientation          : 'invert',
             },
             options                  : {
-                defaultOrientation   : 'inline',
+                defaultOrientation   : 'block',
             },
             expectedResult           : {
                 orientation          : 'inline',
@@ -336,7 +350,7 @@ describe('useOrientationVariant()', () => {
                 orientation          : 'invert',
             },
             options                  : {
-                defaultOrientation   : 'block',
+                defaultOrientation   : 'inline',
             },
             expectedResult           : {
                 orientation          : 'block',

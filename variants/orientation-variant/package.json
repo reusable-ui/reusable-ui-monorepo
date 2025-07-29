@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/orientation-variant",
   "version": "7.0.0",
-  "description": "A utility for managing component orientations consistently across React projects.",
+  "description": "A utility for managing orientations consistently across React components.",
   "keywords": [
     "orientation",
     "axis",

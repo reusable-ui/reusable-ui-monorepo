@@ -35,13 +35,13 @@ import {
  * Resolves the effective orientation value based on props and context.
  * 
  * Resolution order:
- * - `'inherit'` : retrieves the orientation from context, if available.
- * - `'invert'`  : reverses the contextual orientation (`'inline'` ⇄ `'block'`), if available.
+ * - `'inherit'` : retrieves the orientation value from context, if available.
+ * - `'invert'`  : reverses the orientation value from context (`'inline'` ⇄ `'block'`), if available.
  * - `undefined` : falls back to the default orientation.
  * - Otherwise   : returns the provided orientation value as-is.
  * 
- * @param {OrientationVariantProps['orientation']} orientation - The pre-resolved orientation value derived from props.
- * @param {Orientation} defaultOrientation - Fallback orientation when context is unavailable.
+ * @param {OrientationVariantProps['orientation']} orientation - The pre-resolved orientation value provided from props.
+ * @param {Orientation} defaultOrientation - Fallback orientation value when context is unavailable.
  * @returns {Orientation} - The resolved orientation value.
  */
 const useEffectiveOrientationValue = (orientation: OrientationVariantProps['orientation'], defaultOrientation: Orientation): Orientation => {
@@ -53,7 +53,7 @@ const useEffectiveOrientationValue = (orientation: OrientationVariantProps['orie
             
             
             
-            // If the context provides an orientation, return it:
+            // If context value exists, return it:
             if (inheritedOrientation !== undefined) return inheritedOrientation;
             
             
@@ -64,14 +64,14 @@ const useEffectiveOrientationValue = (orientation: OrientationVariantProps['orie
         
         
         
-        // If the orientation is 'invert', return the opposite of the context value:
+        // If the orientation is 'invert', flip the context value:
         case 'invert'  : {
             // Get the inherited orientation from context:
             const inheritedOrientation = use(OrientationVariantContext);
             
             
             
-            // If the context provides an orientation, invert it:
+            // If context value exists, flip it:
             if (inheritedOrientation !== undefined) return inheritedOrientation === 'inline' ? 'block' : 'inline';
             
             

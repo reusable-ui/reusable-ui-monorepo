@@ -1,6 +1,6 @@
 # @reusable-ui/orientation-variant 📦  
 
-A utility for managing component orientations consistently across React projects.  
+A utility for managing orientations consistently across React components.  
 Provides hooks and CSS helpers for orientation resolution and conditional styling — ideal for dropdowns, lists, cards, tooltips, and layout-adaptive UI elements.
 
 ## ✨ Features
@@ -76,35 +76,45 @@ export const OrientationBox: FC<OrientationBoxProps> = (props) => {
 
 The hook evaluates the effective orientation using a tiered approach:
 1. **Explicit Prop Override**  
-   - If `props.orientation` is set to `'inline'` or `'block'`, it takes precedence.
+   - If `props.orientation` is `'inline'` or `'block'`, it takes precedence.
 2. **Relative Resolution**  
-   - If no parent context found, skip to next step.
-   - If set to `'inherit'`, it adopts orientation from a parent context (`OrientationVariantProvider`).
-   - If set to `'invert'`, it flips the parent orientation (`'inline' ⇄ 'block'`).
+   - If set to `'inherit'`, pulls value from context if provided (`OrientationVariantProvider`).
+   - If set to `'invert'`, reverses the inherited value (`'inline' ⇄ 'block'`).
 3. **Fallback Options**  
    - Uses `options.defaultOrientation` if provided.
    - Falls back to system default if all else fails.
 
-#### 🧬 Example with `inherit` and `invert`
+#### 🧬 Context Propagation
+
+Use `<OrientationVariantProvider>` to share orientation with child components:
 
 ```tsx
+import React, { ReactNode, FC } from 'react';
 import {
+    OrientationVariantProps,
     OrientationVariantProvider,
     useOrientationVariant,
 } from '@reusable-ui/orientation-variant';
 
-const ParentComponent = () => (
-    <OrientationVariantProvider orientation='inline'>
-        <ChildComponent />
-    </OrientationVariantProvider>
-);
+export interface ParentComponentProps extends OrientationVariantProps {
+    children ?: ReactNode
+}
 
-const ChildComponent = () => {
-    const { orientation, orientationClassname } = useOrientationVariant({
-        orientation: 'inherit', // or 'invert'
+/**
+ * A component that share orientation with child components.
+ */
+export const ParentComponent: FC<ParentComponentProps> = (props) => {
+    // Resolve orientation value from props:
+    const { orientation } = useOrientationVariant(props, {
+        defaultOrientation: 'block', // fallback if not provided
     });
     
-    return <div className={orientationClassname}>I'm {orientation}</div>;
+    // Propagate orientation value to descendants:
+    return (
+        <OrientationVariantProvider orientation={orientation}>
+            {props.children}
+        </OrientationVariantProvider>
+    );
 };
 ```
 
@@ -118,9 +128,9 @@ import {
     orientationInlineSelector, // Targets `.o-inline` classes
     orientationBlockSelector,  // Targets `.o-block` classes
     
-    // Conditional Rule Helpers:
-    ifOrientationInline,       // Applies styles for horizontal (inline) orientation
-    ifOrientationBlock,        // Applies styles for vertical (block) orientation
+    // Conditional styling helpers:
+    ifOrientationInline,       // Applies styles to horizontal (inline) oriented elements
+    ifOrientationBlock,        // Applies styles to vertical (block) oriented elements
 } from '@reusable-ui/orientation-variant';
 import { style, rule } from '@cssfn/core';
 

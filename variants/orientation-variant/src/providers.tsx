@@ -41,21 +41,35 @@ export interface OrientationVariantProviderProps
 
 /**
  * Provides an orientation value to descendant components,
- * enabling inheritance of the value.
+ * enables descendant components to inherit the value.
  * 
  * @example
  * ```ts
- * // Resolve orientation from props:
- * const { orientation } = useOrientationVariant(props, {
- *     defaultOrientation: 'block',
- * });
+ * import React, { ReactNode, FC } from 'react';
+ * import {
+ *     OrientationVariantProps,
+ *     OrientationVariantProvider,
+ *     useOrientationVariant,
+ * } from '@reusable-ui/orientation-variant';
  * 
- * // Provide orientation value to descendants:
- * return (
- *     <OrientationVariantProvider orientation={orientation}>
- *         {props.children}
- *     </OrientationVariantProvider>
- * );
+ * export interface ParentComponentProps extends OrientationVariantProps {
+ *     children ?: ReactNode
+ * }
+ * 
+ * // A component that share orientation with child components.
+ * export const ParentComponent: FC<ParentComponentProps> = (props) => {
+ *     // Resolve orientation value from props:
+ *     const { orientation } = useOrientationVariant(props, {
+ *         defaultOrientation: 'block', // fallback if not provided
+ *     });
+ *     
+ *     // Propagate orientation value to descendants:
+ *     return (
+ *         <OrientationVariantProvider orientation={orientation}>
+ *             {props.children}
+ *         </OrientationVariantProvider>
+ *     );
+ * };
  * ```
  */
 const OrientationVariantProvider = (props: OrientationVariantProviderProps): ReactElement | null => {
