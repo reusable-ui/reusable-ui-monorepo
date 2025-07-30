@@ -37,8 +37,8 @@ import {
  * Resolution order:
  * - `'inherit'` : retrieves the flow direction value from context, if available.
  * - `'invert'`  : reverses the flow direction value from context (`'start'` ⇄ `'end'`), if available.
- * - `undefined` : falls back to the default flow direction.
- * - Otherwise   : returns the provided flow direction value as-is.
+ * - `undefined` : falls back to the default flow direction value.
+ * - Otherwise   : uses the explicitly provided flow direction value as-is.
  * 
  * @param {FlowDirectionVariantProps['flowDirection']} flowDirection - The pre-resolved flow direction value provided from props.
  * @param {FlowDirection} defaultFlowDirection - Fallback flow direction value when context is unavailable.
@@ -101,7 +101,7 @@ const useEffectiveFlowDirectionValue = (flowDirection: FlowDirectionVariantProps
  * @returns {ResolvedFlowDirectionVariant} - The resolved flow direction value along with its associated CSS class name.
  * 
  * @example
- * ```ts
+ * ```tsx
  * import React, { FC } from 'react';
  * import {
  *     useFlowDirectionVariant,

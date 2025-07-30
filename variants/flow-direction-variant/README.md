@@ -26,7 +26,7 @@ Resolves the flow direction value along with its associated CSS class name, base
 
 #### 💡 Usage Example
 
-```ts
+```tsx
 import React, { FC } from 'react';
 import {
     useFlowDirectionVariant,
@@ -65,19 +65,19 @@ export const PlacementArrow: FC<PlacementArrowProps> = (props) => {
 
 #### 🧠 Flow Direction Resolution Strategy
 
-The hook evaluates the effective flow direction using a tiered approach:
+The hook determines the final flow direction using the following priority:
 1. **Explicit Prop Override**  
    - If `props.flowDirection` is `'start'` or `'end'`, it takes precedence.
 2. **Relative Resolution**  
    - If set to `'inherit'`, pulls value from context if provided (`FlowDirectionVariantProvider`).
    - If set to `'invert'`, reverses the inherited value (`'start' ⇄ 'end'`).
-3. **Fallback Options**  
+3. **Fallback Logic**  
    - Uses `options.defaultFlowDirection` if provided.
-   - Falls back to system default if all else fails.
+   - Defaults to system default if none is provided.
 
 #### 🧬 Context Propagation
 
-Use `<FlowDirectionVariantProvider>` to share flow direction with child components:
+Use `<FlowDirectionVariantProvider>` to share flow direction with descendant components:
 
 ```tsx
 import React, { ReactNode, FC } from 'react';
@@ -92,7 +92,7 @@ export interface ParentComponentProps extends FlowDirectionVariantProps {
 }
 
 /**
- * A component that share flow direction with child components.
+ * A component that shares its flow direction with descendant components.
  */
 export const ParentComponent: FC<ParentComponentProps> = (props) => {
     // Resolve flow direction value from props:

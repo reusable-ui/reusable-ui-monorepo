@@ -57,7 +57,7 @@ export interface FlowDirectionVariantOptions {
 }
 
 /**
- * Represents the final resolved flow direction for the component, along with its associated CSS class name.
+ * Represents the final resolved flow direction of the component, along with its associated CSS class name.
  */
 export interface ResolvedFlowDirectionVariant {
     /**
@@ -70,7 +70,7 @@ export interface ResolvedFlowDirectionVariant {
     flowDirection           : FlowDirection
     
     /**
-     * CSS class name corresponding to the resolved flow direction.
+     * CSS class name reflecting the resolved flow direction.
      * 
      * Possible values:
      * - `'f-start'`
