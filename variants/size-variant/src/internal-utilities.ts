@@ -15,7 +15,7 @@ const sizeClassnameMap : Record<BasicSize | (string & {}), `s-${BasicSize | (str
 };
 
 /**
- * Resolves and caches the CSS class name for a given size.
+ * Resolves and caches the CSS class name for the given size.
  * 
  * - Returns the cached class name if available.
  * - If not cached, computes `s-${size}`, stores it, and returns the result.

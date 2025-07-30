@@ -48,7 +48,7 @@ export interface SizeVariantOptions<TSize extends string = BasicSize> {
 }
 
 /**
- * Represents the final resolved size for the component, along with its associated CSS class name.
+ * Represents the final resolved size of the component, along with its associated CSS class name.
  * 
  * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
  */
@@ -65,7 +65,7 @@ export interface ResolvedSizeVariant<TSize extends string = BasicSize> {
     size           : TSize
     
     /**
-     * CSS class name corresponding to the resolved size.
+     * CSS class name reflecting the resolved size.
      * 
      * Possible values:
      * - `'s-sm'`
@@ -86,7 +86,7 @@ export interface ResolvedSizeVariant<TSize extends string = BasicSize> {
  * @returns {ResolvedSizeVariant} - The resolved size value along with its associated CSS class name.
  * 
  * @example
- * ```ts
+ * ```tsx
  * import React, { FC } from 'react';
  * import {
  *     useSizeVariant,

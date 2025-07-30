@@ -27,7 +27,7 @@ Resolves the size value along with its associated CSS class name, based on compo
 
 #### 💡 Usage Example
 
-```ts
+```tsx
 import React, { FC } from 'react';
 import {
     useSizeVariant,
