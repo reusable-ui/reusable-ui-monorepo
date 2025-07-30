@@ -69,6 +69,7 @@
     "variants/size-variant",
     "variants/theme-variant",
     "variants/emphasize-variant",
+    "variants/outline-variant",
     "__configs/*",
     "__utilities/*",
     "__features/*",
