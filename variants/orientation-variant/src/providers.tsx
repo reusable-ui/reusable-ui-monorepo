@@ -29,8 +29,8 @@ import {
 /**
  * Props for `<OrientationVariantProvider>`.
  * 
- * Requires an `orientation` prop to set the context value,
- * along with children to receive the propagated orientation value.
+ * Requires an `orientation` value to establish the context,
+ * and renders `children` that consume the propagated value.
  */
 export interface OrientationVariantProviderProps
     extends
@@ -41,10 +41,10 @@ export interface OrientationVariantProviderProps
 
 /**
  * Provides an orientation value to descendant components,
- * enables descendant components to inherit the value.
+ * allowing them to inherit the value.
  * 
  * @example
- * ```ts
+ * ```tsx
  * import React, { ReactNode, FC } from 'react';
  * import {
  *     OrientationVariantProps,
@@ -56,7 +56,7 @@ export interface OrientationVariantProviderProps
  *     children ?: ReactNode
  * }
  * 
- * // A component that share orientation with child components.
+ * // A component that shares its orientation with descendant components.
  * export const ParentComponent: FC<ParentComponentProps> = (props) => {
  *     // Resolve orientation value from props:
  *     const { orientation } = useOrientationVariant(props, {

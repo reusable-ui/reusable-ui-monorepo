@@ -26,7 +26,7 @@ Resolves the orientation value along with its associated CSS class name and acce
 
 #### 💡 Usage Example
 
-```ts
+```tsx
 import React, { FC } from 'react';
 import {
     useOrientationVariant,
@@ -74,19 +74,19 @@ export const OrientationBox: FC<OrientationBoxProps> = (props) => {
 
 #### 🧠 Orientation Resolution Strategy
 
-The hook evaluates the effective orientation using a tiered approach:
+The hook determines the final orientation using the following priority:
 1. **Explicit Prop Override**  
    - If `props.orientation` is `'inline'` or `'block'`, it takes precedence.
 2. **Relative Resolution**  
    - If set to `'inherit'`, pulls value from context if provided (`OrientationVariantProvider`).
    - If set to `'invert'`, reverses the inherited value (`'inline' ⇄ 'block'`).
-3. **Fallback Options**  
+3. **Fallback Logic**  
    - Uses `options.defaultOrientation` if provided.
-   - Falls back to system default if all else fails.
+   - Defaults to system default if none is provided.
 
 #### 🧬 Context Propagation
 
-Use `<OrientationVariantProvider>` to share orientation with child components:
+Use `<OrientationVariantProvider>` to share orientation with descendant components:
 
 ```tsx
 import React, { ReactNode, FC } from 'react';
@@ -101,7 +101,7 @@ export interface ParentComponentProps extends OrientationVariantProps {
 }
 
 /**
- * A component that share orientation with child components.
+ * A component that shares its orientation with descendant components.
  */
 export const ParentComponent: FC<ParentComponentProps> = (props) => {
     // Resolve orientation value from props:

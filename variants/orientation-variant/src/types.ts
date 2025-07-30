@@ -40,7 +40,7 @@ export interface OrientationVariantOptions {
 }
 
 /**
- * Represents the final resolved orientation for the component, along with its associated CSS class name and accessibility metadata.
+ * Represents the final resolved orientation of the component, along with its associated CSS class name and accessibility metadata.
  */
 export interface ResolvedOrientationVariant {
     /**
@@ -53,7 +53,7 @@ export interface ResolvedOrientationVariant {
     orientation           : Orientation
     
     /**
-     * CSS class name corresponding to the resolved orientation.
+     * CSS class name reflecting the resolved orientation.
      * 
      * Possible values:
      * - `'o-inline'`

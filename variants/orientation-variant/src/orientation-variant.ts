@@ -37,8 +37,8 @@ import {
  * Resolution order:
  * - `'inherit'` : retrieves the orientation value from context, if available.
  * - `'invert'`  : reverses the orientation value from context (`'inline'` ⇄ `'block'`), if available.
- * - `undefined` : falls back to the default orientation.
- * - Otherwise   : returns the provided orientation value as-is.
+ * - `undefined` : falls back to the default orientation value.
+ * - Otherwise   : uses the explicitly provided orientation value as-is.
  * 
  * @param {OrientationVariantProps['orientation']} orientation - The pre-resolved orientation value provided from props.
  * @param {Orientation} defaultOrientation - Fallback orientation value when context is unavailable.
@@ -101,7 +101,7 @@ const useEffectiveOrientationValue = (orientation: OrientationVariantProps['orie
  * @returns {ResolvedOrientationVariant} - The resolved orientation value along with its associated CSS class name and accessibility metadata.
  * 
  * @example
- * ```ts
+ * ```tsx
  * import React, { FC } from 'react';
  * import {
  *     useOrientationVariant,
