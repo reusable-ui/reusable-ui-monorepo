@@ -35,9 +35,9 @@ import {
  * 
  * Resolution order:
  * - `'inherit'` : retrieves the emphasized value from context, if available.
- * - `'invert'`  : reverses the emphasized value from context (`false` ⇄ `true`), if available.
- * - `undefined` : falls back to the default emphasized.
- * - Otherwise   : returns the provided emphasized value as-is.
+ * - `'invert'`  : reverses the emphasized value from context (`true` ⇄ `false`), if available.
+ * - `undefined` : falls back to the default emphasized value.
+ * - Otherwise   : uses the explicitly provided emphasized value as-is.
  * 
  * @param {EmphasizeVariantProps['emphasized']} emphasized - The pre-resolved emphasized value provided from props.
  * @param {boolean} defaultEmphasized - Fallback emphasized value when context is unavailable.
@@ -96,11 +96,11 @@ const useEffectiveEmphasizedValue = (emphasized: EmphasizeVariantProps['emphasiz
  * based on component props, optional default configuration, and parent context.
  * 
  * @param {EmphasizeVariantProps} props - The component props that may include an `emphasized` value.
- * @param {EmphasizeVariantOptions} options - An optional configuration specifying a default emphasized when no `emphasized` prop is explicitly provided.
+ * @param {EmphasizeVariantOptions} options - An optional configuration specifying a default emphasized value when no `emphasized` prop is explicitly provided.
  * @returns {ResolvedEmphasizeVariant} - The resolved emphasized state along with its associated CSS class name.
  * 
  * @example
- * ```ts
+ * ```tsx
  * import React, { FC } from 'react';
  * import {
  *     useEmphasizeVariant,
@@ -110,7 +110,7 @@ const useEffectiveEmphasizedValue = (emphasized: EmphasizeVariantProps['emphasiz
  * 
  * export interface EmphasizedBoxProps extends EmphasizeVariantProps {}
  * 
- * // A box that highlights its content when emphasized.
+ * // A box that conditionally emphasizes its appearance.
  * export const EmphasizedBox: FC<EmphasizedBoxProps> = (props) => {
  *     const {
  *         emphasized,

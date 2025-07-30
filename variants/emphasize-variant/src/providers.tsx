@@ -29,8 +29,8 @@ import {
 /**
  * Props for `<EmphasizeVariantProvider>`.
  * 
- * Requires an `emphasized` prop to set the context value,
- * along with children to receive the propagated emphasized value.
+ * Requires an `emphasized` value to establish the context,
+ * and renders `children` that consume the propagated value.
  */
 export interface EmphasizeVariantProviderProps
     extends
@@ -41,10 +41,10 @@ export interface EmphasizeVariantProviderProps
 
 /**
  * Provides an emphasized value to descendant components,
- * enables descendant components to inherit the value.
+ * allowing them to inherit the value.
  * 
  * @example
- * ```ts
+ * ```tsx
  * import React, { ReactNode, FC } from 'react';
  * import {
  *     EmphasizeVariantProps,
@@ -56,14 +56,14 @@ export interface EmphasizeVariantProviderProps
  *     children ?: ReactNode
  * }
  * 
- * // A component that share emphasized state with child components.
+ * // A component that shares its emphasized state with descendant components.
  * export const ParentComponent: FC<ParentComponentProps> = (props) => {
- *     // Resolve emphasized value from props:
+ *     // Resolve emphasized state from props:
  *     const { emphasized } = useEmphasizeVariant(props, {
  *         defaultEmphasized: false, // fallback if not provided
  *     });
  *     
- *     // Propagate emphasized value to descendants:
+ *     // Propagate emphasized state to descendants:
  *     return (
  *         <EmphasizeVariantProvider emphasized={emphasized}>
  *             {props.children}

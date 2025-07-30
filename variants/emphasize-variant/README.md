@@ -26,7 +26,7 @@ Resolves the emphasized state along with its associated CSS class name, based on
 
 #### 💡 Usage Example
 
-```ts
+```tsx
 import React, { FC } from 'react';
 import {
     useEmphasizeVariant,
@@ -37,7 +37,7 @@ import styles from './EmphasizedBox.module.css';
 export interface EmphasizedBoxProps extends EmphasizeVariantProps {}
 
 /**
- * A box that highlights its content when emphasized.
+ * A box that conditionally emphasizes its appearance.
  */
 export const EmphasizedBox: FC<EmphasizedBoxProps> = (props) => {
     const {
@@ -60,19 +60,19 @@ export const EmphasizedBox: FC<EmphasizedBoxProps> = (props) => {
 
 #### 🧠 Emphasis Resolution Strategy
 
-The hook evaluates the effective emphasized state using a tiered approach:
+The hook determines the final emphasized state using the following priority:
 1. **Explicit Prop Override**  
    - If `props.emphasized` is `true` or `false`, it takes precedence.
 2. **Relative Resolution**  
    - If set to `'inherit'`, pulls value from context if provided (`EmphasizeVariantProvider`).
    - If set to `'invert'`, reverses the inherited value (`true ⇄ false`).
-3. **Fallback Options**  
+3. **Fallback Logic**  
    - Uses `options.defaultEmphasized` if provided.
-   - Falls back to system default if all else fails.
+   - Defaults to system default if none is provided.
 
 #### 🧬 Context Propagation
 
-Use `<EmphasizeVariantProvider>` to share emphasized state with child components:
+Use `<EmphasizeVariantProvider>` to share emphasized state with descendant components:
 
 ```tsx
 import React, { ReactNode, FC } from 'react';
@@ -87,15 +87,15 @@ export interface ParentComponentProps extends EmphasizeVariantProps {
 }
 
 /**
- * A component that share emphasized state with child components.
+ * A component that shares its emphasized state with descendant components.
  */
 export const ParentComponent: FC<ParentComponentProps> = (props) => {
-    // Resolve emphasized value from props:
+    // Resolve emphasized state from props:
     const { emphasized } = useEmphasizeVariant(props, {
         defaultEmphasized: false, // fallback if not provided
     });
     
-    // Propagate emphasized value to descendants:
+    // Propagate emphasized state to descendants:
     return (
         <EmphasizeVariantProvider emphasized={emphasized}>
             {props.children}

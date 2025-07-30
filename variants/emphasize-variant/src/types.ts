@@ -1,21 +1,21 @@
 /**
- * Props for specifying the visual emphasis of the component.
+ * Props for specifying the emphasized appearance of the component.
  * 
  * Accepts an optional `emphasized`, falling back to a default when not provided.
  */
 export interface EmphasizeVariantProps {
     /**
-     * Specifies the desired emphasized state of the component:
-     * - `true`     : visually emphasizes the component
+     * Specifies the desired emphasized appearance of the component:
+     * - `true`     : emphasizes the component
      * - `false`    : does not emphasize the component
-     * - `'inherit'`: inherits visual emphasis from a parent context
-     * - `'invert'` : flips the inherited visual emphasis (`false` ⇄ `true`)
+     * - `'inherit'`: inherits emphasized appearance from a parent context
+     * - `'invert'` : flips the inherited emphasized appearance (`true` ⇄ `false`)
      */
     emphasized          ?: boolean | 'inherit' | 'invert'
 }
 
 /**
- * Optional configuration options for specifying the default visual emphasis.
+ * Optional configuration options for specifying the default emphasized appearance.
  * 
  * Applied when the component does not explicitly provide the `emphasized` prop.
  */
@@ -27,20 +27,20 @@ export interface EmphasizeVariantOptions {
 }
 
 /**
- * Represents the final resolved emphasized state for the component, along with its associated CSS class name.
+ * Represents the final resolved emphasized state of the component, along with its associated CSS class name.
  */
 export interface ResolvedEmphasizeVariant {
     /**
-     * Indicates whether the component should appear visually emphasized.
+     * Indicates whether the component should appear emphasized.
      * 
      * Possible values:
-     * - `true`  : visually emphasizes the component
+     * - `true`  : emphasizes the component
      * - `false` : does not emphasize the component
      */
     emphasized           : boolean
     
     /**
-     * CSS class name corresponding to the resolved emphasized state.
+     * CSS class name reflecting the resolved emphasized state.
      * 
      * Possible values:
      * - `'is-emphasized'`
