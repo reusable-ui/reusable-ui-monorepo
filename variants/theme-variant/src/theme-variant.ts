@@ -36,8 +36,8 @@ import {
  * 
  * Resolution order:
  * - `'inherit'` : retrieves the theme value from context, if available.
- * - `undefined` : falls back to the default theme.
- * - Otherwise   : returns the provided theme value as-is.
+ * - `undefined` : falls back to the default theme value.
+ * - Otherwise   : uses the explicitly provided theme value as-is.
  * 
  * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
@@ -86,7 +86,7 @@ const useEffectiveThemeValue = <TTheme extends string = BasicTheme>(theme: Theme
  * @returns {ResolvedThemeVariant} - The resolved theme value along with its associated CSS class name.
  * 
  * @example
- * ```ts
+ * ```tsx
  * import React, { FC } from 'react';
  * import {
  *     useThemeVariant,

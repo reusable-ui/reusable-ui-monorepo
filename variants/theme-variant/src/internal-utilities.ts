@@ -20,7 +20,7 @@ const themeClassnameMap : Record<BasicTheme | (string & {}), `t-${BasicTheme | (
 };
 
 /**
- * Resolves and caches the CSS class name for a given theme.
+ * Resolves and caches the CSS class name for the given theme.
  * 
  * - Returns the cached class name if available.
  * - If not cached, computes `t-${theme}`, stores it, and returns the result.

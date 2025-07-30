@@ -30,8 +30,8 @@ import {
 /**
  * Props for `<ThemeVariantProvider>`.
  * 
- * Requires a `theme` prop to set the context value,
- * along with children to receive the propagated theme value.
+ * Requires a `theme` value to establish the context,
+ * and renders `children` that consume the propagated value.
  */
 export interface ThemeVariantProviderProps<TTheme extends string = BasicTheme>
     extends
@@ -42,12 +42,12 @@ export interface ThemeVariantProviderProps<TTheme extends string = BasicTheme>
 
 /**
  * Provides a theme value to descendant components,
- * enables descendant components to inherit the value.
+ * allowing them to inherit the value.
  * 
  * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
  * @example
- * ```ts
+ * ```tsx
  * import React, { ReactNode, FC } from 'react';
  * import {
  *     ThemeVariantProps,
@@ -59,7 +59,7 @@ export interface ThemeVariantProviderProps<TTheme extends string = BasicTheme>
  *     children ?: ReactNode
  * }
  * 
- * // A component that share theme with child components.
+ * // A component that shares its theme with descendant components.
  * export const ParentComponent: FC<ParentComponentProps> = (props) => {
  *     // Resolve theme value from props:
  *     const { theme } = useThemeVariant(props, {

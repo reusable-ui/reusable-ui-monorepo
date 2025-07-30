@@ -27,7 +27,7 @@ Resolves the theme value along with its associated CSS class name, based on comp
 
 #### 💡 Usage Example
 
-```ts
+```tsx
 import React, { FC } from 'react';
 import {
     useThemeVariant,
@@ -61,18 +61,18 @@ export const ThemeableCard : FC<ThemeableCardProps> = (props) => {
 
 #### 🧠 Theme Resolution Strategy
 
-The hook evaluates the effective theme using a tiered approach:
+The hook determines the final theme using the following priority:
 1. **Explicit Prop Override**  
    - If `props.theme` is a value other than `'inherit'`, it takes precedence.
 2. **Relative Resolution**  
    - If set to `'inherit'`, pulls value from context if provided (`ThemeVariantProvider`).
-3. **Fallback Options**  
+3. **Fallback Logic**  
    - Uses `options.defaultTheme` if provided.
-   - Falls back to system default if all else fails.
+   - Defaults to system default if none is provided.
 
 #### 🧬 Context Propagation
 
-Use `<ThemeVariantProvider>` to share theme with child components:
+Use `<ThemeVariantProvider>` to share theme with descendant components:
 
 ```tsx
 import React, { ReactNode, FC } from 'react';
@@ -87,7 +87,7 @@ export interface ParentComponentProps extends ThemeVariantProps {
 }
 
 /**
- * A component that share theme with child components.
+ * A component that shares its theme with descendant components.
  */
 export const ParentComponent: FC<ParentComponentProps> = (props) => {
     // Resolve theme value from props:
