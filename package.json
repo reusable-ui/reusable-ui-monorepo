@@ -70,6 +70,7 @@
     "variants/theme-variant",
     "variants/emphasize-variant",
     "variants/outline-variant",
+    "variants/mild-variant",
     "__configs/*",
     "__utilities/*",
     "__features/*",
