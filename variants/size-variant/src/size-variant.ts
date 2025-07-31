@@ -65,7 +65,7 @@ export interface ResolvedSizeVariant<TSize extends string = BasicSize> {
     size           : TSize
     
     /**
-     * CSS class name reflecting the resolved size.
+     * A CSS class name reflecting the resolved size.
      * 
      * Possible values:
      * - `'s-sm'`
