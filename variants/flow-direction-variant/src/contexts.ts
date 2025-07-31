@@ -14,7 +14,7 @@ import {
 
 
 /**
- * A React context for propagating flow direction value across the component tree.
+ * A React context for propagating the flow direction value across the component tree.
  */
 export const FlowDirectionVariantContext = createContext<FlowDirection | undefined>(/* defaultValue : */undefined);
 

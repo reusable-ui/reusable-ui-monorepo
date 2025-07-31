@@ -34,14 +34,14 @@ import {
 /**
  * Resolves the effective flow direction value based on props and context.
  * 
- * Resolution order:
- * - `'inherit'` : retrieves the flow direction value from context, if available.
- * - `'invert'`  : reverses the flow direction value from context (`'start'` ⇄ `'end'`), if available.
+ * Resolution priority:
+ * - `'inherit'` : uses the flow direction value from context, if available.
+ * - `'invert'`  : flips the flow direction value from context (`'start'` ⇄ `'end'`), if available.
  * - `undefined` : falls back to the default flow direction value.
  * - Otherwise   : uses the explicitly provided flow direction value as-is.
  * 
- * @param {FlowDirectionVariantProps['flowDirection']} flowDirection - The pre-resolved flow direction value provided from props.
- * @param {FlowDirection} defaultFlowDirection - Fallback flow direction value when context is unavailable.
+ * @param {FlowDirectionVariantProps['flowDirection']} flowDirection - The pre-resolved flow direction value from props.
+ * @param {FlowDirection} defaultFlowDirection - Fallback flow direction value when context is missing.
  * @returns {FlowDirection} - The resolved flow direction value.
  */
 const useEffectiveFlowDirectionValue = (flowDirection: FlowDirectionVariantProps['flowDirection'], defaultFlowDirection: FlowDirection): FlowDirection => {

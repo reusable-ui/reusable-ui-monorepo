@@ -70,7 +70,7 @@ export interface ResolvedFlowDirectionVariant {
     flowDirection           : FlowDirection
     
     /**
-     * CSS class name reflecting the resolved flow direction.
+     * A CSS class name reflecting the resolved flow direction.
      * 
      * Possible values:
      * - `'f-start'`

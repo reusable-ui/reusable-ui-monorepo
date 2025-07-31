@@ -69,8 +69,8 @@ The hook determines the final flow direction using the following priority:
 1. **Explicit Prop Override**  
    - If `props.flowDirection` is `'start'` or `'end'`, it takes precedence.
 2. **Relative Resolution**  
-   - If set to `'inherit'`, pulls value from context if provided (`FlowDirectionVariantProvider`).
-   - If set to `'invert'`, reverses the inherited value (`'start' ⇄ 'end'`).
+   - If set to `'inherit'`, uses the value from context, if available (`FlowDirectionVariantProvider`).
+   - If set to `'invert'`, flips the inherited value (`'start' ⇄ 'end'`).
 3. **Fallback Logic**  
    - Uses `options.defaultFlowDirection` if provided.
    - Defaults to system default if none is provided.

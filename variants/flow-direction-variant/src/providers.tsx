@@ -40,7 +40,7 @@ export interface FlowDirectionVariantProviderProps
 }
 
 /**
- * Provides a flow direction value to descendant components,
+ * Provides a `flowDirection` value to descendant components,
  * allowing them to inherit the value.
  * 
  * @example
