@@ -40,7 +40,7 @@ export interface ResolvedOutlineVariant {
     outlined           : boolean
     
     /**
-     * CSS class name reflecting the resolved outlined state.
+     * A CSS class name reflecting the resolved outlined state.
      * 
      * Possible values:
      * - `'is-outlined'`

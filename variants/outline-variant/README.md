@@ -7,7 +7,7 @@ Provides hooks and CSS helpers for outline resolution and conditional styling �
 ✔ Boolean-based outlined variant with inheritance and inversion  
 ✔ Hook-based resolution with customizable fallback behavior  
 ✔ CSS selectors and conditional rule helpers for outline-aware styling  
-✔ Seamless integration appearance, layout, and interaction systems
+✔ Seamless integration across appearance, layout, and interaction systems
 
 ## 📦 Installation
 Install **@reusable-ui/outline-variant** via npm or yarn:
@@ -64,8 +64,8 @@ The hook determines the final outlined state using the following priority:
 1. **Explicit Prop Override**  
    - If `props.outlined` is `true` or `false`, it takes precedence.
 2. **Relative Resolution**  
-   - If set to `'inherit'`, pulls value from context if provided (`OutlineVariantProvider`).
-   - If set to `'invert'`, reverses the inherited value (`true ⇄ false`).
+   - If set to `'inherit'`, uses the value from context, if available (`OutlineVariantProvider`).
+   - If set to `'invert'`, flips the inherited value (`true` ⇄ `false`).
 3. **Fallback Logic**  
    - Uses `options.defaultOutlined` if provided.
    - Defaults to system default if none is provided.

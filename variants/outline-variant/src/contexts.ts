@@ -9,7 +9,7 @@ import {
 
 
 /**
- * A React context for propagating outlined value across the component tree.
+ * A React context for propagating the outlined value across the component tree.
  */
 export const OutlineVariantContext = createContext<boolean | undefined>(/* defaultValue : */undefined);
 

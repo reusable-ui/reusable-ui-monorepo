@@ -40,7 +40,7 @@ export interface OutlineVariantProviderProps
 }
 
 /**
- * Provides an outlined value to descendant components,
+ * Provides an `outlined` value to descendant components,
  * allowing them to inherit the value.
  * 
  * @example

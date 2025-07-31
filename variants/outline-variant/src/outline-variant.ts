@@ -33,14 +33,14 @@ import {
 /**
  * Resolves the effective outlined value based on props and context.
  * 
- * Resolution order:
- * - `'inherit'` : retrieves the outlined value from context, if available.
- * - `'invert'`  : reverses the outlined value from context (`true` ⇄ `false`), if available.
+ * Resolution priority:
+ * - `'inherit'` : uses the outlined value from context, if available.
+ * - `'invert'`  : flips the outlined value from context (`true` ⇄ `false`), if available.
  * - `undefined` : falls back to the default outlined value.
  * - Otherwise   : uses the explicitly provided outlined value as-is.
  * 
- * @param {OutlineVariantProps['outlined']} outlined - The pre-resolved outlined value provided from props.
- * @param {boolean} defaultOutlined - Fallback outlined value when context is unavailable.
+ * @param {OutlineVariantProps['outlined']} outlined - The pre-resolved outlined value from props.
+ * @param {boolean} defaultOutlined - Fallback outlined value when context is missing.
  * @returns {boolean} - The resolved outlined value.
  */
 const useEffectiveOutlinedValue = (outlined: OutlineVariantProps['outlined'], defaultOutlined: boolean): boolean => {
