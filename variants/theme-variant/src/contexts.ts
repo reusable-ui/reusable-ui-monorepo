@@ -14,7 +14,7 @@ import {
 
 
 /**
- * A React context for propagating theme value across the component tree.
+ * A React context for propagating the theme value across the component tree.
  */
 export const ThemeVariantContext = createContext<BasicTheme | (string & {}) | undefined>(/* defaultValue : */undefined);
 

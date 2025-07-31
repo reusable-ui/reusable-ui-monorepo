@@ -65,7 +65,7 @@ The hook determines the final theme using the following priority:
 1. **Explicit Prop Override**  
    - If `props.theme` is a value other than `'inherit'`, it takes precedence.
 2. **Relative Resolution**  
-   - If set to `'inherit'`, pulls value from context if provided (`ThemeVariantProvider`).
+   - If set to `'inherit'`, uses the value from context, if available (`ThemeVariantProvider`).
 3. **Fallback Logic**  
    - Uses `options.defaultTheme` if provided.
    - Defaults to system default if none is provided.

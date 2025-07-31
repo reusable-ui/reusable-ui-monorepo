@@ -83,7 +83,7 @@ export interface ResolvedThemeVariant<TTheme extends string = BasicTheme> {
     theme           : TTheme
     
     /**
-     * CSS class name reflecting the resolved theme.
+     * A CSS class name reflecting the resolved theme.
      * 
      * Possible values:
      * - `'t-primary'`

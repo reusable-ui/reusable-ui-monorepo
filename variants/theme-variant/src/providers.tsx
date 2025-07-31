@@ -41,7 +41,7 @@ export interface ThemeVariantProviderProps<TTheme extends string = BasicTheme>
 }
 
 /**
- * Provides a theme value to descendant components,
+ * Provides a `theme` value to descendant components,
  * allowing them to inherit the value.
  * 
  * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
