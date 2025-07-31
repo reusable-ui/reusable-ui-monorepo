@@ -78,8 +78,8 @@ The hook determines the final orientation using the following priority:
 1. **Explicit Prop Override**  
    - If `props.orientation` is `'inline'` or `'block'`, it takes precedence.
 2. **Relative Resolution**  
-   - If set to `'inherit'`, pulls value from context if provided (`OrientationVariantProvider`).
-   - If set to `'invert'`, reverses the inherited value (`'inline' ⇄ 'block'`).
+   - If set to `'inherit'`, uses the value from context, if available (`OrientationVariantProvider`).
+   - If set to `'invert'`, flips the inherited value (`'inline' ⇄ 'block'`).
 3. **Fallback Logic**  
    - Uses `options.defaultOrientation` if provided.
    - Defaults to system default if none is provided.

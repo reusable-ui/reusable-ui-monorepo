@@ -14,7 +14,7 @@ import {
 
 
 /**
- * A React context for propagating orientation value across the component tree.
+ * A React context for propagating the orientation value across the component tree.
  */
 export const OrientationVariantContext = createContext<Orientation | undefined>(/* defaultValue : */undefined);
 

@@ -34,14 +34,14 @@ import {
 /**
  * Resolves the effective orientation value based on props and context.
  * 
- * Resolution order:
- * - `'inherit'` : retrieves the orientation value from context, if available.
- * - `'invert'`  : reverses the orientation value from context (`'inline'` ⇄ `'block'`), if available.
+ * Resolution priority:
+ * - `'inherit'` : uses the orientation value from context, if available.
+ * - `'invert'`  : flips the orientation value from context (`'inline'` ⇄ `'block'`), if available.
  * - `undefined` : falls back to the default orientation value.
  * - Otherwise   : uses the explicitly provided orientation value as-is.
  * 
- * @param {OrientationVariantProps['orientation']} orientation - The pre-resolved orientation value provided from props.
- * @param {Orientation} defaultOrientation - Fallback orientation value when context is unavailable.
+ * @param {OrientationVariantProps['orientation']} orientation - The pre-resolved orientation value from props.
+ * @param {Orientation} defaultOrientation - Fallback orientation value when context is missing.
  * @returns {Orientation} - The resolved orientation value.
  */
 const useEffectiveOrientationValue = (orientation: OrientationVariantProps['orientation'], defaultOrientation: Orientation): Orientation => {

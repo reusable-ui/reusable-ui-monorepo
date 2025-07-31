@@ -53,7 +53,7 @@ export interface ResolvedOrientationVariant {
     orientation           : Orientation
     
     /**
-     * CSS class name reflecting the resolved orientation.
+     * A CSS class name reflecting the resolved orientation.
      * 
      * Possible values:
      * - `'o-inline'`
