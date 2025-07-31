@@ -33,14 +33,14 @@ import {
 /**
  * Resolves the effective emphasized value based on props and context.
  * 
- * Resolution order:
- * - `'inherit'` : retrieves the emphasized value from context, if available.
- * - `'invert'`  : reverses the emphasized value from context (`true` ⇄ `false`), if available.
+ * Resolution priority:
+ * - `'inherit'` : uses the emphasized value from context, if available.
+ * - `'invert'`  : flips the emphasized value from context (`true` ⇄ `false`), if available.
  * - `undefined` : falls back to the default emphasized value.
  * - Otherwise   : uses the explicitly provided emphasized value as-is.
  * 
- * @param {EmphasizeVariantProps['emphasized']} emphasized - The pre-resolved emphasized value provided from props.
- * @param {boolean} defaultEmphasized - Fallback emphasized value when context is unavailable.
+ * @param {EmphasizeVariantProps['emphasized']} emphasized - The pre-resolved emphasized value from props.
+ * @param {boolean} defaultEmphasized - Fallback emphasized value when context is missing.
  * @returns {boolean} - The resolved emphasized value.
  */
 const useEffectiveEmphasizedValue = (emphasized: EmphasizeVariantProps['emphasized'], defaultEmphasized: boolean): boolean => {

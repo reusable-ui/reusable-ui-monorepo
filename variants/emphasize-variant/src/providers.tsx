@@ -40,7 +40,7 @@ export interface EmphasizeVariantProviderProps
 }
 
 /**
- * Provides an emphasized value to descendant components,
+ * Provides an `emphasized` value to descendant components,
  * allowing them to inherit the value.
  * 
  * @example

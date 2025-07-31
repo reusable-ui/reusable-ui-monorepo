@@ -9,7 +9,7 @@ import {
 
 
 /**
- * A React context for propagating emphasized value across the component tree.
+ * A React context for propagating the emphasized value across the component tree.
  */
 export const EmphasizeVariantContext = createContext<boolean | undefined>(/* defaultValue : */undefined);
 

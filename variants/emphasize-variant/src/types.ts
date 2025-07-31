@@ -40,7 +40,7 @@ export interface ResolvedEmphasizeVariant {
     emphasized           : boolean
     
     /**
-     * CSS class name reflecting the resolved emphasized state.
+     * A CSS class name reflecting the resolved emphasized state.
      * 
      * Possible values:
      * - `'is-emphasized'`
