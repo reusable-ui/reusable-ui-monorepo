@@ -1,5 +1,5 @@
 /**
- * Props for specifying the mild appearance of the component.
+ * Props for specifying the mild (reading friendly) appearance of the component.
  * 
  * Accepts an optional `mild`, falling back to a default when not provided.
  */
