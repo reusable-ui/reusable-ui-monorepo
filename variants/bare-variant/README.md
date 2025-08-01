@@ -4,8 +4,7 @@ A utility for managing bare styling (frameless, minimal layout) consistently acr
 Provides hooks and CSS helpers for bare-enabled resolution and conditional styling — ideal for lists, cards, tables, and any layout elements.
 
 ## ✨ Features
-✔ Boolean-based bare variant with inheritance  
-✔ Extendable to string tokens for advanced layout modes
+✔ Boolean-based bare variant (default), extendable to string tokens for advanced layout modes
 ✔ Hook-based resolution with customizable fallback behavior  
 ✔ CSS selectors and conditional rule helpers for bare-aware styling  
 ✔ Seamless integration across appearance, spacings, and layout systems
