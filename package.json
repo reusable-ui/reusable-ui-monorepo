@@ -71,6 +71,7 @@
     "variants/emphasize-variant",
     "variants/outline-variant",
     "variants/mild-variant",
+    "variants/bare-variant",
     "__configs/*",
     "__utilities/*",
     "__features/*",
