@@ -42,6 +42,7 @@
 @reusable-ui/outline-variant
 @reusable-ui/mild-variant
 @reusable-ui/bare-variant
+@reusable-ui/styling-variants
 
 // Reusable-ui variants: (planned):
 |-----------------------------|-----------------|----------------------------------|-----------|----------|----------------|------------------|---------------------------------------------------------------|

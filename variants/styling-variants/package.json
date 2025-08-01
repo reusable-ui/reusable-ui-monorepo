@@ -1,0 +1,54 @@
+{
+  "name": "@reusable-ui/styling-variants",
+  "version": "7.0.0",
+  "description": "A utility for extracting and filtering styling-related variant props consistently across React components.",
+  "keywords": [
+    "prop-filtering",
+    "variant",
+    "ui",
+    "styling",
+    "utility",
+    "design-system",
+    "component-style",
+    "hooks",
+    "react",
+    "reusable-ui"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "variants/styling-variants"
+  },
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "peerDependencies": {
+    "@reusable-ui/emphasize-variant": "^7.0.0",
+    "@reusable-ui/mild-variant": "^7.0.0",
+    "@reusable-ui/outline-variant": "^7.0.0",
+    "@reusable-ui/size-variant": "^7.0.0",
+    "@reusable-ui/theme-variant": "^7.0.0"
+  }
+}
