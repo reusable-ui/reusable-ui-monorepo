@@ -48,17 +48,21 @@
 |-----------------------------|-----------------|----------------------------------|-----------|----------|----------------|------------------|---------------------------------------------------------------|
 |  Interface Name             |  Prop Name      |  Values                          |  Inherit  |  Invert  |  Hook Default  |  System Default  |  Description                                                  |
 |-----------------------------|-----------------|----------------------------------|-----------|----------|----------------|------------------|---------------------------------------------------------------|
+| Layout Variants: -----------|-----------------|----------------------------------|-----------|----------|----------------|------------------|---------------------------------------------------------------|
 | OrientationVariantProps     | orientation     | inline, block                    |    Yes    |   Yes    |     block      |      block       | Controls horizontal/vertical orientation                      |
 | FlowDirectionVariantProps   | flowDirection   | start, end                       |    Yes    |   Yes    |      end       |       end        | Controls the direction on main axis                           |
+| BareVariantProps            | bare            | boolean                          |    No     |          |     false      |                  | Strips padding, background, border — minimal appearance       |
+|                             |                 |                                  |           |          |                |                  |                                                               |
+| Styling Variants: ----------|-----------------|----------------------------------|-----------|----------|----------------|------------------|---------------------------------------------------------------|
 | SizeVariantProps            | size            | sm, md, lg, custom               |    Yes    |          |    inherit     |        md        | Sets component sizing, including custom token or value        |
 | ThemeVariantProps           | theme           | primary, secondary, ..., custom  |    Yes    |          |    inherit     |     primary      | Applies themed visual identity from palette or context        |
 | EmphasizeVariantProps       | emphasized      | boolean                          |    Yes    |   Yes    |    inherit     |      false       | Enables gradient background styling                           |
 | OutlineVariantProps         | outlined        | boolean                          |    Yes    |   Yes    |    inherit     |      false       | Enables outlined style (border-only, no fill)                 |
 | MildVariantProps            | mild            | boolean                          |    Yes    |   Yes    |    inherit     |      false       | Enables soft-tone background styling                          |
 |                             |                 |                                  |           |          |                |                  |                                                               |
-| BareVariantProps            | bare            | boolean                          |    No     |          |                |                  | Strips padding, background, border — minimal appearance       |
+| Utilities: -----------------|-----------------|----------------------------------|-----------|----------|----------------|------------------|---------------------------------------------------------------|
+| StylingVariantsProps        | (extends above) | (all styling variants unified)   |     -     |          |                |                  | Provides bundled variant props for common component usage     |
 | ColorVariantUtils (utility) | (varies)        | (computed from theme or context) |     -     |          |                |                  | Provides contextual text and icon coloring behavior           |
-| BasicVariantProps           | (extends above) | (all above props unified)        |     -     |          |                |                  | Provides bundled variant props for common component usage     |
 |-----------------------------|-----------------|----------------------------------|-----------|----------|----------------|------------------|---------------------------------------------------------------|
 
 Default inheritance case example:
