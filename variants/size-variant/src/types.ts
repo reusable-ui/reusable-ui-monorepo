@@ -23,12 +23,13 @@ export type BasicSize =
 export interface SizeVariantProps<TSize extends string = BasicSize> {
     /**
      * Specifies the desired size of the component:
-     * - `'sm'`: small size
-     * - `'md'`: medium size (default)
-     * - `'lg'`: large size
+     * - `'sm'`      : small size
+     * - `'md'`      : medium size (default)
+     * - `'lg'`      : large size
+     * - `'inherit'` : inherits size from a parent context
      * - Or any custom size token defined by the design system
      */
-    size           ?: TSize
+    size           ?: TSize | 'inherit'
 }
 
 /**
