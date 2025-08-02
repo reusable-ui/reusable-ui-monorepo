@@ -6,11 +6,11 @@ import {
 
 
 /**
- * The default component size to apply when no `size` prop is explicitly provided.
+ * A context-level default component size to apply when no `size` prop is explicitly provided.
  * 
  * - `'md'`: medium — commonly used as the regular or baseline size.
  */
-export const defaultSize : BasicSize = 'md';
+export const contextDefaultSize : BasicSize = 'md';
 
 /**
  * The default list of supported size variants used across the system.

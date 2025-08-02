@@ -11,7 +11,7 @@ import {
     type ResolvedSizeVariant,
 } from '../dist/types.js'
 import {
-    defaultSize,
+    contextDefaultSize,
     defaultSupportedSizes,
 } from '../dist/internal-defaults.js'
 import {
@@ -193,8 +193,8 @@ describe('useSizeVariant()', () => {
         {
             title              : 'falls back to system default when prop and option are missing',
             expectedResult     : {
-                size           : defaultSize,
-                sizeClassname  : `s-${defaultSize}`,
+                size           : contextDefaultSize,
+                sizeClassname  : `s-${contextDefaultSize}`,
             },
         },
         {
@@ -204,8 +204,8 @@ describe('useSizeVariant()', () => {
                 size           : 'inherit',
             },
             expectedResult     : {
-                size           : defaultSize,
-                sizeClassname  : `s-${defaultSize}`,
+                size           : contextDefaultSize,
+                sizeClassname  : `s-${contextDefaultSize}`,
             },
         },
         
@@ -285,8 +285,8 @@ describe('useSizeVariant()', () => {
                 size           : 'inherit',
             },
             expectedResult     : {
-                size           : (defaultSupportedSizes as string[]).includes(size) ? size        : defaultSize,
-                sizeClassname  : (defaultSupportedSizes as string[]).includes(size) ? `s-${size}` : `s-${defaultSize}`,
+                size           : (defaultSupportedSizes as string[]).includes(size) ? size        : contextDefaultSize,
+                sizeClassname  : (defaultSupportedSizes as string[]).includes(size) ? `s-${size}` : `s-${contextDefaultSize}`,
             },
         }) satisfies SizeVariantTestCase),
         {

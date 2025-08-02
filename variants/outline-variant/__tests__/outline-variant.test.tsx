@@ -10,7 +10,7 @@ import {
     type ResolvedOutlineVariant,
 } from '../dist/types.js'
 import {
-    defaultOutlined,
+    contextDefaultOutlined,
 } from '../dist/internal-defaults.js'
 import {
     useOutlineVariant,
@@ -149,8 +149,8 @@ describe('useOutlineVariant()', () => {
         {
             title                   : 'falls back to system default when prop and option are missing',
             expectedResult          : {
-                outlined            : defaultOutlined,
-                outlinedClassname   : defaultOutlined ? 'is-outlined' : 'not-outlined',
+                outlined            : contextDefaultOutlined,
+                outlinedClassname   : contextDefaultOutlined ? 'is-outlined' : 'not-outlined',
             },
         },
         {
@@ -160,8 +160,8 @@ describe('useOutlineVariant()', () => {
                 outlined            : 'inherit',
             },
             expectedResult          : {
-                outlined            : defaultOutlined,
-                outlinedClassname   : defaultOutlined ? 'is-outlined' : 'not-outlined',
+                outlined            : contextDefaultOutlined,
+                outlinedClassname   : contextDefaultOutlined ? 'is-outlined' : 'not-outlined',
             },
         },
         {
@@ -171,8 +171,8 @@ describe('useOutlineVariant()', () => {
                 outlined            : 'invert',
             },
             expectedResult          : {
-                outlined            : defaultOutlined,
-                outlinedClassname   : defaultOutlined ? 'is-outlined' : 'not-outlined',
+                outlined            : contextDefaultOutlined,
+                outlinedClassname   : contextDefaultOutlined ? 'is-outlined' : 'not-outlined',
             },
         },
         {

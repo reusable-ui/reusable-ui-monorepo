@@ -15,7 +15,7 @@ import {
 
 // Defaults:
 import {
-    defaultEmphasized,
+    contextDefaultEmphasized,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -139,7 +139,7 @@ export const useEmphasizeVariant = (props: EmphasizeVariantProps, options?: Emph
     
     
     // Resolve the effective emphasized value:
-    const effectiveIsEmphasized = useEffectiveEmphasizedValue(emphasized, options?.defaultEmphasized ?? defaultEmphasized);
+    const effectiveIsEmphasized = useEffectiveEmphasizedValue(emphasized, options?.defaultEmphasized ?? contextDefaultEmphasized);
     
     
     

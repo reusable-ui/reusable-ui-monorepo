@@ -16,7 +16,7 @@ import {
 
 // Defaults:
 import {
-    defaultTheme,
+    contextDefaultTheme,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -125,7 +125,7 @@ export const useThemeVariant = <TTheme extends string = BasicTheme>(props: Theme
     
     
     // Resolve the effective theme value:
-    const effectiveTheme = useEffectiveThemeValue<TTheme>(theme, options?.defaultTheme ?? (defaultTheme as TTheme));
+    const effectiveTheme = useEffectiveThemeValue<TTheme>(theme, options?.defaultTheme ?? (contextDefaultTheme as TTheme));
     
     
     

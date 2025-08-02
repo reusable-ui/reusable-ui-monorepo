@@ -10,7 +10,7 @@ import {
     type ResolvedEmphasizeVariant,
 } from '../dist/types.js'
 import {
-    defaultEmphasized,
+    contextDefaultEmphasized,
 } from '../dist/internal-defaults.js'
 import {
     useEmphasizeVariant,
@@ -149,8 +149,8 @@ describe('useEmphasizeVariant()', () => {
         {
             title                   : 'falls back to system default when prop and option are missing',
             expectedResult          : {
-                emphasized          : defaultEmphasized,
-                emphasizedClassname : defaultEmphasized ? 'is-emphasized' : 'not-emphasized',
+                emphasized          : contextDefaultEmphasized,
+                emphasizedClassname : contextDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
             },
         },
         {
@@ -160,8 +160,8 @@ describe('useEmphasizeVariant()', () => {
                 emphasized          : 'inherit',
             },
             expectedResult          : {
-                emphasized          : defaultEmphasized,
-                emphasizedClassname : defaultEmphasized ? 'is-emphasized' : 'not-emphasized',
+                emphasized          : contextDefaultEmphasized,
+                emphasizedClassname : contextDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
             },
         },
         {
@@ -171,8 +171,8 @@ describe('useEmphasizeVariant()', () => {
                 emphasized          : 'invert',
             },
             expectedResult          : {
-                emphasized          : defaultEmphasized,
-                emphasizedClassname : defaultEmphasized ? 'is-emphasized' : 'not-emphasized',
+                emphasized          : contextDefaultEmphasized,
+                emphasizedClassname : contextDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
             },
         },
         {

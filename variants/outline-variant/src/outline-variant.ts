@@ -15,7 +15,7 @@ import {
 
 // Defaults:
 import {
-    defaultOutlined,
+    contextDefaultOutlined,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -139,7 +139,7 @@ export const useOutlineVariant = (props: OutlineVariantProps, options?: OutlineV
     
     
     // Resolve the effective outlined value:
-    const effectiveIsOutlined = useEffectiveOutlinedValue(outlined, options?.defaultOutlined ?? defaultOutlined);
+    const effectiveIsOutlined = useEffectiveOutlinedValue(outlined, options?.defaultOutlined ?? contextDefaultOutlined);
     
     
     

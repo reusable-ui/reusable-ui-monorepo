@@ -16,7 +16,7 @@ import {
 
 // Defaults:
 import {
-    defaultOrientation,
+    contextDefaultOrientation,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -154,7 +154,7 @@ export const useOrientationVariant = (props: OrientationVariantProps, options?: 
     
     
     // Resolve the effective orientation value:
-    const effectiveOrientation = useEffectiveOrientationValue(orientation, options?.defaultOrientation ?? defaultOrientation);
+    const effectiveOrientation = useEffectiveOrientationValue(orientation, options?.defaultOrientation ?? contextDefaultOrientation);
     
     
     
