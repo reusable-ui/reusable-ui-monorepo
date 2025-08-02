@@ -9,9 +9,13 @@ import {
  * Maps each size to its corresponding CSS class name.
  */
 const sizeClassnameMap : Record<BasicSize | (string & {}), `s-${BasicSize | (string & {})}`> = {
-    'sm' : 's-sm',
-    'md' : 's-md',
-    'lg' : 's-lg',
+    'xs'  : 's-xs',
+    'sm'  : 's-sm',
+    'md'  : 's-md',
+    'lg'  : 's-lg',
+    'xl'  : 's-xl',
+    '1em' : 's-1em',
+    '1lh' : 's-1lh',
 };
 
 /**
