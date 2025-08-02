@@ -81,9 +81,9 @@ const useEffectiveThemeValue = <TTheme extends string = BasicTheme>(theme: Theme
  * 
  * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
- * @param {ThemeVariantProps} props - The component props that may include a `theme` value.
- * @param {ThemeVariantOptions} options - An optional configuration specifying a default theme when no `theme` prop is explicitly provided.
- * @returns {ResolvedThemeVariant} - The resolved theme value along with its associated CSS class name.
+ * @param {ThemeVariantProps<TTheme>} props - The component props that may include a `theme` value.
+ * @param {ThemeVariantOptions<TTheme>} options - An optional configuration specifying a default theme when no `theme` prop is explicitly provided.
+ * @returns {ResolvedThemeVariant<TTheme>} - The resolved theme value along with its associated CSS class name.
  * 
  * @example
  * ```tsx
