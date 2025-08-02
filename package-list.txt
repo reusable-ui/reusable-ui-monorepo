@@ -51,7 +51,7 @@
 | Layout Variants: -----------|-----------------|----------------------------------|-----------|----------|----------------|------------------|---------------------------------------------------------------|
 | OrientationVariantProps     | orientation     | inline, block                    |    Yes    |   Yes    |     block      |      block       | Controls horizontal/vertical orientation                      |
 | FlowDirectionVariantProps   | flowDirection   | start, end                       |    Yes    |   Yes    |      end       |       end        | Controls the direction on main axis                           |
-| BareVariantProps            | bare            | boolean                          |    No     |          |     false      |                  | Strips padding, background, border — minimal appearance       |
+| BareVariantProps            | bare            | boolean                          |    No     |   N/A    |     false      |       N/A        | Strips padding, background, border — minimal appearance       |
 |-----------------------------|-----------------|----------------------------------|-----------|----------|----------------|------------------|---------------------------------------------------------------|
 | Styling Variants: ----------|-----------------|----------------------------------|-----------|----------|----------------|------------------|---------------------------------------------------------------|
 | SizeVariantProps            | size            | sm, md, lg, custom               |    Yes    |          |    inherit     |        md        | Sets component sizing, including custom token or value        |
