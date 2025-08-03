@@ -1,16 +1,28 @@
 // Types:
 import {
     type BasicSize,
+    type SizeVariantProps,
 }                           from './types.js'
 
 
 
 /**
- * A context-level default component size to apply when no `size` prop is explicitly provided.
+ * A default intermediate size to apply when no `size` prop is explicitly provided.
+ * 
+ * This value serves as a transitional fallback before attempting context resolution.
+ * 
+ * - `'inherit'`: inherits size from a parent context.
+ */
+export const semiDefaultSize       : Required<SizeVariantProps<BasicSize>>['size'] = 'inherit';
+
+
+
+/**
+ * A default final size to apply when no effective `size` value can be resolved.
  * 
  * - `'md'`: medium — commonly used as the regular or baseline size.
  */
-export const contextDefaultSize : BasicSize = 'md';
+export const finalDefaultSize      : BasicSize = 'md';
 
 /**
  * The default list of supported size variants used across the system.

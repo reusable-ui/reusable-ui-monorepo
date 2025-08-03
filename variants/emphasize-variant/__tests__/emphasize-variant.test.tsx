@@ -10,7 +10,7 @@ import {
     type ResolvedEmphasizeVariant,
 } from '../dist/types.js'
 import {
-    contextDefaultEmphasized,
+    finalDefaultEmphasized,
 } from '../dist/internal-defaults.js'
 import {
     useEmphasizeVariant,
@@ -149,8 +149,24 @@ describe('useEmphasizeVariant()', () => {
         {
             title                   : 'falls back to system default when prop and option are missing',
             expectedResult          : {
-                emphasized          : contextDefaultEmphasized,
-                emphasizedClassname : contextDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
+                emphasized          : finalDefaultEmphasized,
+                emphasizedClassname : finalDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
+            },
+        },
+        {
+            title                   : 'falls back to parent`s: not-emphasized when prop and option are missing',
+            parentEmphasized        : false,
+            expectedResult          : {
+                emphasized          : false,
+                emphasizedClassname : 'not-emphasized',
+            },
+        },
+        {
+            title                   : 'falls back to parent`s: is-emphasized when prop and option are missing',
+            parentEmphasized        : true,
+            expectedResult          : {
+                emphasized          : true,
+                emphasizedClassname : 'is-emphasized',
             },
         },
         {
@@ -160,8 +176,8 @@ describe('useEmphasizeVariant()', () => {
                 emphasized          : 'inherit',
             },
             expectedResult          : {
-                emphasized          : contextDefaultEmphasized,
-                emphasizedClassname : contextDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
+                emphasized          : finalDefaultEmphasized,
+                emphasizedClassname : finalDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
             },
         },
         {
@@ -171,8 +187,8 @@ describe('useEmphasizeVariant()', () => {
                 emphasized          : 'invert',
             },
             expectedResult          : {
-                emphasized          : contextDefaultEmphasized,
-                emphasizedClassname : contextDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
+                emphasized          : finalDefaultEmphasized,
+                emphasizedClassname : finalDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
             },
         },
         {

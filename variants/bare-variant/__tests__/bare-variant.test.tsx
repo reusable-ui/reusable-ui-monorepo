@@ -10,7 +10,7 @@ import {
     type ResolvedBareVariant,
 } from '../dist/types.js'
 import {
-    contextDefaultBare,
+    finalDefaultBare,
 } from '../dist/internal-defaults.js'
 import {
     useBareVariant,
@@ -174,8 +174,8 @@ describe('useBareVariant()', () => {
         {
             title             : 'falls back to system default when prop and option are missing',
             expectedResult    : {
-                bare          : contextDefaultBare,
-                bareClassname : contextDefaultBare ? 'is-bare' : 'not-bare',
+                bare          : finalDefaultBare,
+                bareClassname : finalDefaultBare ? 'is-bare' : 'not-bare',
             },
         },
         

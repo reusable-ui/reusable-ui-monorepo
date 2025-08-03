@@ -16,7 +16,8 @@ import {
 
 // Defaults:
 import {
-    contextDefaultSize,
+    semiDefaultSize,
+    finalDefaultSize,
     defaultSupportedSizes,
 }                           from './internal-defaults.js'
 
@@ -37,17 +38,16 @@ import {
  * 
  * Resolution priority:
  * - `'inherit'` : uses the size value from context, if available.
- * - `undefined` : falls back to the default size value.
  * - Otherwise   : uses the explicitly provided size value as-is.
  * 
  * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
  * 
- * @param {SizeVariantProps['size']} size - The pre-resolved size value from props.
+ * @param {Required<SizeVariantProps<TSize>>['size']} size - The pre-resolved size value from props.
  * @param {TSize} defaultSize - Fallback size value when context is missing.
  * @param {TSize[]} supportedSizes - The list of supported sizes for validation.
  * @returns {TSize} - The resolved size value.
  */
-const useEffectiveSizeValue = <TSize extends string = BasicSize>(size: SizeVariantProps<TSize>['size'], defaultSize: TSize, supportedSizes: TSize[]): TSize => {
+const useEffectiveSizeValue = <TSize extends string = BasicSize>(size: Required<SizeVariantProps<TSize>>['size'], defaultSize: TSize, supportedSizes: TSize[]): TSize => {
     switch (size) {
         // If the size is 'inherit', use the context value:
         case 'inherit' : {
@@ -64,11 +64,6 @@ const useEffectiveSizeValue = <TSize extends string = BasicSize>(size: SizeVaria
             // Otherwise, fallback to the default size:
             return defaultSize;
         }
-        
-        
-        
-        // If the size is undefined, return the default size:
-        case undefined : return defaultSize;
         
         
         
@@ -160,15 +155,27 @@ export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVari
 export function useSizeVariant(props: SizeVariantProps<BasicSize>): ResolvedSizeVariant<BasicSize>;
 
 export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVariantProps<TSize>, options?: SizeVariantOptions<TSize>): ResolvedSizeVariant<TSize> {
+    // Extract options and assign defaults:
+    const {
+        defaultSize    = finalDefaultSize      as TSize,
+        supportedSizes = defaultSupportedSizes as TSize[],
+    } = options ?? {};
+    
+    const {
+        defaultSize    : intermediateDefaultSize = semiDefaultSize as TSize | 'inherit',
+    } = options ?? {};
+    
+    
+    
     // Extract props and assign defaults:
     const {
-        size,
+        size           = intermediateDefaultSize,
     } = props;
     
     
     
     // Resolve the effective size value:
-    const effectiveSize = useEffectiveSizeValue<TSize>(size, options?.defaultSize ?? (contextDefaultSize as TSize), options?.supportedSizes ?? (defaultSupportedSizes as TSize[]));
+    const effectiveSize = useEffectiveSizeValue<TSize>(size, defaultSize, supportedSizes);
     
     
     

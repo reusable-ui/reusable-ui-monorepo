@@ -16,7 +16,8 @@ import {
 
 // Defaults:
 import {
-    contextDefaultTheme,
+    semiDefaultTheme,
+    finalDefaultTheme,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -36,16 +37,15 @@ import {
  * 
  * Resolution priority:
  * - `'inherit'` : uses the theme value from context, if available.
- * - `undefined` : falls back to the default theme value.
  * - Otherwise   : uses the explicitly provided theme value as-is.
  * 
  * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
- * @param {ThemeVariantProps['theme']} theme - The pre-resolved theme value from props.
+ * @param {Required<ThemeVariantProps<TTheme>>['theme']} theme - The pre-resolved theme value from props.
  * @param {TTheme} defaultTheme - Fallback theme value when context is missing.
  * @returns {TTheme} - The resolved theme value.
  */
-const useEffectiveThemeValue = <TTheme extends string = BasicTheme>(theme: ThemeVariantProps<TTheme>['theme'], defaultTheme: TTheme): TTheme => {
+const useEffectiveThemeValue = <TTheme extends string = BasicTheme>(theme: Required<ThemeVariantProps<TTheme>>['theme'], defaultTheme: TTheme): TTheme => {
     switch (theme) {
         // If the theme is 'inherit', use the context value:
         case 'inherit' : {
@@ -62,11 +62,6 @@ const useEffectiveThemeValue = <TTheme extends string = BasicTheme>(theme: Theme
             // Otherwise, fallback to the default theme:
             return defaultTheme;
         }
-        
-        
-        
-        // If the theme is undefined, return the default theme:
-        case undefined : return defaultTheme;
         
         
         
@@ -117,15 +112,26 @@ const useEffectiveThemeValue = <TTheme extends string = BasicTheme>(theme: Theme
  * ```
  */
 export const useThemeVariant = <TTheme extends string = BasicTheme>(props: ThemeVariantProps<TTheme>, options?: ThemeVariantOptions<TTheme>): ResolvedThemeVariant<TTheme> => {
+    // Extract options and assign defaults:
+    const {
+        defaultTheme = finalDefaultTheme as TTheme,
+    } = options ?? {};
+    
+    const {
+        defaultTheme : intermediateDefaultTheme = semiDefaultTheme as TTheme | 'inherit',
+    } = options ?? {};
+    
+    
+    
     // Extract props and assign defaults:
     const {
-        theme,
+        theme        = intermediateDefaultTheme,
     } = props;
     
     
     
     // Resolve the effective theme value:
-    const effectiveTheme = useEffectiveThemeValue<TTheme>(theme, options?.defaultTheme ?? (contextDefaultTheme as TTheme));
+    const effectiveTheme = useEffectiveThemeValue<TTheme>(theme, defaultTheme);
     
     
     

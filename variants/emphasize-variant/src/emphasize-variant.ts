@@ -15,7 +15,8 @@ import {
 
 // Defaults:
 import {
-    contextDefaultEmphasized,
+    semiDefaultEmphasized,
+    finalDefaultEmphasized,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -36,14 +37,13 @@ import {
  * Resolution priority:
  * - `'inherit'` : uses the emphasized value from context, if available.
  * - `'invert'`  : flips the emphasized value from context (`true` ⇄ `false`), if available.
- * - `undefined` : falls back to the default emphasized value.
  * - Otherwise   : uses the explicitly provided emphasized value as-is.
  * 
- * @param {EmphasizeVariantProps['emphasized']} emphasized - The pre-resolved emphasized value from props.
+ * @param {Required<EmphasizeVariantProps>['emphasized']} emphasized - The pre-resolved emphasized value from props.
  * @param {boolean} defaultEmphasized - Fallback emphasized value when context is missing.
  * @returns {boolean} - The resolved emphasized value.
  */
-const useEffectiveEmphasizedValue = (emphasized: EmphasizeVariantProps['emphasized'], defaultEmphasized: boolean): boolean => {
+const useEffectiveEmphasizedValue = (emphasized: Required<EmphasizeVariantProps>['emphasized'], defaultEmphasized: boolean): boolean => {
     switch (emphasized) {
         // If the emphasized is 'inherit', use the context value:
         case 'inherit' : {
@@ -78,11 +78,6 @@ const useEffectiveEmphasizedValue = (emphasized: EmphasizeVariantProps['emphasiz
             // Otherwise, fallback to the default emphasized:
             return defaultEmphasized;
         }
-        
-        
-        
-        // If the emphasized is undefined, return the default emphasized:
-        case undefined : return defaultEmphasized;
         
         
         
@@ -131,15 +126,26 @@ const useEffectiveEmphasizedValue = (emphasized: EmphasizeVariantProps['emphasiz
  * ```
  */
 export const useEmphasizeVariant = (props: EmphasizeVariantProps, options?: EmphasizeVariantOptions): ResolvedEmphasizeVariant => {
+    // Extract options and assign defaults:
+    const {
+        defaultEmphasized = finalDefaultEmphasized,
+    } = options ?? {};
+    
+    const {
+        defaultEmphasized : intermediateDefaultEmphasized = semiDefaultEmphasized,
+    } = options ?? {};
+    
+    
+    
     // Extract props and assign defaults:
     const {
-        emphasized,
+        emphasized        = intermediateDefaultEmphasized,
     } = props;
     
     
     
     // Resolve the effective emphasized value:
-    const effectiveIsEmphasized = useEffectiveEmphasizedValue(emphasized, options?.defaultEmphasized ?? contextDefaultEmphasized);
+    const effectiveIsEmphasized = useEffectiveEmphasizedValue(emphasized, defaultEmphasized);
     
     
     

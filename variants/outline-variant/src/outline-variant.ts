@@ -15,7 +15,8 @@ import {
 
 // Defaults:
 import {
-    contextDefaultOutlined,
+    semiDefaultOutlined,
+    finalDefaultOutlined,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -36,14 +37,13 @@ import {
  * Resolution priority:
  * - `'inherit'` : uses the outlined value from context, if available.
  * - `'invert'`  : flips the outlined value from context (`true` ⇄ `false`), if available.
- * - `undefined` : falls back to the default outlined value.
  * - Otherwise   : uses the explicitly provided outlined value as-is.
  * 
- * @param {OutlineVariantProps['outlined']} outlined - The pre-resolved outlined value from props.
+ * @param {Required<OutlineVariantProps>['outlined']} outlined - The pre-resolved outlined value from props.
  * @param {boolean} defaultOutlined - Fallback outlined value when context is missing.
  * @returns {boolean} - The resolved outlined value.
  */
-const useEffectiveOutlinedValue = (outlined: OutlineVariantProps['outlined'], defaultOutlined: boolean): boolean => {
+const useEffectiveOutlinedValue = (outlined: Required<OutlineVariantProps>['outlined'], defaultOutlined: boolean): boolean => {
     switch (outlined) {
         // If the outlined is 'inherit', use the context value:
         case 'inherit' : {
@@ -78,11 +78,6 @@ const useEffectiveOutlinedValue = (outlined: OutlineVariantProps['outlined'], de
             // Otherwise, fallback to the default outlined:
             return defaultOutlined;
         }
-        
-        
-        
-        // If the outlined is undefined, return the default outlined:
-        case undefined : return defaultOutlined;
         
         
         
@@ -131,15 +126,26 @@ const useEffectiveOutlinedValue = (outlined: OutlineVariantProps['outlined'], de
  * ```
  */
 export const useOutlineVariant = (props: OutlineVariantProps, options?: OutlineVariantOptions): ResolvedOutlineVariant => {
+    // Extract options and assign defaults:
+    const {
+        defaultOutlined = finalDefaultOutlined,
+    } = options ?? {};
+    
+    const {
+        defaultOutlined : intermediateDefaultOutlined = semiDefaultOutlined,
+    } = options ?? {};
+    
+    
+    
     // Extract props and assign defaults:
     const {
-        outlined,
+        outlined        = intermediateDefaultOutlined,
     } = props;
     
     
     
     // Resolve the effective outlined value:
-    const effectiveIsOutlined = useEffectiveOutlinedValue(outlined, options?.defaultOutlined ?? contextDefaultOutlined);
+    const effectiveIsOutlined = useEffectiveOutlinedValue(outlined, defaultOutlined);
     
     
     

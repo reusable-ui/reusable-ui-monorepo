@@ -7,7 +7,7 @@ import {
 
 // Defaults:
 import {
-    contextDefaultBare,
+    finalDefaultBare,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -63,16 +63,23 @@ import {
  * ```
  */
 export const useBareVariant = <TBare extends true | string = true>(props: BareVariantProps<TBare>, options?: BareVariantOptions<TBare>): ResolvedBareVariant<TBare> => {
+    // Extract options and assign defaults:
+    const {
+        defaultBare = finalDefaultBare,
+    } = options ?? {};
+    
+    
+    
     // Extract props and assign defaults:
     const {
-        bare =  options?.defaultBare ?? contextDefaultBare,
+        bare        : effectiveBare =  defaultBare,
     } = props;
     
     
     
     // Return resolved bare attributes:
     return {
-        bare          : bare,
-        bareClassname : getBareClassname<TBare>(bare),
+        bare          : effectiveBare,
+        bareClassname : getBareClassname<TBare>(effectiveBare),
     } satisfies ResolvedBareVariant<TBare>;
 };

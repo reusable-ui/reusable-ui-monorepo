@@ -10,7 +10,7 @@ import {
     type ResolvedMildVariant,
 } from '../dist/types.js'
 import {
-    contextDefaultMild,
+    finalDefaultMild,
 } from '../dist/internal-defaults.js'
 import {
     useMildVariant,
@@ -149,8 +149,24 @@ describe('useMildVariant()', () => {
         {
             title             : 'falls back to system default when prop and option are missing',
             expectedResult    : {
-                mild          : contextDefaultMild,
-                mildClassname : contextDefaultMild ? 'is-mild' : 'not-mild',
+                mild          : finalDefaultMild,
+                mildClassname : finalDefaultMild ? 'is-mild' : 'not-mild',
+            },
+        },
+        {
+            title             : 'falls back to parent`s: not-mild when prop and option are missing',
+            parentMild        : false,
+            expectedResult    : {
+                mild          : false,
+                mildClassname : 'not-mild',
+            },
+        },
+        {
+            title             : 'falls back to parent`s: is-mild when prop and option are missing',
+            parentMild        : true,
+            expectedResult    : {
+                mild          : true,
+                mildClassname : 'is-mild',
             },
         },
         {
@@ -160,8 +176,8 @@ describe('useMildVariant()', () => {
                 mild          : 'inherit',
             },
             expectedResult    : {
-                mild          : contextDefaultMild,
-                mildClassname : contextDefaultMild ? 'is-mild' : 'not-mild',
+                mild          : finalDefaultMild,
+                mildClassname : finalDefaultMild ? 'is-mild' : 'not-mild',
             },
         },
         {
@@ -171,8 +187,8 @@ describe('useMildVariant()', () => {
                 mild          : 'invert',
             },
             expectedResult    : {
-                mild          : contextDefaultMild,
-                mildClassname : contextDefaultMild ? 'is-mild' : 'not-mild',
+                mild          : finalDefaultMild,
+                mildClassname : finalDefaultMild ? 'is-mild' : 'not-mild',
             },
         },
         {

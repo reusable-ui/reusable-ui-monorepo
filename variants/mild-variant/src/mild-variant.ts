@@ -15,7 +15,8 @@ import {
 
 // Defaults:
 import {
-    contextDefaultMild,
+    semiDefaultMild,
+    finalDefaultMild,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -36,14 +37,13 @@ import {
  * Resolution priority:
  * - `'inherit'` : uses the mild value from context, if available.
  * - `'invert'`  : flips the mild value from context (`true` ⇄ `false`), if available.
- * - `undefined` : falls back to the default mild value.
  * - Otherwise   : uses the explicitly provided mild value as-is.
  * 
- * @param {MildVariantProps['mild']} mild - The pre-resolved mild value from props.
+ * @param {Required<MildVariantProps>['mild']} mild - The pre-resolved mild value from props.
  * @param {boolean} defaultMild - Fallback mild value when context is missing.
  * @returns {boolean} - The resolved mild value.
  */
-const useEffectiveMildValue = (mild: MildVariantProps['mild'], defaultMild: boolean): boolean => {
+const useEffectiveMildValue = (mild: Required<MildVariantProps>['mild'], defaultMild: boolean): boolean => {
     switch (mild) {
         // If the mild is 'inherit', use the context value:
         case 'inherit' : {
@@ -78,11 +78,6 @@ const useEffectiveMildValue = (mild: MildVariantProps['mild'], defaultMild: bool
             // Otherwise, fallback to the default mild:
             return defaultMild;
         }
-        
-        
-        
-        // If the mild is undefined, return the default mild:
-        case undefined : return defaultMild;
         
         
         
@@ -131,15 +126,26 @@ const useEffectiveMildValue = (mild: MildVariantProps['mild'], defaultMild: bool
  * ```
  */
 export const useMildVariant = (props: MildVariantProps, options?: MildVariantOptions): ResolvedMildVariant => {
+    // Extract options and assign defaults:
+    const {
+        defaultMild = finalDefaultMild,
+    } = options ?? {};
+    
+    const {
+        defaultMild : intermediateDefaultMild = semiDefaultMild,
+    } = options ?? {};
+    
+    
+    
     // Extract props and assign defaults:
     const {
-        mild,
+        mild        = intermediateDefaultMild,
     } = props;
     
     
     
     // Resolve the effective mild value:
-    const effectiveIsMild = useEffectiveMildValue(mild, options?.defaultMild ?? contextDefaultMild);
+    const effectiveIsMild = useEffectiveMildValue(mild, defaultMild);
     
     
     

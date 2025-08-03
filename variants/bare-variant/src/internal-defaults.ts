@@ -1,6 +1,6 @@
 /**
- * A context-level default bare state to apply when no `bare` prop is explicitly provided.
+ * A default final bare state to apply when no effective `bare` value can be resolved.
  * 
  * Regulates structural layout when direct configuration is absent.
  */
-export const contextDefaultBare : false = false;
+export const finalDefaultBare : false = false;

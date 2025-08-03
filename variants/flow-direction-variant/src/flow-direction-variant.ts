@@ -16,7 +16,8 @@ import {
 
 // Defaults:
 import {
-    contextDefaultFlowDirection,
+    semiDefaultFlowDirection,
+    finalDefaultFlowDirection,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -37,14 +38,13 @@ import {
  * Resolution priority:
  * - `'inherit'` : uses the flow direction value from context, if available.
  * - `'invert'`  : flips the flow direction value from context (`'start'` ⇄ `'end'`), if available.
- * - `undefined` : falls back to the default flow direction value.
  * - Otherwise   : uses the explicitly provided flow direction value as-is.
  * 
- * @param {FlowDirectionVariantProps['flowDirection']} flowDirection - The pre-resolved flow direction value from props.
+ * @param {Required<FlowDirectionVariantProps>['flowDirection']} flowDirection - The pre-resolved flow direction value from props.
  * @param {FlowDirection} defaultFlowDirection - Fallback flow direction value when context is missing.
  * @returns {FlowDirection} - The resolved flow direction value.
  */
-const useEffectiveFlowDirectionValue = (flowDirection: FlowDirectionVariantProps['flowDirection'], defaultFlowDirection: FlowDirection): FlowDirection => {
+const useEffectiveFlowDirectionValue = (flowDirection: Required<FlowDirectionVariantProps>['flowDirection'], defaultFlowDirection: FlowDirection): FlowDirection => {
     switch (flowDirection) {
         // If the flow direction is 'inherit', use the context value:
         case 'inherit' : {
@@ -79,11 +79,6 @@ const useEffectiveFlowDirectionValue = (flowDirection: FlowDirectionVariantProps
             // Otherwise, fallback to the default flow direction:
             return defaultFlowDirection;
         }
-        
-        
-        
-        // If the flow direction is undefined, return the default flow direction:
-        case undefined : return defaultFlowDirection;
         
         
         
@@ -137,15 +132,26 @@ const useEffectiveFlowDirectionValue = (flowDirection: FlowDirectionVariantProps
  * ```
  */
 export const useFlowDirectionVariant = (props: FlowDirectionVariantProps, options?: FlowDirectionVariantOptions): ResolvedFlowDirectionVariant => {
+    // Extract options and assign defaults:
+    const {
+        defaultFlowDirection = finalDefaultFlowDirection,
+    } = options ?? {};
+    
+    const {
+        defaultFlowDirection : intermediateDefaultFlowDirection = semiDefaultFlowDirection,
+    } = options ?? {};
+    
+    
+    
     // Extract props and assign defaults:
     const {
-        flowDirection,
+        flowDirection        = intermediateDefaultFlowDirection,
     } = props;
     
     
     
     // Resolve the effective flow direction value:
-    const effectiveFlowDirection = useEffectiveFlowDirectionValue(flowDirection, options?.defaultFlowDirection ?? contextDefaultFlowDirection);
+    const effectiveFlowDirection = useEffectiveFlowDirectionValue(flowDirection, defaultFlowDirection);
     
     
     

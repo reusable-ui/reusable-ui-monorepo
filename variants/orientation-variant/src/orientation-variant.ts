@@ -16,7 +16,8 @@ import {
 
 // Defaults:
 import {
-    contextDefaultOrientation,
+    semiDefaultOrientation,
+    finalDefaultOrientation,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -37,14 +38,13 @@ import {
  * Resolution priority:
  * - `'inherit'` : uses the orientation value from context, if available.
  * - `'invert'`  : flips the orientation value from context (`'inline'` ⇄ `'block'`), if available.
- * - `undefined` : falls back to the default orientation value.
  * - Otherwise   : uses the explicitly provided orientation value as-is.
  * 
- * @param {OrientationVariantProps['orientation']} orientation - The pre-resolved orientation value from props.
+ * @param {Required<OrientationVariantProps>['orientation']} orientation - The pre-resolved orientation value from props.
  * @param {Orientation} defaultOrientation - Fallback orientation value when context is missing.
  * @returns {Orientation} - The resolved orientation value.
  */
-const useEffectiveOrientationValue = (orientation: OrientationVariantProps['orientation'], defaultOrientation: Orientation): Orientation => {
+const useEffectiveOrientationValue = (orientation: Required<OrientationVariantProps>['orientation'], defaultOrientation: Orientation): Orientation => {
     switch (orientation) {
         // If the orientation is 'inherit', use the context value:
         case 'inherit' : {
@@ -79,11 +79,6 @@ const useEffectiveOrientationValue = (orientation: OrientationVariantProps['orie
             // Otherwise, fallback to the default orientation:
             return defaultOrientation;
         }
-        
-        
-        
-        // If the orientation is undefined, return the default orientation:
-        case undefined : return defaultOrientation;
         
         
         
@@ -146,15 +141,26 @@ const useEffectiveOrientationValue = (orientation: OrientationVariantProps['orie
  * ```
  */
 export const useOrientationVariant = (props: OrientationVariantProps, options?: OrientationVariantOptions): ResolvedOrientationVariant => {
+    // Extract options and assign defaults:
+    const {
+        defaultOrientation = finalDefaultOrientation,
+    } = options ?? {};
+    
+    const {
+        defaultOrientation : intermediateDefaultOrientation = semiDefaultOrientation,
+    } = options ?? {};
+    
+    
+    
     // Extract props and assign defaults:
     const {
-        orientation,
+        orientation        = intermediateDefaultOrientation,
     } = props;
     
     
     
     // Resolve the effective orientation value:
-    const effectiveOrientation = useEffectiveOrientationValue(orientation, options?.defaultOrientation ?? contextDefaultOrientation);
+    const effectiveOrientation = useEffectiveOrientationValue(orientation, defaultOrientation);
     
     
     

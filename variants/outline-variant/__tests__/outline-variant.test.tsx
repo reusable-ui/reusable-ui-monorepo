@@ -10,7 +10,7 @@ import {
     type ResolvedOutlineVariant,
 } from '../dist/types.js'
 import {
-    contextDefaultOutlined,
+    finalDefaultOutlined,
 } from '../dist/internal-defaults.js'
 import {
     useOutlineVariant,
@@ -149,8 +149,24 @@ describe('useOutlineVariant()', () => {
         {
             title                   : 'falls back to system default when prop and option are missing',
             expectedResult          : {
-                outlined            : contextDefaultOutlined,
-                outlinedClassname   : contextDefaultOutlined ? 'is-outlined' : 'not-outlined',
+                outlined            : finalDefaultOutlined,
+                outlinedClassname   : finalDefaultOutlined ? 'is-outlined' : 'not-outlined',
+            },
+        },
+        {
+            title                   : 'falls back to parent`s: not-outlined when prop and option are missing',
+            parentOutlined          : false,
+            expectedResult          : {
+                outlined            : false,
+                outlinedClassname   : 'not-outlined',
+            },
+        },
+        {
+            title                   : 'falls back to parent`s: is-outlined when prop and option are missing',
+            parentOutlined          : true,
+            expectedResult          : {
+                outlined            : true,
+                outlinedClassname   : 'is-outlined',
             },
         },
         {
@@ -160,8 +176,8 @@ describe('useOutlineVariant()', () => {
                 outlined            : 'inherit',
             },
             expectedResult          : {
-                outlined            : contextDefaultOutlined,
-                outlinedClassname   : contextDefaultOutlined ? 'is-outlined' : 'not-outlined',
+                outlined            : finalDefaultOutlined,
+                outlinedClassname   : finalDefaultOutlined ? 'is-outlined' : 'not-outlined',
             },
         },
         {
@@ -171,8 +187,8 @@ describe('useOutlineVariant()', () => {
                 outlined            : 'invert',
             },
             expectedResult          : {
-                outlined            : contextDefaultOutlined,
-                outlinedClassname   : contextDefaultOutlined ? 'is-outlined' : 'not-outlined',
+                outlined            : finalDefaultOutlined,
+                outlinedClassname   : finalDefaultOutlined ? 'is-outlined' : 'not-outlined',
             },
         },
         {
