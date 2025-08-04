@@ -21,6 +21,20 @@ import {
 
 
 
+// Holds the names of all registered themes:
+const themeNamesCache = new Set<string>([
+    'primary',
+    'secondary',
+    'success',
+    'info',
+    'warning',
+    'danger',
+    'light',
+    'dark',
+]);
+
+
+
 /**
  * Defines a theme by mapping the given `themeName` to its corresponding colors.
  * 
@@ -30,6 +44,18 @@ import {
 export const defineTheme = (themeName: string, rootColor: CssColor | null | undefined): void => {
     // Validate parameters:
     if (!themeName) throw TypeError('The `themeName` cannot be empty.');
+    
+    
+    
+    // Caches:
+    if (rootColor) {
+        // Register the theme name:
+        themeNamesCache.add(themeName);
+    }
+    else {
+        // Unregister the theme name:
+        themeNamesCache.delete(themeName);
+    } // if
     
     
     
@@ -98,4 +124,13 @@ export const defineTheme = (themeName: string, rootColor: CssColor | null | unde
  */
 export const deleteTheme = (themeName: string): void => {
     defineTheme(themeName, null);
+};
+
+/**
+ * Retrieves the names of all registered themes.
+ * 
+ * @returns An array of theme names.
+ */
+export const getThemeNames = () => {
+    return Array.from(themeNamesCache);
 };
