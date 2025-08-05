@@ -1,3 +1,16 @@
+// Cssfn:
+import {
+    // Lazies:
+    type Lazy,
+    
+    
+    
+    // Cssfn css specific types:
+    type CssRule,
+}                           from '@cssfn/core'          // Writes css in javascript.
+
+
+
 /**
  * Represents the basic sizing scale of the component.
  * 
@@ -84,4 +97,32 @@ export interface ResolvedSizeVariant<TSize extends string = BasicSize> {
      * - Or any custom size class name in the format `s-${size}`
      */
     sizeClassname   : `s-${TSize}`
+}
+
+
+
+/**
+ * Configuration options for size-based variant logic.
+ * 
+ * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
+ */
+export interface CssSizeVariantOptions<TSize extends string = BasicSize> {
+    /**
+     * The list of supported size values for the component.
+     */
+    supportedSizes  : TSize[]
+}
+
+/**
+ * Defines a CSS API for applying size-based variant logic.
+ */
+export interface CssSizeVariant {
+    /**
+     * Generates size-specific CSS rules based on a component’s configuration.
+     * 
+     * Automatically maps suffixed properties (e.g. `fontSizeSm`, `paddingMd`, `borderRadiusLg`) to their base counterparts (`--comp-fontSize`, `--comp-padding`, etc.) depending on the active size variant.
+     * 
+     * These rules are scoped per size via the `ifSize()` selector.
+     */
+    sizeVariantRule : Lazy<CssRule>
 }

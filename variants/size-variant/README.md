@@ -140,6 +140,62 @@ export const componentStyle = () => style({
 
 ---
 
+## 🧩 Exported CSS Hooks
+
+### `usesSizeVariant(configVars, options)`
+
+Generates size-specific CSS rules based on a component’s configuration.
+
+Automatically maps suffixed properties (e.g. `fontSizeSm`, `paddingMd`, `borderRadiusLg`) to their base counterparts (`--comp-fontSize`, `--comp-padding`, etc.) depending on the active size variant.
+
+#### 💡 Usage Example
+
+```ts
+import {
+    usesSizeVariant,
+} from '@reusable-ui/size-variant';
+import { style, usesCssProps } from '@cssfn/core';
+import { componentVars } from './styles/config';
+
+export const componentStyle = () => {
+    const { sizeVariantRule } = usesSizeVariant(componentVars, {
+        supportedSizes: ['sm', 'md', 'lg'], // list of supported sizes
+    });
+    
+    return style({
+        display: 'flex',
+        // Define component styling here.
+        
+        // Apply static properties from config:
+        ...usesCssProps(componentVars),
+        
+        // Apply dynamic size-specific overrides:
+        ...sizeVariantRule(),
+    });
+};
+```
+
+#### 🧠 How It Works
+
+- For each supported size (e.g. `sm`, `md`, `lg`, etc.), the hook generates scoped rules like:
+    ```css
+    &.s-sm {
+        --comp-fontSize : var(--comp-fontSizeSm);
+        --comp-padding  : var(--comp-paddingSm);
+        ...
+    }
+    ```
+- These rules ensure that the base variables (`--comp-fontSize`, `--comp-padding`, etc.) resolve to the correct size-specific values depending on the active size variant.
+- You can then use those base variables in your component styles:
+    ```ts
+    style({
+        fontSize : componentVars.fontSize, // gets: `var(--comp-fontSize)`
+        padding  : componentVars.padding,  // gets: `var(--comp-padding)`
+    });
+    ```
+
+---
+
 ## 📖 Part of the Reusable-UI Framework  
 **@reusable-ui/size-variant** is a variant utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
