@@ -139,6 +139,151 @@ export const componentStyle = () => style({
 
 ---
 
+## 🧩 Exported CSS Hooks
+
+### `usesThemeVariant()`
+
+Generates theme-specific CSS rules and exposes theme-related CSS variables for styling components based on the active theme.
+
+Automatically maps theme roles (e.g. background, foreground, decoration, border) to the appropriate color variables from `@reusable-ui/colors`,
+depending on the active theme variant. Supports multiple styling modes like **regular**, **mild**, and **outlined**.
+
+#### 💡 Usage Example
+
+```ts
+import {
+    usesThemeVariant,
+} from '@reusable-ui/theme-variant';
+import {
+    ifOutlined,
+} from '@reusable-ui/outline-variant';
+import { style } from '@cssfn/core';
+
+export const componentStyle = () => {
+    const { themeVariantRule, themeVariantVars } = usesThemeVariant();
+    
+    return style({
+        display: 'flex',
+        // Define component styling here.
+        
+        // Apply theme-specific variable overrides:
+        ...themeVariantRule(),
+        
+        // Use semantic theme variables in styling:
+        backgroundColor     : themeVariantVars.backg,
+        color               : themeVariantVars.foreg,
+        
+        // Apply outlined variant styling:
+        ...ifOutlined({
+            backgroundColor : 'transparent',
+            color           : themeVariantVars.foregOutlined,
+        }),
+    });
+};
+```
+
+#### 🧠 How It Works
+
+- For each registered theme (e.g. `primary`, `danger`, `success`, etc.), the hook generates scoped rules like:
+    ```css
+    &.t-primary {
+        --t-backg  : var(--col-primaryBase);
+        --t-foreg  : var(--col-primaryFlip);
+        --t-border : var(--col-primaryBold);
+        ...
+    }
+    ```
+- These rules ensure that semantic theme variables (`--t-backg`, `--t-foreg`, etc.) resolve to the correct theme-specific values depending on the active theme variant.
+- You can then use those theme variables in your component styles:
+    ```ts
+    style({
+        backgroundColor : themeVariantVars.backg, // gets: `var(--t-backg)`
+        color           : themeVariantVars.foreg, // gets: `var(--t-foreg)`
+    });
+    ```
+
+### `usesThemeOverride(theme)`
+
+Injects theme-specific CSS variables to override the current theme contextually.
+
+Useful for conditional states such as **error**, **success**, **warning**, etc.  
+The returned `CssRule` should be scoped within a conditional selector (e.g. `:invalid`, `.error`, `.success`) to avoid applying the override unconditionally.
+
+#### 💡 Usage Example
+
+```ts
+import {
+    usesThemeVariant,
+    usesThemeOverride,
+} from '@reusable-ui/theme-variant';
+import {
+    ifOutlined,
+} from '@reusable-ui/outline-variant';
+import { style, rule, switchOf } from '@cssfn/core';
+
+export const componentStyle = () => {
+    const { themeVariantRule, themeVariantVars } = usesThemeVariant();
+    
+    return style({
+        display: 'flex',
+        // Define component styling here.
+        
+        // Apply theme-specific variable overrides:
+        ...themeVariantRule(),
+        
+        // Use semantic theme variables with fallback chaining:
+        backgroundColor     : switchOf(
+            themeVariantVars.backgOverride,
+            themeVariantVars.backg,
+        ),
+        color               : switchOf(
+            themeVariantVars.foregOverride,
+            themeVariantVars.foreg,
+        ),
+        
+        // Apply outlined variant styling:
+        ...ifOutlined({
+            backgroundColor : 'transparent',
+            color           : switchOf(
+                themeVariantVars.foregOutlinedOverride,
+                themeVariantVars.foregOutlined,
+            ),
+        }),
+        
+        // Override theme when component is invalid:
+        ...rule(':invalid', {
+            ...usesThemeOverride('danger'),
+        }),
+        
+        // Override theme when component is valid:
+        ...rule(':valid', {
+            ...usesThemeOverride('success'),
+        }),
+    });
+};
+```
+
+#### 🧠 How It Works
+
+- `usesThemeOverride('danger')` injects high-priority theme variables like:
+    ```css
+    --t-backgOverride  : var(--col-dangerBase);
+    --t-foregOverride  : var(--col-dangerFlip);
+    --t-borderOverride : var(--col-dangerBold);
+    ...
+    ```
+- These override the default theme resolution using `switchOf(...)`, which selects the first defined value in the chain:
+    ```ts
+    style({
+        backgroundColor : switchOf(
+            themeVariantVars.backgOverride,
+            themeVariantVars.backg,
+        ), // Will be rendered to: `var(--t-backgOverride, var(--t-backg))`
+    });
+    ```
+
+---
+
 ## 📖 Part of the Reusable-UI Framework  
 **@reusable-ui/theme-variant** is a variant utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
