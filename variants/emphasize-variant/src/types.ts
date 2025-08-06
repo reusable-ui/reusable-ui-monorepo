@@ -70,7 +70,7 @@ export interface ResolvedEmphasizeVariant {
 
 
 /**
- * A list of emphasize-related CSS variables used for conditional styling.
+ * A list of emphasize-related CSS variables used to enable conditional styling.
  * 
  * These variables act as boolean switches that determine whether emphasize-specific styles
  * should be applied.
@@ -79,17 +79,17 @@ export interface ResolvedEmphasizeVariant {
  */
 export interface EmphasizeVariantVars {
     /**
-     * Becomes valid when the component is emphasized.
+     * Applies when the component is emphasized.
      * 
-     * Acts as a conditional switch: if declared (with an empty value),
-     * any CSS property that references this variable becomes valid and will be applied.
+     * Acts as a conditional switch: when declared with an empty value,
+     * any CSS property referencing this variable becomes valid and will be applied.
      * If `unset`, the variable **poisons** dependent properties,
      * causing the browser to ignore them.
      * 
      * @example
      * ```ts
      * export const componentStyle = () => style({
-     *     // This property is only applied when the component is emphasized:
+     *     // These properties are only applied when the component is emphasized:
      *     fontWeight     : `${emphasizeVariantVars.isEmphasized} bold`,
      *     textDecoration : `${emphasizeVariantVars.isEmphasized} underline`,
      * });
@@ -98,17 +98,17 @@ export interface EmphasizeVariantVars {
     isEmphasized  : unknown
     
     /**
-     * Becomes valid when the component is not emphasized.
+     * Applies when the component is not emphasized.
      * 
-     * Acts as a conditional switch: if declared (with an empty value),
-     * any CSS property that references this variable becomes valid and will be applied.
+     * Acts as a conditional switch: when declared with an empty value,
+     * any CSS property referencing this variable becomes valid and will be applied.
      * If `unset`, the variable **poisons** dependent properties,
      * causing the browser to ignore them.
      * 
      * @example
      * ```ts
      * export const componentStyle = () => style({
-     *     // This property is only applied when the component is not emphasized:
+     *     // These properties are only applied when the component is not emphasized:
      *     fontWeight     : `${emphasizeVariantVars.notEmphasized} normal`,
      *     textDecoration : `${emphasizeVariantVars.notEmphasized} none`,
      * });
@@ -120,7 +120,7 @@ export interface EmphasizeVariantVars {
 
 
 /**
- * Defines a CSS API for enabling emphasize-aware conditional styling.
+ * Defines a CSS API for enabling conditional styling based on emphasized state.
  */
 export interface CssEmphasizeVariant {
     /**
@@ -134,14 +134,14 @@ export interface CssEmphasizeVariant {
      * Exposes emphasize-related CSS variables for conditional styling.
      * 
      * Includes:
-     * - `isEmphasized`  : valid when emphasized
-     * - `notEmphasized` : valid when not emphasized
+     * - `isEmphasized`  : active when emphasized
+     * - `notEmphasized` : active when not emphasized
      * 
-     * These variables act as conditional switches.
-     * If `unset`, **poisons** dependent properties, causing the browser to ignore them.
-     * If declared (with an empty value), restores the validity of dependent properties.
+     * These variables act as conditional switches:
+     * - If `unset`, they **poison** dependent properties, causing the browser to ignore them.
+     * - If declared with an empty value, they reactivate dependent properties without altering their values.
      * 
-     * These variables are strongly typed and automatically resolved to the correct CSS variable names.
+     * These variables are strongly typed and automatically resolved to consistent CSS variable names.
      */
     emphasizeVariantVars : CssVars<EmphasizeVariantVars>
 }

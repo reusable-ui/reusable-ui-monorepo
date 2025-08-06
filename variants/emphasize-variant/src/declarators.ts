@@ -91,7 +91,7 @@ const [emphasizeVariantVars] = cssVars<EmphasizeVariantVars>({ minify: false });
  * Generates CSS rules that toggle emphasize-related CSS variables based on the current emphasized state,
  * and exposes those variables for conditional styling.
  * 
- * @returns A CSS API for enabling emphasize-aware conditional styling.
+ * @returns A CSS API for enabling conditional styling based on emphasized state.
  */
 export const usesEmphasizeVariant = (): CssEmphasizeVariant => {
     return {

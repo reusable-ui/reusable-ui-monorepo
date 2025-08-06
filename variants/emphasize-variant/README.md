@@ -201,7 +201,9 @@ export const componentStyle = () => {
         --notEmphasized: ;      /* Valid    when not emphasized. */
     }
     ```
-- These variables act as conditional switches. When valid, they allow dependent properties to be applied. When **poisoned**, the browser ignores those properties.
+- These variables act as conditional switches:
+    - If `unset`, they **poison** dependent properties, causing the browser to ignore them.
+    - If declared with an empty value, they reactivate dependent properties without altering their values.
 - You can then use those conditional variables in your component styles:
     ```ts
     style({
