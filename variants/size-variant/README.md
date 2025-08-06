@@ -144,9 +144,9 @@ export const componentStyle = () => style({
 
 ### `usesSizeVariant(configVars, options)`
 
-Generates size-specific CSS rules based on a component’s configuration.
+Generates CSS rules that activate size-specific properties of component’s configuration based on the currently active size.
 
-Automatically maps suffixed properties (e.g. `fontSizeSm`, `paddingMd`, `borderRadiusLg`) to their base counterparts (`--comp-fontSize`, `--comp-padding`, etc.) depending on the active size variant.
+Automatically maps suffixed properties (e.g. `fontSizeSm`, `paddingMd`, `borderRadiusLg`) to their base counterparts (`--comp-fontSize`, `--comp-padding`, etc.), depending on the currently active size.
 
 #### 💡 Usage Example
 

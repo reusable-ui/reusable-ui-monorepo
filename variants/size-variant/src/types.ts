@@ -102,7 +102,7 @@ export interface ResolvedSizeVariant<TSize extends string = BasicSize> {
 
 
 /**
- * Configuration options for size-based variant logic.
+ * Configuration options for enabling size-aware component configuration.
  * 
  * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
  */
@@ -114,15 +114,16 @@ export interface CssSizeVariantOptions<TSize extends string = BasicSize> {
 }
 
 /**
- * Defines a CSS API for applying size-based variant logic.
+ * Defines a CSS API for enabling size-aware component configuration.
  */
 export interface CssSizeVariant {
     /**
-     * Generates size-specific CSS rules based on a component’s configuration.
+     * Generates CSS rules that activate size-specific properties of component’s configuration based on the currently active size.
      * 
-     * Automatically maps suffixed properties (e.g. `fontSizeSm`, `paddingMd`, `borderRadiusLg`) to their base counterparts (`--comp-fontSize`, `--comp-padding`, etc.) depending on the active size variant.
+     * Automatically maps suffixed properties (e.g. `fontSizeSm`, `paddingMd`, `borderRadiusLg`) to their base counterparts (`--comp-fontSize`, `--comp-padding`, etc.),
+     * depending on the currently active size.
      * 
-     * These rules are scoped per size via the `ifSize()` selector.
+     * These rules are scoped per size via the `ifSize()` for activating size-specific properties.
      */
     sizeVariantRule : Lazy<CssRule>
 }

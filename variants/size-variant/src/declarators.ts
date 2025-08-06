@@ -73,25 +73,27 @@ export const ifSize = <TSize extends string = BasicSize>(size: TSize, styles: Cs
 
 
 /**
- * Generates size-specific CSS rules based on a component’s configuration.
+ * Generates CSS rules that activate size-specific properties of component’s configuration based on the currently active size.
  * 
- * Automatically maps suffixed properties (e.g. `fontSizeSm`, `paddingMd`, `borderRadiusLg`) to their base counterparts (`--comp-fontSize`, `--comp-padding`, etc.) depending on the active size variant.
+ * Automatically maps suffixed properties (e.g. `fontSizeSm`, `paddingMd`, `borderRadiusLg`) to their base counterparts (`--comp-fontSize`, `--comp-padding`, etc.),
+ * depending on the currently active size.
  * 
  * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
  * 
  * @param configVars - A CSS configuration that may includes properties suffixed by size identifiers (e.g., `'Sm'`, `'Md'`, `'Lg'`) to define size-specific values.
  * @param options - A required configuration specifying supported size values.
- * @returns A strongly typed CSS API for size variants.
+ * @returns A CSS API for enabling size-aware component configuration.
  */
 export function usesSizeVariant <TSize extends string = BasicSize, TCssConfigProps extends CssConfigProps = CssConfigProps>(configVars: Refs<TCssConfigProps>, options?: CssSizeVariantOptions<TSize>): CssSizeVariant;
 
 /**
- * Generates size-specific CSS rules based on a component’s configuration.
+ * Generates CSS rules that activate size-specific properties of component’s configuration based on the currently active size.
  * 
- * Automatically maps suffixed properties (e.g. `fontSizeSm`, `paddingMd`, `borderRadiusLg`) to their base counterparts (`--comp-fontSize`, `--comp-padding`, etc.) depending on the active size variant.
+ * Automatically maps suffixed properties (e.g. `fontSizeSm`, `paddingMd`, `borderRadiusLg`) to their base counterparts (`--comp-fontSize`, `--comp-padding`, etc.),
+ * depending on the currently active size.
  * 
  * @param configVars - A CSS configuration that may includes properties suffixed by size identifiers (e.g., `'Sm'`, `'Md'`, `'Lg'`) to define size-specific values.
- * @returns A strongly typed CSS API for size variants.
+ * @returns A CSS API for enabling size-aware component configuration.
  */
 export function usesSizeVariant <TCssConfigProps extends CssConfigProps = CssConfigProps>(configVars: Refs<TCssConfigProps>): CssSizeVariant;
 
