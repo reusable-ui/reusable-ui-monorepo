@@ -120,7 +120,7 @@ export interface ResolvedThemeVariant<TTheme extends string = BasicTheme> {
 /*
 Example of color schema of 'primary' theme:
 |------------------|-----------------------------------|------------------------------------|-----------------------------------------|
-| Role             | Regular Style                     | Mild Style                         | Outlined Style                          |
+| Shades           | Regular Style                     | Mild Style                         | Outlined Style                          |
 |------------------|-----------------------------------|------------------------------------|-----------------------------------------|
 | Background       | primaryBase // base strong color  | primaryMild // comfort background  | (transparent, no color needed)          |
 | Foreground       | primaryFlip // max-contrast color | primaryText // readable foreground | primaryFace // edge-contrast foreground |
@@ -140,8 +140,13 @@ Effect     = primarySoft | primarySoft | primarySoft
 
 
 /**
- * List of theme-related CSS variables for all styling modes.
- * These keys are used for jsdoc mapping; values are ignored.
+ * A list of theme-related CSS variables used across all styling modes like **regular**, **mild**, and **outlined**.
+ * 
+ * These variables represent the full spectrum of color shades for the currently active theme,
+ * making them ideal for coloring backgrounds, text, borders, icons, and other visual elements
+ * in harmony with the theme.
+ * 
+ * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
 export interface ThemeVariantVars {
     //#region 🎨 Regular Style
@@ -292,28 +297,28 @@ export interface ThemeVariantVars {
 
 
 /**
- * Defines a CSS API for applying theme-based variant logic.
+ * Defines a CSS API for enabling theme-aware color shades.
  */
 export interface CssThemeVariant {
     /**
-     * Generates theme-specific CSS rules based on the active theme.
+     * Generates CSS rules that switch color shades based on the currently active theme.
      * 
-     * Automatically maps theme roles (e.g. background, foreground, decoration, border) to the appropriate color variables from `@reusable-ui/colors`,
-     * depending on the active theme variant. Supports multiple styling modes like **regular**, **mild**, and **outlined**.
+     * Automatically maps color shades (e.g. background, foreground, decoration, border) to the appropriate color variables from `@reusable-ui/colors`,
+     * depending on the currently active theme.
+     * Supports multiple styling modes like **regular**, **mild**, and **outlined**.
      * 
-     * These rules are scoped per theme via the `ifTheme()` selector.
+     * These rules are scoped per theme via the `ifTheme()` for switching color shades.
      */
     themeVariantRule : Lazy<CssRule>
     
     /**
-     * Exposes theme-related CSS variables for styling components.
+     * Exposes theme-related CSS variables for coloring components.
      * 
      * Includes:
-     * - Dynamic variables resolved from the current theme (e.g. `--t-backg`, `--t-foreg`)
-     * - Override variables for contextual states (e.g. error, success, warning)
+     * - Color variables containing the full spectrum of color shades for the currently active theme
+     * - Override variables for conditionally applying theme overrides (e.g. error, success, warning)
      * 
-     * These variables are strongly typed and automatically mapped to
-     * the corresponding theme color roles.
+     * These variables are strongly typed and automatically resolved to the correct CSS variable names.
      */
     themeVariantVars : CssVars<ThemeVariantVars>
 }

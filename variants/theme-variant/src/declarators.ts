@@ -77,18 +77,24 @@ export const ifTheme = <TTheme extends string = BasicTheme>(theme: TTheme, style
 
 
 /**
- * A strongly typed global theme variable mapping.
+ * A strongly typed global mapping of theme-related CSS variables for coloring components.
+ * 
  * Prefixed with `--t-` to ensure scoped and consistent naming.
+ * 
+ * These variables are shared across server and client environments to ensure
+ * consistent CSS variable names during SSR and hydration.
  */
-const [themeVariantVars] = cssVars<ThemeVariantVars>({ prefix: 't', minify: false }); // Shared variables: Ensures the server-side and client-side have the same generated css variable names.
+const [themeVariantVars] = cssVars<ThemeVariantVars>({ prefix: 't', minify: false });
 
 /**
- * Generates theme-specific CSS rules and exposes theme-related CSS variables for styling components based on the active theme.
+ * Generates CSS rules that switch color shades based on the currently active theme,
+ * and exposes theme-related CSS variables for coloring components.
  * 
- * Automatically maps theme roles (e.g. background, foreground, decoration, border) to the appropriate color variables from `@reusable-ui/colors`,
- * depending on the active theme variant. Supports multiple styling modes like **regular**, **mild**, and **outlined**.
+ * Automatically maps color shades (e.g. background, foreground, decoration, border) to the appropriate color variables from `@reusable-ui/colors`,
+ * depending on the currently active theme.
+ * Supports multiple styling modes like **regular**, **mild**, and **outlined**.
  * 
- * @returns A strongly typed CSS API for theme variants.
+ * @returns A CSS API for enabling theme-aware color shades.
  */
 export const usesThemeVariant = (): CssThemeVariant => {
     return {
@@ -135,7 +141,7 @@ export const usesThemeVariant = (): CssThemeVariant => {
 };
 
 /**
- * Injects theme-specific CSS variables to override the current theme contextually.
+ * Overrides the current theme by injecting theme-specific CSS variables.
  * 
  * Useful for conditional states such as **error**, **success**, **warning**, etc.  
  * The returned `CssRule` should be scoped within a conditional selector (e.g. `:invalid`, `.error`, `.success`) to avoid applying the override unconditionally.
