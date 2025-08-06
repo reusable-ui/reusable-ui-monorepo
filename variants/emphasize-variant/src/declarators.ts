@@ -9,7 +9,21 @@ import {
     
     // Writes css in javascript:
     rule,
+    variants,
+    style,
+    vars,
+    
+    
+    
+    // Strongly typed of css variables:
+    cssVars,
 }                           from '@cssfn/core'          // Writes css in javascript.
+
+// Types:
+import {
+    type EmphasizeVariantVars,
+    type CssEmphasizeVariant,
+}                           from './types.js'
 
 
 
@@ -62,3 +76,42 @@ export const ifEmphasized    = (styles: CssStyleCollection): CssRule => rule(isE
  * ```
  */
 export const ifNotEmphasized = (styles: CssStyleCollection): CssRule => rule(isNotEmphasizedSelector , styles);
+
+
+
+/**
+ * A strongly typed global mapping of emphasize-related CSS variables for conditional styling.
+ * 
+ * These variables are shared across server and client environments to ensure
+ * consistent CSS variable names during SSR and hydration.
+ */
+const [emphasizeVariantVars] = cssVars<EmphasizeVariantVars>({ minify: false });
+
+/**
+ * Generates CSS rules that toggle emphasize-related CSS variables based on the current emphasized state,
+ * and exposes those variables for conditional styling.
+ * 
+ * @returns A CSS API for enabling emphasize-aware conditional styling.
+ */
+export const usesEmphasizeVariant = (): CssEmphasizeVariant => {
+    return {
+        emphasizeVariantRule : () => style(
+            variants({
+                ...ifEmphasized(
+                    vars({
+                        [emphasizeVariantVars.isEmphasized ] : '',      // Valid    when emphasized.
+                        [emphasizeVariantVars.notEmphasized] : 'unset', // Poisoned when emphasized.
+                    })
+                ),
+                ...ifNotEmphasized(
+                    vars({
+                        [emphasizeVariantVars.isEmphasized ] : 'unset', // Poisoned when not emphasized.
+                        [emphasizeVariantVars.notEmphasized] : '',      // Valid    when not emphasized.
+                    })
+                ),
+            }),
+        ),
+        
+        emphasizeVariantVars,
+    } satisfies CssEmphasizeVariant;
+};

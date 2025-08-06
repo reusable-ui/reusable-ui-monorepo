@@ -143,6 +143,75 @@ export const componentStyle = () => style({
 
 ---
 
+## 🧩 Exported CSS Hooks
+
+### `usesEmphasizeVariant()`
+
+Generates CSS rules that toggle emphasize-related CSS variables based on the current emphasized state, and exposes those variables for conditional styling.
+
+#### 💡 Usage Example
+
+```ts
+import {
+    usesEmphasizeVariant,
+} from '@reusable-ui/emphasize-variant';
+import { style, fallback } from '@cssfn/core';
+
+export const componentStyle = () => {
+    const {
+        emphasizeVariantRule,
+        emphasizeVariantVars: { isEmphasized, notEmphasized },
+    } = usesEmphasizeVariant();
+    
+    return style({
+        display: 'flex',
+        // Define component styling here.
+        
+        // Apply emphasize-related variable rules:
+        ...emphasizeVariantRule(),
+        
+        // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — all declarations will be preserved:
+        
+        // Apply conditional styling using `isEmphasized` and `notEmphasized` variables:
+        ...fallback({
+            // Apply emphasized styling:
+            fontWeight : `${isEmphasized} bold`,
+            color      : `${isEmphasized} crimson`,
+        }),
+        ...fallback({
+            // Apply non-emphasized styling:
+            fontWeight : `${notEmphasized} normal`,
+            color      : `${notEmphasized} gray`,
+        }),
+    });
+};
+```
+
+#### 🧠 How It Works
+
+- `usesEmphasizeVariant()` generates scoped rules like:
+    ```css
+    &.is-emphasized {
+        --isEmphasized: ;       /* Valid    when emphasized. */
+        --notEmphasized: unset; /* Poisoned when emphasized. */
+    }
+    
+    &.not-emphasized {
+        --isEmphasized: unset;  /* Poisoned when not emphasized. */
+        --notEmphasized: ;      /* Valid    when not emphasized. */
+    }
+    ```
+- These variables act as conditional switches. When valid, they allow dependent properties to be applied. When **poisoned**, the browser ignores those properties.
+- You can then use those conditional variables in your component styles:
+    ```ts
+    style({
+        fontWeight : `${emphasizeVariantVars.isEmphasized} bold`,    // Will be rendered to: `fontWeight: var(--isEmphasized) bold;` (becomes valid only when emphasized)
+        color      : `${emphasizeVariantVars.isEmphasized} crimson`, // Will be rendered to: `color: var(--isEmphasized) crimson;`   (becomes valid only when emphasized)
+    });
+    ```
+
+---
+
 ## 📖 Part of the Reusable-UI Framework  
 **@reusable-ui/emphasize-variant** is a variant utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
