@@ -74,6 +74,7 @@
     "variants/bare-variant",
     "variants/styling-variants",
     "variants/orientationable",
+    "variants/resizable",
     "__configs/*",
     "__utilities/*",
     "__features/*",

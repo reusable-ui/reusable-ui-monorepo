@@ -1,103 +1,88 @@
 // cssfn:
 import {
-    // cssfn general types:
-    Factory,
+    // Lazies:
+    type Lazy,
     
     
     
-    // cssfn css specific types:
-    CssRule,
-    CssStyleCollection,
+    // Cssfn css specific types:
+    type CssRule,
     
-    CssSelector,
-    
-    CssClassName,
+    type CssClassName,
     
     
     
-    // writes css in javascript:
-    rule,
-    variants,
-    style,
-    startsCapitalized,
+    // Reads/writes css variables configuration:
+    type CssConfigProps,
+    type Refs,
+}                           from '@cssfn/core'                  // Writes css in javascript.
+
+// Reusable-ui variants:
+import {
+    // Types:
+    type BasicSize,
+    type SizeVariantProps,
     
     
     
-    // reads/writes css variables configuration:
-    CssConfigProps,
-    Refs,
-    usesSuffixedProps,
-    overwriteProps,
-}                           from '@cssfn/core'                  // writes css in javascript
+    // Hooks:
+    useSizeVariant,
+    usesSizeVariant,
+    
+    
+    
+    // Utilities:
+    sizeSelector,
+    ifSize,
+}                           from '@reusable-ui/size-variant'    // A utility for managing sizes consistently across React components.
 
 
 
-// defaults:
-const _defaultSize : Required<ResizableProps>['size'] = 'md'
+/**
+ * @deprecated - Use `BasicSize` instead.
+ */
+export type SizeName = BasicSize
 
 
 
-// hooks:
-
-// variants:
-
-//#region resizable
-export type SizeName = 'sm'|'md'|'lg'
-
-
-
-//#region caches
 const sizeClassesCache = new Map<string, CssClassName>();
+
+/**
+ * @deprecated - Use `sizeSelector(sizeName).slice(1)` instead.
+ */
 export const createSizeClass = <TSizeName extends string = SizeName>(sizeName: TSizeName): CssClassName => {
     const cached = sizeClassesCache.get(sizeName);
     if (cached !== undefined) return cached;
     
     
     
-    const sizeClass = `sz${startsCapitalized(sizeName)}`;
+    const sizeClass = (sizeSelector(sizeName) as string).slice(1);
     sizeClassesCache.set(sizeName, sizeClass);
     return sizeClass;
 };
 
-const sizeSelectorsCache = new Map<string, CssSelector>();
-export const createSizeSelector = <TSizeName extends string = SizeName>(sizeName: TSizeName): CssSelector => {
-    const cached = sizeSelectorsCache.get(sizeName);
-    if (cached) return cached;
-    
-    
-    
-    const sizeClass = createSizeClass(sizeName);
-    
-    
-    
-    const sizeRule : CssSelector = `.${sizeClass}`;
-    sizeSelectorsCache.set(sizeName, sizeRule);
-    return sizeRule;
-};
+/**
+ * @deprecated - Use `sizeSelector` instead.
+ */
+export const createSizeSelector = sizeSelector
 
 let sizeOptionsCache : SizeName[] | undefined = undefined;
-//#endregion caches
 
 
 
-export const ifSize = <TSizeName extends string = SizeName>(sizeName: TSizeName, styles: CssStyleCollection): CssRule => rule(createSizeSelector(sizeName), styles);
+// Not deprecated:
+export { ifSize }
 
 
 
-export interface ResizableStuff { resizableRule: Factory<CssRule> }
-const createResizableRule = <TSizeName extends string = SizeName, TConfigProps extends CssConfigProps = CssConfigProps>(config : Refs<TConfigProps>, options : TSizeName[] = (sizeOptions() as TSizeName[])): CssRule => {
-    return style({
-        ...variants([
-            options.map((sizeName) =>
-                ifSize(sizeName,
-                    // overwrites propName = propName{SizeName}:
-                    overwriteProps(config, usesSuffixedProps(config, sizeName)),
-                )
-            ),
-        ]),
-    });
-};
 /**
+ * @deprecated - Use `CssSizeVariant` instead.
+ */
+export interface ResizableStuff { resizableRule: Lazy<CssRule> }
+
+/**
+ * @deprecated - Use `usesSizeVariant` instead.
+ * 
  * Uses size options.  
  * For example: `sm`, `md`, `lg`.
  * @param config A configuration that defines the variance of the css property for each size in `options`.
@@ -105,12 +90,15 @@ const createResizableRule = <TSizeName extends string = SizeName, TConfigProps e
  * @returns A `ResizableStuff` represents the sizing rules for each size in `options`.
  */
 export const usesResizable = <TSizeName extends string = SizeName, TConfigProps extends CssConfigProps = CssConfigProps>(config : Refs<TConfigProps>, options : TSizeName[] = (sizeOptions() as TSizeName[])): ResizableStuff => {
+    const { sizeVariantRule } = usesSizeVariant(config, { supportedSizes: options });
     return {
-        resizableRule: () => createResizableRule(config, options),
+        resizableRule: sizeVariantRule,
     };
 };
 
 /**
+ * @deprecated - No longer used.
+ * 
  * Gets all available size options.
  * @returns A `SizeName[]` represents all available size options.
  */
@@ -118,11 +106,31 @@ export const sizeOptions = (): SizeName[] => sizeOptionsCache ?? (sizeOptionsCac
 
 
 
-export interface ResizableProps<TSizeName extends string = SizeName> {
-    // variants:
-    size ?: TSizeName|'md'
-}
-export const useResizable = <TSizeName extends string = SizeName>({size = _defaultSize}: ResizableProps<TSizeName>) => ({
-    class: createSizeClass(size),
-});
-//#endregion resizable
+/**
+ * @deprecated - Use `SizeVariantProps` instead.
+ */
+export interface ResizableProps<TSizeName extends string = SizeName> extends SizeVariantProps<TSizeName> { }
+
+/**
+ * @deprecated - Use `useSizeVariant` instead.
+ */
+export const useResizable = <TSizeName extends string = SizeName>(props: ResizableProps<TSizeName>) => {
+    const {
+        sizeClassname,
+    } = useSizeVariant<TSizeName>(props, {
+        defaultSize : 'md' as TSizeName,
+        supportedSizes : [
+            'xs',
+            'sm',
+            'md',
+            'lg',
+            'xl',
+            '1em',
+            '1lh',
+        ] as TSizeName[]
+    });
+    
+    return {
+        class: sizeClassname,
+    };
+};
