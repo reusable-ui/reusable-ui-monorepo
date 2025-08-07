@@ -1,48 +1,57 @@
-// cssfn:
+// Cssfn:
 import {
-    // cssfn general types:
-    Factory,
+    // Lazies:
+    type Lazy,
     
     
     
-    // cssfn css specific types:
-    CssKnownProps,
-    CssRule,
-    CssStyleCollection,
+    // Cssfn css specific types:
+    type CssKnownProps,
+    type CssRule,
+    type CssStyleCollection,
     
     
     
-    // writes css in javascript:
-    rule,
+    // Writes css in javascript:
+    neverRule,
     variants,
     style,
     vars,
     
     
     
-    // strongly typed of css variables:
-    CssVars,
+    // Strongly typed of css variables:
+    type CssVars,
     cssVars,
     
     
     
-    // writes complex stylesheets in simpler way:
+    // Writes complex stylesheets in simpler way:
     memoizeStyleWithVariants,
-}                           from '@cssfn/core'                  // writes css in javascript
+}                           from '@cssfn/core'                      // writes css in javascript
+
+// Reusable-ui variants:
+import {
+    // Hooks:
+    useEmphasizeVariant,
+    
+    
+    
+    // Utilities:
+    ifEmphasized,
+    ifNotEmphasized,
+}                           from '@reusable-ui/emphasize-variant'   // A utility for managing visual emphasis consistently across React components.
 
 
 
-// defaults:
-const _defaultGradient : Required<GradientableProps>['gradient'] = 'inherit'
-
-
-
-// hooks:
-
-// variants:
-
-//#region gradientable
+/**
+ * @deprecated - No longer needed.
+ */
 export type ToggleGradient = boolean|'inherit'|null
+
+/**
+ * @deprecated - Use `EmphasizeVariantVars` instead.
+ */
 export interface GradientableVars {
     /**
      * the gradientable preference.
@@ -64,22 +73,44 @@ export interface GradientableVars {
      */
     backgGradTg : any
 }
+
 const [gradientableVars] = cssVars<GradientableVars>({ prefix: 'gd', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 
-// parent is     `.gradient` -or- current is     `.gradient`:
-export const ifGradient        = (styles: CssStyleCollection): CssRule => rule(              ':is(.gradient&, &.gradient)'                                 , styles); // specificityWeight = 1 + (parent's specificityWeight)
-// parent is `.not-gradient` -or- current is `.not-gradient`:
-export const ifNotGradient     = (styles: CssStyleCollection): CssRule => rule(              ':is(.not-gradient&, &.not-gradient)'                         , styles); // specificityWeight = 1 + (parent's specificityWeight)
-export const ifInheritGradient = (styles: CssStyleCollection): CssRule => rule(':where(&):not(:is(.gradient&, &.gradient, .not-gradient&, &.not-gradient))', styles); // specificityWeight = 1 + (parent's specificityWeight)
+/**
+ * @deprecated - Use `ifEmphasized` instead.
+ */
+export const ifGradient        = ifEmphasized;
+
+/**
+ * @deprecated - Use `ifNotEmphasized` instead.
+ */
+export const ifNotGradient     = ifNotEmphasized;
+
+/**
+ * @deprecated - No longer needed.
+ * 
+ * The effective inheritance value is always resolved automatically for us.
+ * This condition is effectively never match.
+ */
+export const ifInheritGradient = (styles: CssStyleCollection): CssRule => neverRule();
 
 
 
-export interface GradientableStuff { gradientableRule: Factory<CssRule>, gradientableVars: CssVars<GradientableVars> }
+/**
+ * @deprecated - Use `CssEmphasizeVariant` instead.
+ */
+export interface GradientableStuff { gradientableRule: Lazy<CssRule>, gradientableVars: CssVars<GradientableVars> }
+
+/**
+ * @deprecated - No longer needed.
+ * Use `emphasizeVariantVars.isEmphasized` to toggling on/off your background gradient.
+ */
 export interface GradientableConfig {
     backgGrad ?: CssKnownProps['backgroundImage']
 }
+
 const createGradientableRule = (config?: GradientableConfig, gradientDefinition : null|((toggle: ToggleGradient) => CssStyleCollection) = defineGradient): CssRule => {
     return style({
         // configs:
@@ -92,7 +123,7 @@ const createGradientableRule = (config?: GradientableConfig, gradientDefinition 
                 so the *modified* `gradientableVars.gradientSw` by `setGradient()` still *preserved*,
                 thus the `usesColorable()` can see the <parent>'s actual [gradient] status.
             */
-            [gradientableVars.gradientSw] : (gradientDefinition || undefined) && gradientableVars.gradientPr,
+            [gradientableVars.gradientSw] : !gradientDefinition ? undefined : gradientableVars.gradientPr,
         }),
         
         
@@ -111,11 +142,15 @@ const createGradientableRule = (config?: GradientableConfig, gradientDefinition 
         ...variants([
             gradientDefinition && ifGradient(gradientDefinition(true)),
             gradientDefinition && ifNotGradient(gradientDefinition(false)),
-            gradientDefinition && ifInheritGradient(gradientDefinition('inherit')),
+            // gradientDefinition && ifInheritGradient(gradientDefinition('inherit')),
         ]),
     });
 };
+
 /**
+ * @deprecated - Use `useEmphasizeVariant` instead.
+ * Use `emphasizeVariantVars.isEmphasized` to toggling on/off your background gradient.
+ * 
  * Uses a toggleable gradient.  
  * @param config  A configuration of `gradientableRule`.
  * @param gradientDefinition A callback to create a gradient rules for each toggle state.
@@ -129,6 +164,8 @@ export const usesGradientable = (config?: GradientableConfig, gradientDefinition
 };
 
 /**
+ * @deprecated - No longer needed.
+ * 
  * Defines a gradient preference rules for the given `toggle` state.
  * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `'inherit'` to inherit the gradient from its ancestor -or- `null` to remove previously declared `defineGradient`.
  * @returns A `CssRule` represents a gradient rules for the given `toggle` state.
@@ -148,7 +185,10 @@ export const defineGradient = memoizeStyleWithVariants((toggle: ToggleGradient):
         }),
     });
 });
+
 /**
+ * @deprecated - No longer needed.
+ * 
  * Sets the current gradient state by the given `toggle` state.
  * @param toggle `true` to activate the gradient -or- `false` to deactivate -or- `'inherit'` to inherit the gradient from its ancestor -or- `null` to remove previously declared `setGradient`.
  * @returns A `CssRule` represents a gradient rules for the given `toggle` state.
@@ -169,11 +209,25 @@ export const setGradient = (toggle: ToggleGradient): CssRule => style({
 
 
 
+/**
+ * @deprecated - Use `EmphasizeVariantProps` instead.
+ */
 export interface GradientableProps {
     // variants:
     gradient ?: boolean|'inherit'
 }
-export const useGradientable = ({gradient = _defaultGradient}: GradientableProps) => ({
-    class: (gradient === 'inherit') ? null : (gradient ? 'gradient' : 'not-gradient'),
-});
-//#endregion gradientable
+
+/**
+ * @deprecated - Use `useEmphasizeVariant` instead.
+ */
+export const useGradientable = ({ gradient }: GradientableProps) => {
+    const {
+        emphasizedClassname,
+    } = useEmphasizeVariant({
+        emphasized : gradient,
+    });
+    
+    return {
+        class: emphasizedClassname,
+    };
+};
