@@ -73,6 +73,7 @@
     "variants/mild-variant",
     "variants/bare-variant",
     "variants/styling-variants",
+    "variants/orientationable",
     "__configs/*",
     "__utilities/*",
     "__features/*",

@@ -1,27 +1,42 @@
-// cssfn:
+// Cssfn:
 import {
-    // cssfn css specific types:
-    CssRule,
-    CssStyleCollection,
-    CssSelectorCollection,
+    // Cssfn css specific types:
+    type CssRule,
+    type CssStyleCollection,
+    type CssSelectorCollection,
     
-    CssClassName,
+    type CssClassName,
     
     
     
-    // writes css in javascript:
+    // Writes css in javascript:
     rule,
     startsCapitalized,
-}                           from '@cssfn/core'                  // writes css in javascript
+}                           from '@cssfn/core'                          // Writes css in javascript.
+
+// Reusable-ui variants:
+import {
+    // Types:
+    type Orientation,
+    type OrientationVariantProps,
+    
+    
+    
+    // Hooks:
+    useOrientationVariant,
+    
+    
+    
+    // Utilities:
+    orientationInlineSelector,
+    orientationBlockSelector,
+    
+    ifOrientationInline,
+    ifOrientationBlock,
+}                           from '@reusable-ui/orientation-variant'     // A utility for managing orientations consistently across React components.
 
 
 
-// hooks:
-
-// variants:
-
-//#region orientationable
-//#region caches
 const orientationClassesCache       = new Map<OrientationName|OrientationWithDirectionName|undefined, CssClassName|null>();
 export const createOrientationClass = (orientationName: OrientationName|OrientationWithDirectionName|undefined): CssClassName|null => {
     const cached = orientationClassesCache.get(orientationName);
@@ -41,16 +56,6 @@ export const createOrientationClass = (orientationName: OrientationName|Orientat
     return orientationClass;
 };
 
-let defaultInlineOrientationableStuffsCache : WeakRef<OrientationableStuff>|undefined = undefined;
-let defaultBlockOrientationableStuffsCache  : WeakRef<OrientationableStuff>|undefined = undefined;
-
-// rarely used:
-// let defaultInlineStartOrientationableWithDirectionStuffsCache : WeakRef<OrientationableWithDirectionStuff>|undefined = undefined;
-// let defaultInlineEndOrientationableWithDirectionStuffsCache   : WeakRef<OrientationableWithDirectionStuff>|undefined = undefined;
-// let defaultBlockStartOrientationableWithDirectionStuffsCache  : WeakRef<OrientationableWithDirectionStuff>|undefined = undefined;
-// let defaultBlockEndOrientationableWithDirectionStuffsCache    : WeakRef<OrientationableWithDirectionStuff>|undefined = undefined;
-//#endregion caches
-
 
 
 // utilities:
@@ -62,7 +67,14 @@ const fallbacks = <TValue>(value1: TValue|undefined, value2: TValue|undefined, v
 
 
 
-export type OrientationName = 'inline'|'block'
+/**
+ * @deprecated - Use `Orientation` instead.
+ */
+export type OrientationName = Orientation
+
+/**
+ * @deprecated - Use `ifOrientationInline` and `ifOrientationBlock` instead.
+ */
 export interface OrientationableStuff {
     defaultOrientation        : OrientationName
     
@@ -73,123 +85,83 @@ export interface OrientationableStuff {
     ifOrientationBlock        : (styles: CssStyleCollection) => CssRule
 }
 
+/**
+ * @deprecated - Use `ifOrientationInline` and `ifOrientationBlock` instead.
+ */
 export type OrientationableOptions = Omit<Partial<OrientationableStuff>, 'ifOrientationInline'|'ifOrientationBlock'>
+
+/**
+ * @deprecated - Use `ifOrientationInline` and `ifOrientationBlock` instead.
+ */
 export const defaultInlineOrientationableOptions : OrientationableOptions = { defaultOrientation: 'inline' };
+
+/**
+ * @deprecated - Use `ifOrientationInline` and `ifOrientationBlock` instead.
+ */
 export const defaultBlockOrientationableOptions  : OrientationableOptions = { defaultOrientation: 'block'  };
 
+/**
+ * @deprecated - Use `ifOrientationInline` and `ifOrientationBlock` instead.
+ */
 export const usesOrientationable = (options?: OrientationableOptions, defaultOptions = defaultBlockOrientationableOptions): OrientationableStuff => {
-    const isDefaultBlock  = (
-        (defaultOptions === defaultBlockOrientationableOptions)
-        &&
-        (
-            (options === undefined)
-            ||
-            (options === defaultOptions)
-            ||
-            (
-                (options.defaultOrientation        === defaultOptions.defaultOrientation       )
-                &&
-                (options.orientationInlineSelector === defaultOptions.orientationInlineSelector)
-                &&
-                (options.orientationBlockSelector  === defaultOptions.orientationBlockSelector )
-            )
-        )
-    );
-    const isDefaultInline = !isDefaultBlock && (
-        (defaultOptions === defaultInlineOrientationableOptions)
-        &&
-        (
-            (options === undefined)
-            ||
-            (options === defaultOptions)
-            ||
-            (
-                (options.defaultOrientation        === defaultOptions.defaultOrientation       )
-                &&
-                (options.orientationInlineSelector === defaultOptions.orientationInlineSelector)
-                &&
-                (options.orientationBlockSelector  === defaultOptions.orientationBlockSelector )
-            )
-        )
-    );
-    if (isDefaultBlock) {
-        const cached = defaultBlockOrientationableStuffsCache?.deref();
-        if (cached) return cached;
-    }
-    else if (isDefaultInline) {
-        const cached = defaultInlineOrientationableStuffsCache?.deref();
-        if (cached) return cached;
-    } // if
+    const defaultOrientation = fallbacks<OrientationName>(options?.defaultOrientation, defaultOptions.defaultOrientation, 'block');
     
     
     
-    const defaultOrientation        = fallbacks<OrientationName      >(options?.defaultOrientation        , defaultOptions.defaultOrientation        , 'block');
-    const orientationInlineSelector = fallbacks<CssSelectorCollection>(options?.orientationInlineSelector , defaultOptions.orientationInlineSelector , ((defaultOrientation === 'inline') ? ':not(:is(.oBlock, .oBlock-start, .oBlock-end))'    : ':is(.oInline, .oInline-start, .oInline-end)'));
-    const orientationBlockSelector  = fallbacks<CssSelectorCollection>(options?.orientationBlockSelector  , defaultOptions.orientationBlockSelector  , ((defaultOrientation === 'block' ) ? ':not(:is(.oInline, .oInline-start, .oInline-end))' : ':is(.oBlock, .oBlock-start, .oBlock-end)' ));
-    
-    
-    
-    const result : OrientationableStuff = {
-        ...options, // preserves foreign props
-        
+    return {
         defaultOrientation,
+        
         orientationInlineSelector,
         orientationBlockSelector,
         
-        ifOrientationInline : (styles: CssStyleCollection) => rule(orientationInlineSelector, styles),
-        ifOrientationBlock  : (styles: CssStyleCollection) => rule(orientationBlockSelector , styles),
-    };
-    if (isDefaultBlock) {
-        defaultBlockOrientationableStuffsCache = new WeakRef<OrientationableStuff>(result);
-    }
-    else if (isDefaultInline) {
-        defaultInlineOrientationableStuffsCache = new WeakRef<OrientationableStuff>(result);
-    } // if
-    return result;
+        ifOrientationInline,
+        ifOrientationBlock,
+    } satisfies OrientationableStuff;
 };
 
 
 
-export interface OrientationableProps {
-    // variants:
-    orientation ?: OrientationName
-}
-export const useOrientationable = ({orientation}: OrientationableProps, defaultOptions = defaultBlockOrientationableOptions) => ({
-    class: createOrientationClass(orientation) ?? null,
+/**
+ * @deprecated - Use `OrientationVariantProps` instead.
+ */
+export interface OrientationableProps extends OrientationVariantProps {}
+
+/**
+ * @deprecated - Use `useOrientationVariant` instead.
+ */
+export const useOrientationable = (props: OrientationableProps, defaultOptions = defaultBlockOrientationableOptions) => {
+    const {
+        orientationClassname,
+        isOrientationBlock,
+        ariaOrientation,
+    } = useOrientationVariant(props);
     
-    get isOrientationBlock(): boolean {
-        return(
-            (
-                orientation
-                ??
-                defaultOptions.defaultOrientation
-            )?.startsWith('block')
-            ??
-            false
-        );
-    },
-    get isOrientationVertical(): boolean {
+    return {
+        class: orientationClassname,
+        
+        isOrientationBlock,
+        
         /*
             Assumes block === vertical, in most cases the `writing-mode` is `horizontal-tb`.
             To check for the styling on element is quite expensive (needs to get the ref of the element and then may re-render).
             For performance reason, we assume the `writing-mode = horizontal-tb`.
         */
-        return this.isOrientationBlock;
-    },
-    get 'aria-orientation'() {
-        return (
-            this.isOrientationVertical
-            ?
-            'vertical'
-            :
-            'horizontal'
-        );
-    }
-});
+        isOrientationVertical: isOrientationBlock,
+        
+        'aria-orientation': ariaOrientation,
+    };
+};
 
 
 
+/**
+ * @deprecated - Use combination of `Orientation` and `FlowDirection` instead.
+ */
 export type OrientationWithDirectionName = 'inline-start'|'inline-end'|'block-start'|'block-end'
+
+/**
+ * @deprecated - Use combination of `ifOrientationInline`, `ifOrientationBlock`, `ifFlowDirectionStart`, `ifFlowDirectionEnd` instead.
+ */
 export interface OrientationableWithDirectionStuff {
     defaultOrientation             : OrientationWithDirectionName
     
@@ -204,12 +176,34 @@ export interface OrientationableWithDirectionStuff {
     ifOrientationBlockEnd          : (styles: CssStyleCollection) => CssRule
 }
 
+/**
+ * @deprecated - Use combination of `ifOrientationInline`, `ifOrientationBlock`, `ifFlowDirectionStart`, `ifFlowDirectionEnd` instead.
+ */
 export type OrientationableWithDirectionOptions = Omit<Partial<OrientationableWithDirectionStuff>, 'ifOrientationInlineStart'|'ifOrientationInlineEnd'|'ifOrientationBlockStart'|'ifOrientationBlockEnd'>
+
+/**
+ * @deprecated - Use combination of `ifOrientationInline`, `ifOrientationBlock`, `ifFlowDirectionStart`, `ifFlowDirectionEnd` instead.
+ */
 export const defaultInlineStartOrientationableWithDirectionOptions : OrientationableWithDirectionOptions = { defaultOrientation: 'inline-start' };
+
+/**
+ * @deprecated - Use combination of `ifOrientationInline`, `ifOrientationBlock`, `ifFlowDirectionStart`, `ifFlowDirectionEnd` instead.
+ */
 export const defaultInlineEndOrientationableWithDirectionOptions   : OrientationableWithDirectionOptions = { defaultOrientation: 'inline-end'   };
+
+/**
+ * @deprecated - Use combination of `ifOrientationInline`, `ifOrientationBlock`, `ifFlowDirectionStart`, `ifFlowDirectionEnd` instead.
+ */
 export const defaultBlockStartOrientationableWithDirectionOptions  : OrientationableWithDirectionOptions = { defaultOrientation: 'block-start'  };
+
+/**
+ * @deprecated - Use combination of `ifOrientationInline`, `ifOrientationBlock`, `ifFlowDirectionStart`, `ifFlowDirectionEnd` instead.
+ */
 export const defaultBlockEndOrientationableWithDirectionOptions    : OrientationableWithDirectionOptions = { defaultOrientation: 'block-end'    };
 
+/**
+ * @deprecated - Use combination of `ifOrientationInline`, `ifOrientationBlock`, `ifFlowDirectionStart`, `ifFlowDirectionEnd` instead.
+ */
 export const usesOrientationableWithDirection = (options?: OrientationableWithDirectionOptions, defaultOptions = defaultBlockEndOrientationableWithDirectionOptions): OrientationableWithDirectionStuff & Pick<OrientationableStuff, 'ifOrientationInline'|'ifOrientationBlock'> => {
     const defaultOrientation             = fallbacks<OrientationWithDirectionName>(options?.defaultOrientation             , defaultOptions.defaultOrientation             , 'block-end');
     const orientationInlineStartSelector = fallbacks<CssSelectorCollection       >(options?.orientationInlineStartSelector , defaultOptions.orientationInlineStartSelector , ((defaultOrientation === 'inline-start') ? ':not(:is(.oBlock-start, .oBlock-end, .oInline-end))'    : '.oInline-start'));
@@ -240,10 +234,17 @@ export const usesOrientationableWithDirection = (options?: OrientationableWithDi
 
 
 
+/**
+ * @deprecated - Use combination of `OrientationVariantProps` and `FlowDirectionVariantProps` instead.
+ */
 export interface OrientationableWithDirectionProps {
     // variants:
     orientation ?: OrientationWithDirectionName
 }
+
+/**
+ * @deprecated - Use combination of `useOrientationVariant` and `useFlowDirectionVariant` instead.
+ */
 export const useOrientationableWithDirection = ({orientation}: OrientationableWithDirectionProps, defaultOptions = defaultBlockEndOrientationableWithDirectionOptions) => ({
     class: createOrientationClass(orientation) ?? null,
     
@@ -257,4 +258,3 @@ export const useOrientationableWithDirection = ({orientation}: OrientationableWi
         );
     },
 });
-//#endregion orientationable
