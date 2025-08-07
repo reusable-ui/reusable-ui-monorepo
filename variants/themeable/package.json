@@ -1,8 +1,9 @@
 {
   "name": "@reusable-ui/themeable",
-  "version": "6.5.0",
+  "version": "7.0.0",
   "description": "Color options of UI.",
   "keywords": [
+    "deprecated",
     "themeable",
     "theme",
     "colors",
@@ -11,19 +12,23 @@
     "layouts"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "variants/themeable"
   },
-  "main": "dist/themeable.js",
-  "types": "dist/themeable.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/themeable.js",
-    "./index": "./dist/themeable.js",
-    "./index.js": "./dist/themeable.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -37,9 +42,10 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.2.0"
+    "@cssfn/core": "^4.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/colors": "^6.5.0"
+    "@reusable-ui/colors": "^7.0.0",
+    "@reusable-ui/theme-variant": "^7.0.0"
   }
 }
