@@ -139,7 +139,7 @@ export interface CssEmphasizeVariant {
      * 
      * These variables act as conditional switches:
      * - If `unset`, they **poison** dependent properties, causing the browser to ignore them.
-     * - If declared with an empty value, they reactivate dependent properties without altering their values.
+     * - If declared with an empty value, they **reactivate** dependent properties without altering their values.
      * 
      * These variables are strongly typed and automatically resolved to consistent CSS variable names.
      */

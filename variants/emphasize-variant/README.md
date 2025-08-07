@@ -170,16 +170,16 @@ export const componentStyle = () => {
         // Apply emphasize-related variable rules:
         ...emphasizeVariantRule(),
         
-        // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — all declarations will be preserved:
+        // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling using `isEmphasized` and `notEmphasized` variables:
+        // Apply conditional styling based on emphasized mode:
         ...fallback({
-            // Apply emphasized styling:
+            // Emphasized styling:
             fontWeight : `${isEmphasized} bold`,
             color      : `${isEmphasized} crimson`,
         }),
         ...fallback({
-            // Apply non-emphasized styling:
+            // Non-emphasized styling:
             fontWeight : `${notEmphasized} normal`,
             color      : `${notEmphasized} gray`,
         }),
@@ -203,12 +203,12 @@ export const componentStyle = () => {
     ```
 - These variables act as conditional switches:
     - If `unset`, they **poison** dependent properties, causing the browser to ignore them.
-    - If declared with an empty value, they reactivate dependent properties without altering their values.
-- You can then use those conditional variables in your component styles:
+    - If declared with an empty value, they **reactivate** dependent properties without altering their values.
+- You can use them directly in your styles:
     ```ts
     style({
-        fontWeight : `${emphasizeVariantVars.isEmphasized} bold`,    // Will be rendered to: `fontWeight: var(--isEmphasized) bold;` (becomes valid only when emphasized)
-        color      : `${emphasizeVariantVars.isEmphasized} crimson`, // Will be rendered to: `color: var(--isEmphasized) crimson;`   (becomes valid only when emphasized)
+        fontWeight : `${emphasizeVariantVars.isEmphasized} bold`,    // Will be rendered to: `font-weight: var(--isEmphasized) bold;` (becomes valid only when emphasized)
+        color      : `${emphasizeVariantVars.isEmphasized} crimson`, // Will be rendered to: `color: var(--isEmphasized) crimson;`    (becomes valid only when emphasized)
     });
     ```
 
