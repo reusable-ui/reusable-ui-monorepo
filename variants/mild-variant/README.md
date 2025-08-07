@@ -143,6 +143,77 @@ export const componentStyle = () => style({
 
 ---
 
+## 🧩 Exported CSS Hooks
+
+### `usesMildVariant()`
+
+Generates CSS rules that toggle mild-related CSS variables based on the current mild mode, and exposes those variables for conditional styling.
+
+#### 💡 Usage Example
+
+```ts
+import {
+    usesMildVariant,
+} from '@reusable-ui/mild-variant';
+import { style, fallback } from '@cssfn/core';
+
+export const componentStyle = () => {
+    const {
+        mildVariantRule,
+        mildVariantVars: { isMild, notMild },
+    } = usesMildVariant();
+    
+    return style({
+        display: 'flex',
+        // Define component styling here.
+        
+        // Apply mild-related variable rules:
+        ...mildVariantRule(),
+        
+        // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
+        
+        // Apply conditional styling based on mild mode:
+        ...fallback({
+            // Mild styling:
+            fontWeight     : `${isMild} lighter`,
+            textDecoration : `${isMild} underline`,
+        }),
+        ...fallback({
+            // Non-mild styling:
+            fontWeight     : `${notMild} normal`,
+            textDecoration : `${notMild} none`,
+        }),
+    });
+};
+```
+
+#### 🧠 How It Works
+
+- `usesMildVariant()` generates scoped rules like:
+    ```css
+    &.is-mild {
+        --isMild: ;       /* Valid    when mild mode is enabled. */
+        --notMild: unset; /* Poisoned when mild mode is enabled. */
+    }
+    
+    &.not-mild {
+        --isMild: unset;  /* Poisoned when mild mode is disabled. */
+        --notMild: ;      /* Valid    when mild mode is disabled. */
+    }
+    ```
+- These variables act as conditional switches:
+    - If `unset`, they **poison** dependent properties, causing the browser to ignore them.
+    - If declared with an empty value, they **reactivate** dependent properties without altering their values.
+- You can use them directly in your styles:
+    ```ts
+    style({
+        fontWeight     : `${mildVariantVars.isMild} lighter`,   // Will be rendered to: `font-weight: var(--isMild) lighter;`       (becomes valid only when in mild mode)
+        textDecoration : `${mildVariantVars.isMild} underline`, // Will be rendered to: `text-decoration: var(--isMild) underline;` (becomes valid only when in mild mode)
+    });
+    ```
+
+---
+
 ## 📖 Part of the Reusable-UI Framework  
 **@reusable-ui/mild-variant** is a variant utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.

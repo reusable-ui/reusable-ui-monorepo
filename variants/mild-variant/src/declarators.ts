@@ -9,7 +9,21 @@ import {
     
     // Writes css in javascript:
     rule,
+    variants,
+    style,
+    vars,
+    
+    
+    
+    // Strongly typed of css variables:
+    cssVars,
 }                           from '@cssfn/core'          // Writes css in javascript.
+
+// Types:
+import {
+    type MildVariantVars,
+    type CssMildVariant,
+}                           from './types.js'
 
 
 
@@ -62,3 +76,42 @@ export const ifMild    = (styles: CssStyleCollection): CssRule => rule(isMildSel
  * ```
  */
 export const ifNotMild = (styles: CssStyleCollection): CssRule => rule(isNotMildSelector , styles);
+
+
+
+/**
+ * A strongly typed global mapping of mild-related CSS variables for conditional styling.
+ * 
+ * These variables are shared across server and client environments to ensure
+ * consistent CSS variable names during SSR and hydration.
+ */
+const [mildVariantVars] = cssVars<MildVariantVars>({ minify: false });
+
+/**
+ * Generates CSS rules that toggle mild-related CSS variables based on the current mild mode,
+ * and exposes those variables for conditional styling.
+ * 
+ * @returns A CSS API for enabling conditional styling based on mild mode.
+ */
+export const usesMildVariant = (): CssMildVariant => {
+    return {
+        mildVariantRule : () => style(
+            variants({
+                ...ifMild(
+                    vars({
+                        [mildVariantVars.isMild ] : '',      // Valid    when mild mode is enabled.
+                        [mildVariantVars.notMild] : 'unset', // Poisoned when mild mode is enabled.
+                    })
+                ),
+                ...ifNotMild(
+                    vars({
+                        [mildVariantVars.isMild ] : 'unset', // Poisoned when mild mode is disabled.
+                        [mildVariantVars.notMild] : '',      // Valid    when mild mode is disabled.
+                    })
+                ),
+            }),
+        ),
+        
+        mildVariantVars,
+    } satisfies CssMildVariant;
+};
