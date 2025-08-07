@@ -9,7 +9,21 @@ import {
     
     // Writes css in javascript:
     rule,
+    variants,
+    style,
+    vars,
+    
+    
+    
+    // Strongly typed of css variables:
+    cssVars,
 }                           from '@cssfn/core'          // Writes css in javascript.
+
+// Types:
+import {
+    type OutlineVariantVars,
+    type CssOutlineVariant,
+}                           from './types.js'
 
 
 
@@ -62,3 +76,42 @@ export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(isOut
  * ```
  */
 export const ifNotOutlined = (styles: CssStyleCollection): CssRule => rule(isNotOutlinedSelector , styles);
+
+
+
+/**
+ * A strongly typed global mapping of outline-related CSS variables for conditional styling.
+ * 
+ * These variables are shared across server and client environments to ensure
+ * consistent CSS variable names during SSR and hydration.
+ */
+const [outlineVariantVars] = cssVars<OutlineVariantVars>({ minify: false });
+
+/**
+ * Generates CSS rules that toggle outline-related CSS variables based on the current outlined state,
+ * and exposes those variables for conditional styling.
+ * 
+ * @returns A CSS API for enabling conditional styling based on outlined state.
+ */
+export const usesOutlineVariant = (): CssOutlineVariant => {
+    return {
+        outlineVariantRule : () => style(
+            variants({
+                ...ifOutlined(
+                    vars({
+                        [outlineVariantVars.isOutlined ] : '',      // Valid    when outlined.
+                        [outlineVariantVars.notOutlined] : 'unset', // Poisoned when outlined.
+                    })
+                ),
+                ...ifNotOutlined(
+                    vars({
+                        [outlineVariantVars.isOutlined ] : 'unset', // Poisoned when not outlined.
+                        [outlineVariantVars.notOutlined] : '',      // Valid    when not outlined.
+                    })
+                ),
+            }),
+        ),
+        
+        outlineVariantVars,
+    } satisfies CssOutlineVariant;
+};

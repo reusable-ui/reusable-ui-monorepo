@@ -143,6 +143,77 @@ export const componentStyle = () => style({
 
 ---
 
+## 🧩 Exported CSS Hooks
+
+### `usesOutlineVariant()`
+
+Generates CSS rules that toggle outline-related CSS variables based on the current outlined state, and exposes those variables for conditional styling.
+
+#### 💡 Usage Example
+
+```ts
+import {
+    usesOutlineVariant,
+} from '@reusable-ui/outline-variant';
+import { style, fallback } from '@cssfn/core';
+
+export const componentStyle = () => {
+    const {
+        outlineVariantRule,
+        outlineVariantVars: { isOutlined, notOutlined },
+    } = usesOutlineVariant();
+    
+    return style({
+        display: 'flex',
+        // Define component styling here.
+        
+        // Apply outline-related variable rules:
+        ...outlineVariantRule(),
+        
+        // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
+        
+        // Apply conditional styling based on outlined mode:
+        ...fallback({
+            // Outlined styling:
+            fontWeight     : `${isOutlined} bold`,
+            textDecoration : `${isOutlined} underline`,
+        }),
+        ...fallback({
+            // Non-outlined styling:
+            fontWeight     : `${notOutlined} normal`,
+            textDecoration : `${notOutlined} none`,
+        }),
+    });
+};
+```
+
+#### 🧠 How It Works
+
+- `usesOutlineVariant()` generates scoped rules like:
+    ```css
+    &.is-outlined {
+        --isOutlined: ;       /* Valid    when outlined. */
+        --notOutlined: unset; /* Poisoned when outlined. */
+    }
+    
+    &.not-outlined {
+        --isOutlined: unset;  /* Poisoned when not outlined. */
+        --notOutlined: ;      /* Valid    when not outlined. */
+    }
+    ```
+- These variables act as conditional switches:
+    - If `unset`, they **poison** dependent properties, causing the browser to ignore them.
+    - If declared with an empty value, they **reactivate** dependent properties without altering their values.
+- You can use them directly in your styles:
+    ```ts
+    style({
+        fontWeight     : `${outlineVariantVars.isOutlined} bold`,      // Will be rendered to: `font-weight: var(--isOutlined) bold;`          (becomes valid only when outlined)
+        textDecoration : `${outlineVariantVars.isOutlined} underline`, // Will be rendered to: `text-decoration: var(--isOutlined) underline;` (becomes valid only when outlined)
+    });
+    ```
+
+---
+
 ## 📖 Part of the Reusable-UI Framework  
 **@reusable-ui/outline-variant** is a variant utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
