@@ -72,7 +72,7 @@ export interface ResolvedOutlineVariant {
 /**
  * A list of outline-related CSS variables used to enable conditional styling.
  * 
- * These variables act as boolean switches that determine whether outline-specific styles
+ * These variables act as boolean switches that control whether outline-specific styles
  * should be applied.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
@@ -82,7 +82,7 @@ export interface OutlineVariantVars {
      * Applies when the component is outlined.
      * 
      * Acts as a conditional switch: when declared with an empty value,
-     * any CSS property referencing this variable becomes valid and will be applied.
+     * any CSS property referencing this variable becomes valid and is applied.
      * If `unset`, the variable **poisons** dependent properties,
      * causing the browser to ignore them.
      * 
@@ -101,7 +101,7 @@ export interface OutlineVariantVars {
      * Applies when the component is not outlined.
      * 
      * Acts as a conditional switch: when declared with an empty value,
-     * any CSS property referencing this variable becomes valid and will be applied.
+     * any CSS property referencing this variable becomes valid and is applied.
      * If `unset`, the variable **poisons** dependent properties,
      * causing the browser to ignore them.
      * 
@@ -126,7 +126,7 @@ export interface CssOutlineVariant {
     /**
      * Generates CSS rules that toggle outline-related CSS variables based on the current outlined state.
      * 
-     * These rules are scoped using `ifOutlined()` and `ifNotOutlined()` for toggling outline-related CSS variables.
+     * These rules are scoped using `ifOutlined()` and `ifNotOutlined()` to toggle outline-related CSS variables.
      */
     outlineVariantRule : Lazy<CssRule>
     
@@ -141,7 +141,7 @@ export interface CssOutlineVariant {
      * - If `unset`, they **poison** dependent properties, causing the browser to ignore them.
      * - If declared with an empty value, they **reactivate** dependent properties without altering their values.
      * 
-     * These variables are strongly typed and automatically resolved to consistent CSS variable names.
+     * These variables are strongly typed and automatically resolve to consistent CSS variable names.
      */
     outlineVariantVars : CssVars<OutlineVariantVars>
 }
