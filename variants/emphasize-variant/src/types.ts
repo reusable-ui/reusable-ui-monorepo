@@ -72,7 +72,7 @@ export interface ResolvedEmphasizeVariant {
 /**
  * A list of emphasize-related CSS variables used to enable conditional styling.
  * 
- * These variables act as boolean switches that determine whether emphasize-specific styles
+ * These variables act as boolean switches that control whether emphasize-specific styles
  * should be applied.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
@@ -82,7 +82,7 @@ export interface EmphasizeVariantVars {
      * Applies when the component is emphasized.
      * 
      * Acts as a conditional switch: when declared with an empty value,
-     * any CSS property referencing this variable becomes valid and will be applied.
+     * any CSS property referencing this variable becomes valid and is applied.
      * If `unset`, the variable **poisons** dependent properties,
      * causing the browser to ignore them.
      * 
@@ -101,7 +101,7 @@ export interface EmphasizeVariantVars {
      * Applies when the component is not emphasized.
      * 
      * Acts as a conditional switch: when declared with an empty value,
-     * any CSS property referencing this variable becomes valid and will be applied.
+     * any CSS property referencing this variable becomes valid and is applied.
      * If `unset`, the variable **poisons** dependent properties,
      * causing the browser to ignore them.
      * 
@@ -126,7 +126,7 @@ export interface CssEmphasizeVariant {
     /**
      * Generates CSS rules that toggle emphasize-related CSS variables based on the current emphasized state.
      * 
-     * These rules are scoped using `ifEmphasized()` and `ifNotEmphasized()` for toggling emphasize-related CSS variables.
+     * These rules are scoped using `ifEmphasized()` and `ifNotEmphasized()` to toggle emphasize-related CSS variables.
      */
     emphasizeVariantRule : Lazy<CssRule>
     
@@ -141,7 +141,7 @@ export interface CssEmphasizeVariant {
      * - If `unset`, they **poison** dependent properties, causing the browser to ignore them.
      * - If declared with an empty value, they **reactivate** dependent properties without altering their values.
      * 
-     * These variables are strongly typed and automatically resolved to consistent CSS variable names.
+     * These variables are strongly typed and automatically resolve to consistent CSS variable names.
      */
     emphasizeVariantVars : CssVars<EmphasizeVariantVars>
 }
