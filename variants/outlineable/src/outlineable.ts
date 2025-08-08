@@ -1,56 +1,70 @@
-// cssfn:
+// Cssfn:
 import {
-    // cssfn general types:
-    Factory,
+    // Lazies:
+    type Lazy,
     
     
     
-    // cssfn css specific types:
-    CssKnownProps,
-    CssRule,
-    CssStyleCollection,
+    // Cssfn css specific types:
+    type CssKnownProps,
+    type CssRule,
+    type CssStyleCollection,
     
     
     
-    // writes css in javascript:
-    rule,
+    // Writes css in javascript:
+    neverRule,
     variants,
     style,
     vars,
     
     
     
-    // strongly typed of css variables:
-    CssVars,
+    // Strongly typed of css variables:
+    type CssVars,
     cssVars,
     switchOf,
     
     
     
-    // writes complex stylesheets in simpler way:
+    // Writes complex stylesheets in simpler way:
     memoizeStyle,
     memoizeStyleWithVariants,
-}                           from '@cssfn/core'                  // writes css in javascript
+}                           from '@cssfn/core'                  // Writes css in javascript
 
 // reusable-ui variants:
 import {
     // hooks:
     usesThemeable,
-}                           from '@reusable-ui/themeable'       // color options of UI
+}                           from '@reusable-ui/themeable'       // Color options of UI
+
+// Reusable-ui variants:
+import {
+    // Types:
+    type OutlineVariantProps,
+    
+    
+    
+    // Hooks:
+    useOutlineVariant,
+    
+    
+    
+    // Utilities:
+    ifOutlined,
+    ifNotOutlined,
+}                           from '@reusable-ui/outline-variant' // A utility for managing visual outline consistently across React components.
 
 
 
-// defaults:
-const _defaultOutlined : Required<OutlineableProps>['outlined'] = 'inherit'
-
-
-
-// hooks:
-
-// variants:
-
-//#region outlineable
+/**
+ * @deprecated - No longer needed.
+ */
 export type ToggleOutlined = boolean|'inherit'|null
+
+/**
+ * @deprecated - Use `OutlineVariantVars` instead.
+ */
 export interface OutlineableVars {
     /**
      * the outlineable preference.
@@ -106,25 +120,43 @@ export interface OutlineableVars {
      */
     altForegTg : any
 }
+
 const [outlineableVars] = cssVars<OutlineableVars>({ prefix: 'ol', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 
-// parent is     `.outlined` -or- current is     `.outlined`:
-export const ifOutlined        = (styles: CssStyleCollection): CssRule => rule(              ':is(.outlined&, &.outlined)'                                 , styles); // specificityWeight = 1 + (parent's specificityWeight)
-// parent is `.not-outlined` -or- current is `.not-outlined`:
-export const ifNotOutlined     = (styles: CssStyleCollection): CssRule => rule(              ':is(.not-outlined&, &.not-outlined)'                         , styles); // specificityWeight = 1 + (parent's specificityWeight)
-export const ifInheritOutlined = (styles: CssStyleCollection): CssRule => rule(':where(&):not(:is(.outlined&, &.outlined, .not-outlined&, &.not-outlined))', styles); // specificityWeight = 1 + (parent's specificityWeight)
+// Not deprecated:
+export {
+    ifOutlined,
+    ifNotOutlined,
+}
+
+/**
+ * @deprecated - No longer needed.
+ * 
+ * The effective inheritance value is always resolved automatically for us.
+ * This condition is effectively never match.
+ */
+export const ifInheritOutlined = (styles: CssStyleCollection): CssRule => neverRule();
 
 
 
-export interface OutlineableStuff { outlineableRule: Factory<CssRule>, outlineableVars: CssVars<OutlineableVars> }
+/**
+ * @deprecated - Use `CssOutlineVariant` instead.
+ */
+export interface OutlineableStuff { outlineableRule: Lazy<CssRule>, outlineableVars: CssVars<OutlineableVars> }
+
+/**
+ * @deprecated - No longer needed.
+ * Use `outlineVariantVars.isOutlined` and `outlineVariantVars.notOutlined` to conditionally styling your background, foreground, and border colors.
+ */
 export interface OutlineableConfig {
     backg    ?: CssKnownProps['backgroundColor']
     foreg    ?: CssKnownProps['foreground'     ]
     altBackg ?: CssKnownProps['backgroundColor']
     altForeg ?: CssKnownProps['foreground'     ]
 }
+
 const createOutlineableRule = (config?: OutlineableConfig, outlinedDefinition : null|((toggle: ToggleOutlined) => CssStyleCollection) = defineOutlined): CssRule => {
     // dependencies:
     const {themeableRule, themeableVars} = usesThemeable();
@@ -146,7 +178,7 @@ const createOutlineableRule = (config?: OutlineableConfig, outlinedDefinition : 
                 so the *modified* `outlineableVars.outlinedSw` by `setOutlined()` still *preserved*,
                 thus the `usesColorable()` can see the <parent>'s actual [outlined] status.
             */
-            [outlineableVars.outlinedSw] : (outlinedDefinition || undefined) && outlineableVars.outlinedPr,
+            [outlineableVars.outlinedSw] : !outlinedDefinition ? undefined : outlineableVars.outlinedPr,
         }),
         
         
@@ -228,12 +260,16 @@ const createOutlineableRule = (config?: OutlineableConfig, outlinedDefinition : 
         ...variants([
             outlinedDefinition && ifOutlined(outlinedDefinition(true)),
             outlinedDefinition && ifNotOutlined(outlinedDefinition(false)),
-            outlinedDefinition && ifInheritOutlined(outlinedDefinition('inherit')),
+            // outlinedDefinition && ifInheritOutlined(outlinedDefinition('inherit')),
         ]),
     });
 };
 const getDefaultOutlineableRule = memoizeStyle(() => createOutlineableRule());
+
 /**
+ * @deprecated - Use `usesOutlineVariant` instead.
+ * Use `outlineVariantVars.isOutlined` and `outlineVariantVars.notOutlined` to conditionally styling your background, foreground, and border colors.
+ * 
  * Uses a toggleable outlining.  
  * @param config  A configuration of `outlineableRule`.
  * @param outlinedDefinition A callback to create an outlining rules for each toggle state.
@@ -253,6 +289,8 @@ export const usesOutlineable = (config?: OutlineableConfig, outlinedDefinition :
 };
 
 /**
+ * @deprecated - No longer needed.
+ * 
  * Defines an outlining preference rules for the given `toggle` state.
  * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `'inherit'` to inherit the outlining from its ancestor -or- `null` to remove previously declared `defineOutlined`.
  * @returns A `CssRule` represents an outlining rules for the given `toggle` state.
@@ -272,7 +310,10 @@ export const defineOutlined = memoizeStyleWithVariants((toggle: ToggleOutlined):
         }),
     });
 });
+
 /**
+ * @deprecated - No longer needed.
+ * 
  * Sets the current outlining state by the given `toggle` state.
  * @param toggle `true` to activate the outlining -or- `false` to deactivate -or- `'inherit'` to inherit the outlining from its ancestor -or- `null` to remove previously declared `setOutlined`.
  * @returns A `CssRule` represents an outlining rules for the given `toggle` state.
@@ -293,11 +334,20 @@ export const setOutlined = (toggle: ToggleOutlined): CssRule => style({
 
 
 
-export interface OutlineableProps {
-    // variants:
-    outlined ?: boolean|'inherit'
-}
-export const useOutlineable = ({outlined = _defaultOutlined}: OutlineableProps) => ({
-    class: (outlined === 'inherit') ? null : (outlined ? 'outlined' : 'not-outlined'),
-});
-//#endregion outlineable
+/**
+ * @deprecated - Use `OutlineVariantProps` instead.
+ */
+export interface OutlineableProps extends OutlineVariantProps { }
+
+/**
+ * @deprecated - Use `useOutlineVariant` instead.
+ */
+export const useOutlineable = (props: OutlineableProps) => {
+    const {
+        outlinedClassname,
+    } = useOutlineVariant(props);
+    
+    return {
+        class: outlinedClassname,
+    };
+};
