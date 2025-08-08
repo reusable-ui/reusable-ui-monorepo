@@ -84,7 +84,7 @@ export const ifSize = <TSize extends string = BasicSize>(size: TSize, styles: Cs
  * @param options - A required configuration specifying supported size values.
  * @returns A CSS API for enabling size-aware component configuration.
  */
-export function usesSizeVariant<TSize extends string = BasicSize, TCssConfigProps extends CssConfigProps = CssConfigProps>(configVars: Refs<TCssConfigProps>, options?: CssSizeVariantOptions<TSize>): CssSizeVariant;
+export function usesSizeVariant<TSize extends string = BasicSize, TCssConfigProps extends CssConfigProps = CssConfigProps>(configVars: Refs<TCssConfigProps>, options: CssSizeVariantOptions<TSize>): CssSizeVariant;
 
 /**
  * Generates CSS rules that activate size-specific properties of component’s configuration based on the currently active size.
