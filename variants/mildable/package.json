@@ -1,8 +1,9 @@
 {
   "name": "@reusable-ui/mildable",
-  "version": "6.5.0",
+  "version": "7.0.0",
   "description": "Mild (soft color) variant of UI.",
   "keywords": [
+    "deprecated",
     "mildable",
     "mild",
     "soft",
@@ -12,19 +13,23 @@
     "layouts"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "variants/mildable"
   },
-  "main": "dist/mildable.js",
-  "types": "dist/mildable.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/mildable.js",
-    "./index": "./dist/mildable.js",
-    "./index.js": "./dist/mildable.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": [
     "dist/effects/styles.js"
@@ -40,9 +45,10 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.2.0"
+    "@cssfn/core": "^4.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/themeable": "^6.5.0"
+    "@reusable-ui/mild-variant": "^7.0.0",
+    "@reusable-ui/themeable": "^7.0.0"
   }
 }

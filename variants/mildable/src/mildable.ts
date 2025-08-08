@@ -1,59 +1,73 @@
-// cssfn:
+// Cssfn:
 import {
-    // cssfn general types:
-    Factory,
+    // Lazies:
+    type Lazy,
     
     
     
-    // cssfn css specific types:
-    CssKnownProps,
-    CssRule,
-    CssStyleCollection,
+    // Cssfn css specific types:
+    type CssKnownProps,
+    type CssRule,
+    type CssStyleCollection,
     
     
     
-    // writes css in javascript:
-    rule,
+    // Writes css in javascript:
+    neverRule,
     variants,
     style,
     vars,
     
     
     
-    // strongly typed of css variables:
-    CssVars,
+    // Strongly typed of css variables:
+    type CssVars,
     cssVars,
     switchOf,
     
     
     
-    // writes complex stylesheets in simpler way:
+    // Writes complex stylesheets in simpler way:
     memoizeStyle,
     memoizeStyleWithVariants,
-}                           from '@cssfn/core'                  // writes css in javascript
+}                           from '@cssfn/core'                  // Writes css in javascript
 
-// reusable-ui variants:
+// Reusable-ui variants:
 import {
     // hooks:
     usesThemeable,
-}                           from '@reusable-ui/themeable'       // color options of UI
+}                           from '@reusable-ui/themeable'       // Color options of UI
+
+// Reusable-ui variants:
+import {
+    // Types:
+    type MildVariantProps,
+    
+    
+    
+    // Hooks:
+    useMildVariant,
+    
+    
+    
+    // Utilities:
+    ifMild,
+    ifNotMild,
+}                           from '@reusable-ui/mild-variant'    // A utility for managing mild styling (reading friendly) consistently across React components.
 
 // internals:
 import                           './effects/styles.js'          // side effect
 
 
 
-// defaults:
-const _defaultMild : Required<MildableProps>['mild'] = false
-
-
-
-// hooks:
-
-// variants:
-
-//#region mildable
+/**
+ * @deprecated - No longer needed.
+ */
 export type ToggleMild = boolean|'inherit'|null
+
+/**
+ * @deprecated - Use `MildVariantVars` instead.
+ */
 export interface MildableVars {
     /**
      * the mildable preference.
@@ -102,25 +116,43 @@ export interface MildableVars {
      */
     altForegTg : any
 }
+
 const [mildableVars] = cssVars<MildableVars>({ prefix: 'mi', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 
-// parent is     `.mild` -or- current is     `.mild`:
-export const ifMild        = (styles: CssStyleCollection): CssRule => rule(              ':is(.mild&, &.mild)'                         , styles); // specificityWeight = 1 + (parent's specificityWeight)
-// parent is `.not-mild` -or- current is `.not-mild`:
-export const ifNotMild     = (styles: CssStyleCollection): CssRule => rule(              ':is(.not-mild&, &.not-mild)'                 , styles); // specificityWeight = 1 + (parent's specificityWeight)
-export const ifInheritMild = (styles: CssStyleCollection): CssRule => rule(':where(&):not(:is(.mild&, &.mild, .not-mild&, &.not-mild))', styles); // specificityWeight = 1 + (parent's specificityWeight)
+// Not deprecated:
+export {
+    ifMild,
+    ifNotMild,
+}
+
+/**
+ * @deprecated - No longer needed.
+ * 
+ * The effective inheritance value is always resolved automatically for us.
+ * This condition is effectively never match.
+ */
+export const ifInheritMild = (styles: CssStyleCollection): CssRule => neverRule();
 
 
 
-export interface MildableStuff { mildableRule: Factory<CssRule>, mildableVars: CssVars<MildableVars> }
+/**
+ * @deprecated - Use `CssMildVariant` instead.
+ */
+export interface MildableStuff { mildableRule: Lazy<CssRule>, mildableVars: CssVars<MildableVars> }
+
+/**
+ * @deprecated - No longer needed.
+ * Use `mildVariantVars.isMild` and `mildVariantVars.notMild` to conditionally styling your background, foreground, and border colors.
+ */
 export interface MildableConfig {
     backg    ?: CssKnownProps['backgroundColor']
     foreg    ?: CssKnownProps['foreground'     ]
     altBackg ?: CssKnownProps['backgroundColor']
     altForeg ?: CssKnownProps['foreground'     ]
 }
+
 const createMildableRule = (config?: MildableConfig, mildDefinition : null|((toggle: ToggleMild) => CssStyleCollection) = defineMild): CssRule => {
     // dependencies:
     const {themeableRule, themeableVars} = usesThemeable();
@@ -211,12 +243,16 @@ const createMildableRule = (config?: MildableConfig, mildDefinition : null|((tog
         ...variants([
             mildDefinition && ifMild(mildDefinition(true)),
             mildDefinition && ifNotMild(mildDefinition(false)),
-            mildDefinition && ifInheritMild(mildDefinition('inherit')),
+            // mildDefinition && ifInheritMild(mildDefinition('inherit')),
         ]),
     });
 };
 const getDefaultMildableRule = memoizeStyle(() => createMildableRule());
+
 /**
+ * @deprecated - Use `usesMildVariant` instead.
+ * Use `mildVariantVars.isMild` and `mildVariantVars.notMild` to conditionally styling your background, foreground, and border colors.
+ * 
  * Uses a toggleable mildification.  
  * @param config  A configuration of `mildableRule`.
  * @param mildDefinition A callback to create a mildification rules for each toggle state.
@@ -236,6 +272,8 @@ export const usesMildable = (config?: MildableConfig, mildDefinition : null|((to
 };
 
 /**
+ * @deprecated - No longer needed.
+ * 
  * Defines a mildification preference rules for the given `toggle` state.
  * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `'inherit'` to inherit the mildification from its ancestor -or- `null` to remove previously declared `defineMild`.
  * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
@@ -255,7 +293,10 @@ export const defineMild = memoizeStyleWithVariants((toggle: ToggleMild): CssRule
         }),
     });
 });
+
 /**
+ * @deprecated - No longer needed.
+ * 
  * Sets the current mildification state by the given `toggle` state.
  * @param toggle `true` to activate the mildification -or- `false` to deactivate -or- `'inherit'` to inherit the mildification from its ancestor -or- `null` to remove previously declared `setMild`.
  * @returns A `CssRule` represents a mildification rules for the given `toggle` state.
@@ -276,11 +317,20 @@ export const setMild = (toggle: ToggleMild): CssRule => style({
 
 
 
-export interface MildableProps {
-    // variants:
-    mild ?: boolean|'inherit'
-}
-export const useMildable = ({mild = _defaultMild}: MildableProps) => ({
-    class: (mild === 'inherit') ? null : (mild ? 'mild' : 'not-mild'),
-});
-//#endregion mildable
+/**
+ * @deprecated - Use `MildVariantProps` instead.
+ */
+export interface MildableProps extends MildVariantProps { }
+
+/**
+ * @deprecated - Use `useMildVariant` instead.
+ */
+export const useMildable = (props: MildableProps) => {
+    const {
+        mildClassname,
+    } = useMildVariant(props);
+    
+    return {
+        class: mildClassname,
+    };
+};

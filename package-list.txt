@@ -90,7 +90,7 @@ Default inheritance case example:
 @reusable-ui/themeable          DEPRECATED
 @reusable-ui/gradientable       DEPRECATED
 @reusable-ui/outlineable        DEPRECATED
-@reusable-ui/mildable
+@reusable-ui/mildable           DEPRECATED
 @reusable-ui/nudible
 @reusable-ui/colorable
 @reusable-ui/basic-variants
