@@ -318,7 +318,7 @@ export interface CssThemeVariant {
      * - Color variables containing the full spectrum of color shades for the currently active theme
      * - Override variables for conditionally applying theme overrides (e.g. error, success, warning)
      * 
-     * These variables are strongly typed and automatically resolved to consistent CSS variable names.
+     * These variables are strongly typed and automatically resolve to consistent CSS variable names.
      */
     themeVariantVars : CssVars<ThemeVariantVars>
 }
