@@ -106,8 +106,8 @@ export function usesSizeVariant <TSize extends string = BasicSize, TCssConfigPro
     
     
     return {
-        sizeVariantRule : () => style({
-            ...variants(
+        sizeVariantRule : () => style(
+            variants(
                 supportedSizes
                 
                 // Iterate over all supported size tokens:
@@ -120,6 +120,6 @@ export function usesSizeVariant <TSize extends string = BasicSize, TCssConfigPro
                     )
                 )
             ),
-        }),
+        ),
     } satisfies CssSizeVariant;
 };
