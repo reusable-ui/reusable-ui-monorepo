@@ -17,7 +17,7 @@ const bareClassnameMap : Record<string, `is-${string}`> = {
  * - Returns `'not-bare'` if `bare` is `false`.
  * - Returns `'is-{mode}'` if `bare` is a string variant.
  * 
- * @template TBare - The extended type of the `bare` prop, allowing `true` or string modes.
+ * @template TBare - The extended type of the `bare` prop, allowing `true` or custom string-based modes.
  * 
  * @param bare - A boolean or string flag indicating whether the component should appear in a bare (frameless) layout.
  * @returns A CSS class name reflecting the bare state.

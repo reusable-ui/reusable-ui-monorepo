@@ -122,6 +122,77 @@ export const componentStyle = () => style({
 
 ---
 
+## 🧩 Exported CSS Hooks
+
+### `usesBareVariant()`
+
+Generates CSS rules that toggle bare-related CSS variables based on the current bare mode, and exposes those variables for conditional styling.
+
+#### 💡 Usage Example
+
+```ts
+import {
+    usesBareVariant,
+} from '@reusable-ui/bare-variant';
+import { style, fallback } from '@cssfn/core';
+
+export const componentStyle = () => {
+    const {
+        bareVariantRule,
+        bareVariantVars: { isBare, notBare },
+    } = usesBareVariant();
+    
+    return style({
+        display: 'flex',
+        // Define component styling here.
+        
+        // Apply bare-related variable rules:
+        ...bareVariantRule(),
+        
+        // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
+        
+        // Apply conditional styling based on bare mode:
+        ...fallback({
+            // Bare styling:
+            fontWeight     : `${isBare} lighter`,
+            textDecoration : `${isBare} underline`,
+        }),
+        ...fallback({
+            // Non-bare styling:
+            fontWeight     : `${notBare} normal`,
+            textDecoration : `${notBare} none`,
+        }),
+    });
+};
+```
+
+#### 🧠 How It Works
+
+- `usesBareVariant()` generates scoped rules like:
+    ```css
+    &.is-bare {
+        --isBare: ;       /* Valid    when bare mode is enabled. */
+        --notBare: unset; /* Poisoned when bare mode is enabled. */
+    }
+    
+    &.not-bare {
+        --isBare: unset;  /* Poisoned when bare mode is disabled. */
+        --notBare: ;      /* Valid    when bare mode is disabled. */
+    }
+    ```
+- These variables act as conditional switches:
+    - If `unset`, they **poison** dependent properties, causing the browser to ignore them.
+    - If declared with an empty value, they **reactivate** dependent properties without altering their values.
+- You can use them directly in your styles:
+    ```ts
+    style({
+        fontWeight     : `${bareVariantVars.isBare} lighter`,   // Will be rendered to: `font-weight: var(--isBare) lighter;`       (becomes valid only when in bare mode)
+        textDecoration : `${bareVariantVars.isBare} underline`, // Will be rendered to: `text-decoration: var(--isBare) underline;` (becomes valid only when in bare mode)
+    });
+    ```
+
+---
+
 ## 📖 Part of the Reusable-UI Framework  
 **@reusable-ui/bare-variant** is a variant utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.

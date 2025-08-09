@@ -21,7 +21,7 @@ import {
  * Resolves the bare state along with its associated CSS class name,
  * based on component props and optional default configuration.
  * 
- * @template TBare - The extended type of the `bare` prop, allowing `true` or string modes.
+ * @template TBare - The extended type of the `bare` prop, allowing `true` or custom string-based modes.
  * 
  * @param {BareVariantProps} props - The component props that may include a `bare` value.
  * @param {BareVariantOptions} options - An optional configuration specifying a default bare value when no `bare` prop is explicitly provided.
