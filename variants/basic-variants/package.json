@@ -1,8 +1,9 @@
 {
   "name": "@reusable-ui/basic-variants",
-  "version": "6.5.0",
+  "version": "7.0.0",
   "description": "Basic variants of UI.",
   "keywords": [
+    "deprecated",
     "variants",
     "size",
     "theme",
@@ -15,19 +16,23 @@
     "layouts"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "variants/basic-variants"
   },
-  "main": "dist/basic-variants.js",
-  "types": "dist/basic-variants.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/basic-variants.js",
-    "./index": "./dist/basic-variants.js",
-    "./index.js": "./dist/basic-variants.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -41,12 +46,6 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "peerDependencies": {
-    "@reusable-ui/gradientable": "^6.5.0",
-    "@reusable-ui/mildable": "^6.5.0",
-    "@reusable-ui/outlineable": "^6.5.0",
-    "@reusable-ui/resizable": "^6.5.0",
-    "@reusable-ui/themeable": "^6.5.0",
-    "@types/react": "^18.0.0",
-    "react": "^18.0.0"
+    "@reusable-ui/styling-variants": "^7.0.0"
   }
 }

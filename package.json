@@ -80,6 +80,7 @@
     "variants/outlineable",
     "variants/mildable",
     "variants/nudible",
+    "variants/basic-variants",
     "__configs/*",
     "__utilities/*",
     "__features/*",
