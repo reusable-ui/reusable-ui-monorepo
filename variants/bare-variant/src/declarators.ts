@@ -126,6 +126,7 @@ const [bareVariantVars] = cssVars<BareVariantVars<true | string>>({ minify: fals
  * 
  * @template TBare - The extended type of the `bare` prop, allowing `true` or custom string-based modes.
  * 
+ * @param options - A required configuration specifying supported bare values.
  * @returns A CSS API for enabling conditional styling based on bare mode.
  */
 export function usesBareVariant<TBare extends true | string = true>(options: CssBareVariantOptions<TBare>): CssBareVariant<TBare>;
@@ -136,7 +137,7 @@ export function usesBareVariant<TBare extends true | string = true>(options: Css
  * 
  * @returns A CSS API for enabling conditional styling based on bare mode.
  */
-export function usesBareVariant(options?: CssBareVariantOptions): CssBareVariant;
+export function usesBareVariant(): CssBareVariant;
 
 export function usesBareVariant<TBare extends true | string = true>(options?: CssBareVariantOptions<TBare>): CssBareVariant<TBare> {
     // Extract options and assign defaults:
