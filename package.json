@@ -79,6 +79,7 @@
     "variants/gradientable",
     "variants/outlineable",
     "variants/mildable",
+    "variants/nudible",
     "__configs/*",
     "__utilities/*",
     "__features/*",
