@@ -1,12 +1,7 @@
 'use client' // The exported `<SizeVariantProvider>` component is client side only.
 
 // React:
-import {
-    // React:
-    default as React,
-    
-    
-    
+import React, {
     // Types:
     type PropsWithChildren,
     type ReactElement,

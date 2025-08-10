@@ -1,10 +1,5 @@
 // React:
-import {
-    // React:
-    default as React,
-    
-    
-    
+import React, {
     // Types:
     type ReactNode,
     type ReactElement,
