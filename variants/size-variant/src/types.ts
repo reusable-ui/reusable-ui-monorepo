@@ -114,7 +114,7 @@ export interface CssSizeVariantOptions<TSize extends string = BasicSize> {
 }
 
 /**
- * Defines a CSS API for enabling size-aware component configuration.
+ * Provides a CSS API for enabling size-aware component configuration.
  */
 export interface CssSizeVariant {
     /**

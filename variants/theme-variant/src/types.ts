@@ -297,7 +297,7 @@ export interface ThemeVariantVars {
 
 
 /**
- * Defines a CSS API for enabling theme-aware color shades.
+ * Provides a CSS API for enabling theme-aware color shades.
  */
 export interface CssThemeVariant {
     /**

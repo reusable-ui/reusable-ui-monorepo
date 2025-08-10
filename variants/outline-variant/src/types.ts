@@ -120,7 +120,7 @@ export interface OutlineVariantVars {
 
 
 /**
- * Defines a CSS API for enabling conditional styling based on outlined state.
+ * Provides a CSS API for enabling conditional styling based on outlined state.
  */
 export interface CssOutlineVariant {
     /**

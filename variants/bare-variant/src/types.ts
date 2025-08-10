@@ -177,7 +177,7 @@ export interface CssBareVariantOptions<TBare extends true | string = true> {
 
 
 /**
- * Defines a CSS API for enabling conditional styling based on bare mode.
+ * Provides a CSS API for enabling conditional styling based on bare mode.
  * 
  * @template TBare - The extended type of the `bare` prop, allowing `true` or custom string-based modes.
  */
