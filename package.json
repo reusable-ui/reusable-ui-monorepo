@@ -10,6 +10,8 @@
     "publish": "npm run build && npx lerna publish from-package"
   },
   "devDependencies": {
+    "@cssfn/cssfn": "^4.0.1",
+    "@cssfn/cssfn-react": "^4.0.4",
     "@playwright/experimental-ct-react": "^1.54.2",
     "@playwright/test": "^1.54.2",
     "@testing-library/jest-dom": "^6.6.3",
