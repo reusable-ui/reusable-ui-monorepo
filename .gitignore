@@ -28,3 +28,9 @@ barrels/*/dist/
 
 lerna-debug.log
 npm-debug.log
+
+# Ignore Playwright artifacts globally
+/**/test-results/
+/**/playwright-report/
+/**/blob-report/
+/**/playwright/.cache/
