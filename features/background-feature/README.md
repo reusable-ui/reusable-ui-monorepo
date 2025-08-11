@@ -5,11 +5,11 @@ It exposes CSS variables for directly coloring your component’s background, wi
 Ideal for buttons, cards, dialogs, and any theme-aware components.
 
 ## ✨ Features
-✔ Dynamically adjusts background color based on active variants (theme, emphasize, outline, mild)
-✔ Resolved background color (`backgColor`) for direct usage or further adjustment via CSS color functions
-✔ Composite background layers (`backg`) combining gradient, custom background, and themed color
-✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration
-✔ Seamless integration across appearance, theming, and color systems
+✔ Dynamically adjusts background color based on active variants (theme, emphasize, outline, mild)  
+✔ Resolved background color (`backgColor`) for direct usage or further adjustment via CSS color functions  
+✔ Composite background layers (`backg`) combining gradient, custom background, and themed color  
+✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
+✔ Seamless integration across appearance, theming, and color systems  
 
 ## 📦 Installation
 Install **@reusable-ui/background-feature** via npm or yarn:
@@ -119,9 +119,9 @@ The final background color (`backgColor`) is determined by a prioritized fallbac
 
 The composite background (`backg`) stacks layers:
 
-- Top    : gradient (if emphasized)
-- Middle : custom background (if provided)
-- Bottom : resolved background color
+1. Top    : gradient (if emphasized)
+2. Middle : custom background (if provided)
+3. Bottom : resolved background color
 
 ---
 
