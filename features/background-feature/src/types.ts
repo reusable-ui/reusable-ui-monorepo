@@ -88,6 +88,7 @@ export interface CssBackgroundFeatureOptions
         // Bases:
         Pick<CssKnownProps,
             | 'backgroundColor'
+            | 'background'
         >
 {
     /**
