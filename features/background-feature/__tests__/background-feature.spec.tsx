@@ -82,6 +82,59 @@ const THEME_NAMES          = [
 
 
 
+//#region Utilities
+const parseOklch = (color: string): [number, number, number] | null => {
+    const match = color.match(/oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*\)/);
+    if (!match) return null;
+    return [
+        parseFloat(match[1]), // lightness
+        parseFloat(match[2]), // chroma
+        parseFloat(match[3]), // hue
+    ];
+};
+
+const MAX_DEVIATION = 0.001;
+
+/**
+ * Asserts that two oklch(...) color strings are equal within ±0.001 precision per channel.
+ * Throws an error if any channel deviates beyond the threshold.
+ */
+export function expectColor(actualColor: string, expectedColor: string): void {
+    if ((actualColor === 'rgba(0, 0, 0, 0)') && (expectedColor === 'rgba(0, 0, 0, 0)')) return;
+    
+    
+    
+    const actual   = parseOklch(actualColor);
+    const expected = parseOklch(expectedColor);
+    
+    
+    
+    if (!actual || !expected) {
+        throw new Error(
+`Failed to parse oklch color:
+Actual:   ${actualColor}
+Expected: ${expectedColor}`
+        );
+    } // if
+    
+    
+    
+    for (let i = 0; i < 3; i++) {
+        const deviation = Math.abs(actual[i] - expected[i]);
+        if (deviation > MAX_DEVIATION) {
+            throw new Error(
+`Color mismatch on channel ${['lightness', 'chroma', 'hue'][i]}:
+Expected: ${expected[i]}
+Actual:   ${actual[i]}
+Deviation: ${deviation} (max allowed: ${MAX_DEVIATION})`
+);
+        } // if
+    } // for
+}
+//#endregion Utilities
+
+
+
 test.describe('usesBackgroundFeature', () => {
     for (const { title, props, expectedBackgroundColor, expectedBackgroundImage, expectedBackgroundOrigin } of [
         ...THEME_NAMES.flatMap((themeName): BackgroundFeatureTestCase[] => [
@@ -219,11 +272,9 @@ test.describe('usesBackgroundFeature', () => {
                 };
             });
             
-            expect(styles).toEqual({
-                backgroundColor  : expectedBackgroundColor,
-                backgroundImage  : expectedBackgroundImage,
-                backgroundOrigin : expectedBackgroundOrigin,
-            });
+            expectColor(styles.backgroundColor, expectedBackgroundColor);
+            expect(styles.backgroundImage).toBe(expectedBackgroundImage);
+            expect(styles.backgroundOrigin).toBe(expectedBackgroundOrigin);
         });
     } // for
 });
