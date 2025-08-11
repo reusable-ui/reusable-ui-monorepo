@@ -96,6 +96,7 @@ Default inheritance case example:
 @reusable-ui/basic-variants     DEPRECATED
 
 // Reusable-ui features:
+@reusable-ui/background-feature
 @reusable-ui/background
 @reusable-ui/foreground
 @reusable-ui/border

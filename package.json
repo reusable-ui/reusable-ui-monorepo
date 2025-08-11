@@ -85,6 +85,7 @@
     "variants/mildable",
     "variants/nudible",
     "variants/basic-variants",
+    "features/background-feature",
     "__configs/*",
     "__utilities/*",
     "__features/*",
