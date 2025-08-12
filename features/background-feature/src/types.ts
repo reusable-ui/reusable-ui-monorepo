@@ -29,31 +29,31 @@ export interface BackgroundFeatureVars {
     //#region Conditional variables (may be poisoned) 
     /**
      * References the gradient background image when emphasized mode is active.
-     * Poisoned if emphasized mode is inactive.
+     * Poisoned when emphasized mode is inactive.
      */
     backgEmphasizedCond : unknown
     
     /**
      * References the custom background when configured.
-     * Poisoned if no custom background is provided.
+     * Poisoned when no custom background is provided.
      */
     backgCond           : unknown
     
     /**
      * References a transparent background color when outlined mode is active.
-     * Poisoned if outlined mode is inactive.
+     * Poisoned when outlined mode is inactive.
      */
     backgOutlinedCond   : unknown
     
     /**
      * References a mild (reading-friendly) background color when mild mode is active.
-     * Poisoned if mild mode is inactive.
+     * Poisoned when mild mode is inactive.
      */
     backgMildCond       : unknown
     
     /**
      * References the regular background color from the theme.
-     * Poisoned if theme styling is not implemented.
+     * Poisoned when theme styling is not implemented.
      */
     backgRegularCond    : unknown
     //#endregion Conditional variables (may be poisoned) 
@@ -129,7 +129,7 @@ export interface CssBackgroundFeature {
      * with support for layered background composition and CSS color function adjustments.
      * 
      * Includes:
-     * - `backg**Cond`s : Mode-specific background colors, conditionally valid or poisoned.
+     * - `backg**Cond`s : Mode-specific background colors (conditionally valid or poisoned).
      * - `backgColor`   : Final resolved background color for the current mode.
      * - `backg`        : Composite background layers (gradient, custom, and color) for the current mode.
      * 

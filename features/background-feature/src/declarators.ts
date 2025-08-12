@@ -81,7 +81,7 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                     
                     /**
                      * Applies gradient background image when emphasized mode is active.
-                     * Poisoned if emphasized mode is inactive.
+                     * Poisoned when emphasized mode is inactive.
                      */
                     [backgroundFeatureVars.backgEmphasizedCond]: (
                         Array.isArray(emphasizedBackgroundImage)
@@ -103,7 +103,7 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                     
                     /**
                      * Applies custom background when configured.
-                     * Poisoned if no custom background is provided.
+                     * Poisoned when no custom background is provided.
                      */
                     [backgroundFeatureVars.backgCond]: customBackground,
                     
@@ -113,7 +113,7 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                     
                     /**
                      * Applies transparent background color when outlined mode is active.
-                     * Poisoned if outlined mode is inactive.
+                     * Poisoned when outlined mode is inactive.
                      */
                     [backgroundFeatureVars.backgOutlinedCond]: [[
                         outlineVariantVars.isOutlined, // If outlined mode is active.
@@ -126,12 +126,12 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                     
                     /**
                      * Applies mild (reading-friendly) background color when mild mode is active.
-                     * Poisoned if mild mode is inactive.
+                     * Poisoned when mild mode is inactive.
                      */
                     [backgroundFeatureVars.backgMildCond]: [[
                         mildVariantVars.isMild,                 // If mild mode is active.
                         switchOf(
-                            themeVariantVars.backgMildOverride, // ⚠️ Theme Override (if active).
+                            themeVariantVars.backgMildOverride, // ⚠️ Theme override (if active).
                             themeVariantVars.backgMild,         // A themed background color for mild variant.
                         ),
                     ]],
@@ -142,10 +142,10 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                     
                     /**
                      * Applies regular background color from the theme.
-                     * Poisoned if theme styling is not implemented.
+                     * Poisoned when theme styling is not implemented.
                      */
                     [backgroundFeatureVars.backgRegularCond]: switchOf(
-                        themeVariantVars.backgOverride, // ⚠️ Theme Override (if active).
+                        themeVariantVars.backgOverride, // ⚠️ Theme override (if active).
                         themeVariantVars.backg,         // A themed background color for regular variant.
                     ),
                 }),
@@ -164,9 +164,9 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                      * 6. Config fallback
                      */
                     [backgroundFeatureVars.backgColor]: switchOf(
-                        backgroundFeatureVars.backgOutlinedCond, // 🧊 Outlined Style (if active)
-                        backgroundFeatureVars.backgMildCond,     // 🌸 Mild Style (if active)
-                        backgroundFeatureVars.backgRegularCond,  // 🎨 Regular Style (if themed)
+                        backgroundFeatureVars.backgOutlinedCond, // 🧊 Outlined style (if active)
+                        backgroundFeatureVars.backgMildCond,     // 🌸 Mild style (if active)
+                        backgroundFeatureVars.backgRegularCond,  // 🎨 Regular style (if themed)
                         defaultBackgroundColor,                  // 🛠️ Config fallback
                     ),
                     
