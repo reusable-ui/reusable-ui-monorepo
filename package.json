@@ -87,6 +87,7 @@
     "variants/basic-variants",
     "features/background-feature",
     "features/foreground-feature",
+    "features/decoration-feature",
     "__configs/*",
     "__utilities/*",
     "__features/*",
