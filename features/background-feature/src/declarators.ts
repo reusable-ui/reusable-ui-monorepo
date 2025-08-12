@@ -48,11 +48,11 @@ import {
 const [backgroundFeatureVars] = cssVars<BackgroundFeatureVars>({ prefix: 'bg', minify: false });
 
 /**
- * Resolves the appropriate background color based on the current active variants
+ * Resolves the appropriate background color based on the currently active variants
  * and exposes ready-to-use CSS variables.
  * 
  * @param options - An optional configuration for customizing background behavior.
- * @returns A CSS API for enabling theme-aware background feature styling in components.
+ * @returns A CSS API for enabling theme-aware background styling in components.
  */
 export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): CssBackgroundFeature => {
     // Extract options and assign defaults:
@@ -75,7 +75,7 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
             
             
             return style({
-                // Intermediate conditional variables:
+                // Conditional background variables (may be poisoned):
                 ...vars({
                     // 🚨 Emphasized Style:
                     
@@ -117,7 +117,7 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                      */
                     [backgroundFeatureVars.backgOutlinedCond]: [[
                         outlineVariantVars.isOutlined, // If outlined mode is active.
-                        'transparent',                 // A transparent background color for outlined variant. 
+                        'transparent',                 // A transparent background color for outlined variant.
                     ]],
                     
                     
@@ -132,7 +132,7 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                         mildVariantVars.isMild,                 // If mild mode is active.
                         switchOf(
                             themeVariantVars.backgMildOverride, // ⚠️ Theme Override (if active).
-                            themeVariantVars.backgMild,         // A themed background color for mild variant. 
+                            themeVariantVars.backgMild,         // A themed background color for mild variant.
                         ),
                     ]],
                     
@@ -146,13 +146,13 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                      */
                     [backgroundFeatureVars.backgRegularCond]: switchOf(
                         themeVariantVars.backgOverride, // ⚠️ Theme Override (if active).
-                        themeVariantVars.backg,         // A themed background color for regular variant. 
+                        themeVariantVars.backg,         // A themed background color for regular variant.
                     ),
                 }),
                 
                 
                 
-                // Final resolved background variables:
+                // Final resolved background variables (always valid):
                 ...vars({
                     /**
                      * Resolves the final background color based on variant priority:

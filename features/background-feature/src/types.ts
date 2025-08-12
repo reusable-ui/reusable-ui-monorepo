@@ -113,32 +113,32 @@ export interface CssBackgroundFeatureOptions
 
 
 /**
- * Provides a CSS API for enabling theme-aware background feature styling in components.
+ * Provides a CSS API for enabling theme-aware background styling in components.
  */
 export interface CssBackgroundFeature {
     /**
-     * Generates CSS rules that resolves the appropriate background color based on the current active variants.
+     * Generates CSS rules that resolve the appropriate background color based on the currently active variants.
      * 
-     * These rules use CSS variable fallback logic to dynamically switch background colors.
+     * These rules leverage poisoned fallback logic to dynamically switch
+     * between emphasized, outlined, mild, and regular background colors.
      */
     backgroundFeatureRule : Lazy<CssRule>
     
     /**
      * Exposes background-related CSS variables for coloring component’s background,
-     * with support for layered background composition and color function adjustments.
+     * with support for layered background composition and CSS color function adjustments.
      * 
      * Includes:
      * - `backg**Cond`s : Mode-specific background colors, conditionally valid or poisoned.
-     * - `backgColor`   : Resolved background color for the current mode.
+     * - `backgColor`   : Final resolved background color for the current mode.
      * - `backg`        : Composite background layers (gradient, custom, and color) for the current mode.
      * 
-     * These variables can be consumed directly or composed into specific use cases
+     * These variables can be consumed directly or composed into advanced use cases
      * using CSS color functions, variable fallbacks, or custom logic.
      * 
-     * Be cautious when working with variables ending in `**Cond`.
-     * If not handled properly, they can **poison** the entire property declaration,
-     * causing the browser to ignore it entirely.
-     * Use `switchOf(...)` to ensure graceful fallback to valid values.
+     * ⚠️ **Caution**: Variables ending in `**Cond` may be poisoned.
+     * If used improperly, they can invalidate the entire CSS declaration.
+     * Always wrap them with `switchOf(...)` to ensure graceful fallback.
      * 
      * These variables are strongly typed and automatically resolve to consistent CSS variable names.
      */

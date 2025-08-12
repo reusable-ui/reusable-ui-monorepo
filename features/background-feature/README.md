@@ -1,7 +1,7 @@
 # @reusable-ui/background-feature 📦  
 
-A styling utility for resolving the appropriate background color based on the current active variants — including theme, emphasize, outline, and mild.  
-It exposes CSS variables for directly coloring your component’s background, with support for layered background composition and color function adjustments.
+A styling utility for resolving the appropriate background color based on the currently active variants — including theme, emphasize, outline, and mild.  
+It exposes CSS variables for directly coloring your component’s background, with support for layered background composition and CSS color function adjustments.
 Ideal for buttons, cards, dialogs, and any theme-aware components.
 
 ## ✨ Features
@@ -24,7 +24,7 @@ yarn add @reusable-ui/background-feature
 
 ### `usesBackgroundFeature(options?: CssBackgroundFeatureOptions): CssBackgroundFeature`
 
-Resolves the appropriate background color based on the current active variants and exposes ready-to-use CSS variables.
+Resolves the appropriate background color based on the currently active variants and exposes ready-to-use CSS variables.
 
 #### Primary Variables
 
@@ -36,20 +36,20 @@ These variables are ready-to-use for coloring your component’s background.
 | `backg`       | Composite background layers: gradient → custom → color   |
 
 You can further adjust `backgColor` using CSS color functions:
-Ee.g.: `oklch(from ${backgColor} l c h / calc(alpha * 0.25))`
+Example: `oklch(from ${backgColor} l c h / calc(alpha * 0.25))`
 
 #### Supporting Variables (Advanced Use)
 
 These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding mode is inactive.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable               | Active When...         | Purpose                          |
-|------------------------|------------------------|----------------------------------|
-| `backgEmphasizedCond`  | Emphasize mode active  | Gradient background layer        |
-| `backgCond`            | Custom background set  | User-defined background layer    |
-| `backgOutlinedCond`    | Outline mode active    | Transparent background layer     |
-| `backgMildCond`        | Mild mode active       | Reading-friendly background      |
-| `backgRegularCond`     | Theme mode active      | Themed background color          |
+| Variable              | Active When...        | Purpose                       |
+|-----------------------|-----------------------|-------------------------------|
+| `backgEmphasizedCond` | Emphasize mode active | Gradient background layer     |
+| `backgCond`           | Custom background set | User-defined background layer |
+| `backgOutlinedCond`   | Outline mode active   | Transparent background layer  |
+| `backgMildCond`       | Mild mode active      | Reading-friendly background   |
+| `backgRegularCond`    | Theme mode active     | Themed background color       |
 
 #### 💡 Usage Example
 
@@ -137,5 +137,5 @@ Licensed under the **MIT License** – see the [LICENSE](./LICENSE) file for det
 
 ---
 
-🚀 **@reusable-ui/background-feature helps you build theme-aware components with elegant, layered background styling.**  
+🚀 **@reusable-ui/background-feature helps you build theme-aware components with elegant, adaptive background styling.**  
 Give it a ⭐ on GitHub if you find it useful!  
