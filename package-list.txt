@@ -97,6 +97,7 @@ Default inheritance case example:
 
 // Reusable-ui features:
 @reusable-ui/background-feature
+@reusable-ui/foreground-feature
 @reusable-ui/background
 @reusable-ui/foreground
 @reusable-ui/border

@@ -1,0 +1,63 @@
+{
+  "name": "@reusable-ui/foreground-feature",
+  "version": "7.0.0",
+  "description": "A styling utility for resolving the appropriate foreground color based on the currently active variants — including theme, outline, and mild.",
+  "keywords": [
+    "foreground",
+    "text-color",
+    "theme",
+    "variant",
+    "ui",
+    "styling",
+    "utility",
+    "css",
+    "cssfn",
+    "css-in-js",
+    "design-system",
+    "component-style",
+    "conditional-style",
+    "react",
+    "reusable-ui"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "features/foreground-feature"
+  },
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@cssfn/core": "^4.0.0"
+  },
+  "peerDependencies": {
+    "@reusable-ui/mild-variant": "^7.0.0",
+    "@reusable-ui/outline-variant": "^7.0.0",
+    "@reusable-ui/theme-variant": "^7.0.0"
+  },
+  "devDependencies": {
+    "@reusable-ui/emphasize-variant": "^7.0.0"
+  }
+}
