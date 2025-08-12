@@ -101,7 +101,7 @@ export interface CssBackgroundFeatureOptions
      * The gradient background image to apply when emphasized mode is active.
      */
     backgroundEmphasize ?:
-        // | Extract<CssKnownProps['background'], string>
+        |  Extract<CssKnownProps['background'], string>
         | [Extract<CssKnownProps['background'], unknown[]>]
     
     /**
