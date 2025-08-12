@@ -29,19 +29,19 @@ export interface ForegroundFeatureVars {
     //#region Conditional variables (may be poisoned) 
     /**
      * References an outlined foreground color when outlined mode is active.
-     * Poisoned if outlined mode is inactive.
+     * Poisoned when outlined mode is inactive.
      */
     foregOutlinedCond   : unknown
     
     /**
      * References a mild (reading-friendly) foreground color when mild mode is active.
-     * Poisoned if mild mode is inactive.
+     * Poisoned when mild mode is inactive.
      */
     foregMildCond       : unknown
     
     /**
      * References the regular foreground color from the theme.
-     * Poisoned if theme styling is not implemented.
+     * Poisoned when theme styling is not implemented.
      */
     foregRegularCond    : unknown
     //#endregion Conditional variables (may be poisoned) 
@@ -107,7 +107,7 @@ export interface CssForegroundFeature {
      * with support for CSS color function adjustments.
      * 
      * Includes:
-     * - `foreg**Cond`s : Mode-specific foreground colors, conditionally valid or poisoned.
+     * - `foreg**Cond`s : Mode-specific foreground colors (conditionally valid or poisoned).
      * - `foregColor`   : Final resolved foreground color for the current mode.
      * 
      * These variables can be consumed directly or composed into advanced use cases
