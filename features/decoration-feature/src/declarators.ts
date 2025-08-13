@@ -37,7 +37,7 @@ import {
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-const [decorationFeatureVars] = cssVars<DecorationFeatureVars>({ prefix: 'dc', minify: false });
+const [decorationFeatureVars] = cssVars<DecorationFeatureVars>({ prefix: 'dn', minify: false });
 
 /**
  * Resolves the appropriate decoration color based on the currently active variants
