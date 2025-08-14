@@ -99,6 +99,7 @@ Default inheritance case example:
 @reusable-ui/background-feature
 @reusable-ui/foreground-feature
 @reusable-ui/decoration-feature
+@reusable-ui/border-feature
 @reusable-ui/background
 @reusable-ui/foreground
 @reusable-ui/border
