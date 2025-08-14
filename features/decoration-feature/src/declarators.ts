@@ -73,7 +73,7 @@ export const usesDecorationFeature = (options?: CssDecorationFeatureOptions): Cs
                      * Poisoned when outlined mode is inactive.
                      */
                     [decorationFeatureVars.decorOutlinedCond]: [[
-                        outlineVariantVars.isOutlined, // If outlined mode is active.
+                        outlineVariantVars.isOutlined,              // If outlined mode is active.
                         switchOf(
                             themeVariantVars.decorOutlinedOverride, // ⚠️ Theme override (if active).
                             themeVariantVars.decorOutlined,         // A themed decoration color for outlined variant.

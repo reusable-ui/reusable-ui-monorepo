@@ -18,10 +18,7 @@ import {
 
 
 /**
- * A list of decoration-related CSS variables used to enable conditional styling.
- * 
- * These variables act as semantic switches that control whether decoration-specific styles
- * should be applied. They are resolved by the browser using poisoned fallback logic.
+ * A list of decoration-related CSS variables used for variant-aware styling.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
@@ -51,7 +48,7 @@ export interface DecorationFeatureVars {
     //#region Final resolved variables (always valid) 
     /**
      * References the resolved decoration color for the current mode.
-     * Guaranteed to be valid via internal fallback logic.
+     * Always valid via internal fallback logic.
      * 
      * Can be further customized using CSS color functions.
      * Example: `oklch(from ${decorationFeatureVars.decorColor} l c h / calc(alpha * 0.5))`
@@ -64,6 +61,9 @@ export interface DecorationFeatureVars {
 
 /**
  * Configuration options for enabling decoration-aware styling in components.
+ * 
+ * These options represent the component’s desired decoration color intent —
+ * in case the framework does not override it through variant logic or contextual utilities.
  */
 export interface CssDecorationFeatureOptions {
     /**
