@@ -74,7 +74,7 @@ export const usesForegroundFeature = (options?: CssForegroundFeatureOptions): Cs
                      * Poisoned when outlined mode is inactive.
                      */
                     [foregroundFeatureVars.foregOutlinedCond]: [[
-                        outlineVariantVars.isOutlined, // If outlined mode is active.
+                        outlineVariantVars.isOutlined,              // If outlined mode is active.
                         switchOf(
                             themeVariantVars.foregOutlinedOverride, // ⚠️ Theme override (if active).
                             themeVariantVars.foregOutlined,         // A themed foreground color for outlined variant.
