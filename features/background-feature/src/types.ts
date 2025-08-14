@@ -18,10 +18,7 @@ import {
 
 
 /**
- * A list of background-related CSS variables used to enable conditional styling.
- * 
- * These variables act as semantic switches that control whether background-specific styles
- * should be applied. They are resolved by the browser using poisoned fallback logic.
+ * A list of background-related CSS variables used for variant-aware styling.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
@@ -63,7 +60,7 @@ export interface BackgroundFeatureVars {
     //#region Final resolved variables (always valid) 
     /**
      * References the resolved background color for the current mode.
-     * Guaranteed to be valid via internal fallback logic.
+     * Always valid via internal fallback logic.
      * 
      * Can be further customized using CSS color functions.
      * Example: `oklch(from ${backgroundFeatureVars.backgColor} l c h / calc(alpha * 0.5))`
@@ -72,7 +69,7 @@ export interface BackgroundFeatureVars {
     
     /**
      * References the composite background layers (gradient, custom, and color) for the current mode.
-     * Guaranteed to be valid via internal fallback logic.
+     * Always valid via internal fallback logic.
      */
     backg               : unknown
     //#endregion Final resolved variables (always valid) 
@@ -82,6 +79,10 @@ export interface BackgroundFeatureVars {
 
 /**
  * Configuration options for enabling background-aware styling in components.
+ * 
+ * These options represent the component’s desired background styling intent —
+ * including emphasized gradient background image, additional background layers, and fallback background color —
+ * in case the framework does not override them through variant logic or contextual utilities.
  */
 export interface CssBackgroundFeatureOptions
     extends
@@ -125,7 +126,7 @@ export interface CssBackgroundFeature {
     backgroundFeatureRule : Lazy<CssRule>
     
     /**
-     * Exposes background-related CSS variables for coloring component’s background,
+     * Exposes background-related CSS variables for styling component’s background,
      * with support for layered background composition and CSS color function adjustments.
      * 
      * Includes:
