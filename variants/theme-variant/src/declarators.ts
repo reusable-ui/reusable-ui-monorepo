@@ -114,7 +114,7 @@ export const usesThemeVariant = (): CssThemeVariant => {
                             [themeVariantVars.foreg         ] : colorVars[`${themeName}Flip`], // max-contrast color
                             [themeVariantVars.decor         ] : colorVars[`${themeName}Flip`], // max-contrast color
                             [themeVariantVars.border        ] : colorVars[`${themeName}Bold`], // strong separator
-                            [themeVariantVars.effect        ] : colorVars[`${themeName}Soft`], // attention color
+                            [themeVariantVars.ring          ] : colorVars[`${themeName}Soft`], // attention color
                             
                             
                             
@@ -155,26 +155,26 @@ export const usesThemeOverride = <TTheme extends string = BasicTheme>(theme: TTh
     return style(
         vars({
             // 🎨 Regular Style:
-            [themeVariantVars.backgOverride         ] : theme ? colorVars[`${theme}Base`] : null, // base strong color
-            [themeVariantVars.foregOverride         ] : theme ? colorVars[`${theme}Flip`] : null, // max-contrast color
-            [themeVariantVars.decorOverride         ] : theme ? colorVars[`${theme}Flip`] : null, // max-contrast color
-            [themeVariantVars.borderOverride        ] : theme ? colorVars[`${theme}Bold`] : null, // strong separator
-            [themeVariantVars.effectOverride        ] : theme ? colorVars[`${theme}Soft`] : null, // attention color
+            [themeVariantVars.backgOverride         ] : theme ? colorVars[`${theme}Base`] : 'unset', // base strong color
+            [themeVariantVars.foregOverride         ] : theme ? colorVars[`${theme}Flip`] : 'unset', // max-contrast color
+            [themeVariantVars.decorOverride         ] : theme ? colorVars[`${theme}Flip`] : 'unset', // max-contrast color
+            [themeVariantVars.borderOverride        ] : theme ? colorVars[`${theme}Bold`] : 'unset', // strong separator
+            [themeVariantVars.ringOverride          ] : theme ? colorVars[`${theme}Soft`] : 'unset', // attention color
             
             
             
             // 🌸 Mild Style:
-            [themeVariantVars.backgMildOverride     ] : theme ? colorVars[`${theme}Mild`] : null, // comfort background
-            [themeVariantVars.foregMildOverride     ] : theme ? colorVars[`${theme}Text`] : null, // readable foreground
-            [themeVariantVars.decorMildOverride     ] : theme ? colorVars[`${theme}Face`] : null, // fair-contrast icon
-            [themeVariantVars.borderMildOverride    ] : theme ? colorVars[`${theme}Thin`] : null, // fair separator
+            [themeVariantVars.backgMildOverride     ] : theme ? colorVars[`${theme}Mild`] : 'unset', // comfort background
+            [themeVariantVars.foregMildOverride     ] : theme ? colorVars[`${theme}Text`] : 'unset', // readable foreground
+            [themeVariantVars.decorMildOverride     ] : theme ? colorVars[`${theme}Face`] : 'unset', // fair-contrast icon
+            [themeVariantVars.borderMildOverride    ] : theme ? colorVars[`${theme}Thin`] : 'unset', // fair separator
             
             
             
             // 🧊 Outlined Style:
-            [themeVariantVars.foregOutlinedOverride ] : theme ? colorVars[`${theme}Face`] : null, // edge-contrast fore
-            [themeVariantVars.decorOutlinedOverride ] : theme ? colorVars[`${theme}Face`] : null, // edge-contrast icon
-            [themeVariantVars.borderOutlinedOverride] : theme ? colorVars[`${theme}Edge`] : null, // edge separator
+            [themeVariantVars.foregOutlinedOverride ] : theme ? colorVars[`${theme}Face`] : 'unset', // edge-contrast fore
+            [themeVariantVars.decorOutlinedOverride ] : theme ? colorVars[`${theme}Face`] : 'unset', // edge-contrast icon
+            [themeVariantVars.borderOutlinedOverride] : theme ? colorVars[`${theme}Edge`] : 'unset', // edge separator
         })
     );
 };

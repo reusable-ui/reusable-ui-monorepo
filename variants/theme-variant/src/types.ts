@@ -126,7 +126,7 @@ Example of color schema of 'primary' theme:
 | Foreground       | primaryFlip // max-contrast color | primaryText // readable foreground | primaryFace // edge-contrast foreground |
 | Decoration (icon)| primaryFlip // max-contrast color | primaryFace // fair-contrast icon  | primaryFace // edge-contrast icon       |
 | Border           | primaryBold // strong separator   | primaryThin // fair separator      | primaryEdge // edge separator           |
-| Effect (ring)    | primarySoft // attention color    | (same as regular)                  | (same as regular)                       |
+| Ring             | primarySoft // attention color    | (same as regular)                  | (same as regular)                       |
 |------------------|-----------------------------------|------------------------------------|-----------------------------------------|
 
 Possible color variants (regular | mild | outlined):
@@ -134,7 +134,7 @@ Background = primaryBase | primaryMild | <none>
 Foreground = primaryFlip | primaryText | primaryFace
 Decoration = primaryFlip | primaryFace | primaryFace
 Border     = primaryBold | primaryThin | primaryEdge
-Effect     = primarySoft | primarySoft | primarySoft
+Ring       = primarySoft | primarySoft | primarySoft
 */
 
 
@@ -171,9 +171,9 @@ export interface ThemeVariantVars {
     border                 : unknown
     
     /**
-     * Themed effect color for regular style.
+     * Themed ring color for regular style.
      */
-    effect                 : unknown
+    ring                   : unknown
     //#endregion 🎨 Regular Style
     
     
@@ -245,9 +245,9 @@ export interface ThemeVariantVars {
     borderOverride         : unknown
     
     /**
-     * Effect color override.
+     * Ring color override.
      */
-    effectOverride         : unknown
+    ringOverride           : unknown
     
     
     
