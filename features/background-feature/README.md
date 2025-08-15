@@ -1,12 +1,12 @@
 # @reusable-ui/background-feature 📦  
 
 A styling utility for resolving the appropriate background color based on the currently active variants — including theme, emphasize, outline, and mild.  
-It exposes CSS variables for directly coloring your component’s background, with support for layered background composition and CSS color function adjustments.
+It exposes CSS variables for coloring your component’s background, with support for layered background composition and CSS color function adjustments.
 Ideal for buttons, cards, dialogs, and any theme-aware components.
 
 ## ✨ Features
-✔ Dynamically adjusts background color based on active variants (theme, emphasize, outline, mild)  
-✔ Resolved background color (`backgColor`) for direct usage or further adjustment via CSS color functions  
+✔ Dynamically switches background color based on active variants (theme, emphasize, outline, mild)  
+✔ Exposes background color variable (`backgColor`) for direct usage or further adjustment via CSS color functions  
 ✔ Composite background layers (`backg`) combining gradient, custom background, and themed color  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, theming, and color systems  
