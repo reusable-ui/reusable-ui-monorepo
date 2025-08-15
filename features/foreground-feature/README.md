@@ -1,12 +1,12 @@
 # @reusable-ui/foreground-feature 📦  
 
 A styling utility for resolving the appropriate foreground color based on the currently active variants — including theme, outline, and mild.  
-It exposes CSS variables for directly coloring your component’s foreground, with support for CSS color function adjustments.
+It exposes CSS variables for coloring your component’s foreground, with support for CSS color function adjustments.
 Ideal for buttons, cards, dialogs, and any theme-aware components.
 
 ## ✨ Features
-✔ Dynamically adjusts foreground color based on active variants (theme, outline, mild)  
-✔ Resolved foreground color (`foregColor`) for direct usage or further adjustment via CSS color functions  
+✔ Dynamically switches foreground color based on active variants (theme, outline, mild)  
+✔ Exposes foreground color variable (`foregColor`) for direct usage or further adjustment via CSS color functions  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, theming, and color systems  
 
