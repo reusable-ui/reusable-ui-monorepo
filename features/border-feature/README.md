@@ -1,14 +1,14 @@
 # @reusable-ui/border-feature 📦  
 
 A styling utility for resolving the appropriate border color, geometry, and radius based on the currently active variants — including theme, outline, mild, and bare.  
-It exposes CSS variables for directly styling your component’s border, with support for CSS color function adjustments.
+It exposes CSS variables for styling your component’s border, with support for CSS color function adjustments.
 Ideal for buttons, cards, dialogs, and any theme-aware components.
 
 ## ✨ Features
-✔ Dynamically adjusts border color based on active variants (theme, outline, mild)  
+✔ Dynamically switches border color based on active variants (theme, outline, mild)  
 ✔ Supports `bare` variant for geometry-only rendering  
 ✔ Exposes logical border widths and radii for full layout control  
-✔ Resolved border color (`borderColor`) for direct usage or further adjustment via CSS color functions  
+✔ Exposes border color variable (`borderColor`) for direct usage or further adjustment via CSS color functions  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, theming, and color systems  
 
