@@ -1,12 +1,12 @@
 # @reusable-ui/decoration-feature 📦  
 
 A styling utility for resolving the appropriate decoration color based on the currently active variants — including theme, outline, and mild.  
-It exposes CSS variables for directly coloring your component’s decoration, with support for CSS color function adjustments.
+It exposes CSS variables for coloring your component’s decoration, with support for CSS color function adjustments.
 Ideal for buttons, cards, dialogs, and any theme-aware components.
 
 ## ✨ Features
-✔ Dynamically adjusts decoration color based on active variants (theme, outline, mild)  
-✔ Resolved decoration color (`decorColor`) for direct usage or further adjustment via CSS color functions  
+✔ Dynamically switches decoration color based on active variants (theme, outline, mild)  
+✔ Exposes decoration color variable (`decorColor`) for direct usage or further adjustment via CSS color functions  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, theming, and color systems  
 
