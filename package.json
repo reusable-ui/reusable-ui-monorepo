@@ -89,6 +89,7 @@
     "features/foreground-feature",
     "features/decoration-feature",
     "features/border-feature",
+    "features/ring-feature",
     "__configs/*",
     "__utilities/*",
     "__features/*",
