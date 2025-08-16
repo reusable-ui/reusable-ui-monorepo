@@ -101,6 +101,7 @@ Default inheritance case example:
 @reusable-ui/decoration-feature
 @reusable-ui/border-feature
 @reusable-ui/ring-feature
+@reusable-ui/padding-feature
 @reusable-ui/background
 @reusable-ui/foreground
 @reusable-ui/border
