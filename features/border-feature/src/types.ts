@@ -118,11 +118,18 @@ export interface BorderFeatureVars {
     borderColor            : unknown
     
     /**
-     * References the resolved general-purpose border width used for layout separators or structural dividers.
+     * References the resolved general-purpose horizontal border width used for layout separators or structural dividers.
      * Always valid via fallback to config default.
      * Not affected by bare mode.
      */
-    borderBaseWidth        : unknown
+    borderInlineBaseWidth  : unknown
+    
+    /**
+     * References the resolved general-purpose vertical border width used for layout separators or structural dividers.
+     * Always valid via fallback to config default.
+     * Not affected by bare mode.
+     */
+    borderBlockBaseWidth   : unknown
     //#endregion Final resolved variables (always valid) 
 }
 
@@ -131,9 +138,9 @@ export interface BorderFeatureVars {
 /**
  * Configuration options for enabling border-aware styling in components.
  * 
- * These options represent the component’s desired border styling intent —
+ * These options represent the component’s intended border styling —
  * including border style, widths, radii, and fallback border color —
- * in case the framework does not override them through variant logic or contextual utilities.
+ * unless overridden by contextual utilities within the framework.
  */
 export interface CssBorderFeatureOptions
     extends
@@ -142,6 +149,8 @@ export interface CssBorderFeatureOptions
             | 'borderStyle'
             
             | 'borderWidth'
+            | 'borderInlineWidth'
+            | 'borderBlockWidth'
             | 'borderInlineStartWidth'
             | 'borderInlineEndWidth'
             | 'borderBlockStartWidth'
@@ -165,37 +174,57 @@ export interface CssBorderFeatureOptions
     
     
     /**
-     * The desired border width to apply on all edges.
+     * The desired border width to apply uniformly to all edges (horizontal and vertical).
      * 
-     * This value serves two purposes:
-     * - As the default for directional border widths (`borderInlineStartWidth`, `borderInlineEndWidth`, etc.)
-     * - As the resolved value for `borderBaseWidth`, used in layout separators or structural dividers
+     * Serves as the default for horizontal and vertical border widths (`borderInlineWidth` and `borderBlockWidth`)
      * 
      * Defaults to `borderVars.defaultWidth`.
      */
     borderWidth            ?: CssKnownProps['borderWidth']
     
     /**
-     * The desired border width on the left (or right in RTL) to apply.
+     * The desired horizontal border width to apply both left and right sides.
+     * 
+     * Serves as:
+     * - The default horizontal border widths (`borderInlineStartWidth` and `borderInlineEndWidth`)
+     * - The resolved value for `borderInlineBaseWidth`, used in layout separators or structural dividers
+     * 
      * Defaults to `borderWidth`.
+     */
+    borderInlineWidth      ?: CssKnownProps['borderInlineWidth']
+    
+    /**
+     * The desired vertical border width to apply both top and bottom sides.
+     * 
+     * Serves as:
+     * - The default vertical border widths (`borderBlockStartWidth` and `borderBlockEndWidth`)
+     * - The resolved value for `borderBlockBaseWidth`, used in layout separators or structural dividers
+     * 
+     * Defaults to `borderWidth`.
+     */
+    borderBlockWidth       ?: CssKnownProps['borderBlockWidth']
+    
+    /**
+     * The desired border width to apply on the left side (or right side in RTL).
+     * Defaults to `borderInlineWidth`.
      */
     borderInlineStartWidth ?: CssKnownProps['borderInlineStartWidth']
     
     /**
-     * The desired border width on the right (or left in RTL) to apply.
-     * Defaults to `borderWidth`.
+     * The desired border width to apply on the right side (or left side in RTL).
+     * Defaults to `borderInlineWidth`.
      */
     borderInlineEndWidth   ?: CssKnownProps['borderInlineEndWidth']
     
     /**
-     * The desired border width on the top to apply.
-     * Defaults to `borderWidth`.
+     * The desired border width to apply on the top side.
+     * Defaults to `borderBlockWidth`.
      */
     borderBlockStartWidth  ?: CssKnownProps['borderBlockStartWidth']
     
     /**
-     * The desired border width on the bottom to apply.
-     * Defaults to `borderWidth`.
+     * The desired border width to apply on the bottom side.
+     * Defaults to `borderBlockWidth`.
      */
     borderBlockEndWidth    ?: CssKnownProps['borderBlockEndWidth']
     

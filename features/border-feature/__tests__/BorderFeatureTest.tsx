@@ -3,6 +3,7 @@ import { type ThemeVariantProps, useThemeVariant } from '@reusable-ui/theme-vari
 import { type EmphasizeVariantProps, useEmphasizeVariant } from '@reusable-ui/emphasize-variant'
 import { type OutlineVariantProps, useOutlineVariant } from '@reusable-ui/outline-variant'
 import { type MildVariantProps, useMildVariant } from '@reusable-ui/mild-variant'
+import { type BareVariantProps, useBareVariant } from '@reusable-ui/bare-variant'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useBorderFeatureTestStyles } from './BorderFeatureTest.loader.js'
 
@@ -11,7 +12,8 @@ export interface BorderFeatureTestProps
         ThemeVariantProps,
         EmphasizeVariantProps,
         OutlineVariantProps,
-        MildVariantProps
+        MildVariantProps,
+        BareVariantProps
 {
 }
 export const BorderFeatureTest = (props: BorderFeatureTestProps) => {
@@ -21,13 +23,14 @@ export const BorderFeatureTest = (props: BorderFeatureTestProps) => {
     const { emphasizedClassname } = useEmphasizeVariant(props);
     const { outlinedClassname   } = useOutlineVariant(props);
     const { mildClassname       } = useMildVariant(props);
+    const { bareClassname       } = useBareVariant(props);
     
     return (
         <div>
             <HydrateStyles />
             <div
                 data-testid="border-feature-test"
-                className={`${styles.main} ${themeClassname} ${emphasizedClassname} ${outlinedClassname} ${mildClassname}`}
+                className={`${styles.main} ${themeClassname} ${emphasizedClassname} ${outlinedClassname} ${mildClassname} ${bareClassname}`}
             >
                 Border Feature Test
             </div>

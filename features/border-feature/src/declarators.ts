@@ -63,10 +63,12 @@ export const usesBorderFeature = (options?: CssBorderFeatureOptions): CssBorderF
         
         
         borderWidth                      = borderVars.defaultWidth,
-        borderInlineStartWidth           = borderWidth,
-        borderInlineEndWidth             = borderWidth,
-        borderBlockStartWidth            = borderWidth,
-        borderBlockEndWidth              = borderWidth,
+        borderInlineWidth                = borderWidth,
+        borderBlockWidth                 = borderWidth,
+        borderInlineStartWidth           = borderInlineWidth,
+        borderInlineEndWidth             = borderInlineWidth,
+        borderBlockStartWidth            = borderBlockWidth,
+        borderBlockEndWidth              = borderBlockWidth,
         
         
         
@@ -193,10 +195,16 @@ export const usesBorderFeature = (options?: CssBorderFeatureOptions): CssBorderF
                     
                     
                     /**
-                     * General-purpose border width used for layout separators or structural dividers.
+                     * General-purpose horizontal border width used for layout separators or structural dividers.
                      * Not affected by bare mode.
                      */
-                    [borderFeatureVars.borderBaseWidth]: borderWidth,
+                    [borderFeatureVars.borderInlineBaseWidth] : borderInlineWidth,
+                    
+                    /**
+                     * General-purpose vertical border width used for layout separators or structural dividers.
+                     * Not affected by bare mode.
+                     */
+                    [borderFeatureVars.borderBlockBaseWidth ] : borderBlockWidth,
                 }),
             });
         },
