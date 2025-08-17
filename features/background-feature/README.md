@@ -1,13 +1,14 @@
 # @reusable-ui/background-feature 📦  
 
-A styling utility for resolving the appropriate background color based on the currently active variants — including theme, emphasize, outline, and mild.  
+A styling utility for resolving the appropriate background color based on the currently active variants — including theme, emphasize, outline, mild, and bare.  
 It exposes CSS variables for coloring your component’s background, with support for layered background composition and CSS color function adjustments.
 Ideal for buttons, cards, dialogs, and any theme-aware components.
 
 ## ✨ Features
 ✔ Dynamically switches background color based on active variants (theme, emphasize, outline, mild)  
+✔ Supports `bare` variant for geometry-only rendering  
 ✔ Exposes background color variable (`backgColor`) for direct usage or further adjustment via CSS color functions  
-✔ Composite background layers (`backg`) combining gradient, custom background, and themed color  
+✔ Exposes composite background layers (`backg`) combining gradient, custom background, and themed color  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, theming, and color systems  
 
@@ -30,10 +31,11 @@ Resolves the appropriate background color based on the currently active variants
 
 These variables are ready-to-use for coloring your component’s background.
 
-| Variable      | Description                                              |
-|---------------|----------------------------------------------------------|
-| `backgColor`  | Final resolved background color based on active variants |
-| `backg`       | Composite background layers: gradient → custom → color   |
+| Variable      | Description                                                              |
+|---------------|--------------------------------------------------------------------------|
+| `backgColor`  | Final resolved background color based on active variants                 |
+| `backgLayers` | Composite background layers: gradient → custom → color                   |
+| `backg`       | Final background value, resolved from layers or suppressed via bare mode |
 
 You can further adjust `backgColor` using CSS color functions:
 Example: `oklch(from ${backgColor} l c h / calc(alpha * 0.25))`
@@ -50,6 +52,7 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 | `backgOutlinedCond`   | Outline mode active   | Transparent background layer  |
 | `backgMildCond`       | Mild mode active      | Reading-friendly background   |
 | `backgRegularCond`    | Theme mode active     | Themed background color       |
+| `backgBareCond`       | Bare mode active      | Suppresses background styling |
 
 #### 💡 Usage Example
 
@@ -59,6 +62,7 @@ import { usesThemeVariant } from '@reusable-ui/theme-variant'
 import { usesEmphasizeVariant } from '@reusable-ui/emphasize-variant'
 import { usesOutlineVariant } from '@reusable-ui/outline-variant'
 import { usesMildVariant } from '@reusable-ui/mild-variant'
+import { usesBareVariant } from '@reusable-ui/bare-variant'
 
 // Theme-aware background feature:
 import { usesBackgroundFeature } from '@reusable-ui/background-feature';
@@ -71,6 +75,7 @@ export const componentStyle = () => {
     const { emphasizeVariantRule } = usesEmphasizeVariant();
     const { outlineVariantRule   } = usesOutlineVariant();
     const { mildVariantRule      } = usesMildVariant();
+    const { bareVariantRule      } = usesBareVariant();
     
     const {
         backgroundFeatureRule,
@@ -92,6 +97,7 @@ export const componentStyle = () => {
         ...emphasizeVariantRule(),
         ...outlineVariantRule(),
         ...mildVariantRule(),
+        ...bareVariantRule(),
         
         // Apply theme-aware background feature:
         ...backgroundFeatureRule(),
@@ -117,11 +123,13 @@ The final background color (`backgColor`) is determined by a prioritized fallbac
 3. Regular theme override or regular color (if themed)
 4. Config fallback (default: transparent)
 
-The composite background (`backg`) stacks layers:
+The composite background (`backgLayers`) stacks layers:
 
 1. Top    : gradient (if emphasized)
 2. Middle : custom background (if provided)
 3. Bottom : resolved background color
+
+The final background (`backg`) resolves from these layers, or is suppressed if bare mode is active.
 
 ---
 

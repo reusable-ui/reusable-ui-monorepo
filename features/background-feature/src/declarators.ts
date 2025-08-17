@@ -36,6 +36,9 @@ import {
 import {
     usesMildVariant,
 }                           from '@reusable-ui/mild-variant'        // A utility for managing mild styling (reading friendly) consistently across React components.
+import {
+    usesBareVariant,
+}                           from '@reusable-ui/bare-variant'        // A utility for managing bare styling (frameless, minimal layout) consistently across React components.
 
 
 
@@ -71,6 +74,7 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
             const { emphasizeVariantVars } = usesEmphasizeVariant();
             const { outlineVariantVars   } = usesOutlineVariant();
             const { mildVariantVars      } = usesMildVariant();
+            const { bareVariantVars      } = usesBareVariant();
             
             
             
@@ -148,6 +152,21 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                         themeVariantVars.backgOverride, // ⚠️ Theme override (if active).
                         themeVariantVars.backg,         // A themed background color for regular variant.
                     ),
+                    
+                    
+                    
+                    // 🧱 Bare Layout:
+                    
+                    /**
+                     * Applies an empty background when bare mode is active.
+                     * Poisoned when bare mode is inactive.
+                     * 
+                     * Used to suppress background styling.
+                     */
+                    [backgroundFeatureVars.backgBareCond]: [[
+                        bareVariantVars.isBare,
+                        'none',
+                    ]],
                 }),
                 
                 
@@ -176,7 +195,7 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                      * - Middle : custom background
                      * - Bottom : resolved background color
                      */
-                    [backgroundFeatureVars.backg]: [
+                    [backgroundFeatureVars.backgLayers]: [
                         // Top: emphasized gradient:
                         switchOf(
                             backgroundFeatureVars.backgEmphasizedCond,
@@ -192,6 +211,16 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                         // Bottom: resolved background color:
                         backgroundFeatureVars.backgColor,
                     ],
+                    
+                    /**
+                     * Final background resolution:
+                     * - If bare mode is active, suppress all layers
+                     * - Otherwise, apply layered background
+                     */
+                    [backgroundFeatureVars.backg]: switchOf(
+                        backgroundFeatureVars.backgBareCond,
+                        backgroundFeatureVars.backgLayers,
+                    ),
                 }),
             });
         },

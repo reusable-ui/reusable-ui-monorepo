@@ -3,6 +3,7 @@ import { type ThemeVariantProps, useThemeVariant } from '@reusable-ui/theme-vari
 import { type EmphasizeVariantProps, useEmphasizeVariant } from '@reusable-ui/emphasize-variant'
 import { type OutlineVariantProps, useOutlineVariant } from '@reusable-ui/outline-variant'
 import { type MildVariantProps, useMildVariant } from '@reusable-ui/mild-variant'
+import { type BareVariantProps, useBareVariant } from '@reusable-ui/bare-variant'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useBackgroundFeatureTestStyles } from './BackgroundFeatureTest.loader.js'
 
@@ -11,7 +12,8 @@ export interface BackgroundFeatureTestProps
         ThemeVariantProps,
         EmphasizeVariantProps,
         OutlineVariantProps,
-        MildVariantProps
+        MildVariantProps,
+        BareVariantProps
 {
 }
 export const BackgroundFeatureTest = (props: BackgroundFeatureTestProps) => {
@@ -21,13 +23,14 @@ export const BackgroundFeatureTest = (props: BackgroundFeatureTestProps) => {
     const { emphasizedClassname } = useEmphasizeVariant(props);
     const { outlinedClassname   } = useOutlineVariant(props);
     const { mildClassname       } = useMildVariant(props);
+    const { bareClassname       } = useBareVariant(props);
     
     return (
         <div>
             <HydrateStyles />
             <div
                 data-testid="background-feature-test"
-                className={`${styles.main} ${themeClassname} ${emphasizedClassname} ${outlinedClassname} ${mildClassname}`}
+                className={`${styles.main} ${themeClassname} ${emphasizedClassname} ${outlinedClassname} ${mildClassname} ${bareClassname}`}
             >
                 Background Feature Test
             </div>

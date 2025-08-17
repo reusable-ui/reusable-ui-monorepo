@@ -53,6 +53,14 @@ export interface BackgroundFeatureVars {
      * Poisoned when theme styling is not implemented.
      */
     backgRegularCond    : unknown
+    
+    /**
+     * References an empty background (`none`) when bare mode is active.
+     * Poisoned when bare mode is inactive.
+     * 
+     * Used to conditionally suppress background styling.
+     */
+    backgBareCond       : unknown
     //#endregion Conditional variables (may be poisoned) 
     
     
@@ -68,7 +76,21 @@ export interface BackgroundFeatureVars {
     backgColor          : unknown
     
     /**
-     * References the composite background layers (gradient, custom, and color) for the current mode.
+     * References the composite background layers for the current mode.
+     * Includes:
+     * - Emphasized gradient (top layer)
+     * - Custom background(s) (middle layer)
+     * - Resolved background color (bottom layer)
+     * 
+     * Always valid via internal fallback logic.
+     */
+    backgLayers         : unknown
+    
+    /**
+     * References the final resolved background for the current mode.
+     * Resolves to `backgLayers` when bare mode is inactive,
+     * or to an empty background (`none`) when bare mode is active.
+     * 
      * Always valid via internal fallback logic.
      */
     backg               : unknown
@@ -130,9 +152,11 @@ export interface CssBackgroundFeature {
      * with support for layered background composition and CSS color function adjustments.
      * 
      * Includes:
-     * - `backg**Cond`s : Mode-specific background colors (conditionally valid or poisoned).
-     * - `backgColor`   : Final resolved background color for the current mode.
-     * - `backg`        : Composite background layers (gradient, custom, and color) for the current mode.
+     * - `backg**Cond`s  : Mode-specific background colors (conditionally valid or poisoned).
+     * - `backgBareCond` : Suppresses background styling when bare mode is active.
+     * - `backgColor`    : Final resolved background color for the current mode.
+     * - `backgLayers`   : Composite background layers (gradient, custom, and color) for the current mode.
+     * - `backg`         : Final background value, resolved from layers or suppressed via bare mode.
      * 
      * These variables can be consumed directly or composed into advanced use cases
      * using CSS color functions, variable fallbacks, or custom logic.
