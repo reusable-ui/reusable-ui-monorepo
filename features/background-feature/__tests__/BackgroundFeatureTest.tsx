@@ -15,8 +15,13 @@ export interface BackgroundFeatureTestProps
         MildVariantProps,
         BareVariantProps
 {
+    backgCustom ?: keyof ReturnType<typeof useBackgroundFeatureTestStyles>
 }
 export const BackgroundFeatureTest = (props: BackgroundFeatureTestProps) => {
+    const {
+        backgCustom = 'backgroundNoCustomStyle',
+    } = props;
+    
     const styles = useBackgroundFeatureTestStyles();
     
     const { themeClassname      } = useThemeVariant(props);
@@ -30,7 +35,7 @@ export const BackgroundFeatureTest = (props: BackgroundFeatureTestProps) => {
             <HydrateStyles />
             <div
                 data-testid="background-feature-test"
-                className={`${styles.main} ${themeClassname} ${emphasizedClassname} ${outlinedClassname} ${mildClassname} ${bareClassname}`}
+                className={`${styles[backgCustom]} ${themeClassname} ${emphasizedClassname} ${outlinedClassname} ${mildClassname} ${bareClassname}`}
             >
                 Background Feature Test
             </div>

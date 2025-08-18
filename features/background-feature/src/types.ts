@@ -31,8 +31,8 @@ export interface BackgroundFeatureVars {
     backgEmphasizedCond : unknown
     
     /**
-     * References the custom background when configured.
-     * Poisoned when no custom background is provided.
+     * References the custom background layers when configured.
+     * Poisoned when no custom background layer is provided.
      */
     backgCond           : unknown
     
@@ -79,7 +79,7 @@ export interface BackgroundFeatureVars {
      * References the composite background layers for the current mode.
      * Includes:
      * - Emphasized gradient (top layer)
-     * - Custom background(s) (middle layer)
+     * - Custom background layers (middle layer)
      * - Resolved background color (bottom layer)
      * 
      * Always valid via internal fallback logic.
@@ -128,9 +128,10 @@ export interface CssBackgroundFeatureOptions
         | [Extract<CssKnownProps['background'], unknown[]>]
     
     /**
-     * A custom background layer to apply above the themed color but below the gradient layer.
+     * A custom background layer stack to insert above the themed color but below the gradient layer.
+     * Accepts a single background or multiple layered backgrounds.
      */
-    background          ?: CssKnownProps['background']
+    background          ?: CssKnownProps['backgroundImage']
 }
 
 

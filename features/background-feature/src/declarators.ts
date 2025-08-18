@@ -62,7 +62,7 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
     const {
         backgroundColor     : defaultBackgroundColor    = 'transparent', // Ensures a concrete fallback to avoid invalid value.
         backgroundEmphasize : emphasizedBackgroundImage = '',
-        background          : customBackground,
+        background          : customBackgrounds         = null,
     } = options ?? {};
     
     
@@ -106,10 +106,10 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                     // 🖼️ Custom Background:
                     
                     /**
-                     * Applies custom background when configured.
-                     * Poisoned when no custom background is provided.
+                     * Applies custom background layers when configured.
+                     * Poisoned when no custom background layer is provided.
                      */
-                    [backgroundFeatureVars.backgCond]: customBackground,
+                    [backgroundFeatureVars.backgCond]: customBackgrounds,
                     
                     
                     
@@ -192,7 +192,7 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                     /**
                      * Composite background layers:
                      * - Top    : emphasized gradient
-                     * - Middle : custom background
+                     * - Middle : custom background layers
                      * - Bottom : resolved background color
                      */
                     [backgroundFeatureVars.backgLayers]: [
@@ -202,7 +202,7 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                             'none',
                         ),
                         
-                        // Middle: custom background:
+                        // Middle: custom background layers:
                         switchOf(
                             backgroundFeatureVars.backgCond,
                             'none',

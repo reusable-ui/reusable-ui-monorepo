@@ -8,7 +8,7 @@ Ideal for buttons, cards, dialogs, and any theme-aware components.
 ✔ Dynamically switches background color based on active variants (theme, emphasize, outline, mild)  
 ✔ Supports `bare` variant for geometry-only rendering  
 ✔ Exposes background color variable (`backgColor`) for direct usage or further adjustment via CSS color functions  
-✔ Exposes composite background layers (`backg`) combining gradient, custom background, and themed color  
+✔ Exposes composite background layers (`backg`) combining gradient, custom background layers, and themed color  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, theming, and color systems  
 
@@ -45,14 +45,14 @@ Example: `oklch(from ${backgColor} l c h / calc(alpha * 0.25))`
 These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding mode is inactive.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable              | Active When...        | Purpose                       |
-|-----------------------|-----------------------|-------------------------------|
-| `backgEmphasizedCond` | Emphasize mode active | Gradient background layer     |
-| `backgCond`           | Custom background set | User-defined background layer |
-| `backgOutlinedCond`   | Outline mode active   | Transparent background layer  |
-| `backgMildCond`       | Mild mode active      | Reading-friendly background   |
-| `backgRegularCond`    | Theme mode active     | Themed background color       |
-| `backgBareCond`       | Bare mode active      | Suppresses background styling |
+| Variable              | Active When...           | Purpose                        |
+|-----------------------|--------------------------|--------------------------------|
+| `backgEmphasizedCond` | Emphasize mode active    | Gradient background layer      |
+| `backgCond`           | Custom background layers | User-defined background layers |
+| `backgOutlinedCond`   | Outline mode active      | Transparent background layer   |
+| `backgMildCond`       | Mild mode active         | Reading-friendly background    |
+| `backgRegularCond`    | Theme mode active        | Themed background color        |
+| `backgBareCond`       | Bare mode active         | Suppresses background styling  |
 
 #### 💡 Usage Example
 
@@ -126,7 +126,7 @@ The final background color (`backgColor`) is determined by a prioritized fallbac
 The composite background (`backgLayers`) stacks layers:
 
 1. Top    : gradient (if emphasized)
-2. Middle : custom background (if provided)
+2. Middle : custom background layers (if provided)
 3. Bottom : resolved background color
 
 The final background (`backg`) resolves from these layers, or is suppressed if bare mode is active.
