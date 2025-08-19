@@ -23,11 +23,11 @@ yarn add @reusable-ui/animation-feature
 
 ### `animationRegistry.animations`
 
-Returns the list of registered animation variables.
+Retrieves the list of registered animation variables.
 
-### `animationRegistry.registerAnimation(animation): () => void`
+### `animationRegistry.registerAnimation(animationVariable, priority?): () => void`
 
-Registers a new animation variable into the stack and returns an unregister function.
+Registers an animation variable with an optional stacking priority.
 
 ### `animationRegistry.onAnimationChange.subscribe()`
 

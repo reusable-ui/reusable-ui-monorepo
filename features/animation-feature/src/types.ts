@@ -72,32 +72,30 @@ export interface CssAnimationFeatureOptions
 /**
  * A registry for unifying animation layers across independent state packages.
  * 
- * Enables dynamic registration of animation variables and guarantees
- * safe stacking via internal pre-reset with `none`.
- * 
- * Prevents inherited animations from leaking into components
- * unless explicitly redefined.
+ * Supports dynamic registration of animation variables with priority-based stacking.
  */
 export interface CssAnimationRegistry {
     /**
-     * Returns the list of registered animation variables.
+     * Retrieves the list of registered animation variables.
      * 
      * Each entry is a CSS variable reference intended for use in the final animation stack.
-     * The order reflects stacking priority (lowest specificity first).
+     * The order reflects stacking priority (lower specificity appears first).
      */
     get animations(): CssCustomSimpleRef[]
     
     /**
-     * Registers a new animation variable into the stack and returns an unregister function.
+     * Registers an animation variable with an optional stacking priority.
      * 
-     * @param animation - A CSS variable reference representing an animation layer.
+     * @param animationVariable - A CSS variable reference representing an animation layer.
+     * @param priority - Optional stacking priority; higher values override lower ones.
+     * @returns - An unregister function to remove the variable.
      */
-    registerAnimation(animation: CssCustomSimpleRef): () => void
+    registerAnimation(animationVariable: CssCustomSimpleRef, priority?: number): () => void
     
     /**
      * Subscribes a callback listener for animation registry changes.
      * 
-     * Useful for memoizing styles or triggering recomputation.
+     * Useful for memoizing styles, triggering recomputation, or syncing registry state.
      */
     onAnimationChange: Subscribable<CssCustomSimpleRef>
 }
