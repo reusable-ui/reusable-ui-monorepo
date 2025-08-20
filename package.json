@@ -92,6 +92,7 @@
     "features/ring-feature",
     "features/padding-feature",
     "features/animation-feature",
+    "features/filter-feature",
     "__configs/*",
     "__utilities/*",
     "__features/*",
