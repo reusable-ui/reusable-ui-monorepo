@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/animation-feature",
   "version": "7.0.0",
-  "description": "A styling utility for composing animation stack from custom and registered state packages.",
+  "description": "A styling utility for composing an animation stack from custom and registered state packages.",
   "keywords": [
     "animation",
     "animation-stack",
@@ -14,7 +14,6 @@
     "css-in-js",
     "design-system",
     "component-style",
-    "conditional-style",
     "react",
     "reusable-ui"
   ],

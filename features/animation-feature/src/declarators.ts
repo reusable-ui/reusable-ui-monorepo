@@ -46,11 +46,11 @@ import {
 const [animationFeatureVars] = cssVars<AnimationFeatureVars>({ prefix: 'an', minify: false });
 
 /**
- * Composes custom and registered animations into a single stack
+ * Composes custom and registered animations into a unified stack
  * and exposes ready-to-use CSS variables.
  * 
  * @param options - An optional configuration for customizing animation behavior.
- * @returns A CSS API for composing animation stack from custom and registered state packages.
+ * @returns A CSS API for composing an animation stack from custom and registered state packages.
  */
 export const usesAnimationFeature = (options?: CssAnimationFeatureOptions): CssAnimationFeature => {
     // Extract options and assign defaults:
@@ -67,7 +67,7 @@ export const usesAnimationFeature = (options?: CssAnimationFeatureOptions): CssA
             
             
             return style({
-                // Pre-reset animation variables, preventing inheritance and ensuring the final `animation` property is always valid—even when no animations are active:
+                // Pre-reset registered animation variables to prevent inheritance and ensuring the final `animation` property remains valid—even when no animations are active:
                 ...fallback({ // The `fallback()` ensures the resets are written before any other declarations.
                     ...rules(
                         animationRegistry.animations.map((variable) =>
@@ -142,7 +142,7 @@ export const usesAnimationFeature = (options?: CssAnimationFeatureOptions): CssA
                                 
                                 
                                 // Wrap single custom animation (multi of single):
-                                if (rawValues.some((validValue) => !Array.isArray(validValue))) return [
+                                if (rawValues.some((rawValue) => !Array.isArray(rawValue))) return [
                                     rawValues as (CssKnownValueOf<'animation'> | CssCustomKeyframesRef)[]
                                 ];
                                 

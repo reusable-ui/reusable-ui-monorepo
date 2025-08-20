@@ -39,7 +39,7 @@ export interface AnimationFeatureVars {
      * - Registered animations from independent state packages
      * 
      * All registered variables are internally pre-reset with `none` to prevent inheritance and
-     * ensuring the final `animation` property is always valid—even when no animations are active.
+     * ensuring the final `animation` property remains valid—even when no animations are active.
      */
     animation : unknown
     //#endregion Final resolved variables (always valid) 
@@ -51,7 +51,7 @@ export interface AnimationFeatureVars {
  * Configuration options for styling component’s animation.
  * 
  * These options represent the component’s intended animation behavior —
- * appended to the final composed animation stack.
+ * which is appended to the final composed animation stack.
  */
 export interface CssAnimationFeatureOptions
     extends
@@ -72,7 +72,7 @@ export interface CssAnimationFeatureOptions
 /**
  * A registry for unifying animation layers across independent state packages.
  * 
- * Supports dynamic registration of animation variables with priority-based stacking.
+ * Supports dynamic registration of animation variables with priority-aware stacking.
  */
 export interface CssAnimationRegistry {
     /**
@@ -84,7 +84,7 @@ export interface CssAnimationRegistry {
     get animations(): CssCustomSimpleRef[]
     
     /**
-     * Registers an animation variable with an optional stacking priority.
+     * Registers an animation variable with optional stacking priority.
      * 
      * @param animationVariable - A CSS variable reference representing an animation layer.
      * @param priority - Optional stacking priority; higher values override lower ones.
@@ -103,14 +103,14 @@ export interface CssAnimationRegistry {
 
 
 /**
- * Provides a CSS API for composing animation stack from custom and registered state packages.
+ * Provides a CSS API for composing an animation stack from custom and registered state packages.
  */
 export interface CssAnimationFeature {
     /**
-     * Generates CSS rules that compose custom and registered animations into a single stack.
+     * Generates CSS rules that compose custom and registered animations into a unified stack.
      * 
      * These rules use internal pre-reset with `none` to prevent inheritance and
-     * ensuring the final `animation` property is always valid—even when no animations are active.
+     * ensuring the final `animation` property remains valid—even when no animations are active.
      */
     animationFeatureRule : Lazy<CssRule>
     

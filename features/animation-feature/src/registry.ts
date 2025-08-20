@@ -29,7 +29,7 @@ import {
  */
 interface AnimationEntry {
     /**
-     * The unique CSS variable reference representing an animation layer.
+     * A unique CSS variable reference representing an animation layer.
      */
     variable : CssCustomSimpleRef
     
@@ -44,7 +44,7 @@ interface AnimationEntry {
 /**
  * An internal store of registered animation entries.
  * 
- * Maintains insertion order and priority-based stacking for animation resolution.
+ * Preserves insertion order and supports priority-aware stacking for animation resolution.
  */
 const registeredAnimations : AnimationEntry[] = [];
 
@@ -65,7 +65,7 @@ const onAnimationChange : Subscribable<CssCustomSimpleRef> = {
 /**
  * A registry for unifying animation layers across independent state packages.
  * 
- * Supports dynamic registration of animation variables with priority-based stacking.
+ * Supports dynamic registration of animation variables with priority-aware stacking.
  */
 export const animationRegistry : CssAnimationRegistry = {
     get animations() {
@@ -97,7 +97,7 @@ export const animationRegistry : CssAnimationRegistry = {
         
         
         
-        // Find insertion index based on the effective priority:
+        // Determine insertion index based on the effective priority:
         const insertIndex = registeredAnimations.findIndex(({ priority }) => (priority > effectivePriority));
         
         
