@@ -93,6 +93,7 @@
     "features/padding-feature",
     "features/animation-feature",
     "features/filter-feature",
+    "features/transform-feature",
     "__configs/*",
     "__utilities/*",
     "__features/*",
