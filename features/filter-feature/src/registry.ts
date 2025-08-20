@@ -34,7 +34,7 @@ interface FilterEntry {
     variable : CssCustomSimpleRef
     
     /**
-     * Determines stacking order; higher values appear later in the filter stack.
+     * A stacking priority. Higher values appear later in the composed filter stack.
      */
     priority : number
 }
@@ -49,12 +49,12 @@ interface FilterEntry {
 const registeredFilters : FilterEntry[] = [];
 
 /**
- * Event stream for notifying filter registry changes.
+ * An event stream for broadcasting filter registry changes.
  */
 const subscribers = new Subject<CssCustomSimpleRef>();
 
 /**
- * Reactive interface for subscribing to filter registry updates.
+ * A reactive interface for subscribing to filter registry updates.
  */
 const onFilterChange : Subscribable<CssCustomSimpleRef> = {
     subscribe: subscribers.subscribe,

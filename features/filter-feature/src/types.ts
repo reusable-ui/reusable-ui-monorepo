@@ -103,7 +103,7 @@ export interface CssFilterRegistry {
 
 
 /**
- * Provides a CSS API for composing a filter stack from custom and registered state packages.
+ * Provides a CSS API for composing a unified filter stack from custom and registered state packages.
  */
 export interface CssFilterFeature {
     /**

@@ -1,12 +1,12 @@
 # @reusable-ui/filter-feature 📦  
 
-A styling utility for composing a filter stack from custom and registered state packages.  
+A styling utility for composing a unified filter stack from custom and registered state packages.  
 It exposes CSS variables for styling component’s filter.
 Ideal for buttons, accordions, popups, and any interactive components.
 
 ## ✨ Features
 ✔ Composes custom and registered filters into a unified stack  
-✔ Prevents accidentally filter inheritance via internal pre-reset  
+✔ Prevents unintended filter inheritance via internal pre-reset  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across state packages  
 
@@ -94,10 +94,10 @@ export const componentStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The final filters (`filter`) is composed of:
+The final filters (`filter`) value is composed of:
 
 1. Custom filters (if provided)
-2. Registered filter variables from registered state packages
+2. Registered filter variables from independent state packages
 
 All registered variables are internally pre-reset with `brightness(1)` (a no-op filter) to prevent inheritance and ensuring the final `filter` property remains valid—even when no filters are active.
 

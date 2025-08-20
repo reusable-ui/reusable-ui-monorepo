@@ -49,7 +49,7 @@ const [filterFeatureVars] = cssVars<FilterFeatureVars>({ prefix: 'fr', minify: f
  * and exposes ready-to-use CSS variables.
  * 
  * @param options - An optional configuration for customizing filter behavior.
- * @returns A CSS API for composing a filter stack from custom and registered state packages.
+ * @returns A CSS API for composing a unified filter stack from custom and registered state packages.
  */
 export const usesFilterFeature = (options?: CssFilterFeatureOptions): CssFilterFeature => {
     // Extract options and assign defaults:
