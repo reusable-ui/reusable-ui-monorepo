@@ -34,7 +34,7 @@ interface AnimationEntry {
     variable : CssCustomSimpleRef
     
     /**
-     * Determines stacking order; higher values appear later in the animation stack.
+     * A stacking priority. Higher values appear later in the composed animation stack.
      */
     priority : number
 }
@@ -49,12 +49,12 @@ interface AnimationEntry {
 const registeredAnimations : AnimationEntry[] = [];
 
 /**
- * Event stream for notifying animation registry changes.
+ * An event stream for broadcasting animation registry changes.
  */
 const subscribers = new Subject<CssCustomSimpleRef>();
 
 /**
- * Reactive interface for subscribing to animation registry updates.
+ * A reactive interface for subscribing to animation registry updates.
  */
 const onAnimationChange : Subscribable<CssCustomSimpleRef> = {
     subscribe: subscribers.subscribe,

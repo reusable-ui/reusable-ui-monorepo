@@ -103,7 +103,7 @@ export interface CssAnimationRegistry {
 
 
 /**
- * Provides a CSS API for composing an animation stack from custom and registered state packages.
+ * Provides a CSS API for composing a unified animation stack from custom and registered state packages.
  */
 export interface CssAnimationFeature {
     /**

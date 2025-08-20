@@ -1,12 +1,12 @@
 # @reusable-ui/animation-feature 📦  
 
-A styling utility for composing an animation stack from custom and registered state packages.  
+A styling utility for composing a unified animation stack from custom and registered state packages.  
 It exposes CSS variables for styling component’s animation.
 Ideal for buttons, accordions, popups, and any interactive components.
 
 ## ✨ Features
 ✔ Composes custom and registered animations into a unified stack  
-✔ Prevents accidentally animation inheritance via internal pre-reset  
+✔ Prevents unintended animation inheritance via internal pre-reset  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across state packages  
 
@@ -94,10 +94,10 @@ export const componentStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The final animations (`animation`) is composed of:
+The final animations (`animation`) value is composed of:
 
 1. Custom animations (if provided)
-2. Registered animation variables from registered state packages
+2. Registered animation variables from independent state packages
 
 All registered variables are internally pre-reset with `none` to prevent inheritance and ensuring the final `animation` property remains valid—even when no animations are active.
 

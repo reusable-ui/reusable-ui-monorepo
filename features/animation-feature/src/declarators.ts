@@ -50,7 +50,7 @@ const [animationFeatureVars] = cssVars<AnimationFeatureVars>({ prefix: 'an', min
  * and exposes ready-to-use CSS variables.
  * 
  * @param options - An optional configuration for customizing animation behavior.
- * @returns A CSS API for composing an animation stack from custom and registered state packages.
+ * @returns A CSS API for composing a unified animation stack from custom and registered state packages.
  */
 export const usesAnimationFeature = (options?: CssAnimationFeatureOptions): CssAnimationFeature => {
     // Extract options and assign defaults:
