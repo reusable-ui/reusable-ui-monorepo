@@ -54,10 +54,10 @@ test.describe('filterRegistry', () => {
             title   : 'Single filter registration',
             updates : [
                 {
-                    title           : 'Register fade-in filter',
-                    newFilter       : { filterVariable: 'var(--fade-in)' },
+                    title           : 'Register contrast-boost filter',
+                    newFilter       : { filterVariable: 'var(--contrast-boost)' },
                     expectedFilters : [
-                        'var(--fade-in)',
+                        'var(--contrast-boost)',
                     ],
                 },
             ],
@@ -66,18 +66,18 @@ test.describe('filterRegistry', () => {
             title   : 'Multiple filters with default priority',
             updates : [
                 {
-                    title           : 'Register fade-in',
-                    newFilter       : { filterVariable: 'var(--fade-in)' },
+                    title           : 'Register contrast-boost',
+                    newFilter       : { filterVariable: 'var(--contrast-boost)' },
                     expectedFilters : [
-                        'var(--fade-in)',
+                        'var(--contrast-boost)',
                     ],
                 },
                 {
-                    title           : 'Register slide-up',
-                    newFilter       : { filterVariable: 'var(--slide-up)' },
+                    title           : 'Register lift-brightness',
+                    newFilter       : { filterVariable: 'var(--lift-brightness)' },
                     expectedFilters : [
-                        'var(--fade-in)',
-                        'var(--slide-up)',
+                        'var(--contrast-boost)',
+                        'var(--lift-brightness)',
                     ],
                 },
             ],
@@ -86,27 +86,27 @@ test.describe('filterRegistry', () => {
             title   : 'Priority stacking overrides default order',
             updates : [
                 {
-                    title           : 'Register fade-in with priority 1',
-                    newFilter       : { filterVariable: 'var(--fade-in)', priority: 1 },
+                    title           : 'Register contrast-boost with priority 1',
+                    newFilter       : { filterVariable: 'var(--contrast-boost)', priority: 1 },
                     expectedFilters : [
-                        'var(--fade-in)',
+                        'var(--contrast-boost)',
                     ],
                 },
                 {
-                    title           : 'Register slide-up with priority 2',
-                    newFilter       : { filterVariable: 'var(--slide-up)', priority: 2 },
+                    title           : 'Register lift-brightness with priority 2',
+                    newFilter       : { filterVariable: 'var(--lift-brightness)', priority: 2 },
                     expectedFilters : [
-                        'var(--fade-in)',
-                        'var(--slide-up)',
+                        'var(--contrast-boost)',
+                        'var(--lift-brightness)',
                     ],
                 },
                 {
-                    title           : 'Register zoom-in with priority 0',
-                    newFilter       : { filterVariable: 'var(--zoom-in)', priority: 0 },
+                    title           : 'Register focus-sharpen with priority 0',
+                    newFilter       : { filterVariable: 'var(--focus-sharpen)', priority: 0 },
                     expectedFilters : [
-                        'var(--zoom-in)',
-                        'var(--fade-in)',
-                        'var(--slide-up)',
+                        'var(--focus-sharpen)',
+                        'var(--contrast-boost)',
+                        'var(--lift-brightness)',
                     ],
                 },
             ],
@@ -115,15 +115,15 @@ test.describe('filterRegistry', () => {
             title   : 'Duplicate registration should not duplicate entry',
             updates : [
                 {
-                    title           : 'Register fade-in',
-                    newFilter       : { filterVariable: 'var(--fade-in)' },
-                    expectedFilters : ['var(--fade-in)'],
+                    title           : 'Register contrast-boost',
+                    newFilter       : { filterVariable: 'var(--contrast-boost)' },
+                    expectedFilters : ['var(--contrast-boost)'],
                 },
                 {
-                    title           : 'Register fade-in again',
-                    newFilter       : { filterVariable: 'var(--fade-in)' },
+                    title           : 'Register contrast-boost again',
+                    newFilter       : { filterVariable: 'var(--contrast-boost)' },
                     expectedFilters : [
-                        'var(--fade-in)', // No duplication
+                        'var(--contrast-boost)', // No duplication
                     ],
                 },
             ],
@@ -132,26 +132,26 @@ test.describe('filterRegistry', () => {
             title   : 'Re-register with higher priority should reorder',
             updates : [
                 {
-                    title           : 'Register fade-in with priority 1',
-                    newFilter       : { filterVariable: 'var(--fade-in)', priority: 1 },
+                    title           : 'Register contrast-boost with priority 1',
+                    newFilter       : { filterVariable: 'var(--contrast-boost)', priority: 1 },
                     expectedFilters : [
-                        'var(--fade-in)',
+                        'var(--contrast-boost)',
                     ],
                 },
                 {
-                    title           : 'Register slide-up with priority 0',
-                    newFilter       : { filterVariable: 'var(--slide-up)', priority: 0 },
+                    title           : 'Register lift-brightness with priority 0',
+                    newFilter       : { filterVariable: 'var(--lift-brightness)', priority: 0 },
                     expectedFilters : [
-                        'var(--slide-up)',
-                        'var(--fade-in)',
+                        'var(--lift-brightness)',
+                        'var(--contrast-boost)',
                     ],
                 },
                 {
-                    title           : 'Re-register slide-up with priority 2',
-                    newFilter       : { filterVariable: 'var(--slide-up)', priority: 2 },
+                    title           : 'Re-register lift-brightness with priority 2',
+                    newFilter       : { filterVariable: 'var(--lift-brightness)', priority: 2 },
                     expectedFilters : [
-                        'var(--fade-in)',
-                        'var(--slide-up)',
+                        'var(--contrast-boost)',
+                        'var(--lift-brightness)',
                     ],
                 },
             ],
@@ -160,18 +160,18 @@ test.describe('filterRegistry', () => {
             title   : 'Same priority preserves insertion order',
             updates : [
                 {
-                    title           : 'Register fade-in with priority 1',
-                    newFilter       : { filterVariable: 'var(--fade-in)', priority: 1 },
+                    title           : 'Register contrast-boost with priority 1',
+                    newFilter       : { filterVariable: 'var(--contrast-boost)', priority: 1 },
                     expectedFilters : [
-                        'var(--fade-in)',
+                        'var(--contrast-boost)',
                     ],
                 },
                 {
-                    title           : 'Register slide-up with priority 1',
-                    newFilter       : { filterVariable: 'var(--slide-up)', priority: 1 },
+                    title           : 'Register lift-brightness with priority 1',
+                    newFilter       : { filterVariable: 'var(--lift-brightness)', priority: 1 },
                     expectedFilters : [
-                        'var(--fade-in)',
-                        'var(--slide-up)',
+                        'var(--contrast-boost)',
+                        'var(--lift-brightness)',
                     ],
                 },
             ],
