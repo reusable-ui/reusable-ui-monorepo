@@ -54,10 +54,10 @@ test.describe('transformRegistry', () => {
             title   : 'Single transform registration',
             updates : [
                 {
-                    title              : 'Register fade-in transform',
-                    newTransform       : { transformVariable: 'var(--fade-in)' },
+                    title              : 'Register opacity-appear transform',
+                    newTransform       : { transformVariable: 'var(--opacity-appear)' },
                     expectedTransforms : [
-                        'var(--fade-in)',
+                        'var(--opacity-appear)',
                     ],
                 },
             ],
@@ -66,18 +66,18 @@ test.describe('transformRegistry', () => {
             title   : 'Multiple transforms with default priority',
             updates : [
                 {
-                    title              : 'Register fade-in',
-                    newTransform       : { transformVariable: 'var(--fade-in)' },
+                    title              : 'Register opacity-appear',
+                    newTransform       : { transformVariable: 'var(--opacity-appear)' },
                     expectedTransforms : [
-                        'var(--fade-in)',
+                        'var(--opacity-appear)',
                     ],
                 },
                 {
-                    title              : 'Register slide-up',
-                    newTransform       : { transformVariable: 'var(--slide-up)' },
+                    title              : 'Register translate-up',
+                    newTransform       : { transformVariable: 'var(--translate-up)' },
                     expectedTransforms : [
-                        'var(--fade-in)',
-                        'var(--slide-up)',
+                        'var(--opacity-appear)',
+                        'var(--translate-up)',
                     ],
                 },
             ],
@@ -86,27 +86,27 @@ test.describe('transformRegistry', () => {
             title   : 'Priority stacking overrides default order',
             updates : [
                 {
-                    title              : 'Register fade-in with priority 1',
-                    newTransform       : { transformVariable: 'var(--fade-in)', priority: 1 },
+                    title              : 'Register opacity-appear with priority 1',
+                    newTransform       : { transformVariable: 'var(--opacity-appear)', priority: 1 },
                     expectedTransforms : [
-                        'var(--fade-in)',
+                        'var(--opacity-appear)',
                     ],
                 },
                 {
-                    title              : 'Register slide-up with priority 2',
-                    newTransform       : { transformVariable: 'var(--slide-up)', priority: 2 },
+                    title              : 'Register translate-up with priority 2',
+                    newTransform       : { transformVariable: 'var(--translate-up)', priority: 2 },
                     expectedTransforms : [
-                        'var(--fade-in)',
-                        'var(--slide-up)',
+                        'var(--opacity-appear)',
+                        'var(--translate-up)',
                     ],
                 },
                 {
-                    title              : 'Register zoom-in with priority 0',
-                    newTransform       : { transformVariable: 'var(--zoom-in)', priority: 0 },
+                    title              : 'Register scale-up with priority 0',
+                    newTransform       : { transformVariable: 'var(--scale-up)', priority: 0 },
                     expectedTransforms : [
-                        'var(--zoom-in)',
-                        'var(--fade-in)',
-                        'var(--slide-up)',
+                        'var(--scale-up)',
+                        'var(--opacity-appear)',
+                        'var(--translate-up)',
                     ],
                 },
             ],
@@ -115,15 +115,15 @@ test.describe('transformRegistry', () => {
             title   : 'Duplicate registration should not duplicate entry',
             updates : [
                 {
-                    title              : 'Register fade-in',
-                    newTransform       : { transformVariable: 'var(--fade-in)' },
-                    expectedTransforms : ['var(--fade-in)'],
+                    title              : 'Register opacity-appear',
+                    newTransform       : { transformVariable: 'var(--opacity-appear)' },
+                    expectedTransforms : ['var(--opacity-appear)'],
                 },
                 {
-                    title              : 'Register fade-in again',
-                    newTransform       : { transformVariable: 'var(--fade-in)' },
+                    title              : 'Register opacity-appear again',
+                    newTransform       : { transformVariable: 'var(--opacity-appear)' },
                     expectedTransforms : [
-                        'var(--fade-in)', // No duplication
+                        'var(--opacity-appear)', // No duplication
                     ],
                 },
             ],
@@ -132,26 +132,26 @@ test.describe('transformRegistry', () => {
             title   : 'Re-register with higher priority should reorder',
             updates : [
                 {
-                    title              : 'Register fade-in with priority 1',
-                    newTransform       : { transformVariable: 'var(--fade-in)', priority: 1 },
+                    title              : 'Register opacity-appear with priority 1',
+                    newTransform       : { transformVariable: 'var(--opacity-appear)', priority: 1 },
                     expectedTransforms : [
-                        'var(--fade-in)',
+                        'var(--opacity-appear)',
                     ],
                 },
                 {
-                    title              : 'Register slide-up with priority 0',
-                    newTransform       : { transformVariable: 'var(--slide-up)', priority: 0 },
+                    title              : 'Register translate-up with priority 0',
+                    newTransform       : { transformVariable: 'var(--translate-up)', priority: 0 },
                     expectedTransforms : [
-                        'var(--slide-up)',
-                        'var(--fade-in)',
+                        'var(--translate-up)',
+                        'var(--opacity-appear)',
                     ],
                 },
                 {
-                    title              : 'Re-register slide-up with priority 2',
-                    newTransform       : { transformVariable: 'var(--slide-up)', priority: 2 },
+                    title              : 'Re-register translate-up with priority 2',
+                    newTransform       : { transformVariable: 'var(--translate-up)', priority: 2 },
                     expectedTransforms : [
-                        'var(--fade-in)',
-                        'var(--slide-up)',
+                        'var(--opacity-appear)',
+                        'var(--translate-up)',
                     ],
                 },
             ],
@@ -160,18 +160,18 @@ test.describe('transformRegistry', () => {
             title   : 'Same priority preserves insertion order',
             updates : [
                 {
-                    title              : 'Register fade-in with priority 1',
-                    newTransform       : { transformVariable: 'var(--fade-in)', priority: 1 },
+                    title              : 'Register opacity-appear with priority 1',
+                    newTransform       : { transformVariable: 'var(--opacity-appear)', priority: 1 },
                     expectedTransforms : [
-                        'var(--fade-in)',
+                        'var(--opacity-appear)',
                     ],
                 },
                 {
-                    title              : 'Register slide-up with priority 1',
-                    newTransform       : { transformVariable: 'var(--slide-up)', priority: 1 },
+                    title              : 'Register translate-up with priority 1',
+                    newTransform       : { transformVariable: 'var(--translate-up)', priority: 1 },
                     expectedTransforms : [
-                        'var(--fade-in)',
-                        'var(--slide-up)',
+                        'var(--opacity-appear)',
+                        'var(--translate-up)',
                     ],
                 },
             ],
