@@ -92,7 +92,6 @@ Default inheritance case example:
 @reusable-ui/outlineable        DEPRECATED
 @reusable-ui/mildable           DEPRECATED
 @reusable-ui/nudible            DEPRECATED
-@reusable-ui/colorable
 @reusable-ui/basic-variants     DEPRECATED
 
 // Reusable-ui features:
@@ -108,6 +107,7 @@ Default inheritance case example:
 @reusable-ui/box-shadow-feature
 @reusable-ui/background
 @reusable-ui/foreground
+@reusable-ui/colorable
 @reusable-ui/border
 @reusable-ui/ring
 @reusable-ui/animation
