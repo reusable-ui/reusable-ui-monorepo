@@ -95,6 +95,7 @@
     "features/filter-feature",
     "features/transform-feature",
     "features/box-shadow-feature",
+    "features/background",
     "__configs/*",
     "__utilities/*",
     "__features/*",

@@ -1,56 +1,41 @@
-// cssfn:
+// Cssfn:
 import {
-    // cssfn general types:
-    Factory,
+    // Lazies:
+    type Lazy,
     
     
     
-    // cssfn css specific types:
-    CssKnownProps,
-    CssRule,
+    // Cssfn css specific types:
+    type CssKnownProps,
+    type CssRule,
     
     
     
-    // writes css in javascript:
-    style,
-    vars,
-    solidBackg,
-    
-    
-    
-    // strongly typed of css variables:
-    CssVars,
+    // Strongly typed of css variables:
+    type CssVars,
     cssVars,
-    switchOf,
-}                           from '@cssfn/core'                  // writes css in javascript
+}                           from '@cssfn/core'                      // Writes css in javascript.
 
-// reusable-ui variants:
+// Reusable-ui features:
 import {
-    // hooks:
-    usesThemeable,
-}                           from '@reusable-ui/themeable'       // color options of UI
-import {
-    // hooks:
-    usesGradientable,
-}                           from '@reusable-ui/gradientable'    // gradient variant of UI
-import {
-    // hooks:
-    usesOutlineable,
-}                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
-import {
-    // hooks:
-    usesMildable,
-}                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
+    // Types:
+    type CssBackgroundFeatureOptions,
+    
+    
+    
+    // CSS Hooks:
+    usesBackgroundFeature,
+}                           from '@reusable-ui/background-feature'  // A styling utility for resolving the appropriate background color based on the currently active variants — including theme, emphasize, outline, mild, and bare.
 
 
 
-// hooks:
-
-// features:
-
-//#region background
+/**
+ * @deprecated - Use `BackgroundFeatureVars` instead.
+ */
 export interface BackgroundVars {
     /**
+     * @deprecated - No longer needed.
+     * 
      * none background.
      */
     backgNone       : any
@@ -58,18 +43,27 @@ export interface BackgroundVars {
     
     
     /**
+     * @deprecated - Use `switchOf(backgroundFeatureVars.backgRegularCond, options.backgroundColor)` instead.
+     * 
      * functional background color.
      */
     backgColorFn    : any
+    
     /**
      * final background color.
      */
     backgColor      : any
+    
     /**
+     * @deprecated - No longer needed.
+     * 
      * functional alternate background color.
      */
     altBackgColorFn : any
+    
     /**
+     * @deprecated - No longer needed.
+     * 
      * final alternate background color.
      */
     altBackgColor   : any
@@ -80,7 +74,10 @@ export interface BackgroundVars {
      * final background layers.
      */
     backg           : any
+    
     /**
+     * @deprecated - No longer needed.
+     * 
      * final alternate background layers.
      */
     altBackg        : any
@@ -89,116 +86,62 @@ const [backgroundVars] = cssVars<BackgroundVars>({ prefix: 'bg', minify: false }
 
 
 
-export interface BackgroundStuff { backgroundRule: Factory<CssRule>, backgroundVars: CssVars<BackgroundVars> }
-export interface BackgroundConfig {
+/**
+ * @deprecated - Use `CssBackgroundFeature` instead.
+ */
+export interface BackgroundStuff { backgroundRule: Lazy<CssRule>, backgroundVars: CssVars<BackgroundVars> }
+
+/**
+ * @deprecated - Use `CssBackgroundFeatureOptions` instead.
+ */
+export interface BackgroundConfig extends Pick<CssBackgroundFeatureOptions, 'backgroundEmphasize'> {
+    /**
+     * @deprecated - Use `backgroundColor` instead.
+     */
     backg           ?: CssKnownProps['backgroundColor']
+    
+    /**
+     * @deprecated - No longer needed.
+     */
     altBackg        ?: CssKnownProps['backgroundColor']
     
+    /**
+     * @deprecated - Use `background` instead.
+     */
     backgroundImage ?: CssKnownProps['backgroundImage'] & Array<any>
 }
+
 /**
+ * @deprecated - Use `usesBackgroundFeature` instead.
+ * 
  * Uses background layer(s).
  * @param config  A configuration of `backgroundRule`.
  * @returns A `BackgroundStuff` represents the background rules.
  */
 export const usesBackground = (config?: BackgroundConfig): BackgroundStuff => {
+    const {
+        backg,
+        
+        backgroundEmphasize,
+        
+        backgroundImage,
+    } = config ?? {};
+    
+    
+    
     // dependencies:
-    const {themeableVars   } = usesThemeable();
-    const {gradientableVars} = usesGradientable();
-    const {outlineableVars } = usesOutlineable();
-    const {mildableVars    } = usesMildable();
+    const {
+        backgroundFeatureRule,
+    } = usesBackgroundFeature({
+        backgroundColor     : backg,
+        backgroundEmphasize : backgroundEmphasize,
+        background          : backgroundImage,
+    });
     
     
     
     return {
-        backgroundRule: () => style({
-            // constants:
-            ...vars({
-                [backgroundVars.backgNone      ] : solidBackg('transparent'),
-            }),
-            
-            
-            
-            // color functions:
-            ...vars({
-                // adaptive color functions:
-                [backgroundVars.backgColorFn   ] : switchOf(
-                    themeableVars.backgCond,    // first  priority
-                    themeableVars.backg,        // second priority
-                    
-                    config?.backg,              // default => uses config's background
-                ),
-                [backgroundVars.altBackgColorFn] : switchOf(
-                    themeableVars.altBackgCond, // first  priority
-                    themeableVars.altBackg,     // second priority
-                    
-                    config?.altBackg,           // default => uses config's alternate background
-                ),
-                
-                
-                
-                // final color functions:
-                [backgroundVars.backgColor     ] : switchOf(
-                    outlineableVars.backgTg,        // toggle outlined (if `usesOutlineable()` applied)
-                    mildableVars.backgTg,           // toggle mild     (if `usesMildable()` applied)
-                    
-                    backgroundVars.backgColorFn,    // default => uses our `backgColorFn`
-                ),
-                [backgroundVars.altBackgColor  ] : switchOf(
-                    outlineableVars.altBackgTg,     // toggle outlined (if `usesOutlineable()` applied)
-                    mildableVars.altBackgTg,        // toggle mild     (if `usesMildable()` applied)
-                    
-                    backgroundVars.altBackgColorFn, // default => uses our `altBackgColorFn`
-                ),
-            }),
-            
-            
-            
-            // compositions:
-            ...vars({
-                [backgroundVars.backg          ] : [
-                    // layering: backg1 | backg2 | backg3 ...
-                    
-                    // top layer:
-                    switchOf(
-                        gradientableVars.backgGradTg, // toggle gradient (if `usesGradientable()` applied)
-                        
-                        backgroundVars.backgNone,     // default => no top layer
-                    ),
-                    
-                    // middle layer:
-                    ...(config?.backgroundImage ?? ([] as CssKnownProps['backgroundImage'] & Array<any>)),
-                    
-                    // bottom layer:
-                    switchOf(
-                        outlineableVars.noBackgTg, // toggle outlined transparent background (if `usesOutlineable()` applied)
-                        
-                        backgroundVars.backgColor, // default => uses our `backgColor`
-                    ),
-                ],
-                [backgroundVars.altBackg       ] : [
-                    // layering: backg1 | backg2 | backg3 ...
-                    
-                    // top layer:
-                    switchOf(
-                        gradientableVars.backgGradTg, // toggle gradient (if `usesGradientable()` applied)
-                        
-                        backgroundVars.backgNone,     // default => no top layer
-                    ),
-                    
-                    // middle layer:
-                    ...(config?.backgroundImage ?? ([] as CssKnownProps['backgroundImage'] & Array<any>)),
-                    
-                    // bottom layer:
-                    switchOf(
-                        outlineableVars.noBackgTg,    // toggle outlined transparent background (if `usesOutlineable()` applied)
-                        
-                        backgroundVars.altBackgColor, // default => uses our `altBackgColor`
-                    ),
-                ],
-            }),
-        }),
+        backgroundRule: backgroundFeatureRule,
         backgroundVars,
     };
 };
-//#endregion background
