@@ -1,63 +1,57 @@
-// cssfn:
+// Cssfn:
 import {
-    // cssfn general types:
-    Factory,
+    // Lazies:
+    type Lazy,
     
     
     
-    // cssfn css specific types:
-    CssKnownProps,
-    CssRule,
+    // Cssfn css specific types:
+    type CssKnownProps,
+    type CssRule,
     
     
     
-    // writes css in javascript:
-    style,
-    vars,
-    
-    
-    
-    // strongly typed of css variables:
-    CssVars,
+    // Strongly typed of css variables:
+    type CssVars,
     cssVars,
-    switchOf,
-}                           from '@cssfn/core'                  // writes css in javascript
+}                           from '@cssfn/core'                      // Writes css in javascript.
 
-// reusable-ui variants:
+// Reusable-ui features:
 import {
-    // hooks:
-    usesThemeable,
-}                           from '@reusable-ui/themeable'       // color options of UI
-import {
-    // hooks:
-    usesOutlineable,
-}                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
-import {
-    // hooks:
-    usesMildable,
-}                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
+    // CSS Hooks:
+    usesForegroundFeature,
+}                           from '@reusable-ui/foreground-feature'  // A styling utility for resolving the appropriate foreground color based on the currently active variants — including theme, outline, and mild.
 
 
 
-// hooks:
-
-// features:
-
-//#region foreground
+/**
+ * @deprecated - Use `ForegroundFeatureVars` instead.
+ */
 export interface ForegroundVars {
     /**
+     * @deprecated - Use `switchOf(foregroundFeatureVars.foregRegularCond, options.foregroundColor)` instead.
+     * 
      * functional foreground color.
      */
     foregFn    : any
+    
     /**
+     * @deprecated - Use `foregColor` instead.
+     * 
      * final foreground color.
      */
     foreg      : any
+    
     /**
+     * @deprecated - No longer needed.
+     * 
      * functional alternate foreground color.
      */
     altForegFn : any
+    
     /**
+     * @deprecated - No longer needed.
+     * 
      * final alternate foreground color.
      */
     altForeg   : any
@@ -66,60 +60,51 @@ const [foregroundVars] = cssVars<ForegroundVars>({ prefix: 'fg', minify: false }
 
 
 
-export interface ForegroundStuff { foregroundRule: Factory<CssRule>, foregroundVars: CssVars<ForegroundVars> }
+/**
+ * @deprecated - Use `CssForegroundFeature` instead.
+ */
+export interface ForegroundStuff { foregroundRule: Lazy<CssRule>, foregroundVars: CssVars<ForegroundVars> }
+
+/**
+ * @deprecated - Use `CssForegroundFeatureOptions` instead.
+ */
 export interface ForegroundConfig {
+    /**
+     * @deprecated - Use `foregroundColor` instead.
+     */
     foreg    ?: CssKnownProps['foreground']
+    
+    /**
+     * @deprecated - No longer needed.
+     */
     altForeg ?: CssKnownProps['foreground']
 }
+
 /**
+ * @deprecated - Use `usesForegroundFeature` instead.
+ * 
  * Uses foreground color (text color).
  * @param config  A configuration of `foregroundRule`.
  * @returns A `ForegroundStuff` represents the foreground rules.
  */
 export const usesForeground = (config?: ForegroundConfig): ForegroundStuff => {
+    const {
+        foreg,
+    } = config ?? {};
+    
+    
+    
     // dependencies:
-    const {themeableVars  } = usesThemeable();
-    const {outlineableVars} = usesOutlineable();
-    const {mildableVars   } = usesMildable();
+    const {
+        foregroundFeatureRule,
+    } = usesForegroundFeature({
+        foregroundColor : foreg,
+    });
     
     
     
     return {
-        foregroundRule: () => style({
-            // color functions:
-            ...vars({
-                // adaptive color functions:
-                [foregroundVars.foregFn   ] : switchOf(
-                    themeableVars.foregCond,    // first  priority
-                    themeableVars.foreg,        // second priority
-                    
-                    config?.foreg,              // default => uses config's foreground
-                ),
-                [foregroundVars.altForegFn] : switchOf(
-                    themeableVars.altForegCond, // first  priority
-                    themeableVars.altForeg,     // second priority
-                    
-                    config?.altForeg,           // default => uses config's alternate foreground
-                ),
-                
-                
-                
-                // final color functions:
-                [foregroundVars.foreg     ] : switchOf(
-                    outlineableVars.foregTg,        // toggle outlined (if `usesOutlineable()` applied)
-                    mildableVars.foregTg,           // toggle mild     (if `usesMildable()` applied)
-                    
-                    foregroundVars.foregFn,         // default => uses our `foregFn`
-                ),
-                [foregroundVars.altForeg  ] : switchOf(
-                    outlineableVars.altForegTg,     // toggle outlined (if `usesOutlineable()` applied)
-                    mildableVars.altForegTg,        // toggle mild     (if `usesMildable()` applied)
-                    
-                    foregroundVars.altForegFn,      // default => uses our `altForegFn`
-                ),
-            }),
-        }),
+        foregroundRule: foregroundFeatureRule,
         foregroundVars,
     };
 };
-//#endregion foreground
