@@ -98,6 +98,7 @@
     "features/background",
     "features/foreground",
     "features/colorable",
+    "features/border",
     "__configs/*",
     "__utilities/*",
     "__features/*",

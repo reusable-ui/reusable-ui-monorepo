@@ -1,8 +1,9 @@
 {
   "name": "@reusable-ui/border",
-  "version": "6.5.0",
-  "description": "Border (stroke) stuff of UI.",
+  "version": "7.0.0",
+  "description": "[Deprecated] Border (stroke) stuff of UI.",
   "keywords": [
+    "deprecated",
     "border",
     "stroke",
     "corners",
@@ -12,19 +13,23 @@
     "layouts"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "features/border"
   },
-  "main": "dist/border.js",
-  "types": "dist/border.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/border.js",
-    "./index": "./dist/border.js",
-    "./index.js": "./dist/border.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -38,10 +43,9 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.2.0"
+    "@cssfn/core": "^4.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/outlineable": "^6.5.0",
-    "@reusable-ui/themeable": "^6.5.0"
+    "@reusable-ui/border-feature": "^7.0.0"
   }
 }

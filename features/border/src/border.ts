@@ -1,45 +1,36 @@
-// cssfn:
+// Cssfn:
 import {
-    // cssfn general types:
-    Factory,
+    // Lazies:
+    type Lazy,
     
     
     
-    // cssfn css specific types:
-    CssKnownProps,
-    CssRule,
+    // Cssfn css specific types:
+    type CssRule,
     
     
     
-    // writes css in javascript:
-    style,
-    vars,
-    
-    
-    
-    // strongly typed of css variables:
-    CssVars,
+    // Strongly typed of css variables:
+    type CssVars,
     cssVars,
-    switchOf,
-}                           from '@cssfn/core'                  // writes css in javascript
+}                           from '@cssfn/core'                      // Writes css in javascript.
 
-// reusable-ui variants:
+// Reusable-ui features:
 import {
-    // hooks:
-    usesThemeable,
-}                           from '@reusable-ui/themeable'       // color options of UI
-import {
-    // hooks:
-    usesOutlineable,
-}                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
+    // Types:
+    type CssBorderFeatureOptions,
+    
+    
+    
+    // CSS Hooks:
+    usesBorderFeature,
+}                           from '@reusable-ui/border-feature'      // A styling utility for resolving the appropriate border color, geometry, and radius based on the currently active variants — including theme, outline, mild, and bare.
 
 
 
-// hooks:
-
-// features:
-
-//#region border
+/**
+ * @deprecated - Use `BorderFeatureVars` instead.
+ */
 export interface BorderVars {
     /**
      * final border style.
@@ -47,14 +38,19 @@ export interface BorderVars {
     borderStyle            : any
     
     /**
+     * @deprecated - Use `borderInlineStartWidth`, `borderInlineEndWidth`, `borderBlockStartWidth`, `borderBlockEndWidth`, `borderInlineBaseWidth`, or `borderBlockBaseWidth` instead.
+     * 
      * final border width.
      */
     borderWidth            : any
     
     /**
+     * @deprecated - Use `switchOf(borderFeatureVars.borderRegularCond, options.borderColor)` instead.
+     * 
      * functional border color.
      */
     borderColorFn          : any
+    
     /**
      * final border color.
      */
@@ -63,6 +59,7 @@ export interface BorderVars {
     
     
     /**
+     * @deprecated - Use `borderStyle`, `borderInlineStartWidth`, `borderInlineEndWidth`, `borderBlockStartWidth`, `borderBlockEndWidth`, and `borderColor` instead.
      * final border compositions (style, width, color).
      */
     border                 : any
@@ -89,7 +86,8 @@ export interface BorderVars {
     
     
     /**
-     * @deprecated Please use `borderStartStartRadius`, `borderStartEndRadius`, `borderEndStartRadius` & `borderEndEndRadius`. The *logical* borderRadius is not solved yet.  
+     * @deprecated Please use `borderStartStartRadius`, `borderStartEndRadius`, `borderEndStartRadius`, and `borderEndEndRadius`.
+     * 
      * final border radiuses (all 4 corners).
      */
     borderRadius           : any
@@ -98,76 +96,53 @@ const [borderVars] = cssVars<BorderVars>({ prefix: 'bd', minify: false }); // sh
 
 
 
-export interface BorderStuff { borderRule: Factory<CssRule>, borderVars: CssVars<BorderVars> }
-export interface BorderConfig {
-    // generals:
-    borderStyle            ?: CssKnownProps['borderStyle' ]
-    borderWidth            ?: CssKnownProps['borderWidth' ]
-    borderColor            ?: CssKnownProps['borderColor' ]
-    borderRadius           ?: CssKnownProps['borderRadius']
-}
 /**
+ * @deprecated - Use `CssBorderFeature` instead.
+ */
+export interface BorderStuff { borderRule: Lazy<CssRule>, borderVars: CssVars<BorderVars> }
+
+/**
+ * @deprecated - Use `CssBorderFeatureOptions` instead.
+ */
+export interface BorderConfig extends Pick<CssBorderFeatureOptions,
+    | 'borderStyle'
+    | 'borderWidth'
+    | 'borderColor'
+    | 'borderRadius'
+> {
+}
+
+/**
+ * @deprecated - Use `usesBorderFeature` instead.
+ * 
  * Uses border (strokes, colors, radiuses).
  * @param config  A configuration of `borderRule`.
  * @returns A `BorderStuff` represents the border rules.
  */
 export const usesBorder = (config?: BorderConfig): BorderStuff => {
+    const {
+        borderStyle,
+        borderWidth,
+        borderColor,
+        borderRadius,
+    } = config ?? {};
+    
+    
+    
     // dependencies:
-    const {themeableVars  } = usesThemeable();
-    const {outlineableVars} = usesOutlineable();
+    const {
+        borderFeatureRule,
+    } = usesBorderFeature({
+        borderStyle,
+        borderWidth,
+        borderColor,
+        borderRadius,
+    });
     
     
     
     return {
-        borderRule: () => style({
-            // color functions:
-            ...vars({
-                // adaptive color functions:
-                [borderVars.borderColorFn] : switchOf(
-                    themeableVars.borderCond, // first  priority
-                    themeableVars.border,     // second priority
-                    
-                    config?.borderColor,      // default => uses config's border color
-                ),
-                
-                
-                
-                // final color functions:
-                [borderVars.borderColor  ] : switchOf(
-                    outlineableVars.foregTg,     // toggle outlined (if `usesOutlineable()` applied)
-                    
-                    borderVars.borderColorFn,    // default => uses our `borderColorFn`
-                ),
-            }),
-            
-            
-            
-            // compositions:
-            ...vars({
-                [borderVars.borderStyle] : config?.borderStyle, // default => uses config's border style
-                [borderVars.borderWidth] : config?.borderWidth, // default => uses config's border width
-                [borderVars.border     ] : [[
-                    borderVars.borderStyle,
-                    borderVars.borderWidth,
-                    borderVars.borderColor,
-                ]],
-                
-                
-                
-                [borderVars.borderStartStartRadius] : config?.borderRadius,
-                [borderVars.borderStartEndRadius  ] : config?.borderRadius,
-                [borderVars.borderEndStartRadius  ] : config?.borderRadius,
-                [borderVars.borderEndEndRadius    ] : config?.borderRadius,
-                // TODO: fix map to logical, not physical:
-                [borderVars.borderRadius] : [[
-                    borderVars.borderStartStartRadius, // top-left
-                    borderVars.borderStartEndRadius,   // top-right
-                    borderVars.borderEndEndRadius,     // bottom-right
-                    borderVars.borderEndStartRadius,   // bottom-left
-                ]],
-            }),
-        }),
+        borderRule: borderFeatureRule,
         borderVars,
     };
 };
-//#endregion border

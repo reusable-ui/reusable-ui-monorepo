@@ -108,7 +108,7 @@ Default inheritance case example:
 @reusable-ui/background         DEPRECATED
 @reusable-ui/foreground         DEPRECATED
 @reusable-ui/colorable          DEPRECATED
-@reusable-ui/border
+@reusable-ui/border             DEPRECATED
 @reusable-ui/ring
 @reusable-ui/animation
 @reusable-ui/padding
