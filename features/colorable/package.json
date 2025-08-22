@@ -1,8 +1,9 @@
 {
   "name": "@reusable-ui/colorable",
-  "version": "6.5.0",
-  "description": "Colorize the UI based on its theme or the background theme.",
+  "version": "7.0.0",
+  "description": "[Deprecated] Colorize the UI based on its theme or the background theme.",
   "keywords": [
+    "deprecated",
     "colorable",
     "colorize",
     "colors",
@@ -12,19 +13,23 @@
     "layouts"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "features/colorable"
   },
-  "main": "dist/colorable.js",
-  "types": "dist/colorable.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/colorable.js",
-    "./index": "./dist/colorable.js",
-    "./index.js": "./dist/colorable.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -38,12 +43,9 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.2.0"
+    "@cssfn/core": "^4.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/background": "^6.5.0",
-    "@reusable-ui/mildable": "^6.5.0",
-    "@reusable-ui/outlineable": "^6.5.0",
-    "@reusable-ui/themeable": "^6.5.0"
+    "@reusable-ui/decoration-feature": "^7.0.0"
   }
 }

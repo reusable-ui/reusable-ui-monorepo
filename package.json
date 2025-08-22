@@ -97,6 +97,7 @@
     "features/box-shadow-feature",
     "features/background",
     "features/foreground",
+    "features/colorable",
     "__configs/*",
     "__utilities/*",
     "__features/*",
