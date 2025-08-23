@@ -1,40 +1,47 @@
-// cssfn:
+// Cssfn:
 import {
-    // cssfn general types:
-    Factory,
+    // Lazies:
+    type Lazy,
     
     
     
-    // cssfn css specific types:
-    CssKnownProps,
-    CssRule,
+    // Cssfn css specific types:
+    type CssRule,
     
     
     
-    // writes css in javascript:
-    style,
-    vars,
-    
-    
-    
-    // strongly typed of css variables:
-    CssVars,
+    // Strongly typed of css variables:
+    type CssVars,
     cssVars,
-}                           from '@cssfn/core'                  // writes css in javascript
+}                           from '@cssfn/core'                      // Writes css in javascript.
+
+// Reusable-ui features:
+import {
+    // Types:
+    type CssPaddingFeatureOptions,
+    
+    
+    
+    // CSS Hooks:
+    usesPaddingFeature,
+}                           from '@reusable-ui/padding-feature'     // A styling utility for resolving the appropriate padding values based on active bare mode and framework-level overrides.
 
 
 
-// hooks:
-
-// features:
-
-//#region padding
+/**
+ * @deprecated - Use `PaddingFeatureVars` instead.
+ */
 export interface PaddingVars {
     /**
+     * @deprecated - Use `paddingInlineStart`, `paddingInlineEnd`, or `paddingInlineBase` instead.
+     * 
      * left & right paddings.
      */
     paddingInline : any
+    
     /**
+     * @deprecated - Use `paddingBlockStart`, `paddingBlockEnd`, or `paddingBlockBase` instead.
+     * 
      * top & bottom paddings.
      */
     paddingBlock  : any
@@ -42,7 +49,8 @@ export interface PaddingVars {
     
     
     /**
-     * @deprecated Please use `paddingInline` & `paddingBlock`. The *logical* padding is not solved yet.  
+     * @deprecated - Use `paddingInlineStart`, `paddingInlineEnd`, `paddingInlineBase`, `paddingBlockStart`, `paddingBlockEnd`, or `paddingBlockBase` instead.
+     * 
      * final padding (all 4 sides).
      */
     padding       : any
@@ -51,31 +59,43 @@ const [paddingVars] = cssVars<PaddingVars>({ prefix: 'pd', minify: false }); // 
 
 
 
-export interface PaddingStuff { paddingRule: Factory<CssRule>, paddingVars: CssVars<PaddingVars> }
-export interface PaddingConfig {
-    paddingInline ?: CssKnownProps['paddingInline']
-    paddingBlock  ?: CssKnownProps['paddingBlock' ]
-}
 /**
+ * @deprecated - Use `CssPaddingFeature` instead.
+ */
+export interface PaddingStuff { paddingRule: Lazy<CssRule>, paddingVars: CssVars<PaddingVars> }
+
+/**
+ * @deprecated - Use `CssPaddingFeatureOptions` instead.
+ */
+export interface PaddingConfig extends Pick<CssPaddingFeatureOptions, 'paddingInline' | 'paddingBlock'> { }
+
+/**
+ * @deprecated - Use `usesPaddingFeature` instead.
+ * 
  * Uses padding (inner spacing).
  * @param config  A configuration of `paddingRule`.
  * @returns A `PaddingStuff` represents the padding rules.
  */
 export const usesPadding = (config?: PaddingConfig): PaddingStuff => {
+    const {
+        paddingInline,
+        paddingBlock,
+    } = config ?? {};
+    
+    
+    
+    // dependencies:
+    const {
+        paddingFeatureRule,
+    } = usesPaddingFeature({
+        paddingInline,
+        paddingBlock,
+    });
+    
+    
+    
     return {
-        paddingRule: () => style({
-            // compositions:
-            ...vars({
-                [paddingVars.paddingInline] : config?.paddingInline,
-                [paddingVars.paddingBlock ] : config?.paddingBlock,
-                // TODO: fix map to logical, not physical:
-                [paddingVars.padding] : [[
-                    paddingVars.paddingBlock,  // top-bottom
-                    paddingVars.paddingInline, // left-right
-                ]],
-            }),
-        }),
+        paddingRule: paddingFeatureRule,
         paddingVars,
     };
 };
-//#endregion padding

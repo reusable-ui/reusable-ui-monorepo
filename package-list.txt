@@ -110,8 +110,8 @@ Default inheritance case example:
 @reusable-ui/colorable          DEPRECATED
 @reusable-ui/border             DEPRECATED
 @reusable-ui/ring               DEPRECATED
+@reusable-ui/padding            DEPRECATED
 @reusable-ui/animation          DEPRECATED
-@reusable-ui/padding
 
 // Reusable-ui capabilities:
 @reusable-ui/floatable
