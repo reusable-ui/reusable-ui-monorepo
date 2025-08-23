@@ -1,4 +1,4 @@
-# `@reusable-ui/border-feature` (Deprecated)
+# `@reusable-ui/border` (Deprecated)
 
 > ⚠️ **Deprecated**: This package has been superseded by [`@reusable-ui/border-feature`](https://www.npmjs.com/package/@reusable-ui/border-feature).  
 > Please migrate to the new modular API for improved override safety, SSR guarantees, and semantic clarity.
