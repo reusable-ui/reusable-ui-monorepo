@@ -99,6 +99,7 @@
     "features/foreground",
     "features/colorable",
     "features/border",
+    "features/ring",
     "__configs/*",
     "__utilities/*",
     "__features/*",

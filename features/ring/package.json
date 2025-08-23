@@ -1,8 +1,9 @@
 {
   "name": "@reusable-ui/ring",
-  "version": "6.5.0",
-  "description": "Ring (focus indicator) color of UI.",
+  "version": "7.0.0",
+  "description": "[Deprecated] Ring (focus indicator) color of UI.",
   "keywords": [
+    "deprecated",
     "ring",
     "focus",
     "colors",
@@ -11,19 +12,23 @@
     "layouts"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "features/ring"
   },
-  "main": "dist/ring.js",
-  "types": "dist/ring.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/ring.js",
-    "./index": "./dist/ring.js",
-    "./index.js": "./dist/ring.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -37,9 +42,9 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.2.0"
+    "@cssfn/core": "^4.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/themeable": "^6.5.0"
+    "@reusable-ui/ring-feature": "^7.0.0"
   }
 }

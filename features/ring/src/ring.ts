@@ -1,93 +1,91 @@
-// cssfn:
+// Cssfn:
 import {
-    // cssfn general types:
-    Factory,
+    // Lazies:
+    type Lazy,
     
     
     
-    // cssfn css specific types:
-    CssKnownProps,
-    CssRule,
+    // Cssfn css specific types:
+    type CssKnownProps,
+    type CssRule,
     
     
     
-    // writes css in javascript:
-    style,
-    vars,
-    
-    
-    
-    // strongly typed of css variables:
-    CssVars,
+    // Strongly typed of css variables:
+    type CssVars,
     cssVars,
-    switchOf,
-}                           from '@cssfn/core'                  // writes css in javascript
+}                           from '@cssfn/core'                      // Writes css in javascript.
 
-// reusable-ui variants:
+// Reusable-ui features:
 import {
-    // hooks:
-    usesThemeable,
-}                           from '@reusable-ui/themeable'       // color options of UI
+    // CSS Hooks:
+    usesRingFeature,
+}                           from '@reusable-ui/ring-feature'        // A styling utility for resolving the appropriate ring color based on the currently active theme variant.
 
 
 
-// hooks:
-
-// features:
-
-//#region ring
+/**
+ * @deprecated - Use `RingFeatureVars` instead.
+ */
 export interface RingVars {
     /**
+     * @deprecated - Use `switchOf(ringFeatureVars.ringRegularCond, options.ringColor)` instead.
+     * 
      * functional ring color.
      */
     ringFn : any
+    
     /**
+     * @deprecated - Use `ringColor` instead.
+     * 
      * final ring color.
      */
     ring   : any
 }
-const [ringVars] = cssVars<RingVars>({ prefix: 'ri', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
+const [ringVars] = cssVars<RingVars>({ prefix: 'rg', minify: false }); // shared variables: ensures the server-side & client-side have the same generated css variable names
 
 
 
-export interface RingStuff { ringRule: Factory<CssRule>, ringVars: CssVars<RingVars> }
+/**
+ * @deprecated - Use `CssRingFeature` instead.
+ */
+export interface RingStuff { ringRule: Lazy<CssRule>, ringVars: CssVars<RingVars> }
+
+/**
+ * @deprecated - Use `CssRingFeatureOptions` instead.
+ */
 export interface RingConfig {
+    /**
+     * @deprecated - Use `ringColor` instead.
+     */
     ring ?: CssKnownProps['color']
 }
+
 /**
+ * @deprecated - Use `usesRingFeature` instead.
+ * 
  * Uses ring (focus indicator) color.
  * @param config  A configuration of `ringRule`.
  * @returns A `RingStuff` represents the ring rules.
  */
 export const usesRing = (config?: RingConfig): RingStuff => {
+    const {
+        ring,
+    } = config ?? {};
+    
+    
+    
     // dependencies:
-    const {themeableVars} = usesThemeable();
+    const {
+        ringFeatureRule,
+    } = usesRingFeature({
+        ringColor : ring,
+    });
     
     
     
     return {
-        ringRule: () => style({
-            // color functions:
-            ...vars({
-                // adaptive color functions:
-                [ringVars.ringFn] : switchOf(
-                    themeableVars.ringCond, // first  priority
-                    themeableVars.ring,     // second priority
-                    
-                    config?.ring,           // default => uses config's ring
-                ),
-                
-                
-                
-                // final color functions:
-                [ringVars.ring  ] : switchOf(
-                    // no toggle outlined nor toggle mild yet (might be added in the future)
-                    
-                    ringVars.ringFn,           // default => uses our `ringFn`
-                ),
-            }),
-        }),
+        ringRule: ringFeatureRule,
         ringVars,
     };
 };
-//#endregion ring
