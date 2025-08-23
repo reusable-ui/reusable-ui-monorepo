@@ -1,8 +1,9 @@
 {
   "name": "@reusable-ui/animation",
-  "version": "6.5.0",
-  "description": "Animation stuff of UI.",
+  "version": "7.0.0",
+  "description": "[Deprecated] Animation stuff of UI.",
   "keywords": [
+    "deprecated",
     "animation",
     "transition",
     "features",
@@ -10,19 +11,23 @@
     "layouts"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "features/animation"
   },
-  "main": "dist/animation.js",
-  "types": "dist/animation.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/animation.js",
-    "./index": "./dist/animation.js",
-    "./index.js": "./dist/animation.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -36,9 +41,12 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.2.0"
+    "@cssfn/core": "^4.0.0"
   },
   "peerDependencies": {
-    "rxjs": "^7.8.0"
+    "@reusable-ui/animation-feature": "^7.0.0",
+    "@reusable-ui/box-shadow-feature": "^7.0.0",
+    "@reusable-ui/filter-feature": "^7.0.0",
+    "@reusable-ui/transform-feature": "^7.0.0"
   }
 }
