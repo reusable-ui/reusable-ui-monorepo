@@ -113,13 +113,6 @@ Default inheritance case example:
 @reusable-ui/padding            DEPRECATED
 @reusable-ui/animation          DEPRECATED
 
-// Reusable-ui capabilities:
-@reusable-ui/floatable
-@reusable-ui/global-stackable
-@reusable-ui/auto-focusable
-@reusable-ui/groupable
-@reusable-ui/pointer-capturable
-
 // Reusable-ui states:
 @reusable-ui/excitable
 @reusable-ui/collapsible
@@ -133,6 +126,13 @@ Default inheritance case example:
 @reusable-ui/invalidable
 @reusable-ui/checkable
 @reusable-ui/validation-icon
+
+// Reusable-ui capabilities:
+@reusable-ui/floatable
+@reusable-ui/global-stackable
+@reusable-ui/auto-focusable
+@reusable-ui/groupable
+@reusable-ui/pointer-capturable
 
 @reusable-ui/core
 
