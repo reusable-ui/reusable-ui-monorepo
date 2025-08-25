@@ -74,10 +74,10 @@ const Button = (props: ButtonProps) => {
         role             = fallbackButtonRole,
         tag              = fallbackButtonTag,
         
-        enabled,
+        disabled,
         readOnly,
         active,
-        cascadeEnabled,
+        cascadeDisabled,
         cascadeReadOnly,
         cascadeActive,
         
@@ -94,15 +94,15 @@ const Button = (props: ButtonProps) => {
     });
     
     const {
-        enabled  : isEnabled,
+        disabled : isDisabled,
         readOnly : isReadOnly,
         active   : isActive,
     } = useResolvedAccessibilityState({
-        enabled,
+        disabled,
         readOnly,
         active,
         
-        cascadeEnabled,
+        cascadeDisabled,
         cascadeReadOnly,
         cascadeActive,
     });
@@ -118,7 +118,7 @@ const Button = (props: ButtonProps) => {
             
             data-testid='interactive-element'
             
-            data-disabled = {!isEnabled || undefined}
+            data-disabled = {isDisabled || undefined}
             data-readonly = {isReadOnly || undefined}
             data-active   = {isActive   || undefined}
             

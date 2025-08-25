@@ -19,7 +19,7 @@ import {
 
 // Defaults:
 import {
-    DEFAULT_ENABLED,
+    DEFAULT_DISABLED,
     DEFAULT_READ_ONLY,
     DEFAULT_ACTIVE,
 }                           from './defaults.js'
@@ -37,26 +37,26 @@ import {
 /**
  * Props for `<AccessibilityProvider>`.
  * 
- * Accepts optional `enabled`, `readOnly`, and `active` states,
+ * Accepts optional `disabled`, `readOnly`, and `active` states,
  * along with children to receive the propagated accessibility state.
  */
 export interface AccessibilityProviderProps
     extends
         // Bases:
-        PropsWithChildren<Pick<AccessibilityProps, 'enabled' | 'readOnly' | 'active'>>
+        PropsWithChildren<Pick<AccessibilityProps, 'disabled' | 'readOnly' | 'active'>>
 {
 }
 
 /**
  * Provides accessibility context to descendant components,
- * enabling cascading resolution of `enabled`, `readOnly`, and `active` states.
+ * enables cascading resolution of `disabled`, `readOnly`, and `active` states.
  * 
  * Should wrap components that rely on `useResolvedAccessibilityState()`.
  * 
  * @example
  * ```ts
- * // The child will inherit `enabled = false`:
- * <AccessibilityProvider enabled={false}>
+ * // The child will inherit `disabled = true`:
+ * <AccessibilityProvider disabled={true}>
  *     <ToggleButton />
  * </AccessibilityProvider>
  * ```
@@ -64,7 +64,7 @@ export interface AccessibilityProviderProps
 const AccessibilityProvider = (props: AccessibilityProviderProps): ReactElement | null => {
     // Extract props and assign defaults:
     const {
-        enabled  = DEFAULT_ENABLED,
+        disabled = DEFAULT_DISABLED,
         readOnly = DEFAULT_READ_ONLY,
         active   = DEFAULT_ACTIVE,
         children,
@@ -74,11 +74,11 @@ const AccessibilityProvider = (props: AccessibilityProviderProps): ReactElement 
     
     // Memoize context value to prevent unnecessary re-renders:
     const accessibilityContextValue = useMemo(() => ({
-        enabled,
+        disabled,
         readOnly,
         active,
     } satisfies AccessibilityContextValue), [
-        enabled,
+        disabled,
         readOnly,
         active,
     ]);

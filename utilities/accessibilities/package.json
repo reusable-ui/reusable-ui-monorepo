@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/accessibilities",
   "version": "7.0.0",
-  "description": "Composable React utilities for resolving enabled, readOnly, and active state with optional cascading context.",
+  "description": "Composable React utilities for resolving disabled, readOnly, and active state with optional cascading context.",
   "keywords": [
     "accessibility",
     "react",

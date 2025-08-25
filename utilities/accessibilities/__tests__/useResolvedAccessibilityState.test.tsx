@@ -23,11 +23,11 @@ interface ControlProps extends AccessibilityProps {
 }
 const Control = (props: ControlProps) => {
     const {
-        enabled,
+        disabled,
         readOnly,
         active,
         
-        cascadeEnabled,
+        cascadeDisabled,
         cascadeReadOnly,
         cascadeActive,
         
@@ -39,16 +39,16 @@ const Control = (props: ControlProps) => {
     } = props;
     
     const resolvedAccessibilityState = useResolvedAccessibilityState({
-        enabled,
+        disabled,
         readOnly,
         active,
         
-        cascadeEnabled,
+        cascadeDisabled,
         cascadeReadOnly,
         cascadeActive,
     });
     const {
-        enabled  : resolvedEnabled,
+        disabled : resolvedDisabled,
         readOnly : resolvedReadOnly,
         active   : resolvedActive,
     } = resolvedAccessibilityState;
@@ -60,12 +60,12 @@ const Control = (props: ControlProps) => {
         <div
             {...restProps}
             
-            data-disabled={!resolvedEnabled || undefined}
-            data-readonly={resolvedReadOnly || undefined}
-            data-active={resolvedActive || undefined}
+            data-disabled = {resolvedDisabled || undefined}
+            data-readonly = {resolvedReadOnly || undefined}
+            data-active   = {resolvedActive   || undefined}
         >
             <AccessibilityProvider
-                enabled={resolvedEnabled}
+                disabled={resolvedDisabled}
                 readOnly={resolvedReadOnly}
                 active={resolvedActive}
             >
@@ -80,7 +80,7 @@ const Control = (props: ControlProps) => {
 describe('Accessibility resolution across nesting levels', () => {
     const createResultRef = () => renderHook(() => useRef<ResolvedAccessibilityState | null>(null)).result.current;
     
-    test("'single level: no accessibility props'", () => {
+    test('single level: no accessibility props', () => {
         const resultRef = createResultRef();
         render(<Control
             data-testid='control'
@@ -91,25 +91,25 @@ describe('Accessibility resolution across nesting levels', () => {
         expect(element).not.toHaveAttribute('data-readonly');
         expect(element).not.toHaveAttribute('data-active');
         expect(resultRef.current).toMatchObject({
-            enabled  : true,
+            disabled : false,
             readOnly : false,
             active   : false,
         } satisfies ResolvedAccessibilityState);
     });
     
-    test('dual nested: outer disabled=true, inner enabled=true + cascadeEnabled=true → resolved enabled=false', () => {
+    test('dual nested: outer disabled=true, inner disabled=false + cascadeDisabled=true → resolved disabled=true', () => {
         const outerRef = createResultRef();
         const innerRef = createResultRef();
         render(
-            <Control data-testid='outer' enabled={false} resultRef={outerRef}>
-                <Control data-testid='inner' enabled={true} cascadeEnabled={true} resultRef={innerRef}>
+            <Control data-testid='outer' disabled={true} resultRef={outerRef}>
+                <Control data-testid='inner' disabled={false} cascadeDisabled={true} resultRef={innerRef}>
                     inner
                 </Control>
             </Control>
         );
         expect(screen.getByTestId('outer')).toHaveAttribute('data-disabled', 'true');
         expect(screen.getByTestId('inner')).toHaveAttribute('data-disabled', 'true');
-        expect(innerRef.current).toMatchObject({ enabled: false });
+        expect(innerRef.current).toMatchObject({ disabled: true });
     });
     
     test('dual nested: inner disables cascading → override parent readonly', () => {
@@ -132,15 +132,15 @@ describe('Accessibility resolution across nesting levels', () => {
         const midRef = createResultRef();
         const leafRef = createResultRef();
         render(
-            <Control data-testid='root' enabled={false} resultRef={rootRef}>
+            <Control data-testid='root' disabled={true} resultRef={rootRef}>
                 <Control data-testid='middle' resultRef={midRef}>
                     <Control data-testid='leaf' resultRef={leafRef}>leaf</Control>
                 </Control>
             </Control>
         );
-        expect(rootRef.current).toMatchObject({ enabled: false });
-        expect(midRef.current).toMatchObject({ enabled: false });
-        expect(leafRef.current).toMatchObject({ enabled: false });
+        expect(rootRef.current).toMatchObject({ disabled: true });
+        expect(midRef.current).toMatchObject({ disabled: true });
+        expect(leafRef.current).toMatchObject({ disabled: true });
         expect(screen.getByTestId('root')).toHaveAttribute('data-disabled', 'true');
         expect(screen.getByTestId('middle')).toHaveAttribute('data-disabled', 'true');
         expect(screen.getByTestId('leaf')).toHaveAttribute('data-disabled', 'true');
@@ -165,20 +165,20 @@ describe('Accessibility resolution across nesting levels', () => {
         expect(screen.getByTestId('leaf')).toHaveAttribute('data-readonly', 'true');
     });
     
-    test('triple nested: middle disables enabled propagation → leaf remains enabled', () => {
+    test('triple nested: middle disables disabled propagation → leaf remains enabled', () => {
         const rootRef = createResultRef();
         const midRef = createResultRef();
         const leafRef = createResultRef();
         render(
-            <Control data-testid='root' enabled={false} resultRef={rootRef}>
-                <Control data-testid='middle' cascadeEnabled={false} resultRef={midRef}>
+            <Control data-testid='root' disabled={true} resultRef={rootRef}>
+                <Control data-testid='middle' cascadeDisabled={false} resultRef={midRef}>
                     <Control data-testid='leaf' resultRef={leafRef}>leaf</Control>
                 </Control>
             </Control>
         );
-        expect(rootRef.current).toMatchObject({ enabled: false });
-        expect(midRef.current).toMatchObject({ enabled: true });
-        expect(leafRef.current).toMatchObject({ enabled: true });
+        expect(rootRef.current).toMatchObject({ disabled: true });
+        expect(midRef.current).toMatchObject({ disabled: false });
+        expect(leafRef.current).toMatchObject({ disabled: false });
         expect(screen.getByTestId('root')).toHaveAttribute('data-disabled', 'true');
         expect(screen.getByTestId('middle')).not.toHaveAttribute('data-disabled');
         expect(screen.getByTestId('leaf')).not.toHaveAttribute('data-disabled');
@@ -224,20 +224,20 @@ describe('Accessibility resolution across nesting levels', () => {
     
     test('single level: disabled locally with cascade off → remains disabled', () => {
         const ref = renderHook(() => useRef(null)).result.current;
-        render(<Control data-testid="control" enabled={false} cascadeEnabled={false} resultRef={ref}>x</Control>);
+        render(<Control data-testid="control" disabled={true} cascadeDisabled={false} resultRef={ref}>x</Control>);
         expect(screen.getByTestId('control')).toHaveAttribute('data-disabled', 'true');
-        expect(ref.current).toMatchObject({ enabled: false });
+        expect(ref.current).toMatchObject({ disabled: true });
     });
     
     test('dual nested: parent disabled → child inherits via cascade', () => {
         const ref = renderHook(() => useRef(null)).result.current;
         render(
-            <Control enabled={false} data-testid="outer">
+            <Control disabled={true} data-testid="outer">
                 <Control data-testid="inner" resultRef={ref}>x</Control>
             </Control>
         );
         expect(screen.getByTestId('inner')).toHaveAttribute('data-disabled', 'true');
-        expect(ref.current).toMatchObject({ enabled: false });
+        expect(ref.current).toMatchObject({ disabled: true });
     });
     
     test('dual nested: parent readOnly → child inherits via cascade', () => {
@@ -310,17 +310,17 @@ describe('Accessibility resolution across nesting levels', () => {
         expect(ref.current).toMatchObject({ active: true });
     });
     
-    test('middle disables cascadeEnabled → leaf breaks from ancestor disabled', () => {
+    test('middle disables cascadeDisabled → leaf breaks from ancestor disabled', () => {
         const ref = renderHook(() => useRef<ResolvedAccessibilityState | null>(null)).result.current;
         render(
-            <Control enabled={false}>
-                <Control cascadeEnabled={false}>
+            <Control disabled={true}>
+                <Control cascadeDisabled={false}>
                     <Control data-testid="leaf" resultRef={ref}>leaf</Control>
                 </Control>
             </Control>
         );
         expect(screen.getByTestId('leaf')).not.toHaveAttribute('data-disabled');
-        expect(ref.current).toMatchObject({ enabled: true });
+        expect(ref.current).toMatchObject({ disabled: false });
     });
     
     test('readOnly cascade confirmed even if both parent and self are readOnly=true', () => {
@@ -339,14 +339,14 @@ describe('Accessibility resolution across nesting levels', () => {
     test('child with no props inside disabled+readOnly parent → inherits all', () => {
         const ref = renderHook(() => useRef<ResolvedAccessibilityState | null>(null)).result.current;
         render(
-            <Control enabled={false} readOnly={true}>
+            <Control disabled={true} readOnly={true}>
                 <Control data-testid="child" resultRef={ref}>child</Control>
             </Control>
         );
         const el = screen.getByTestId('child');
         expect(el).toHaveAttribute('data-disabled', 'true');
         expect(el).toHaveAttribute('data-readonly', 'true');
-        expect(ref.current).toMatchObject({ enabled: false, readOnly: true });
+        expect(ref.current).toMatchObject({ disabled: true, readOnly: true });
     });
     
     test('no active provided and cascade disabled → remains inactive', () => {
@@ -359,25 +359,25 @@ describe('Accessibility resolution across nesting levels', () => {
     test('both ancestor and child disabled, cascade=true → resolved disabled', () => {
         const ref = renderHook(() => useRef(null)).result.current;
         render(
-            <Control enabled={false}>
-                <Control enabled={false} data-testid="child" resultRef={ref}>x</Control>
+            <Control disabled={true}>
+                <Control disabled={true} data-testid="child" resultRef={ref}>x</Control>
             </Control>
         );
         expect(screen.getByTestId('child')).toHaveAttribute('data-disabled', 'true');
-        expect(ref.current).toMatchObject({ enabled: false });
+        expect(ref.current).toMatchObject({ disabled: true });
     });
     
     test('deep tree: cascade disabled, leaf uses local props only', () => {
         const ref = renderHook(() => useRef(null)).result.current;
         render(
-            <Control enabled={false} readOnly={true} active={true}>
-                <Control enabled={false} readOnly={true} active={true}>
+            <Control disabled={true} readOnly={true} active={true}>
+                <Control disabled={true} readOnly={true} active={true}>
                     <Control
-                        enabled={true}
+                        disabled={false}
                         readOnly={false}
                         active={false}
                         
-                        cascadeEnabled={false}
+                        cascadeDisabled={false}
                         cascadeReadOnly={false}
                         cascadeActive={false}
                         
@@ -394,7 +394,7 @@ describe('Accessibility resolution across nesting levels', () => {
         expect(el).not.toHaveAttribute('data-readonly');
         expect(el).not.toHaveAttribute('data-active');
         expect(ref.current).toMatchObject({
-            enabled: true,
+            disabled: false,
             readOnly: false,
             active: false,
         });
@@ -405,7 +405,7 @@ describe('Accessibility resolution across nesting levels', () => {
         const bRef = renderHook(() => useRef(null)).result.current;
         render(
             <>
-                <Control enabled={false}>
+                <Control disabled={true}>
                     <Control resultRef={aRef} data-testid="branchA">A</Control>
                 </Control>
                 <Control resultRef={bRef} data-testid="branchB">B</Control>
@@ -413,7 +413,7 @@ describe('Accessibility resolution across nesting levels', () => {
         );
         expect(screen.getByTestId('branchA')).toHaveAttribute('data-disabled', 'true');
         expect(screen.getByTestId('branchB')).not.toHaveAttribute('data-disabled');
-        expect(aRef).toMatchObject({ current: { enabled: false } });
-        expect(bRef).toMatchObject({ current: { enabled: true } });
+        expect(aRef).toMatchObject({ current: { disabled: true } });
+        expect(bRef).toMatchObject({ current: { disabled: false } });
     });
 });

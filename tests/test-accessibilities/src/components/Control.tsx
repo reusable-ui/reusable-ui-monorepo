@@ -1,18 +1,18 @@
 'use client'
 
 import { default as React, type ReactNode } from 'react'
-import { type AccessibilityProps, useResolvedAccessibilities, AccessibilityProvider } from '@reusable-ui/accessibilities'
+import { type AccessibilityProps, useResolvedAccessibilityState, AccessibilityProvider } from '@reusable-ui/accessibilities'
 
 interface ControlProps extends AccessibilityProps {
     children ?: ReactNode
 }
 export const Control = (props: ControlProps) => {
     const {
-        enabled,
+        disabled,
         readOnly,
         active,
         
-        cascadeEnabled,
+        cascadeDisabled,
         cascadeReadOnly,
         cascadeActive,
         
@@ -22,15 +22,15 @@ export const Control = (props: ControlProps) => {
     } = props;
     
     const {
-        enabled  : resolvedEnabled,
+        disabled : resolvedDisabled,
         readOnly : resolvedReadOnly,
         active   : resolvedActive,
-    } = useResolvedAccessibilities({
-        enabled,
+    } = useResolvedAccessibilityState({
+        disabled,
         readOnly,
         active,
         
-        cascadeEnabled,
+        cascadeDisabled,
         cascadeReadOnly,
         cascadeActive,
     });
@@ -41,12 +41,12 @@ export const Control = (props: ControlProps) => {
         <div
             {...restProps}
             
-            data-disabled={!resolvedEnabled || undefined}
+            data-disabled={resolvedDisabled || undefined}
             data-readonly={resolvedReadOnly || undefined}
             data-active={resolvedActive || undefined}
         >
             <AccessibilityProvider
-                enabled={resolvedEnabled}
+                disabled={resolvedDisabled}
                 readOnly={resolvedReadOnly}
                 active={resolvedActive}
             >

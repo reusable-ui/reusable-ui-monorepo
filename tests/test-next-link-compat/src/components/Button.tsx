@@ -51,10 +51,10 @@ export const Button = (props: ButtonProps) => {
         role             = fallbackButtonRole,
         tag              = fallbackButtonTag,
         
-        enabled,
+        disabled,
         readOnly,
         active,
-        cascadeEnabled,
+        cascadeDisabled,
         cascadeReadOnly,
         cascadeActive,
         
@@ -71,15 +71,15 @@ export const Button = (props: ButtonProps) => {
     });
     
     const {
-        enabled  : isEnabled,
+        disabled : isDisabled,
         readOnly : isReadOnly,
         active   : isActive,
     } = useResolvedAccessibilityState({
-        enabled,
+        disabled,
         readOnly,
         active,
         
-        cascadeEnabled,
+        cascadeDisabled,
         cascadeReadOnly,
         cascadeActive,
     });
@@ -93,7 +93,7 @@ export const Button = (props: ButtonProps) => {
             
             role={resolvedRole ?? undefined}
             
-            disabled = {!isEnabled || undefined}
+            disabled      = {isDisabled || undefined}
             data-readonly = {isReadOnly || undefined}
             data-active   = {isActive   || undefined}
         >

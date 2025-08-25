@@ -10,7 +10,7 @@ export default function Home() {
         <div>
             <main className={styles.main}>
                 <section>
-                    <AccessibilityProvider enabled={false}>
+                    <AccessibilityProvider disabled={true}>
                         <Control>
                             Control-1
                         </Control>
@@ -24,7 +24,7 @@ export default function Home() {
                     </AccessibilityProvider>
                 </section>
                 <section>
-                    <Control enabled={false}>
+                    <Control disabled={true}>
                         <Control>
                             Control-1
                         </Control>

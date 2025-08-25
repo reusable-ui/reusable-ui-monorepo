@@ -68,10 +68,10 @@ const Button = (props: ButtonProps) => {
         role = fallbackRole,
         tag  = fallbackTag,
         
-        enabled,
+        disabled,
         readOnly,
         active,
-        cascadeEnabled,
+        cascadeDisabled,
         cascadeReadOnly,
         cascadeActive,
         
@@ -88,15 +88,15 @@ const Button = (props: ButtonProps) => {
     });
     
     const {
-        enabled  : isEnabled,
+        disabled : isDisabled,
         readOnly : isReadOnly,
         active   : isActive,
     } = useResolvedAccessibilityState({
-        enabled,
+        disabled,
         readOnly,
         active,
         
-        cascadeEnabled,
+        cascadeDisabled,
         cascadeReadOnly,
         cascadeActive,
     });
@@ -115,7 +115,7 @@ const Button = (props: ButtonProps) => {
             
             data-testid='interactive-element'
             
-            data-disabled = {!isEnabled || undefined}
+            data-disabled = {isDisabled || undefined}
             data-readonly = {isReadOnly || undefined}
             data-active   = {isActive   || undefined}
         >
@@ -238,7 +238,7 @@ interface SmartButtonTestCase {
      */
     role         : 'auto' | 'button' | 'link'
     
-    enabled      : boolean,
+    disabled     : boolean,
     
     /**
      * The mix of `<Link>` and other structures to nest inside `<SmartButton>`.
@@ -281,7 +281,7 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
             // Tests:
             title        : 'renders plain children without any <Link>',
             role         : 'auto',
-            enabled      : true,
+            disabled     : false,
             children     : (
                 'click me'
             ),
@@ -302,7 +302,7 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
             // Tests:
             title        : 'renders complex nested structure without any <Link>',
             role         : 'auto',
-            enabled      : true,
+            disabled     : false,
             children     : [
                 <span key={1}>boo</span>,
                 <span key={2}>okay</span>,
@@ -353,7 +353,7 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
             // Tests:
             title        : 'renders with nested Next.js <Link> (anchorless, role="auto")',
             role         : 'auto',
-            enabled      : true,
+            disabled     : false,
             children     : (
                 <MockNextLinkCompat href='/about'>
                     click me
@@ -378,7 +378,7 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
             // Tests:
             title        : 'renders with Next.js <Link> and explicit role="link"',
             role         : 'link',
-            enabled      : true,
+            disabled     : false,
             children     : (
                 <MockNextLinkCompat href='/about'>
                     click me
@@ -403,7 +403,7 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
             // Tests:
             title        : 'renders deeply nested structure with a single Next.js <Link> + role="link"',
             role         : 'link',
-            enabled      : true,
+            disabled     : false,
             children     : [
                 <span key={1}>boo</span>,
                 <MockNextLinkCompat key={2} href='/about'>
@@ -454,7 +454,7 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
             // Tests:
             title        : 'renders multiple <Link> children but uses only the first valid Next.js <Link> + role="link"',
             role         : 'link',
-            enabled      : true,
+            disabled     : false,
             children     : [
                 <span key={1}>boo</span>,
                 <MockNextLinkCompat key={2} href='/about'>
@@ -525,7 +525,7 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
             // Tests:
             title        : 'renders with nested React Router <Link> (anchorless, role="auto")',
             role         : 'auto',
-            enabled      : true,
+            disabled     : false,
             children     : (
                 <MockRouterLinkCompat to='/about'>
                     click me
@@ -550,7 +550,7 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
             // Tests:
             title        : 'renders with React Router <Link> and explicit role="link"',
             role         : 'link',
-            enabled      : true,
+            disabled     : false,
             children     : (
                 <MockRouterLinkCompat to='/about'>
                     click me
@@ -575,7 +575,7 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
             // Tests:
             title        : 'renders deeply nested structure with a single React Router <Link> + role="link"',
             role         : 'link',
-            enabled      : true,
+            disabled     : false,
             children     : [
                 <span key={1}>boo</span>,
                 <MockRouterLinkCompat key={2} to='/about'>
@@ -626,7 +626,7 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
             // Tests:
             title        : 'renders multiple <Link> children but uses only the first valid React Router <Link> + role="link"',
             role         : 'link',
-            enabled      : true,
+            disabled     : false,
             children     : [
                 <span key={1}>boo</span>,
                 <MockRouterLinkCompat key={2} to='/about'>
@@ -697,7 +697,7 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
             // Tests:
             title        : 'renders with nested React Router <NavLink> (anchorless, role="auto")',
             role         : 'auto',
-            enabled      : true,
+            disabled     : false,
             children     : (
                 <MockRouterNavLinkCompat to='/about'>
                     click me
@@ -722,7 +722,7 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
             // Tests:
             title        : 'renders with React Router <NavLink> and explicit role="link"',
             role         : 'link',
-            enabled      : true,
+            disabled     : false,
             children     : (
                 <MockRouterNavLinkCompat to='/about'>
                     click me
@@ -747,7 +747,7 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
             // Tests:
             title        : 'renders deeply nested structure with a single React Router <NavLink> + role="link"',
             role         : 'link',
-            enabled      : true,
+            disabled     : false,
             children     : [
                 <span key={1}>boo</span>,
                 <MockRouterNavLinkCompat key={2} to='/about'>
@@ -798,7 +798,7 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
             // Tests:
             title        : 'renders multiple <NavLink> children but uses only the first valid React Router <NavLink> + role="link"',
             role         : 'link',
-            enabled      : true,
+            disabled     : false,
             children     : [
                 <span key={1}>boo</span>,
                 <MockRouterNavLinkCompat key={2} to='/about'>
@@ -867,7 +867,7 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
             // Test Inputs:
             title,
             role,
-            enabled,
+            disabled,
             children,
             RouteContext,
             
@@ -884,7 +884,7 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
                 <div data-testid='body' ref={containerRef}>
                     <MockSmartButton
                         role={role}
-                        enabled={enabled}
+                        disabled={disabled}
                     >
                         {children}
                     </MockSmartButton>

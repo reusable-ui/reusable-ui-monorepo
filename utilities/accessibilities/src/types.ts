@@ -4,19 +4,19 @@
  */
 export interface AccessibilityProps {
     /**
-     * Controls whether the component is enabled (responds to user interactions) or disabled (ignores them).
-     * Defaults to `true`.
+     * Controls whether the component is disabled (non-interactive) or enabled (interactive).
+     * Defaults to `false`.
      */
-    enabled          ?: boolean
+    disabled         ?: boolean
     
     /**
-     * Controls whether the component is read-only (prevents user editing) or editable.
+     * Controls whether the component is read-only (non-editable) or editable.
      * Defaults to `false`.
      */
     readOnly         ?: boolean
     
     /**
-     * Controls whether the component is in the active state (e.g., checked, selected, toggled, or chosen).
+     * Controls whether the component is in an active state (e.g., checked, selected, toggled, or chosen).
      * Defaults to `false`.
      */
     active           ?: boolean
@@ -24,27 +24,27 @@ export interface AccessibilityProps {
     
     
     /**
-     * Controls how the component's `enabled` value is influenced by an ancestor `<AccessibilityProvider>`.
+     * Controls how the component's `disabled` state is influenced by an ancestor `<AccessibilityProvider>`.
      * 
-     * - If `true` (default), the component inherits the ancestor’s `enabled` state.
+     * - If `true` (default), the component inherits the ancestor’s `disabled` state.
      *   ```ts
-     *   computedEnabled = ancestorEnabled && enabled;
+     *   computedDisabled = ancestorDisabled || disabled;
      *   ```
-     * - If `false`, the component uses its own `enabled` independently:
+     * - If `false`, the component uses its own `disabled` state independently:
      *   ```ts
-     *   computedEnabled = enabled;
+     *   computedDisabled = disabled;
      *   ```
      */
-    cascadeEnabled   ?: boolean
+    cascadeDisabled  ?: boolean
     
     /**
-     * Controls how the component's `readOnly` value is influenced by an ancestor `<AccessibilityProvider>`.
+     * Controls how the component's `readOnly` state is influenced by an ancestor `<AccessibilityProvider>`.
      * 
      * - If `true` (default), the component inherits the ancestor’s `readOnly` state.
      *   ```ts
      *   computedReadOnly = ancestorReadOnly || readOnly;
      *   ```
-     * - If `false`, the component uses its own `readOnly` independently:
+     * - If `false`, the component uses its own `readOnly` state independently:
      *   ```ts
      *   computedReadOnly = readOnly;
      *   ```
@@ -52,13 +52,13 @@ export interface AccessibilityProps {
     cascadeReadOnly  ?: boolean
     
     /**
-     * Controls how the component's `active` value is influenced by an ancestor `<AccessibilityProvider>`.
+     * Controls how the component's `active` state is influenced by an ancestor `<AccessibilityProvider>`.
      * 
      * - If `true`, the component inherits the ancestor’s `active` state.
      *   ```ts
      *   computedActive = ancestorActive || active;
      *   ```
-     * - If `false` (default), the component uses its own `active` independently:
+     * - If `false` (default), the component uses its own `active` state independently:
      *   ```ts
      *   computedActive = active;
      *   ```
@@ -67,19 +67,19 @@ export interface AccessibilityProps {
 }
 
 /**
- * Represents the final resolved accessibility states for a component.
+ * Represents the final resolved accessibility states of a component.
  * 
- * These values reflect the computed `enabled`, `readOnly`, and `active` states
- * after evaluating local props in combination with cascading context constraints.
+ * These values reflect the computed `disabled`, `readOnly`, and `active` states
+ * after evaluating local props in conjunction with any cascading accessibility context.
  */
 export interface ResolvedAccessibilityState {
     /**
-     * Indicates whether the component is enabled and responsive to user interaction.
+     * Indicates whether the component is disabled (non-interactive).
      */
-    enabled  : boolean
+    disabled : boolean
     
     /**
-     * Indicates whether the component is read-only and not editable.
+     * Indicates whether the component is read-only (non-editable).
      */
     readOnly : boolean
     

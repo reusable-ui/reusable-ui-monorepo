@@ -13,11 +13,11 @@ import {
 
 // Defaults:
 import {
-    DEFAULT_ENABLED,
+    DEFAULT_DISABLED,
     DEFAULT_READ_ONLY,
     DEFAULT_ACTIVE,
     
-    DEFAULT_CASCADE_ENABLED,
+    DEFAULT_CASCADE_DISABLED,
     DEFAULT_CASCADE_READ_ONLY,
     DEFAULT_CASCADE_ACTIVE,
 }                           from './defaults.js'
@@ -30,51 +30,57 @@ import {
 
 
 /**
- * Resolves the final accessibility states (`enabled`, `readOnly`, `active`) by
+ * Resolves the final accessibility states (`disabled`, `readOnly`, `active`) by
  * combining local props with optional cascading from an `<AccessibilityProvider>`.
  * 
  * @example
  * ```ts
+ * import {
+ *     type AccessibilityProps,
+ *     useResolvedAccessibilityState,
+ *     AccessibilityProvider,
+ * } from '@reusable-ui/accessibilities';
+ * 
  * interface ToggleButtonProps extends AccessibilityProps {
  *     onClick?: React.MouseEventHandler<HTMLButtonElement>;
  * }
  * 
  * const ToggleButton = (props: ToggleButtonProps) => {
  *     const {
- *         enabled,
+ *         disabled,
  *         readOnly,
  *         active,
  *         
- *         cascadeEnabled,
+ *         cascadeDisabled,
  *         cascadeReadOnly,
  *         cascadeActive,
  *         
  *         onClick,
  *     } = props;
- * 
+ *     
  *     const {
- *         enabled  : computedEnabled,
+ *         disabled : computedDisabled,
  *         readOnly : computedReadOnly,
  *         active   : computedActive,
  *     } = useResolvedAccessibilityState({
- *         enabled,
+ *         disabled,
  *         readOnly,
  *         active,
  *         
- *         cascadeEnabled,
+ *         cascadeDisabled,
  *         cascadeReadOnly,
  *         cascadeActive,
  *     });
- * 
+ *     
  *     return (
  *         <button
  *             type='button'
  *             
- *             disabled={!computedEnabled}
+ *             disabled={computedDisabled}
  *             aria-readonly={computedReadOnly || undefined}
  *             aria-pressed={computedActive || undefined}
  *             
- *             onClick={enabled && !readOnly ? onClick : undefined}
+ *             onClick={!computedDisabled && !computedReadOnly ? onClick : undefined}
  *         >
  *             Toggle
  *         </button>
@@ -85,11 +91,11 @@ import {
 export const useResolvedAccessibilityState = (props: AccessibilityProps): ResolvedAccessibilityState => {
     // Extract props and assign defaults:
     const {
-        enabled         = DEFAULT_ENABLED,
+        disabled        = DEFAULT_DISABLED,
         readOnly        = DEFAULT_READ_ONLY,
         active          = DEFAULT_ACTIVE,
         
-        cascadeEnabled  = DEFAULT_CASCADE_ENABLED,
+        cascadeDisabled = DEFAULT_CASCADE_DISABLED,
         cascadeReadOnly = DEFAULT_CASCADE_READ_ONLY,
         cascadeActive   = DEFAULT_CASCADE_ACTIVE,
     } = props;
@@ -98,7 +104,7 @@ export const useResolvedAccessibilityState = (props: AccessibilityProps): Resolv
     
     // Retrieve ancestor accessibility context:
     const {
-        enabled  : ancestorEnabled,
+        disabled : ancestorDisabled,
         readOnly : ancestorReadOnly,
         active   : ancestorActive,
     } = use(AccessibilityContext);
@@ -106,7 +112,7 @@ export const useResolvedAccessibilityState = (props: AccessibilityProps): Resolv
     
     
     // Compute final resolved accessibilities:
-    const computedEnabled  : boolean = (cascadeEnabled  ? ancestorEnabled  : true ) && enabled;
+    const computedDisabled : boolean = (cascadeDisabled ? ancestorDisabled : false) || disabled;
     const computedReadOnly : boolean = (cascadeReadOnly ? ancestorReadOnly : false) || readOnly;
     const computedActive   : boolean = (cascadeActive   ? ancestorActive   : false) || active;
     
@@ -114,11 +120,11 @@ export const useResolvedAccessibilityState = (props: AccessibilityProps): Resolv
     
     // Return stable resolved state:
     return useMemo(() => ({
-        enabled  : computedEnabled,
+        disabled : computedDisabled,
         readOnly : computedReadOnly,
         active   : computedActive,
     } satisfies ResolvedAccessibilityState), [
-        computedEnabled,
+        computedDisabled,
         computedReadOnly,
         computedActive,
     ]);

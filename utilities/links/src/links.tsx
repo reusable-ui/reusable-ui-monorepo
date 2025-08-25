@@ -108,7 +108,7 @@ const renderWithLinkIfPresent = <TProps extends PropsWithChildren<AccessibilityP
     const { tag     : resolvedTag } = useResolvedSemanticAttributes(originalElement.props);
     const isAnchorElement = (resolvedTag === 'a');
     
-    const { enabled : isEnabled   } = useResolvedAccessibilityState(originalElement.props);
+    const { disabled : isDisabled } = useResolvedAccessibilityState(originalElement.props);
     
     
     
@@ -138,7 +138,7 @@ const renderWithLinkIfPresent = <TProps extends PropsWithChildren<AccessibilityP
     
     
     // If disabled, skip wrapping with `<Link>`, return unwrapped enhanced element:
-    if (!isEnabled) return enhancedElement;
+    if (isDisabled) return enhancedElement;
     
     
     
