@@ -14,7 +14,7 @@
  * @param animationPattern - Pattern to match: string, array of strings, or RegExp.
  * @returns `true` if the animation name matches the expected pattern; otherwise `false`.
  */
-export const matchesPattern = (animationName: string, animationPattern: string | string[] | RegExp): boolean => {
+export const animationNameMatches = (animationName: string, animationPattern: string | string[] | RegExp): boolean => {
     // Handle regular expression pattern:
     if (animationPattern instanceof RegExp) return animationPattern.test(animationName);
     

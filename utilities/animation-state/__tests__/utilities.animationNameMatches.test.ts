@@ -1,6 +1,6 @@
 import {
-    matchesPattern,
-} from '../dist/internal-utilities.js'
+    animationNameMatches,
+} from '../dist/utilities.js'
 
 
 
@@ -39,7 +39,7 @@ interface PatternTestCase {
 
 
 
-describe('matchesPattern', () => {
+describe('animationNameMatches', () => {
     test.each<PatternTestCase>([
         // ✅ Basic string suffix matches
         {
@@ -235,7 +235,7 @@ describe('matchesPattern', () => {
             // Expects:
             expectedResult,
         }) => {
-            expect(matchesPattern(animationName, animationPattern)).toBe(expectedResult);
+            expect(animationNameMatches(animationName, animationPattern)).toBe(expectedResult);
         }
     );
 });

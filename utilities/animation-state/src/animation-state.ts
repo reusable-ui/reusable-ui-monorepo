@@ -23,8 +23,8 @@ import {
 }                           from '@reusable-ui/timers'          // A collection of reusable timing utilities for UI components.
 import {
     // Utilities:
-    matchesPattern,
-}                           from './internal-utilities.js'
+    animationNameMatches,
+}                           from './utilities.js'
 
 
 
@@ -397,7 +397,7 @@ export const useAnimationState = <TState extends {} | null, TElement extends Ele
         if (!animationBubbling && event.target !== event.currentTarget) return;
         
         // Ensure the animation matches the expected pattern:
-        if (!matchesPattern(event.animationName, animationPattern)) return;
+        if (!animationNameMatches(event.animationName, animationPattern)) return;
         
         
         
@@ -412,7 +412,7 @@ export const useAnimationState = <TState extends {} | null, TElement extends Ele
         if (!animationBubbling && event.target !== event.currentTarget) return;
         
         // Ensure the animation matches the expected pattern:
-        if (!matchesPattern(event.animationName, animationPattern)) return;
+        if (!animationNameMatches(event.animationName, animationPattern)) return;
         
         
         
