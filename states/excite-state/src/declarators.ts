@@ -105,10 +105,10 @@ animationRegistry.registerAnimation(exciteStateVars.animationExcite);
  *
  * @example
  * ```ts
- * // Supporting features:
+ * // Animation feature:
  * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
  * 
- * // Controllable excite state:
+ * // Excitement state:
  * import { usesExciteState } from '@reusable-ui/excite-state';
  * 
  * // CSS-in-JS:
@@ -130,10 +130,10 @@ animationRegistry.registerAnimation(exciteStateVars.animationExcite);
  *         display: 'flex',
  *         // Define component styling here.
  *         
- *         // Apply supporting feature rules:
+ *         // Apply animation feature rules:
  *         ...animationFeatureRule(),
  *         
- *         // Apply controllable excite state:
+ *         // Apply excitement state rules:
  *         ...exciteStateRule(),
  *         
  *         // Define excitement animation:
