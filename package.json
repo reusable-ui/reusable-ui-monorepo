@@ -102,6 +102,7 @@
     "features/ring",
     "features/padding",
     "features/animation",
+    "states/excite-state",
     "__configs/*",
     "__utilities/*",
     "__features/*",
