@@ -3,6 +3,7 @@
     background-color: white;
     interpolate-size: allow-keywords; /* Enables height transitions */
     width: 200px;
+    animation: var(--clp-animation, none), var(--val-animation, none);
 }
 
 
@@ -11,10 +12,10 @@
 
 /* Animation triggers */
 .expanding {
-    animation: expand 1s ease-in-out forwards;
+    --clp-animation: 1s ease-in-out forwards expand;
 }
 .collapsing {
-    animation: collapse 1s ease-in-out forwards;
+    --clp-animation: 1s ease-in-out forwards collapse;
 }
 
 /* Target states */
@@ -42,16 +43,16 @@
 
 /* Animation triggers */
 .validating {
-    animation: validate 1s ease-in-out forwards;
+    --val-animation: 1s ease-in-out forwards validate;
 }
 .unvalidating {
-    animation: unvalidate 1s ease-in-out forwards;
+    --val-animation: 1s ease-in-out forwards unvalidate;
 }
 .invalidating {
-    animation: invalidate 1s ease-in-out forwards;
+    --val-animation: 1s ease-in-out forwards invalidate;
 }
 .uninvalidating {
-    animation: uninvalidate 1s ease-in-out forwards;
+    --val-animation: 1s ease-in-out forwards uninvalidate;
 }
 
 /* Target states */

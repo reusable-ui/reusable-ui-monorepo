@@ -1,12 +1,6 @@
-import React, { useRef, useEffect, useState, type RefObject } from 'react'
-import {
-    type AnimationStateApi,
-    useAnimationState,
-} from '../dist/index.js'
-import { render, renderHook, act } from '@testing-library/react'
-import { useMergeEventHandlers } from '@reusable-ui/callbacks'
-import { useSetTimeout } from '@reusable-ui/timers'
-// import styles from './TestComponent.module.css'
+import React from 'react'
+import { type ValidityState, MockComponent } from './MockComponent.js'
+import { test, expect } from '@playwright/experimental-ct-react';
 
 
 
@@ -98,299 +92,17 @@ interface AnimationStateTestCase {
 
 
 
-type UndoAnimation =
-    |  0  // undoing valid
-    | -0  // undoing invalid
-type ValidityState =
-    |  1  // valid
-    | -1  // invalid
-    | UndoAnimation
-/**
- * Props for the mock component used to test animation-aware state transitions.
- */
-interface MockComponentProps {
-    /**
-     * Indicates whether the component is expanded (`true`) or collapsed (`false`).
-     * Changing this value will trigger an expand/collapse animation.
-     */
-    expanded         ?: boolean
-    
-    /**
-     * Reference to access the internal expand/collapse animation state.
-     * Useful for testing and tracking animated expand/collapse transitions.
-     */
-    expandStateRef    : RefObject<AnimationStateApi<boolean, HTMLDivElement> | null>
-    
-    /**
-     * Validity state of the component.
-     * - `true`: marked as valid.
-     * - `false`: marked as invalid.
-     * - `null`: neutral (no validation applied).
-     * Changing this value will trigger a validity animation.
-     */
-    valid            ?: boolean | null
-    
-    /**
-     * Reference to access the internal validity animation state.
-     * Useful for testing and tracking animated validation transitions.
-     * 
-     * Validity states:
-     * - `-1`: invalid.
-     * - `-0`: transitioning from invalid to neutral.
-     * - `+0`: transitioning from valid to neutral.
-     * - `+1`: valid.
-     */
-    validityStateRef  : RefObject<AnimationStateApi<-1 | -0 | 0 | 1, HTMLDivElement> | null>
-}
-const MockComponent = (props: MockComponentProps) => {
-    // Extract props and assign defaults:
-    const {
-        expanded          = false,
-        expandStateRef,
-        
-        valid             = null,
-        validityStateRef,
-    } = props;
-    
-    
-    
-    //#region Expand/Collapse Animation API
-    const expandState = useAnimationState<boolean, HTMLDivElement>({
-        initialIntent     : expanded,
-        animationPattern  : [
-            'expand',
-            'collapse',
-        ],
-        animationBubbling : false,
-    });
-    expandStateRef.current = expandState;
-    
-    const [
-        isExpanded,     // Latest intent
-        setExpanded,    // Intent setter
-        isExpanding,    // Ongoing animation (if any)
-        expandHandlers, // Lifecycle event handlers
-    ] = expandState;
-    
-    useEffect(() => {
-        setExpanded(expanded);
-    }, [expanded]);
-    
-    // Map expand animation state to corresponding class:
-    const expandClass = (
-        (isExpanding !== undefined)
-        ? isExpanding ? 'expanding' : 'collapsing'
-        : isExpanded  ? 'expanded'  : 'collapsed'
-    );
-    //#endregion Expand/Collapse Animation API
-    
-    
-    
-    //#region Validity Animation API
-    const validityState = useAnimationState<ValidityState, HTMLDivElement>({
-        initialIntent     : (() => {
-            switch (valid) {
-                case true  : return +1;
-                case false : return -1;
-                default    : return +0;
-            } // switch
-        })(),
-        animationPattern  : [
-            'validate',
-            'unvalidate',
-            'invalidate',
-            'uninvalidate',
-        ],
-        animationBubbling : false,
-    });
-    validityStateRef.current = validityState;
-    
-    const [
-        currentValidity,  // Latest intent
-        setValidity,      // Intent setter
-        validating,       // Ongoing animation
-        validityHandlers, // Lifecycle event handlers
-    ] = validityState;
-    
-    useEffect(() => {
-        if (valid !== null) {
-            setValidity(valid ? 1 : -1);
-        }
-        else {
-            setValidity((currentValue, currentRunning) => {
-                const latestEffect = currentRunning ?? currentValue;
-                switch (latestEffect) {
-                    case -1 : return -0;   // undoing invalid
-                    case +1 : return +0;   // undoing valid
-                    default : return latestEffect; // already neutral
-                } // switch
-            });
-        } // if
-    }, [valid]);
-    
-    // Map validity animation state to corresponding class:
-    const validityClass = (() => {
-        if (validating !== undefined) {
-            if (validating === -1)         return 'invalidating';
-            if (Object.is(validating, -0)) return 'uninvalidating';
-            if (Object.is(validating, +0)) return 'unvalidating';
-            if (validating === +1)         return 'validating';
-        } // if
-        
-        if (currentValidity === -1) return 'invalidated';
-        if (currentValidity === +1) return 'validated';
-        if (currentValidity === 0) return 'novalidity';
-        
-        return '';
-    })();
-    //#endregion Validity Animation API
-    
-    
-    
-    // Merged Event Handlers:
-    const handleAnimationStart = useMergeEventHandlers(
-        expandHandlers.handleAnimationStart,
-        validityHandlers.handleAnimationStart,
-    );
-    const handleAnimationEnd   = useMergeEventHandlers(
-        expandHandlers.handleAnimationEnd,
-        validityHandlers.handleAnimationEnd,
-    );
-    
-    
-    
-    // Manual `animationcancel` Handling:
-    // This is necessary because React does not provide an `onAnimationCancel` event handler.
-    const divRef = useRef<HTMLDivElement | null>(null);
-    useEffect(() => {
-        const divElm = divRef.current;
-        if (!divElm) return;
-        
-        const handleNativeAnimationCancel = (event: AnimationEvent) => {
-            expandHandlers.handleAnimationCancel(event as any);
-            validityHandlers.handleAnimationCancel(event as any);
-        };
-        
-        divElm.addEventListener('animationcancel', handleNativeAnimationCancel);
-        return () => {
-            divElm.removeEventListener('animationcancel', handleNativeAnimationCancel);
-        };
-    }, []);
-    
-    
-    
-    // Simulate animation events:
-    const [activeAnimations] = useState(() => new Map</* activeClass: */ string, /* abortAnimation: */() => void>());
-    const setTimeoutAsync = useSetTimeout();
-    useEffect(() => {
-        const divElm = divRef.current;
-        if (!divElm) return;
-        
-        const currentClasses = [expandClass, validityClass].filter(Boolean);
-        const activeClasses  = Array.from(activeAnimations.keys());
-        
-        // The additional classes that are not in the active set:
-        const addedClasses   = currentClasses.filter((c) => !activeClasses.includes(c));
-        // The missing classes that are not in the current set:
-        const removedClasses = activeClasses.filter((c)  => !currentClasses.includes(c));
-        
-        
-        
-        // Abort animation for removed classes:
-        for (const className of removedClasses) {
-            const animationName = getCorrespondingAnimationName(className);
-            if (animationName === null) continue; // Skip if no corresponding animation name
-            
-            
-            
-            const abort = activeAnimations.get(className);
-            if (abort) {
-                abort();
-                activeAnimations.delete(className);
-                
-                // Fire animation abort event:
-                divElm.dispatchEvent(new AnimationEvent('animationcancel', {
-                    bubbles: true,
-                    cancelable: true,
-                    animationName,
-                }));
-            } // if
-        } // for
-        
-        
-        
-        // Start animation for added classes:
-        for (const className of addedClasses) {
-            const animationName = getCorrespondingAnimationName(className);
-            if (animationName === null) continue; // Skip if no corresponding animation name
-            
-            
-            
-            // Create delay to simulate animation end:
-            const timerPromise = setTimeoutAsync(1000);
-            
-            // Store the abort function:
-            // This allows us to cancel the animation if the class is removed before it ends.
-            activeAnimations.set(className, timerPromise.abort);
-            
-            // Fire animation start event:
-            divElm.dispatchEvent(new AnimationEvent('animationstart', {
-                bubbles: true,
-                cancelable: true,
-                animationName,
-            }));
-            
-            
-            
-            // End the animation after the delay:
-            timerPromise.then(() => {
-                // Remove the class after the animation ends:
-                activeAnimations.delete(className);
-                
-                // Fire animation end event:
-                divElm.dispatchEvent(new AnimationEvent('animationend', {
-                    bubbles: true,
-                    cancelable: true,
-                    animationName,
-                }));
-            });
-        } // for
-    }, [expandClass, validityClass]);
-    
-    
-    
-    // Render:
-    return (
-        <div
-            ref={divRef}
-            
-            onAnimationStart={handleAnimationStart}
-            onAnimationEnd={handleAnimationEnd}
-            // onAnimationCancel={handleAnimationCancel} // There's no `onAnimationCancel` on React's DOMAttributes
-            
-            className={`${expandClass} ${validityClass}`}
-        />
-    );
-};
-
-const animationClassMap: Record<string, string> = {
-    expanding      : 'expand',
-    collapsing     : 'collapse',
-    validating     : 'validate',
-    unvalidating   : 'unvalidate',
-    invalidating   : 'invalidate',
-    uninvalidating : 'uninvalidate',
-};
-const getCorrespondingAnimationName = (className: string): string | null => {
-    return animationClassMap[className] ?? null;
-};
 
 
-
-describe('useAnimationState', () => {
-    const createTestRef = <TRef extends unknown>(initial: TRef) => renderHook(() => useRef<TRef>(initial)).result.current;
-    
-    test.each<AnimationStateTestCase>([
+test.describe('useAnimationState', () => {
+    for (const {
+        title,
+        
+        expanded : initialExpanded,
+        valid    : initialValid,
+        
+        updates,
+    } of [
         {
             title            : 'Initial state is collapsed and neutral',
             expanded         : false,
@@ -871,103 +583,36 @@ describe('useAnimationState', () => {
                 },
             ],
         },
-    ])(
-        `$title`,
-        async ({
-            // Test Inputs:
-            title,
-            
-            expanded : initialExpanded,
-            valid    : initialValid,
-            
-            updates,
-        }) => {
+    ] as AnimationStateTestCase[]) {
+        test(title, async ({ mount }) => {
             // Setup API refs for testing animation state:
-            const expandStateRef   = createTestRef<AnimationStateApi<boolean, HTMLDivElement> | null>(null);
-            const validityStateRef = createTestRef<AnimationStateApi<ValidityState, HTMLDivElement> | null>(null);
+            let expandValue   : [boolean, boolean | undefined] | null             = null;
+            let validityValue : [ValidityState, ValidityState | undefined] | null = null;
             
             // Hold previous props:
             let currentExpanded = initialExpanded;
             let currentValid    = initialValid;
             
-            const { rerender } = render(
+            const component = await mount(
                 <MockComponent
                     expanded={currentExpanded}
-                    expandStateRef={expandStateRef}
+                    expandValueRef={(current) => { expandValue = current; }}
                     
                     valid={currentValid}
-                    validityStateRef={validityStateRef}
+                    validityValueRef={(current) => { validityValue = current; }}
                 />
             );
             
             
             
-            // Assert ref initialization:
-            expect(expandStateRef.current).toBeDefined();
-            expect(validityStateRef.current).toBeDefined();
+            // Ensure the component is rendered correctly:
+            await expect(component).toContainText('Mock Component Test');
             
             
             
-            // Tuple-style destructuring:
-            const [
-                isExpanded,
-                setIsExpanded,
-                isExpandingOrCollapsing,
-                {
-                    handleAnimationStart  : handleAnimationStartForExpand,
-                    handleAnimationEnd    : handleAnimationEndForExpand,
-                    handleAnimationCancel : handleAnimationCancelForExpand,
-                },
-            ] = expandStateRef.current!;
-            const [
-                isValid,
-                setIsValid,
-                isValidatingOrInvalidating,
-                {
-                    handleAnimationStart  : handleAnimationStartForValidity,
-                    handleAnimationEnd    : handleAnimationEndForValidity,
-                    handleAnimationCancel : handleAnimationCancelForValidity,
-                },
-            ] = validityStateRef.current!;
-            
-            
-            
-            // Named-property destructuring:
-            const {
-                intent    : isExpanded2,
-                setIntent : setIsExpanded2,
-                running   : isExpandingOrCollapsing2,
-                
-                handleAnimationStart  : handleAnimationStartForExpand2,
-                handleAnimationEnd    : handleAnimationEndForExpand2,
-                handleAnimationCancel : handleAnimationCancelForExpand2,
-            } = expandStateRef.current!;
-            const {
-                intent    : isValid2,
-                setIntent : setIsValid2,
-                running   : isValidatingOrInvalidating2,
-                
-                handleAnimationStart  : handleAnimationStartForValidity2,
-                handleAnimationEnd    : handleAnimationEndForValidity2,
-                handleAnimationCancel : handleAnimationCancelForValidity2,
-            } = validityStateRef.current!;
-            
-            
-            
-            // Confirm tuple-style and named properties match:
-            expect(isExpanded).toBe(isExpanded2);
-            expect(setIsExpanded).toBe(setIsExpanded2);
-            expect(isExpandingOrCollapsing).toBe(isExpandingOrCollapsing2);
-            expect(handleAnimationStartForExpand).toBe(handleAnimationStartForExpand2);
-            expect(handleAnimationEndForExpand).toBe(handleAnimationEndForExpand2);
-            expect(handleAnimationCancelForExpand).toBe(handleAnimationCancelForExpand2);
-            
-            expect(isValid).toBe(isValid2);
-            expect(setIsValid).toBe(setIsValid2);
-            expect(isValidatingOrInvalidating).toBe(isValidatingOrInvalidating2);
-            expect(handleAnimationStartForValidity).toBe(handleAnimationStartForValidity2);
-            expect(handleAnimationEndForValidity).toBe(handleAnimationEndForValidity2);
-            expect(handleAnimationCancelForValidity).toBe(handleAnimationCancelForValidity2);
+            // Destructure state values:
+            const [isExpanded, isExpandingOrCollapsing] = expandValue ?? [undefined, undefined];
+            const [isValid, isValidatingOrInvalidating] = validityValue ?? [undefined, undefined];
             
             
             
@@ -1004,34 +649,35 @@ describe('useAnimationState', () => {
                 if (nextValid !== undefined) currentValid = nextValid;
                 
                 // Apply the update:
-                rerender(
+                await component.update(
                     <MockComponent
                         expanded={currentExpanded}
-                        expandStateRef={expandStateRef}
+                        expandValueRef={(current) => { expandValue = current; }}
                         
                         valid={currentValid}
-                        validityStateRef={validityStateRef}
+                        validityValueRef={(current) => { validityValue = current; }}
                     />
                 );
                 
                 
                 
+                // Ensure the component is rendered correctly:
+                await expect(component).toContainText('Mock Component Test');
+                
+                
+                
                 // Wait for the specified delay:
                 if (delay !== undefined) {
-                    await act(async () => {
-                        await new Promise((resolve) => {
-                            setTimeout(resolve, delay);
-                        });
+                    await new Promise((resolve) => {
+                        setTimeout(resolve, delay);
                     });
                 };
                 
                 
                 
                 // Access current state after delay:
-                expect(expandStateRef.current).toBeDefined();
-                expect(validityStateRef.current).toBeDefined();
-                const [isExpanded, , isExpandingOrCollapsing] = expandStateRef.current!;
-                const [isValid, , isValidatingOrInvalidating] = validityStateRef.current!;
+                const [isExpanded, isExpandingOrCollapsing] = expandValue ?? [undefined, undefined];
+                const [isValid, isValidatingOrInvalidating] = validityValue ?? [undefined, undefined];
                 
                 
                 
@@ -1042,6 +688,6 @@ describe('useAnimationState', () => {
                 expect(Object.is(isValid, expectedValidity)).toBe(true);
                 expect(isValidatingOrInvalidating).toBe(expectedRunningValidity);
             } // for
-        }
-    );
+        });
+    } // for
 });

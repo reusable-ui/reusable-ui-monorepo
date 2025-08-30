@@ -1,6 +1,7 @@
 import {
     animationNameMatches,
 } from '../dist/utilities.js'
+import { test, expect } from '@playwright/experimental-ct-react';
 
 
 
@@ -39,8 +40,15 @@ interface PatternTestCase {
 
 
 
-describe('animationNameMatches', () => {
-    test.each<PatternTestCase>([
+test.describe('animationNameMatches', () => {
+    for (const {
+        title,
+        
+        animationName,
+        animationPattern,
+        
+        expectedResult,
+    } of [
         // ✅ Basic string suffix matches
         {
             title            : 'Exact match with string pattern',
@@ -222,20 +230,9 @@ describe('animationNameMatches', () => {
             animationPattern : ['fade-in', 'slide'],
             expectedResult   : false,
         },
-    ])(
-        `$title`,
-        ({
-            // Test Inputs:
-            title,
-            animationName,
-            animationPattern,
-            
-            
-            
-            // Expects:
-            expectedResult,
-        }) => {
+    ] as PatternTestCase[]) {
+        test(title, async ({ mount }) => {
             expect(animationNameMatches(animationName, animationPattern)).toBe(expectedResult);
-        }
-    );
+        });
+    } // for
 });
