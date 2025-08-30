@@ -30,8 +30,6 @@
 @reusable-ui/links
 @reusable-ui/client-sides   DEPRECATED
 @reusable-ui/navigations
-@reusable-ui/animation-state
-@reusable-ui/animating-state DEPRECATED
 
 // Reusable-ui variants: (refactored):
 @reusable-ui/orientation-variant
@@ -114,6 +112,8 @@ Default inheritance case example:
 @reusable-ui/animation          DEPRECATED
 
 // Reusable-ui states:
+@reusable-ui/animation-state
+@reusable-ui/animating-state DEPRECATED
 @reusable-ui/excite-state
 @reusable-ui/excitable
 @reusable-ui/collapsible
