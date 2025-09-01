@@ -194,21 +194,24 @@ export interface AnimationStateOptions<TState extends {} | null> {
     initialIntent      : TState
     
     /**
-     * Defines the pattern used to match relevant animation names.
+     * Defines the pattern used to identify the related animation names.
      * 
-     * Used to identify animations that should trigger immediately
-     * after the new intent has been applied. (e.g. `'expand'`, `'collapse'`).
+     * This pattern determines which animations are considered part of the intent lifecycle. (e.g. `'expand'`, `'collapse'`).
      * 
-     * Supports regular expression and string suffix matching with word-boundary awareness:
-     * - Use a string to match suffixes with word-boundary awareness.
-     * - Use an array of strings to match multiple suffixes.
-     * - Use a RegExp for custom or complex matching logic.
+     * Supports:
+     * - A string suffix (with word-boundary awareness)
+     * - An array of suffixes
+     * - A RegExp for advanced matching
+     * 
+     * Word-boundary behavior mimics regex `\b` semantics:
+     * - If the matched pattern starts with a non-word character, it’s always considered boundary-safe.
+     * - Otherwise, the character preceding the suffix must be a non-word character or undefined.
      */
     animationPattern   : string | string[] | RegExp
     
     /**
-     * Enables listening to animation events bubbling up from child elements.
-     * Useful when the animated node is deeply nested.
+     * Enables listening to animation events bubbling up from nested child elements.
+     * Useful when the animated node is deeply nested within the component.
      * 
      * Defaults to `false`.
      */
@@ -241,7 +244,7 @@ export interface AnimationStateHandlers<TElement extends Element = HTMLElement> 
 }
 
 /**
- * Defines the API surface for managing animation state within a component.
+ * An API for managing animation state within the component.
  * 
  * Supports both tuple-style destructuring and named properties
  * for ergonomic use in hooks and JSX event bindings.

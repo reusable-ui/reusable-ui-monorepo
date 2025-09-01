@@ -1,10 +1,10 @@
 /**
  * Determines whether a given animation name matches the expected pattern.
  * 
- * Supports regular expression and string suffix matching with word-boundary awareness:
- * - Use a string to match suffixes with word-boundary awareness.
- * - Use an array of strings to match multiple suffixes.
- * - Use a RegExp for custom or complex matching logic.
+ * Supports:
+ * - A string suffix (with word-boundary awareness)
+ * - An array of suffixes
+ * - A RegExp for advanced matching
  * 
  * Word-boundary behavior mimics regex `\b` semantics:
  * - If the matched pattern starts with a non-word character, it’s always considered boundary-safe.
