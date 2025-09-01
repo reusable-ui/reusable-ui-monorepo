@@ -58,15 +58,17 @@ import {
 
 
 /**
- * Resolves the excited state along with its associated CSS class name,
+ * Resolves the excited state, associated CSS class name, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  *
  * Supports controlled excitement with automatic re-triggering if the parent
  * does not reset the `excited` prop after animation completion.
  * 
+ * @template TElement - The type of the target DOM element.
+ * 
  * @param {ExciteStateProps} props - The component props that may include a controlled `excited` value and an `onExcitedChange` callback.
  * @param {ExciteStateOptions} options - An optional configuration for customizing excitement behavior.
- * @returns {ExciteStateApi<TElement>} - The resolved excited state, its associated CSS class name, and animation event handlers.
+ * @returns {ExciteStateApi<TElement>} - The resolved excited state, associated CSS class name, and animation event handlers.
  * 
  * @example
  * ```tsx

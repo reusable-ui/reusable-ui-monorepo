@@ -86,7 +86,7 @@ export const ifNotExcited = (styles: CssStyleCollection): CssRule => rule(isNotE
 
 
 /**
- * A strongly typed global mapping of excitement-related CSS variables for conditional excitement animation.
+ * A strongly typed global mapping of excitement-related CSS variables for conditional animation.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
@@ -97,11 +97,11 @@ const [exciteStateVars] = cssVars<ExciteStateVars>({ prefix: 'ex', minify: false
 animationRegistry.registerAnimation(exciteStateVars.animationExcite);
 
 /**
- * Generates CSS rules that conditionally apply the excitement animation based on the current excited state,
- * and exposes excitement-related CSS variables for conditional excitement animation.
+ * Generates CSS rules that conditionally apply the excitement animation based on the current state,
+ * and exposes excitement-related CSS variables for conditional animation.
  * 
  * @param options - An optional configuration for customizing excitement animation.
- * @returns A CSS API for enabling conditional excitement animation based on current excited state.
+ * @returns A CSS API for conditionally apply the excitement animation based on the current state.
  *
  * @example
  * ```ts

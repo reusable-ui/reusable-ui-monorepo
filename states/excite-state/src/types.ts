@@ -41,7 +41,7 @@ import {
  */
 export interface ExciteStateProps {
     /**
-     * Indicates whether the component should be in an excited state:
+     * Specifies whether the component is in an excited state:
      * - `true`  : the component appears excited
      * - `false` : the component remains in its default state
      * 
@@ -57,7 +57,7 @@ export interface ExciteStateProps {
 }
 
 /**
- * Optional configuration options for customizing excitement behavior.
+ * Optional configuration options for customizing excitement behavior and animation lifecycle.
  */
 export interface ExciteStateOptions
     extends
@@ -73,22 +73,26 @@ export interface ExciteStateOptions
     defaultExcited      ?: boolean
     
     /**
-     * Defines the pattern used to match relevant animation names.
+     * Defines the pattern used to identify excite-related animation names.
      * 
      * This pattern determines which animations are considered part of the excitement lifecycle.
      * 
-     * Supports regular expression and string suffix matching with word-boundary awareness:
-     * - Use a string to match suffixes with word-boundary awareness.
-     * - Use an array of strings to match multiple suffixes.
-     * - Use a RegExp for custom or complex matching logic.
+     * Supports:
+     * - A string suffix (with word-boundary awareness)
+     * - An array of suffixes
+     * - A RegExp for advanced matching
+     * 
+     * Word-boundary behavior mimics regex `\b` semantics:
+     * - If the matched pattern starts with a non-word character, it’s always considered boundary-safe.
+     * - Otherwise, the character preceding the suffix must be a non-word character or undefined.
      * 
      * Defaults to `'excite'`.
      */
     animationPattern    ?: AnimationStateOptions<boolean>['animationPattern']
     
     /**
-     * Enables listening to animation events bubbling up from child elements.
-     * Useful when the animated node is deeply nested.
+     * Enables listening to animation events bubbling up from nested child elements.
+     * Useful when the animated node is deeply nested within the component.
      * 
      * Defaults to `false`.
      */
@@ -104,8 +108,9 @@ export interface ExciteStateOptions
 }
 
 /**
- * Represents the final resolved excited state of the component, along with its associated CSS class name
- * and animation event handlers.
+ * An API for accessing the resolved excited state, associated CSS class name, and animation event handlers.
+ * 
+ * @template TElement - The type of the target DOM element.
  */
 export interface ExciteStateApi<TElement extends Element = HTMLElement>
     extends
@@ -113,7 +118,7 @@ export interface ExciteStateApi<TElement extends Element = HTMLElement>
         AnimationStateHandlers<TElement>
 {
     /**
-     * Indicates whether the component is currently in an excited state:
+     * Indicates whether the component is currently in an excited state.
      * 
      * Possible values:
      * - `true`  : the component appears excited
@@ -152,7 +157,7 @@ export interface ExciteStateVars {
 
 
 /**
- * Configuration options for enabling excitement-aware styling in components.
+ * Configuration options for customizing excitement animation.
  */
 export interface CssExciteStateOptions {
     /**
@@ -161,7 +166,8 @@ export interface CssExciteStateOptions {
      * The animation should be designed for seamless continuity across iterations to ensure smooth visual feedback.
      * 
      * The `useExciteState()` hook will replay the excitement animation as long as the `excited` prop remains `true`.  
-     * When the prop changes to `false`, the currently running animation is allowed to finish gracefully—preventing abrupt interruptions or visual glitches.
+     * When the prop changes to `false`, the currently running animation is allowed to finish gracefully—
+     * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
      */
@@ -171,21 +177,21 @@ export interface CssExciteStateOptions {
 
 
 /**
- * Provides a CSS API for enabling conditional excitement animation based on current excited state.
+ * Provides a CSS API for conditionally apply the excitement animation based on the current state.
  */
 export interface CssExciteState {
     /**
-     * Generates CSS rules that conditionally apply the excitement animation based on the current excited state.
+     * Generates CSS rules that conditionally apply the excitement animation based on the current state.
      * 
-     * Typically used to toggle animation variables when the component is in an excited state.
+     * Typically used to toggle animation variables when the component is excited.
      */
     exciteStateRule : Lazy<CssRule>
     
     /**
-     * Exposes excitement-related CSS variables for conditional excitement animation.
+     * Exposes excitement-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationExcite`: References the configured excitement animation when the component is excited.
+     * - `animationExcite`: Active when the component is excited.
      * 
      * ⚠️ **Caution**: The `animationExcite` variable becomes invalid when the component is not excited.
      * If used improperly, it can invalidate the entire CSS declaration.
