@@ -19,7 +19,7 @@ export const DecorationFeatureTest = (props: DecorationFeatureTestProps) => {
     
     const { themeClassname     } = useThemeVariant(props);
     const { emphasizeClassname } = useEmphasizeVariant(props);
-    const { outlinedClassname  } = useOutlineVariant(props);
+    const { outlineClassname   } = useOutlineVariant(props);
     const { mildClassname      } = useMildVariant(props);
     
     return (
@@ -27,7 +27,7 @@ export const DecorationFeatureTest = (props: DecorationFeatureTestProps) => {
             <HydrateStyles />
             <div
                 data-testid="decoration-feature-test"
-                className={`${styles.main} ${themeClassname} ${emphasizeClassname} ${outlinedClassname} ${mildClassname}`}
+                className={`${styles.main} ${themeClassname} ${emphasizeClassname} ${outlineClassname} ${mildClassname}`}
             >
                 Decoration Feature Test
             </div>

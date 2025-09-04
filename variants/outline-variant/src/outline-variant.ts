@@ -21,7 +21,7 @@ import {
 
 // Utilities:
 import {
-    getOutlinedClassname,
+    getOutlineClassname,
 }                           from './internal-utilities.js'
 
 // Contexts:
@@ -109,14 +109,14 @@ const useEffectiveOutlinedValue = (outlined: Required<OutlineVariantProps>['outl
  * export const OutlinedBox: FC<OutlinedBoxProps> = (props) => {
  *     const {
  *         outlined,
- *         outlinedClassname,
+ *         outlineClassname,
  *     } = useOutlineVariant(props, {
  *         defaultOutlined: false, // fallback if not provided
  *     });
  *     
  *     return (
  *         <div
- *             className={`${styles.box} ${outlinedClassname}`}
+ *             className={`${styles.box} ${outlineClassname}`}
  *         >
  *             {outlined && <span className={styles.badge}>🔔</span>}
  *             <p>Additional details go here.</p>
@@ -151,7 +151,7 @@ export const useOutlineVariant = (props: OutlineVariantProps, options?: OutlineV
     
     // Return resolved outlined attributes:
     return {
-        outlined          : effectiveIsOutlined,
-        outlinedClassname : getOutlinedClassname(effectiveIsOutlined),
+        outlined         : effectiveIsOutlined,
+        outlineClassname : getOutlineClassname(effectiveIsOutlined),
     } satisfies ResolvedOutlineVariant;
 };

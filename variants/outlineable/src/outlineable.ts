@@ -344,10 +344,10 @@ export interface OutlineableProps extends OutlineVariantProps { }
  */
 export const useOutlineable = (props: OutlineableProps) => {
     const {
-        outlinedClassname,
+        outlineClassname,
     } = useOutlineVariant(props);
     
     return {
-        class: outlinedClassname,
+        class: outlineClassname,
     };
 };

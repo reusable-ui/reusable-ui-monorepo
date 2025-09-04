@@ -21,7 +21,7 @@ export const BorderFeatureTest = (props: BorderFeatureTestProps) => {
     
     const { themeClassname     } = useThemeVariant(props);
     const { emphasizeClassname } = useEmphasizeVariant(props);
-    const { outlinedClassname  } = useOutlineVariant(props);
+    const { outlineClassname   } = useOutlineVariant(props);
     const { mildClassname      } = useMildVariant(props);
     const { bareClassname      } = useBareVariant(props);
     
@@ -30,7 +30,7 @@ export const BorderFeatureTest = (props: BorderFeatureTestProps) => {
             <HydrateStyles />
             <div
                 data-testid="border-feature-test"
-                className={`${styles.main} ${themeClassname} ${emphasizeClassname} ${outlinedClassname} ${mildClassname} ${bareClassname}`}
+                className={`${styles.main} ${themeClassname} ${emphasizeClassname} ${outlineClassname} ${mildClassname} ${bareClassname}`}
             >
                 Border Feature Test
             </div>

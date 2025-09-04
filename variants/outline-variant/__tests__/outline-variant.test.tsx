@@ -107,114 +107,114 @@ describe('useOutlineVariant()', () => {
     test.each<OutlineVariantTestCase>([
         //#region direct resolution from props and/or options
         {
-            title                   : 'resolves not-outlined from props',
-            props                   : {
-                outlined            : false,
+            title                : 'resolves not-outlined from props',
+            props                : {
+                outlined         : false,
             },
-            expectedResult          : {
-                outlined            : false,
-                outlinedClassname   : 'not-outlined',
-            },
-        },
-        {
-            title                   : 'resolves is-outlined from props',
-            props                   : {
-                outlined            : true,
-            },
-            expectedResult          : {
-                outlined            : true,
-                outlinedClassname   : 'is-outlined',
+            expectedResult       : {
+                outlined         : false,
+                outlineClassname : 'not-outlined',
             },
         },
         {
-            title                   : 'uses default not-outlined when prop is missing',
-            options                 : {
-                defaultOutlined     : false,
+            title                : 'resolves is-outlined from props',
+            props                : {
+                outlined         : true,
             },
-            expectedResult          : {
-                outlined            : false,
-                outlinedClassname   : 'not-outlined',
-            },
-        },
-        {
-            title                   : 'uses default is-outlined when prop is missing',
-            options                 : {
-                defaultOutlined     : true,
-            },
-            expectedResult          : {
-                outlined            : true,
-                outlinedClassname   : 'is-outlined',
+            expectedResult       : {
+                outlined         : true,
+                outlineClassname : 'is-outlined',
             },
         },
         {
-            title                   : 'falls back to system default when prop and option are missing',
-            expectedResult          : {
-                outlined            : finalDefaultOutlined,
-                outlinedClassname   : finalDefaultOutlined ? 'is-outlined' : 'not-outlined',
+            title                : 'uses default not-outlined when prop is missing',
+            options              : {
+                defaultOutlined  : false,
+            },
+            expectedResult       : {
+                outlined         : false,
+                outlineClassname : 'not-outlined',
             },
         },
         {
-            title                   : 'falls back to parent`s: not-outlined when prop and option are missing',
-            parentOutlined          : false,
-            expectedResult          : {
-                outlined            : false,
-                outlinedClassname   : 'not-outlined',
+            title                : 'uses default is-outlined when prop is missing',
+            options              : {
+                defaultOutlined  : true,
+            },
+            expectedResult       : {
+                outlined         : true,
+                outlineClassname : 'is-outlined',
             },
         },
         {
-            title                   : 'falls back to parent`s: is-outlined when prop and option are missing',
-            parentOutlined          : true,
-            expectedResult          : {
-                outlined            : true,
-                outlinedClassname   : 'is-outlined',
+            title                : 'falls back to system default when prop and option are missing',
+            expectedResult       : {
+                outlined         : finalDefaultOutlined,
+                outlineClassname : finalDefaultOutlined ? 'is-outlined' : 'not-outlined',
             },
         },
         {
-            title                   : 'falls back to system default when inheritance is missing',
-            parentOutlined          : undefined,
-            props                   : {
-                outlined            : 'inherit',
-            },
-            expectedResult          : {
-                outlined            : finalDefaultOutlined,
-                outlinedClassname   : finalDefaultOutlined ? 'is-outlined' : 'not-outlined',
+            title                : 'falls back to parent`s: not-outlined when prop and option are missing',
+            parentOutlined       : false,
+            expectedResult       : {
+                outlined         : false,
+                outlineClassname : 'not-outlined',
             },
         },
         {
-            title                   : 'falls back to system default when inverting is missing',
-            parentOutlined          : undefined,
-            props                   : {
-                outlined            : 'invert',
-            },
-            expectedResult          : {
-                outlined            : finalDefaultOutlined,
-                outlinedClassname   : finalDefaultOutlined ? 'is-outlined' : 'not-outlined',
+            title                : 'falls back to parent`s: is-outlined when prop and option are missing',
+            parentOutlined       : true,
+            expectedResult       : {
+                outlined         : true,
+                outlineClassname : 'is-outlined',
             },
         },
         {
-            title                   : 'resolves not-outlined from props ignoring option',
-            props                   : {
-                outlined            : false,
+            title                : 'falls back to system default when inheritance is missing',
+            parentOutlined       : undefined,
+            props                : {
+                outlined         : 'inherit',
             },
-            options                 : {
-                defaultOutlined     : true,
-            },
-            expectedResult          : {
-                outlined            : false,
-                outlinedClassname   : 'not-outlined',
+            expectedResult       : {
+                outlined         : finalDefaultOutlined,
+                outlineClassname : finalDefaultOutlined ? 'is-outlined' : 'not-outlined',
             },
         },
         {
-            title                   : 'resolves is-outlined from props ignoring option',
-            props                   : {
-                outlined            : true,
+            title                : 'falls back to system default when inverting is missing',
+            parentOutlined       : undefined,
+            props                : {
+                outlined         : 'invert',
             },
-            options                 : {
-                defaultOutlined     : false,
+            expectedResult       : {
+                outlined         : finalDefaultOutlined,
+                outlineClassname : finalDefaultOutlined ? 'is-outlined' : 'not-outlined',
             },
-            expectedResult          : {
-                outlined            : true,
-                outlinedClassname   : 'is-outlined',
+        },
+        {
+            title                : 'resolves not-outlined from props ignoring option',
+            props                : {
+                outlined         : false,
+            },
+            options              : {
+                defaultOutlined  : true,
+            },
+            expectedResult       : {
+                outlined         : false,
+                outlineClassname : 'not-outlined',
+            },
+        },
+        {
+            title                : 'resolves is-outlined from props ignoring option',
+            props                : {
+                outlined         : true,
+            },
+            options              : {
+                defaultOutlined  : false,
+            },
+            expectedResult       : {
+                outlined         : true,
+                outlineClassname : 'is-outlined',
             },
         },
         //#endregion direct resolution from props and/or options
@@ -223,105 +223,105 @@ describe('useOutlineVariant()', () => {
         
         //#region cascade resolution from props and/or options
         {
-            title                   : 'resolves not-outlined from parent',
-            parentOutlined          : false,
-            props                   : {
-                outlined            : 'inherit',
+            title                : 'resolves not-outlined from parent',
+            parentOutlined       : false,
+            props                : {
+                outlined         : 'inherit',
             },
-            expectedResult          : {
-                outlined            : false,
-                outlinedClassname   : 'not-outlined',
-            },
-        },
-        {
-            title                   : 'resolves is-outlined from parent',
-            parentOutlined          : true,
-            props                   : {
-                outlined            : 'inherit',
-            },
-            expectedResult          : {
-                outlined            : true,
-                outlinedClassname   : 'is-outlined',
+            expectedResult       : {
+                outlined         : false,
+                outlineClassname : 'not-outlined',
             },
         },
         {
-            title                   : 'resolves not-outlined from inverted parent',
-            parentOutlined          : true,
-            props                   : {
-                outlined            : 'invert',
+            title                : 'resolves is-outlined from parent',
+            parentOutlined       : true,
+            props                : {
+                outlined         : 'inherit',
             },
-            expectedResult          : {
-                outlined            : false,
-                outlinedClassname   : 'not-outlined',
+            expectedResult       : {
+                outlined         : true,
+                outlineClassname : 'is-outlined',
             },
         },
         {
-            title                   : 'resolves is-outlined from inverted parent',
-            parentOutlined          : false,
-            props                   : {
-                outlined            : 'invert',
+            title                : 'resolves not-outlined from inverted parent',
+            parentOutlined       : true,
+            props                : {
+                outlined         : 'invert',
             },
-            expectedResult          : {
-                outlined            : true,
-                outlinedClassname   : 'is-outlined',
+            expectedResult       : {
+                outlined         : false,
+                outlineClassname : 'not-outlined',
+            },
+        },
+        {
+            title                : 'resolves is-outlined from inverted parent',
+            parentOutlined       : false,
+            props                : {
+                outlined         : 'invert',
+            },
+            expectedResult       : {
+                outlined         : true,
+                outlineClassname : 'is-outlined',
             },
         },
         
         
         {
-            title                   : 'resolves not-outlined from parent ignoring option',
-            parentOutlined          : false,
-            props                   : {
-                outlined            : 'inherit',
+            title                : 'resolves not-outlined from parent ignoring option',
+            parentOutlined       : false,
+            props                : {
+                outlined         : 'inherit',
             },
-            options                 : {
-                defaultOutlined     : true,
+            options              : {
+                defaultOutlined  : true,
             },
-            expectedResult          : {
-                outlined            : false,
-                outlinedClassname   : 'not-outlined',
-            },
-        },
-        {
-            title                   : 'resolves is-outlined from parent ignoring option',
-            parentOutlined          : true,
-            props                   : {
-                outlined            : 'inherit',
-            },
-            options                 : {
-                defaultOutlined     : false,
-            },
-            expectedResult          : {
-                outlined            : true,
-                outlinedClassname   : 'is-outlined',
+            expectedResult       : {
+                outlined         : false,
+                outlineClassname : 'not-outlined',
             },
         },
         {
-            title                   : 'resolves not-outlined from inverted parent ignoring option',
-            parentOutlined          : true,
-            props                   : {
-                outlined            : 'invert',
+            title                : 'resolves is-outlined from parent ignoring option',
+            parentOutlined       : true,
+            props                : {
+                outlined         : 'inherit',
             },
-            options                 : {
-                defaultOutlined     : true,
+            options              : {
+                defaultOutlined  : false,
             },
-            expectedResult          : {
-                outlined            : false,
-                outlinedClassname   : 'not-outlined',
+            expectedResult       : {
+                outlined         : true,
+                outlineClassname : 'is-outlined',
             },
         },
         {
-            title                   : 'resolves is-outlined from inverted parent ignoring option',
-            parentOutlined          : false,
-            props                   : {
-                outlined            : 'invert',
+            title                : 'resolves not-outlined from inverted parent ignoring option',
+            parentOutlined       : true,
+            props                : {
+                outlined         : 'invert',
             },
-            options                 : {
-                defaultOutlined     : false,
+            options              : {
+                defaultOutlined  : true,
             },
-            expectedResult          : {
-                outlined            : true,
-                outlinedClassname   : 'is-outlined',
+            expectedResult       : {
+                outlined         : false,
+                outlineClassname : 'not-outlined',
+            },
+        },
+        {
+            title                : 'resolves is-outlined from inverted parent ignoring option',
+            parentOutlined       : false,
+            props                : {
+                outlined         : 'invert',
+            },
+            options              : {
+                defaultOutlined  : false,
+            },
+            expectedResult       : {
+                outlined         : true,
+                outlineClassname : 'is-outlined',
             },
         },
         //#endregion cascade resolution from props and/or options

@@ -64,7 +64,7 @@ export interface ResolvedOutlineVariant {
      * - `'is-outlined'`
      * - `'not-outlined'`
      */
-    outlinedClassname  : 'is-outlined' | 'not-outlined'
+    outlineClassname   : 'is-outlined' | 'not-outlined'
 }
 
 

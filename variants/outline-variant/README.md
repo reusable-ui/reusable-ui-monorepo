@@ -42,14 +42,14 @@ export interface OutlinedBoxProps extends OutlineVariantProps {}
 export const OutlinedBox: FC<OutlinedBoxProps> = (props) => {
     const {
         outlined,
-        outlinedClassname,
+        outlineClassname,
     } = useOutlineVariant(props, {
         defaultOutlined: false, // fallback if not provided
     });
     
     return (
         <div
-            className={`${styles.box} ${outlinedClassname}`}
+            className={`${styles.box} ${outlineClassname}`}
         >
             {outlined && <span className={styles.badge}>🔔</span>}
             <p>Additional details go here.</p>

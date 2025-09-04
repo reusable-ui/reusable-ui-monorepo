@@ -19,7 +19,7 @@ export const ForegroundFeatureTest = (props: ForegroundFeatureTestProps) => {
     
     const { themeClassname     } = useThemeVariant(props);
     const { emphasizeClassname } = useEmphasizeVariant(props);
-    const { outlinedClassname  } = useOutlineVariant(props);
+    const { outlineClassname   } = useOutlineVariant(props);
     const { mildClassname      } = useMildVariant(props);
     
     return (
@@ -27,7 +27,7 @@ export const ForegroundFeatureTest = (props: ForegroundFeatureTestProps) => {
             <HydrateStyles />
             <div
                 data-testid="foreground-feature-test"
-                className={`${styles.main} ${themeClassname} ${emphasizeClassname} ${outlinedClassname} ${mildClassname}`}
+                className={`${styles.main} ${themeClassname} ${emphasizeClassname} ${outlineClassname} ${mildClassname}`}
             >
                 Foreground Feature Test
             </div>
