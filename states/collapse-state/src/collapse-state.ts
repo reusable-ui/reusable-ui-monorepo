@@ -1,4 +1,4 @@
-'use client' // The exported `useCollapseState()` and `useCollapsePhaseEvents()` hooks are client side only.
+'use client' // The exported `useCollapseState()` and `useCollapseStatePhaseEvents()` hooks are client side only.
 
 // React:
 import {
