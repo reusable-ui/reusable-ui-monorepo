@@ -222,12 +222,12 @@ export interface GradientableProps {
  */
 export const useGradientable = ({ gradient }: GradientableProps) => {
     const {
-        emphasizedClassname,
+        emphasizeClassname,
     } = useEmphasizeVariant({
         emphasized : gradient,
     });
     
     return {
-        class: emphasizedClassname,
+        class: emphasizeClassname,
     };
 };

@@ -17,17 +17,17 @@ export interface RingFeatureTestProps
 export const RingFeatureTest = (props: RingFeatureTestProps) => {
     const styles = useRingFeatureTestStyles();
     
-    const { themeClassname      } = useThemeVariant(props);
-    const { emphasizedClassname } = useEmphasizeVariant(props);
-    const { outlinedClassname   } = useOutlineVariant(props);
-    const { mildClassname       } = useMildVariant(props);
+    const { themeClassname     } = useThemeVariant(props);
+    const { emphasizeClassname } = useEmphasizeVariant(props);
+    const { outlinedClassname  } = useOutlineVariant(props);
+    const { mildClassname      } = useMildVariant(props);
     
     return (
         <div>
             <HydrateStyles />
             <div
                 data-testid="ring-feature-test"
-                className={`${styles.main} ${themeClassname} ${emphasizedClassname} ${outlinedClassname} ${mildClassname}`}
+                className={`${styles.main} ${themeClassname} ${emphasizeClassname} ${outlinedClassname} ${mildClassname}`}
             >
                 Ring Feature Test
             </div>

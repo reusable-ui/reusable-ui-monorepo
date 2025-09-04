@@ -107,114 +107,114 @@ describe('useEmphasizeVariant()', () => {
     test.each<EmphasizeVariantTestCase>([
         //#region direct resolution from props and/or options
         {
-            title                   : 'resolves not-emphasized from props',
-            props                   : {
-                emphasized          : false,
+            title                  : 'resolves not-emphasized from props',
+            props                  : {
+                emphasized         : false,
             },
-            expectedResult          : {
-                emphasized          : false,
-                emphasizedClassname : 'not-emphasized',
-            },
-        },
-        {
-            title                   : 'resolves is-emphasized from props',
-            props                   : {
-                emphasized          : true,
-            },
-            expectedResult          : {
-                emphasized          : true,
-                emphasizedClassname : 'is-emphasized',
+            expectedResult         : {
+                emphasized         : false,
+                emphasizeClassname : 'not-emphasized',
             },
         },
         {
-            title                   : 'uses default not-emphasized when prop is missing',
-            options                 : {
-                defaultEmphasized   : false,
+            title                  : 'resolves is-emphasized from props',
+            props                  : {
+                emphasized         : true,
             },
-            expectedResult          : {
-                emphasized          : false,
-                emphasizedClassname : 'not-emphasized',
-            },
-        },
-        {
-            title                   : 'uses default is-emphasized when prop is missing',
-            options                 : {
-                defaultEmphasized   : true,
-            },
-            expectedResult          : {
-                emphasized          : true,
-                emphasizedClassname : 'is-emphasized',
+            expectedResult         : {
+                emphasized         : true,
+                emphasizeClassname : 'is-emphasized',
             },
         },
         {
-            title                   : 'falls back to system default when prop and option are missing',
-            expectedResult          : {
-                emphasized          : finalDefaultEmphasized,
-                emphasizedClassname : finalDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
+            title                  : 'uses default not-emphasized when prop is missing',
+            options                : {
+                defaultEmphasized  : false,
+            },
+            expectedResult         : {
+                emphasized         : false,
+                emphasizeClassname : 'not-emphasized',
             },
         },
         {
-            title                   : 'falls back to parent`s: not-emphasized when prop and option are missing',
-            parentEmphasized        : false,
-            expectedResult          : {
-                emphasized          : false,
-                emphasizedClassname : 'not-emphasized',
+            title                  : 'uses default is-emphasized when prop is missing',
+            options                : {
+                defaultEmphasized  : true,
+            },
+            expectedResult         : {
+                emphasized         : true,
+                emphasizeClassname : 'is-emphasized',
             },
         },
         {
-            title                   : 'falls back to parent`s: is-emphasized when prop and option are missing',
-            parentEmphasized        : true,
-            expectedResult          : {
-                emphasized          : true,
-                emphasizedClassname : 'is-emphasized',
+            title                  : 'falls back to system default when prop and option are missing',
+            expectedResult         : {
+                emphasized         : finalDefaultEmphasized,
+                emphasizeClassname : finalDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
             },
         },
         {
-            title                   : 'falls back to system default when inheritance is missing',
-            parentEmphasized        : undefined,
-            props                   : {
-                emphasized          : 'inherit',
-            },
-            expectedResult          : {
-                emphasized          : finalDefaultEmphasized,
-                emphasizedClassname : finalDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
+            title                  : 'falls back to parent`s: not-emphasized when prop and option are missing',
+            parentEmphasized       : false,
+            expectedResult         : {
+                emphasized         : false,
+                emphasizeClassname : 'not-emphasized',
             },
         },
         {
-            title                   : 'falls back to system default when inverting is missing',
-            parentEmphasized        : undefined,
-            props                   : {
-                emphasized          : 'invert',
-            },
-            expectedResult          : {
-                emphasized          : finalDefaultEmphasized,
-                emphasizedClassname : finalDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
+            title                  : 'falls back to parent`s: is-emphasized when prop and option are missing',
+            parentEmphasized       : true,
+            expectedResult         : {
+                emphasized         : true,
+                emphasizeClassname : 'is-emphasized',
             },
         },
         {
-            title                   : 'resolves not-emphasized from props ignoring option',
-            props                   : {
-                emphasized          : false,
+            title                  : 'falls back to system default when inheritance is missing',
+            parentEmphasized       : undefined,
+            props                  : {
+                emphasized         : 'inherit',
             },
-            options                 : {
-                defaultEmphasized   : true,
-            },
-            expectedResult          : {
-                emphasized          : false,
-                emphasizedClassname : 'not-emphasized',
+            expectedResult         : {
+                emphasized         : finalDefaultEmphasized,
+                emphasizeClassname : finalDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
             },
         },
         {
-            title                   : 'resolves is-emphasized from props ignoring option',
-            props                   : {
-                emphasized          : true,
+            title                  : 'falls back to system default when inverting is missing',
+            parentEmphasized       : undefined,
+            props                  : {
+                emphasized         : 'invert',
             },
-            options                 : {
-                defaultEmphasized   : false,
+            expectedResult         : {
+                emphasized         : finalDefaultEmphasized,
+                emphasizeClassname : finalDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
             },
-            expectedResult          : {
-                emphasized          : true,
-                emphasizedClassname : 'is-emphasized',
+        },
+        {
+            title                  : 'resolves not-emphasized from props ignoring option',
+            props                  : {
+                emphasized         : false,
+            },
+            options                : {
+                defaultEmphasized  : true,
+            },
+            expectedResult         : {
+                emphasized         : false,
+                emphasizeClassname : 'not-emphasized',
+            },
+        },
+        {
+            title                  : 'resolves is-emphasized from props ignoring option',
+            props                  : {
+                emphasized         : true,
+            },
+            options                : {
+                defaultEmphasized  : false,
+            },
+            expectedResult         : {
+                emphasized         : true,
+                emphasizeClassname : 'is-emphasized',
             },
         },
         //#endregion direct resolution from props and/or options
@@ -223,105 +223,105 @@ describe('useEmphasizeVariant()', () => {
         
         //#region cascade resolution from props and/or options
         {
-            title                   : 'resolves not-emphasized from parent',
-            parentEmphasized        : false,
-            props                   : {
-                emphasized          : 'inherit',
+            title                  : 'resolves not-emphasized from parent',
+            parentEmphasized       : false,
+            props                  : {
+                emphasized         : 'inherit',
             },
-            expectedResult          : {
-                emphasized          : false,
-                emphasizedClassname : 'not-emphasized',
-            },
-        },
-        {
-            title                   : 'resolves is-emphasized from parent',
-            parentEmphasized        : true,
-            props                   : {
-                emphasized          : 'inherit',
-            },
-            expectedResult          : {
-                emphasized          : true,
-                emphasizedClassname : 'is-emphasized',
+            expectedResult         : {
+                emphasized         : false,
+                emphasizeClassname : 'not-emphasized',
             },
         },
         {
-            title                   : 'resolves not-emphasized from inverted parent',
-            parentEmphasized        : true,
-            props                   : {
-                emphasized          : 'invert',
+            title                  : 'resolves is-emphasized from parent',
+            parentEmphasized       : true,
+            props                  : {
+                emphasized         : 'inherit',
             },
-            expectedResult          : {
-                emphasized          : false,
-                emphasizedClassname : 'not-emphasized',
+            expectedResult         : {
+                emphasized         : true,
+                emphasizeClassname : 'is-emphasized',
             },
         },
         {
-            title                   : 'resolves is-emphasized from inverted parent',
-            parentEmphasized        : false,
-            props                   : {
-                emphasized          : 'invert',
+            title                  : 'resolves not-emphasized from inverted parent',
+            parentEmphasized       : true,
+            props                  : {
+                emphasized         : 'invert',
             },
-            expectedResult          : {
-                emphasized          : true,
-                emphasizedClassname : 'is-emphasized',
+            expectedResult         : {
+                emphasized         : false,
+                emphasizeClassname : 'not-emphasized',
+            },
+        },
+        {
+            title                  : 'resolves is-emphasized from inverted parent',
+            parentEmphasized       : false,
+            props                  : {
+                emphasized         : 'invert',
+            },
+            expectedResult         : {
+                emphasized         : true,
+                emphasizeClassname : 'is-emphasized',
             },
         },
         
         
         {
-            title                   : 'resolves not-emphasized from parent ignoring option',
-            parentEmphasized        : false,
-            props                   : {
-                emphasized          : 'inherit',
+            title                  : 'resolves not-emphasized from parent ignoring option',
+            parentEmphasized       : false,
+            props                  : {
+                emphasized         : 'inherit',
             },
-            options                 : {
-                defaultEmphasized   : true,
+            options                : {
+                defaultEmphasized  : true,
             },
-            expectedResult          : {
-                emphasized          : false,
-                emphasizedClassname : 'not-emphasized',
-            },
-        },
-        {
-            title                   : 'resolves is-emphasized from parent ignoring option',
-            parentEmphasized        : true,
-            props                   : {
-                emphasized          : 'inherit',
-            },
-            options                 : {
-                defaultEmphasized   : false,
-            },
-            expectedResult          : {
-                emphasized          : true,
-                emphasizedClassname : 'is-emphasized',
+            expectedResult         : {
+                emphasized         : false,
+                emphasizeClassname : 'not-emphasized',
             },
         },
         {
-            title                   : 'resolves not-emphasized from inverted parent ignoring option',
-            parentEmphasized        : true,
-            props                   : {
-                emphasized          : 'invert',
+            title                  : 'resolves is-emphasized from parent ignoring option',
+            parentEmphasized       : true,
+            props                  : {
+                emphasized         : 'inherit',
             },
-            options                 : {
-                defaultEmphasized   : true,
+            options                : {
+                defaultEmphasized  : false,
             },
-            expectedResult          : {
-                emphasized          : false,
-                emphasizedClassname : 'not-emphasized',
+            expectedResult         : {
+                emphasized         : true,
+                emphasizeClassname : 'is-emphasized',
             },
         },
         {
-            title                   : 'resolves is-emphasized from inverted parent ignoring option',
-            parentEmphasized        : false,
-            props                   : {
-                emphasized          : 'invert',
+            title                  : 'resolves not-emphasized from inverted parent ignoring option',
+            parentEmphasized       : true,
+            props                  : {
+                emphasized         : 'invert',
             },
-            options                 : {
-                defaultEmphasized   : false,
+            options                : {
+                defaultEmphasized  : true,
             },
-            expectedResult          : {
-                emphasized          : true,
-                emphasizedClassname : 'is-emphasized',
+            expectedResult         : {
+                emphasized         : false,
+                emphasizeClassname : 'not-emphasized',
+            },
+        },
+        {
+            title                  : 'resolves is-emphasized from inverted parent ignoring option',
+            parentEmphasized       : false,
+            props                  : {
+                emphasized         : 'invert',
+            },
+            options                : {
+                defaultEmphasized  : false,
+            },
+            expectedResult         : {
+                emphasized         : true,
+                emphasizeClassname : 'is-emphasized',
             },
         },
         //#endregion cascade resolution from props and/or options

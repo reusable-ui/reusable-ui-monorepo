@@ -42,14 +42,14 @@ export interface EmphasizedBoxProps extends EmphasizeVariantProps {}
 export const EmphasizedBox: FC<EmphasizedBoxProps> = (props) => {
     const {
         emphasized,
-        emphasizedClassname,
+        emphasizeClassname,
     } = useEmphasizeVariant(props, {
         defaultEmphasized: false, // fallback if not provided
     });
     
     return (
         <div
-            className={`${styles.box} ${emphasizedClassname}`}
+            className={`${styles.box} ${emphasizeClassname}`}
         >
             {emphasized && <strong>Important Content</strong>}
             <p>Additional details go here.</p>

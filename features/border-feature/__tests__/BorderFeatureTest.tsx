@@ -19,18 +19,18 @@ export interface BorderFeatureTestProps
 export const BorderFeatureTest = (props: BorderFeatureTestProps) => {
     const styles = useBorderFeatureTestStyles();
     
-    const { themeClassname      } = useThemeVariant(props);
-    const { emphasizedClassname } = useEmphasizeVariant(props);
-    const { outlinedClassname   } = useOutlineVariant(props);
-    const { mildClassname       } = useMildVariant(props);
-    const { bareClassname       } = useBareVariant(props);
+    const { themeClassname     } = useThemeVariant(props);
+    const { emphasizeClassname } = useEmphasizeVariant(props);
+    const { outlinedClassname  } = useOutlineVariant(props);
+    const { mildClassname      } = useMildVariant(props);
+    const { bareClassname      } = useBareVariant(props);
     
     return (
         <div>
             <HydrateStyles />
             <div
                 data-testid="border-feature-test"
-                className={`${styles.main} ${themeClassname} ${emphasizedClassname} ${outlinedClassname} ${mildClassname} ${bareClassname}`}
+                className={`${styles.main} ${themeClassname} ${emphasizeClassname} ${outlinedClassname} ${mildClassname} ${bareClassname}`}
             >
                 Border Feature Test
             </div>

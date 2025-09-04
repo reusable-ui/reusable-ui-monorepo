@@ -33,7 +33,7 @@ By transitioning to `emphasize-variant`, you gain:
 const { class: gradientClassname } = useGradientable({ gradient: true });
 
 // After
-const { emphasizedClassname } = useEmphasizeVariant({ emphasized: true });
+const { emphasizeClassname } = useEmphasizeVariant({ emphasized: true });
 ```
 
 ### From `usesGradientable()` → `usesEmphasizeVariant()`

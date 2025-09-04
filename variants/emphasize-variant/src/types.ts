@@ -64,7 +64,7 @@ export interface ResolvedEmphasizeVariant {
      * - `'is-emphasized'`
      * - `'not-emphasized'`
      */
-    emphasizedClassname  : 'is-emphasized' | 'not-emphasized'
+    emphasizeClassname   : 'is-emphasized' | 'not-emphasized'
 }
 
 

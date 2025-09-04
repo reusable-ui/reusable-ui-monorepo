@@ -17,17 +17,17 @@ export interface DecorationFeatureTestProps
 export const DecorationFeatureTest = (props: DecorationFeatureTestProps) => {
     const styles = useDecorationFeatureTestStyles();
     
-    const { themeClassname      } = useThemeVariant(props);
-    const { emphasizedClassname } = useEmphasizeVariant(props);
-    const { outlinedClassname   } = useOutlineVariant(props);
-    const { mildClassname       } = useMildVariant(props);
+    const { themeClassname     } = useThemeVariant(props);
+    const { emphasizeClassname } = useEmphasizeVariant(props);
+    const { outlinedClassname  } = useOutlineVariant(props);
+    const { mildClassname      } = useMildVariant(props);
     
     return (
         <div>
             <HydrateStyles />
             <div
                 data-testid="decoration-feature-test"
-                className={`${styles.main} ${themeClassname} ${emphasizedClassname} ${outlinedClassname} ${mildClassname}`}
+                className={`${styles.main} ${themeClassname} ${emphasizeClassname} ${outlinedClassname} ${mildClassname}`}
             >
                 Decoration Feature Test
             </div>

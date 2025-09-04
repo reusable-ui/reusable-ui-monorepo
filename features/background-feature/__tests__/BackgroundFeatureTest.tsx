@@ -24,18 +24,18 @@ export const BackgroundFeatureTest = (props: BackgroundFeatureTestProps) => {
     
     const styles = useBackgroundFeatureTestStyles();
     
-    const { themeClassname      } = useThemeVariant(props);
-    const { emphasizedClassname } = useEmphasizeVariant(props);
-    const { outlinedClassname   } = useOutlineVariant(props);
-    const { mildClassname       } = useMildVariant(props);
-    const { bareClassname       } = useBareVariant(props);
+    const { themeClassname     } = useThemeVariant(props);
+    const { emphasizeClassname } = useEmphasizeVariant(props);
+    const { outlinedClassname  } = useOutlineVariant(props);
+    const { mildClassname      } = useMildVariant(props);
+    const { bareClassname      } = useBareVariant(props);
     
     return (
         <div>
             <HydrateStyles />
             <div
                 data-testid="background-feature-test"
-                className={`${styles[backgCustom]} ${themeClassname} ${emphasizedClassname} ${outlinedClassname} ${mildClassname} ${bareClassname}`}
+                className={`${styles[backgCustom]} ${themeClassname} ${emphasizeClassname} ${outlinedClassname} ${mildClassname} ${bareClassname}`}
             >
                 Background Feature Test
             </div>
