@@ -20,7 +20,7 @@ export const ExciteStateTest = (props: ExciteStateTestProps) => {
     const styles = useExciteStateTestStyles();
     
     const {
-        excitedClassname,
+        exciteClassname,
         
         handleAnimationStart,
         handleAnimationEnd,
@@ -69,7 +69,7 @@ export const ExciteStateTest = (props: ExciteStateTestProps) => {
             <div
                 ref={elementRef}
                 data-testid="excite-state-test"
-                className={`${styles.main} ${excitedClassname}`}
+                className={`${styles.main} ${exciteClassname}`}
                 onAnimationStart={handleMergedAnimationStart}
                 onAnimationEnd={handleMergedAnimationEnd}
             >

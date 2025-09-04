@@ -133,7 +133,7 @@ export interface ExciteStateApi<TElement extends Element = HTMLElement>
      * - `'is-excited'`
      * - `'not-excited'`
      */
-    excitedClassname  : 'is-excited' | 'not-excited'
+    exciteClassname   : 'is-excited' | 'not-excited'
 }
 
 

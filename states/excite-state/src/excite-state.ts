@@ -27,7 +27,7 @@ import {
 
 // Utilities:
 import {
-    getExcitedClassname,
+    getExciteClassname,
 }                           from './internal-utilities.js'
 
 // Reusable-ui utilities:
@@ -85,7 +85,7 @@ import {
  * export const ExcitableBox: FC<ExcitableBoxProps> = (props) => {
  *     const {
  *         excited,
- *         excitedClassname,
+ *         exciteClassname,
  *         
  *         handleAnimationStart,
  *         handleAnimationEnd,
@@ -98,7 +98,7 @@ import {
  *     
  *     return (
  *         <div
- *             className={`${styles.box} ${excitedClassname}`}
+ *             className={`${styles.box} ${exciteClassname}`}
  *             
  *             onAnimationStart={handleAnimationStart}
  *             onAnimationEnd={handleAnimationEnd}
@@ -134,7 +134,7 @@ export const useExciteState = <TElement extends Element = HTMLElement>(props: Ex
     
     // Controlled excitement state:
     const {
-        value              : excitedIntent,
+        value              : resolvedExcited,
         triggerValueChange : requestExcitedReset,
     } = useControllableValueChange<boolean, AnimationEvent>({
         value              : excited,
@@ -142,14 +142,14 @@ export const useExciteState = <TElement extends Element = HTMLElement>(props: Ex
     });
     
     // Animation lifecycle state:
-    const [, setExcitedAnimation, isAnimating, animationHandlers] = useAnimationState<boolean, TElement>({
+    const [, setExcitedAnimation, runningAnimation, animationHandlers] = useAnimationState<boolean, TElement>({
         initialIntent : false, // Initially is **Stopped** (false).
         animationPattern,
         animationBubbling,
     });
     
     // Animation status (fallback to false if idle):
-    const excitedAnimation = isAnimating ?? false;
+    const exciteAnimation = runningAnimation ?? false;
     
     // Tracks the animation event that triggered the excitement:
     const exciteAnimationEventRef = useRef<AnimationEvent<TElement> | undefined>(undefined);
@@ -211,10 +211,10 @@ export const useExciteState = <TElement extends Element = HTMLElement>(props: Ex
     
     
     
-    // Sync animation state with excitement intent:
+    // Sync animation state with resolved excitement state:
     useEffect(() => {
         // Exit early if the animation state is already in sync with the intended one:
-        if (excitedAnimation === excitedIntent) return;
+        if (exciteAnimation === resolvedExcited) return;
         
         
         
@@ -224,7 +224,7 @@ export const useExciteState = <TElement extends Element = HTMLElement>(props: Ex
         
         
         
-        if (!excitedIntent) {
+        if (!resolvedExcited) {
             // Stop animation immediately:
             setExcitedAnimation(false); // Not really stopped immediately, the already running animation will finish properly (not interrupted).
             
@@ -287,14 +287,14 @@ export const useExciteState = <TElement extends Element = HTMLElement>(props: Ex
             tickPromise?.abort();
             framePromise?.abort();
         };
-    }, [excitedAnimation, excitedIntent]);
+    }, [exciteAnimation, resolvedExcited]);
     
     
     
     // Return resolved excitement attributes:
     return {
-        excited               : excitedIntent,
-        excitedClassname      : getExcitedClassname(excitedAnimation),
+        excited               : resolvedExcited,
+        exciteClassname       : getExciteClassname(exciteAnimation),
         ...animationHandlers,
         handleAnimationEnd    : mergedHandleAnimationEnd,
         handleAnimationCancel : mergedHandleAnimationCancel,

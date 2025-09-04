@@ -41,7 +41,7 @@ export interface ExcitableBoxProps extends ExciteStateProps {}
 export const ExcitableBox: FC<ExcitableBoxProps> = (props) => {
     const {
         excited,
-        excitedClassname,
+        exciteClassname,
         
         handleAnimationStart,
         handleAnimationEnd,
@@ -54,7 +54,7 @@ export const ExcitableBox: FC<ExcitableBoxProps> = (props) => {
     
     return (
         <div
-            className={`${styles.box} ${excitedClassname}`}
+            className={`${styles.box} ${exciteClassname}`}
             
             onAnimationStart={handleAnimationStart}
             onAnimationEnd={handleAnimationEnd}
