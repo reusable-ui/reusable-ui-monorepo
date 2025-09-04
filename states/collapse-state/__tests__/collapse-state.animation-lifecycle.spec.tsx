@@ -7,7 +7,7 @@ import { CollapseStateTest } from './CollapseStateTest.js';
 /**
  * Represents a single test scenario for validating expand/collapse state transitions.
  */
-interface CollapseStateTestCase {
+interface CollapseStateAnimationTestCase {
     // Test Inputs:
     
     /**
@@ -57,18 +57,18 @@ interface CollapseStateTestCase {
          * - `null`      : there is no running expand/collapse animation
          * - `undefined` : nothing to expect
          */
-        expectedRunningExpand ?: boolean
+        expectedRunningExpand ?: boolean | null
     }[]
 }
 
 
 
-test.describe('usesCollapseState', () => {
+test.describe('useCollapseState - animation', () => {
     for (const { title, expanded : initialExpanded, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.
             To check the existance of the animation,
-            please do it between +200 ms after the expected start time and -200 ms before the expected end time.
+            please do it between +200 ms after the expected starts and -200 ms before the expected ends.
         */
         {
             title    : 'No running expand/collapse animation in all time',
@@ -260,7 +260,7 @@ test.describe('usesCollapseState', () => {
                 },
             ],
         },
-    ] as CollapseStateTestCase[]) {
+    ] as CollapseStateAnimationTestCase[]) {
         test(title, async ({ mount }) => {
             // States:
             let currentExpanded : boolean = initialExpanded;

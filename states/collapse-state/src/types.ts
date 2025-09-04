@@ -18,6 +18,11 @@ import {
 // Reusable-ui utilities:
 import {
     // Types:
+    type ValueChangeDispatcher,
+    type ValueChangeEventHandler,
+}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+import {
+    // Types:
     type AnimationStateOptions,
     type AnimationStateHandlers,
 }                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
@@ -41,6 +46,73 @@ export interface CollapseStateProps {
 }
 
 /**
+ * Props for initializing the expanded/collapsed state in uncontrolled components.
+ * 
+ * Enables passive expansion behavior when the parent does not actively manage state.
+ * Commonly used in components like `<Accordion>` or `<Detail>` that enhance content
+ * without requiring external control or feedback loops.
+ */
+export interface CollapseStateUncontrollableProps {
+    /**
+     * Specifies the initial expanded state for uncontrolled usage.
+     * 
+     * - `true`  → initially expanded
+     * - `false` → initially collapsed
+     * 
+     * Defaults to `false` if not provided.
+     */
+    defaultExpanded ?: boolean
+}
+
+/**
+ * Props for exposing a change request to the expanded/collapsed state.
+ * 
+ * Typically used in interactive components (e.g. Alert, Toast, Accordion) that may initiate expand/collapse
+ * through user actions such as dismiss buttons, ESC key presses, or header toggles.
+ * 
+ * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
+ */
+export interface CollapseStateChangeProps<TChangeEvent = unknown> {
+    /**
+     * Signals intent to change the expanded state.
+     * 
+     * - `true`  → request to expand
+     * - `false` → request to collapse
+     * 
+     * The parent may choose to honor or ignore this request.
+     */
+    onExpandedChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
+}
+
+/**
+ * Props for listening lifecycle events triggered by expand/collapse phase transitions.
+ * 
+ * These events allow external listeners to react to phase changes—such as logging, analytics,
+ * or chaining animations.
+ */
+export interface CollapseStatePhaseEventProps {
+    /**
+     * Called when the expand animation begins.
+     */
+    onExpandStart   ?: ValueChangeEventHandler<ExpandPhase, unknown>
+    
+    /**
+     * Called when the expand animation completes.
+     */
+    onExpandEnd     ?: ValueChangeEventHandler<ExpandPhase, unknown>
+    
+    /**
+     * Called when the collapse animation begins.
+     */
+    onCollapseStart ?: ValueChangeEventHandler<ExpandPhase, unknown>
+    
+    /**
+     * Called when the collapse animation completes.
+     */
+    onCollapseEnd   ?: ValueChangeEventHandler<ExpandPhase, unknown>
+}
+
+/**
  * Optional configuration options for customizing expand/collapse behavior and animation lifecycle.
  */
 export interface CollapseStateOptions
@@ -52,7 +124,8 @@ export interface CollapseStateOptions
         >>
 {
     /**
-     * The default expanded state to apply when no `expanded` prop is explicitly provided.
+     * The default expanded state to apply when no `defaultExpanded` prop is explicitly provided.
+     * This value is only applied in uncontrolled mode.
      */
     defaultExpanded   ?: boolean
     
@@ -95,11 +168,11 @@ export type ExpandPhase =
     | 'expanded'
 
 /**
- * An API for accessing the resolved expand/collapse state, current transition phase, associated CSS class name, and animation event handlers.
+ * An API for accessing the resolved expand/collapse state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
  */
-export interface CollapseStateApi<TElement extends Element = HTMLElement>
+export interface CollapseStateApi<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends
         // Bases:
         AnimationStateHandlers<TElement>
@@ -112,14 +185,14 @@ export interface CollapseStateApi<TElement extends Element = HTMLElement>
      * - `true`  : the component remains expanded
      * - `false` : the component appears collapsed
      */
-    expanded        : boolean
+    expanded               : boolean
     
     /**
      * The current transition phase of the expand/collapse lifecycle.
      * 
      * Reflects both transitional states (`expanding`, `collapsing`) and resolved states (`expanded`, `collapsed`).
      */
-    expandPhase     : ExpandPhase
+    expandPhase            : ExpandPhase
     
     /**
      * A CSS class name reflecting the current expand/collapse phase.
@@ -130,7 +203,16 @@ export interface CollapseStateApi<TElement extends Element = HTMLElement>
      * - `'is-expanding'`
      * - `'is-expanded'`
      */
-    expandClassname : `is-${ExpandPhase}`
+    expandClassname        : `is-${ExpandPhase}`
+    
+    /**
+     * Requests a change to the expanded state.
+     * 
+     * - In uncontrolled mode (no `expanded` prop), updates internal state directly.
+     * - In controlled mode, delegates the decision to the parent component, which may choose to accept or ignore the request.
+     * - Always triggers `onExpandedChange`, if defined, regardless of control mode.
+     */
+    dispatchExpandedChange : ValueChangeDispatcher<boolean, TChangeEvent>
 }
 
 

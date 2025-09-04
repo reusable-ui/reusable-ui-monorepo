@@ -5,9 +5,10 @@ Ideal for tooltips, accordions, dialogs, and any collapsible UI components.
 
 ## ✨ Features
 ✔ Lifecycle-aware expand/collapse animations based on transition phase  
-✔ Gracefully completes running animations before resolving state  
+✔ Gracefully completes running animations before resolving new state  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, animation, and feedback systems  
+✔ Supports controlled, uncontrolled, and hybrid expansion behavior  
 
 ## 📦 Installation
 Install **@reusable-ui/collapse-state** via npm or yarn:
@@ -24,17 +25,25 @@ yarn add @reusable-ui/collapse-state
 
 Resolves the expand/collapse state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
+Supports controlled, uncontrolled, and hybrid expansion behavior with optional change dispatching.
+
 #### 💡 Usage Example
 
 ```tsx
-import React, { FC } from 'react';
+import React, { FC, MouseEventHandler } from 'react';
 import {
     useCollapseState,
     CollapseStateProps,
+    CollapseStateUncontrollableProps,
+    CollapseStateChangeProps,
 } from '@reusable-ui/collapse-state';
 import styles from './CollapsibleBox.module.css';
 
-export interface CollapsibleBoxProps extends CollapseStateProps {}
+export interface CollapsibleBoxProps extends
+    CollapseStateProps,
+    CollapseStateUncontrollableProps<MouseEventHandler<HTMLButtonElement>>, // optional uncontrolled behavior
+    CollapseStateChangeProps // optional change dispatching behavior
+{}
 
 // A box that can be expanded and collapsed.
 export const CollapsibleBox: FC<CollapsibleBoxProps> = (props) => {
@@ -43,11 +52,13 @@ export const CollapsibleBox: FC<CollapsibleBoxProps> = (props) => {
         expandPhase,
         expandClassname,
         
+        dispatchExpandedChange,
+        
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
     } = useCollapseState(props, {
-        defaultExpanded   : false,                  // Defaults the `expanded` prop to `false` if not provided.
+        defaultExpanded   : false,                  // Fallback for uncontrolled mode.
         animationPattern  : ['expand', 'collapse'], // Matches animation names ending with 'expand' or 'collapse'.
         animationBubbling : false,                  // Ignores bubbling animation events from children.
     });
@@ -59,22 +70,35 @@ export const CollapsibleBox: FC<CollapsibleBoxProps> = (props) => {
             onAnimationStart={handleAnimationStart}
             onAnimationEnd={handleAnimationEnd}
         >
-            {expanded && <span className={styles.badge}>🔔</span>}
-            <p>Additional details go here.</p>
+            <button onClick={(event) => dispatchExpandedChange(!expanded, event)}>
+                See details
+            </button>
+            {expanded && <div className={styles.details}>
+                <p>Additional details go here.</p>
+            </div>}
         </div>
     );
 };
 ```
 
+### `useCollapseStatePhaseEvents(props, expandPhase)`
+
+Emits lifecycle events in response to expand/collapse phase transitions.
+
+This hook observes the resolved `expandPhase` from `useCollapseState()` and triggers the appropriate callbacks defined in `CollapseStatePhaseEventProps`, such as:
+
+- `onExpandStart`
+- `onExpandEnd`
+- `onCollapseStart`
+- `onCollapseEnd`
+
 #### 🧠 Transition Animation Behavior
 
-The hook manages transitions between `expanded` and `collapsed` states using a unified animation flow.  
-Whether expanding or collapsing, the animation sequence is visually consistent—ensuring smooth reversals without abrupt jumps.
+The hook manages transitions between `expanded` and `collapsed` states using a unified animation flow:
 
-When the `expanded` prop changes:
-- If a transition is already in progress, the new intent (e.g., switching from collapse to expand) is deferred until the current animation completes.
-- Once the active animation finishes, the hook resumes the latest intent and initiates the corresponding transition.
-- This guarantees that animations are never interrupted mid-flight and outdated transitions are discarded.
+- If a transition is already in progress, new intent (e.g., switching from collapse to expand) is deferred until the current animation completes.
+- Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
+- This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
 
 ---
 
