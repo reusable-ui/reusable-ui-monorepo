@@ -240,6 +240,44 @@ export interface CollapseStateVars {
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
     animationCollapse : unknown
+    
+    /**
+     * Applies when the component is either expanding or fully expanded.
+     * 
+     * Acts as a conditional switch: when declared with an empty value,
+     * any CSS property referencing this variable becomes valid and is applied.
+     * If `unset`, the variable **poisons** dependent properties,
+     * causing the browser to ignore them.
+     * 
+     * @example
+     * ```ts
+     * export const componentStyle = () => style({
+     *     // These properties are only applied when the component is either expanding or fully expanded:
+     *     blockSize : `${collapseStateVars.isExpanded} 100px`,
+     *     opacity   : `${collapseStateVars.isExpanded} 100%`,
+     * });
+     * ```
+     */
+    isExpanded  : unknown
+    
+    /**
+     * Applies when the component is either collapsing or fully collapsed.
+     * 
+     * Acts as a conditional switch: when declared with an empty value,
+     * any CSS property referencing this variable becomes valid and is applied.
+     * If `unset`, the variable **poisons** dependent properties,
+     * causing the browser to ignore them.
+     * 
+     * @example
+     * ```ts
+     * export const componentStyle = () => style({
+     *     // These properties are only applied when the component is either collapsing or fully collapsed:
+     *     blockSize : `${collapseStateVars.isCollapsed} 0px`,
+     *     opacity   : `${collapseStateVars.isCollapsed} 0%`,
+     * });
+     * ```
+     */
+    isCollapsed : unknown
 }
 
 

@@ -58,6 +58,13 @@ interface CollapseStateAnimationTestCase {
          * - `undefined` : nothing to expect
          */
         expectedRunningExpand ?: boolean | null
+        
+        /**
+         * The expected height in pixel of the expanded/collapsed element.
+         * - `number`    : expected height in pixel
+         * - `undefined` : nothing to expect
+         */
+        expectedHeight        ?: number
     }[]
 }
 
@@ -77,24 +84,28 @@ test.describe('useCollapseState - animation', () => {
                 {
                     title                 : 'Initially no running animation',
                     expectedRunningExpand : null,
+                    expectedHeight        : 0,
                 },
                 {
                     title                 : 'Still no running animation',
                     
                     delay                 : 200,
                     expectedRunningExpand : null,
+                    expectedHeight        : 0,
                 },
                 {
                     title                 : 'Still no running animation',
                     
                     delay                 : 1000,
                     expectedRunningExpand : null,
+                    expectedHeight        : 0,
                 },
                 {
                     title                 : 'Still no running animation',
                     
                     delay                 : 1000,
                     expectedRunningExpand : null,
+                    expectedHeight        : 0,
                 },
             ],
         },
@@ -102,6 +113,11 @@ test.describe('useCollapseState - animation', () => {
             title    : 'Expanded state after update',
             expanded : false,
             updates  : [
+                {
+                    title                 : 'Initially collapsed',
+                    expectedRunningExpand : null,
+                    expectedHeight        : 0,
+                },
                 {
                     title                 : 'Set expanded to true (immediate)',
                     expanded              : true, // The animation duration is 1000 ms.
@@ -120,6 +136,7 @@ test.describe('useCollapseState - animation', () => {
                     
                     delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedRunningExpand : null,
+                    expectedHeight        : 100,
                 },
             ],
         },
@@ -127,6 +144,11 @@ test.describe('useCollapseState - animation', () => {
             title    : 'Collapsed state after update',
             expanded : true,
             updates  : [
+                {
+                    title                 : 'Initially expanded',
+                    expectedRunningExpand : null,
+                    expectedHeight        : 100,
+                },
                 {
                     title                 : 'Set expanded to false (immediate)',
                     expanded              : false, // The animation duration is 1000 ms.
@@ -145,6 +167,7 @@ test.describe('useCollapseState - animation', () => {
                     
                     delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedRunningExpand : null,
+                    expectedHeight        : 0,
                 },
             ],
         },
@@ -153,31 +176,37 @@ test.describe('useCollapseState - animation', () => {
             expanded : false,
             updates  : [
                 {
-                    title                   : 'Expand',
-                    expanded                : true,
-                    
-                    delay                   : 200,
-                    expectedRunningExpand   : true,
+                    title                 : 'Initially collapsed',
+                    expectedRunningExpand : null,
+                    expectedHeight        : 0,
                 },
                 {
-                    title                   : 'Collapse before expansion finishes',
-                    expanded                : false,
+                    title                 : 'Expand',
+                    expanded              : true,
                     
-                    delay                   : 200,
-                    expectedRunningExpand   : true,  // Still expanding (600ms remaining) — cannot cancel mid-flight.
+                    delay                 : 200,
+                    expectedRunningExpand : true,
                 },
                 {
-                    title                   : 'Re-expand again before collapse finishes',
-                    expanded                : true,
+                    title                 : 'Collapse before expansion finishes',
+                    expanded              : false,
                     
-                    delay                   : 200,
-                    expectedRunningExpand   : true, // Still in original expansion sequence (400ms remaining).
+                    delay                 : 200,
+                    expectedRunningExpand : true,  // Still expanding (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
-                    title                   : 'Wait for final expansion to complete',
+                    title                 : 'Re-expand again before collapse finishes',
+                    expanded              : true,
                     
-                    delay                   : 600, // Includes additional margin to guarantee completion.
-                    expectedRunningExpand   : undefined, // No running animation.
+                    delay                 : 200,
+                    expectedRunningExpand : true, // Still in original expansion sequence (400ms remaining).
+                },
+                {
+                    title                 : 'Wait for final expansion to complete',
+                    
+                    delay                 : 600, // Includes additional margin to guarantee completion.
+                    expectedRunningExpand : undefined, // No running animation.
+                    expectedHeight        : 100,
                 },
             ],
         },
@@ -186,31 +215,37 @@ test.describe('useCollapseState - animation', () => {
             expanded : true,
             updates  : [
                 {
-                    title                   : 'Collapse',
-                    expanded                : false,
-                    
-                    delay                   : 200,
-                    expectedRunningExpand   : false,
+                    title                 : 'Initially expanded',
+                    expectedRunningExpand : null,
+                    expectedHeight        : 100,
                 },
                 {
-                    title                   : 'Expand before collapsion finishes',
-                    expanded                : true,
+                    title                 : 'Collapse',
+                    expanded              : false,
                     
-                    delay                   : 200,
-                    expectedRunningExpand   : false,  // Still collapsing (600ms remaining) — cannot cancel mid-flight.
+                    delay                 : 200,
+                    expectedRunningExpand : false,
                 },
                 {
-                    title                   : 'Re-collapse again before expand finishes',
-                    expanded                : false,
+                    title                 : 'Expand before collapsion finishes',
+                    expanded              : true,
                     
-                    delay                   : 200,
-                    expectedRunningExpand   : false, // Still in original collapsion sequence (400ms remaining).
+                    delay                 : 200,
+                    expectedRunningExpand : false,  // Still collapsing (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
-                    title                   : 'Wait for final collapsion to complete',
+                    title                 : 'Re-collapse again before expand finishes',
+                    expanded              : false,
                     
-                    delay                   : 600, // Includes additional margin to guarantee completion.
-                    expectedRunningExpand   : undefined, // No running animation.
+                    delay                 : 200,
+                    expectedRunningExpand : false, // Still in original collapsion sequence (400ms remaining).
+                },
+                {
+                    title                 : 'Wait for final collapsion to complete',
+                    
+                    delay                 : 600, // Includes additional margin to guarantee completion.
+                    expectedRunningExpand : undefined, // No running animation.
+                    expectedHeight        : 0,
                 },
             ],
         },
@@ -219,21 +254,27 @@ test.describe('useCollapseState - animation', () => {
             expanded : false,
             updates  : [
                 {
-                    title                   : 'Expand (first time)',
-                    expanded                : true,
-                    delay                   : 200,
-                    expectedRunningExpand   : true,
+                    title                 : 'Initially collapsed',
+                    expectedRunningExpand : null,
+                    expectedHeight        : 0,
                 },
                 {
-                    title                   : 'Set expanded to true again (no change)',
-                    expanded                : true,
-                    delay                   : 200,
-                    expectedRunningExpand   : true, // Continues original animation, no reset (800ms remaining).
+                    title                 : 'Expand (first time)',
+                    expanded              : true,
+                    delay                 : 200,
+                    expectedRunningExpand : true,
                 },
                 {
-                    title                   : 'Wait for final animation to finish',
-                    delay                   : 800, // Includes additional margin to guarantee completion.
-                    expectedRunningExpand   : undefined,
+                    title                 : 'Set expanded to true again (no change)',
+                    expanded              : true,
+                    delay                 : 200,
+                    expectedRunningExpand : true, // Continues original animation, no reset (800ms remaining).
+                },
+                {
+                    title                 : 'Wait for final animation to finish',
+                    delay                 : 800, // Includes additional margin to guarantee completion.
+                    expectedRunningExpand : undefined,
+                    expectedHeight        : 100,
                 },
             ],
         },
@@ -242,21 +283,27 @@ test.describe('useCollapseState - animation', () => {
             expanded : true,
             updates  : [
                 {
-                    title                   : 'Collapse (first time)',
-                    expanded                : false,
-                    delay                   : 200,
-                    expectedRunningExpand   : false,
+                    title                 : 'Initially expanded',
+                    expectedRunningExpand : null,
+                    expectedHeight        : 100,
                 },
                 {
-                    title                   : 'Set expanded to false again (no change)',
-                    expanded                : false,
-                    delay                   : 200,
-                    expectedRunningExpand   : false, // Continues original animation, no reset (800ms remaining).
+                    title                 : 'Collapse (first time)',
+                    expanded              : false,
+                    delay                 : 200,
+                    expectedRunningExpand : false,
                 },
                 {
-                    title                   : 'Wait for final animation to finish',
-                    delay                   : 800, // Includes additional margin to guarantee completion.
-                    expectedRunningExpand   : undefined,
+                    title                 : 'Set expanded to false again (no change)',
+                    expanded              : false,
+                    delay                 : 200,
+                    expectedRunningExpand : false, // Continues original animation, no reset (800ms remaining).
+                },
+                {
+                    title                 : 'Wait for final animation to finish',
+                    delay                 : 800, // Includes additional margin to guarantee completion.
+                    expectedRunningExpand : undefined,
+                    expectedHeight        : 0,
                 },
             ],
         },
@@ -303,7 +350,7 @@ test.describe('useCollapseState - animation', () => {
             
             
             // Apply update scenarios:
-            for (const { title, expanded, delay, expectedRunningExpand} of updates) {
+            for (const { title, expanded, delay, expectedRunningExpand, expectedHeight} of updates) {
                 console.log(`[Subtest] ${title}`);
                 
                 
@@ -356,6 +403,11 @@ test.describe('useCollapseState - animation', () => {
                             expect(runningAnimations.has('boo-test-collapse')).toBe(false);
                             break;
                     } // switch
+                } // if
+                
+                if (expectedHeight !== undefined) {
+                    const actualHeight = await box.evaluate((el) => window.getComputedStyle(el).height);
+                    expect(actualHeight).toBe(`${expectedHeight}px`);
                 } // if
             } // for
         });

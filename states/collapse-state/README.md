@@ -171,7 +171,7 @@ import { usesAnimationFeature } from '@reusable-ui/animation-feature';
 import { usesCollapseState } from '@reusable-ui/collapse-state';
 
 // CSS-in-JS:
-import { style, vars, keyframes } from '@cssfn/core';
+import { style, vars, keyframes, fallback } from '@cssfn/core';
 
 export const collapsibleBoxStyle = () => {
     const {
@@ -181,6 +181,7 @@ export const collapsibleBoxStyle = () => {
     
     const {
         collapseStateRule,
+        collapseStateVars: { isExpanded, isCollapsed },
     } = usesCollapseState({
         animationExpand   : 'var(--box-expand)',
         animationCollapse : 'var(--box-collapse)',
@@ -225,6 +226,17 @@ export const collapsibleBoxStyle = () => {
                 blockSize: '0px',
             },
         }),
+        
+        // Define final block size based on lifecycle state:
+        boxSizing: 'border-box',
+        overflow: 'hidden',
+        ...fallback({
+            '--blockSize-expanded' : `${isExpanded} 100px`,
+        }),
+        ...fallback({
+            '--blockSize-collapsed' : `${isCollapsed} 0px`,
+        }),
+        blockSize: 'var(--blockSize-expanded, var(--blockSize-collapsed))',
         
         // Apply composed animations:
         animation,

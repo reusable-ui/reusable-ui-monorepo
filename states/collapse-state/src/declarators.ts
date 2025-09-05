@@ -219,7 +219,7 @@ animationRegistry.registerAnimation(collapseStateVars.animationCollapse);
  * import { usesCollapseState } from '@reusable-ui/collapse-state';
  * 
  * // CSS-in-JS:
- * import { style, vars, keyframes } from '@cssfn/core';
+ * import { style, vars, keyframes, fallback } from '@cssfn/core';
  * 
  * export const collapsibleBoxStyle = () => {
  *     const {
@@ -229,6 +229,7 @@ animationRegistry.registerAnimation(collapseStateVars.animationCollapse);
  *     
  *     const {
  *         collapseStateRule,
+ *         collapseStateVars: { isExpanded, isCollapsed },
  *     } = usesCollapseState({
  *         animationExpand   : 'var(--box-expand)',
  *         animationCollapse : 'var(--box-collapse)',
@@ -274,6 +275,17 @@ animationRegistry.registerAnimation(collapseStateVars.animationCollapse);
  *             },
  *         }),
  *         
+ *         // Define final block size based on lifecycle state:
+ *         boxSizing: 'border-box',
+ *         overflow: 'hidden',
+ *         ...fallback({
+ *             '--blockSize-expanded' : `${isExpanded} 100px`,
+ *         }),
+ *         ...fallback({
+ *             '--blockSize-collapsed' : `${isCollapsed} 0px`,
+ *         }),
+ *         blockSize: 'var(--blockSize-expanded, var(--blockSize-collapsed))',
+ *         
  *         // Apply composed animations:
  *         animation,
  *     });
@@ -292,14 +304,35 @@ export const usesCollapseState = (options?: CssCollapseStateOptions): CssCollaps
     return {
         collapseStateRule : () => style({
             ...states({
+                // Apply expand animation during the expanding phase:
                 ...ifExpanding(
                     vars({
                         [collapseStateVars.animationExpand  ] : animationExpand,   // Activate the animation (if provided).
                     })
                 ),
+                
+                // Apply collapse animation during the collapsing phase:
                 ...ifCollapsing(
                     vars({
                         [collapseStateVars.animationCollapse] : animationCollapse, // Activate the animation (if provided).
+                    })
+                ),
+                
+                
+                
+                // Mark as expanded during both expanding and fully expanded states:
+                ...ifExpandingOrExpanded(
+                    vars({
+                        [collapseStateVars.isExpanded ] : '',      // Valid    when either expanding or fully expanded.
+                        [collapseStateVars.isCollapsed] : 'unset', // Poisoned when either expanding or fully expanded.
+                    })
+                ),
+                
+                // Mark as collapsed during both collapsing and fully collapsed states:
+                ...ifCollapsingOrCollapsed(
+                    vars({
+                        [collapseStateVars.isExpanded ] : 'unset', // Poisoned when either collapsing or fully collapsed.
+                        [collapseStateVars.isCollapsed] : '',      // Valid    when either collapsing or fully collapsed.
                     })
                 ),
             }),
