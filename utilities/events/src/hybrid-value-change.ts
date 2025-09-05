@@ -48,14 +48,14 @@ import {
  *          onActiveChange
  *      } = props;
  *      
- *      const { value: isActive, triggerValueChange } = useHybridValueChange<boolean, Event>({
+ *      const { value: isActive, dispatchValueChange } = useHybridValueChange<boolean, Event>({
  *          defaultValue  : defaultActive,
  *          value         : active,
  *          onValueChange : onActiveChange,
  *      });
  *      
  *      return (
- *          <button onClick={() => triggerValueChange(!isActive, new Event('active', { bubbles: true, cancelable: false }))}>
+ *          <button onClick={() => dispatchValueChange(!isActive, new Event('active', { bubbles: true, cancelable: false }))}>
  *              {isActive ? 'Active' : 'Inactive'}
  *          </button>
  *      );
@@ -83,7 +83,7 @@ export const useHybridValueChange = <TValue, TChangeEvent = unknown>(props: Hybr
     
     
     // Stable functions:
-    const triggerValueChange : ValueChangeDispatcher<TValue, TChangeEvent> = useStableCallback((newValue: TValue, event: TChangeEvent): void => {
+    const dispatchValueChange : ValueChangeDispatcher<TValue, TChangeEvent> = useStableCallback((newValue: TValue, event: TChangeEvent): void => {
         // Update the internal value only if uncontrolled:
         if (!isExternallyControlled) setInternalValue(newValue);
         
@@ -103,6 +103,6 @@ export const useHybridValueChange = <TValue, TChangeEvent = unknown>(props: Hybr
         
         
         // Stable functions:
-        triggerValueChange,
+        dispatchValueChange,
     } satisfies ValueChangeApi<TValue, TChangeEvent>;
 };

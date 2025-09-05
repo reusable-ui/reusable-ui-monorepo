@@ -46,13 +46,13 @@ import {
  *          onActiveChange
  *      } = props;
  *      
- *      const { value: isActive, triggerValueChange } = useUncontrollableValueChange<boolean, Event>({
+ *      const { value: isActive, dispatchValueChange } = useUncontrollableValueChange<boolean, Event>({
  *          defaultValue  : defaultActive,
  *          onValueChange : onActiveChange,
  *      });
  *      
  *      return (
- *          <button onClick={() => triggerValueChange(!isActive, new Event('active', { bubbles: true, cancelable: false }))}>
+ *          <button onClick={() => dispatchValueChange(!isActive, new Event('active', { bubbles: true, cancelable: false }))}>
  *              {isActive ? 'Active' : 'Inactive'}
  *          </button>
  *      );
@@ -77,7 +77,7 @@ export const useUncontrollableValueChange = <TValue, TChangeEvent = unknown>(pro
     
     
     // Stable functions:
-    const triggerValueChange : ValueChangeDispatcher<TValue, TChangeEvent> = useStableCallback((newValue: TValue, event: TChangeEvent): void => {
+    const dispatchValueChange : ValueChangeDispatcher<TValue, TChangeEvent> = useStableCallback((newValue: TValue, event: TChangeEvent): void => {
         // Update the internal value:
         setInternalValue(newValue);
         
@@ -97,6 +97,6 @@ export const useUncontrollableValueChange = <TValue, TChangeEvent = unknown>(pro
         
         
         // Stable functions:
-        triggerValueChange,
+        dispatchValueChange,
     } satisfies ValueChangeApi<TValue, TChangeEvent>;
 };

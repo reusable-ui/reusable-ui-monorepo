@@ -24,7 +24,7 @@ describe('useControllableValueChange', () => {
         expect(result.current.value).toBe('initial');
     });
     
-    it('should update value externally when calling triggerValueChange', () => {
+    it('should update value externally when calling dispatchValueChange', () => {
         const { result } = renderHook(() => {
             const [externalValue, setExternalValue] = useState<string>('before');
             return useControllableValueChange<string, Event>({
@@ -34,36 +34,36 @@ describe('useControllableValueChange', () => {
         });
         
         act(() => {
-            result.current.triggerValueChange('after', new Event('click'));
+            result.current.dispatchValueChange('after', new Event('click'));
         });
         
         expect(result.current.value).toBe('after');
     });
     
-    it('should trigger onValueChange when calling triggerValueChange', () => {
+    it('should trigger onValueChange when calling dispatchValueChange', () => {
         const { result } = renderHook(() => useControllableValueChange<string, Event>({
             value: 'start',
             onValueChange,
         }));
         
         act(() => {
-            result.current.triggerValueChange('updated', new Event('change'));
+            result.current.dispatchValueChange('updated', new Event('change'));
         });
         
         expect(onValueChange).toHaveBeenCalledTimes(1);
         expect(onValueChange).toHaveBeenCalledWith('updated', expect.any(Event));
     });
     
-    it('should maintain stable triggerValueChange reference across renders', () => {
+    it('should maintain stable dispatchValueChange reference across renders', () => {
         const { result, rerender } = renderHook(() => useControllableValueChange<string, Event>({
             value: 'state1',
             onValueChange,
         }));
         
-        const initialTrigger = result.current.triggerValueChange;
+        const initialTrigger = result.current.dispatchValueChange;
         rerender();
         
-        expect(result.current.triggerValueChange).toBe(initialTrigger);
+        expect(result.current.dispatchValueChange).toBe(initialTrigger);
     });
     
     it('should correctly forward the event object to onValueChange', () => {
@@ -75,7 +75,7 @@ describe('useControllableValueChange', () => {
         const event = new Event('change');
         
         act(() => {
-            result.current.triggerValueChange('updated', event);
+            result.current.dispatchValueChange('updated', event);
         });
         
         expect(onValueChange).toHaveBeenCalledWith('updated', event);
@@ -123,7 +123,7 @@ describe('useControllableValueChange (Edge Cases)', () => {
         }));
         
         act(() => {
-            result.current.triggerValueChange(undefined, new Event('change'));
+            result.current.dispatchValueChange(undefined, new Event('change'));
         });
         
         expect(onValueChange).toHaveBeenCalledWith(undefined, expect.any(Event));
@@ -136,7 +136,7 @@ describe('useControllableValueChange (Edge Cases)', () => {
         }));
         
         act(() => {
-            result.current.triggerValueChange(null, new Event('change'));
+            result.current.dispatchValueChange(null, new Event('change'));
         });
         
         expect(onValueChange).toHaveBeenCalledWith(null, expect.any(Event));
@@ -149,7 +149,7 @@ describe('useControllableValueChange (Edge Cases)', () => {
         }));
         
         act(() => {
-            result.current.triggerValueChange('', new Event('change'));
+            result.current.dispatchValueChange('', new Event('change'));
         });
         
         expect(onValueChange).toHaveBeenCalledWith('', expect.any(Event));

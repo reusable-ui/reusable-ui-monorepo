@@ -58,7 +58,7 @@ export interface ValueChangeApi<in out TValue, in TChangeEvent = unknown> {
     /**
      * The current value being managed.
      */
-    value              : TValue
+    value               : TValue
     
     
     
@@ -72,7 +72,7 @@ export interface ValueChangeApi<in out TValue, in TChangeEvent = unknown> {
      * 
      * See {@link ValueChangeDispatcher} for parameter details.
      */
-    triggerValueChange : ValueChangeDispatcher<TValue, TChangeEvent>
+    dispatchValueChange : ValueChangeDispatcher<TValue, TChangeEvent>
 }
 
 

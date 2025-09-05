@@ -38,13 +38,13 @@ export const ExampleComponent = (props: ExampleComponentProps) => {
         onActiveChange
     } = props;
     
-    const { value: isActive, triggerValueChange } = useControllableValueChange<boolean, Event>({
+    const { value: isActive, dispatchValueChange } = useControllableValueChange<boolean, Event>({
         value         : active,
         onValueChange : onActiveChange,
     });
     
     return (
-        <button onClick={() => triggerValueChange(!isActive, new Event('active', { bubbles: true, cancelable: false }))}>
+        <button onClick={() => dispatchValueChange(!isActive, new Event('active', { bubbles: true, cancelable: false }))}>
             {isActive ? 'Active' : 'Inactive'}
         </button>
     );
@@ -69,13 +69,13 @@ export const ExampleComponent = (props: ExampleComponentProps) => {
         onActiveChange
     } = props;
     
-    const { value: isActive, triggerValueChange } = useUncontrollableValueChange<boolean, Event>({
+    const { value: isActive, dispatchValueChange } = useUncontrollableValueChange<boolean, Event>({
         defaultValue  : defaultActive,
         onValueChange : onActiveChange,
     });
     
     return (
-        <button onClick={() => triggerValueChange(!isActive, new Event('active', { bubbles: true, cancelable: false }))}>
+        <button onClick={() => dispatchValueChange(!isActive, new Event('active', { bubbles: true, cancelable: false }))}>
             {isActive ? 'Active' : 'Inactive'}
         </button>
     );
@@ -102,14 +102,14 @@ export const ExampleComponent = (props: ExampleComponentProps) => {
         onActiveChange
     } = props;
     
-    const { value: isActive, triggerValueChange } = useHybridValueChange<boolean, Event>({
+    const { value: isActive, dispatchValueChange } = useHybridValueChange<boolean, Event>({
         defaultValue  : defaultActive,
         value         : active,
         onValueChange : onActiveChange,
     });
     
     return (
-        <button onClick={() => triggerValueChange(!isActive, new Event('active', { bubbles: true, cancelable: false }))}>
+        <button onClick={() => dispatchValueChange(!isActive, new Event('active', { bubbles: true, cancelable: false }))}>
             {isActive ? 'Active' : 'Inactive'}
         </button>
     );

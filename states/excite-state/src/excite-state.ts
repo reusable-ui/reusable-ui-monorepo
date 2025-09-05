@@ -134,11 +134,11 @@ export const useExciteState = <TElement extends Element = HTMLElement>(props: Ex
     
     // Controlled excitement state:
     const {
-        value              : resolvedExcited,
-        triggerValueChange : requestExcitedReset,
+        value               : resolvedExcited,
+        dispatchValueChange : requestExcitedReset,
     } = useControllableValueChange<boolean, AnimationEvent>({
-        value              : excited,
-        onValueChange      : onExcitedChange,
+        value               : excited,
+        onValueChange       : onExcitedChange,
     });
     
     // Animation lifecycle state:

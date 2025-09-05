@@ -39,13 +39,13 @@ import {
  *          onActiveChange
  *      } = props;
  *      
- *      const { value: isActive, triggerValueChange } = useControllableValueChange<boolean, Event>({
+ *      const { value: isActive, dispatchValueChange } = useControllableValueChange<boolean, Event>({
  *          value         : active,
  *          onValueChange : onActiveChange,
  *      });
  *      
  *      return (
- *          <button onClick={() => triggerValueChange(!isActive, new Event('active', { bubbles: true, cancelable: false }))}>
+ *          <button onClick={() => dispatchValueChange(!isActive, new Event('active', { bubbles: true, cancelable: false }))}>
  *              {isActive ? 'Active' : 'Inactive'}
  *          </button>
  *      );
@@ -63,7 +63,7 @@ export const useControllableValueChange = <TValue, TChangeEvent = unknown>(props
     
     
     // Stable functions:
-    const triggerValueChange : ValueChangeDispatcher<TValue, TChangeEvent> = useStableCallback((newValue: TValue, event: TChangeEvent): void => {
+    const dispatchValueChange : ValueChangeDispatcher<TValue, TChangeEvent> = useStableCallback((newValue: TValue, event: TChangeEvent): void => {
         // Trigger external change handler (if provided):
         onValueChange?.(newValue, event);
     });
@@ -78,6 +78,6 @@ export const useControllableValueChange = <TValue, TChangeEvent = unknown>(props
         
         
         // Stable functions:
-        triggerValueChange,
+        dispatchValueChange,
     } satisfies ValueChangeApi<TValue, TChangeEvent>;
 };
