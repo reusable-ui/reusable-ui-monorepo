@@ -116,6 +116,7 @@ Default inheritance case example:
 @reusable-ui/animating-state DEPRECATED
 @reusable-ui/excite-state
 @reusable-ui/collapse-state
+@reusable-ui/active-state
 @reusable-ui/excitable
 @reusable-ui/collapsible
 @reusable-ui/scrollable

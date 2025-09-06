@@ -104,6 +104,7 @@
     "states/animating-state",
     "states/excite-state",
     "states/collapse-state",
+    "states/active-state",
     "__configs/*",
     "__utilities/*",
     "__features/*",
