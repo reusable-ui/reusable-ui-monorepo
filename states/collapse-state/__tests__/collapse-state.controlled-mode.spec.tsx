@@ -175,21 +175,21 @@ test.describe('useCollapseState - controlled mode', () => {
                     expectedExpanded      : 'collapsed',
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still collapsed',
+                    title                 : 'The collapsing animation should be running and the expansion is still collapsed',
                     
                     delay                 : 200,
                     expectedExpanded      : 'collapsed',
                     expectedRunningExpand : false,
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still collapsed',
+                    title                 : 'The collapsing animation should be running and the expansion is still collapsed',
                     
                     delay                 : 500, // 200 + 500 = 700 ms, the animation should still running.
                     expectedExpanded      : 'collapsed',
                     expectedRunningExpand : false,
                 },
                 {
-                    title                 : 'The expanding animation should be stopped and the expansion is still collapsed',
+                    title                 : 'The collapsing animation should be stopped and the expansion is still collapsed',
                     
                     delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedExpanded      : 'collapsed',
@@ -240,21 +240,21 @@ test.describe('useCollapseState - controlled mode', () => {
                     expectedExpanded      : 'collapsed',
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still collapsed',
+                    title                 : 'The collapsing animation should be running and the expansion is still collapsed',
                     
                     delay                 : 200,
                     expectedExpanded      : 'collapsed',
                     expectedRunningExpand : false,
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still collapsed',
+                    title                 : 'The collapsing animation should be running and the expansion is still collapsed',
                     
                     delay                 : 500, // 200 + 500 = 700 ms, the animation should still running.
                     expectedExpanded      : 'collapsed',
                     expectedRunningExpand : false,
                 },
                 {
-                    title                 : 'The expanding animation should be stopped and the expansion is still collapsed',
+                    title                 : 'The collapsing animation should be stopped and the expansion is still collapsed',
                     
                     delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedExpanded      : 'collapsed',
@@ -278,21 +278,21 @@ test.describe('useCollapseState - controlled mode', () => {
                     expectedExpanded      : 'collapsed',
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still collapsed',
+                    title                 : 'The collapsing animation should be running and the expansion is still collapsed',
                     
                     delay                 : 200,
                     expectedExpanded      : 'collapsed',
                     expectedRunningExpand : false,
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still collapsed',
+                    title                 : 'The collapsing animation should be running and the expansion is still collapsed',
                     
                     delay                 : 500, // 200 + 500 = 700 ms, the animation should still running.
                     expectedExpanded      : 'collapsed',
                     expectedRunningExpand : false,
                 },
                 {
-                    title                 : 'The expanding animation should be stopped and the expansion is still collapsed',
+                    title                 : 'The collapsing animation should be stopped and the expansion is still collapsed',
                     
                     delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedExpanded      : 'collapsed',
@@ -365,7 +365,7 @@ test.describe('useCollapseState - controlled mode', () => {
                     
                     delay                 : 600, // Includes additional margin to guarantee completion.
                     expectedExpanded      : 'expanded',
-                    expectedRunningExpand : undefined, // No running animation.
+                    expectedRunningExpand : null, // No running animation.
                 },
             ],
         },
@@ -407,7 +407,7 @@ test.describe('useCollapseState - controlled mode', () => {
                     
                     delay                 : 600, // Includes additional margin to guarantee completion.
                     expectedExpanded      : 'collapsed',
-                    expectedRunningExpand : undefined, // No running animation.
+                    expectedRunningExpand : null, // No running animation.
                 },
             ],
         },
@@ -664,7 +664,7 @@ test.describe('useCollapseState - controlled mode', () => {
                     
                     delay                 : 600, // Includes additional margin to guarantee completion.
                     expectedExpanded      : 'expanded',
-                    expectedRunningExpand : undefined, // No running animation.
+                    expectedRunningExpand : null, // No running animation.
                 },
             ],
         },
@@ -706,7 +706,7 @@ test.describe('useCollapseState - controlled mode', () => {
                     
                     delay                 : 600, // Includes additional margin to guarantee completion.
                     expectedExpanded      : 'collapsed',
-                    expectedRunningExpand : undefined, // No running animation.
+                    expectedRunningExpand : null, // No running animation.
                 },
             ],
         },

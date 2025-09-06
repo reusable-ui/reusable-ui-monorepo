@@ -205,7 +205,7 @@ test.describe('useCollapseState - animation', () => {
                     title                 : 'Wait for final expansion to complete',
                     
                     delay                 : 600, // Includes additional margin to guarantee completion.
-                    expectedRunningExpand : undefined, // No running animation.
+                    expectedRunningExpand : null, // No running animation.
                     expectedHeight        : 100,
                 },
             ],
@@ -244,7 +244,7 @@ test.describe('useCollapseState - animation', () => {
                     title                 : 'Wait for final collapsion to complete',
                     
                     delay                 : 600, // Includes additional margin to guarantee completion.
-                    expectedRunningExpand : undefined, // No running animation.
+                    expectedRunningExpand : null, // No running animation.
                     expectedHeight        : 0,
                 },
             ],
@@ -273,7 +273,7 @@ test.describe('useCollapseState - animation', () => {
                 {
                     title                 : 'Wait for final animation to finish',
                     delay                 : 800, // Includes additional margin to guarantee completion.
-                    expectedRunningExpand : undefined,
+                    expectedRunningExpand : null,
                     expectedHeight        : 100,
                 },
             ],
@@ -302,7 +302,7 @@ test.describe('useCollapseState - animation', () => {
                 {
                     title                 : 'Wait for final animation to finish',
                     delay                 : 800, // Includes additional margin to guarantee completion.
-                    expectedRunningExpand : undefined,
+                    expectedRunningExpand : null,
                     expectedHeight        : 0,
                 },
             ],

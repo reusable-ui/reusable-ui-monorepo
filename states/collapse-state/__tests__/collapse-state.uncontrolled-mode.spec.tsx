@@ -359,7 +359,7 @@ test.describe('useCollapseState - uncontrolled mode', () => {
                     
                     delay                 : 600, // Includes additional margin to guarantee completion.
                     expectedExpanded      : 'expanded',
-                    expectedRunningExpand : undefined, // No running animation.
+                    expectedRunningExpand : null, // No running animation.
                 },
             ],
         },
@@ -401,7 +401,7 @@ test.describe('useCollapseState - uncontrolled mode', () => {
                     
                     delay                 : 600, // Includes additional margin to guarantee completion.
                     expectedExpanded      : 'collapsed',
-                    expectedRunningExpand : undefined, // No running animation.
+                    expectedRunningExpand : null, // No running animation.
                 },
             ],
         },

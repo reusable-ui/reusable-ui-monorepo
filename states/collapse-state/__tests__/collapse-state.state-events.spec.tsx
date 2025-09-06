@@ -7,9 +7,9 @@ import { ExpandPhase } from '../dist/index.js'
 
 
 /**
- * Represents a single test scenario for validating uncontrolled expand/collapse state transitions.
+ * Represents a single test scenario for validating event of expand/collapse state transitions.
  */
-interface CollapseStateUncontrolledTestCase {
+interface CollapseStateEventTestCase {
     // Test Inputs:
     
     /**
@@ -34,7 +34,7 @@ interface CollapseStateUncontrolledTestCase {
         /**
          * A descriptive label for the individual update step.
          */
-        title                  : string
+        title          : string
         
         /**
          * Command a new value for expanded state.
@@ -42,7 +42,7 @@ interface CollapseStateUncontrolledTestCase {
          * - `'collapse'` command to collapse this part.
          * - `undefined`: to skip updating this part.
          */
-        action                ?: 'expand' | 'collapse'
+        action        ?: 'expand' | 'collapse'
         
         /**
          * Delay (in milliseconds) after applying the update before performing result assertions.
@@ -51,7 +51,7 @@ interface CollapseStateUncontrolledTestCase {
          * - `0`: defer until the next event loop tick.
          * - Any other value: wait for the specified duration before checking.
          */
-        delay                 ?: number
+        delay         ?: number
         
         // Expected Outcomes:
         
@@ -64,7 +64,7 @@ interface CollapseStateUncontrolledTestCase {
          * - `null`         : no event has been invoked
          * - `undefined`    : nothing to expect
          */
-        expectedEvent         ?: ExpandPhase | null
+        expectedEvent ?: ExpandPhase | null
     }[]
 }
 
@@ -82,33 +82,29 @@ test.describe('useCollapseStatePhaseEvents', () => {
             expanded : false,
             updates  : [
                 {
-                    title                 : 'Should be collapsed and no animation',
-                    expectedEvent         : null,
+                    title         : 'Change to expanded',
+                    action        : 'expand',
+                    
+                    delay         : 0,
+                    expectedEvent : 'expanding',
                 },
                 {
-                    title                 : 'Change to expanded',
-                    action                : 'expand',
+                    title         : 'The expanding animation should be running and the expansion is still expanded',
                     
-                    delay                 : 0,
-                    expectedEvent         : 'expanding',
+                    delay         : 200,
+                    expectedEvent : 'expanding',
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still expanded',
+                    title         : 'The expanding animation should be running and the expansion is still expanded',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'expanding',
+                    delay         : 500, // 200 + 500 = 700 ms, the animation should still running.
+                    expectedEvent : 'expanding',
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still expanded',
+                    title         : 'The expanding animation should be stopped and the expansion is still expanded',
                     
-                    delay                 : 500, // 200 + 500 = 700 ms, the animation should still running.
-                    expectedEvent         : 'expanding',
-                },
-                {
-                    title                 : 'The expanding animation should be stopped and the expansion is still expanded',
-                    
-                    delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
-                    expectedEvent         : 'expanded',
+                    delay         : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
+                    expectedEvent : 'expanded',
                 },
             ],
         },
@@ -117,29 +113,29 @@ test.describe('useCollapseStatePhaseEvents', () => {
             expanded : true,
             updates  : [
                 {
-                    title                 : 'Change to collapsed',
-                    action                : 'collapse',
+                    title         : 'Change to collapsed',
+                    action        : 'collapse',
                     
-                    delay                 : 0,
-                    expectedEvent         : 'collapsing',
+                    delay         : 0,
+                    expectedEvent : 'collapsing',
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still collapsed',
+                    title         : 'The expanding animation should be running and the expansion is still collapsed',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'collapsing',
+                    delay         : 200,
+                    expectedEvent : 'collapsing',
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still collapsed',
+                    title         : 'The expanding animation should be running and the expansion is still collapsed',
                     
-                    delay                 : 500, // 200 + 500 = 700 ms, the animation should still running.
-                    expectedEvent         : 'collapsing',
+                    delay         : 500, // 200 + 500 = 700 ms, the animation should still running.
+                    expectedEvent : 'collapsing',
                 },
                 {
-                    title                 : 'The expanding animation should be stopped and the expansion is still collapsed',
+                    title         : 'The expanding animation should be stopped and the expansion is still collapsed',
                     
-                    delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
-                    expectedEvent         : 'collapsed',
+                    delay         : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
+                    expectedEvent : 'collapsed',
                 },
             ],
         },
@@ -148,54 +144,54 @@ test.describe('useCollapseStatePhaseEvents', () => {
             expanded : false,
             updates  : [
                 {
-                    title                 : 'Change to expanded',
-                    action                : 'expand',
+                    title         : 'Change to expanded',
+                    action        : 'expand',
                     
-                    delay                 : 0,
-                    expectedEvent         : 'expanding',
+                    delay         : 0,
+                    expectedEvent : 'expanding',
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still expanded',
+                    title         : 'The expanding animation should be running and the expansion is still expanded',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'expanding',
+                    delay         : 200,
+                    expectedEvent : 'expanding',
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still expanded',
+                    title         : 'The expanding animation should be running and the expansion is still expanded',
                     
-                    delay                 : 500, // 200 + 500 = 700 ms, the animation should still running.
-                    expectedEvent         : 'expanding',
+                    delay         : 500, // 200 + 500 = 700 ms, the animation should still running.
+                    expectedEvent : 'expanding',
                 },
                 {
-                    title                 : 'The expanding animation should be stopped and the expansion is still expanded',
+                    title         : 'The expanding animation should be stopped and the expansion is still expanded',
                     
-                    delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
-                    expectedEvent         : 'expanded',
+                    delay         : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
+                    expectedEvent : 'expanded',
                 },
                 {
-                    title                 : 'Change to collapsed',
-                    action                : 'collapse',
+                    title         : 'Change to collapsed',
+                    action        : 'collapse',
                     
-                    delay                 : 0,
-                    expectedEvent         : 'collapsing',
+                    delay         : 0,
+                    expectedEvent : 'collapsing',
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still collapsed',
+                    title         : 'The expanding animation should be running and the expansion is still collapsed',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'collapsing',
+                    delay         : 200,
+                    expectedEvent : 'collapsing',
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still collapsed',
+                    title         : 'The expanding animation should be running and the expansion is still collapsed',
                     
-                    delay                 : 500, // 200 + 500 = 700 ms, the animation should still running.
-                    expectedEvent         : 'collapsing',
+                    delay         : 500, // 200 + 500 = 700 ms, the animation should still running.
+                    expectedEvent : 'collapsing',
                 },
                 {
-                    title                 : 'The expanding animation should be stopped and the expansion is still collapsed',
+                    title         : 'The expanding animation should be stopped and the expansion is still collapsed',
                     
-                    delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
-                    expectedEvent         : 'collapsed',
+                    delay         : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
+                    expectedEvent : 'collapsed',
                 },
             ],
         },
@@ -204,54 +200,54 @@ test.describe('useCollapseStatePhaseEvents', () => {
             expanded : true,
             updates  : [
                 {
-                    title                 : 'Change to collapsed',
-                    action                : 'collapse',
+                    title         : 'Change to collapsed',
+                    action        : 'collapse',
                     
-                    delay                 : 0,
-                    expectedEvent         : 'collapsing',
+                    delay         : 0,
+                    expectedEvent : 'collapsing',
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still collapsed',
+                    title         : 'The expanding animation should be running and the expansion is still collapsed',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'collapsing',
+                    delay         : 200,
+                    expectedEvent : 'collapsing',
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still collapsed',
+                    title         : 'The expanding animation should be running and the expansion is still collapsed',
                     
-                    delay                 : 500, // 200 + 500 = 700 ms, the animation should still running.
-                    expectedEvent         : 'collapsing',
+                    delay         : 500, // 200 + 500 = 700 ms, the animation should still running.
+                    expectedEvent : 'collapsing',
                 },
                 {
-                    title                 : 'The expanding animation should be stopped and the expansion is still collapsed',
+                    title         : 'The expanding animation should be stopped and the expansion is still collapsed',
                     
-                    delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
-                    expectedEvent         : 'collapsed',
+                    delay         : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
+                    expectedEvent : 'collapsed',
                 },
                 {
-                    title                 : 'Change to expanded',
-                    action                : 'expand',
+                    title         : 'Change to expanded',
+                    action        : 'expand',
                     
-                    delay                 : 0,
-                    expectedEvent         : 'expanding',
+                    delay         : 0,
+                    expectedEvent : 'expanding',
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still expanded',
+                    title         : 'The expanding animation should be running and the expansion is still expanded',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'expanding',
+                    delay         : 200,
+                    expectedEvent : 'expanding',
                 },
                 {
-                    title                 : 'The expanding animation should be running and the expansion is still expanded',
+                    title         : 'The expanding animation should be running and the expansion is still expanded',
                     
-                    delay                 : 500, // 200 + 500 = 700 ms, the animation should still running.
-                    expectedEvent         : 'expanding',
+                    delay         : 500, // 200 + 500 = 700 ms, the animation should still running.
+                    expectedEvent : 'expanding',
                 },
                 {
-                    title                 : 'The expanding animation should be stopped and the expansion is still expanded',
+                    title         : 'The expanding animation should be stopped and the expansion is still expanded',
                     
-                    delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
-                    expectedEvent         : 'expanded',
+                    delay         : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
+                    expectedEvent : 'expanded',
                 },
             ],
         },
@@ -260,31 +256,31 @@ test.describe('useCollapseStatePhaseEvents', () => {
             expanded : false,
             updates  : [
                 {
-                    title                 : 'Expand',
-                    action                : 'expand',
+                    title         : 'Expand',
+                    action        : 'expand',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'expanding',
+                    delay         : 200,
+                    expectedEvent : 'expanding',
                 },
                 {
-                    title                 : 'Collapse before expansion finishes',
-                    action                : 'collapse',
+                    title         : 'Collapse before expansion finishes',
+                    action        : 'collapse',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'expanding',  // Still expanding (600ms remaining) — cannot cancel mid-flight.
+                    delay         : 200,
+                    expectedEvent : 'expanding', // Still expanding (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
-                    title                 : 'Re-expand again before collapse finishes',
-                    action                : 'expand',
+                    title         : 'Re-expand again before collapse finishes',
+                    action        : 'expand',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'expanding', // Still in original expansion sequence (400ms remaining).
+                    delay         : 200,
+                    expectedEvent : 'expanding', // Still in original expansion sequence (400ms remaining).
                 },
                 {
-                    title                 : 'Wait for final expansion to complete',
+                    title         : 'Wait for final expansion to complete',
                     
-                    delay                 : 600, // Includes additional margin to guarantee completion.
-                    expectedEvent         : 'expanded',
+                    delay         : 600, // Includes additional margin to guarantee completion.
+                    expectedEvent : 'expanded',
                 },
             ],
         },
@@ -293,31 +289,31 @@ test.describe('useCollapseStatePhaseEvents', () => {
             expanded : true,
             updates  : [
                 {
-                    title                 : 'Collapse',
-                    action                : 'collapse',
+                    title         : 'Collapse',
+                    action        : 'collapse',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'collapsing',
+                    delay         : 200,
+                    expectedEvent : 'collapsing',
                 },
                 {
-                    title                 : 'Expand before collapsion finishes',
-                    action                : 'expand',
+                    title         : 'Expand before collapsion finishes',
+                    action        : 'expand',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'collapsing',  // Still collapsing (600ms remaining) — cannot cancel mid-flight.
+                    delay         : 200,
+                    expectedEvent : 'collapsing', // Still collapsing (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
-                    title                 : 'Re-collapse again before expand finishes',
-                    action                : 'collapse',
+                    title         : 'Re-collapse again before expand finishes',
+                    action        : 'collapse',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'collapsing', // Still in original collapsion sequence (400ms remaining).
+                    delay         : 200,
+                    expectedEvent : 'collapsing', // Still in original collapsion sequence (400ms remaining).
                 },
                 {
-                    title                 : 'Wait for final collapsion to complete',
+                    title         : 'Wait for final collapsion to complete',
                     
-                    delay                 : 600, // Includes additional margin to guarantee completion.
-                    expectedEvent         : 'collapsed',
+                    delay         : 600, // Includes additional margin to guarantee completion.
+                    expectedEvent : 'collapsed',
                 },
             ],
         },
@@ -326,42 +322,42 @@ test.describe('useCollapseStatePhaseEvents', () => {
             expanded : false,
             updates  : [
                 {
-                    title                 : 'Expand',
-                    action                : 'expand',
+                    title         : 'Expand',
+                    action        : 'expand',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'expanding',
+                    delay         : 200,
+                    expectedEvent : 'expanding',
                 },
                 {
-                    title                 : 'Collapse before expansion finishes',
-                    action                : 'collapse',
+                    title         : 'Collapse before expansion finishes',
+                    action        : 'collapse',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'expanding',  // Still expanding (600ms remaining) — cannot cancel mid-flight.
+                    delay         : 200,
+                    expectedEvent : 'expanding', // Still expanding (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
-                    title                 : 'Still expanding',
+                    title         : 'Still expanding',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'expanding', // Still in original expansion sequence (400ms remaining).
+                    delay         : 200,
+                    expectedEvent : 'expanding', // Still in original expansion sequence (400ms remaining).
                 },
                 {
-                    title                 : 'Wait for final expansion to complete and switching to collapsing',
+                    title         : 'Wait for final expansion to complete and switching to collapsing',
                     
-                    delay                 : 600, // Includes additional margin to guarantee completion.
-                    expectedEvent         : 'collapsing',
+                    delay         : 600, // Includes additional margin to guarantee completion.
+                    expectedEvent : 'collapsing',
                 },
                 {
-                    title                 : 'Still collapsing',
+                    title         : 'Still collapsing',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'collapsing', // Still in switching collapsion sequence.
+                    delay         : 200,
+                    expectedEvent : 'collapsing', // Still in switching collapsion sequence.
                 },
                 {
-                    title                 : 'Wait for final collapsion to complete',
+                    title         : 'Wait for final collapsion to complete',
                     
-                    delay                 : 1000, // Includes additional margin to guarantee completion.
-                    expectedEvent         : 'collapsed',
+                    delay         : 1000, // Includes additional margin to guarantee completion.
+                    expectedEvent : 'collapsed',
                 },
             ],
         },
@@ -370,46 +366,46 @@ test.describe('useCollapseStatePhaseEvents', () => {
             expanded : true,
             updates  : [
                 {
-                    title                 : 'Collapse',
-                    action                : 'collapse',
+                    title         : 'Collapse',
+                    action        : 'collapse',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'collapsing',
+                    delay         : 200,
+                    expectedEvent : 'collapsing',
                 },
                 {
-                    title                 : 'Expand before collapsion finishes',
-                    action                : 'expand',
+                    title         : 'Expand before collapsion finishes',
+                    action        : 'expand',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'collapsing',  // Still collapsing (600ms remaining) — cannot cancel mid-flight.
+                    delay         : 200,
+                    expectedEvent : 'collapsing', // Still collapsing (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
-                    title                 : 'Still collapsing',
+                    title         : 'Still collapsing',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'collapsing', // Still in original collapsion sequence (400ms remaining).
+                    delay         : 200,
+                    expectedEvent : 'collapsing', // Still in original collapsion sequence (400ms remaining).
                 },
                 {
-                    title                 : 'Wait for final collapsion to complete and switching to expanding',
+                    title         : 'Wait for final collapsion to complete and switching to expanding',
                     
-                    delay                 : 600, // Includes additional margin to guarantee completion.
-                    expectedEvent         : 'expanding',
+                    delay         : 600, // Includes additional margin to guarantee completion.
+                    expectedEvent : 'expanding',
                 },
                 {
-                    title                 : 'Still expanding',
+                    title         : 'Still expanding',
                     
-                    delay                 : 200,
-                    expectedEvent         : 'expanding', // Still in original expansion sequence.
+                    delay         : 200,
+                    expectedEvent : 'expanding', // Still in original expansion sequence.
                 },
                 {
-                    title                 : 'Wait for final expansion to complete',
+                    title         : 'Wait for final expansion to complete',
                     
-                    delay                 : 1000, // Includes additional margin to guarantee completion.
-                    expectedEvent         : 'expanded',
+                    delay         : 1000, // Includes additional margin to guarantee completion.
+                    expectedEvent : 'expanded',
                 },
             ],
         },
-    ] as CollapseStateUncontrolledTestCase[]) {
+    ] as CollapseStateEventTestCase[]) {
         test(title, async ({ mount }) => {
             // Handlers:
             let lastNewExpanded : boolean | undefined = undefined;
