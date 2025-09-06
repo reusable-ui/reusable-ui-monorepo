@@ -48,7 +48,7 @@ export interface CollapseStateProps {
 /**
  * Props for initializing the expanded/collapsed state in uncontrolled components.
  * 
- * Enables passive expansion behavior when the parent does not actively manage state.
+ * Enables default expansion behavior when the parent does not actively manage state.
  * Commonly used in components like `<Accordion>` or `<Detail>` that enhance content
  * without requiring external control or feedback loops.
  */
@@ -258,7 +258,7 @@ export interface CollapseStateVars {
      * });
      * ```
      */
-    isExpanded  : unknown
+    isExpanded        : unknown
     
     /**
      * Applies when the component is either collapsing or fully collapsed.
@@ -277,7 +277,7 @@ export interface CollapseStateVars {
      * });
      * ```
      */
-    isCollapsed : unknown
+    isCollapsed       : unknown
 }
 
 

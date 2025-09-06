@@ -241,15 +241,15 @@ export const collapsibleBoxStyle = () => {
         // Apply composed animations:
         animation,
     });
-}
+};
 ```
 
 #### 🧠 Resolution Logic
 
 The `animationExpand` and `animationCollapse` variables are only defined during **expanding** and **collapsing** phases.
 
-The variables are already registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
-Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining expand/collapse animations with other state-driven animations.
+These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
+Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining expand/collapse animations with other state-driven transitions.
 
 ---
 

@@ -289,7 +289,7 @@ animationRegistry.registerAnimation(collapseStateVars.animationCollapse);
  *         // Apply composed animations:
  *         animation,
  *     });
- * }
+ * };
  * ```
  */
 export const usesCollapseState = (options?: CssCollapseStateOptions): CssCollapseState => {

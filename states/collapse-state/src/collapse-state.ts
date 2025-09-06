@@ -280,6 +280,6 @@ export const useCollapseStatePhaseEvents = (props: CollapseStatePhaseEventProps,
         // Unmark when unmounted:
         return () => {
             hasMountedRef.current = false;
-        }
+        };
     }, []);
 };
