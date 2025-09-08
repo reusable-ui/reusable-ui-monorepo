@@ -34,14 +34,14 @@ import React, { FC, MouseEventHandler } from 'react';
 import {
     useCollapseState,
     CollapseStateProps,
-    CollapseStateUncontrollableProps,
+    UncontrollableCollapseStateProps,
     CollapseStateChangeProps,
 } from '@reusable-ui/collapse-state';
 import styles from './CollapsibleBox.module.css';
 
 export interface CollapsibleBoxProps extends
     CollapseStateProps,
-    CollapseStateUncontrollableProps<MouseEventHandler<HTMLButtonElement>>, // optional uncontrolled behavior
+    UncontrollableCollapseStateProps<MouseEventHandler<HTMLButtonElement>>, // optional uncontrolled behavior
     CollapseStateChangeProps // optional change dispatching behavior
 {}
 

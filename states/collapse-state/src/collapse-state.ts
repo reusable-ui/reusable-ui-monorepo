@@ -12,7 +12,7 @@ import {
     type CollapseStateProps,
     type CollapseStateChangeProps,
     type CollapseStatePhaseEventProps,
-    type CollapseStateUncontrollableProps,
+    type UncontrollableCollapseStateProps,
     type CollapseStateOptions,
     type ExpandPhase,
     type CollapseStateApi,
@@ -64,14 +64,14 @@ import {
  * import {
  *     useCollapseState,
  *     CollapseStateProps,
- *     CollapseStateUncontrollableProps,
+ *     UncontrollableCollapseStateProps,
  *     CollapseStateChangeProps,
  * } from '@reusable-ui/collapse-state';
  * import styles from './CollapsibleBox.module.css';
  * 
  * export interface CollapsibleBoxProps extends
  *     CollapseStateProps,
- *     CollapseStateUncontrollableProps<MouseEventHandler<HTMLButtonElement>>, // optional uncontrolled behavior
+ *     UncontrollableCollapseStateProps<MouseEventHandler<HTMLButtonElement>>, // optional uncontrolled behavior
  *     CollapseStateChangeProps // optional change dispatching behavior
  * {}
  * 
@@ -111,7 +111,7 @@ import {
  * };
  * ```
  */
-export const useCollapseState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: CollapseStateProps & Partial<CollapseStateUncontrollableProps> & Partial<CollapseStateChangeProps<TChangeEvent>>, options?: CollapseStateOptions): CollapseStateApi<TElement, TChangeEvent> => {
+export const useCollapseState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: CollapseStateProps & Partial<UncontrollableCollapseStateProps> & Partial<CollapseStateChangeProps<TChangeEvent>>, options?: CollapseStateOptions): CollapseStateApi<TElement, TChangeEvent> => {
     // Extract options and assign defaults:
     const {
         defaultExpanded   = finalDefaultExpanded,

@@ -34,14 +34,14 @@ import React, { FC, MouseEventHandler } from 'react';
 import {
     useActiveState,
     ActiveStateProps,
-    ActiveStateUncontrollableProps,
+    UncontrollableActiveStateProps,
     ActiveStateChangeProps,
 } from '@reusable-ui/active-state';
 import styles from './ActivatableBox.module.css';
 
 export interface ActivatableBoxProps extends
     ActiveStateProps,
-    ActiveStateUncontrollableProps<MouseEventHandler<HTMLButtonElement>>, // optional uncontrolled behavior
+    UncontrollableActiveStateProps<MouseEventHandler<HTMLButtonElement>>, // optional uncontrolled behavior
     ActiveStateChangeProps // optional change dispatching behavior
 {}
 

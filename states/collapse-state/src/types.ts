@@ -52,7 +52,7 @@ export interface CollapseStateProps {
  * Commonly used in components like `<Accordion>` or `<Detail>` that enhance content
  * without requiring external control or feedback loops.
  */
-export interface CollapseStateUncontrollableProps {
+export interface UncontrollableCollapseStateProps {
     /**
      * Specifies the initial expanded state for uncontrolled usage.
      * 

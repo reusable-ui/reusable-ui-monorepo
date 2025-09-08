@@ -12,7 +12,7 @@ import {
     type ActiveStateProps,
     type ActiveStateChangeProps,
     type ActiveStatePhaseEventProps,
-    type ActiveStateUncontrollableProps,
+    type UncontrollableActiveStateProps,
     type ActiveStateOptions,
     type ActivePhase,
     type ActiveStateApi,
@@ -64,14 +64,14 @@ import {
  * import {
  *     useActiveState,
  *     ActiveStateProps,
- *     ActiveStateUncontrollableProps,
+ *     UncontrollableActiveStateProps,
  *     ActiveStateChangeProps,
  * } from '@reusable-ui/active-state';
  * import styles from './ActivatableBox.module.css';
  * 
  * export interface ActivatableBoxProps extends
  *     ActiveStateProps,
- *     ActiveStateUncontrollableProps<MouseEventHandler<HTMLButtonElement>>, // optional uncontrolled behavior
+ *     UncontrollableActiveStateProps<MouseEventHandler<HTMLButtonElement>>, // optional uncontrolled behavior
  *     ActiveStateChangeProps // optional change dispatching behavior
  * {}
  * 
@@ -111,7 +111,7 @@ import {
  * };
  * ```
  */
-export const useActiveState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ActiveStateProps & Partial<ActiveStateUncontrollableProps> & Partial<ActiveStateChangeProps<TChangeEvent>>, options?: ActiveStateOptions): ActiveStateApi<TElement, TChangeEvent> => {
+export const useActiveState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ActiveStateProps & Partial<UncontrollableActiveStateProps> & Partial<ActiveStateChangeProps<TChangeEvent>>, options?: ActiveStateOptions): ActiveStateApi<TElement, TChangeEvent> => {
     // Extract options and assign defaults:
     const {
         defaultActive     = finalDefaultActive,

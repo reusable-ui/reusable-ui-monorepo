@@ -52,7 +52,7 @@ export interface ActiveStateProps {
  * Commonly used in components like `<Toggle>`, `<Switch>`, or `<Selection>` that enhance interactivity
  * without requiring external control or feedback loops.
  */
-export interface ActiveStateUncontrollableProps {
+export interface UncontrollableActiveStateProps {
     /**
      * Specifies the initial active state for uncontrolled usage.
      * 
