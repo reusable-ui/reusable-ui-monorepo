@@ -129,19 +129,19 @@ Additional flags:
 - active-state: aria-checked, aria-pressed, aria-selected, aria-current, aria-activedescendant
 - disabled-state: aria-disabled
 
-|-----------------|-------------------------|-----------------------------------|--------------------------------|--------------------------------|
-| State Package   | Resolve Final State     | Uncontrollable                    | Dispatcher                     | Resolve Final State + Meta     |
-|-----------------|-------------------------|-----------------------------------|--------------------------------|--------------------------------|
-| excite-state    | useExciteState          | useUncontrollableExciteState      | useExciteChangeDispatcher      | useExciteBehaviorState         |
-| collapse-state  | useCollapseState        | useUncontrollableCollapseState    | useCollapseChangeDispatcher    | useCollapseBehaviorState       |
-| active-state    | useActiveState          | useUncontrollableActiveState      | useActiveChangeDispatcher      | useActiveBehaviorState         |
-|-----------------|-------------------------|-----------------------------------|--------------------------------|--------------------------------|
-| disable-state   | useDisableState         | useUncontrollableDisableState     | useDisableChangeDispatcher     | useDisableBehaviorState        |
-| focus-state     | useFocusState           | useUncontrollableFocusState       | useFocusChangeDispatcher       | useFocusBehaviorState          |
-| hover-state     | useHoverState           | useUncontrollableHoverState       | useHoverChangeDispatcher       | useHoverBehaviorState          |
-| press-state     | usePressState           | useUncontrollablePressState       | usePressChangeDispatcher       | usePressBehaviorState          |
-| validity-state  | useValidityState        | useUncontrollableValidityState    | useValidityChangeDispatcher    | useValidityBehaviorState       |
-|-----------------|-------------------------|-----------------------------------|--------------------------------|--------------------------------|
+|----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
+| State Package  | Resolve Final State | Uncontrollable                 | Dispatcher                  | Resolve Final State + Meta |
+|----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
+| excite-state   | useExciteState      | useUncontrollableExciteState   | useExciteChangeDispatcher   | useExciteBehaviorState     |
+| collapse-state | useCollapseState    | useUncontrollableCollapseState | useCollapseChangeDispatcher | useCollapseBehaviorState   |
+| active-state   | useActiveState      | useUncontrollableActiveState   | useActiveChangeDispatcher   | useActiveBehaviorState     |
+|----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
+| disable-state  | useDisableState     | useUncontrollableDisableState  | useDisableChangeDispatcher  | useDisableBehaviorState    |
+| focus-state    | useFocusState       | useUncontrollableFocusState    | useFocusChangeDispatcher    | useFocusBehaviorState      |
+| hover-state    | useHoverState       | useUncontrollableHoverState    | useHoverChangeDispatcher    | useHoverBehaviorState      |
+| press-state    | usePressState       | useUncontrollablePressState    | usePressChangeDispatcher    | usePressBehaviorState      |
+| validity-state | useValidityState    | useUncontrollableValidityState | useValidityChangeDispatcher | useValidityBehaviorState   |
+|----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
 
 
 // Reusable-ui states:
