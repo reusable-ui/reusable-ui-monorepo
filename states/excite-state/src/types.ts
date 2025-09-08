@@ -112,7 +112,7 @@ export interface ExciteStateOptions
  * 
  * @template TElement - The type of the target DOM element.
  */
-export interface ExciteStateApi<TElement extends Element = HTMLElement>
+export interface ExciteBehaviorState<TElement extends Element = HTMLElement>
     extends
         // Bases:
         AnimationStateHandlers<TElement>
@@ -165,7 +165,7 @@ export interface CssExciteStateOptions {
      * 
      * The animation should be designed for seamless continuity across iterations to ensure smooth visual feedback.
      * 
-     * The `useExciteState()` hook will replay the excitement animation as long as the `excited` prop remains `true`.  
+     * The `useExciteBehaviorState()` hook will replay the excitement animation as long as the `excited` prop remains `true`.  
      * When the prop changes to `false`, the currently running animation is allowed to finish gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 

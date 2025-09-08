@@ -172,7 +172,7 @@ export type ActivePhase =
  * 
  * @template TElement - The type of the target DOM element.
  */
-export interface ActiveStateApi<TElement extends Element = HTMLElement, TChangeEvent = unknown>
+export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends
         // Bases:
         AnimationStateHandlers<TElement>

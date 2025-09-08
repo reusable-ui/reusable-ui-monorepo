@@ -1,4 +1,4 @@
-'use client' // The exported `useExciteState()` hook is client side only.
+'use client' // The exported `useExciteBehaviorState()` hook is client side only.
 
 // React:
 import {
@@ -17,7 +17,7 @@ import {
 import {
     type ExciteStateProps,
     type ExciteStateOptions,
-    type ExciteStateApi,
+    type ExciteBehaviorState,
 }                           from './types.js'
 
 // Defaults:
@@ -68,13 +68,13 @@ import {
  * 
  * @param {ExciteStateProps} props - The component props that may include a controlled `excited` value and an `onExcitedChange` callback.
  * @param {ExciteStateOptions} options - An optional configuration for customizing excitement behavior.
- * @returns {ExciteStateApi<TElement>} - The resolved excited state, associated CSS class name, and animation event handlers.
+ * @returns {ExciteBehaviorState<TElement>} - The resolved excited state, associated CSS class name, and animation event handlers.
  * 
  * @example
  * ```tsx
  * import React, { FC } from 'react';
  * import {
- *     useExciteState,
+ *     useExciteBehaviorState,
  *     ExciteStateProps,
  * } from '@reusable-ui/excite-state';
  * import styles from './ExcitableBox.module.css';
@@ -90,7 +90,7 @@ import {
  *         handleAnimationStart,
  *         handleAnimationEnd,
  *         handleAnimationCancel,
- *     } = useExciteState(props, {
+ *     } = useExciteBehaviorState(props, {
  *         defaultExcited    : false,        // Defaults the `excited` prop to `false` if not provided.
  *         animationPattern  : 'box-excite', // Matches animation names ending with 'box-excite'.
  *         animationBubbling : false,        // Ignores bubbling animation events from children.
@@ -110,7 +110,7 @@ import {
  * };
  * ```
  */
-export const useExciteState = <TElement extends Element = HTMLElement>(props: ExciteStateProps, options?: ExciteStateOptions): ExciteStateApi<TElement> => {
+export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(props: ExciteStateProps, options?: ExciteStateOptions): ExciteBehaviorState<TElement> => {
     // Extract options and assign defaults:
     const {
         defaultExcited      = finalDefaultExcited,
@@ -298,5 +298,5 @@ export const useExciteState = <TElement extends Element = HTMLElement>(props: Ex
         ...animationHandlers,
         handleAnimationEnd    : mergedHandleAnimationEnd,
         handleAnimationCancel : mergedHandleAnimationCancel,
-    } satisfies ExciteStateApi<TElement>;
+    } satisfies ExciteBehaviorState<TElement>;
 };

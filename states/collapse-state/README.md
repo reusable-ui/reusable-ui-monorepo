@@ -21,7 +21,7 @@ yarn add @reusable-ui/collapse-state
 
 ## 🧩 Exported Hooks
 
-### `useCollapseState(props, options?)`
+### `useCollapseBehaviorState(props, options?)`
 
 Resolves the expand/collapse state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
@@ -32,7 +32,7 @@ Supports controlled, uncontrolled, and hybrid expansion behavior with optional c
 ```tsx
 import React, { FC, MouseEventHandler } from 'react';
 import {
-    useCollapseState,
+    useCollapseBehaviorState,
     CollapseStateProps,
     UncontrollableCollapseStateProps,
     CollapseStateChangeProps,
@@ -57,7 +57,7 @@ export const CollapsibleBox: FC<CollapsibleBoxProps> = (props) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useCollapseState(props, {
+    } = useCollapseBehaviorState(props, {
         defaultExpanded   : false,                  // Fallback for uncontrolled mode.
         animationPattern  : ['expand', 'collapse'], // Matches animation names ending with 'expand' or 'collapse'.
         animationBubbling : false,                  // Ignores bubbling animation events from children.
@@ -85,7 +85,7 @@ export const CollapsibleBox: FC<CollapsibleBoxProps> = (props) => {
 
 Emits lifecycle events in response to expand/collapse phase transitions.
 
-This hook observes the resolved `expandPhase` from `useCollapseState()` and triggers the appropriate callbacks defined in `CollapseStatePhaseEventProps`, such as:
+This hook observes the resolved `expandPhase` from `useCollapseBehaviorState()` and triggers the appropriate callbacks defined in `CollapseStatePhaseEventProps`, such as:
 
 - `onExpandStart`
 - `onExpandEnd`

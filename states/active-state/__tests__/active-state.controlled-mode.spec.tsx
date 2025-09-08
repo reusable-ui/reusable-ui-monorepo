@@ -80,7 +80,7 @@ interface ActiveStateControlledTestCase {
 
 
 
-test.describe('useActiveState - controlled mode', () => {
+test.describe('useActiveBehaviorState - controlled mode', () => {
     for (const { title, active : initialActive, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

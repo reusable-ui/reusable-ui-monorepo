@@ -1,4 +1,4 @@
-'use client' // The exported `useCollapseState()` and `useCollapseStatePhaseEvents()` hooks are client side only.
+'use client' // The exported `useCollapseBehaviorState()` and `useCollapseStatePhaseEvents()` hooks are client side only.
 
 // React:
 import {
@@ -15,7 +15,7 @@ import {
     type UncontrollableCollapseStateProps,
     type CollapseStateOptions,
     type ExpandPhase,
-    type CollapseStateApi,
+    type CollapseBehaviorState,
 }                           from './types.js'
 
 // Defaults:
@@ -62,7 +62,7 @@ import {
  * ```tsx
  * import React, { FC, MouseEventHandler } from 'react';
  * import {
- *     useCollapseState,
+ *     useCollapseBehaviorState,
  *     CollapseStateProps,
  *     UncontrollableCollapseStateProps,
  *     CollapseStateChangeProps,
@@ -87,7 +87,7 @@ import {
  *         handleAnimationStart,
  *         handleAnimationEnd,
  *         handleAnimationCancel,
- *     } = useCollapseState(props, {
+ *     } = useCollapseBehaviorState(props, {
  *         defaultExpanded   : false,                  // Fallback for uncontrolled mode.
  *         animationPattern  : ['expand', 'collapse'], // Matches animation names ending with 'expand' or 'collapse'.
  *         animationBubbling : false,                  // Ignores bubbling animation events from children.
@@ -111,7 +111,7 @@ import {
  * };
  * ```
  */
-export const useCollapseState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: CollapseStateProps & Partial<UncontrollableCollapseStateProps> & Partial<CollapseStateChangeProps<TChangeEvent>>, options?: CollapseStateOptions): CollapseStateApi<TElement, TChangeEvent> => {
+export const useCollapseBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: CollapseStateProps & Partial<UncontrollableCollapseStateProps> & Partial<CollapseStateChangeProps<TChangeEvent>>, options?: CollapseStateOptions): CollapseBehaviorState<TElement, TChangeEvent> => {
     // Extract options and assign defaults:
     const {
         defaultExpanded   = finalDefaultExpanded,
@@ -179,13 +179,13 @@ export const useCollapseState = <TElement extends Element = HTMLElement, TChange
         expandClassname : getExpandClassname(expandPhase),
         dispatchExpandedChange,
         ...animationHandlers,
-    } satisfies CollapseStateApi<TElement, TChangeEvent>;
+    } satisfies CollapseBehaviorState<TElement, TChangeEvent>;
 };
 
 /**
  * Emits lifecycle events in response to expand/collapse phase transitions.
  * 
- * This hook observes the resolved `expandPhase` from `useCollapseState()` and triggers
+ * This hook observes the resolved `expandPhase` from `useCollapseBehaviorState()` and triggers
  * the appropriate callbacks defined in `CollapseStatePhaseEventProps`, such as:
  * 
  * - `onExpandStart`
@@ -194,7 +194,7 @@ export const useCollapseState = <TElement extends Element = HTMLElement, TChange
  * - `onCollapseEnd`
  * 
  * @param {CollapseStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
- * @param {ExpandPhase} expandPhase - The current phase value returned from `useCollapseState()`.
+ * @param {ExpandPhase} expandPhase - The current phase value returned from `useCollapseBehaviorState()`.
  */
 export const useCollapseStatePhaseEvents = (props: CollapseStatePhaseEventProps, expandPhase: ExpandPhase): void => {
     // Extract props:

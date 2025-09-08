@@ -4,7 +4,7 @@ import {
     type UncontrollableActiveStateProps,
     type ActiveStateChangeProps,
     type ActiveStatePhaseEventProps,
-    useActiveState,
+    useActiveBehaviorState,
     useActiveStatePhaseEvents,
 } from '../dist/index.js'
 import { useMergeEventHandlers } from '@reusable-ui/callbacks'
@@ -44,7 +44,7 @@ export const ActiveStateTest = (props: ActiveStateTestProps) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useActiveState(props, {
+    } = useActiveBehaviorState(props, {
         animationPattern,
     });
     

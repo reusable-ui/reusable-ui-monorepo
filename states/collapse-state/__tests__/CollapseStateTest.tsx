@@ -4,7 +4,7 @@ import {
     type UncontrollableCollapseStateProps,
     type CollapseStateChangeProps,
     type CollapseStatePhaseEventProps,
-    useCollapseState,
+    useCollapseBehaviorState,
     useCollapseStatePhaseEvents,
 } from '../dist/index.js'
 import { useMergeEventHandlers } from '@reusable-ui/callbacks'
@@ -44,7 +44,7 @@ export const CollapseStateTest = (props: CollapseStateTestProps) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useCollapseState(props, {
+    } = useCollapseBehaviorState(props, {
         animationPattern,
     });
     

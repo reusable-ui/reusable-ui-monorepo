@@ -1,4 +1,4 @@
-'use client' // The exported `useActiveState()` and `useActiveStatePhaseEvents()` hooks are client side only.
+'use client' // The exported `useActiveBehaviorState()` and `useActiveStatePhaseEvents()` hooks are client side only.
 
 // React:
 import {
@@ -15,7 +15,7 @@ import {
     type UncontrollableActiveStateProps,
     type ActiveStateOptions,
     type ActivePhase,
-    type ActiveStateApi,
+    type ActiveBehaviorState,
 }                           from './types.js'
 
 // Defaults:
@@ -62,7 +62,7 @@ import {
  * ```tsx
  * import React, { FC, MouseEventHandler } from 'react';
  * import {
- *     useActiveState,
+ *     useActiveBehaviorState,
  *     ActiveStateProps,
  *     UncontrollableActiveStateProps,
  *     ActiveStateChangeProps,
@@ -87,7 +87,7 @@ import {
  *         handleAnimationStart,
  *         handleAnimationEnd,
  *         handleAnimationCancel,
- *     } = useActiveState(props, {
+ *     } = useActiveBehaviorState(props, {
  *         defaultActive     : false,                      // Fallback for uncontrolled mode.
  *         animationPattern  : ['activate', 'deactivate'], // Matches animation names ending with 'activate' or 'deactivate'.
  *         animationBubbling : false,                      // Ignores bubbling animation events from children.
@@ -111,7 +111,7 @@ import {
  * };
  * ```
  */
-export const useActiveState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ActiveStateProps & Partial<UncontrollableActiveStateProps> & Partial<ActiveStateChangeProps<TChangeEvent>>, options?: ActiveStateOptions): ActiveStateApi<TElement, TChangeEvent> => {
+export const useActiveBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ActiveStateProps & Partial<UncontrollableActiveStateProps> & Partial<ActiveStateChangeProps<TChangeEvent>>, options?: ActiveStateOptions): ActiveBehaviorState<TElement, TChangeEvent> => {
     // Extract options and assign defaults:
     const {
         defaultActive     = finalDefaultActive,
@@ -179,13 +179,13 @@ export const useActiveState = <TElement extends Element = HTMLElement, TChangeEv
         activeClassname : getActiveClassname(activePhase),
         dispatchActiveChange,
         ...animationHandlers,
-    } satisfies ActiveStateApi<TElement, TChangeEvent>;
+    } satisfies ActiveBehaviorState<TElement, TChangeEvent>;
 };
 
 /**
  * Emits lifecycle events in response to activate/deactivate phase transitions.
  * 
- * This hook observes the resolved `activePhase` from `useActiveState()` and triggers
+ * This hook observes the resolved `activePhase` from `useActiveBehaviorState()` and triggers
  * the appropriate callbacks defined in `ActiveStatePhaseEventProps`, such as:
  * 
  * - `onActivateStart`
@@ -194,7 +194,7 @@ export const useActiveState = <TElement extends Element = HTMLElement, TChangeEv
  * - `onDeactivateEnd`
  * 
  * @param {ActiveStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
- * @param {ActivePhase} activePhase - The current phase value returned from `useActiveState()`.
+ * @param {ActivePhase} activePhase - The current phase value returned from `useActiveBehaviorState()`.
  */
 export const useActiveStatePhaseEvents = (props: ActiveStatePhaseEventProps, activePhase: ActivePhase): void => {
     // Extract props:

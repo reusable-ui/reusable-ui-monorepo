@@ -172,7 +172,7 @@ export type ExpandPhase =
  * 
  * @template TElement - The type of the target DOM element.
  */
-export interface CollapseStateApi<TElement extends Element = HTMLElement, TChangeEvent = unknown>
+export interface CollapseBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends
         // Bases:
         AnimationStateHandlers<TElement>

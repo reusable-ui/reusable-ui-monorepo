@@ -1,5 +1,5 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
-import { type ExciteStateProps, useExciteState } from '../dist/index.js'
+import { type ExciteStateProps, useExciteBehaviorState } from '../dist/index.js'
 import { useMergeEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
 import { HydrateStyles } from '@cssfn/cssfn-react'
@@ -25,7 +25,7 @@ export const ExciteStateTest = (props: ExciteStateTestProps) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useExciteState(props, {
+    } = useExciteBehaviorState(props, {
         animationPattern: 'test-excite',
     });
     

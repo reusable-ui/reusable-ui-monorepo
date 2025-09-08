@@ -21,7 +21,7 @@ yarn add @reusable-ui/active-state
 
 ## 🧩 Exported Hooks
 
-### `useActiveState(props, options?)`
+### `useActiveBehaviorState(props, options?)`
 
 Resolves the active/inactive state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
@@ -32,7 +32,7 @@ Supports controlled, uncontrolled, and hybrid activation behavior with optional 
 ```tsx
 import React, { FC, MouseEventHandler } from 'react';
 import {
-    useActiveState,
+    useActiveBehaviorState,
     ActiveStateProps,
     UncontrollableActiveStateProps,
     ActiveStateChangeProps,
@@ -57,7 +57,7 @@ export const ActivatableBox: FC<ActivatableBoxProps> = (props) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useActiveState(props, {
+    } = useActiveBehaviorState(props, {
         defaultActive     : false,                      // Fallback for uncontrolled mode.
         animationPattern  : ['activate', 'deactivate'], // Matches animation names ending with 'activate' or 'deactivate'.
         animationBubbling : false,                      // Ignores bubbling animation events from children.
@@ -85,7 +85,7 @@ export const ActivatableBox: FC<ActivatableBoxProps> = (props) => {
 
 Emits lifecycle events in response to activate/deactivate phase transitions.
 
-This hook observes the resolved `activePhase` from `useActiveState()` and triggers the appropriate callbacks defined in `ActiveStatePhaseEventProps`, such as:
+This hook observes the resolved `activePhase` from `useActiveBehaviorState()` and triggers the appropriate callbacks defined in `ActiveStatePhaseEventProps`, such as:
 
 - `onActivateStart`
 - `onActivateEnd`
