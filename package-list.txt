@@ -120,12 +120,10 @@ Default inheritance case example:
 |----------------|----------------------|--------------------|-----------|-----------|--------|-------------------|---------------------|--------------------------|--------------|------------------|-----------------------------------------|
 | disable-state  | Animates transitions | DisableStateProps  | disabled  | Yes       |        | disableClassname  | disabled, enabled   | disabling, enabling      | Yes          | via 'inherit'    | No — indicator only                     |
 | focus-state    | Animates transitions | FocusStateProps    | focused   | No        | Yes    | focusClassname    | blurred, focused    | focusing, blurring       | Yes          | via 'auto'       | No — indicator only                     |
-| hover-state    | Animates transitions | HoverStateProps    | hovered   | No        | Yes    | hoverClassname    | idle*, hovered      | leaving, hovering        | Yes          | via 'auto'       | No — indicator only                     |
+| hover-state    | Animates transitions | HoverStateProps    | hovered   | No        | Yes    | hoverClassname    | leaved, hovered     | leaving, hovering        | Yes          | via 'auto'       | No — indicator only                     |
 | press-state    | Animates transitions | PressStateProps    | pressed   | No        | Yes    | pressClassname    | released, pressed   | pressing, releasing      | Yes          | via 'auto'       | No — indicator only                     |
 | validity-state | Animates transitions | ValidityStateProps | invalid   | Yes       | Yes    | validityClassname | invalid, valid      | invalidating, validating | Yes          | via 'auto'       | Yes — user expected to revise           |
 |----------------|----------------------|--------------------|-----------|-----------|--------|-------------------|---------------------|--------------------------|--------------|------------------|-----------------------------------------|
-
-* = Still unclear
 
 Additional flags:
 - active-state: aria-checked, aria-pressed, aria-selected, aria-current, aria-activedescendant
