@@ -92,6 +92,18 @@ This hook observes the resolved `activePhase` from `useActiveBehaviorState()` an
 - `onDeactivateStart`
 - `onDeactivateEnd`
 
+### `useActiveChangeDispatcher(props)`
+
+Creates a stable dispatcher for requesting a change to the active state.
+
+This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `active` state and forwards it to a `<BaseComponent active={...}>`.
+
+Unlike `useActiveBehaviorState()`, which supports both controlled and uncontrolled modes, `useActiveChangeDispatcher()` assumes the component is **fully controlled** and does not manage internal state.
+
+- Always triggers `onActiveChange`, if provided.
+- Does not support internal fallback or uncontrolled behavior.
+- Ideal for components that **dictate** state externally and need a clean dispatcher without lifecycle orchestration.
+
 #### 🧠 Transition Animation Behavior
 
 The hook manages transitions between `active` and `inactive` states using a unified animation flow:

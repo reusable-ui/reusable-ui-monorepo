@@ -46,6 +46,44 @@ import {
 
 
 /**
+ * Creates a stable dispatcher for requesting a change to the expanded state.
+ * 
+ * This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `expanded` state and forwards it to a `<BaseComponent expanded={...}>`.
+ * 
+ * Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontrolled modes, `useCollapseChangeDispatcher()` assumes the component is **fully controlled** and does not manage internal state.
+ * 
+ * - Always triggers `onExpandedChange`, if provided.
+ * - Does not support internal fallback or uncontrolled behavior.
+ * - Ideal for components that **dictate** state externally and need a clean dispatcher without lifecycle orchestration.
+ * 
+ * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
+ * 
+ * @param props - The component props that may include `onExpandedChange`.
+ * @returns A dispatcher function for expansion change requests.
+ */
+export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: CollapseStateChangeProps<TChangeEvent>) : ValueChangeDispatcher<boolean, TChangeEvent> => {
+    // A Stable dispatcher for expansion change requests.
+    // This function remains referentially stable across renders,
+    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
+    const dispatchExpandedChange : ValueChangeDispatcher<boolean, TChangeEvent> = useStableCallback((newExpanded: boolean, event: TChangeEvent): void => {
+        // No internal state to update in controlled mode:
+        // if (!isControlled) setInternalExpanded(newExpanded);
+        
+        
+        
+        // Dispatch external change handler (if provided):
+        props.onExpandedChange?.(newExpanded, event);
+    });
+    
+    
+    
+    // Return the expansion change dispatcher:
+    return dispatchExpandedChange;
+};
+
+
+
+/**
  * Resolves the expand/collapse state, current transition phase, associated CSS class name, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  * 
@@ -159,7 +197,9 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
     
     
     
-    // Stable dispatcher for expansion change requests:
+    // A Stable dispatcher for expansion change requests.
+    // This function remains referentially stable across renders,
+    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const dispatchExpandedChange : ValueChangeDispatcher<boolean, TChangeEvent> = useStableCallback((newExpanded: boolean, event: TChangeEvent): void => {
         // Update the internal state only if uncontrolled:
         if (!isControlled) setInternalExpanded(newExpanded);

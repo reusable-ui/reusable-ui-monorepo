@@ -210,7 +210,7 @@ export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TCh
      * 
      * - In uncontrolled mode (no `active` prop), updates internal state directly.
      * - In controlled mode, delegates the decision to the parent component, which may choose to accept or ignore the request.
-     * - Always triggers `onActiveChange`, if defined, regardless of control mode.
+     * - Always triggers `onActiveChange`, if provided, regardless of control mode.
      */
     dispatchActiveChange : ValueChangeDispatcher<boolean, TChangeEvent>
 }

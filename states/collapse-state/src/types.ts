@@ -210,7 +210,7 @@ export interface CollapseBehaviorState<TElement extends Element = HTMLElement, T
      * 
      * - In uncontrolled mode (no `expanded` prop), updates internal state directly.
      * - In controlled mode, delegates the decision to the parent component, which may choose to accept or ignore the request.
-     * - Always triggers `onExpandedChange`, if defined, regardless of control mode.
+     * - Always triggers `onExpandedChange`, if provided, regardless of control mode.
      */
     dispatchExpandedChange : ValueChangeDispatcher<boolean, TChangeEvent>
 }
