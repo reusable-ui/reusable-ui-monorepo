@@ -92,6 +92,18 @@ This hook observes the resolved `expandPhase` from `useCollapseBehaviorState()` 
 - `onCollapseStart`
 - `onCollapseEnd`
 
+### `useCollapseState(props)`
+
+Resolves the current expanded state for a fully controlled component.
+
+This hook is intended for components that consume and forward the resolved `expanded` state to base component.
+
+Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontrolled modes, `useCollapseState()` assumes the component is **fully controlled** and does not manage internal state.
+
+- Does not manage internal state.
+- Does not support `defaultExpanded`.
+- Ideal for components that consume and forward the resolved `expanded` state.
+
 ### `useCollapseChangeDispatcher(props)`
 
 Creates a stable dispatcher for requesting a change to the expanded state.
@@ -101,7 +113,7 @@ This hook is designed for **fully controlled components**—typically the outer 
 Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontrolled modes, `useCollapseChangeDispatcher()` assumes the component is **fully controlled** and does not manage internal state.
 
 - Always triggers `onExpandedChange`, if provided.
-- Does not support internal fallback or uncontrolled behavior.
+- Does not support internal state for uncontrolled behavior.
 - Ideal for components that **dictate** state externally and need a clean dispatcher without lifecycle orchestration.
 
 #### 🧠 Transition Animation Behavior

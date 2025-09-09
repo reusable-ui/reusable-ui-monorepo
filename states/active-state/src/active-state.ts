@@ -46,19 +46,47 @@ import {
 
 
 /**
+ * Resolves the current active state for a fully controlled component.
+ * 
+ * This hook is intended for components that consume and forward the resolved `active` state to base component.
+ * 
+ * Unlike `useActiveBehaviorState()`, which supports both controlled and uncontrolled modes,
+ * `useActiveState()` assumes the component is **fully controlled** and does not manage internal state.
+ * 
+ * - Does not manage internal state.
+ * - Does not support `defaultActive`.
+ * - Ideal for components that consume and forward the resolved `active` state.
+ * 
+ * @param props - The component props that may include a controlled `active` value but must exclude `defaultActive`.
+ * @returns The resolved active state.
+ */
+export const useActiveState = (props: ActiveStateProps & { defaultActive: never }) : boolean => {
+    // Extract props and assign defaults:
+    const {
+        active : controlledActive = finalDefaultActive,
+    } = props;
+    
+    
+    
+    // Return the resolved active state:
+    return controlledActive;
+};
+
+/**
  * Creates a stable dispatcher for requesting a change to the active state.
  * 
  * This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `active` state and forwards it to a `<BaseComponent active={...}>`.
  * 
- * Unlike `useActiveBehaviorState()`, which supports both controlled and uncontrolled modes, `useActiveChangeDispatcher()` assumes the component is **fully controlled** and does not manage internal state.
+ * Unlike `useActiveBehaviorState()`, which supports both controlled and uncontrolled modes,
+ * `useActiveChangeDispatcher()` assumes the component is **fully controlled** and does not manage internal state.
  * 
  * - Always triggers `onActiveChange`, if provided.
- * - Does not support internal fallback or uncontrolled behavior.
+ * - Does not support internal state for uncontrolled behavior.
  * - Ideal for components that **dictate** state externally and need a clean dispatcher without lifecycle orchestration.
  * 
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  * 
- * @param props - The component props that may include `onActiveChange`.
+ * @param props - The component props that may include `onActiveChange` callback.
  * @returns A dispatcher function for activation change requests.
  */
 export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveStateChangeProps<TChangeEvent>) : ValueChangeDispatcher<boolean, TChangeEvent> => {

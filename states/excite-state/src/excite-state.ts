@@ -58,6 +58,31 @@ import {
 
 
 /**
+ * Resolves the current excited state for a fully controlled component.
+ * 
+ * This hook is intended for components that consume and forward the resolved `excited` state to base component.
+ * 
+ * - Does not manage internal state.
+ * - Ideal for components that consume and forward the resolved `excited` state.
+ * 
+ * @param props - The component props that may include a controlled `excited` value.
+ * @returns The resolved excited state.
+ */
+export const useExciteState = (props: ExciteStateProps): boolean => {
+    // Extract props and assign defaults:
+    const {
+        excited : controlledExcited = finalDefaultExcited,
+    } = props;
+    
+    
+    
+    // Return the resolved excited state:
+    return controlledExcited;
+};
+
+
+
+/**
  * Resolves the excited state, associated CSS class name, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  *
