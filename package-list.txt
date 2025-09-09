@@ -132,15 +132,15 @@ Additional flags:
 |----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
 | State Package  | Resolve Final State | Uncontrollable                 | Dispatcher                  | Resolve Final State + Meta |
 |----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
-| excite-state   | useExciteState      | useUncontrollableExciteState   | not applicable              | useExciteBehaviorState     |
+| excite-state   | useExciteState      | not applicable                 | not applicable              | useExciteBehaviorState     |
 | collapse-state | useCollapseState    | useUncontrollableCollapseState | useCollapseChangeDispatcher | useCollapseBehaviorState   |
 | active-state   | useActiveState      | useUncontrollableActiveState   | useActiveChangeDispatcher   | useActiveBehaviorState     |
 |----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
-| disable-state  | useDisableState     | useUncontrollableDisableState  | not applicable              | useDisableBehaviorState    |
-| focus-state    | useFocusState       | useUncontrollableFocusState    | not applicable              | useFocusBehaviorState      |
-| hover-state    | useHoverState       | useUncontrollableHoverState    | not applicable              | useHoverBehaviorState      |
-| press-state    | usePressState       | useUncontrollablePressState    | not applicable              | usePressBehaviorState      |
-| validity-state | useValidityState    | useUncontrollableValidityState | not applicable              | useValidityBehaviorState   |
+| disable-state  | useDisableState     | not applicable                 | not applicable              | useDisableBehaviorState    |
+| focus-state    | useFocusState       | not applicable                 | not applicable              | useFocusBehaviorState      |
+| hover-state    | useHoverState       | not applicable                 | not applicable              | useHoverBehaviorState      |
+| press-state    | usePressState       | not applicable                 | not applicable              | usePressBehaviorState      |
+| validity-state | useValidityState    | not applicable                 | not applicable              | useValidityBehaviorState   |
 |----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
 
 
