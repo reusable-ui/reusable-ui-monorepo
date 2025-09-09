@@ -96,13 +96,12 @@ This hook observes the resolved `expandPhase` from `useCollapseBehaviorState()` 
 
 Resolves the current expanded state for a fully controlled component.
 
-This hook is intended for components that consume and forward the resolved `expanded` state to base component.
+This hook is intended for components that **consume** the resolved `expanded` state and **forward** it to a base component.
 
 Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontrolled modes, `useCollapseState()` assumes the component is **fully controlled** and does not manage internal state.
 
-- Does not manage internal state.
-- Does not support `defaultExpanded`.
-- Ideal for components that consume and forward the resolved `expanded` state.
+- Supports only controlled mode.
+- Ideal for components that **consume** the resolved `expanded` state.
 
 ### `useCollapseChangeDispatcher(props)`
 
@@ -112,9 +111,22 @@ This hook is designed for **fully controlled components**—typically the outer 
 
 Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontrolled modes, `useCollapseChangeDispatcher()` assumes the component is **fully controlled** and does not manage internal state.
 
+- Supports only controlled mode.
 - Always triggers `onExpandedChange`, if provided.
-- Does not support internal state for uncontrolled behavior.
-- Ideal for components that **dictate** state externally and need a clean dispatcher without lifecycle orchestration.
+- Ideal for components that **dictate** the `expanded` state externally and need a stable dispatcher without lifecycle orchestration.
+
+### `useUncontrollableCollapseState(props, options)`
+
+Resolves the current expanded state and provides a dispatcher for requesting changes.
+
+This hook is intended for components that **manage** the resolved `expanded` state and **forward** it to a base component, while optionally supporting uncontrolled behavior.
+
+Unlike `useCollapseBehaviorState()`, which resolves full lifecycle, `useUncontrollableCollapseState()` provides a **simplified implementation** for managing expansion state and dispatching changes.
+
+- Supports both controlled and uncontrolled modes.
+- If `expanded` is provided, the internal state is disabled and the component becomes fully controlled.
+- If `expanded` is omitted, the internal state is initialized via `defaultExpanded`.
+- Ideal for components that **manage** the resolved `expanded` state.
 
 #### 🧠 Transition Animation Behavior
 

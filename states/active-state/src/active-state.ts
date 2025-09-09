@@ -1,10 +1,11 @@
-'use client' // The exported `useActiveBehaviorState()` and `useActiveStatePhaseEvents()` hooks are client side only.
+'use client' // The exported hooks are client side only.
 
 // React:
 import {
     // Hooks:
     useEffect,
     useRef,
+    useState,
 }                           from 'react'
 
 // Types:
@@ -48,14 +49,13 @@ import {
 /**
  * Resolves the current active state for a fully controlled component.
  * 
- * This hook is intended for components that consume and forward the resolved `active` state to base component.
+ * This hook is intended for components that **consume** the resolved `active` state and **forward** it to a base component.
  * 
  * Unlike `useActiveBehaviorState()`, which supports both controlled and uncontrolled modes,
  * `useActiveState()` assumes the component is **fully controlled** and does not manage internal state.
  * 
- * - Does not manage internal state.
- * - Does not support `defaultActive`.
- * - Ideal for components that consume and forward the resolved `active` state.
+ * - Supports only controlled mode.
+ * - Ideal for components that **consume** the resolved `active` state.
  * 
  * @param props - The component props that may include a controlled `active` value but must exclude `defaultActive`.
  * @returns The resolved active state.
@@ -80,16 +80,16 @@ export const useActiveState = (props: ActiveStateProps & { defaultActive: never 
  * Unlike `useActiveBehaviorState()`, which supports both controlled and uncontrolled modes,
  * `useActiveChangeDispatcher()` assumes the component is **fully controlled** and does not manage internal state.
  * 
+ * - Supports only controlled mode.
  * - Always triggers `onActiveChange`, if provided.
- * - Does not support internal state for uncontrolled behavior.
- * - Ideal for components that **dictate** state externally and need a clean dispatcher without lifecycle orchestration.
+ * - Ideal for components that **dictate** the `active` state externally and need a stable dispatcher without lifecycle orchestration.
  * 
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  * 
- * @param props - The component props that may include `onActiveChange` callback.
+ * @param props - The component props that may include `onActiveChange` callback but must exclude `defaultActive`.
  * @returns A dispatcher function for activation change requests.
  */
-export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveStateChangeProps<TChangeEvent>) : ValueChangeDispatcher<boolean, TChangeEvent> => {
+export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveStateChangeProps<TChangeEvent> & { defaultActive: never }) : ValueChangeDispatcher<boolean, TChangeEvent> => {
     // A Stable dispatcher for activation change requests.
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
@@ -107,6 +107,75 @@ export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveS
     
     // Return the active change dispatcher:
     return dispatchActiveChange;
+};
+
+/**
+ * Resolves the current active state and provides a dispatcher for requesting changes.
+ * 
+ * This hook is intended for components that **manage** the resolved `active` state and **forward** it to a base component,
+ * while optionally supporting uncontrolled behavior.
+ * 
+ * Unlike `useActiveBehaviorState()`, which resolves full lifecycle,
+ * `useUncontrollableActiveState()` provides a **simplified implementation** for managing active state and dispatching changes.
+ * 
+ * - Supports both controlled and uncontrolled modes.
+ * - If `active` is provided, the internal state is disabled and the component becomes fully controlled.
+ * - If `active` is omitted, the internal state is initialized via `defaultActive`.
+ * - Ideal for components that **manage** the resolved `active` state.
+ * 
+ * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
+ * 
+ * @param props - The component props that may include a controlled `active` value, `defaultActive` value, and `onActiveChange` callback.
+ * @returns A tuple of the resolved active state and a dispatcher for requesting changes.
+ */
+export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: ActiveStateProps & UncontrollableActiveStateProps & ActiveStateChangeProps<TChangeEvent>, options?: Pick<ActiveStateOptions, 'defaultActive'>): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
+    // Extract options and assign defaults:
+    const {
+        defaultActive     = finalDefaultActive,
+    } = options ?? {};
+    
+    
+    
+    // Extract props and assign defaults:
+    const {
+        defaultActive : defaultInitialIntent = defaultActive,
+        active        : initialIntent        = defaultInitialIntent,
+        active        : controlledActive,
+        onActiveChange,
+    } = props;
+    
+    
+    
+    // States and flags:
+    
+    // Internal activation state:
+    const [internalActive, setInternalActive] = useState<boolean>(initialIntent);
+    
+    // Determine control mode:
+    const isControlled     = (controlledActive !== undefined);
+    
+    // Resolve effective activation state:
+    const resolvedActive   = isControlled ? controlledActive : internalActive;
+    
+    
+    
+    // A Stable dispatcher for activation change requests.
+    // This function remains referentially stable across renders,
+    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
+    const dispatchActiveChange : ValueChangeDispatcher<boolean, TChangeEvent> = useStableCallback((newActive: boolean, event: TChangeEvent): void => {
+        // Update the internal state only if uncontrolled:
+        if (!isControlled) setInternalActive(newActive);
+        
+        
+        
+        // Dispatch external change handler (if provided):
+        onActiveChange?.(newActive, event);
+    });
+    
+    
+    
+    // Return resolved active state and dispatcher:
+    return [resolvedActive, dispatchActiveChange];
 };
 
 
@@ -177,7 +246,7 @@ export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveS
  * };
  * ```
  */
-export const useActiveBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ActiveStateProps & Partial<UncontrollableActiveStateProps> & Partial<ActiveStateChangeProps<TChangeEvent>>, options?: ActiveStateOptions): ActiveBehaviorState<TElement, TChangeEvent> => {
+export const useActiveBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ActiveStateProps & UncontrollableActiveStateProps & ActiveStateChangeProps<TChangeEvent>, options?: ActiveStateOptions): ActiveBehaviorState<TElement, TChangeEvent> => {
     // Extract options and assign defaults:
     const {
         defaultActive     = finalDefaultActive,

@@ -96,13 +96,12 @@ This hook observes the resolved `activePhase` from `useActiveBehaviorState()` an
 
 Resolves the current active state for a fully controlled component.
 
-This hook is intended for components that consume and forward the resolved `active` state to base component.
+This hook is intended for components that **consume** the resolved `active` state and **forward** it to a base component.
 
 Unlike `useActiveBehaviorState()`, which supports both controlled and uncontrolled modes, `useActiveState()` assumes the component is **fully controlled** and does not manage internal state.
 
-- Does not manage internal state.
-- Does not support `defaultActive`.
-- Ideal for components that consume and forward the resolved `active` state.
+- Supports only controlled mode.
+- Ideal for components that **consume** the resolved `active` state.
 
 ### `useActiveChangeDispatcher(props)`
 
@@ -112,9 +111,22 @@ This hook is designed for **fully controlled components**—typically the outer 
 
 Unlike `useActiveBehaviorState()`, which supports both controlled and uncontrolled modes, `useActiveChangeDispatcher()` assumes the component is **fully controlled** and does not manage internal state.
 
+- Supports only controlled mode.
 - Always triggers `onActiveChange`, if provided.
-- Does not support internal state for uncontrolled behavior.
-- Ideal for components that **dictate** state externally and need a clean dispatcher without lifecycle orchestration.
+- Ideal for components that **dictate** the `active` state externally and need a stable dispatcher without lifecycle orchestration.
+
+### `useUncontrollableActiveState(props, options)`
+
+Resolves the current active state and provides a dispatcher for requesting changes.
+
+This hook is intended for components that **manage** the resolved `active` state and **forward** it to a base component, while optionally supporting uncontrolled behavior.
+
+Unlike `useActiveBehaviorState()`, which resolves full lifecycle, `useUncontrollableActiveState()` provides a **simplified implementation** for managing active state and dispatching changes.
+
+- Supports both controlled and uncontrolled modes.
+- If `active` is provided, the internal state is disabled and the component becomes fully controlled.
+- If `active` is omitted, the internal state is initialized via `defaultActive`.
+- Ideal for components that **manage** the resolved `active` state.
 
 #### 🧠 Transition Animation Behavior
 

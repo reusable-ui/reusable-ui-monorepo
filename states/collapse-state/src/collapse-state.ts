@@ -1,10 +1,11 @@
-'use client' // The exported `useCollapseBehaviorState()` and `useCollapseStatePhaseEvents()` hooks are client side only.
+'use client' // The exported hooks are client side only.
 
 // React:
 import {
     // Hooks:
     useEffect,
     useRef,
+    useState,
 }                           from 'react'
 
 // Types:
@@ -48,14 +49,13 @@ import {
 /**
  * Resolves the current expanded state for a fully controlled component.
  * 
- * This hook is intended for components that consume and forward the resolved `expanded` state to base component.
+ * This hook is intended for components that **consume** the resolved `expanded` state and **forward** it to a base component.
  * 
  * Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontrolled modes,
  * `useCollapseState()` assumes the component is **fully controlled** and does not manage internal state.
  * 
- * - Does not manage internal state.
- * - Does not support `defaultExpanded`.
- * - Ideal for components that consume and forward the resolved `expanded` state.
+ * - Supports only controlled mode.
+ * - Ideal for components that **consume** the resolved `expanded` state.
  * 
  * @param props - The component props that may include a controlled `expanded` value but must exclude `defaultExpanded`.
  * @returns The resolved expanded state.
@@ -80,16 +80,16 @@ export const useCollapseState = (props: CollapseStateProps & { defaultExpanded: 
  * Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontrolled modes,
  * `useCollapseChangeDispatcher()` assumes the component is **fully controlled** and does not manage internal state.
  * 
+ * - Supports only controlled mode.
  * - Always triggers `onExpandedChange`, if provided.
- * - Does not support internal state for uncontrolled behavior.
- * - Ideal for components that **dictate** state externally and need a clean dispatcher without lifecycle orchestration.
+ * - Ideal for components that **dictate** the `expanded` state externally and need a stable dispatcher without lifecycle orchestration.
  * 
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  * 
- * @param props - The component props that may include `onExpandedChange` callback.
+ * @param props - The component props that may include `onExpandedChange` callback but must exclude `defaultExpanded`.
  * @returns A dispatcher function for expansion change requests.
  */
-export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: CollapseStateChangeProps<TChangeEvent>) : ValueChangeDispatcher<boolean, TChangeEvent> => {
+export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: CollapseStateChangeProps<TChangeEvent> & { defaultExpanded: never }) : ValueChangeDispatcher<boolean, TChangeEvent> => {
     // A Stable dispatcher for expansion change requests.
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
@@ -107,6 +107,75 @@ export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: Colla
     
     // Return the expansion change dispatcher:
     return dispatchExpandedChange;
+};
+
+/**
+ * Resolves the current expanded state and provides a dispatcher for requesting changes.
+ * 
+ * This hook is intended for components that **manage** the resolved `expanded` state and **forward** it to a base component,
+ * while optionally supporting uncontrolled behavior.
+ * 
+ * Unlike `useCollapseBehaviorState()`, which resolves full lifecycle,
+ * `useUncontrollableCollapseState()` provides a **simplified implementation** for managing expansion state and dispatching changes.
+ * 
+ * - Supports both controlled and uncontrolled modes.
+ * - If `expanded` is provided, the internal state is disabled and the component becomes fully controlled.
+ * - If `expanded` is omitted, the internal state is initialized via `defaultExpanded`.
+ * - Ideal for components that **manage** the resolved `expanded` state.
+ * 
+ * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
+ * 
+ * @param props - The component props that may include a controlled `expanded` value, `defaultExpanded` value, and `onExpandedChange` callback.
+ * @returns A tuple of the resolved expanded state and a dispatcher for requesting changes.
+ */
+export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: CollapseStateProps & UncontrollableCollapseStateProps & CollapseStateChangeProps<TChangeEvent>, options?: Pick<CollapseStateOptions, 'defaultExpanded'>): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
+    // Extract options and assign defaults:
+    const {
+        defaultExpanded   = finalDefaultExpanded,
+    } = options ?? {};
+    
+    
+    
+    // Extract props and assign defaults:
+    const {
+        defaultExpanded : defaultInitialIntent = defaultExpanded,
+        expanded        : initialIntent        = defaultInitialIntent,
+        expanded        : controlledExpanded,
+        onExpandedChange,
+    } = props;
+    
+    
+    
+    // States and flags:
+    
+    // Internal activation state:
+    const [internalExpanded, setInternalExpanded] = useState<boolean>(initialIntent);
+    
+    // Determine control mode:
+    const isControlled     = (controlledExpanded !== undefined);
+    
+    // Resolve effective expansion state:
+    const resolvedExpanded = isControlled ? controlledExpanded : internalExpanded;
+    
+    
+    
+    // A Stable dispatcher for expansion change requests.
+    // This function remains referentially stable across renders,
+    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
+    const dispatchExpandedChange : ValueChangeDispatcher<boolean, TChangeEvent> = useStableCallback((newExpanded: boolean, event: TChangeEvent): void => {
+        // Update the internal state only if uncontrolled:
+        if (!isControlled) setInternalExpanded(newExpanded);
+        
+        
+        
+        // Dispatch external change handler (if provided):
+        onExpandedChange?.(newExpanded, event);
+    });
+    
+    
+    
+    // Return resolved collapse state and dispatcher:
+    return [resolvedExpanded, dispatchExpandedChange];
 };
 
 
@@ -177,7 +246,7 @@ export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: Colla
  * };
  * ```
  */
-export const useCollapseBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: CollapseStateProps & Partial<UncontrollableCollapseStateProps> & Partial<CollapseStateChangeProps<TChangeEvent>>, options?: CollapseStateOptions): CollapseBehaviorState<TElement, TChangeEvent> => {
+export const useCollapseBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: CollapseStateProps & UncontrollableCollapseStateProps & CollapseStateChangeProps<TChangeEvent>, options?: CollapseStateOptions): CollapseBehaviorState<TElement, TChangeEvent> => {
     // Extract options and assign defaults:
     const {
         defaultExpanded   = finalDefaultExpanded,
