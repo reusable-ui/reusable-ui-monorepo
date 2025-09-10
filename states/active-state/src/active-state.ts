@@ -5,7 +5,6 @@ import {
     // Hooks:
     useEffect,
     useRef,
-    useState,
 }                           from 'react'
 
 // Types:
@@ -38,6 +37,11 @@ import {
 import {
     // Types:
     type ValueChangeDispatcher,
+    
+    
+    
+    // Hooks:
+    useHybridValueChange,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
 import {
     // Hooks:
@@ -146,30 +150,14 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
     
     
     
-    // States and flags:
-    
-    // Internal activation state:
-    const [internalActive, setInternalActive] = useState<boolean>(initialIntent);
-    
-    // Determine control mode:
-    const isControlled     = (controlledActive !== undefined);
-    
-    // Resolve effective activation state:
-    const resolvedActive   = isControlled ? controlledActive : internalActive;
-    
-    
-    
-    // A Stable dispatcher for activation change requests.
-    // This function remains referentially stable across renders,
-    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const dispatchActiveChange : ValueChangeDispatcher<boolean, TChangeEvent> = useStableCallback((newActive: boolean, event: TChangeEvent): void => {
-        // Update the internal state only if uncontrolled:
-        if (!isControlled) setInternalActive(newActive);
-        
-        
-        
-        // Dispatch external change handler (if provided):
-        onActiveChange?.(newActive, event);
+    // States:
+    const {
+        value               : resolvedActive,
+        dispatchValueChange : dispatchActiveChange,
+    } = useHybridValueChange<boolean, TChangeEvent>({
+        defaultValue  : initialIntent,
+        value         : controlledActive,
+        onValueChange : onActiveChange,
     });
     
     

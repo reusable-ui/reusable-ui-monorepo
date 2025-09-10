@@ -5,7 +5,6 @@ import {
     // Hooks:
     useEffect,
     useRef,
-    useState,
 }                           from 'react'
 
 // Types:
@@ -38,6 +37,11 @@ import {
 import {
     // Types:
     type ValueChangeDispatcher,
+    
+    
+    
+    // Hooks:
+    useHybridValueChange,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
 import {
     // Hooks:
@@ -146,35 +150,19 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
     
     
     
-    // States and flags:
-    
-    // Internal activation state:
-    const [internalExpanded, setInternalExpanded] = useState<boolean>(initialIntent);
-    
-    // Determine control mode:
-    const isControlled     = (controlledExpanded !== undefined);
-    
-    // Resolve effective expansion state:
-    const resolvedExpanded = isControlled ? controlledExpanded : internalExpanded;
-    
-    
-    
-    // A Stable dispatcher for expansion change requests.
-    // This function remains referentially stable across renders,
-    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const dispatchExpandedChange : ValueChangeDispatcher<boolean, TChangeEvent> = useStableCallback((newExpanded: boolean, event: TChangeEvent): void => {
-        // Update the internal state only if uncontrolled:
-        if (!isControlled) setInternalExpanded(newExpanded);
-        
-        
-        
-        // Dispatch external change handler (if provided):
-        onExpandedChange?.(newExpanded, event);
+    // States:
+    const {
+        value               : resolvedExpanded,
+        dispatchValueChange : dispatchExpandedChange,
+    } = useHybridValueChange<boolean, TChangeEvent>({
+        defaultValue  : initialIntent,
+        value         : controlledExpanded,
+        onValueChange : onExpandedChange,
     });
     
     
     
-    // Return resolved collapse state and dispatcher:
+    // Return resolved expansion state and dispatcher:
     return [resolvedExpanded, dispatchExpandedChange];
 };
 
