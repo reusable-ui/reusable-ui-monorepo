@@ -70,10 +70,10 @@ export const ExcitableBox: FC<ExcitableBoxProps> = (props) => {
 
 Resolves the current excited state for a fully controlled component.
 
-This hook is intended for components that consume and forward the resolved `excited` state to base component.
+This hook is intended for components that **consume** the resolved `excited` state and **forward** it to a base component.
 
-- Does not manage internal state.
-- Ideal for components that consume and forward the resolved `excited` state.
+- Does not contain internal state.
+- Ideal for components that **consume** the resolved `excited` state.
 
 #### 🧠 Excitement Animation Behavior
 

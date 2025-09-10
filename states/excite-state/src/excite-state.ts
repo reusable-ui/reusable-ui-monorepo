@@ -1,4 +1,4 @@
-'use client' // The exported `useExciteBehaviorState()` hook is client side only.
+'use client' // The exported hooks are client side only.
 
 // React:
 import {
@@ -60,10 +60,10 @@ import {
 /**
  * Resolves the current excited state for a fully controlled component.
  * 
- * This hook is intended for components that consume and forward the resolved `excited` state to base component.
+ * This hook is intended for components that **consume** the resolved `excited` state and **forward** it to a base component.
  * 
- * - Does not manage internal state.
- * - Ideal for components that consume and forward the resolved `excited` state.
+ * - Does not contain internal state.
+ * - Ideal for components that **consume** the resolved `excited` state.
  * 
  * @param props - The component props that may include a controlled `excited` value.
  * @returns The resolved excited state.
