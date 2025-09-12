@@ -54,8 +54,7 @@ export interface CollapseStateProps {
  */
 export interface UncontrollableCollapseStateProps {
     /**
-     * Specifies the initial expanded state for uncontrolled usage.
-     * 
+     * Specifies the initial expanded state for uncontrolled usage:
      * - `true`  → initially expanded
      * - `false` → initially collapsed
      * 
@@ -74,8 +73,7 @@ export interface UncontrollableCollapseStateProps {
  */
 export interface CollapseStateChangeProps<TChangeEvent = unknown> {
     /**
-     * Signals intent to change the expanded state.
-     * 
+     * Signals intent to change the expanded state:
      * - `true`  → request to expand
      * - `false` → request to collapse
      * 
@@ -125,7 +123,11 @@ export interface CollapseStateOptions
 {
     /**
      * The default expanded state to apply when no `defaultExpanded` prop is explicitly provided.
-     * This value is only applied in uncontrolled mode.
+     * This value is only applied in uncontrolled mode:
+     * - `true`  → initially expanded
+     * - `false` → initially collapsed
+     * 
+     * Defaults to `false` if not provided.
      */
     defaultExpanded   ?: boolean
     
@@ -171,6 +173,7 @@ export type ExpandPhase =
  * An API for accessing the resolved expand/collapse state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
+ * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  */
 export interface CollapseBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends

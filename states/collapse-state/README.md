@@ -41,8 +41,8 @@ import styles from './CollapsibleBox.module.css';
 
 export interface CollapsibleBoxProps extends
     CollapseStateProps,
-    UncontrollableCollapseStateProps<MouseEventHandler<HTMLButtonElement>>, // optional uncontrolled behavior
-    CollapseStateChangeProps // optional change dispatching behavior
+    UncontrollableCollapseStateProps, // optional uncontrolled behavior
+    CollapseStateChangeProps<MouseEventHandler<HTMLButtonElement>> // optional change dispatching behavior
 {}
 
 // A box that can be expanded and collapsed.

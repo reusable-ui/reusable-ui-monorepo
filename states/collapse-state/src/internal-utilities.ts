@@ -41,10 +41,5 @@ export const resolveExpandPhase = (isExpanded: boolean, runningIntent: boolean |
  */
 export const getExpandClassname = (expandPhase: ExpandPhase): `is-${ExpandPhase}` => {
     // Return the corresponding class name:
-    switch (expandPhase) {
-        case 'expanding'  : return 'is-expanding';
-        case 'collapsing' : return 'is-collapsing';
-        case 'expanded'   : return 'is-expanded';
-        default           : return 'is-collapsed';
-    } // switch
+    return `is-${expandPhase}`;
 };
