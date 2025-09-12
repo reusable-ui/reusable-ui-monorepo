@@ -41,10 +41,5 @@ export const resolveActivePhase = (isActive: boolean, runningIntent: boolean | u
  */
 export const getActiveClassname = (activePhase: ActivePhase): `is-${ActivePhase}` => {
     // Return the corresponding class name:
-    switch (activePhase) {
-        case 'activating'   : return 'is-activating';
-        case 'deactivating' : return 'is-deactivating';
-        case 'active'       : return 'is-active';
-        default             : return 'is-inactive';
-    } // switch
+    return `is-${activePhase}`;
 };

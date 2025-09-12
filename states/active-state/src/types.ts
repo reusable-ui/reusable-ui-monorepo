@@ -54,8 +54,7 @@ export interface ActiveStateProps {
  */
 export interface UncontrollableActiveStateProps {
     /**
-     * Specifies the initial active state for uncontrolled usage.
-     * 
+     * Specifies the initial active state for uncontrolled usage:
      * - `true`  → initially active
      * - `false` → initially inactive
      * 
@@ -74,8 +73,7 @@ export interface UncontrollableActiveStateProps {
  */
 export interface ActiveStateChangeProps<TChangeEvent = unknown> {
     /**
-     * Signals intent to change the active state.
-     * 
+     * Signals intent to change the active state:
      * - `true`  → request to activate
      * - `false` → request to deactivate
      * 
@@ -125,7 +123,11 @@ export interface ActiveStateOptions
 {
     /**
      * The default active state to apply when no `defaultActive` prop is explicitly provided.
-     * This value is only applied in uncontrolled mode.
+     * This value is only applied in uncontrolled mode:
+     * - `true`  → initially active
+     * - `false` → initially inactive
+     * 
+     * Defaults to `false` if not provided.
      */
     defaultActive     ?: boolean
     
@@ -171,6 +173,7 @@ export type ActivePhase =
  * An API for accessing the resolved active/inactive state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
+ * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  */
 export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends

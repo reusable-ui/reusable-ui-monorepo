@@ -194,8 +194,8 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
  * 
  * export interface ActivatableBoxProps extends
  *     ActiveStateProps,
- *     UncontrollableActiveStateProps<MouseEventHandler<HTMLButtonElement>>, // optional uncontrolled behavior
- *     ActiveStateChangeProps // optional change dispatching behavior
+ *     UncontrollableActiveStateProps, // optional uncontrolled behavior
+ *     ActiveStateChangeProps<MouseEventHandler<HTMLButtonElement>> // optional change dispatching behavior
  * {}
  * 
  * // A box that can be activated and deactivated.
@@ -264,13 +264,13 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
     });
     
     // Determine control mode:
-    const isControlled     = (controlledActive !== undefined);
+    const isControlled   = (controlledActive !== undefined);
     
     // Resolve effective activation state:
-    const resolvedActive   = isControlled ? controlledActive : internalActive;
+    const resolvedActive = isControlled ? controlledActive : internalActive;
     
     // Derive semantic phase from animation lifecycle:
-    const activePhase      = resolveActivePhase(resolvedActive, runningIntent); // 'inactive', 'deactivating', 'activating', 'active'
+    const activePhase    = resolveActivePhase(resolvedActive, runningIntent); // 'inactive', 'deactivating', 'activating', 'active'
     
     
     

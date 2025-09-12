@@ -41,8 +41,8 @@ import styles from './ActivatableBox.module.css';
 
 export interface ActivatableBoxProps extends
     ActiveStateProps,
-    UncontrollableActiveStateProps<MouseEventHandler<HTMLButtonElement>>, // optional uncontrolled behavior
-    ActiveStateChangeProps // optional change dispatching behavior
+    UncontrollableActiveStateProps, // optional uncontrolled behavior
+    ActiveStateChangeProps<MouseEventHandler<HTMLButtonElement>> // optional change dispatching behavior
 {}
 
 // A box that can be activated and deactivated.
