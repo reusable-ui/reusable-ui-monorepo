@@ -92,7 +92,7 @@ This hook observes the resolved `activePhase` from `useActiveBehaviorState()` an
 - `onDeactivateStart`
 - `onDeactivateEnd`
 
-### `useActiveState(props)`
+### `useActiveState(props, options)`
 
 Resolves the current active state for a fully controlled component.
 

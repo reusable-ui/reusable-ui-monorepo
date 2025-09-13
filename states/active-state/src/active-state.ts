@@ -62,12 +62,20 @@ import {
  * - Ideal for components that **consume** the resolved `active` state.
  * 
  * @param props - The component props that may include a controlled `active` value but must exclude `defaultActive`.
+ * @param options - An optional configuration for customizing activate/deactivate behavior.
  * @returns The resolved active state.
  */
-export const useActiveState = (props: ActiveStateProps & { defaultActive: never }) : boolean => {
+export const useActiveState = (props: ActiveStateProps & { defaultActive: never }, options?: Pick<ActiveStateOptions, 'defaultActive'>) : boolean => {
+    // Extract options and assign defaults:
+    const {
+        defaultActive     = finalDefaultActive,
+    } = options ?? {};
+    
+    
+    
     // Extract props and assign defaults:
     const {
-        active : controlledActive = finalDefaultActive,
+        active : controlledActive = defaultActive,
     } = props;
     
     
@@ -130,6 +138,7 @@ export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveS
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  * 
  * @param props - The component props that may include a controlled `active` value, `defaultActive` value, and `onActiveChange` callback.
+ * @param options - An optional configuration for customizing activate/deactivate behavior.
  * @returns A tuple of the resolved active state and a dispatcher for requesting changes.
  */
 export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: ActiveStateProps & UncontrollableActiveStateProps & ActiveStateChangeProps<TChangeEvent>, options?: Pick<ActiveStateOptions, 'defaultActive'>): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
@@ -177,8 +186,8 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
  * @template TElement - The type of the target DOM element.
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  * 
- * @param props - The component props that may include a controlled `active` value, optional `defaultActive`, and `onActiveChange`.
- * @param options - An optional configuration for customizing activate/deactivate behavior.
+ * @param props - The component props that may include a controlled `active` value, optional `defaultActive`, and `onActiveChange` callback.
+ * @param options - An optional configuration for customizing activate/deactivate behavior and animation lifecycle.
  * @returns The resolved active/inactive state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
  * @example
