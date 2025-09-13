@@ -62,12 +62,20 @@ import {
  * - Ideal for components that **consume** the resolved `expanded` state.
  * 
  * @param props - The component props that may include a controlled `expanded` value but must exclude `defaultExpanded`.
+ * @param options - An optional configuration for customizing expand/collapse behavior.
  * @returns The resolved expanded state.
  */
-export const useCollapseState = (props: CollapseStateProps & { defaultExpanded: never }) : boolean => {
+export const useCollapseState = (props: CollapseStateProps & { defaultExpanded: never }, options?: Pick<CollapseStateOptions, 'defaultExpanded'>) : boolean => {
+    // Extract options and assign defaults:
+    const {
+        defaultExpanded   = finalDefaultExpanded,
+    } = options ?? {};
+    
+    
+    
     // Extract props and assign defaults:
     const {
-        expanded : controlledExpanded = finalDefaultExpanded,
+        expanded : controlledExpanded = defaultExpanded,
     } = props;
     
     
@@ -130,6 +138,7 @@ export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: Colla
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  * 
  * @param props - The component props that may include a controlled `expanded` value, `defaultExpanded` value, and `onExpandedChange` callback.
+ * @param options - An optional configuration for customizing expand/collapse behavior.
  * @returns A tuple of the resolved expanded state and a dispatcher for requesting changes.
  */
 export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: CollapseStateProps & UncontrollableCollapseStateProps & CollapseStateChangeProps<TChangeEvent>, options?: Pick<CollapseStateOptions, 'defaultExpanded'>): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
@@ -177,8 +186,8 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
  * @template TElement - The type of the target DOM element.
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  * 
- * @param props - The component props that may include a controlled `expanded` value, optional `defaultExpanded`, and `onExpandedChange`.
- * @param options - An optional configuration for customizing expand/collapse behavior.
+ * @param props - The component props that may include a controlled `expanded` value, optional `defaultExpanded`, and `onExpandedChange` callback.
+ * @param options - An optional configuration for customizing expand/collapse behavior and animation lifecycle.
  * @returns The resolved expand/collapse state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
  * @example

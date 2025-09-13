@@ -92,7 +92,7 @@ This hook observes the resolved `expandPhase` from `useCollapseBehaviorState()` 
 - `onCollapseStart`
 - `onCollapseEnd`
 
-### `useCollapseState(props)`
+### `useCollapseState(props, options)`
 
 Resolves the current expanded state for a fully controlled component.
 
