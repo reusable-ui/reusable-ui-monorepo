@@ -92,7 +92,7 @@ This hook observes the resolved `activePhase` from `useActiveBehaviorState()` an
 - `onDeactivateStart`
 - `onDeactivateEnd`
 
-### `useActiveState(props, options)`
+### `useActiveState(props, options?)`
 
 Resolves the current active state for a fully controlled component.
 
@@ -115,7 +115,7 @@ Unlike `useActiveBehaviorState()`, which supports both controlled and uncontroll
 - Always triggers `onActiveChange`, if provided.
 - Ideal for components that **dictate** the `active` state externally and need a stable dispatcher without lifecycle orchestration.
 
-### `useUncontrollableActiveState(props, options)`
+### `useUncontrollableActiveState(props, options?)`
 
 Resolves the current active state and provides a dispatcher for requesting changes.
 
