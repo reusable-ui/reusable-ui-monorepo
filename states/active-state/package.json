@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/active-state",
   "version": "7.0.0",
-  "description": "A utility for orchestrating activate/deactivate animations based on the current transition phase.",
+  "description": "Adds activation/deactivation (selection) functionality to UI components, with transition animations and semantic styling hooks.",
   "keywords": [
     "activate",
     "deactivate",

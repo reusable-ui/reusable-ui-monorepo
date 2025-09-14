@@ -313,11 +313,11 @@ export interface CssCollapseStateOptions {
 
 
 /**
- * Provides a CSS API for conditionally apply the expand/collapse animations based on the current transition phase.
+ * Provides a CSS API for conditionally apply the expand/collapse animations based on current expanded state.
  */
 export interface CssCollapseState {
     /**
-     * Generates CSS rules that conditionally apply the expand/collapse animations based on the current transition phase.
+     * Generates CSS rules that conditionally apply the expand/collapse animations based on current expanded state.
      * 
      * Typically used to toggle animation variables during expanding or collapsing transitions.
      */

@@ -1,10 +1,10 @@
 # @reusable-ui/collapse-state 📦  
 
-A utility for orchestrating expand/collapse animations based on the current transition phase.  
-Ideal for tooltips, accordions, dialogs, and any collapsible UI components.
+Adds expand/collapse functionality to UI components, with transition animations and semantic styling hooks.  
+Ideal for tooltips, accordions, dialogs, and any interactive component requiring controlled expansion feedback.
 
 ## ✨ Features
-✔ Lifecycle-aware expand/collapse animations based on transition phase  
+✔ Lifecycle-aware expand/collapse animations based on current expanded state  
 ✔ Gracefully completes running animations before resolving new state  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, animation, and feedback systems  
@@ -185,7 +185,7 @@ export const componentStyle = () => style({
 
 ### `usesCollapseState(options?: CssCollapseStateOptions): CssCollapseState`
 
-Generates CSS rules that conditionally apply the expand/collapse animations based on the current transition phase, and exposes expand/collapse-related CSS variables for conditional animation.
+Generates CSS rules that conditionally apply the expand/collapse animations based on current expanded state, and exposes expand/collapse-related CSS variables for conditional animation.
 
 #### Supporting Variables (Advanced Use)
 

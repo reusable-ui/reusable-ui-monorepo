@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/collapse-state",
   "version": "7.0.0",
-  "description": "A utility for orchestrating expand/collapse animations based on the current transition phase.",
+  "description": "Adds expand/collapse functionality to UI components, with transition animations and semantic styling hooks.",
   "keywords": [
     "expand",
     "collapse",

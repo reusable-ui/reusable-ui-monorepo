@@ -313,11 +313,11 @@ export interface CssActiveStateOptions {
 
 
 /**
- * Provides a CSS API for conditionally apply the activate/deactivate animations based on the current transition phase.
+ * Provides a CSS API for conditionally apply the activate/deactivate animations based on current active state.
  */
 export interface CssActiveState {
     /**
-     * Generates CSS rules that conditionally apply the activate/deactivate animations based on the current transition phase.
+     * Generates CSS rules that conditionally apply the activate/deactivate animations based on current active state.
      * 
      * Typically used to toggle animation variables during activating or deactivating transitions.
      */

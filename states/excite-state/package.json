@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/excite-state",
   "version": "7.0.0",
-  "description": "A utility for triggering excitement animations based on the current excited state.",
+  "description": "Adds excitement (attention grabbing) functionality to UI components, with an attention-triggering animation and semantic styling hooks.",
   "keywords": [
     "excite",
     "state",

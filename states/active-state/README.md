@@ -1,10 +1,10 @@
 # @reusable-ui/active-state 📦  
 
-A utility for orchestrating activate/deactivate animations based on the current transition phase.  
-Ideal for toggles, switches, selections, alerts, and any activatable UI components.
+Adds activation/deactivation (selection) functionality to UI components, with transition animations and semantic styling hooks.  
+Ideal for toggles, switches, selections, alerts, and any interactive component requiring controlled activation feedback.
 
 ## ✨ Features
-✔ Lifecycle-aware activate/deactivate animations based on transition phase  
+✔ Lifecycle-aware activate/deactivate animations based on current active state  
 ✔ Gracefully completes running animations before resolving new state  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, animation, and feedback systems  
@@ -185,7 +185,7 @@ export const componentStyle = () => style({
 
 ### `usesActiveState(options?: CssActiveStateOptions): CssActiveState`
 
-Generates CSS rules that conditionally apply the activate/deactivate animations based on the current transition phase, and exposes activate/deactivate-related CSS variables for conditional animation.
+Generates CSS rules that conditionally apply the activate/deactivate animations based on current active state, and exposes activate/deactivate-related CSS variables for conditional animation.
 
 #### Supporting Variables (Advanced Use)
 

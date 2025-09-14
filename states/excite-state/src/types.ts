@@ -177,11 +177,11 @@ export interface CssExciteStateOptions {
 
 
 /**
- * Provides a CSS API for conditionally apply the excitement animation based on the current state.
+ * Provides a CSS API for conditionally apply the excitement animation based on current excited state.
  */
 export interface CssExciteState {
     /**
-     * Generates CSS rules that conditionally apply the excitement animation based on the current state.
+     * Generates CSS rules that conditionally apply the excitement animation based on current excited state.
      * 
      * Typically used to toggle animation variables when the component is excited.
      */

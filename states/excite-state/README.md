@@ -1,10 +1,10 @@
 # @reusable-ui/excite-state 📦  
 
-A utility for triggering excitement animations based on the current excited state.  
-Ideal for badges, shopping carts, dialogs, and any attention-grabbing components.
+Adds excitement (attention grabbing) functionality to UI components, with an attention-triggering animation and semantic styling hooks.  
+Ideal for badges, shopping carts, dialogs, and any action component designed to grab user attention.
 
 ## ✨ Features
-✔ Dynamically displays excitement animation based on the current excited state  
+✔ Dynamically displays excitement animation based on current excited state  
 ✔ Supports controlled excitement with automatic animation replay  
 ✔ Gracefully completes running animations before stopping  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
@@ -123,7 +123,7 @@ export const componentStyle = () => style({
 
 ### `usesExciteState(options?: CssExciteStateOptions): CssExciteState`
 
-Generates CSS rules that conditionally apply the excitement animation based on the current excited state, and exposes excitement-related CSS variables for conditional excitement animation.
+Generates CSS rules that conditionally apply the excitement animation based on current excited state, and exposes excitement-related CSS variables for conditional excitement animation.
 
 #### Supporting Variables (Advanced Use)
 
