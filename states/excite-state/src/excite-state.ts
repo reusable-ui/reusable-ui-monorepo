@@ -66,12 +66,20 @@ import {
  * - Ideal for components that **consume** the resolved `excited` state.
  * 
  * @param props - The component props that may include a controlled `excited` value.
+ * @param options - An optional configuration for customizing excitement behavior.
  * @returns The resolved excited state.
  */
-export const useExciteState = (props: ExciteStateProps): boolean => {
+export const useExciteState = (props: ExciteStateProps, options?: Pick<ExciteStateOptions, 'defaultExcited'>): boolean => {
+    // Extract options and assign defaults:
+    const {
+        defaultExcited      = finalDefaultExcited,
+    } = options ?? {};
+    
+    
+    
     // Extract props and assign defaults:
     const {
-        excited : controlledExcited = finalDefaultExcited,
+        excited : controlledExcited = defaultExcited,
     } = props;
     
     
@@ -92,7 +100,7 @@ export const useExciteState = (props: ExciteStateProps): boolean => {
  * @template TElement - The type of the target DOM element.
  * 
  * @param {ExciteStateProps} props - The component props that may include a controlled `excited` value and an `onExcitedChange` callback.
- * @param {ExciteStateOptions} options - An optional configuration for customizing excitement behavior.
+ * @param {ExciteStateOptions} options - An optional configuration for customizing excitement behavior and animation lifecycle.
  * @returns {ExciteBehaviorState<TElement>} - The resolved excited state, associated CSS class name, and animation event handlers.
  * 
  * @example
@@ -149,7 +157,7 @@ export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(p
     
     // Extract props and assign defaults:
     const {
-        excited =  defaultExcited,
+        excited : controlledExcited = defaultExcited,
         onExcitedChange,
     } = props;
     
@@ -162,7 +170,7 @@ export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(p
         value               : resolvedExcited,
         dispatchValueChange : requestExcitedReset,
     } = useControllableValueChange<boolean, AnimationEvent>({
-        value               : excited,
+        value               : controlledExcited,
         onValueChange       : onExcitedChange,
     });
     
