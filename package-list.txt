@@ -63,6 +63,21 @@
 | ColorVariantUtils (utility) | (varies)        | (computed from theme or context) |     -     |          |                |                  | Provides contextual text and icon coloring behavior           |
 |-----------------------------|-----------------|----------------------------------|-----------|----------|----------------|------------------|---------------------------------------------------------------|
 
+
+|------------------------|-----------------------------|-----------------|--------------------------|-----------------------------------------------------|----------|
+| Package Name           | Main Interface              | Main Prop       | Classname                | Reason for Base Form or `-ed`                       | Verify   |
+|------------------------|-----------------------------|-----------------|--------------------------|-----------------------------------------------------|----------|
+| orientation-variant    | `OrientationVariantProps`   | `orientation`   | `orientationClassname`   | ✅ Base form: describes axis, not condition         | VERIFIED |
+| flow-direction-variant | `FlowDirectionVariantProps` | `flowDirection` | `flowDirectionClassname` | ✅ Base form: matches CSS `flex-direction` idiom    | VERIFIED |
+| size-variant           | `SizeVariantProps`          | `size`          | `sizeClassname`          | ✅ Base form: declarative sizing (`sm`, `lg`, etc.) | VERIFIED |
+| theme-variant          | `ThemeVariantProps`         | `theme`         | `themeClassname`         | ✅ Base form: matches design system conventions     | VERIFIED |
+| emphasis-variant       | `EmphasisVariantProps`      | `emphasis`      | `emphasisClassname`      | ✅ Noun form: declarative styling intent            | Should be `<Component emphasis />` (emphasis is a pure noun) |
+| outline-variant        | `OutlineVariantProps`       | `outline`       | `outlineClassname`       | ✅ Base form: matches common UI idioms              | Should be `<Component outline />` (outline is a noun in the context (styling intent)) |
+| mild-variant           | `MildVariantProps`          | `mild`          | `mildClassname`          | ✅ Base form: emotionally descriptive styling       | VERIFIED |
+| bare-variant           | `BareVariantProps`          | `bare`          | `bareClassname`          | ✅ Base form: minimalist styling intent             | VERIFIED |
+|------------------------|-----------------------------|-----------------|--------------------------|-----------------------------------------------------|----------|
+
+
 Default inheritance case example:
 ```tsx
 <Group orientation='inline' size='lg' theme='primary' gradient outlined mild>
@@ -142,6 +157,23 @@ Additional flags:
 | press-state    | usePressState       | not applicable                 | not applicable              | usePressBehaviorState      |
 | validity-state | useValidityState    | not applicable                 | not applicable              | useValidityBehaviorState   |
 |----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
+
+
+|----------------------------|-----------------------------|---------------|------------------------|------------------------------|----------------------------------|--------------------------------------------------------------------|----------|
+| Package Name               | Main Interface              | Main Prop     | Classname Prop         | Resolved States              | Transitioning States             | Reason for Base Form or `-ed`                                      | Verify   |
+|----------------------------|-----------------------------|---------------|------------------------|------------------------------|----------------------------------|--------------------------------------------------------------------|----------|
+| excite-state               | `ExciteStateProps`          | `excited`     | `exciteClassname`      | —                            | —                                | ✅ Base form: reflects emotional trigger, not static condition     | VERIFIED |
+|----------------------------|-----------------------------|---------------|------------------------|------------------------------|----------------------------------|--------------------------------------------------------------------|----------|
+| collapse-state             | `CollapseStateProps`        | `expanded`    | `expandClassname`      | `collapsed`, `expanded`      | `collapsing`, `expanding`        | ✅ Base form: domain is “collapse”, resolved states are adjectives | VERIFIED |
+| active-state               | `ActiveStateProps`          | `active`      | `activeClassname`      | `inactive`, `active`         | `deactivating`, `activating`     | ✅ Base form: behavioral toggle, matches React idiom | VERIFIED    |          |
+|----------------------------|-----------------------------|---------------|------------------------|------------------------------|----------------------------------|--------------------------------------------------------------------|----------|
+| disabled-state             | `DisabledStateProps`        | `disabled`    | `disabledClassname`    | `disabled`, `enabled`        | `disabling`, `enabling`          | ✅ `-ed` form: reflects diagnostic condition, matches HTML/ARIA    |          |
+|----------------------------|-----------------------------|---------------|------------------------|------------------------------|----------------------------------|--------------------------------------------------------------------|----------|
+| focus-state                | `FocusStateProps`           | `focused`     | `focusClassname`       | `blurred`, `focused`         | `focusing`, `blurring`           | ✅ `-ed` form: reflects visual condition, idiomatic in JS/DOM      | VERIFIED |
+| hover-state                | `HoverStateProps`           | `hovered`     | `hoverClassname`       | `leaved`, `hovered`          | `leaving`, `hovering`            | ✅ `-ed` form: reflects pointer condition, idiomatic in CSS        | VERIFIED |
+| press-state                | `PressStateProps`           | `pressed`     | `pressClassname`       | `released`, `pressed`        | `pressing`, `releasing`          | ✅ `-ed` form: reflects interaction condition, idiomatic in UI     | VERIFIED |
+| validity-state             | `ValidityStateProps`        | `validity`    | `validityClassname`    | `invalid`, `valid`           | `invalidating`, `validating`     | ✅ Noun form: diagnostic domain, resolved states are adjectives    | VERIFIED |
+|----------------------------|-----------------------------|---------------|------------------------|------------------------------|----------------------------------|--------------------------------------------------------------------|----------|
 
 
 // Reusable-ui states:
