@@ -105,6 +105,7 @@
     "states/excite-state",
     "states/collapse-state",
     "states/active-state",
+    "states/validity-state",
     "__configs/*",
     "__utilities/*",
     "__features/*",

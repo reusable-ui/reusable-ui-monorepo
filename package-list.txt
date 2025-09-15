@@ -150,6 +150,7 @@ Additional flags:
 @reusable-ui/excite-state
 @reusable-ui/collapse-state
 @reusable-ui/active-state
+@reusable-ui/validity-state
 @reusable-ui/excitable
 @reusable-ui/collapsible
 @reusable-ui/scrollable
