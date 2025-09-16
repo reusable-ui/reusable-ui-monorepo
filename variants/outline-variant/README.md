@@ -4,7 +4,7 @@ A utility for managing visual outline consistently across React components.
 Provides hooks and CSS helpers for outline resolution and conditional styling — ideal for buttons, cards, badges, alerts, or any component that benefits from bordered emphasis.
 
 ## ✨ Features
-✔ Boolean-based outlined variant with inheritance and inversion  
+✔ Boolean-based outline variant with inheritance and inversion  
 ✔ Hook-based resolution with customizable fallback behavior  
 ✔ CSS selectors and conditional rule helpers for outline-aware styling  
 ✔ Seamless integration across appearance, layout, and interaction systems
@@ -22,7 +22,7 @@ yarn add @reusable-ui/outline-variant
 
 ### `useOutlineVariant(props, options)`
 
-Resolves the outlined state along with its associated CSS class name, based on component props, optional default configuration, and parent context.
+Resolves the outline state along with its associated CSS class name, based on component props, optional default configuration, and parent context.
 
 #### 💡 Usage Example
 
@@ -32,14 +32,12 @@ import {
     useOutlineVariant,
     OutlineVariantProps,
 } from '@reusable-ui/outline-variant';
-import styles from './OutlinedBox.module.css';
+import styles from './OutlineBox.module.css';
 
-export interface OutlinedBoxProps extends OutlineVariantProps {}
+export interface OutlineBoxProps extends OutlineVariantProps {}
 
-/**
- * A box that conditionally outlines its appearance.
- */
-export const OutlinedBox: FC<OutlinedBoxProps> = (props) => {
+// A box that conditionally outlines its appearance.
+export const OutlineBox: FC<OutlineBoxProps> = (props) => {
     const {
         outlined,
         outlineClassname,
@@ -58,9 +56,9 @@ export const OutlinedBox: FC<OutlinedBoxProps> = (props) => {
 };
 ```
 
-#### 🧠 Outlines Resolution Strategy
+#### 🧠 Outline Resolution Strategy
 
-The hook determines the final outlined state using the following priority:
+The hook determines the final outline state using the following priority:
 1. **Explicit Prop Override**  
    - If `props.outlined` is `true` or `false`, it takes precedence.
 2. **Relative Resolution**  
@@ -72,7 +70,7 @@ The hook determines the final outlined state using the following priority:
 
 #### 🧬 Context Propagation
 
-Use `<OutlineVariantProvider>` to share outlined state with descendant components:
+Use `<OutlineVariantProvider>` to share outline state with descendant components:
 
 ```tsx
 import React, { ReactNode, FC } from 'react';
@@ -86,16 +84,14 @@ export interface ParentComponentProps extends OutlineVariantProps {
     children ?: ReactNode
 }
 
-/**
- * A component that shares its outlined state with descendant components.
- */
+// A component that shares its outline state with descendant components.
 export const ParentComponent: FC<ParentComponentProps> = (props) => {
-    // Resolve outlined state from props:
+    // Resolve outline state from props:
     const { outlined } = useOutlineVariant(props, {
         defaultOutlined: false, // fallback if not provided
     });
     
-    // Propagate outlined state to descendants:
+    // Propagate outline state to descendants:
     return (
         <OutlineVariantProvider outlined={outlined}>
             {props.children}
@@ -110,7 +106,7 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
 
 ```ts
 import {
-    // Outlines Selectors:
+    // Outline Selectors:
     isOutlinedSelector,    // Targets `.is-outlined` classes
     isNotOutlinedSelector, // Targets `.not-outlined` classes
     
@@ -147,7 +143,7 @@ export const componentStyle = () => style({
 
 ### `usesOutlineVariant()`
 
-Generates CSS rules that toggle outline-related CSS variables based on the current outlined state, and exposes those variables for conditional styling.
+Generates CSS rules that toggle outline-related CSS variables based on the current outline state, and exposes those variables for conditional styling.
 
 #### 💡 Usage Example
 
@@ -172,7 +168,7 @@ export const componentStyle = () => {
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling based on outlined mode:
+        // Apply conditional styling based on outline mode:
         ...fallback({
             // Outlined styling:
             fontWeight     : `${isOutlined} bold`,

@@ -88,10 +88,10 @@ export const ifNotOutlined = (styles: CssStyleCollection): CssRule => rule(isNot
 const [outlineVariantVars] = cssVars<OutlineVariantVars>({ minify: false });
 
 /**
- * Generates CSS rules that toggle outline-related CSS variables based on the current outlined state,
+ * Generates CSS rules that toggle outline-related CSS variables based on the current outline state,
  * and exposes those variables for conditional styling.
  * 
- * @returns A CSS API for enabling conditional styling based on outlined state.
+ * @returns A CSS API for enabling conditional styling based on outline state.
  */
 export const usesOutlineVariant = (): CssOutlineVariant => {
     return {

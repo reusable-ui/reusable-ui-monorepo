@@ -17,35 +17,35 @@ import {
 
 
 /**
- * Props for specifying the outlined appearance of the component.
+ * Props for specifying the outline appearance of the component.
  * 
  * Accepts an optional `outlined`, falling back to a default when not provided.
  */
 export interface OutlineVariantProps {
     /**
-     * Specifies the desired outlined appearance of the component:
+     * Specifies the desired outline appearance of the component:
      * - `true`     : outlines the component
      * - `false`    : does not outline the component
-     * - `'inherit'`: inherits outlined appearance from a parent context
-     * - `'invert'` : flips the inherited outlined appearance (`true` ⇄ `false`)
+     * - `'inherit'`: inherits outline appearance from a parent context
+     * - `'invert'` : flips the inherited outline appearance (`true` ⇄ `false`)
      */
     outlined          ?: boolean | 'inherit' | 'invert'
 }
 
 /**
- * Optional configuration options for specifying the default outlined appearance.
+ * Optional configuration options for specifying the default outline appearance.
  * 
  * Applied when the component does not explicitly provide the `outlined` prop.
  */
 export interface OutlineVariantOptions {
     /**
-     * The default outlined state to apply when no `outlined` prop is explicitly provided.
+     * The default outline state to apply when no `outlined` prop is explicitly provided.
      */
     defaultOutlined   ?: boolean
 }
 
 /**
- * Represents the final resolved outlined state of the component, along with its associated CSS class name.
+ * Represents the final resolved outline state of the component, along with its associated CSS class name.
  */
 export interface ResolvedOutlineVariant {
     /**
@@ -120,11 +120,11 @@ export interface OutlineVariantVars {
 
 
 /**
- * Provides a CSS API for enabling conditional styling based on outlined state.
+ * Provides a CSS API for enabling conditional styling based on outline state.
  */
 export interface CssOutlineVariant {
     /**
-     * Generates CSS rules that toggle outline-related CSS variables based on the current outlined state.
+     * Generates CSS rules that toggle outline-related CSS variables based on the current outline state.
      * 
      * These rules are scoped using `ifOutlined()` and `ifNotOutlined()` to toggle outline-related CSS variables.
      */
