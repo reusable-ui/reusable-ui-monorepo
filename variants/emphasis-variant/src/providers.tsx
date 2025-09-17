@@ -9,7 +9,7 @@ import React, {
 
 // Types:
 import {
-    type ResolvedEmphasisVariant,
+    type EmphasisVariant,
 }                           from './types.js'
 
 // Contexts:
@@ -30,7 +30,7 @@ import {
 export interface EmphasisVariantProviderProps
     extends
         // Bases:
-        PropsWithChildren<Pick<ResolvedEmphasisVariant, 'emphasized'>>
+        PropsWithChildren<Pick<EmphasisVariant, 'emphasized'>>
 {
 }
 

@@ -8,7 +8,7 @@ import {
     type BasicTheme,
     type ThemeVariantProps,
     type ThemeVariantOptions,
-    type ResolvedThemeVariant,
+    type ThemeVariant,
 } from '../dist/types.js'
 import {
     finalDefaultTheme,
@@ -63,7 +63,7 @@ interface ThemeVariantTestCase {
     /**
      * The expected result of the `useThemeVariant` hook.
      */
-    expectedResult  : ResolvedThemeVariant<BasicTheme | (string & {})>
+    expectedResult  : ThemeVariant<BasicTheme | (string & {})>
 }
 
 
@@ -82,7 +82,7 @@ interface MockComponentProps
     /**
      * A ref to peek the result of the `useThemeVariant` hook.
      */
-    resultRef : RefObject<ResolvedThemeVariant<BasicTheme | (string & {})> | undefined>
+    resultRef : RefObject<ThemeVariant<BasicTheme | (string & {})> | undefined>
 }
 
 /**
@@ -350,7 +350,7 @@ describe('useThemeVariant()', () => {
             expectedResult,
         }) => {
             // Create a ref to peek the result:
-            const resultRef = createRef<ResolvedThemeVariant<BasicTheme | (string & {})>>();
+            const resultRef = createRef<ThemeVariant<BasicTheme | (string & {})>>();
             
             
             

@@ -42,7 +42,7 @@ export interface OrientationVariantOptions {
 /**
  * Represents the final resolved orientation of the component, along with its associated CSS class name and accessibility metadata.
  */
-export interface ResolvedOrientationVariant {
+export interface OrientationVariant {
     /**
      * The resolved orientation value.
      * 

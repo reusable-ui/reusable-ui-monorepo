@@ -10,7 +10,7 @@ import {
 import {
     type OutlineVariantProps,
     type OutlineVariantOptions,
-    type ResolvedOutlineVariant,
+    type OutlineVariant,
 }                           from './types.js'
 
 // Defaults:
@@ -92,7 +92,7 @@ const useEffectiveOutlinedValue = (outlined: Required<OutlineVariantProps>['outl
  * 
  * @param {OutlineVariantProps} props - The component props that may include an `outlined` value.
  * @param {OutlineVariantOptions} options - An optional configuration specifying a default outlined value when no `outlined` prop is explicitly provided.
- * @returns {ResolvedOutlineVariant} - The resolved outlined state along with its associated CSS class name.
+ * @returns {OutlineVariant} - The resolved outlined state along with its associated CSS class name.
  * 
  * @example
  * ```tsx
@@ -125,7 +125,7 @@ const useEffectiveOutlinedValue = (outlined: Required<OutlineVariantProps>['outl
  * };
  * ```
  */
-export const useOutlineVariant = (props: OutlineVariantProps, options?: OutlineVariantOptions): ResolvedOutlineVariant => {
+export const useOutlineVariant = (props: OutlineVariantProps, options?: OutlineVariantOptions): OutlineVariant => {
     // Extract options and assign defaults:
     const {
         defaultOutlined = finalDefaultOutlined,
@@ -153,5 +153,5 @@ export const useOutlineVariant = (props: OutlineVariantProps, options?: OutlineV
     return {
         outlined         : effectiveIsOutlined,
         outlineClassname : getOutlineClassname(effectiveIsOutlined),
-    } satisfies ResolvedOutlineVariant;
+    } satisfies OutlineVariant;
 };

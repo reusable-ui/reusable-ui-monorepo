@@ -10,7 +10,7 @@ import React, {
 // Types:
 import {
     type BasicSize,
-    type ResolvedSizeVariant,
+    type SizeVariant,
 }                           from './types.js'
 
 // Contexts:
@@ -33,7 +33,7 @@ import {
 export interface SizeVariantProviderProps<TSize extends string = BasicSize>
     extends
         // Bases:
-        PropsWithChildren<Pick<ResolvedSizeVariant<TSize>, 'size'>>
+        PropsWithChildren<Pick<SizeVariant<TSize>, 'size'>>
 {
 }
 

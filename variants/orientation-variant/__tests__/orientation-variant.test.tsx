@@ -8,7 +8,7 @@ import {
     type Orientation,
     type OrientationVariantProps,
     type OrientationVariantOptions,
-    type ResolvedOrientationVariant,
+    type OrientationVariant,
 } from '../dist/types.js'
 import {
     finalDefaultOrientation,
@@ -63,7 +63,7 @@ interface OrientationVariantTestCase {
     /**
      * The expected result of the `useOrientationVariant` hook.
      */
-    expectedResult     : ResolvedOrientationVariant
+    expectedResult     : OrientationVariant
 }
 
 
@@ -82,7 +82,7 @@ interface MockComponentProps
     /**
      * A ref to peek the result of the `useOrientationVariant` hook.
      */
-    resultRef : RefObject<ResolvedOrientationVariant | undefined>
+    resultRef : RefObject<OrientationVariant | undefined>
 }
 
 /**
@@ -377,7 +377,7 @@ describe('useOrientationVariant()', () => {
             expectedResult,
         }) => {
             // Create a ref to peek the result:
-            const resultRef = createRef<ResolvedOrientationVariant>();
+            const resultRef = createRef<OrientationVariant>();
             
             
             

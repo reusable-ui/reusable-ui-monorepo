@@ -9,7 +9,7 @@ import React, {
 
 // Types:
 import {
-    type ResolvedOrientationVariant,
+    type OrientationVariant,
 }                           from './types.js'
 
 // Contexts:
@@ -30,7 +30,7 @@ import {
 export interface OrientationVariantProviderProps
     extends
         // Bases:
-        PropsWithChildren<Pick<ResolvedOrientationVariant, 'orientation'>>
+        PropsWithChildren<Pick<OrientationVariant, 'orientation'>>
 {
 }
 

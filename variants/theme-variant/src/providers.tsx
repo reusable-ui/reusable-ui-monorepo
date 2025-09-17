@@ -10,7 +10,7 @@ import React, {
 // Types:
 import {
     type BasicTheme,
-    type ResolvedThemeVariant,
+    type ThemeVariant,
 }                           from './types.js'
 
 // Contexts:
@@ -33,7 +33,7 @@ import {
 export interface ThemeVariantProviderProps<TTheme extends string = BasicTheme>
     extends
         // Bases:
-        PropsWithChildren<Pick<ResolvedThemeVariant<TTheme>, 'theme'>>
+        PropsWithChildren<Pick<ThemeVariant<TTheme>, 'theme'>>
 {
 }
 

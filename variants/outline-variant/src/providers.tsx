@@ -9,7 +9,7 @@ import React, {
 
 // Types:
 import {
-    type ResolvedOutlineVariant,
+    type OutlineVariant,
 }                           from './types.js'
 
 // Contexts:
@@ -30,7 +30,7 @@ import {
 export interface OutlineVariantProviderProps
     extends
         // Bases:
-        PropsWithChildren<Pick<ResolvedOutlineVariant, 'outlined'>>
+        PropsWithChildren<Pick<OutlineVariant, 'outlined'>>
 {
 }
 

@@ -11,7 +11,7 @@ import {
     type FlowDirection,
     type FlowDirectionVariantProps,
     type FlowDirectionVariantOptions,
-    type ResolvedFlowDirectionVariant,
+    type FlowDirectionVariant,
 }                           from './types.js'
 
 // Defaults:
@@ -93,7 +93,7 @@ const useEffectiveFlowDirectionValue = (flowDirection: Required<FlowDirectionVar
  * 
  * @param {FlowDirectionVariantProps} props - The component props that may include a `flowDirection` value.
  * @param {FlowDirectionVariantOptions} options - An optional configuration specifying a default flow direction when no `flowDirection` prop is explicitly provided.
- * @returns {ResolvedFlowDirectionVariant} - The resolved flow direction value along with its associated CSS class name.
+ * @returns {FlowDirectionVariant} - The resolved flow direction value along with its associated CSS class name.
  * 
  * @example
  * ```tsx
@@ -131,7 +131,7 @@ const useEffectiveFlowDirectionValue = (flowDirection: Required<FlowDirectionVar
  * };
  * ```
  */
-export const useFlowDirectionVariant = (props: FlowDirectionVariantProps, options?: FlowDirectionVariantOptions): ResolvedFlowDirectionVariant => {
+export const useFlowDirectionVariant = (props: FlowDirectionVariantProps, options?: FlowDirectionVariantOptions): FlowDirectionVariant => {
     // Extract options and assign defaults:
     const {
         defaultFlowDirection = finalDefaultFlowDirection,
@@ -159,5 +159,5 @@ export const useFlowDirectionVariant = (props: FlowDirectionVariantProps, option
     return {
         flowDirection          : effectiveFlowDirection,
         flowDirectionClassname : flowDirectionClassnameMap[effectiveFlowDirection],
-    } satisfies ResolvedFlowDirectionVariant;
+    } satisfies FlowDirectionVariant;
 };

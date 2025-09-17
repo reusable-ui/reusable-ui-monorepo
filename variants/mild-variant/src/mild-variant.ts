@@ -10,7 +10,7 @@ import {
 import {
     type MildVariantProps,
     type MildVariantOptions,
-    type ResolvedMildVariant,
+    type MildVariant,
 }                           from './types.js'
 
 // Defaults:
@@ -92,7 +92,7 @@ const useEffectiveMildValue = (mild: Required<MildVariantProps>['mild'], default
  * 
  * @param {MildVariantProps} props - The component props that may include a `mild` value.
  * @param {MildVariantOptions} options - An optional configuration specifying a default mild value when no `mild` prop is explicitly provided.
- * @returns {ResolvedMildVariant} - The resolved mild state along with its associated CSS class name.
+ * @returns {MildVariant} - The resolved mild state along with its associated CSS class name.
  * 
  * @example
  * ```tsx
@@ -125,7 +125,7 @@ const useEffectiveMildValue = (mild: Required<MildVariantProps>['mild'], default
  * };
  * ```
  */
-export const useMildVariant = (props: MildVariantProps, options?: MildVariantOptions): ResolvedMildVariant => {
+export const useMildVariant = (props: MildVariantProps, options?: MildVariantOptions): MildVariant => {
     // Extract options and assign defaults:
     const {
         defaultMild = finalDefaultMild,
@@ -153,5 +153,5 @@ export const useMildVariant = (props: MildVariantProps, options?: MildVariantOpt
     return {
         mild          : effectiveIsMild,
         mildClassname : getMildClassname(effectiveIsMild),
-    } satisfies ResolvedMildVariant;
+    } satisfies MildVariant;
 };

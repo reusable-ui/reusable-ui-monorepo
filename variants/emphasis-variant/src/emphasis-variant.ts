@@ -10,7 +10,7 @@ import {
 import {
     type EmphasisVariantProps,
     type EmphasisVariantOptions,
-    type ResolvedEmphasisVariant,
+    type EmphasisVariant,
 }                           from './types.js'
 
 // Defaults:
@@ -92,7 +92,7 @@ const useEffectiveEmphasizedValue = (emphasized: Required<EmphasisVariantProps>[
  * 
  * @param {EmphasisVariantProps} props - The component props that may include an `emphasized` value.
  * @param {EmphasisVariantOptions} options - An optional configuration specifying a default emphasized value when no `emphasized` prop is explicitly provided.
- * @returns {ResolvedEmphasisVariant} - The resolved emphasized state along with its associated CSS class name.
+ * @returns {EmphasisVariant} - The resolved emphasized state along with its associated CSS class name.
  * 
  * @example
  * ```tsx
@@ -125,7 +125,7 @@ const useEffectiveEmphasizedValue = (emphasized: Required<EmphasisVariantProps>[
  * };
  * ```
  */
-export const useEmphasisVariant = (props: EmphasisVariantProps, options?: EmphasisVariantOptions): ResolvedEmphasisVariant => {
+export const useEmphasisVariant = (props: EmphasisVariantProps, options?: EmphasisVariantOptions): EmphasisVariant => {
     // Extract options and assign defaults:
     const {
         defaultEmphasized = finalDefaultEmphasized,
@@ -153,5 +153,5 @@ export const useEmphasisVariant = (props: EmphasisVariantProps, options?: Emphas
     return {
         emphasized         : effectiveIsEmphasized,
         emphasisClassname  : getEmphasisClassname(effectiveIsEmphasized),
-    } satisfies ResolvedEmphasisVariant;
+    } satisfies EmphasisVariant;
 };

@@ -47,7 +47,7 @@ export interface EmphasisVariantOptions {
 /**
  * Represents the final resolved emphasis state of the component, along with its associated CSS class name.
  */
-export interface ResolvedEmphasisVariant {
+export interface EmphasisVariant {
     /**
      * Indicates whether the component should appear emphasized.
      * 

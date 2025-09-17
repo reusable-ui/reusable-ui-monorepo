@@ -7,7 +7,7 @@ import {
 import {
     type OutlineVariantProps,
     type OutlineVariantOptions,
-    type ResolvedOutlineVariant,
+    type OutlineVariant,
 } from '../dist/types.js'
 import {
     finalDefaultOutlined,
@@ -62,7 +62,7 @@ interface OutlineVariantTestCase {
     /**
      * The expected result of the `useOutlineVariant` hook.
      */
-    expectedResult  : ResolvedOutlineVariant
+    expectedResult  : OutlineVariant
 }
 
 
@@ -81,7 +81,7 @@ interface MockComponentProps
     /**
      * A ref to peek the result of the `useOutlineVariant` hook.
      */
-    resultRef : RefObject<ResolvedOutlineVariant | undefined>
+    resultRef : RefObject<OutlineVariant | undefined>
 }
 
 /**
@@ -341,7 +341,7 @@ describe('useOutlineVariant()', () => {
             expectedResult,
         }) => {
             // Create a ref to peek the result:
-            const resultRef = createRef<ResolvedOutlineVariant>();
+            const resultRef = createRef<OutlineVariant>();
             
             
             

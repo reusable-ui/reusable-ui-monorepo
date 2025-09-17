@@ -47,7 +47,7 @@ export interface OutlineVariantOptions {
 /**
  * Represents the final resolved outline state of the component, along with its associated CSS class name.
  */
-export interface ResolvedOutlineVariant {
+export interface OutlineVariant {
     /**
      * Indicates whether the component should appear outlined.
      * 

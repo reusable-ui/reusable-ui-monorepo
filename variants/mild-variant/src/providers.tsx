@@ -9,7 +9,7 @@ import React, {
 
 // Types:
 import {
-    type ResolvedMildVariant,
+    type MildVariant,
 }                           from './types.js'
 
 // Contexts:
@@ -30,7 +30,7 @@ import {
 export interface MildVariantProviderProps
     extends
         // Bases:
-        PropsWithChildren<Pick<ResolvedMildVariant, 'mild'>>
+        PropsWithChildren<Pick<MildVariant, 'mild'>>
 {
 }
 

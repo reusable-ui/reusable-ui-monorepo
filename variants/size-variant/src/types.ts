@@ -76,7 +76,7 @@ export interface SizeVariantOptions<TSize extends string = BasicSize> {
  * 
  * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
  */
-export interface ResolvedSizeVariant<TSize extends string = BasicSize> {
+export interface SizeVariant<TSize extends string = BasicSize> {
     /**
      * The resolved size value.
      * 

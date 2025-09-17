@@ -7,7 +7,7 @@ import {
 import {
     type MildVariantProps,
     type MildVariantOptions,
-    type ResolvedMildVariant,
+    type MildVariant,
 } from '../dist/types.js'
 import {
     finalDefaultMild,
@@ -62,7 +62,7 @@ interface MildVariantTestCase {
     /**
      * The expected result of the `useMildVariant` hook.
      */
-    expectedResult  : ResolvedMildVariant
+    expectedResult  : MildVariant
 }
 
 
@@ -81,7 +81,7 @@ interface MockComponentProps
     /**
      * A ref to peek the result of the `useMildVariant` hook.
      */
-    resultRef : RefObject<ResolvedMildVariant | undefined>
+    resultRef : RefObject<MildVariant | undefined>
 }
 
 /**
@@ -341,7 +341,7 @@ describe('useMildVariant()', () => {
             expectedResult,
         }) => {
             // Create a ref to peek the result:
-            const resultRef = createRef<ResolvedMildVariant>();
+            const resultRef = createRef<MildVariant>();
             
             
             

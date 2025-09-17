@@ -7,7 +7,7 @@ import {
 import {
     type BareVariantProps,
     type BareVariantOptions,
-    type ResolvedBareVariant,
+    type BareVariant,
 } from '../dist/types.js'
 import {
     finalDefaultBare,
@@ -53,7 +53,7 @@ interface BareVariantTestCase {
     /**
      * The expected result of the `useBareVariant` hook.
      */
-    expectedResult  : ResolvedBareVariant<true | string>
+    expectedResult  : BareVariant<true | string>
 }
 
 
@@ -72,7 +72,7 @@ interface MockComponentProps
     /**
      * A ref to peek the result of the `useBareVariant` hook.
      */
-    resultRef : RefObject<ResolvedBareVariant<true | string> | undefined>
+    resultRef : RefObject<BareVariant<true | string> | undefined>
 }
 
 /**
@@ -234,7 +234,7 @@ describe('useBareVariant()', () => {
             expectedResult,
         }) => {
             // Create a ref to peek the result:
-            const resultRef = createRef<ResolvedBareVariant<true | string>>();
+            const resultRef = createRef<BareVariant<true | string>>();
             
             
             

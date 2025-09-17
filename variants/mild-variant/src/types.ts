@@ -47,7 +47,7 @@ export interface MildVariantOptions {
 /**
  * Represents the final resolved mild state of the component, along with its associated CSS class name.
  */
-export interface ResolvedMildVariant {
+export interface MildVariant {
     /**
      * Indicates whether the component should appear in a mild (reading friendly).
      * 

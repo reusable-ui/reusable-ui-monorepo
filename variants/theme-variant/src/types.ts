@@ -81,7 +81,7 @@ export interface ThemeVariantOptions<TTheme extends string = BasicTheme> {
  * 
  * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  */
-export interface ResolvedThemeVariant<TTheme extends string = BasicTheme> {
+export interface ThemeVariant<TTheme extends string = BasicTheme> {
     /**
      * The resolved theme value.
      * 

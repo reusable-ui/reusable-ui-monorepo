@@ -59,7 +59,7 @@ export interface FlowDirectionVariantOptions {
 /**
  * Represents the final resolved flow direction of the component, along with its associated CSS class name.
  */
-export interface ResolvedFlowDirectionVariant {
+export interface FlowDirectionVariant {
     /**
      * The resolved flow direction value.
      * 

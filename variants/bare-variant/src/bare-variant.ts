@@ -2,7 +2,7 @@
 import {
     type BareVariantProps,
     type BareVariantOptions,
-    type ResolvedBareVariant,
+    type BareVariant,
 }                           from './types.js'
 
 // Defaults:
@@ -25,7 +25,7 @@ import {
  * 
  * @param {BareVariantProps} props - The component props that may include a `bare` value.
  * @param {BareVariantOptions} options - An optional configuration specifying a default bare value when no `bare` prop is explicitly provided.
- * @returns {ResolvedBareVariant} - The resolved bare state along with its associated CSS class name.
+ * @returns {BareVariant} - The resolved bare state along with its associated CSS class name.
  * 
  * @example
  * ```tsx
@@ -62,7 +62,7 @@ import {
  * };
  * ```
  */
-export const useBareVariant = <TBare extends true | string = true>(props: BareVariantProps<TBare>, options?: BareVariantOptions<TBare>): ResolvedBareVariant<TBare> => {
+export const useBareVariant = <TBare extends true | string = true>(props: BareVariantProps<TBare>, options?: BareVariantOptions<TBare>): BareVariant<TBare> => {
     // Extract options and assign defaults:
     const {
         defaultBare = finalDefaultBare,
@@ -81,5 +81,5 @@ export const useBareVariant = <TBare extends true | string = true>(props: BareVa
     return {
         bare          : effectiveBare,
         bareClassname : getBareClassname<TBare>(effectiveBare),
-    } satisfies ResolvedBareVariant<TBare>;
+    } satisfies BareVariant<TBare>;
 };

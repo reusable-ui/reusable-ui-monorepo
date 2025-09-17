@@ -7,7 +7,7 @@ import {
 import {
     type EmphasisVariantProps,
     type EmphasisVariantOptions,
-    type ResolvedEmphasisVariant,
+    type EmphasisVariant,
 } from '../dist/types.js'
 import {
     finalDefaultEmphasized,
@@ -62,7 +62,7 @@ interface EmphasisVariantTestCase {
     /**
      * The expected result of the `useEmphasisVariant` hook.
      */
-    expectedResult    : ResolvedEmphasisVariant
+    expectedResult    : EmphasisVariant
 }
 
 
@@ -81,7 +81,7 @@ interface MockComponentProps
     /**
      * A ref to peek the result of the `useEmphasisVariant` hook.
      */
-    resultRef : RefObject<ResolvedEmphasisVariant | undefined>
+    resultRef : RefObject<EmphasisVariant | undefined>
 }
 
 /**
@@ -341,7 +341,7 @@ describe('useEmphasisVariant()', () => {
             expectedResult,
         }) => {
             // Create a ref to peek the result:
-            const resultRef = createRef<ResolvedEmphasisVariant>();
+            const resultRef = createRef<EmphasisVariant>();
             
             
             

@@ -8,7 +8,7 @@ import {
     type BasicSize,
     type SizeVariantProps,
     type SizeVariantOptions,
-    type ResolvedSizeVariant,
+    type SizeVariant,
 } from '../dist/types.js'
 import {
     finalDefaultSize,
@@ -64,7 +64,7 @@ interface SizeVariantTestCase {
     /**
      * The expected result of the `useSizeVariant` hook.
      */
-    expectedResult  : ResolvedSizeVariant<BasicSize | (string & {})>
+    expectedResult  : SizeVariant<BasicSize | (string & {})>
 }
 
 
@@ -83,7 +83,7 @@ interface MockComponentProps
     /**
      * A ref to peek the result of the `useSizeVariant` hook.
      */
-    resultRef : RefObject<ResolvedSizeVariant<BasicSize | (string & {})> | undefined>
+    resultRef : RefObject<SizeVariant<BasicSize | (string & {})> | undefined>
 }
 
 /**
@@ -402,7 +402,7 @@ describe('useSizeVariant()', () => {
             expectedResult,
         }) => {
             // Create a ref to peek the result:
-            const resultRef = createRef<ResolvedSizeVariant<BasicSize | (string & {})>>();
+            const resultRef = createRef<SizeVariant<BasicSize | (string & {})>>();
             
             
             

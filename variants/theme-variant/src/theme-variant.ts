@@ -11,7 +11,7 @@ import {
     type BasicTheme,
     type ThemeVariantProps,
     type ThemeVariantOptions,
-    type ResolvedThemeVariant,
+    type ThemeVariant,
 }                           from './types.js'
 
 // Defaults:
@@ -78,7 +78,7 @@ const useEffectiveThemeValue = <TTheme extends string = BasicTheme>(theme: Requi
  * 
  * @param {ThemeVariantProps<TTheme>} props - The component props that may include a `theme` value.
  * @param {ThemeVariantOptions<TTheme>} options - An optional configuration specifying a default theme when no `theme` prop is explicitly provided.
- * @returns {ResolvedThemeVariant<TTheme>} - The resolved theme value along with its associated CSS class name.
+ * @returns {ThemeVariant<TTheme>} - The resolved theme value along with its associated CSS class name.
  * 
  * @example
  * ```tsx
@@ -111,7 +111,7 @@ const useEffectiveThemeValue = <TTheme extends string = BasicTheme>(theme: Requi
  * };
  * ```
  */
-export const useThemeVariant = <TTheme extends string = BasicTheme>(props: ThemeVariantProps<TTheme>, options?: ThemeVariantOptions<TTheme>): ResolvedThemeVariant<TTheme> => {
+export const useThemeVariant = <TTheme extends string = BasicTheme>(props: ThemeVariantProps<TTheme>, options?: ThemeVariantOptions<TTheme>): ThemeVariant<TTheme> => {
     // Extract options and assign defaults:
     const {
         defaultTheme = finalDefaultTheme as TTheme,
@@ -139,5 +139,5 @@ export const useThemeVariant = <TTheme extends string = BasicTheme>(props: Theme
     return {
         theme          : effectiveTheme,
         themeClassname : getThemeClassname<TTheme>(effectiveTheme),
-    } satisfies ResolvedThemeVariant<TTheme>;
+    } satisfies ThemeVariant<TTheme>;
 };

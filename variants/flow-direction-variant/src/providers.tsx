@@ -9,7 +9,7 @@ import React, {
 
 // Types:
 import {
-    type ResolvedFlowDirectionVariant,
+    type FlowDirectionVariant,
 }                           from './types.js'
 
 // Contexts:
@@ -30,7 +30,7 @@ import {
 export interface FlowDirectionVariantProviderProps
     extends
         // Bases:
-        PropsWithChildren<Pick<ResolvedFlowDirectionVariant, 'flowDirection'>>
+        PropsWithChildren<Pick<FlowDirectionVariant, 'flowDirection'>>
 {
 }
 

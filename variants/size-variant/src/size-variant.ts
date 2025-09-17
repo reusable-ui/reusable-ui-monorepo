@@ -11,7 +11,7 @@ import {
     type BasicSize,
     type SizeVariantProps,
     type SizeVariantOptions,
-    type ResolvedSizeVariant,
+    type SizeVariant,
 }                           from './types.js'
 
 // Defaults:
@@ -80,7 +80,7 @@ const useEffectiveSizeValue = <TSize extends string = BasicSize>(size: Required<
  * 
  * @param {SizeVariantProps<TSize>} props - The component props that may include a `size` value.
  * @param {SizeVariantOptions<TSize>} options - A required configuration specifying a default size when no `size` prop is explicitly provided.
- * @returns {ResolvedSizeVariant<TSize>} - The resolved size value along with its associated CSS class name.
+ * @returns {SizeVariant<TSize>} - The resolved size value along with its associated CSS class name.
  * 
  * @example
  * ```tsx
@@ -114,14 +114,14 @@ const useEffectiveSizeValue = <TSize extends string = BasicSize>(size: Required<
  * };
  * ```
  */
-export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVariantProps<TSize>, options: SizeVariantOptions<TSize>): ResolvedSizeVariant<TSize>;
+export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVariantProps<TSize>, options: SizeVariantOptions<TSize>): SizeVariant<TSize>;
 
 /**
  * Resolves the size value along with its associated CSS class name,
  * based on component props and parent context.
  * 
  * @param {SizeVariantProps<BasicSize>} props - The component props that may include a `size` value.
- * @returns {ResolvedSizeVariant<BasicSize>} - The resolved size value along with its associated CSS class name.
+ * @returns {SizeVariant<BasicSize>} - The resolved size value along with its associated CSS class name.
  * 
  * @example
  * ```tsx
@@ -152,9 +152,9 @@ export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVari
  * };
  * ```
  */
-export function useSizeVariant(props: SizeVariantProps<BasicSize>): ResolvedSizeVariant<BasicSize>;
+export function useSizeVariant(props: SizeVariantProps<BasicSize>): SizeVariant<BasicSize>;
 
-export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVariantProps<TSize>, options?: SizeVariantOptions<TSize>): ResolvedSizeVariant<TSize> {
+export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVariantProps<TSize>, options?: SizeVariantOptions<TSize>): SizeVariant<TSize> {
     // Extract options and assign defaults:
     const {
         defaultSize    = finalDefaultSize      as TSize,
@@ -183,5 +183,5 @@ export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVari
     return {
         size          : effectiveSize,
         sizeClassname : getSizeClassname<TSize>(effectiveSize),
-    } satisfies ResolvedSizeVariant<TSize>;
+    } satisfies SizeVariant<TSize>;
 };

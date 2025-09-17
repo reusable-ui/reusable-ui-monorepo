@@ -11,7 +11,7 @@ import {
     type Orientation,
     type OrientationVariantProps,
     type OrientationVariantOptions,
-    type ResolvedOrientationVariant,
+    type OrientationVariant,
 }                           from './types.js'
 
 // Defaults:
@@ -93,7 +93,7 @@ const useEffectiveOrientationValue = (orientation: Required<OrientationVariantPr
  * 
  * @param {OrientationVariantProps} props - The component props that may include an `orientation` value.
  * @param {OrientationVariantOptions} options - An optional configuration specifying a default orientation when no `orientation` prop is explicitly provided.
- * @returns {ResolvedOrientationVariant} - The resolved orientation value along with its associated CSS class name and accessibility metadata.
+ * @returns {OrientationVariant} - The resolved orientation value along with its associated CSS class name and accessibility metadata.
  * 
  * @example
  * ```tsx
@@ -140,7 +140,7 @@ const useEffectiveOrientationValue = (orientation: Required<OrientationVariantPr
  * };
  * ```
  */
-export const useOrientationVariant = (props: OrientationVariantProps, options?: OrientationVariantOptions): ResolvedOrientationVariant => {
+export const useOrientationVariant = (props: OrientationVariantProps, options?: OrientationVariantOptions): OrientationVariant => {
     // Extract options and assign defaults:
     const {
         defaultOrientation = finalDefaultOrientation,
@@ -176,5 +176,5 @@ export const useOrientationVariant = (props: OrientationVariantProps, options?: 
         isOrientationInline,
         isOrientationBlock   : !isOrientationInline,
         ariaOrientation      : isOrientationInline ? 'horizontal' : 'vertical',
-    } satisfies ResolvedOrientationVariant;
+    } satisfies OrientationVariant;
 };

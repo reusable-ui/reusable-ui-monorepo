@@ -8,7 +8,7 @@ import {
     type FlowDirection,
     type FlowDirectionVariantProps,
     type FlowDirectionVariantOptions,
-    type ResolvedFlowDirectionVariant,
+    type FlowDirectionVariant,
 } from '../dist/types.js'
 import {
     finalDefaultFlowDirection,
@@ -63,7 +63,7 @@ interface FlowDirectionVariantTestCase {
     /**
      * The expected result of the `useFlowDirectionVariant` hook.
      */
-    expectedResult       : ResolvedFlowDirectionVariant
+    expectedResult       : FlowDirectionVariant
 }
 
 
@@ -82,7 +82,7 @@ interface MockComponentProps
     /**
      * A ref to peek the result of the `useFlowDirectionVariant` hook.
      */
-    resultRef : RefObject<ResolvedFlowDirectionVariant | undefined>
+    resultRef : RefObject<FlowDirectionVariant | undefined>
 }
 
 /**
@@ -326,7 +326,7 @@ describe('useFlowDirectionVariant()', () => {
             expectedResult,
         }) => {
             // Create a ref to peek the result:
-            const resultRef = createRef<ResolvedFlowDirectionVariant>();
+            const resultRef = createRef<FlowDirectionVariant>();
             
             
             

@@ -58,7 +58,7 @@ export interface BareVariantOptions<TBare extends true | string = true> {
  * 
  * @template TBare - The extended type of the `bare` prop, allowing `true` or custom string-based modes.
  */
-export interface ResolvedBareVariant<TBare extends true | string = true> {
+export interface BareVariant<TBare extends true | string = true> {
     /**
      * Indicates whether the component should appear in a bare (frameless) layout.
      * 
