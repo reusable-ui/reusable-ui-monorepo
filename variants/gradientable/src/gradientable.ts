@@ -33,14 +33,14 @@ import {
 // Reusable-ui variants:
 import {
     // Hooks:
-    useEmphasizeVariant,
+    useEmphasisVariant,
     
     
     
     // Utilities:
     ifEmphasized,
     ifNotEmphasized,
-}                           from '@reusable-ui/emphasize-variant'   // A utility for managing visual emphasis consistently across React components.
+}                           from '@reusable-ui/emphasis-variant'    // A utility for managing visual emphasis consistently across React components.
 
 
 
@@ -148,7 +148,7 @@ const createGradientableRule = (config?: GradientableConfig, gradientDefinition 
 };
 
 /**
- * @deprecated - Use `useEmphasizeVariant` instead.
+ * @deprecated - Use `useEmphasisVariant` instead.
  * Use `emphasizeVariantVars.isEmphasized` to toggling on/off your background gradient.
  * 
  * Uses a toggleable gradient.  
@@ -218,16 +218,16 @@ export interface GradientableProps {
 }
 
 /**
- * @deprecated - Use `useEmphasizeVariant` instead.
+ * @deprecated - Use `useEmphasisVariant` instead.
  */
 export const useGradientable = ({ gradient }: GradientableProps) => {
     const {
-        emphasizeClassname,
-    } = useEmphasizeVariant({
+        emphasisClassname,
+    } = useEmphasisVariant({
         emphasized : gradient,
     });
     
     return {
-        class: emphasizeClassname,
+        class: emphasisClassname,
     };
 };

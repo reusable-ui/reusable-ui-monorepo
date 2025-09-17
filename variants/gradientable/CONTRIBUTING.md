@@ -7,7 +7,7 @@
 
 ## 🛠️ Migration-Focused Contributions
 
-Since `@reusable-ui/gradientable` has been superseded by [`@reusable-ui/emphasize-variant`](https://www.npmjs.com/package/@reusable-ui/emphasize-variant), we welcome contributions that help:
+Since `@reusable-ui/gradientable` has been superseded by [`@reusable-ui/emphasis-variant`](https://www.npmjs.com/package/@reusable-ui/emphasis-variant), we welcome contributions that help:
 
 - Ease migration for existing users
 - Improve documentation and clarity
@@ -30,7 +30,7 @@ Since `@reusable-ui/gradientable` has been superseded by [`@reusable-ui/emphasiz
 - 🔄 API redesigns
 - 🧱 Structural refactors unrelated to migration
 
-For new features, please contribute to [`@reusable-ui/emphasize-variant`](https://www.npmjs.com/package/@reusable-ui/emphasize-variant) instead.
+For new features, please contribute to [`@reusable-ui/emphasis-variant`](https://www.npmjs.com/package/@reusable-ui/emphasis-variant) instead.
 
 ---
 

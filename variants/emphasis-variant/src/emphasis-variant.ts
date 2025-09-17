@@ -1,4 +1,4 @@
-'use client' // The exported `useEmphasizeVariant()` hook is client side only.
+'use client' // The exported `useEmphasisVariant()` hook is client side only.
 
 // React:
 import {
@@ -8,9 +8,9 @@ import {
 
 // Types:
 import {
-    type EmphasizeVariantProps,
-    type EmphasizeVariantOptions,
-    type ResolvedEmphasizeVariant,
+    type EmphasisVariantProps,
+    type EmphasisVariantOptions,
+    type ResolvedEmphasisVariant,
 }                           from './types.js'
 
 // Defaults:
@@ -21,12 +21,12 @@ import {
 
 // Utilities:
 import {
-    getEmphasizeClassname,
+    getEmphasisClassname,
 }                           from './internal-utilities.js'
 
 // Contexts:
 import {
-    EmphasizeVariantContext,
+    EmphasisVariantContext,
 }                           from './contexts.js'
 
 
@@ -39,16 +39,16 @@ import {
  * - `'invert'`  : flips the emphasized value from context (`true` ⇄ `false`), if available.
  * - Otherwise   : uses the explicitly provided emphasized value as-is.
  * 
- * @param {Required<EmphasizeVariantProps>['emphasized']} emphasized - The pre-resolved emphasized value from props.
+ * @param {Required<EmphasisVariantProps>['emphasized']} emphasized - The pre-resolved emphasized value from props.
  * @param {boolean} defaultEmphasized - Fallback emphasized value when context is missing.
  * @returns {boolean} - The resolved emphasized value.
  */
-const useEffectiveEmphasizedValue = (emphasized: Required<EmphasizeVariantProps>['emphasized'], defaultEmphasized: boolean): boolean => {
+const useEffectiveEmphasizedValue = (emphasized: Required<EmphasisVariantProps>['emphasized'], defaultEmphasized: boolean): boolean => {
     switch (emphasized) {
         // If the emphasized is 'inherit', use the context value:
         case 'inherit' : {
             // Get the inherited emphasized from context:
-            const inheritedEmphasized = use(EmphasizeVariantContext);
+            const inheritedEmphasized = use(EmphasisVariantContext);
             
             
             
@@ -66,7 +66,7 @@ const useEffectiveEmphasizedValue = (emphasized: Required<EmphasizeVariantProps>
         // If the emphasized is 'invert', flip the context value:
         case 'invert'  : {
             // Get the inherited emphasized from context:
-            const inheritedEmphasized = use(EmphasizeVariantContext);
+            const inheritedEmphasized = use(EmphasisVariantContext);
             
             
             
@@ -90,33 +90,33 @@ const useEffectiveEmphasizedValue = (emphasized: Required<EmphasizeVariantProps>
  * Resolves the emphasized state along with its associated CSS class name,
  * based on component props, optional default configuration, and parent context.
  * 
- * @param {EmphasizeVariantProps} props - The component props that may include an `emphasized` value.
- * @param {EmphasizeVariantOptions} options - An optional configuration specifying a default emphasized value when no `emphasized` prop is explicitly provided.
- * @returns {ResolvedEmphasizeVariant} - The resolved emphasized state along with its associated CSS class name.
+ * @param {EmphasisVariantProps} props - The component props that may include an `emphasized` value.
+ * @param {EmphasisVariantOptions} options - An optional configuration specifying a default emphasized value when no `emphasized` prop is explicitly provided.
+ * @returns {ResolvedEmphasisVariant} - The resolved emphasized state along with its associated CSS class name.
  * 
  * @example
  * ```tsx
  * import React, { FC } from 'react';
  * import {
- *     useEmphasizeVariant,
- *     EmphasizeVariantProps,
- * } from '@reusable-ui/emphasize-variant';
+ *     useEmphasisVariant,
+ *     EmphasisVariantProps,
+ * } from '@reusable-ui/emphasis-variant';
  * import styles from './EmphasizedBox.module.css';
  * 
- * export interface EmphasizedBoxProps extends EmphasizeVariantProps {}
+ * export interface EmphasizedBoxProps extends EmphasisVariantProps {}
  * 
  * // A box that conditionally emphasizes its appearance.
  * export const EmphasizedBox: FC<EmphasizedBoxProps> = (props) => {
  *     const {
  *         emphasized,
- *         emphasizeClassname,
- *     } = useEmphasizeVariant(props, {
+ *         emphasisClassname,
+ *     } = useEmphasisVariant(props, {
  *         defaultEmphasized: false, // fallback if not provided
  *     });
  *     
  *     return (
  *         <div
- *             className={`${styles.box} ${emphasizeClassname}`}
+ *             className={`${styles.box} ${emphasisClassname}`}
  *         >
  *             {emphasized && <strong>Important Content</strong>}
  *             <p>Additional details go here.</p>
@@ -125,7 +125,7 @@ const useEffectiveEmphasizedValue = (emphasized: Required<EmphasizeVariantProps>
  * };
  * ```
  */
-export const useEmphasizeVariant = (props: EmphasizeVariantProps, options?: EmphasizeVariantOptions): ResolvedEmphasizeVariant => {
+export const useEmphasisVariant = (props: EmphasisVariantProps, options?: EmphasisVariantOptions): ResolvedEmphasisVariant => {
     // Extract options and assign defaults:
     const {
         defaultEmphasized = finalDefaultEmphasized,
@@ -152,6 +152,6 @@ export const useEmphasizeVariant = (props: EmphasizeVariantProps, options?: Emph
     // Return resolved emphasized attributes:
     return {
         emphasized         : effectiveIsEmphasized,
-        emphasizeClassname : getEmphasizeClassname(effectiveIsEmphasized),
-    } satisfies ResolvedEmphasizeVariant;
+        emphasisClassname  : getEmphasisClassname(effectiveIsEmphasized),
+    } satisfies ResolvedEmphasisVariant;
 };

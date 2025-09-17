@@ -36,7 +36,7 @@
 @reusable-ui/flow-direction-variant
 @reusable-ui/size-variant
 @reusable-ui/theme-variant
-@reusable-ui/emphasize-variant
+@reusable-ui/emphasis-variant
 @reusable-ui/outline-variant
 @reusable-ui/mild-variant
 @reusable-ui/bare-variant

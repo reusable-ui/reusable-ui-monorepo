@@ -1,12 +1,12 @@
 # @reusable-ui/gradientable
 
-> ⚠️ **Deprecated** — superseded by [`@reusable-ui/emphasize-variant`](https://www.npmjs.com/package/@reusable-ui/emphasize-variant)
+> ⚠️ **Deprecated** — superseded by [`@reusable-ui/emphasis-variant`](https://www.npmjs.com/package/@reusable-ui/emphasis-variant)
 
 ---
 
 ## 📦 Deprecation Summary
 
-The `@reusable-ui/gradientable` package has been deprecated and replaced by [`@reusable-ui/emphasize-variant`](https://www.npmjs.com/package/@reusable-ui/emphasize-variant), which provides a more flexible and semantically consistent approach to toggling visual emphasis — including gradient-based styling.
+The `@reusable-ui/gradientable` package has been deprecated and replaced by [`@reusable-ui/emphasis-variant`](https://www.npmjs.com/package/@reusable-ui/emphasis-variant), which provides a more flexible and semantically consistent approach to toggling visual emphasis — including gradient-based styling.
 
 ---
 
@@ -15,7 +15,7 @@ The `@reusable-ui/gradientable` package has been deprecated and replaced by [`@r
 The original `gradientable` API introduced a custom toggle system for background gradients using `true`, `false`, `'inherit'`, and `null`.  
 While powerful, this approach duplicated logic already handled by the emphasize variant system.
 
-By transitioning to `emphasize-variant`, you gain:
+By transitioning to `emphasis-variant`, you gain:
 
 - ✅ Unified emphasis toggling via `emphasized` prop
 - ✅ Poisoning-based conditional styling

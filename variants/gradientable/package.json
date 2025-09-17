@@ -45,6 +45,6 @@
     "@cssfn/core": "^4.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/emphasize-variant": "^7.0.0"
+    "@reusable-ui/emphasis-variant": "^7.0.0"
   }
 }

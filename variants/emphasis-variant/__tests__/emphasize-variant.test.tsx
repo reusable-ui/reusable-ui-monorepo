@@ -5,18 +5,18 @@ import {
 } from 'react'
 
 import {
-    type EmphasizeVariantProps,
-    type EmphasizeVariantOptions,
-    type ResolvedEmphasizeVariant,
+    type EmphasisVariantProps,
+    type EmphasisVariantOptions,
+    type ResolvedEmphasisVariant,
 } from '../dist/types.js'
 import {
     finalDefaultEmphasized,
 } from '../dist/internal-defaults.js'
 import {
-    useEmphasizeVariant,
-} from '../dist/emphasize-variant.js'
+    useEmphasisVariant,
+} from '../dist/emphasis-variant.js'
 import {
-    EmphasizeVariantProvider,
+    EmphasisVariantProvider,
 } from '../dist/providers.js'
 
 import { renderHook, render } from '@testing-library/react'
@@ -27,15 +27,15 @@ import '@testing-library/jest-dom'
 // Tests:
 
 /**
- * Defines a single test case for evaluating the emphasize variant.
+ * Defines a single test case for evaluating the emphasis variant.
  */
-interface EmphasizeVariantTestCase {
+interface EmphasisVariantTestCase {
     // Test Inputs:
     
     /**
      * Descriptive name for the test scenario.
      */
-    title              : string
+    title             : string
     
     /**
      * The parent emphasized state to use for the test.
@@ -44,25 +44,25 @@ interface EmphasizeVariantTestCase {
     parentEmphasized ?: boolean
     
     /**
-     * Props to pass to the `useEmphasizeVariant` hook.
+     * Props to pass to the `useEmphasisVariant` hook.
      * Set to `undefined` for no props.
      */
-    props             ?: EmphasizeVariantProps
+    props            ?: EmphasisVariantProps
     
     /**
-     * An optional options for the `useEmphasizeVariant` hook.
+     * An optional options for the `useEmphasisVariant` hook.
      * Set to `undefined` for no options.
      */
-    options           ?: EmphasizeVariantOptions
+    options          ?: EmphasisVariantOptions
     
     
     
     // Expected Outcomes:
     
     /**
-     * The expected result of the `useEmphasizeVariant` hook.
+     * The expected result of the `useEmphasisVariant` hook.
      */
-    expectedResult     : ResolvedEmphasizeVariant
+    expectedResult    : ResolvedEmphasisVariant
 }
 
 
@@ -71,25 +71,25 @@ interface EmphasizeVariantTestCase {
 interface MockComponentProps
     // Bases:
     extends
-        EmphasizeVariantProps
+        EmphasisVariantProps
 {
     /**
-     * Passed options to the `useEmphasizeVariant` hook.
+     * Passed options to the `useEmphasisVariant` hook.
      */
-    options   : EmphasizeVariantOptions | undefined
+    options   : EmphasisVariantOptions | undefined
     
     /**
-     * A ref to peek the result of the `useEmphasizeVariant` hook.
+     * A ref to peek the result of the `useEmphasisVariant` hook.
      */
-    resultRef : RefObject<ResolvedEmphasizeVariant | undefined>
+    resultRef : RefObject<ResolvedEmphasisVariant | undefined>
 }
 
 /**
- * A mock component for testing the `useEmphasizeVariant` hook.
+ * A mock component for testing the `useEmphasisVariant` hook.
  */
 const MockComponent = (props: MockComponentProps) => {
-    // Test the `useEmphasizeVariant` hook:
-    const result = useEmphasizeVariant(props, props.options);
+    // Test the `useEmphasisVariant` hook:
+    const result = useEmphasisVariant(props, props.options);
     
     // Peek the result:
     props.resultRef.current = result;
@@ -101,10 +101,10 @@ const MockComponent = (props: MockComponentProps) => {
 
 
 
-describe('useEmphasizeVariant()', () => {
+describe('useEmphasisVariant()', () => {
     const createRef = <TRef extends unknown>() => renderHook(() => useRef<TRef | undefined>(undefined)).result.current;
     
-    test.each<EmphasizeVariantTestCase>([
+    test.each<EmphasisVariantTestCase>([
         //#region direct resolution from props and/or options
         {
             title                  : 'resolves not-emphasized from props',
@@ -113,7 +113,7 @@ describe('useEmphasizeVariant()', () => {
             },
             expectedResult         : {
                 emphasized         : false,
-                emphasizeClassname : 'not-emphasized',
+                emphasisClassname  : 'not-emphasized',
             },
         },
         {
@@ -123,7 +123,7 @@ describe('useEmphasizeVariant()', () => {
             },
             expectedResult         : {
                 emphasized         : true,
-                emphasizeClassname : 'is-emphasized',
+                emphasisClassname  : 'is-emphasized',
             },
         },
         {
@@ -133,7 +133,7 @@ describe('useEmphasizeVariant()', () => {
             },
             expectedResult         : {
                 emphasized         : false,
-                emphasizeClassname : 'not-emphasized',
+                emphasisClassname  : 'not-emphasized',
             },
         },
         {
@@ -143,14 +143,14 @@ describe('useEmphasizeVariant()', () => {
             },
             expectedResult         : {
                 emphasized         : true,
-                emphasizeClassname : 'is-emphasized',
+                emphasisClassname  : 'is-emphasized',
             },
         },
         {
             title                  : 'falls back to system default when prop and option are missing',
             expectedResult         : {
                 emphasized         : finalDefaultEmphasized,
-                emphasizeClassname : finalDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
+                emphasisClassname  : finalDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
             },
         },
         {
@@ -158,7 +158,7 @@ describe('useEmphasizeVariant()', () => {
             parentEmphasized       : false,
             expectedResult         : {
                 emphasized         : false,
-                emphasizeClassname : 'not-emphasized',
+                emphasisClassname  : 'not-emphasized',
             },
         },
         {
@@ -166,7 +166,7 @@ describe('useEmphasizeVariant()', () => {
             parentEmphasized       : true,
             expectedResult         : {
                 emphasized         : true,
-                emphasizeClassname : 'is-emphasized',
+                emphasisClassname  : 'is-emphasized',
             },
         },
         {
@@ -177,7 +177,7 @@ describe('useEmphasizeVariant()', () => {
             },
             expectedResult         : {
                 emphasized         : finalDefaultEmphasized,
-                emphasizeClassname : finalDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
+                emphasisClassname  : finalDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
             },
         },
         {
@@ -188,7 +188,7 @@ describe('useEmphasizeVariant()', () => {
             },
             expectedResult         : {
                 emphasized         : finalDefaultEmphasized,
-                emphasizeClassname : finalDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
+                emphasisClassname  : finalDefaultEmphasized ? 'is-emphasized' : 'not-emphasized',
             },
         },
         {
@@ -201,7 +201,7 @@ describe('useEmphasizeVariant()', () => {
             },
             expectedResult         : {
                 emphasized         : false,
-                emphasizeClassname : 'not-emphasized',
+                emphasisClassname  : 'not-emphasized',
             },
         },
         {
@@ -214,7 +214,7 @@ describe('useEmphasizeVariant()', () => {
             },
             expectedResult         : {
                 emphasized         : true,
-                emphasizeClassname : 'is-emphasized',
+                emphasisClassname  : 'is-emphasized',
             },
         },
         //#endregion direct resolution from props and/or options
@@ -230,7 +230,7 @@ describe('useEmphasizeVariant()', () => {
             },
             expectedResult         : {
                 emphasized         : false,
-                emphasizeClassname : 'not-emphasized',
+                emphasisClassname  : 'not-emphasized',
             },
         },
         {
@@ -241,7 +241,7 @@ describe('useEmphasizeVariant()', () => {
             },
             expectedResult         : {
                 emphasized         : true,
-                emphasizeClassname : 'is-emphasized',
+                emphasisClassname  : 'is-emphasized',
             },
         },
         {
@@ -252,7 +252,7 @@ describe('useEmphasizeVariant()', () => {
             },
             expectedResult         : {
                 emphasized         : false,
-                emphasizeClassname : 'not-emphasized',
+                emphasisClassname  : 'not-emphasized',
             },
         },
         {
@@ -263,7 +263,7 @@ describe('useEmphasizeVariant()', () => {
             },
             expectedResult         : {
                 emphasized         : true,
-                emphasizeClassname : 'is-emphasized',
+                emphasisClassname  : 'is-emphasized',
             },
         },
         
@@ -279,7 +279,7 @@ describe('useEmphasizeVariant()', () => {
             },
             expectedResult         : {
                 emphasized         : false,
-                emphasizeClassname : 'not-emphasized',
+                emphasisClassname  : 'not-emphasized',
             },
         },
         {
@@ -293,7 +293,7 @@ describe('useEmphasizeVariant()', () => {
             },
             expectedResult         : {
                 emphasized         : true,
-                emphasizeClassname : 'is-emphasized',
+                emphasisClassname  : 'is-emphasized',
             },
         },
         {
@@ -307,7 +307,7 @@ describe('useEmphasizeVariant()', () => {
             },
             expectedResult         : {
                 emphasized         : false,
-                emphasizeClassname : 'not-emphasized',
+                emphasisClassname  : 'not-emphasized',
             },
         },
         {
@@ -321,7 +321,7 @@ describe('useEmphasizeVariant()', () => {
             },
             expectedResult         : {
                 emphasized         : true,
-                emphasizeClassname : 'is-emphasized',
+                emphasisClassname  : 'is-emphasized',
             },
         },
         //#endregion cascade resolution from props and/or options
@@ -341,7 +341,7 @@ describe('useEmphasizeVariant()', () => {
             expectedResult,
         }) => {
             // Create a ref to peek the result:
-            const resultRef = createRef<ResolvedEmphasizeVariant>();
+            const resultRef = createRef<ResolvedEmphasisVariant>();
             
             
             
@@ -355,9 +355,9 @@ describe('useEmphasizeVariant()', () => {
             else {
                 // With parent emphasis:
                 render(
-                    <EmphasizeVariantProvider emphasized={parentEmphasized}>
+                    <EmphasisVariantProvider emphasized={parentEmphasized}>
                         <MockComponent {...props} options={options} resultRef={resultRef} />
-                    </EmphasizeVariantProvider>
+                    </EmphasisVariantProvider>
                 );
             } // if
             
@@ -368,3 +368,4 @@ describe('useEmphasizeVariant()', () => {
         }
     );
 });
+

@@ -1,26 +1,26 @@
-# @reusable-ui/emphasize-variant 📦  
+# @reusable-ui/emphasis-variant 📦  
 
 A utility for managing visual emphasis consistently across React components.  
 Provides hooks and CSS helpers for emphasis resolution and conditional styling — ideal for buttons, cards, badges, alerts, or any component that requires visual prioritization.
 
 ## ✨ Features
-✔ Boolean-based emphasize variant with inheritance and inversion  
+✔ Boolean-based emphasis variant with inheritance and inversion  
 ✔ Hook-based resolution with customizable fallback behavior  
 ✔ CSS selectors and conditional rule helpers for emphasis-aware styling  
 ✔ Seamless integration across appearance, layout, and interaction systems
 
 ## 📦 Installation
-Install **@reusable-ui/emphasize-variant** via npm or yarn:
+Install **@reusable-ui/emphasis-variant** via npm or yarn:
 
 ```sh
-npm install @reusable-ui/emphasize-variant
+npm install @reusable-ui/emphasis-variant
 # or
-yarn add @reusable-ui/emphasize-variant
+yarn add @reusable-ui/emphasis-variant
 ```
 
 ## 🧩 Exported Hooks
 
-### `useEmphasizeVariant(props, options)`
+### `useEmphasisVariant(props, options)`
 
 Resolves the emphasized state along with its associated CSS class name, based on component props, optional default configuration, and parent context.
 
@@ -29,27 +29,25 @@ Resolves the emphasized state along with its associated CSS class name, based on
 ```tsx
 import React, { FC } from 'react';
 import {
-    useEmphasizeVariant,
-    EmphasizeVariantProps,
-} from '@reusable-ui/emphasize-variant';
+    useEmphasisVariant,
+    EmphasisVariantProps,
+} from '@reusable-ui/emphasis-variant';
 import styles from './EmphasizedBox.module.css';
 
-export interface EmphasizedBoxProps extends EmphasizeVariantProps {}
+export interface EmphasizedBoxProps extends EmphasisVariantProps {}
 
-/**
- * A box that conditionally emphasizes its appearance.
- */
+// A box that conditionally emphasizes its appearance.
 export const EmphasizedBox: FC<EmphasizedBoxProps> = (props) => {
     const {
         emphasized,
-        emphasizeClassname,
-    } = useEmphasizeVariant(props, {
+        emphasisClassname,
+    } = useEmphasisVariant(props, {
         defaultEmphasized: false, // fallback if not provided
     });
     
     return (
         <div
-            className={`${styles.box} ${emphasizeClassname}`}
+            className={`${styles.box} ${emphasisClassname}`}
         >
             {emphasized && <strong>Important Content</strong>}
             <p>Additional details go here.</p>
@@ -64,7 +62,7 @@ The hook determines the final emphasized state using the following priority:
 1. **Explicit Prop Override**  
    - If `props.emphasized` is `true` or `false`, it takes precedence.
 2. **Relative Resolution**  
-   - If set to `'inherit'`, uses the value from context, if available (`EmphasizeVariantProvider`).
+   - If set to `'inherit'`, uses the value from context, if available (`EmphasisVariantProvider`).
    - If set to `'invert'`, flips the inherited value (`true` ⇄ `false`).
 3. **Fallback Logic**  
    - Uses `options.defaultEmphasized` if provided.
@@ -72,34 +70,32 @@ The hook determines the final emphasized state using the following priority:
 
 #### 🧬 Context Propagation
 
-Use `<EmphasizeVariantProvider>` to share emphasized state with descendant components:
+Use `<EmphasisVariantProvider>` to share emphasized state with descendant components:
 
 ```tsx
 import React, { ReactNode, FC } from 'react';
 import {
-    EmphasizeVariantProps,
-    EmphasizeVariantProvider,
-    useEmphasizeVariant,
-} from '@reusable-ui/emphasize-variant';
+    EmphasisVariantProps,
+    EmphasisVariantProvider,
+    useEmphasisVariant,
+} from '@reusable-ui/emphasis-variant';
 
-export interface ParentComponentProps extends EmphasizeVariantProps {
+export interface ParentComponentProps extends EmphasisVariantProps {
     children ?: ReactNode
 }
 
-/**
- * A component that shares its emphasized state with descendant components.
- */
+// A component that shares its emphasized state with descendant components.
 export const ParentComponent: FC<ParentComponentProps> = (props) => {
     // Resolve emphasized state from props:
-    const { emphasized } = useEmphasizeVariant(props, {
+    const { emphasized } = useEmphasisVariant(props, {
         defaultEmphasized: false, // fallback if not provided
     });
     
     // Propagate emphasized state to descendants:
     return (
-        <EmphasizeVariantProvider emphasized={emphasized}>
+        <EmphasisVariantProvider emphasized={emphasized}>
             {props.children}
-        </EmphasizeVariantProvider>
+        </EmphasisVariantProvider>
     );
 };
 ```
@@ -117,7 +113,7 @@ import {
     // Conditional styling helpers:
     ifEmphasized,            // Applies styles to emphasized elements
     ifNotEmphasized,         // Applies styles to non-emphasized elements
-} from '@reusable-ui/emphasize-variant';
+} from '@reusable-ui/emphasis-variant';
 import { style, rule } from '@cssfn/core';
 
 export const componentStyle = () => style({
@@ -145,30 +141,30 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesEmphasizeVariant()`
+### `usesEmphasisVariant()`
 
-Generates CSS rules that toggle emphasize-related CSS variables based on the current emphasized state, and exposes those variables for conditional styling.
+Generates CSS rules that toggle emphasis-related CSS variables based on the current emphasized state, and exposes those variables for conditional styling.
 
 #### 💡 Usage Example
 
 ```ts
 import {
-    usesEmphasizeVariant,
-} from '@reusable-ui/emphasize-variant';
+    usesEmphasisVariant,
+} from '@reusable-ui/emphasis-variant';
 import { style, fallback } from '@cssfn/core';
 
 export const componentStyle = () => {
     const {
-        emphasizeVariantRule,
-        emphasizeVariantVars: { isEmphasized, notEmphasized },
-    } = usesEmphasizeVariant();
+        emphasisVariantRule,
+        emphasisVariantVars: { isEmphasized, notEmphasized },
+    } = usesEmphasisVariant();
     
     return style({
         display: 'flex',
         // Define component styling here.
         
-        // Apply emphasize-related variable rules:
-        ...emphasizeVariantRule(),
+        // Apply emphasis-related variable rules:
+        ...emphasisVariantRule(),
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
@@ -189,7 +185,7 @@ export const componentStyle = () => {
 
 #### 🧠 How It Works
 
-- `usesEmphasizeVariant()` generates scoped rules like:
+- `usesEmphasisVariant()` generates scoped rules like:
     ```css
     &.is-emphasized {
         --isEmphasized: ;       /* Valid    when emphasized. */
@@ -207,24 +203,24 @@ export const componentStyle = () => {
 - You can use them directly in your styles:
     ```ts
     style({
-        fontWeight : `${emphasizeVariantVars.isEmphasized} bold`,    // Will be rendered to: `font-weight: var(--isEmphasized) bold;` (becomes valid only when emphasized)
-        color      : `${emphasizeVariantVars.isEmphasized} crimson`, // Will be rendered to: `color: var(--isEmphasized) crimson;`    (becomes valid only when emphasized)
+        fontWeight : `${emphasisVariantVars.isEmphasized} bold`,    // Will be rendered to: `font-weight: var(--isEmphasized) bold;` (becomes valid only when emphasized)
+        color      : `${emphasisVariantVars.isEmphasized} crimson`, // Will be rendered to: `color: var(--isEmphasized) crimson;`    (becomes valid only when emphasized)
     });
     ```
 
 ---
 
 ## 📖 Part of the Reusable-UI Framework  
-**@reusable-ui/emphasize-variant** is a variant utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
+**@reusable-ui/emphasis-variant** is a variant utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
 
 ## 🤝 Contributing  
-Want to improve **@reusable-ui/emphasize-variant**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
+Want to improve **@reusable-ui/emphasis-variant**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
 
 ## 🛡️ License  
 Licensed under the **MIT License** – see the [LICENSE](./LICENSE) file for details.  
 
 ---
 
-🚀 **@reusable-ui/emphasize-variant emphasize your UI with clarity and consistency across React UIs.**  
+🚀 **@reusable-ui/emphasis-variant emphasizes your UI with clarity and consistency across React UIs.**  
 Give it a ⭐ on GitHub if you find it useful!  

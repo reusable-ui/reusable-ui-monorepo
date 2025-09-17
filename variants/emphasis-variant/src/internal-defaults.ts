@@ -1,6 +1,6 @@
 // Types:
 import {
-    type EmphasizeVariantProps,
+    type EmphasisVariantProps,
 }                           from './types.js'
 
 
@@ -10,9 +10,9 @@ import {
  * 
  * This value serves as a transitional fallback before attempting context resolution.
  * 
- * - `'inherit'`: inherits emphasized appearance from a parent context.
+ * - `'inherit'`: inherits emphasis appearance from a parent context.
  */
-export const semiDefaultEmphasized  : Required<EmphasizeVariantProps>['emphasized'] = 'inherit';
+export const semiDefaultEmphasized  : Required<EmphasisVariantProps>['emphasized'] = 'inherit';
 
 
 

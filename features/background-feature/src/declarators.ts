@@ -28,8 +28,8 @@ import {
     usesThemeVariant,
 }                           from '@reusable-ui/theme-variant'       // A utility for managing themes consistently across React components.
 import {
-    usesEmphasizeVariant,
-}                           from '@reusable-ui/emphasize-variant'   // A utility for managing visual emphasis consistently across React components.
+    usesEmphasisVariant,
+}                           from '@reusable-ui/emphasis-variant'    // A utility for managing visual emphasis consistently across React components.
 import {
     usesOutlineVariant,
 }                           from '@reusable-ui/outline-variant'     // A utility for managing visual outline consistently across React components.
@@ -70,11 +70,11 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
     return {
         backgroundFeatureRule : () => {
             // Peer variant dependencies (may be poisoned if not implemented):
-            const { themeVariantVars     } = usesThemeVariant();
-            const { emphasizeVariantVars } = usesEmphasizeVariant();
-            const { outlineVariantVars   } = usesOutlineVariant();
-            const { mildVariantVars      } = usesMildVariant();
-            const { bareVariantVars      } = usesBareVariant();
+            const { themeVariantVars    } = usesThemeVariant();
+            const { emphasisVariantVars } = usesEmphasisVariant();
+            const { outlineVariantVars  } = usesOutlineVariant();
+            const { mildVariantVars     } = usesMildVariant();
+            const { bareVariantVars     } = usesBareVariant();
             
             
             
@@ -91,12 +91,12 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                         Array.isArray(emphasizedBackgroundImage)
                         
                         ? [[
-                            emphasizeVariantVars.isEmphasized, // If emphasized mode is active.
+                            emphasisVariantVars.isEmphasized, // If emphasized mode is active.
                             ...emphasizedBackgroundImage[0],
                         ]] as CssCustomValue
                         
                         : [[
-                            emphasizeVariantVars.isEmphasized, // If emphasized mode is active.
+                            emphasisVariantVars.isEmphasized, // If emphasized mode is active.
                             emphasizedBackgroundImage,
                         ]]
                     ),

@@ -1,10 +1,10 @@
 {
-  "name": "@reusable-ui/emphasize-variant",
+  "name": "@reusable-ui/emphasis-variant",
   "version": "7.0.0",
   "description": "A utility for managing visual emphasis consistently across React components.",
   "keywords": [
-    "emphasize",
     "emphasis",
+    "emphasize",
     "variant",
     "ui",
     "styling",
@@ -26,7 +26,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "variants/emphasize-variant"
+    "directory": "variants/emphasis-variant"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"

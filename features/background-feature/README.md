@@ -59,7 +59,7 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 ```ts
 // Supporting variants:
 import { usesThemeVariant } from '@reusable-ui/theme-variant'
-import { usesEmphasizeVariant } from '@reusable-ui/emphasize-variant'
+import { usesEmphasisVariant } from '@reusable-ui/emphasis-variant'
 import { usesOutlineVariant } from '@reusable-ui/outline-variant'
 import { usesMildVariant } from '@reusable-ui/mild-variant'
 import { usesBareVariant } from '@reusable-ui/bare-variant'
@@ -71,11 +71,11 @@ import { usesBackgroundFeature } from '@reusable-ui/background-feature';
 import { style } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { themeVariantRule     } = usesThemeVariant();
-    const { emphasizeVariantRule } = usesEmphasizeVariant();
-    const { outlineVariantRule   } = usesOutlineVariant();
-    const { mildVariantRule      } = usesMildVariant();
-    const { bareVariantRule      } = usesBareVariant();
+    const { themeVariantRule    } = usesThemeVariant();
+    const { emphasisVariantRule } = usesEmphasisVariant();
+    const { outlineVariantRule  } = usesOutlineVariant();
+    const { mildVariantRule     } = usesMildVariant();
+    const { bareVariantRule     } = usesBareVariant();
     
     const {
         backgroundFeatureRule,
@@ -94,7 +94,7 @@ export const componentStyle = () => {
         
         // Apply supporting variant rules:
         ...themeVariantRule(),
-        ...emphasizeVariantRule(),
+        ...emphasisVariantRule(),
         ...outlineVariantRule(),
         ...mildVariantRule(),
         ...bareVariantRule(),

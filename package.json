@@ -70,7 +70,7 @@
     "variants/flow-direction-variant",
     "variants/size-variant",
     "variants/theme-variant",
-    "variants/emphasize-variant",
+    "variants/emphasis-variant",
     "variants/outline-variant",
     "variants/mild-variant",
     "variants/bare-variant",

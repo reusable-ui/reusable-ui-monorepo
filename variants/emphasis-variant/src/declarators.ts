@@ -21,8 +21,8 @@ import {
 
 // Types:
 import {
-    type EmphasizeVariantVars,
-    type CssEmphasizeVariant,
+    type EmphasisVariantVars,
+    type CssEmphasisVariant,
 }                           from './types.js'
 
 
@@ -80,38 +80,38 @@ export const ifNotEmphasized = (styles: CssStyleCollection): CssRule => rule(isN
 
 
 /**
- * A strongly typed global mapping of emphasize-related CSS variables for conditional styling.
+ * A strongly typed global mapping of emphasis-related CSS variables for conditional styling.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-const [emphasizeVariantVars] = cssVars<EmphasizeVariantVars>({ minify: false });
+const [emphasisVariantVars] = cssVars<EmphasisVariantVars>({ minify: false });
 
 /**
- * Generates CSS rules that toggle emphasize-related CSS variables based on the current emphasized state,
+ * Generates CSS rules that toggle emphasis-related CSS variables based on the current emphasized state,
  * and exposes those variables for conditional styling.
  * 
  * @returns A CSS API for enabling conditional styling based on emphasized state.
  */
-export const usesEmphasizeVariant = (): CssEmphasizeVariant => {
+export const usesEmphasisVariant = (): CssEmphasisVariant => {
     return {
-        emphasizeVariantRule : () => style(
+        emphasisVariantRule : () => style(
             variants({
                 ...ifEmphasized(
                     vars({
-                        [emphasizeVariantVars.isEmphasized ] : '',      // Valid    when emphasized.
-                        [emphasizeVariantVars.notEmphasized] : 'unset', // Poisoned when emphasized.
+                        [emphasisVariantVars.isEmphasized ] : '',      // Valid    when emphasized.
+                        [emphasisVariantVars.notEmphasized] : 'unset', // Poisoned when emphasized.
                     })
                 ),
                 ...ifNotEmphasized(
                     vars({
-                        [emphasizeVariantVars.isEmphasized ] : 'unset', // Poisoned when not emphasized.
-                        [emphasizeVariantVars.notEmphasized] : '',      // Valid    when not emphasized.
+                        [emphasisVariantVars.isEmphasized ] : 'unset', // Poisoned when not emphasized.
+                        [emphasisVariantVars.notEmphasized] : '',      // Valid    when not emphasized.
                     })
                 ),
             }),
         ),
         
-        emphasizeVariantVars,
-    } satisfies CssEmphasizeVariant;
+        emphasisVariantVars,
+    } satisfies CssEmphasisVariant;
 };

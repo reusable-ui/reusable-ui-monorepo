@@ -57,7 +57,7 @@
     "@reusable-ui/theme-variant": "^7.0.0"
   },
   "devDependencies": {
-    "@reusable-ui/emphasize-variant": "^7.0.0",
+    "@reusable-ui/emphasis-variant": "^7.0.0",
     "@reusable-ui/mild-variant": "^7.0.0",
     "@reusable-ui/outline-variant": "^7.0.0"
   }

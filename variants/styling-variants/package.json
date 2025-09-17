@@ -45,7 +45,7 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "peerDependencies": {
-    "@reusable-ui/emphasize-variant": "^7.0.0",
+    "@reusable-ui/emphasis-variant": "^7.0.0",
     "@reusable-ui/mild-variant": "^7.0.0",
     "@reusable-ui/outline-variant": "^7.0.0",
     "@reusable-ui/size-variant": "^7.0.0",

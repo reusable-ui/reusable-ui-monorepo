@@ -1,4 +1,4 @@
-'use client' // The exported `<EmphasizeVariantProvider>` component is client side only.
+'use client' // The exported `<EmphasisVariantProvider>` component is client side only.
 
 // React:
 import React, {
@@ -9,12 +9,12 @@ import React, {
 
 // Types:
 import {
-    type ResolvedEmphasizeVariant,
+    type ResolvedEmphasisVariant,
 }                           from './types.js'
 
 // Contexts:
 import {
-    EmphasizeVariantContext,
+    EmphasisVariantContext,
 }                           from './contexts.js'
 
 
@@ -22,15 +22,15 @@ import {
 // React components:
 
 /**
- * Props for `<EmphasizeVariantProvider>`.
+ * Props for `<EmphasisVariantProvider>`.
  * 
  * Requires an `emphasized` value to establish the context,
  * and renders `children` that consume the propagated value.
  */
-export interface EmphasizeVariantProviderProps
+export interface EmphasisVariantProviderProps
     extends
         // Bases:
-        PropsWithChildren<Pick<ResolvedEmphasizeVariant, 'emphasized'>>
+        PropsWithChildren<Pick<ResolvedEmphasisVariant, 'emphasized'>>
 {
 }
 
@@ -42,32 +42,32 @@ export interface EmphasizeVariantProviderProps
  * ```tsx
  * import React, { ReactNode, FC } from 'react';
  * import {
- *     EmphasizeVariantProps,
- *     EmphasizeVariantProvider,
- *     useEmphasizeVariant,
- * } from '@reusable-ui/emphasize-variant';
+ *     EmphasisVariantProps,
+ *     EmphasisVariantProvider,
+ *     useEmphasisVariant,
+ * } from '@reusable-ui/emphasis-variant';
  * 
- * export interface ParentComponentProps extends EmphasizeVariantProps {
+ * export interface ParentComponentProps extends EmphasisVariantProps {
  *     children ?: ReactNode
  * }
  * 
  * // A component that shares its emphasized state with descendant components.
  * export const ParentComponent: FC<ParentComponentProps> = (props) => {
  *     // Resolve emphasized state from props:
- *     const { emphasized } = useEmphasizeVariant(props, {
+ *     const { emphasized } = useEmphasisVariant(props, {
  *         defaultEmphasized: false, // fallback if not provided
  *     });
  *     
  *     // Propagate emphasized state to descendants:
  *     return (
- *         <EmphasizeVariantProvider emphasized={emphasized}>
+ *         <EmphasisVariantProvider emphasized={emphasized}>
  *             {props.children}
- *         </EmphasizeVariantProvider>
+ *         </EmphasisVariantProvider>
  *     );
  * };
  * ```
  */
-const EmphasizeVariantProvider = (props: EmphasizeVariantProviderProps): ReactElement | null => {
+const EmphasisVariantProvider = (props: EmphasisVariantProviderProps): ReactElement | null => {
     // Extract props:
     const {
         emphasized,
@@ -78,13 +78,13 @@ const EmphasizeVariantProvider = (props: EmphasizeVariantProviderProps): ReactEl
     
     // React elements:
     return (
-        <EmphasizeVariantContext value={emphasized}>
+        <EmphasisVariantContext value={emphasized}>
             {children}
-        </EmphasizeVariantContext>
+        </EmphasisVariantContext>
     );
 };
 
 export {
-    EmphasizeVariantProvider,            // Named export for readability.
-    EmphasizeVariantProvider as default, // Default export to support React.lazy.
+    EmphasisVariantProvider,            // Named export for readability.
+    EmphasisVariantProvider as default, // Default export to support React.lazy.
 }

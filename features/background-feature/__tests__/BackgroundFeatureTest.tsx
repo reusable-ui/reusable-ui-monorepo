@@ -1,6 +1,6 @@
 import React from 'react'
 import { type ThemeVariantProps, useThemeVariant } from '@reusable-ui/theme-variant'
-import { type EmphasizeVariantProps, useEmphasizeVariant } from '@reusable-ui/emphasize-variant'
+import { type EmphasisVariantProps, useEmphasisVariant } from '@reusable-ui/emphasis-variant'
 import { type OutlineVariantProps, useOutlineVariant } from '@reusable-ui/outline-variant'
 import { type MildVariantProps, useMildVariant } from '@reusable-ui/mild-variant'
 import { type BareVariantProps, useBareVariant } from '@reusable-ui/bare-variant'
@@ -10,7 +10,7 @@ import { useBackgroundFeatureTestStyles } from './BackgroundFeatureTest.loader.j
 export interface BackgroundFeatureTestProps
     extends
         ThemeVariantProps,
-        EmphasizeVariantProps,
+        EmphasisVariantProps,
         OutlineVariantProps,
         MildVariantProps,
         BareVariantProps
@@ -24,18 +24,18 @@ export const BackgroundFeatureTest = (props: BackgroundFeatureTestProps) => {
     
     const styles = useBackgroundFeatureTestStyles();
     
-    const { themeClassname     } = useThemeVariant(props);
-    const { emphasizeClassname } = useEmphasizeVariant(props);
-    const { outlineClassname   } = useOutlineVariant(props);
-    const { mildClassname      } = useMildVariant(props);
-    const { bareClassname      } = useBareVariant(props);
+    const { themeClassname    } = useThemeVariant(props);
+    const { emphasisClassname } = useEmphasisVariant(props);
+    const { outlineClassname  } = useOutlineVariant(props);
+    const { mildClassname     } = useMildVariant(props);
+    const { bareClassname     } = useBareVariant(props);
     
     return (
         <div>
             <HydrateStyles />
             <div
                 data-testid="background-feature-test"
-                className={`${styles[backgCustom]} ${themeClassname} ${emphasizeClassname} ${outlineClassname} ${mildClassname} ${bareClassname}`}
+                className={`${styles[backgCustom]} ${themeClassname} ${emphasisClassname} ${outlineClassname} ${mildClassname} ${bareClassname}`}
             >
                 Background Feature Test
             </div>
