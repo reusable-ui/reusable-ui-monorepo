@@ -22,7 +22,7 @@ yarn add @reusable-ui/outline-variant
 
 ### `useOutlineVariant(props, options)`
 
-Resolves the outline state along with its associated CSS class name, based on component props, optional default configuration, and parent context.
+Resolves the outlined state along with its associated CSS class name, based on component props, optional default configuration, and parent context.
 
 #### 💡 Usage Example
 
@@ -32,12 +32,12 @@ import {
     useOutlineVariant,
     OutlineVariantProps,
 } from '@reusable-ui/outline-variant';
-import styles from './OutlineBox.module.css';
+import styles from './OutlinedBox.module.css';
 
-export interface OutlineBoxProps extends OutlineVariantProps {}
+export interface OutlinedBoxProps extends OutlineVariantProps {}
 
 // A box that conditionally outlines its appearance.
-export const OutlineBox: FC<OutlineBoxProps> = (props) => {
+export const OutlinedBox: FC<OutlinedBoxProps> = (props) => {
     const {
         outlined,
         outlineClassname,
@@ -58,7 +58,7 @@ export const OutlineBox: FC<OutlineBoxProps> = (props) => {
 
 #### 🧠 Outline Resolution Strategy
 
-The hook determines the final outline state using the following priority:
+The hook determines the final outlined state using the following priority:
 1. **Explicit Prop Override**  
    - If `props.outlined` is `true` or `false`, it takes precedence.
 2. **Relative Resolution**  
@@ -70,7 +70,7 @@ The hook determines the final outline state using the following priority:
 
 #### 🧬 Context Propagation
 
-Use `<OutlineVariantProvider>` to share outline state with descendant components:
+Use `<OutlineVariantProvider>` to share outlined state with descendant components:
 
 ```tsx
 import React, { ReactNode, FC } from 'react';
@@ -84,14 +84,14 @@ export interface ParentComponentProps extends OutlineVariantProps {
     children ?: ReactNode
 }
 
-// A component that shares its outline state with descendant components.
+// A component that shares its outlined state with descendant components.
 export const ParentComponent: FC<ParentComponentProps> = (props) => {
-    // Resolve outline state from props:
+    // Resolve outlined state from props:
     const { outlined } = useOutlineVariant(props, {
         defaultOutlined: false, // fallback if not provided
     });
     
-    // Propagate outline state to descendants:
+    // Propagate outlined state to descendants:
     return (
         <OutlineVariantProvider outlined={outlined}>
             {props.children}
@@ -143,7 +143,7 @@ export const componentStyle = () => style({
 
 ### `usesOutlineVariant()`
 
-Generates CSS rules that toggle outline-related CSS variables based on the current outline state, and exposes those variables for conditional styling.
+Generates CSS rules that toggle outline-related CSS variables based on the current outlined state, and exposes those variables for conditional styling.
 
 #### 💡 Usage Example
 
@@ -168,7 +168,7 @@ export const componentStyle = () => {
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling based on outline mode:
+        // Apply conditional styling based on outlined mode:
         ...fallback({
             // Outlined styling:
             fontWeight     : `${isOutlined} bold`,

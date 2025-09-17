@@ -39,7 +39,7 @@ export interface OutlineVariantProps {
  */
 export interface OutlineVariantOptions {
     /**
-     * The default outline state to apply when no `outlined` prop is explicitly provided.
+     * The default outlined state to apply when no `outlined` prop is explicitly provided.
      */
     defaultOutlined   ?: boolean
 }
@@ -120,11 +120,11 @@ export interface OutlineVariantVars {
 
 
 /**
- * Provides a CSS API for enabling conditional styling based on outline state.
+ * Provides a CSS API for enabling conditional styling based on outlined state.
  */
 export interface CssOutlineVariant {
     /**
-     * Generates CSS rules that toggle outline-related CSS variables based on the current outline state.
+     * Generates CSS rules that toggle outline-related CSS variables based on the current outlined state.
      * 
      * These rules are scoped using `ifOutlined()` and `ifNotOutlined()` to toggle outline-related CSS variables.
      */

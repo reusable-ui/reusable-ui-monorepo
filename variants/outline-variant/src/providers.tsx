@@ -51,14 +51,14 @@ export interface OutlineVariantProviderProps
  *     children ?: ReactNode
  * }
  * 
- * // A component that shares its outline state with descendant components.
+ * // A component that shares its outlined state with descendant components.
  * export const ParentComponent: FC<ParentComponentProps> = (props) => {
- *     // Resolve outline state from props:
+ *     // Resolve outlined state from props:
  *     const { outlined } = useOutlineVariant(props, {
  *         defaultOutlined: false, // fallback if not provided
  *     });
  *     
- *     // Propagate outline state to descendants:
+ *     // Propagate outlined state to descendants:
  *     return (
  *         <OutlineVariantProvider outlined={outlined}>
  *             {props.children}
