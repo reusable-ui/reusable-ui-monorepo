@@ -48,7 +48,7 @@
     "tsc:watch": "tsc --watch",
     "ncu": "ncu --peer",
     "ncu:upgrade": "ncu --peer --upgrade",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
+    "test": "npx playwright test"
   },
   "dependencies": {
     "@cssfn/core": "^4.0.0",
