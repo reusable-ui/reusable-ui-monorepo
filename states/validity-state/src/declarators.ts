@@ -90,6 +90,30 @@ export const isInvalidOrInvalidatingSelector     : CssSelectorCollection = ':is(
  */
 export const isUnvalidatedOrUnvalidatingSelector : CssSelectorCollection = ':is(.is-unvalidated, .is-unvalidating)';
 
+/**
+ * A CSS selector targeting elements that previously resolved to a valid state.
+ * 
+ * Applies only during a transition away from `valid`.
+ * Does not represent the `validating` phase itself.
+ */
+export const wasValidSelector                    : CssSelectorCollection = '.was-valid';
+
+/**
+ * A CSS selector targeting elements that previously resolved to an invalid state.
+ * 
+ * Applies only during a transition away from `invalid`.
+ * Does not represent the `invalidating` phase itself.
+ */
+export const wasInvalidSelector                  : CssSelectorCollection = '.was-invalid';
+
+/**
+ * A CSS selector targeting elements that previously resolved to an unvalidated state.
+ * 
+ * Applies only during a transition away from `unvalidated`.
+ * Does not represent the `unvalidating` phase itself.
+ */
+export const wasUnvalidatedSelector              : CssSelectorCollection = '.was-unvalidated';
+
 
 
 /**
@@ -266,6 +290,66 @@ export const ifInvalidOrInvalidating     = (styles: CssStyleCollection): CssRule
  */
 export const ifUnvalidatedOrUnvalidating = (styles: CssStyleCollection): CssRule => rule(isUnvalidatedOrUnvalidatingSelector , styles);
 
+/**
+ * Applies the given `styles` to elements that previously resolved to a valid state.
+ * 
+ * Active only during a transition away from `valid`.
+ * 
+ * @param styles The styles applied to elements that previously resolved to a valid state.
+ * @returns A `CssRule` that applies the given `styles` for elements that previously resolved to a valid state.
+ * 
+ * @example
+ * ```ts
+ * export const componentStyle = () => style({
+ *     fontSize: '1rem',
+ *     ...ifWasValid({
+ *         color: 'green',
+ *     }),
+ * });
+ * ```
+ */
+export const ifWasValid                  = (styles: CssStyleCollection): CssRule => rule(wasValidSelector                    , styles);
+
+/**
+ * Applies the given `styles` to elements that previously resolved to an invalid state.
+ * 
+ * Active only during a transition away from `invalid`.
+ * 
+ * @param styles The styles applied to elements that previously resolved to an invalid state.
+ * @returns A `CssRule` that applies the given `styles` for elements that previously resolved to an invalid state.
+ * 
+ * @example
+ * ```ts
+ * export const componentStyle = () => style({
+ *     fontSize: '1rem',
+ *     ...ifWasInvalid({
+ *         color: 'red',
+ *     }),
+ * });
+ * ```
+ */
+export const ifWasInvalid                = (styles: CssStyleCollection): CssRule => rule(wasInvalidSelector                  , styles);
+
+/**
+ * Applies the given `styles` to elements that previously resolved to an unvalidated state.
+ * 
+ * Active only during a transition away from `unvalidated`.
+ * 
+ * @param styles The styles applied to elements that previously resolved to an unvalidated state.
+ * @returns A `CssRule` that applies the given `styles` for elements that previously resolved to an unvalidated state.
+ * 
+ * @example
+ * ```ts
+ * export const componentStyle = () => style({
+ *     fontSize: '1rem',
+ *     ...ifWasUnvalidated({
+ *         color: 'blue',
+ *     }),
+ * });
+ * ```
+ */
+export const ifWasUnvalidated            = (styles: CssStyleCollection): CssRule => rule(wasUnvalidatedSelector              , styles);
+
 
 
 /**
@@ -307,7 +391,7 @@ animationRegistry.registerAnimation(validityStateVars.animationUnvalidate);
  *     
  *     const {
  *         validityStateRule,
- *         validityStateVars: { isValid, isInvalid, isUnvalidated },
+ *         validityStateVars: { isValid, isInvalid, isUnvalidated, wasValid, wasInvalid, wasUnvalidated },
  *     } = usesValidityState({
  *         animationValidate   : 'var(--box-validate)',
  *         animationInvalidate : 'var(--box-invalidate)',
@@ -332,7 +416,10 @@ animationRegistry.registerAnimation(validityStateVars.animationUnvalidate);
  *         }),
  *         ...keyframes('splash-validating', {
  *             from: {
- *                 backgroundColor: blue,
+ *                 // Define origin background color based on previous validity state:
+ *                 '--was-invalid-backg-color': `${wasInvalid} red`,
+ *                 '--was-unvalidated-backg-color': `${wasUnvalidated} blue`,
+ *                 backgroundColor: 'var(--was-invalid-backg-color, var(--was-unvalidated-backg-color))',
  *             },
  *             to: {
  *                 backgroundColor: green,
@@ -347,7 +434,10 @@ animationRegistry.registerAnimation(validityStateVars.animationUnvalidate);
  *         }),
  *         ...keyframes('splash-invalidating', {
  *             from: {
- *                 backgroundColor: blue,
+ *                 // Define origin background color based on previous validity state:
+ *                 '--was-valid-backg-color': `${wasValid} green`,
+ *                 '--was-unvalidated-backg-color': `${wasUnvalidated} blue`,
+ *                 backgroundColor: 'var(--was-valid-backg-color, var(--was-unvalidated-backg-color))',
  *             },
  *             to: {
  *                 backgroundColor: red,
@@ -362,7 +452,10 @@ animationRegistry.registerAnimation(validityStateVars.animationUnvalidate);
  *         }),
  *         ...keyframes('splash-unvalidating', {
  *             from: {
- *                 backgroundColor: white,
+ *                 // Define origin background color based on previous validity state:
+ *                 '--was-valid-backg-color': `${wasValid} green`,
+ *                 '--was-invalid-backg-color': `${wasInvalid} red`,
+ *                 backgroundColor: 'var(--was-valid-backg-color, var(--was-invalid-backg-color))',
  *             },
  *             to: {
  *                 backgroundColor: blue,
@@ -447,6 +540,35 @@ export const usesValidityState = (options?: CssValidityStateOptions): CssValidit
                         [validityStateVars.isValid      ] : 'unset', // Poisoned when either unvalidating or fully unvalidated.
                         [validityStateVars.isInvalid    ] : 'unset', // Poisoned when either unvalidating or fully unvalidated.
                         [validityStateVars.isUnvalidated] : '',      // Valid    when either unvalidating or fully unvalidated.
+                    })
+                ),
+                
+                
+                
+                // Mark as previously valid during a transition away from valid:
+                ...ifWasValid(
+                    vars({
+                        [validityStateVars.wasValid      ] : '',      // Valid    when previously valid.
+                        [validityStateVars.wasInvalid    ] : 'unset', // Poisoned when previously valid.
+                        [validityStateVars.wasUnvalidated] : 'unset', // Poisoned when previously valid.
+                    })
+                ),
+                
+                // Mark as previously invalid during a transition away from invalid:
+                ...ifWasInvalid(
+                    vars({
+                        [validityStateVars.wasValid      ] : 'unset', // Poisoned when previously invalid.
+                        [validityStateVars.wasInvalid    ] : '',      // Valid    when previously invalid.
+                        [validityStateVars.wasUnvalidated] : 'unset', // Poisoned when previously invalid.
+                    })
+                ),
+                
+                // Mark as previously unvalidated during a transition away from unvalidated:
+                ...ifWasUnvalidated(
+                    vars({
+                        [validityStateVars.wasValid      ] : 'unset', // Poisoned when previously unvalidated.
+                        [validityStateVars.wasInvalid    ] : 'unset', // Poisoned when previously unvalidated.
+                        [validityStateVars.wasUnvalidated] : '',      // Valid    when previously unvalidated.
                     })
                 ),
             }),

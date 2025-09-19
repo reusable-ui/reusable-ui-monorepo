@@ -209,6 +209,24 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     
     
     
+    // Tracks the history of resolved validity states to expose the previous state.
+    // This is useful for animation authors to determine the direction of transitions.
+    const validityHistoryRef = useRef<[current: boolean | null, previous: boolean | null | undefined]>([resolvedValidity, undefined]);
+    const validityHistory = validityHistoryRef.current;
+    
+    if (validityHistory[0] !== resolvedValidity) {
+        // Shift history:
+        validityHistory[1] = validityHistory[0];
+        
+        // Update current:
+        validityHistory[0] = resolvedValidity;
+    } // if
+    
+    // Expose previous validity state for animation authors:
+    const prevResolvedValidity = validityHistory[1];
+    
+    
+    
     // Sync animation state with resolved validity state:
     useEffect(() => {
         // The `setInternalValidity()` has internal `Object.is()` check to avoid redundant state updates.
@@ -238,7 +256,7 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     return {
         validity          : resolvedValidity,
         validityPhase,
-        validityClassname : getValidityClassname(validityPhase),
+        validityClassname : getValidityClassname(validityPhase, prevResolvedValidity),
         ...animationHandlers,
     } satisfies ValidityBehaviorState<TElement>;
 };

@@ -5,7 +5,7 @@ import { usesAnimationFeature } from '@reusable-ui/animation-feature'
 export default function validityStateTestStyle() {
     const {
         validityStateRule,
-        validityStateVars: { isValid, isInvalid, isUnvalidated },
+        validityStateVars: { isValid, isInvalid, isUnvalidated, wasValid, wasInvalid, wasUnvalidated },
     } = usesValidityState({
         animationValidate   : 'var(--test-validate)',
         animationInvalidate : 'var(--test-invalidate)',
@@ -23,12 +23,15 @@ export default function validityStateTestStyle() {
         
         ...vars({
             '--test-validate': [
-                ['1s', 'ease-out', 'both', 'boo-test-validate'],
+                ['1s', 'linear', 'both', 'boo-test-validate'],
             ],
         }),
         ...keyframes('boo-test-validate', {
             from : {
-                backgroundColor: '#ffffff',
+                // Define origin background color based on previous validity state:
+                '--was-invalid-backg-color': `${wasInvalid} #ff0000`,
+                '--was-unvalidated-backg-color': `${wasUnvalidated} #0000ff`,
+                backgroundColor: 'var(--was-invalid-backg-color, var(--was-unvalidated-backg-color))',
             },
             to   : {
                 backgroundColor: '#00ff00',
@@ -37,12 +40,15 @@ export default function validityStateTestStyle() {
         
         ...vars({
             '--test-invalidate': [
-                ['1s', 'ease-out', 'both', 'boo-test-invalidate'],
+                ['1s', 'linear', 'both', 'boo-test-invalidate'],
             ],
         }),
         ...keyframes('boo-test-invalidate', {
             from : {
-                backgroundColor: '#ffffff',
+                // Define origin background color based on previous validity state:
+                '--was-valid-backg-color': `${wasValid} #00ff00`,
+                '--was-unvalidated-backg-color': `${wasUnvalidated} #0000ff`,
+                backgroundColor: 'var(--was-valid-backg-color, var(--was-unvalidated-backg-color))',
             },
             to   : {
                 backgroundColor: '#ff0000',
@@ -51,12 +57,15 @@ export default function validityStateTestStyle() {
         
         ...vars({
             '--test-unvalidate': [
-                ['1s', 'ease-out', 'both', 'boo-test-unvalidate'],
+                ['1s', 'linear', 'both', 'boo-test-unvalidate'],
             ],
         }),
         ...keyframes('boo-test-unvalidate', {
             from : {
-                backgroundColor: '#ffffff',
+                // Define origin background color based on previous validity state:
+                '--was-valid-backg-color': `${wasValid} #00ff00`,
+                '--was-invalid-backg-color': `${wasInvalid} #ff0000`,
+                backgroundColor: 'var(--was-valid-backg-color, var(--was-invalid-backg-color))',
             },
             to   : {
                 backgroundColor: '#0000ff',

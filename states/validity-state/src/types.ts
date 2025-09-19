@@ -164,6 +164,32 @@ export interface ValidityStateOptions
 }
 
 /**
+ * Represents the resolved (settled) phase of the validity lifecycle.
+ * 
+ * These states indicate that the component has completed its transition:
+ * - 'valid'        ✅ fully valid
+ * - 'invalid'      ❌ fully invalid
+ * - 'unvalidated'  ➖ not yet validated
+ */
+export type ResolvedValidityPhase =
+    | 'valid'
+    | 'invalid'
+    | 'unvalidated'
+
+/**
+ * Represents the transitional phase of the validity lifecycle.
+ * 
+ * These states indicate that the component is currently animating toward a resolved state:
+ * - 'validating'     🔄 transitioning toward valid
+ * - 'invalidating'   🔄 transitioning toward invalid
+ * - 'unvalidating'   🔄 transitioning toward unvalidated
+ */
+export type TransitioningValidityPhase =
+    | 'validating'
+    | 'invalidating'
+    | 'unvalidating'
+
+/**
  * Represents the current transition phase of the validity lifecycle.
  * 
  * Used to distinguish between transitional and resolved states:
@@ -171,12 +197,8 @@ export interface ValidityStateOptions
  * - Transitional: 'validating', 'invalidating', 'unvalidating'
  */
 export type ValidityPhase =
-    | 'valid'        // ✅ resolved
-    | 'invalid'      // ❌ resolved
-    | 'unvalidated'  // ➖ resolved
-    | 'validating'   // 🔄 transitioning toward valid
-    | 'invalidating' // 🔄 transitioning toward invalid
-    | 'unvalidating' // 🔄 transitioning toward unvalidated
+    | ResolvedValidityPhase
+    | TransitioningValidityPhase
 
 /**
  * An API for accessing the resolved validity state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
@@ -217,7 +239,7 @@ export interface ValidityBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-invalidating'`
      * - `'is-unvalidating'`
      */
-    validityClassname : `is-${ValidityPhase}`
+    validityClassname : `is-${ResolvedValidityPhase}` | `is-${TransitioningValidityPhase} was-${ResolvedValidityPhase}`
 }
 
 
@@ -311,6 +333,72 @@ export interface ValidityStateVars {
      * ```
      */
     isUnvalidated       : unknown
+    
+    /**
+     * Applies when the component has just transitioned from a valid state.
+     * 
+     * This variable is conditionally available during the animation phase
+     * immediately following a transition away from `valid`.
+     * After the animation completes, this variable becomes unavailable.
+     * 
+     * Acts as a conditional switch: when declared with an empty value,
+     * any CSS property referencing this variable becomes valid and is applied.
+     * If `unset`, the variable **poisons** dependent properties,
+     * causing the browser to ignore them.
+     * 
+     * @example
+     * ```ts
+     * export const componentStyle = () => style({
+     *     // These properties are only applied when the component was previously valid:
+     *     boxShadow : `${validityStateVars.wasValid} 0 0 0 2px lime`,
+     * });
+     * ```
+     */
+    wasValid            : unknown
+    
+    /**
+     * Applies when the component has just transitioned from an invalid state.
+     * 
+     * This variable is conditionally available during the animation phase
+     * immediately following a transition away from `invalid`.
+     * After the animation completes, this variable becomes unavailable.
+     * 
+     * Acts as a conditional switch: when declared with an empty value,
+     * any CSS property referencing this variable becomes valid and is applied.
+     * If `unset`, the variable **poisons** dependent properties,
+     * causing the browser to ignore them.
+     * 
+     * @example
+     * ```ts
+     * export const componentStyle = () => style({
+     *     // These properties are only applied when the component was previously invalid:
+     *     boxShadow : `${validityStateVars.wasInvalid} 0 0 0 2px crimson`,
+     * });
+     * ```
+     */
+    wasInvalid          : unknown
+    
+    /**
+     * Applies when the component has just transitioned from an unvalidated state.
+     * 
+     * This variable is conditionally available during the animation phase
+     * immediately following a transition away from `unvalidated`.
+     * After the animation completes, this variable becomes unavailable.
+     * 
+     * Acts as a conditional switch: when declared with an empty value,
+     * any CSS property referencing this variable becomes valid and is applied.
+     * If `unset`, the variable **poisons** dependent properties,
+     * causing the browser to ignore them.
+     * 
+     * @example
+     * ```ts
+     * export const componentStyle = () => style({
+     *     // These properties are only applied when the component was previously unvalidated:
+     *     boxShadow : `${validityStateVars.wasUnvalidated} 0 0 0 2px dodgerblue`,
+     * });
+     * ```
+     */
+    wasUnvalidated      : unknown
 }
 
 

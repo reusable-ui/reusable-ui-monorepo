@@ -1,5 +1,7 @@
 // Types:
 import {
+    type ResolvedValidityPhase,
+    type TransitioningValidityPhase,
     type ValidityPhase,
 }                           from './types.js'
 
@@ -41,17 +43,34 @@ export const resolveValidityPhase = (validity: boolean | null, runningIntent: bo
  * Resolves the CSS class name for the given validity lifecycle phase.
  * 
  * Maps each `validityPhase` to a semantic class name:
- * - `'validating'`   → `'is-validating'`
- * - `'invalidating'` → `'is-invalidating'`
- * - `'unvalidating'` → `'is-unvalidating'`
- * - `'valid'`        → `'is-valid'`
- * - `'invalid'`      → `'is-invalid'`
- * - `'unvalidated'`  → `'is-unvalidated'`
+ * - Resolved phases:
+ *   - `'valid'`        → `'is-valid'`
+ *   - `'invalid'`      → `'is-invalid'`
+ *   - `'unvalidated'`  → `'is-unvalidated'`
+ * 
+ * - Transitioning phases:
+ *   - `'validating'`   → `'is-validating was-valid|was-invalid|was-unvalidated'`
+ *   - `'invalidating'` → `'is-invalidating was-valid|was-invalid|was-unvalidated'`
+ *   - `'unvalidating'` → `'is-unvalidating was-valid|was-invalid|was-unvalidated'`
+ * 
+ * The `was-*` suffix reflects the previous resolved state, enabling animation authors
+ * to target transitions with precision.
  * 
  * @param {ValidityPhase} validityPhase - The current lifecycle phase of the component.
- * @returns {`is-${ValidityPhase}`} A CSS class name reflecting the phase.
+ * @param prevResolvedValidity - The previous resolved validity state, used to trace transition origin.
+ * @returns {`is-${ValidityPhase}`} A CSS class name reflecting the phase, optionally including the previous state.
  */
-export const getValidityClassname = (validityPhase: ValidityPhase): `is-${ValidityPhase}` => {
+export const getValidityClassname = (validityPhase: ValidityPhase, prevResolvedValidity: boolean | null = null): `is-${ResolvedValidityPhase}` | `is-${TransitioningValidityPhase} was-${ResolvedValidityPhase}` => {
     // Return the corresponding class name:
-    return `is-${validityPhase}`;
+    switch (validityPhase) {
+        case 'validating':
+        case 'invalidating':
+        case 'unvalidating': {
+            const prevPhase = resolveValidityPhase(prevResolvedValidity, undefined) as ResolvedValidityPhase;
+            return `is-${validityPhase} was-${prevPhase}`;
+        } // case
+        
+        default:
+            return `is-${validityPhase}`;
+    } // switch
 };

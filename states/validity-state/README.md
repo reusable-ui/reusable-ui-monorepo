@@ -9,6 +9,7 @@ Ideal for inputs, selections, options, and any editable component requiring cont
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, animation, and feedback systems  
 ✔ User definable `computedValidity` for validation logic delegation  
+✔ Conditional CSS variables (`--va-was-*`) to determine previous validity state (useful for animating from prev validity state to new one)
 
 ## 📦 Installation
 Install **@reusable-ui/validity-state** via npm or yarn:
@@ -146,6 +147,9 @@ import {
     isValidOrValidatingSelector,         // Targets `.is-valid` and `.is-validating` class
     isInvalidOrInvalidatingSelector,     // Targets `.is-invalid` and `.is-invalidating` class
     isUnvalidatedOrUnvalidatingSelector, // Targets `.is-unvalidated` and `.is-unvalidating` class
+    wasValidSelector,                    // Targets `.was-valid` class
+    wasInvalidSelector,                  // Targets `.was-invalid` class
+    wasUnvalidatedSelector,              // Targets `.was-unvalidated` class
     
     // Conditional styling helpers:
     ifValid,                     // Applies the given `styles` to elements in the fully valid state.
@@ -157,6 +161,9 @@ import {
     ifValidOrValidating,         // Applies the given `styles` to elements that are either validating or fully valid.
     ifInvalidOrInvalidating,     // Applies the given `styles` to elements that are either invalidating or fully invalid.
     ifUnvalidatedOrUnvalidating, // Applies the given `styles` to elements that are either unvalidating or fully unvalidated.
+    ifWasValid,                  // Applies the given `styles` to elements that were previously in the valid state.
+    ifWasInvalid,                // Applies the given `styles` to elements that were previously in the invalid state.
+    ifWasUnvalidated,            // Applies the given `styles` to elements that were previously in the unvalidated state.
 } from '@reusable-ui/validity-state';
 import { style, rule } from '@cssfn/core';
 
@@ -198,14 +205,17 @@ Generates CSS rules that conditionally apply the validity-related animations bas
 These variables are only active during their respective transition phases.  
 Use `switchOf(...)` to ensure graceful fallback when inactive.
 
-| Variable              | Active When...                         | Purpose                         |
-|-----------------------|----------------------------------------|---------------------------------|
-| `animationValidate`   | `.is-validating`                       | Triggers validating animation   |
-| `animationInvalidate` | `.is-invalidating`                     | Triggers invalidating animation |
-| `animationUnvalidate` | `.is-unvalidating`                     | Triggers unvalidating animation |
-| `isValid`             | `.is-valid` or `is-validating`         | Styling for valid state         |
-| `isInvalid`           | `.is-invalid` or `is-invalidating`     | Styling for invalid state       |
-| `isUnvalidated`       | `.is-unvalidated` or `is-unvalidating` | Styling for unvalidated state   |
+| Variable              | Active When...                          | Purpose                                  |
+|-----------------------|-----------------------------------------|------------------------------------------|
+| `animationValidate`   | `.is-validating`                        | Triggers validating animation            |
+| `animationInvalidate` | `.is-invalidating`                      | Triggers invalidating animation          |
+| `animationUnvalidate` | `.is-unvalidating`                      | Triggers unvalidating animation          |
+| `isValid`             | `.is-valid` or `.is-validating`         | Styling for valid state                  |
+| `isInvalid`           | `.is-invalid` or `.is-invalidating`     | Styling for invalid state                |
+| `isUnvalidated`       | `.is-unvalidated` or `.is-unvalidating` | Styling for unvalidated state            |
+| `wasValid`            | `.was-valid`                            | Styling for previously valid state       |
+| `wasInvalid`          | `.was-invalid`                          | Styling for previously invalid state     |
+| `wasUnvalidated`      | `.was-unvalidated`                      | Styling for previously unvalidated state |
 
 #### 💡 Usage Example
 
@@ -227,7 +237,7 @@ export const validatableBoxStyle = () => {
     
     const {
         validityStateRule,
-        validityStateVars: { isValid, isInvalid, isUnvalidated },
+        validityStateVars: { isValid, isInvalid, isUnvalidated, wasValid, wasInvalid, wasUnvalidated },
     } = usesValidityState({
         animationValidate   : 'var(--box-validate)',
         animationInvalidate : 'var(--box-invalidate)',
@@ -252,7 +262,10 @@ export const validatableBoxStyle = () => {
         }),
         ...keyframes('splash-validating', {
             from: {
-                backgroundColor: blue,
+                // Define origin background color based on previous validity state:
+                '--was-invalid-backg-color': `${wasInvalid} red`,
+                '--was-unvalidated-backg-color': `${wasUnvalidated} blue`,
+                backgroundColor: 'var(--was-invalid-backg-color, var(--was-unvalidated-backg-color))',
             },
             to: {
                 backgroundColor: green,
@@ -267,7 +280,10 @@ export const validatableBoxStyle = () => {
         }),
         ...keyframes('splash-invalidating', {
             from: {
-                backgroundColor: blue,
+                // Define origin background color based on previous validity state:
+                '--was-valid-backg-color': `${wasValid} green`,
+                '--was-unvalidated-backg-color': `${wasUnvalidated} blue`,
+                backgroundColor: 'var(--was-valid-backg-color, var(--was-unvalidated-backg-color))',
             },
             to: {
                 backgroundColor: red,
@@ -282,7 +298,10 @@ export const validatableBoxStyle = () => {
         }),
         ...keyframes('splash-unvalidating', {
             from: {
-                backgroundColor: white,
+                // Define origin background color based on previous validity state:
+                '--was-valid-backg-color': `${wasValid} green`,
+                '--was-invalid-backg-color': `${wasInvalid} red`,
+                backgroundColor: 'var(--was-valid-backg-color, var(--was-invalid-backg-color))',
             },
             to: {
                 backgroundColor: blue,
