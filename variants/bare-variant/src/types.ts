@@ -23,7 +23,7 @@ import {
  * borders, paddings, and margins) are removed, allowing the component
  * to visually merge with its surrounding layout.
  * 
- * Accepts an optional `bare`, falling back to a default when not provided.
+ * Accepts an optional `bare`, defaulting to a default when not provided.
  * 
  * The type of `TBare` can be `true` or a string, depending
  * on the component's needs.

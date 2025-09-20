@@ -32,7 +32,7 @@ import {
 /**
  * Props for controlling the expanded/collapsed state of the component.
  * 
- * Accepts an optional `expanded` prop, falling back to `false` (collapsed) when not provided.
+ * Accepts an optional `expanded` prop, defaulting to `false` (collapsed) when not provided.
  */
 export interface CollapseStateProps {
     /**

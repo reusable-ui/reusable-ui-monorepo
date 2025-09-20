@@ -31,7 +31,7 @@ export type FlowDirection =
 /**
  * Props for specifying the flow direction of the component.
  * 
- * Accepts an optional `flowDirection`, falling back to a default when not provided.
+ * Accepts an optional `flowDirection`, defaulting to a default when not provided.
  */
 export interface FlowDirectionVariantProps {
     /**

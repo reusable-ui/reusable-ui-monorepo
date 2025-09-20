@@ -31,7 +31,7 @@ import {
 /**
  * Props for controlling the validity state of the component.
  * 
- * Accepts an optional `validity` prop, falling back to `'auto'` (automatic determine validity state) when not provided.
+ * Accepts an optional `validity` prop, defaulting to `'auto'` (automatic determine validity state) when not provided.
  */
 export interface ValidityStateProps {
     /**

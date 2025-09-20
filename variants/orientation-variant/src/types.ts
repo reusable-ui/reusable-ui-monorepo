@@ -14,7 +14,7 @@ export type Orientation =
 /**
  * Props for specifying the orientation of the component.
  * 
- * Accepts an optional `orientation`, falling back to a default when not provided.
+ * Accepts an optional `orientation`, defaulting to a default when not provided.
  */
 export interface OrientationVariantProps {
     /**

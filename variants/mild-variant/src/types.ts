@@ -19,7 +19,7 @@ import {
 /**
  * Props for specifying the mild (reading friendly) appearance of the component.
  * 
- * Accepts an optional `mild`, falling back to a default when not provided.
+ * Accepts an optional `mild`, defaulting to a default when not provided.
  */
 export interface MildVariantProps {
     /**

@@ -19,7 +19,7 @@ import {
 /**
  * Props for specifying the emphasis appearance of the component.
  * 
- * Accepts an optional `emphasized`, falling back to a default when not provided.
+ * Accepts an optional `emphasized`, defaulting to a default when not provided.
  */
 export interface EmphasisVariantProps {
     /**

@@ -41,7 +41,7 @@ export type BasicTheme = keyof DefaultRootColors
 /**
  * Props for specifying the theme of the component.
  * 
- * Accepts an optional `theme`, falling back to a default when not provided.
+ * Accepts an optional `theme`, defaulting to a default when not provided.
  * 
  * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  */

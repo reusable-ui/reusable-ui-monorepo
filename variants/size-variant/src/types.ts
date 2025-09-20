@@ -29,7 +29,7 @@ export type BasicSize =
 /**
  * Props for specifying the size of the component.
  * 
- * Accepts an optional `size`, falling back to a default when not provided.
+ * Accepts an optional `size`, defaulting to a default when not provided.
  * 
  * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
  */

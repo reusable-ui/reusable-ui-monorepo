@@ -19,7 +19,7 @@ import {
 /**
  * Props for specifying the outline appearance of the component.
  * 
- * Accepts an optional `outlined`, falling back to a default when not provided.
+ * Accepts an optional `outlined`, defaulting to a default when not provided.
  */
 export interface OutlineVariantProps {
     /**

@@ -32,7 +32,7 @@ import {
 /**
  * Props for controlling the active/inactive state of the component.
  * 
- * Accepts an optional `active` prop, falling back to `false` (inactive) when not provided.
+ * Accepts an optional `active` prop, defaulting to `false` (inactive) when not provided.
  */
 export interface ActiveStateProps {
     /**

@@ -37,7 +37,7 @@ import {
 /**
  * Props for controlling the excited state of the component.
  * 
- * Accepts an optional `excited` prop, falling back to `false` when not provided.
+ * Accepts an optional `excited` prop, defaulting to `false` when not provided.
  */
 export interface ExciteStateProps {
     /**
