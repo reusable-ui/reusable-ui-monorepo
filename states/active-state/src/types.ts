@@ -158,15 +158,37 @@ export interface ActiveStateOptions
 }
 
 /**
+ * Represents the resolved (settled) phase of the activate/deactivate lifecycle.
+ * 
+ * These states indicate that the component has completed its transition:
+ * - 'active'       ▶️ fully active
+ * - 'inactive'     ⏹️ fully inactive
+ */
+export type ResolvedActivePhase =
+    | 'active'
+    | 'inactive'
+
+/**
+ * Represents the transitional phase of the activate/deactivate lifecycle.
+ * 
+ * These states indicate that the component is currently animating toward a resolved state:
+ * - 'activating'   🔄 transitioning toward active
+ * - 'deactivating' 🔄 transitioning toward inactive
+ */
+export type TransitioningActivePhase =
+    | 'activating'
+    | 'deactivating'
+
+/**
  * Represents the current transition phase of the activate/deactivate lifecycle.
  * 
- * Used to distinguish between transitional and resolved states.
+ * Used to distinguish between transitional and resolved states:
+ * - Resolved: 'active', 'inactive'
+ * - Transitional: 'activating', 'deactivating'
  */
 export type ActivePhase =
-    | 'inactive'
-    | 'deactivating'
-    | 'activating'
-    | 'active'
+    | ResolvedActivePhase
+    | TransitioningActivePhase
 
 /**
  * An API for accessing the resolved active/inactive state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.

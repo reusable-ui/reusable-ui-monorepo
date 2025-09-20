@@ -158,15 +158,37 @@ export interface CollapseStateOptions
 }
 
 /**
+ * Represents the resolved (settled) phase of the expand/collapse lifecycle.
+ * 
+ * These states indicate that the component has completed its transition:
+ * - 'expanded'   ☂️ fully expanded
+ * - 'collapsed'  🌂 fully collapsed
+ */
+export type ResolvedExpandPhase =
+    | 'expanded'
+    | 'collapsed'
+
+/**
+ * Represents the transitional phase of the expand/collapse lifecycle.
+ * 
+ * These states indicate that the component is currently animating toward a resolved state:
+ * - 'expanding'  🔄 transitioning toward expanded
+ * - 'collapsing' 🔄 transitioning toward collapsed
+ */
+export type TransitioningExpandPhase =
+    | 'expanding'
+    | 'collapsing'
+
+/**
  * Represents the current transition phase of the expand/collapse lifecycle.
  * 
- * Used to distinguish between transitional and resolved states.
+ * Used to distinguish between transitional and resolved states:
+ * - Resolved: 'expanded', 'collapsed'
+ * - Transitional: 'expanding', 'collapsing'
  */
 export type ExpandPhase =
-    | 'collapsed'
-    | 'collapsing'
-    | 'expanding'
-    | 'expanded'
+    | ResolvedExpandPhase
+    | TransitioningExpandPhase
 
 /**
  * An API for accessing the resolved expand/collapse state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.

@@ -179,9 +179,9 @@ export type ResolvedValidityPhase =
  * Represents the transitional phase of the validity lifecycle.
  * 
  * These states indicate that the component is currently animating toward a resolved state:
- * - 'validating'     🔄 transitioning toward valid
- * - 'invalidating'   🔄 transitioning toward invalid
- * - 'unvalidating'   🔄 transitioning toward unvalidated
+ * - 'validating'   🔄 transitioning toward valid
+ * - 'invalidating' 🔄 transitioning toward invalid
+ * - 'unvalidating' 🔄 transitioning toward unvalidated
  */
 export type TransitioningValidityPhase =
     | 'validating'
