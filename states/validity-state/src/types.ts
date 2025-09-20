@@ -61,7 +61,7 @@ export interface ValidityStateProps {
  * Props for reporting updates to the validity state.
  * 
  * Typically used in editable components (e.g. Input, Select, Option) to notify external systems
- * when the resolved validity changes—whether due to user input, async validation, or validity constraints changes.
+ * when the resolved validity state changes—whether due to user input, async validation, or validity constraints changes.
  */
 export interface ValidityStateUpdateProps {
     /**
