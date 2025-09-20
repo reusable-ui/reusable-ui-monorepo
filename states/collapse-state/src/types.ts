@@ -64,7 +64,7 @@ export interface UncontrollableCollapseStateProps {
 }
 
 /**
- * Props for exposing a change request to the expanded/collapsed state.
+ * Props for reporting a change request to the expanded/collapsed state.
  * 
  * Typically used in interactive components (e.g. Alert, Toast, Accordion) that may initiate expand/collapse
  * through user actions such as dismiss buttons, ESC key presses, or header toggles.

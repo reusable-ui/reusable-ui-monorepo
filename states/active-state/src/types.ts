@@ -64,7 +64,7 @@ export interface UncontrollableActiveStateProps {
 }
 
 /**
- * Props for exposing a change request to the active/inactive state.
+ * Props for reporting a change request to the active/inactive state.
  * 
  * Typically used in interactive components (e.g. Toggle, Switch, Selection) that may initiate activation/deactivation
  * through user actions such as select buttons, SPACE key presses, or toggles.
