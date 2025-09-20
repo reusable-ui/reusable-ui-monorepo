@@ -85,32 +85,32 @@ export interface ValidityStatePhaseEventProps {
     /**
      * Called when the validation animation begins.
      */
-    onValidatingStart   ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onValidateStart   ?: ValueChangeEventHandler<ValidityPhase, unknown>
     
     /**
      * Called when the validation animation completes.
      */
-    onValidatingEnd     ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onValidateEnd     ?: ValueChangeEventHandler<ValidityPhase, unknown>
     
     /**
      * Called when the invalidation animation begins.
      */
-    onInvalidatingStart ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onInvalidateStart ?: ValueChangeEventHandler<ValidityPhase, unknown>
     
     /**
      * Called when the invalidation animation completes.
      */
-    onInvalidatingEnd   ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onInvalidateEnd   ?: ValueChangeEventHandler<ValidityPhase, unknown>
     
     /**
      * Called when the unvalidation animation begins.
      */
-    onUnvalidatingStart ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onUnvalidateStart ?: ValueChangeEventHandler<ValidityPhase, unknown>
     
     /**
      * Called when the unvalidation animation completes.
      */
-    onUnvalidatingEnd   ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onUnvalidateEnd   ?: ValueChangeEventHandler<ValidityPhase, unknown>
 }
 
 /**

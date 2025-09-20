@@ -104,12 +104,12 @@ Emits lifecycle events in response to validity phase transitions.
 
 This hook observes the resolved `validityPhase` from `useValidityBehaviorState()` and triggers the appropriate callbacks defined in `ValidityStatePhaseEventProps`, such as:
 
-- `onValidatingStart`
-- `onValidatingEnd`
-- `onInvalidatingStart`
-- `onInvalidatingEnd`
-- `onUnvalidatingStart`
-- `onUnvalidatingEnd`
+- `onValidateStart`
+- `onValidateEnd`
+- `onInvalidateStart`
+- `onInvalidateEnd`
+- `onUnvalidateStart`
+- `onUnvalidateEnd`
 
 ### `useValidityState(props, options?)`
 
