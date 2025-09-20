@@ -41,7 +41,7 @@ export interface ValidityStateProps {
      * - `null`   : the component is unvalidated
      * - `'auto'` : automatically determine validity state
      * 
-     * Defaults to `'auto'`.
+     * Defaults to `'auto'` (automatic determine validity state).
      */
     validity         ?: boolean | null | 'auto'
     
@@ -125,14 +125,13 @@ export interface ValidityStateOptions
         >>
 {
     /**
-     * The default validity state to apply when no `validity` prop is explicitly provided.
-     * This value determines the default control mode when the `validity` prop is not provided:
+     * Specifies the default validity state when no `validity` prop is explicitly provided:
      * - `true`   : the component is valid
      * - `false`  : the component is invalid
      * - `null`   : the component is unvalidated
      * - `'auto'` : automatically determine validity state
      * 
-     * Defaults to `'auto'` if not provided.
+     * Defaults to `'auto'` (automatic determine validity state).
      */
     defaultValidity   ?: boolean | null | 'auto'
     
@@ -158,7 +157,7 @@ export interface ValidityStateOptions
      * Enables listening to animation events bubbling up from nested child elements.
      * Useful when the animated node is deeply nested within the component.
      * 
-     * Defaults to `false`.
+     * Defaults to `false` (no bubbling).
      */
     animationBubbling ?: AnimationStateOptions<boolean | null>['animationBubbling']
 }

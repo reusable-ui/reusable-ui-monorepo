@@ -36,11 +36,11 @@ import {
  */
 export interface ActiveStateProps {
     /**
-     * Specifies whether the component is in an active state:
-     * - `true`  : the component appears active
-     * - `false` : the component remains inactive
+     * Specifies the current active state:
+     * - `true`  : the component is active
+     * - `false` : the component is inactive
      * 
-     * Defaults to `false`.
+     * Defaults to `undefined` (uncontrolled mode).
      */
     active ?: boolean
 }
@@ -54,11 +54,11 @@ export interface ActiveStateProps {
  */
 export interface UncontrollableActiveStateProps {
     /**
-     * Specifies the initial active state for uncontrolled usage:
-     * - `true`  → initially active
-     * - `false` → initially inactive
+     * Specifies the initial active state for uncontrolled mode:
+     * - `true`  : the component is initially active
+     * - `false` : the component is initially inactive
      * 
-     * Defaults to `false` if not provided.
+     * Defaults to `false` (inactive).
      */
     defaultActive ?: boolean
 }
@@ -122,12 +122,11 @@ export interface ActiveStateOptions
         >>
 {
     /**
-     * The default active state to apply when no `defaultActive` prop is explicitly provided.
-     * This value is only applied in uncontrolled mode:
-     * - `true`  → initially active
-     * - `false` → initially inactive
+     * Specifies the initial active state for uncontrolled mode when no `defaultActive` prop is explicitly provided:
+     * - `true`  : the component is initially active
+     * - `false` : the component is initially inactive
      * 
-     * Defaults to `false` if not provided.
+     * Defaults to `false` (inactive).
      */
     defaultActive     ?: boolean
     
@@ -153,7 +152,7 @@ export interface ActiveStateOptions
      * Enables listening to animation events bubbling up from nested child elements.
      * Useful when the animated node is deeply nested within the component.
      * 
-     * Defaults to `false`.
+     * Defaults to `false` (no bubbling).
      */
     animationBubbling ?: AnimationStateOptions<boolean>['animationBubbling']
 }
@@ -185,8 +184,8 @@ export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TCh
      * This reflects the final resolved state, not the transitional intent.
      * 
      * Possible values:
-     * - `true`  : the component appears active
-     * - `false` : the component remains inactive
+     * - `true`  : the component is active
+     * - `false` : the component is inactive
      */
     active               : boolean
     

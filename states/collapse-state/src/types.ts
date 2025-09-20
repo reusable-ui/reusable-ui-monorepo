@@ -36,11 +36,11 @@ import {
  */
 export interface CollapseStateProps {
     /**
-     * Specifies whether the component is in an expanded state:
-     * - `true`  : the component remains expanded
-     * - `false` : the component appears collapsed
+     * Specifies the current expanded state:
+     * - `true`  : the component is expanded
+     * - `false` : the component is collapsed
      * 
-     * Defaults to `false`.
+     * Defaults to `undefined` (uncontrolled mode).
      */
     expanded ?: boolean
 }
@@ -54,11 +54,11 @@ export interface CollapseStateProps {
  */
 export interface UncontrollableCollapseStateProps {
     /**
-     * Specifies the initial expanded state for uncontrolled usage:
-     * - `true`  → initially expanded
-     * - `false` → initially collapsed
+     * Specifies the initial expanded state for uncontrolled mode:
+     * - `true`  : the component is initially expanded
+     * - `false` : the component is initially collapsed
      * 
-     * Defaults to `false` if not provided.
+     * Defaults to `false` (collapsed).
      */
     defaultExpanded ?: boolean
 }
@@ -122,12 +122,11 @@ export interface CollapseStateOptions
         >>
 {
     /**
-     * The default expanded state to apply when no `defaultExpanded` prop is explicitly provided.
-     * This value is only applied in uncontrolled mode:
-     * - `true`  → initially expanded
-     * - `false` → initially collapsed
+     * Specifies the initial expanded state for uncontrolled mode when no `defaultExpanded` prop is explicitly provided:
+     * - `true`  : the component is initially expanded
+     * - `false` : the component is initially collapsed
      * 
-     * Defaults to `false` if not provided.
+     * Defaults to `false` (collapsed).
      */
     defaultExpanded   ?: boolean
     
@@ -153,7 +152,7 @@ export interface CollapseStateOptions
      * Enables listening to animation events bubbling up from nested child elements.
      * Useful when the animated node is deeply nested within the component.
      * 
-     * Defaults to `false`.
+     * Defaults to `false` (no bubbling).
      */
     animationBubbling ?: AnimationStateOptions<boolean>['animationBubbling']
 }
@@ -185,8 +184,8 @@ export interface CollapseBehaviorState<TElement extends Element = HTMLElement, T
      * This reflects the final resolved state, not the transitional intent.
      * 
      * Possible values:
-     * - `true`  : the component remains expanded
-     * - `false` : the component appears collapsed
+     * - `true`  : the component is expanded
+     * - `false` : the component is collapsed
      */
     expanded               : boolean
     

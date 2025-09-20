@@ -213,7 +213,7 @@ export interface AnimationStateOptions<TState extends {} | null> {
      * Enables listening to animation events bubbling up from nested child elements.
      * Useful when the animated node is deeply nested within the component.
      * 
-     * Defaults to `false`.
+     * Defaults to `false` (no bubbling).
      */
     animationBubbling ?: boolean
 }

@@ -41,11 +41,11 @@ import {
  */
 export interface ExciteStateProps {
     /**
-     * Specifies whether the component is in an excited state:
-     * - `true`  : the component appears excited
-     * - `false` : the component remains in its default state
+     * Specifies the current excited state:
+     * - `true`  : the component is excited
+     * - `false` : the component is not excited
      * 
-     * Defaults to `false`.
+     * Defaults to `false` (not excited).
      */
     excited         ?: boolean
     
@@ -94,7 +94,7 @@ export interface ExciteStateOptions
      * Enables listening to animation events bubbling up from nested child elements.
      * Useful when the animated node is deeply nested within the component.
      * 
-     * Defaults to `false`.
+     * Defaults to `false` (no bubbling).
      */
     animationBubbling   ?: AnimationStateOptions<boolean>['animationBubbling']
     
@@ -121,8 +121,8 @@ export interface ExciteBehaviorState<TElement extends Element = HTMLElement>
      * Indicates whether the component is currently in an excited state.
      * 
      * Possible values:
-     * - `true`  : the component appears excited
-     * - `false` : the component remains in its default state
+     * - `true`  : the component is excited
+     * - `false` : the component is not excited
      */
     excited           : boolean
     
