@@ -90,22 +90,22 @@ export interface CollapseStateChangeProps<TChangeEvent = unknown> {
  */
 export interface CollapseStatePhaseEventProps {
     /**
-     * Called when the expand animation begins.
+     * Called when the expansion animation begins.
      */
     onExpandStart   ?: ValueChangeEventHandler<ExpandPhase, unknown>
     
     /**
-     * Called when the expand animation completes.
+     * Called when the expansion animation completes.
      */
     onExpandEnd     ?: ValueChangeEventHandler<ExpandPhase, unknown>
     
     /**
-     * Called when the collapse animation begins.
+     * Called when the collapsion animation begins.
      */
     onCollapseStart ?: ValueChangeEventHandler<ExpandPhase, unknown>
     
     /**
-     * Called when the collapse animation completes.
+     * Called when the collapsion animation completes.
      */
     onCollapseEnd   ?: ValueChangeEventHandler<ExpandPhase, unknown>
 }

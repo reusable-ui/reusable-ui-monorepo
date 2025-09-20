@@ -90,22 +90,22 @@ export interface ActiveStateChangeProps<TChangeEvent = unknown> {
  */
 export interface ActiveStatePhaseEventProps {
     /**
-     * Called when the activate animation begins.
+     * Called when the activation animation begins.
      */
     onActivateStart   ?: ValueChangeEventHandler<ActivePhase, unknown>
     
     /**
-     * Called when the activate animation completes.
+     * Called when the activation animation completes.
      */
     onActivateEnd     ?: ValueChangeEventHandler<ActivePhase, unknown>
     
     /**
-     * Called when the deactivate animation begins.
+     * Called when the deactivation animation begins.
      */
     onDeactivateStart ?: ValueChangeEventHandler<ActivePhase, unknown>
     
     /**
-     * Called when the deactivate animation completes.
+     * Called when the deactivation animation completes.
      */
     onDeactivateEnd   ?: ValueChangeEventHandler<ActivePhase, unknown>
 }

@@ -83,32 +83,32 @@ export interface ValidityStateUpdateProps {
  */
 export interface ValidityStatePhaseEventProps {
     /**
-     * Called when the validation begins transitioning toward `valid`.
+     * Called when the validation animation begins.
      */
     onValidatingStart   ?: ValueChangeEventHandler<ValidityPhase, unknown>
     
     /**
-     * Called when the validation completes and reaches `valid`.
+     * Called when the validation animation completes.
      */
     onValidatingEnd     ?: ValueChangeEventHandler<ValidityPhase, unknown>
     
     /**
-     * Called when the validation begins transitioning toward `invalid`.
+     * Called when the invalidation animation begins.
      */
     onInvalidatingStart ?: ValueChangeEventHandler<ValidityPhase, unknown>
     
     /**
-     * Called when the validation completes and reaches `invalid`.
+     * Called when the invalidation animation completes.
      */
     onInvalidatingEnd   ?: ValueChangeEventHandler<ValidityPhase, unknown>
     
     /**
-     * Called when the validation begins transitioning toward `unvalidated`.
+     * Called when the unvalidation animation begins.
      */
     onUnvalidatingStart ?: ValueChangeEventHandler<ValidityPhase, unknown>
     
     /**
-     * Called when the validation completes and reaches `unvalidated`.
+     * Called when the unvalidation animation completes.
      */
     onUnvalidatingEnd   ?: ValueChangeEventHandler<ValidityPhase, unknown>
 }
