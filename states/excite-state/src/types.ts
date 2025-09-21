@@ -68,7 +68,11 @@ export interface ExciteStateOptions
         >>
 {
     /**
-     * The default excitement state to apply when no `excited` prop is explicitly provided.
+     * Specifies the default excited state when no `excited` prop is explicitly provided:
+     * - `true`  : the component is excited
+     * - `false` : the component is not excited
+     * 
+     * Defaults to `false` (not excited).
      */
     defaultExcited      ?: boolean
     
