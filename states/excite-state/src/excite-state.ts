@@ -22,7 +22,7 @@ import {
 
 // Defaults:
 import {
-    finalDefaultExcited,
+    declarativeDefaultExcited,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -72,7 +72,7 @@ import {
 export const useExciteState = (props: ExciteStateProps, options?: Pick<ExciteStateOptions, 'defaultExcited'>): boolean => {
     // Extract options and assign defaults:
     const {
-        defaultExcited      = finalDefaultExcited,
+        defaultExcited      = declarativeDefaultExcited,
     } = options ?? {};
     
     
@@ -146,7 +146,7 @@ export const useExciteState = (props: ExciteStateProps, options?: Pick<ExciteSta
 export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(props: ExciteStateProps, options?: ExciteStateOptions): ExciteBehaviorState<TElement> => {
     // Extract options and assign defaults:
     const {
-        defaultExcited      = finalDefaultExcited,
+        defaultExcited      = declarativeDefaultExcited,
         animationPattern    = 'excite',
         animationBubbling   = false,
         

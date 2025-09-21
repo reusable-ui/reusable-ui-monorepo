@@ -1,6 +1,16 @@
+// Types:
+import {
+    type ExciteStateProps,
+}                           from './types.js'
+
+
+
 /**
- * A default final excited state to apply when no effective `excited` value can be resolved.
+ * A default declarative excited state to apply when neither `excited` prop nor `defaultExcited` option is explicitly provided.
  * 
- * Typically used to control visual prominence when direct configuration is absent.
+ * This fallback ensures the component is not excited by default,
+ * requiring explicit configuration to enable the excited state.
+ * 
+ * - `false`: the component is not excited by default.
  */
-export const finalDefaultExcited : boolean = false;
+export const declarativeDefaultExcited : Required<ExciteStateProps>['excited']  = false;
