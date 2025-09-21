@@ -20,7 +20,7 @@ import {
 
 // Defaults:
 import {
-    finalDefaultActive,
+    initialDefaultActive,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -68,7 +68,7 @@ import {
 export const useActiveState = (props: ActiveStateProps & { defaultActive: never }, options?: Pick<ActiveStateOptions, 'defaultActive'>) : boolean => {
     // Extract options and assign defaults:
     const {
-        defaultActive     = finalDefaultActive,
+        defaultActive     = initialDefaultActive,
     } = options ?? {};
     
     
@@ -144,7 +144,7 @@ export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveS
 export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: ActiveStateProps & UncontrollableActiveStateProps & ActiveStateChangeProps<TChangeEvent>, options?: Pick<ActiveStateOptions, 'defaultActive'>): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
     // Extract options and assign defaults:
     const {
-        defaultActive     = finalDefaultActive,
+        defaultActive     = initialDefaultActive,
     } = options ?? {};
     
     
@@ -246,7 +246,7 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
 export const useActiveBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ActiveStateProps & UncontrollableActiveStateProps & ActiveStateChangeProps<TChangeEvent>, options?: ActiveStateOptions): ActiveBehaviorState<TElement, TChangeEvent> => {
     // Extract options and assign defaults:
     const {
-        defaultActive     = finalDefaultActive,
+        defaultActive     = initialDefaultActive,
         animationPattern  = ['activate', 'deactivate'], // Matches animation names for transitions
         animationBubbling = false,
     } = options ?? {};

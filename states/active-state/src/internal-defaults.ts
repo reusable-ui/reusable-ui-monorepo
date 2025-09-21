@@ -1,6 +1,8 @@
 /**
- * A default final active state to apply when no effective `active` value can be resolved.
+ * A default initial active state to apply when no `active` prop, `defaultActive` prop, or `defaultActive` option is explicitly provided.
  * 
- * Typically used to control visual prominence when direct configuration is absent.
+ * This fallback ensures the component is initially inactive by default when in uncontrollable mode.
+ * 
+ * - `false`: the component is initially inactive by default.
  */
-export const finalDefaultActive : boolean = false;
+export const initialDefaultActive : boolean = false;
