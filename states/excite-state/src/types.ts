@@ -118,7 +118,7 @@ export interface ExciteBehaviorState<TElement extends Element = HTMLElement>
         AnimationStateHandlers<TElement>
 {
     /**
-     * Indicates whether the component is currently in an excited state.
+     * Indicates the current resolved excited state.
      * 
      * Possible values:
      * - `true`  : the component is excited

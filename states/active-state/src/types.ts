@@ -202,7 +202,7 @@ export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TCh
         AnimationStateHandlers<TElement>
 {
     /**
-     * Indicates whether the component is currently in an active/inactive state.
+     * Indicates the current resolved active/inactive state.
      * This reflects the final resolved state, not the transitional intent.
      * 
      * Possible values:

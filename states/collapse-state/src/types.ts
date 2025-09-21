@@ -202,7 +202,7 @@ export interface CollapseBehaviorState<TElement extends Element = HTMLElement, T
         AnimationStateHandlers<TElement>
 {
     /**
-     * Indicates whether the component is currently in an expanded/collapsed state.
+     * Indicates the current resolved expanded/collapsed state.
      * This reflects the final resolved state, not the transitional intent.
      * 
      * Possible values:
