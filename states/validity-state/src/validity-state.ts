@@ -19,8 +19,8 @@ import {
 
 // Defaults:
 import {
-    semiDefaultValidity,
-    finalDefaultValidity,
+    declarativeDefaultValidity,
+    effectiveDefaultValidity,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -60,7 +60,7 @@ import {
 export const useValidityState = (props: ValidityStateProps, options?: Pick<ValidityStateOptions, 'defaultValidity'>) : boolean | null => {
     // Extract options and assign defaults:
     const {
-        defaultValidity   = semiDefaultValidity,
+        defaultValidity   = declarativeDefaultValidity,
     } = options ?? {};
     
     
@@ -68,7 +68,7 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
     // Extract props and assign defaults:
     const {
         validity         : controlledValidity = defaultValidity,
-        computedValidity                      = finalDefaultValidity,
+        computedValidity                      = effectiveDefaultValidity,
     } = props;
     
     
@@ -173,7 +173,7 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
 export const useValidityBehaviorState = <TElement extends Element = HTMLElement>(props: ValidityStateProps & ValidityStateUpdateProps, options?: ValidityStateOptions): ValidityBehaviorState<TElement> => {
     // Extract options and assign defaults:
     const {
-        defaultValidity   = semiDefaultValidity,
+        defaultValidity   = declarativeDefaultValidity,
         animationPattern  = ['validate', 'invalidate', 'unvalidate'], // Matches animation names for transitions
         animationBubbling = false,
     } = options ?? {};
@@ -183,7 +183,7 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     // Extract props and assign defaults:
     const {
         validity         : controlledValidity = defaultValidity,
-        computedValidity                      = finalDefaultValidity,
+        computedValidity                      = effectiveDefaultValidity,
         onValidityUpdate,
     } = props;
     
