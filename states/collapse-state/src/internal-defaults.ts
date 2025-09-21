@@ -1,6 +1,8 @@
 /**
- * A default final expanded state to apply when no effective `expanded` value can be resolved.
+ * A default initial expanded state to apply when no `expanded` prop, `defaultExpanded` prop, or `defaultExpanded` option is explicitly provided.
  * 
- * Typically used to control visual prominence when direct configuration is absent.
+ * This fallback ensures the component is initially collapsed by default when in uncontrollable mode.
+ * 
+ * - `false`: the component is initially collapsed by default.
  */
-export const finalDefaultExpanded : boolean = false;
+export const initialDefaultExpanded : boolean = false;
