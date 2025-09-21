@@ -6,7 +6,7 @@ import {
 
 
 /**
- * A default declarative validity state to apply when neither `validity` prop nor `defaultValidity` option are explicitly provided.
+ * A default declarative validity state to apply when neither `validity` prop nor `defaultValidity` option is explicitly provided.
  * 
  * This fallback ensures the component uses diagnostic mode by default,
  * deferring the actual validity resolution to external logic via `computedValidity`.
