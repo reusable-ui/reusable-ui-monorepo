@@ -352,10 +352,10 @@ export const useActiveStatePhaseEvents = (props: ActiveStatePhaseEventProps, act
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const handleActivePhaseChange = useStableCallback((activePhase: ActivePhase): void => {
         switch (activePhase) {
-            case 'inactive'     : onDeactivateEnd?.(activePhase, undefined);   break;
-            case 'deactivating' : onDeactivateStart?.(activePhase, undefined); break;
             case 'activating'   : onActivateStart?.(activePhase, undefined);   break;
             case 'active'       : onActivateEnd?.(activePhase, undefined);     break;
+            case 'deactivating' : onDeactivateStart?.(activePhase, undefined); break;
+            case 'inactive'     : onDeactivateEnd?.(activePhase, undefined);   break;
         } // switch
     });
     

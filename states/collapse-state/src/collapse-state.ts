@@ -352,10 +352,10 @@ export const useCollapseStatePhaseEvents = (props: CollapseStatePhaseEventProps,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const handleExpandPhaseChange = useStableCallback((expandPhase: ExpandPhase): void => {
         switch (expandPhase) {
-            case 'collapsed'  : onCollapseEnd?.(expandPhase, undefined);   break;
-            case 'collapsing' : onCollapseStart?.(expandPhase, undefined); break;
             case 'expanding'  : onExpandStart?.(expandPhase, undefined);   break;
             case 'expanded'   : onExpandEnd?.(expandPhase, undefined);     break;
+            case 'collapsing' : onCollapseStart?.(expandPhase, undefined); break;
+            case 'collapsed'  : onCollapseEnd?.(expandPhase, undefined);   break;
         } // switch
     });
     
