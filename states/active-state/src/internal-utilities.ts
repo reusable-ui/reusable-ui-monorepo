@@ -31,10 +31,13 @@ export const resolveActivePhase = (isActive: boolean, runningIntent: boolean | u
  * Resolves the CSS class name for the given activate/deactivate lifecycle phase.
  * 
  * Maps each `activePhase` to a semantic class name:
- * - `'activating'`   → `'is-activating'`
- * - `'deactivating'` → `'is-deactivating'`
- * - `'active'`       → `'is-active'`
- * - `'inactive'`     → `'is-inactive'`
+ * - Resolved phases:
+ *   - `'active'`       → `'is-active'`
+ *   - `'inactive'`     → `'is-inactive'`
+ * 
+ * - Transitioning phases:
+ *   - `'activating'`   → `'is-activating'`
+ *   - `'deactivating'` → `'is-deactivating'`
  * 
  * @param {ActivePhase} activePhase - The current lifecycle phase of the component.
  * @returns {`is-${ActivePhase}`} A CSS class name reflecting the phase.

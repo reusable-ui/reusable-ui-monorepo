@@ -31,10 +31,13 @@ export const resolveExpandPhase = (isExpanded: boolean, runningIntent: boolean |
  * Resolves the CSS class name for the given expand/collapse lifecycle phase.
  * 
  * Maps each `expandPhase` to a semantic class name:
- * - `'expanding'`  → `'is-expanding'`
- * - `'collapsing'` → `'is-collapsing'`
- * - `'expanded'`   → `'is-expanded'`
- * - `'collapsed'`  → `'is-collapsed'`
+ * - Resolved phases:
+ *   - `'expanded'`   → `'is-expanded'`
+ *   - `'collapsed'`  → `'is-collapsed'`
+ * 
+ * - Transitioning phases:
+ *   - `'expanding'`  → `'is-expanding'`
+ *   - `'collapsing'` → `'is-collapsing'`
  * 
  * @param {ExpandPhase} expandPhase - The current lifecycle phase of the component.
  * @returns {`is-${ExpandPhase}`} A CSS class name reflecting the phase.
