@@ -66,7 +66,7 @@ export interface UncontrollableCollapseStateProps {
 /**
  * Props for reporting a change request to the expanded/collapsed state.
  * 
- * Typically used in interactive components (e.g. Alert, Toast, Accordion) that may initiate expand/collapse
+ * Typically used in interactive components (e.g. Alert, Toast, Accordion) that may initiate expansion/collapsion
  * through user actions such as dismiss buttons, ESC key presses, or header toggles.
  * 
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
@@ -191,7 +191,7 @@ export type ExpandPhase =
     | TransitioningExpandPhase
 
 /**
- * An API for accessing the resolved expand/collapse state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
+ * An API for accessing the resolved expanded/collapsed state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
@@ -242,7 +242,7 @@ export interface CollapseBehaviorState<TElement extends Element = HTMLElement, T
 
 
 /**
- * A list of expand/collapse-related CSS variables used for expand/collapse-aware styling.
+ * A list of expand/collapse-related CSS variables used for expansion-aware styling.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */

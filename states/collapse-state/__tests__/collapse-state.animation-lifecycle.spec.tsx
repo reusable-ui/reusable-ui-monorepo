@@ -5,7 +5,7 @@ import { CollapseStateTest } from './CollapseStateTest.js';
 
 
 /**
- * Represents a single test scenario for validating expand/collapse state transitions.
+ * Represents a single test scenario for validating expanded/collapsed state transitions.
  */
 interface CollapseStateAnimationTestCase {
     // Test Inputs:
@@ -23,7 +23,7 @@ interface CollapseStateAnimationTestCase {
     expanded : boolean
     
     /**
-     * A sequence of updates applied to the expand/collapse state, including expected outcomes.
+     * A sequence of updates applied to the expanded/collapsed state, including expected outcomes.
      */
     updates  : {
         // Test Inputs:

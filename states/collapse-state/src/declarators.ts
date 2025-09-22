@@ -215,7 +215,7 @@ animationRegistry.registerAnimation(collapseStateVars.animationCollapse);
  * // Animation feature:
  * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
  * 
- * // Expand/collapse state:
+ * // Expanded/collapsed state:
  * import { usesCollapseState } from '@reusable-ui/collapse-state';
  * 
  * // CSS-in-JS:
@@ -242,7 +242,7 @@ animationRegistry.registerAnimation(collapseStateVars.animationCollapse);
  *         // Apply animation feature rules:
  *         ...animationFeatureRule(),
  *         
- *         // Apply expand/collapse state rules:
+ *         // Apply expanded/collapsed state rules:
  *         ...collapseStateRule(),
  *         
  *         // Define expanding animation:

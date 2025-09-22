@@ -242,7 +242,7 @@ export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TCh
 
 
 /**
- * A list of activate/deactivate-related CSS variables used for active/inactive-aware styling.
+ * A list of activate/deactivate-related CSS variables used for activation-aware styling.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */

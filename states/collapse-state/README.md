@@ -23,7 +23,7 @@ yarn add @reusable-ui/collapse-state
 
 ### `useCollapseBehaviorState(props, options?)`
 
-Resolves the expand/collapse state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
+Resolves the expanded/collapsed state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
 Supports controlled, uncontrolled, and hybrid expansion behavior with optional change dispatching.
 
@@ -203,7 +203,7 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 // Animation feature:
 import { usesAnimationFeature } from '@reusable-ui/animation-feature';
 
-// Expand/collapse state:
+// Expanded/collapsed state:
 import { usesCollapseState } from '@reusable-ui/collapse-state';
 
 // CSS-in-JS:
@@ -230,7 +230,7 @@ export const collapsibleBoxStyle = () => {
         // Apply animation feature rules:
         ...animationFeatureRule(),
         
-        // Apply expand/collapse state rules:
+        // Apply expanded/collapsed state rules:
         ...collapseStateRule(),
         
         // Define expanding animation:

@@ -178,7 +178,7 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
 
 
 /**
- * Resolves the expand/collapse state, current transition phase, associated CSS class name, and animation event handlers
+ * Resolves the expanded/collapsed state, current transition phase, associated CSS class name, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  * 
  * Supports controlled, uncontrolled, and hybrid expansion behavior with optional change dispatching.
@@ -188,7 +188,7 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
  * 
  * @param props - The component props that may include a controlled `expanded` value, optional `defaultExpanded`, and `onExpandedChange` callback.
  * @param options - An optional configuration for customizing expand/collapse behavior and animation lifecycle.
- * @returns The resolved expand/collapse state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
+ * @returns The resolved expanded/collapsed state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
  * @example
  * ```tsx

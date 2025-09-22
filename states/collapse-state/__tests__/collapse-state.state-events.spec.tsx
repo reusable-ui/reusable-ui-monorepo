@@ -7,7 +7,7 @@ import { ExpandPhase } from '../dist/index.js'
 
 
 /**
- * Represents a single test scenario for validating event of expand/collapse state transitions.
+ * Represents a single test scenario for validating event of expanded/collapsed state transitions.
  */
 interface CollapseStateEventTestCase {
     // Test Inputs:
@@ -26,7 +26,7 @@ interface CollapseStateEventTestCase {
     expanded ?: boolean
     
     /**
-     * A sequence of updates applied to the expand/collapse state, including expected outcomes.
+     * A sequence of updates applied to the expanded/collapsed state, including expected outcomes.
      */
     updates   : {
         // Test Inputs:

@@ -43,7 +43,7 @@ import { useMergeEventHandlers } from '@reusable-ui/callbacks';
 import styles from './styles.module.css';
 
 export const AnimatedComponent = () => {
-    // Initialize animation-aware expand/collapse state:
+    // Initialize animation-aware expanded/collapsed state:
     const [isExpanded, setExpanded, isExpanding, expandHandlers] = useAnimationState<boolean, HTMLDivElement>({
         initialIntent    : false, // Initial state is collapsed.
         animationPattern : ['expand', 'collapse'], // Matches animation names ending with 'expand' or 'collapse'.

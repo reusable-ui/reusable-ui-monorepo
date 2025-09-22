@@ -67,7 +67,7 @@ interface AnimationStateTestCase {
         // Expected Outcomes:
         
         /**
-         * Expected expand/collapse state after the delay.
+         * Expected expanded/collapsed state after the delay.
          */
         expectedExpand           : boolean
         

@@ -6,7 +6,7 @@ import { ValueChangeEventHandler } from '@reusable-ui/events';
 
 
 /**
- * Represents a single test scenario for validating controlled expand/collapse state transitions.
+ * Represents a single test scenario for validating controlled expanded/collapsed state transitions.
  */
 interface CollapseStateControlledTestCase {
     // Test Inputs:
@@ -25,7 +25,7 @@ interface CollapseStateControlledTestCase {
     expanded ?: boolean
     
     /**
-     * A sequence of updates applied to the expand/collapse state, including expected outcomes.
+     * A sequence of updates applied to the expanded/collapsed state, including expected outcomes.
      */
     updates   : {
         // Test Inputs:
