@@ -6,7 +6,7 @@ import {
 
 
 /**
- * Resolves the current activate/deactivate lifecycle phase based on active state and animation intent.
+ * Resolves the current activate/deactivate lifecycle phase based on activation state and animation intent.
  * 
  * - If `runningIntent` is defined, returns a transitional phase:
  *   - `'activating'` or `'deactivating'`

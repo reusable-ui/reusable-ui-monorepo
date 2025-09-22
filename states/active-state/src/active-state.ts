@@ -128,7 +128,7 @@ export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveS
  * while optionally supporting uncontrolled behavior.
  * 
  * Unlike `useActiveBehaviorState()`, which resolves full lifecycle,
- * `useUncontrollableActiveState()` provides a **simplified implementation** for managing active state and dispatching changes.
+ * `useUncontrollableActiveState()` provides a **simplified implementation** for managing activation state and dispatching changes.
  * 
  * - Supports both controlled and uncontrolled modes.
  * - If `active` is provided, the internal state is disabled and the component becomes fully controlled.
