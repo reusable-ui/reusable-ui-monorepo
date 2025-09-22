@@ -8,21 +8,23 @@ import {
 /**
  * Resolves the current expand/collapse lifecycle phase based on expansion state and animation intent.
  * 
- * - If `runningIntent` is defined, returns `'expanding'` or `'collapsing'` accordingly.
- * - Otherwise, falls back to the resolved state: `'expanded'` or `'collapsed'`.
+ * - If `runningIntent` is defined, returns a transitional phase:
+ *   - `'expanding'` or `'collapsing'`
+ * - Otherwise, falls back to the resolved state:
+ *   - `'expanded'` or `'collapsed'`
  * 
- * @param isExpanded - Whether the component is currently expanded.
- * @param runningIntent - Whether the component is actively transitioning to expanded/collapsed.
+ * @param expanded - The current resolved expanded state.
+ * @param runningIntent - The target expanded state being animated toward.
  * @returns The current `ExpandPhase` value.
  */
-export const resolveExpandPhase = (isExpanded: boolean, runningIntent: boolean | undefined): ExpandPhase => {
+export const resolveExpandPhase = (expanded: boolean, runningIntent: boolean | undefined): ExpandPhase => {
     if (runningIntent !== undefined) {
         return runningIntent ? 'expanding' : 'collapsing';
     } // if
     
     
     
-    return isExpanded ? 'expanded' : 'collapsed';
+    return expanded ? 'expanded' : 'collapsed';
 };
 
 

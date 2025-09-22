@@ -8,21 +8,23 @@ import {
 /**
  * Resolves the current activate/deactivate lifecycle phase based on active state and animation intent.
  * 
- * - If `runningIntent` is defined, returns `'activating'` or `'deactivating'` accordingly.
- * - Otherwise, falls back to the resolved state: `'active'` or `'inactive'`.
+ * - If `runningIntent` is defined, returns a transitional phase:
+ *   - `'activating'` or `'deactivating'`
+ * - Otherwise, falls back to the resolved state:
+ *   - `'active'` or `'inactive'`
  * 
- * @param isActive - Whether the component is currently active.
- * @param runningIntent - Whether the component is actively transitioning to active/inactive.
+ * @param active - The current resolved active state.
+ * @param runningIntent - The target active state being animated toward.
  * @returns The current `ActivePhase` value.
  */
-export const resolveActivePhase = (isActive: boolean, runningIntent: boolean | undefined): ActivePhase => {
+export const resolveActivePhase = (active: boolean, runningIntent: boolean | undefined): ActivePhase => {
     if (runningIntent !== undefined) {
         return runningIntent ? 'activating' : 'deactivating';
     } // if
     
     
     
-    return isActive ? 'active' : 'inactive';
+    return active ? 'active' : 'inactive';
 };
 
 
