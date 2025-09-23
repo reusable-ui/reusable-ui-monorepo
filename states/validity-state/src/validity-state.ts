@@ -93,7 +93,7 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
  * Resolves the validity state, current transition phase, associated CSS class name, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  * 
- * - Supports controlled validity, when `validity` is set to `true`, `false`, or `null`.
+ * - Supports controlled validity state, when `validity` is set to `true`, `false`, or `null`.
  * - Supports diagnostic mode, when `validity` is set to `'auto'`, which derives the effective validity from `computedValidity`.
  * 
  * @template TElement - The type of the target DOM element.

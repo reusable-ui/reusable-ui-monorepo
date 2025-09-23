@@ -94,7 +94,7 @@ This hook observes the resolved `activePhase` from `useActiveBehaviorState()` an
 
 ### `useActiveState(props, options?)`
 
-Resolves the current active state for a fully controlled component.
+Resolves the current active/inactive state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `active` state and **forward** it to a base component.
 
@@ -117,7 +117,7 @@ Unlike `useActiveBehaviorState()`, which supports both controlled and uncontroll
 
 ### `useUncontrollableActiveState(props, options?)`
 
-Resolves the current active state and provides a dispatcher for requesting changes.
+Resolves the current active/inactive state and provides a dispatcher for requesting changes.
 
 This hook is intended for components that **manage** the resolved `active` state and **forward** it to a base component, while optionally supporting uncontrolled behavior.
 

@@ -51,7 +51,7 @@ import {
 
 
 /**
- * Resolves the current expanded state for a fully controlled component.
+ * Resolves the current expanded/collapsed state for a fully controlled component.
  * 
  * This hook is intended for components that **consume** the resolved `expanded` state and **forward** it to a base component.
  * 
@@ -63,7 +63,7 @@ import {
  * 
  * @param props - The component props that may include a controlled `expanded` value but must exclude `defaultExpanded`.
  * @param options - An optional configuration for customizing expand/collapse behavior.
- * @returns The resolved expanded state.
+ * @returns The resolved expanded/collapsed state.
  */
 export const useCollapseState = (props: CollapseStateProps & { defaultExpanded: never }, options?: Pick<CollapseStateOptions, 'defaultExpanded'>) : boolean => {
     // Extract options and assign defaults:
@@ -80,7 +80,7 @@ export const useCollapseState = (props: CollapseStateProps & { defaultExpanded: 
     
     
     
-    // Return the resolved expanded state:
+    // Return the resolved expanded/collapsed state:
     return controlledExpanded;
 };
 
@@ -122,7 +122,7 @@ export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: Colla
 };
 
 /**
- * Resolves the current expanded state and provides a dispatcher for requesting changes.
+ * Resolves the current expanded/collapsed state and provides a dispatcher for requesting changes.
  * 
  * This hook is intended for components that **manage** the resolved `expanded` state and **forward** it to a base component,
  * while optionally supporting uncontrolled behavior.
@@ -139,7 +139,7 @@ export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: Colla
  * 
  * @param props - The component props that may include a controlled `expanded` value, `defaultExpanded` value, and `onExpandedChange` callback.
  * @param options - An optional configuration for customizing expand/collapse behavior.
- * @returns A tuple of the resolved expanded state and a dispatcher for requesting changes.
+ * @returns A tuple of the resolved expanded/collapsed state and a dispatcher for requesting changes.
  */
 export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: CollapseStateProps & UncontrollableCollapseStateProps & CollapseStateChangeProps<TChangeEvent>, options?: Pick<CollapseStateOptions, 'defaultExpanded'>): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
     // Extract options and assign defaults:

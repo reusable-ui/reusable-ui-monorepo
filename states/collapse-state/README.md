@@ -94,7 +94,7 @@ This hook observes the resolved `expandPhase` from `useCollapseBehaviorState()` 
 
 ### `useCollapseState(props, options?)`
 
-Resolves the current expanded state for a fully controlled component.
+Resolves the current expanded/collapsed state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `expanded` state and **forward** it to a base component.
 
@@ -117,7 +117,7 @@ Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontro
 
 ### `useUncontrollableCollapseState(props, options?)`
 
-Resolves the current expanded state and provides a dispatcher for requesting changes.
+Resolves the current expanded/collapsed state and provides a dispatcher for requesting changes.
 
 This hook is intended for components that **manage** the resolved `expanded` state and **forward** it to a base component, while optionally supporting uncontrolled behavior.
 

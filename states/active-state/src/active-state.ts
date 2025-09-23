@@ -51,7 +51,7 @@ import {
 
 
 /**
- * Resolves the current active state for a fully controlled component.
+ * Resolves the current active/inactive state for a fully controlled component.
  * 
  * This hook is intended for components that **consume** the resolved `active` state and **forward** it to a base component.
  * 
@@ -63,7 +63,7 @@ import {
  * 
  * @param props - The component props that may include a controlled `active` value but must exclude `defaultActive`.
  * @param options - An optional configuration for customizing activate/deactivate behavior.
- * @returns The resolved active state.
+ * @returns The resolved active/inactive state.
  */
 export const useActiveState = (props: ActiveStateProps & { defaultActive: never }, options?: Pick<ActiveStateOptions, 'defaultActive'>) : boolean => {
     // Extract options and assign defaults:
@@ -80,7 +80,7 @@ export const useActiveState = (props: ActiveStateProps & { defaultActive: never 
     
     
     
-    // Return the resolved active state:
+    // Return the resolved active/inactive state:
     return controlledActive;
 };
 
@@ -122,7 +122,7 @@ export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveS
 };
 
 /**
- * Resolves the current active state and provides a dispatcher for requesting changes.
+ * Resolves the current active/inactive state and provides a dispatcher for requesting changes.
  * 
  * This hook is intended for components that **manage** the resolved `active` state and **forward** it to a base component,
  * while optionally supporting uncontrolled behavior.
@@ -139,7 +139,7 @@ export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveS
  * 
  * @param props - The component props that may include a controlled `active` value, `defaultActive` value, and `onActiveChange` callback.
  * @param options - An optional configuration for customizing activate/deactivate behavior.
- * @returns A tuple of the resolved active state and a dispatcher for requesting changes.
+ * @returns A tuple of the resolved active/inactive state and a dispatcher for requesting changes.
  */
 export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: ActiveStateProps & UncontrollableActiveStateProps & ActiveStateChangeProps<TChangeEvent>, options?: Pick<ActiveStateOptions, 'defaultActive'>): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
     // Extract options and assign defaults:
