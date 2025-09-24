@@ -167,7 +167,7 @@ export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(p
     
     // Controlled excitement state:
     const {
-        value               : resolvedExcited,
+        value               : effectiveExcited,
         dispatchValueChange : requestExcitedReset,
     } = useControllableValueChange<boolean, AnimationEvent>({
         value               : controlledExcited,
@@ -244,10 +244,10 @@ export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(p
     
     
     
-    // Sync animation state with resolved excitement state:
+    // Sync animation state with effective excitement state:
     useEffect(() => {
         // Exit early if the animation state is already in sync with the intended one:
-        if (exciteAnimation === resolvedExcited) return;
+        if (exciteAnimation === effectiveExcited) return;
         
         
         
@@ -257,7 +257,7 @@ export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(p
         
         
         
-        if (!resolvedExcited) {
+        if (!effectiveExcited) {
             // Stop animation immediately:
             setExcitedAnimation(false); // Not really stopped immediately, the already running animation will finish properly (not interrupted).
             
@@ -320,13 +320,13 @@ export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(p
             tickPromise?.abort();
             framePromise?.abort();
         };
-    }, [exciteAnimation, resolvedExcited]);
+    }, [exciteAnimation, effectiveExcited]);
     
     
     
     // Return resolved excitement attributes:
     return {
-        excited               : resolvedExcited,
+        excited               : effectiveExcited,
         exciteClassname       : getExciteClassname(exciteAnimation),
         ...animationHandlers,
         handleAnimationEnd    : mergedHandleAnimationEnd,

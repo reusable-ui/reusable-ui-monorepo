@@ -161,7 +161,7 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
     
     // States:
     const {
-        value               : resolvedExpanded,
+        value               : effectiveExpanded,
         dispatchValueChange : dispatchExpandedChange,
     } = useHybridValueChange<boolean, TChangeEvent>({
         defaultValue  : initialIntent,
@@ -172,7 +172,7 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
     
     
     // Return resolved expansion state and dispatcher:
-    return [resolvedExpanded, dispatchExpandedChange];
+    return [effectiveExpanded, dispatchExpandedChange];
 };
 
 
@@ -273,21 +273,21 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
     });
     
     // Determine control mode:
-    const isControlled     = (controlledExpanded !== undefined);
+    const isControlled      = (controlledExpanded !== undefined);
     
     // Resolve effective expansion state:
-    const resolvedExpanded = isControlled ? controlledExpanded : internalExpanded;
+    const effectiveExpanded = isControlled ? controlledExpanded : internalExpanded;
     
     // Derive semantic phase from animation lifecycle:
-    const expandPhase      = resolveExpandPhase(resolvedExpanded, runningIntent); // 'collapsed', 'collapsing', 'expanding', 'expanded'
+    const expandPhase       = resolveExpandPhase(effectiveExpanded, runningIntent); // 'collapsed', 'collapsing', 'expanding', 'expanded'
     
     
     
-    // Sync animation state with resolved expansion state:
+    // Sync animation state with effective expansion state:
     useEffect(() => {
         // The `setInternalExpanded()` has internal `Object.is()` check to avoid redundant state updates.
-        setInternalExpanded(resolvedExpanded);
-    }, [resolvedExpanded]);
+        setInternalExpanded(effectiveExpanded);
+    }, [effectiveExpanded]);
     
     
     
@@ -308,7 +308,7 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
     
     // Return resolved collapse state API:
     return {
-        expanded        : resolvedExpanded,
+        expanded        : effectiveExpanded,
         expandPhase,
         expandClassname : getExpandClassname(expandPhase),
         dispatchExpandedChange,

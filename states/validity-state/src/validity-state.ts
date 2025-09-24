@@ -79,12 +79,12 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
     const isExplicitValue  = (controlledValidity !== 'auto');
     
     // Resolve effective validity state:
-    const resolvedValidity = isExplicitValue ? controlledValidity : computedValidity;
+    const effectiveValidity = isExplicitValue ? controlledValidity : computedValidity;
     
     
     
     // Return the resolved validity state:
-    return resolvedValidity;
+    return effectiveValidity;
 };
 
 
@@ -192,34 +192,34 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     // States and flags:
     
     // Determine control mode:
-    const isExplicitValue  = (controlledValidity !== 'auto');
+    const isExplicitValue   = (controlledValidity !== 'auto');
     
     // Resolve effective validity state:
-    const resolvedValidity = isExplicitValue ? controlledValidity : computedValidity;
+    const effectiveValidity = isExplicitValue ? controlledValidity : computedValidity;
     
     // Internal animation lifecycle:
     const [, setInternalValidity, runningIntent, animationHandlers] = useAnimationState<boolean | null, TElement>({
-        initialIntent : resolvedValidity,
+        initialIntent : effectiveValidity,
         animationPattern,
         animationBubbling,
     });
     
     // Derive semantic phase from animation lifecycle:
-    const validityPhase    = resolveValidityPhase(resolvedValidity, runningIntent); // 'valid', 'invalid', 'unvalidated', 'validating', 'invalidating', 'unvalidating'
+    const validityPhase     = resolveValidityPhase(effectiveValidity, runningIntent); // 'valid', 'invalid', 'unvalidated', 'validating', 'invalidating', 'unvalidating'
     
     
     
-    // Tracks the history of resolved validity states to expose the previous state.
+    // Tracks the history of effective validity states to expose the previous state.
     // This is useful for animation authors to determine the direction of transitions.
-    const validityHistoryRef = useRef<[current: boolean | null, previous: boolean | null | undefined]>([resolvedValidity, undefined]);
+    const validityHistoryRef = useRef<[current: boolean | null, previous: boolean | null | undefined]>([effectiveValidity, undefined]);
     const validityHistory = validityHistoryRef.current;
     
-    if (validityHistory[0] !== resolvedValidity) {
+    if (validityHistory[0] !== effectiveValidity) {
         // Shift history:
         validityHistory[1] = validityHistory[0];
         
         // Update current:
-        validityHistory[0] = resolvedValidity;
+        validityHistory[0] = effectiveValidity;
     } // if
     
     // Expose previous validity state for animation authors:
@@ -227,11 +227,11 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     
     
     
-    // Sync animation state with resolved validity state:
+    // Sync animation state with effective validity state:
     useEffect(() => {
         // The `setInternalValidity()` has internal `Object.is()` check to avoid redundant state updates.
-        setInternalValidity(resolvedValidity);
-    }, [resolvedValidity]);
+        setInternalValidity(effectiveValidity);
+    }, [effectiveValidity]);
     
     
     
@@ -244,17 +244,17 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     
     
     
-    // Observer effect: emits validity update events on `resolvedValidity` updates.
+    // Observer effect: emits validity update events on `effectiveValidity` updates.
     useEffect(() => {
         // Emits validity update events:
-        handleValidityUpdate(resolvedValidity);
-    }, [resolvedValidity]);
+        handleValidityUpdate(effectiveValidity);
+    }, [effectiveValidity]);
     
     
     
     // Return resolved validity state API:
     return {
-        validity          : resolvedValidity,
+        validity          : effectiveValidity,
         validityPhase,
         validityClassname : getValidityClassname(validityPhase, prevResolvedValidity),
         ...animationHandlers,

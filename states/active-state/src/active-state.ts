@@ -161,7 +161,7 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
     
     // States:
     const {
-        value               : resolvedActive,
+        value               : effectiveActive,
         dispatchValueChange : dispatchActiveChange,
     } = useHybridValueChange<boolean, TChangeEvent>({
         defaultValue  : initialIntent,
@@ -172,7 +172,7 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
     
     
     // Return resolved active state and dispatcher:
-    return [resolvedActive, dispatchActiveChange];
+    return [effectiveActive, dispatchActiveChange];
 };
 
 
@@ -273,21 +273,21 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
     });
     
     // Determine control mode:
-    const isControlled   = (controlledActive !== undefined);
+    const isControlled    = (controlledActive !== undefined);
     
     // Resolve effective activation state:
-    const resolvedActive = isControlled ? controlledActive : internalActive;
+    const effectiveActive = isControlled ? controlledActive : internalActive;
     
     // Derive semantic phase from animation lifecycle:
-    const activePhase    = resolveActivePhase(resolvedActive, runningIntent); // 'inactive', 'deactivating', 'activating', 'active'
+    const activePhase     = resolveActivePhase(effectiveActive, runningIntent); // 'inactive', 'deactivating', 'activating', 'active'
     
     
     
-    // Sync animation state with resolved activation state:
+    // Sync animation state with effective activation state:
     useEffect(() => {
         // The `setInternalActive()` has internal `Object.is()` check to avoid redundant state updates.
-        setInternalActive(resolvedActive);
-    }, [resolvedActive]);
+        setInternalActive(effectiveActive);
+    }, [effectiveActive]);
     
     
     
@@ -308,7 +308,7 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
     
     // Return resolved active state API:
     return {
-        active          : resolvedActive,
+        active          : effectiveActive,
         activePhase,
         activeClassname : getActiveClassname(activePhase),
         dispatchActiveChange,
