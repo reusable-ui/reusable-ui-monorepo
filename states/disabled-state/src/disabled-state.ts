@@ -1,0 +1,362 @@
+'use client' // The exported hooks are client side only.
+
+// React:
+import {
+    // Hooks:
+    use,
+    useEffect,
+    useRef,
+}                           from 'react'
+
+// Types:
+import {
+    type DisabledStateProps,
+    type DisabledStateUpdateProps,
+    type DisabledStatePhaseEventProps,
+    type DisabledStateOptions,
+    type DisabledPhase,
+    type DisabledBehaviorState,
+}                           from './types.js'
+
+// Defaults:
+import {
+    declarativeDefaultDisabled,
+    declarativeDefaultCascadeDisabled,
+}                           from './internal-defaults.js'
+
+// Utilities:
+import {
+    resolveDisabledPhase,
+    getDisabledClassname,
+}                           from './internal-utilities.js'
+
+// Contexts:
+import {
+    DisabledStateContext,
+}                           from './contexts.js'
+
+// Reusable-ui utilities:
+import {
+    // Hooks:
+    useStableCallback,
+}                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
+import {
+    // Hooks:
+    useAnimationState,
+}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
+
+
+
+/**
+ * Resolves the effective disabled value based on props and context.
+ * 
+ * Resolution priority:
+ * - If `disabled` is `true`, the component is explicitly disabled.
+ * - If `disabled` is `false` and `cascadeDisabled` is `false`, the component is explicitly enabled.
+ * - If `disabled` is `false` and `cascadeDisabled` is `true`, the component checks context for inherited disabled state.
+ * - If context is unavailable and `cascadeDisabled` is `true`, the component defaults to enabled (`false`).
+ * 
+ * @param disabled - The controlled disabled state.
+ * @param cascadeDisabled - Whether to consider context for cascading disabled state.
+ * @returns The resolved disabled value.
+ */
+const useEffectiveDisabledValue = (disabled: Required<DisabledStateProps>['disabled'], cascadeDisabled: boolean): boolean => {
+    // If explicitly disabled, no need to check context:
+    if (disabled) return true;
+    
+    
+    
+    // If not cascading, context is ignored:
+    if (!cascadeDisabled) return false;
+    
+    
+    
+    // Get the inherited disabled from context:
+    const inheritedDisabled = use(DisabledStateContext);
+    
+    
+    
+    // If context value exists, return it:
+    if (inheritedDisabled !== undefined) return inheritedDisabled;
+    
+    
+    
+    // Otherwise, fallback to enabled:
+    return false;
+};
+
+/**
+ * Resolves the current enabled/disabled state for a fully controlled component.
+ * 
+ * This hook is intended for components that **consume** the resolved `disabled` state and **forward** it to a base component.
+ * 
+ * Unlike `useDisabledBehaviorState()`, which handles animation and lifecycle,
+ * `useDisabledState()` performs a lightweight resolution of the effective disabled value.
+ * 
+ * - No internal state or uncontrolled fallback.
+ * - Ideal for components that **consume** the resolved `disabled` state.
+ * 
+ * @param props - The component props that may include a controlled `disabled` value and contextual `cascadeDisabled` value.
+ * @param options - An optional configuration for customizing enable/disable behavior.
+ * @returns The resolved enabled/disabled state.
+ */
+export const useDisabledState = (props: DisabledStateProps, options?: Pick<DisabledStateOptions, 'defaultDisabled' | 'defaultCascadeDisabled'>) : boolean => {
+    // Extract options and assign defaults:
+    const {
+        defaultDisabled        = declarativeDefaultDisabled,
+        defaultCascadeDisabled = declarativeDefaultCascadeDisabled,
+    } = options ?? {};
+    
+    
+    
+    // Extract props and assign defaults:
+    const {
+        disabled         : controlledDisabled        = defaultDisabled,
+        cascadeDisabled  : controlledCascadeDisabled = defaultCascadeDisabled,
+    } = props;
+    
+    
+    
+    // States and flags:
+    
+    // Resolve effective disabled state:
+    const effectiveDisabled = useEffectiveDisabledValue(controlledDisabled, controlledCascadeDisabled);
+    
+    
+    
+    // Return the resolved enabled/disabled state:
+    return effectiveDisabled;
+};
+
+
+
+/**
+ * Resolves the enabled/disabled state, current transition phase, associated CSS class name, and animation event handlers
+ * based on component props, optional default configuration, and animation lifecycle.
+ * 
+ * - Supports controlled disabled state.
+ * - Supports contextual override via `cascadeDisabled`.
+ * 
+ * @template TElement - The type of the target DOM element.
+ * 
+ * @param props - The component props that may include a controlled `disabled` value, contextual `cascadeDisabled` value, and `onDisabledUpdate` callback.
+ * @param options - An optional configuration for customizing disabled behavior and animation lifecycle.
+ * @returns The resolved enabled/disabled state, current transition phase, associated CSS class name, and animation event handlers.
+ * 
+ * @example
+ * ```tsx
+ * import React, { FC } from 'react';
+ * import {
+ *     useDisabledBehaviorState,
+ *     DisabledStateProps,
+ *     DisabledStateUpdateProps,
+ * } from '@reusable-ui/disabled-state';
+ * import styles from './CustomEditor.module.css';
+ * 
+ * export interface CustomEditorProps extends
+ *     DisabledStateProps,
+ *     DisabledStateUpdateProps // optional update reporting behavior
+ * {}
+ * 
+ * // An editor that can be enabled or disabled.
+ * export const CustomEditor: FC<CustomEditorProps> = (props) => {
+ *     const {
+ *         disabled,
+ *         disabledPhase,
+ *         disabledClassname,
+ *         
+ *         handleAnimationStart,
+ *         handleAnimationEnd,
+ *         handleAnimationCancel,
+ *     } = useDisabledBehaviorState(props, {
+ *         defaultDisabled        : false,                 // Defaults to enabled.
+ *         defaultCascadeDisabled : true,                  // Defaults to allow contextual disabling.
+ *         animationPattern       : ['enable', 'disable'], // Matches animation names ending with 'enable' or 'disable'.
+ *         animationBubbling      : false,                 // Ignores bubbling animation events from children.
+ *     });
+ *     
+ *     return (
+ *         <input
+ *             type='text'
+ *             className={`${styles.box} ${disabledClassname}`}
+ *             disabled={disabled}
+ *             
+ *             onAnimationStart={handleAnimationStart}
+ *             onAnimationEnd={handleAnimationEnd}
+ *         />
+ *     );
+ * };
+ * ```
+ */
+export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>(props: DisabledStateProps & DisabledStateUpdateProps, options?: DisabledStateOptions): DisabledBehaviorState<TElement> => {
+    // Extract options and assign defaults:
+    const {
+        defaultDisabled        = declarativeDefaultDisabled,
+        defaultCascadeDisabled = declarativeDefaultCascadeDisabled,
+        animationPattern       = ['enable', 'disable'], // Matches animation names for transitions
+        animationBubbling      = false,
+    } = options ?? {};
+    
+    
+    
+    // Extract props and assign defaults:
+    const {
+        disabled         : controlledDisabled        = defaultDisabled,
+        cascadeDisabled  : controlledCascadeDisabled = defaultCascadeDisabled,
+        onDisabledUpdate,
+    } = props;
+    
+    
+    
+    // States and flags:
+    
+    // Resolve effective disabled state:
+    const effectiveDisabled = useEffectiveDisabledValue(controlledDisabled, controlledCascadeDisabled);
+    
+    // Internal animation lifecycle:
+    const [, setInternalDisabled, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
+        initialIntent : effectiveDisabled,
+        animationPattern,
+        animationBubbling,
+    });
+    
+    // Derive semantic phase from animation lifecycle:
+    const disabledPhase     = resolveDisabledPhase(effectiveDisabled, runningIntent); // 'enabled', 'disabled', 'enabling', 'disabling'
+    
+    
+    
+    // Sync animation state with effective disabled state:
+    useEffect(() => {
+        // The `setInternalDisabled()` has internal `Object.is()` check to avoid redundant state updates.
+        setInternalDisabled(effectiveDisabled);
+    }, [effectiveDisabled]);
+    
+    
+    
+    // A stable dispatcher for emitting disabled update events.
+    // This function remains referentially stable across renders,
+    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
+    const handleDisabledUpdate = useStableCallback((currentDisabled: boolean): void => {
+        onDisabledUpdate?.(currentDisabled, undefined);
+    });
+    
+    
+    
+    // Observer effect: emits disabled update events on `effectiveDisabled` updates.
+    useEffect(() => {
+        // Emits disabled update events:
+        handleDisabledUpdate(effectiveDisabled);
+    }, [effectiveDisabled]);
+    
+    
+    
+    // Return resolved disabled state API:
+    return {
+        disabled          : effectiveDisabled,
+        disabledPhase,
+        disabledClassname : getDisabledClassname(disabledPhase),
+        ...animationHandlers,
+    } satisfies DisabledBehaviorState<TElement>;
+};
+
+/**
+ * Emits lifecycle events in response to enable/disable phase transitions.
+ * 
+ * This hook observes the resolved `disabledPhase` from `useDisabledBehaviorState()` and triggers
+ * the appropriate callbacks defined in `DisabledStatePhaseEventProps`, such as:
+ * 
+ * - `onEnableStart`
+ * - `onEnableEnd`
+ * - `onDisableStart`
+ * - `onDisableEnd`
+ * 
+ * @param {DisabledStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
+ * @param {DisabledPhase} disabledPhase - The current phase value returned from `useDisabledBehaviorState()`.
+ */
+export const useDisabledStatePhaseEvents = (props: DisabledStatePhaseEventProps, disabledPhase: DisabledPhase): void => {
+    // Extract props:
+    const {
+        onEnableStart,
+        onEnableEnd,
+        onDisableStart,
+        onDisableEnd,
+    } = props;
+    
+    
+    
+    // Tracks whether the component has passed its initial mount phase.
+    // Prevents phase-specific lifecycle events from wrongfully firing on initial mount.
+    const hasMountedRef = useRef<boolean>(false);
+    
+    
+    
+    // A stable dispatcher for emitting phase change events.
+    // This function remains referentially stable across renders,
+    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
+    const handleDisabledPhaseChange = useStableCallback((disabledPhase: DisabledPhase): void => {
+        switch (disabledPhase) {
+            case 'enabling'  : onEnableStart?.(disabledPhase, undefined);  break;
+            case 'enabled'   : onEnableEnd?.(disabledPhase, undefined);    break;
+            case 'disabling' : onDisableStart?.(disabledPhase, undefined); break;
+            case 'disabled'  : onDisableEnd?.(disabledPhase, undefined);   break;
+        } // switch
+    });
+    
+    
+    
+    /*
+        ⚠️ React Strict Mode Consideration:
+        This hook uses two effects to ensure **consistent behavior** across strict and non-strict modes.
+        The observer effect emits phase change events, while the setup effect tracks the mount status.
+        The setup effect must be placed after observer effect in order to correctly emit events for subsequent updates only.
+        
+        This configuration ensures that phase change events are emitted only for SUBSEQUENT UPDATES.
+        The first update never emits any events.
+        
+        Sequence on initial mount:
+        1. First render
+            → observer effect runs → but SKIPS event emission due to `hasMountedRef = false`
+            → setup effect runs → marks `hasMountedRef = true`, allowing further updates to emit events
+        2. [Strict Mode] Simulated unmount
+            → observer cleanup (noop)
+            → setup cleanup → resets `hasMountedRef = false`, preventing further updates from emitting events
+        3. [Strict Mode] Second render
+            → observer effect runs → SKIPS event emission again due to `hasMountedRef = false`
+            → setup effect runs → marks `hasMountedRef = true`, allowing further updates to emit events
+        So effectively, the initial mount does NOT emit any events in both strict and non-strict modes.
+        
+        Sequence on subsequent updates of `disabledPhase`:
+            → observer effect runs → emits phase change event
+            → setup effect does NOT run (no changes in dependencies)
+        
+        Sequence on final unmount:
+            → observer cleanup (noop)
+            → setup cleanup → resets `hasMountedRef = false`
+    */
+    
+    
+    
+    // Observer effect: emits phase change events on `disabledPhase` updates.
+    useEffect(() => {
+        // Ignore the first mount phase change:
+        if (!hasMountedRef.current) return;
+        
+        
+        
+        // Emits subsequent phase change events:
+        handleDisabledPhaseChange(disabledPhase);
+    }, [disabledPhase]);
+    
+    // Setup effect: marks the component as mounted and resets on unmount.
+    useEffect(() => {
+        // Mark as mounted:
+        hasMountedRef.current = true;
+        
+        
+        
+        // Unmark when unmounted:
+        return () => {
+            hasMountedRef.current = false;
+        };
+    }, []);
+};
