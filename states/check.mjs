@@ -8,6 +8,7 @@ const stateDirs = [
     'collapse-state',
     'active-state',
     'validity-state',
+    'disabled-state',
 ];
 
 console.log('🧪 Running tests for feature packages...\n');
