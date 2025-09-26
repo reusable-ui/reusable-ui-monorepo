@@ -11,7 +11,7 @@ import {
     type ThemeVariant,
 } from '../dist/types.js'
 import {
-    finalDefaultTheme,
+    effectiveDefaultTheme,
 } from '../dist/internal-defaults.js'
 import {
     useThemeVariant,
@@ -188,8 +188,8 @@ describe('useThemeVariant()', () => {
         {
             title              : 'falls back to system default when prop and option are missing',
             expectedResult     : {
-                theme          : finalDefaultTheme,
-                themeClassname : `t-${finalDefaultTheme}`,
+                theme          : effectiveDefaultTheme,
+                themeClassname : `t-${effectiveDefaultTheme}`,
             },
         },
         ...allThemes.map((theme) => ({
@@ -207,8 +207,8 @@ describe('useThemeVariant()', () => {
                 theme          : 'inherit',
             },
             expectedResult     : {
-                theme          : finalDefaultTheme,
-                themeClassname : `t-${finalDefaultTheme}`,
+                theme          : effectiveDefaultTheme,
+                themeClassname : `t-${effectiveDefaultTheme}`,
             },
         },
         

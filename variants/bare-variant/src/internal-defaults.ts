@@ -1,6 +1,16 @@
+// Types:
+import {
+    type BareVariantProps,
+}                           from './types.js'
+
+
+
 /**
- * A default final bare state to apply when no effective `bare` value can be resolved.
+ * A default declarative bare state to apply when neither `bare` prop nor `defaultBare` option is explicitly provided.
  * 
- * Regulates structural layout when direct configuration is absent.
+ * This fallback preserves full visual framing by default,
+ * ensuring the component appears with backgrounds, borders, and paddings unless explicitly set to bare mode.
+ * 
+ * - `false`: preserves full visual framing by default.
  */
-export const finalDefaultBare : false = false;
+export const declarativeDefaultBare : Extract<Required<BareVariantProps<true>>['bare'], false> = false;

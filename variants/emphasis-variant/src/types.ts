@@ -28,6 +28,8 @@ export interface EmphasisVariantProps {
      * - `false`    : does not emphasize the component
      * - `'inherit'`: inherits emphasis appearance from a parent context
      * - `'invert'` : flips the inherited emphasis appearance (`true` ⇄ `false`)
+     * 
+     * Defaults to `'inherit'` (inherits from parent context).
      */
     emphasized          ?: boolean | 'inherit' | 'invert'
 }
@@ -39,9 +41,15 @@ export interface EmphasisVariantProps {
  */
 export interface EmphasisVariantOptions {
     /**
-     * The default emphasized state to apply when no `emphasized` prop is explicitly provided.
+     * Specifies the default emphasis appearance when no `emphasized` prop is explicitly provided:
+     * - `true`     : emphasizes the component
+     * - `false`    : does not emphasize the component
+     * - `'inherit'`: inherits emphasis appearance from a parent context
+     * - `'invert'` : flips the inherited emphasis appearance (`true` ⇄ `false`)
+     * 
+     * Defaults to `'inherit'` (inherits from parent context).
      */
-    defaultEmphasized   ?: boolean
+    defaultEmphasized   ?: boolean | 'inherit' | 'invert'
 }
 
 /**

@@ -28,6 +28,8 @@ export interface OutlineVariantProps {
      * - `false`    : does not outline the component
      * - `'inherit'`: inherits outline appearance from a parent context
      * - `'invert'` : flips the inherited outline appearance (`true` ⇄ `false`)
+     * 
+     * Defaults to `'inherit'` (inherits from parent context).
      */
     outlined          ?: boolean | 'inherit' | 'invert'
 }
@@ -39,9 +41,15 @@ export interface OutlineVariantProps {
  */
 export interface OutlineVariantOptions {
     /**
-     * The default outlined state to apply when no `outlined` prop is explicitly provided.
+     * Specifies the default outline appearance when no `outlined` prop is explicitly provided:
+     * - `true`     : outlines the component
+     * - `false`    : does not outline the component
+     * - `'inherit'`: inherits outline appearance from a parent context
+     * - `'invert'` : flips the inherited outline appearance (`true` ⇄ `false`)
+     * 
+     * Defaults to `'inherit'` (inherits from parent context).
      */
-    defaultOutlined   ?: boolean
+    defaultOutlined   ?: boolean | 'inherit' | 'invert'
 }
 
 /**

@@ -35,6 +35,8 @@ export interface BareVariantProps<TBare extends true | string = true> {
      * Specifies the desired bare layout of the component:
      * - `true`  : strips out the visual framing (no borders, no paddings) for seamless embedding
      * - `false` : preserves full visual framing for standalone presentation
+     * 
+     * Defaults to `false` (full framing).
      */
     bare          ?: false | TBare
 }
@@ -48,7 +50,11 @@ export interface BareVariantProps<TBare extends true | string = true> {
  */
 export interface BareVariantOptions<TBare extends true | string = true> {
     /**
-     * The default bare state to apply when no `bare` prop is explicitly provided.
+     * Specifies the default bare layout when no `bare` prop is explicitly provided:
+     * - `true`  : strips out the visual framing (no borders, no paddings) for seamless embedding
+     * - `false` : preserves full visual framing for standalone presentation
+     * 
+     * Defaults to `false` (full framing).
      */
     defaultBare   ?: false | TBare
 }

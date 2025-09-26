@@ -6,19 +6,22 @@ import {
 
 
 /**
- * A default intermediate outlined state to apply when no `outlined` prop is explicitly provided.
+ * A default declarative outline appearance to apply when neither `outlined` prop nor `defaultOutlined` option is explicitly provided.
  * 
- * This value serves as a transitional fallback before attempting context resolution.
+ * This fallback represents an inherited outline appearance by default,
+ * allowing components to adapt to their surrounding context unless explicitly set.
  * 
  * - `'inherit'`: inherits outline appearance from a parent context.
  */
-export const semiDefaultOutlined  : Required<OutlineVariantProps>['outlined'] = 'inherit';
+export const declarativeDefaultOutlined : Required<OutlineVariantProps>['outlined'] = 'inherit';
 
 
 
 /**
- * A default final outlined state to apply when no effective `outlined` value can be resolved.
+ * A default effective outline appearance to apply when no effective `outlined` value can be resolved.
  * 
- * Typically used to control visual prominence when direct configuration is absent.
+ * This fallback applies when `outlined` prop is set to `'inherit'` or `'invert'` but no context is available.
+ * 
+ * - `false`: represents a non-outlined appearance by default.
  */
-export const finalDefaultOutlined : boolean = false;
+export const effectiveDefaultOutlined   : boolean = false;

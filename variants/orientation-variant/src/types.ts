@@ -23,6 +23,8 @@ export interface OrientationVariantProps {
      * - `'block'`  : vertical orientation, aligns along the block axis (e.g., top-to-bottom)
      * - `'inherit'`: inherits orientation from a parent context
      * - `'invert'` : flips the inherited orientation (`'inline'` ⇄ `'block'`)
+     * 
+     * Defaults to `'block'` (vertical).
      */
     orientation          ?: Orientation | 'inherit' | 'invert'
 }
@@ -34,9 +36,15 @@ export interface OrientationVariantProps {
  */
 export interface OrientationVariantOptions {
     /**
-     * The default orientation to apply when no `orientation` prop is explicitly provided.
+     * Specifies the default orientation when no `orientation` prop is explicitly provided:
+     * - `'inline'` : horizontal orientation, aligns along the inline axis (e.g., left-to-right or right-to-left)
+     * - `'block'`  : vertical orientation, aligns along the block axis (e.g., top-to-bottom)
+     * - `'inherit'`: inherits orientation from a parent context
+     * - `'invert'` : flips the inherited orientation (`'inline'` ⇄ `'block'`)
+     * 
+     * Defaults to `'block'` (vertical).
      */
-    defaultOrientation   ?: Orientation
+    defaultOrientation   ?: Orientation | 'inherit' | 'invert'
 }
 
 /**

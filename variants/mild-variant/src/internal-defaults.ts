@@ -6,19 +6,22 @@ import {
 
 
 /**
- * A default intermediate mild state to apply when no `mild` prop is explicitly provided.
+ * A default declarative mild appearance to apply when neither `mild` prop nor `defaultMild` option is explicitly provided.
  * 
- * This value serves as a transitional fallback before attempting context resolution.
+ * This fallback represents an inherited mild appearance by default,
+ * allowing components to adapt to their surrounding context unless explicitly set.
  * 
  * - `'inherit'`: inherits mild appearance from a parent context.
  */
-export const semiDefaultMild  : Required<MildVariantProps>['mild'] = 'inherit';
+export const declarativeDefaultMild : Required<MildVariantProps>['mild'] = 'inherit';
 
 
 
 /**
- * A default final mild state to apply when no effective `mild` value can be resolved.
+ * A default effective mild appearance to apply when no effective `mild` value can be resolved.
  * 
- * Regulates visual tone when direct configuration is absent.
+ * This fallback applies when `mild` prop is set to `'inherit'` or `'invert'` but no context is available.
+ * 
+ * - `false`: represents a non-mild appearance by default.
  */
-export const finalDefaultMild : boolean = false;
+export const effectiveDefaultMild   : boolean = false;

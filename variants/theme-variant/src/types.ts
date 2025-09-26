@@ -58,6 +58,8 @@ export interface ThemeVariantProps<TTheme extends string = BasicTheme> {
      * - `'dark'`      : suitable for overlaying light backgrounds
      * - `'inherit'`   : inherits theme from a parent context
      * - Or any custom theme token defined by the design system
+     * 
+     * Defaults to `'inherit'` (inherits from parent context).
      */
     theme          ?: TTheme | 'inherit'
 }
@@ -71,9 +73,21 @@ export interface ThemeVariantProps<TTheme extends string = BasicTheme> {
  */
 export interface ThemeVariantOptions<TTheme extends string = BasicTheme> {
     /**
-     * The default theme to apply when no `theme` prop is explicitly provided.
+     * Specifies the default theme when no `theme` prop is explicitly provided:
+     * - `'primary'`   : core branding or primary site identity
+     * - `'secondary'` : muted accent or complementary variant
+     * - `'success'`   : positive actions and confirmations
+     * - `'info'`      : neutral messages or informative context
+     * - `'warning'`   : cautionary states and potential issues
+     * - `'danger'`    : destructive actions or error indicators
+     * - `'light'`     : suitable for overlaying dark backgrounds (e.g. over images)
+     * - `'dark'`      : suitable for overlaying light backgrounds
+     * - `'inherit'`   : inherits theme from a parent context
+     * - Or any custom theme token defined by the design system
+     * 
+     * Defaults to `'inherit'` (inherits from parent context).
      */
-    defaultTheme   ?: TTheme
+    defaultTheme   ?: TTheme | 'inherit'
 }
 
 /**

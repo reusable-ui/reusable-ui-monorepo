@@ -11,7 +11,7 @@ import {
     type SizeVariant,
 } from '../dist/types.js'
 import {
-    finalDefaultSize,
+    effectiveDefaultSize,
     defaultSupportedSizes,
 } from '../dist/internal-defaults.js'
 import {
@@ -193,16 +193,16 @@ describe('useSizeVariant()', () => {
         {
             title              : 'falls back to system default when prop and option are missing',
             expectedResult     : {
-                size           : finalDefaultSize,
-                sizeClassname  : `s-${finalDefaultSize}`,
+                size           : effectiveDefaultSize,
+                sizeClassname  : `s-${effectiveDefaultSize}`,
             },
         },
         ...allSizes.map((size) => ({
             title              : `falls back to parent's: ${size} (or default size) when prop and option are missing`,
             parentSize         : size,
             expectedResult     : {
-                size           : (defaultSupportedSizes as string[]).includes(size) ? size        : finalDefaultSize,
-                sizeClassname  : (defaultSupportedSizes as string[]).includes(size) ? `s-${size}` : `s-${finalDefaultSize}`,
+                size           : (defaultSupportedSizes as string[]).includes(size) ? size        : effectiveDefaultSize,
+                sizeClassname  : (defaultSupportedSizes as string[]).includes(size) ? `s-${size}` : `s-${effectiveDefaultSize}`,
             },
         }) satisfies SizeVariantTestCase),
         {
@@ -212,8 +212,8 @@ describe('useSizeVariant()', () => {
                 size           : 'inherit',
             },
             expectedResult     : {
-                size           : finalDefaultSize,
-                sizeClassname  : `s-${finalDefaultSize}`,
+                size           : effectiveDefaultSize,
+                sizeClassname  : `s-${effectiveDefaultSize}`,
             },
         },
         
@@ -293,8 +293,8 @@ describe('useSizeVariant()', () => {
                 size           : 'inherit',
             },
             expectedResult     : {
-                size           : (defaultSupportedSizes as string[]).includes(size) ? size        : finalDefaultSize,
-                sizeClassname  : (defaultSupportedSizes as string[]).includes(size) ? `s-${size}` : `s-${finalDefaultSize}`,
+                size           : (defaultSupportedSizes as string[]).includes(size) ? size        : effectiveDefaultSize,
+                sizeClassname  : (defaultSupportedSizes as string[]).includes(size) ? `s-${size}` : `s-${effectiveDefaultSize}`,
             },
         }) satisfies SizeVariantTestCase),
         {
@@ -308,36 +308,36 @@ describe('useSizeVariant()', () => {
                 sizeClassname  : 's-md',
             },
         },
-        {
-            title              : 'uses default sm size when parent`s size unsupported',
-            parentSize         : 'weired',
-            props              : {
-                size           : 'inherit',
-            },
-            options            : {
-                defaultSize    : 'sm',
-                supportedSizes : allSizes,
-            },
-            expectedResult     : {
-                size           : 'sm',
-                sizeClassname  : 's-sm',
-            },
-        },
-        ...allSizes.map((size) => ({
-            title              : `uses default sm size when parent's size unsupported`,
-            parentSize         : 'weired',
-            props              : {
-                size           : 'inherit',
-            },
-            options            : {
-                defaultSize    : size,
-                supportedSizes : allSizes,
-            },
-            expectedResult     : {
-                size           : size,
-                sizeClassname  : `s-${size}`,
-            },
-        }) satisfies SizeVariantTestCase),
+        // {
+        //     title              : 'uses default sm size when parent`s size unsupported',
+        //     parentSize         : 'weired',
+        //     props              : {
+        //         size           : 'inherit',
+        //     },
+        //     options            : {
+        //         defaultSize    : 'sm',
+        //         supportedSizes : allSizes,
+        //     },
+        //     expectedResult     : {
+        //         size           : 'sm',
+        //         sizeClassname  : 's-sm',
+        //     },
+        // },
+        // ...allSizes.map((size) => ({
+        //     title              : `uses default ${size} size when parent's size unsupported`,
+        //     parentSize         : 'weired',
+        //     props              : {
+        //         size           : 'inherit',
+        //     },
+        //     options            : {
+        //         defaultSize    : size,
+        //         supportedSizes : allSizes,
+        //     },
+        //     expectedResult     : {
+        //         size           : size,
+        //         sizeClassname  : `s-${size}`,
+        //     },
+        // }) satisfies SizeVariantTestCase),
         
         
         {

@@ -41,6 +41,8 @@ export interface SizeVariantProps<TSize extends string = BasicSize> {
      * - `'lg'`      : large size
      * - `'inherit'` : inherits size from a parent context
      * - Or any custom size token defined by the design system
+     * 
+     * Defaults to `'inherit'` (inherits from parent context).
      */
     size           ?: TSize | 'inherit'
 }
@@ -55,17 +57,21 @@ export interface SizeVariantProps<TSize extends string = BasicSize> {
  */
 export interface SizeVariantOptions<TSize extends string = BasicSize> {
     /**
-     * The default size to apply when no `size` prop is explicitly provided.
+     * Specifies the default size when no `size` prop is explicitly provided:
+     * - `'sm'`      : small size
+     * - `'md'`      : medium size (default)
+     * - `'lg'`      : large size
+     * - `'inherit'` : inherits size from a parent context
+     * - Or any custom size token defined by the design system
      * 
-     * This value is applied if the component does not define its own `size`
-     * or no supported size is available in the inherited size.
+     * Defaults to `'inherit'` (inherits from parent context).
      */
-    defaultSize     : TSize
+    defaultSize    ?: TSize | 'inherit'
     
     /**
      * The list of supported size values for the component.
      * 
-     * If the inherited size is not included in this list,
+     * If the `size` prop is `'inherit'` and the inherited size is not included in this list,
      * the hook will fall back to `defaultSize`.
      */
     supportedSizes  : TSize[]

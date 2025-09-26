@@ -7,19 +7,22 @@ import {
 
 
 /**
- * A default intermediate theme to apply when no `theme` prop is explicitly provided.
+ * A default declarative theme to apply when neither `theme` prop nor `defaultTheme` option is explicitly provided.
  * 
- * This value serves as a transitional fallback before attempting context resolution.
+ * This fallback represents an inherited theme by default,
+ * allowing components to adapt to their surrounding context unless a specific theme is set.
  * 
  * - `'inherit'`: inherits theme from a parent context.
  */
-export const semiDefaultTheme  : Required<ThemeVariantProps<BasicTheme>>['theme'] = 'inherit';
+export const declarativeDefaultTheme : Required<ThemeVariantProps<BasicTheme>>['theme'] = 'inherit';
 
 
 
 /**
- * A default final theme to apply when no effective `theme` value can be resolved.
+ * A default effective theme to apply when no effective `theme` value can be resolved.
  * 
- * - `'primary'`: Typically used as the baseline or main theme style.
+ * This fallback applies when `theme` prop is set to `'inherit'` but no context is available.
+ * 
+ * - `'primary'`: represents the primary theme by default.
  */
-export const finalDefaultTheme : BasicTheme = 'primary';
+export const effectiveDefaultTheme   : BasicTheme = 'primary';

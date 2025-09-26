@@ -15,8 +15,8 @@ import {
 
 // Defaults:
 import {
-    semiDefaultOutlined,
-    finalDefaultOutlined,
+    declarativeDefaultOutlined,
+    effectiveDefaultOutlined,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -128,24 +128,20 @@ const useEffectiveOutlinedValue = (outlined: Required<OutlineVariantProps>['outl
 export const useOutlineVariant = (props: OutlineVariantProps, options?: OutlineVariantOptions): OutlineVariant => {
     // Extract options and assign defaults:
     const {
-        defaultOutlined = finalDefaultOutlined,
-    } = options ?? {};
-    
-    const {
-        defaultOutlined : intermediateDefaultOutlined = semiDefaultOutlined,
+        defaultOutlined = declarativeDefaultOutlined,
     } = options ?? {};
     
     
     
     // Extract props and assign defaults:
     const {
-        outlined        = intermediateDefaultOutlined,
+        outlined : declarativeOutlined = defaultOutlined,
     } = props;
     
     
     
     // Resolve the effective outlined value:
-    const effectiveIsOutlined = useEffectiveOutlinedValue(outlined, defaultOutlined);
+    const effectiveIsOutlined = useEffectiveOutlinedValue(declarativeOutlined, effectiveDefaultOutlined);
     
     
     

@@ -15,8 +15,8 @@ import {
 
 // Defaults:
 import {
-    semiDefaultEmphasized,
-    finalDefaultEmphasized,
+    declarativeDefaultEmphasized,
+    effectiveDefaultEmphasized,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -128,24 +128,20 @@ const useEffectiveEmphasizedValue = (emphasized: Required<EmphasisVariantProps>[
 export const useEmphasisVariant = (props: EmphasisVariantProps, options?: EmphasisVariantOptions): EmphasisVariant => {
     // Extract options and assign defaults:
     const {
-        defaultEmphasized = finalDefaultEmphasized,
-    } = options ?? {};
-    
-    const {
-        defaultEmphasized : intermediateDefaultEmphasized = semiDefaultEmphasized,
+        defaultEmphasized = declarativeDefaultEmphasized,
     } = options ?? {};
     
     
     
     // Extract props and assign defaults:
     const {
-        emphasized        = intermediateDefaultEmphasized,
+        emphasized : declarativeEmphasized = defaultEmphasized,
     } = props;
     
     
     
     // Resolve the effective emphasized value:
-    const effectiveIsEmphasized = useEffectiveEmphasizedValue(emphasized, defaultEmphasized);
+    const effectiveIsEmphasized = useEffectiveEmphasizedValue(declarativeEmphasized, effectiveDefaultEmphasized);
     
     
     

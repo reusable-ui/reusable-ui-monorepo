@@ -16,8 +16,8 @@ import {
 
 // Defaults:
 import {
-    semiDefaultTheme,
-    finalDefaultTheme,
+    declarativeDefaultTheme,
+    effectiveDefaultTheme,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -114,24 +114,20 @@ const useEffectiveThemeValue = <TTheme extends string = BasicTheme>(theme: Requi
 export const useThemeVariant = <TTheme extends string = BasicTheme>(props: ThemeVariantProps<TTheme>, options?: ThemeVariantOptions<TTheme>): ThemeVariant<TTheme> => {
     // Extract options and assign defaults:
     const {
-        defaultTheme = finalDefaultTheme as TTheme,
-    } = options ?? {};
-    
-    const {
-        defaultTheme : intermediateDefaultTheme = semiDefaultTheme as TTheme | 'inherit',
+        defaultTheme = declarativeDefaultTheme as TTheme | 'inherit',
     } = options ?? {};
     
     
     
     // Extract props and assign defaults:
     const {
-        theme        = intermediateDefaultTheme,
+        theme : declarativeTheme = defaultTheme,
     } = props;
     
     
     
     // Resolve the effective theme value:
-    const effectiveTheme = useEffectiveThemeValue<TTheme>(theme, defaultTheme);
+    const effectiveTheme = useEffectiveThemeValue<TTheme>(declarativeTheme, effectiveDefaultTheme as TTheme);
     
     
     

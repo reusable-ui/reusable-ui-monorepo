@@ -7,20 +7,22 @@ import {
 
 
 /**
- * A default intermediate orientation to apply when no `orientation` prop is explicitly provided.
+ * A default declarative orientation to apply when neither `orientation` prop nor `defaultOrientation` option is explicitly provided.
  * 
- * This value serves as a transitional fallback before attempting context resolution.
+ * This fallback represents vertical orientation by default,
+ * suiting safe stacking layouts for narrow screens.
  * 
- * - `'block'`: vertical orientation, aligns along the block axis — commonly used for stacking elements top-to-bottom.
+ * - `'block'`: represents vertical orientation by default.
  */
-export const semiDefaultOrientation  : Required<OrientationVariantProps>['orientation'] = 'block';
+export const declarativeDefaultOrientation  : Required<OrientationVariantProps>['orientation'] = 'block';
 
 
 
 /**
- * A default final orientation to apply when no effective `orientation` value can be resolved.
+ * A default effective orientation to apply when no effective `orientation` value can be resolved.
  * 
- * - `'block'`: vertical orientation, aligns along the block axis — commonly used for stacking elements top-to-bottom.
- *   Ideal for vertical layouts such as form fields, lists, or column-based arrangements.
+ * This fallback applies when `orientation` prop is set to `'inherit'` or `'invert'` but no context is available.
+ * 
+ * - `'block'`: represents vertical orientation by default.
  */
-export const finalDefaultOrientation : Orientation = 'block';
+export const effectiveDefaultOrientation    : Orientation = 'block';

@@ -16,8 +16,8 @@ import {
 
 // Defaults:
 import {
-    semiDefaultSize,
-    finalDefaultSize,
+    declarativeDefaultSize,
+    effectiveDefaultSize,
     defaultSupportedSizes,
 }                           from './internal-defaults.js'
 
@@ -157,25 +157,21 @@ export function useSizeVariant(props: SizeVariantProps<BasicSize>): SizeVariant<
 export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVariantProps<TSize>, options?: SizeVariantOptions<TSize>): SizeVariant<TSize> {
     // Extract options and assign defaults:
     const {
-        defaultSize    = finalDefaultSize      as TSize,
-        supportedSizes = defaultSupportedSizes as TSize[],
-    } = options ?? {};
-    
-    const {
-        defaultSize    : intermediateDefaultSize = semiDefaultSize as TSize | 'inherit',
+        defaultSize    = declarativeDefaultSize as TSize | 'inherit',
+        supportedSizes = defaultSupportedSizes  as TSize[],
     } = options ?? {};
     
     
     
     // Extract props and assign defaults:
     const {
-        size           = intermediateDefaultSize,
+        size : declarativeSize = defaultSize,
     } = props;
     
     
     
     // Resolve the effective size value:
-    const effectiveSize = useEffectiveSizeValue<TSize>(size, defaultSize, supportedSizes);
+    const effectiveSize = useEffectiveSizeValue<TSize>(declarativeSize, effectiveDefaultSize as TSize, supportedSizes);
     
     
     

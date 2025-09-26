@@ -6,19 +6,22 @@ import {
 
 
 /**
- * A default intermediate emphasized state to apply when no `emphasized` prop is explicitly provided.
+ * A default declarative emphasis appearance to apply when neither `emphasized` prop nor `defaultEmphasized` option is explicitly provided.
  * 
- * This value serves as a transitional fallback before attempting context resolution.
+ * This fallback represents an inherited emphasis appearance by default,
+ * allowing components to adapt to their surrounding context unless explicitly set.
  * 
  * - `'inherit'`: inherits emphasis appearance from a parent context.
  */
-export const semiDefaultEmphasized  : Required<EmphasisVariantProps>['emphasized'] = 'inherit';
+export const declarativeDefaultEmphasized : Required<EmphasisVariantProps>['emphasized'] = 'inherit';
 
 
 
 /**
- * A default final emphasized state to apply when no effective `emphasized` value can be resolved.
+ * A default effective emphasis appearance to apply when no effective `emphasized` value can be resolved.
  * 
- * Typically used to control visual prominence when direct configuration is absent.
+ * This fallback applies when `emphasized` prop is set to `'inherit'` or `'invert'` but no context is available.
+ * 
+ * - `false`: represents a non-emphasized appearance by default.
  */
-export const finalDefaultEmphasized : boolean = false;
+export const effectiveDefaultEmphasized   : boolean = false;

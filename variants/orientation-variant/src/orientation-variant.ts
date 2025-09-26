@@ -16,8 +16,8 @@ import {
 
 // Defaults:
 import {
-    semiDefaultOrientation,
-    finalDefaultOrientation,
+    declarativeDefaultOrientation,
+    effectiveDefaultOrientation,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -143,24 +143,20 @@ const useEffectiveOrientationValue = (orientation: Required<OrientationVariantPr
 export const useOrientationVariant = (props: OrientationVariantProps, options?: OrientationVariantOptions): OrientationVariant => {
     // Extract options and assign defaults:
     const {
-        defaultOrientation = finalDefaultOrientation,
-    } = options ?? {};
-    
-    const {
-        defaultOrientation : intermediateDefaultOrientation = semiDefaultOrientation,
+        defaultOrientation = declarativeDefaultOrientation,
     } = options ?? {};
     
     
     
     // Extract props and assign defaults:
     const {
-        orientation        = intermediateDefaultOrientation,
+        orientation : declarativeOrientation = defaultOrientation,
     } = props;
     
     
     
     // Resolve the effective orientation value:
-    const effectiveOrientation = useEffectiveOrientationValue(orientation, defaultOrientation);
+    const effectiveOrientation = useEffectiveOrientationValue(declarativeOrientation, effectiveDefaultOrientation);
     
     
     

@@ -28,6 +28,8 @@ export interface MildVariantProps {
      * - `false`    : does not soften the component
      * - `'inherit'`: inherits mild appearance from a parent context
      * - `'invert'` : flips the inherited mild appearance (`true` ⇄ `false`)
+     * 
+     * Defaults to `'inherit'` (inherits from parent context).
      */
     mild          ?: boolean | 'inherit' | 'invert'
 }
@@ -39,9 +41,15 @@ export interface MildVariantProps {
  */
 export interface MildVariantOptions {
     /**
-     * The default mild state to apply when no `mild` prop is explicitly provided.
+     * Specifies the default mild appearance when no `mild` prop is explicitly provided:
+     * - `true`     : softens (reading friendly) the component
+     * - `false`    : does not soften the component
+     * - `'inherit'`: inherits mild appearance from a parent context
+     * - `'invert'` : flips the inherited mild appearance (`true` ⇄ `false`)
+     * 
+     * Defaults to `'inherit'` (inherits from parent context).
      */
-    defaultMild   ?: boolean
+    defaultMild   ?: boolean | 'inherit' | 'invert'
 }
 
 /**

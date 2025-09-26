@@ -7,21 +7,22 @@ import {
 
 
 /**
- * A default intermediate flow direction to apply when no `flowDirection` prop is explicitly provided.
+ * A default declarative flow direction to apply when neither `flowDirection` prop nor `defaultFlowDirection` option is explicitly provided.
  * 
- * This value serves as a transitional fallback before attempting context resolution.
+ * This fallback aligns to the logical end edge by default,
+ * suiting common use cases like dropdowns and overlays that expand away from their anchor.
  * 
- * - `'end'`: Corresponds to the logical end edge — commonly resolved to the bottom in vertical layouts or right (LTR) in horizontal layouts.
- *   Ideal for dropdowns, slides, and overlays that expand away from their anchor.
+ * - `'end'`: aligns to the logical end edge by default.
  */
-export const semiDefaultFlowDirection  : Required<FlowDirectionVariantProps>['flowDirection'] = 'end';
+export const declarativeDefaultFlowDirection : Required<FlowDirectionVariantProps>['flowDirection'] = 'end';
 
 
 
 /**
- * A default final flow direction to apply when no effective `flowDirection` value can be resolved.
+ * A default effective flow direction to apply when no effective `flowDirection` value can be resolved.
  * 
- * - `'end'`: Corresponds to the logical end edge — commonly resolved to the bottom in vertical layouts or right (LTR) in horizontal layouts.
- *   Ideal for dropdowns, slides, and overlays that expand away from their anchor.
+ * This fallback applies when `flowDirection` prop is set to `'inherit'` or `'invert'` but no context is available.
+ * 
+ * - `'end'`: aligns to the logical end edge by default.
  */
-export const finalDefaultFlowDirection : FlowDirection = 'end';
+export const effectiveDefaultFlowDirection   : FlowDirection = 'end';

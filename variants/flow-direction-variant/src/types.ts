@@ -40,6 +40,8 @@ export interface FlowDirectionVariantProps {
      * - `'end'`    : aligns to the logical end edge (e.g. right in LTR, bottom in top-down modes)
      * - `'inherit'`: inherits flow direction from a parent context
      * - `'invert'` : flips the inherited flow direction (`'start'` ⇄ `'end'`)
+     * 
+     * Defaults to `'end'` (logical end edge).
      */
     flowDirection          ?: FlowDirection | 'inherit' | 'invert'
 }
@@ -51,9 +53,15 @@ export interface FlowDirectionVariantProps {
  */
 export interface FlowDirectionVariantOptions {
     /**
-     * The default flow direction to apply when no `flowDirection` prop is explicitly provided.
+     * Specifies the default flow direction when no `flowDirection` prop is explicitly provided:
+     * - `'start'`  : aligns to the logical start edge (e.g. left in LTR, top in top-down modes)
+     * - `'end'`    : aligns to the logical end edge (e.g. right in LTR, bottom in top-down modes)
+     * - `'inherit'`: inherits flow direction from a parent context
+     * - `'invert'` : flips the inherited flow direction (`'start'` ⇄ `'end'`)
+     * 
+     * Defaults to `'end'` (logical end edge).
      */
-    defaultFlowDirection   ?: FlowDirection
+    defaultFlowDirection   ?: FlowDirection | 'inherit' | 'invert'
 }
 
 /**

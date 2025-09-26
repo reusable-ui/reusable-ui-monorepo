@@ -16,8 +16,8 @@ import {
 
 // Defaults:
 import {
-    semiDefaultFlowDirection,
-    finalDefaultFlowDirection,
+    declarativeDefaultFlowDirection,
+    effectiveDefaultFlowDirection,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -134,24 +134,20 @@ const useEffectiveFlowDirectionValue = (flowDirection: Required<FlowDirectionVar
 export const useFlowDirectionVariant = (props: FlowDirectionVariantProps, options?: FlowDirectionVariantOptions): FlowDirectionVariant => {
     // Extract options and assign defaults:
     const {
-        defaultFlowDirection = finalDefaultFlowDirection,
-    } = options ?? {};
-    
-    const {
-        defaultFlowDirection : intermediateDefaultFlowDirection = semiDefaultFlowDirection,
+        defaultFlowDirection = declarativeDefaultFlowDirection,
     } = options ?? {};
     
     
     
     // Extract props and assign defaults:
     const {
-        flowDirection        = intermediateDefaultFlowDirection,
+        flowDirection : declarativeFlowDirection = defaultFlowDirection,
     } = props;
     
     
     
     // Resolve the effective flow direction value:
-    const effectiveFlowDirection = useEffectiveFlowDirectionValue(flowDirection, defaultFlowDirection);
+    const effectiveFlowDirection = useEffectiveFlowDirectionValue(declarativeFlowDirection, effectiveDefaultFlowDirection);
     
     
     
