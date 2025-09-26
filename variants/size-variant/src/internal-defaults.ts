@@ -31,7 +31,8 @@ export const effectiveDefaultSize   : BasicSize = 'md';
 /**
  * A default list of supported size variants when no `supportedSizes` option is explicitly provided.
  * 
- * This fallback includes common size tokens, ensuring components can adapt to typical size variations.
+ * This fallback filters out non-supported sizes when inheriting size from context,
+ * ensuring the component only adopts sizes that are explicitly allowed.
  * 
  * - `'sm'` : small size
  * - `'md'` : medium size
