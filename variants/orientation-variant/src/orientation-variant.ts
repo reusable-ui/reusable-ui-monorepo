@@ -17,7 +17,7 @@ import {
 // Defaults:
 import {
     defaultDeclarativeOrientation,
-    defaultEffectiveOrientation,
+    defaultFallbackOrientation,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -156,7 +156,7 @@ export const useOrientationVariant = (props: OrientationVariantProps, options?: 
     
     
     // Resolve the effective orientation value:
-    const effectiveOrientation = useEffectiveOrientationValue(declarativeOrientation, defaultEffectiveOrientation);
+    const effectiveOrientation = useEffectiveOrientationValue(declarativeOrientation, defaultFallbackOrientation);
     
     
     

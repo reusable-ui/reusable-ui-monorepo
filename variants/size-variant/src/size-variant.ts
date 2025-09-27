@@ -17,7 +17,7 @@ import {
 // Defaults:
 import {
     defaultDeclarativeSize,
-    defaultEffectiveSize,
+    defaultFallbackSize,
     defaultSupportedSizes,
 }                           from './internal-defaults.js'
 
@@ -171,7 +171,7 @@ export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVari
     
     
     // Resolve the effective size value:
-    const effectiveSize = useEffectiveSizeValue<TSize>(declarativeSize, supportedSizes, defaultEffectiveSize as TSize);
+    const effectiveSize = useEffectiveSizeValue<TSize>(declarativeSize, supportedSizes, defaultFallbackSize as TSize);
     
     
     

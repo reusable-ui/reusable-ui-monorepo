@@ -11,7 +11,7 @@ import {
     type FlowDirectionVariant,
 } from '../dist/types.js'
 import {
-    defaultEffectiveFlowDirection,
+    defaultFallbackFlowDirection,
 } from '../dist/internal-defaults.js'
 import {
     useFlowDirectionVariant,
@@ -150,8 +150,8 @@ describe('useFlowDirectionVariant()', () => {
         {
             title                      : 'falls back to system default when prop and option are missing',
             expectedResult             : {
-                flowDirection          : defaultEffectiveFlowDirection,
-                flowDirectionClassname : `f-${defaultEffectiveFlowDirection}`,
+                flowDirection          : defaultFallbackFlowDirection,
+                flowDirectionClassname : `f-${defaultFallbackFlowDirection}`,
             },
         },
         {
@@ -161,8 +161,8 @@ describe('useFlowDirectionVariant()', () => {
                 flowDirection          : 'inherit',
             },
             expectedResult             : {
-                flowDirection          : defaultEffectiveFlowDirection,
-                flowDirectionClassname : `f-${defaultEffectiveFlowDirection}`,
+                flowDirection          : defaultFallbackFlowDirection,
+                flowDirectionClassname : `f-${defaultFallbackFlowDirection}`,
             },
         },
         {
@@ -172,8 +172,8 @@ describe('useFlowDirectionVariant()', () => {
                 flowDirection          : 'invert',
             },
             expectedResult             : {
-                flowDirection          : defaultEffectiveFlowDirection,
-                flowDirectionClassname : `f-${defaultEffectiveFlowDirection}`,
+                flowDirection          : defaultFallbackFlowDirection,
+                flowDirectionClassname : `f-${defaultFallbackFlowDirection}`,
             },
         },
         {

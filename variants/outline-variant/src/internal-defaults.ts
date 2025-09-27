@@ -18,10 +18,10 @@ export const defaultDeclarativeOutlined : Required<OutlineVariantProps>['outline
 
 
 /**
- * A default effective outline appearance to apply when no effective `outlined` value can be resolved.
+ * A default fallback outline appearance to apply when no `fallbackOutlined` option is explicitly provided and no effective outlined value can be resolved.
  * 
  * This fallback applies when `outlined` prop is set to `'inherit'` or `'invert'` but no context is available.
  * 
  * - `false`: represents a non-outlined appearance by default.
  */
-export const defaultEffectiveOutlined   : boolean = false;
+export const defaultFallbackOutlined    : boolean = false;

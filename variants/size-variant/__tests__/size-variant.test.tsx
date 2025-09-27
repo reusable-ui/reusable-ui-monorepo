@@ -11,7 +11,7 @@ import {
     type SizeVariant,
 } from '../dist/types.js'
 import {
-    defaultEffectiveSize,
+    defaultFallbackSize,
     defaultSupportedSizes,
 } from '../dist/internal-defaults.js'
 import {
@@ -193,16 +193,16 @@ describe('useSizeVariant()', () => {
         {
             title              : 'falls back to system default when prop and option are missing',
             expectedResult     : {
-                size           : defaultEffectiveSize,
-                sizeClassname  : `s-${defaultEffectiveSize}`,
+                size           : defaultFallbackSize,
+                sizeClassname  : `s-${defaultFallbackSize}`,
             },
         },
         ...allSizes.map((size) => ({
             title              : `falls back to parent's: ${size} (or default size) when prop and option are missing`,
             parentSize         : size,
             expectedResult     : {
-                size           : (defaultSupportedSizes as string[]).includes(size) ? size        : defaultEffectiveSize,
-                sizeClassname  : (defaultSupportedSizes as string[]).includes(size) ? `s-${size}` : `s-${defaultEffectiveSize}`,
+                size           : (defaultSupportedSizes as string[]).includes(size) ? size        : defaultFallbackSize,
+                sizeClassname  : (defaultSupportedSizes as string[]).includes(size) ? `s-${size}` : `s-${defaultFallbackSize}`,
             },
         }) satisfies SizeVariantTestCase),
         {
@@ -212,8 +212,8 @@ describe('useSizeVariant()', () => {
                 size           : 'inherit',
             },
             expectedResult     : {
-                size           : defaultEffectiveSize,
-                sizeClassname  : `s-${defaultEffectiveSize}`,
+                size           : defaultFallbackSize,
+                sizeClassname  : `s-${defaultFallbackSize}`,
             },
         },
         
@@ -293,8 +293,8 @@ describe('useSizeVariant()', () => {
                 size           : 'inherit',
             },
             expectedResult     : {
-                size           : (defaultSupportedSizes as string[]).includes(size) ? size        : defaultEffectiveSize,
-                sizeClassname  : (defaultSupportedSizes as string[]).includes(size) ? `s-${size}` : `s-${defaultEffectiveSize}`,
+                size           : (defaultSupportedSizes as string[]).includes(size) ? size        : defaultFallbackSize,
+                sizeClassname  : (defaultSupportedSizes as string[]).includes(size) ? `s-${size}` : `s-${defaultFallbackSize}`,
             },
         }) satisfies SizeVariantTestCase),
         {

@@ -19,14 +19,14 @@ export const defaultDeclarativeSize : Required<SizeVariantProps<BasicSize>>['siz
 
 
 /**
- * A default effective size to apply when no effective `size` value can be resolved.
+ * A default fallback size to apply when no `fallbackSize` option is explicitly provided and no effective size value can be resolved.
  * 
- * This fallback applies when `size` prop is set to `'inherit'` but no context is available, or
- * when the inherited size is not included in the supported sizes list.
+ * This fallback applies when `size` prop is set to `'inherit'` but no context is available,
+ * or if the inherited size is not included in the supported sizes list.
  * 
  * - `'md'`: represents medium size by default.
  */
-export const defaultEffectiveSize   : BasicSize = 'md';
+export const defaultFallbackSize    : BasicSize = 'md';
 
 /**
  * A default list of supported size variants when no `supportedSizes` option is explicitly provided.

@@ -19,10 +19,10 @@ export const defaultDeclarativeTheme : Required<ThemeVariantProps<BasicTheme>>['
 
 
 /**
- * A default effective theme to apply when no effective `theme` value can be resolved.
+ * A default fallback theme to apply when no `fallbackTheme` option is explicitly provided and no effective theme value can be resolved.
  * 
  * This fallback applies when `theme` prop is set to `'inherit'` but no context is available.
  * 
  * - `'primary'`: represents the primary theme by default.
  */
-export const defaultEffectiveTheme   : BasicTheme = 'primary';
+export const defaultFallbackTheme    : BasicTheme = 'primary';

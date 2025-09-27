@@ -18,10 +18,10 @@ export const defaultDeclarativeEmphasized : Required<EmphasisVariantProps>['emph
 
 
 /**
- * A default effective emphasis appearance to apply when no effective `emphasized` value can be resolved.
+ * A default fallback emphasis appearance to apply when no `fallbackEmphasized` option is explicitly provided and no effective emphasized value can be resolved.
  * 
  * This fallback applies when `emphasized` prop is set to `'inherit'` or `'invert'` but no context is available.
  * 
  * - `false`: represents a non-emphasized appearance by default.
  */
-export const defaultEffectiveEmphasized   : boolean = false;
+export const defaultFallbackEmphasized    : boolean = false;

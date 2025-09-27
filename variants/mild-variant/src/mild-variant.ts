@@ -16,7 +16,7 @@ import {
 // Defaults:
 import {
     defaultDeclarativeMild,
-    defaultEffectiveMild,
+    defaultFallbackMild,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -141,7 +141,7 @@ export const useMildVariant = (props: MildVariantProps, options?: MildVariantOpt
     
     
     // Resolve the effective mild value:
-    const effectiveIsMild = useEffectiveMildValue(declarativeMild, defaultEffectiveMild);
+    const effectiveIsMild = useEffectiveMildValue(declarativeMild, defaultFallbackMild);
     
     
     

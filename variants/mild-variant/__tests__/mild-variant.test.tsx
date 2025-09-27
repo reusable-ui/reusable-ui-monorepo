@@ -10,7 +10,7 @@ import {
     type MildVariant,
 } from '../dist/types.js'
 import {
-    defaultEffectiveMild,
+    defaultFallbackMild,
 } from '../dist/internal-defaults.js'
 import {
     useMildVariant,
@@ -149,8 +149,8 @@ describe('useMildVariant()', () => {
         {
             title             : 'falls back to system default when prop and option are missing',
             expectedResult    : {
-                mild          : defaultEffectiveMild,
-                mildClassname : defaultEffectiveMild ? 'is-mild' : 'not-mild',
+                mild          : defaultFallbackMild,
+                mildClassname : defaultFallbackMild ? 'is-mild' : 'not-mild',
             },
         },
         {
@@ -176,8 +176,8 @@ describe('useMildVariant()', () => {
                 mild          : 'inherit',
             },
             expectedResult    : {
-                mild          : defaultEffectiveMild,
-                mildClassname : defaultEffectiveMild ? 'is-mild' : 'not-mild',
+                mild          : defaultFallbackMild,
+                mildClassname : defaultFallbackMild ? 'is-mild' : 'not-mild',
             },
         },
         {
@@ -187,8 +187,8 @@ describe('useMildVariant()', () => {
                 mild          : 'invert',
             },
             expectedResult    : {
-                mild          : defaultEffectiveMild,
-                mildClassname : defaultEffectiveMild ? 'is-mild' : 'not-mild',
+                mild          : defaultFallbackMild,
+                mildClassname : defaultFallbackMild ? 'is-mild' : 'not-mild',
             },
         },
         {

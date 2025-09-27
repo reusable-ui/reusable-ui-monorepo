@@ -18,10 +18,10 @@ export const defaultDeclarativeMild : Required<MildVariantProps>['mild'] = 'inhe
 
 
 /**
- * A default effective mild appearance to apply when no effective `mild` value can be resolved.
+ * A default fallback mild appearance to apply when no `fallbackMild` option is explicitly provided and no effective mild value can be resolved.
  * 
  * This fallback applies when `mild` prop is set to `'inherit'` or `'invert'` but no context is available.
  * 
  * - `false`: represents a non-mild appearance by default.
  */
-export const defaultEffectiveMild   : boolean = false;
+export const defaultFallbackMild    : boolean = false;

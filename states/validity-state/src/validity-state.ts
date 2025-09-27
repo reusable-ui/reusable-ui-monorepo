@@ -20,7 +20,7 @@ import {
 // Defaults:
 import {
     defaultDeclarativeValidity,
-    defaultEffectiveValidity,
+    defaultFallbackValidity,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -68,7 +68,7 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
     // Extract props and assign defaults:
     const {
         validity         : controlledValidity = defaultValidity,
-        computedValidity                      = defaultEffectiveValidity,
+        computedValidity                      = defaultFallbackValidity,
     } = props;
     
     
@@ -183,7 +183,7 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     // Extract props and assign defaults:
     const {
         validity         : controlledValidity = defaultValidity,
-        computedValidity                      = defaultEffectiveValidity,
+        computedValidity                      = defaultFallbackValidity,
         onValidityUpdate,
     } = props;
     

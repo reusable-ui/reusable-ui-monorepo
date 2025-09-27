@@ -16,7 +16,7 @@ import {
 // Defaults:
 import {
     defaultDeclarativeEmphasized,
-    defaultEffectiveEmphasized,
+    defaultFallbackEmphasized,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -141,7 +141,7 @@ export const useEmphasisVariant = (props: EmphasisVariantProps, options?: Emphas
     
     
     // Resolve the effective emphasized value:
-    const effectiveIsEmphasized = useEffectiveEmphasisValue(declarativeEmphasized, defaultEffectiveEmphasized);
+    const effectiveIsEmphasized = useEffectiveEmphasisValue(declarativeEmphasized, defaultFallbackEmphasized);
     
     
     

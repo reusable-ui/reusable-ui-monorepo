@@ -14,15 +14,15 @@ import {
  * 
  * - `'block'`: represents vertical orientation by default.
  */
-export const defaultDeclarativeOrientation  : Required<OrientationVariantProps>['orientation'] = 'block';
+export const defaultDeclarativeOrientation : Required<OrientationVariantProps>['orientation'] = 'block';
 
 
 
 /**
- * A default effective orientation to apply when no effective `orientation` value can be resolved.
+ * A default fallback orientation to apply when no `fallbackOrientation` option is explicitly provided and no effective orientation value can be resolved.
  * 
  * This fallback applies when `orientation` prop is set to `'inherit'` or `'invert'` but no context is available.
  * 
  * - `'block'`: represents vertical orientation by default.
  */
-export const defaultEffectiveOrientation    : Orientation = 'block';
+export const defaultFallbackOrientation    : Orientation = 'block';

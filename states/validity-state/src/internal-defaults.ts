@@ -18,11 +18,11 @@ export const defaultDeclarativeValidity : Required<ValidityStateProps>['validity
 
 
 /**
- * A default effective validity state to apply when no effective `validity` value can be resolved.
+ * A default fallback validity state to apply when no `fallbackValidity` option is explicitly provided and no effective validity value can be resolved.
  * 
  * This fallback applies when `validity` prop is set to `'auto'` but no `computedValidity` is provided.
  * It ensures the component remains in an unresolved state rather than defaulting to valid or invalid.
  * 
  * - `null`: represents an unresolved or pending validity state.
  */
-export const defaultEffectiveValidity   : boolean | null = null;
+export const defaultFallbackValidity    : boolean | null = null;

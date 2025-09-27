@@ -17,7 +17,7 @@ import {
 // Defaults:
 import {
     defaultDeclarativeFlowDirection,
-    defaultEffectiveFlowDirection,
+    defaultFallbackFlowDirection,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -147,7 +147,7 @@ export const useFlowDirectionVariant = (props: FlowDirectionVariantProps, option
     
     
     // Resolve the effective flow direction value:
-    const effectiveFlowDirection = useEffectiveFlowDirectionValue(declarativeFlowDirection, defaultEffectiveFlowDirection);
+    const effectiveFlowDirection = useEffectiveFlowDirectionValue(declarativeFlowDirection, defaultFallbackFlowDirection);
     
     
     

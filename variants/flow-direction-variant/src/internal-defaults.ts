@@ -19,10 +19,10 @@ export const defaultDeclarativeFlowDirection : Required<FlowDirectionVariantProp
 
 
 /**
- * A default effective flow direction to apply when no effective `flowDirection` value can be resolved.
+ * A default fallback flow direction to apply when no `fallbackFlowDirection` option is explicitly provided and no effective flow direction value can be resolved.
  * 
  * This fallback applies when `flowDirection` prop is set to `'inherit'` or `'invert'` but no context is available.
  * 
  * - `'end'`: aligns to the logical end edge by default.
  */
-export const defaultEffectiveFlowDirection   : FlowDirection = 'end';
+export const defaultFallbackFlowDirection    : FlowDirection = 'end';

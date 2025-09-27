@@ -17,7 +17,7 @@ import {
 // Defaults:
 import {
     defaultDeclarativeTheme,
-    defaultEffectiveTheme,
+    defaultFallbackTheme,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -127,7 +127,7 @@ export const useThemeVariant = <TTheme extends string = BasicTheme>(props: Theme
     
     
     // Resolve the effective theme value:
-    const effectiveTheme = useEffectiveThemeValue<TTheme>(declarativeTheme, defaultEffectiveTheme as TTheme);
+    const effectiveTheme = useEffectiveThemeValue<TTheme>(declarativeTheme, defaultFallbackTheme as TTheme);
     
     
     
