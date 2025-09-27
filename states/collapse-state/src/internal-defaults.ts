@@ -5,4 +5,4 @@
  * 
  * - `false`: the component is initially collapsed by default.
  */
-export const initialDefaultExpanded : boolean = false;
+export const defaultInitialExpanded : boolean = false;

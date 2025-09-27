@@ -14,7 +14,7 @@ import {
  * 
  * - `'end'`: aligns to the logical end edge by default.
  */
-export const declarativeDefaultFlowDirection : Required<FlowDirectionVariantProps>['flowDirection'] = 'end';
+export const defaultDeclarativeFlowDirection : Required<FlowDirectionVariantProps>['flowDirection'] = 'end';
 
 
 
@@ -25,4 +25,4 @@ export const declarativeDefaultFlowDirection : Required<FlowDirectionVariantProp
  * 
  * - `'end'`: aligns to the logical end edge by default.
  */
-export const effectiveDefaultFlowDirection   : FlowDirection = 'end';
+export const defaultEffectiveFlowDirection   : FlowDirection = 'end';

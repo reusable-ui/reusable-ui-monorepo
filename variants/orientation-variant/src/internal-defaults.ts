@@ -14,7 +14,7 @@ import {
  * 
  * - `'block'`: represents vertical orientation by default.
  */
-export const declarativeDefaultOrientation  : Required<OrientationVariantProps>['orientation'] = 'block';
+export const defaultDeclarativeOrientation  : Required<OrientationVariantProps>['orientation'] = 'block';
 
 
 
@@ -25,4 +25,4 @@ export const declarativeDefaultOrientation  : Required<OrientationVariantProps>[
  * 
  * - `'block'`: represents vertical orientation by default.
  */
-export const effectiveDefaultOrientation    : Orientation = 'block';
+export const defaultEffectiveOrientation    : Orientation = 'block';

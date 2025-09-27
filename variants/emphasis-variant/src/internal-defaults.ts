@@ -13,7 +13,7 @@ import {
  * 
  * - `'inherit'`: inherits emphasis appearance from a parent context.
  */
-export const declarativeDefaultEmphasized : Required<EmphasisVariantProps>['emphasized'] = 'inherit';
+export const defaultDeclarativeEmphasized : Required<EmphasisVariantProps>['emphasized'] = 'inherit';
 
 
 
@@ -24,4 +24,4 @@ export const declarativeDefaultEmphasized : Required<EmphasisVariantProps>['emph
  * 
  * - `false`: represents a non-emphasized appearance by default.
  */
-export const effectiveDefaultEmphasized   : boolean = false;
+export const defaultEffectiveEmphasized   : boolean = false;

@@ -14,7 +14,7 @@ import {
  * 
  * - `'inherit'`: inherits size from a parent context.
  */
-export const declarativeDefaultSize : Required<SizeVariantProps<BasicSize>>['size'] = 'inherit';
+export const defaultDeclarativeSize : Required<SizeVariantProps<BasicSize>>['size'] = 'inherit';
 
 
 
@@ -26,7 +26,7 @@ export const declarativeDefaultSize : Required<SizeVariantProps<BasicSize>>['siz
  * 
  * - `'md'`: represents medium size by default.
  */
-export const effectiveDefaultSize   : BasicSize = 'md';
+export const defaultEffectiveSize   : BasicSize = 'md';
 
 /**
  * A default list of supported size variants when no `supportedSizes` option is explicitly provided.

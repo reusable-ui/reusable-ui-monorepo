@@ -13,4 +13,4 @@ import {
  * 
  * - `false`: the component is not excited by default.
  */
-export const declarativeDefaultExcited : Required<ExciteStateProps>['excited']  = false;
+export const defaultDeclarativeExcited : Required<ExciteStateProps>['excited']  = false;

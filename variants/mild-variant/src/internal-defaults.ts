@@ -13,7 +13,7 @@ import {
  * 
  * - `'inherit'`: inherits mild appearance from a parent context.
  */
-export const declarativeDefaultMild : Required<MildVariantProps>['mild'] = 'inherit';
+export const defaultDeclarativeMild : Required<MildVariantProps>['mild'] = 'inherit';
 
 
 
@@ -24,4 +24,4 @@ export const declarativeDefaultMild : Required<MildVariantProps>['mild'] = 'inhe
  * 
  * - `false`: represents a non-mild appearance by default.
  */
-export const effectiveDefaultMild   : boolean = false;
+export const defaultEffectiveMild   : boolean = false;

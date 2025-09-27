@@ -13,4 +13,4 @@ import {
  * 
  * - `false`: preserves full visual framing by default.
  */
-export const declarativeDefaultBare : Extract<Required<BareVariantProps<true>>['bare'], false> = false;
+export const defaultDeclarativeBare : Extract<Required<BareVariantProps<true>>['bare'], false> = false;

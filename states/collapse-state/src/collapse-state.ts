@@ -20,7 +20,7 @@ import {
 
 // Defaults:
 import {
-    initialDefaultExpanded,
+    defaultInitialExpanded,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -68,7 +68,7 @@ import {
 export const useCollapseState = (props: CollapseStateProps & { defaultExpanded: never }, options?: Pick<CollapseStateOptions, 'defaultExpanded'>) : boolean => {
     // Extract options and assign defaults:
     const {
-        defaultExpanded   = initialDefaultExpanded,
+        defaultExpanded   = defaultInitialExpanded,
     } = options ?? {};
     
     
@@ -144,7 +144,7 @@ export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: Colla
 export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: CollapseStateProps & UncontrollableCollapseStateProps & CollapseStateChangeProps<TChangeEvent>, options?: Pick<CollapseStateOptions, 'defaultExpanded'>): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
     // Extract options and assign defaults:
     const {
-        defaultExpanded   = initialDefaultExpanded,
+        defaultExpanded   = defaultInitialExpanded,
     } = options ?? {};
     
     
@@ -246,7 +246,7 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
 export const useCollapseBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: CollapseStateProps & UncontrollableCollapseStateProps & CollapseStateChangeProps<TChangeEvent>, options?: CollapseStateOptions): CollapseBehaviorState<TElement, TChangeEvent> => {
     // Extract options and assign defaults:
     const {
-        defaultExpanded   = initialDefaultExpanded,
+        defaultExpanded   = defaultInitialExpanded,
         animationPattern  = ['expand', 'collapse'], // Matches animation names for transitions
         animationBubbling = false,
     } = options ?? {};

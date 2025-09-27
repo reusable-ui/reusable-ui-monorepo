@@ -11,7 +11,7 @@ import {
     type SizeVariant,
 } from '../dist/types.js'
 import {
-    effectiveDefaultSize,
+    defaultEffectiveSize,
     defaultSupportedSizes,
 } from '../dist/internal-defaults.js'
 import {
@@ -193,16 +193,16 @@ describe('useSizeVariant()', () => {
         {
             title              : 'falls back to system default when prop and option are missing',
             expectedResult     : {
-                size           : effectiveDefaultSize,
-                sizeClassname  : `s-${effectiveDefaultSize}`,
+                size           : defaultEffectiveSize,
+                sizeClassname  : `s-${defaultEffectiveSize}`,
             },
         },
         ...allSizes.map((size) => ({
             title              : `falls back to parent's: ${size} (or default size) when prop and option are missing`,
             parentSize         : size,
             expectedResult     : {
-                size           : (defaultSupportedSizes as string[]).includes(size) ? size        : effectiveDefaultSize,
-                sizeClassname  : (defaultSupportedSizes as string[]).includes(size) ? `s-${size}` : `s-${effectiveDefaultSize}`,
+                size           : (defaultSupportedSizes as string[]).includes(size) ? size        : defaultEffectiveSize,
+                sizeClassname  : (defaultSupportedSizes as string[]).includes(size) ? `s-${size}` : `s-${defaultEffectiveSize}`,
             },
         }) satisfies SizeVariantTestCase),
         {
@@ -212,8 +212,8 @@ describe('useSizeVariant()', () => {
                 size           : 'inherit',
             },
             expectedResult     : {
-                size           : effectiveDefaultSize,
-                sizeClassname  : `s-${effectiveDefaultSize}`,
+                size           : defaultEffectiveSize,
+                sizeClassname  : `s-${defaultEffectiveSize}`,
             },
         },
         
@@ -293,8 +293,8 @@ describe('useSizeVariant()', () => {
                 size           : 'inherit',
             },
             expectedResult     : {
-                size           : (defaultSupportedSizes as string[]).includes(size) ? size        : effectiveDefaultSize,
-                sizeClassname  : (defaultSupportedSizes as string[]).includes(size) ? `s-${size}` : `s-${effectiveDefaultSize}`,
+                size           : (defaultSupportedSizes as string[]).includes(size) ? size        : defaultEffectiveSize,
+                sizeClassname  : (defaultSupportedSizes as string[]).includes(size) ? `s-${size}` : `s-${defaultEffectiveSize}`,
             },
         }) satisfies SizeVariantTestCase),
         {

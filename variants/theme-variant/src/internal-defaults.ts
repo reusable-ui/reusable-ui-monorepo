@@ -14,7 +14,7 @@ import {
  * 
  * - `'inherit'`: inherits theme from a parent context.
  */
-export const declarativeDefaultTheme : Required<ThemeVariantProps<BasicTheme>>['theme'] = 'inherit';
+export const defaultDeclarativeTheme : Required<ThemeVariantProps<BasicTheme>>['theme'] = 'inherit';
 
 
 
@@ -25,4 +25,4 @@ export const declarativeDefaultTheme : Required<ThemeVariantProps<BasicTheme>>['
  * 
  * - `'primary'`: represents the primary theme by default.
  */
-export const effectiveDefaultTheme   : BasicTheme = 'primary';
+export const defaultEffectiveTheme   : BasicTheme = 'primary';

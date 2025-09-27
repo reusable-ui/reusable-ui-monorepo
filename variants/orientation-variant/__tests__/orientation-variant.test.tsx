@@ -11,7 +11,7 @@ import {
     type OrientationVariant,
 } from '../dist/types.js'
 import {
-    effectiveDefaultOrientation,
+    defaultEffectiveOrientation,
 } from '../dist/internal-defaults.js'
 import {
     useOrientationVariant,
@@ -162,11 +162,11 @@ describe('useOrientationVariant()', () => {
         {
             title                    : 'falls back to system default when prop and option are missing',
             expectedResult           : {
-                orientation          : effectiveDefaultOrientation,
-                orientationClassname : `o-${effectiveDefaultOrientation}`,
-                isOrientationInline  : effectiveDefaultOrientation === 'inline',
-                isOrientationBlock   : effectiveDefaultOrientation === 'block',
-                ariaOrientation      : effectiveDefaultOrientation === 'inline' ? 'horizontal' : 'vertical',
+                orientation          : defaultEffectiveOrientation,
+                orientationClassname : `o-${defaultEffectiveOrientation}`,
+                isOrientationInline  : defaultEffectiveOrientation === 'inline',
+                isOrientationBlock   : defaultEffectiveOrientation === 'block',
+                ariaOrientation      : defaultEffectiveOrientation === 'inline' ? 'horizontal' : 'vertical',
             },
         },
         {
@@ -176,11 +176,11 @@ describe('useOrientationVariant()', () => {
                 orientation          : 'inherit',
             },
             expectedResult           : {
-                orientation          : effectiveDefaultOrientation,
-                orientationClassname : `o-${effectiveDefaultOrientation}`,
-                isOrientationInline  : effectiveDefaultOrientation === 'inline',
-                isOrientationBlock   : effectiveDefaultOrientation === 'block',
-                ariaOrientation      : effectiveDefaultOrientation === 'inline' ? 'horizontal' : 'vertical',
+                orientation          : defaultEffectiveOrientation,
+                orientationClassname : `o-${defaultEffectiveOrientation}`,
+                isOrientationInline  : defaultEffectiveOrientation === 'inline',
+                isOrientationBlock   : defaultEffectiveOrientation === 'block',
+                ariaOrientation      : defaultEffectiveOrientation === 'inline' ? 'horizontal' : 'vertical',
             },
         },
         {
@@ -190,11 +190,11 @@ describe('useOrientationVariant()', () => {
                 orientation          : 'invert',
             },
             expectedResult           : {
-                orientation          : effectiveDefaultOrientation,
-                orientationClassname : `o-${effectiveDefaultOrientation}`,
-                isOrientationInline  : effectiveDefaultOrientation === 'inline',
-                isOrientationBlock   : effectiveDefaultOrientation === 'block',
-                ariaOrientation      : effectiveDefaultOrientation === 'inline' ? 'horizontal' : 'vertical',
+                orientation          : defaultEffectiveOrientation,
+                orientationClassname : `o-${defaultEffectiveOrientation}`,
+                isOrientationInline  : defaultEffectiveOrientation === 'inline',
+                isOrientationBlock   : defaultEffectiveOrientation === 'block',
+                ariaOrientation      : defaultEffectiveOrientation === 'inline' ? 'horizontal' : 'vertical',
             },
         },
         {

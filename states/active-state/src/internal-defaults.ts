@@ -5,4 +5,4 @@
  * 
  * - `false`: the component is initially inactive by default.
  */
-export const initialDefaultActive : boolean = false;
+export const defaultInitialActive : boolean = false;

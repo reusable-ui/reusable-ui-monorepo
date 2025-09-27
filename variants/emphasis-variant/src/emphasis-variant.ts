@@ -15,8 +15,8 @@ import {
 
 // Defaults:
 import {
-    declarativeDefaultEmphasized,
-    effectiveDefaultEmphasized,
+    defaultDeclarativeEmphasized,
+    defaultEffectiveEmphasized,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -128,7 +128,7 @@ const useEffectiveEmphasizedValue = (emphasized: Required<EmphasisVariantProps>[
 export const useEmphasisVariant = (props: EmphasisVariantProps, options?: EmphasisVariantOptions): EmphasisVariant => {
     // Extract options and assign defaults:
     const {
-        defaultEmphasized = declarativeDefaultEmphasized,
+        defaultEmphasized = defaultDeclarativeEmphasized,
     } = options ?? {};
     
     
@@ -141,7 +141,7 @@ export const useEmphasisVariant = (props: EmphasisVariantProps, options?: Emphas
     
     
     // Resolve the effective emphasized value:
-    const effectiveIsEmphasized = useEffectiveEmphasizedValue(declarativeEmphasized, effectiveDefaultEmphasized);
+    const effectiveIsEmphasized = useEffectiveEmphasizedValue(declarativeEmphasized, defaultEffectiveEmphasized);
     
     
     

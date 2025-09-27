@@ -13,7 +13,7 @@ import {
  * 
  * - `'auto'`: enables automatic validity resolution based on `computedValidity`.
  */
-export const declarativeDefaultValidity : Required<ValidityStateProps>['validity'] = 'auto';
+export const defaultDeclarativeValidity : Required<ValidityStateProps>['validity'] = 'auto';
 
 
 
@@ -25,4 +25,4 @@ export const declarativeDefaultValidity : Required<ValidityStateProps>['validity
  * 
  * - `null`: represents an unresolved or pending validity state.
  */
-export const effectiveDefaultValidity   : boolean | null = null;
+export const defaultEffectiveValidity   : boolean | null = null;

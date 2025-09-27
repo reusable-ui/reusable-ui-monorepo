@@ -10,7 +10,7 @@ import {
     type BareVariant,
 } from '../dist/types.js'
 import {
-    declarativeDefaultBare,
+    defaultDeclarativeBare,
 } from '../dist/internal-defaults.js'
 import {
     useBareVariant,
@@ -174,8 +174,8 @@ describe('useBareVariant()', () => {
         {
             title             : 'falls back to system default when prop and option are missing',
             expectedResult    : {
-                bare          : declarativeDefaultBare,
-                bareClassname : declarativeDefaultBare ? 'is-bare' : 'not-bare',
+                bare          : defaultDeclarativeBare,
+                bareClassname : defaultDeclarativeBare ? 'is-bare' : 'not-bare',
             },
         },
         

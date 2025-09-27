@@ -13,7 +13,7 @@ import {
  * 
  * - `false`: the component is enabled by default.
  */
-export const declarativeDefaultDisabled        : Required<DisabledStateProps>['disabled']         = false;
+export const defaultDeclarativeDisabled        : Required<DisabledStateProps>['disabled']         = false;
 
 
 
@@ -25,4 +25,4 @@ export const declarativeDefaultDisabled        : Required<DisabledStateProps>['d
  * 
  * - `true`: allows contextual disabling.
  */
-export const declarativeDefaultCascadeDisabled : Required<DisabledStateProps>['cascadeDisabled']  = true;
+export const defaultDeclarativeCascadeDisabled : Required<DisabledStateProps>['cascadeDisabled']  = true;

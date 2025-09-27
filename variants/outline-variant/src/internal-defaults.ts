@@ -13,7 +13,7 @@ import {
  * 
  * - `'inherit'`: inherits outline appearance from a parent context.
  */
-export const declarativeDefaultOutlined : Required<OutlineVariantProps>['outlined'] = 'inherit';
+export const defaultDeclarativeOutlined : Required<OutlineVariantProps>['outlined'] = 'inherit';
 
 
 
@@ -24,4 +24,4 @@ export const declarativeDefaultOutlined : Required<OutlineVariantProps>['outline
  * 
  * - `false`: represents a non-outlined appearance by default.
  */
-export const effectiveDefaultOutlined   : boolean = false;
+export const defaultEffectiveOutlined   : boolean = false;

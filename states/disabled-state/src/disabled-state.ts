@@ -20,8 +20,8 @@ import {
 
 // Defaults:
 import {
-    declarativeDefaultDisabled,
-    declarativeDefaultCascadeDisabled,
+    defaultDeclarativeDisabled,
+    defaultDeclarativeCascadeDisabled,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -103,8 +103,8 @@ const useEffectiveDisabledValue = (disabled: Required<DisabledStateProps>['disab
 export const useDisabledState = (props: DisabledStateProps, options?: Pick<DisabledStateOptions, 'defaultDisabled' | 'defaultCascadeDisabled'>) : boolean => {
     // Extract options and assign defaults:
     const {
-        defaultDisabled        = declarativeDefaultDisabled,
-        defaultCascadeDisabled = declarativeDefaultCascadeDisabled,
+        defaultDisabled        = defaultDeclarativeDisabled,
+        defaultCascadeDisabled = defaultDeclarativeCascadeDisabled,
     } = options ?? {};
     
     
@@ -191,8 +191,8 @@ export const useDisabledState = (props: DisabledStateProps, options?: Pick<Disab
 export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>(props: DisabledStateProps & DisabledStateUpdateProps, options?: DisabledStateOptions): DisabledBehaviorState<TElement> => {
     // Extract options and assign defaults:
     const {
-        defaultDisabled        = declarativeDefaultDisabled,
-        defaultCascadeDisabled = declarativeDefaultCascadeDisabled,
+        defaultDisabled        = defaultDeclarativeDisabled,
+        defaultCascadeDisabled = defaultDeclarativeCascadeDisabled,
         animationPattern       = ['enable', 'disable'], // Matches animation names for transitions
         animationBubbling      = false,
     } = options ?? {};

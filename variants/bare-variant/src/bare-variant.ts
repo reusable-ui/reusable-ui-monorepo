@@ -7,7 +7,7 @@ import {
 
 // Defaults:
 import {
-    declarativeDefaultBare,
+    defaultDeclarativeBare,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -65,7 +65,7 @@ import {
 export const useBareVariant = <TBare extends true | string = true>(props: BareVariantProps<TBare>, options?: BareVariantOptions<TBare>): BareVariant<TBare> => {
     // Extract options and assign defaults:
     const {
-        defaultBare = declarativeDefaultBare,
+        defaultBare = defaultDeclarativeBare,
     } = options ?? {};
     
     
