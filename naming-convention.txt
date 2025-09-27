@@ -1,0 +1,5 @@
+- Use **default** when narrating absence of user input (`defaultSize`)
+- Use **effective** when narrating resolution logic (`effectiveSize`)
+- Use **fallback** only when narrating defensive substitution (`fallbackSize`)
+- Use **initial** for uncontrolled startup (`initialExpanded`)
+- Use **override** when narrating intentional replacement (`sizeOverride`)
