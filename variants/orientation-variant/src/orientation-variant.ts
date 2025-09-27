@@ -36,16 +36,16 @@ import {
  * Resolves the effective orientation value based on props and context.
  * 
  * Resolution priority:
- * - `'inherit'` : uses the orientation value from context, if available.
- * - `'invert'`  : flips the orientation value from context (`'inline'` ⇄ `'block'`), if available.
+ * - `'inherit'` : uses the orientation value from context, if available, otherwise falls back to `fallbackOrientation`.
+ * - `'invert'`  : flips the orientation value from context (`'inline'` ⇄ `'block'`), if available, otherwise falls back to `fallbackOrientation`.
  * - Otherwise   : uses the explicitly provided orientation value as-is.
  * 
- * @param {Required<OrientationVariantProps>['orientation']} orientation - The pre-resolved orientation value from props.
- * @param {Orientation} defaultOrientation - Fallback orientation value when context is missing.
+ * @param {Required<OrientationVariantProps>['orientation']} declarativeOrientation - The declared orientation value from props.
+ * @param {Orientation} fallbackOrientation - The fallback orientation when context is missing.
  * @returns {Orientation} - The resolved orientation value.
  */
-const useEffectiveOrientationValue = (orientation: Required<OrientationVariantProps>['orientation'], defaultOrientation: Orientation): Orientation => {
-    switch (orientation) {
+const useEffectiveOrientationValue = (declarativeOrientation: Required<OrientationVariantProps>['orientation'], fallbackOrientation: Orientation): Orientation => {
+    switch (declarativeOrientation) {
         // If the orientation is 'inherit', use the context value:
         case 'inherit' : {
             // Get the inherited orientation from context:
@@ -58,8 +58,8 @@ const useEffectiveOrientationValue = (orientation: Required<OrientationVariantPr
             
             
             
-            // Otherwise, fallback to the default orientation:
-            return defaultOrientation;
+            // Otherwise, fallback to the specified fallback orientation:
+            return fallbackOrientation;
         }
         
         
@@ -76,14 +76,14 @@ const useEffectiveOrientationValue = (orientation: Required<OrientationVariantPr
             
             
             
-            // Otherwise, fallback to the default orientation:
-            return defaultOrientation;
+            // Otherwise, fallback to the specified fallback orientation:
+            return fallbackOrientation;
         }
         
         
         
         // The orientation is explicitly defined, return it as-is:
-        default        : return orientation;
+        default        : return declarativeOrientation;
     } // switch
 };
 

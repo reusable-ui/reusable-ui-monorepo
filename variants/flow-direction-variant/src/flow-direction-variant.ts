@@ -36,16 +36,16 @@ import {
  * Resolves the effective flow direction value based on props and context.
  * 
  * Resolution priority:
- * - `'inherit'` : uses the flow direction value from context, if available.
- * - `'invert'`  : flips the flow direction value from context (`'start'` ⇄ `'end'`), if available.
+ * - `'inherit'` : uses the flow direction value from context, if available, otherwise falls back to `fallbackFlowDirection`.
+ * - `'invert'`  : flips the flow direction value from context (`'start'` ⇄ `'end'`), if available, otherwise falls back to `fallbackFlowDirection`.
  * - Otherwise   : uses the explicitly provided flow direction value as-is.
  * 
- * @param {Required<FlowDirectionVariantProps>['flowDirection']} flowDirection - The pre-resolved flow direction value from props.
- * @param {FlowDirection} defaultFlowDirection - Fallback flow direction value when context is missing.
+ * @param {Required<FlowDirectionVariantProps>['flowDirection']} declarativeFlowDirection - The declared flow direction value from props.
+ * @param {FlowDirection} fallbackFlowDirection - The fallback flow direction when context is missing.
  * @returns {FlowDirection} - The resolved flow direction value.
  */
-const useEffectiveFlowDirectionValue = (flowDirection: Required<FlowDirectionVariantProps>['flowDirection'], defaultFlowDirection: FlowDirection): FlowDirection => {
-    switch (flowDirection) {
+const useEffectiveFlowDirectionValue = (declarativeFlowDirection: Required<FlowDirectionVariantProps>['flowDirection'], fallbackFlowDirection: FlowDirection): FlowDirection => {
+    switch (declarativeFlowDirection) {
         // If the flow direction is 'inherit', use the context value:
         case 'inherit' : {
             // Get the inherited flow direction from context:
@@ -58,8 +58,8 @@ const useEffectiveFlowDirectionValue = (flowDirection: Required<FlowDirectionVar
             
             
             
-            // Otherwise, fallback to the default flow direction:
-            return defaultFlowDirection;
+            // Otherwise, fallback to the specified fallback flow direction:
+            return fallbackFlowDirection;
         }
         
         
@@ -76,14 +76,14 @@ const useEffectiveFlowDirectionValue = (flowDirection: Required<FlowDirectionVar
             
             
             
-            // Otherwise, fallback to the default flow direction:
-            return defaultFlowDirection;
+            // Otherwise, fallback to the specified fallback flow direction:
+            return fallbackFlowDirection;
         }
         
         
         
         // The flow direction is explicitly defined, return it as-is:
-        default        : return flowDirection;
+        default        : return declarativeFlowDirection;
     } // switch
 };
 

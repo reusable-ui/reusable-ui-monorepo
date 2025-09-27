@@ -35,16 +35,16 @@ import {
  * Resolves the effective outlined value based on props and context.
  * 
  * Resolution priority:
- * - `'inherit'` : uses the outlined value from context, if available.
- * - `'invert'`  : flips the outlined value from context (`true` ⇄ `false`), if available.
+ * - `'inherit'` : uses the outlined value from context, if available, otherwise falls back to `fallbackOutlined`.
+ * - `'invert'`  : flips the outlined value from context (`true` ⇄ `false`), if available, otherwise falls back to `fallbackOutlined`.
  * - Otherwise   : uses the explicitly provided outlined value as-is.
  * 
- * @param {Required<OutlineVariantProps>['outlined']} outlined - The pre-resolved outlined value from props.
- * @param {boolean} defaultOutlined - Fallback outlined value when context is missing.
+ * @param {Required<OutlineVariantProps>['outlined']} declarativeOutlined - The declared outlined value from props.
+ * @param {boolean} fallbackOutlined - The fallback outlined when context is missing.
  * @returns {boolean} - The resolved outlined value.
  */
-const useEffectiveOutlinedValue = (outlined: Required<OutlineVariantProps>['outlined'], defaultOutlined: boolean): boolean => {
-    switch (outlined) {
+const useEffectiveOutlineValue = (declarativeOutlined: Required<OutlineVariantProps>['outlined'], fallbackOutlined: boolean): boolean => {
+    switch (declarativeOutlined) {
         // If the outlined is 'inherit', use the context value:
         case 'inherit' : {
             // Get the inherited outlined from context:
@@ -57,8 +57,8 @@ const useEffectiveOutlinedValue = (outlined: Required<OutlineVariantProps>['outl
             
             
             
-            // Otherwise, fallback to the default outlined:
-            return defaultOutlined;
+            // Otherwise, fallback to the specified fallback outlined:
+            return fallbackOutlined;
         }
         
         
@@ -75,14 +75,14 @@ const useEffectiveOutlinedValue = (outlined: Required<OutlineVariantProps>['outl
             
             
             
-            // Otherwise, fallback to the default outlined:
-            return defaultOutlined;
+            // Otherwise, fallback to the specified fallback outlined:
+            return fallbackOutlined;
         }
         
         
         
         // The outlined is explicitly defined, return it as-is:
-        default        : return outlined;
+        default        : return declarativeOutlined;
     } // switch
 };
 
@@ -141,7 +141,7 @@ export const useOutlineVariant = (props: OutlineVariantProps, options?: OutlineV
     
     
     // Resolve the effective outlined value:
-    const effectiveIsOutlined = useEffectiveOutlinedValue(declarativeOutlined, defaultEffectiveOutlined);
+    const effectiveIsOutlined = useEffectiveOutlineValue(declarativeOutlined, defaultEffectiveOutlined);
     
     
     

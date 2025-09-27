@@ -35,16 +35,16 @@ import {
  * Resolves the effective emphasized value based on props and context.
  * 
  * Resolution priority:
- * - `'inherit'` : uses the emphasized value from context, if available.
- * - `'invert'`  : flips the emphasized value from context (`true` ⇄ `false`), if available.
+ * - `'inherit'` : uses the emphasized value from context, if available, otherwise falls back to `fallbackEmphasized`.
+ * - `'invert'`  : flips the emphasized value from context (`true` ⇄ `false`), if available, otherwise falls back to `fallbackEmphasized`.
  * - Otherwise   : uses the explicitly provided emphasized value as-is.
  * 
- * @param {Required<EmphasisVariantProps>['emphasized']} emphasized - The pre-resolved emphasized value from props.
- * @param {boolean} defaultEmphasized - Fallback emphasized value when context is missing.
+ * @param {Required<EmphasisVariantProps>['emphasized']} declarativeEmphasized - The declared emphasized value from props.
+ * @param {boolean} fallbackEmphasized - The fallback emphasized when context is missing.
  * @returns {boolean} - The resolved emphasized value.
  */
-const useEffectiveEmphasizedValue = (emphasized: Required<EmphasisVariantProps>['emphasized'], defaultEmphasized: boolean): boolean => {
-    switch (emphasized) {
+const useEffectiveEmphasisValue = (declarativeEmphasized: Required<EmphasisVariantProps>['emphasized'], fallbackEmphasized: boolean): boolean => {
+    switch (declarativeEmphasized) {
         // If the emphasized is 'inherit', use the context value:
         case 'inherit' : {
             // Get the inherited emphasized from context:
@@ -57,8 +57,8 @@ const useEffectiveEmphasizedValue = (emphasized: Required<EmphasisVariantProps>[
             
             
             
-            // Otherwise, fallback to the default emphasized:
-            return defaultEmphasized;
+            // Otherwise, fallback to the specified fallback emphasized:
+            return fallbackEmphasized;
         }
         
         
@@ -75,14 +75,14 @@ const useEffectiveEmphasizedValue = (emphasized: Required<EmphasisVariantProps>[
             
             
             
-            // Otherwise, fallback to the default emphasized:
-            return defaultEmphasized;
+            // Otherwise, fallback to the specified fallback emphasized:
+            return fallbackEmphasized;
         }
         
         
         
         // The emphasized is explicitly defined, return it as-is:
-        default        : return emphasized;
+        default        : return declarativeEmphasized;
     } // switch
 };
 
@@ -141,7 +141,7 @@ export const useEmphasisVariant = (props: EmphasisVariantProps, options?: Emphas
     
     
     // Resolve the effective emphasized value:
-    const effectiveIsEmphasized = useEffectiveEmphasizedValue(declarativeEmphasized, defaultEffectiveEmphasized);
+    const effectiveIsEmphasized = useEffectiveEmphasisValue(declarativeEmphasized, defaultEffectiveEmphasized);
     
     
     

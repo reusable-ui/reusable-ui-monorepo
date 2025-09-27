@@ -36,17 +36,17 @@ import {
  * Resolves the effective theme value based on props and context.
  * 
  * Resolution priority:
- * - `'inherit'` : uses the theme value from context, if available.
+ * - `'inherit'` : uses the theme value from context, if available, otherwise falls back to `fallbackTheme`.
  * - Otherwise   : uses the explicitly provided theme value as-is.
  * 
  * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
- * @param {Required<ThemeVariantProps<TTheme>>['theme']} theme - The pre-resolved theme value from props.
- * @param {TTheme} defaultTheme - Fallback theme value when context is missing.
+ * @param {Required<ThemeVariantProps<TTheme>>['theme']} declarativeTheme - The declared theme value from props.
+ * @param {TTheme} fallbackTheme - The fallback theme when context is missing.
  * @returns {TTheme} - The resolved theme value.
  */
-const useEffectiveThemeValue = <TTheme extends string = BasicTheme>(theme: Required<ThemeVariantProps<TTheme>>['theme'], defaultTheme: TTheme): TTheme => {
-    switch (theme) {
+const useEffectiveThemeValue = <TTheme extends string = BasicTheme>(declarativeTheme: Required<ThemeVariantProps<TTheme>>['theme'], fallbackTheme: TTheme): TTheme => {
+    switch (declarativeTheme) {
         // If the theme is 'inherit', use the context value:
         case 'inherit' : {
             // Get the inherited theme from context:
@@ -59,14 +59,14 @@ const useEffectiveThemeValue = <TTheme extends string = BasicTheme>(theme: Requi
             
             
             
-            // Otherwise, fallback to the default theme:
-            return defaultTheme;
+            // Otherwise, fallback to the specified fallback theme:
+            return fallbackTheme;
         }
         
         
         
         // The theme is explicitly defined, return it as-is:
-        default        : return theme;
+        default        : return declarativeTheme;
     } // switch
 };
 

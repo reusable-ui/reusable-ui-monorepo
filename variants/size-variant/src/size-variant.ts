@@ -37,18 +37,18 @@ import {
  * Resolves the effective size value based on props and context.
  * 
  * Resolution priority:
- * - `'inherit'` : uses the size value from context, if available.
+ * - `'inherit'` : uses the size value from context, if available and supported, otherwise falls back to `fallbackSize`.
  * - Otherwise   : uses the explicitly provided size value as-is.
  * 
  * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
  * 
- * @param {Required<SizeVariantProps<TSize>>['size']} size - The pre-resolved size value from props.
- * @param {TSize} defaultSize - Fallback size value when context is missing.
+ * @param {Required<SizeVariantProps<TSize>>['size']} declarativeSize - The declared size value from props.
  * @param {TSize[]} supportedSizes - The list of supported sizes for validation.
+ * @param {TSize} fallbackSize - The fallback size when context is missing or unsupported.
  * @returns {TSize} - The resolved size value.
  */
-const useEffectiveSizeValue = <TSize extends string = BasicSize>(size: Required<SizeVariantProps<TSize>>['size'], defaultSize: TSize, supportedSizes: TSize[]): TSize => {
-    switch (size) {
+const useEffectiveSizeValue = <TSize extends string = BasicSize>(declarativeSize: Required<SizeVariantProps<TSize>>['size'], supportedSizes: TSize[], fallbackSize: TSize): TSize => {
+    switch (declarativeSize) {
         // If the size is 'inherit', use the context value:
         case 'inherit' : {
             // Get the inherited size from context:
@@ -61,14 +61,14 @@ const useEffectiveSizeValue = <TSize extends string = BasicSize>(size: Required<
             
             
             
-            // Otherwise, fallback to the default size:
-            return defaultSize;
+            // Otherwise, fallback to the specified fallback size:
+            return fallbackSize;
         }
         
         
         
         // The size is explicitly defined, return it as-is:
-        default        : return size;
+        default        : return declarativeSize;
     } // switch
 };
 
@@ -171,7 +171,7 @@ export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVari
     
     
     // Resolve the effective size value:
-    const effectiveSize = useEffectiveSizeValue<TSize>(declarativeSize, defaultEffectiveSize as TSize, supportedSizes);
+    const effectiveSize = useEffectiveSizeValue<TSize>(declarativeSize, supportedSizes, defaultEffectiveSize as TSize);
     
     
     

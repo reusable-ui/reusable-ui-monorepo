@@ -35,16 +35,16 @@ import {
  * Resolves the effective mild value based on props and context.
  * 
  * Resolution priority:
- * - `'inherit'` : uses the mild value from context, if available.
- * - `'invert'`  : flips the mild value from context (`true` ⇄ `false`), if available.
+ * - `'inherit'` : uses the mild value from context, if available, otherwise falls back to `fallbackMild`.
+ * - `'invert'`  : flips the mild value from context (`true` ⇄ `false`), if available, otherwise falls back to `fallbackMild`.
  * - Otherwise   : uses the explicitly provided mild value as-is.
  * 
- * @param {Required<MildVariantProps>['mild']} mild - The pre-resolved mild value from props.
- * @param {boolean} defaultMild - Fallback mild value when context is missing.
+ * @param {Required<MildVariantProps>['mild']} declarativeMild - The declared mild value from props.
+ * @param {boolean} fallbackMild - The fallback mild when context is missing.
  * @returns {boolean} - The resolved mild value.
  */
-const useEffectiveMildValue = (mild: Required<MildVariantProps>['mild'], defaultMild: boolean): boolean => {
-    switch (mild) {
+const useEffectiveMildValue = (declarativeMild: Required<MildVariantProps>['mild'], fallbackMild: boolean): boolean => {
+    switch (declarativeMild) {
         // If the mild is 'inherit', use the context value:
         case 'inherit' : {
             // Get the inherited mild from context:
@@ -57,8 +57,8 @@ const useEffectiveMildValue = (mild: Required<MildVariantProps>['mild'], default
             
             
             
-            // Otherwise, fallback to the default mild:
-            return defaultMild;
+            // Otherwise, fallback to the specified fallback mild:
+            return fallbackMild;
         }
         
         
@@ -75,14 +75,14 @@ const useEffectiveMildValue = (mild: Required<MildVariantProps>['mild'], default
             
             
             
-            // Otherwise, fallback to the default mild:
-            return defaultMild;
+            // Otherwise, fallback to the specified fallback mild:
+            return fallbackMild;
         }
         
         
         
         // The mild is explicitly defined, return it as-is:
-        default        : return mild;
+        default        : return declarativeMild;
     } // switch
 };
 
