@@ -45,6 +45,17 @@ export interface OrientationVariantOptions {
      * Defaults to `'block'` (vertical).
      */
     defaultOrientation   ?: Orientation | 'inherit' | 'invert'
+    
+    /**
+     * Specifies the fallback orientation when no effective orientation value can be resolved:
+     * - `'inline'`: horizontal orientation, aligns along the inline axis (e.g., left-to-right or right-to-left)
+     * - `'block'` : vertical orientation, aligns along the block axis (e.g., top-to-bottom)
+     * 
+     * This fallback applies when `orientation` prop is set to `'inherit'` or `'invert'` but no context is available.
+     * 
+     * Defaults to `'block'` (vertical).
+     */
+    fallbackOrientation  ?: Orientation
 }
 
 /**

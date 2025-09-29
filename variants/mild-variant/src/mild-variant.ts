@@ -128,7 +128,8 @@ const useEffectiveMildValue = (declarativeMild: Required<MildVariantProps>['mild
 export const useMildVariant = (props: MildVariantProps, options?: MildVariantOptions): MildVariant => {
     // Extract options and assign defaults:
     const {
-        defaultMild = defaultDeclarativeMild,
+        defaultMild  = defaultDeclarativeMild,
+        fallbackMild = defaultFallbackMild,
     } = options ?? {};
     
     
@@ -141,7 +142,7 @@ export const useMildVariant = (props: MildVariantProps, options?: MildVariantOpt
     
     
     // Resolve the effective mild value:
-    const effectiveIsMild = useEffectiveMildValue(declarativeMild, defaultFallbackMild);
+    const effectiveIsMild = useEffectiveMildValue(declarativeMild, fallbackMild);
     
     
     

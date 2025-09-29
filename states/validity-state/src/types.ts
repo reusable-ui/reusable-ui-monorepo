@@ -136,6 +136,18 @@ export interface ValidityStateOptions
     defaultValidity   ?: boolean | null | 'auto'
     
     /**
+     * Specifies the fallback validity state when no effective validity value can be resolved:
+     * - `true`  : the component is valid
+     * - `false` : the component is invalid
+     * - `null`  : the component is unvalidated
+     * 
+     * This fallback applies when `validity` prop is set to `'auto'` but no `computedValidity` is provided.
+     * 
+     * Defaults to `null` (unvalidated).
+     */
+    fallbackValidity  ?: boolean | null
+    
+    /**
      * Defines the pattern used to identify validity-related animation names.
      * 
      * This pattern determines which animations are considered part of the validity lifecycle.

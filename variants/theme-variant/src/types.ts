@@ -88,6 +88,24 @@ export interface ThemeVariantOptions<TTheme extends string = BasicTheme> {
      * Defaults to `'inherit'` (inherits from parent context).
      */
     defaultTheme   ?: TTheme | 'inherit'
+    
+    /**
+     * Specifies the fallback theme when no effective theme value can be resolved:
+     * - `'primary'`   : core branding or primary site identity
+     * - `'secondary'` : muted accent or complementary variant
+     * - `'success'`   : positive actions and confirmations
+     * - `'info'`      : neutral messages or informative context
+     * - `'warning'`   : cautionary states and potential issues
+     * - `'danger'`    : destructive actions or error indicators
+     * - `'light'`     : suitable for overlaying dark backgrounds (e.g. over images)
+     * - `'dark'`      : suitable for overlaying light backgrounds
+     * - Or any custom theme token defined by the design system
+     * 
+     * This fallback applies when `theme` prop is set to `'inherit'` but no context is available.
+     * 
+     * Defaults to `'primary'` (core branding or primary site identity).
+     */
+    fallbackTheme  ?: TTheme
 }
 
 /**

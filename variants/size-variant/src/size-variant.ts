@@ -158,6 +158,7 @@ export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVari
     // Extract options and assign defaults:
     const {
         defaultSize    = defaultDeclarativeSize as TSize | 'inherit',
+        fallbackSize   = defaultFallbackSize    as TSize,
         supportedSizes = defaultSupportedSizes  as TSize[],
     } = options ?? {};
     
@@ -171,7 +172,7 @@ export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVari
     
     
     // Resolve the effective size value:
-    const effectiveSize = useEffectiveSizeValue<TSize>(declarativeSize, supportedSizes, defaultFallbackSize as TSize);
+    const effectiveSize = useEffectiveSizeValue<TSize>(declarativeSize, supportedSizes, fallbackSize);
     
     
     

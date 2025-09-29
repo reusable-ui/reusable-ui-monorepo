@@ -50,6 +50,17 @@ export interface MildVariantOptions {
      * Defaults to `'inherit'` (inherits from parent context).
      */
     defaultMild   ?: boolean | 'inherit' | 'invert'
+    
+    /**
+     * Specifies the fallback mild appearance when no effective mild value can be resolved:
+     * - `true`  : softens (reading friendly) the component
+     * - `false` : does not soften the component
+     * 
+     * This fallback applies when `mild` prop is set to `'inherit'` or `'invert'` but no context is available.
+     * 
+     * Defaults to `false` (does not soften the component).
+     */
+    fallbackMild  ?: boolean
 }
 
 /**

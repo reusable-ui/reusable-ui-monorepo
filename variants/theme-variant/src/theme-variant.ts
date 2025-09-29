@@ -114,7 +114,8 @@ const useEffectiveThemeValue = <TTheme extends string = BasicTheme>(declarativeT
 export const useThemeVariant = <TTheme extends string = BasicTheme>(props: ThemeVariantProps<TTheme>, options?: ThemeVariantOptions<TTheme>): ThemeVariant<TTheme> => {
     // Extract options and assign defaults:
     const {
-        defaultTheme = defaultDeclarativeTheme as TTheme | 'inherit',
+        defaultTheme  = defaultDeclarativeTheme as TTheme | 'inherit',
+        fallbackTheme = defaultFallbackTheme    as TTheme,
     } = options ?? {};
     
     
@@ -127,7 +128,7 @@ export const useThemeVariant = <TTheme extends string = BasicTheme>(props: Theme
     
     
     // Resolve the effective theme value:
-    const effectiveTheme = useEffectiveThemeValue<TTheme>(declarativeTheme, defaultFallbackTheme as TTheme);
+    const effectiveTheme = useEffectiveThemeValue<TTheme>(declarativeTheme, fallbackTheme);
     
     
     

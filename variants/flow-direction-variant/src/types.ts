@@ -62,6 +62,17 @@ export interface FlowDirectionVariantOptions {
      * Defaults to `'end'` (logical end edge).
      */
     defaultFlowDirection   ?: FlowDirection | 'inherit' | 'invert'
+    
+    /**
+     * Specifies the fallback flow direction when no effective flow direction value can be resolved:
+     * - `'start'`: aligns to the logical start edge (e.g. left in LTR, top in top-down modes)
+     * - `'end'`  : aligns to the logical end edge (e.g. right in LTR, bottom in top-down modes)
+     * 
+     * This fallback applies when `flowDirection` prop is set to `'inherit'` or `'invert'` but no context is available.
+     * 
+     * Defaults to `'end'` (logical end edge).
+     */
+    fallbackFlowDirection  ?: FlowDirection
 }
 
 /**

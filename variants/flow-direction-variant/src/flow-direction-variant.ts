@@ -134,7 +134,8 @@ const useEffectiveFlowDirectionValue = (declarativeFlowDirection: Required<FlowD
 export const useFlowDirectionVariant = (props: FlowDirectionVariantProps, options?: FlowDirectionVariantOptions): FlowDirectionVariant => {
     // Extract options and assign defaults:
     const {
-        defaultFlowDirection = defaultDeclarativeFlowDirection,
+        defaultFlowDirection  = defaultDeclarativeFlowDirection,
+        fallbackFlowDirection = defaultFallbackFlowDirection,
     } = options ?? {};
     
     
@@ -147,7 +148,7 @@ export const useFlowDirectionVariant = (props: FlowDirectionVariantProps, option
     
     
     // Resolve the effective flow direction value:
-    const effectiveFlowDirection = useEffectiveFlowDirectionValue(declarativeFlowDirection, defaultFallbackFlowDirection);
+    const effectiveFlowDirection = useEffectiveFlowDirectionValue(declarativeFlowDirection, fallbackFlowDirection);
     
     
     

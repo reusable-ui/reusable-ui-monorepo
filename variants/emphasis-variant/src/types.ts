@@ -50,6 +50,17 @@ export interface EmphasisVariantOptions {
      * Defaults to `'inherit'` (inherits from parent context).
      */
     defaultEmphasized   ?: boolean | 'inherit' | 'invert'
+    
+    /**
+     * Specifies the fallback emphasis appearance when no effective emphasized value can be resolved:
+     * - `true`  : emphasizes the component
+     * - `false` : does not emphasize the component
+     * 
+     * This fallback applies when `emphasized` prop is set to `'inherit'` or `'invert'` but no context is available.
+     * 
+     * Defaults to `false` (does not emphasize the component).
+     */
+    fallbackEmphasized  ?: boolean
 }
 
 /**

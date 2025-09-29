@@ -128,7 +128,8 @@ const useEffectiveOutlineValue = (declarativeOutlined: Required<OutlineVariantPr
 export const useOutlineVariant = (props: OutlineVariantProps, options?: OutlineVariantOptions): OutlineVariant => {
     // Extract options and assign defaults:
     const {
-        defaultOutlined = defaultDeclarativeOutlined,
+        defaultOutlined  = defaultDeclarativeOutlined,
+        fallbackOutlined = defaultFallbackOutlined,
     } = options ?? {};
     
     
@@ -141,7 +142,7 @@ export const useOutlineVariant = (props: OutlineVariantProps, options?: OutlineV
     
     
     // Resolve the effective outlined value:
-    const effectiveIsOutlined = useEffectiveOutlineValue(declarativeOutlined, defaultFallbackOutlined);
+    const effectiveIsOutlined = useEffectiveOutlineValue(declarativeOutlined, fallbackOutlined);
     
     
     

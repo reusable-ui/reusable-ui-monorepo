@@ -50,6 +50,17 @@ export interface OutlineVariantOptions {
      * Defaults to `'inherit'` (inherits from parent context).
      */
     defaultOutlined   ?: boolean | 'inherit' | 'invert'
+    
+    /**
+     * Specifies the fallback outline appearance when no effective outlined value can be resolved:
+     * - `true`  : outlines the component
+     * - `false` : does not outline the component
+     * 
+     * This fallback applies when `outlined` prop is set to `'inherit'` or `'invert'` but no context is available.
+     * 
+     * Defaults to `false` (does not outline the component).
+     */
+    fallbackOutlined  ?: boolean
 }
 
 /**

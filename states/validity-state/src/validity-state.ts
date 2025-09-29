@@ -57,10 +57,11 @@ import {
  * @param options - An optional configuration for customizing validity behavior.
  * @returns The resolved validity state.
  */
-export const useValidityState = (props: ValidityStateProps, options?: Pick<ValidityStateOptions, 'defaultValidity'>) : boolean | null => {
+export const useValidityState = (props: ValidityStateProps, options?: Pick<ValidityStateOptions, 'defaultValidity' | 'fallbackValidity'>) : boolean | null => {
     // Extract options and assign defaults:
     const {
         defaultValidity   = defaultDeclarativeValidity,
+        fallbackValidity  = defaultFallbackValidity,
     } = options ?? {};
     
     
@@ -68,7 +69,7 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
     // Extract props and assign defaults:
     const {
         validity         : controlledValidity = defaultValidity,
-        computedValidity                      = defaultFallbackValidity,
+        computedValidity                      = fallbackValidity,
     } = props;
     
     
@@ -174,6 +175,7 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     // Extract options and assign defaults:
     const {
         defaultValidity   = defaultDeclarativeValidity,
+        fallbackValidity  = defaultFallbackValidity,
         animationPattern  = ['validate', 'invalidate', 'unvalidate'], // Matches animation names for transitions
         animationBubbling = false,
     } = options ?? {};
@@ -183,7 +185,7 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     // Extract props and assign defaults:
     const {
         validity         : controlledValidity = defaultValidity,
-        computedValidity                      = defaultFallbackValidity,
+        computedValidity                      = fallbackValidity,
         onValidityUpdate,
     } = props;
     

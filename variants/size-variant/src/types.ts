@@ -69,6 +69,20 @@ export interface SizeVariantOptions<TSize extends string = BasicSize> {
     defaultSize    ?: TSize | 'inherit'
     
     /**
+     * Specifies the fallback size when no effective size value can be resolved:
+     * - `'sm'`: small size
+     * - `'md'`: medium size (default)
+     * - `'lg'`: large size
+     * - Or any custom size token defined by the design system
+     * 
+     * This fallback applies when `size` prop is set to `'inherit'` but no context is available,
+     * or if the inherited size is not included in the supported sizes list.
+     * 
+     * Defaults to `'md'` (medium size).
+     */
+    fallbackSize   ?: TSize
+    
+    /**
      * The list of supported size values for the component.
      * 
      * If the `size` prop is `'inherit'` and the inherited size is not included in this list,

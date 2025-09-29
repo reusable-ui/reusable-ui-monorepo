@@ -128,7 +128,8 @@ const useEffectiveEmphasisValue = (declarativeEmphasized: Required<EmphasisVaria
 export const useEmphasisVariant = (props: EmphasisVariantProps, options?: EmphasisVariantOptions): EmphasisVariant => {
     // Extract options and assign defaults:
     const {
-        defaultEmphasized = defaultDeclarativeEmphasized,
+        defaultEmphasized  = defaultDeclarativeEmphasized,
+        fallbackEmphasized = defaultFallbackEmphasized,
     } = options ?? {};
     
     
@@ -141,7 +142,7 @@ export const useEmphasisVariant = (props: EmphasisVariantProps, options?: Emphas
     
     
     // Resolve the effective emphasized value:
-    const effectiveIsEmphasized = useEffectiveEmphasisValue(declarativeEmphasized, defaultFallbackEmphasized);
+    const effectiveIsEmphasized = useEffectiveEmphasisValue(declarativeEmphasized, fallbackEmphasized);
     
     
     
