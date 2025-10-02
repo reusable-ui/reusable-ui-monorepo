@@ -57,7 +57,7 @@ export interface DisabledStateProps {
  * Props for reporting updates to the enabled/disabled state.
  * 
  * Typically used in interactive components (e.g. Button, Input, Select) to notify external systems
- * when the resolved enabled/disabled state changes—whether due to user interaction or contextual override.
+ * when the resolved enabled/disabled state changes—whether due to `disabled` prop changes or contextual override.
  */
 export interface DisabledStateUpdateProps {
     /**

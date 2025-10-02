@@ -20,7 +20,7 @@ export const defaultDeclarativeDisabled        : Required<DisabledStateProps>['d
 /**
  * A default declarative cascade behavior to apply when neither `cascadeDisabled` prop nor `defaultCascadeDisabled` option is explicitly provided.
  * 
- * This fallback allows contextual disabling from parent components,
+ * This fallback allows contextual disabling inheritance from parent components,
  * even if the component itself is not directly disabled.
  * 
  * - `true`: allows contextual disabling.
