@@ -1,14 +1,14 @@
 # @reusable-ui/disabled-state 📦  
 
 Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.  
-Ideal for buttons, inputs, toggles, and any interactive component requiring controlled disabled feedback.
+Ideal for buttons, inputs, toggles, and any interactive component requiring controlled disabled state.
 
 ## ✨ Features
 ✔ Lifecycle-aware enable/disable animations based on current disabled state  
 ✔ Gracefully completes running animations before resolving new state  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, animation, and feedback systems  
-✔ Contextual override via `cascadeDisabled` for parent-driven disabling  
+✔ Contextual override via `cascadeDisabled` for parent-driven disabled state  
 
 ## 📦 Installation
 Install **@reusable-ui/disabled-state** via npm or yarn:
