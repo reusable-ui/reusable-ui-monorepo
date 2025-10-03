@@ -107,6 +107,7 @@
     "states/active-state",
     "states/validity-state",
     "states/disabled-state",
+    "states/read-only-state",
     "__configs/*",
     "__utilities/*",
     "__features/*",

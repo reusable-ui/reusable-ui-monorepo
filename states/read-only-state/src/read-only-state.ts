@@ -1,0 +1,362 @@
+'use client' // The exported hooks are client side only.
+
+// React:
+import {
+    // Hooks:
+    use,
+    useEffect,
+    useRef,
+}                           from 'react'
+
+// Types:
+import {
+    type ReadOnlyStateProps,
+    type ReadOnlyStateUpdateProps,
+    type ReadOnlyStatePhaseEventProps,
+    type ReadOnlyStateOptions,
+    type ReadOnlyPhase,
+    type ReadOnlyBehaviorState,
+}                           from './types.js'
+
+// Defaults:
+import {
+    defaultDeclarativeReadOnly,
+    defaultDeclarativeCascadeReadOnly,
+}                           from './internal-defaults.js'
+
+// Utilities:
+import {
+    resolveReadOnlyPhase,
+    getReadOnlyClassname,
+}                           from './internal-utilities.js'
+
+// Contexts:
+import {
+    ReadOnlyStateContext,
+}                           from './contexts.js'
+
+// Reusable-ui utilities:
+import {
+    // Hooks:
+    useStableCallback,
+}                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
+import {
+    // Hooks:
+    useAnimationState,
+}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
+
+
+
+/**
+ * Resolves the effective read-only value based on props and context.
+ * 
+ * Resolution priority:
+ * - If `readOnly` is `true`, the component is explicitly read-only.
+ * - If `readOnly` is `false` and `cascadeReadOnly` is `false`, the component is explicitly editable.
+ * - If `readOnly` is `false` and `cascadeReadOnly` is `true`, the component checks context for inherited read-only state.
+ * - If context is unavailable and `cascadeReadOnly` is `true`, the component defaults to editable (`false`).
+ * 
+ * @param controlledReadOnly - The controlled read-only state.
+ * @param cascadeReadOnly - Whether to cascade read-only state from context.
+ * @returns The resolved read-only value.
+ */
+const useEffectiveReadOnlyValue = (controlledReadOnly: Required<ReadOnlyStateProps>['readOnly'], cascadeReadOnly: boolean): boolean => {
+    // If explicitly read-only, no need to check context:
+    if (controlledReadOnly) return true;
+    
+    
+    
+    // If not cascading, context is ignored, thus editable:
+    if (!cascadeReadOnly) return false;
+    
+    
+    
+    // Get the inherited read-only from context:
+    const inheritedReadOnly = use(ReadOnlyStateContext);
+    
+    
+    
+    // If context value exists, return it:
+    if (inheritedReadOnly !== undefined) return inheritedReadOnly;
+    
+    
+    
+    // Otherwise, fallback to editable:
+    return false;
+};
+
+/**
+ * Resolves the current editable/read-only state for a fully controlled component.
+ * 
+ * This hook is intended for components that **consume** the resolved `readOnly` state and **forward** it to a base component.
+ * 
+ * Unlike `useReadOnlyBehaviorState()`, which handles animation and lifecycle,
+ * `useReadOnlyState()` performs a lightweight resolution of the effective read-only value.
+ * 
+ * - No internal state or uncontrolled fallback.
+ * - Ideal for components that **consume** the resolved `readOnly` state.
+ * 
+ * @param props - The component props that may include a controlled `readOnly` value and contextual `cascadeReadOnly` value.
+ * @param options - An optional configuration for customizing editable/read-only behavior.
+ * @returns The resolved editable/read-only state.
+ */
+export const useReadOnlyState = (props: ReadOnlyStateProps, options?: Pick<ReadOnlyStateOptions, 'defaultReadOnly' | 'defaultCascadeReadOnly'>) : boolean => {
+    // Extract options and assign defaults:
+    const {
+        defaultReadOnly        = defaultDeclarativeReadOnly,
+        defaultCascadeReadOnly = defaultDeclarativeCascadeReadOnly,
+    } = options ?? {};
+    
+    
+    
+    // Extract props and assign defaults:
+    const {
+        readOnly         : controlledReadOnly = defaultReadOnly,
+        cascadeReadOnly  : cascadeReadOnly    = defaultCascadeReadOnly,
+    } = props;
+    
+    
+    
+    // States and flags:
+    
+    // Resolve effective read-only state:
+    const effectiveReadOnly = useEffectiveReadOnlyValue(controlledReadOnly, cascadeReadOnly);
+    
+    
+    
+    // Return the resolved editable/read-only state:
+    return effectiveReadOnly;
+};
+
+
+
+/**
+ * Resolves the editable/read-only state, current transition phase, associated CSS class name, and animation event handlers
+ * based on component props, optional default configuration, and animation lifecycle.
+ * 
+ * - Supports controlled read-only state.
+ * - Supports contextual override via `cascadeReadOnly`.
+ * 
+ * @template TElement - The type of the target DOM element.
+ * 
+ * @param props - The component props that may include a controlled `readOnly` value, contextual `cascadeReadOnly` value, and `onReadOnlyUpdate` callback.
+ * @param options - An optional configuration for customizing read-only behavior and animation lifecycle.
+ * @returns The resolved editable/read-only state, current transition phase, associated CSS class name, and animation event handlers.
+ * 
+ * @example
+ * ```tsx
+ * import React, { FC } from 'react';
+ * import {
+ *     useReadOnlyBehaviorState,
+ *     ReadOnlyStateProps,
+ *     ReadOnlyStateUpdateProps,
+ * } from '@reusable-ui/read-only-state';
+ * import styles from './CustomEditor.module.css';
+ * 
+ * export interface CustomEditorProps extends
+ *     ReadOnlyStateProps,
+ *     ReadOnlyStateUpdateProps // optional update reporting behavior
+ * {}
+ * 
+ * // An editor that can be editable or read-only.
+ * export const CustomEditor: FC<CustomEditorProps> = (props) => {
+ *     const {
+ *         readOnly,
+ *         readOnlyPhase,
+ *         readOnlyClassname,
+ *         
+ *         handleAnimationStart,
+ *         handleAnimationEnd,
+ *         handleAnimationCancel,
+ *     } = useReadOnlyBehaviorState(props, {
+ *         defaultReadOnly        : false,              // Defaults to editable.
+ *         defaultCascadeReadOnly : true,               // Defaults to allow contextual read-only.
+ *         animationPattern       : ['thaw', 'freeze'], // Matches animation names ending with 'thaw' or 'freeze'.
+ *         animationBubbling      : false,              // Ignores bubbling animation events from children.
+ *     });
+ *     
+ *     return (
+ *         <input
+ *             type='text'
+ *             className={`${styles.box} ${readOnlyClassname}`}
+ *             readOnly={readOnly}
+ *             
+ *             onAnimationStart={handleAnimationStart}
+ *             onAnimationEnd={handleAnimationEnd}
+ *         />
+ *     );
+ * };
+ * ```
+ */
+export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>(props: ReadOnlyStateProps & ReadOnlyStateUpdateProps, options?: ReadOnlyStateOptions): ReadOnlyBehaviorState<TElement> => {
+    // Extract options and assign defaults:
+    const {
+        defaultReadOnly        = defaultDeclarativeReadOnly,
+        defaultCascadeReadOnly = defaultDeclarativeCascadeReadOnly,
+        animationPattern       = ['thaw', 'freeze'], // Matches animation names for transitions
+        animationBubbling      = false,
+    } = options ?? {};
+    
+    
+    
+    // Extract props and assign defaults:
+    const {
+        readOnly         : controlledReadOnly = defaultReadOnly,
+        cascadeReadOnly  : cascadeReadOnly    = defaultCascadeReadOnly,
+        onReadOnlyUpdate,
+    } = props;
+    
+    
+    
+    // States and flags:
+    
+    // Resolve effective read-only state:
+    const effectiveReadOnly = useEffectiveReadOnlyValue(controlledReadOnly, cascadeReadOnly);
+    
+    // Internal animation lifecycle:
+    const [, setInternalReadOnly, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
+        initialIntent : effectiveReadOnly,
+        animationPattern,
+        animationBubbling,
+    });
+    
+    // Derive semantic phase from animation lifecycle:
+    const readOnlyPhase     = resolveReadOnlyPhase(effectiveReadOnly, runningIntent); // 'editable', 'readonly', 'thawing', 'freezing'
+    
+    
+    
+    // Sync animation state with effective read-only state:
+    useEffect(() => {
+        // The `setInternalReadOnly()` has internal `Object.is()` check to avoid redundant state updates.
+        setInternalReadOnly(effectiveReadOnly);
+    }, [effectiveReadOnly]);
+    
+    
+    
+    // A stable dispatcher for emitting read-only update events.
+    // This function remains referentially stable across renders,
+    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
+    const handleReadOnlyUpdate = useStableCallback((currentReadOnly: boolean): void => {
+        onReadOnlyUpdate?.(currentReadOnly, undefined);
+    });
+    
+    
+    
+    // Observer effect: emits read-only update events on `effectiveReadOnly` updates.
+    useEffect(() => {
+        // Emits read-only update events:
+        handleReadOnlyUpdate(effectiveReadOnly);
+    }, [effectiveReadOnly]);
+    
+    
+    
+    // Return resolved read-only state API:
+    return {
+        readOnly          : effectiveReadOnly,
+        readOnlyPhase,
+        readOnlyClassname : getReadOnlyClassname(readOnlyPhase),
+        ...animationHandlers,
+    } satisfies ReadOnlyBehaviorState<TElement>;
+};
+
+/**
+ * Emits lifecycle events in response to editable/read-only phase transitions.
+ * 
+ * This hook observes the resolved `readOnlyPhase` from `useReadOnlyBehaviorState()` and triggers
+ * the appropriate callbacks defined in `ReadOnlyStatePhaseEventProps`, such as:
+ * 
+ * - `onEditableStart`
+ * - `onEditableEnd`
+ * - `onReadOnlyStart`
+ * - `onReadOnlyEnd`
+ * 
+ * @param {ReadOnlyStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
+ * @param {ReadOnlyPhase} readOnlyPhase - The current phase value returned from `useReadOnlyBehaviorState()`.
+ */
+export const useReadOnlyStatePhaseEvents = (props: ReadOnlyStatePhaseEventProps, readOnlyPhase: ReadOnlyPhase): void => {
+    // Extract props:
+    const {
+        onEditableStart,
+        onEditableEnd,
+        onReadOnlyStart,
+        onReadOnlyEnd,
+    } = props;
+    
+    
+    
+    // Tracks whether the component has passed its initial mount phase.
+    // Prevents phase-specific lifecycle events from wrongfully firing on initial mount.
+    const hasMountedRef = useRef<boolean>(false);
+    
+    
+    
+    // A stable dispatcher for emitting phase change events.
+    // This function remains referentially stable across renders,
+    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
+    const handleReadOnlyPhaseChange = useStableCallback((readOnlyPhase: ReadOnlyPhase): void => {
+        switch (readOnlyPhase) {
+            case 'thawing'  : onEditableStart?.(readOnlyPhase, undefined); break;
+            case 'editable' : onEditableEnd?.(readOnlyPhase, undefined);   break;
+            case 'freezing' : onReadOnlyStart?.(readOnlyPhase, undefined); break;
+            case 'readonly' : onReadOnlyEnd?.(readOnlyPhase, undefined);   break;
+        } // switch
+    });
+    
+    
+    
+    /*
+        ⚠️ React Strict Mode Consideration:
+        This hook uses two effects to ensure **consistent behavior** across strict and non-strict modes.
+        The observer effect emits phase change events, while the setup effect tracks the mount status.
+        The setup effect must be placed after observer effect in order to correctly emit events for subsequent updates only.
+        
+        This configuration ensures that phase change events are emitted only for SUBSEQUENT UPDATES.
+        The first update never emits any events.
+        
+        Sequence on initial mount:
+        1. First render
+            → observer effect runs → but SKIPS event emission due to `hasMountedRef = false`
+            → setup effect runs → marks `hasMountedRef = true`, allowing further updates to emit events
+        2. [Strict Mode] Simulated unmount
+            → observer cleanup (noop)
+            → setup cleanup → resets `hasMountedRef = false`, preventing further updates from emitting events
+        3. [Strict Mode] Second render
+            → observer effect runs → SKIPS event emission again due to `hasMountedRef = false`
+            → setup effect runs → marks `hasMountedRef = true`, allowing further updates to emit events
+        So effectively, the initial mount does NOT emit any events in both strict and non-strict modes.
+        
+        Sequence on subsequent updates of `readOnlyPhase`:
+            → observer effect runs → emits phase change event
+            → setup effect does NOT run (no changes in dependencies)
+        
+        Sequence on final unmount:
+            → observer cleanup (noop)
+            → setup cleanup → resets `hasMountedRef = false`
+    */
+    
+    
+    
+    // Observer effect: emits phase change events on `readOnlyPhase` updates.
+    useEffect(() => {
+        // Ignore the first mount phase change:
+        if (!hasMountedRef.current) return;
+        
+        
+        
+        // Emits subsequent phase change events:
+        handleReadOnlyPhaseChange(readOnlyPhase);
+    }, [readOnlyPhase]);
+    
+    // Setup effect: marks the component as mounted and resets on unmount.
+    useEffect(() => {
+        // Mark as mounted:
+        hasMountedRef.current = true;
+        
+        
+        
+        // Unmark when unmounted:
+        return () => {
+            hasMountedRef.current = false;
+        };
+    }, []);
+};

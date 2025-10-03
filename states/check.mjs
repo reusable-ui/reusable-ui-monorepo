@@ -9,6 +9,7 @@ const stateDirs = [
     'active-state',
     'validity-state',
     'disabled-state',
+    'read-only-state',
 ];
 
 console.log('🧪 Running tests for feature packages...\n');

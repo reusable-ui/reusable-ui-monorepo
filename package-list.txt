@@ -184,6 +184,7 @@ Additional flags:
 @reusable-ui/active-state
 @reusable-ui/validity-state
 @reusable-ui/disabled-state
+@reusable-ui/read-only-state
 @reusable-ui/excitable
 @reusable-ui/collapsible
 @reusable-ui/scrollable

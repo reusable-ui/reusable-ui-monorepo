@@ -9,6 +9,7 @@ const stateDirs = [
     'active-state',
     'validity-state',
     'disabled-state',
+    'read-only-state',
 ];
 
 console.log('🔧 Compiling feature packages...\n');
