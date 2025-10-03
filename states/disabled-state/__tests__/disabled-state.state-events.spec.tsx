@@ -21,7 +21,7 @@ interface DisabledStateEventTestCase {
      * Initial enabled/disabled state.
      * - `true`: disabled
      * - `false`: enabled
-     * - `undefined`: default to disabled
+     * - `undefined`: default to enabled
      */
     disabled ?: boolean
     
@@ -340,7 +340,7 @@ test.describe('useDisabledStatePhaseEvents', () => {
                     expectedEvent : 'enabling', // Still in original disablement sequence (400ms remaining).
                 },
                 {
-                    title         : 'Wait for final disablement to complete and switching to disabling',
+                    title         : 'Wait for final disablement to complete and switching to disabled',
                     
                     delay         : 600, // Includes additional margin to guarantee completion.
                     expectedEvent : 'disabling',
@@ -384,7 +384,7 @@ test.describe('useDisabledStatePhaseEvents', () => {
                     expectedEvent : 'disabling', // Still in original disablement sequence (400ms remaining).
                 },
                 {
-                    title         : 'Wait for final disablement to complete and switching to enableing',
+                    title         : 'Wait for final disablement to complete and switching to enabled',
                     
                     delay         : 600, // Includes additional margin to guarantee completion.
                     expectedEvent : 'enabling',
@@ -411,10 +411,8 @@ test.describe('useDisabledStatePhaseEvents', () => {
             
             
             // Handlers:
-            let lastNewDisabled : boolean | undefined = undefined;
-            let lastEvent       : unknown | undefined = undefined;
+            let lastEvent : unknown | undefined = undefined;
             const handleDisabledUpdate : ValueChangeEventHandler<boolean, unknown> = (newDisabled, event) => {
-                lastNewDisabled = newDisabled;
                 lastEvent = event;
             };
             
@@ -472,7 +470,6 @@ test.describe('useDisabledStatePhaseEvents', () => {
                 
                 
                 // Reset the last received values:
-                lastNewDisabled = undefined;
                 lastEvent = undefined;
                 
                 

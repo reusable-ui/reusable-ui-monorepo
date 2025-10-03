@@ -27,7 +27,7 @@ interface DisabledStateControlledTestCase {
      * Initial enabled/disabled state.
      * - `true`: disabled
      * - `false`: enabled
-     * - `undefined`: default to disabled
+     * - `undefined`: default to enabled
      */
     disabled       ?: boolean
     

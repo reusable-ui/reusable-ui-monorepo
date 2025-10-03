@@ -9,10 +9,10 @@ import {
 
 
 
-export interface DisabledStateWithContextTest extends DisabledStateTestProps {
+export interface DisabledStateWithContextTestProps extends DisabledStateTestProps {
     parentDisabled : boolean
 }
-export const DisabledStateWithContextTest = (props: DisabledStateWithContextTest) => {
+export const DisabledStateWithContextTest = (props: DisabledStateWithContextTestProps) => {
     const {
         parentDisabled,
         ...childProps
