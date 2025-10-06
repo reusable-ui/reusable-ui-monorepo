@@ -200,8 +200,8 @@ export const ifDeactivatingOrInactive = (styles: CssStyleCollection): CssRule =>
 const [activeStateVars] = cssVars<ActiveStateVars>({ prefix: 'ac', minify: false });
 
 // Register the activate/deactivate animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(activeStateVars.animationActivate);
-animationRegistry.registerAnimation(activeStateVars.animationDeactivate);
+animationRegistry.registerAnimation(activeStateVars.animationActivating);
+animationRegistry.registerAnimation(activeStateVars.animationDeactivating);
 
 /**
  * Generates CSS rules that conditionally apply the activate/deactivate animations based on current active state,
@@ -231,8 +231,8 @@ animationRegistry.registerAnimation(activeStateVars.animationDeactivate);
  *         activeStateRule,
  *         activeStateVars: { isActive, isInactive },
  *     } = usesActiveState({
- *         animationActivate   : 'var(--box-activate)',
- *         animationDeactivate : 'var(--box-deactivate)',
+ *         animationActivating   : 'var(--box-activating)',
+ *         animationDeactivating : 'var(--box-deactivating)',
  *     });
  *     
  *     return style({
@@ -247,7 +247,7 @@ animationRegistry.registerAnimation(activeStateVars.animationDeactivate);
  *         
  *         // Define activating animation:
  *         ...vars({
- *             '--box-activate': [
+ *             '--box-activating': [
  *                 ['0.3s', 'ease-out', 'both', 'opacity-activating'],
  *             ],
  *         }),
@@ -262,7 +262,7 @@ animationRegistry.registerAnimation(activeStateVars.animationDeactivate);
  *         
  *         // Define deactivating animation:
  *         ...vars({
- *             '--box-deactivate': [
+ *             '--box-deactivating': [
  *                 ['0.3s', 'ease-out', 'both', 'opacity-deactivating'],
  *             ],
  *         }),
@@ -293,8 +293,8 @@ animationRegistry.registerAnimation(activeStateVars.animationDeactivate);
 export const usesActiveState = (options?: CssActiveStateOptions): CssActiveState => {
     // Extract options and assign defaults:
     const {
-        animationActivate   = 'none', // Defaults to `none`.
-        animationDeactivate = 'none', // Defaults to `none`.
+        animationActivating   = 'none', // Defaults to `none`.
+        animationDeactivating = 'none', // Defaults to `none`.
     } = options ?? {};
     
     
@@ -305,14 +305,14 @@ export const usesActiveState = (options?: CssActiveStateOptions): CssActiveState
                 // Apply activate animation during the activating phase:
                 ...ifActivating(
                     vars({
-                        [activeStateVars.animationActivate  ] : animationActivate,   // Activate the animation (if provided).
+                        [activeStateVars.animationActivating  ] : animationActivating,   // Activate the animation (if provided).
                     })
                 ),
                 
                 // Apply deactivate animation during the deactivating phase:
                 ...ifDeactivating(
                     vars({
-                        [activeStateVars.animationDeactivate] : animationDeactivate, // Activate the animation (if provided).
+                        [activeStateVars.animationDeactivating] : animationDeactivating, // Activate the animation (if provided).
                     })
                 ),
                 

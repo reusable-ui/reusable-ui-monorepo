@@ -47,9 +47,9 @@ export const ExcitableBox: FC<ExcitableBoxProps> = (props) => {
         handleAnimationEnd,
         handleAnimationCancel,
     } = useExciteBehaviorState(props, {
-        defaultExcited    : false,        // Defaults the `excited` prop to `false` if not provided.
-        animationPattern  : 'box-excite', // Matches animation names ending with 'box-excite'.
-        animationBubbling : false,        // Ignores bubbling animation events from children.
+        defaultExcited    : false,          // Defaults the `excited` prop to `false` if not provided.
+        animationPattern  : 'box-exciting', // Matches animation names ending with 'box-exciting'.
+        animationBubbling : false,          // Ignores bubbling animation events from children.
     });
     
     return (
@@ -130,9 +130,9 @@ Generates CSS rules that conditionally apply the excitement animation based on c
 These variables are conditionally valid and may be **invalid** (`unset`) when the component is not excited.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable          | Active When...       | Purpose                       |
-|-------------------|----------------------|-------------------------------|
-| `animationExcite` | `.is-excited` active | Triggers excitement animation |
+| Variable            | Active When...       | Purpose                       |
+|---------------------|----------------------|-------------------------------|
+| `animationExciting` | `.is-excited` active | Triggers excitement animation |
 
 #### 💡 Usage Example
 
@@ -155,7 +155,7 @@ export const highlightCardStyle = () => {
     const {
         exciteStateRule,
     } = usesExciteState({
-        animationExcite: 'var(--highlight-excite)',
+        animationExciting: 'var(--highlight-exciting)',
     });
     
     return style({
@@ -168,9 +168,9 @@ export const highlightCardStyle = () => {
         // Apply excitement state rules:
         ...exciteStateRule(),
         
-        // Define excitement animation:
+        // Define exciting animation:
         ...vars({
-            '--highlight-excite': [
+            '--highlight-exciting': [
                 ['0.3s', 'ease-in-out', 'both', 'alternate', 4, 'pulse-highlight'],
             ],
         }),
@@ -193,7 +193,7 @@ export const highlightCardStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationExcite` variable is conditionally defined when `.is-excited` is active.  
+The `animationExciting` variable is conditionally defined when `.is-excited` is active.  
 
 The variable is already registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume it directly.  
 Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining excitement animation with other state-driven animations.

@@ -64,10 +64,10 @@ export interface ReadOnlyStateProviderProps
  *         handleAnimationEnd,
  *         handleAnimationCancel,
  *     } = useReadOnlyBehaviorState(props, {
- *         defaultReadOnly        : false,              // Defaults to editable.
- *         defaultCascadeReadOnly : true,               // Defaults to allow contextual read-only.
- *         animationPattern       : ['thaw', 'freeze'], // Matches animation names ending with 'thaw' or 'freeze'.
- *         animationBubbling      : false,              // Ignores bubbling animation events from children.
+ *         defaultReadOnly        : false,                   // Defaults to editable.
+ *         defaultCascadeReadOnly : true,                    // Defaults to allow contextual read-only.
+ *         animationPattern       : ['thawing', 'freezing'], // Matches animation names ending with 'thawing' or 'freezing'.
+ *         animationBubbling      : false,                   // Ignores bubbling animation events from children.
  *     });
  *     
  *     // Or use `useReadOnlyState()` if not concerned with animation phases:

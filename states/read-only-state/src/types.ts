@@ -78,24 +78,24 @@ export interface ReadOnlyStateUpdateProps {
  */
 export interface ReadOnlyStatePhaseEventProps {
     /**
-     * Called when the editable animation begins.
+     * Called when the thawing transition begins.
      */
-    onEditableStart  ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
+    onThawingStart  ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
     
     /**
-     * Called when the editable animation completes.
+     * Called when the thawing transition completes.
      */
-    onEditableEnd    ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
+    onThawingEnd    ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
     
     /**
-     * Called when the read-only animation begins.
+     * Called when the freezing transition begins.
      */
-    onReadOnlyStart  ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
+    onFreezingStart ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
     
     /**
-     * Called when the read-only animation completes.
+     * Called when the freezing transition completes.
      */
-    onReadOnlyEnd    ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
+    onFreezingEnd   ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
 }
 
 /**
@@ -130,7 +130,7 @@ export interface ReadOnlyStateOptions
     /**
      * Defines the pattern used to identify editable/read-only-related animation names.
      * 
-     * This pattern determines which animations are considered part of the editable/read-only lifecycle.
+     * This pattern determines which animation names are recognized as part of the thawing/freezing transition lifecycle.
      * 
      * Supports:
      * - A string suffix (with word-boundary awareness)
@@ -141,7 +141,7 @@ export interface ReadOnlyStateOptions
      * - If the matched pattern starts with a non-word character, it’s always considered boundary-safe.
      * - Otherwise, the character preceding the suffix must be a non-word character or undefined.
      * 
-     * Defaults to `['thaw', 'freeze']`.
+     * Defaults to `['thawing', 'freezing']`.
      */
     animationPattern       ?: AnimationStateOptions<boolean>['animationPattern']
     
@@ -235,22 +235,22 @@ export interface ReadOnlyBehaviorState<TElement extends Element = HTMLElement>
  */
 export interface ReadOnlyStateVars {
     /**
-     * References a thawing animation used during the thawing transition.
-     * Invalid (`unset`) when not actively thawing.
+     * References an animation used during the thawing transition.
+     * It becomes invalid (`unset`) when not actively thawing.
      * 
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationThaw   : unknown
+    animationThawing  : unknown
     
     /**
-     * References a freezing animation used during the freezing transition.
-     * Invalid (`unset`) when not actively freezing.
+     * References an animation used during the freezing transition.
+     * It becomes invalid (`unset`) when not actively freezing.
      * 
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationFreeze : unknown
+    animationFreezing : unknown
     
     /**
      * Applies when the component is either thawing or fully editable.
@@ -269,7 +269,7 @@ export interface ReadOnlyStateVars {
      * });
      * ```
      */
-    isEditable      : unknown
+    isEditable        : unknown
     
     /**
      * Applies when the component is either freezing or fully read-only.
@@ -288,7 +288,7 @@ export interface ReadOnlyStateVars {
      * });
      * ```
      */
-    isReadOnly      : unknown
+    isReadOnly        : unknown
 }
 
 
@@ -298,24 +298,24 @@ export interface ReadOnlyStateVars {
  */
 export interface CssReadOnlyStateOptions {
     /**
-     * The animation to apply during the thawing transition.
+     * Defines the animation to apply during the thawing transition.
      * 
-     * When the `readOnly` prop changes to `false`, the currently running animation is allowed to finish gracefully—
+     * When the `readOnly` prop changes to `false`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationThaw   ?: CssKnownProps['animation']
+    animationThawing  ?: CssKnownProps['animation']
     
     /**
-     * The animation to apply during the freezing transition.
+     * Defines the animation to apply during the freezing transition.
      * 
-     * When the `readOnly` prop changes to `true`, the currently running animation is allowed to finish gracefully—
+     * When the `readOnly` prop changes to `true`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationFreeze ?: CssKnownProps['animation']
+    animationFreezing ?: CssKnownProps['animation']
 }
 
 
@@ -335,8 +335,8 @@ export interface CssReadOnlyState {
      * Exposes editable/read-only-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationThaw`   : Active during the thawing transition.
-     * - `animationFreeze` : Active during the freezing transition.
+     * - `animationThawing`  : Active during the thawing transition.
+     * - `animationFreezing` : Active during the freezing transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.

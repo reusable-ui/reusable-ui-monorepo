@@ -78,24 +78,24 @@ export interface DisabledStateUpdateProps {
  */
 export interface DisabledStatePhaseEventProps {
     /**
-     * Called when the enabling animation begins.
+     * Called when the enabling transition begins.
      */
-    onEnableStart  ?: ValueChangeEventHandler<DisabledPhase, unknown>
+    onEnablingStart  ?: ValueChangeEventHandler<DisabledPhase, unknown>
     
     /**
-     * Called when the enabling animation completes.
+     * Called when the enabling transition completes.
      */
-    onEnableEnd    ?: ValueChangeEventHandler<DisabledPhase, unknown>
+    onEnablingEnd    ?: ValueChangeEventHandler<DisabledPhase, unknown>
     
     /**
-     * Called when the disabling animation begins.
+     * Called when the disabling transition begins.
      */
-    onDisableStart ?: ValueChangeEventHandler<DisabledPhase, unknown>
+    onDisablingStart ?: ValueChangeEventHandler<DisabledPhase, unknown>
     
     /**
-     * Called when the disabling animation completes.
+     * Called when the disabling transition completes.
      */
-    onDisableEnd   ?: ValueChangeEventHandler<DisabledPhase, unknown>
+    onDisablingEnd   ?: ValueChangeEventHandler<DisabledPhase, unknown>
 }
 
 /**
@@ -130,7 +130,7 @@ export interface DisabledStateOptions
     /**
      * Defines the pattern used to identify enable/disable-related animation names.
      * 
-     * This pattern determines which animations are considered part of the enable/disable lifecycle.
+     * This pattern determines which animation names are recognized as part of the enabling/disabling transition lifecycle.
      * 
      * Supports:
      * - A string suffix (with word-boundary awareness)
@@ -141,7 +141,7 @@ export interface DisabledStateOptions
      * - If the matched pattern starts with a non-word character, it’s always considered boundary-safe.
      * - Otherwise, the character preceding the suffix must be a non-word character or undefined.
      * 
-     * Defaults to `['enable', 'disable']`.
+     * Defaults to `['enabling', 'disabling']`.
      */
     animationPattern       ?: AnimationStateOptions<boolean>['animationPattern']
     
@@ -235,22 +235,22 @@ export interface DisabledBehaviorState<TElement extends Element = HTMLElement>
  */
 export interface DisabledStateVars {
     /**
-     * References an enabling animation used during the enabling transition.
-     * Invalid (`unset`) when not actively enabling.
+     * References an animation used during the enabling transition.
+     * It becomes invalid (`unset`) when not actively enabling.
      * 
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationEnable  : unknown
+    animationEnabling  : unknown
     
     /**
-     * References a disabling animation used during the disabling transition.
-     * Invalid (`unset`) when not actively disabling.
+     * References an animation used during the disabling transition.
+     * It becomes invalid (`unset`) when not actively disabling.
      * 
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationDisable : unknown
+    animationDisabling : unknown
     
     /**
      * Applies when the component is either enabling or fully enabled.
@@ -269,7 +269,7 @@ export interface DisabledStateVars {
      * });
      * ```
      */
-    isEnabled        : unknown
+    isEnabled          : unknown
     
     /**
      * Applies when the component is either disabling or fully disabled.
@@ -288,7 +288,7 @@ export interface DisabledStateVars {
      * });
      * ```
      */
-    isDisabled       : unknown
+    isDisabled         : unknown
 }
 
 
@@ -298,24 +298,24 @@ export interface DisabledStateVars {
  */
 export interface CssDisabledStateOptions {
     /**
-     * The animation to apply during the enabling transition.
+     * Defines the animation to apply during the enabling transition.
      * 
-     * When the `disabled` prop changes to `false`, the currently running animation is allowed to finish gracefully—
+     * When the `disabled` prop changes to `false`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationEnable  ?: CssKnownProps['animation']
+    animationEnabling  ?: CssKnownProps['animation']
     
     /**
-     * The animation to apply during the disabling transition.
+     * Defines the animation to apply during the disabling transition.
      * 
-     * When the `disabled` prop changes to `true`, the currently running animation is allowed to finish gracefully—
+     * When the `disabled` prop changes to `true`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationDisable ?: CssKnownProps['animation']
+    animationDisabling ?: CssKnownProps['animation']
 }
 
 
@@ -335,8 +335,8 @@ export interface CssDisabledState {
      * Exposes enable/disable-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationEnable`  : Active during the enabling transition.
-     * - `animationDisable` : Active during the disabling transition.
+     * - `animationEnabling`  : Active during the enabling transition.
+     * - `animationDisabling` : Active during the disabling transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.

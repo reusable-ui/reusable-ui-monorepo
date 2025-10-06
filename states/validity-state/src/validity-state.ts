@@ -151,9 +151,9 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
  *         computedValidity,
  *         ...restProps,
  *     }, {
- *         defaultValidity   : 'auto',                                   // Defaults to diagnostic mode.
- *         animationPattern  : ['validate', 'invalidate', 'unvalidate'], // Matches animation names ending with 'validate', 'invalidate', or 'unvalidate'.
- *         animationBubbling : false,                                    // Ignores bubbling animation events from children.
+ *         defaultValidity   : 'auto',                                         // Defaults to diagnostic mode.
+ *         animationPattern  : ['validating', 'invalidating', 'unvalidating'], // Matches animation names ending with 'validating', 'invalidating', or 'unvalidating'.
+ *         animationBubbling : false,                                          // Ignores bubbling animation events from children.
  *     });
  *     
  *     return (
@@ -176,7 +176,7 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     const {
         defaultValidity   = defaultDeclarativeValidity,
         fallbackValidity  = defaultFallbackValidity,
-        animationPattern  = ['validate', 'invalidate', 'unvalidate'], // Matches animation names for transitions
+        animationPattern  = ['validating', 'invalidating', 'unvalidating'], // Matches animation names for transitions
         animationBubbling = false,
     } = options ?? {};
     
@@ -269,12 +269,12 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
  * This hook observes the resolved `validityPhase` from `useValidityBehaviorState()` and triggers
  * the appropriate callbacks defined in `ValidityStatePhaseEventProps`, such as:
  * 
- * - `onValidateStart`
- * - `onValidateEnd`
- * - `onInvalidateStart`
- * - `onInvalidateEnd`
- * - `onUnvalidateStart`
- * - `onUnvalidateEnd`
+ * - `onValidatingStart`
+ * - `onValidatingEnd`
+ * - `onInvalidatingStart`
+ * - `onInvalidatingEnd`
+ * - `onUnvalidatingStart`
+ * - `onUnvalidatingEnd`
  * 
  * @param {ValidityStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
  * @param {ValidityPhase} validityPhase - The current phase value returned from `useValidityBehaviorState()`.
@@ -282,12 +282,12 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
 export const useValidityStatePhaseEvents = (props: ValidityStatePhaseEventProps, validityPhase: ValidityPhase): void => {
     // Extract props:
     const {
-        onValidateStart,
-        onValidateEnd,
-        onInvalidateStart,
-        onInvalidateEnd,
-        onUnvalidateStart,
-        onUnvalidateEnd,
+        onValidatingStart,
+        onValidatingEnd,
+        onInvalidatingStart,
+        onInvalidatingEnd,
+        onUnvalidatingStart,
+        onUnvalidatingEnd,
     } = props;
     
     
@@ -303,12 +303,12 @@ export const useValidityStatePhaseEvents = (props: ValidityStatePhaseEventProps,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const handleValidityPhaseChange = useStableCallback((validityPhase: ValidityPhase): void => {
         switch (validityPhase) {
-            case 'validating'   : onValidateStart?.(validityPhase, undefined);   break;
-            case 'valid'        : onValidateEnd?.(validityPhase, undefined);     break;
-            case 'invalidating' : onInvalidateStart?.(validityPhase, undefined); break;
-            case 'invalid'      : onInvalidateEnd?.(validityPhase, undefined);   break;
-            case 'unvalidating' : onUnvalidateStart?.(validityPhase, undefined); break;
-            case 'unvalidated'  : onUnvalidateEnd?.(validityPhase, undefined);   break;
+            case 'validating'   : onValidatingStart?.(validityPhase, undefined);   break;
+            case 'valid'        : onValidatingEnd?.(validityPhase, undefined);     break;
+            case 'invalidating' : onInvalidatingStart?.(validityPhase, undefined); break;
+            case 'invalid'      : onInvalidatingEnd?.(validityPhase, undefined);   break;
+            case 'unvalidating' : onUnvalidatingStart?.(validityPhase, undefined); break;
+            case 'unvalidated'  : onUnvalidatingEnd?.(validityPhase, undefined);   break;
         } // switch
     });
     

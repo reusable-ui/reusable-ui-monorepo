@@ -55,10 +55,10 @@ interface ReadOnlyStateEventTestCase {
         
         /**
          * The expected read-only state.
-         * - `'readonly'` : onReadOnlyEnd event has been invoked
-         * - `'freezing'` : onReadOnlyStart event has been invoked
-         * - `'thawing'`  : onEditableStart event has been invoked
-         * - `'editable'` : onEditableEnd event has been invoked
+         * - `'readonly'` : onFreezingEnd event has been invoked
+         * - `'freezing'` : onFreezingStart event has been invoked
+         * - `'thawing'`  : onThawingStart event has been invoked
+         * - `'editable'` : onThawingEnd event has been invoked
          * - `null`       : no event has been invoked
          * - `undefined`  : nothing to expect
          */
@@ -417,19 +417,19 @@ test.describe('useReadOnlyStatePhaseEvents', () => {
             };
             
             let lastReadOnlyPhase : ReadOnlyPhase | null = null;
-            const handleEditableStart : ValueChangeEventHandler<ReadOnlyPhase, unknown> = (readOnlyPhase) => {
+            const handleThawingStart : ValueChangeEventHandler<ReadOnlyPhase, unknown> = (readOnlyPhase) => {
                 expect(readOnlyPhase).toBe('thawing');
                 lastReadOnlyPhase = readOnlyPhase;
             };
-            const handleEditableEnd : ValueChangeEventHandler<ReadOnlyPhase, unknown> = (readOnlyPhase) => {
+            const handleThawingEnd : ValueChangeEventHandler<ReadOnlyPhase, unknown> = (readOnlyPhase) => {
                 expect(readOnlyPhase).toBe('editable');
                 lastReadOnlyPhase = readOnlyPhase;
             };
-            const handleReadOnlyStart : ValueChangeEventHandler<ReadOnlyPhase, unknown> = (readOnlyPhase) => {
+            const handleFreezingStart : ValueChangeEventHandler<ReadOnlyPhase, unknown> = (readOnlyPhase) => {
                 expect(readOnlyPhase).toBe('freezing');
                 lastReadOnlyPhase = readOnlyPhase;
             };
-            const handleReadOnlyEnd : ValueChangeEventHandler<ReadOnlyPhase, unknown> = (readOnlyPhase) => {
+            const handleFreezingEnd : ValueChangeEventHandler<ReadOnlyPhase, unknown> = (readOnlyPhase) => {
                 expect(readOnlyPhase).toBe('readonly');
                 lastReadOnlyPhase = readOnlyPhase;
             };
@@ -443,10 +443,10 @@ test.describe('useReadOnlyStatePhaseEvents', () => {
                     
                     onReadOnlyUpdate={handleReadOnlyUpdate}
                     
-                    onEditableStart={handleEditableStart}
-                    onEditableEnd={handleEditableEnd}
-                    onReadOnlyStart={handleReadOnlyStart}
-                    onReadOnlyEnd={handleReadOnlyEnd}
+                    onThawingStart={handleThawingStart}
+                    onThawingEnd={handleThawingEnd}
+                    onFreezingStart={handleFreezingStart}
+                    onFreezingEnd={handleFreezingEnd}
                 />
             );
             
@@ -481,10 +481,10 @@ test.describe('useReadOnlyStatePhaseEvents', () => {
                         
                         onReadOnlyUpdate={handleReadOnlyUpdate}
                         
-                        onEditableStart={handleEditableStart}
-                        onEditableEnd={handleEditableEnd}
-                        onReadOnlyStart={handleReadOnlyStart}
-                        onReadOnlyEnd={handleReadOnlyEnd}
+                        onThawingStart={handleThawingStart}
+                        onThawingEnd={handleThawingEnd}
+                        onFreezingStart={handleFreezingStart}
+                        onFreezingEnd={handleFreezingEnd}
                     />
                 );
                 

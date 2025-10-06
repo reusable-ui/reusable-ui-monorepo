@@ -200,8 +200,8 @@ export const ifCollapsingOrCollapsed = (styles: CssStyleCollection): CssRule => 
 const [collapseStateVars] = cssVars<CollapseStateVars>({ prefix: 'cp', minify: false });
 
 // Register the expand/collapse animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(collapseStateVars.animationExpand);
-animationRegistry.registerAnimation(collapseStateVars.animationCollapse);
+animationRegistry.registerAnimation(collapseStateVars.animationExpanding);
+animationRegistry.registerAnimation(collapseStateVars.animationCollapsing);
 
 /**
  * Generates CSS rules that conditionally apply the expand/collapse animations based on current expanded state,
@@ -231,8 +231,8 @@ animationRegistry.registerAnimation(collapseStateVars.animationCollapse);
  *         collapseStateRule,
  *         collapseStateVars: { isExpanded, isCollapsed },
  *     } = usesCollapseState({
- *         animationExpand   : 'var(--box-expand)',
- *         animationCollapse : 'var(--box-collapse)',
+ *         animationExpanding  : 'var(--box-expanding)',
+ *         animationCollapsing : 'var(--box-collapsing)',
  *     });
  *     
  *     return style({
@@ -247,7 +247,7 @@ animationRegistry.registerAnimation(collapseStateVars.animationCollapse);
  *         
  *         // Define expanding animation:
  *         ...vars({
- *             '--box-expand': [
+ *             '--box-expanding': [
  *                 ['0.3s', 'ease-out', 'both', 'height-expanding'],
  *             ],
  *         }),
@@ -262,7 +262,7 @@ animationRegistry.registerAnimation(collapseStateVars.animationCollapse);
  *         
  *         // Define collapsing animation:
  *         ...vars({
- *             '--box-collapse': [
+ *             '--box-collapsing': [
  *                 ['0.3s', 'ease-out', 'both', 'height-collapsing'],
  *             ],
  *         }),
@@ -295,8 +295,8 @@ animationRegistry.registerAnimation(collapseStateVars.animationCollapse);
 export const usesCollapseState = (options?: CssCollapseStateOptions): CssCollapseState => {
     // Extract options and assign defaults:
     const {
-        animationExpand   = 'none', // Defaults to `none`.
-        animationCollapse = 'none', // Defaults to `none`.
+        animationExpanding  = 'none', // Defaults to `none`.
+        animationCollapsing = 'none', // Defaults to `none`.
     } = options ?? {};
     
     
@@ -307,14 +307,14 @@ export const usesCollapseState = (options?: CssCollapseStateOptions): CssCollaps
                 // Apply expand animation during the expanding phase:
                 ...ifExpanding(
                     vars({
-                        [collapseStateVars.animationExpand  ] : animationExpand,   // Activate the animation (if provided).
+                        [collapseStateVars.animationExpanding ] : animationExpanding,  // Activate the animation (if provided).
                     })
                 ),
                 
                 // Apply collapse animation during the collapsing phase:
                 ...ifCollapsing(
                     vars({
-                        [collapseStateVars.animationCollapse] : animationCollapse, // Activate the animation (if provided).
+                        [collapseStateVars.animationCollapsing] : animationCollapsing, // Activate the animation (if provided).
                     })
                 ),
                 

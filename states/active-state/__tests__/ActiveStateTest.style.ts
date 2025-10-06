@@ -7,8 +7,8 @@ export default function activeStateTestStyle() {
         activeStateRule,
         activeStateVars: { isActive, isInactive },
     } = usesActiveState({
-        animationActivate   : 'var(--test-activate)',
-        animationDeactivate : 'var(--test-deactivate)',
+        animationActivating   : 'var(--test-activating)',
+        animationDeactivating : 'var(--test-deactivating)',
     });
     
     const {
@@ -21,11 +21,11 @@ export default function activeStateTestStyle() {
         ...animationFeatureRule(),
         
         ...vars({
-            '--test-activate': [
-                ['1s', 'ease-out', 'both', 'boo-test-activate'],
+            '--test-activating': [
+                ['1s', 'ease-out', 'both', 'boo-test-activating'],
             ],
         }),
-        ...keyframes('boo-test-activate', {
+        ...keyframes('boo-test-activating', {
             from : {
                 opacity: '60%',
             },
@@ -35,11 +35,11 @@ export default function activeStateTestStyle() {
         }),
         
         ...vars({
-            '--test-deactivate': [
-                ['1s', 'ease-out', 'both', 'boo-test-deactivate'],
+            '--test-deactivating': [
+                ['1s', 'ease-out', 'both', 'boo-test-deactivating'],
             ],
         }),
-        ...keyframes('boo-test-deactivate', {
+        ...keyframes('boo-test-deactivating', {
             from : {
                 opacity: '100%',
             },

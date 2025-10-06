@@ -64,10 +64,10 @@ export interface DisabledStateProviderProps
  *         handleAnimationEnd,
  *         handleAnimationCancel,
  *     } = useDisabledBehaviorState(props, {
- *         defaultDisabled        : false,                 // Defaults to enabled.
- *         defaultCascadeDisabled : true,                  // Defaults to allow contextual disabling.
- *         animationPattern       : ['enable', 'disable'], // Matches animation names ending with 'enable' or 'disable'.
- *         animationBubbling      : false,                 // Ignores bubbling animation events from children.
+ *         defaultDisabled        : false,                     // Defaults to enabled.
+ *         defaultCascadeDisabled : true,                      // Defaults to allow contextual disabling.
+ *         animationPattern       : ['enabling', 'disabling'], // Matches animation names ending with 'enabling' or 'disabling'.
+ *         animationBubbling      : false,                     // Ignores bubbling animation events from children.
  *     });
  *     
  *     // Or use `useDisabledState()` if not concerned with animation phases:

@@ -78,9 +78,9 @@ export const CustomInput: FC<CustomInputProps> = (props) => {
         computedValidity,
         ...restProps,
     }, {
-        defaultValidity   : 'auto',                                   // Defaults to diagnostic mode.
-        animationPattern  : ['validate', 'invalidate', 'unvalidate'], // Matches animation names ending with 'validate', 'invalidate', or 'unvalidate'.
-        animationBubbling : false,                                    // Ignores bubbling animation events from children.
+        defaultValidity   : 'auto',                                         // Defaults to diagnostic mode.
+        animationPattern  : ['validating', 'invalidating', 'unvalidating'], // Matches animation names ending with 'validating', 'invalidating', or 'unvalidating'.
+        animationBubbling : false,                                          // Ignores bubbling animation events from children.
     });
     
     return (
@@ -104,12 +104,12 @@ Emits lifecycle events in response to validity phase transitions.
 
 This hook observes the resolved `validityPhase` from `useValidityBehaviorState()` and triggers the appropriate callbacks defined in `ValidityStatePhaseEventProps`, such as:
 
-- `onValidateStart`
-- `onValidateEnd`
-- `onInvalidateStart`
-- `onInvalidateEnd`
-- `onUnvalidateStart`
-- `onUnvalidateEnd`
+- `onValidatingStart`
+- `onValidatingEnd`
+- `onInvalidatingStart`
+- `onInvalidatingEnd`
+- `onUnvalidatingStart`
+- `onUnvalidatingEnd`
 
 ### `useValidityState(props, options?)`
 
@@ -205,17 +205,17 @@ Generates CSS rules that conditionally apply the validity-related animations bas
 These variables are only active during their respective transition phases.  
 Use `switchOf(...)` to ensure graceful fallback when inactive.
 
-| Variable              | Active When...                          | Purpose                                  |
-|-----------------------|-----------------------------------------|------------------------------------------|
-| `animationValidate`   | `.is-validating`                        | Triggers validating animation            |
-| `animationInvalidate` | `.is-invalidating`                      | Triggers invalidating animation          |
-| `animationUnvalidate` | `.is-unvalidating`                      | Triggers unvalidating animation          |
-| `isValid`             | `.is-valid` or `.is-validating`         | Styling for valid state                  |
-| `isInvalid`           | `.is-invalid` or `.is-invalidating`     | Styling for invalid state                |
-| `isUnvalidated`       | `.is-unvalidated` or `.is-unvalidating` | Styling for unvalidated state            |
-| `wasValid`            | `.was-valid`                            | Styling for previously valid state       |
-| `wasInvalid`          | `.was-invalid`                          | Styling for previously invalid state     |
-| `wasUnvalidated`      | `.was-unvalidated`                      | Styling for previously unvalidated state |
+| Variable                | Active When...                          | Purpose                                  |
+|-------------------------|-----------------------------------------|------------------------------------------|
+| `animationValidating`   | `.is-validating`                        | Triggers validating animation            |
+| `animationInvalidating` | `.is-invalidating`                      | Triggers invalidating animation          |
+| `animationUnvalidating` | `.is-unvalidating`                      | Triggers unvalidating animation          |
+| `isValid`               | `.is-valid` or `.is-validating`         | Styling for valid state                  |
+| `isInvalid`             | `.is-invalid` or `.is-invalidating`     | Styling for invalid state                |
+| `isUnvalidated`         | `.is-unvalidated` or `.is-unvalidating` | Styling for unvalidated state            |
+| `wasValid`              | `.was-valid`                            | Styling for previously valid state       |
+| `wasInvalid`            | `.was-invalid`                          | Styling for previously invalid state     |
+| `wasUnvalidated`        | `.was-unvalidated`                      | Styling for previously unvalidated state |
 
 #### 💡 Usage Example
 
@@ -239,9 +239,9 @@ export const validatableBoxStyle = () => {
         validityStateRule,
         validityStateVars: { isValid, isInvalid, isUnvalidated, wasValid, wasInvalid, wasUnvalidated },
     } = usesValidityState({
-        animationValidate   : 'var(--box-validate)',
-        animationInvalidate : 'var(--box-invalidate)',
-        animationUnvalidate : 'var(--box-unvalidate)',
+        animationValidating   : 'var(--box-validating)',
+        animationInvalidating : 'var(--box-invalidating)',
+        animationUnvalidating : 'var(--box-unvalidating)',
     });
     
     return style({
@@ -256,7 +256,7 @@ export const validatableBoxStyle = () => {
         
         // Define validating animation:
         ...vars({
-            '--box-validate': [
+            '--box-validating': [
                 ['0.3s', 'ease-out', 'both', 'splash-validating'],
             ],
         }),
@@ -274,7 +274,7 @@ export const validatableBoxStyle = () => {
         
         // Define invalidating animation:
         ...vars({
-            '--box-invalidate': [
+            '--box-invalidating': [
                 ['0.3s', 'ease-out', 'both', 'splash-invalidating'],
             ],
         }),
@@ -292,7 +292,7 @@ export const validatableBoxStyle = () => {
         
         // Define unvalidating animation:
         ...vars({
-            '--box-unvalidate': [
+            '--box-unvalidating': [
                 ['0.3s', 'ease-out', 'both', 'splash-unvalidating'],
             ],
         }),
@@ -328,7 +328,7 @@ export const validatableBoxStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationValidate`, `animationInvalidate`, and `animationUnvalidate` variables are only defined during **validating**, **invalidating**, and **unvalidating** phases.
+The `animationValidating`, `animationInvalidating`, and `animationUnvalidating` variables are only defined during **validating**, **invalidating**, and **unvalidating** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
 Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining validity-related animations with other state-driven transitions.

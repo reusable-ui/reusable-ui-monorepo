@@ -58,9 +58,9 @@ export const ActivatableBox: FC<ActivatableBoxProps> = (props) => {
         handleAnimationEnd,
         handleAnimationCancel,
     } = useActiveBehaviorState(props, {
-        defaultActive     : false,                      // Fallback for uncontrolled mode.
-        animationPattern  : ['activate', 'deactivate'], // Matches animation names ending with 'activate' or 'deactivate'.
-        animationBubbling : false,                      // Ignores bubbling animation events from children.
+        defaultActive     : false,                          // Fallback for uncontrolled mode.
+        animationPattern  : ['activating', 'deactivating'], // Matches animation names ending with 'activating' or 'deactivating'.
+        animationBubbling : false,                          // Ignores bubbling animation events from children.
     });
     
     return (
@@ -87,10 +87,10 @@ Emits lifecycle events in response to activate/deactivate phase transitions.
 
 This hook observes the resolved `activePhase` from `useActiveBehaviorState()` and triggers the appropriate callbacks defined in `ActiveStatePhaseEventProps`, such as:
 
-- `onActivateStart`
-- `onActivateEnd`
-- `onDeactivateStart`
-- `onDeactivateEnd`
+- `onActivatingStart`
+- `onActivatingEnd`
+- `onDeactivatingStart`
+- `onDeactivatingEnd`
 
 ### `useActiveState(props, options?)`
 
@@ -192,10 +192,10 @@ Generates CSS rules that conditionally apply the activate/deactivate animations 
 These variables are only active during their respective transition phases.  
 Use `switchOf(...)` to ensure graceful fallback when inactive.
 
-| Variable              | Active When...     | Purpose                         |
-|-----------------------|--------------------|---------------------------------|
-| `animationActivate`   | `.is-activating`   | Triggers activating animation   |
-| `animationDeactivate` | `.is-deactivating` | Triggers deactivating animation |
+| Variable                | Active When...     | Purpose                         |
+|-------------------------|--------------------|---------------------------------|
+| `animationActivating`   | `.is-activating`   | Triggers activating animation   |
+| `animationDeactivating` | `.is-deactivating` | Triggers deactivating animation |
 
 #### 💡 Usage Example
 
@@ -219,8 +219,8 @@ export const activatableBoxStyle = () => {
         activeStateRule,
         activeStateVars: { isActive, isInactive },
     } = usesActiveState({
-        animationActivate   : 'var(--box-activate)',
-        animationDeactivate : 'var(--box-deactivate)',
+        animationActivating   : 'var(--box-activating)',
+        animationDeactivating : 'var(--box-deactivating)',
     });
     
     return style({
@@ -235,7 +235,7 @@ export const activatableBoxStyle = () => {
         
         // Define activating animation:
         ...vars({
-            '--box-activate': [
+            '--box-activating': [
                 ['0.3s', 'ease-out', 'both', 'opacity-activating'],
             ],
         }),
@@ -250,7 +250,7 @@ export const activatableBoxStyle = () => {
         
         // Define deactivating animation:
         ...vars({
-            '--box-deactivate': [
+            '--box-deactivating': [
                 ['0.3s', 'ease-out', 'both', 'opacity-deactivating'],
             ],
         }),
@@ -280,7 +280,7 @@ export const activatableBoxStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationActivate` and `animationDeactivate` variables are only defined during **activating** and **deactivating** phases.
+The `animationActivating` and `animationDeactivating` variables are only defined during **activating** and **deactivating** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
 Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining activate/deactivate animations with other state-driven transitions.

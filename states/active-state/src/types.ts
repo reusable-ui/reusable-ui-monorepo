@@ -90,24 +90,24 @@ export interface ActiveStateChangeProps<TChangeEvent = unknown> {
  */
 export interface ActiveStatePhaseEventProps {
     /**
-     * Called when the activation animation begins.
+     * Called when the activating transition begins.
      */
-    onActivateStart   ?: ValueChangeEventHandler<ActivePhase, unknown>
+    onActivatingStart   ?: ValueChangeEventHandler<ActivePhase, unknown>
     
     /**
-     * Called when the activation animation completes.
+     * Called when the activating transition completes.
      */
-    onActivateEnd     ?: ValueChangeEventHandler<ActivePhase, unknown>
+    onActivatingEnd     ?: ValueChangeEventHandler<ActivePhase, unknown>
     
     /**
-     * Called when the deactivation animation begins.
+     * Called when the deactivating transition begins.
      */
-    onDeactivateStart ?: ValueChangeEventHandler<ActivePhase, unknown>
+    onDeactivatingStart ?: ValueChangeEventHandler<ActivePhase, unknown>
     
     /**
-     * Called when the deactivation animation completes.
+     * Called when the deactivating transition completes.
      */
-    onDeactivateEnd   ?: ValueChangeEventHandler<ActivePhase, unknown>
+    onDeactivatingEnd   ?: ValueChangeEventHandler<ActivePhase, unknown>
 }
 
 /**
@@ -133,7 +133,7 @@ export interface ActiveStateOptions
     /**
      * Defines the pattern used to identify activate/deactivate-related animation names.
      * 
-     * This pattern determines which animations are considered part of the activate/deactivate lifecycle.
+     * This pattern determines which animation names are recognized as part of the activating/deactivating transition lifecycle.
      * 
      * Supports:
      * - A string suffix (with word-boundary awareness)
@@ -144,7 +144,7 @@ export interface ActiveStateOptions
      * - If the matched pattern starts with a non-word character, it’s always considered boundary-safe.
      * - Otherwise, the character preceding the suffix must be a non-word character or undefined.
      * 
-     * Defaults to `['activate', 'deactivate']`.
+     * Defaults to `['activating', 'deactivating']`.
      */
     animationPattern  ?: AnimationStateOptions<boolean>['animationPattern']
     
@@ -248,22 +248,22 @@ export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TCh
  */
 export interface ActiveStateVars {
     /**
-     * References an activating animation used during the activating transition.
-     * Invalid (`unset`) when not actively activating.
+     * References an animation used during the activating transition.
+     * It becomes invalid (`unset`) when not actively activating.
      * 
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationActivate   : unknown
+    animationActivating   : unknown
     
     /**
-     * References a deactivating animation used during the deactivating transition.
-     * Invalid (`unset`) when not actively deactivating.
+     * References an animation used during the deactivating transition.
+     * It becomes invalid (`unset`) when not actively deactivating.
      * 
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationDeactivate : unknown
+    animationDeactivating : unknown
     
     /**
      * Applies when the component is either activating or fully active.
@@ -282,7 +282,7 @@ export interface ActiveStateVars {
      * });
      * ```
      */
-    isActive            : unknown
+    isActive              : unknown
     
     /**
      * Applies when the component is either deactivating or fully inactive.
@@ -301,7 +301,7 @@ export interface ActiveStateVars {
      * });
      * ```
      */
-    isInactive          : unknown
+    isInactive            : unknown
 }
 
 
@@ -311,24 +311,24 @@ export interface ActiveStateVars {
  */
 export interface CssActiveStateOptions {
     /**
-     * The animation to apply during the activating transition.
+     * Defines the animation to apply during the activating transition.
      * 
-     * When the `active` prop changes to `false`, the currently running animation is allowed to finish gracefully—
+     * When the `active` prop changes to `false`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationActivate   ?: CssKnownProps['animation']
+    animationActivating   ?: CssKnownProps['animation']
     
     /**
-     * The animation to apply during the deactivating transition.
+     * Defines the animation to apply during the deactivating transition.
      * 
-     * When the `active` prop changes to `true`, the currently running animation is allowed to finish gracefully—
+     * When the `active` prop changes to `true`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationDeactivate ?: CssKnownProps['animation']
+    animationDeactivating ?: CssKnownProps['animation']
 }
 
 
@@ -348,8 +348,8 @@ export interface CssActiveState {
      * Exposes activate/deactivate-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationActivate`   : Active during the activating transition.
-     * - `animationDeactivate` : Active during the deactivating transition.
+     * - `animationActivating`   : Active during the activating transition.
+     * - `animationDeactivating` : Active during the deactivating transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.

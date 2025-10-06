@@ -55,10 +55,10 @@ interface DisabledStateEventTestCase {
         
         /**
          * The expected disabled state.
-         * - `'disabled'`  : onDisableEnd event has been invoked
-         * - `'disabling'` : onDisableStart event has been invoked
-         * - `'enabling'`  : onEnableStart event has been invoked
-         * - `'enabled'`   : onEnableEnd event has been invoked
+         * - `'disabled'`  : onDisablingEnd event has been invoked
+         * - `'disabling'` : onDisablingStart event has been invoked
+         * - `'enabling'`  : onEnablingStart event has been invoked
+         * - `'enabled'`   : onEnablingEnd event has been invoked
          * - `null`         : no event has been invoked
          * - `undefined`    : nothing to expect
          */
@@ -417,19 +417,19 @@ test.describe('useDisabledStatePhaseEvents', () => {
             };
             
             let lastDisabledPhase : DisabledPhase | null = null;
-            const handleEnableStart : ValueChangeEventHandler<DisabledPhase, unknown> = (disabledPhase) => {
+            const handleEnablingStart : ValueChangeEventHandler<DisabledPhase, unknown> = (disabledPhase) => {
                 expect(disabledPhase).toBe('enabling');
                 lastDisabledPhase = disabledPhase;
             };
-            const handleEnableEnd : ValueChangeEventHandler<DisabledPhase, unknown> = (disabledPhase) => {
+            const handleEnablingEnd : ValueChangeEventHandler<DisabledPhase, unknown> = (disabledPhase) => {
                 expect(disabledPhase).toBe('enabled');
                 lastDisabledPhase = disabledPhase;
             };
-            const handleDisableStart : ValueChangeEventHandler<DisabledPhase, unknown> = (disabledPhase) => {
+            const handleDisablingStart : ValueChangeEventHandler<DisabledPhase, unknown> = (disabledPhase) => {
                 expect(disabledPhase).toBe('disabling');
                 lastDisabledPhase = disabledPhase;
             };
-            const handleDisableEnd : ValueChangeEventHandler<DisabledPhase, unknown> = (disabledPhase) => {
+            const handleDisablingEnd : ValueChangeEventHandler<DisabledPhase, unknown> = (disabledPhase) => {
                 expect(disabledPhase).toBe('disabled');
                 lastDisabledPhase = disabledPhase;
             };
@@ -443,10 +443,10 @@ test.describe('useDisabledStatePhaseEvents', () => {
                     
                     onDisabledUpdate={handleDisabledUpdate}
                     
-                    onEnableStart={handleEnableStart}
-                    onEnableEnd={handleEnableEnd}
-                    onDisableStart={handleDisableStart}
-                    onDisableEnd={handleDisableEnd}
+                    onEnablingStart={handleEnablingStart}
+                    onEnablingEnd={handleEnablingEnd}
+                    onDisablingStart={handleDisablingStart}
+                    onDisablingEnd={handleDisablingEnd}
                 />
             );
             
@@ -481,10 +481,10 @@ test.describe('useDisabledStatePhaseEvents', () => {
                         
                         onDisabledUpdate={handleDisabledUpdate}
                         
-                        onEnableStart={handleEnableStart}
-                        onEnableEnd={handleEnableEnd}
-                        onDisableStart={handleDisableStart}
-                        onDisableEnd={handleDisableEnd}
+                        onEnablingStart={handleEnablingStart}
+                        onEnablingEnd={handleEnablingEnd}
+                        onDisablingStart={handleDisablingStart}
+                        onDisablingEnd={handleDisablingEnd}
                     />
                 );
                 

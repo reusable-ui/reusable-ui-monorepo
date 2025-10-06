@@ -7,8 +7,8 @@ export default function disabledStateTestStyle() {
         disabledStateRule,
         disabledStateVars: { isEnabled, isDisabled },
     } = usesDisabledState({
-        animationEnable  : 'var(--test-enable)',
-        animationDisable : 'var(--test-disable)',
+        animationEnabling  : 'var(--test-enabling)',
+        animationDisabling : 'var(--test-disabling)',
     });
     
     const {
@@ -21,11 +21,11 @@ export default function disabledStateTestStyle() {
         ...animationFeatureRule(),
         
         ...vars({
-            '--test-enable': [
-                ['1s', 'ease-out', 'both', 'boo-test-enable'],
+            '--test-enabling': [
+                ['1s', 'ease-out', 'both', 'boo-test-enabling'],
             ],
         }),
-        ...keyframes('boo-test-enable', {
+        ...keyframes('boo-test-enabling', {
             from: {
                 opacity: 0.5,
             },
@@ -35,11 +35,11 @@ export default function disabledStateTestStyle() {
         }),
         
         ...vars({
-            '--test-disable': [
-                ['1s', 'ease-out', 'both', 'boo-test-disable'],
+            '--test-disabling': [
+                ['1s', 'ease-out', 'both', 'boo-test-disabling'],
             ],
         }),
-        ...keyframes('boo-test-disable', {
+        ...keyframes('boo-test-disabling', {
             from: {
                 opacity: 1,
             },

@@ -74,12 +74,12 @@ interface ValidityStateEventTestCase {
         
         /**
          * The expected validity state.
-         * - `'valid'`        : onValidateStart event has been invoked
-         * - `'invalid'`      : onValidateEnd event has been invoked
-         * - `'unvalidated'`  : onInvalidateStart event has been invoked
-         * - `'validating'`   : onInvalidateEnd event has been invoked
-         * - `'invalidating'` : onUnvalidateStart event has been invoked
-         * - `'unvalidating'` : onUnvalidateEnd event has been invoked
+         * - `'valid'`        : onValidatingStart event has been invoked
+         * - `'invalid'`      : onValidatingEnd event has been invoked
+         * - `'unvalidated'`  : onInvalidatingStart event has been invoked
+         * - `'validating'`   : onInvalidatingEnd event has been invoked
+         * - `'invalidating'` : onUnvalidatingStart event has been invoked
+         * - `'unvalidating'` : onUnvalidatingEnd event has been invoked
          * - `null`           : no event has been invoked
          * - `undefined`      : nothing to expect
          */
@@ -905,27 +905,27 @@ test.describe('useValidityStatePhaseEvents', () => {
             };
             
             let lastValidityPhase : ValidityPhase | null = null;
-            const handleValidateStart : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
+            const handleValidatingStart : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
                 expect(validityPhase).toBe('validating');
                 lastValidityPhase = validityPhase;
             };
-            const handleValidateEnd : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
+            const handleValidatingEnd : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
                 expect(validityPhase).toBe('valid');
                 lastValidityPhase = validityPhase;
             };
-            const handleInvalidateStart : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
+            const handleInvalidatingStart : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
                 expect(validityPhase).toBe('invalidating');
                 lastValidityPhase = validityPhase;
             };
-            const handleInvalidateEnd : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
+            const handleInvalidatingEnd : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
                 expect(validityPhase).toBe('invalid');
                 lastValidityPhase = validityPhase;
             };
-            const handleUnvalidateStart : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
+            const handleUnvalidatingStart : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
                 expect(validityPhase).toBe('unvalidating');
                 lastValidityPhase = validityPhase;
             };
-            const handleUnvalidateEnd : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
+            const handleUnvalidatingEnd : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
                 expect(validityPhase).toBe('unvalidated');
                 lastValidityPhase = validityPhase;
             };
@@ -940,12 +940,12 @@ test.describe('useValidityStatePhaseEvents', () => {
                     
                     onValidityUpdate={handleValidityUpdate}
                     
-                    onValidateStart={handleValidateStart}
-                    onValidateEnd={handleValidateEnd}
-                    onInvalidateStart={handleInvalidateStart}
-                    onInvalidateEnd={handleInvalidateEnd}
-                    onUnvalidateStart={handleUnvalidateStart}
-                    onUnvalidateEnd={handleUnvalidateEnd}
+                    onValidatingStart={handleValidatingStart}
+                    onValidatingEnd={handleValidatingEnd}
+                    onInvalidatingStart={handleInvalidatingStart}
+                    onInvalidatingEnd={handleInvalidatingEnd}
+                    onUnvalidatingStart={handleUnvalidatingStart}
+                    onUnvalidatingEnd={handleUnvalidatingEnd}
                 />
             );
             
@@ -983,12 +983,12 @@ test.describe('useValidityStatePhaseEvents', () => {
                         
                         onValidityUpdate={handleValidityUpdate}
                         
-                        onValidateStart={handleValidateStart}
-                        onValidateEnd={handleValidateEnd}
-                        onInvalidateStart={handleInvalidateStart}
-                        onInvalidateEnd={handleInvalidateEnd}
-                        onUnvalidateStart={handleUnvalidateStart}
-                        onUnvalidateEnd={handleUnvalidateEnd}
+                        onValidatingStart={handleValidatingStart}
+                        onValidatingEnd={handleValidatingEnd}
+                        onInvalidatingStart={handleInvalidatingStart}
+                        onInvalidatingEnd={handleInvalidatingEnd}
+                        onUnvalidatingStart={handleUnvalidatingStart}
+                        onUnvalidatingEnd={handleUnvalidatingEnd}
                     />
                 );
                 

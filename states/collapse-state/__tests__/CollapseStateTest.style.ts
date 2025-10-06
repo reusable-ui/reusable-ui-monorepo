@@ -7,8 +7,8 @@ export default function collapseStateTestStyle() {
         collapseStateRule,
         collapseStateVars: { isExpanded, isCollapsed },
     } = usesCollapseState({
-        animationExpand   : 'var(--test-expand)',
-        animationCollapse : 'var(--test-collapse)',
+        animationExpanding  : 'var(--test-expanding)',
+        animationCollapsing : 'var(--test-collapsing)',
     });
     
     const {
@@ -21,11 +21,11 @@ export default function collapseStateTestStyle() {
         ...animationFeatureRule(),
         
         ...vars({
-            '--test-expand': [
-                ['1s', 'ease-out', 'both', 'boo-test-expand'],
+            '--test-expanding': [
+                ['1s', 'ease-out', 'both', 'boo-test-expanding'],
             ],
         }),
-        ...keyframes('boo-test-expand', {
+        ...keyframes('boo-test-expanding', {
             from : {
                 blockSize: '0px',
             },
@@ -35,11 +35,11 @@ export default function collapseStateTestStyle() {
         }),
         
         ...vars({
-            '--test-collapse': [
-                ['1s', 'ease-out', 'both', 'boo-test-collapse'],
+            '--test-collapsing': [
+                ['1s', 'ease-out', 'both', 'boo-test-collapsing'],
             ],
         }),
-        ...keyframes('boo-test-collapse', {
+        ...keyframes('boo-test-collapsing', {
             from : {
                 blockSize: '100px',
             },

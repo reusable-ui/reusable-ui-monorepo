@@ -94,7 +94,7 @@ export const ifNotExcited = (styles: CssStyleCollection): CssRule => rule(isNotE
 const [exciteStateVars] = cssVars<ExciteStateVars>({ prefix: 'ex', minify: false });
 
 // Register the excitement animation globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(exciteStateVars.animationExcite);
+animationRegistry.registerAnimation(exciteStateVars.animationExciting);
 
 /**
  * Generates CSS rules that conditionally apply the excitement animation based on current excited state,
@@ -123,7 +123,7 @@ animationRegistry.registerAnimation(exciteStateVars.animationExcite);
  *     const {
  *         exciteStateRule,
  *     } = usesExciteState({
- *         animationExcite: 'var(--highlight-excite)',
+ *         animationExciting: 'var(--highlight-exciting)',
  *     });
  *     
  *     return style({
@@ -136,9 +136,9 @@ animationRegistry.registerAnimation(exciteStateVars.animationExcite);
  *         // Apply excitement state rules:
  *         ...exciteStateRule(),
  *         
- *         // Define excitement animation:
+ *         // Define exciting animation:
  *         ...vars({
- *             '--highlight-excite': [
+ *             '--highlight-exciting': [
  *                 ['0.3s', 'ease-in-out', 'both', 'alternate', 4, 'pulse-highlight'],
  *             ],
  *         }),
@@ -162,7 +162,7 @@ animationRegistry.registerAnimation(exciteStateVars.animationExcite);
 export const usesExciteState = (options?: CssExciteStateOptions): CssExciteState => {
     // Extract options and assign defaults:
     const {
-        animationExcite = 'none', // Defaults to `none`.
+        animationExciting = 'none', // Defaults to `none`.
     } = options ?? {};
     
     
@@ -172,7 +172,7 @@ export const usesExciteState = (options?: CssExciteStateOptions): CssExciteState
             ...states({
                 ...ifExcited(
                     vars({
-                        [exciteStateVars.animationExcite] : animationExcite, // Activate the animation (if provided).
+                        [exciteStateVars.animationExciting] : animationExciting, // Activate the animation (if provided).
                     })
                 ),
             }),

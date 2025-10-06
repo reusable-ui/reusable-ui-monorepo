@@ -257,7 +257,7 @@ test.describe('usesExciteState', () => {
                 
                 // Verify the expected values:
                 if (expectedExcited !== undefined) {
-                    expect(runningAnimations.has('boo-test-excite')).toBe(expectedExcited);
+                    expect(runningAnimations.has('boo-test-exciting')).toBe(expectedExcited);
                 } // if
             } // for
         });

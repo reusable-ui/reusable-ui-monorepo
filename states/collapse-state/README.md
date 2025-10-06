@@ -58,9 +58,9 @@ export const CollapsibleBox: FC<CollapsibleBoxProps> = (props) => {
         handleAnimationEnd,
         handleAnimationCancel,
     } = useCollapseBehaviorState(props, {
-        defaultExpanded   : false,                  // Fallback for uncontrolled mode.
-        animationPattern  : ['expand', 'collapse'], // Matches animation names ending with 'expand' or 'collapse'.
-        animationBubbling : false,                  // Ignores bubbling animation events from children.
+        defaultExpanded   : false,                       // Fallback for uncontrolled mode.
+        animationPattern  : ['expanding', 'collapsing'], // Matches animation names ending with 'expanding' or 'collapsing'.
+        animationBubbling : false,                       // Ignores bubbling animation events from children.
     });
     
     return (
@@ -87,10 +87,10 @@ Emits lifecycle events in response to expand/collapse phase transitions.
 
 This hook observes the resolved `expandPhase` from `useCollapseBehaviorState()` and triggers the appropriate callbacks defined in `CollapseStatePhaseEventProps`, such as:
 
-- `onExpandStart`
-- `onExpandEnd`
-- `onCollapseStart`
-- `onCollapseEnd`
+- `onExpandingStart`
+- `onExpandingEnd`
+- `onCollapsingStart`
+- `onCollapsingEnd`
 
 ### `useCollapseState(props, options?)`
 
@@ -192,10 +192,10 @@ Generates CSS rules that conditionally apply the expand/collapse animations base
 These variables are only active during their respective transition phases.  
 Use `switchOf(...)` to ensure graceful fallback when inactive.
 
-| Variable            | Active When...   | Purpose                       |
-|---------------------|------------------|-------------------------------|
-| `animationExpand`   | `.is-expanding`  | Triggers expanding animation  |
-| `animationCollapse` | `.is-collapsing` | Triggers collapsing animation |
+| Variable              | Active When...   | Purpose                       |
+|-----------------------|------------------|-------------------------------|
+| `animationExpanding`  | `.is-expanding`  | Triggers expanding animation  |
+| `animationCollapsing` | `.is-collapsing` | Triggers collapsing animation |
 
 #### 💡 Usage Example
 
@@ -219,8 +219,8 @@ export const collapsibleBoxStyle = () => {
         collapseStateRule,
         collapseStateVars: { isExpanded, isCollapsed },
     } = usesCollapseState({
-        animationExpand   : 'var(--box-expand)',
-        animationCollapse : 'var(--box-collapse)',
+        animationExpanding  : 'var(--box-expanding)',
+        animationCollapsing : 'var(--box-collapsing)',
     });
     
     return style({
@@ -235,7 +235,7 @@ export const collapsibleBoxStyle = () => {
         
         // Define expanding animation:
         ...vars({
-            '--box-expand': [
+            '--box-expanding': [
                 ['0.3s', 'ease-out', 'both', 'height-expanding'],
             ],
         }),
@@ -250,7 +250,7 @@ export const collapsibleBoxStyle = () => {
         
         // Define collapsing animation:
         ...vars({
-            '--box-collapse': [
+            '--box-collapsing': [
                 ['0.3s', 'ease-out', 'both', 'height-collapsing'],
             ],
         }),
@@ -282,7 +282,7 @@ export const collapsibleBoxStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationExpand` and `animationCollapse` variables are only defined during **expanding** and **collapsing** phases.
+The `animationExpanding` and `animationCollapsing` variables are only defined during **expanding** and **collapsing** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
 Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining expand/collapse animations with other state-driven transitions.

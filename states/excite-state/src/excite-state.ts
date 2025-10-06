@@ -124,9 +124,9 @@ export const useExciteState = (props: ExciteStateProps, options?: Pick<ExciteSta
  *         handleAnimationEnd,
  *         handleAnimationCancel,
  *     } = useExciteBehaviorState(props, {
- *         defaultExcited    : false,        // Defaults the `excited` prop to `false` if not provided.
- *         animationPattern  : 'box-excite', // Matches animation names ending with 'box-excite'.
- *         animationBubbling : false,        // Ignores bubbling animation events from children.
+ *         defaultExcited    : false,          // Defaults the `excited` prop to `false` if not provided.
+ *         animationPattern  : 'box-exciting', // Matches animation names ending with 'box-exciting'.
+ *         animationBubbling : false,          // Ignores bubbling animation events from children.
  *     });
  *     
  *     return (
@@ -147,7 +147,7 @@ export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(p
     // Extract options and assign defaults:
     const {
         defaultExcited      = defaultDeclarativeExcited,
-        animationPattern    = 'excite',
+        animationPattern    = 'exciting',
         animationBubbling   = false,
         
         retriggerDelayTicks = 3,

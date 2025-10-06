@@ -7,8 +7,8 @@ export default function readOnlyStateTestStyle() {
         readOnlyStateRule,
         readOnlyStateVars: { isEditable, isReadOnly },
     } = usesReadOnlyState({
-        animationThaw  : 'var(--test-thaw)',
-        animationFreeze : 'var(--test-freeze)',
+        animationThawing  : 'var(--test-thawing)',
+        animationFreezing : 'var(--test-freezing)',
     });
     
     const {
@@ -21,11 +21,11 @@ export default function readOnlyStateTestStyle() {
         ...animationFeatureRule(),
         
         ...vars({
-            '--test-thaw': [
-                ['1s', 'ease-out', 'both', 'boo-test-thaw'],
+            '--test-thawing': [
+                ['1s', 'ease-out', 'both', 'boo-test-thawing'],
             ],
         }),
-        ...keyframes('boo-test-thaw', {
+        ...keyframes('boo-test-thawing', {
             from: {
                 opacity: 0.5,
             },
@@ -35,11 +35,11 @@ export default function readOnlyStateTestStyle() {
         }),
         
         ...vars({
-            '--test-freeze': [
-                ['1s', 'ease-out', 'both', 'boo-test-freeze'],
+            '--test-freezing': [
+                ['1s', 'ease-out', 'both', 'boo-test-freezing'],
             ],
         }),
-        ...keyframes('boo-test-freeze', {
+        ...keyframes('boo-test-freezing', {
             from: {
                 opacity: 1,
             },

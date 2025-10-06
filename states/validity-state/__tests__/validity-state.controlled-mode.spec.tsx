@@ -2055,24 +2055,24 @@ test.describe('useValidityBehaviorState - controlled mode', () => {
                     
                     switch (expectedRunningValidity) {
                         case true:
-                            expect(runningAnimations.has('boo-test-validate')).toBe(true);
-                            expect(runningAnimations.has('boo-test-invalidate')).toBe(false);
-                            expect(runningAnimations.has('boo-test-unvalidate')).toBe(false);
+                            expect(runningAnimations.has('boo-test-validating')).toBe(true);
+                            expect(runningAnimations.has('boo-test-invalidating')).toBe(false);
+                            expect(runningAnimations.has('boo-test-unvalidating')).toBe(false);
                             break;
                         case false:
-                            expect(runningAnimations.has('boo-test-validate')).toBe(false);
-                            expect(runningAnimations.has('boo-test-invalidate')).toBe(true);
-                            expect(runningAnimations.has('boo-test-unvalidate')).toBe(false);
+                            expect(runningAnimations.has('boo-test-validating')).toBe(false);
+                            expect(runningAnimations.has('boo-test-invalidating')).toBe(true);
+                            expect(runningAnimations.has('boo-test-unvalidating')).toBe(false);
                             break;
                         case null:
-                            expect(runningAnimations.has('boo-test-validate')).toBe(false);
-                            expect(runningAnimations.has('boo-test-invalidate')).toBe(false);
-                            expect(runningAnimations.has('boo-test-unvalidate')).toBe(true);
+                            expect(runningAnimations.has('boo-test-validating')).toBe(false);
+                            expect(runningAnimations.has('boo-test-invalidating')).toBe(false);
+                            expect(runningAnimations.has('boo-test-unvalidating')).toBe(true);
                             break;
                         case 0:
-                            expect(runningAnimations.has('boo-test-validate')).toBe(false);
-                            expect(runningAnimations.has('boo-test-invalidate')).toBe(false);
-                            expect(runningAnimations.has('boo-test-unvalidate')).toBe(false);
+                            expect(runningAnimations.has('boo-test-validating')).toBe(false);
+                            expect(runningAnimations.has('boo-test-invalidating')).toBe(false);
+                            expect(runningAnimations.has('boo-test-unvalidating')).toBe(false);
                             break;
                     } // switch
                 } // if

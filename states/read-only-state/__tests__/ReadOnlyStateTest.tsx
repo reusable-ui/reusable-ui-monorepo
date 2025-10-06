@@ -12,8 +12,8 @@ import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useReadOnlyStateTestStyles } from './ReadOnlyStateTest.loader.js'
 
 const animationPattern = [
-    'test-thaw',
-    'test-freeze',
+    'test-thawing',
+    'test-freezing',
 ];
 
 export interface ReadOnlyStateTestProps

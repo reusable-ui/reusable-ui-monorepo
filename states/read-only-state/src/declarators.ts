@@ -200,8 +200,8 @@ export const ifFreezingOrReadOnly     = (styles: CssStyleCollection): CssRule =>
 const [readOnlyStateVars] = cssVars<ReadOnlyStateVars>({ prefix: 'ro', minify: false });
 
 // Register the editable/read-only animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(readOnlyStateVars.animationThaw);
-animationRegistry.registerAnimation(readOnlyStateVars.animationFreeze);
+animationRegistry.registerAnimation(readOnlyStateVars.animationThawing);
+animationRegistry.registerAnimation(readOnlyStateVars.animationFreezing);
 
 /**
  * Generates CSS rules that conditionally apply the editable/read-only animations based on current read-only state,
@@ -231,8 +231,8 @@ animationRegistry.registerAnimation(readOnlyStateVars.animationFreeze);
  *         readOnlyStateRule,
  *         readOnlyStateVars: { isEditable, isReadOnly },
  *     } = usesReadOnlyState({
- *         animationThaw   : 'var(--box-thaw)',
- *         animationFreeze : 'var(--box-freeze)',
+ *         animationThawing  : 'var(--box-thawing)',
+ *         animationFreezing : 'var(--box-freezing)',
  *     });
  *     
  *     return style({
@@ -247,7 +247,7 @@ animationRegistry.registerAnimation(readOnlyStateVars.animationFreeze);
  *         
  *         // Define thawing animation:
  *         ...vars({
- *             '--box-thaw': [
+ *             '--box-thawing': [
  *                 ['0.3s', 'ease-out', 'both', 'fade-thawing'],
  *             ],
  *         }),
@@ -262,7 +262,7 @@ animationRegistry.registerAnimation(readOnlyStateVars.animationFreeze);
  *         
  *         // Define freezing animation:
  *         ...vars({
- *             '--box-freeze': [
+ *             '--box-freezing': [
  *                 ['0.3s', 'ease-out', 'both', 'fade-freezing'],
  *             ],
  *         }),
@@ -293,8 +293,8 @@ animationRegistry.registerAnimation(readOnlyStateVars.animationFreeze);
 export const usesReadOnlyState = (options?: CssReadOnlyStateOptions): CssReadOnlyState => {
     // Extract options and assign defaults:
     const {
-        animationThaw   = 'none', // Defaults to `none`.
-        animationFreeze = 'none', // Defaults to `none`.
+        animationThawing  = 'none', // Defaults to `none`.
+        animationFreezing = 'none', // Defaults to `none`.
     } = options ?? {};
     
     
@@ -305,14 +305,14 @@ export const usesReadOnlyState = (options?: CssReadOnlyStateOptions): CssReadOnl
                 // Apply thaw animation during the thawing phase:
                 ...ifThawing(
                     vars({
-                        [readOnlyStateVars.animationThaw  ] : animationThaw,   // Activate the animation (if provided).
+                        [readOnlyStateVars.animationThawing ] : animationThawing,  // Activate the animation (if provided).
                     })
                 ),
                 
                 // Apply freeze animation during the freezing phase:
                 ...ifFreezing(
                     vars({
-                        [readOnlyStateVars.animationFreeze] : animationFreeze, // Activate the animation (if provided).
+                        [readOnlyStateVars.animationFreezing] : animationFreezing, // Activate the animation (if provided).
                     })
                 ),
                 

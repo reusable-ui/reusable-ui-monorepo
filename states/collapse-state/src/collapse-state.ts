@@ -220,9 +220,9 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
  *         handleAnimationEnd,
  *         handleAnimationCancel,
  *     } = useCollapseBehaviorState(props, {
- *         defaultExpanded   : false,                  // Fallback for uncontrolled mode.
- *         animationPattern  : ['expand', 'collapse'], // Matches animation names ending with 'expand' or 'collapse'.
- *         animationBubbling : false,                  // Ignores bubbling animation events from children.
+ *         defaultExpanded   : false,                       // Fallback for uncontrolled mode.
+ *         animationPattern  : ['expanding', 'collapsing'], // Matches animation names ending with 'expanding' or 'collapsing'.
+ *         animationBubbling : false,                       // Ignores bubbling animation events from children.
  *     });
  *     
  *     return (
@@ -247,7 +247,7 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
     // Extract options and assign defaults:
     const {
         defaultExpanded   = defaultInitialExpanded,
-        animationPattern  = ['expand', 'collapse'], // Matches animation names for transitions
+        animationPattern  = ['expanding', 'collapsing'], // Matches animation names for transitions
         animationBubbling = false,
     } = options ?? {};
     
@@ -322,10 +322,10 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
  * This hook observes the resolved `expandPhase` from `useCollapseBehaviorState()` and triggers
  * the appropriate callbacks defined in `CollapseStatePhaseEventProps`, such as:
  * 
- * - `onExpandStart`
- * - `onExpandEnd`
- * - `onCollapseStart`
- * - `onCollapseEnd`
+ * - `onExpandingStart`
+ * - `onExpandingEnd`
+ * - `onCollapsingStart`
+ * - `onCollapsingEnd`
  * 
  * @param {CollapseStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
  * @param {ExpandPhase} expandPhase - The current phase value returned from `useCollapseBehaviorState()`.
@@ -333,10 +333,10 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
 export const useCollapseStatePhaseEvents = (props: CollapseStatePhaseEventProps, expandPhase: ExpandPhase): void => {
     // Extract props:
     const {
-        onExpandStart,
-        onExpandEnd,
-        onCollapseStart,
-        onCollapseEnd,
+        onExpandingStart,
+        onExpandingEnd,
+        onCollapsingStart,
+        onCollapsingEnd,
     } = props;
     
     
@@ -352,10 +352,10 @@ export const useCollapseStatePhaseEvents = (props: CollapseStatePhaseEventProps,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const handleExpandPhaseChange = useStableCallback((expandPhase: ExpandPhase): void => {
         switch (expandPhase) {
-            case 'expanding'  : onExpandStart?.(expandPhase, undefined);   break;
-            case 'expanded'   : onExpandEnd?.(expandPhase, undefined);     break;
-            case 'collapsing' : onCollapseStart?.(expandPhase, undefined); break;
-            case 'collapsed'  : onCollapseEnd?.(expandPhase, undefined);   break;
+            case 'expanding'  : onExpandingStart?.(expandPhase, undefined);   break;
+            case 'expanded'   : onExpandingEnd?.(expandPhase, undefined);     break;
+            case 'collapsing' : onCollapsingStart?.(expandPhase, undefined); break;
+            case 'collapsed'  : onCollapsingEnd?.(expandPhase, undefined);   break;
         } // switch
     });
     

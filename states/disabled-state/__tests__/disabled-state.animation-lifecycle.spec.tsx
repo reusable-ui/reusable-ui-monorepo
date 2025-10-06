@@ -392,16 +392,16 @@ test.describe('useDisabledBehaviorState - animation', () => {
                 if (expectedRunningDisabled!== undefined) {
                     switch (expectedRunningDisabled) {
                         case true: // expectedRunningDisabled = true (disabling)
-                            expect(runningAnimations.has('boo-test-enable')).toBe(false);
-                            expect(runningAnimations.has('boo-test-disable')).toBe(true); // disabling
+                            expect(runningAnimations.has('boo-test-enabling')).toBe(false);
+                            expect(runningAnimations.has('boo-test-disabling')).toBe(true); // disabling
                             break;
                         case false: // expectedRunningDisabled = false (enabling)
-                            expect(runningAnimations.has('boo-test-enable')).toBe(true); // enabling
-                            expect(runningAnimations.has('boo-test-disable')).toBe(false);
+                            expect(runningAnimations.has('boo-test-enabling')).toBe(true); // enabling
+                            expect(runningAnimations.has('boo-test-disabling')).toBe(false);
                             break;
                         case null: // expectedRunningDisabled = null (idle)
-                            expect(runningAnimations.has('boo-test-enable')).toBe(false);
-                            expect(runningAnimations.has('boo-test-disable')).toBe(false);
+                            expect(runningAnimations.has('boo-test-enabling')).toBe(false);
+                            expect(runningAnimations.has('boo-test-disabling')).toBe(false);
                             break;
                     } // switch
                 } // if

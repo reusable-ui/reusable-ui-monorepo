@@ -55,10 +55,10 @@ export const CustomEditor: FC<CustomEditorProps> = (props) => {
         handleAnimationEnd,
         handleAnimationCancel,
     } = useReadOnlyBehaviorState(props, {
-        defaultReadOnly        : false,              // Defaults to editable.
-        defaultCascadeReadOnly : true,               // Defaults to allow contextual read-only.
-        animationPattern       : ['thaw', 'freeze'], // Matches animation names ending with 'thaw' or 'freeze'.
-        animationBubbling      : false,              // Ignores bubbling animation events from children.
+        defaultReadOnly        : false,                   // Defaults to editable.
+        defaultCascadeReadOnly : true,                    // Defaults to allow contextual read-only.
+        animationPattern       : ['thawing', 'freezing'], // Matches animation names ending with 'thawing' or 'freezing'.
+        animationBubbling      : false,                   // Ignores bubbling animation events from children.
     });
     
     return (
@@ -80,10 +80,10 @@ Emits lifecycle events in response to editable/read-only phase transitions.
 
 This hook observes the resolved `readOnlyPhase` from `useReadOnlyBehaviorState()` and triggers the appropriate callbacks defined in `ReadOnlyStatePhaseEventProps`, such as:
 
-- `onEditableStart`
-- `onEditableEnd`
-- `onReadOnlyStart`
-- `onReadOnlyEnd`
+- `onThawingStart`
+- `onThawingEnd`
+- `onFreezingStart`
+- `onFreezingEnd`
 
 ### `useReadOnlyState(props, options?)`
 
@@ -133,10 +133,10 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
         handleAnimationEnd,
         handleAnimationCancel,
     } = useReadOnlyBehaviorState(props, {
-        defaultReadOnly        : false,              // Defaults to editable.
-        defaultCascadeReadOnly : true,               // Defaults to allow contextual read-only.
-        animationPattern       : ['thaw', 'freeze'], // Matches animation names ending with 'thaw' or 'freeze'.
-        animationBubbling      : false,              // Ignores bubbling animation events from children.
+        defaultReadOnly        : false,                   // Defaults to editable.
+        defaultCascadeReadOnly : true,                    // Defaults to allow contextual read-only.
+        animationPattern       : ['thawing', 'freezing'], // Matches animation names ending with 'thawing' or 'freezing'.
+        animationBubbling      : false,                   // Ignores bubbling animation events from children.
     });
     
     // Or use `useReadOnlyState()` if not concerned with animation phases:
@@ -210,12 +210,12 @@ Generates CSS rules that conditionally apply the editable/read-only animations b
 These variables are only active during their respective transition phases.  
 Use `switchOf(...)` to ensure graceful fallback when inactive.
 
-| Variable          | Active When...                   | Purpose                      |
-|-------------------|----------------------------------|------------------------------|
-| `animationThaw`   | `.is-thawing`                    | Triggers thawing animation   |
-| `animationFreeze` | `.is-freezing`                   | Triggers freezing animation  |
-| `isEditable`      | `.is-editable` or `.is-thawing`  | Styling for editable state   |
-| `isReadOnly`      | `.is-readonly` or `.is-freezing` | Styling for read-only state  |
+| Variable            | Active When...                   | Purpose                      |
+|---------------------|----------------------------------|------------------------------|
+| `animationThawing`  | `.is-thawing`                    | Triggers thawing animation   |
+| `animationFreezing` | `.is-freezing`                   | Triggers freezing animation  |
+| `isEditable`        | `.is-editable` or `.is-thawing`  | Styling for editable state   |
+| `isReadOnly`        | `.is-readonly` or `.is-freezing` | Styling for read-only state  |
 
 #### 💡 Usage Example
 
@@ -239,8 +239,8 @@ export const readOnlyBoxStyle = () => {
         readOnlyStateRule,
         readOnlyStateVars: { isEditable, isReadOnly },
     } = usesReadOnlyState({
-        animationThaw   : 'var(--box-thaw)',
-        animationFreeze : 'var(--box-freeze)',
+        animationThawing  : 'var(--box-thawing)',
+        animationFreezing : 'var(--box-freezing)',
     });
     
     return style({
@@ -255,7 +255,7 @@ export const readOnlyBoxStyle = () => {
         
         // Define thawing animation:
         ...vars({
-            '--box-thaw': [
+            '--box-thawing': [
                 ['0.3s', 'ease-out', 'both', 'fade-thawing'],
             ],
         }),
@@ -270,7 +270,7 @@ export const readOnlyBoxStyle = () => {
         
         // Define freezing animation:
         ...vars({
-            '--box-freeze': [
+            '--box-freezing': [
                 ['0.3s', 'ease-out', 'both', 'fade-freezing'],
             ],
         }),
@@ -300,7 +300,7 @@ export const readOnlyBoxStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationThaw` and `animationFreeze` variables are only defined during **thawing** and **freezing** phases.
+The `animationThawing` and `animationFreezing` variables are only defined during **thawing** and **freezing** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
 Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining editable/read-only animations with other state-driven transitions.

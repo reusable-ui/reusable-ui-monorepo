@@ -13,8 +13,8 @@ import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useCollapseStateTestStyles } from './CollapseStateTest.loader.js'
 
 const animationPattern = [
-    'test-expand',
-    'test-collapse',
+    'test-expanding',
+    'test-collapsing',
 ];
 
 export interface CollapseStateTestProps

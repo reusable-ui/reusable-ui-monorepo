@@ -169,10 +169,10 @@ export const useReadOnlyState = (props: ReadOnlyStateProps, options?: Pick<ReadO
  *         handleAnimationEnd,
  *         handleAnimationCancel,
  *     } = useReadOnlyBehaviorState(props, {
- *         defaultReadOnly        : false,              // Defaults to editable.
- *         defaultCascadeReadOnly : true,               // Defaults to allow contextual read-only.
- *         animationPattern       : ['thaw', 'freeze'], // Matches animation names ending with 'thaw' or 'freeze'.
- *         animationBubbling      : false,              // Ignores bubbling animation events from children.
+ *         defaultReadOnly        : false,                   // Defaults to editable.
+ *         defaultCascadeReadOnly : true,                    // Defaults to allow contextual read-only.
+ *         animationPattern       : ['thawing', 'freezing'], // Matches animation names ending with 'thawing' or 'freezing'.
+ *         animationBubbling      : false,                   // Ignores bubbling animation events from children.
  *     });
  *     
  *     return (
@@ -193,7 +193,7 @@ export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>
     const {
         defaultReadOnly        = defaultDeclarativeReadOnly,
         defaultCascadeReadOnly = defaultDeclarativeCascadeReadOnly,
-        animationPattern       = ['thaw', 'freeze'], // Matches animation names for transitions
+        animationPattern       = ['thawing', 'freezing'], // Matches animation names for transitions
         animationBubbling      = false,
     } = options ?? {};
     
@@ -265,10 +265,10 @@ export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>
  * This hook observes the resolved `readOnlyPhase` from `useReadOnlyBehaviorState()` and triggers
  * the appropriate callbacks defined in `ReadOnlyStatePhaseEventProps`, such as:
  * 
- * - `onEditableStart`
- * - `onEditableEnd`
- * - `onReadOnlyStart`
- * - `onReadOnlyEnd`
+ * - `onThawingStart`
+ * - `onThawingEnd`
+ * - `onFreezingStart`
+ * - `onFreezingEnd`
  * 
  * @param {ReadOnlyStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
  * @param {ReadOnlyPhase} readOnlyPhase - The current phase value returned from `useReadOnlyBehaviorState()`.
@@ -276,10 +276,10 @@ export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>
 export const useReadOnlyStatePhaseEvents = (props: ReadOnlyStatePhaseEventProps, readOnlyPhase: ReadOnlyPhase): void => {
     // Extract props:
     const {
-        onEditableStart,
-        onEditableEnd,
-        onReadOnlyStart,
-        onReadOnlyEnd,
+        onThawingStart,
+        onThawingEnd,
+        onFreezingStart,
+        onFreezingEnd,
     } = props;
     
     
@@ -295,10 +295,10 @@ export const useReadOnlyStatePhaseEvents = (props: ReadOnlyStatePhaseEventProps,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const handleReadOnlyPhaseChange = useStableCallback((readOnlyPhase: ReadOnlyPhase): void => {
         switch (readOnlyPhase) {
-            case 'thawing'  : onEditableStart?.(readOnlyPhase, undefined); break;
-            case 'editable' : onEditableEnd?.(readOnlyPhase, undefined);   break;
-            case 'freezing' : onReadOnlyStart?.(readOnlyPhase, undefined); break;
-            case 'readonly' : onReadOnlyEnd?.(readOnlyPhase, undefined);   break;
+            case 'thawing'  : onThawingStart?.(readOnlyPhase, undefined); break;
+            case 'editable' : onThawingEnd?.(readOnlyPhase, undefined);   break;
+            case 'freezing' : onFreezingStart?.(readOnlyPhase, undefined); break;
+            case 'readonly' : onFreezingEnd?.(readOnlyPhase, undefined);   break;
         } // switch
     });
     

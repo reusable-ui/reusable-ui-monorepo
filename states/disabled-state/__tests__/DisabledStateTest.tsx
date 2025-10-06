@@ -12,8 +12,8 @@ import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useDisabledStateTestStyles } from './DisabledStateTest.loader.js'
 
 const animationPattern = [
-    'test-enable',
-    'test-disable',
+    'test-enabling',
+    'test-disabling',
 ];
 
 export interface DisabledStateTestProps

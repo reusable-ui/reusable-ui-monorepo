@@ -55,10 +55,10 @@ export const CustomEditor: FC<CustomEditorProps> = (props) => {
         handleAnimationEnd,
         handleAnimationCancel,
     } = useDisabledBehaviorState(props, {
-        defaultDisabled        : false,                 // Defaults to enabled.
-        defaultCascadeDisabled : true,                  // Defaults to allow contextual disabling.
-        animationPattern       : ['enable', 'disable'], // Matches animation names ending with 'enable' or 'disable'.
-        animationBubbling      : false,                 // Ignores bubbling animation events from children.
+        defaultDisabled        : false,                     // Defaults to enabled.
+        defaultCascadeDisabled : true,                      // Defaults to allow contextual disabling.
+        animationPattern       : ['enabling', 'disabling'], // Matches animation names ending with 'enabling' or 'disabling'.
+        animationBubbling      : false,                     // Ignores bubbling animation events from children.
     });
     
     return (
@@ -80,10 +80,10 @@ Emits lifecycle events in response to enable/disable phase transitions.
 
 This hook observes the resolved `disabledPhase` from `useDisabledBehaviorState()` and triggers the appropriate callbacks defined in `DisabledStatePhaseEventProps`, such as:
 
-- `onEnableStart`
-- `onEnableEnd`
-- `onDisableStart`
-- `onDisableEnd`
+- `onEnablingStart`
+- `onEnablingEnd`
+- `onDisablingStart`
+- `onDisablingEnd`
 
 ### `useDisabledState(props, options?)`
 
@@ -133,10 +133,10 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
         handleAnimationEnd,
         handleAnimationCancel,
     } = useDisabledBehaviorState(props, {
-        defaultDisabled        : false,                 // Defaults to enabled.
-        defaultCascadeDisabled : true,                  // Defaults to allow contextual disabling.
-        animationPattern       : ['enable', 'disable'], // Matches animation names ending with 'enable' or 'disable'.
-        animationBubbling      : false,                 // Ignores bubbling animation events from children.
+        defaultDisabled        : false,                     // Defaults to enabled.
+        defaultCascadeDisabled : true,                      // Defaults to allow contextual disabling.
+        animationPattern       : ['enabling', 'disabling'], // Matches animation names ending with 'enabling' or 'disabling'.
+        animationBubbling      : false,                     // Ignores bubbling animation events from children.
     });
     
     // Or use `useDisabledState()` if not concerned with animation phases:
@@ -210,12 +210,12 @@ Generates CSS rules that conditionally apply the enable/disable animations based
 These variables are only active during their respective transition phases.  
 Use `switchOf(...)` to ensure graceful fallback when inactive.
 
-| Variable           | Active When...                    | Purpose                      |
-|--------------------|-----------------------------------|------------------------------|
-| `animationEnable`  | `.is-enabling`                    | Triggers enabling animation  |
-| `animationDisable` | `.is-disabling`                   | Triggers disabling animation |
-| `isEnabled`        | `.is-enabled` or `.is-enabling`   | Styling for enabled state    |
-| `isDisabled`       | `.is-disabled` or `.is-disabling` | Styling for disabled state   |
+| Variable             | Active When...                    | Purpose                      |
+|----------------------|-----------------------------------|------------------------------|
+| `animationEnabling`  | `.is-enabling`                    | Triggers enabling animation  |
+| `animationDisabling` | `.is-disabling`                   | Triggers disabling animation |
+| `isEnabled`          | `.is-enabled` or `.is-enabling`   | Styling for enabled state    |
+| `isDisabled`         | `.is-disabled` or `.is-disabling` | Styling for disabled state   |
 
 #### 💡 Usage Example
 
@@ -239,8 +239,8 @@ export const disableableBoxStyle = () => {
         disabledStateRule,
         disabledStateVars: { isEnabled, isDisabled },
     } = usesDisabledState({
-        animationEnable  : 'var(--box-enable)',
-        animationDisable : 'var(--box-disable)',
+        animationEnabling  : 'var(--box-enabling)',
+        animationDisabling : 'var(--box-disabling)',
     });
     
     return style({
@@ -255,7 +255,7 @@ export const disableableBoxStyle = () => {
         
         // Define enabling animation:
         ...vars({
-            '--box-enable': [
+            '--box-enabling': [
                 ['0.3s', 'ease-out', 'both', 'fade-enabling'],
             ],
         }),
@@ -270,7 +270,7 @@ export const disableableBoxStyle = () => {
         
         // Define disabling animation:
         ...vars({
-            '--box-disable': [
+            '--box-disabling': [
                 ['0.3s', 'ease-out', 'both', 'fade-disabling'],
             ],
         }),
@@ -300,7 +300,7 @@ export const disableableBoxStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationEnable` and `animationDisable` variables are only defined during **enabling** and **disabling** phases.
+The `animationEnabling` and `animationDisabling` variables are only defined during **enabling** and **disabling** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
 Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining enable/disable animations with other state-driven transitions.

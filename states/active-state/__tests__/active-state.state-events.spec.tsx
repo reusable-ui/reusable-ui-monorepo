@@ -56,10 +56,10 @@ interface ActiveStateEventTestCase {
         
         /**
          * The expected active state.
-         * - `'inactive'`     : onDeactivateEnd event has been invoked
-         * - `'deactivating'` : onDeactivateStart event has been invoked
-         * - `'activating'`   : onActivateStart event has been invoked
-         * - `'active'`       : onActivateEnd event has been invoked
+         * - `'inactive'`     : onDeactivatingEnd event has been invoked
+         * - `'deactivating'` : onDeactivatingStart event has been invoked
+         * - `'activating'`   : onActivatingStart event has been invoked
+         * - `'active'`       : onActivatingEnd event has been invoked
          * - `null`           : no event has been invoked
          * - `undefined`      : nothing to expect
          */
@@ -415,19 +415,19 @@ test.describe('useActiveStatePhaseEvents', () => {
             };
             
             let lastActivePhase : ActivePhase | null = null;
-            const handleActivateStart : ValueChangeEventHandler<ActivePhase, unknown> = (activePhase) => {
+            const handleActivatingStart : ValueChangeEventHandler<ActivePhase, unknown> = (activePhase) => {
                 expect(activePhase).toBe('activating');
                 lastActivePhase = activePhase;
             };
-            const handleActivateEnd : ValueChangeEventHandler<ActivePhase, unknown> = (activePhase) => {
+            const handleActivatingEnd : ValueChangeEventHandler<ActivePhase, unknown> = (activePhase) => {
                 expect(activePhase).toBe('active');
                 lastActivePhase = activePhase;
             };
-            const handleDeactivateStart : ValueChangeEventHandler<ActivePhase, unknown> = (activePhase) => {
+            const handleDeactivatingStart : ValueChangeEventHandler<ActivePhase, unknown> = (activePhase) => {
                 expect(activePhase).toBe('deactivating');
                 lastActivePhase = activePhase;
             };
-            const handleDeactivateEnd : ValueChangeEventHandler<ActivePhase, unknown> = (activePhase) => {
+            const handleDeactivatingEnd : ValueChangeEventHandler<ActivePhase, unknown> = (activePhase) => {
                 expect(activePhase).toBe('inactive');
                 lastActivePhase = activePhase;
             };
@@ -441,10 +441,10 @@ test.describe('useActiveStatePhaseEvents', () => {
                     
                     onActiveChange={handleActiveChange}
                     
-                    onActivateStart={handleActivateStart}
-                    onActivateEnd={handleActivateEnd}
-                    onDeactivateStart={handleDeactivateStart}
-                    onDeactivateEnd={handleDeactivateEnd}
+                    onActivatingStart={handleActivatingStart}
+                    onActivatingEnd={handleActivatingEnd}
+                    onDeactivatingStart={handleDeactivatingStart}
+                    onDeactivatingEnd={handleDeactivatingEnd}
                 />
             );
             

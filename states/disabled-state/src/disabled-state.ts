@@ -169,10 +169,10 @@ export const useDisabledState = (props: DisabledStateProps, options?: Pick<Disab
  *         handleAnimationEnd,
  *         handleAnimationCancel,
  *     } = useDisabledBehaviorState(props, {
- *         defaultDisabled        : false,                 // Defaults to enabled.
- *         defaultCascadeDisabled : true,                  // Defaults to allow contextual disabling.
- *         animationPattern       : ['enable', 'disable'], // Matches animation names ending with 'enable' or 'disable'.
- *         animationBubbling      : false,                 // Ignores bubbling animation events from children.
+ *         defaultDisabled        : false,                     // Defaults to enabled.
+ *         defaultCascadeDisabled : true,                      // Defaults to allow contextual disabling.
+ *         animationPattern       : ['enabling', 'disabling'], // Matches animation names ending with 'enabling' or 'disabling'.
+ *         animationBubbling      : false,                     // Ignores bubbling animation events from children.
  *     });
  *     
  *     return (
@@ -193,7 +193,7 @@ export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>
     const {
         defaultDisabled        = defaultDeclarativeDisabled,
         defaultCascadeDisabled = defaultDeclarativeCascadeDisabled,
-        animationPattern       = ['enable', 'disable'], // Matches animation names for transitions
+        animationPattern       = ['enabling', 'disabling'], // Matches animation names for transitions
         animationBubbling      = false,
     } = options ?? {};
     
@@ -265,10 +265,10 @@ export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>
  * This hook observes the resolved `disabledPhase` from `useDisabledBehaviorState()` and triggers
  * the appropriate callbacks defined in `DisabledStatePhaseEventProps`, such as:
  * 
- * - `onEnableStart`
- * - `onEnableEnd`
- * - `onDisableStart`
- * - `onDisableEnd`
+ * - `onEnablingStart`
+ * - `onEnablingEnd`
+ * - `onDisablingStart`
+ * - `onDisablingEnd`
  * 
  * @param {DisabledStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
  * @param {DisabledPhase} disabledPhase - The current phase value returned from `useDisabledBehaviorState()`.
@@ -276,10 +276,10 @@ export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>
 export const useDisabledStatePhaseEvents = (props: DisabledStatePhaseEventProps, disabledPhase: DisabledPhase): void => {
     // Extract props:
     const {
-        onEnableStart,
-        onEnableEnd,
-        onDisableStart,
-        onDisableEnd,
+        onEnablingStart,
+        onEnablingEnd,
+        onDisablingStart,
+        onDisablingEnd,
     } = props;
     
     
@@ -295,10 +295,10 @@ export const useDisabledStatePhaseEvents = (props: DisabledStatePhaseEventProps,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const handleDisabledPhaseChange = useStableCallback((disabledPhase: DisabledPhase): void => {
         switch (disabledPhase) {
-            case 'enabling'  : onEnableStart?.(disabledPhase, undefined);  break;
-            case 'enabled'   : onEnableEnd?.(disabledPhase, undefined);    break;
-            case 'disabling' : onDisableStart?.(disabledPhase, undefined); break;
-            case 'disabled'  : onDisableEnd?.(disabledPhase, undefined);   break;
+            case 'enabling'  : onEnablingStart?.(disabledPhase, undefined);  break;
+            case 'enabled'   : onEnablingEnd?.(disabledPhase, undefined);    break;
+            case 'disabling' : onDisablingStart?.(disabledPhase, undefined); break;
+            case 'disabled'  : onDisablingEnd?.(disabledPhase, undefined);   break;
         } // switch
     });
     

@@ -220,9 +220,9 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
  *         handleAnimationEnd,
  *         handleAnimationCancel,
  *     } = useActiveBehaviorState(props, {
- *         defaultActive     : false,                      // Fallback for uncontrolled mode.
- *         animationPattern  : ['activate', 'deactivate'], // Matches animation names ending with 'activate' or 'deactivate'.
- *         animationBubbling : false,                      // Ignores bubbling animation events from children.
+ *         defaultActive     : false,                          // Fallback for uncontrolled mode.
+ *         animationPattern  : ['activating', 'deactivating'], // Matches animation names ending with 'activating' or 'deactivating'.
+ *         animationBubbling : false,                          // Ignores bubbling animation events from children.
  *     });
  *     
  *     return (
@@ -247,7 +247,7 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
     // Extract options and assign defaults:
     const {
         defaultActive     = defaultInitialActive,
-        animationPattern  = ['activate', 'deactivate'], // Matches animation names for transitions
+        animationPattern  = ['activating', 'deactivating'], // Matches animation names for transitions
         animationBubbling = false,
     } = options ?? {};
     
@@ -322,10 +322,10 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
  * This hook observes the resolved `activePhase` from `useActiveBehaviorState()` and triggers
  * the appropriate callbacks defined in `ActiveStatePhaseEventProps`, such as:
  * 
- * - `onActivateStart`
- * - `onActivateEnd`
- * - `onDeactivateStart`
- * - `onDeactivateEnd`
+ * - `onActivatingStart`
+ * - `onActivatingEnd`
+ * - `onDeactivatingStart`
+ * - `onDeactivatingEnd`
  * 
  * @param {ActiveStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
  * @param {ActivePhase} activePhase - The current phase value returned from `useActiveBehaviorState()`.
@@ -333,10 +333,10 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
 export const useActiveStatePhaseEvents = (props: ActiveStatePhaseEventProps, activePhase: ActivePhase): void => {
     // Extract props:
     const {
-        onActivateStart,
-        onActivateEnd,
-        onDeactivateStart,
-        onDeactivateEnd,
+        onActivatingStart,
+        onActivatingEnd,
+        onDeactivatingStart,
+        onDeactivatingEnd,
     } = props;
     
     
@@ -352,10 +352,10 @@ export const useActiveStatePhaseEvents = (props: ActiveStatePhaseEventProps, act
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const handleActivePhaseChange = useStableCallback((activePhase: ActivePhase): void => {
         switch (activePhase) {
-            case 'activating'   : onActivateStart?.(activePhase, undefined);   break;
-            case 'active'       : onActivateEnd?.(activePhase, undefined);     break;
-            case 'deactivating' : onDeactivateStart?.(activePhase, undefined); break;
-            case 'inactive'     : onDeactivateEnd?.(activePhase, undefined);   break;
+            case 'activating'   : onActivatingStart?.(activePhase, undefined);   break;
+            case 'active'       : onActivatingEnd?.(activePhase, undefined);     break;
+            case 'deactivating' : onDeactivatingStart?.(activePhase, undefined); break;
+            case 'inactive'     : onDeactivatingEnd?.(activePhase, undefined);   break;
         } // switch
     });
     

@@ -57,10 +57,10 @@ interface CollapseStateEventTestCase {
         
         /**
          * The expected expanded state.
-         * - `'collapsed'`  : onCollapseEnd event has been invoked
-         * - `'collapsing'` : onCollapseStart event has been invoked
-         * - `'expanding'`  : onExpandStart event has been invoked
-         * - `'expanded'`   : onExpandEnd event has been invoked
+         * - `'collapsed'`  : onCollapsingEnd event has been invoked
+         * - `'collapsing'` : onCollapsingStart event has been invoked
+         * - `'expanding'`  : onExpandingStart event has been invoked
+         * - `'expanded'`   : onExpandingEnd event has been invoked
          * - `null`         : no event has been invoked
          * - `undefined`    : nothing to expect
          */
@@ -416,19 +416,19 @@ test.describe('useCollapseStatePhaseEvents', () => {
             };
             
             let lastExpandPhase : ExpandPhase | null = null;
-            const handleExpandStart : ValueChangeEventHandler<ExpandPhase, unknown> = (expandPhase) => {
+            const handleExpandingStart : ValueChangeEventHandler<ExpandPhase, unknown> = (expandPhase) => {
                 expect(expandPhase).toBe('expanding');
                 lastExpandPhase = expandPhase;
             };
-            const handleExpandEnd : ValueChangeEventHandler<ExpandPhase, unknown> = (expandPhase) => {
+            const handleExpandingEnd : ValueChangeEventHandler<ExpandPhase, unknown> = (expandPhase) => {
                 expect(expandPhase).toBe('expanded');
                 lastExpandPhase = expandPhase;
             };
-            const handleCollapseStart : ValueChangeEventHandler<ExpandPhase, unknown> = (expandPhase) => {
+            const handleCollapsingStart : ValueChangeEventHandler<ExpandPhase, unknown> = (expandPhase) => {
                 expect(expandPhase).toBe('collapsing');
                 lastExpandPhase = expandPhase;
             };
-            const handleCollapseEnd : ValueChangeEventHandler<ExpandPhase, unknown> = (expandPhase) => {
+            const handleCollapsingEnd : ValueChangeEventHandler<ExpandPhase, unknown> = (expandPhase) => {
                 expect(expandPhase).toBe('collapsed');
                 lastExpandPhase = expandPhase;
             };
@@ -442,10 +442,10 @@ test.describe('useCollapseStatePhaseEvents', () => {
                     
                     onExpandedChange={handleExpandedChange}
                     
-                    onExpandStart={handleExpandStart}
-                    onExpandEnd={handleExpandEnd}
-                    onCollapseStart={handleCollapseStart}
-                    onCollapseEnd={handleCollapseEnd}
+                    onExpandingStart={handleExpandingStart}
+                    onExpandingEnd={handleExpandingEnd}
+                    onCollapsingStart={handleCollapsingStart}
+                    onCollapsingEnd={handleCollapsingEnd}
                 />
             );
             

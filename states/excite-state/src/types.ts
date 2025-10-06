@@ -79,7 +79,7 @@ export interface ExciteStateOptions
     /**
      * Defines the pattern used to identify excite-related animation names.
      * 
-     * This pattern determines which animations are considered part of the excitement lifecycle.
+     * This pattern determines which animation names are recognized as part of the exciting state lifecycle.
      * 
      * Supports:
      * - A string suffix (with word-boundary awareness)
@@ -90,7 +90,7 @@ export interface ExciteStateOptions
      * - If the matched pattern starts with a non-word character, it’s always considered boundary-safe.
      * - Otherwise, the character preceding the suffix must be a non-word character or undefined.
      * 
-     * Defaults to `'excite'`.
+     * Defaults to `'exciting'`.
      */
     animationPattern    ?: AnimationStateOptions<boolean>['animationPattern']
     
@@ -149,13 +149,13 @@ export interface ExciteBehaviorState<TElement extends Element = HTMLElement>
  */
 export interface ExciteStateVars {
     /**
-     * References an excitement animation when the component is in an excited state.
-     * Invalid (`unset`) when not excited.
+     * References an animation used during the exciting transition.
+     * It becomes invalid (`unset`) when no longer excited.
      * 
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationExcite : unknown
+    animationExciting : unknown
 }
 
 
@@ -165,17 +165,17 @@ export interface ExciteStateVars {
  */
 export interface CssExciteStateOptions {
     /**
-     * The animation to apply repeatedly while the component is in an excited state.
+     * Defines the animation to apply repeatedly while the component is in an excited state.
      * 
-     * The animation should be designed for seamless continuity across iterations to ensure smooth visual feedback.
+     * The animation should be designed for seamless continuity across iterations to ensure smooth and uninterrupted visual feedback.
      * 
-     * The `useExciteBehaviorState()` hook will replay the excitement animation as long as the `excited` prop remains `true`.  
-     * When the prop changes to `false`, the currently running animation is allowed to finish gracefully—
+     * The `useExciteBehaviorState()` hook will replay the exciting animation as long as the `excited` prop remains `true`.
+     * When the `excited` prop changes to `false`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationExcite ?: CssKnownProps['animation']
+    animationExciting ?: CssKnownProps['animation']
 }
 
 
@@ -195,9 +195,9 @@ export interface CssExciteState {
      * Exposes excitement-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationExcite`: Active when the component is excited.
+     * - `animationExciting`: Active when the component is excited.
      * 
-     * ⚠️ **Caution**: The `animationExcite` variable becomes invalid when the component is not excited.
+     * ⚠️ **Caution**: The `animationExciting` variable becomes invalid when the component is not excited.
      * If used improperly, it can invalidate the entire CSS declaration.
      * Always wrap it with `switchOf(...)` to ensure graceful fallback.
      * 

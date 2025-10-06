@@ -392,16 +392,16 @@ test.describe('useReadOnlyBehaviorState - animation', () => {
                 if (expectedRunningReadOnly!== undefined) {
                     switch (expectedRunningReadOnly) {
                         case true: // expectedRunningReadOnly = true (freezing)
-                            expect(runningAnimations.has('boo-test-thaw')).toBe(false);
-                            expect(runningAnimations.has('boo-test-freeze')).toBe(true); // freezing
+                            expect(runningAnimations.has('boo-test-thawing')).toBe(false);
+                            expect(runningAnimations.has('boo-test-freezing')).toBe(true); // freezing
                             break;
                         case false: // expectedRunningReadOnly = false (thawing)
-                            expect(runningAnimations.has('boo-test-thaw')).toBe(true); // thawing
-                            expect(runningAnimations.has('boo-test-freeze')).toBe(false);
+                            expect(runningAnimations.has('boo-test-thawing')).toBe(true); // thawing
+                            expect(runningAnimations.has('boo-test-freezing')).toBe(false);
                             break;
                         case null: // expectedRunningReadOnly = null (idle)
-                            expect(runningAnimations.has('boo-test-thaw')).toBe(false);
-                            expect(runningAnimations.has('boo-test-freeze')).toBe(false);
+                            expect(runningAnimations.has('boo-test-thawing')).toBe(false);
+                            expect(runningAnimations.has('boo-test-freezing')).toBe(false);
                             break;
                     } // switch
                 } // if

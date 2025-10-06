@@ -6,7 +6,7 @@ export default function exciteStateTestStyle() {
     const {
         exciteStateRule,
     } = usesExciteState({
-        animationExcite: 'var(--test-excite)',
+        animationExciting: 'var(--test-exciting)',
     });
     
     const {
@@ -19,12 +19,12 @@ export default function exciteStateTestStyle() {
         ...animationFeatureRule(),
         
         ...vars({
-            '--test-excite': [
+            '--test-exciting': [
                 // 0.2 sec * 5 iterations = 1 sec:
-                ['0.2s', 'ease', 'both', 'alternate-reverse', 5, 'boo-test-excite'],
+                ['0.2s', 'ease', 'both', 'alternate-reverse', 5, 'boo-test-exciting'],
             ],
         }),
-        ...keyframes('boo-test-excite', {
+        ...keyframes('boo-test-exciting', {
             from : {
                 filter : [[
                     'invert(0)',

@@ -361,9 +361,9 @@ export const ifWasUnvalidated            = (styles: CssStyleCollection): CssRule
 const [validityStateVars] = cssVars<ValidityStateVars>({ prefix: 'va', minify: false });
 
 // Register the validity-related animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(validityStateVars.animationValidate);
-animationRegistry.registerAnimation(validityStateVars.animationInvalidate);
-animationRegistry.registerAnimation(validityStateVars.animationUnvalidate);
+animationRegistry.registerAnimation(validityStateVars.animationValidating);
+animationRegistry.registerAnimation(validityStateVars.animationInvalidating);
+animationRegistry.registerAnimation(validityStateVars.animationUnvalidating);
 
 /**
  * Generates CSS rules that conditionally apply the validity-related animations based on current validity state,
@@ -393,9 +393,9 @@ animationRegistry.registerAnimation(validityStateVars.animationUnvalidate);
  *         validityStateRule,
  *         validityStateVars: { isValid, isInvalid, isUnvalidated, wasValid, wasInvalid, wasUnvalidated },
  *     } = usesValidityState({
- *         animationValidate   : 'var(--box-validate)',
- *         animationInvalidate : 'var(--box-invalidate)',
- *         animationUnvalidate : 'var(--box-unvalidate)',
+ *         animationValidating   : 'var(--box-validating)',
+ *         animationInvalidating : 'var(--box-invalidating)',
+ *         animationUnvalidating : 'var(--box-unvalidating)',
  *     });
  *     
  *     return style({
@@ -410,7 +410,7 @@ animationRegistry.registerAnimation(validityStateVars.animationUnvalidate);
  *         
  *         // Define validating animation:
  *         ...vars({
- *             '--box-validate': [
+ *             '--box-validating': [
  *                 ['0.3s', 'ease-out', 'both', 'splash-validating'],
  *             ],
  *         }),
@@ -428,7 +428,7 @@ animationRegistry.registerAnimation(validityStateVars.animationUnvalidate);
  *         
  *         // Define invalidating animation:
  *         ...vars({
- *             '--box-invalidate': [
+ *             '--box-invalidating': [
  *                 ['0.3s', 'ease-out', 'both', 'splash-invalidating'],
  *             ],
  *         }),
@@ -446,7 +446,7 @@ animationRegistry.registerAnimation(validityStateVars.animationUnvalidate);
  *         
  *         // Define unvalidating animation:
  *         ...vars({
- *             '--box-unvalidate': [
+ *             '--box-unvalidating': [
  *                 ['0.3s', 'ease-out', 'both', 'splash-unvalidating'],
  *             ],
  *         }),
@@ -483,9 +483,9 @@ animationRegistry.registerAnimation(validityStateVars.animationUnvalidate);
 export const usesValidityState = (options?: CssValidityStateOptions): CssValidityState => {
     // Extract options and assign defaults:
     const {
-        animationValidate   = 'none', // Defaults to `none`.
-        animationInvalidate = 'none', // Defaults to `none`.
-        animationUnvalidate = 'none', // Defaults to `none`.
+        animationValidating   = 'none', // Defaults to `none`.
+        animationInvalidating = 'none', // Defaults to `none`.
+        animationUnvalidating = 'none', // Defaults to `none`.
     } = options ?? {};
     
     
@@ -496,21 +496,21 @@ export const usesValidityState = (options?: CssValidityStateOptions): CssValidit
                 // Apply validate animation during the validating phase:
                 ...ifValidating(
                     vars({
-                        [validityStateVars.animationValidate  ] : animationValidate,   // Activate the animation (if provided).
+                        [validityStateVars.animationValidating  ] : animationValidating,   // Activate the animation (if provided).
                     })
                 ),
                 
                 // Apply invalidate animation during the invalidating phase:
                 ...ifInvalidating(
                     vars({
-                        [validityStateVars.animationInvalidate] : animationInvalidate, // Activate the animation (if provided).
+                        [validityStateVars.animationInvalidating] : animationInvalidating, // Activate the animation (if provided).
                     })
                 ),
                 
                 // Apply unvalidate animation during the unvalidating phase:
                 ...ifUnvalidating(
                     vars({
-                        [validityStateVars.animationUnvalidate] : animationUnvalidate, // Activate the animation (if provided).
+                        [validityStateVars.animationUnvalidating] : animationUnvalidating, // Activate the animation (if provided).
                     })
                 ),
                 

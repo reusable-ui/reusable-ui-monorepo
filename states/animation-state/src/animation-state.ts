@@ -196,7 +196,7 @@ export interface AnimationStateOptions<TState extends {} | null> {
     /**
      * Defines the pattern used to identify the related animation names.
      * 
-     * This pattern determines which animations are considered part of the intent lifecycle. (e.g. `'expand'`, `'collapse'`).
+     * This pattern determines which animation names are recognized as part of the intent lifecycle (e.g. `'expand'`, `'collapse'`).
      * 
      * Supports:
      * - A string suffix (with word-boundary awareness)

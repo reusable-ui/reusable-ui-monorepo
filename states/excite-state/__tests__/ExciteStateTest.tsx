@@ -26,7 +26,7 @@ export const ExciteStateTest = (props: ExciteStateTestProps) => {
         handleAnimationEnd,
         handleAnimationCancel,
     } = useExciteBehaviorState(props, {
-        animationPattern: 'test-excite',
+        animationPattern: 'test-exciting',
     });
     
     const handleMergedAnimationStart = useMergeEventHandlers(

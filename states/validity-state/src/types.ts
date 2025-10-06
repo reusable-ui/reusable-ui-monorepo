@@ -83,34 +83,34 @@ export interface ValidityStateUpdateProps {
  */
 export interface ValidityStatePhaseEventProps {
     /**
-     * Called when the validation animation begins.
+     * Called when the validating transition begins.
      */
-    onValidateStart   ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onValidatingStart   ?: ValueChangeEventHandler<ValidityPhase, unknown>
     
     /**
-     * Called when the validation animation completes.
+     * Called when the validating transition completes.
      */
-    onValidateEnd     ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onValidatingEnd     ?: ValueChangeEventHandler<ValidityPhase, unknown>
     
     /**
-     * Called when the invalidation animation begins.
+     * Called when the invalidating transition begins.
      */
-    onInvalidateStart ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onInvalidatingStart ?: ValueChangeEventHandler<ValidityPhase, unknown>
     
     /**
-     * Called when the invalidation animation completes.
+     * Called when the invalidating transition completes.
      */
-    onInvalidateEnd   ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onInvalidatingEnd   ?: ValueChangeEventHandler<ValidityPhase, unknown>
     
     /**
-     * Called when the unvalidation animation begins.
+     * Called when the unvalidating transition begins.
      */
-    onUnvalidateStart ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onUnvalidatingStart ?: ValueChangeEventHandler<ValidityPhase, unknown>
     
     /**
-     * Called when the unvalidation animation completes.
+     * Called when the unvalidating transition completes.
      */
-    onUnvalidateEnd   ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onUnvalidatingEnd   ?: ValueChangeEventHandler<ValidityPhase, unknown>
 }
 
 /**
@@ -150,7 +150,7 @@ export interface ValidityStateOptions
     /**
      * Defines the pattern used to identify validity-related animation names.
      * 
-     * This pattern determines which animations are considered part of the validity lifecycle.
+     * This pattern determines which animation names are recognized as part of the validity transition lifecycle.
      * 
      * Supports:
      * - A string suffix (with word-boundary awareness)
@@ -161,7 +161,7 @@ export interface ValidityStateOptions
      * - If the matched pattern starts with a non-word character, it’s always considered boundary-safe.
      * - Otherwise, the character preceding the suffix must be a non-word character or undefined.
      * 
-     * Defaults to `['validate', 'invalidate', 'unvalidate']`.
+     * Defaults to `['validating', 'invalidating', 'unvalidating']`.
      */
     animationPattern  ?: AnimationStateOptions<boolean | null>['animationPattern']
     
@@ -262,31 +262,31 @@ export interface ValidityBehaviorState<TElement extends Element = HTMLElement>
  */
 export interface ValidityStateVars {
     /**
-     * References a validating animation used during the transition toward valid.
-     * Invalid (`unset`) when not actively validating.
+     * References an animation used during the validating transition.
+     * It becomes invalid (`unset`) when not actively validating.
      * 
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationValidate   : unknown
+    animationValidating   : unknown
     
     /**
-     * References an invalidating animation used during the transition toward invalid.
-     * Invalid (`unset`) when not actively invalidating.
+     * References an animation used during the invalidating transition.
+     * It becomes invalid (`unset`) when not actively invalidating.
      * 
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationInvalidate : unknown
+    animationInvalidating : unknown
     
     /**
-     * References an unvalidating animation used during the transition toward unvalidated.
-     * Invalid (`unset`) when not actively unvalidating.
+     * References an animation used during the unvalidating transition.
+     * It becomes invalid (`unset`) when not actively unvalidating.
      * 
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationUnvalidate : unknown
+    animationUnvalidating : unknown
     
     /**
      * Applies when the component is either validating or fully valid.
@@ -305,7 +305,7 @@ export interface ValidityStateVars {
      * });
      * ```
      */
-    isValid             : unknown
+    isValid               : unknown
     
     /**
      * Applies when the component is either invalidating or fully invalid.
@@ -324,7 +324,7 @@ export interface ValidityStateVars {
      * });
      * ```
      */
-    isInvalid           : unknown
+    isInvalid             : unknown
     
     /**
      * Applies when the component is either unvalidating or fully unvalidated.
@@ -343,7 +343,7 @@ export interface ValidityStateVars {
      * });
      * ```
      */
-    isUnvalidated       : unknown
+    isUnvalidated         : unknown
     
     /**
      * Applies when the component has just transitioned from a valid state.
@@ -365,7 +365,7 @@ export interface ValidityStateVars {
      * });
      * ```
      */
-    wasValid            : unknown
+    wasValid              : unknown
     
     /**
      * Applies when the component has just transitioned from an invalid state.
@@ -387,7 +387,7 @@ export interface ValidityStateVars {
      * });
      * ```
      */
-    wasInvalid          : unknown
+    wasInvalid            : unknown
     
     /**
      * Applies when the component has just transitioned from an unvalidated state.
@@ -409,7 +409,7 @@ export interface ValidityStateVars {
      * });
      * ```
      */
-    wasUnvalidated      : unknown
+    wasUnvalidated        : unknown
 }
 
 
@@ -419,34 +419,34 @@ export interface ValidityStateVars {
  */
 export interface CssValidityStateOptions {
     /**
-     * The animation to apply during the validating transition.
+     * Defines the animation to apply during the validating transition.
      * 
-     * When the component transitions toward `valid`, the currently running animation is allowed to finish gracefully—
+     * When the component transitions toward `valid`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationValidate   ?: CssKnownProps['animation']
+    animationValidating   ?: CssKnownProps['animation']
     
     /**
-     * The animation to apply during the invalidating transition.
+     * Defines the animation to apply during the invalidating transition.
      * 
-     * When the component transitions toward `invalid`, the currently running animation is allowed to finish gracefully—
+     * When the component transitions toward `invalid`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationInvalidate ?: CssKnownProps['animation']
+    animationInvalidating ?: CssKnownProps['animation']
     
     /**
-     * The animation to apply during the unvalidating transition.
+     * Defines the animation to apply during the unvalidating transition.
      * 
-     * When the component transitions toward `unvalidated`, the currently running animation is allowed to finish gracefully—
+     * When the component transitions toward `unvalidated`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationUnvalidate ?: CssKnownProps['animation']
+    animationUnvalidating ?: CssKnownProps['animation']
 }
 
 
@@ -466,9 +466,9 @@ export interface CssValidityState {
      * Exposes validity-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationValidate`   : Active during the validating transition.
-     * - `animationInvalidate` : Active during the invalidating transition.
-     * - `animationUnvalidate` : Active during the unvalidating transition.
+     * - `animationValidating`   : Active during the validating transition.
+     * - `animationInvalidating` : Active during the invalidating transition.
+     * - `animationUnvalidating` : Active during the unvalidating transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.

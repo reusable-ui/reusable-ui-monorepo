@@ -846,16 +846,16 @@ test.describe('useCollapseBehaviorState - controlled mode', () => {
                 if (expectedRunningExpand!== undefined) {
                     switch (expectedRunningExpand) {
                         case true:
-                            expect(runningAnimations.has('boo-test-expand')).toBe(true);
-                            expect(runningAnimations.has('boo-test-collapse')).toBe(false);
+                            expect(runningAnimations.has('boo-test-expanding')).toBe(true);
+                            expect(runningAnimations.has('boo-test-collapsing')).toBe(false);
                             break;
                         case false:
-                            expect(runningAnimations.has('boo-test-expand')).toBe(false);
-                            expect(runningAnimations.has('boo-test-collapse')).toBe(true);
+                            expect(runningAnimations.has('boo-test-expanding')).toBe(false);
+                            expect(runningAnimations.has('boo-test-collapsing')).toBe(true);
                             break;
                         case null:
-                            expect(runningAnimations.has('boo-test-expand')).toBe(false);
-                            expect(runningAnimations.has('boo-test-collapse')).toBe(false);
+                            expect(runningAnimations.has('boo-test-expanding')).toBe(false);
+                            expect(runningAnimations.has('boo-test-collapsing')).toBe(false);
                             break;
                     } // switch
                 } // if

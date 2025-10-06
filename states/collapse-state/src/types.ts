@@ -90,24 +90,24 @@ export interface CollapseStateChangeProps<TChangeEvent = unknown> {
  */
 export interface CollapseStatePhaseEventProps {
     /**
-     * Called when the expansion animation begins.
+     * Called when the expanding transition begins.
      */
-    onExpandStart   ?: ValueChangeEventHandler<ExpandPhase, unknown>
+    onExpandingStart  ?: ValueChangeEventHandler<ExpandPhase, unknown>
     
     /**
-     * Called when the expansion animation completes.
+     * Called when the expanding transition completes.
      */
-    onExpandEnd     ?: ValueChangeEventHandler<ExpandPhase, unknown>
+    onExpandingEnd    ?: ValueChangeEventHandler<ExpandPhase, unknown>
     
     /**
-     * Called when the collapsion animation begins.
+     * Called when the collapsing transition begins.
      */
-    onCollapseStart ?: ValueChangeEventHandler<ExpandPhase, unknown>
+    onCollapsingStart ?: ValueChangeEventHandler<ExpandPhase, unknown>
     
     /**
-     * Called when the collapsion animation completes.
+     * Called when the collapsing transition completes.
      */
-    onCollapseEnd   ?: ValueChangeEventHandler<ExpandPhase, unknown>
+    onCollapsingEnd   ?: ValueChangeEventHandler<ExpandPhase, unknown>
 }
 
 /**
@@ -133,7 +133,7 @@ export interface CollapseStateOptions
     /**
      * Defines the pattern used to identify expand/collapse-related animation names.
      * 
-     * This pattern determines which animations are considered part of the expand/collapse lifecycle.
+     * This pattern determines which animation names are recognized as part of the expanding/collapsing transition lifecycle.
      * 
      * Supports:
      * - A string suffix (with word-boundary awareness)
@@ -144,7 +144,7 @@ export interface CollapseStateOptions
      * - If the matched pattern starts with a non-word character, it’s always considered boundary-safe.
      * - Otherwise, the character preceding the suffix must be a non-word character or undefined.
      * 
-     * Defaults to `['expand', 'collapse']`.
+     * Defaults to `['expanding', 'collapsing']`.
      */
     animationPattern  ?: AnimationStateOptions<boolean>['animationPattern']
     
@@ -248,22 +248,22 @@ export interface CollapseBehaviorState<TElement extends Element = HTMLElement, T
  */
 export interface CollapseStateVars {
     /**
-     * References an expanding animation used during the expanding transition.
-     * Invalid (`unset`) when not actively expanding.
+     * References an animation used during the expanding transition.
+     * It becomes invalid (`unset`) when not actively expanding.
      * 
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationExpand   : unknown
+    animationExpanding  : unknown
     
     /**
-     * References a collapsing animation used during the collapsing transition.
-     * Invalid (`unset`) when not actively collapsing.
+     * References an animation used during the collapsing transition.
+     * It becomes invalid (`unset`) when not actively collapsing.
      * 
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationCollapse : unknown
+    animationCollapsing : unknown
     
     /**
      * Applies when the component is either expanding or fully expanded.
@@ -282,7 +282,7 @@ export interface CollapseStateVars {
      * });
      * ```
      */
-    isExpanded        : unknown
+    isExpanded          : unknown
     
     /**
      * Applies when the component is either collapsing or fully collapsed.
@@ -301,7 +301,7 @@ export interface CollapseStateVars {
      * });
      * ```
      */
-    isCollapsed       : unknown
+    isCollapsed         : unknown
 }
 
 
@@ -311,24 +311,24 @@ export interface CollapseStateVars {
  */
 export interface CssCollapseStateOptions {
     /**
-     * The animation to apply during the expanding transition.
+     * Defines the animation to apply during the expanding transition.
      * 
-     * When the `expanded` prop changes to `false`, the currently running animation is allowed to finish gracefully—
+     * When the `expanded` prop changes to `false`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationExpand   ?: CssKnownProps['animation']
+    animationExpanding  ?: CssKnownProps['animation']
     
     /**
-     * The animation to apply during the collapsing transition.
+     * Defines the animation to apply during the collapsing transition.
      * 
-     * When the `expanded` prop changes to `true`, the currently running animation is allowed to finish gracefully—
+     * When the `expanded` prop changes to `true`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationCollapse ?: CssKnownProps['animation']
+    animationCollapsing ?: CssKnownProps['animation']
 }
 
 
@@ -348,8 +348,8 @@ export interface CssCollapseState {
      * Exposes expand/collapse-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationExpand`   : Active during the expanding transition.
-     * - `animationCollapse` : Active during the collapsing transition.
+     * - `animationExpanding`  : Active during the expanding transition.
+     * - `animationCollapsing` : Active during the collapsing transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.

@@ -13,8 +13,8 @@ import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useActiveStateTestStyles } from './ActiveStateTest.loader.js'
 
 const animationPattern = [
-    'test-activate',
-    'test-deactivate',
+    'test-activating',
+    'test-deactivating',
 ];
 
 export interface ActiveStateTestProps

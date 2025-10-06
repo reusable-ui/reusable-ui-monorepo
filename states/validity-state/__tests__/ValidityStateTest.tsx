@@ -12,9 +12,9 @@ import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useValidityStateTestStyles } from './ValidityStateTest.loader.js'
 
 const animationPattern = [
-    'test-validate',
-    'test-invalidate',
-    'test-unvalidate',
+    'test-validating',
+    'test-invalidating',
+    'test-unvalidating',
 ];
 
 export interface ValidityStateTestProps

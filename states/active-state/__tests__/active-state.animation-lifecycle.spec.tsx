@@ -391,16 +391,16 @@ test.describe('useActiveBehaviorState - animation', () => {
                 if (expectedRunningActivate!== undefined) {
                     switch (expectedRunningActivate) {
                         case true:
-                            expect(runningAnimations.has('boo-test-activate')).toBe(true);
-                            expect(runningAnimations.has('boo-test-deactivate')).toBe(false);
+                            expect(runningAnimations.has('boo-test-activating')).toBe(true);
+                            expect(runningAnimations.has('boo-test-deactivating')).toBe(false);
                             break;
                         case false:
-                            expect(runningAnimations.has('boo-test-activate')).toBe(false);
-                            expect(runningAnimations.has('boo-test-deactivate')).toBe(true);
+                            expect(runningAnimations.has('boo-test-activating')).toBe(false);
+                            expect(runningAnimations.has('boo-test-deactivating')).toBe(true);
                             break;
                         case null:
-                            expect(runningAnimations.has('boo-test-activate')).toBe(false);
-                            expect(runningAnimations.has('boo-test-deactivate')).toBe(false);
+                            expect(runningAnimations.has('boo-test-activating')).toBe(false);
+                            expect(runningAnimations.has('boo-test-deactivating')).toBe(false);
                             break;
                     } // switch
                 } // if

@@ -200,8 +200,8 @@ export const ifDisablingOrDisabled = (styles: CssStyleCollection): CssRule => ru
 const [disabledStateVars] = cssVars<DisabledStateVars>({ prefix: 'ds', minify: false });
 
 // Register the enable/disable animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(disabledStateVars.animationEnable);
-animationRegistry.registerAnimation(disabledStateVars.animationDisable);
+animationRegistry.registerAnimation(disabledStateVars.animationEnabling);
+animationRegistry.registerAnimation(disabledStateVars.animationDisabling);
 
 /**
  * Generates CSS rules that conditionally apply the enable/disable animations based on current disabled state,
@@ -231,8 +231,8 @@ animationRegistry.registerAnimation(disabledStateVars.animationDisable);
  *         disabledStateRule,
  *         disabledStateVars: { isEnabled, isDisabled },
  *     } = usesDisabledState({
- *         animationEnable  : 'var(--box-enable)',
- *         animationDisable : 'var(--box-disable)',
+ *         animationEnabling  : 'var(--box-enabling)',
+ *         animationDisabling : 'var(--box-disabling)',
  *     });
  *     
  *     return style({
@@ -247,7 +247,7 @@ animationRegistry.registerAnimation(disabledStateVars.animationDisable);
  *         
  *         // Define enabling animation:
  *         ...vars({
- *             '--box-enable': [
+ *             '--box-enabling': [
  *                 ['0.3s', 'ease-out', 'both', 'fade-enabling'],
  *             ],
  *         }),
@@ -262,7 +262,7 @@ animationRegistry.registerAnimation(disabledStateVars.animationDisable);
  *         
  *         // Define disabling animation:
  *         ...vars({
- *             '--box-disable': [
+ *             '--box-disabling': [
  *                 ['0.3s', 'ease-out', 'both', 'fade-disabling'],
  *             ],
  *         }),
@@ -293,8 +293,8 @@ animationRegistry.registerAnimation(disabledStateVars.animationDisable);
 export const usesDisabledState = (options?: CssDisabledStateOptions): CssDisabledState => {
     // Extract options and assign defaults:
     const {
-        animationEnable  = 'none', // Defaults to `none`.
-        animationDisable = 'none', // Defaults to `none`.
+        animationEnabling  = 'none', // Defaults to `none`.
+        animationDisabling = 'none', // Defaults to `none`.
     } = options ?? {};
     
     
@@ -305,14 +305,14 @@ export const usesDisabledState = (options?: CssDisabledStateOptions): CssDisable
                 // Apply enable animation during the enabling phase:
                 ...ifEnabling(
                     vars({
-                        [disabledStateVars.animationEnable ] : animationEnable,  // Activate the animation (if provided).
+                        [disabledStateVars.animationEnabling ] : animationEnabling,  // Activate the animation (if provided).
                     })
                 ),
                 
                 // Apply disable animation during the disabling phase:
                 ...ifDisabling(
                     vars({
-                        [disabledStateVars.animationDisable] : animationDisable, // Activate the animation (if provided).
+                        [disabledStateVars.animationDisabling] : animationDisabling, // Activate the animation (if provided).
                     })
                 ),
                 
