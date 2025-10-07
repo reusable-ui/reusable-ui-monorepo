@@ -6,10 +6,10 @@ const stateDirs = [
     'animation-state',
     'disabled-state',
     'read-only-state',
+    'validity-state',
     'excite-state',
     'collapse-state',
     'active-state',
-    'validity-state',
 ];
 
 console.log('🧪 Running tests for feature packages...\n');
