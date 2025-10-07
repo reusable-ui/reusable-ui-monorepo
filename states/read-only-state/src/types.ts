@@ -199,7 +199,7 @@ export interface ReadOnlyBehaviorState<TElement extends Element = HTMLElement>
 {
     /**
      * Indicates the current resolved editable/read-only state.
-     * This reflects the final diagnostic status, not the transitional intent.
+     * This reflects the final constraint status, not the transitional intent.
      * 
      * Possible values:
      * - `true`  : the component is read-only

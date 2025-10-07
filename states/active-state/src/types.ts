@@ -203,7 +203,7 @@ export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TCh
 {
     /**
      * Indicates the current resolved active/inactive state.
-     * This reflects the final resolved state, not the transitional intent.
+     * This reflects the final controlled state, not the transitional intent.
      * 
      * Possible values:
      * - `true`  : the component is active
