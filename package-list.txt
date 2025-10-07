@@ -180,12 +180,12 @@ Additional flags:
 // Reusable-ui states:
 @reusable-ui/animation-state
 @reusable-ui/animating-state DEPRECATED
+@reusable-ui/disabled-state
+@reusable-ui/read-only-state
 @reusable-ui/excite-state
 @reusable-ui/collapse-state
 @reusable-ui/active-state
 @reusable-ui/validity-state
-@reusable-ui/disabled-state
-@reusable-ui/read-only-state
 @reusable-ui/excitable
 @reusable-ui/collapsible
 @reusable-ui/scrollable
