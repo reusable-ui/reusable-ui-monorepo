@@ -4,12 +4,12 @@ import { existsSync } from 'fs';
 
 const stateDirs = [
     'animation-state',
+    'disabled-state',
+    'read-only-state',
     'excite-state',
     'collapse-state',
     'active-state',
     'validity-state',
-    'disabled-state',
-    'read-only-state',
 ];
 
 console.log('🔧 Compiling feature packages...\n');
