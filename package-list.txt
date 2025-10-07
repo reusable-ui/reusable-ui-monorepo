@@ -172,8 +172,8 @@ Additional flags:
 |----------------------------|--------------|-----------------------------|---------------|------------------------|------------------------------|----------------------------------|--------------------------------------------------------------------|----------|
 | excite-state               | notification | `ExciteStateProps`          | `excited`     | `exciteClassname`      | —                            | —                                | ❌ Base form: reflects emotional trigger, not static condition     | VERIFIED |
 |----------------------------|--------------|-----------------------------|---------------|------------------------|------------------------------|----------------------------------|--------------------------------------------------------------------|----------|
-| collapse-state             | control      | `CollapseStateProps`        | `expanded`    | `expandClassname`      | `collapsed`, `expanded`      | `collapsing`, `expanding`        | ❌ Base form: domain is “collapse”, resolved states are adjectives | VERIFIED |
-| active-state               | control      | `ActiveStateProps`          | `active`      | `activeClassname`      | `inactive`, `active`         | `deactivating`, `activating`     | ❌ Base form: behavioral toggle, matches React idiom | VERIFIED    |          |
+| collapse-state             | interaction  | `CollapseStateProps`        | `expanded`    | `expandClassname`      | `collapsed`, `expanded`      | `collapsing`, `expanding`        | ❌ Base form: domain is “collapse”, resolved states are adjectives | VERIFIED |
+| active-state               | interaction  | `ActiveStateProps`          | `active`      | `activeClassname`      | `inactive`, `active`         | `deactivating`, `activating`     | ❌ Base form: behavioral toggle, matches React idiom | VERIFIED    |          |
 |----------------------------|--------------|-----------------------------|---------------|------------------------|------------------------------|----------------------------------|--------------------------------------------------------------------|----------|
 
 
