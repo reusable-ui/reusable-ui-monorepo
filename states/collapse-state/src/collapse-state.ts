@@ -75,12 +75,12 @@ export const useCollapseState = (props: CollapseStateProps & { defaultExpanded: 
     
     // Extract props and assign defaults:
     const {
-        expanded : controlledExpanded = defaultExpanded,
+        expanded        : controlledExpanded = defaultExpanded,
     } = props;
     
     
     
-    // Return the resolved expanded/collapsed state:
+    // Return the resolved expansion state:
     return controlledExpanded;
 };
 
@@ -137,7 +137,7 @@ export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: Colla
  * 
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  * 
- * @param props - The component props that may include a controlled `expanded` value, `defaultExpanded` value, and `onExpandedChange` callback.
+ * @param props - The component props that may include a controlled `expanded` value, optional `defaultExpanded` value, and `onExpandedChange` callback.
  * @param options - An optional configuration for customizing expand/collapse behavior.
  * @returns A tuple of the resolved expanded/collapsed state and a dispatcher for requesting changes.
  */
@@ -160,6 +160,8 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
     
     
     // States:
+    
+    // Internal activation state:
     const {
         value               : effectiveExpanded,
         dispatchValueChange : dispatchExpandedChange,
@@ -181,12 +183,12 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
  * Resolves the expanded/collapsed state, current transition phase, associated CSS class name, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  * 
- * Supports controlled, uncontrolled, and hybrid expansion behavior with optional change dispatching.
+ * - Supports controlled, uncontrolled, and hybrid expansion behavior with optional change dispatching.
  * 
  * @template TElement - The type of the target DOM element.
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  * 
- * @param props - The component props that may include a controlled `expanded` value, optional `defaultExpanded`, and `onExpandedChange` callback.
+ * @param props - The component props that may include a controlled `expanded` value, optional `defaultExpanded` value, and `onExpandedChange` callback.
  * @param options - An optional configuration for customizing expand/collapse behavior and animation lifecycle.
  * @returns The resolved expanded/collapsed state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
@@ -306,7 +308,7 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
     
     
     
-    // Return resolved collapse state API:
+    // Return resolved expansion state API:
     return {
         expanded        : effectiveExpanded,
         expandPhase,
