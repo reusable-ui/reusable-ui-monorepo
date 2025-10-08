@@ -1,3 +1,5 @@
-export * from './types.js'
-export * from './active-state.js'
-export * from './declarators.js'
+export *           from './types.js'
+export *           from './active-state.js'
+export *           from './declarators.js'
+export *           from './providers.js'
+export { default } from './providers.js'

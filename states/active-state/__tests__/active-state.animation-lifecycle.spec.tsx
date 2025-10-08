@@ -78,9 +78,9 @@ test.describe('useActiveBehaviorState - animation', () => {
             please do it between +200 ms after the expected starts and -200 ms before the expected ends.
         */
         {
-            title   : 'No running activate/deactivate animation in all time',
-            active  : false,
-            updates : [
+            title          : 'No running activate/deactivate animation in all time',
+            active         : false,
+            updates        : [
                 {
                     title                   : 'Initially no running animation',
                     expectedRunningActivate : null,
@@ -110,9 +110,9 @@ test.describe('useActiveBehaviorState - animation', () => {
             ],
         },
         {
-            title   : 'Active state after update',
-            active  : false,
-            updates : [
+            title          : 'Active state after update',
+            active         : false,
+            updates        : [
                 {
                     title                   : 'Initially inactive',
                     expectedRunningActivate : null,
@@ -141,9 +141,9 @@ test.describe('useActiveBehaviorState - animation', () => {
             ],
         },
         {
-            title   : 'Inactive state after update',
-            active  : true,
-            updates : [
+            title          : 'Inactive state after update',
+            active         : true,
+            updates        : [
                 {
                     title                   : 'Initially active',
                     expectedRunningActivate : null,
@@ -172,9 +172,9 @@ test.describe('useActiveBehaviorState - animation', () => {
             ],
         },
         {
-            title   : 'Activate, deactivate, and re-activate quickly',
-            active  : false,
-            updates : [
+            title          : 'Activate, deactivate, and re-activate quickly',
+            active         : false,
+            updates        : [
                 {
                     title                   : 'Initially inactive',
                     expectedRunningActivate : null,
@@ -211,9 +211,9 @@ test.describe('useActiveBehaviorState - animation', () => {
             ],
         },
         {
-            title   : 'Deactivate, activate, and re-deactivate quickly',
-            active  : true,
-            updates : [
+            title          : 'Deactivate, activate, and re-deactivate quickly',
+            active         : true,
+            updates        : [
                 {
                     title                   : 'Initially active',
                     expectedRunningActivate : null,
@@ -250,9 +250,9 @@ test.describe('useActiveBehaviorState - animation', () => {
             ],
         },
         {
-            title   : 'Repeated activation does not restart animation',
-            active  : false,
-            updates : [
+            title          : 'Repeated activation does not restart animation',
+            active         : false,
+            updates        : [
                 {
                     title                   : 'Initially inactive',
                     expectedRunningActivate : null,
@@ -279,9 +279,9 @@ test.describe('useActiveBehaviorState - animation', () => {
             ],
         },
         {
-            title   : 'Repeated deactivation does not restart animation',
-            active  : true,
-            updates : [
+            title          : 'Repeated deactivation does not restart animation',
+            active         : true,
+            updates        : [
                 {
                     title                   : 'Initially active',
                     expectedRunningActivate : null,

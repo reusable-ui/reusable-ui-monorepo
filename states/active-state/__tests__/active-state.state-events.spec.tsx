@@ -77,9 +77,9 @@ test.describe('useActiveStatePhaseEvents', () => {
             please do it between +200 ms after the expected starts and -200 ms before the expected ends.
         */
         {
-            title   : 'Should be respond to change from inactive to active',
-            active  : false,
-            updates : [
+            title          : 'Should be respond to change from inactive to active',
+            active         : false,
+            updates        : [
                 {
                     title         : 'Change to active',
                     action        : 'activate',
@@ -108,9 +108,9 @@ test.describe('useActiveStatePhaseEvents', () => {
             ],
         },
         {
-            title   : 'Should be respond to change from active to inactive',
-            active  : true,
-            updates : [
+            title          : 'Should be respond to change from active to inactive',
+            active         : true,
+            updates        : [
                 {
                     title         : 'Change to inactive',
                     action        : 'deactivate',
@@ -139,9 +139,9 @@ test.describe('useActiveStatePhaseEvents', () => {
             ],
         },
         {
-            title   : 'Should be respond to change from inactive to active then inactive',
-            active  : false,
-            updates : [
+            title          : 'Should be respond to change from inactive to active then inactive',
+            active         : false,
+            updates        : [
                 {
                     title         : 'Change to active',
                     action        : 'activate',
@@ -195,9 +195,9 @@ test.describe('useActiveStatePhaseEvents', () => {
             ],
         },
         {
-            title   : 'Should be respond to change from active to inactive then active',
-            active  : true,
-            updates : [
+            title          : 'Should be respond to change from active to inactive then active',
+            active         : true,
+            updates        : [
                 {
                     title         : 'Change to inactive',
                     action        : 'deactivate',
@@ -251,9 +251,9 @@ test.describe('useActiveStatePhaseEvents', () => {
             ],
         },
         {
-            title   : 'Should be respond to activate, deactivate, and re-activate quickly',
-            active  : false,
-            updates : [
+            title          : 'Should be respond to activate, deactivate, and re-activate quickly',
+            active         : false,
+            updates        : [
                 {
                     title         : 'Activate',
                     action        : 'activate',
@@ -284,9 +284,9 @@ test.describe('useActiveStatePhaseEvents', () => {
             ],
         },
         {
-            title   : 'Should be respond to deactivate, activate, and re-deactivate quickly',
-            active  : true,
-            updates : [
+            title          : 'Should be respond to deactivate, activate, and re-deactivate quickly',
+            active         : true,
+            updates        : [
                 {
                     title         : 'Deactivate',
                     action        : 'deactivate',
@@ -317,9 +317,9 @@ test.describe('useActiveStatePhaseEvents', () => {
             ],
         },
         {
-            title   : 'Should be respond to activate and quickly switch to deactivate',
-            active  : false,
-            updates : [
+            title          : 'Should be respond to activate and quickly switch to deactivate',
+            active         : false,
+            updates        : [
                 {
                     title         : 'Activate',
                     action        : 'activate',
@@ -361,9 +361,9 @@ test.describe('useActiveStatePhaseEvents', () => {
             ],
         },
         {
-            title   : 'Should be respond to deactivate and quickly switch to activate',
-            active  : true,
-            updates : [
+            title          : 'Should be respond to deactivate and quickly switch to activate',
+            active         : true,
+            updates        : [
                 {
                     title         : 'Deactivate',
                     action        : 'deactivate',

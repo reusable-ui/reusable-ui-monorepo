@@ -42,7 +42,16 @@ export interface ActiveStateProps {
      * 
      * Defaults to `undefined` (uncontrolled mode).
      */
-    active ?: boolean
+    active        ?: boolean
+    
+    /**
+     * Specifies whether the component can be activated via parent context:
+     * - `true`  : allows the component to be activated via parent context
+     * - `false` : the component can only be activated directly via its own `active` prop
+     * 
+     * Defaults to `false` (prevents contextual activation).
+     */
+    cascadeActive ?: boolean
 }
 
 /**
@@ -128,7 +137,16 @@ export interface ActiveStateOptions
      * 
      * Defaults to `false` (inactive).
      */
-    defaultActive     ?: boolean
+    defaultActive        ?: boolean
+    
+    /**
+     * Specifies the default cascade behavior when no `cascadeActive` prop is explicitly provided:
+     * - `true`  : allows the component to be activated via parent context
+     * - `false` : the component can only be activated directly via its own `active` prop
+     * 
+     * Defaults to `false` (prevents contextual activation).
+     */
+    defaultCascadeActive ?: boolean
     
     /**
      * Defines the pattern used to identify activate/deactivate-related animation names.
@@ -146,7 +164,7 @@ export interface ActiveStateOptions
      * 
      * Defaults to `['activating', 'deactivating']`.
      */
-    animationPattern  ?: AnimationStateOptions<boolean>['animationPattern']
+    animationPattern     ?: AnimationStateOptions<boolean>['animationPattern']
     
     /**
      * Enables listening to animation events bubbling up from nested child elements.
@@ -154,7 +172,7 @@ export interface ActiveStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling ?: AnimationStateOptions<boolean>['animationBubbling']
+    animationBubbling    ?: AnimationStateOptions<boolean>['animationBubbling']
 }
 
 /**

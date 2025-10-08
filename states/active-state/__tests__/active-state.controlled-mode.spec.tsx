@@ -1,6 +1,7 @@
 import React, { type AnimationEventHandler, MouseEvent as ReactMouseEvent } from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { ActiveStateTest } from './ActiveStateTest.js';
+import { ActiveStateWithContextTest } from './ActiveStateWithContextTest.js';
 import { ValueChangeEventHandler } from '@reusable-ui/events';
 
 
@@ -14,25 +15,37 @@ interface ActiveStateControlledTestCase {
     /**
      * A human-readable description of the overall test case.
      */
-    title   : string
+    title         : string
+    
+    /**
+     * The parent active state to use for the test.
+     * Set to `undefined` for no parent active context.
+     */
+    parentActive ?: boolean
     
     /**
      * Initial active/inactive state.
      * - `true`: active
      * - `false`: inactive
      */
-    active  : boolean
+    active        : boolean
     
     /**
      * A sequence of updates applied to the active/inactive state, including expected outcomes.
      */
-    updates : {
+    updates       : {
         // Test Inputs:
         
         /**
          * A descriptive label for the individual update step.
          */
         title                    : string
+        
+        /**
+         * New value for parent active state.
+         * Set to `undefined` to skip updating this part.
+         */
+        parentActive            ?: boolean
         
         /**
          * New value for active state.
@@ -81,16 +94,16 @@ interface ActiveStateControlledTestCase {
 
 
 test.describe('useActiveBehaviorState - controlled mode', () => {
-    for (const { title, active : initialActive, updates } of [
+    for (const { title, parentActive: initialParentActive, active : initialActive, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.
             To check the existance of the animation,
             please do it between +200 ms after the expected starts and -200 ms before the expected ends.
         */
         {
-            title   : 'Should be defaults to inactive',
-            active  : undefined,
-            updates : [
+            title          : 'Should be defaults to inactive',
+            active         : undefined,
+            updates        : [
                 {
                     title                   : 'Should be inactive and no animation',
                     expectedActive          : 'inactive',
@@ -99,9 +112,9 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
             ],
         },
         {
-            title   : 'Should be controlled to inactive',
-            active  : false,
-            updates : [
+            title          : 'Should be controlled to inactive',
+            active         : false,
+            updates        : [
                 {
                     title                   : 'Should be inactive and no animation',
                     expectedActive          : 'inactive',
@@ -110,9 +123,9 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
             ],
         },
         {
-            title   : 'Should be controlled to active',
-            active  : true,
-            updates : [
+            title          : 'Should be controlled to active',
+            active         : true,
+            updates        : [
                 {
                     title                   : 'Should be active and no animation',
                     expectedActive          : 'active',
@@ -121,9 +134,9 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
             ],
         },
         {
-            title   : 'Should be changed from inactive to active',
-            active  : false,
-            updates : [
+            title          : 'Should be changed from inactive to active',
+            active         : false,
+            updates        : [
                 {
                     title                   : 'Should be inactive and no animation',
                     expectedActive          : 'inactive',
@@ -159,9 +172,9 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
             ],
         },
         {
-            title   : 'Should be changed from active to inactive',
-            active  : true,
-            updates : [
+            title          : 'Should be changed from active to inactive',
+            active         : true,
+            updates        : [
                 {
                     title                   : 'Should be active and no animation',
                     expectedActive          : 'active',
@@ -197,9 +210,9 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
             ],
         },
         {
-            title   : 'Should be changed from inactive to active then inactive',
-            active  : false,
-            updates : [
+            title          : 'Should be changed from inactive to active then inactive',
+            active         : false,
+            updates        : [
                 {
                     title                   : 'Should be inactive and no animation',
                     expectedActive          : 'inactive',
@@ -262,9 +275,9 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
             ],
         },
         {
-            title   : 'Should be changed from active to inactive then active',
-            active  : true,
-            updates : [
+            title          : 'Should be changed from active to inactive then active',
+            active         : true,
+            updates        : [
                 {
                     title                   : 'Should be active and no animation',
                     expectedActive          : 'active',
@@ -327,9 +340,9 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
             ],
         },
         {
-            title   : 'Activate, deactivate, and re-activate quickly',
-            active  : false,
-            updates : [
+            title          : 'Activate, deactivate, and re-activate quickly',
+            active         : false,
+            updates        : [
                 {
                     title                   : 'Should be inactive and no animation',
                     expectedActive          : 'inactive',
@@ -369,9 +382,9 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
             ],
         },
         {
-            title   : 'Deactivate, activate, and re-deactivate quickly',
-            active  : true,
-            updates : [
+            title          : 'Deactivate, activate, and re-deactivate quickly',
+            active         : true,
+            updates        : [
                 {
                     title                   : 'Should be active and no animation',
                     expectedActive          : 'active',
@@ -414,9 +427,9 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
         
         
         {
-            title   : 'Should be respond to change from inactive to active',
-            active  : false,
-            updates : [
+            title          : 'Should be respond to change from inactive to active',
+            active         : false,
+            updates        : [
                 {
                     title                   : 'Should be inactive and no animation',
                     expectedActive          : 'inactive',
@@ -453,9 +466,9 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
             ],
         },
         {
-            title   : 'Should be respond to change from active to inactive',
-            active  : true,
-            updates : [
+            title          : 'Should be respond to change from active to inactive',
+            active         : true,
+            updates        : [
                 {
                     title                   : 'Should be active and no animation',
                     expectedActive          : 'active',
@@ -492,9 +505,9 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
             ],
         },
         {
-            title   : 'Should be respond to change from inactive to active then inactive',
-            active  : false,
-            updates : [
+            title          : 'Should be respond to change from inactive to active then inactive',
+            active         : false,
+            updates        : [
                 {
                     title                   : 'Should be inactive and no animation',
                     expectedActive          : 'inactive',
@@ -559,9 +572,9 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
             ],
         },
         {
-            title   : 'Should be respond to change from active to inactive then active',
-            active  : true,
-            updates : [
+            title          : 'Should be respond to change from active to inactive then active',
+            active         : true,
+            updates        : [
                 {
                     title                   : 'Should be active and no animation',
                     expectedActive          : 'active',
@@ -626,9 +639,9 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
             ],
         },
         {
-            title   : 'Should be respond to activate, deactivate, and re-activate quickly',
-            active  : false,
-            updates : [
+            title          : 'Should be respond to activate, deactivate, and re-activate quickly',
+            active         : false,
+            updates        : [
                 {
                     title                   : 'Should be inactive and no animation',
                     expectedActive          : 'inactive',
@@ -668,9 +681,9 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
             ],
         },
         {
-            title   : 'Should be respond to deactivate, activate, and re-deactivate quickly',
-            active  : true,
-            updates : [
+            title          : 'Should be respond to deactivate, activate, and re-deactivate quickly',
+            active         : true,
+            updates        : [
                 {
                     title                   : 'Should be active and no animation',
                     expectedActive          : 'active',
@@ -706,12 +719,354 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
                     delay                   : 600, // Includes additional margin to guarantee completion.
                     expectedActive          : 'inactive',
                     expectedRunningActivate : null, // No running animation.
+                },
+            ],
+        },
+        
+        
+        
+        {
+            title          : 'Should be contextual active',
+            parentInactive : false,
+            inactive       : false,
+            updates        : [
+                {
+                    title                   : 'Should be active and no animation',
+                    expectedInactive        : 'active',
+                    expectedRunningInactive : null,
+                },
+            ],
+        },
+        {
+            title          : 'Should be contextual inactive',
+            parentInactive : true,
+            inactive       : false,
+            updates        : [
+                {
+                    title                   : 'Should be inactive and no animation',
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : null,
+                },
+            ],
+        },
+        {
+            title          : 'Should be explicitly inactive regradless context is active',
+            parentInactive : false,
+            inactive       : true,
+            updates        : [
+                {
+                    title                   : 'Should be inactive and no animation',
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : null,
+                },
+            ],
+        },
+        {
+            title          : 'Should be explicitly inactive regradless context is inactive',
+            parentInactive : true,
+            inactive       : true,
+            updates        : [
+                {
+                    title                   : 'Should be inactive and no animation',
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : null,
+                },
+            ],
+        },
+        {
+            title          : 'Should be contextual changed from active to inactive',
+            parentInactive : false,
+            updates        : [
+                {
+                    title                   : 'Should be active and no animation',
+                    expectedInactive        : 'active',
+                    expectedRunningInactive : null,
+                },
+                {
+                    title                   : 'Change to inactive',
+                    parentInactive          : true,
+                    
+                    expectedInactive        : 'inactive',
+                },
+                {
+                    title                   : 'The deactivating animation should be running and the activationment is still inactive',
+                    
+                    delay                   : 200,
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : true,
+                },
+                {
+                    title                   : 'The deactivating animation should be running and the activationment is still inactive',
+                    
+                    delay                   : 500, // 200 + 500 = 700 ms, the animation should still running.
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : true,
+                },
+                {
+                    title                   : 'The deactivating animation should be stopped and the activationment is still inactive',
+                    
+                    delay                   : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : null,
+                },
+            ],
+        },
+        {
+            title          : 'Should be contextual changed from inactive to active',
+            parentInactive : true,
+            updates        : [
+                {
+                    title                   : 'Should be inactive and no animation',
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : null,
+                },
+                {
+                    title                   : 'Change to active',
+                    parentInactive          : false,
+                    
+                    expectedInactive        : 'active',
+                },
+                {
+                    title                   : 'The activating animation should be running and the activationment is still active',
+                    
+                    delay                   : 200,
+                    expectedInactive        : 'active',
+                    expectedRunningInactive : false,
+                },
+                {
+                    title                   : 'The activating animation should be running and the activationment is still active',
+                    
+                    delay                   : 500, // 200 + 500 = 700 ms, the animation should still running.
+                    expectedInactive        : 'active',
+                    expectedRunningInactive : false,
+                },
+                {
+                    title                   : 'The activating animation should be stopped and the activationment is still active',
+                    
+                    delay                   : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
+                    expectedInactive        : 'active',
+                    expectedRunningInactive : null,
+                },
+            ],
+        },
+        {
+            title          : 'Should be contextual changed from inactive to active then inactive',
+            parentInactive : true,
+            updates        : [
+                {
+                    title                   : 'Should be inactive and no animation',
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : null,
+                },
+                {
+                    title                   : 'Change to active',
+                    parentInactive          : false,
+                    
+                    expectedInactive        : 'active',
+                },
+                {
+                    title                   : 'The activating animation should be running and the activationment is still active',
+                    
+                    delay                   : 200,
+                    expectedInactive        : 'active',
+                    expectedRunningInactive : false,
+                },
+                {
+                    title                   : 'The activating animation should be running and the activationment is still active',
+                    
+                    delay                   : 500, // 200 + 500 = 700 ms, the animation should still running.
+                    expectedInactive        : 'active',
+                    expectedRunningInactive : false,
+                },
+                {
+                    title                   : 'The activating animation should be stopped and the activationment is still active',
+                    
+                    delay                   : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
+                    expectedInactive        : 'active',
+                    expectedRunningInactive : null,
+                },
+                {
+                    title                   : 'Change to inactive',
+                    parentInactive          : true,
+                    
+                    expectedInactive        : 'inactive',
+                },
+                {
+                    title                   : 'The deactivating animation should be running and the activationment is still inactive',
+                    
+                    delay                   : 200,
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : true,
+                },
+                {
+                    title                   : 'The deactivating animation should be running and the activationment is still inactive',
+                    
+                    delay                   : 500, // 200 + 500 = 700 ms, the animation should still running.
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : true,
+                },
+                {
+                    title                   : 'The deactivating animation should be stopped and the activationment is still inactive',
+                    
+                    delay                   : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : null,
+                },
+            ],
+        },
+        {
+            title          : 'Should be contextual changed from active to inactive then active',
+            parentInactive : false,
+            updates        : [
+                {
+                    title                   : 'Should be active and no animation',
+                    expectedInactive        : 'active',
+                    expectedRunningInactive : null,
+                },
+                {
+                    title                   : 'Change to inactive',
+                    parentInactive          : true,
+                    
+                    expectedInactive        : 'inactive',
+                },
+                {
+                    title                   : 'The deactivating animation should be running and the activationment is still inactive',
+                    
+                    delay                   : 200,
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : true,
+                },
+                {
+                    title                   : 'The deactivating animation should be running and the activationment is still inactive',
+                    
+                    delay                   : 500, // 200 + 500 = 700 ms, the animation should still running.
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : true,
+                },
+                {
+                    title                   : 'The deactivating animation should be stopped and the activationment is still inactive',
+                    
+                    delay                   : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : null,
+                },
+                {
+                    title                   : 'Change to active',
+                    parentInactive          : false,
+                    
+                    expectedInactive        : 'active',
+                },
+                {
+                    title                   : 'The activating animation should be running and the activationment is still active',
+                    
+                    delay                   : 200,
+                    expectedInactive        : 'active',
+                    expectedRunningInactive : false,
+                },
+                {
+                    title                   : 'The activating animation should be running and the activationment is still active',
+                    
+                    delay                   : 500, // 200 + 500 = 700 ms, the animation should still running.
+                    expectedInactive        : 'active',
+                    expectedRunningInactive : false,
+                },
+                {
+                    title                   : 'The activating animation should be stopped and the activationment is still active',
+                    
+                    delay                   : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
+                    expectedInactive        : 'active',
+                    expectedRunningInactive : null,
+                },
+            ],
+        },
+        {
+            title          : 'Contextual activate, deactivate, and re-activate quickly',
+            parentInactive : true,
+            updates        : [
+                {
+                    title                   : 'Should be inactive and no animation',
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : null,
+                },
+                {
+                    title                   : 'Activate',
+                    parentInactive          : false,
+                    
+                    delay                   : 200,
+                    expectedInactive        : 'active',
+                    expectedRunningInactive : false,
+                },
+                {
+                    title                   : 'Deactivate before activationment finishes',
+                    parentInactive          : true,
+                    
+                    delay                   : 200,
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : false,  // Still activating (600ms remaining) — cannot cancel mid-flight.
+                },
+                {
+                    title                   : 'Re-activate again before deactivate finishes',
+                    parentInactive          : false,
+                    
+                    delay                   : 200,
+                    expectedInactive        : 'active',
+                    expectedRunningInactive : false, // Still in original activationment sequence (400ms remaining).
+                },
+                {
+                    title                   : 'Wait for final activationment to complete',
+                    
+                    delay                   : 600, // Includes additional margin to guarantee completion.
+                    expectedInactive        : 'active',
+                    expectedRunningInactive : null, // No running animation.
+                },
+            ],
+        },
+        {
+            title          : 'Contextual deactivate, activate, and re-deactivate quickly',
+            parentInactive : false,
+            updates        : [
+                {
+                    title                   : 'Should be active and no animation',
+                    expectedInactive        : 'active',
+                    expectedRunningInactive : null,
+                },
+                {
+                    title                   : 'Deactivate',
+                    parentInactive          : true,
+                    
+                    delay                   : 200,
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : true,
+                },
+                {
+                    title                   : 'Activate before activationment finishes',
+                    parentInactive          : false,
+                    
+                    delay                   : 200,
+                    expectedInactive        : 'active',
+                    expectedRunningInactive : true,  // Still deactivating (600ms remaining) — cannot cancel mid-flight.
+                },
+                {
+                    title                   : 'Re-deactivate again before activate finishes',
+                    parentInactive          : true,
+                    
+                    delay                   : 200,
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : true, // Still in original activationment sequence (400ms remaining).
+                },
+                {
+                    title                   : 'Wait for final activationment to complete',
+                    
+                    delay                   : 600, // Includes additional margin to guarantee completion.
+                    expectedInactive        : 'inactive',
+                    expectedRunningInactive : null, // No running animation.
                 },
             ],
         },
     ] as ActiveStateControlledTestCase[]) {
         test(title, async ({ mount }) => {
             // States:
+            let currentParentActive : boolean | undefined = initialParentActive;
             let currentActive : boolean | undefined = initialActive;
             
             
@@ -742,7 +1097,17 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
                 
                 // Simulate re-render after state changed:
                 component.update(
-                    <ActiveStateTest
+                    (currentParentActive === undefined)
+                    ? <ActiveStateTest
+                        active={currentActive}
+                        
+                        onAnimationStart={handleAnimationStart}
+                        onAnimationEnd={handleAnimationEnd}
+                        
+                        onActiveChange={handleActiveChange}
+                    />
+                    : <ActiveStateWithContextTest
+                        parentActive={currentParentActive}
                         active={currentActive}
                         
                         onAnimationStart={handleAnimationStart}
@@ -757,7 +1122,17 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
             
             // First render:
             const component = await mount(
-                <ActiveStateTest
+                (currentParentActive === undefined)
+                ? <ActiveStateTest
+                    active={currentActive}
+                    
+                    onAnimationStart={handleAnimationStart}
+                    onAnimationEnd={handleAnimationEnd}
+                    
+                    onActiveChange={handleActiveChange}
+                />
+                : <ActiveStateWithContextTest
+                    parentActive={currentParentActive}
                     active={currentActive}
                     
                     onAnimationStart={handleAnimationStart}
@@ -776,12 +1151,13 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
             
             
             // Apply update scenarios:
-            for (const { title, active, action, delay, expectedActive, expectedRunningActivate} of updates) {
+            for (const { title, parentActive, active, action, delay, expectedActive, expectedRunningActivate} of updates) {
                 console.log(`[Subtest] ${title}`);
                 
                 
                 
                 // Update props:
+                if (currentParentActive !== undefined) currentParentActive = parentActive;
                 if (active !== undefined) currentActive = active;
                 
                 
@@ -810,7 +1186,17 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
                 
                 // Re-render:
                 await component.update(
-                    <ActiveStateTest
+                    (currentParentActive === undefined)
+                    ? <ActiveStateTest
+                        active={currentActive}
+                        
+                        onAnimationStart={handleAnimationStart}
+                        onAnimationEnd={handleAnimationEnd}
+                        
+                        onActiveChange={handleActiveChange}
+                    />
+                    : <ActiveStateWithContextTest
+                        parentActive={currentParentActive}
                         active={currentActive}
                         
                         onAnimationStart={handleAnimationStart}

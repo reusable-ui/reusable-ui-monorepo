@@ -9,6 +9,7 @@ Ideal for toggles, switches, selections, alerts, and any interactive component r
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, animation, and feedback systems  
 ✔ Supports controlled, uncontrolled, and hybrid activation behavior  
+✔ Contextual override via `cascadeActive` for parent-driven active state  
 
 ## 📦 Installation
 Install **@reusable-ui/active-state** via npm or yarn:
@@ -25,7 +26,8 @@ yarn add @reusable-ui/active-state
 
 Resolves the active/inactive state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
-Supports controlled, uncontrolled, and hybrid activation behavior with optional change dispatching.
+- Supports controlled, uncontrolled, and hybrid activation behavior with optional change dispatching.
+- Supports contextual override via `cascadeActive`.
 
 #### 💡 Usage Example
 
@@ -58,9 +60,10 @@ export const ActivatableBox: FC<ActivatableBoxProps> = (props) => {
         handleAnimationEnd,
         handleAnimationCancel,
     } = useActiveBehaviorState(props, {
-        defaultActive     : false,                          // Fallback for uncontrolled mode.
-        animationPattern  : ['activating', 'deactivating'], // Matches animation names ending with 'activating' or 'deactivating'.
-        animationBubbling : false,                          // Ignores bubbling animation events from children.
+        defaultActive        : false,                          // Fallback for uncontrolled mode.
+        defaultCascadeActive : false,                          // Defaults to prevent contextual activation.
+        animationPattern     : ['activating', 'deactivating'], // Matches animation names ending with 'activating' or 'deactivating'.
+        animationBubbling    : false,                          // Ignores bubbling animation events from children.
     });
     
     return (
@@ -101,6 +104,7 @@ This hook is intended for components that **consume** the resolved `active` stat
 Unlike `useActiveBehaviorState()`, which supports both controlled and uncontrolled modes, `useActiveState()` assumes the component is **fully controlled** and does not manage internal state.
 
 - Supports only controlled mode.
+- Supports contextual override via `cascadeActive`.
 - Ideal for components that **consume** the resolved `active` state.
 
 ### `useActiveChangeDispatcher(props)`
@@ -124,6 +128,7 @@ This hook is intended for components that **manage** the resolved `active` state
 Unlike `useActiveBehaviorState()`, which resolves full lifecycle, `useUncontrollableActiveState()` provides a **simplified implementation** for managing activation state and dispatching changes.
 
 - Supports both controlled and uncontrolled modes.
+- Supports contextual override via `cascadeActive`.
 - If `active` is provided, the internal state is disabled and the component becomes fully controlled.
 - If `active` is omitted, the internal state is initialized via `defaultActive`.
 - Ideal for components that **manage** the resolved `active` state.
@@ -135,6 +140,57 @@ The hook manages transitions between `active` and `inactive` states using a unif
 - If a transition is already in progress, new intent (e.g., switching from deactivate to activate) is deferred until the current animation completes.
 - Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
 - This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
+
+#### 🧬 Context Propagation
+
+Use `<ActiveStateProvider>` to share active state with descendant components:
+
+```tsx
+import React, { ReactNode, FC } from 'react';
+import {
+    ActiveStateProps,
+    ActiveStateProvider,
+    useActiveBehaviorState,
+    useActiveState,
+} from '@reusable-ui/active-state';
+
+export interface ParentComponentProps extends ActiveStateProps {
+    children ?: ReactNode
+}
+
+// A component that shares its active state with descendant components.
+export const ParentComponent: FC<ParentComponentProps> = (props) => {
+    // Resolve active state from props and handle animation phases:
+    const {
+        active,
+        activePhase,
+        activeClassname,
+        
+        handleAnimationStart,
+        handleAnimationEnd,
+        handleAnimationCancel,
+    } = useActiveBehaviorState(props, {
+        defaultActive        : false,                          // Fallback for uncontrolled mode.
+        defaultCascadeActive : false,                          // Defaults to prevent contextual activation.
+        animationPattern     : ['activating', 'deactivating'], // Matches animation names ending with 'activating' or 'deactivating'.
+        animationBubbling    : false,                          // Ignores bubbling animation events from children.
+    });
+    
+    // Or use `useActiveState()` if not concerned with animation phases:
+    // const active = useActiveState(props, {
+    //     defaultActive        : false, // Defaults to inactive.
+    //     defaultCascadeActive : false, // Defaults to prevent contextual activation.
+    //     defaultCascadeActive : false, // Defaults to prevent contextual activation.
+    // });
+    
+    // Propagate active state to descendants:
+    return (
+        <ActiveStateProvider active={active}>
+            {props.children}
+        </ActiveStateProvider>
+    );
+};
+```
 
 ---
 
