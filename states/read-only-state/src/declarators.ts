@@ -199,7 +199,7 @@ export const ifFreezingOrReadOnly     = (styles: CssStyleCollection): CssRule =>
  */
 const [readOnlyStateVars] = cssVars<ReadOnlyStateVars>({ prefix: 'ro', minify: false });
 
-// Register the editable/read-only animations globally for composing a unified animation stack across state packages:
+// Register the editable/read-only-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(readOnlyStateVars.animationThawing);
 animationRegistry.registerAnimation(readOnlyStateVars.animationFreezing);
 
@@ -302,14 +302,14 @@ export const usesReadOnlyState = (options?: CssReadOnlyStateOptions): CssReadOnl
     return {
         readOnlyStateRule : () => style({
             ...states({
-                // Apply thaw animation during the thawing phase:
+                // Apply thawing animation during the thawing phase:
                 ...ifThawing(
                     vars({
                         [readOnlyStateVars.animationThawing ] : animationThawing,  // Activate the animation (if provided).
                     })
                 ),
                 
-                // Apply freeze animation during the freezing phase:
+                // Apply freezing animation during the freezing phase:
                 ...ifFreezing(
                     vars({
                         [readOnlyStateVars.animationFreezing] : animationFreezing, // Activate the animation (if provided).

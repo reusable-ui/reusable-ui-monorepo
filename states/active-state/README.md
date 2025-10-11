@@ -137,7 +137,7 @@ Unlike `useActiveBehaviorState()`, which resolves full lifecycle, `useUncontroll
 
 The hook manages transitions between `active` and `inactive` states using a unified animation flow:
 
-- If a transition is already in progress, new intent (e.g., switching from deactivate to activate) is deferred until the current animation completes.
+- If a transition is already in progress, new intent (e.g., switching from active to inactive) is deferred until the current animation completes.
 - Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
 - This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
 
@@ -203,8 +203,8 @@ import {
     isInactiveSelector,               // Targets `.is-inactive` classes
     isActivatingSelector,             // Targets `.is-activating` classes
     isDeactivatingSelector,           // Targets `.is-deactivating` classes
-    isActivatingOrActiveSelector,     // Targets `.is-activating` and `.is-active` classes
-    isDeactivatingOrInactiveSelector, // Targets `.is-deactivating` and `.is-inactive` classes
+    isActivatingOrActiveSelector,     // Targets `.is-activating` and `.is-active` class
+    isDeactivatingOrInactiveSelector, // Targets `.is-deactivating` and `.is-inactive` class
     
     // Conditional styling helpers:
     ifActive,                 // Applies styles to elements in the fully active state

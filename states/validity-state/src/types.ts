@@ -31,7 +31,7 @@ import {
 /**
  * Props for controlling the validity state of the component.
  * 
- * Accepts an optional `validity` prop, defaulting to `'auto'` (automatic determine validity state) when not provided.
+ * Accepts an optional `validity` prop, defaulting to `'auto'` (automatically determine validity state) when not provided.
  */
 export interface ValidityStateProps {
     /**
@@ -41,7 +41,7 @@ export interface ValidityStateProps {
      * - `null`   : the component is unvalidated
      * - `'auto'` : automatically determine validity state
      * 
-     * Defaults to `'auto'` (automatic determine validity state).
+     * Defaults to `'auto'` (automatically determine validity state).
      */
     validity         ?: boolean | null | 'auto'
     
@@ -131,7 +131,7 @@ export interface ValidityStateOptions
      * - `null`   : the component is unvalidated
      * - `'auto'` : automatically determine validity state
      * 
-     * Defaults to `'auto'` (automatic determine validity state).
+     * Defaults to `'auto'` (automatically determine validity state).
      */
     defaultValidity   ?: boolean | null | 'auto'
     
@@ -212,7 +212,7 @@ export type ValidityPhase =
     | TransitioningValidityPhase
 
 /**
- * An API for accessing the resolved validity state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
+ * An API for accessing the resolved validity state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
  */
@@ -415,13 +415,13 @@ export interface ValidityStateVars {
 
 
 /**
- * Configuration options for customizing validity-related animations.
+ * Configuration options for customizing validity animations.
  */
 export interface CssValidityStateOptions {
     /**
      * Defines the animation to apply during the validating transition.
      * 
-     * When the component transitions toward `valid`, the currently running animation is allowed to complete gracefully—
+     * When the `validity` state changes away from `valid`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
@@ -431,7 +431,7 @@ export interface CssValidityStateOptions {
     /**
      * Defines the animation to apply during the invalidating transition.
      * 
-     * When the component transitions toward `invalid`, the currently running animation is allowed to complete gracefully—
+     * When the `validity` state changes away from `invalid`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
@@ -441,7 +441,7 @@ export interface CssValidityStateOptions {
     /**
      * Defines the animation to apply during the unvalidating transition.
      * 
-     * When the component transitions toward `unvalidated`, the currently running animation is allowed to complete gracefully—
+     * When the `validity` state changes away from `unvalidated`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
@@ -452,11 +452,11 @@ export interface CssValidityStateOptions {
 
 
 /**
- * Provides a CSS API for conditionally apply the validity-related animations based on current validity state.
+ * Provides a CSS API for conditionally apply the validation animations based on current validity state.
  */
 export interface CssValidityState {
     /**
-     * Generates CSS rules that conditionally apply the validity-related animations based on current validity state.
+     * Generates CSS rules that conditionally apply the validation animations based on current validity state.
      * 
      * Typically used to toggle animation variables during validating, invalidating, or unvalidating transitions.
      */

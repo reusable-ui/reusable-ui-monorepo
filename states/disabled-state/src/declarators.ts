@@ -199,7 +199,7 @@ export const ifDisablingOrDisabled = (styles: CssStyleCollection): CssRule => ru
  */
 const [disabledStateVars] = cssVars<DisabledStateVars>({ prefix: 'ds', minify: false });
 
-// Register the enable/disable animations globally for composing a unified animation stack across state packages:
+// Register the enable/disable-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(disabledStateVars.animationEnabling);
 animationRegistry.registerAnimation(disabledStateVars.animationDisabling);
 
@@ -302,14 +302,14 @@ export const usesDisabledState = (options?: CssDisabledStateOptions): CssDisable
     return {
         disabledStateRule : () => style({
             ...states({
-                // Apply enable animation during the enabling phase:
+                // Apply enabling animation during the enabling phase:
                 ...ifEnabling(
                     vars({
                         [disabledStateVars.animationEnabling ] : animationEnabling,  // Activate the animation (if provided).
                     })
                 ),
                 
-                // Apply disable animation during the disabling phase:
+                // Apply disabling animation during the disabling phase:
                 ...ifDisabling(
                     vars({
                         [disabledStateVars.animationDisabling] : animationDisabling, // Activate the animation (if provided).

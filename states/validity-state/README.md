@@ -1,10 +1,10 @@
 # @reusable-ui/validity-state 📦  
 
 Adds validation functionality to UI components, with transition animations and semantic styling hooks.  
-Ideal for inputs, selections, options, and any editable component requiring controlled validity feedback.
+Ideal for inputs, selections, options, and any editable component requiring validity feedback.
 
 ## ✨ Features
-✔ Lifecycle-aware validity-related animations based on current validity state  
+✔ Lifecycle-aware validation animations based on current validity state  
 ✔ Gracefully completes running animations before resolving new state  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, animation, and feedback systems  
@@ -79,6 +79,7 @@ export const CustomInput: FC<CustomInputProps> = (props) => {
         ...restProps,
     }, {
         defaultValidity   : 'auto',                                         // Defaults to diagnostic mode.
+        fallbackValidity  : null,                                           // Defaults to unresolved state when `validity` is 'auto' but no `computedValidity` is provided.
         animationPattern  : ['validating', 'invalidating', 'unvalidating'], // Matches animation names ending with 'validating', 'invalidating', or 'unvalidating'.
         animationBubbling : false,                                          // Ignores bubbling animation events from children.
     });
@@ -127,7 +128,7 @@ Unlike `useValidityBehaviorState()`, which handles animation and lifecycle, `use
 
 The hook manages transitions between `valid`, `invalid`, and `unvalidated` states using a unified animation flow:
 
-- If a transition is already in progress, new intent (e.g., switching from invalid to valid) is deferred until the current animation completes.
+- If a transition is already in progress, new intent (e.g., switching from valid to invalid) is deferred until the current animation completes.
 - Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
 - This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
 
@@ -144,9 +145,9 @@ import {
     isValidatingSelector,                // Targets `.is-validating` class
     isInvalidatingSelector,              // Targets `.is-invalidating` class
     isUnvalidatingSelector,              // Targets `.is-unvalidating` class
-    isValidOrValidatingSelector,         // Targets `.is-valid` and `.is-validating` class
-    isInvalidOrInvalidatingSelector,     // Targets `.is-invalid` and `.is-invalidating` class
-    isUnvalidatedOrUnvalidatingSelector, // Targets `.is-unvalidated` and `.is-unvalidating` class
+    isValidatingOrValidSelector,         // Targets `.is-validating` and `.is-valid` class
+    isInvalidatingOrInvalidSelector,     // Targets `.is-invalidating` and `.is-invalid` class
+    isUnvalidatingOrUnvalidatedSelector, // Targets `.is-unvalidating` and `.is-unvalidated` class
     wasValidSelector,                    // Targets `.was-valid` class
     wasInvalidSelector,                  // Targets `.was-invalid` class
     wasUnvalidatedSelector,              // Targets `.was-unvalidated` class
@@ -158,9 +159,9 @@ import {
     ifValidating,                // Applies the given `styles` to elements currently in the validating transition.
     ifInvalidating,              // Applies the given `styles` to elements currently in the invalidating transition.
     ifUnvalidating,              // Applies the given `styles` to elements currently in the unvalidating transition.
-    ifValidOrValidating,         // Applies the given `styles` to elements that are either validating or fully valid.
-    ifInvalidOrInvalidating,     // Applies the given `styles` to elements that are either invalidating or fully invalid.
-    ifUnvalidatedOrUnvalidating, // Applies the given `styles` to elements that are either unvalidating or fully unvalidated.
+    ifValidatingOrValid,         // Applies the given `styles` to elements that are either validating or fully valid.
+    ifInvalidatingOrInvalid,     // Applies the given `styles` to elements that are either invalidating or fully invalid.
+    ifUnvalidatingOrUnvalidated, // Applies the given `styles` to elements that are either unvalidating or fully unvalidated.
     ifWasValid,                  // Applies the given `styles` to elements that were previously in the valid state.
     ifWasInvalid,                // Applies the given `styles` to elements that were previously in the invalid state.
     ifWasUnvalidated,            // Applies the given `styles` to elements that were previously in the unvalidated state.
@@ -169,24 +170,24 @@ import { style, rule } from '@cssfn/core';
 
 export const componentStyle = () => style({
     fontSize: '1rem',
-    ...ifValidOrValidating({
+    ...ifValidatingOrValid({
         color: 'green',
     }),
-    ...ifInvalidOrInvalidating({
+    ...ifInvalidatingOrInvalid({
         color: 'red',
     }),
-    ...ifUnvalidatedOrUnvalidating({
+    ...ifUnvalidatingOrUnvalidated({
         color: 'blue',
     }),
     
     // Alternative approach using explicit selectors:
-    ...rule(isValidOrValidatingSelector, { // equivalent to `ifValidOrValidating`
+    ...rule(isValidatingOrValidSelector, { // equivalent to `ifValidatingOrValid`
         backgroundColor: 'lightgreen',
     }),
-    ...rule(isInvalidOrInvalidatingSelector, { // equivalent to `ifInvalidOrInvalidating`
+    ...rule(isInvalidatingOrInvalidSelector, { // equivalent to `ifInvalidatingOrInvalid`
         backgroundColor: 'pink',
     }),
-    ...rule(isUnvalidatedOrUnvalidatingSelector, { // equivalent to `ifUnvalidatedOrUnvalidating`
+    ...rule(isUnvalidatingOrUnvalidatedSelector, { // equivalent to `ifUnvalidatingOrUnvalidated`
         backgroundColor: 'lightblue',
     }),
 });
@@ -198,7 +199,7 @@ export const componentStyle = () => style({
 
 ### `usesValidityState(options?: CssValidityStateOptions): CssValidityState`
 
-Generates CSS rules that conditionally apply the validity-related animations based on current validity state, and exposes validity-related CSS variables for conditional animation.
+Generates CSS rules that conditionally apply the validation animations based on current validity state, and exposes validity-related CSS variables for conditional animation.
 
 #### Supporting Variables (Advanced Use)
 
@@ -331,7 +332,7 @@ export const validatableBoxStyle = () => {
 The `animationValidating`, `animationInvalidating`, and `animationUnvalidating` variables are only defined during **validating**, **invalidating**, and **unvalidating** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
-Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining validity-related animations with other state-driven transitions.
+Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining validity animations with other state-driven transitions.
 
 ---
 

@@ -313,7 +313,7 @@ export interface CssCollapseStateOptions {
     /**
      * Defines the animation to apply during the expanding transition.
      * 
-     * When the `expanded` prop changes to `false`, the currently running animation is allowed to complete gracefully—
+     * When the `expanded` state changes away from `true`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
@@ -323,7 +323,7 @@ export interface CssCollapseStateOptions {
     /**
      * Defines the animation to apply during the collapsing transition.
      * 
-     * When the `expanded` prop changes to `true`, the currently running animation is allowed to complete gracefully—
+     * When the `expanded` state changes away from `false`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.

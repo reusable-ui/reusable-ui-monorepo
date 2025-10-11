@@ -295,8 +295,8 @@ export const useReadOnlyStatePhaseEvents = (props: ReadOnlyStatePhaseEventProps,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const handleReadOnlyPhaseChange = useStableCallback((readOnlyPhase: ReadOnlyPhase): void => {
         switch (readOnlyPhase) {
-            case 'thawing'  : onThawingStart?.(readOnlyPhase, undefined); break;
-            case 'editable' : onThawingEnd?.(readOnlyPhase, undefined);   break;
+            case 'thawing'  : onThawingStart?.(readOnlyPhase, undefined);  break;
+            case 'editable' : onThawingEnd?.(readOnlyPhase, undefined);    break;
             case 'freezing' : onFreezingStart?.(readOnlyPhase, undefined); break;
             case 'readonly' : onFreezingEnd?.(readOnlyPhase, undefined);   break;
         } // switch

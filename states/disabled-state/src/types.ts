@@ -300,7 +300,7 @@ export interface CssDisabledStateOptions {
     /**
      * Defines the animation to apply during the enabling transition.
      * 
-     * When the `disabled` prop changes to `false`, the currently running animation is allowed to complete gracefully—
+     * When the `disabled` state changes away from `true`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
@@ -310,7 +310,7 @@ export interface CssDisabledStateOptions {
     /**
      * Defines the animation to apply during the disabling transition.
      * 
-     * When the `disabled` prop changes to `true`, the currently running animation is allowed to complete gracefully—
+     * When the `disabled` state changes away from `false`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.

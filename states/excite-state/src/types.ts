@@ -170,7 +170,7 @@ export interface CssExciteStateOptions {
      * The animation should be designed for seamless continuity across iterations to ensure smooth and uninterrupted visual feedback.
      * 
      * The `useExciteBehaviorState()` hook will replay the exciting animation as long as the `excited` prop remains `true`.
-     * When the `excited` prop changes to `false`, the currently running animation is allowed to complete gracefully—
+     * When the `excited` state changes away from `true`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.

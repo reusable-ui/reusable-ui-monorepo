@@ -77,7 +77,7 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
     // States and flags:
     
     // Determine control mode:
-    const isExplicitValue  = (controlledValidity !== 'auto');
+    const isExplicitValue   = (controlledValidity !== 'auto');
     
     // Resolve effective validity state:
     const effectiveValidity = isExplicitValue ? controlledValidity : computedValidity;
@@ -152,6 +152,7 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
  *         ...restProps,
  *     }, {
  *         defaultValidity   : 'auto',                                         // Defaults to diagnostic mode.
+ *         fallbackValidity  : null,                                           // Defaults to unresolved state when `validity` is 'auto' but no `computedValidity` is provided.
  *         animationPattern  : ['validating', 'invalidating', 'unvalidating'], // Matches animation names ending with 'validating', 'invalidating', or 'unvalidating'.
  *         animationBubbling : false,                                          // Ignores bubbling animation events from children.
  *     });

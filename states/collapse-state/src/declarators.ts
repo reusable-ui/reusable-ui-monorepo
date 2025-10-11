@@ -199,7 +199,7 @@ export const ifCollapsingOrCollapsed = (styles: CssStyleCollection): CssRule => 
  */
 const [collapseStateVars] = cssVars<CollapseStateVars>({ prefix: 'cp', minify: false });
 
-// Register the expand/collapse animations globally for composing a unified animation stack across state packages:
+// Register the expand/collapse-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(collapseStateVars.animationExpanding);
 animationRegistry.registerAnimation(collapseStateVars.animationCollapsing);
 
@@ -304,14 +304,14 @@ export const usesCollapseState = (options?: CssCollapseStateOptions): CssCollaps
     return {
         collapseStateRule : () => style({
             ...states({
-                // Apply expand animation during the expanding phase:
+                // Apply expanding animation during the expanding phase:
                 ...ifExpanding(
                     vars({
                         [collapseStateVars.animationExpanding ] : animationExpanding,  // Activate the animation (if provided).
                     })
                 ),
                 
-                // Apply collapse animation during the collapsing phase:
+                // Apply collapsing animation during the collapsing phase:
                 ...ifCollapsing(
                     vars({
                         [collapseStateVars.animationCollapsing] : animationCollapsing, // Activate the animation (if provided).

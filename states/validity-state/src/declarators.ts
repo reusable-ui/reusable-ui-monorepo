@@ -78,17 +78,17 @@ export const isUnvalidatingSelector              : CssSelectorCollection = '.is-
 /**
  * A CSS selector targeting elements that are either validating or fully valid.
  */
-export const isValidOrValidatingSelector         : CssSelectorCollection = ':is(.is-valid, .is-validating)';
+export const isValidatingOrValidSelector         : CssSelectorCollection = ':is(.is-validating, .is-valid)';
 
 /**
  * A CSS selector targeting elements that are either invalidating or fully invalid.
  */
-export const isInvalidOrInvalidatingSelector     : CssSelectorCollection = ':is(.is-invalid, .is-invalidating)';
+export const isInvalidatingOrInvalidSelector     : CssSelectorCollection = ':is(.is-invalidating, .is-invalid)';
 
 /**
  * A CSS selector targeting elements that are either unvalidating or fully unvalidated.
  */
-export const isUnvalidatedOrUnvalidatingSelector : CssSelectorCollection = ':is(.is-unvalidated, .is-unvalidating)';
+export const isUnvalidatingOrUnvalidatedSelector : CssSelectorCollection = ':is(.is-unvalidating, .is-unvalidated)';
 
 /**
  * A CSS selector targeting elements that previously resolved to a valid state.
@@ -246,13 +246,13 @@ export const ifUnvalidating              = (styles: CssStyleCollection): CssRule
  * ```ts
  * export const componentStyle = () => style({
  *     fontSize: '1rem',
- *     ...ifValidOrValidating({
+ *     ...ifValidatingOrValid({
  *         color: 'green',
  *     }),
  * });
  * ```
  */
-export const ifValidOrValidating         = (styles: CssStyleCollection): CssRule => rule(isValidOrValidatingSelector         , styles);
+export const ifValidatingOrValid         = (styles: CssStyleCollection): CssRule => rule(isValidatingOrValidSelector         , styles);
 
 /**
  * Applies the given `styles` to elements that are either invalidating or fully invalid.
@@ -264,13 +264,13 @@ export const ifValidOrValidating         = (styles: CssStyleCollection): CssRule
  * ```ts
  * export const componentStyle = () => style({
  *     fontSize: '1rem',
- *     ...ifInvalidOrInvalidating({
+ *     ...ifInvalidatingOrInvalid({
  *         color: 'red',
  *     }),
  * });
  * ```
  */
-export const ifInvalidOrInvalidating     = (styles: CssStyleCollection): CssRule => rule(isInvalidOrInvalidatingSelector     , styles);
+export const ifInvalidatingOrInvalid     = (styles: CssStyleCollection): CssRule => rule(isInvalidatingOrInvalidSelector     , styles);
 
 /**
  * Applies the given `styles` to elements that are either unvalidating or fully unvalidated.
@@ -282,13 +282,13 @@ export const ifInvalidOrInvalidating     = (styles: CssStyleCollection): CssRule
  * ```ts
  * export const componentStyle = () => style({
  *     fontSize: '1rem',
- *     ...ifUnvalidatedOrUnvalidating({
+ *     ...ifUnvalidatingOrUnvalidated({
  *         color: 'blue',
  *     }),
  * });
  * ```
  */
-export const ifUnvalidatedOrUnvalidating = (styles: CssStyleCollection): CssRule => rule(isUnvalidatedOrUnvalidatingSelector , styles);
+export const ifUnvalidatingOrUnvalidated = (styles: CssStyleCollection): CssRule => rule(isUnvalidatingOrUnvalidatedSelector , styles);
 
 /**
  * Applies the given `styles` to elements that previously resolved to a valid state.
@@ -366,11 +366,11 @@ animationRegistry.registerAnimation(validityStateVars.animationInvalidating);
 animationRegistry.registerAnimation(validityStateVars.animationUnvalidating);
 
 /**
- * Generates CSS rules that conditionally apply the validity-related animations based on current validity state,
+ * Generates CSS rules that conditionally apply the validation animations based on current validity state,
  * and exposes validity-related CSS variables for conditional animation.
  * 
- * @param options - An optional configuration for customizing validity-related animations.
- * @returns A CSS API for conditionally apply the validity-related animations based on current validity state.
+ * @param options - An optional configuration for customizing validity animations.
+ * @returns A CSS API for conditionally apply the validation animations based on current validity state.
  *
  * @example
  * ```ts
@@ -493,21 +493,21 @@ export const usesValidityState = (options?: CssValidityStateOptions): CssValidit
     return {
         validityStateRule : () => style({
             ...states({
-                // Apply validate animation during the validating phase:
+                // Apply validating animation during the validating phase:
                 ...ifValidating(
                     vars({
                         [validityStateVars.animationValidating  ] : animationValidating,   // Activate the animation (if provided).
                     })
                 ),
                 
-                // Apply invalidate animation during the invalidating phase:
+                // Apply invalidating animation during the invalidating phase:
                 ...ifInvalidating(
                     vars({
                         [validityStateVars.animationInvalidating] : animationInvalidating, // Activate the animation (if provided).
                     })
                 ),
                 
-                // Apply unvalidate animation during the unvalidating phase:
+                // Apply unvalidating animation during the unvalidating phase:
                 ...ifUnvalidating(
                     vars({
                         [validityStateVars.animationUnvalidating] : animationUnvalidating, // Activate the animation (if provided).
@@ -517,7 +517,7 @@ export const usesValidityState = (options?: CssValidityStateOptions): CssValidit
                 
                 
                 // Mark as valid during both validating and fully valid states:
-                ...ifValidOrValidating(
+                ...ifValidatingOrValid(
                     vars({
                         [validityStateVars.isValid      ] : '',      // Valid    when either validating or fully valid.
                         [validityStateVars.isInvalid    ] : 'unset', // Poisoned when either validating or fully valid.
@@ -526,7 +526,7 @@ export const usesValidityState = (options?: CssValidityStateOptions): CssValidit
                 ),
                 
                 // Mark as invalid during both invalidating and fully invalid states:
-                ...ifInvalidOrInvalidating(
+                ...ifInvalidatingOrInvalid(
                     vars({
                         [validityStateVars.isValid      ] : 'unset', // Poisoned when either invalidating or fully invalid.
                         [validityStateVars.isInvalid    ] : '',      // Valid    when either invalidating or fully invalid.
@@ -535,7 +535,7 @@ export const usesValidityState = (options?: CssValidityStateOptions): CssValidit
                 ),
                 
                 // Mark as unvalidated during both unvalidating and fully unvalidated states:
-                ...ifUnvalidatedOrUnvalidating(
+                ...ifUnvalidatingOrUnvalidated(
                     vars({
                         [validityStateVars.isValid      ] : 'unset', // Poisoned when either unvalidating or fully unvalidated.
                         [validityStateVars.isInvalid    ] : 'unset', // Poisoned when either unvalidating or fully unvalidated.

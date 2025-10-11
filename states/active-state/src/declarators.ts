@@ -199,7 +199,7 @@ export const ifDeactivatingOrInactive = (styles: CssStyleCollection): CssRule =>
  */
 const [activeStateVars] = cssVars<ActiveStateVars>({ prefix: 'ac', minify: false });
 
-// Register the activate/deactivate animations globally for composing a unified animation stack across state packages:
+// Register the activate/deactivate-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(activeStateVars.animationActivating);
 animationRegistry.registerAnimation(activeStateVars.animationDeactivating);
 
@@ -302,14 +302,14 @@ export const usesActiveState = (options?: CssActiveStateOptions): CssActiveState
     return {
         activeStateRule : () => style({
             ...states({
-                // Apply activate animation during the activating phase:
+                // Apply activating animation during the activating phase:
                 ...ifActivating(
                     vars({
                         [activeStateVars.animationActivating  ] : animationActivating,   // Activate the animation (if provided).
                     })
                 ),
                 
-                // Apply deactivate animation during the deactivating phase:
+                // Apply deactivating animation during the deactivating phase:
                 ...ifDeactivating(
                     vars({
                         [activeStateVars.animationDeactivating] : animationDeactivating, // Activate the animation (if provided).

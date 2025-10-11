@@ -132,7 +132,7 @@ Unlike `useCollapseBehaviorState()`, which resolves full lifecycle, `useUncontro
 
 The hook manages transitions between `expanded` and `collapsed` states using a unified animation flow:
 
-- If a transition is already in progress, new intent (e.g., switching from collapse to expand) is deferred until the current animation completes.
+- If a transition is already in progress, new intent (e.g., switching from expanded to collapsed) is deferred until the current animation completes.
 - Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
 - This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
 
@@ -147,8 +147,8 @@ import {
     isCollapsedSelector,             // Targets `.is-collapsed` classes
     isExpandingSelector,             // Targets `.is-expanding` classes
     isCollapsingSelector,            // Targets `.is-collapsing` classes
-    isExpandingOrExpandedSelector,   // Targets `.is-expanding` and `.is-expanded` classes
-    isCollapsingOrCollapsedSelector, // Targets `.is-collapsing` and `.is-collapsed` classes
+    isExpandingOrExpandedSelector,   // Targets `.is-expanding` and `.is-expanded` class
+    isCollapsingOrCollapsedSelector, // Targets `.is-collapsing` and `.is-collapsed` class
     
     // Conditional styling helpers:
     ifExpanded,              // Applies styles to elements in the fully expanded state

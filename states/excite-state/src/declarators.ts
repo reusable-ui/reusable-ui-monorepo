@@ -93,7 +93,7 @@ export const ifNotExcited = (styles: CssStyleCollection): CssRule => rule(isNotE
  */
 const [exciteStateVars] = cssVars<ExciteStateVars>({ prefix: 'ex', minify: false });
 
-// Register the excitement animation globally for composing a unified animation stack across state packages:
+// Register the excitement-related animation globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(exciteStateVars.animationExciting);
 
 /**
@@ -170,6 +170,7 @@ export const usesExciteState = (options?: CssExciteStateOptions): CssExciteState
     return {
         exciteStateRule : () => style({
             ...states({
+                // Apply exciting animation while still in excited state:
                 ...ifExcited(
                     vars({
                         [exciteStateVars.animationExciting] : animationExciting, // Activate the animation (if provided).
