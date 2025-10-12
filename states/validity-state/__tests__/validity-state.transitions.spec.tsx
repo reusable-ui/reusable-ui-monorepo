@@ -121,104 +121,104 @@ test.describe('useValidityBehaviorState - animation', () => {
             please do it between +200 ms after the expected starts and -200 ms before the expected ends.
         */
         {
-            title    : 'Transition: valid → invalid',
-            validity : true,
-            updates  : [
+            title            : 'Transition: valid → invalid',
+            validity         : true,
+            updates          : [
                 {
-                    title         : 'Expect initial color to be valid (green)',
-                    validity      : false,
-                    delay         : 200, // Wait for animation to near the beginning
-                    expectedColor : COLOR_VALID,
+                    title                   : 'Expect initial color to be valid (green)',
+                    validity                : false,
+                    delay                   : 200, // Wait for animation to near the beginning
+                    expectedColor           : COLOR_VALID,
                 },
                 {
-                    title         : 'Expect color to be invalid (red) near the animation end',
-                    delay         : 600, // Wait for animation to near the end
-                    expectedColor : COLOR_INVALID,
-                },
-            ],
-        },
-        {
-            title    : 'Transition: valid → unvalidated',
-            validity : true,
-            updates  : [
-                {
-                    title         : 'Expect initial color to be valid (green)',
-                    validity      : null,
-                    delay         : 200, // Wait for animation to near the beginning
-                    expectedColor : COLOR_VALID,
-                },
-                {
-                    title         : 'Expect color to be unvalidated (blue) near the animation end',
-                    delay         : 600, // Wait for animation to near the end
-                    expectedColor : COLOR_UNVALIDATED,
+                    title                   : 'Expect color to be invalid (red) near the animation end',
+                    delay                   : 600, // Wait for animation to near the end
+                    expectedColor           : COLOR_INVALID,
                 },
             ],
         },
         {
-            title    : 'Transition: invalid → valid',
-            validity : false,
-            updates  : [
+            title            : 'Transition: valid → unvalidated',
+            validity         : true,
+            updates          : [
                 {
-                    title         : 'Expect initial color to be invalid (red)',
-                    validity      : true,
-                    delay         : 200, // Wait for animation to near the beginning
-                    expectedColor : COLOR_INVALID,
+                    title                   : 'Expect initial color to be valid (green)',
+                    validity                : null,
+                    delay                   : 200, // Wait for animation to near the beginning
+                    expectedColor           : COLOR_VALID,
                 },
                 {
-                    title         : 'Expect color to be valid (green) near the animation end',
-                    delay         : 600, // Wait for animation to near the end
-                    expectedColor : COLOR_VALID,
-                },
-            ],
-        },
-        {
-            title    : 'Transition: invalid → unvalidated',
-            validity : false,
-            updates  : [
-                {
-                    title         : 'Expect initial color to be invalid (red)',
-                    validity      : null,
-                    delay         : 200, // Wait for animation to near the beginning
-                    expectedColor : COLOR_INVALID,
-                },
-                {
-                    title         : 'Expect color to be unvalidated (blue) near the animation end',
-                    delay         : 600, // Wait for animation to near the end
-                    expectedColor : COLOR_UNVALIDATED,
+                    title                   : 'Expect color to be unvalidated (blue) near the animation end',
+                    delay                   : 600, // Wait for animation to near the end
+                    expectedColor           : COLOR_UNVALIDATED,
                 },
             ],
         },
         {
-            title    : 'Transition: unvalidated → valid',
-            validity : null,
-            updates  : [
+            title            : 'Transition: invalid → valid',
+            validity         : false,
+            updates          : [
                 {
-                    title         : 'Expect initial color to be unvalidated (blue)',
-                    validity      : true,
-                    delay         : 200, // Wait for animation to near the beginning
-                    expectedColor : COLOR_UNVALIDATED,
+                    title                   : 'Expect initial color to be invalid (red)',
+                    validity                : true,
+                    delay                   : 200, // Wait for animation to near the beginning
+                    expectedColor           : COLOR_INVALID,
                 },
                 {
-                    title         : 'Expect color to be valid (green) near the animation end',
-                    delay         : 600, // Wait for animation to near the end
-                    expectedColor : COLOR_VALID,
+                    title                   : 'Expect color to be valid (green) near the animation end',
+                    delay                   : 600, // Wait for animation to near the end
+                    expectedColor           : COLOR_VALID,
                 },
             ],
         },
         {
-            title    : 'Transition: unvalidated → invalid',
-            validity : null,
-            updates  : [
+            title            : 'Transition: invalid → unvalidated',
+            validity         : false,
+            updates          : [
                 {
-                    title         : 'Expect initial color to be unvalidated (blue)',
-                    validity      : false,
-                    delay         : 200, // Wait for animation to near the beginning
-                    expectedColor : COLOR_UNVALIDATED,
+                    title                   : 'Expect initial color to be invalid (red)',
+                    validity                : null,
+                    delay                   : 200, // Wait for animation to near the beginning
+                    expectedColor           : COLOR_INVALID,
                 },
                 {
-                    title         : 'Expect color to be invalid (red) near the animation end',
-                    delay         : 600, // Wait for animation to near the end
-                    expectedColor : COLOR_INVALID,
+                    title                   : 'Expect color to be unvalidated (blue) near the animation end',
+                    delay                   : 600, // Wait for animation to near the end
+                    expectedColor           : COLOR_UNVALIDATED,
+                },
+            ],
+        },
+        {
+            title            : 'Transition: unvalidated → valid',
+            validity         : null,
+            updates          : [
+                {
+                    title                   : 'Expect initial color to be unvalidated (blue)',
+                    validity                : true,
+                    delay                   : 200, // Wait for animation to near the beginning
+                    expectedColor           : COLOR_UNVALIDATED,
+                },
+                {
+                    title                   : 'Expect color to be valid (green) near the animation end',
+                    delay                   : 600, // Wait for animation to near the end
+                    expectedColor           : COLOR_VALID,
+                },
+            ],
+        },
+        {
+            title            : 'Transition: unvalidated → invalid',
+            validity         : null,
+            updates          : [
+                {
+                    title                   : 'Expect initial color to be unvalidated (blue)',
+                    validity                : false,
+                    delay                   : 200, // Wait for animation to near the beginning
+                    expectedColor           : COLOR_UNVALIDATED,
+                },
+                {
+                    title                   : 'Expect color to be invalid (red) near the animation end',
+                    delay                   : 600, // Wait for animation to near the end
+                    expectedColor           : COLOR_INVALID,
                 },
             ],
         },

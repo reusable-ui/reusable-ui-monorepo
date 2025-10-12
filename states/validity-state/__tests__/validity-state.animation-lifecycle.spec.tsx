@@ -27,10 +27,10 @@ interface ValidityStateAnimationTestCase {
     
     /**
      * Initial computed validity state.
-     * - `true`   : valid
-     * - `false`  : invalid
-     * - `null`   : unvalidated
-     * - `'auto'` : automatic determine
+     * - `true`      : valid
+     * - `false`     : invalid
+     * - `null`      : unvalidated
+     * - `undefined` : use default behavior.
      */
     computedValidity ?: boolean | null
     
@@ -52,11 +52,11 @@ interface ValidityStateAnimationTestCase {
         validity                ?: boolean | null | 'auto'
         
         /**
-         * Initial computed validity state.
-         * - `true`   : valid
-         * - `false`  : invalid
-         * - `null`   : unvalidated
-         * - `'auto'` : automatic determine
+         * New value for computed validity state.
+         * - `true`      : valid
+         * - `false`     : invalid
+         * - `null`      : unvalidated
+         * - `undefined` : skip updating this part.
          */
         computedValidity        ?: boolean | null
         

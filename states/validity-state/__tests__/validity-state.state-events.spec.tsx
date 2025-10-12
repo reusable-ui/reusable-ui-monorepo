@@ -28,10 +28,10 @@ interface ValidityStateEventTestCase {
     
     /**
      * Initial computed validity state.
-     * - `true`   : valid
-     * - `false`  : invalid
-     * - `null`   : unvalidated
-     * - `'auto'` : automatic determine
+     * - `true`      : valid
+     * - `false`     : invalid
+     * - `null`      : unvalidated
+     * - `undefined` : use default behavior.
      */
     computedValidity ?: boolean | null
     
@@ -53,11 +53,11 @@ interface ValidityStateEventTestCase {
         validity                ?: boolean | null | 'auto'
         
         /**
-         * Initial computed validity state.
-         * - `true`   : valid
-         * - `false`  : invalid
-         * - `null`   : unvalidated
-         * - `'auto'` : automatic determine
+         * New value for computed validity state.
+         * - `true`      : valid
+         * - `false`     : invalid
+         * - `null`      : unvalidated
+         * - `undefined` : skip updating this part.
          */
         computedValidity        ?: boolean | null
         
@@ -74,12 +74,12 @@ interface ValidityStateEventTestCase {
         
         /**
          * The expected validity state.
-         * - `'valid'`        : onValidatingStart event has been invoked
-         * - `'invalid'`      : onValidatingEnd event has been invoked
-         * - `'unvalidated'`  : onInvalidatingStart event has been invoked
-         * - `'validating'`   : onInvalidatingEnd event has been invoked
-         * - `'invalidating'` : onUnvalidatingStart event has been invoked
-         * - `'unvalidating'` : onUnvalidatingEnd event has been invoked
+         * - `'validating'`   : onValidatingStart event has been invoked
+         * - `'valid'`        : onValidatingEnd event has been invoked
+         * - `'invalidating'` : onInvalidatingStart event has been invoked
+         * - `'invalid'`      : onInvalidatingEnd event has been invoked
+         * - `'unvalidating'` : onUnvalidatingStart event has been invoked
+         * - `'unvalidated'`  : onUnvalidatingEnd event has been invoked
          * - `null`           : no event has been invoked
          * - `undefined`      : nothing to expect
          */
