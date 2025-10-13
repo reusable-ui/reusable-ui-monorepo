@@ -6,6 +6,7 @@ const stateDirs = [
     'animation-state',
     'disabled-state',
     'read-only-state',
+    'focus-state',
     'validity-state',
     'excite-state',
     'collapse-state',
