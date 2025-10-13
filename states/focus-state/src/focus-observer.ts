@@ -4,6 +4,7 @@
 import {
     // Types:
     type FocusEventHandler,
+    type KeyboardEventHandler,
     
     
     
@@ -27,9 +28,22 @@ import {
 
 
 /**
+ * A selector used to detect whether an element or any of its descendants
+ * are visibly focused for styling purposes.
+ * 
+ * This includes:
+ * - Native `:focus-visible` matches
+ * - Polyfilled input-like focus via `.input-like-focus:focus`
+ * - Descendant matches via `:has(...)`
+ */
+const focusVisibleWithinSelector = ':is(:focus-visible, .input-like-focus:focus, :has(:focus-visible, .input-like-focus:focus))';
+
+
+
+/**
  * Observed focus state for uncontrolled components.
  * 
- * Provides a ref to the focusable element and imperative focus/blur handlers
+ * Provides a ref to the focusable element and imperative focus/blur/keydown handlers
  * for tracking focus presence when not explicitly controlled.
  * 
  * Includes fallback detection for pre-existing focus on mount,
@@ -40,7 +54,7 @@ import {
 export interface FocusObserverState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Pick<FocusBehaviorState<TElement>, 'ref' | 'handleFocus' | 'handleBlur'>
+        Pick<FocusBehaviorState<TElement>, 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'>
 {
     /**
      * Observed focus presence.
@@ -56,7 +70,7 @@ export interface FocusObserverState<TElement extends Element = HTMLElement>
  * Hook for observing focus state in uncontrolled scenarios.
  * 
  * Detects initial focus on mount and updates internal state via
- * imperative focus/blur handlers. Skips updates when externally controlled.
+ * imperative focus/blur/keydown handlers. Skips updates when externally controlled.
  * 
  * @template TElement - The type of the target DOM element.
  * 
@@ -86,25 +100,40 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(isExter
         // Ignore if the element is not focused:
         if (focusableElement !== document.activeElement) return;
         
+        // Check if the element or any of its descendants are visibly focused:
+        const isFocusVisibleWithin = focusableElement.matches(focusVisibleWithinSelector);
+        
+        // Ignore if not visibly focused:
+        if (!isFocusVisibleWithin) return;
         
         
-        // Ensure internal state is in sync when the element is already focused on mount:
+        
+        // Set the focus state:
         setObservedFocus(true);
     }, []);
     
     
     
     // Imperative handlers for uncontrolled focus tracking:
-    const handleFocus : FocusEventHandler<TElement> = useStableCallback(() => {
+    const handleFocus   : FocusEventHandler<TElement>    = useStableCallback((event) => {
         // Ignore if externally controlled, avoiding unnecessary state updates:
         if (isExternallyControlled) return;
+        
+        // Ignore if already focused:
+        if (observedFocus) return;
+        
+        // Check if the element or any of its descendants are visibly focused:
+        const isFocusVisibleWithin = event.currentTarget.matches(focusVisibleWithinSelector);
+        
+        // Ignore if not visibly focused:
+        if (!isFocusVisibleWithin) return;
         
         
         
         // Set the focus state:
         setObservedFocus(true);
     });
-    const handleBlur  : FocusEventHandler<TElement> = useStableCallback(() => {
+    const handleBlur    : FocusEventHandler<TElement>    = useStableCallback(() => {
         // Ignore if externally controlled, avoiding unnecessary state updates:
         if (isExternallyControlled) return;
         
@@ -112,6 +141,27 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(isExter
         
         // Reset the focus state:
         setObservedFocus(false);
+    });
+    const handleKeyDown : KeyboardEventHandler<TElement> = useStableCallback((event) => {
+        // Ignore if externally controlled, avoiding unnecessary state updates:
+        if (isExternallyControlled) return;
+        
+        // Ignore if already focused:
+        if (observedFocus) return;
+        
+        // Ignore if the focus is going to move away via Tab key and not prevented:
+        if (event.key === 'Tab' && !event.defaultPrevented) return;
+        
+        // Check if the element or any of its descendants are visibly focused:
+        const isFocusVisibleWithin = event.currentTarget.matches(focusVisibleWithinSelector);
+        
+        // Ignore if not visibly focused:
+        if (!isFocusVisibleWithin) return;
+        
+        
+        
+        // Set the focus state:
+        setObservedFocus(true);
     });
     
     
@@ -122,5 +172,6 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(isExter
         ref : focusableElementRef,
         handleFocus,
         handleBlur,
+        handleKeyDown,
     } satisfies FocusObserverState<TElement>;
 };

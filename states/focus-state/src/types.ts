@@ -3,6 +3,7 @@ import {
     // Types:
     type RefObject,
     type FocusEventHandler,
+    type KeyboardEventHandler,
 }                           from 'react'
 
 // Cssfn:
@@ -42,7 +43,7 @@ import {
  * 
  * When `focused` prop is set to `'auto'`, the component derives its focus state from either:
  * - an externally provided `computedFocus`, or
- * - internal focus observer via `ref`, `handleFocus()` and `handleBlur()` callbacks.
+ * - internal focus observer via `ref`, `handleFocus()`, `handleBlur()`, and `handleKeyDown()` callbacks.
  */
 export interface FocusStateProps {
     /**
@@ -61,7 +62,7 @@ export interface FocusStateProps {
      * This value is typically computed reactively based on DOM focus events,
      * keyboard navigation, or accessibility-driven logic. It is ignored when `focused` is explicitly set.
      * 
-     * If not provided, the component falls back to internal focus observer via `ref`, `handleFocus()` and `handleBlur()` callbacks.
+     * If not provided, the component falls back to internal focus observer via `ref`, `handleFocus()`, `handleBlur()`, and `handleKeyDown()` callbacks.
      * 
      * This property is intended for **component developers** who need to customize focus resolution.
      * For **application developers**, prefer using the `focused` prop directly.
@@ -134,6 +135,16 @@ export interface FocusStateOptions
      * Defaults to `'auto'` (automatically determine focus state).
      */
     defaultFocused    ?: boolean | 'auto'
+    
+    /**
+     * Enables input-like focus behavior for styling purposes.
+     * 
+     * When `true`, the component will always show a focus ring when focused—
+     * mimicking native `<input>` semantics, even on mouse click.
+     * 
+     * Defaults to `false`, relying on `:focus-visible` heuristics.
+     */
+    inputLikeFocus    ?: boolean
     
     /**
      * Defines the pattern used to identify focus/blur-related animation names.
@@ -230,8 +241,11 @@ export interface FocusBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-blurring'`
      * - `'is-focusing'`
      * - `'is-focused'`
+     * 
+     * If input-like focus behavior is enabled, the class name will include `'input-like-focus'`
+     * to signal that the component should visually behave like a native input.
      */
-    focusClassname : `is-${FocusPhase}`
+    focusClassname : `is-${FocusPhase}` | `is-${FocusPhase} input-like-focus`
     
     /**
      * Ref to the focusable DOM element.
@@ -259,6 +273,25 @@ export interface FocusBehaviorState<TElement extends Element = HTMLElement>
      * typically when `focused` prop is set to `'auto'` and `computedFocus` is not provided.
      */
     handleBlur     : FocusEventHandler<TElement>
+    
+    /**
+     * Keydown handler to detect modality transitions while focused.
+     * 
+     * Used to catch cases where focus was established via mouse,
+     * but the user begins interacting via keyboard — triggering `:focus-visible`.
+     * 
+     * This handler ensures that the focus ring becomes visible when appropriate,
+     * even if the initial focus did not activate `:focus-visible`.
+     * 
+     * ✅ Lifecycle-safe: runs only while the element is focused
+     * ✅ Performance-aware: skips evaluation if already visibly focused
+     * ✅ Edge-case resilient:
+     *   - Handles mouse-to-keyboard transitions (e.g. pressing [Space] or [Enter])
+     *   - Ignores `[Tab]` transitions that shift focus away
+     *   - Avoids redundant updates when already focused
+     *   - Aligns with native browser behavior for `:focus-visible`
+     */
+    handleKeyDown  : KeyboardEventHandler<TElement>
 }
 
 

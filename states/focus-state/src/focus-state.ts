@@ -20,6 +20,7 @@ import {
 // Defaults:
 import {
     defaultDeclarativeFocused,
+    defaultInputLikeFocus,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -63,7 +64,7 @@ import {
  * @param options - An optional configuration for customizing focus/blur behavior.
  * @returns The resolved focused/blurred state and event handlers for focus/blur events.
  */
-export const useFocusState = <TElement extends Element = HTMLElement>(props: FocusStateProps, options?: Pick<FocusStateOptions, 'defaultFocused'>) : Pick<FocusBehaviorState<TElement>, 'focused' | 'ref' | 'handleFocus' | 'handleBlur'> => {
+export const useFocusState = <TElement extends Element = HTMLElement>(props: FocusStateProps, options?: Pick<FocusStateOptions, 'defaultFocused'>) : Pick<FocusBehaviorState<TElement>, 'focused' | 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'> => {
     // Extract options and assign defaults:
     const {
         defaultFocused    = defaultDeclarativeFocused,
@@ -93,6 +94,7 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
         ref,
         handleFocus,
         handleBlur,
+        handleKeyDown,
     } = useFocusObserver<TElement>(isExplicitValue || isExternallyComputed);
     
     // Resolve effective `computedFocus`:
@@ -109,7 +111,8 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
         ref,
         handleFocus,
         handleBlur,
-    } satisfies Pick<FocusBehaviorState<TElement>, 'focused' | 'ref' | 'handleFocus' | 'handleBlur'>;
+        handleKeyDown,
+    } satisfies Pick<FocusBehaviorState<TElement>, 'focused' | 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'>;
 };
 
 
@@ -120,6 +123,7 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
  * 
  * - Supports controlled focus state, when `focused` is set to `true` or `false`.
  * - Supports diagnostic mode, when `focused` is set to `'auto'`, which derives the effective focus from `computedFocus`.
+ * - Supports input-like styling behavior via `inputLikeFocus`, which forces a focus ring to appear when focused—mimicking native `<input>` semantics even on mouse click.
  * 
  * @template TElement - The type of the target DOM element.
  * 
@@ -176,11 +180,13 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
  *         ref,
  *         handleFocus,
  *         handleBlur,
+ *         handleKeyDown,
  *     } = useFocusBehaviorState({
  *         computedFocus,
  *         ...restProps,
  *     }, {
  *         defaultFocused    : 'auto',                   // Defaults to diagnostic mode.
+ *         inputLikeFocus    : false,                    // Disables input-like focus styling behavior.
  *         animationPattern  : ['focusing', 'blurring'], // Matches animation names ending with 'focusing' or 'blurring'.
  *         animationBubbling : false,                    // Ignores bubbling animation events from children.
  *     });
@@ -203,6 +209,7 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
     // Extract options and assign defaults:
     const {
         defaultFocused    = defaultDeclarativeFocused,
+        inputLikeFocus    = defaultInputLikeFocus,
         animationPattern  = ['focusing', 'blurring'], // Matches animation names for transitions
         animationBubbling = false,
     } = options ?? {};
@@ -232,6 +239,7 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
         ref,
         handleFocus,
         handleBlur,
+        handleKeyDown,
     } = useFocusObserver<TElement>(isExplicitValue || isExternallyComputed);
     
     // Resolve effective `computedFocus`:
@@ -281,11 +289,12 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
     return {
         focused        : effectiveFocused,
         focusPhase,
-        focusClassname : getFocusClassname(focusPhase),
+        focusClassname : getFocusClassname(focusPhase, inputLikeFocus),
         ...animationHandlers,
         ref,
         handleFocus,
         handleBlur,
+        handleKeyDown,
     } satisfies FocusBehaviorState<TElement>;
 };
 

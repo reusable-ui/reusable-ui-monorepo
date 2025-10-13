@@ -8,8 +8,9 @@ Ideal for buttons, selects, inputs, and any interactive component requiring focu
 ✔ Gracefully completes running animations before resolving new state  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, animation, and accessibility systems  
-✔ Built-in internal focus observer via `ref`, `handleFocus()` and `handleBlur()` — no need for external state unless desired  
+✔ Built-in internal focus observer via `ref`, `handleFocus()`, `handleBlur()`, and `handleKeyDown()` — no need for external state unless desired  
 ✔ Optional `computedFocus` override for custom focus resolution logic in advanced use cases  
+✔ Declarative `inputLikeFocus` flag for input-style focus ring behavior — mimics native `<input>` semantics even on mouse click  
 
 ## 📦 Installation
 Install **@reusable-ui/focus-state** via npm or yarn:
@@ -28,6 +29,7 @@ Resolves the focus state, current transition phase, associated CSS class name, a
 
 - Supports controlled focus state, when `focused` is set to `true` or `false`.
 - Supports diagnostic mode, when `focused` is set to `'auto'`, which derives the effective focus from `computedFocus`.
+- Supports input-like styling behavior via `inputLikeFocus`, which forces a focus ring to appear when focused—mimicking native `<input>` semantics even on mouse click.
 
 #### 💡 Usage Example
 
@@ -79,11 +81,13 @@ export const CustomButton: FC<CustomButtonProps> = (props) => {
         ref,
         handleFocus,
         handleBlur,
+        handleKeyDown,
     } = useFocusBehaviorState({
         computedFocus,
         ...restProps,
     }, {
         defaultFocused    : 'auto',                   // Defaults to diagnostic mode.
+        inputLikeFocus    : false,                    // Disables input-like focus styling behavior.
         animationPattern  : ['focusing', 'blurring'], // Matches animation names ending with 'focusing' or 'blurring'.
         animationBubbling : false,                    // Ignores bubbling animation events from children.
     });

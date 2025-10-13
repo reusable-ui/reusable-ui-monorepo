@@ -41,10 +41,17 @@ export const resolveFocusPhase = (focused: boolean, runningIntent: boolean | und
  *   - `'focusing'`  → `'is-focusing'`
  *   - `'blurring'`  → `'is-blurring'`
  * 
- * @param {FocusPhase} focusPhase - The current lifecycle phase of the component.
- * @returns {`is-${FocusPhase}`} A CSS class name reflecting the phase.
+ * If `inputLikeFocus` is enabled, appends `'input-like-focus'` to signal input-style focus ring behavior.
+ * 
+ * @param focusPhase - The current lifecycle phase of the component.
+ * @param inputLikeFocus - Whether input-like focus styling should be applied.
+ * @returns A CSS class name reflecting the phase.
  */
-export const getFocusClassname = (focusPhase: FocusPhase): `is-${FocusPhase}` => {
+export const getFocusClassname = (focusPhase: FocusPhase, inputLikeFocus: boolean): `is-${FocusPhase}` | `is-${FocusPhase} input-like-focus` => {
     // Return the corresponding class name:
-    return `is-${focusPhase}`;
+    return (
+        inputLikeFocus
+        ? `is-${focusPhase} input-like-focus`
+        : `is-${focusPhase}`
+    );
 };

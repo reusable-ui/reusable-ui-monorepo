@@ -47,8 +47,10 @@ export const FocusStateTest = (props: FocusStateTestProps) => {
         ref,
         handleFocus,
         handleBlur,
+        handleKeyDown,
     } = useFocusBehaviorState(props, {
         animationPattern,
+        inputLikeFocus: true, // enable input-like focus styling
     });
     
     useFocusStatePhaseEvents(props, focusPhase);
@@ -104,6 +106,7 @@ export const FocusStateTest = (props: FocusStateTestProps) => {
                 onAnimationEnd={handleMergedAnimationEnd}
                 onFocus={implementsFocusHandlers ? handleFocus : undefined}
                 onBlur={implementsFocusHandlers ? handleBlur : undefined}
+                onKeyDown={implementsFocusHandlers ? handleKeyDown : undefined}
                 tabIndex={implementsFocusHandlers ? 0 : undefined} // make it focusable
             >
                 Focus State Test
