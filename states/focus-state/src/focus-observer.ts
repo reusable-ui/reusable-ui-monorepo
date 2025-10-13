@@ -102,7 +102,7 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(isExter
         
         
         // Set the focus state:
-        setObservedFocus(true)
+        setObservedFocus(true);
     });
     const handleBlur  : FocusEventHandler<TElement> = useStableCallback(() => {
         // Ignore if externally controlled, avoiding unnecessary state updates:
@@ -111,7 +111,7 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(isExter
         
         
         // Reset the focus state:
-        setObservedFocus(false)
+        setObservedFocus(false);
     });
     
     
