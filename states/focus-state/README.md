@@ -84,7 +84,6 @@ export const CustomButton: FC<CustomButtonProps> = (props) => {
         ...restProps,
     }, {
         defaultFocused    : 'auto',                   // Defaults to diagnostic mode.
-        fallbackFocus     : false,                    // Defaults to blurred state when `focused` is 'auto' but no `computedFocus` is provided.
         animationPattern  : ['focusing', 'blurring'], // Matches animation names ending with 'focusing' or 'blurring'.
         animationBubbling : false,                    // Ignores bubbling animation events from children.
     });
