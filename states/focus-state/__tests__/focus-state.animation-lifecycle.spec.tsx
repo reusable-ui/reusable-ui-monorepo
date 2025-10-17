@@ -249,7 +249,7 @@ test.describe('useFocusBehaviorState - animation', () => {
                     focused              : false,
                     
                     delay                : 200,
-                    expectedRunningFocus : true,  // Still focusedating (600ms remaining) — cannot cancel mid-flight.
+                    expectedRunningFocus : true,  // Still focusing (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
                     title                : 'Re-focus again before blurring finishes',
@@ -288,7 +288,7 @@ test.describe('useFocusBehaviorState - animation', () => {
                     focused              : true,
                     
                     delay                : 200,
-                    expectedRunningFocus : false,  // Still blurredating (600ms remaining) — cannot cancel mid-flight.
+                    expectedRunningFocus : false,  // Still blurring (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
                     title                : 'Re-blur again before focusing finishes',

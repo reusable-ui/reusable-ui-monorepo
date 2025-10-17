@@ -300,7 +300,7 @@ test.describe('useFocusStatePhaseEvents', () => {
                     computedFocus        : false,
                     
                     delay                : 200,
-                    expectedEvent        : 'focusing',  // Still focusedating (600ms remaining) — cannot cancel mid-flight.
+                    expectedEvent        : 'focusing',  // Still focusing (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
                     title                : 'Re-focus again before blurring finishes',
@@ -338,7 +338,7 @@ test.describe('useFocusStatePhaseEvents', () => {
                     computedFocus        : true,
                     
                     delay                : 200,
-                    expectedEvent        : 'blurring',  // Still blurredating (600ms remaining) — cannot cancel mid-flight.
+                    expectedEvent        : 'blurring',  // Still blurring (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
                     title                : 'Re-blur again before focusing finishes',

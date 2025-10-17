@@ -333,7 +333,7 @@ test.describe('useFocusBehaviorState - diagnostic mode', () => {
                     
                     delay                : 200,
                     expectedFocus        : 'blurred',
-                    expectedRunningFocus : true,  // Still focusedating (600ms remaining) — cannot cancel mid-flight.
+                    expectedRunningFocus : true,  // Still focusing (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
                     title                : 'Re-focus again before blurring finishes',
@@ -383,7 +383,7 @@ test.describe('useFocusBehaviorState - diagnostic mode', () => {
                     
                     delay                : 200,
                     expectedFocus        : 'focused',
-                    expectedRunningFocus : false,  // Still blurredating (600ms remaining) — cannot cancel mid-flight.
+                    expectedRunningFocus : false,  // Still blurring (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
                     title                : 'Re-blur again before focusing finishes',
