@@ -183,6 +183,7 @@ Additional flags:
 @reusable-ui/disabled-state
 @reusable-ui/read-only-state
 @reusable-ui/focus-state
+@reusable-ui/hover-state
 @reusable-ui/validity-state
 @reusable-ui/excite-state
 @reusable-ui/collapse-state

@@ -7,6 +7,7 @@ const stateDirs = [
     'disabled-state',
     'read-only-state',
     'focus-state',
+    'hover-state',
     'validity-state',
     'excite-state',
     'collapse-state',

@@ -105,6 +105,7 @@
     "states/disabled-state",
     "states/read-only-state",
     "states/focus-state",
+    "states/hover-state",
     "states/validity-state",
     "states/excite-state",
     "states/collapse-state",

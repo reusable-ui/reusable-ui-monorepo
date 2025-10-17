@@ -1,0 +1,68 @@
+{
+  "name": "@reusable-ui/hover-state",
+  "version": "7.0.0",
+  "description": "Adds hover/leave functionality to UI components, with transition animations and semantic styling hooks.",
+  "keywords": [
+    "hover",
+    "leave",
+    "state",
+    "transition",
+    "animation",
+    "feedback",
+    "ui",
+    "styling",
+    "utility",
+    "css",
+    "cssfn",
+    "css-in-js",
+    "design-system",
+    "component-style",
+    "conditional-style",
+    "react",
+    "reusable-ui"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "states/hover-state"
+  },
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "npx playwright test"
+  },
+  "dependencies": {
+    "@cssfn/core": "^4.0.0",
+    "@reusable-ui/animation-state": "^7.0.0",
+    "@reusable-ui/callbacks": "^7.0.0",
+    "@reusable-ui/events": "^7.0.0"
+  },
+  "peerDependencies": {
+    "@reusable-ui/animation-feature": "^7.0.0",
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@reusable-ui/references": "^7.0.0"
+  }
+}
