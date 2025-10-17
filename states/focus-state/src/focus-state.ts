@@ -193,7 +193,7 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
  *     
  *     return (
  *         <div
- *             className={`${styles.box} ${focusClassname}`}
+ *             className={`${styles.button} ${focusClassname}`}
  *             
  *             onAnimationStart={handleAnimationStart}
  *             onAnimationEnd={handleAnimationEnd}
@@ -271,8 +271,8 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
     // A stable dispatcher for emitting focus update events.
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const handleFocusUpdate = useStableCallback((currentFocus: boolean): void => {
-        onFocusUpdate?.(currentFocus, undefined);
+    const handleFocusUpdate = useStableCallback((currentFocused: boolean): void => {
+        onFocusUpdate?.(currentFocused, undefined);
     });
     
     

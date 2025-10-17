@@ -34,12 +34,12 @@ export const resolveFocusPhase = (focused: boolean, runningIntent: boolean | und
  * 
  * Maps each `focusPhase` to a semantic class name:
  * - Resolved phases:
- *   - `'focused'`   → `'is-focused'`
- *   - `'blurred'`   → `'is-blurred'`
+ *   - `'focused'`  → `'is-focused'`
+ *   - `'blurred'`  → `'is-blurred'`
  * 
  * - Transitioning phases:
- *   - `'focusing'`  → `'is-focusing'`
- *   - `'blurring'`  → `'is-blurring'`
+ *   - `'focusing'` → `'is-focusing'`
+ *   - `'blurring'` → `'is-blurring'`
  * 
  * If `inputLikeFocus` is enabled, appends `'input-like-focus'` to signal input-style focus ring behavior.
  * 

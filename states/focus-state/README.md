@@ -94,7 +94,7 @@ export const CustomButton: FC<CustomButtonProps> = (props) => {
     
     return (
         <div
-            className={`${styles.box} ${focusClassname}`}
+            className={`${styles.button} ${focusClassname}`}
             
             onAnimationStart={handleAnimationStart}
             onAnimationEnd={handleAnimationEnd}

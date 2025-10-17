@@ -97,22 +97,22 @@ export interface FocusStatePhaseEventProps {
     /**
      * Called when the focusing transition begins.
      */
-    onFocusingStart  ?: ValueChangeEventHandler<FocusPhase, unknown>
+    onFocusingStart ?: ValueChangeEventHandler<FocusPhase, unknown>
     
     /**
      * Called when the focusing transition completes.
      */
-    onFocusingEnd    ?: ValueChangeEventHandler<FocusPhase, unknown>
+    onFocusingEnd   ?: ValueChangeEventHandler<FocusPhase, unknown>
     
     /**
      * Called when the blurring transition begins.
      */
-    onBlurringStart  ?: ValueChangeEventHandler<FocusPhase, unknown>
+    onBlurringStart ?: ValueChangeEventHandler<FocusPhase, unknown>
     
     /**
      * Called when the blurring transition completes.
      */
-    onBlurringEnd    ?: ValueChangeEventHandler<FocusPhase, unknown>
+    onBlurringEnd   ?: ValueChangeEventHandler<FocusPhase, unknown>
 }
 
 /**
@@ -403,8 +403,8 @@ export interface CssFocusState {
      * Exposes focus/blur-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationFocusing`  : Active during the focusing transition.
-     * - `animationBlurring`  : Active during the blurring transition.
+     * - `animationFocusing` : Active during the focusing transition.
+     * - `animationBlurring` : Active during the blurring transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.
