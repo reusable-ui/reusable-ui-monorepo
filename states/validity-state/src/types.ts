@@ -348,9 +348,7 @@ export interface ValidityStateVars {
     /**
      * Applies when the component has just transitioned from a valid state.
      * 
-     * This variable is conditionally available during the animation phase
-     * immediately following a transition away from `valid`.
-     * After the animation completes, this variable becomes unavailable.
+     * This variable is available only during the transition phase and becomes invalid once the animation completes.
      * 
      * Acts as a conditional switch: when declared with an empty value,
      * any CSS property referencing this variable becomes valid and is applied.
@@ -370,9 +368,7 @@ export interface ValidityStateVars {
     /**
      * Applies when the component has just transitioned from an invalid state.
      * 
-     * This variable is conditionally available during the animation phase
-     * immediately following a transition away from `invalid`.
-     * After the animation completes, this variable becomes unavailable.
+     * This variable is available only during the transition phase and becomes invalid once the animation completes.
      * 
      * Acts as a conditional switch: when declared with an empty value,
      * any CSS property referencing this variable becomes valid and is applied.
@@ -392,9 +388,7 @@ export interface ValidityStateVars {
     /**
      * Applies when the component has just transitioned from an unvalidated state.
      * 
-     * This variable is conditionally available during the animation phase
-     * immediately following a transition away from `unvalidated`.
-     * After the animation completes, this variable becomes unavailable.
+     * This variable is available only during the transition phase and becomes invalid once the animation completes.
      * 
      * Acts as a conditional switch: when declared with an empty value,
      * any CSS property referencing this variable becomes valid and is applied.
