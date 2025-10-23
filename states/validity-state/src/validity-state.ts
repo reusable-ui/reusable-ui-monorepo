@@ -36,6 +36,10 @@ import {
 }                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
 import {
     // Hooks:
+    usePreviousValue,
+}                           from '@reusable-ui/lifecycles'      // A React utility package for managing component lifecycles, ensuring stable effects, and optimizing state updates.
+import {
+    // Hooks:
     useAnimationState,
 }                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
@@ -77,10 +81,10 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
     // States and flags:
     
     // Determine control mode:
-    const isExplicitValue   = (controlledValidity !== 'auto');
+    const isExplicitValue      = (controlledValidity !== 'auto');
     
     // Resolve effective validity state:
-    const effectiveValidity = isExplicitValue ? controlledValidity : computedValidity;
+    const effectiveValidity    = isExplicitValue ? controlledValidity : computedValidity;
     
     
     
@@ -195,10 +199,10 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     // States and flags:
     
     // Determine control mode:
-    const isExplicitValue   = (controlledValidity !== 'auto');
+    const isExplicitValue      = (controlledValidity !== 'auto');
     
     // Resolve effective validity state:
-    const effectiveValidity = isExplicitValue ? controlledValidity : computedValidity;
+    const effectiveValidity    = isExplicitValue ? controlledValidity : computedValidity;
     
     // Internal animation lifecycle:
     const [, setInternalValidity, runningIntent, animationHandlers] = useAnimationState<boolean | null, TElement>({
@@ -208,25 +212,10 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     });
     
     // Derive semantic phase from animation lifecycle:
-    const validityPhase     = resolveValidityPhase(effectiveValidity, runningIntent); // 'valid', 'invalid', 'unvalidated', 'validating', 'invalidating', 'unvalidating'
-    
-    
-    
-    // Tracks the history of effective validity states to expose the previous state.
-    // This is useful for animation authors to determine the direction of transitions.
-    const validityHistoryRef = useRef<[current: boolean | null, previous: boolean | null | undefined]>([effectiveValidity, undefined]);
-    const validityHistory = validityHistoryRef.current;
-    
-    if (validityHistory[0] !== effectiveValidity) {
-        // Shift history:
-        validityHistory[1] = validityHistory[0];
-        
-        // Update current:
-        validityHistory[0] = effectiveValidity;
-    } // if
+    const validityPhase        = resolveValidityPhase(effectiveValidity, runningIntent); // 'valid', 'invalid', 'unvalidated', 'validating', 'invalidating', 'unvalidating'
     
     // Expose previous validity state for animation authors:
-    const prevResolvedValidity = validityHistory[1];
+    const prevResolvedValidity = usePreviousValue<boolean | null>(effectiveValidity);
     
     
     
