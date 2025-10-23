@@ -61,6 +61,34 @@ const [triggerRender] = useTriggerRender();
 triggerRender();
 ```
 
+### `usePreviousValue<TValue>(value: TValue): TValue | undefined`
+Tracks the previous value of a given input across renders — synchronously and without delay.
+
+This hook is ideal for animation authors, directional transitions, and lifecycle-aware components that need to compare the current and previous values within the same render pass.
+
+```tsx
+import { usePreviousValue } from '@reusable-ui/lifecycles';
+
+export const ExampleComponent = ({ viewIndex }: { viewIndex: number }) => {
+    const prevViewIndex = usePreviousValue(viewIndex);
+    
+    const direction = (
+        prevViewIndex === undefined ? 'initial' :
+        viewIndex > prevViewIndex ? 'forward' :
+        viewIndex < prevViewIndex ? 'backward' :
+        'static'
+    );
+    
+    return (
+        <div>
+            <p>Current view index: {viewIndex}</p>
+            <p>Previous view index: {String(prevViewIndex)}</p>
+            <p>Transition direction: {direction}</p>
+        </div>
+    );
+};
+```
+
 ## 📖 Part of the Reusable-UI Framework  
 **@reusable-ui/lifecycles** is an essential utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.

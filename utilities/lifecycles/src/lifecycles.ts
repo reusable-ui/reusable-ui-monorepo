@@ -134,3 +134,67 @@ export const useMountedFlag = (): RefObject<boolean | undefined> => {
     // Returns the mounted status flag:
     return isMounted;
 };
+
+
+
+/**
+ * Tracks the previous value of a given input across renders.
+ * 
+ * This hook is ideal for animation authors, directional transitions, and lifecycle-aware components
+ * that need to compare the current and previous values within the same render pass.
+ * 
+ * Unlike `useEffect`-based tracking, this hook updates the previous value
+ * synchronously during render using an inline `if` mutation. This ensures
+ * that the previous value is immediately available for layout, animation,
+ * or style decisions — without a one-frame delay.
+ * 
+ * @example
+ * ```tsx
+ * import { usePreviousValue } from '@reusable-ui/lifecycles';
+ * 
+ * export const ExampleComponent = ({ viewIndex }: { viewIndex: number }) => {
+ *     const prevViewIndex = usePreviousValue(viewIndex);
+ *     
+ *     const direction = (
+ *         prevViewIndex === undefined ? 'initial' :
+ *         viewIndex > prevViewIndex ? 'forward' :
+ *         viewIndex < prevViewIndex ? 'backward' :
+ *         'static'
+ *     );
+ *     
+ *     return (
+ *         <div>
+ *             <p>Current view index: {viewIndex}</p>
+ *             <p>Previous view index: {String(prevViewIndex)}</p>
+ *             <p>Transition direction: {direction}</p>
+ *         </div>
+ *     );
+ * };
+ * ```
+ * 
+ * @template TValue - The type of the value to track.
+ * 
+ * @param value The current value to track.
+ * @returns The previous value, or `undefined` on the first render.
+ */
+export function usePreviousValue<TValue>(value: TValue): TValue | undefined {
+    // Tracks the history of current and previous values:
+    const historyRef = useRef<[current: TValue, previous: TValue | undefined]>([value, undefined]);
+    const history    = historyRef.current;
+    
+    
+    
+    // Compare and update the history inline during render:
+    if (!Object.is(history[0], value)) { // Use `Object.is` for accurate equality check (handles NaN, -0, +0).
+        // Shift previous:
+        history[1] = history[0];
+        
+        // Update current:
+        history[0] = value;
+    } // if
+    
+    
+    
+    // Returns the previous value:
+    return history[1];
+};
