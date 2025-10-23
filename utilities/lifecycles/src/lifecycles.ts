@@ -177,7 +177,7 @@ export const useMountedFlag = (): RefObject<boolean | undefined> => {
  * @param value The current value to track.
  * @returns The previous value, or `undefined` on the first render.
  */
-export function usePreviousValue<TValue>(value: TValue): TValue | undefined {
+export const usePreviousValue = <TValue>(value: TValue): TValue | undefined => {
     // Tracks the history of current and previous values:
     const historyRef = useRef<[current: TValue, previous: TValue | undefined]>([value, undefined]);
     const history    = historyRef.current;
