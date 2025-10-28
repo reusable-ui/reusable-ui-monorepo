@@ -111,6 +111,7 @@
     "states/excite-state",
     "states/collapse-state",
     "states/active-state",
+    "states/view-state",
     "__configs/*",
     "__utilities/*",
     "__features/*",

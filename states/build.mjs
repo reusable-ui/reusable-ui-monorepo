@@ -13,6 +13,7 @@ const stateDirs = [
     'excite-state',
     'collapse-state',
     'active-state',
+    'view-state',
 ];
 
 console.log('🔧 Compiling feature packages...\n');
