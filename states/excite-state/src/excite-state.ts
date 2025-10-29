@@ -10,7 +10,7 @@ import {
     
     // Hooks:
     useRef,
-    useEffect,
+    useLayoutEffect,
 }                           from 'react'
 
 // Types:
@@ -38,7 +38,6 @@ import {
 }                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
 import {
     // Hooks:
-    useSetTimeout,
     useRequestAnimationFrame,
 }                           from '@reusable-ui/timers'              // A collection of reusable timing utilities for UI components.
 import {
@@ -146,11 +145,9 @@ export const useExciteState = (props: ExciteStateProps, options?: Pick<ExciteSta
 export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(props: ExciteStateProps, options?: ExciteStateOptions): ExciteBehaviorState<TElement> => {
     // Extract options and assign defaults:
     const {
-        defaultExcited      = defaultDeclarativeExcited,
-        animationPattern    = 'exciting',
-        animationBubbling   = false,
-        
-        retriggerDelayTicks = 3,
+        defaultExcited    = defaultDeclarativeExcited,
+        animationPattern  = 'exciting',
+        animationBubbling = false,
     } = options ?? {};
     
     
@@ -234,25 +231,24 @@ export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(p
     
     
     
-    // Async schedulers:
-    
-    // Managed, promise-based timeout scheduler (auto-cleans up):
-    const setTimeoutAsync            = useSetTimeout();
-    
+    // Async scheduler:
     // Managed, promise-based animation frame scheduler (auto-cleans up):
     const requestAnimationFrameAsync = useRequestAnimationFrame();
     
     
     
     // Sync animation state with effective excitement state:
-    useEffect(() => {
+    // Use `useLayoutEffect` instead of `useEffect` to avoid losing an extra frame tick before the restart logic runs.
+    // We manually schedule a one-frame delay using `requestAnimationFrameAsync()` to ensure precise control over timing.
+    // Additionally, we invoke `requestExcitedReset()`, which triggers `onExcitedChange` —
+    // the handler may perform timing-sensitive DOM operations that must run before the next paint.
+    useLayoutEffect(() => {
         // Exit early if the animation state is already in sync with the intended one:
         if (exciteAnimation === effectiveExcited) return;
         
         
         
-        // Holds in-flight promises:
-        let tickPromise  : ReturnType<typeof setTimeoutAsync>            | undefined = undefined;
+        // Holds in-flight promise:
         let framePromise : ReturnType<typeof requestAnimationFrameAsync> | undefined = undefined;
         
         
@@ -287,18 +283,6 @@ export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(p
                 
                 
                 
-                // Wait for N ticks to give parent time to reset `excited`:
-                for (let ticks = 0; ticks < retriggerDelayTicks; ticks++) {
-                    tickPromise = setTimeoutAsync(0);
-                    const isCompleted = await tickPromise;
-                    tickPromise = undefined;
-                    
-                    // Ensures no interruptions occur during the delay:
-                    if (isCompleted === false) return;
-                } // for
-                
-                
-                
                 // Ensures the one frame delay has completed:
                 const timestampOrAborted = await framePromise;
                 framePromise = undefined;
@@ -316,8 +300,7 @@ export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(p
         
         
         return () => {
-            // Abort the in-flight promises (if any):
-            tickPromise?.abort();
+            // Abort the in-flight promise (if any):
             framePromise?.abort();
         };
     }, [exciteAnimation, effectiveExcited]);

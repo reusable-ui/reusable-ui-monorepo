@@ -74,7 +74,7 @@ export interface ExciteStateOptions
      * 
      * Defaults to `false` (not excited).
      */
-    defaultExcited      ?: boolean
+    defaultExcited    ?: boolean
     
     /**
      * Defines the pattern used to identify excite-related animation names.
@@ -92,7 +92,7 @@ export interface ExciteStateOptions
      * 
      * Defaults to `'exciting'`.
      */
-    animationPattern    ?: AnimationStateOptions<boolean>['animationPattern']
+    animationPattern  ?: AnimationStateOptions<boolean>['animationPattern']
     
     /**
      * Enables listening to animation events bubbling up from nested child elements.
@@ -100,15 +100,7 @@ export interface ExciteStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling   ?: AnimationStateOptions<boolean>['animationBubbling']
-    
-    /**
-     * The number of macrotask ticks to wait before re-triggering the animation.
-     * This delay gives the parent component time to reset the `excited` state.
-     * 
-     * Defaults to `3`.
-     */
-    retriggerDelayTicks ?: number
+    animationBubbling ?: AnimationStateOptions<boolean>['animationBubbling']
 }
 
 /**
