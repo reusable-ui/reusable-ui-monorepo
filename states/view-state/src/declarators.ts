@@ -165,7 +165,7 @@ export const ifViewTransitioning = (styles: CssStyleCollection): CssRule => rule
  *     
  *     const {
  *         viewStateRule,
- *         viewStateVars: { viewIndex, prevViewIndex },
+ *         viewStateVars: { viewIndex, prevViewIndex, isViewProgressing },
  *     } = usesViewState({
  *         animationViewProgressing : 'var(--box-view-progressing)',
  *         animationViewRegressing  : 'var(--box-view-regressing)',
@@ -185,27 +185,38 @@ export const ifViewTransitioning = (styles: CssStyleCollection): CssRule => rule
  *         // To show the correct view, we translate this box based on the current viewIndex.
  *         // We `translate` using `marginInlineStart` for better RTL support, because `translate` is physical, not logical.
  *         
- *         // Define animations for progressing (next) and regressing (previous) view transitions:
+ *         // Define view-progressing animation:
  *         ...vars({
  *             '--box-view-progressing': [
- *                 ['0.3s', 'ease-out', 'both', 'slide-to-view'],
- *             ],
- *             '--box-view-regressing': [
- *                 ['0.3s', 'ease-out', 'both', 'slide-to-view'],
+ *                 ['0.3s', 'ease-out', 'both', 'translate-view-progressing'],
  *             ],
  *         }),
- *         
- *         ...keyframes('slide-to-view', {
+ *         ...keyframes('translate-view-progressing', {
  *             from: {
- *                 marginInlineStart: `calc(${prevViewIndex} * -100px)`,
+ *                 marginInlineStart: 0,
  *             },
  *             to: {
- *                 marginInlineStart: `calc(${viewIndex} * -100px)`,
+ *                 marginInlineStart: `calc((${viewIndex} - ${prevViewIndex}) * -100px)`,
+ *             },
+ *         }),
+ *         
+ *         // Define view-regressing animation:
+ *         ...vars({
+ *             '--box-view-regressing': [
+ *                 ['0.3s', 'ease-out', 'both', 'translate-view-regressing'],
+ *             ],
+ *         }),
+ *         ...keyframes('translate-view-regressing', {
+ *             from: {
+ *                 marginInlineStart: `calc((${prevViewIndex} - ${viewIndex}) * -100px)`,
+ *             },
+ *             to: {
+ *                 marginInlineStart: 0,
  *             },
  *         }),
  *         
  *         // Define final translation based on current viewIndex:
- *         marginInlineStart: `calc(${viewIndex} * -100px)`, // Translate to the current view.
+ *         marginInlineStart: `${isViewProgressing} calc((${viewIndex} - ${prevViewIndex}) * -100px)`, // Translate to the current view.
  *         contain: 'layout', // Contain layout to prevent reflows.
  *         willChange: 'margin-inline-start', // Hint to browser for better performance.
  *         

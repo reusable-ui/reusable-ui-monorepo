@@ -15,7 +15,7 @@ function containerStyle() {
 function viewsStyle() {
     const {
         viewStateRule,
-        viewStateVars: { viewIndex, prevViewIndex, isViewProgressing, isViewRegressing },
+        viewStateVars: { viewIndex, prevViewIndex, isViewProgressing },
     } = usesViewState({
         animationViewProgressing : 'var(--test-view-progressing)',
         animationViewRegressing  : 'var(--test-view-regressing)',
@@ -48,11 +48,9 @@ function viewsStyle() {
         }),
         ...keyframes('boo-test-view-progressing', {
             from: {
-                // marginInlineStart: `calc(${prevViewIndex} * -100px)`,
                 marginInlineStart: 0,
             },
             to: {
-                // marginInlineStart: `calc(${viewIndex} * -100px)`,
                 marginInlineStart: `calc((${viewIndex} - ${prevViewIndex}) * -100px)`,
             },
         }),
@@ -64,18 +62,15 @@ function viewsStyle() {
         }),
         ...keyframes('boo-test-view-regressing', {
             from: {
-                // marginInlineStart: `calc(${prevViewIndex} * -100px)`,
                 marginInlineStart: `calc((${prevViewIndex} - ${viewIndex}) * -100px)`,
             },
             to: {
-                // marginInlineStart: `calc(${viewIndex} * -100px)`,
                 marginInlineStart: 0,
             },
         }),
         
         // Define final translation based on current viewIndex:
-        // marginInlineStart: `calc(${viewIndex} * -100px)`, // Translate to the current view.
-        marginInlineStart: `${isViewProgressing} calc((${viewIndex} - ${prevViewIndex}) * -100px)`,
+        marginInlineStart: `${isViewProgressing} calc((${viewIndex} - ${prevViewIndex}) * -100px)`, // Translate to the current view.
         contain: 'layout', // Contain layout to prevent reflows.
         willChange: 'margin-inline-start', // Hint to browser for better performance.
         
