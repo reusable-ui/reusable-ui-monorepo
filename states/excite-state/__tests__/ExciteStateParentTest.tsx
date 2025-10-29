@@ -1,4 +1,4 @@
-import React, { type AnimationEvent, useState, useEffect } from 'react'
+import React, { type AnimationEvent, useState, useLayoutEffect } from 'react'
 import { type ExciteStateTestProps, ExciteStateTest } from './ExciteStateTest.js'
 import { useStableEventHandler } from '@reusable-ui/callbacks'
 import { ValueChangeEventHandler } from '@reusable-ui/events';
@@ -16,7 +16,7 @@ export const ExciteStateParentTest = (props: ExciteStateParentTestProps) => {
     } = props;
     
     const [excited, setExcited] = useState<boolean>(controlledExcited);
-    useEffect(() => {
+    useLayoutEffect(() => {
         setExcited(controlledExcited);
     }, [controlledExcited]);
     
