@@ -4,6 +4,7 @@
 import {
     // Hooks:
     useEffect,
+    useLayoutEffect,
     useRef,
 }                           from 'react'
 
@@ -248,12 +249,14 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
     });
     
     // Derive semantic phase from animation lifecycle:
-    const pressPhase            = resolvePressPhase(effectivePressed, runningIntent); // 'released', 'releasing', 'pressing', 'pressed'
+    const pressPhase            = resolvePressPhase(effectivePressed, runningIntent); // 'pressed', 'released', 'pressing', 'releasing'
     
     
     
     // Sync animation state with effective press state:
-    useEffect(() => {
+    // Use `useLayoutEffect()` to make sure the `runningIntent` updates before browser paint,
+    // preventing premature `'pressed'` and `'released'` phase accidentally painted during switching to another state.
+    useLayoutEffect(() => {
         // The `setInternalPressed()` has internal `Object.is()` check to avoid redundant state updates.
         setInternalPressed(effectivePressed);
     }, [effectivePressed]);
@@ -367,7 +370,9 @@ export const usePressStatePhaseEvents = (props: PressStatePhaseEventProps, press
     
     
     // Observer effect: emits phase change events on `pressPhase` updates.
-    useEffect(() => {
+    // Use `useLayoutEffect()` to ensure the events are emitted before browser paint,
+    // in case the event handlers manipulate timing-sensitive DOM operations.
+    useLayoutEffect(() => {
         // Ignore the first mount phase change:
         if (!hasMountedRef.current) return;
         
@@ -378,6 +383,7 @@ export const usePressStatePhaseEvents = (props: PressStatePhaseEventProps, press
     }, [pressPhase]);
     
     // Setup effect: marks the component as mounted and resets on unmount.
+    // Use regular `useEffect()` is sufficient, since mount status tracking does not require timing-sensitive operations before painting.
     useEffect(() => {
         // Mark as mounted:
         hasMountedRef.current = true;

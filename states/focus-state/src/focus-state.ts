@@ -4,6 +4,7 @@
 import {
     // Hooks:
     useEffect,
+    useLayoutEffect,
     useRef,
 }                           from 'react'
 
@@ -256,12 +257,14 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
     });
     
     // Derive semantic phase from animation lifecycle:
-    const focusPhase            = resolveFocusPhase(effectiveFocused, runningIntent); // 'blurred', 'blurring', 'focusing', 'focused'
+    const focusPhase            = resolveFocusPhase(effectiveFocused, runningIntent); // 'focused', 'blurred', 'focusing', 'blurring'
     
     
     
     // Sync animation state with effective focus state:
-    useEffect(() => {
+    // Use `useLayoutEffect()` to make sure the `runningIntent` updates before browser paint,
+    // preventing premature `'focused'` and `'blurred'` phase accidentally painted during switching to another state.
+    useLayoutEffect(() => {
         // The `setInternalFocused()` has internal `Object.is()` check to avoid redundant state updates.
         setInternalFocused(effectiveFocused);
     }, [effectiveFocused]);
@@ -376,7 +379,9 @@ export const useFocusStatePhaseEvents = (props: FocusStatePhaseEventProps, focus
     
     
     // Observer effect: emits phase change events on `focusPhase` updates.
-    useEffect(() => {
+    // Use `useLayoutEffect()` to ensure the events are emitted before browser paint,
+    // in case the event handlers manipulate timing-sensitive DOM operations.
+    useLayoutEffect(() => {
         // Ignore the first mount phase change:
         if (!hasMountedRef.current) return;
         
@@ -387,6 +392,7 @@ export const useFocusStatePhaseEvents = (props: FocusStatePhaseEventProps, focus
     }, [focusPhase]);
     
     // Setup effect: marks the component as mounted and resets on unmount.
+    // Use regular `useEffect()` is sufficient, since mount status tracking does not require timing-sensitive operations before painting.
     useEffect(() => {
         // Mark as mounted:
         hasMountedRef.current = true;

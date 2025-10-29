@@ -4,6 +4,7 @@
 import {
     // Hooks:
     useEffect,
+    useLayoutEffect,
     useRef,
 }                           from 'react'
 
@@ -281,12 +282,14 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
     const effectiveExpanded = isControlled ? controlledExpanded : internalExpanded;
     
     // Derive semantic phase from animation lifecycle:
-    const expandPhase       = resolveExpandPhase(effectiveExpanded, runningIntent); // 'collapsed', 'collapsing', 'expanding', 'expanded'
+    const expandPhase       = resolveExpandPhase(effectiveExpanded, runningIntent); // 'expanded', 'collapsed', 'expanding', 'collapsing'
     
     
     
     // Sync animation state with effective expansion state:
-    useEffect(() => {
+    // Use `useLayoutEffect()` to make sure the `runningIntent` updates before browser paint,
+    // preventing premature `'expanded'` and `'collapsed'` phase accidentally painted during switching to another state.
+    useLayoutEffect(() => {
         // The `setInternalExpanded()` has internal `Object.is()` check to avoid redundant state updates.
         setInternalExpanded(effectiveExpanded);
     }, [effectiveExpanded]);
@@ -396,7 +399,9 @@ export const useCollapseStatePhaseEvents = (props: CollapseStatePhaseEventProps,
     
     
     // Observer effect: emits phase change events on `expandPhase` updates.
-    useEffect(() => {
+    // Use `useLayoutEffect()` to ensure the events are emitted before browser paint,
+    // in case the event handlers manipulate timing-sensitive DOM operations.
+    useLayoutEffect(() => {
         // Ignore the first mount phase change:
         if (!hasMountedRef.current) return;
         
@@ -407,6 +412,7 @@ export const useCollapseStatePhaseEvents = (props: CollapseStatePhaseEventProps,
     }, [expandPhase]);
     
     // Setup effect: marks the component as mounted and resets on unmount.
+    // Use regular `useEffect()` is sufficient, since mount status tracking does not require timing-sensitive operations before painting.
     useEffect(() => {
         // Mark as mounted:
         hasMountedRef.current = true;

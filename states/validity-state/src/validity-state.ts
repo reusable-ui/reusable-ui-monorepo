@@ -4,6 +4,7 @@
 import {
     // Hooks:
     useEffect,
+    useLayoutEffect,
     useRef,
 }                           from 'react'
 
@@ -220,7 +221,9 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     
     
     // Sync animation state with effective validity state:
-    useEffect(() => {
+    // Use `useLayoutEffect()` to make sure the `runningIntent` updates before browser paint,
+    // preventing premature `'valid'`, `'invalid'` and `'unvalidated'` phase accidentally painted during switching to another state.
+    useLayoutEffect(() => {
         // The `setInternalValidity()` has internal `Object.is()` check to avoid redundant state updates.
         setInternalValidity(effectiveValidity);
     }, [effectiveValidity]);
@@ -337,7 +340,9 @@ export const useValidityStatePhaseEvents = (props: ValidityStatePhaseEventProps,
     
     
     // Observer effect: emits phase change events on `validityPhase` updates.
-    useEffect(() => {
+    // Use `useLayoutEffect()` to ensure the events are emitted before browser paint,
+    // in case the event handlers manipulate timing-sensitive DOM operations.
+    useLayoutEffect(() => {
         // Ignore the first mount phase change:
         if (!hasMountedRef.current) return;
         
@@ -348,6 +353,7 @@ export const useValidityStatePhaseEvents = (props: ValidityStatePhaseEventProps,
     }, [validityPhase]);
     
     // Setup effect: marks the component as mounted and resets on unmount.
+    // Use regular `useEffect()` is sufficient, since mount status tracking does not require timing-sensitive operations before painting.
     useEffect(() => {
         // Mark as mounted:
         hasMountedRef.current = true;

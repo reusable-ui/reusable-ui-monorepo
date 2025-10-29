@@ -4,6 +4,7 @@
 import {
     // Hooks:
     useEffect,
+    useLayoutEffect,
     useRef,
 }                           from 'react'
 
@@ -248,12 +249,14 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
     });
     
     // Derive semantic phase from animation lifecycle:
-    const hoverPhase            = resolveHoverPhase(effectiveHovered, runningIntent); // 'leaved', 'leaving', 'hovering', 'hovered'
+    const hoverPhase            = resolveHoverPhase(effectiveHovered, runningIntent); // 'hovered', 'leaved', 'hovering', 'leaving'
     
     
     
     // Sync animation state with effective hover state:
-    useEffect(() => {
+    // Use `useLayoutEffect()` to make sure the `runningIntent` updates before browser paint,
+    // preventing premature `'hovered'` and `'leaved'` phase accidentally painted during switching to another state.
+    useLayoutEffect(() => {
         // The `setInternalHovered()` has internal `Object.is()` check to avoid redundant state updates.
         setInternalHovered(effectiveHovered);
     }, [effectiveHovered]);
@@ -367,7 +370,9 @@ export const useHoverStatePhaseEvents = (props: HoverStatePhaseEventProps, hover
     
     
     // Observer effect: emits phase change events on `hoverPhase` updates.
-    useEffect(() => {
+    // Use `useLayoutEffect()` to ensure the events are emitted before browser paint,
+    // in case the event handlers manipulate timing-sensitive DOM operations.
+    useLayoutEffect(() => {
         // Ignore the first mount phase change:
         if (!hasMountedRef.current) return;
         
@@ -378,6 +383,7 @@ export const useHoverStatePhaseEvents = (props: HoverStatePhaseEventProps, hover
     }, [hoverPhase]);
     
     // Setup effect: marks the component as mounted and resets on unmount.
+    // Use regular `useEffect()` is sufficient, since mount status tracking does not require timing-sensitive operations before painting.
     useEffect(() => {
         // Mark as mounted:
         hasMountedRef.current = true;

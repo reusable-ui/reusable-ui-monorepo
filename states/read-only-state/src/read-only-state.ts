@@ -5,6 +5,7 @@ import {
     // Hooks:
     use,
     useEffect,
+    useLayoutEffect,
     useRef,
 }                           from 'react'
 
@@ -226,7 +227,9 @@ export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>
     
     
     // Sync animation state with effective read-only state:
-    useEffect(() => {
+    // Use `useLayoutEffect()` to make sure the `runningIntent` updates before browser paint,
+    // preventing premature `'editable'` and `'readonly'` phase accidentally painted during switching to another state.
+    useLayoutEffect(() => {
         // The `setInternalReadOnly()` has internal `Object.is()` check to avoid redundant state updates.
         setInternalReadOnly(effectiveReadOnly);
     }, [effectiveReadOnly]);
@@ -337,7 +340,9 @@ export const useReadOnlyStatePhaseEvents = (props: ReadOnlyStatePhaseEventProps,
     
     
     // Observer effect: emits phase change events on `readOnlyPhase` updates.
-    useEffect(() => {
+    // Use `useLayoutEffect()` to ensure the events are emitted before browser paint,
+    // in case the event handlers manipulate timing-sensitive DOM operations.
+    useLayoutEffect(() => {
         // Ignore the first mount phase change:
         if (!hasMountedRef.current) return;
         
@@ -348,6 +353,7 @@ export const useReadOnlyStatePhaseEvents = (props: ReadOnlyStatePhaseEventProps,
     }, [readOnlyPhase]);
     
     // Setup effect: marks the component as mounted and resets on unmount.
+    // Use regular `useEffect()` is sufficient, since mount status tracking does not require timing-sensitive operations before painting.
     useEffect(() => {
         // Mark as mounted:
         hasMountedRef.current = true;
