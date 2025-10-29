@@ -273,7 +273,9 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
     
     
     // Observer effect: emits press update events on `effectivePressed` updates.
-    useEffect(() => {
+    // Use `useLayoutEffect()` to ensure the update is emitted before browser paint,
+    // in case the event handlers manipulate timing-sensitive DOM operations.
+    useLayoutEffect(() => {
         // Emits press update events:
         handlePressUpdate(effectivePressed);
     }, [effectivePressed]);

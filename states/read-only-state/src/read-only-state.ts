@@ -246,7 +246,9 @@ export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>
     
     
     // Observer effect: emits read-only update events on `effectiveReadOnly` updates.
-    useEffect(() => {
+    // Use `useLayoutEffect()` to ensure the update is emitted before browser paint,
+    // in case the event handlers manipulate timing-sensitive DOM operations.
+    useLayoutEffect(() => {
         // Emits read-only update events:
         handleReadOnlyUpdate(effectiveReadOnly);
     }, [effectiveReadOnly]);

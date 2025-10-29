@@ -281,7 +281,9 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
     
     
     // Observer effect: emits focus update events on `effectiveFocused` updates.
-    useEffect(() => {
+    // Use `useLayoutEffect()` to ensure the update is emitted before browser paint,
+    // in case the event handlers manipulate timing-sensitive DOM operations.
+    useLayoutEffect(() => {
         // Emits focus update events:
         handleFocusUpdate(effectiveFocused);
     }, [effectiveFocused]);

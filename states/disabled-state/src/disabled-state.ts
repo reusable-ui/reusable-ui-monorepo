@@ -246,7 +246,9 @@ export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>
     
     
     // Observer effect: emits disabled update events on `effectiveDisabled` updates.
-    useEffect(() => {
+    // Use `useLayoutEffect()` to ensure the update is emitted before browser paint,
+    // in case the event handlers manipulate timing-sensitive DOM operations.
+    useLayoutEffect(() => {
         // Emits disabled update events:
         handleDisabledUpdate(effectiveDisabled);
     }, [effectiveDisabled]);

@@ -273,7 +273,9 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
     
     
     // Observer effect: emits hover update events on `effectiveHovered` updates.
-    useEffect(() => {
+    // Use `useLayoutEffect()` to ensure the update is emitted before browser paint,
+    // in case the event handlers manipulate timing-sensitive DOM operations.
+    useLayoutEffect(() => {
         // Emits hover update events:
         handleHoverUpdate(effectiveHovered);
     }, [effectiveHovered]);

@@ -240,7 +240,9 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     
     
     // Observer effect: emits validity update events on `effectiveValidity` updates.
-    useEffect(() => {
+    // Use `useLayoutEffect()` to ensure the update is emitted before browser paint,
+    // in case the event handlers manipulate timing-sensitive DOM operations.
+    useLayoutEffect(() => {
         // Emits validity update events:
         handleValidityUpdate(effectiveValidity);
     }, [effectiveValidity]);
