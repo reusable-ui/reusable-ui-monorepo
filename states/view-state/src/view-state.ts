@@ -186,7 +186,7 @@ export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewSt
     // Extract props and assign defaults:
     const {
         defaultViewIndex : defaultInitialIntent = defaultViewIndex,
-        viewIndex        : initialIntent        = defaultInitialIntent,
+        viewIndex        : rawInitialIntent     = defaultInitialIntent,
         viewIndex        : controlledViewIndex,
         onViewIndexChange,
     } = props;
@@ -194,6 +194,9 @@ export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewSt
     
     
     // States:
+    
+    // Clamp the initial intent within valid range:
+    const initialIntent        = clamp(minViewIndex, rawInitialIntent, maxViewIndex, viewIndexStep);
     
     // Internal view index state:
     const {
@@ -323,7 +326,7 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     // Extract props and assign defaults:
     const {
         defaultViewIndex : defaultInitialIntent = defaultViewIndex,
-        viewIndex        : initialIntent        = defaultInitialIntent,
+        viewIndex        : rawInitialIntent     = defaultInitialIntent,
         viewIndex        : controlledViewIndex,
         onViewIndexChange,
     } = props;
@@ -357,6 +360,9 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
         │ → `prevSettledViewIndex` enables directional inference                                │
         └───────────────────────────────────────────────────────────────────────────────────────┘
     */
+    
+    // Clamp the initial intent within valid range:
+    const initialIntent        = clamp(minViewIndex, rawInitialIntent, maxViewIndex, viewIndexStep);
     
     // Internal view index state with animation lifecycle:
     const [internalViewIndex, setInternalViewIndex, runningIntent, animationHandlers] = useAnimationState<number, TElement>({
