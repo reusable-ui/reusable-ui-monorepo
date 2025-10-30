@@ -6,22 +6,23 @@ import {
 
 
 /**
- * Resolves the current view-switching lifecycle phase based on index movement and animation intent.
+ * Resolves the current view-switching lifecycle phase based on directional movement and transition status.
  * 
- * - If `runningIntent` is defined, returns a transitional phase:
+ * - If a transition is in progress, returns a transitional phase:
  *   - `'view-progressing'` or `'view-regressing'`
- * - Otherwise, falls back to the resolved state:
+ * - Otherwise, returns the settled phase:
  *   - `'view-settled'`
  * 
- * @param prevViewIndex - The previous resolved view index.
- * @param runningIntent - The target view index being animated toward.
+ * @param prevSettledViewIndex - The previously settled view index.
+ * @param settledViewIndex - The currently settled (laggy) view index.
+ * @param isTransitioning - Whether a transition is currently in progress.
  * @returns The current `ViewPhase` value.
  */
-export const resolveViewPhase = (prevViewIndex: number | undefined, runningIntent: number | undefined): ViewPhase => {
-    if ((runningIntent !== undefined) && (prevViewIndex !== undefined)) {
+export const resolveViewPhase = (prevSettledViewIndex: number | undefined, settledViewIndex: number, isTransitioning: boolean): ViewPhase => {
+    if (isTransitioning && (prevSettledViewIndex !== undefined)) {
         return (
             // Determine the direction of movement (the same index counts as **forward**, which should never happen):
-            (runningIntent >= prevViewIndex)
+            (settledViewIndex >= prevSettledViewIndex)
             ? 'view-progressing'
             : 'view-regressing'
         );

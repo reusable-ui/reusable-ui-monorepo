@@ -332,6 +332,32 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     
     // States and flags:
     
+    /*
+        ┌───────────────────────────────────────────────────────────────────────────────────────┐
+        │                               View Transition Lifecycle                               │
+        ├────────────┬────────────┬─────────────────────────────────────────────────────────────┤
+        │  Block #   │   Label    │                        Meaning / Role                       │
+        ├────────────┼────────────┼─────────────────────────────────────────────────────────────┤
+        │     0      │   past     │ Historical view index before any transition                 │
+        │     1      │   past     │ Historical view index before any transition                 │
+        │     2  ─┐  │   prev     │ Previously settled view index                               │
+        │  x  3   │  │ discarded  │ Interrupted intent — never animated                         │
+        │  x  4   │  │ discarded  │ Interrupted intent — never animated                         │
+        │  x  5   v  │ discarded  │ Interrupted intent — never animated                         │
+        │     6  ─┘  │ settled    │ Current laggy view index (settled after animation)          │
+        │  x  7   │  │ deferred   │ Overwritten intent — will be discarded                      │
+        │  x  8   v  │ deferred   │ Overwritten intent — will be discarded                      │
+        │     9  ─┘  │ effective  │ Final intent — will animate after current animation ends    │
+        ├────────────┴────────────┴─────────────────────────────────────────────────────────────┤
+        │ → Only one animation runs at a time and cannot be interrupted mid-flight              │
+        │ → Current animation direction: top to bottom (from block #2 to #6)                    │
+        │ → Intermediate deferred intents are discarded                                         │
+        │ → Only the latest deferred intent (effective) will animate next (from block #6 to #9) │
+        │ → `settledViewIndex` lags behind `effectiveViewIndex` during animation                │
+        │ → `prevSettledViewIndex` enables directional inference                                │
+        └───────────────────────────────────────────────────────────────────────────────────────┘
+    */
+    
     // Internal view index state with animation lifecycle:
     const [internalViewIndex, setInternalViewIndex, runningIntent, animationHandlers] = useAnimationState<number, TElement>({
         initialIntent,
@@ -347,9 +373,10 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     const effectiveViewIndex   = clamp(minViewIndex, unclampedViewIndex, maxViewIndex, viewIndexStep);
     
     // The current settled or animating target view index.
-    // This value may slightly lag behind the actual resolved index due to in-flight animations.
-    // It updates only after an animation completes, ensuring the styling remains in sync with animation state.
-    // The discarded pending views are never reflected here.
+    // During animation, this reflects the active target (`runningIntent`).
+    // If no animation is active, it reflects the latest declared intent (`effectiveViewIndex`), even if not yet committed.
+    // This optimistic fallback ensures directional inference and styling remain in sync with declared transitions.
+    // Deferred or discarded intents are never reflected here.
     const settledViewIndex     = runningIntent ?? effectiveViewIndex;
     
     // The previously settled view index before the most recent transition.
@@ -359,17 +386,33 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     // Useful for directional inference, layout comparisons, and transition-aware animations.
     const prevSettledViewIndex = usePreviousValue<number>(settledViewIndex);
     
+    // Determine whether a transition toward the effective view index is currently in progress:
+    const isTransitioning      = (
+        // An in-flight animation is active toward a target view index:
+        (runningIntent !== undefined)
+        
+        ||
+        
+        // An optimistic transition is pending: the intent has changed, but React has not yet re-rendered to reflect it.
+        // This mismatch is expected and resolves once `setInternalViewIndex(effectiveViewIndex)` takes effect.
+        (internalViewIndex !== effectiveViewIndex)
+    );
+    
     // Derive semantic phase from animation lifecycle:
-    const viewPhase            = resolveViewPhase(prevSettledViewIndex, runningIntent); // 'view-progressing', 'view-regressing', 'view-settled'
+    const viewPhase            = resolveViewPhase(prevSettledViewIndex, settledViewIndex, isTransitioning); // 'view-progressing', 'view-regressing', 'view-settled'
     
     
     
     // Sync animation state with effective view index:
-    // Use `useLayoutEffect()` to make sure the `runningIntent` updates before browser paint,
-    // preventing premature `'view-settled'` phase accidentally painted during switching to another view.
-    useLayoutEffect(() => {
+    // Use regular `useEffect()` is sufficient, since phase resolution no longer depends on pre-paint timing.
+    // The `useAnimationState()` hook internally treats missing animation events as immediately completed transitions.
+    useEffect(() => {
         // The `setInternalViewIndex()` has internal `Object.is()` check to avoid redundant state updates.
         setInternalViewIndex(effectiveViewIndex);
+        
+        // Note: If `setInternalViewIndex()` is delayed (e.g. by React's render scheduler),
+        // both `internalViewIndex` and `runningIntent` may remain stale temporarily.
+        // This introduces a brief pre-transition ambiguity, safely handled by `isTransitioning` logic.
     }, [effectiveViewIndex]);
     
     
@@ -390,8 +433,7 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     
     
     // Determine the range of visible views, including during transitions:
-    const isSettled = runningIntent === undefined;
-    const fromIndex = isSettled ? settledViewIndex : (prevSettledViewIndex ?? settledViewIndex);
+    const fromIndex = isTransitioning ? (prevSettledViewIndex ?? settledViewIndex) : settledViewIndex;
     const toIndex   = settledViewIndex;
     const [minVisibleViewIndex, maxVisibleViewIndex] = (
         fromIndex < toIndex
