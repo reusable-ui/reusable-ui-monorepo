@@ -451,7 +451,7 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     
     // Return resolved view-switching state API:
     return {
-        viewIndex           : settledViewIndex,     // Use `settledViewIndex` instead of `effectiveViewIndex`, because during animation, the settled index reflects the target view.
+        viewIndex           : settledViewIndex,     // Use `settledViewIndex` instead of `effectiveViewIndex`, because during animation, the settled index reflects the visually committed view.
         prevViewIndex       : prevSettledViewIndex, // Include the previous settled index for conditionally rendering the origin view during animations.
         minVisibleViewIndex,                        // The minimum visible view index in the current transition or settled state.
         maxVisibleViewIndex,                        // The maximum visible view index in the current transition or settled state.
