@@ -343,7 +343,7 @@ test.describe('useCollapseBehaviorState - uncontrolled mode', () => {
                     action                : 'collapse',
                     
                     delay                 : 200,
-                    expectedExpanded      : 'collapsed',
+                    expectedExpanded      : 'expanded', // Still expanded because the expanding animation is not finished yet.
                     expectedRunningExpand : true,  // Still expanding (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -385,7 +385,7 @@ test.describe('useCollapseBehaviorState - uncontrolled mode', () => {
                     action                : 'expand',
                     
                     delay                 : 200,
-                    expectedExpanded      : 'expanded',
+                    expectedExpanded      : 'collapsed', // Still collapsed because the collapsing animation is not finished yet.
                     expectedRunningExpand : false,  // Still collapsing (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -465,11 +465,24 @@ test.describe('useCollapseBehaviorState - uncontrolled mode', () => {
                     
                     // Simulate user interaction to change the state:
                     if (action === 'expand') {
-                        await component.getByTestId('expand-btn').click();
+                        await component.getByTestId('expand-btn').click({
+                            force: true,
+                            noWaitAfter: true,
+                            timeout : 0,
+                        });
                     }
                     else if (action === 'collapse') {
-                        await component.getByTestId('collapse-btn').click();
+                        await component.getByTestId('collapse-btn').click({
+                            force: true,
+                            noWaitAfter: true,
+                            timeout : 0,
+                        });
                     } // if
+                    
+                    // Wait for brief moment to ensure the click event is already processed:
+                    await new Promise((resolve) => {
+                        setTimeout(resolve, 10);
+                    });
                     
                     // Ensure the change handler was called with correct parameters:
                     expect(lastNewExpanded).toBe(action === 'expand');
