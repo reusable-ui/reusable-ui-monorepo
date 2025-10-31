@@ -6,25 +6,25 @@ import {
 
 
 /**
- * Resolves the current expand/collapse lifecycle phase based on expansion state and animation intent.
+ * Resolves the current expand/collapse lifecycle phase based on expansion state and transition status.
  * 
- * - If `runningIntent` is defined, returns a transitional phase:
+ * - If a transition is in progress, returns a transitional phase:
  *   - `'expanding'` or `'collapsing'`
- * - Otherwise, falls back to the resolved state:
+ * - Otherwise, returns the settled phase:
  *   - `'expanded'` or `'collapsed'`
  * 
- * @param expanded - The current resolved expanded state.
- * @param runningIntent - The target expanded state being animated toward.
+ * @param settledExpanded - The currently settled (laggy) expansion state.
+ * @param isTransitioning - Whether a transition is currently in progress.
  * @returns The current `ExpandPhase` value.
  */
-export const resolveExpandPhase = (expanded: boolean, runningIntent: boolean | undefined): ExpandPhase => {
-    if (runningIntent !== undefined) {
-        return runningIntent ? 'expanding' : 'collapsing';
+export const resolveExpandPhase = (settledExpanded: boolean, isTransitioning: boolean): ExpandPhase => {
+    if (isTransitioning) {
+        return settledExpanded ? 'expanding' : 'collapsing';
     } // if
     
     
     
-    return expanded ? 'expanded' : 'collapsed';
+    return settledExpanded ? 'expanded' : 'collapsed';
 };
 
 

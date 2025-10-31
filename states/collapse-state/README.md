@@ -49,6 +49,7 @@ export interface CollapsibleBoxProps extends
 export const CollapsibleBox: FC<CollapsibleBoxProps> = (props) => {
     const {
         expanded,
+        actualExpanded,
         expandPhase,
         expandClassname,
         
