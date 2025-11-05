@@ -170,6 +170,7 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
  *     
  *     const {
  *         focused,
+ *         actualFocused,
  *         focusPhase,
  *         focusClassname,
  *         
@@ -250,23 +251,47 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
     const effectiveFocused      = isExplicitValue ? controlledFocused : resolvedComputedFocus;
     
     // Internal animation lifecycle:
-    const [, setInternalFocused, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
+    const [internalFocused, setInternalFocused, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
         initialIntent : effectiveFocused,
         animationPattern,
         animationBubbling,
     });
     
+    // The current settled or animating focus state.
+    // During animation, this reflects the active target (`runningIntent`).
+    // If no animation is active, it reflects the latest declared intent (`effectiveFocused`), even if not yet committed.
+    // This optimistic fallback ensures transition logic and styling remain in sync with declared transitions.
+    // Deferred or discarded intents are never reflected here.
+    const settledFocused        = runningIntent ?? effectiveFocused;
+    
+    // Determine whether a transition toward the effective focus state is currently in progress:
+    const isTransitioning       = (
+        // An in-flight animation is active toward a target focus state:
+        (runningIntent !== undefined)
+        
+        ||
+        
+        // An optimistic transition is pending: the intent has changed, but React has not yet re-rendered to reflect it.
+        // This mismatch is expected and resolves once `setInternalFocused(effectiveFocused)` takes effect.
+        (internalFocused !== effectiveFocused)
+    );
+    
     // Derive semantic phase from animation lifecycle:
-    const focusPhase            = resolveFocusPhase(effectiveFocused, runningIntent); // 'focused', 'blurred', 'focusing', 'blurring'
+    const focusPhase            = resolveFocusPhase(settledFocused, isTransitioning); // 'focused', 'blurred', 'focusing', 'blurring'
     
     
     
     // Sync animation state with effective focus state:
-    // Use `useLayoutEffect()` to make sure the `runningIntent` updates before browser paint,
-    // preventing premature `'focused'` and `'blurred'` phase accidentally painted during switching to another state.
+    // Use `useLayoutEffect()` to ensure the intent is registered before the browser fires `animationstart`.
+    // This guarantees the animation lifecycle handshake completes correctly.
+    // The `useAnimationState()` hook internally treats missing animation events as immediately completed transitions.
     useLayoutEffect(() => {
         // The `setInternalFocused()` has internal `Object.is()` check to avoid redundant state updates.
         setInternalFocused(effectiveFocused);
+        
+        // Note: If `setInternalFocused()` is delayed (e.g. by React's render scheduler),
+        // both `internalFocused` and `runningIntent` may remain stale temporarily.
+        // This introduces a brief pre-transition ambiguity, safely handled by `isTransitioning` logic.
     }, [effectiveFocused]);
     
     
@@ -292,7 +317,8 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
     
     // Return resolved focus state API:
     return {
-        focused        : effectiveFocused,
+        focused        : settledFocused,   // Use `settledFocused` instead of `effectiveFocused`, because during animation, the settled state reflects the visually committed focus state.
+        actualFocused  : effectiveFocused, // Expose the actual effective state for advanced use cases.
         focusPhase,
         focusClassname : getFocusClassname(focusPhase, inputLikeFocus),
         ...animationHandlers,

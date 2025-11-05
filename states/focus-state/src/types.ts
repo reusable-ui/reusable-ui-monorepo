@@ -217,14 +217,32 @@ export interface FocusBehaviorState<TElement extends Element = HTMLElement>
         AnimationStateHandlers<TElement>
 {
     /**
-     * Indicates the current resolved focus state.
-     * This reflects the final diagnostic status, not the transitional intent.
+     * The current settled focus/blur state used for animation-aware rendering and behavioral coordination.
+     * 
+     * This value may slightly lag behind the actual resolved state due to in-flight animations.
+     * It updates only after an animation completes, ensuring the styling remains in sync with animation lifecycle.
+     * 
+     * Useful for rendering the focus/blur state in sync with animation lifecycle.
      * 
      * Possible values:
-     * - `true`  : the component is focused
-     * - `false` : the component is blurred
+     * - `true`  : the component has visually settled in focused state
+     * - `false` : the component has visually settled in blurred state
      */
     focused        : boolean
+    
+    /**
+     * The actual resolved focus/blur state, regardless of animation state.
+     * 
+     * This reflects the current target state based on the final diagnostic status.
+     * Unlike `focused`, it updates immediately and does not wait for transitions to complete.
+     * 
+     * Useful for logic that needs the latest intent or target state, independent of animation lifecycle.
+     * 
+     * Possible values:
+     * - `true`  : the component is intended to be focused
+     * - `false` : the component is intended to be blurred
+     */
+    actualFocused  : boolean
     
     /**
      * The current transition phase of the focus/blur lifecycle.

@@ -6,25 +6,25 @@ import {
 
 
 /**
- * Resolves the current focus/blur lifecycle phase based on focus state and animation intent.
+ * Resolves the current focus/blur lifecycle phase based on focus state and transition status.
  * 
- * - If `runningIntent` is defined, returns a transitional phase:
+ * - If a transition is in progress, returns a transitional phase:
  *   - `'focusing'` or `'blurring'`
- * - Otherwise, falls back to the resolved state:
+ * - Otherwise, returns the settled phase:
  *   - `'focused'` or `'blurred'`
  * 
- * @param focused - The current resolved focus state.
- * @param runningIntent - The target focus state being animated toward.
+ * @param settledFocused - The currently settled (laggy) focus state.
+ * @param isTransitioning - Whether a transition is currently in progress.
  * @returns The current `FocusPhase` value.
  */
-export const resolveFocusPhase = (focused: boolean, runningIntent: boolean | undefined): FocusPhase => {
-    if (runningIntent !== undefined) {
-        return runningIntent ? 'focusing' : 'blurring';
+export const resolveFocusPhase = (settledFocused: boolean, isTransitioning: boolean): FocusPhase => {
+    if (isTransitioning) {
+        return settledFocused ? 'focusing' : 'blurring';
     } // if
     
     
     
-    return focused ? 'focused' : 'blurred';
+    return settledFocused ? 'focused' : 'blurred';
 };
 
 

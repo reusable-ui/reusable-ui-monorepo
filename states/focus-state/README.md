@@ -70,6 +70,7 @@ export const CustomButton: FC<CustomButtonProps> = (props) => {
     
     const {
         focused,
+        actualFocused,
         focusPhase,
         focusClassname,
         
