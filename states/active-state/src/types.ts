@@ -220,14 +220,32 @@ export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TCh
         AnimationStateHandlers<TElement>
 {
     /**
-     * Indicates the current resolved active/inactive state.
-     * This reflects the final controlled state, not the transitional intent.
+     * The current settled active/inactive state used for animation-aware rendering and behavioral coordination.
+     * 
+     * This value may slightly lag behind the actual resolved state due to in-flight animations.
+     * It updates only after an animation completes, ensuring the styling remains in sync with animation lifecycle.
+     * 
+     * Useful for rendering the active/inactive state in sync with animation lifecycle.
      * 
      * Possible values:
-     * - `true`  : the component is active
-     * - `false` : the component is inactive
+     * - `true`  : the component has visually settled in active state
+     * - `false` : the component has visually settled in inactive state
      */
     active               : boolean
+    
+    /**
+     * The actual resolved active/inactive state, regardless of animation state.
+     * 
+     * This reflects the current target state based on controlled or uncontrolled mode.
+     * Unlike `active`, it updates immediately and does not wait for transitions to complete.
+     * 
+     * Useful for logic that needs the latest intent or target state, independent of animation lifecycle.
+     * 
+     * Possible values:
+     * - `true`  : the component is intended to be active
+     * - `false` : the component is intended to be inactive
+     */
+    actualActive         : boolean
     
     /**
      * The current transition phase of the activate/deactivate lifecycle.

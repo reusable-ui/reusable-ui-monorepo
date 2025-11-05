@@ -276,6 +276,7 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
  * export const ActivatableBox: FC<ActivatableBoxProps> = (props) => {
  *     const {
  *         active,
+ *         actualActive,
  *         activePhase,
  *         activeClassname,
  *         
@@ -347,17 +348,40 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
     const intendedActive  = isControlled ? controlledActive : internalActive;
     const effectiveActive = useEffectiveActiveValue(intendedActive, cascadeActive);
     
+    // The current settled or animating active state.
+    // During animation, this reflects the active target (`runningIntent`).
+    // If no animation is active, it reflects the latest declared intent (`effectiveActive`), even if not yet committed.
+    // This optimistic fallback ensures transition logic and styling remain in sync with declared transitions.
+    // Deferred or discarded intents are never reflected here.
+    const settledActive   = runningIntent ?? effectiveActive;
+    
+    // Determine whether a transition toward the effective active state is currently in progress:
+    const isTransitioning = (
+        // An in-flight animation is active toward a target active state:
+        (runningIntent !== undefined)
+        
+        ||
+        
+        // An optimistic transition is pending: the intent has changed, but React has not yet re-rendered to reflect it.
+        // This mismatch is expected and resolves once `setInternalActive(effectiveActive)` takes effect.
+        (internalActive !== effectiveActive)
+    );
+    
     // Derive semantic phase from animation lifecycle:
-    const activePhase     = resolveActivePhase(effectiveActive, runningIntent); // 'active', 'inactive', 'activating', 'deactivating'
+    const activePhase     = resolveActivePhase(settledActive, isTransitioning); // 'active', 'inactive', 'activating', 'deactivating'
     
     
     
     // Sync animation state with effective activation state:
-    // Use `useLayoutEffect()` to make sure the `runningIntent` updates before browser paint,
-    // preventing premature `'active'` and `'inactive'` phase accidentally painted during switching to another state.
-    useLayoutEffect(() => {
+    // Use regular `useEffect()` is sufficient, since phase resolution no longer depends on pre-paint timing.
+    // The `useAnimationState()` hook internally treats missing animation events as immediately completed transitions.
+    useEffect(() => {
         // The `setInternalActive()` has internal `Object.is()` check to avoid redundant state updates.
         setInternalActive(effectiveActive);
+        
+        // Note: If `setInternalActive()` is delayed (e.g. by React's render scheduler),
+        // both `internalActive` and `runningIntent` may remain stale temporarily.
+        // This introduces a brief pre-transition ambiguity, safely handled by `isTransitioning` logic.
     }, [effectiveActive]);
     
     
@@ -379,7 +403,8 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
     
     // Return resolved active state API:
     return {
-        active          : effectiveActive,
+        active          : settledActive,    // Use `settledActive` instead of `effectiveActive`, because during animation, the settled state reflects the visually committed active state.
+        actualActive    : effectiveActive,  // Expose the actual effective state for advanced use cases.
         activePhase,
         activeClassname : getActiveClassname(activePhase),
         dispatchActiveChange,

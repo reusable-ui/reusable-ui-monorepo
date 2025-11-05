@@ -6,25 +6,25 @@ import {
 
 
 /**
- * Resolves the current activate/deactivate lifecycle phase based on activation state and animation intent.
+ * Resolves the current activate/deactivate lifecycle phase based on activation state and transition status.
  * 
- * - If `runningIntent` is defined, returns a transitional phase:
+ * - If a transition is in progress, returns a transitional phase:
  *   - `'activating'` or `'deactivating'`
- * - Otherwise, falls back to the resolved state:
+ * - Otherwise, returns the settled phase:
  *   - `'active'` or `'inactive'`
  * 
- * @param active - The current resolved active state.
- * @param runningIntent - The target active state being animated toward.
+ * @param settledActive - The currently settled (laggy) active state.
+ * @param isTransitioning - Whether a transition is currently in progress.
  * @returns The current `ActivePhase` value.
  */
-export const resolveActivePhase = (active: boolean, runningIntent: boolean | undefined): ActivePhase => {
-    if (runningIntent !== undefined) {
-        return runningIntent ? 'activating' : 'deactivating';
+export const resolveActivePhase = (settledActive: boolean, isTransitioning: boolean): ActivePhase => {
+    if (isTransitioning) {
+        return settledActive ? 'activating' : 'deactivating';
     } // if
     
     
     
-    return active ? 'active' : 'inactive';
+    return settledActive ? 'active' : 'inactive';
 };
 
 

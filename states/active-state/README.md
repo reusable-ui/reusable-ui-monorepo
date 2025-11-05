@@ -51,6 +51,7 @@ export interface ActivatableBoxProps extends
 export const ActivatableBox: FC<ActivatableBoxProps> = (props) => {
     const {
         active,
+        actualActive,
         activePhase,
         activeClassname,
         
