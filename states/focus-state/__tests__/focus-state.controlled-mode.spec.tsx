@@ -346,7 +346,7 @@ test.describe('useFocusBehaviorState - controlled mode', () => {
                     focused              : false,
                     
                     delay                : 200,
-                    expectedFocus        : 'blurred',
+                    expectedFocus        : 'focused', // Still focused because the focusing animation is not finished yet.
                     expectedRunningFocus : true,  // Still focusing (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -388,7 +388,7 @@ test.describe('useFocusBehaviorState - controlled mode', () => {
                     focused              : true,
                     
                     delay                : 200,
-                    expectedFocus        : 'focused',
+                    expectedFocus        : 'blurred', // Still blurred because the blurring animation is not finished yet.
                     expectedRunningFocus : false,  // Still blurring (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -650,7 +650,7 @@ test.describe('useFocusBehaviorState - controlled mode', () => {
                     computedFocus        : false,
                     
                     delay                : 200,
-                    expectedFocus        : 'blurred',
+                    expectedFocus        : 'focused', // Still focused because the focusing animation is not finished yet.
                     expectedRunningFocus : true,  // Still focusing (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -693,7 +693,7 @@ test.describe('useFocusBehaviorState - controlled mode', () => {
                     computedFocus        : true,
                     
                     delay                : 200,
-                    expectedFocus        : 'focused',
+                    expectedFocus        : 'blurred', // Still blurred because the blurring animation is not finished yet.
                     expectedRunningFocus : false,  // Still blurring (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
