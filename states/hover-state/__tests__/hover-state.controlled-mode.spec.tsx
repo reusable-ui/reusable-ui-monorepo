@@ -346,7 +346,7 @@ test.describe('useHoverBehaviorState - controlled mode', () => {
                     hovered              : false,
                     
                     delay                : 200,
-                    expectedHover        : 'leaved',
+                    expectedHover        : 'hovered', // Still hovered because the hovering animation is not finished yet.
                     expectedRunningHover : true,  // Still hovering (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -388,7 +388,7 @@ test.describe('useHoverBehaviorState - controlled mode', () => {
                     hovered              : true,
                     
                     delay                : 200,
-                    expectedHover        : 'hovered',
+                    expectedHover        : 'leaved', // Still leaved because the leaving animation is not finished yet.
                     expectedRunningHover : false,  // Still leaving (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -650,7 +650,7 @@ test.describe('useHoverBehaviorState - controlled mode', () => {
                     computedHover        : false,
                     
                     delay                : 200,
-                    expectedHover        : 'leaved',
+                    expectedHover        : 'hovered', // Still hovered because the hovering animation is not finished yet.
                     expectedRunningHover : true,  // Still hovering (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -693,7 +693,7 @@ test.describe('useHoverBehaviorState - controlled mode', () => {
                     computedHover        : true,
                     
                     delay                : 200,
-                    expectedHover        : 'hovered',
+                    expectedHover        : 'leaved', // Still leaved because the leaving animation is not finished yet.
                     expectedRunningHover : false,  // Still leaving (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
