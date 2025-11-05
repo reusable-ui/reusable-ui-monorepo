@@ -361,7 +361,7 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
                     active                  : false,
                     
                     delay                   : 200,
-                    expectedActive          : 'inactive',
+                    expectedActive          : 'active', // Still active because the activating animation is not finished yet.
                     expectedRunningActivate : true,  // Still activating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -403,7 +403,7 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
                     active                  : true,
                     
                     delay                   : 200,
-                    expectedActive          : 'active',
+                    expectedActive          : 'inactive', // Still inactive because the deactivating animation is not finished yet.
                     expectedRunningActivate : false,  // Still deactivating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -660,7 +660,7 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
                     action                  : 'deactivate',
                     
                     delay                   : 200,
-                    expectedActive          : 'inactive',
+                    expectedActive          : 'active', // Still active because the activating animation is not finished yet.
                     expectedRunningActivate : true,  // Still activating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -702,7 +702,7 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
                     action                  : 'activate',
                     
                     delay                   : 200,
-                    expectedActive          : 'active',
+                    expectedActive          : 'inactive', // Still inactive because the deactivating animation is not finished yet.
                     expectedRunningActivate : false,  // Still deactivating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -1001,7 +1001,7 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
                     parentInactive          : true,
                     
                     delay                   : 200,
-                    expectedInactive        : 'inactive',
+                    expectedInactive        : 'active', // Still active because the activating animation is not finished yet.
                     expectedRunningInactive : false,  // Still activating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -1043,7 +1043,7 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
                     parentInactive          : false,
                     
                     delay                   : 200,
-                    expectedInactive        : 'active',
+                    expectedInactive        : 'inactive', // Still inactive because the deactivating animation is not finished yet.
                     expectedRunningInactive : true,  // Still deactivating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -1170,11 +1170,24 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
                     
                     // Simulate user interaction to change the state:
                     if (action === 'activate') {
-                        await component.getByTestId('activate-btn').click();
+                        await component.getByTestId('activate-btn').click({
+                            force: true,
+                            noWaitAfter: true,
+                            timeout : 0,
+                        });
                     }
                     else if (action === 'deactivate') {
-                        await component.getByTestId('deactivate-btn').click();
+                        await component.getByTestId('deactivate-btn').click({
+                            force: true,
+                            noWaitAfter: true,
+                            timeout : 0,
+                        });
                     } // if
+                    
+                    // Wait for brief moment to ensure the click event is already processed:
+                    await new Promise((resolve) => {
+                        setTimeout(resolve, 10);
+                    });
                     
                     // Ensure the change handler was called with correct parameters:
                     expect(lastNewActive).toBe(action === 'activate');

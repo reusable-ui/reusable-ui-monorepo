@@ -470,11 +470,24 @@ test.describe('useActiveStatePhaseEvents', () => {
                     
                     // Simulate user interaction to change the state:
                     if (action === 'activate') {
-                        await component.getByTestId('activate-btn').click();
+                        await component.getByTestId('activate-btn').click({
+                            force: true,
+                            noWaitAfter: true,
+                            timeout : 0,
+                        });
                     }
                     else if (action === 'deactivate') {
-                        await component.getByTestId('deactivate-btn').click();
+                        await component.getByTestId('deactivate-btn').click({
+                            force: true,
+                            noWaitAfter: true,
+                            timeout : 0,
+                        });
                     } // if
+                    
+                    // Wait for brief moment to ensure the click event is already processed:
+                    await new Promise((resolve) => {
+                        setTimeout(resolve, 10);
+                    });
                     
                     // Ensure the change handler was called with correct parameters:
                     expect(lastNewActive).toBe(action === 'activate');
