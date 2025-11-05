@@ -403,8 +403,8 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
     
     // Return resolved active state API:
     return {
-        active          : settledActive,    // Use `settledActive` instead of `effectiveActive`, because during animation, the settled state reflects the visually committed active state.
-        actualActive    : effectiveActive,  // Expose the actual effective state for advanced use cases.
+        active          : settledActive,   // Use `settledActive` instead of `effectiveActive`, because during animation, the settled state reflects the visually committed active state.
+        actualActive    : effectiveActive, // Expose the actual effective state for advanced use cases.
         activePhase,
         activeClassname : getActiveClassname(activePhase),
         dispatchActiveChange,
