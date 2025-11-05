@@ -206,14 +206,32 @@ export interface HoverBehaviorState<TElement extends Element = HTMLElement>
         AnimationStateHandlers<TElement>
 {
     /**
-     * Indicates the current resolved hover state.
-     * This reflects the final diagnostic status, not the transitional intent.
+     * The current settled hovered/leaved state used for animation-aware rendering and behavioral coordination.
+     * 
+     * This value may slightly lag behind the actual resolved state due to in-flight animations.
+     * It updates only after an animation completes, ensuring the styling remains in sync with animation lifecycle.
+     * 
+     * Useful for rendering the hovered/leaved state in sync with animation lifecycle.
      * 
      * Possible values:
-     * - `true`  : the component is hovered
-     * - `false` : the component is leaved
+     * - `true`  : the component has visually settled in hovered state
+     * - `false` : the component has visually settled in leaved state
      */
     hovered           : boolean
+    
+    /**
+     * The actual resolved hovered/leaved state, regardless of animation state.
+     * 
+     * This reflects the current target state based on the final diagnostic status.
+     * Unlike `hovered`, it updates immediately and does not wait for transitions to complete.
+     * 
+     * Useful for logic that needs the latest intent or target state, independent of animation lifecycle.
+     * 
+     * Possible values:
+     * - `true`  : the component is intended to be hovered
+     * - `false` : the component is intended to be leaved
+     */
+    actualHovered     : boolean
     
     /**
      * The current transition phase of the hover/leave lifecycle.

@@ -68,6 +68,7 @@ export const CustomCard: FC<CustomCardProps> = (props) => {
     
     const {
         hovered,
+        actualHovered,
         hoverPhase,
         hoverClassname,
         

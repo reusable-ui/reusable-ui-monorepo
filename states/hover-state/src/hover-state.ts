@@ -166,6 +166,7 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
  *     
  *     const {
  *         hovered,
+ *         actualHovered,
  *         hoverPhase,
  *         hoverClassname,
  *         
@@ -242,23 +243,47 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
     const effectiveHovered      = isExplicitValue ? controlledHovered : resolvedComputedHover;
     
     // Internal animation lifecycle:
-    const [, setInternalHovered, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
+    const [internalHovered, setInternalHovered, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
         initialIntent : effectiveHovered,
         animationPattern,
         animationBubbling,
     });
     
+    // The current settled or animating hover state.
+    // During animation, this reflects the active target (`runningIntent`).
+    // If no animation is active, it reflects the latest declared intent (`effectiveHovered`), even if not yet committed.
+    // This optimistic fallback ensures transition logic and styling remain in sync with declared transitions.
+    // Deferred or discarded intents are never reflected here.
+    const settledHovered        = runningIntent ?? effectiveHovered;
+    
+    // Determine whether a transition toward the effective hover state is currently in progress:
+    const isTransitioning       = (
+        // An in-flight animation is active toward a target hover state:
+        (runningIntent !== undefined)
+        
+        ||
+        
+        // An optimistic transition is pending: the intent has changed, but React has not yet re-rendered to reflect it.
+        // This mismatch is expected and resolves once `setInternalHovered(effectiveHovered)` takes effect.
+        (internalHovered !== effectiveHovered)
+    );
+    
     // Derive semantic phase from animation lifecycle:
-    const hoverPhase            = resolveHoverPhase(effectiveHovered, runningIntent); // 'hovered', 'leaved', 'hovering', 'leaving'
+    const hoverPhase            = resolveHoverPhase(settledHovered, isTransitioning); // 'hovered', 'leaved', 'hovering', 'leaving'
     
     
     
     // Sync animation state with effective hover state:
-    // Use `useLayoutEffect()` to make sure the `runningIntent` updates before browser paint,
-    // preventing premature `'hovered'` and `'leaved'` phase accidentally painted during switching to another state.
+    // Use `useLayoutEffect()` to ensure the intent is registered before the browser fires `animationstart`.
+    // This guarantees the animation lifecycle handshake completes correctly.
+    // The `useAnimationState()` hook internally treats missing animation events as immediately completed transitions.
     useLayoutEffect(() => {
         // The `setInternalHovered()` has internal `Object.is()` check to avoid redundant state updates.
         setInternalHovered(effectiveHovered);
+        
+        // Note: If `setInternalHovered()` is delayed (e.g. by React's render scheduler),
+        // both `internalHovered` and `runningIntent` may remain stale temporarily.
+        // This introduces a brief pre-transition ambiguity, safely handled by `isTransitioning` logic.
     }, [effectiveHovered]);
     
     
@@ -284,7 +309,8 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
     
     // Return resolved hover state API:
     return {
-        hovered        : effectiveHovered,
+        hovered        : settledHovered,   // Use `settledHovered` instead of `effectiveHovered`, because during animation, the settled state reflects the visually committed hover state.
+        actualHovered  : effectiveHovered, // Expose the actual effective state for advanced use cases.
         hoverPhase,
         hoverClassname : getHoverClassname(hoverPhase),
         ...animationHandlers,

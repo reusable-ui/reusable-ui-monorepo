@@ -6,25 +6,25 @@ import {
 
 
 /**
- * Resolves the current hover/leave lifecycle phase based on hover state and animation intent.
+ * Resolves the current hover/leave lifecycle phase based on hover state and transition status.
  * 
- * - If `runningIntent` is defined, returns a transitional phase:
+ * - If a transition is in progress, returns a transitional phase:
  *   - `'hovering'` or `'leaving'`
- * - Otherwise, falls back to the resolved state:
+ * - Otherwise, returns the settled phase:
  *   - `'hovered'` or `'leaved'`
  * 
- * @param hovered - The current resolved hover state.
- * @param runningIntent - The target hover state being animated toward.
+ * @param settledHovered - The currently settled (laggy) hover state.
+ * @param isTransitioning - Whether a transition is currently in progress.
  * @returns The current `HoverPhase` value.
  */
-export const resolveHoverPhase = (hovered: boolean, runningIntent: boolean | undefined): HoverPhase => {
-    if (runningIntent !== undefined) {
-        return runningIntent ? 'hovering' : 'leaving';
+export const resolveHoverPhase = (settledHovered: boolean, isTransitioning: boolean): HoverPhase => {
+    if (isTransitioning) {
+        return settledHovered ? 'hovering' : 'leaving';
     } // if
     
     
     
-    return hovered ? 'hovered' : 'leaved';
+    return settledHovered ? 'hovered' : 'leaved';
 };
 
 
