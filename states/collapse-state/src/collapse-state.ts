@@ -307,9 +307,10 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
     
     
     // Sync animation state with effective expansion state:
-    // Use regular `useEffect()` is sufficient, since phase resolution no longer depends on pre-paint timing.
+    // Use `useLayoutEffect()` to ensure the intent is registered before the browser fires `animationstart`.
+    // This guarantees the animation lifecycle handshake completes correctly.
     // The `useAnimationState()` hook internally treats missing animation events as immediately completed transitions.
-    useEffect(() => {
+    useLayoutEffect(() => {
         // The `setInternalExpanded()` has internal `Object.is()` check to avoid redundant state updates.
         setInternalExpanded(effectiveExpanded);
         
