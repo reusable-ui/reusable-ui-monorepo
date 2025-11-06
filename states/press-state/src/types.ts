@@ -206,14 +206,32 @@ export interface PressBehaviorState<TElement extends Element = HTMLElement>
         AnimationStateHandlers<TElement>
 {
     /**
-     * Indicates the current resolved press state.
-     * This reflects the final diagnostic status, not the transitional intent.
+     * The current settled pressed/released state used for animation-aware rendering and behavioral coordination.
+     * 
+     * This value may slightly lag behind the actual resolved state due to in-flight animations.
+     * It updates only after an animation completes, ensuring the styling remains in sync with animation lifecycle.
+     * 
+     * Useful for rendering the pressed/released state in sync with animation lifecycle.
      * 
      * Possible values:
-     * - `true`  : the component is pressed
-     * - `false` : the component is released
+     * - `true`  : the component has visually settled in pressed state
+     * - `false` : the component has visually settled in released state
      */
     pressed         : boolean
+    
+    /**
+     * The actual resolved pressed/released state, regardless of animation state.
+     * 
+     * This reflects the current target state based on the final diagnostic status.
+     * Unlike `pressed`, it updates immediately and does not wait for transitions to complete.
+     * 
+     * Useful for logic that needs the latest intent or target state, independent of animation lifecycle.
+     * 
+     * Possible values:
+     * - `true`  : the component is intended to be pressed
+     * - `false` : the component is intended to be released
+     */
+    actualPressed   : boolean
     
     /**
      * The current transition phase of the press/release lifecycle.

@@ -6,25 +6,25 @@ import {
 
 
 /**
- * Resolves the current press/release lifecycle phase based on press state and animation intent.
+ * Resolves the current press/release lifecycle phase based on press state and transition status.
  * 
- * - If `runningIntent` is defined, returns a transitional phase:
+ * - If a transition is in progress, returns a transitional phase:
  *   - `'pressing'` or `'releasing'`
- * - Otherwise, falls back to the resolved state:
+ * - Otherwise, returns the settled phase:
  *   - `'pressed'` or `'released'`
  * 
- * @param pressed - The current resolved press state.
- * @param runningIntent - The target press state being animated toward.
+ * @param settledPressed - The currently settled (laggy) press state.
+ * @param isTransitioning - Whether a transition is currently in progress.
  * @returns The current `PressPhase` value.
  */
-export const resolvePressPhase = (pressed: boolean, runningIntent: boolean | undefined): PressPhase => {
-    if (runningIntent !== undefined) {
-        return runningIntent ? 'pressing' : 'releasing';
+export const resolvePressPhase = (settledPressed: boolean, isTransitioning: boolean): PressPhase => {
+    if (isTransitioning) {
+        return settledPressed ? 'pressing' : 'releasing';
     } // if
     
     
     
-    return pressed ? 'pressed' : 'released';
+    return settledPressed ? 'pressed' : 'released';
 };
 
 
