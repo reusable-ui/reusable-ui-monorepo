@@ -332,7 +332,7 @@ test.describe('usePressBehaviorState - diagnostic mode', () => {
                     setPress             : false,
                     
                     delay                : 200,
-                    expectedPress        : 'released',
+                    expectedPress        : 'pressed', // Still pressed because the pressing animation is not finished yet.
                     expectedRunningPress : true,  // Still pressing (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -382,7 +382,7 @@ test.describe('usePressBehaviorState - diagnostic mode', () => {
                     setPress             : true,
                     
                     delay                : 200,
-                    expectedPress        : 'pressed',
+                    expectedPress        : 'released', // Still released because the releasing animation is not finished yet.
                     expectedRunningPress : false,  // Still releasing (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
