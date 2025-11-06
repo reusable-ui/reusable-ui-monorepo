@@ -786,7 +786,7 @@ test.describe('useValidityBehaviorState - controlled mode', () => {
                     validity                : false,
                     
                     delay                   : 200,
-                    expectedValidity        : 'invalid',
+                    expectedValidity        : 'valid', // Still valid because the validating animation is not finished yet.
                     expectedRunningValidity : true,  // Still validating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -828,7 +828,7 @@ test.describe('useValidityBehaviorState - controlled mode', () => {
                     validity                : null,
                     
                     delay                   : 200,
-                    expectedValidity        : 'unvalidated',
+                    expectedValidity        : 'valid', // Still valid because the validating animation is not finished yet.
                     expectedRunningValidity : true,  // Still validating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -870,7 +870,7 @@ test.describe('useValidityBehaviorState - controlled mode', () => {
                     validity                : true,
                     
                     delay                   : 200,
-                    expectedValidity        : 'valid',
+                    expectedValidity        : 'invalid', // Still invalid because the invalidating animation is not finished yet.
                     expectedRunningValidity : false,  // Still invalidating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -912,7 +912,7 @@ test.describe('useValidityBehaviorState - controlled mode', () => {
                     validity                : null,
                     
                     delay                   : 200,
-                    expectedValidity        : 'unvalidated',
+                    expectedValidity        : 'invalid', // Still invalid because the invalidating animation is not finished yet.
                     expectedRunningValidity : false,  // Still invalidating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -954,7 +954,7 @@ test.describe('useValidityBehaviorState - controlled mode', () => {
                     validity                : false,
                     
                     delay                   : 200,
-                    expectedValidity        : 'invalid',
+                    expectedValidity        : 'unvalidated', // Still unvalidated because the unvalidating animation is not finished yet.
                     expectedRunningValidity : null,  // Still unvalidating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -996,7 +996,7 @@ test.describe('useValidityBehaviorState - controlled mode', () => {
                     validity                : true,
                     
                     delay                   : 200,
-                    expectedValidity        : 'valid',
+                    expectedValidity        : 'unvalidated', // Still unvalidated because the unvalidating animation is not finished yet.
                     expectedRunningValidity : null,  // Still unvalidating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -1690,7 +1690,7 @@ test.describe('useValidityBehaviorState - controlled mode', () => {
                     computedValidity        : false,
                     
                     delay                   : 200,
-                    expectedValidity        : 'invalid',
+                    expectedValidity        : 'valid', // Still valid because the validating animation is not finished yet.
                     expectedRunningValidity : true,  // Still validating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -1733,7 +1733,7 @@ test.describe('useValidityBehaviorState - controlled mode', () => {
                     computedValidity        : null,
                     
                     delay                   : 200,
-                    expectedValidity        : 'unvalidated',
+                    expectedValidity        : 'valid', // Still valid because the validating animation is not finished yet.
                     expectedRunningValidity : true,  // Still validating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -1776,7 +1776,7 @@ test.describe('useValidityBehaviorState - controlled mode', () => {
                     computedValidity        : true,
                     
                     delay                   : 200,
-                    expectedValidity        : 'valid',
+                    expectedValidity        : 'invalid', // Still invalid because the invalidating animation is not finished yet.
                     expectedRunningValidity : false,  // Still invalidating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -1819,7 +1819,7 @@ test.describe('useValidityBehaviorState - controlled mode', () => {
                     computedValidity        : null,
                     
                     delay                   : 200,
-                    expectedValidity        : 'unvalidated',
+                    expectedValidity        : 'invalid', // Still invalid because the invalidating animation is not finished yet.
                     expectedRunningValidity : false,  // Still invalidating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -1862,7 +1862,7 @@ test.describe('useValidityBehaviorState - controlled mode', () => {
                     computedValidity        : false,
                     
                     delay                   : 200,
-                    expectedValidity        : 'invalid',
+                    expectedValidity        : 'unvalidated', // Still unvalidated because the unvalidating animation is not finished yet.
                     expectedRunningValidity : null,  // Still unvalidating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -1905,7 +1905,7 @@ test.describe('useValidityBehaviorState - controlled mode', () => {
                     computedValidity        : true,
                     
                     delay                   : 200,
-                    expectedValidity        : 'valid',
+                    expectedValidity        : 'unvalidated', // Still unvalidated because the unvalidating animation is not finished yet.
                     expectedRunningValidity : null,  // Still unvalidating (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
