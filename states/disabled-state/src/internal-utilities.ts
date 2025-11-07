@@ -6,25 +6,25 @@ import {
 
 
 /**
- * Resolves the current enable/disable lifecycle phase based on disabling state and animation intent.
+ * Resolves the current enable/disable lifecycle phase based on disabled state and transition status.
  * 
- * - If `runningIntent` is defined, returns a transitional phase:
+ * - If a transition is in progress, returns a transitional phase:
  *   - `'enabling'` or `'disabling'`
- * - Otherwise, falls back to the resolved state:
+ * - Otherwise, returns the settled phase:
  *   - `'enabled'` or `'disabled'`
  * 
- * @param disabled - The current resolved disabled state.
- * @param runningIntent - The target disabled state being animated toward.
+ * @param settledDisabled - The currently settled (laggy) disabled state.
+ * @param isTransitioning - Whether a transition is currently in progress.
  * @returns The current `DisabledPhase` value.
  */
-export const resolveDisabledPhase = (disabled: boolean, runningIntent: boolean | undefined): DisabledPhase => {
-    if (runningIntent !== undefined) {
-        return runningIntent ? 'disabling' : 'enabling';
+export const resolveDisabledPhase = (settledDisabled: boolean, isTransitioning: boolean): DisabledPhase => {
+    if (isTransitioning) {
+        return settledDisabled ? 'disabling' : 'enabling';
     } // if
     
     
     
-    return disabled ? 'disabled' : 'enabled';
+    return settledDisabled ? 'disabled' : 'enabled';
 };
 
 

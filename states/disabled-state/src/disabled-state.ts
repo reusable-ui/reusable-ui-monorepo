@@ -163,6 +163,7 @@ export const useDisabledState = (props: DisabledStateProps, options?: Pick<Disab
  * export const CustomEditor: FC<CustomEditorProps> = (props) => {
  *     const {
  *         disabled,
+ *         actualDisabled,
  *         disabledPhase,
  *         disabledClassname,
  *         
@@ -215,23 +216,47 @@ export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>
     const effectiveDisabled = useEffectiveDisabledValue(controlledDisabled, cascadeDisabled);
     
     // Internal animation lifecycle:
-    const [, setInternalDisabled, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
+    const [internalDisabled, setInternalDisabled, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
         initialIntent : effectiveDisabled,
         animationPattern,
         animationBubbling,
     });
     
+    // The current settled or animating disabled state.
+    // During animation, this reflects the active target (`runningIntent`).
+    // If no animation is active, it reflects the latest declared intent (`effectiveDisabled`), even if not yet committed.
+    // This optimistic fallback ensures transition logic and styling remain in sync with declared transitions.
+    // Deferred or discarded intents are never reflected here.
+    const settledDisabled   = runningIntent ?? effectiveDisabled;
+    
+    // Determine whether a transition toward the effective disabled state is currently in progress:
+    const isTransitioning   = (
+        // An in-flight animation is active toward a target disabled state:
+        (runningIntent !== undefined)
+        
+        ||
+        
+        // An optimistic transition is pending: the intent has changed, but React has not yet re-rendered to reflect it.
+        // This mismatch is expected and resolves once `setInternalDisabled(effectiveDisabled)` takes effect.
+        (internalDisabled !== effectiveDisabled)
+    );
+    
     // Derive semantic phase from animation lifecycle:
-    const disabledPhase     = resolveDisabledPhase(effectiveDisabled, runningIntent); // 'enabled', 'disabled', 'enabling', 'disabling'
+    const disabledPhase     = resolveDisabledPhase(settledDisabled, isTransitioning); // 'enabled', 'disabled', 'enabling', 'disabling'
     
     
     
     // Sync animation state with effective disabled state:
-    // Use `useLayoutEffect()` to make sure the `runningIntent` updates before browser paint,
-    // preventing premature `'enabled'` and `'disabled'` phase accidentally painted during switching to another state.
+    // Use `useLayoutEffect()` to ensure the intent is registered before the browser fires `animationstart`.
+    // This guarantees the animation lifecycle handshake completes correctly.
+    // The `useAnimationState()` hook internally treats missing animation events as immediately completed transitions.
     useLayoutEffect(() => {
         // The `setInternalDisabled()` has internal `Object.is()` check to avoid redundant state updates.
         setInternalDisabled(effectiveDisabled);
+        
+        // Note: If `setInternalDisabled()` is delayed (e.g. by React's render scheduler),
+        // both `internalDisabled` and `runningIntent` may remain stale temporarily.
+        // This introduces a brief pre-transition ambiguity, safely handled by `isTransitioning` logic.
     }, [effectiveDisabled]);
     
     
@@ -257,7 +282,8 @@ export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>
     
     // Return resolved disabled state API:
     return {
-        disabled          : effectiveDisabled,
+        disabled          : settledDisabled,   // Use `settledDisabled` instead of `effectiveDisabled`, because during animation, the settled state reflects the visually committed disabled state.
+        actualDisabled    : effectiveDisabled, // Expose the actual effective state for advanced use cases.
         disabledPhase,
         disabledClassname : getDisabledClassname(disabledPhase),
         ...animationHandlers,

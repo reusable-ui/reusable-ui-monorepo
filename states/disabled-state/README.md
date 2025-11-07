@@ -48,6 +48,7 @@ export interface CustomEditorProps extends
 export const CustomEditor: FC<CustomEditorProps> = (props) => {
     const {
         disabled,
+        actualDisabled,
         disabledPhase,
         disabledClassname,
         
