@@ -198,14 +198,32 @@ export interface ReadOnlyBehaviorState<TElement extends Element = HTMLElement>
         AnimationStateHandlers<TElement>
 {
     /**
-     * Indicates the current resolved editable/read-only state.
-     * This reflects the final constraint status, not the transitional intent.
+     * The current settled editable/read-only state used for animation-aware rendering and behavioral coordination.
+     * 
+     * This value may slightly lag behind the actual resolved state due to in-flight animations.
+     * It updates only after an animation completes, ensuring the styling remains in sync with animation lifecycle.
+     * 
+     * Useful for rendering the editable/read-only state in sync with animation lifecycle.
      * 
      * Possible values:
-     * - `true`  : the component is read-only
-     * - `false` : the component is editable
+     * - `true`  : the component has visually settled in read-only state
+     * - `false` : the component has visually settled in editable state
      */
     readOnly          : boolean
+    
+    /**
+     * The actual resolved editable/read-only state, regardless of animation state.
+     * 
+     * This reflects the current target state based on the final diagnostic status.
+     * Unlike `readOnly`, it updates immediately and does not wait for transitions to complete.
+     * 
+     * Useful for logic that needs the latest intent or target state, independent of animation lifecycle.
+     * 
+     * Possible values:
+     * - `true`  : the component is intended to be read-only
+     * - `false` : the component is intended to be editable
+     */
+    actualReadOnly    : boolean
     
     /**
      * The current transition phase of the editable/read-only lifecycle.

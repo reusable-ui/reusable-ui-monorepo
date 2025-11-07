@@ -6,25 +6,25 @@ import {
 
 
 /**
- * Resolves the current editable/read-only lifecycle phase based on read-only state and animation intent.
+ * Resolves the current editable/read-only lifecycle phase based on read-only state and transition status.
  * 
- * - If `runningIntent` is defined, returns a transitional phase:
+ * - If a transition is in progress, returns a transitional phase:
  *   - `'thawing'` or `'freezing'`
- * - Otherwise, falls back to the resolved state:
+ * - Otherwise, returns the settled phase:
  *   - `'editable'` or `'readonly'`
  * 
- * @param readOnly - The current resolved read-only state.
- * @param runningIntent - The target read-only state being animated toward.
+ * @param settledReadOnly - The currently settled (laggy) read-only state.
+ * @param isTransitioning - Whether a transition is currently in progress.
  * @returns The current `ReadOnlyPhase` value.
  */
-export const resolveReadOnlyPhase = (readOnly: boolean, runningIntent: boolean | undefined): ReadOnlyPhase => {
-    if (runningIntent !== undefined) {
-        return runningIntent ? 'freezing' : 'thawing';
+export const resolveReadOnlyPhase = (settledReadOnly: boolean, isTransitioning: boolean): ReadOnlyPhase => {
+    if (isTransitioning) {
+        return settledReadOnly ? 'freezing' : 'thawing';
     } // if
     
     
     
-    return readOnly ? 'readonly' : 'editable';
+    return settledReadOnly ? 'readonly' : 'editable';
 };
 
 
