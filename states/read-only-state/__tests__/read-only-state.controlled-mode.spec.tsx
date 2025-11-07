@@ -354,7 +354,7 @@ test.describe('useReadOnlyBehaviorState - controlled mode', () => {
                     readOnly                : true,
                     
                     delay                   : 200,
-                    expectedReadOnly        : 'readonly',
+                    expectedReadOnly        : 'editable', // Still editable because the thawing animation is not finished yet.
                     expectedRunningReadOnly : false,  // Still thawing (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -396,7 +396,7 @@ test.describe('useReadOnlyBehaviorState - controlled mode', () => {
                     readOnly                : false,
                     
                     delay                   : 200,
-                    expectedReadOnly        : 'editable',
+                    expectedReadOnly        : 'readonly', // Still read-only because the freezing animation is not finished yet.
                     expectedRunningReadOnly : true,  // Still freezing (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -695,7 +695,7 @@ test.describe('useReadOnlyBehaviorState - controlled mode', () => {
                     parentReadOnly          : true,
                     
                     delay                   : 200,
-                    expectedReadOnly        : 'readonly',
+                    expectedReadOnly        : 'editable', // Still editable because the thawing animation is not finished yet.
                     expectedRunningReadOnly : false,  // Still thawing (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -737,7 +737,7 @@ test.describe('useReadOnlyBehaviorState - controlled mode', () => {
                     parentReadOnly          : false,
                     
                     delay                   : 200,
-                    expectedReadOnly        : 'editable',
+                    expectedReadOnly        : 'readonly', // Still read-only because the freezing animation is not finished yet.
                     expectedRunningReadOnly : true,  // Still freezing (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -869,18 +869,7 @@ test.describe('useReadOnlyBehaviorState - controlled mode', () => {
                     });
                     
                     // Ensure the change handler was called with correct parameters:
-                    if (expectedReadOnly !== undefined) {
-                        switch (expectedReadOnly) {
-                            case 'editable':
-                                expect(lastNewReadOnly).toBe(false); // lastNewReadOnly = false (editable)
-                                break;
-                            case 'readonly':
-                                expect(lastNewReadOnly).toBe(true);  // lastNewReadOnly = true (read-only)
-                                break;
-                            default:
-                                throw new Error('unexpected case');
-                        } // switch
-                    } // if
+                    expect(lastNewReadOnly).toBe((readOnly ?? false) || (parentReadOnly ?? false));
                     expect((lastEvent as any)?.type).toBe(undefined);
                 } // if
                 
