@@ -354,7 +354,7 @@ test.describe('useDisabledBehaviorState - controlled mode', () => {
                     disabled                : true,
                     
                     delay                   : 200,
-                    expectedDisabled        : 'disabled',
+                    expectedDisabled        : 'enabled', // Still enabled because the enabling animation is not finished yet.
                     expectedRunningDisabled : false,  // Still enabling (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -396,7 +396,7 @@ test.describe('useDisabledBehaviorState - controlled mode', () => {
                     disabled                : false,
                     
                     delay                   : 200,
-                    expectedDisabled        : 'enabled',
+                    expectedDisabled        : 'disabled', // Still disabled because the disabling animation is not finished yet.
                     expectedRunningDisabled : true,  // Still disabling (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -695,7 +695,7 @@ test.describe('useDisabledBehaviorState - controlled mode', () => {
                     parentDisabled          : true,
                     
                     delay                   : 200,
-                    expectedDisabled        : 'disabled',
+                    expectedDisabled        : 'enabled', // Still enabled because the enabling animation is not finished yet.
                     expectedRunningDisabled : false,  // Still enabling (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -737,7 +737,7 @@ test.describe('useDisabledBehaviorState - controlled mode', () => {
                     parentDisabled          : false,
                     
                     delay                   : 200,
-                    expectedDisabled        : 'enabled',
+                    expectedDisabled        : 'disabled', // Still disabled because the disabling animation is not finished yet.
                     expectedRunningDisabled : true,  // Still disabling (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
@@ -869,18 +869,7 @@ test.describe('useDisabledBehaviorState - controlled mode', () => {
                     });
                     
                     // Ensure the change handler was called with correct parameters:
-                    if (expectedDisabled !== undefined) {
-                        switch (expectedDisabled) {
-                            case 'enabled':
-                                expect(lastNewDisabled).toBe(false); // lastNewDisabled = false (enabled)
-                                break;
-                            case 'disabled':
-                                expect(lastNewDisabled).toBe(true);  // lastNewDisabled = true (disabled)
-                                break;
-                            default:
-                                throw new Error('unexpected case');
-                        } // switch
-                    } // if
+                    expect(lastNewDisabled).toBe((disabled ?? false) || (parentDisabled ?? false));
                     expect((lastEvent as any)?.type).toBe(undefined);
                 } // if
                 
