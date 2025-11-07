@@ -8,20 +8,20 @@ import {
 
 
 /**
- * Resolves the current validity lifecycle phase based on validity state and animation intent.
+ * Resolves the current validity lifecycle phase based on validity state and transition status.
  * 
- * - If `runningIntent` is defined, returns a transitional phase:
+ * - If a transition is in progress, returns a transitional phase:
  *   - `'validating'`, `'invalidating'`, or `'unvalidating'`
- * - Otherwise, falls back to the resolved state:
+ * - Otherwise, returns the settled phase:
  *   - `'valid'`, `'invalid'`, or `'unvalidated'`
  * 
- * @param validity - The current resolved validity state.
- * @param runningIntent - The target validity state being animated toward.
+ * @param settledValidity - The currently settled (laggy) validity state.
+ * @param isTransitioning - Whether a transition is currently in progress.
  * @returns The current `ValidityPhase` value.
  */
-export const resolveValidityPhase = (validity: boolean | null, runningIntent: boolean | null | undefined): ValidityPhase => {
-    if (runningIntent !== undefined) {
-        switch (runningIntent) {
+export const resolveValidityPhase = (settledValidity: boolean | null, isTransitioning: boolean): ValidityPhase => {
+    if (isTransitioning) {
+        switch (settledValidity) {
             case true  : return 'validating';
             case false : return 'invalidating';
             default    : return 'unvalidating';
@@ -30,7 +30,7 @@ export const resolveValidityPhase = (validity: boolean | null, runningIntent: bo
     
     
     
-    switch (validity) {
+    switch (settledValidity) {
         case true  : return 'valid';
         case false : return 'invalid';
         default    : return 'unvalidated';
@@ -57,16 +57,16 @@ export const resolveValidityPhase = (validity: boolean | null, runningIntent: bo
  * to target transitions with precision.
  * 
  * @param {ValidityPhase} validityPhase - The current lifecycle phase of the component.
- * @param prevResolvedValidity - The previous resolved validity state, used to trace transition origin.
+ * @param prevSettledValidity - The previously settled validity state, used to trace transition origin.
  * @returns {`is-${ValidityPhase}`} A CSS class name reflecting the phase, optionally including the previous state.
  */
-export const getValidityClassname = (validityPhase: ValidityPhase, prevResolvedValidity: boolean | null = null): `is-${ResolvedValidityPhase}` | `is-${TransitioningValidityPhase} was-${ResolvedValidityPhase}` => {
+export const getValidityClassname = (validityPhase: ValidityPhase, prevSettledValidity: boolean | null = null): `is-${ResolvedValidityPhase}` | `is-${TransitioningValidityPhase} was-${ResolvedValidityPhase}` => {
     // Return the corresponding class name:
     switch (validityPhase) {
         case 'validating':
         case 'invalidating':
         case 'unvalidating': {
-            const prevPhase = resolveValidityPhase(prevResolvedValidity, undefined) as ResolvedValidityPhase;
+            const prevPhase = resolveValidityPhase(prevSettledValidity, false) as ResolvedValidityPhase;
             return `is-${validityPhase} was-${prevPhase}`;
         } // case
         

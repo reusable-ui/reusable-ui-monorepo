@@ -222,15 +222,34 @@ export interface ValidityBehaviorState<TElement extends Element = HTMLElement>
         AnimationStateHandlers<TElement>
 {
     /**
-     * Indicates the current resolved validity state.
-     * This reflects the final diagnostic status, not the transitional intent.
+     * The current settled validity state used for animation-aware rendering and behavioral coordination.
+     * 
+     * This value may slightly lag behind the actual resolved state due to in-flight animations.
+     * It updates only after an animation completes, ensuring the styling remains in sync with animation lifecycle.
+     * 
+     * Useful for rendering the validity state in sync with animation lifecycle.
      * 
      * Possible values:
-     * - `true`  : the component is valid
-     * - `false` : the component is invalid
-     * - `null`  : the component is unvalidated
+     * - `true`  : the component has visually settled in valid state
+     * - `false` : the component has visually settled in invalid state
+     * - `null`  : the component has visually settled in unvalidated state
      */
     validity          : boolean | null
+    
+    /**
+     * The actual resolved validity state, regardless of animation state.
+     * 
+     * This reflects the current target state based on the final diagnostic status.
+     * Unlike `validity`, it updates immediately and does not wait for transitions to complete.
+     * 
+     * Useful for logic that needs the latest intent or target state, independent of animation lifecycle.
+     * 
+     * Possible values:
+     * - `true`  : the component is intended to be valid
+     * - `false` : the component is intended to be invalid
+     * - `null`  : the component is intended to be unvalidated
+     */
+    actualValidity    : boolean | null
     
     /**
      * The current transition phase of the validity lifecycle.

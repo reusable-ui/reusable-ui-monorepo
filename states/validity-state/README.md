@@ -68,6 +68,7 @@ export const CustomInput: FC<CustomInputProps> = (props) => {
     
     const {
         validity,
+        actualValidity,
         validityPhase,
         validityClassname,
         
