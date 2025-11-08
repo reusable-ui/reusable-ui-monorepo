@@ -43,9 +43,9 @@ export interface ExciteStateProps {
     /**
      * Specifies the current excited state:
      * - `true`  : the component is excited
-     * - `false` : the component is not excited
+     * - `false` : the component is idle
      * 
-     * Defaults to `false` (not excited).
+     * Defaults to `false` (idle).
      */
     excited         ?: boolean
     
@@ -70,9 +70,9 @@ export interface ExciteStateOptions
     /**
      * Specifies the default excited state when no `excited` prop is explicitly provided:
      * - `true`  : the component is excited
-     * - `false` : the component is not excited
+     * - `false` : the component is idle
      * 
-     * Defaults to `false` (not excited).
+     * Defaults to `false` (idle).
      */
     defaultExcited    ?: boolean
     
@@ -114,13 +114,32 @@ export interface ExciteBehaviorState<TElement extends Element = HTMLElement>
         AnimationStateHandlers<TElement>
 {
     /**
-     * Indicates the current resolved excited state.
+     * The current active excitement-animation state used for animation-aware rendering and behavioral coordination.
+     * 
+     * This reflects whether the excitement animation is actively running.
+     * It may slightly lag behind the actual resolved state due to animation lifecycle timing.
+     * 
+     * Useful for styling and rendering decisions that depend on the visually active excitement-animation on screen.
      * 
      * Possible values:
-     * - `true`  : the component is excited
-     * - `false` : the component is not excited
+     * - `true`  : the excitement animation is currently active
+     * - `false` : the excitement animation is idle
      */
     excited           : boolean
+    
+    /**
+     * The actual resolved excitement state, regardless of animation state.
+     * 
+     * This reflects whether the component is intended to be excited.
+     * Unlike `excited`, it updates immediately and does not wait for animation lifecycle.
+     * 
+     * Useful for logic that needs the latest excitement state without animation start/done delays.
+     * 
+     * Possible values:
+     * - `true`  : the component is intended to be excited
+     * - `false` : the component is intended to be idle
+     */
+    actualExcited     : boolean
     
     /**
      * A CSS class name reflecting the resolved excitement state.
@@ -189,7 +208,7 @@ export interface CssExciteState {
      * Includes:
      * - `animationExciting`: Active when the component is excited.
      * 
-     * ⚠️ **Caution**: The `animationExciting` variable becomes invalid when the component is not excited.
+     * ⚠️ **Caution**: The `animationExciting` variable becomes invalid when the component is idle.
      * If used improperly, it can invalidate the entire CSS declaration.
      * Always wrap it with `switchOf(...)` to ensure graceful fallback.
      * 

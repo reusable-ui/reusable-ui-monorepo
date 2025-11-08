@@ -117,6 +117,7 @@ export const useExciteState = (props: ExciteStateProps, options?: Pick<ExciteSta
  * export const ExcitableBox: FC<ExcitableBoxProps> = (props) => {
  *     const {
  *         excited,
+ *         actualExcited,
  *         exciteClassname,
  *         
  *         handleAnimationStart,
@@ -309,7 +310,8 @@ export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(p
     
     // Return resolved excitement attributes:
     return {
-        excited               : effectiveExcited,
+        excited               : exciteAnimation,  // Use `exciteAnimation` instead of `effectiveExcited` to reflect the visually active excitement-animation on screen.
+        actualExcited         : effectiveExcited, // Expose the actual effective state for advanced use cases.
         exciteClassname       : getExciteClassname(exciteAnimation),
         ...animationHandlers,
         handleAnimationEnd    : mergedHandleAnimationEnd,

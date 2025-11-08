@@ -41,6 +41,7 @@ export interface ExcitableBoxProps extends ExciteStateProps {}
 export const ExcitableBox: FC<ExcitableBoxProps> = (props) => {
     const {
         excited,
+        actualExcited,
         exciteClassname,
         
         handleAnimationStart,
@@ -127,7 +128,7 @@ Generates CSS rules that conditionally apply the excitement animation based on c
 
 #### Supporting Variables (Advanced Use)
 
-These variables are conditionally valid and may be **invalid** (`unset`) when the component is not excited.  
+These variables are conditionally valid and may be **invalid** (`unset`) when the component is idle.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
 | Variable            | Active When...       | Purpose                       |
