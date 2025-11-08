@@ -45,8 +45,9 @@ export const PressStateTest = (props: PressStateTestProps) => {
         handleAnimationCancel,
         
         ref,
-        handleMouseDown,
-        handleMouseUp,
+        handlePointerDown,
+        handlePointerUp,
+        handlePointerCancel,
     } = usePressBehaviorState(props, {
         animationPattern,
     });
@@ -102,8 +103,9 @@ export const PressStateTest = (props: PressStateTestProps) => {
                 className={`${styles.main} ${pressClassname}`}
                 onAnimationStart={handleMergedAnimationStart}
                 onAnimationEnd={handleMergedAnimationEnd}
-                onMouseDown={implementsPressHandlers ? handleMouseDown : undefined}
-                onMouseUp={implementsPressHandlers ? handleMouseUp : undefined}
+                onPointerDown={implementsPressHandlers ? handlePointerDown : undefined}
+                onPointerUp={implementsPressHandlers ? handlePointerUp : undefined}
+                onPointerCancel={implementsPressHandlers ? handlePointerCancel : undefined}
                 tabIndex={implementsPressHandlers ? 0 : undefined} // make it pressable
             >
                 Press State Test

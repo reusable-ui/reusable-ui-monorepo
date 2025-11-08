@@ -8,7 +8,7 @@ Ideal for buttons, selects, menuItems, and any interactive component requiring p
 ✔ Gracefully completes running animations before resolving new state  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, animation, and accessibility systems  
-✔ Built-in internal press observer via `ref`, `handleMouseDown()`, and `handleMouseUp()` — no need for external state unless desired  
+✔ Built-in internal press observer via `ref`, `handlePointerDown()`, `handlePointerUp()`, and `handlePointerCancel()` — no need for external state unless desired  
 ✔ Optional `computedPress` override for custom press resolution logic in advanced use cases  
 
 ## 📦 Installation
@@ -78,8 +78,9 @@ export const CustomButton: FC<CustomButtonProps> = (props) => {
         
         // Use these ref and handlers to use built-in press observer when `computedPress` is not provided:
         ref,
-        handleMouseDown,
-        handleMouseUp,
+        handlePointerDown,
+        handlePointerUp,
+        handlePointerCancel,
     } = usePressBehaviorState({
         computedPress,
         ...restProps,

@@ -2,7 +2,7 @@
 import {
     // Types:
     type RefObject,
-    type MouseEventHandler,
+    type PointerEventHandler,
 }                           from 'react'
 
 // Cssfn:
@@ -42,7 +42,7 @@ import {
  * 
  * When `pressed` prop is set to `'auto'`, the component derives its press state from either:
  * - an externally provided `computedPress`, or
- * - internal press observer via `ref`, `handleMouseDown()`, and `handleMouseUp()` callbacks.
+ * - internal press observer via `ref`, `handlePointerDown()`, `handlePointerUp()`, and `handlePointerCancel()` callbacks.
  */
 export interface PressStateProps {
     /**
@@ -61,7 +61,7 @@ export interface PressStateProps {
      * This value is typically computed reactively based on DOM pointer events,
      * layout containment, or accessibility-driven logic. It is ignored when `pressed` is explicitly set.
      * 
-     * If not provided, the component falls back to internal press observer via `ref`, `handleMouseDown()`, and `handleMouseUp()` callbacks.
+     * If not provided, the component falls back to internal press observer via `ref`, `handlePointerDown()`, `handlePointerUp()`, and `handlePointerCancel()` callbacks.
      * 
      * This property is intended for **component developers** who need to customize press resolution.
      * For **application developers**, prefer using the `pressed` prop directly.
@@ -217,7 +217,7 @@ export interface PressBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component has visually settled in pressed state
      * - `false` : the component has visually settled in released state
      */
-    pressed         : boolean
+    pressed             : boolean
     
     /**
      * The actual resolved pressed/released state, regardless of animation state.
@@ -231,14 +231,14 @@ export interface PressBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component is intended to be pressed
      * - `false` : the component is intended to be released
      */
-    actualPressed   : boolean
+    actualPressed       : boolean
     
     /**
      * The current transition phase of the press/release lifecycle.
      * 
      * Reflects both transitional states (`pressing`, `releasing`) and resolved states (`pressed`, `released`).
      */
-    pressPhase      : PressPhase
+    pressPhase          : PressPhase
     
     /**
      * A CSS class name reflecting the current press/release phase.
@@ -249,7 +249,7 @@ export interface PressBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-pressing'`
      * - `'is-pressed'`
      */
-    pressClassname  : `is-${PressPhase}`
+    pressClassname      : `is-${PressPhase}`
     
     /**
      * Ref to the pressable DOM element.
@@ -260,23 +260,35 @@ export interface PressBehaviorState<TElement extends Element = HTMLElement>
      * but React hasn't yet hydrated, this ref allows detection of the
      * pre-existing press state.
      */
-    ref             : RefObject<TElement | null>
+    ref                 : RefObject<TElement | null>
     
     /**
-     * Event handler for mousedown events.
+     * Event handler for pointerdown events.
      * 
-     * Used to signal that the pointer is pressing the component,
-     * typically when `pressed` prop is set to `'auto'` and `computedPress` is not provided.
+     * Signals that the pointer is pressing the component.
+     * Typically used when `pressed` is set to `'auto'` and `computedPress` is not provided.
+     * 
+     * Supports mouse, touch, and stylus inputs.
      */
-    handleMouseDown : MouseEventHandler<TElement>
+    handlePointerDown   : PointerEventHandler<TElement>
     
     /**
-     * Event handler for mouseup events.
+     * Event handler for pointerup events.
      * 
-     * Used to signal that the pointer has released the component,
-     * typically when `pressed` prop is set to `'auto'` and `computedPress` is not provided.
+     * Signals that the pointer has released the component.
+     * Typically used when `pressed` is set to `'auto'` and `computedPress` is not provided.
+     * 
+     * Complements `pointerdown` for unified input lifecycle.
      */
-    handleMouseUp   : MouseEventHandler<TElement>
+    handlePointerUp     : PointerEventHandler<TElement>
+    
+    /**
+     * Event handler for pointercancel events.
+     * 
+     * Signals that the pointer interaction was interrupted and will not complete normally.
+     * Used to safely reset the press state in edge cases like gesture takeover, app switch, or input loss.
+     */
+    handlePointerCancel : PointerEventHandler<TElement>
 }
 
 

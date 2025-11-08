@@ -3,7 +3,7 @@
 // React:
 import {
     // Types:
-    type MouseEventHandler,
+    type PointerEventHandler,
     
     
     
@@ -41,7 +41,7 @@ const pressWithinSelector = ':active';
 /**
  * An observed press state for uncontrolled components.
  * 
- * Provides a ref to the pressable element and imperative mousedown/mouseup handlers
+ * Provides a ref to the pressable element and imperative pointerdown/pointerup/pointercancel handlers
  * for tracking press presence when not explicitly controlled.
  * 
  * Includes fallback detection for pre-existing press on mount,
@@ -52,7 +52,7 @@ const pressWithinSelector = ':active';
 export interface PressObserverState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Pick<PressBehaviorState<TElement>, 'ref' | 'handleMouseDown' | 'handleMouseUp'>
+        Pick<PressBehaviorState<TElement>, 'ref' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel'>
 {
     /**
      * Observed press presence.
@@ -68,7 +68,7 @@ export interface PressObserverState<TElement extends Element = HTMLElement>
  * Observes press state in uncontrolled scenarios.
  * 
  * Detects initial press on mount and updates internal state via
- * imperative mousedown/mouseup handlers. Skips updates when externally controlled.
+ * imperative pointerdown/pointerup/pointercancel handlers. Skips updates when externally controlled.
  * 
  * @template TElement - The type of the target DOM element.
  * 
@@ -110,14 +110,14 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(isExter
     
     
     // Imperative handlers for uncontrolled press tracking:
-    const handleMouseDown : MouseEventHandler<TElement> = useStableCallback((event) => {
+    const handlePointerDown   : PointerEventHandler<TElement> = useStableCallback((event) => {
         // Ignore if externally controlled, avoiding unnecessary state updates:
         if (isExternallyControlled) return;
         
         // Ignore if already pressed:
         if (observedPress) return;
         
-        // The code below is redundant as `mousedown` inherently means the element is pressed:
+        // The code below is redundant as `pointerdown` inherently means the element is pressed:
         // // Check if the element or any of its descendants are currently pressed:
         // const isPressWithin = event.currentTarget.matches(pressWithinSelector);
         // 
@@ -129,7 +129,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(isExter
         // Set the press state:
         setObservedPress(true);
     });
-    const handleMouseUp : MouseEventHandler<TElement> = useStableCallback(() => {
+    const handlePointerUp     : PointerEventHandler<TElement> = useStableCallback(() => {
         // Ignore if externally controlled, avoiding unnecessary state updates:
         if (isExternallyControlled) return;
         
@@ -138,6 +138,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(isExter
         // Reset the press state:
         setObservedPress(false);
     });
+    const handlePointerCancel : PointerEventHandler<TElement> = handlePointerUp; // Currently, pointercancel has the same effect as pointerup.
     
     
     
@@ -145,7 +146,8 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(isExter
     return {
         observedPress,
         ref : pressableElementRef,
-        handleMouseDown,
-        handleMouseUp,
+        handlePointerDown,
+        handlePointerUp,
+        handlePointerCancel,
     } satisfies PressObserverState<TElement>;
 };
