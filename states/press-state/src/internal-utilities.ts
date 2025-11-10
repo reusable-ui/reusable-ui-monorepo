@@ -48,3 +48,23 @@ export const getPressClassname = (pressPhase: PressPhase): `is-${PressPhase}` =>
     // Return the corresponding class name:
     return `is-${pressPhase}`;
 };
+
+
+
+/**
+ * Determines whether a given key matches the expected key(s).
+ * 
+ * @param actualKey - The key received from a keyboard event (e.g. event.key)
+ * @param expectedKeys - A string or array of strings representing the keys to match against
+ * @returns `true` if the actual key matches any of the expected keys; otherwise `false`
+ */
+export const matchesKey = (actualKey: string | undefined, expectedKeys: string | string[] | null): boolean => {
+    if (!actualKey) return false;
+    if (!expectedKeys) return false;
+    
+    
+    
+    if (typeof expectedKeys === 'string') return actualKey === expectedKeys;
+    return expectedKeys.includes(actualKey);
+};
+

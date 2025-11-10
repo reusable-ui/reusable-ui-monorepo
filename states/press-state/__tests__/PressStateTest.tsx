@@ -22,7 +22,7 @@ export interface PressStateTestProps
         PressStateProps,
         PressStateUpdateProps,
         PressStatePhaseEventProps,
-        Pick<React.DOMAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd'>
+        Pick<React.DOMAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd' | 'onClick'>
 {
     implementsPressHandlers ?: boolean
 }
@@ -30,6 +30,7 @@ export const PressStateTest = (props: PressStateTestProps) => {
     const {
         onAnimationStart,
         onAnimationEnd,
+        onClick,
         implementsPressHandlers = false,
     } = props;
     
@@ -48,6 +49,8 @@ export const PressStateTest = (props: PressStateTestProps) => {
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,
+        handleKeyDown,
+        handleKeyUp,
     } = usePressBehaviorState(props, {
         animationPattern,
     });
@@ -106,6 +109,9 @@ export const PressStateTest = (props: PressStateTestProps) => {
                 onPointerDown={implementsPressHandlers ? handlePointerDown : undefined}
                 onPointerUp={implementsPressHandlers ? handlePointerUp : undefined}
                 onPointerCancel={implementsPressHandlers ? handlePointerCancel : undefined}
+                onKeyDown={implementsPressHandlers ? handleKeyDown : undefined}
+                onKeyUp={implementsPressHandlers ? handleKeyUp : undefined}
+                onClick={onClick}
                 tabIndex={implementsPressHandlers ? 0 : undefined} // make it pressable
             >
                 Press State Test

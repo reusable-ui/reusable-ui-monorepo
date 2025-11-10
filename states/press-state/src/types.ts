@@ -3,6 +3,7 @@ import {
     // Types:
     type RefObject,
     type PointerEventHandler,
+    type KeyboardEventHandler,
 }                           from 'react'
 
 // Cssfn:
@@ -133,7 +134,45 @@ export interface PressStateOptions
      * 
      * Defaults to `'auto'` (automatically determine press state).
      */
-    defaultPressed    ?: boolean | 'auto'
+    defaultPressed      ?: boolean | 'auto'
+    
+    /**
+     * Defines which keyboard keys simulate press interactions.
+     * 
+     * When a matching key is pressed, the component enters the pressed state;
+     * when released, it exits the pressed state.
+     * 
+     * Accepts:
+     * - A single key string
+     * - An array of key strings
+     * - `null` to disable key-based press simulation
+     * 
+     * Defaults to `'Space'`, matching native button behavior.
+     */
+    pressKeys           ?: string | string[] | null
+    
+    /**
+     * Defines which keyboard keys trigger a synthetic click event.
+     * 
+     * When a matching key is pressed, a synthetic click event is dispatched on the component.
+     * 
+     * Accepts:
+     * - A single key string
+     * - An array of key strings
+     * - `null` to disable key-based click triggering
+     * 
+     * Defaults to `'Enter'`, matching native button behavior.
+     */
+    clickKeys           ?: string | string[] | null
+    
+    /**
+     * Determines whether a synthetic click event should be triggered after key release.
+     * 
+     * Applies only to keys defined in `pressKeys`.
+     * 
+     * Defaults to `true`, matching native button behavior for keys defined in `pressKeys`.
+     */
+    triggerClickOnKeyUp ?: boolean
     
     /**
      * Defines the pattern used to identify press/release-related animation names.
@@ -151,7 +190,7 @@ export interface PressStateOptions
      * 
      * Defaults to `['pressing', 'releasing']`.
      */
-    animationPattern  ?: AnimationStateOptions<boolean>['animationPattern']
+    animationPattern    ?: AnimationStateOptions<boolean>['animationPattern']
     
     /**
      * Enables listening to animation events bubbling up from nested child elements.
@@ -159,7 +198,7 @@ export interface PressStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling ?: AnimationStateOptions<boolean>['animationBubbling']
+    animationBubbling   ?: AnimationStateOptions<boolean>['animationBubbling']
 }
 
 /**
@@ -289,6 +328,22 @@ export interface PressBehaviorState<TElement extends Element = HTMLElement>
      * Used to safely reset the press state in edge cases like gesture takeover, app switch, or input loss.
      */
     handlePointerCancel : PointerEventHandler<TElement>
+    
+    /**
+     * Event handler for keydown events.
+     * 
+     * Simulates press interactions based on the configured `pressKeys`,
+     * and triggers synthetic click events for keys defined in `clickKeys`.
+     */
+    handleKeyDown       : KeyboardEventHandler<TElement>
+    
+    /**
+     * Event handler for keyup events.
+     * 
+     * Simulates release interactions for keys defined in `pressKeys`,
+     * and optionally triggers synthetic click events if `triggerClickOnKeyUp` is enabled.
+     */
+    handleKeyUp         : KeyboardEventHandler<TElement>
 }
 
 

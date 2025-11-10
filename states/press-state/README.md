@@ -10,6 +10,7 @@ Ideal for buttons, selects, menuItems, and any interactive component requiring p
 ✔ Seamless integration across appearance, animation, and accessibility systems  
 ✔ Built-in internal press observer via `ref`, `handlePointerDown()`, `handlePointerUp()`, and `handlePointerCancel()` — no need for external state unless desired  
 ✔ Optional `computedPress` override for custom press resolution logic in advanced use cases  
+✔ Built-in keyboard observer for `[Space]` and `[Enter]` keys — simulates press and click behavior with lifecycle consistency  
 
 ## 📦 Installation
 Install **@reusable-ui/press-state** via npm or yarn:
@@ -81,6 +82,8 @@ export const CustomButton: FC<CustomButtonProps> = (props) => {
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,
+        handleKeyDown,
+        handleKeyUp,
     } = usePressBehaviorState({
         computedPress,
         ...restProps,
@@ -104,6 +107,32 @@ export const CustomButton: FC<CustomButtonProps> = (props) => {
 };
 ```
 
+#### 🧠 Transition Animation Behavior
+
+The hook manages transitions between `pressed` and `released` states using a unified animation flow:
+
+- If a transition is already in progress, new intent (e.g., switching from pressed to released) is deferred until the current animation completes.
+- Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
+- This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
+
+#### Keyboard Behavior
+
+The hook includes a built-in keyboard observer that mirrors native button semantics:
+
+- By default, `[Space]` triggers a press animation and synthetic click **on key release**.
+- `[Enter]` triggers a synthetic click **immediately on key press**, without activating press animation.
+- Other keys are ignored unless explicitly configured via `pressKeys` or `clickKeys`.
+
+This behavior ensures:
+
+- Press animations are lifecycle-aware and never interrupted mid-flight.
+- Synthetic clicks are dispatched only once, avoiding double activation.
+- Native submit buttons continue to trigger form submission when activated via keyboard.
+- Regular buttons receive standard click events.
+
+You can override the default keys using the `pressKeys` and `clickKeys` options for custom accessibility or interaction needs.
+
+
 ### `usePressStatePhaseEvents(props, pressPhase)`
 
 Emits lifecycle events in response to press/release phase transitions.
@@ -126,14 +155,6 @@ Unlike `usePressBehaviorState()`, which handles animation and lifecycle, `usePre
 - No internal state or uncontrolled fallback.
 - `'auto'` is treated as a declarative diagnostic mode.
 - Ideal for components that **consume** the resolved `pressed` state.
-
-#### 🧠 Transition Animation Behavior
-
-The hook manages transitions between `pressed` and `released` states using a unified animation flow:
-
-- If a transition is already in progress, new intent (e.g., switching from pressed to released) is deferred until the current animation completes.
-- Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
-- This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
 
 ---
 

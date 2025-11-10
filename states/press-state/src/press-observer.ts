@@ -4,6 +4,7 @@
 import {
     // Types:
     type PointerEventHandler,
+    type KeyboardEventHandler,
     
     
     
@@ -15,8 +16,21 @@ import {
 
 // Types:
 import {
+    type PressStateOptions,
     type PressBehaviorState,
 }                           from './types.js'
+
+// Defaults:
+import {
+    defaultPressKeys,
+    defaultClickKeys,
+    defaultTriggerClickOnKeyUp,
+}                           from './internal-defaults.js'
+
+// Utilities:
+import {
+    matchesKey,
+}                           from './internal-utilities.js'
 
 // Reusable-ui utilities:
 import {
@@ -52,7 +66,7 @@ const pressWithinSelector = ':active';
 export interface PressObserverState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Pick<PressBehaviorState<TElement>, 'ref' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel'>
+        Pick<PressBehaviorState<TElement>, 'ref' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'>
 {
     /**
      * Observed press presence.
@@ -75,7 +89,16 @@ export interface PressObserverState<TElement extends Element = HTMLElement>
  * @param isExternallyControlled - Whether the press state is externally controlled.
  * @returns The observed press state, ref, and event handlers.
  */
-export const usePressObserver = <TElement extends Element = HTMLElement>(isExternallyControlled: boolean): PressObserverState<TElement> => {
+export const usePressObserver = <TElement extends Element = HTMLElement>(isExternallyControlled: boolean, options: Pick<PressStateOptions, 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp'> | undefined): PressObserverState<TElement> => {
+    // Extract options and assign defaults:
+    const {
+        pressKeys           = defaultPressKeys,
+        clickKeys           = defaultClickKeys,
+        triggerClickOnKeyUp = defaultTriggerClickOnKeyUp,
+    } = options ?? {};
+    
+    
+    
     // States and flags:
     
     // Ref to the pressable DOM element:
@@ -83,6 +106,11 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(isExter
     
     // Internal fallback for observed press (used only when uncontrolled):
     const [observedPress, setObservedPress] = useState<boolean>(false);
+    
+    // Internal memory for tracking currently pressed keys:
+    const pressedKeysRef = useRef<Set<string> | undefined>(undefined);
+    if (pressedKeysRef.current === undefined) pressedKeysRef.current = new Set<string>();
+    const pressedKeys = pressedKeysRef.current;
     
     
     
@@ -140,6 +168,106 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(isExter
     });
     const handlePointerCancel : PointerEventHandler<TElement> = handlePointerUp; // Currently, pointercancel has the same effect as pointerup.
     
+    const handleKeyDown       : KeyboardEventHandler<TElement> = useStableCallback((event) => {
+        // Get the pressed key for matching the configured keys:
+        const keyCode = event.code;
+        
+        // Defensive check: although `event.code` is typed as a string,
+        // some browsers may emit key events with `undefined` code during autocomplete or IME composition.
+        // Exit early to avoid matching against an invalid or missing key.
+        if (keyCode === undefined) return;
+        
+        
+        
+        // Trigger synthetic click for keys in `clickKeys`:
+        const pressableElement = event.currentTarget;
+        if ((pressableElement instanceof HTMLElement) && matchesKey(keyCode, clickKeys)) {
+            event.preventDefault(); // The key is handled, prevent default browser behavior (e.g. form submission, scroll).
+            
+            // Dispatch a synthetic click event:
+            pressableElement.click();
+            
+            /**
+             * This combination of `.preventDefault()` and `.click()` ensures consistent behavior across browsers:
+             * 
+             * - For native submit buttons inside forms, form submission still occurs once as expected.
+             *   The manual `.click()` replaces the browser's native activation, avoiding double submission.
+             * 
+             * - For custom buttons (e.g. styled `<div>`), the synthetic click mimics native behavior,
+             *   triggering associated click handlers without unintended side effects like scroll or focus shifts.
+             */
+        } // if
+        
+        
+        
+        // Track press state for keys in `pressKeys`:
+        if (!matchesKey(keyCode, pressKeys)) return; // Early exit if the key is not in `pressKeys`.
+        pressedKeys.add(keyCode);
+        event.preventDefault(); // The key is handled, prevent default browser behavior (e.g. form submission, scroll).
+        
+        
+        
+        // Ignore if externally controlled, avoiding unnecessary state updates:
+        if (isExternallyControlled) return;
+        
+        // Ignore if already pressed:
+        if (observedPress) return;
+        
+        // The code below is redundant as `keydown` inherently means the element is pressed:
+        // // Check if the element or any of its descendants are currently pressed:
+        // const isPressWithin = event.currentTarget.matches(pressWithinSelector);
+        // 
+        // // Ignore if not pressed:
+        // if (!isPressWithin) return;
+        
+        
+        
+        // Set the press state:
+        setObservedPress(true);
+    });
+    const handleKeyUp         : KeyboardEventHandler<TElement> = useStableCallback((event) => {
+        // Get the pressed key for matching the configured keys:
+        const keyCode = event.code;
+        
+        // Defensive check: although `event.code` is typed as a string,
+        // some browsers may emit key events with `undefined` code during autocomplete or IME composition.
+        // Exit early to avoid matching against an invalid or missing key.
+        if (keyCode === undefined) return;
+        
+        
+        
+        // Untrack release state for keys in `pressKeys`:
+        if (!matchesKey(keyCode, pressKeys)) return; // Early exit if the key is not in `pressKeys`.
+        pressedKeys.delete(keyCode);
+        
+        
+        
+        // If other keys are still pressed, keep press state active:
+        if (pressedKeys.size !== 0) return;
+        
+        
+        
+        // Ignore if externally controlled, avoiding unnecessary state updates:
+        if (isExternallyControlled) return;
+        
+        // Ignore if already released:
+        if (!observedPress) return;
+        
+        
+        
+        // Reset the press state:
+        setObservedPress(false);
+        
+        
+        
+        // Trigger synthetic click on keyup if configured:
+        if (!triggerClickOnKeyUp) return;
+        const pressableElement = event.currentTarget;
+        if (pressableElement instanceof HTMLElement) {
+            pressableElement.click();
+        } // if
+    });
+    
     
     
     // Return the internal press state API:
@@ -149,5 +277,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(isExter
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,
+        handleKeyDown,
+        handleKeyUp,
     } satisfies PressObserverState<TElement>;
 };

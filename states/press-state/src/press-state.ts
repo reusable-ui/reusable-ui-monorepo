@@ -62,9 +62,9 @@ import {
  * 
  * @param props - The component props that may include a controlled `pressed` value and derived `computedPress` value.
  * @param options - An optional configuration for customizing press/release behavior.
- * @returns The resolved pressed/released state and event handlers for pointerdown/pointerup/pointercancel events.
+ * @returns The resolved pressed/released state and event handlers for pointer and keyboard events.
  */
-export const usePressState = <TElement extends Element = HTMLElement>(props: PressStateProps, options?: Pick<PressStateOptions, 'defaultPressed'>) : Pick<PressBehaviorState<TElement>, 'pressed' | 'ref' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel'> => {
+export const usePressState = <TElement extends Element = HTMLElement>(props: PressStateProps, options?: Pick<PressStateOptions, 'defaultPressed' | 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp'>) : Pick<PressBehaviorState<TElement>, 'pressed' | 'ref' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'> => {
     // Extract options and assign defaults:
     const {
         defaultPressed    = defaultDeclarativePressed,
@@ -95,7 +95,9 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,
-    } = usePressObserver<TElement>(isExplicitValue || isExternallyComputed);
+        handleKeyDown,
+        handleKeyUp,
+    } = usePressObserver<TElement>(isExplicitValue || isExternallyComputed, options);
     
     // Resolve effective `computedPress`:
     const resolvedComputedPress = isExternallyComputed ? externalComputedPress : observedPress;
@@ -112,7 +114,9 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,
-    } satisfies Pick<PressBehaviorState<TElement>, 'pressed' | 'ref' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel'>;
+        handleKeyDown,
+        handleKeyUp,
+    } satisfies Pick<PressBehaviorState<TElement>, 'pressed' | 'ref' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'>;
 };
 
 
@@ -181,6 +185,8 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
  *         handlePointerDown,
  *         handlePointerUp,
  *         handlePointerCancel,
+ *         handleKeyDown,
+ *         handleKeyUp,
  *     } = usePressBehaviorState({
  *         computedPress,
  *         ...restProps,
@@ -238,7 +244,9 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,
-    } = usePressObserver<TElement>(isExplicitValue || isExternallyComputed);
+        handleKeyDown,
+        handleKeyUp,
+    } = usePressObserver<TElement>(isExplicitValue || isExternallyComputed, options);
     
     // Resolve effective `computedPress`:
     const resolvedComputedPress = isExternallyComputed ? externalComputedPress : observedPress;
@@ -322,6 +330,8 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,
+        handleKeyDown,
+        handleKeyUp,
     } satisfies PressBehaviorState<TElement>;
 };
 
