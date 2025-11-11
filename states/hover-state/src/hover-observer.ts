@@ -72,10 +72,10 @@ export interface HoverObserverState<TElement extends Element = HTMLElement>
  * 
  * @template TElement - The type of the target DOM element.
  * 
- * @param isExternallyControlled - Whether the hover state is externally controlled.
+ * @param disabledUpdates - Whether to disable internal hover state updates (e.g. when externally controlled).
  * @returns The observed hover state, ref, and event handlers.
  */
-export const useHoverObserver = <TElement extends Element = HTMLElement>(isExternallyControlled: boolean): HoverObserverState<TElement> => {
+export const useHoverObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean): HoverObserverState<TElement> => {
     // States and flags:
     
     // Ref to the hoverable DOM element:
@@ -90,6 +90,9 @@ export const useHoverObserver = <TElement extends Element = HTMLElement>(isExter
     // Using `useLayoutEffect()` to ensure the check runs before browser paint,
     // preventing potential visual glitches if the element is already hovered.
     useLayoutEffect(() => {
+        // Ignore if the state updates should be disabled:
+        if (disabledUpdates) return;
+        
         const hoverableElement = hoverableElementRef.current;
         
         // Ignore if no element to observe:
@@ -105,14 +108,14 @@ export const useHoverObserver = <TElement extends Element = HTMLElement>(isExter
         
         // Set the hover state:
         setObservedHover(true);
-    }, []);
+    }, [disabledUpdates]);
     
     
     
     // Imperative handlers for uncontrolled hover tracking:
     const handleMouseEnter : MouseEventHandler<TElement> = useStableCallback((event) => {
-        // Ignore if externally controlled, avoiding unnecessary state updates:
-        if (isExternallyControlled) return;
+        // Ignore if the state updates should be disabled:
+        if (disabledUpdates) return;
         
         // Ignore if already hovered:
         if (observedHover) return;
@@ -130,8 +133,8 @@ export const useHoverObserver = <TElement extends Element = HTMLElement>(isExter
         setObservedHover(true);
     });
     const handleMouseLeave : MouseEventHandler<TElement> = useStableCallback(() => {
-        // Ignore if externally controlled, avoiding unnecessary state updates:
-        if (isExternallyControlled) return;
+        // Ignore if the state updates should be disabled:
+        if (disabledUpdates) return;
         
         
         
