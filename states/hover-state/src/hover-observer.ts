@@ -90,6 +90,7 @@ export const useHoverObserver = <TElement extends Element = HTMLElement>(disable
     // Using `useLayoutEffect()` to ensure the check runs before browser paint,
     // preventing potential visual glitches if the element is already hovered.
     useLayoutEffect(() => {
+        //#region State update
         // Ignore if the state updates should be disabled:
         if (disabledUpdates) return;
         
@@ -108,12 +109,14 @@ export const useHoverObserver = <TElement extends Element = HTMLElement>(disable
         
         // Set the hover state:
         setObservedHover(true);
+        //#endregion State update
     }, [disabledUpdates]);
     
     
     
     // Imperative handlers for uncontrolled hover tracking:
     const handleMouseEnter : MouseEventHandler<TElement> = useStableCallback((event) => {
+        //#region State update
         // Ignore if the state updates should be disabled:
         if (disabledUpdates) return;
         
@@ -131,15 +134,21 @@ export const useHoverObserver = <TElement extends Element = HTMLElement>(disable
         
         // Set the hover state:
         setObservedHover(true);
+        //#endregion State update
     });
     const handleMouseLeave : MouseEventHandler<TElement> = useStableCallback(() => {
+        //#region State update
         // Ignore if the state updates should be disabled:
         if (disabledUpdates) return;
+        
+        // Ignore if already leaved:
+        if (!observedHover) return;
         
         
         
         // Reset the hover state:
         setObservedHover(false);
+        //#endregion State update
     });
     
     
