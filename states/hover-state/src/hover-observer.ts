@@ -86,69 +86,61 @@ export const useHoverObserver = <TElement extends Element = HTMLElement>(disable
     
     
     
+    /**
+     * Updates the internal hover state based on the current hover state of the given element.
+     * 
+     * - If `disabledUpdates` is true, the update will be skipped.
+     * - If `newObservedHover` is not provided, it will be auto-detected using `.matches(hoverWithinSelector)`.
+     * - If the new state matches the current `observedHover`, no update will occur.
+     * 
+     * @param hoverableElement - The DOM element to observe for hover state.
+     * @param newObservedHover - Optional override for the detected hover state.
+     */
+    const handleHoverStateUpdate : (hoverableElement: TElement | null, newObservedHover?: boolean) => void = useStableCallback((hoverableElement, newObservedHover) => {
+        // Skip update if disabled:
+        if (disabledUpdates) return;
+        
+        // Skip update if no element to observe:
+        if (!hoverableElement) return;
+        
+        // Auto-detect hover state if not provided:
+        newObservedHover ??= hoverableElement.matches(hoverWithinSelector);
+        
+        // The code below is redundant as `:hover` inherently means the element is `:hover-within`,
+        // so no additional verification is needed.
+        // // If hovered, verify hover-within:
+        // if (newObservedHover) {
+        //     newObservedHover = hoverableElement.matches(hoverWithinSelector);
+        // } // if
+        
+        // Skip update if state is unchanged:
+        if (newObservedHover === observedHover) return;
+        
+        
+        
+        // Commit hover state update:
+        setObservedHover(newObservedHover);
+    });
+    
+    
+    
     // Initial mount effect: sync internal state if the element is already hovered on mount.
     // Using `useLayoutEffect()` to ensure the check runs before browser paint,
     // preventing potential visual glitches if the element is already hovered.
     useLayoutEffect(() => {
-        //#region State update
-        // Ignore if the state updates should be disabled:
-        if (disabledUpdates) return;
-        
-        const hoverableElement = hoverableElementRef.current;
-        
-        // Ignore if no element to observe:
-        if (!hoverableElement) return;
-        
-        // Check if the element or any of its descendants are currently hovered:
-        const isHoverWithin = hoverableElement.matches(hoverWithinSelector);
-        
-        // Ignore if not hovered:
-        if (!isHoverWithin) return;
-        
-        
-        
-        // Set the hover state:
-        setObservedHover(true);
-        //#endregion State update
+        handleHoverStateUpdate(hoverableElementRef.current);
     }, [disabledUpdates]);
+    // Re-evaluate hover state only when `disabledUpdates` changes.
+    // `handleHoverStateUpdate` is stable via useStableCallback, so it's safe to omit from deps.
     
     
     
     // Imperative handlers for uncontrolled hover tracking:
     const handleMouseEnter : MouseEventHandler<TElement> = useStableCallback((event) => {
-        //#region State update
-        // Ignore if the state updates should be disabled:
-        if (disabledUpdates) return;
-        
-        // Ignore if already hovered:
-        if (observedHover) return;
-        
-        // The code below is redundant as `mouseenter` inherently means the element is hovered:
-        // // Check if the element or any of its descendants are currently hovered:
-        // const isHoverWithin = event.currentTarget.matches(hoverWithinSelector);
-        // 
-        // // Ignore if not hovered:
-        // if (!isHoverWithin) return;
-        
-        
-        
-        // Set the hover state:
-        setObservedHover(true);
-        //#endregion State update
+        handleHoverStateUpdate(event.currentTarget, true);
     });
-    const handleMouseLeave : MouseEventHandler<TElement> = useStableCallback(() => {
-        //#region State update
-        // Ignore if the state updates should be disabled:
-        if (disabledUpdates) return;
-        
-        // Ignore if already leaved:
-        if (!observedHover) return;
-        
-        
-        
-        // Reset the hover state:
-        setObservedHover(false);
-        //#endregion State update
+    const handleMouseLeave : MouseEventHandler<TElement> = useStableCallback((event) => {
+        handleHoverStateUpdate(event.currentTarget, false);
     });
     
     
