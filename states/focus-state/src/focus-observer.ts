@@ -90,71 +90,60 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(disable
     
     
     
+    /**
+     * Updates the internal focus state based on the current focus visibility of the given element.
+     * 
+     * - If `disabledUpdates` is true, the update will be skipped.
+     * - If `newObservedFocus` is not provided, it will be auto-detected using `document.activeElement`.
+     * - If the element is focused, it must also match `focusVisibleWithinSelector` to be considered visibly focused.
+     * - If the new state matches the current `observedFocus`, no update will occur.
+     * 
+     * @param focusableElement - The DOM element to observe for focus visibility.
+     * @param newObservedFocus - Optional override for the detected focus state.
+     */
+    const handleFocusStateUpdate : (focusableElement: TElement | null, newObservedFocus?: boolean) => void = useStableCallback((focusableElement, newObservedFocus) => {
+        // Skip update if disabled:
+        if (disabledUpdates) return;
+        
+        // Skip update if no element to observe:
+        if (!focusableElement) return;
+        
+        // Auto-detect focus state if not provided:
+        newObservedFocus ??= (document.activeElement === focusableElement);
+        
+        // If focused, verify visible focus:
+        if (newObservedFocus) {
+            newObservedFocus = focusableElement.matches(focusVisibleWithinSelector);
+        } // if
+        
+        // Skip update if state is unchanged:
+        if (newObservedFocus === observedFocus) return;
+        
+        
+        
+        // Commit focus state update:
+        setObservedFocus(newObservedFocus);
+    });
+    
+    
+    
     // Initial mount effect: sync internal state if the element is already focused on mount.
     // Using `useLayoutEffect()` to ensure the check runs before browser paint,
     // preventing potential visual glitches if the element is already focused.
     useLayoutEffect(() => {
-        //#region State update
-        // Ignore if the state updates should be disabled:
-        if (disabledUpdates) return;
-        
-        const focusableElement = focusableElementRef.current;
-        
-        // Ignore if no element to observe:
-        if (!focusableElement) return;
-        
-        // Ignore if the element is not currently focused:
-        if (focusableElement !== document.activeElement) return;
-        
-        // Check if the element or any of its descendants are currently visibly focused:
-        const isFocusVisibleWithin = focusableElement.matches(focusVisibleWithinSelector);
-        
-        // Ignore if not visibly focused:
-        if (!isFocusVisibleWithin) return;
-        
-        
-        
-        // Set the focus state:
-        setObservedFocus(true);
-        //#endregion State update
+        handleFocusStateUpdate(focusableElementRef.current);
     }, [disabledUpdates]);
+    // Re-evaluate focus state only when `disabledUpdates` changes.
+    // `handleFocusStateUpdate` is stable via useStableCallback, so it's safe to omit from deps.
     
     
     
     // Imperative handlers for uncontrolled focus tracking:
     const handleFocus   = useStableCallback((event: FocusEvent<TElement, Element> | KeyboardEvent<TElement>) => {
-        //#region State update
-        // Ignore if the state updates should be disabled:
-        if (disabledUpdates) return;
-        
-        // Ignore if already focused:
-        if (observedFocus) return;
-        
-        // Check if the element or any of its descendants are currently visibly focused:
-        const isFocusVisibleWithin = event.currentTarget.matches(focusVisibleWithinSelector);
-        
-        // Ignore if not visibly focused:
-        if (!isFocusVisibleWithin) return;
-        
-        
-        
-        // Set the focus state:
-        setObservedFocus(true);
-        //#endregion State update
+        handleFocusStateUpdate(event.currentTarget, true);
     });
-    const handleBlur    : FocusEventHandler<TElement> = useStableCallback(() => {
-        //#region State update
-        // Ignore if the state updates should be disabled:
-        if (disabledUpdates) return;
-        
-        // Ignore if already blurred:
-        if (!observedFocus) return;
-        
-        
-        
-        // Reset the focus state:
-        setObservedFocus(false);
-        //#endregion State update
+    const handleBlur    : FocusEventHandler<TElement> = useStableCallback((event) => {
+        handleFocusStateUpdate(event.currentTarget, false);
     });
     const handleKeyDown : KeyboardEventHandler<TElement> = useStableCallback((event) => {
         // Ignore if the state updates should be disabled:
