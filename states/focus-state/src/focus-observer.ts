@@ -76,10 +76,10 @@ export interface FocusObserverState<TElement extends Element = HTMLElement>
  * 
  * @template TElement - The type of the target DOM element.
  * 
- * @param isExternallyControlled - Whether the focus state is externally controlled.
+ * @param disabledUpdates - Whether to disable internal focus state updates (e.g. when externally controlled).
  * @returns The observed focus state, ref, and event handlers.
  */
-export const useFocusObserver = <TElement extends Element = HTMLElement>(isExternallyControlled: boolean): FocusObserverState<TElement> => {
+export const useFocusObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean): FocusObserverState<TElement> => {
     // States and flags:
     
     // Ref to the focusable DOM element:
@@ -94,6 +94,9 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(isExter
     // Using `useLayoutEffect()` to ensure the check runs before browser paint,
     // preventing potential visual glitches if the element is already focused.
     useLayoutEffect(() => {
+        // Ignore if the state updates should be disabled:
+        if (disabledUpdates) return;
+        
         const focusableElement = focusableElementRef.current;
         
         // Ignore if no element to observe:
@@ -112,14 +115,14 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(isExter
         
         // Set the focus state:
         setObservedFocus(true);
-    }, []);
+    }, [disabledUpdates]);
     
     
     
     // Imperative handlers for uncontrolled focus tracking:
     const handleFocus   = useStableCallback((event: FocusEvent<TElement, Element> | KeyboardEvent<TElement>) => {
-        // Ignore if externally controlled, avoiding unnecessary state updates:
-        if (isExternallyControlled) return;
+        // Ignore if the state updates should be disabled:
+        if (disabledUpdates) return;
         
         // Ignore if already focused:
         if (observedFocus) return;
@@ -136,8 +139,8 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(isExter
         setObservedFocus(true);
     });
     const handleBlur    : FocusEventHandler<TElement> = useStableCallback(() => {
-        // Ignore if externally controlled, avoiding unnecessary state updates:
-        if (isExternallyControlled) return;
+        // Ignore if the state updates should be disabled:
+        if (disabledUpdates) return;
         
         
         
@@ -145,6 +148,9 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(isExter
         setObservedFocus(false);
     });
     const handleKeyDown : KeyboardEventHandler<TElement> = useStableCallback((event) => {
+        // Ignore if the state updates should be disabled:
+        if (disabledUpdates) return;
+        
         // Ignore if the focus is going to move away via Tab key and not prevented:
         if (event.key === 'Tab' && !event.defaultPrevented) return;
         
