@@ -86,10 +86,10 @@ export interface PressObserverState<TElement extends Element = HTMLElement>
  * 
  * @template TElement - The type of the target DOM element.
  * 
- * @param isExternallyControlled - Whether the press state is externally controlled.
+ * @param disabledUpdates - Whether to disable internal press state updates (e.g. when externally controlled).
  * @returns The observed press state, ref, and event handlers.
  */
-export const usePressObserver = <TElement extends Element = HTMLElement>(isExternallyControlled: boolean, options: Pick<PressStateOptions, 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp'> | undefined): PressObserverState<TElement> => {
+export const usePressObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, options: Pick<PressStateOptions, 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp'> | undefined): PressObserverState<TElement> => {
     // Extract options and assign defaults:
     const {
         pressKeys           = defaultPressKeys,
@@ -118,6 +118,9 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(isExter
     // Using `useLayoutEffect()` to ensure the check runs before browser paint,
     // preventing potential visual glitches if the element is already pressed.
     useLayoutEffect(() => {
+        // Ignore if the state updates should be disabled:
+        if (disabledUpdates) return;
+        
         const pressableElement = pressableElementRef.current;
         
         // Ignore if no element to observe:
@@ -133,14 +136,14 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(isExter
         
         // Set the press state:
         setObservedPress(true);
-    }, []);
+    }, [disabledUpdates]);
     
     
     
     // Imperative handlers for uncontrolled press tracking:
     const handlePointerDown   : PointerEventHandler<TElement> = useStableCallback((event) => {
-        // Ignore if externally controlled, avoiding unnecessary state updates:
-        if (isExternallyControlled) return;
+        // Ignore if the state updates should be disabled:
+        if (disabledUpdates) return;
         
         // Ignore if already pressed:
         if (observedPress) return;
@@ -158,8 +161,8 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(isExter
         setObservedPress(true);
     });
     const handlePointerUp     : PointerEventHandler<TElement> = useStableCallback(() => {
-        // Ignore if externally controlled, avoiding unnecessary state updates:
-        if (isExternallyControlled) return;
+        // Ignore if the state updates should be disabled:
+        if (disabledUpdates) return;
         
         
         
@@ -207,8 +210,8 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(isExter
         
         
         
-        // Ignore if externally controlled, avoiding unnecessary state updates:
-        if (isExternallyControlled) return;
+        // Ignore if the state updates should be disabled:
+        if (disabledUpdates) return;
         
         // Ignore if already pressed:
         if (observedPress) return;
@@ -247,8 +250,8 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(isExter
         
         
         
-        // Ignore if externally controlled, avoiding unnecessary state updates:
-        if (isExternallyControlled) return;
+        // Ignore if the state updates should be disabled:
+        if (disabledUpdates) return;
         
         // Ignore if already released:
         if (!observedPress) return;
