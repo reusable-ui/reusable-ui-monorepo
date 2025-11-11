@@ -118,6 +118,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     // Using `useLayoutEffect()` to ensure the check runs before browser paint,
     // preventing potential visual glitches if the element is already pressed.
     useLayoutEffect(() => {
+        //#region State update
         // Ignore if the state updates should be disabled:
         if (disabledUpdates) return;
         
@@ -136,12 +137,14 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         // Set the press state:
         setObservedPress(true);
+        //#endregion State update
     }, [disabledUpdates]);
     
     
     
     // Imperative handlers for uncontrolled press tracking:
     const handlePointerDown   : PointerEventHandler<TElement> = useStableCallback((event) => {
+        //#region State update
         // Ignore if the state updates should be disabled:
         if (disabledUpdates) return;
         
@@ -159,15 +162,21 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         // Set the press state:
         setObservedPress(true);
+        //#endregion State update
     });
     const handlePointerUp     : PointerEventHandler<TElement> = useStableCallback(() => {
+        //#region State update
         // Ignore if the state updates should be disabled:
         if (disabledUpdates) return;
+        
+        // Ignore if already released:
+        if (!observedPress) return;
         
         
         
         // Reset the press state:
         setObservedPress(false);
+        //#endregion State update
     });
     const handlePointerCancel : PointerEventHandler<TElement> = handlePointerUp; // Currently, pointercancel has the same effect as pointerup.
     
@@ -182,6 +191,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         
         
+        //#region Keyboard click on press behavior
         // Trigger synthetic click for keys in `clickKeys`:
         const pressableElement = event.currentTarget;
         if ((pressableElement instanceof HTMLElement) && matchesKey(keyCode, clickKeys)) {
@@ -200,16 +210,20 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
              *   triggering associated click handlers without unintended side effects like scroll or focus shifts.
              */
         } // if
+        //#endregion Keyboard click on press behavior
         
         
         
+        //#region Keyboard press tracking
         // Track press state for keys in `pressKeys`:
         if (!matchesKey(keyCode, pressKeys)) return; // Early exit if the key is not in `pressKeys`.
         pressedKeys.add(keyCode);
         event.preventDefault(); // The key is handled, prevent default browser behavior (e.g. form submission, scroll).
+        //#endregion Keyboard press tracking
         
         
         
+        //#region State update
         // Ignore if the state updates should be disabled:
         if (disabledUpdates) return;
         
@@ -227,6 +241,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         // Set the press state:
         setObservedPress(true);
+        //#endregion State update
     });
     const handleKeyUp         : KeyboardEventHandler<TElement> = useStableCallback((event) => {
         // Get the pressed key for matching the configured keys:
@@ -239,6 +254,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         
         
+        //#region Keyboard press tracking
         // Untrack release state for keys in `pressKeys`:
         if (!matchesKey(keyCode, pressKeys)) return; // Early exit if the key is not in `pressKeys`.
         pressedKeys.delete(keyCode);
@@ -247,9 +263,22 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         // If other keys are still pressed, keep press state active:
         if (pressedKeys.size !== 0) return;
+        //#endregion Keyboard press tracking
         
         
         
+        //#region Keyboard click on release behavior
+        // Trigger synthetic click on keyup if configured:
+        if (!triggerClickOnKeyUp) return;
+        const pressableElement = event.currentTarget;
+        if (pressableElement instanceof HTMLElement) {
+            pressableElement.click();
+        } // if
+        //#endregion Keyboard click on release behavior
+        
+        
+        
+        //#region State update
         // Ignore if the state updates should be disabled:
         if (disabledUpdates) return;
         
@@ -260,15 +289,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         // Reset the press state:
         setObservedPress(false);
-        
-        
-        
-        // Trigger synthetic click on keyup if configured:
-        if (!triggerClickOnKeyUp) return;
-        const pressableElement = event.currentTarget;
-        if (pressableElement instanceof HTMLElement) {
-            pressableElement.click();
-        } // if
+        //#endregion State update
     });
     
     
