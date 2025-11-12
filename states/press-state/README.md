@@ -3,6 +3,22 @@
 Adds press/release functionality to UI components, with transition animations and semantic styling hooks.  
 Ideal for buttons, selects, menuItems, and any interactive component requiring press feedback.
 
+## Why Use `@reusable-ui/press-state` Instead of `:active`
+
+While the `:active` pseudo-class works for basic styling, it falls short when building interactive components that demand lifecycle precision, cross-device consistency, and expressive animation control.
+
+`@reusable-ui/press-state` offers a declarative, lifecycle-aware alternative — designed for developers who care about nuance, accessibility, and animation ergonomics.
+
+With this hook, you can:
+
+- Precisely define which mouse buttons, keyboard keys, or stylus pressure levels activate press state
+- Simulate press behavior programmatically — ideal for demos, tutorials, or guided UI walkthroughs
+- Animate press transitions with full control over timing, easing, and interruption handling
+- Style components as if they’re being pressed, even without user interaction — enabling scripted motion and teaching tools
+- Achieve consistent behavior across browsers, devices, and input types (mouse, touch, pen, keyboard)
+
+Whether you're building a design system, onboarding flow, or accessibility-first UI, `press-state` gives you the semantic hooks and lifecycle clarity that `:active` simply can't.
+
 ## ✨ Features
 ✔ Lifecycle-aware press/release animations based on current press state  
 ✔ Gracefully completes running animations before resolving new state  
