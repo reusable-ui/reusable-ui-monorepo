@@ -57,9 +57,9 @@ export const defaultPressButtons        : Required<PressStateOptions>['pressButt
  * 
  * This fallback ensures that only intentional contact (not hover) activates the press state.
  * 
- * - `0.1`: activates press when pressure is ≥ 0.1
+ * - `0.005`: activates press when pressure is ≥ 0.005
  */
-export const defaultPressPressure       : Required<PressStateOptions>['pressPressure']       = 0.1;
+export const defaultPressPressure       : Required<PressStateOptions>['pressPressure']       = 0.005;
 
 /**
  * A default finger count that activates press state when no `pressFingers` option is explicitly provided.

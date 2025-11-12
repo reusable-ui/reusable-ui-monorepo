@@ -196,7 +196,7 @@ export interface PressStateOptions
      * 
      * Accepts:
      * - Range: `0.0` (light press) to `1.0` (full press)
-     * - Default: `0.1` — activates press when pressure is ≥ 0.1
+     * - Default: `0.005` — activates press when pressure is ≥ 0.005
      * - `-1` to disable stylus-based press activation
      */
     pressPressure       ?: number
