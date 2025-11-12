@@ -114,69 +114,61 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     
     
     
+    /**
+     * Updates the internal press state based on the current press state of the given element.
+     * 
+     * - If `disabledUpdates` is true, the update will be skipped.
+     * - If `newObservedPress` is not provided, it will be auto-detected using `.matches(pressWithinSelector)`.
+     * - If the new state matches the current `observedPress`, no update will occur.
+     * 
+     * @param pressableElement - The DOM element to observe for press state.
+     * @param newObservedPress - Optional override for the detected press state.
+     */
+    const handlePressStateUpdate : (pressableElement: TElement | null, newObservedPress?: boolean) => void = useStableCallback((pressableElement, newObservedPress) => {
+        // Skip update if disabled:
+        if (disabledUpdates) return;
+        
+        // Skip update if no element to observe:
+        if (!pressableElement) return;
+        
+        // Auto-detect press state if not provided:
+        newObservedPress ??= pressableElement.matches(pressWithinSelector);
+        
+        // The code below is redundant as `:press` inherently means the element is `:press-within`,
+        // so no additional verification is needed.
+        // // If pressed, verify press-within:
+        // if (newObservedPress) {
+        //     newObservedPress = pressableElement.matches(pressWithinSelector);
+        // } // if
+        
+        // Skip update if state is unchanged:
+        if (newObservedPress === observedPress) return;
+        
+        
+        
+        // Commit press state update:
+        setObservedPress(newObservedPress);
+    });
+    
+    
+    
     // Initial mount effect: sync internal state if the element is already pressed on mount.
     // Using `useLayoutEffect()` to ensure the check runs before browser paint,
     // preventing potential visual glitches if the element is already pressed.
     useLayoutEffect(() => {
-        //#region State update
-        // Ignore if the state updates should be disabled:
-        if (disabledUpdates) return;
-        
-        const pressableElement = pressableElementRef.current;
-        
-        // Ignore if no element to observe:
-        if (!pressableElement) return;
-        
-        // Check if the element or any of its descendants are currently pressed:
-        const isPressWithin = pressableElement.matches(pressWithinSelector);
-        
-        // Ignore if not pressed:
-        if (!isPressWithin) return;
-        
-        
-        
-        // Set the press state:
-        setObservedPress(true);
-        //#endregion State update
+        handlePressStateUpdate(pressableElementRef.current);
     }, [disabledUpdates]);
+    // Re-evaluate press state only when `disabledUpdates` changes.
+    // `handlePressStateUpdate` is stable via useStableCallback, so it's safe to omit from deps.
     
     
     
     // Imperative handlers for uncontrolled press tracking:
     const handlePointerDown   : PointerEventHandler<TElement> = useStableCallback((event) => {
-        //#region State update
-        // Ignore if the state updates should be disabled:
-        if (disabledUpdates) return;
-        
-        // Ignore if already pressed:
-        if (observedPress) return;
-        
-        // The code below is redundant as `pointerdown` inherently means the element is pressed:
-        // // Check if the element or any of its descendants are currently pressed:
-        // const isPressWithin = event.currentTarget.matches(pressWithinSelector);
-        // 
-        // // Ignore if not pressed:
-        // if (!isPressWithin) return;
-        
-        
-        
-        // Set the press state:
-        setObservedPress(true);
-        //#endregion State update
+        handlePressStateUpdate(event.currentTarget, true);
     });
-    const handlePointerUp     : PointerEventHandler<TElement> = useStableCallback(() => {
-        //#region State update
-        // Ignore if the state updates should be disabled:
-        if (disabledUpdates) return;
-        
-        // Ignore if already released:
-        if (!observedPress) return;
-        
-        
-        
-        // Reset the press state:
-        setObservedPress(false);
-        //#endregion State update
+    const handlePointerUp     : PointerEventHandler<TElement> = useStableCallback((event) => {
+        handlePressStateUpdate(event.currentTarget, false);
     });
     const handlePointerCancel : PointerEventHandler<TElement> = handlePointerUp; // Currently, pointercancel has the same effect as pointerup.
     
@@ -223,25 +215,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         
         
-        //#region State update
-        // Ignore if the state updates should be disabled:
-        if (disabledUpdates) return;
-        
-        // Ignore if already pressed:
-        if (observedPress) return;
-        
-        // The code below is redundant as `keydown` inherently means the element is pressed:
-        // // Check if the element or any of its descendants are currently pressed:
-        // const isPressWithin = event.currentTarget.matches(pressWithinSelector);
-        // 
-        // // Ignore if not pressed:
-        // if (!isPressWithin) return;
-        
-        
-        
-        // Set the press state:
-        setObservedPress(true);
-        //#endregion State update
+        handlePressStateUpdate(event.currentTarget, true);
     });
     const handleKeyUp         : KeyboardEventHandler<TElement> = useStableCallback((event) => {
         // Get the pressed key for matching the configured keys:
@@ -278,18 +252,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         
         
-        //#region State update
-        // Ignore if the state updates should be disabled:
-        if (disabledUpdates) return;
-        
-        // Ignore if already released:
-        if (!observedPress) return;
-        
-        
-        
-        // Reset the press state:
-        setObservedPress(false);
-        //#endregion State update
+        handlePressStateUpdate(event.currentTarget, false);
     });
     
     
