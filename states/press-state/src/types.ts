@@ -175,6 +175,45 @@ export interface PressStateOptions
     triggerClickOnKeyUp ?: boolean
     
     /**
+     * A list of mouse buttons that activate press state.
+     * 
+     * When a matching button is pressed, the component enters the pressed state;
+     * when released, it exits the pressed state.
+     * 
+     * Accepts:
+     * - `0`: activates press on left mouse button
+     * - `1`: activates press on middle mouse button
+     * - `2`: activates press on right mouse button
+     * - An array of button values
+     * - `null` to disable mouse-based press activation
+     */
+    pressButtons        ?: number | number[] | null
+    
+    /**
+     * The minimum pressure threshold required to activate press state for pen devices.
+     * 
+     * Ensures that only deliberate stylus contact (not hover or accidental proximity) triggers press.
+     * 
+     * Accepts:
+     * - Range: `0.0` (light press) to `1.0` (full press)
+     * - Default: `0.1` — activates press when pressure is ≥ 0.1
+     * - `-1` to disable stylus-based press activation
+     */
+    pressPressure       ?: number
+    
+    /**
+     * The exact number of fingers required to activate press state for touch devices.
+     * 
+     * Ensures that only the specified number of touches triggers press.
+     * 
+     * Accepts:
+     * - `1`: activates press on single-finger touch.
+     * - Any other number: requires exact number of finger touches
+     * - `0` to disable touch-based press activation
+     */
+    pressFingers        ?: number
+    
+    /**
      * Defines the pattern used to identify press/release-related animation names.
      * 
      * This pattern determines which animation names are recognized as part of the pressing/releasing transition lifecycle.

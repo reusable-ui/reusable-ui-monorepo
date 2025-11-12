@@ -64,7 +64,7 @@ import {
  * @param options - An optional configuration for customizing press/release behavior.
  * @returns The resolved pressed/released state and event handlers for pointer and keyboard events.
  */
-export const usePressState = <TElement extends Element = HTMLElement>(props: PressStateProps, options?: Pick<PressStateOptions, 'defaultPressed' | 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp'>) : Pick<PressBehaviorState<TElement>, 'pressed' | 'ref' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'> => {
+export const usePressState = <TElement extends Element = HTMLElement>(props: PressStateProps, options?: Pick<PressStateOptions, 'defaultPressed' | 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers'>) : Pick<PressBehaviorState<TElement>, 'pressed' | 'ref' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'> => {
     // Extract options and assign defaults:
     const {
         defaultPressed    = defaultDeclarativePressed,

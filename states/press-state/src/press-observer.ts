@@ -25,12 +25,19 @@ import {
     defaultPressKeys,
     defaultClickKeys,
     defaultTriggerClickOnKeyUp,
+    
+    defaultPressButtons,
+    defaultPressPressure,
+    defaultPressFingers,
 }                           from './internal-defaults.js'
 
 // Utilities:
 import {
     matchesKey,
 }                           from './internal-utilities.js'
+import {
+    usePointerPressTracker,
+}                           from './pointer-press-tracker.js'
 import {
     useKeyPressTracker,
 }                           from './key-press-tracker.js'
@@ -92,12 +99,16 @@ export interface PressObserverState<TElement extends Element = HTMLElement>
  * @param disabledUpdates - Whether to disable internal press state updates (e.g. when externally controlled).
  * @returns The observed press state, ref, and event handlers.
  */
-export const usePressObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, options: Pick<PressStateOptions, 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp'> | undefined): PressObserverState<TElement> => {
+export const usePressObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, options: Pick<PressStateOptions, 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers'> | undefined): PressObserverState<TElement> => {
     // Extract options and assign defaults:
     const {
         pressKeys           = defaultPressKeys,
         clickKeys           = defaultClickKeys,
         triggerClickOnKeyUp = defaultTriggerClickOnKeyUp,
+        
+        pressButtons        = defaultPressButtons,
+        pressPressure       = defaultPressPressure,
+        pressFingers        = defaultPressFingers,
     } = options ?? {};
     
     
@@ -110,8 +121,11 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     // Internal fallback for observed press (used only when uncontrolled):
     const [observedPress, setObservedPress] = useState<boolean>(false);
     
+    // PointerPress tracker for determining pressed state by pointers:
+    const trackPointerPressState = usePointerPressTracker(pressButtons, pressPressure, pressFingers);
+    
     // KeyPress tracker for determining pressed state by keys:
-    const trackKeyPressState = useKeyPressTracker(pressKeys);
+    const trackKeyPressState     = useKeyPressTracker(pressKeys);
     
     
     
@@ -166,9 +180,19 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     
     // Imperative handlers for uncontrolled press tracking:
     const handlePointerDown   : PointerEventHandler<TElement> = useStableCallback((event) => {
+        // Track pointer press state:
+        if (!trackPointerPressState(event, true)) return; // Early exit if not successfully tracked.
+        
+        
+        
         handlePressStateUpdate(event.currentTarget, true);
     });
     const handlePointerUp     : PointerEventHandler<TElement> = useStableCallback((event) => {
+        // Untrack pointer press state:
+        if (!trackPointerPressState(event, false)) return; // Early exit if not fully untracked.
+        
+        
+        
         handlePressStateUpdate(event.currentTarget, false);
     });
     const handlePointerCancel : PointerEventHandler<TElement> = handlePointerUp; // Currently, pointercancel has the same effect as pointerup.

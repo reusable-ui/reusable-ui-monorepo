@@ -11,6 +11,7 @@ Ideal for buttons, selects, menuItems, and any interactive component requiring p
 ✔ Built-in internal press observer via `ref`, `handlePointerDown()`, `handlePointerUp()`, and `handlePointerCancel()` — no need for external state unless desired  
 ✔ Optional `computedPress` override for custom press resolution logic in advanced use cases  
 ✔ Built-in keyboard observer for `[Space]` and `[Enter]` keys — simulates press and click behavior with lifecycle consistency  
+✔ Built-in pointer observer for for mouse, touch, and pen devices  
 
 ## 📦 Installation
 Install **@reusable-ui/press-state** via npm or yarn:
@@ -114,6 +115,20 @@ The hook manages transitions between `pressed` and `released` states using a uni
 - If a transition is already in progress, new intent (e.g., switching from pressed to released) is deferred until the current animation completes.
 - Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
 - This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
+
+#### Pointer Behavior
+
+The hook includes a built-in pointer observer that supports mouse, touch, and pen input:
+
+- **Mouse**: Press state activates only when the pressed button matches the `pressButtons` filter (`0` for left, `1` for middle, `2` for right). You can pass a single value, an array, or `null` to disable mouse-based press activation.
+- **Touch**: Press state activates only when the number of active touches matches the `pressFingers` value exactly. Set `pressFingers = 1` for single-finger activation, or `0` to disable touch-based press.
+- **Pen**: Press state activates only when stylus pressure meets or exceeds the `pressPressure` threshold. Set `pressPressure = -1` to disable stylus-based press activation entirely.
+
+This behavior ensures:
+
+- Press animations are lifecycle-aware and never interrupted mid-flight.
+- Press state is only activated by deliberate, device-specific interactions.
+- Multi-touch and stylus input are lifecycle-aware and filtered for precision.
 
 #### Keyboard Behavior
 

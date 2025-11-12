@@ -68,3 +68,20 @@ export const matchesKey = (actualKey: string | undefined, expectedKeys: string |
     return expectedKeys.includes(actualKey);
 };
 
+/**
+ * Determines whether the given pointer button matches the expected button(s).
+ * 
+ * @param actualButton - The button value received from a pointer event (e.g. `event.button`)
+ * @param expectedButtons - A number or array of numbers representing the buttons to match against
+ * @returns `true` if the actual button matches any of the expected buttons; otherwise `false`
+ */
+export const matchesButton = (actualButton: number, expectedButtons: number | number[] | null): boolean => {
+    // Validate parameters:
+    if (expectedButtons === null) return false;
+    
+    
+    
+    // Test matches:
+    if (Array.isArray(expectedButtons)) return expectedButtons.includes(actualButton);
+    return (actualButton === expectedButtons);
+};

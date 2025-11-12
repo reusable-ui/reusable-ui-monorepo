@@ -42,3 +42,31 @@ export const defaultClickKeys           : Required<PressStateOptions>['clickKeys
  * - `true`: triggers synthetic click on keyup of keys in `pressKeys`.
  */
 export const defaultTriggerClickOnKeyUp : Required<PressStateOptions>['triggerClickOnKeyUp'] = true;
+
+/**
+ * A default mouse buttons that activate press state when no `pressButtons` option is explicitly provided.
+ * 
+ * This fallback mirrors native button behavior for left-click activation.
+ * 
+ * - `0`: activates press on left mouse button.
+ */
+export const defaultPressButtons        : Required<PressStateOptions>['pressButtons']        = 0;
+
+/**
+ * A default pressure threshold that activates press state when no `pressPressure` option is explicitly provided.
+ * 
+ * This fallback ensures that only intentional contact (not hover) activates the press state.
+ * 
+ * - `0.1`: activates press when pressure is ≥ 0.1
+ */
+export const defaultPressPressure       : Required<PressStateOptions>['pressPressure']       = 0.1;
+
+/**
+ * A default finger count that activates press state when no `pressFingers` option is explicitly provided.
+ * 
+ * This fallback mirrors native button behavior for single-finger touch activation.
+ * 
+ * - `1`: activates press on single-finger touch.
+ */
+export const defaultPressFingers        : Required<PressStateOptions>['pressFingers']        = 1;
+
