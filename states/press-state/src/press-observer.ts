@@ -31,6 +31,9 @@ import {
 import {
     matchesKey,
 }                           from './internal-utilities.js'
+import {
+    useKeyPressTracker,
+}                           from './key-press-tracker.js'
 
 // Reusable-ui utilities:
 import {
@@ -107,10 +110,8 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     // Internal fallback for observed press (used only when uncontrolled):
     const [observedPress, setObservedPress] = useState<boolean>(false);
     
-    // Internal memory for tracking currently pressed keys:
-    const pressedKeysRef = useRef<Set<string> | undefined>(undefined);
-    if (pressedKeysRef.current === undefined) pressedKeysRef.current = new Set<string>();
-    const pressedKeys = pressedKeysRef.current;
+    // KeyPress tracker for determining pressed state by keys:
+    const trackKeyPressState = useKeyPressTracker(pressKeys);
     
     
     
@@ -206,12 +207,9 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         
         
-        //#region Keyboard press tracking
-        // Track press state for keys in `pressKeys`:
-        if (!matchesKey(keyCode, pressKeys)) return; // Early exit if the key is not in `pressKeys`.
-        pressedKeys.add(keyCode);
-        event.preventDefault(); // The key is handled, prevent default browser behavior (e.g. form submission, scroll).
-        //#endregion Keyboard press tracking
+        // Track key press state:
+        if (!trackKeyPressState(keyCode, true)) return; // Early exit if not successfully tracked.
+        event.preventDefault(); // The key is handled (tracked), prevent default browser behavior (e.g. form submission, scroll).
         
         
         
@@ -228,16 +226,8 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         
         
-        //#region Keyboard press tracking
-        // Untrack release state for keys in `pressKeys`:
-        if (!matchesKey(keyCode, pressKeys)) return; // Early exit if the key is not in `pressKeys`.
-        pressedKeys.delete(keyCode);
-        
-        
-        
-        // If other keys are still pressed, keep press state active:
-        if (pressedKeys.size !== 0) return;
-        //#endregion Keyboard press tracking
+        // Untrack key press state:
+        if (!trackKeyPressState(keyCode, false)) return; // Early exit if not fully untracked.
         
         
         
