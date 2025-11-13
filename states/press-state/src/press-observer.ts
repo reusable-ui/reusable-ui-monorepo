@@ -29,6 +29,8 @@ import {
     defaultPressButtons,
     defaultPressPressure,
     defaultPressFingers,
+    
+    defaultNoGlobalPointerRelease,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -41,12 +43,19 @@ import {
 import {
     useKeyPressTracker,
 }                           from './key-press-tracker.js'
+import {
+    useGlobalPointerRelease,
+}                           from './global-pointer-release.js'
 
 // Reusable-ui utilities:
 import {
     // Hooks:
     useStableCallback,
 }                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
+import {
+    // Utilities:
+    createSyntheticPointerEvent,
+}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
 
 
 
@@ -99,16 +108,18 @@ export interface PressObserverState<TElement extends Element = HTMLElement>
  * @param disabledUpdates - Whether to disable internal press state updates (e.g. when externally controlled).
  * @returns The observed press state, ref, and event handlers.
  */
-export const usePressObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, options: Pick<PressStateOptions, 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers'> | undefined): PressObserverState<TElement> => {
+export const usePressObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, options: Pick<PressStateOptions, 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease'> | undefined): PressObserverState<TElement> => {
     // Extract options and assign defaults:
     const {
-        pressKeys           = defaultPressKeys,
-        clickKeys           = defaultClickKeys,
-        triggerClickOnKeyUp = defaultTriggerClickOnKeyUp,
+        pressKeys              = defaultPressKeys,
+        clickKeys              = defaultClickKeys,
+        triggerClickOnKeyUp    = defaultTriggerClickOnKeyUp,
         
-        pressButtons        = defaultPressButtons,
-        pressPressure       = defaultPressPressure,
-        pressFingers        = defaultPressFingers,
+        pressButtons           = defaultPressButtons,
+        pressPressure          = defaultPressPressure,
+        pressFingers           = defaultPressFingers,
+        
+        noGlobalPointerRelease = defaultNoGlobalPointerRelease,
     } = options ?? {};
     
     
@@ -136,18 +147,18 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
      * - If `newObservedPress` is not provided, it will be auto-detected using `.matches(pressWithinSelector)`.
      * - If the new state matches the current `observedPress`, no update will occur.
      * 
-     * @param pressableElement - The DOM element to observe for press state.
+     * @param pressableElement - The DOM element to observe for press state (only required when the `newObservedPress` is not provided).
      * @param newObservedPress - Optional override for the detected press state.
      */
     const handlePressStateUpdate : (pressableElement: TElement | null, newObservedPress?: boolean) => void = useStableCallback((pressableElement, newObservedPress) => {
         // Skip update if disabled:
         if (disabledUpdates) return;
         
-        // Skip update if no element to observe:
-        if (!pressableElement) return;
-        
-        // Auto-detect press state if not provided:
-        newObservedPress ??= pressableElement.matches(pressWithinSelector);
+        // If press state is not provided, attempt to infer from element:
+        if (newObservedPress === undefined) {
+            if (!pressableElement) return; // Cannot infer without element
+            newObservedPress = pressableElement.matches(pressWithinSelector);
+        } // if
         
         // The code below is redundant as `:press` inherently means the element is `:press-within`,
         // so no additional verification is needed.
@@ -179,25 +190,44 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     
     
     // Imperative handlers for uncontrolled press tracking:
-    const handlePointerDown   : PointerEventHandler<TElement> = useStableCallback((event) => {
+    const handlePointerDown    : PointerEventHandler<TElement>  = useStableCallback((event) => {
         // Track pointer press state:
         if (!trackPointerPressState(event, true)) return; // Early exit if not successfully tracked.
         
         
         
         handlePressStateUpdate(event.currentTarget, true);
+        
+        
+        
+        // Register global fallback listener to handle premature release outside the component:
+        if (!noGlobalPointerRelease) globalPointerReleaseController.register(event.pointerId);
     });
-    const handlePointerUp     : PointerEventHandler<TElement> = useStableCallback((event) => {
+    const handlePointerUp      : PointerEventHandler<TElement>  = useStableCallback((event) => {
         // Untrack pointer press state:
         if (!trackPointerPressState(event, false)) return; // Early exit if not fully untracked.
         
         
         
         handlePressStateUpdate(event.currentTarget, false);
+        
+        
+        
+        // Abort global fallback listener — release has already been handled:
+        if (!noGlobalPointerRelease) globalPointerReleaseController.abort(); // `abort()` is safe to call multiple times — it’s idempotent and guards against late release callbacks.
     });
-    const handlePointerCancel : PointerEventHandler<TElement> = handlePointerUp; // Currently, pointercancel has the same effect as pointerup.
+    const handlePointerCancel  : PointerEventHandler<TElement>  = handlePointerUp; // Currently, pointercancel has the same effect as pointerup.
+    const handlePointerRelease = useStableCallback((event: globalThis.PointerEvent) => {
+        // Convert native PointerEvent to a React-compatible synthetic event:
+        const syntheticEvent = createSyntheticPointerEvent<TElement, PointerEvent>({
+            nativeEvent : event,
+        });
+        
+        // Delegate to the pointercancel handler to ensure consistent release logic:
+        handlePointerCancel(syntheticEvent);
+    });
     
-    const handleKeyDown       : KeyboardEventHandler<TElement> = useStableCallback((event) => {
+    const handleKeyDown        : KeyboardEventHandler<TElement> = useStableCallback((event) => {
         // Get the pressed key for matching the configured keys:
         const keyCode = event.code;
         
@@ -239,7 +269,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         handlePressStateUpdate(event.currentTarget, true);
     });
-    const handleKeyUp         : KeyboardEventHandler<TElement> = useStableCallback((event) => {
+    const handleKeyUp          : KeyboardEventHandler<TElement> = useStableCallback((event) => {
         // Get the pressed key for matching the configured keys:
         const keyCode = event.code;
         
@@ -268,6 +298,11 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         handlePressStateUpdate(event.currentTarget, false);
     });
+    
+    
+    
+    // States and flags:
+    const globalPointerReleaseController = useGlobalPointerRelease(handlePointerRelease);
     
     
     

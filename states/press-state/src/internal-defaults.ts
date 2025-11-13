@@ -14,7 +14,7 @@ import {
  * 
  * - `'auto'`: enables automatic press resolution based on `computedPress` (if provided), or internal press observer.
  */
-export const defaultDeclarativePressed  : Required<PressStateProps>['pressed']               = 'auto';
+export const defaultDeclarativePressed     : Required<PressStateProps>['pressed']                  = 'auto';
 
 /**
  * A default keys that simulate press interactions when no `pressKeys` option is explicitly provided.
@@ -23,7 +23,7 @@ export const defaultDeclarativePressed  : Required<PressStateProps>['pressed']  
  * 
  * - `'Space'`: simulates press on `[Space]` key.
  */
-export const defaultPressKeys           : Required<PressStateOptions>['pressKeys']           = 'Space';
+export const defaultPressKeys              : Required<PressStateOptions>['pressKeys']              = 'Space';
 
 /**
  * A default keys that trigger a synthetic click event when no `clickKeys` option is explicitly provided.
@@ -32,7 +32,7 @@ export const defaultPressKeys           : Required<PressStateOptions>['pressKeys
  * 
  * - `'Enter'`: triggers synthetic click on `[Enter]` key.
  */
-export const defaultClickKeys           : Required<PressStateOptions>['clickKeys']           = 'Enter';
+export const defaultClickKeys              : Required<PressStateOptions>['clickKeys']              = 'Enter';
 
 /**
  * A default setting for triggering a synthetic click event on key release when no `triggerClickOnKeyUp` option is explicitly provided.
@@ -41,7 +41,7 @@ export const defaultClickKeys           : Required<PressStateOptions>['clickKeys
  * 
  * - `true`: triggers synthetic click on keyup of keys in `pressKeys`.
  */
-export const defaultTriggerClickOnKeyUp : Required<PressStateOptions>['triggerClickOnKeyUp'] = true;
+export const defaultTriggerClickOnKeyUp    : Required<PressStateOptions>['triggerClickOnKeyUp']    = true;
 
 /**
  * A default mouse buttons that activate press state when no `pressButtons` option is explicitly provided.
@@ -50,7 +50,7 @@ export const defaultTriggerClickOnKeyUp : Required<PressStateOptions>['triggerCl
  * 
  * - `0`: activates press on left mouse button.
  */
-export const defaultPressButtons        : Required<PressStateOptions>['pressButtons']        = 0;
+export const defaultPressButtons           : Required<PressStateOptions>['pressButtons']           = 0;
 
 /**
  * A default pressure threshold that activates press state when no `pressPressure` option is explicitly provided.
@@ -59,7 +59,7 @@ export const defaultPressButtons        : Required<PressStateOptions>['pressButt
  * 
  * - `0.005`: activates press when pressure is ≥ 0.005
  */
-export const defaultPressPressure       : Required<PressStateOptions>['pressPressure']       = 0.005;
+export const defaultPressPressure          : Required<PressStateOptions>['pressPressure']          = 0.005;
 
 /**
  * A default finger count that activates press state when no `pressFingers` option is explicitly provided.
@@ -68,5 +68,14 @@ export const defaultPressPressure       : Required<PressStateOptions>['pressPres
  * 
  * - `1`: activates press on single-finger touch.
  */
-export const defaultPressFingers        : Required<PressStateOptions>['pressFingers']        = 1;
+export const defaultPressFingers           : Required<PressStateOptions>['pressFingers']           = 1;
 
+/**
+ * A default global pointer release fallback value when no `noGlobalPointerRelease` option is explicitly provided.
+ * 
+ * This fallback enables a robust press state detection,
+ * even when pointer release occurs outside the component boundary.
+ * 
+ * - `false`: Enables the global fallback listener.
+ */
+export const defaultNoGlobalPointerRelease : Required<PressStateOptions>['noGlobalPointerRelease'] = false;

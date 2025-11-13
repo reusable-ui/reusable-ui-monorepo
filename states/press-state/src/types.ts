@@ -134,7 +134,7 @@ export interface PressStateOptions
      * 
      * Defaults to `'auto'` (automatically determine press state).
      */
-    defaultPressed      ?: boolean | 'auto'
+    defaultPressed         ?: boolean | 'auto'
     
     /**
      * Defines which keyboard keys simulate press interactions.
@@ -149,7 +149,7 @@ export interface PressStateOptions
      * 
      * Defaults to `'Space'`, matching native button behavior.
      */
-    pressKeys           ?: string | string[] | null
+    pressKeys              ?: string | string[] | null
     
     /**
      * Defines which keyboard keys trigger a synthetic click event.
@@ -163,7 +163,7 @@ export interface PressStateOptions
      * 
      * Defaults to `'Enter'`, matching native button behavior.
      */
-    clickKeys           ?: string | string[] | null
+    clickKeys              ?: string | string[] | null
     
     /**
      * Determines whether a synthetic click event should be triggered after key release.
@@ -172,7 +172,7 @@ export interface PressStateOptions
      * 
      * Defaults to `true`, matching native button behavior for keys defined in `pressKeys`.
      */
-    triggerClickOnKeyUp ?: boolean
+    triggerClickOnKeyUp    ?: boolean
     
     /**
      * A list of mouse buttons that activate press state.
@@ -187,7 +187,7 @@ export interface PressStateOptions
      * - An array of button values
      * - `null` to disable mouse-based press activation
      */
-    pressButtons        ?: number | number[] | null
+    pressButtons           ?: number | number[] | null
     
     /**
      * The minimum pressure threshold required to activate press state for pen devices.
@@ -199,7 +199,7 @@ export interface PressStateOptions
      * - Default: `0.005` — activates press when pressure is ≥ 0.005
      * - `-1` to disable stylus-based press activation
      */
-    pressPressure       ?: number
+    pressPressure          ?: number
     
     /**
      * The exact number of fingers required to activate press state for touch devices.
@@ -211,7 +211,20 @@ export interface PressStateOptions
      * - Any other number: requires exact number of finger touches
      * - `0` to disable touch-based press activation
      */
-    pressFingers        ?: number
+    pressFingers           ?: number
+    
+    /**
+     * Disables the global pointer release fallback mechanism.
+     * 
+     * When enabled (`true`), the press state will no longer rely on a global `pointerup`/`pointercancel` listener
+     * to detect premature releases outside the component boundary (e.g. portals, shadow DOM, or lost focus).
+     * 
+     * ⚠️ When `true`, the implementor must guarantee that either `handlePointerUp()` or `handlePointerCancel()` 
+     * will be invoked after `handlePointerDown()` — otherwise, the press state may remain stuck indefinitely.
+     * 
+     * Defaults to `false`.
+     */
+    noGlobalPointerRelease ?: boolean
     
     /**
      * Defines the pattern used to identify press/release-related animation names.
@@ -229,7 +242,7 @@ export interface PressStateOptions
      * 
      * Defaults to `['pressing', 'releasing']`.
      */
-    animationPattern    ?: AnimationStateOptions<boolean>['animationPattern']
+    animationPattern       ?: AnimationStateOptions<boolean>['animationPattern']
     
     /**
      * Enables listening to animation events bubbling up from nested child elements.
@@ -237,7 +250,7 @@ export interface PressStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling   ?: AnimationStateOptions<boolean>['animationBubbling']
+    animationBubbling      ?: AnimationStateOptions<boolean>['animationBubbling']
 }
 
 /**
