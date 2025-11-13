@@ -4,6 +4,7 @@ import {
     type SyntheticEvent  as ReactSyntheticEvent,
     type UIEvent         as ReactUIEvent,
     type MouseEvent      as ReactMouseEvent,
+    type PointerEvent    as ReactPointerEvent,
     type KeyboardEvent   as ReactKeyboardEvent,
     type AbstractView    as ReactAbstractView,
 }                           from 'react'
@@ -293,7 +294,7 @@ export const createSyntheticMouseEvent = <TElement extends Element, TEvent exten
         
         
         
-        // Pointers:
+        // Mouses:
         clientX,
         clientY,
         
@@ -347,7 +348,7 @@ export const createSyntheticMouseEvent = <TElement extends Element, TEvent exten
         
         
         
-        // Pointers:
+        // Mouses:
         clientX,
         clientY,
         
@@ -374,6 +375,158 @@ export const createSyntheticMouseEvent = <TElement extends Element, TEvent exten
         // Ensures function binding:
         getModifierState : (key: string): boolean => getModifierState.call(options.nativeEvent, key),
     } satisfies ReactMouseEvent<TElement, TEvent>;
+};
+
+
+
+/**
+ * Defines the configuration options for creating a React-compatible synthetic pointer event.
+ * 
+ * @template TElement - The type of the DOM element associated with the event.
+ * @template TEvent - The type of the native pointer event being wrapped.
+ */
+export interface CreateSyntheticPointerEventOptions<out TElement extends Element, out TEvent extends PointerEvent>
+    extends
+        // Bases:
+        CreateSyntheticUIEventOptions<TElement, TEvent>
+{
+    /**
+     * The secondary target for the pointer event, if applicable.
+     * 
+     * Defaults to `nativeEvent.relatedTarget` if omitted.
+     * 
+     * @type {EventTarget | null}
+     * @optional
+     */
+    relatedTarget ?: EventTarget | null
+}
+
+/**
+ * Creates a React-compatible synthetic pointer event from a native pointer event.
+ * 
+ * @template TElement - The type of the DOM element associated with the event.
+ * @template TEvent - The type of the native pointer event being wrapped.
+ * 
+ * @param options - Configuration options for constructing the synthetic pointer event.
+ * @returns A React-compatible `PointerEvent`.
+ */
+export const createSyntheticPointerEvent = <TElement extends Element, TEvent extends PointerEvent>(options: CreateSyntheticPointerEventOptions<TElement, TEvent>): ReactPointerEvent<TElement> => {
+    // Extract options:
+    const {
+        // Standards:
+        relatedTarget : nativeRelatedTarget,
+        
+        
+        
+        // Mouses:
+        clientX,
+        clientY,
+        
+        screenX,
+        screenY,
+        
+        pageX,
+        pageY,
+        
+        movementX = 0, // Defaults to `0` if the prop doesn't exist.
+        movementY = 0, // Defaults to `0` if the prop doesn't exist.
+        
+        
+        
+        // Pointers:
+        pointerId,
+        pointerType,
+        width,
+        height,
+        pressure,
+        tangentialPressure,
+        tiltX,
+        tiltY,
+        twist,
+        isPrimary,
+        
+        
+        
+        // Buttons:
+        button,
+        buttons,
+        
+        ctrlKey,
+        shiftKey,
+        altKey,
+        metaKey,
+        
+        getModifierState,
+    } = options.nativeEvent;
+    
+    
+    
+    // Apply defaults and retain other options:
+    const {
+        // Standards:
+        relatedTarget = nativeRelatedTarget,
+        
+        
+        
+        // Rests:
+        ...restOptions
+    } = options;
+    
+    
+    
+    // Construct synthetic pointer event:
+    return {
+        // Bases:
+        ...createSyntheticUIEvent<TElement, TEvent>(restOptions),
+        
+        
+        
+        // Standards:
+        relatedTarget,
+        
+        
+        
+        // Mouses:
+        clientX,
+        clientY,
+        
+        screenX,
+        screenY,
+        
+        pageX,
+        pageY,
+        
+        movementX,
+        movementY,
+        
+        
+        
+        // Pointers:
+        pointerId,
+        pointerType : pointerType as 'mouse' | 'pen' | 'touch',
+        width,
+        height,
+        pressure,
+        tangentialPressure,
+        tiltX,
+        tiltY,
+        twist,
+        isPrimary,
+        
+        
+        
+        // Buttons:
+        button,
+        buttons,
+        
+        ctrlKey,
+        shiftKey,
+        altKey,
+        metaKey,
+        
+        // Ensures function binding:
+        getModifierState : (key: string): boolean => getModifierState.call(options.nativeEvent, key),
+    } satisfies ReactPointerEvent<TElement>;
 };
 
 

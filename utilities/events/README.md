@@ -125,6 +125,9 @@ Generates a **React-compatible synthetic UI events**, supporting accessibility r
 ### `createSyntheticMouseEvent<TElement, TEvent>()`
 Generates a **React-compatible synthetic mouse events**, ideal for drag-and-drop components.
 
+### `createSyntheticPointerEvent<TElement, TEvent>()`
+Generates a **React-compatible synthetic pointer events**, ideal for drag-and-drop components.
+
 ### `createSyntheticKeyboardEvent<TElement, TEvent>()`
 Generates a **React-compatible synthetic keyboard events**, perfect for keyboard shortcuts and UI interactions.
 
