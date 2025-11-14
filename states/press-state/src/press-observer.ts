@@ -10,7 +10,6 @@ import {
     
     // Hooks:
     useLayoutEffect,
-    useRef,
     useState,
 }                           from 'react'
 
@@ -65,22 +64,9 @@ import {
 
 
 /**
- * A selector used to detect whether an element or any of its descendants
- * are currently pressed for styling purposes.
- * 
- * This includes:
- * - Native `:active` matches
- * - No need descendant matches via `:has(...)` as nested press is inherently handled by `:active`
- */
-const pressWithinSelector = ':active';
-
-
-
-/**
  * An observed press state for uncontrolled components.
  * 
- * Provides a ref to the pressable element and imperative pointerdown/pointerup/pointercancel handlers
- * for tracking press presence when not explicitly controlled.
+ * Updates internal state via pointer and keyboard handlers. Skips updates when externally controlled.
  * 
  * Includes fallback detection for pre-existing press on mount,
  * ensuring lifecycle consistency during hydration or layout delay.
@@ -90,7 +76,7 @@ const pressWithinSelector = ':active';
 export interface PressObserverState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Pick<PressBehaviorState<TElement>, 'ref' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'>
+        Pick<PressBehaviorState<TElement>, 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'>
 {
     /**
      * Observed press presence.
@@ -105,13 +91,12 @@ export interface PressObserverState<TElement extends Element = HTMLElement>
 /**
  * Observes press state in uncontrolled scenarios.
  * 
- * Detects initial press on mount and updates internal state via
- * imperative pointerdown/pointerup/pointercancel handlers. Skips updates when externally controlled.
+ * Updates internal state via pointer and keyboard handlers. Skips updates when externally controlled.
  * 
  * @template TElement - The type of the target DOM element.
  * 
  * @param disabledUpdates - Whether to disable internal press state updates (e.g. when externally controlled).
- * @returns The observed press state, ref, and event handlers.
+ * @returns The observed press state and event handlers.
  */
 export const usePressObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, options: Pick<PressStateOptions, 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'> | undefined): PressObserverState<TElement> => {
     // Extract options and assign defaults:
@@ -132,46 +117,38 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     
     // States and flags:
     
-    // Ref to the pressable DOM element:
-    const pressableElementRef = useRef<TElement | null>(null);
-    
     // Internal fallback for observed press (used only when uncontrolled):
     const [observedPress, setObservedPress] = useState<boolean>(false);
     
     // PointerPress tracker for determining pressed state by pointers:
-    const trackPointerPressState = usePointerPressTracker(pressButtons, pressPressure, pressFingers);
+    const pointerPressTracker = usePointerPressTracker(pressButtons, pressPressure, pressFingers);
     
     // KeyPress tracker for determining pressed state by keys:
-    const trackKeyPressState     = useKeyPressTracker(pressKeys);
+    const keyPressTracker     = useKeyPressTracker(pressKeys);
     
     
     
     /**
-     * Updates the internal press state based on the current press state of the given element.
+     * Updates the internal press state.
      * 
      * - If `disabledUpdates` is true, the update will be skipped.
-     * - If `newObservedPress` is not provided, it will be auto-detected using `.matches(pressWithinSelector)`.
+     * - If `newObservedPress` is not provided, it will be auto-detected using the internal trackers.
      * - If the new state matches the current `observedPress`, no update will occur.
      * 
-     * @param pressableElement - The DOM element to observe for press state (only required when the `newObservedPress` is not provided).
      * @param newObservedPress - Optional override for the detected press state.
      */
-    const handlePressStateUpdate : (pressableElement: TElement | null, newObservedPress?: boolean) => void = useStableCallback((pressableElement, newObservedPress) => {
+    const handlePressStateUpdate : (newObservedPress?: boolean) => void = useStableCallback((newObservedPress) => {
         // Skip update if disabled:
         if (disabledUpdates) return;
         
-        // If press state is not provided, attempt to infer from element:
+        // If press state is not provided, infer press state from internal trackers:
         if (newObservedPress === undefined) {
-            if (!pressableElement) return; // Cannot infer without element
-            newObservedPress = pressableElement.matches(pressWithinSelector);
+            newObservedPress = (
+                pointerPressTracker.isPressed()
+                ||
+                keyPressTracker.isPressed()
+            );
         } // if
-        
-        // The code below is redundant as `:press` inherently means the element is `:press-within`,
-        // so no additional verification is needed.
-        // // If pressed, verify press-within:
-        // if (newObservedPress) {
-        //     newObservedPress = pressableElement.matches(pressWithinSelector);
-        // } // if
         
         // Skip update if state is unchanged:
         if (newObservedPress === observedPress) return;
@@ -188,7 +165,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     // Using `useLayoutEffect()` to ensure the check runs before browser paint,
     // preventing potential visual glitches if the element is already pressed.
     useLayoutEffect(() => {
-        handlePressStateUpdate(pressableElementRef.current);
+        handlePressStateUpdate();
     }, [disabledUpdates]);
     // Re-evaluate press state only when `disabledUpdates` changes.
     // `handlePressStateUpdate` is stable via useStableCallback, so it's safe to omit from deps.
@@ -198,11 +175,11 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     // Imperative handlers for uncontrolled press tracking:
     const handlePointerDown    : PointerEventHandler<TElement>  = useStableCallback((event) => {
         // Track pointer press state:
-        if (!trackPointerPressState(event, true)) return; // Early exit if not successfully tracked.
+        if (!pointerPressTracker.track(event, true)) return; // Early exit if not successfully tracked.
         
         
         
-        handlePressStateUpdate(event.currentTarget, true);
+        handlePressStateUpdate(true);
         
         
         
@@ -211,11 +188,11 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     });
     const handlePointerUp      : PointerEventHandler<TElement>  = useStableCallback((event) => {
         // Untrack pointer press state:
-        if (!trackPointerPressState(event, false)) return; // Early exit if not fully untracked.
+        if (!pointerPressTracker.track(event, false)) return; // Early exit if not fully untracked.
         
         
         
-        handlePressStateUpdate(event.currentTarget, false);
+        handlePressStateUpdate(false);
         
         
         
@@ -268,12 +245,12 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         
         // Track key press state:
-        if (!trackKeyPressState(keyCode, true)) return; // Early exit if not successfully tracked.
+        if (!keyPressTracker.track(keyCode, true)) return; // Early exit if not successfully tracked.
         event.preventDefault(); // The key is handled (tracked), prevent default browser behavior (e.g. form submission, scroll).
         
         
         
-        handlePressStateUpdate(event.currentTarget, true);
+        handlePressStateUpdate(true);
         
         
         
@@ -292,7 +269,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         
         // Untrack key press state:
-        if (!trackKeyPressState(keyCode, false)) return; // Early exit if not fully untracked.
+        if (!keyPressTracker.track(keyCode, false)) return; // Early exit if not fully untracked.
         
         
         
@@ -307,7 +284,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         
         
-        handlePressStateUpdate(event.currentTarget, false);
+        handlePressStateUpdate(false);
         
         
         
@@ -335,7 +312,6 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     // Return the internal press state API:
     return {
         observedPress,
-        ref : pressableElementRef,
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,

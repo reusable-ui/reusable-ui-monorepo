@@ -24,7 +24,7 @@ Whether you're building a design system, onboarding flow, or accessibility-first
 ✔ Gracefully completes running animations before resolving new state  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, animation, and accessibility systems  
-✔ Built-in internal press observer via `ref`, `handlePointerDown()`, `handlePointerUp()`, and `handlePointerCancel()` — no need for external state unless desired  
+✔ Built-in internal press observer via pointer and keyboard handlers — no need for external state unless desired  
 ✔ Optional `computedPress` override for custom press resolution logic in advanced use cases  
 ✔ Built-in keyboard observer for `[Space]` and `[Enter]` keys — simulates press and click behavior with lifecycle consistency  
 ✔ Built-in pointer observer for for mouse, touch, and pen devices  
@@ -94,8 +94,7 @@ export const CustomButton: FC<CustomButtonProps> = (props) => {
         handleAnimationEnd,
         handleAnimationCancel,
         
-        // Use these ref and handlers to use built-in press observer when `computedPress` is not provided:
-        ref,
+        // Use these handlers to use built-in press observer when `computedPress` is not provided:
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,

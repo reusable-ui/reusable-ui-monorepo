@@ -7,7 +7,6 @@ import {
     usePressStatePhaseEvents,
 } from '../dist/index.js'
 import { useMergeEventHandlers } from '@reusable-ui/callbacks'
-import { useMergeRefs } from '@reusable-ui/references'
 import { createSyntheticEvent } from '@reusable-ui/events'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { usePressStateTestStyles } from './PressStateTest.loader.js'
@@ -45,7 +44,6 @@ export const PressStateTest = (props: PressStateTestProps) => {
         handleAnimationEnd,
         handleAnimationCancel,
         
-        ref,
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,
@@ -91,16 +89,11 @@ export const PressStateTest = (props: PressStateTestProps) => {
         };
     }, []);
     
-    const mergedRef = useMergeRefs(
-        elementRef,
-        ref,
-    );
-    
     return (
         <div>
             <HydrateStyles />
             <div
-                ref={mergedRef}
+                ref={elementRef}
                 data-testid="press-state-test"
                 data-state={pressed ? 'pressed' : 'released'}
                 className={`${styles.main} ${pressClassname}`}

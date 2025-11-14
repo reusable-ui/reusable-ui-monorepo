@@ -64,7 +64,7 @@ import {
  * @param options - An optional configuration for customizing press/release behavior.
  * @returns The resolved pressed/released state and event handlers for pointer and keyboard events.
  */
-export const usePressState = <TElement extends Element = HTMLElement>(props: PressStateProps, options?: Pick<PressStateOptions, 'defaultPressed' | 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'>) : Pick<PressBehaviorState<TElement>, 'pressed' | 'ref' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'> => {
+export const usePressState = <TElement extends Element = HTMLElement>(props: PressStateProps, options?: Pick<PressStateOptions, 'defaultPressed' | 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'>) : Pick<PressBehaviorState<TElement>, 'pressed' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'> => {
     // Extract options and assign defaults:
     const {
         defaultPressed    = defaultDeclarativePressed,
@@ -91,7 +91,6 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
     // Internal press observer (used only when uncontrolled and not delegated):
     const {
         observedPress,
-        ref,
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,
@@ -110,13 +109,12 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
     // Return resolved press state API:
     return {
         pressed        : effectivePressed,
-        ref,
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,
         handleKeyDown,
         handleKeyUp,
-    } satisfies Pick<PressBehaviorState<TElement>, 'pressed' | 'ref' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'>;
+    } satisfies Pick<PressBehaviorState<TElement>, 'pressed' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'>;
 };
 
 
@@ -180,8 +178,7 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
  *         handleAnimationEnd,
  *         handleAnimationCancel,
  *         
- *         // Use these ref and handlers to use built-in press observer when `computedPress` is not provided:
- *         ref,
+ *         // Use these handlers to use built-in press observer when `computedPress` is not provided:
  *         handlePointerDown,
  *         handlePointerUp,
  *         handlePointerCancel,
@@ -240,7 +237,6 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
     // Internal press observer (used only when uncontrolled and not delegated):
     const {
         observedPress,
-        ref,
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,
@@ -326,7 +322,6 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
         pressPhase,
         pressClassname : getPressClassname(pressPhase),
         ...animationHandlers,
-        ref,
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,

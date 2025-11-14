@@ -1,7 +1,6 @@
 // React:
 import {
     // Types:
-    type RefObject,
     type PointerEventHandler,
     type KeyboardEventHandler,
 }                           from 'react'
@@ -43,7 +42,7 @@ import {
  * 
  * When `pressed` prop is set to `'auto'`, the component derives its press state from either:
  * - an externally provided `computedPress`, or
- * - internal press observer via `ref`, `handlePointerDown()`, `handlePointerUp()`, and `handlePointerCancel()` callbacks.
+ * - internal press observer via pointer and keyboard handlers.
  */
 export interface PressStateProps {
     /**
@@ -62,7 +61,7 @@ export interface PressStateProps {
      * This value is typically computed reactively based on DOM pointer events,
      * layout containment, or accessibility-driven logic. It is ignored when `pressed` is explicitly set.
      * 
-     * If not provided, the component falls back to internal press observer via `ref`, `handlePointerDown()`, `handlePointerUp()`, and `handlePointerCancel()` callbacks.
+     * If not provided, the component falls back to internal press observer via pointer and keyboard handlers.
      * 
      * This property is intended for **component developers** who need to customize press resolution.
      * For **application developers**, prefer using the `pressed` prop directly.
@@ -354,17 +353,6 @@ export interface PressBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-pressed'`
      */
     pressClassname      : `is-${PressPhase}`
-    
-    /**
-     * Ref to the pressable DOM element.
-     * 
-     * Enables initial press detection and diagnostic tooling.
-     * 
-     * If the component is already pressed on mount (e.g. via pointer resting),
-     * but React hasn't yet hydrated, this ref allows detection of the
-     * pre-existing press state.
-     */
-    ref                 : RefObject<TElement | null>
     
     /**
      * Event handler for pointerdown events.

@@ -61,8 +61,5 @@
     "@reusable-ui/animation-feature": "^7.0.0",
     "@types/react": "^19.0.0",
     "react": "^19.0.0"
-  },
-  "devDependencies": {
-    "@reusable-ui/references": "^7.0.0"
   }
 }
