@@ -17,11 +17,11 @@ import {
 export const defaultDeclarativePressed     : Required<PressStateProps>['pressed']                  = 'auto';
 
 /**
- * A default keys that simulate press interactions when no `pressKeys` option is explicitly provided.
+ * A default keys that activate press state when no `pressKeys` option is explicitly provided.
  * 
  * This fallback mirrors native button behavior for the `[Space]` key.
  * 
- * - `'Space'`: simulates press on `[Space]` key.
+ * - `'Space'`: activates press on `[Space]` key.
  */
 export const defaultPressKeys              : Required<PressStateOptions>['pressKeys']              = 'Space';
 
@@ -30,7 +30,7 @@ export const defaultPressKeys              : Required<PressStateOptions>['pressK
  * 
  * This fallback mirrors native button behavior for the `[Enter]` key.
  * 
- * - `'Enter'`: triggers synthetic click on `[Enter]` key.
+ * - `'Enter'`: triggers synthetic click event on `[Enter]` key.
  */
 export const defaultClickKeys              : Required<PressStateOptions>['clickKeys']              = 'Enter';
 

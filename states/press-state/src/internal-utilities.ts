@@ -52,15 +52,15 @@ export const getPressClassname = (pressPhase: PressPhase): `is-${PressPhase}` =>
 
 
 /**
- * Determines whether a given keyCode matches the expected keyCode(s).
+ * Determines whether the given keyCode matches the expected keyCode(s).
  * 
- * @param actualKey - The keyCode received from a keyboard event (e.g. event.code)
+ * @param actualKey - The keyCode received from a keyboard event (e.g. `event.code`)
  * @param expectedKeys - A string or array of strings representing the keyCode(s) to match against
  * @returns `true` if the actual keyCode matches any of the expected keyCode(s); otherwise `false`
  */
 export const matchesKey = (actualKey: string | undefined, expectedKeys: string | string[] | null): boolean => {
-    if (!actualKey) return false;
-    if (!expectedKeys) return false;
+    if (actualKey === undefined) return false;
+    if (expectedKeys === null) return false;
     
     
     

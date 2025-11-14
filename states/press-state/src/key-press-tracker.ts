@@ -70,7 +70,7 @@ export const useKeyPressTracker = (pressKeys: string | string[] | null): TrackKe
     
     // Stable tracker function:
     const trackKeyPressState : TrackKeyPressStateFunction = useStableCallback((keyCode, isPressed) => {
-        if (!matchesKey(keyCode, pressKeys)) return false; // Key not tracked => failed
+        if (!matchesKey(keyCode, pressKeys)) return false; // The key does not match the expected => failed
         
         
         
