@@ -79,3 +79,13 @@ export const defaultPressFingers           : Required<PressStateOptions>['pressF
  * - `false`: Enables the global fallback listener.
  */
 export const defaultNoGlobalPointerRelease : Required<PressStateOptions>['noGlobalPointerRelease'] = false;
+
+/**
+ * A default global key release fallback value when no `noGlobalKeyRelease` option is explicitly provided.
+ * 
+ * This fallback enables a robust press state detection,
+ * even when key release occurs outside the component boundary.
+ * 
+ * - `false`: Enables the global fallback listener.
+ */
+export const defaultNoGlobalKeyRelease     : Required<PressStateOptions>['noGlobalKeyRelease']     = false;

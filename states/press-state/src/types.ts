@@ -227,6 +227,19 @@ export interface PressStateOptions
     noGlobalPointerRelease ?: boolean
     
     /**
+     * Disables the global key release fallback mechanism.
+     * 
+     * When enabled (`true`), the press state will no longer rely on a global `keyup` listener
+     * to detect premature releases outside the component boundary (e.g. portals, shadow DOM, or lost focus).
+     * 
+     * ⚠️ When `true`, the implementor must guarantee that `handleKeyUp()`
+     * will be invoked after `handleKeyDown()` — otherwise, the press state may remain stuck indefinitely.
+     * 
+     * Defaults to `false`.
+     */
+    noGlobalKeyRelease     ?: boolean
+    
+    /**
      * Defines the pattern used to identify press/release-related animation names.
      * 
      * This pattern determines which animation names are recognized as part of the pressing/releasing transition lifecycle.

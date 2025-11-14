@@ -31,6 +31,7 @@ import {
     defaultPressFingers,
     
     defaultNoGlobalPointerRelease,
+    defaultNoGlobalKeyRelease,
 }                           from './internal-defaults.js'
 
 // Utilities:
@@ -46,6 +47,9 @@ import {
 import {
     useGlobalPointerRelease,
 }                           from './global-pointer-release.js'
+import {
+    useGlobalKeyRelease,
+}                           from './global-key-release.js'
 
 // Reusable-ui utilities:
 import {
@@ -55,6 +59,7 @@ import {
 import {
     // Utilities:
     createSyntheticPointerEvent,
+    createSyntheticKeyboardEvent,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
 
 
@@ -108,7 +113,7 @@ export interface PressObserverState<TElement extends Element = HTMLElement>
  * @param disabledUpdates - Whether to disable internal press state updates (e.g. when externally controlled).
  * @returns The observed press state, ref, and event handlers.
  */
-export const usePressObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, options: Pick<PressStateOptions, 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease'> | undefined): PressObserverState<TElement> => {
+export const usePressObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, options: Pick<PressStateOptions, 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'> | undefined): PressObserverState<TElement> => {
     // Extract options and assign defaults:
     const {
         pressKeys              = defaultPressKeys,
@@ -120,6 +125,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         pressFingers           = defaultPressFingers,
         
         noGlobalPointerRelease = defaultNoGlobalPointerRelease,
+        noGlobalKeyRelease     = defaultNoGlobalKeyRelease,
     } = options ?? {};
     
     
@@ -268,6 +274,11 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         
         handlePressStateUpdate(event.currentTarget, true);
+        
+        
+        
+        // Register global fallback listener to handle premature release outside the component:
+        if (!noGlobalKeyRelease) globalKeyReleaseController.register(keyCode);
     });
     const handleKeyUp          : KeyboardEventHandler<TElement> = useStableCallback((event) => {
         // Get the pressed key for matching the configured keys:
@@ -297,12 +308,27 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         
         handlePressStateUpdate(event.currentTarget, false);
+        
+        
+        
+        // Abort global fallback listener — release has already been handled:
+        if (!noGlobalKeyRelease) globalKeyReleaseController.abort(); // `abort()` is safe to call multiple times — it’s idempotent and guards against late release callbacks.
+    });
+    const handleKeyRelease     = useStableCallback((event: globalThis.KeyboardEvent) => {
+        // Convert native KeyboardEvent to a React-compatible synthetic event:
+        const syntheticEvent = createSyntheticKeyboardEvent<TElement, KeyboardEvent>({
+            nativeEvent : event,
+        });
+        
+        // Delegate to the keyup handler to ensure consistent release logic:
+        handleKeyUp(syntheticEvent);
     });
     
     
     
     // States and flags:
     const globalPointerReleaseController = useGlobalPointerRelease(handlePointerRelease);
+    const globalKeyReleaseController     = useGlobalKeyRelease(handleKeyRelease);
     
     
     
