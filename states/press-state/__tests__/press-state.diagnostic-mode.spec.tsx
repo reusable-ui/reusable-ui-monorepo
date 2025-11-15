@@ -478,6 +478,16 @@ test.describe('usePressBehaviorState - diagnostic mode', () => {
                         await page.mouse.up();   // simulate release
                     } // if
                     
+                    // Wait for the next macrotask since the release state is a bit deferred than the press one:
+                    if (setPress === false) {
+                        // Wait again if still no event received:
+                        for (let attempts = 5; attempts > 0; attempts--) {
+                            if (lastNewPress === undefined) await new Promise<void>((resolve) => {
+                                setTimeout(resolve, 0);
+                            });
+                        } // for
+                    } // if
+                    
                     // Ensure the change handler was called with correct parameters:
                     expect(lastNewPress).toBe(setPress);
                     expect((lastEvent as any)?.type).toBe(undefined);

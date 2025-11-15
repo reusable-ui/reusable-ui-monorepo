@@ -11,6 +11,8 @@ import {
     // Hooks:
     useLayoutEffect,
     useState,
+    useRef,
+    useEffect,
 }                           from 'react'
 
 // Types:
@@ -126,6 +128,9 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     // KeyPress tracker for determining pressed state by keys:
     const keyPressTracker     = useKeyPressTracker(pressKeys);
     
+    // Tracks the pending release timeout:
+    const timeoutRef          = useRef<ReturnType<typeof setTimeout> | null>(null);
+    
     
     
     /**
@@ -156,12 +161,54 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         
         // Commit press state update:
-        setObservedPress(newObservedPress);
+        if (newObservedPress) {
+            setObservedPress(true);
+        }
+        else {
+            /**
+             * Defers the press release update with a *single* macrotask tick.
+             * 
+             * Why:
+             * - Ensures the release runs *after* the click event, so the user has a chance to flip `pressed={true|false}`,
+             *   before the press observer commits a release.
+             * 
+             * How:
+             * - The timeout is cancelled in `useLayoutEffect` when `disabledUpdates` flips,
+             *   preventing unwanted release flicker.
+             * - Cancellation must happen in `useLayoutEffect` (not `useEffect`),
+             *   because `useLayoutEffect` run before paint and before the timeout fires.
+             */
+            timeoutRef.current = setTimeout(() => {
+                setObservedPress(false);
+            }, 0);
+        } // if
     });
     
     
     
-    // Initial mount effect: sync internal state if the element is already pressed on mount.
+    // Cancels any pending press release update when the press observer is disabled.
+    // 
+    // Placement matters: this effect must run *before* the subsequent `useLayoutEffect` that refreshes press state,
+    // to avoid accidentally clearing a newly scheduled timeout from that refresh (the *wrong kill* scenario).
+    //
+    // Using `useLayoutEffect()` to ensure the cancellation happens before browser paint,
+    // preventing potential visual glitches if the element is already pressed.
+    useLayoutEffect(() => {
+        // Kills pending press release update when the press observer is disabled:
+        if (!disabledUpdates) return; // Enabled => do not kill.
+        
+        
+        
+        // Cancel the deferred press release update:
+        if (timeoutRef.current !== null) {
+            clearTimeout(timeoutRef.current);
+            timeoutRef.current = null;
+        } // if
+    }, [disabledUpdates]);
+    
+    
+    
+    // Refreshes press state effect: Sync internal state when the element is already pressed on mount or when the press observer is re-enabled.
     // Using `useLayoutEffect()` to ensure the check runs before browser paint,
     // preventing potential visual glitches if the element is already pressed.
     useLayoutEffect(() => {
@@ -169,6 +216,23 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     }, [disabledUpdates]);
     // Re-evaluate press state only when `disabledUpdates` changes.
     // `handlePressStateUpdate` is stable via useStableCallback, so it's safe to omit from deps.
+    
+    
+    
+    // Cleanup on unmount: Cancel any pending press release update.
+    // Even with a 0 ms timeout, there is a small chance the callback
+    // could fire after the component has been unmounted.
+    // Using `useEffect` is sufficient here since this hook only
+    // provides cleanup logic (no need for `useLayoutEffect`).
+    useEffect(() => {
+        return () => {
+            // Cancel the deferred press release update:
+            if (timeoutRef.current !== null) {
+                clearTimeout(timeoutRef.current);
+                timeoutRef.current = null;
+            } // if
+        };
+    }, []);
     
     
     

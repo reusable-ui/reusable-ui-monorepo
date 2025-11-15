@@ -104,10 +104,23 @@ export const useGlobalPointerRelease = (onRelease: (event: PointerEvent) => void
         
         
         
-        // Defer to macrotask to allow local bubbling handlers to run first:
+        /**
+         * Defers the global pointer release fallback with a *double* macrotask tick.
+         * 
+         * Why:
+         * - Ensures this fallback runs *after* both the click event and the press_release_update commit.
+         * - Acts as a safety net if a real `pointerup` is missed.
+         * 
+         * How:
+         * - Immediately aborted in the `pointerup` and `pointercancel` handlers indicating a *real* release has occurred.
+         * - Double macrotask is chosen because macrotask+microtask ordering would run too early (before click). Double macrotask ensures "last in line."
+         * - `timeoutRef.current` is reassigned each time to track the latest timer ID.
+         */
         timeoutRef.current = setTimeout(() => {
-            onRelease(event);
-            timeoutRef.current = null;
+            timeoutRef.current = setTimeout(() => {
+                onRelease(event);
+                timeoutRef.current = null;
+            }, 0);
         }, 0);
     });
     
