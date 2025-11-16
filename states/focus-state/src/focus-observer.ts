@@ -74,12 +74,18 @@ export interface FocusObserverState<TElement extends Element = HTMLElement>
  * Detects initial focus on mount and updates internal state via
  * imperative focus/blur/keydown handlers. Skips updates when externally controlled.
  * 
+ * Disabled behavior:
+ * - While `isDisabled` is true, the observer forces the focus state to blurred (`false`),
+ *   since disabled elements cannot retain focus.
+ * - This ensures consistency even if no native `blur` event is dispatched when disabling.
+ * 
  * @template TElement - The type of the target DOM element.
  * 
  * @param disabledUpdates - Whether to disable internal focus state updates (e.g. when externally controlled).
+ * @param isDisabled - Whether the component is currently disabled; used to enforce blur override.
  * @returns The observed focus state, ref, and event handlers.
  */
-export const useFocusObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean): FocusObserverState<TElement> => {
+export const useFocusObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, isDisabled: boolean): FocusObserverState<TElement> => {
     // States and flags:
     
     // Ref to the focusable DOM element:
@@ -127,13 +133,30 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(disable
     
     
     
-    // Initial mount effect: sync internal state if the element is already focused on mount.
+    // Refreshes press state effect: Sync internal state when the element is already focused on mount or when the focus observer is re-enabled.
     // Using `useLayoutEffect()` to ensure the check runs before browser paint,
     // preventing potential visual glitches if the element is already focused.
     useLayoutEffect(() => {
         handleFocusStateUpdate(focusableElementRef.current);
     }, [disabledUpdates]);
     // Re-evaluate focus state only when `disabledUpdates` changes.
+    // `handleFocusStateUpdate` is stable via useStableCallback, so it's safe to omit from deps.
+    
+    
+    
+    // Disabled behavior effect: Forces the internal focus state to blurred (`false`) whenever the component is disabled,
+    // ensuring the state remains consistent if later re‑enabled.
+    // Using `useLayoutEffect()` to ensure the check runs before browser paint,
+    // preventing potential visual glitches if the element is initially rendered in a disabled state.
+    useLayoutEffect(() => {
+        // Sets the state to blurred (`false`) when the component is disabled:
+        if (!isDisabled) return; // Enabled => do not update.
+        
+        
+        
+        handleFocusStateUpdate(focusableElementRef.current, false);
+    }, [isDisabled]);
+    // Re-evaluate focus state only when `isDisabled` changes.
     // `handleFocusStateUpdate` is stable via useStableCallback, so it's safe to omit from deps.
     
     

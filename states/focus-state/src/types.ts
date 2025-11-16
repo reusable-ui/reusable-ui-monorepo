@@ -52,6 +52,14 @@ export interface FocusStateProps {
      * - `false`  : the component is blurred
      * - `'auto'` : automatically determine focus state
      * 
+     * Disabled behavior:
+     * - While `disabled`, the component is always treated as blurred (`false`), regardless of `focused`.
+     * - When re‑enabled:
+     *   - `'auto'` mode (internal focus observer): remains blurred until the user explicitly refocuses.
+     *   - Explicit (`true`/`false`) or external (`computedFocus`): resumes following the provided value.
+     * - To enforce a "remain blurred until user refocuses" contract in these declarative modes,
+     *   implementors must manage a persistent blur in their own state (e.g. suppressing `true` until a new `focus` event is observed).
+     * 
      * Defaults to `'auto'` (automatically determine focus state).
      */
     focused       ?: boolean | 'auto'
@@ -63,6 +71,12 @@ export interface FocusStateProps {
      * keyboard navigation, or accessibility-driven logic. It is ignored when `focused` is explicitly set.
      * 
      * If not provided, the component falls back to internal focus observer via `ref`, `handleFocus()`, `handleBlur()`, and `handleKeyDown()` callbacks.
+     * 
+     * Disabled behavior:
+     * - While `disabled`, the component is always treated as blurred (`false`), regardless of `computedFocus`.
+     * - When re‑enabled, the component resumes following the passed `computedFocus` value.
+     * - To enforce a "remain blurred until user refocuses" contract in this mode,
+     * implementors must manage a persistent blur in their own state (e.g. suppressing `true` until a new `focus` event is observed).
      * 
      * This property is intended for **component developers** who need to customize focus resolution.
      * For **application developers**, prefer using the `focused` prop directly.

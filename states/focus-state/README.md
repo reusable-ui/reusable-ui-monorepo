@@ -11,6 +11,7 @@ Ideal for buttons, selects, inputs, and any interactive component requiring focu
 ✔ Built-in internal focus observer via `ref`, `handleFocus()`, `handleBlur()`, and `handleKeyDown()` — no need for external state unless desired  
 ✔ Optional `computedFocus` override for custom focus resolution logic in advanced use cases  
 ✔ Declarative `inputLikeFocus` flag for input-style focus ring behavior — mimics native `<input>` semantics even on mouse click  
+✔ Deterministic disabled handling: always blurred when disabled, with clear contracts across auto, explicit, and external modes  
 
 ## 📦 Installation
 Install **@reusable-ui/focus-state** via npm or yarn:
@@ -107,6 +108,24 @@ export const CustomButton: FC<CustomButtonProps> = (props) => {
 };
 ```
 
+#### 🧠 Transition Animation Behavior
+
+The hook manages transitions between `focused` and `blurred` states using a unified animation flow:
+
+- If a transition is already in progress, new intent (e.g., switching from focused to blurred) is deferred until the current animation completes.
+- Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
+- This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
+
+#### 🔒 Disabled Behavior
+- **Always blurred when disabled**: Components are forced into a blurred state whenever `disabled` is active, regardless of `focused` or `computedFocus` values.  
+- **On re‑enable**:
+    - **Auto mode (internal observer)**: The component remains blurred until the user explicitly refocuses.  
+    - **Explicit (`true`/`false`) or external (`computedFocus`) modes**: The component resumes following the provided value.  
+- **Blur lock responsibility**:
+    - Auto mode enforces the lock internally.  
+    - In explicit/external modes, implementors must manage a persistent blur in their own state (for example, suppressing `true` until a new `focus` event is observed).  
+- **Rationale**: Ensures accessibility consistency by preventing phantom focus restoration when toggling disabled state.
+
 ### `useFocusStatePhaseEvents(props, focusPhase)`
 
 Emits lifecycle events in response to focus/blur phase transitions.
@@ -129,14 +148,6 @@ Unlike `useFocusBehaviorState()`, which handles animation and lifecycle, `useFoc
 - No internal state or uncontrolled fallback.
 - `'auto'` is treated as a declarative diagnostic mode.
 - Ideal for components that **consume** the resolved `focused` state.
-
-#### 🧠 Transition Animation Behavior
-
-The hook manages transitions between `focused` and `blurred` states using a unified animation flow:
-
-- If a transition is already in progress, new intent (e.g., switching from focused to blurred) is deferred until the current animation completes.
-- Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
-- This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
 
 ---
 
