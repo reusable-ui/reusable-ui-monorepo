@@ -28,6 +28,7 @@ Whether you're building a design system, onboarding flow, or accessibility-first
 ✔ Optional `computedPress` override for custom press resolution logic in advanced use cases  
 ✔ Built-in keyboard observer for `[Space]` and `[Enter]` keys — simulates press and click behavior with lifecycle consistency  
 ✔ Built-in pointer observer for for mouse, touch, and pen devices  
+✔ Deterministic disabled handling: always released when disabled, with clear contracts across auto, explicit, and external modes  
 
 ## 📦 Installation
 Install **@reusable-ui/press-state** via npm or yarn:
@@ -130,6 +131,16 @@ The hook manages transitions between `pressed` and `released` states using a uni
 - If a transition is already in progress, new intent (e.g., switching from pressed to released) is deferred until the current animation completes.
 - Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
 - This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
+
+#### 🔒 Disabled Behavior
+- **Always released when disabled**: Components are forced into a released state whenever `disabled` is active, regardless of `pressed` or `computedPress` values.  
+- **On re‑enable**:
+    - **Auto mode (internal press observer)**: The component remains released until the user explicitly re‑presses.  
+    - **Explicit (`true`/`false`) or external (`computedPress`) modes**: The component resumes following the provided value.  
+- **Release lock responsibility**:
+    - Auto mode enforces the lock internally.  
+    - In explicit/external modes, implementors must manage a persistent release in their own state (for example, suppressing `true` until a new `pointerdown` or `keydown` event is observed).  
+- **Rationale**: Ensures accessibility consistency by preventing phantom press restoration when toggling disabled state.
 
 #### Pointer Behavior
 

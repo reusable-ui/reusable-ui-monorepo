@@ -44,6 +44,11 @@ import {
     useAnimationState,
 }                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
+// Reusable-ui states:
+import {
+    useDisabledState,
+}                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
+
 
 
 /**
@@ -82,6 +87,9 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
     
     // States and flags:
     
+    // Determine whether the component is disabled:
+    const isDisabled            = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    
     // Determine control mode:
     const isExplicitValue       = (controlledPressed !== 'auto');
     
@@ -96,13 +104,16 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
         handlePointerCancel,
         handleKeyDown,
         handleKeyUp,
-    } = usePressObserver<TElement>(isExplicitValue || isExternallyComputed, options);
+    } = usePressObserver<TElement>(isExplicitValue || isExternallyComputed, isDisabled, options);
     
     // Resolve effective `computedPress`:
     const resolvedComputedPress = isExternallyComputed ? externalComputedPress : observedPress;
     
-    // Resolve effective press state:
-    const effectivePressed      = isExplicitValue ? controlledPressed : resolvedComputedPress;
+    // Resolve press state before disabled override:
+    const resolvedPressed       = isExplicitValue ? controlledPressed : resolvedComputedPress;
+    
+    // Apply disabled override: disabled always forces release:
+    const effectivePressed      = !isDisabled && resolvedPressed;
     
     
     
@@ -228,6 +239,9 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
     
     // States and flags:
     
+    // Determine whether the component is disabled:
+    const isDisabled            = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    
     // Determine control mode:
     const isExplicitValue       = (controlledPressed !== 'auto');
     
@@ -242,13 +256,16 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
         handlePointerCancel,
         handleKeyDown,
         handleKeyUp,
-    } = usePressObserver<TElement>(isExplicitValue || isExternallyComputed, options);
+    } = usePressObserver<TElement>(isExplicitValue || isExternallyComputed, isDisabled, options);
     
     // Resolve effective `computedPress`:
     const resolvedComputedPress = isExternallyComputed ? externalComputedPress : observedPress;
     
-    // Resolve effective press state:
-    const effectivePressed      = isExplicitValue ? controlledPressed : resolvedComputedPress;
+    // Resolve press state before disabled override:
+    const resolvedPressed       = isExplicitValue ? controlledPressed : resolvedComputedPress;
+    
+    // Apply disabled override: disabled always forces release:
+    const effectivePressed      = !isDisabled && resolvedPressed;
     
     // Internal animation lifecycle:
     const [internalPressed, setInternalPressed, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({

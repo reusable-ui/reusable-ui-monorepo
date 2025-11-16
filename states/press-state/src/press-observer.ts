@@ -95,12 +95,19 @@ export interface PressObserverState<TElement extends Element = HTMLElement>
  * 
  * Updates internal state via pointer and keyboard handlers. Skips updates when externally controlled.
  * 
+ * Disabled behavior:
+ * - While `isDisabled` is true, the observer forces the press state to released (`false`),
+ *   since disabled elements cannot remain pressed.
+ * - This ensures consistency even if no native `pointerup` or `keyup` event is dispatched when disabling.
+ * 
  * @template TElement - The type of the target DOM element.
  * 
  * @param disabledUpdates - Whether to disable internal press state updates (e.g. when externally controlled).
+ * @param isDisabled - Whether the component is currently disabled; used to enforce release override.
+ * @param options - Configuration for press resolution (keys, buttons, pressure, fingers, global release behavior).
  * @returns The observed press state and event handlers.
  */
-export const usePressObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, options: Pick<PressStateOptions, 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'> | undefined): PressObserverState<TElement> => {
+export const usePressObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, isDisabled: boolean, options: Pick<PressStateOptions, 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'> | undefined): PressObserverState<TElement> => {
     // Extract options and assign defaults:
     const {
         pressKeys              = defaultPressKeys,
@@ -215,6 +222,23 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         handlePressStateUpdate();
     }, [disabledUpdates]);
     // Re-evaluate press state only when `disabledUpdates` changes.
+    // `handlePressStateUpdate` is stable via useStableCallback, so it's safe to omit from deps.
+    
+    
+    
+    // Disabled behavior effect: Forces the internal press state to released (`false`) whenever the component is disabled,
+    // ensuring the state remains consistent if later re‑enabled.
+    // Using `useLayoutEffect()` to ensure the check runs before browser paint,
+    // preventing potential visual glitches if the element is initially rendered in a disabled state.
+    useLayoutEffect(() => {
+        // Sets the state to released (`false`) when the component is disabled:
+        if (!isDisabled) return; // Skip when enabled.
+        
+        
+        
+        handlePressStateUpdate(false);
+    }, [isDisabled]);
+    // Re-evaluate press state only when `isDisabled` changes.
     // `handlePressStateUpdate` is stable via useStableCallback, so it's safe to omit from deps.
     
     

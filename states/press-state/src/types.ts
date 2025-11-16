@@ -51,6 +51,14 @@ export interface PressStateProps {
      * - `false`  : the component is released
      * - `'auto'` : automatically determine press state
      * 
+     * Disabled behavior:
+     * - While `disabled`, the component is always treated as released (`false`), regardless of `pressed`.
+     * - When re‑enabled:
+     *   - `'auto'` mode (internal press observer): remains released until the user explicitly re‑presses.
+     *   - Explicit (`true`/`false`) or external (`computedPress`): resumes following the provided value.
+     * - To enforce a "remain released until user re‑presses" contract in these declarative modes,
+     *   implementors must manage a persistent release in their own state (e.g. suppressing `true` until a new `pointerdown` or `keydown` event is observed).
+     * 
      * Defaults to `'auto'` (automatically determine press state).
      */
     pressed       ?: boolean | 'auto'
@@ -62,6 +70,12 @@ export interface PressStateProps {
      * layout containment, or accessibility-driven logic. It is ignored when `pressed` is explicitly set.
      * 
      * If not provided, the component falls back to internal press observer via pointer and keyboard handlers.
+     * 
+     * Disabled behavior:
+     * - While `disabled`, the component is always treated as released (`false`), regardless of `computedPress`.
+     * - When re‑enabled, the component resumes following the passed `computedPress` value.
+     * - To enforce a "remain released until user re‑presses" contract in this mode,
+     *   implementors must manage a persistent release in their own state (e.g. suppressing `true` until a new `pointerdown` or `keydown` event is observed).
      * 
      * This property is intended for **component developers** who need to customize press resolution.
      * For **application developers**, prefer using the `pressed` prop directly.
