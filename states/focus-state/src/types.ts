@@ -76,7 +76,7 @@ export interface FocusStateProps {
      * - While `disabled`, the component is always treated as blurred (`false`), regardless of `computedFocus`.
      * - When re‑enabled, the component resumes following the passed `computedFocus` value.
      * - To enforce a "remain blurred until user refocuses" contract in this mode,
-     * implementors must manage a persistent blur in their own state (e.g. suppressing `true` until a new `focus` event is observed).
+     *   implementors must manage a persistent blur in their own state (e.g. suppressing `true` until a new `focus` event is observed).
      * 
      * This property is intended for **component developers** who need to customize focus resolution.
      * For **application developers**, prefer using the `focused` prop directly.

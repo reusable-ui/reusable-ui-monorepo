@@ -150,7 +150,7 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(disable
     // preventing potential visual glitches if the element is initially rendered in a disabled state.
     useLayoutEffect(() => {
         // Sets the state to blurred (`false`) when the component is disabled:
-        if (!isDisabled) return; // Enabled => do not update.
+        if (!isDisabled) return; // Skip when enabled.
         
         
         
