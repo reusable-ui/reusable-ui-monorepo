@@ -187,18 +187,18 @@ Additional flags:
 | press‑state      | Reset lost; remain lost until user re‑presses      | Prevents unintended actions; press must be explicit                 |
 | validity‑state   | Unvalidated; recompute on re‑enable                | Disabled inputs excluded from validation; recompute when re‑enabled |
 | collapse‑state   | Block dispatch; preserve last state                | Disabled freezes interaction but doesn’t reset                      |
-| active‑state     | Block dispatch; preserve last state                | Same rationale as collapse                                          |
-| view‑state       | Block dispatch; preserve last state                | Same rationale as collapse                                          |
+| active‑state     | Block dispatch; preserve last state                | Disabled freezes interaction but doesn’t reset                      |
+| view‑state       | Block dispatch; preserve last state                | Disabled freezes interaction but doesn’t reset                      |
 | excite‑state     | Unaffected                                         | Purely notification/animation                                       |
 |------------------|----------------------------------------------------|---------------------------------------------------------------------|
 
 |------------------|----------------------------------------------------|---------------------------------------------------------------------|
 | Package Name     | Recommended Behavior when Readonly                 | Reason                                                              |
 |------------------|----------------------------------------------------|---------------------------------------------------------------------|
-| focus‑state      | Unaffected; remains focusable                      | Readonly inputs are still part of tab order and accessible          |
+| focus‑state      | Unaffected; focus feedback applies                 | Readonly inputs are still part of tab order and accessible          |
 | hover‑state      | Unaffected; hover feedback applies                 | Pointer feedback remains useful for discoverability                 |
-| press‑state      | Unaffected; press allowed, no mutation             | Press can select/focus but must not trigger state changes           |
-| validity‑state   | Unvalidated; recompute on re‑enable                | Readonly inputs are excluded from constraint validation             |
+| press‑state      | Unaffected; press feedback applies                 | Press can select/focus but must not trigger state changes           |
+| validity‑state   | Unvalidated; recompute on re‑enable                | Readonly inputs excluded from validation; recompute when re‑mutable |
 | collapse‑state   | Block dispatch; preserve last state                | Readonly prevents mutation; interaction state frozen                |
 | active‑state     | Block dispatch; preserve last state                | Same rationale as collapse                                          |
 | view‑state       | Block dispatch; preserve last state                | Same rationale as collapse                                          |
