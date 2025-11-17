@@ -44,6 +44,11 @@ import {
     useAnimationState,
 }                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
+// Reusable-ui states:
+import {
+    useDisabledState,
+}                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
+
 
 
 /**
@@ -81,11 +86,17 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
     
     // States and flags:
     
+    // Determine whether the component is disabled:
+    const isDisabled           = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    
     // Determine control mode:
     const isExplicitValue      = (controlledValidity !== 'auto');
     
-    // Resolve effective validity state:
-    const effectiveValidity    = isExplicitValue ? controlledValidity : computedValidity;
+    // Resolve validity state before disabled override:
+    const resolvedValidity     = isExplicitValue ? controlledValidity : computedValidity;
+    
+    // Apply disabled override: disabled always forces unvalidated (`null`):
+    const effectiveValidity    = isDisabled ? null : resolvedValidity;
     
     
     
@@ -200,11 +211,17 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     
     // States and flags:
     
+    // Determine whether the component is disabled:
+    const isDisabled           = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    
     // Determine control mode:
     const isExplicitValue      = (controlledValidity !== 'auto');
     
-    // Resolve effective validity state:
-    const effectiveValidity    = isExplicitValue ? controlledValidity : computedValidity;
+    // Resolve validity state before disabled override:
+    const resolvedValidity     = isExplicitValue ? controlledValidity : computedValidity;
+    
+    // Apply disabled override: disabled always forces unvalidated (`null`):
+    const effectiveValidity    = isDisabled ? null : resolvedValidity;
     
     // Internal animation lifecycle:
     const [internalValidity, setInternalValidity, runningIntent, animationHandlers] = useAnimationState<boolean | null, TElement>({

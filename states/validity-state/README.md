@@ -9,7 +9,8 @@ Ideal for inputs, selections, options, and any editable component requiring vali
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, animation, and feedback systems  
 ✔ User definable `computedValidity` for validation logic delegation  
-✔ Conditional CSS variables (`--va-was-*`) to determine previous validity state (useful for animating from prev validity state to new one)
+✔ Conditional CSS variables (`--va-was-*`) to determine previous validity state (useful for animating from prev validity state to new one)  
+✔ Deterministic disabled handling: always unvalidated when disabled, with immediate recomputation on re-enable  
 
 ## 📦 Installation
 Install **@reusable-ui/validity-state** via npm or yarn:
@@ -100,6 +101,21 @@ export const CustomInput: FC<CustomInputProps> = (props) => {
 };
 ```
 
+#### 🧠 Transition Animation Behavior
+
+The hook manages transitions between `valid`, `invalid`, and `unvalidated` states using a unified animation flow:
+
+- If a transition is already in progress, new intent (e.g., switching from valid to invalid) is deferred until the current animation completes.
+- Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
+- This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
+
+#### 🔒 Disabled Behavior
+- **Always unvalidated when disabled**: Components are forced into an unvalidated state whenever `disabled` is active, regardless of `validity` or `computedValidity` values.  
+- **On re-enable**:
+    - **Auto mode (external validity recomputation)**: The component resumes validity based on the provided `computedValidity`.  
+    - **Explicit (`true`/`false`/`null`) modes**: The component resumes following the provided value.  
+- **Rationale**: Validity is a continuous state but component-specific — there is no built-in validity observer. Developers must supply `computedValidity` for correctness; otherwise, the component stays unvalidated.
+
 ### `useValidityStatePhaseEvents(props, validityPhase)`
 
 Emits lifecycle events in response to validity phase transitions.
@@ -124,14 +140,6 @@ Unlike `useValidityBehaviorState()`, which handles animation and lifecycle, `use
 - No internal state or uncontrolled fallback.
 - `'auto'` is treated as a declarative diagnostic mode.
 - Ideal for components that **consume** the resolved `validity` state.
-
-#### 🧠 Transition Animation Behavior
-
-The hook manages transitions between `valid`, `invalid`, and `unvalidated` states using a unified animation flow:
-
-- If a transition is already in progress, new intent (e.g., switching from valid to invalid) is deferred until the current animation completes.
-- Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
-- This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
 
 ---
 
