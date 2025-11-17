@@ -97,25 +97,21 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(disable
     
     
     /**
-     * Updates the internal focus state based on the current focus visibility of the given element.
+     * Updates the internal focus state.
      * 
      * - If `disabledUpdates` is true, the update will be skipped.
-     * - If `newObservedFocus` is not provided, it will be auto-detected using `document.activeElement`.
      * - If the element is focused, it must also match `focusVisibleWithinSelector` to be considered visibly focused.
      * - If the new state matches the current `observedFocus`, no update will occur.
      * 
-     * @param focusableElement - The DOM element to observe for focus visibility.
-     * @param newObservedFocus - Optional override for the detected focus state.
+     * @param focusableElement - The DOM element whose focus state is being updated.
+     * @param newObservedFocus - The desired focus state.
      */
-    const handleFocusStateUpdate : (focusableElement: TElement | null, newObservedFocus?: boolean) => void = useStableCallback((focusableElement, newObservedFocus) => {
+    const handleFocusStateUpdate : (focusableElement: TElement | null, newObservedFocus: boolean) => void = useStableCallback((focusableElement, newObservedFocus) => {
         // Skip update if disabled:
         if (disabledUpdates) return;
         
         // Skip update if no element to observe:
         if (!focusableElement) return;
-        
-        // Auto-detect focus state if not provided:
-        newObservedFocus ??= (document.activeElement === focusableElement);
         
         // If focused, verify visible focus:
         if (newObservedFocus) {
@@ -133,31 +129,30 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(disable
     
     
     
-    // Refreshes focus state effect: Sync internal state when the element is already focused on mount or when the focus observer is re-enabled.
-    // Using `useLayoutEffect()` to ensure the check runs before browser paint,
-    // preventing potential visual glitches if the element is already focused.
+    // Focus state refresh effect:
+    // Ensures the internal focus state is synchronized when:
+    // - The observer switches back to uncontrolled mode (`disabledUpdates` becomes false).
+    // - The component transitions between disabled and enabled (`isDisabled` changes).
+    //
+    // For discrete focus behavior, past focus actions are ignored:
+    // - Disabling always forces the state to blurred (`false`), even if no native `blur` event fires.
+    // - Re-enabling or switching back to uncontrolled also resets to blurred (`false`),
+    //   requiring a fresh user interaction to set focus again.
+    //
+    // Using `useLayoutEffect()` ensures the update runs before the browser paints,
+    // preventing potential visual glitches if the element was focused at mount or
+    // during a disable/enable transition.
     useLayoutEffect(() => {
-        handleFocusStateUpdate(focusableElementRef.current);
-    }, [disabledUpdates]);
-    // Re-evaluate focus state only when `disabledUpdates` changes.
-    // `handleFocusStateUpdate` is stable via useStableCallback, so it's safe to omit from deps.
-    
-    
-    
-    // Disabled behavior effect: Forces the internal focus state to blurred (`false`) whenever the component is disabled,
-    // ensuring the state remains consistent if later re-enabled.
-    // Using `useLayoutEffect()` to ensure the check runs before browser paint,
-    // preventing potential visual glitches if the element is initially rendered in a disabled state.
-    useLayoutEffect(() => {
-        // Sets the state to blurred (`false`) when the component is disabled:
-        if (!isDisabled) return; // Skip when enabled.
+        // Skip if observer updates are disabled (controlled mode):
+        if (disabledUpdates) return;
         
         
         
+        // Always force blurred (`false`) when disabled or re-enabled:
         handleFocusStateUpdate(focusableElementRef.current, false);
-    }, [isDisabled]);
-    // Re-evaluate focus state only when `isDisabled` changes.
-    // `handleFocusStateUpdate` is stable via useStableCallback, so it's safe to omit from deps.
+    }, [disabledUpdates, isDisabled]);
+    // Re-evaluates focus state only when `disabledUpdates` or `isDisabled` changes.
+    // `handleFocusStateUpdate` is stable via useStableCallback, so it is safe to omit from deps.
     
     
     

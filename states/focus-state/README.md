@@ -124,7 +124,7 @@ The hook manages transitions between `focused` and `blurred` states using a unif
 - **Blur lock responsibility**:
     - Auto mode enforces the lock internally.  
     - In explicit/external modes, implementors must manage a persistent blur in their own state (for example, suppressing `true` until a new `focus` event is observed).  
-- **Rationale**: Ensures accessibility consistency by preventing phantom focus restoration when toggling disabled state.
+- **Rationale**: Focus is a discrete state — past focus actions are ignored when toggling disabled, preventing phantom restoration and ensuring accessibility consistency.
 
 ### `useFocusStatePhaseEvents(props, focusPhase)`
 
