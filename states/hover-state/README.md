@@ -10,6 +10,7 @@ Ideal for buttons, selects, menuItems, and any interactive component requiring h
 ✔ Seamless integration across appearance, animation, and accessibility systems  
 ✔ Built-in internal hover observer via `ref`, `handleMouseEnter()`, and `handleMouseLeave()` — no need for external state unless desired  
 ✔ Optional `computedHover` override for custom hover resolution logic in advanced use cases  
+✔ Deterministic disabled handling: always leaved when disabled, with immediate recomputation on re-enable  
 
 ## 📦 Installation
 Install **@reusable-ui/hover-state** via npm or yarn:
@@ -103,6 +104,20 @@ export const CustomCard: FC<CustomCardProps> = (props) => {
 };
 ```
 
+#### 🧠 Transition Animation Behavior
+
+The hook manages transitions between `hovered` and `leaved` states using a unified animation flow:
+
+- If a transition is already in progress, new intent (e.g., switching from hovered to leaved) is deferred until the current animation completes.
+- Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
+- This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
+
+#### 🔒 Disabled Behavior
+- **Always leaved when disabled**: Components are forced into a leaved state whenever `disabled` is active, regardless of `hovered` or `computedHover` values.  
+- **On re-enable**:
+    - **Auto mode (internal hover observer)**: The component immediately re-evaluates based on current pointer position and containment.  
+    - **Explicit (`true`/`false`) or external (`computedHover`) modes**: The component resumes following the provided value.  
+
 ### `useHoverStatePhaseEvents(props, hoverPhase)`
 
 Emits lifecycle events in response to hover/leave phase transitions.
@@ -125,14 +140,6 @@ Unlike `useHoverBehaviorState()`, which handles animation and lifecycle, `useHov
 - No internal state or uncontrolled fallback.
 - `'auto'` is treated as a declarative diagnostic mode.
 - Ideal for components that **consume** the resolved `hovered` state.
-
-#### 🧠 Transition Animation Behavior
-
-The hook manages transitions between `hovered` and `leaved` states using a unified animation flow:
-
-- If a transition is already in progress, new intent (e.g., switching from hovered to leaved) is deferred until the current animation completes.
-- Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
-- This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
 
 ---
 

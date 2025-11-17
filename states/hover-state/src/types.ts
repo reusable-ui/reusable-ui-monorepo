@@ -51,6 +51,12 @@ export interface HoverStateProps {
      * - `false`  : the component is leaved
      * - `'auto'` : automatically determine hover state
      * 
+     * Disabled behavior:
+     * - When disabled, the component is always treated as leaved (`false`), regardless of `hovered`.
+     * - When re-enabled:
+     *   - `'auto'` mode (internal hover observer): immediately re-evaluates based on current pointer position and containment.
+     *   - Explicit (`true`/`false`) or external (`computedHover`): resumes following the provided value.
+     * 
      * Defaults to `'auto'` (automatically determine hover state).
      */
     hovered       ?: boolean | 'auto'
@@ -62,6 +68,10 @@ export interface HoverStateProps {
      * layout containment, or accessibility-driven logic. It is ignored when `hovered` is explicitly set.
      * 
      * If not provided, the component falls back to internal hover observer via `ref`, `handleMouseEnter()`, and `handleMouseLeave()` callbacks.
+     * 
+     * Disabled behavior:
+     * - When disabled, the component is always treated as leaved (`false`), regardless of `computedHover`.
+     * - When re-enabled, the component resumes following the passed `computedHover` value.
      * 
      * This property is intended for **component developers** who need to customize hover resolution.
      * For **application developers**, prefer using the `hovered` prop directly.

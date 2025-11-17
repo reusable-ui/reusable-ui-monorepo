@@ -44,6 +44,11 @@ import {
     useAnimationState,
 }                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
+// Reusable-ui states:
+import {
+    useDisabledState,
+}                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
+
 
 
 /**
@@ -82,6 +87,9 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
     
     // States and flags:
     
+    // Determine whether the component is disabled:
+    const isDisabled            = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    
     // Determine control mode:
     const isExplicitValue       = (controlledHovered !== 'auto');
     
@@ -94,13 +102,16 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
         ref,
         handleMouseEnter,
         handleMouseLeave,
-    } = useHoverObserver<TElement>(isExplicitValue || isExternallyComputed);
+    } = useHoverObserver<TElement>(isExplicitValue || isExternallyComputed, isDisabled);
     
     // Resolve effective `computedHover`:
     const resolvedComputedHover = isExternallyComputed ? externalComputedHover : observedHover;
     
-    // Resolve effective hover state:
-    const effectiveHovered      = isExplicitValue ? controlledHovered : resolvedComputedHover;
+    // Resolve hover state before disabled override:
+    const resolvedHovered       = isExplicitValue ? controlledHovered : resolvedComputedHover;
+    
+    // Apply disabled override: disabled always forces leave:
+    const effectiveHovered      = !isDisabled && resolvedHovered;
     
     
     
@@ -222,6 +233,9 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
     
     // States and flags:
     
+    // Determine whether the component is disabled:
+    const isDisabled            = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    
     // Determine control mode:
     const isExplicitValue       = (controlledHovered !== 'auto');
     
@@ -234,13 +248,16 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
         ref,
         handleMouseEnter,
         handleMouseLeave,
-    } = useHoverObserver<TElement>(isExplicitValue || isExternallyComputed);
+    } = useHoverObserver<TElement>(isExplicitValue || isExternallyComputed, isDisabled);
     
     // Resolve effective `computedHover`:
     const resolvedComputedHover = isExternallyComputed ? externalComputedHover : observedHover;
     
-    // Resolve effective hover state:
-    const effectiveHovered      = isExplicitValue ? controlledHovered : resolvedComputedHover;
+    // Resolve hover state before disabled override:
+    const resolvedHovered       = isExplicitValue ? controlledHovered : resolvedComputedHover;
+    
+    // Apply disabled override: disabled always forces leave:
+    const effectiveHovered      = !isDisabled && resolvedHovered;
     
     // Internal animation lifecycle:
     const [internalHovered, setInternalHovered, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({

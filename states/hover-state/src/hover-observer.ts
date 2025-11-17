@@ -70,12 +70,18 @@ export interface HoverObserverState<TElement extends Element = HTMLElement>
  * Detects initial hover on mount and updates internal state via
  * imperative mouseenter/mouseleave handlers. Skips updates when externally controlled.
  * 
+ * Disabled behavior:
+ * - When disabled, the observer forces the hover state to leaved (`false`),
+ *   since disabled elements cannot be hovered.
+ * - When re-enabled, immediately re-evaluates based on current pointer position and containment.
+ * 
  * @template TElement - The type of the target DOM element.
  * 
  * @param disabledUpdates - Whether to disable internal hover state updates (e.g. when externally controlled).
+ * @param isDisabled - Whether the component is currently disabled; used to enforce leave override.
  * @returns The observed hover state, ref, and event handlers.
  */
-export const useHoverObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean): HoverObserverState<TElement> => {
+export const useHoverObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, isDisabled: boolean): HoverObserverState<TElement> => {
     // States and flags:
     
     // Ref to the hoverable DOM element:
@@ -124,13 +130,26 @@ export const useHoverObserver = <TElement extends Element = HTMLElement>(disable
     
     
     
-    // Initial mount effect: sync internal state if the element is already hovered on mount.
-    // Using `useLayoutEffect()` to ensure the check runs before browser paint,
-    // preventing potential visual glitches if the element is already hovered.
+    // Hover state refresh effect:
+    // Ensures the internal hover state is synchronized when:
+    // - The observer switches back to uncontrolled mode (`disabledUpdates` becomes false).
+    // - The component transitions from disabled to enabled (`isDisabled` becomes false).
+    
+    // Using `useLayoutEffect()` ensures the update runs before browser paint,
+    // preventing potential visual glitches if the element is already hovered at mount, or
+    // immediately after being re-enabled.
     useLayoutEffect(() => {
+        // Skip if observer updates are disabled (controlled mode):
+        if (disabledUpdates) return;
+        
+        // Skip if the component itself is disabled:
+        if (isDisabled) return;
+        
+        
+        
         handleHoverStateUpdate(hoverableElementRef.current);
-    }, [disabledUpdates]);
-    // Re-evaluate hover state only when `disabledUpdates` changes.
+    }, [disabledUpdates, isDisabled]);
+    // Re-evaluates hover state only when `disabledUpdates` or `isDisabled` changes.
     // `handleHoverStateUpdate` is stable via useStableCallback, so it's safe to omit from deps.
     
     
