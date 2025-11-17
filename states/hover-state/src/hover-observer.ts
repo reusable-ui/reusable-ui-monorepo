@@ -134,10 +134,15 @@ export const useHoverObserver = <TElement extends Element = HTMLElement>(disable
     // Ensures the internal hover state is synchronized when:
     // - The observer switches back to uncontrolled mode (`disabledUpdates` becomes false).
     // - The component transitions from disabled to enabled (`isDisabled` becomes false).
-    
-    // Using `useLayoutEffect()` ensures the update runs before browser paint,
-    // preventing potential visual glitches if the element is already hovered at mount, or
-    // immediately after being re-enabled.
+    //
+    // For continuous hover behavior:
+    // - The pointer position may legitimately remain over the element across enabled/disabled transitions.
+    // - On re-enable or when returning to uncontrolled mode, the state should be recomputed
+    //   from the actual DOM hover condition rather than reset to false.
+    // 
+    // Using `useLayoutEffect()` ensures the update runs before the browser paints,
+    // preventing potential visual glitches if the element was hovered at mount or
+    // during a disable/enable transition.
     useLayoutEffect(() => {
         // Skip if observer updates are disabled (controlled mode):
         if (disabledUpdates) return;
@@ -147,10 +152,12 @@ export const useHoverObserver = <TElement extends Element = HTMLElement>(disable
         
         
         
+        // Refresh when re-enabled or observer toggles back to uncontrolled.
+        // Let the observer recompute based on the current DOM hover state.
         handleHoverStateUpdate(hoverableElementRef.current);
     }, [disabledUpdates, isDisabled]);
     // Re-evaluates hover state only when `disabledUpdates` or `isDisabled` changes.
-    // `handleHoverStateUpdate` is stable via useStableCallback, so it's safe to omit from deps.
+    // `handleHoverStateUpdate` is stable via useStableCallback, so it is safe to omit from deps.
     
     
     

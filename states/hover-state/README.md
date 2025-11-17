@@ -115,8 +115,9 @@ The hook manages transitions between `hovered` and `leaved` states using a unifi
 #### 🔒 Disabled Behavior
 - **Always leaved when disabled**: Components are forced into a leaved state whenever `disabled` is active, regardless of `hovered` or `computedHover` values.  
 - **On re-enable**:
-    - **Auto mode (internal hover observer)**: The component immediately re-evaluates based on current pointer position and containment.  
+    - **Auto mode (internal hover observer)**: The component immediately re-evaluates based on the current pointer position and containment.  
     - **Explicit (`true`/`false`) or external (`computedHover`) modes**: The component resumes following the provided value.  
+- **Rationale**: Hover is a continuous state — pointer position may persist across enabled/disabled transitions, so recomputation ensures visual consistency.
 
 ### `useHoverStatePhaseEvents(props, hoverPhase)`
 
