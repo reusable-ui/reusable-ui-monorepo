@@ -96,9 +96,9 @@ export interface PressObserverState<TElement extends Element = HTMLElement>
  * Updates internal state via pointer and keyboard handlers. Skips updates when externally controlled.
  * 
  * Disabled behavior:
- * - While `isDisabled` is true, the observer forces the press state to released (`false`),
- *   since disabled elements cannot remain pressed.
- * - This ensures consistency even if no native `pointerup` or `keyup` event is dispatched when disabling.
+ * - When disabled, the observer forces the press state to released (`false`),
+ *   since disabled elements cannot be pressed.
+ * - When re-enabled, remains released until the user explicitly re-presses.
  * 
  * @template TElement - The type of the target DOM element.
  * 
@@ -227,7 +227,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     
     
     // Disabled behavior effect: Forces the internal press state to released (`false`) whenever the component is disabled,
-    // ensuring the state remains consistent if later re‑enabled.
+    // ensuring the state remains consistent if later re-enabled.
     // Using `useLayoutEffect()` to ensure the check runs before browser paint,
     // preventing potential visual glitches if the element is initially rendered in a disabled state.
     useLayoutEffect(() => {

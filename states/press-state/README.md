@@ -134,8 +134,8 @@ The hook manages transitions between `pressed` and `released` states using a uni
 
 #### 🔒 Disabled Behavior
 - **Always released when disabled**: Components are forced into a released state whenever `disabled` is active, regardless of `pressed` or `computedPress` values.  
-- **On re‑enable**:
-    - **Auto mode (internal press observer)**: The component remains released until the user explicitly re‑presses.  
+- **On re-enable**:
+    - **Auto mode (internal press observer)**: The component remains released until the user explicitly re-presses.  
     - **Explicit (`true`/`false`) or external (`computedPress`) modes**: The component resumes following the provided value.  
 - **Release lock responsibility**:
     - Auto mode enforces the lock internally.  
