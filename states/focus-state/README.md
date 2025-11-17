@@ -118,7 +118,7 @@ The hook manages transitions between `focused` and `blurred` states using a unif
 
 #### 🔒 Disabled Behavior
 - **Always blurred when disabled**: Components are forced into a blurred state whenever `disabled` is active, regardless of `focused` or `computedFocus` values.  
-- **On re‑enable**:
+- **On re-enable**:
     - **Auto mode (internal focus observer)**: The component remains blurred until the user explicitly refocuses.  
     - **Explicit (`true`/`false`) or external (`computedFocus`) modes**: The component resumes following the provided value.  
 - **Blur lock responsibility**:

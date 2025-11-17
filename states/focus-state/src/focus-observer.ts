@@ -75,9 +75,9 @@ export interface FocusObserverState<TElement extends Element = HTMLElement>
  * imperative focus/blur/keydown handlers. Skips updates when externally controlled.
  * 
  * Disabled behavior:
- * - While `isDisabled` is true, the observer forces the focus state to blurred (`false`),
- *   since disabled elements cannot retain focus.
- * - This ensures consistency even if no native `blur` event is dispatched when disabling.
+ * - When disabled, the observer forces the focus state to blurred (`false`),
+ *   since disabled elements cannot be focused.
+ * - When re-enabled, remains blurred until the user explicitly refocuses.
  * 
  * @template TElement - The type of the target DOM element.
  * 
@@ -133,7 +133,7 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(disable
     
     
     
-    // Refreshes press state effect: Sync internal state when the element is already focused on mount or when the focus observer is re-enabled.
+    // Refreshes focus state effect: Sync internal state when the element is already focused on mount or when the focus observer is re-enabled.
     // Using `useLayoutEffect()` to ensure the check runs before browser paint,
     // preventing potential visual glitches if the element is already focused.
     useLayoutEffect(() => {
@@ -145,7 +145,7 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(disable
     
     
     // Disabled behavior effect: Forces the internal focus state to blurred (`false`) whenever the component is disabled,
-    // ensuring the state remains consistent if later re‑enabled.
+    // ensuring the state remains consistent if later re-enabled.
     // Using `useLayoutEffect()` to ensure the check runs before browser paint,
     // preventing potential visual glitches if the element is initially rendered in a disabled state.
     useLayoutEffect(() => {

@@ -53,8 +53,8 @@ export interface FocusStateProps {
      * - `'auto'` : automatically determine focus state
      * 
      * Disabled behavior:
-     * - While `disabled`, the component is always treated as blurred (`false`), regardless of `focused`.
-     * - When re‑enabled:
+     * - When disabled, the component is always treated as blurred (`false`), regardless of `focused`.
+     * - When re-enabled:
      *   - `'auto'` mode (internal focus observer): remains blurred until the user explicitly refocuses.
      *   - Explicit (`true`/`false`) or external (`computedFocus`): resumes following the provided value.
      * - To enforce a "remain blurred until user refocuses" contract in these declarative modes,
@@ -73,8 +73,8 @@ export interface FocusStateProps {
      * If not provided, the component falls back to internal focus observer via `ref`, `handleFocus()`, `handleBlur()`, and `handleKeyDown()` callbacks.
      * 
      * Disabled behavior:
-     * - While `disabled`, the component is always treated as blurred (`false`), regardless of `computedFocus`.
-     * - When re‑enabled, the component resumes following the passed `computedFocus` value.
+     * - When disabled, the component is always treated as blurred (`false`), regardless of `computedFocus`.
+     * - When re-enabled, the component resumes following the passed `computedFocus` value.
      * - To enforce a "remain blurred until user refocuses" contract in this mode,
      *   implementors must manage a persistent blur in their own state (e.g. suppressing `true` until a new `focus` event is observed).
      * 
