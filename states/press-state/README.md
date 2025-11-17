@@ -140,7 +140,7 @@ The hook manages transitions between `pressed` and `released` states using a uni
 - **Release lock responsibility**:
     - Auto mode enforces the lock internally.  
     - In explicit/external modes, implementors must manage a persistent release in their own state (for example, suppressing `true` until a new `pointerdown` or `keydown` event is observed).  
-- **Rationale**: Ensures accessibility consistency by preventing phantom press restoration when toggling disabled state.
+- **Rationale**: Press is a discrete state — past press actions are ignored when toggling disabled, preventing phantom restoration and ensuring accessibility consistency.
 
 #### Pointer Behavior
 
