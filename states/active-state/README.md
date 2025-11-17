@@ -10,7 +10,7 @@ Ideal for toggles, switches, selections, alerts, and any interactive component r
 ✔ Seamless integration across appearance, animation, and feedback systems  
 ✔ Supports controlled, uncontrolled, and hybrid activation behavior  
 ✔ Contextual override via `cascadeActive` for parent-driven active state  
-✔ Disabled state handling — blocks user interaction while disabled, preserving the last known state until re‑enabled  
+✔ Disabled state handling — blocks user interaction while disabled, preserving the last known state until re-enabled  
 
 ## 📦 Installation
 Install **@reusable-ui/active-state** via npm or yarn:
@@ -96,8 +96,8 @@ The hook manages transitions between `active` and `inactive` states using a unif
 
 #### 🔒 Disabled Behavior
 - **Block dispatch; preserve last state**: When disabled, activation requests are ignored. The component remains in its last active/inactive state.  
-- **On re‑enable**: `dispatchActiveChange()` works normally.  
-- **Rationale**: Disabled components freeze interaction — they don’t reset activation, but prevent user interactions until re‑enabled.
+- **On re-enable**: `dispatchActiveChange()` works normally.  
+- **Rationale**: Disabled components freeze interaction — they don’t reset activation, but prevent user interactions until re-enabled.
 
 ### `useActiveStatePhaseEvents(props, activePhase)`
 
