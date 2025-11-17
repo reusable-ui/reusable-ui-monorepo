@@ -15,7 +15,7 @@ Ideal for tabs, slides, carousel, and any interactive component requiring contro
 ✔ Configurable snapping behavior via `viewIndexStep` (defaults to `1`) for integer-based or fractional transitions  
 ✔ Enforces clamped view index boundaries via `minViewIndex` and `maxViewIndex`  
 ✔ Exposes `actualViewIndex`, `minVisibleViewIndex`, and `maxVisibleViewIndex` for precise layout and rendering control
-✔ Disabled state handling — blocks user interaction while disabled, preserving the last known state until re‑enabled  
+✔ Disabled state handling — blocks user interaction while disabled, preserving the last known state until re-enabled  
 
 ## 📦 Installation
 Install **@reusable-ui/view-state** via npm or yarn:
@@ -121,8 +121,8 @@ The hook manages transitions when `viewIndex` changes using a unified animation 
 
 #### 🔒 Disabled Behavior
 - **Block dispatch; preserve last state**: When disabled, view-switch requests are ignored. The component remains at its last view index.  
-- **On re‑enable**: `dispatchViewIndexChange()` works normally.  
-- **Rationale**: Disabled components freeze interaction — they don’t reset view index, but prevent user interactions until re‑enabled.
+- **On re-enable**: `dispatchViewIndexChange()` works normally.  
+- **Rationale**: Disabled components freeze interaction — they don’t reset view index, but prevent user interactions until re-enabled.
 
 ### `useViewStatePhaseEvents(props, viewPhase)`
 
