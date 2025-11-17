@@ -71,6 +71,11 @@ import {
     useAnimationState,
 }                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
+// Reusable-ui states:
+import {
+    useDisabledState,
+}                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
+
 
 
 /**
@@ -133,10 +138,25 @@ export const useViewState = (props: ViewStateProps & { defaultViewIndex: never }
  * @returns A dispatcher function for view index change requests.
  */
 export const useViewIndexChangeDispatcher = <TChangeEvent = unknown>(props: ViewStateChangeProps<TChangeEvent> & { defaultViewIndex: never }) : ValueChangeDispatcher<number, TChangeEvent> => {
+    // States and flags:
+    
+    // Determine whether the component is disabled:
+    const isDisabled        = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    
+    
+    
     // A stable dispatcher for view index change requests.
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const dispatchViewIndexChange : ValueChangeDispatcher<number, TChangeEvent> = useStableCallback((newViewIndex: number, event: TChangeEvent): void => {
+        // Block expansion lifecycle while disabled:
+        // - Prevents internal state updates (uncontrolled mode)
+        // - Prevents external change requests (controlled mode)
+        // - Prevents notifying listeners of a change
+        if (isDisabled) return;
+        
+        
+        
         // No internal state to update in controlled mode:
         // if (!isControlled) setInternalViewIndex(newViewIndex);
         
@@ -361,6 +381,9 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
         └───────────────────────────────────────────────────────────────────────────────────────┘
     */
     
+    // Determine whether the component is disabled:
+    const isDisabled           = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    
     // Clamp the initial intent within valid range:
     const initialIntent        = clamp(minViewIndex, rawInitialIntent, maxViewIndex, viewIndexStep);
     
@@ -428,6 +451,14 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const dispatchViewIndexChange : ValueChangeDispatcher<number, TChangeEvent> = useStableCallback((newViewIndex: number, event: TChangeEvent): void => {
+        // Block expansion lifecycle while disabled:
+        // - Prevents internal state updates (uncontrolled mode)
+        // - Prevents external change requests (controlled mode)
+        // - Prevents notifying listeners of a change
+        if (isDisabled) return;
+        
+        
+        
         // Update the internal state only if uncontrolled:
         if (!isControlled) setInternalViewIndex(newViewIndex);
         
