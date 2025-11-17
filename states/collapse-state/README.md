@@ -9,6 +9,7 @@ Ideal for tooltips, accordions, dialogs, and any interactive component requiring
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, animation, and feedback systems  
 ✔ Supports controlled, uncontrolled, and hybrid expansion behavior  
+✔ Disabled state handling — blocks user interaction while disabled, preserving the last known state until re‑enabled  
 
 ## 📦 Installation
 Install **@reusable-ui/collapse-state** via npm or yarn:
@@ -82,6 +83,19 @@ export const CollapsibleBox: FC<CollapsibleBoxProps> = (props) => {
 };
 ```
 
+#### 🧠 Transition Animation Behavior
+
+The hook manages transitions between `expanded` and `collapsed` states using a unified animation flow:
+
+- If a transition is already in progress, new intent (e.g., switching from expanded to collapsed) is deferred until the current animation completes.
+- Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
+- This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
+
+#### 🔒 Disabled Behavior
+- **Block dispatch; preserve last state**: When disabled, expansion requests are ignored. The component remains in its last expanded/collapsed state.  
+- **On re‑enable**: `dispatchExpandedChange()` works normally.  
+- **Rationale**: Disabled components freeze interaction — they don’t reset expansion, but prevent user interactions until re‑enabled.
+
 ### `useCollapseStatePhaseEvents(props, expandPhase)`
 
 Emits lifecycle events in response to expand/collapse phase transitions.
@@ -128,14 +142,6 @@ Unlike `useCollapseBehaviorState()`, which resolves full lifecycle, `useUncontro
 - If `expanded` is provided, the internal state is disabled and the component becomes fully controlled.
 - If `expanded` is omitted, the internal state is initialized via `defaultExpanded`.
 - Ideal for components that **manage** the resolved `expanded` state.
-
-#### 🧠 Transition Animation Behavior
-
-The hook manages transitions between `expanded` and `collapsed` states using a unified animation flow:
-
-- If a transition is already in progress, new intent (e.g., switching from expanded to collapsed) is deferred until the current animation completes.
-- Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
-- This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
 
 ---
 

@@ -49,6 +49,11 @@ import {
     useAnimationState,
 }                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
+// Reusable-ui states:
+import {
+    useDisabledState,
+}                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
+
 
 
 /**
@@ -103,10 +108,25 @@ export const useCollapseState = (props: CollapseStateProps & { defaultExpanded: 
  * @returns A dispatcher function for expansion change requests.
  */
 export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: CollapseStateChangeProps<TChangeEvent> & { defaultExpanded: never }) : ValueChangeDispatcher<boolean, TChangeEvent> => {
+    // States and flags:
+    
+    // Determine whether the component is disabled:
+    const isDisabled        = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    
+    
+    
     // A Stable dispatcher for expansion change requests.
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const dispatchExpandedChange : ValueChangeDispatcher<boolean, TChangeEvent> = useStableCallback((newExpanded: boolean, event: TChangeEvent): void => {
+        // Block expansion lifecycle while disabled:
+        // - Prevents internal state updates (uncontrolled mode)
+        // - Prevents external change requests (controlled mode)
+        // - Prevents notifying listeners of a change
+        if (isDisabled) return;
+        
+        
+        
         // No internal state to update in controlled mode:
         // if (!isControlled) setInternalExpanded(newExpanded);
         
@@ -269,6 +289,9 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
     
     // States and flags:
     
+    // Determine whether the component is disabled:
+    const isDisabled        = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    
     // Internal expansion state with animation lifecycle:
     const [internalExpanded, setInternalExpanded, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
         initialIntent,
@@ -325,6 +348,14 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const dispatchExpandedChange : ValueChangeDispatcher<boolean, TChangeEvent> = useStableCallback((newExpanded: boolean, event: TChangeEvent): void => {
+        // Block expansion lifecycle while disabled:
+        // - Prevents internal state updates (uncontrolled mode)
+        // - Prevents external change requests (controlled mode)
+        // - Prevents notifying listeners of a change
+        if (isDisabled) return;
+        
+        
+        
         // Update the internal state only if uncontrolled:
         if (!isControlled) setInternalExpanded(newExpanded);
         
