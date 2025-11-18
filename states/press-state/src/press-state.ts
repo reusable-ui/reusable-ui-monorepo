@@ -87,8 +87,8 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
     
     // States and flags:
     
-    // Determine whether the component is disabled:
-    const isDisabled            = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    // Resolve whether the component is in a restricted state (interaction blocked):
+    const isRestricted          = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     // Determine control mode:
     const isExplicitValue       = (controlledPressed !== 'auto');
@@ -104,16 +104,16 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
         handlePointerCancel,
         handleKeyDown,
         handleKeyUp,
-    } = usePressObserver<TElement>(isExplicitValue || isExternallyComputed, isDisabled, options);
+    } = usePressObserver<TElement>(isExplicitValue || isExternallyComputed, isRestricted, options);
     
     // Resolve effective `computedPress`:
     const resolvedComputedPress = isExternallyComputed ? externalComputedPress : observedPress;
     
-    // Resolve press state before disabled override:
+    // Resolve press state prior to applying the restricted guard:
     const resolvedPressed       = isExplicitValue ? controlledPressed : resolvedComputedPress;
     
-    // Apply disabled override: disabled always forces release:
-    const effectivePressed      = !isDisabled && resolvedPressed;
+    // Apply restricted guard — restriction always enforces release:
+    const effectivePressed      = !isRestricted && resolvedPressed;
     
     
     
@@ -239,8 +239,8 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
     
     // States and flags:
     
-    // Determine whether the component is disabled:
-    const isDisabled            = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    // Resolve whether the component is in a restricted state (interaction blocked):
+    const isRestricted          = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     // Determine control mode:
     const isExplicitValue       = (controlledPressed !== 'auto');
@@ -256,16 +256,16 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
         handlePointerCancel,
         handleKeyDown,
         handleKeyUp,
-    } = usePressObserver<TElement>(isExplicitValue || isExternallyComputed, isDisabled, options);
+    } = usePressObserver<TElement>(isExplicitValue || isExternallyComputed, isRestricted, options);
     
     // Resolve effective `computedPress`:
     const resolvedComputedPress = isExternallyComputed ? externalComputedPress : observedPress;
     
-    // Resolve press state before disabled override:
+    // Resolve press state prior to applying the restricted guard:
     const resolvedPressed       = isExplicitValue ? controlledPressed : resolvedComputedPress;
     
-    // Apply disabled override: disabled always forces release:
-    const effectivePressed      = !isDisabled && resolvedPressed;
+    // Apply restricted guard — restriction always enforces release:
+    const effectivePressed      = !isRestricted && resolvedPressed;
     
     // Internal animation lifecycle:
     const [internalPressed, setInternalPressed, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({

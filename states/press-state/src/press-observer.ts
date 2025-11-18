@@ -95,19 +95,19 @@ export interface PressObserverState<TElement extends Element = HTMLElement>
  * 
  * Updates internal state via pointer and keyboard handlers. Skips updates when externally controlled.
  * 
- * Disabled behavior:
- * - When disabled, the observer forces the press state to released (`false`),
- *   since disabled elements cannot be pressed.
+ * Restricted behavior:
+ * - When restricted, the observer forces the press state to released (`false`),
+ *   since restricted elements cannot be pressed.
  * - When re-enabled, remains released until the user explicitly re-presses.
  * 
  * @template TElement - The type of the target DOM element.
  * 
  * @param disabledUpdates - Whether to disable internal press state updates (e.g. when externally controlled).
- * @param isDisabled - Whether the component is currently disabled; used to enforce release override.
+ * @param isRestricted - Whether the component is currently in a restricted state; enforces a release override.
  * @param options - Configuration for press resolution (keys, buttons, pressure, fingers, global release behavior).
  * @returns The observed press state and event handlers.
  */
-export const usePressObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, isDisabled: boolean, options: Pick<PressStateOptions, 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'> | undefined): PressObserverState<TElement> => {
+export const usePressObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, isRestricted: boolean, options: Pick<PressStateOptions, 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'> | undefined): PressObserverState<TElement> => {
     // Extract options and assign defaults:
     const {
         pressKeys              = defaultPressKeys,
@@ -149,7 +149,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
      * @param newObservedPress - The desired press state.
      */
     const handlePressStateUpdate : (newObservedPress: boolean) => void = useStableCallback((newObservedPress) => {
-        // Skip update if disabled:
+        // Skip if observer updates are disabled (controlled mode):
         if (disabledUpdates) return;
         
         // Skip update if state is unchanged:
@@ -183,7 +183,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     
     
     
-    // Cancels any pending press release update when the press observer is disabled.
+    // Cancels any pending press release update when the observer updates are disabled (controlled mode).
     // 
     // Placement matters: this effect must run *before* the subsequent `useLayoutEffect` that refreshes press state,
     // to avoid accidentally clearing a newly scheduled timeout from that refresh (the *wrong kill* scenario).
@@ -191,7 +191,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     // Using `useLayoutEffect()` to ensure the cancellation happens before browser paint,
     // preventing potential visual glitches if the element is already pressed.
     useLayoutEffect(() => {
-        // Kills pending press release update when the press observer is disabled:
+        // Kills pending press release update when the observer updates are disabled (controlled mode):
         if (!disabledUpdates) return; // Enabled => do not kill.
         
         
@@ -208,7 +208,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     // Press state refresh effect:
     // Ensures the internal press state is synchronized when:
     // - The observer switches back to uncontrolled mode (`disabledUpdates` becomes false).
-    // - The component transitions between disabled and enabled (`isDisabled` changes).
+    // - The component transitions between restricted and unrestricted (`isRestricted` changes).
     //
     // For discrete press behavior, past press actions are ignored:
     // - Disabling always forces the state to released (`false`), even if no native `pointerup` or `keyup` event fires.
@@ -217,17 +217,17 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     //
     // Using `useLayoutEffect()` ensures the update runs before the browser paints,
     // preventing potential visual glitches if the element was pressed at mount or
-    // during a disable/enable transition.
+    // during a restricted/unrestricted transition.
     useLayoutEffect(() => {
         // Skip if observer updates are disabled (controlled mode):
         if (disabledUpdates) return;
         
         
         
-        // Always force released (`false`) when disabled or re-enabled:
+        // Always force released (`false`) when restricted or re-unrestricted:
         handlePressStateUpdate(false);
-    }, [disabledUpdates, isDisabled]);
-    // Re-evaluates press state only when `disabledUpdates` or `isDisabled` changes.
+    }, [disabledUpdates, isRestricted]);
+    // Re-evaluates press state only when `disabledUpdates` or `isRestricted` changes.
     // `handlePressStateUpdate` is stable via useStableCallback, so it is safe to omit from deps.
     
     
