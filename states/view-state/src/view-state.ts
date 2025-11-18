@@ -140,8 +140,8 @@ export const useViewState = (props: ViewStateProps & { defaultViewIndex: never }
 export const useViewIndexChangeDispatcher = <TChangeEvent = unknown>(props: ViewStateChangeProps<TChangeEvent> & { defaultViewIndex: never }) : ValueChangeDispatcher<number, TChangeEvent> => {
     // States and flags:
     
-    // Determine whether the component is disabled:
-    const isDisabled        = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    // Resolve whether the component is in a restricted state (interaction blocked):
+    const isRestricted      = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     
     
@@ -149,11 +149,11 @@ export const useViewIndexChangeDispatcher = <TChangeEvent = unknown>(props: View
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const dispatchViewIndexChange : ValueChangeDispatcher<number, TChangeEvent> = useStableCallback((newViewIndex: number, event: TChangeEvent): void => {
-        // Block expansion lifecycle while disabled:
+        // Halt expansion lifecycle when the component is in a restricted state (interaction blocked):
         // - Prevents internal state updates (uncontrolled mode)
         // - Prevents external change requests (controlled mode)
         // - Prevents notifying listeners of a change
-        if (isDisabled) return;
+        if (isRestricted) return;
         
         
         
@@ -381,8 +381,8 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
         └───────────────────────────────────────────────────────────────────────────────────────┘
     */
     
-    // Determine whether the component is disabled:
-    const isDisabled           = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    // Resolve whether the component is in a restricted state (interaction blocked):
+    const isRestricted         = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     // Clamp the initial intent within valid range:
     const initialIntent        = clamp(minViewIndex, rawInitialIntent, maxViewIndex, viewIndexStep);
@@ -451,11 +451,11 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const dispatchViewIndexChange : ValueChangeDispatcher<number, TChangeEvent> = useStableCallback((newViewIndex: number, event: TChangeEvent): void => {
-        // Block expansion lifecycle while disabled:
+        // Halt expansion lifecycle when the component is in a restricted state (interaction blocked):
         // - Prevents internal state updates (uncontrolled mode)
         // - Prevents external change requests (controlled mode)
         // - Prevents notifying listeners of a change
-        if (isDisabled) return;
+        if (isRestricted) return;
         
         
         
