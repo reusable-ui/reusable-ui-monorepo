@@ -88,8 +88,8 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
     
     // States and flags:
     
-    // Determine whether the component is disabled:
-    const isDisabled            = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    // Resolve whether the component is in a restricted state (interaction blocked):
+    const isRestricted          = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     // Determine control mode:
     const isExplicitValue       = (controlledFocused !== 'auto');
@@ -104,16 +104,16 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
         handleFocus,
         handleBlur,
         handleKeyDown,
-    } = useFocusObserver<TElement>(isExplicitValue || isExternallyComputed, isDisabled);
+    } = useFocusObserver<TElement>(isExplicitValue || isExternallyComputed, isRestricted);
     
     // Resolve effective `computedFocus`:
     const resolvedComputedFocus = isExternallyComputed ? externalComputedFocus : observedFocus;
     
-    // Resolve focus state before disabled override:
+    // Resolve focus state prior to applying the restricted guard:
     const resolvedFocused       = isExplicitValue ? controlledFocused : resolvedComputedFocus;
     
-    // Apply disabled override: disabled always forces blur:
-    const effectiveFocused      = !isDisabled && resolvedFocused;
+    // Apply restricted guard — restriction always enforces blur:
+    const effectiveFocused      = !isRestricted && resolvedFocused;
     
     
     
@@ -240,8 +240,8 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
     
     // States and flags:
     
-    // Determine whether the component is disabled:
-    const isDisabled            = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    // Resolve whether the component is in a restricted state (interaction blocked):
+    const isRestricted          = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     // Determine control mode:
     const isExplicitValue       = (controlledFocused !== 'auto');
@@ -256,16 +256,16 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
         handleFocus,
         handleBlur,
         handleKeyDown,
-    } = useFocusObserver<TElement>(isExplicitValue || isExternallyComputed, isDisabled);
+    } = useFocusObserver<TElement>(isExplicitValue || isExternallyComputed, isRestricted);
     
     // Resolve effective `computedFocus`:
     const resolvedComputedFocus = isExternallyComputed ? externalComputedFocus : observedFocus;
     
-    // Resolve focus state before disabled override:
+    // Resolve focus state prior to applying the restricted guard:
     const resolvedFocused       = isExplicitValue ? controlledFocused : resolvedComputedFocus;
     
-    // Apply disabled override: disabled always forces blur:
-    const effectiveFocused      = !isDisabled && resolvedFocused;
+    // Apply restricted guard — restriction always enforces blur:
+    const effectiveFocused      = !isRestricted && resolvedFocused;
     
     // Internal animation lifecycle:
     const [internalFocused, setInternalFocused, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({

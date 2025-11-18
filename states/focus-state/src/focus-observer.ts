@@ -74,18 +74,18 @@ export interface FocusObserverState<TElement extends Element = HTMLElement>
  * Detects initial focus on mount and updates internal state via
  * imperative focus/blur/keydown handlers. Skips updates when externally controlled.
  * 
- * Disabled behavior:
- * - When disabled, the observer forces the focus state to blurred (`false`),
- *   since disabled elements cannot be focused.
+ * Restricted behavior:
+ * - When restricted, the observer forces the focus state to blurred (`false`),
+ *   since restricted elements cannot be focused.
  * - When re-enabled, remains blurred until the user explicitly refocuses.
  * 
  * @template TElement - The type of the target DOM element.
  * 
  * @param disabledUpdates - Whether to disable internal focus state updates (e.g. when externally controlled).
- * @param isDisabled - Whether the component is currently disabled; used to enforce blur override.
+ * @param isRestricted - Whether the component is currently in a restricted state; enforces a blur override.
  * @returns The observed focus state, ref, and event handlers.
  */
-export const useFocusObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, isDisabled: boolean): FocusObserverState<TElement> => {
+export const useFocusObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, isRestricted: boolean): FocusObserverState<TElement> => {
     // States and flags:
     
     // Ref to the focusable DOM element:
@@ -107,7 +107,7 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(disable
      * @param newObservedFocus - The desired focus state.
      */
     const handleFocusStateUpdate : (focusableElement: TElement | null, newObservedFocus: boolean) => void = useStableCallback((focusableElement, newObservedFocus) => {
-        // Skip update if disabled:
+        // Skip if observer updates are disabled (controlled mode):
         if (disabledUpdates) return;
         
         // Skip update if no element to observe:
@@ -132,7 +132,7 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(disable
     // Focus state refresh effect:
     // Ensures the internal focus state is synchronized when:
     // - The observer switches back to uncontrolled mode (`disabledUpdates` becomes false).
-    // - The component transitions between disabled and enabled (`isDisabled` changes).
+    // - The component transitions between restricted and unrestricted (`isRestricted` changes).
     //
     // For discrete focus behavior, past focus actions are ignored:
     // - Disabling always forces the state to blurred (`false`), even if no native `blur` event fires.
@@ -141,17 +141,17 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(disable
     //
     // Using `useLayoutEffect()` ensures the update runs before the browser paints,
     // preventing potential visual glitches if the element was focused at mount or
-    // during a disable/enable transition.
+    // during a restricted/unrestricted transition.
     useLayoutEffect(() => {
         // Skip if observer updates are disabled (controlled mode):
         if (disabledUpdates) return;
         
         
         
-        // Always force blurred (`false`) when disabled or re-enabled:
+        // Always force blurred (`false`) when restricted or re-unrestricted:
         handleFocusStateUpdate(focusableElementRef.current, false);
-    }, [disabledUpdates, isDisabled]);
-    // Re-evaluates focus state only when `disabledUpdates` or `isDisabled` changes.
+    }, [disabledUpdates, isRestricted]);
+    // Re-evaluates focus state only when `disabledUpdates` or `isRestricted` changes.
     // `handleFocusStateUpdate` is stable via useStableCallback, so it is safe to omit from deps.
     
     
@@ -164,7 +164,7 @@ export const useFocusObserver = <TElement extends Element = HTMLElement>(disable
         handleFocusStateUpdate(event.currentTarget, false);
     });
     const handleKeyDown : KeyboardEventHandler<TElement> = useStableCallback((event) => {
-        // Ignore if the state updates should be disabled:
+        // Ignore if observer updates are disabled (controlled mode):
         if (disabledUpdates) return;
         
         // Ignore if the focus is going to move away via Tab key and not prevented:
