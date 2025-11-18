@@ -78,6 +78,11 @@ export interface CollapseStateChangeProps<TChangeEvent = unknown> {
      * - `false` → request to collapse
      * 
      * The parent may choose to honor or ignore this request.
+     * 
+     * Restricted behavior (`disabled` or `readonly`):
+     * - When restricted, expansion requests are ignored internally, so this callback is never invoked.
+     * - When restriction is lifted, the callback will be invoked in response to user interactions
+     *   requesting to expand or collapse.
      */
     onExpandedChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
 }
@@ -253,6 +258,10 @@ export interface CollapseBehaviorState<TElement extends Element = HTMLElement, T
      * - In uncontrolled mode (no `expanded` prop), updates internal state directly.
      * - In controlled mode, delegates the decision to the parent component, which may choose to accept or ignore the request.
      * - Always triggers `onExpandedChange`, if provided, regardless of control mode.
+     * 
+     * Restricted behavior (`disabled` or `readonly`):
+     * - When restricted, expansion requests are ignored and the component remains in its last expanded/collapsed state.
+     * - When restriction is lifted, `dispatchExpandedChange()` resumes normal operation.
      */
     dispatchExpandedChange : ValueChangeDispatcher<boolean, TChangeEvent>
 }

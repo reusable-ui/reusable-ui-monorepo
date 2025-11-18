@@ -9,7 +9,7 @@ Ideal for tooltips, accordions, dialogs, and any interactive component requiring
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, animation, and feedback systems  
 ✔ Supports controlled, uncontrolled, and hybrid expansion behavior  
-✔ Disabled state handling — blocks user interaction while disabled, preserving the last known state until re-enabled  
+✔ Restricted state handling — blocks user interaction while restricted (disabled or readonly), preserving the last known state until unrestricted  
 
 ## 📦 Installation
 Install **@reusable-ui/collapse-state** via npm or yarn:
@@ -91,10 +91,10 @@ The hook manages transitions between `expanded` and `collapsed` states using a u
 - Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
 - This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
 
-#### 🔒 Disabled Behavior
-- **Block dispatch; preserve last state**: When disabled, expansion requests are ignored. The component remains in its last expanded/collapsed state.  
-- **On re-enable**: `dispatchExpandedChange()` works normally.  
-- **Rationale**: Disabled components freeze interaction — they don’t reset expansion, but prevent user interactions until re-enabled.
+#### 🔒 Restricted Behavior (`disabled` or `readonly`)
+- **Block dispatch; preserve last state**: When restricted, expansion requests are ignored. The component remains in its last expanded/collapsed state.  
+- **On unrestricted (re‑enabled or exit readonly)**: `dispatchExpandedChange()` works normally.  
+- **Rationale**: Restricted components freeze interaction — they don’t reset expansion, but prevent user interactions until unrestricted.
 
 ### `useCollapseStatePhaseEvents(props, expandPhase)`
 
