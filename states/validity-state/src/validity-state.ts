@@ -86,17 +86,17 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
     
     // States and flags:
     
-    // Determine whether the component is disabled:
-    const isDisabled           = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    // Resolve whether the component is in a restricted state (interaction blocked):
+    const isRestricted         = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     // Determine control mode:
     const isExplicitValue      = (controlledValidity !== 'auto');
     
-    // Resolve validity state before disabled override:
+    // Resolve validity state prior to applying the restricted guard:
     const resolvedValidity     = isExplicitValue ? controlledValidity : computedValidity;
     
-    // Apply disabled override: disabled always forces unvalidated (`null`):
-    const effectiveValidity    = isDisabled ? null : resolvedValidity;
+    // Apply restricted guard — restriction always enforces unvalidated (`null`):
+    const effectiveValidity    = isRestricted ? null : resolvedValidity;
     
     
     
@@ -211,17 +211,17 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     
     // States and flags:
     
-    // Determine whether the component is disabled:
-    const isDisabled           = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    // Resolve whether the component is in a restricted state (interaction blocked):
+    const isRestricted         = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     // Determine control mode:
     const isExplicitValue      = (controlledValidity !== 'auto');
     
-    // Resolve validity state before disabled override:
+    // Resolve validity state prior to applying the restricted guard:
     const resolvedValidity     = isExplicitValue ? controlledValidity : computedValidity;
     
-    // Apply disabled override: disabled always forces unvalidated (`null`):
-    const effectiveValidity    = isDisabled ? null : resolvedValidity;
+    // Apply restricted guard — restriction always enforces unvalidated (`null`):
+    const effectiveValidity    = isRestricted ? null : resolvedValidity;
     
     // Internal animation lifecycle:
     const [internalValidity, setInternalValidity, runningIntent, animationHandlers] = useAnimationState<boolean | null, TElement>({
