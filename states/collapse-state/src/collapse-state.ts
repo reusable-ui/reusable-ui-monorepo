@@ -110,8 +110,8 @@ export const useCollapseState = (props: CollapseStateProps & { defaultExpanded: 
 export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: CollapseStateChangeProps<TChangeEvent> & { defaultExpanded: never }) : ValueChangeDispatcher<boolean, TChangeEvent> => {
     // States and flags:
     
-    // Determine whether the component is disabled:
-    const isDisabled        = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    // Resolve whether the component is in a restricted state (interaction blocked):
+    const isRestricted      = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     
     
@@ -119,11 +119,11 @@ export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: Colla
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const dispatchExpandedChange : ValueChangeDispatcher<boolean, TChangeEvent> = useStableCallback((newExpanded: boolean, event: TChangeEvent): void => {
-        // Block expansion lifecycle while disabled:
+        // Halt expansion lifecycle when the component is in a restricted state (interaction blocked):
         // - Prevents internal state updates (uncontrolled mode)
         // - Prevents external change requests (controlled mode)
         // - Prevents notifying listeners of a change
-        if (isDisabled) return;
+        if (isRestricted) return;
         
         
         
@@ -289,8 +289,8 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
     
     // States and flags:
     
-    // Determine whether the component is disabled:
-    const isDisabled        = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    // Resolve whether the component is in a restricted state (interaction blocked):
+    const isRestricted      = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     // Internal expansion state with animation lifecycle:
     const [internalExpanded, setInternalExpanded, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
@@ -348,11 +348,11 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const dispatchExpandedChange : ValueChangeDispatcher<boolean, TChangeEvent> = useStableCallback((newExpanded: boolean, event: TChangeEvent): void => {
-        // Block expansion lifecycle while disabled:
+        // Halt expansion lifecycle when the component is in a restricted state (interaction blocked):
         // - Prevents internal state updates (uncontrolled mode)
         // - Prevents external change requests (controlled mode)
         // - Prevents notifying listeners of a change
-        if (isDisabled) return;
+        if (isRestricted) return;
         
         
         
