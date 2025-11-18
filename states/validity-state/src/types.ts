@@ -41,10 +41,10 @@ export interface ValidityStateProps {
      * - `null`   : the component is unvalidated
      * - `'auto'` : automatically determine validity state
      * 
-     * Disabled behavior:
-     * - When disabled, the component is always treated as invalid (`false`), regardless of `validity`.
-     * - When re-enabled:
-     *   - `'auto'` mode (internal validity recomputation): immediately re-evaluates using the component’s own validation logic.
+     * Restricted behavior (`disabled` or `readonly`):
+     * - When restricted, the component is always treated as invalid (`false`), regardless of `validity`.
+     * - When restriction is lifted:
+     *   - `'auto'` mode (external validity recomputation): immediately re-evaluates based on the provided `computedValidity`.
      *   - Explicit (`true`/`false`/`null`) or external (`computedValidity`): resumes following the provided value.
      * 
      * Defaults to `'auto'` (automatically determine validity state).
@@ -57,9 +57,9 @@ export interface ValidityStateProps {
      * This value is typically computed reactively based on input, async validation,
      * or domain-specific logic. It is ignored when `validity` is explicitly set.
      * 
-     * Disabled behavior:
-     * - When disabled, the component is always treated as invalid (`false`), regardless of `computedValidity`.
-     * - When re-enabled, the component resumes following the passed `computedValidity` value.
+     * Restricted behavior (`disabled` or `readonly`):
+     * - When restricted, the component is always treated as invalid (`false`), regardless of `computedValidity`.
+     * - When restriction is lifted, the component resumes following the passed `computedValidity` value.
      * 
      * This property is intended for **component developers** who need to customize validity resolution.
      * For **application developers**, prefer using the `validity` prop directly.

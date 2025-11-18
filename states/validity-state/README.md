@@ -10,7 +10,7 @@ Ideal for inputs, selections, options, and any editable component requiring vali
 ✔ Seamless integration across appearance, animation, and feedback systems  
 ✔ User definable `computedValidity` for validation logic delegation  
 ✔ Conditional CSS variables (`--va-was-*`) to determine previous validity state (useful for animating from prev validity state to new one)  
-✔ Deterministic disabled handling: always unvalidated when disabled, with immediate recomputation on re-enable  
+✔ Deterministic restricted handling: always unvalidated when restricted, with immediate recomputation when unrestricted  
 
 ## 📦 Installation
 Install **@reusable-ui/validity-state** via npm or yarn:
@@ -109,10 +109,10 @@ The hook manages transitions between `valid`, `invalid`, and `unvalidated` state
 - Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
 - This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
 
-#### 🔒 Disabled Behavior
-- **Always unvalidated when disabled**: Components are forced into an unvalidated state whenever `disabled` is active, regardless of `validity` or `computedValidity` values.  
-- **On re-enable**:
-    - **Auto mode (external validity recomputation)**: The component resumes validity based on the provided `computedValidity`.  
+#### 🔒 Restricted Behavior (`disabled` or `readonly`)
+- **Always unvalidated when restricted**: Components are forced into an unvalidated state whenever `disabled` or `readonly` is active, regardless of `validity` or `computedValidity` values.  
+- **On unrestricted (re‑enabled or exit readonly)**:
+    - **Auto mode (external validity recomputation)**: The component immediately re-evaluates based on the provided `computedValidity`.  
     - **Explicit (`true`/`false`/`null`) modes**: The component resumes following the provided value.  
 - **Rationale**: Validity is a continuous state but component-specific — there is no built-in validity observer. Developers must supply `computedValidity` for correctness; otherwise, the component stays unvalidated.
 
