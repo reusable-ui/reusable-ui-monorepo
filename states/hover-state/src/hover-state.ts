@@ -87,8 +87,8 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
     
     // States and flags:
     
-    // Determine whether the component is disabled:
-    const isDisabled            = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    // Resolve whether the component is in a restricted state (interaction blocked):
+    const isRestricted          = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     // Determine control mode:
     const isExplicitValue       = (controlledHovered !== 'auto');
@@ -102,16 +102,16 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
         ref,
         handleMouseEnter,
         handleMouseLeave,
-    } = useHoverObserver<TElement>(isExplicitValue || isExternallyComputed, isDisabled);
+    } = useHoverObserver<TElement>(isExplicitValue || isExternallyComputed, isRestricted);
     
     // Resolve effective `computedHover`:
     const resolvedComputedHover = isExternallyComputed ? externalComputedHover : observedHover;
     
-    // Resolve hover state before disabled override:
+    // Resolve hover state prior to applying the restricted guard:
     const resolvedHovered       = isExplicitValue ? controlledHovered : resolvedComputedHover;
     
-    // Apply disabled override: disabled always forces leave:
-    const effectiveHovered      = !isDisabled && resolvedHovered;
+    // Apply restricted guard — restriction always enforces leave:
+    const effectiveHovered      = !isRestricted && resolvedHovered;
     
     
     
@@ -233,8 +233,8 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
     
     // States and flags:
     
-    // Determine whether the component is disabled:
-    const isDisabled            = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    // Resolve whether the component is in a restricted state (interaction blocked):
+    const isRestricted          = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     // Determine control mode:
     const isExplicitValue       = (controlledHovered !== 'auto');
@@ -248,16 +248,16 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
         ref,
         handleMouseEnter,
         handleMouseLeave,
-    } = useHoverObserver<TElement>(isExplicitValue || isExternallyComputed, isDisabled);
+    } = useHoverObserver<TElement>(isExplicitValue || isExternallyComputed, isRestricted);
     
     // Resolve effective `computedHover`:
     const resolvedComputedHover = isExternallyComputed ? externalComputedHover : observedHover;
     
-    // Resolve hover state before disabled override:
+    // Resolve hover state prior to applying the restricted guard:
     const resolvedHovered       = isExplicitValue ? controlledHovered : resolvedComputedHover;
     
-    // Apply disabled override: disabled always forces leave:
-    const effectiveHovered      = !isDisabled && resolvedHovered;
+    // Apply restricted guard — restriction always enforces leave:
+    const effectiveHovered      = !isRestricted && resolvedHovered;
     
     // Internal animation lifecycle:
     const [internalHovered, setInternalHovered, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({

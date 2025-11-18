@@ -70,18 +70,18 @@ export interface HoverObserverState<TElement extends Element = HTMLElement>
  * Detects initial hover on mount and updates internal state via
  * imperative mouseenter/mouseleave handlers. Skips updates when externally controlled.
  * 
- * Disabled behavior:
- * - When disabled, the observer forces the hover state to leaved (`false`),
- *   since disabled elements cannot be hovered.
+ * Restricted behavior:
+ * - When restricted, the observer forces the hover state to leaved (`false`),
+ *   since restricted elements cannot be hovered.
  * - When re-enabled, immediately re-evaluates based on current pointer position and containment.
  * 
  * @template TElement - The type of the target DOM element.
  * 
  * @param disabledUpdates - Whether to disable internal hover state updates (e.g. when externally controlled).
- * @param isDisabled - Whether the component is currently disabled; used to enforce leave override.
+ * @param isRestricted - Whether the component is currently in a restricted state; enforces a leave override.
  * @returns The observed hover state, ref, and event handlers.
  */
-export const useHoverObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, isDisabled: boolean): HoverObserverState<TElement> => {
+export const useHoverObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, isRestricted: boolean): HoverObserverState<TElement> => {
     // States and flags:
     
     // Ref to the hoverable DOM element:
@@ -103,7 +103,7 @@ export const useHoverObserver = <TElement extends Element = HTMLElement>(disable
      * @param newObservedHover - Optional override for the detected hover state.
      */
     const handleHoverStateUpdate : (hoverableElement: TElement | null, newObservedHover?: boolean) => void = useStableCallback((hoverableElement, newObservedHover) => {
-        // Skip update if disabled:
+        // Skip if observer updates are disabled (controlled mode):
         if (disabledUpdates) return;
         
         // Skip update if no element to observe:
@@ -133,30 +133,30 @@ export const useHoverObserver = <TElement extends Element = HTMLElement>(disable
     // Hover state refresh effect:
     // Ensures the internal hover state is synchronized when:
     // - The observer switches back to uncontrolled mode (`disabledUpdates` becomes false).
-    // - The component transitions from disabled to enabled (`isDisabled` becomes false).
+    // - The component transitions from restricted to unrestricted (`isRestricted` becomes false).
     //
     // For continuous hover behavior:
-    // - The pointer position may legitimately remain over the element across enabled/disabled transitions.
+    // - The pointer position may legitimately remain over the element across restricted/unrestricted transitions.
     // - On re-enable or when returning to uncontrolled mode, the state should be recomputed
     //   from the actual DOM hover condition rather than reset to false.
     // 
     // Using `useLayoutEffect()` ensures the update runs before the browser paints,
     // preventing potential visual glitches if the element was hovered at mount or
-    // during a disable/enable transition.
+    // during a restricted/unrestricted transition.
     useLayoutEffect(() => {
         // Skip if observer updates are disabled (controlled mode):
         if (disabledUpdates) return;
         
-        // Skip if the component itself is disabled:
-        if (isDisabled) return;
+        // Skip if the component is restricted:
+        if (isRestricted) return;
         
         
         
         // Refresh when re-enabled or observer toggles back to uncontrolled.
         // Let the observer recompute based on the current DOM hover state.
         handleHoverStateUpdate(hoverableElementRef.current);
-    }, [disabledUpdates, isDisabled]);
-    // Re-evaluates hover state only when `disabledUpdates` or `isDisabled` changes.
+    }, [disabledUpdates, isRestricted]);
+    // Re-evaluates hover state only when `disabledUpdates` or `isRestricted` changes.
     // `handleHoverStateUpdate` is stable via useStableCallback, so it is safe to omit from deps.
     
     
