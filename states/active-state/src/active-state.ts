@@ -60,6 +60,9 @@ import {
 import {
     useDisabledState,
 }                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
+import {
+    useReadOnlyState,
+}                           from '@reusable-ui/read-only-state'     // Adds editable/read-only functionality to UI components, with transition animations and semantic styling hooks.
 
 
 
@@ -165,8 +168,14 @@ export const useActiveState = (props: ActiveStateProps & { defaultActive: never 
 export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveStateChangeProps<TChangeEvent> & { defaultActive: never }) : ValueChangeDispatcher<boolean, TChangeEvent> => {
     // States and flags:
     
-    // Resolve whether the component is in a restricted state (interaction blocked):
-    const isRestricted      = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    // Resolve whether the component is disabled:
+    const isDisabled      = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    
+    // Resolve whether the component is readonly:
+    const isReadonly      = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
+    
+    // Resolve whether the component is in a restricted state:
+    const isRestricted    = isDisabled || isReadonly;
     
     
     
@@ -354,8 +363,14 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
     
     // States and flags:
     
-    // Resolve whether the component is in a restricted state (interaction blocked):
-    const isRestricted    = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    // Resolve whether the component is disabled:
+    const isDisabled      = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    
+    // Resolve whether the component is readonly:
+    const isReadonly      = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
+    
+    // Resolve whether the component is in a restricted state:
+    const isRestricted    = isDisabled || isReadonly;
     
     // Internal activation state with animation lifecycle:
     const [internalActive, setInternalActive, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
