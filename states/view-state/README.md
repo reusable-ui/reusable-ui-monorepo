@@ -70,12 +70,12 @@ export const SlideBox: FC<SlideBoxProps> = (props) => {
         handleAnimationEnd,
         handleAnimationCancel,
     } = useViewBehaviorState(props, {
-        defaultViewIndex  : 0,                                       // Fallback for uncontrolled mode.
-        minViewIndex      : 0,                                       // Limits minimum view index to 0.
-        maxViewIndex      : 4,                                       // Limits maximum view index to 4.
-        viewIndexStep     : 1,                                       // Snaps to integer view indices.
-        animationPattern  : ['view-progressing', 'view-regressing'], // Matches animation names ending with 'view-progressing' or 'view-regressing'.
-        animationBubbling : false,                                   // Ignores bubbling animation events from children.
+        defaultViewIndex  : 0,                                   // Fallback for uncontrolled mode.
+        minViewIndex      : 0,                                   // Limits minimum view index to 0.
+        maxViewIndex      : 4,                                   // Limits maximum view index to 4.
+        viewIndexStep     : 1,                                   // Snaps to integer view indices.
+        animationPattern  : ['view-advancing', 'view-receding'], // Matches animation names ending with 'view-advancing' or 'view-receding'.
+        animationBubbling : false,                               // Ignores bubbling animation events from children.
     });
     
     // Determine which views to render based on visibility range:
@@ -130,10 +130,10 @@ Emits lifecycle events in response to view phase transitions.
 
 This hook observes the resolved `viewPhase` from `useViewBehaviorState()` and triggers the appropriate callbacks defined in `ViewStatePhaseEventProps`, such as:
 
-- `onViewProgressingStart`
-- `onViewProgressingEnd`
-- `onViewRegressingStart`
-- `onViewRegressingEnd`
+- `onViewAdvancingStart`
+- `onViewAdvancingEnd`
+- `onViewRecedingStart`
+- `onViewRecedingEnd`
 
 ### `useViewState(props, options?)`
 
@@ -179,15 +179,15 @@ Unlike `useViewBehaviorState()`, which resolves full lifecycle, `useUncontrollab
 import {
     // View-switching selectors:
     isViewSettledSelector,       // Targets `.view-settled` classes
-    isViewProgressingSelector,   // Targets `.view-progressing` classes
-    isViewRegressingSelector,    // Targets `.view-regressing` classes
-    isViewTransitioningSelector, // Targets `.view-progressing` and `.view-regressing` classes
+    isViewAdvancingSelector,     // Targets `.view-advancing` classes
+    isViewRecedingSelector,      // Targets `.view-receding` classes
+    isViewTransitioningSelector, // Targets `.view-advancing` and `.view-receding` classes
     
     // Conditional styling helpers:
     ifViewSettled,       // Applies styles to elements in a fully settled state (not transitioning between views)
-    ifViewProgressing,   // Applies styles to elements currently progressing toward the next view (higher index)
-    ifViewRegressing,    // Applies styles to elements currently regressing toward the previous view (lower index)
-    ifViewTransitioning, // Applies styles to elements currently transitioning, either progressing or regressing between views
+    ifViewAdvancing,     // Applies styles to elements currently advancing toward the next view (higher index)
+    ifViewReceding,      // Applies styles to elements currently receding toward the previous view (lower index)
+    ifViewTransitioning, // Applies styles to elements currently transitioning, either advancing or receding between views
 } from '@reusable-ui/view-state';
 import { style, rule } from '@cssfn/core';
 
@@ -223,16 +223,16 @@ Generates CSS rules that conditionally apply the view-switching animations based
 These variables are only active during their respective transition phases.  
 Use `switchOf(...)` to ensure graceful fallback when inactive.
 
-| Variable                   | Active When...             | Purpose                                            |
-|----------------------------|----------------------------|----------------------------------------------------|
-| `animationViewProgressing` | `.view-progressing`        | Triggers animation for progressing to next view    |
-| `animationViewRegressing`  | `.view-regressing`         | Triggers animation for regressing to previous view |
-| `isViewSettled`            | After transition completes | Indicates the view is fully settled                |
-| `isViewProgressing`        | During transition          | Indicates a forward transition                     |
-| `isViewRegressing`         | During transition          | Indicates a backward transition                    |
-| `isViewTransitioning`      | During transition          | Indicates any transition in progress               |
-| `viewIndex`                | Always                     | Displays the correct view for styling purposes     |
-| `prevViewIndex`            | Having changed `viewIndex` | Previous view index used for directional inference |
+| Variable                 | Active When...             | Purpose                                            |
+|--------------------------|----------------------------|----------------------------------------------------|
+| `animationViewAdvancing` | `.view-advancing`          | Triggers animation for advancing to next view      |
+| `animationViewReceding`  | `.view-receding`           | Triggers animation for receding to previous view   |
+| `isViewSettled`          | After transition completes | Indicates the view is fully settled                |
+| `isViewAdvancing`        | During transition          | Indicates a forward transition                     |
+| `isViewReceding`         | During transition          | Indicates a backward transition                    |
+| `isViewTransitioning`    | During transition          | Indicates any transition in progress               |
+| `viewIndex`              | Always                     | Displays the correct view for styling purposes     |
+| `prevViewIndex`          | Having changed `viewIndex` | Previous view index used for directional inference |
 
 #### 💡 Usage Example
 
@@ -254,10 +254,10 @@ export const slideBoxStyle = () => {
     
     const {
         viewStateRule,
-        viewStateVars: { viewIndex, prevViewIndex, isViewProgressing },
+        viewStateVars: { viewIndex, prevViewIndex, isViewAdvancing },
     } = usesViewState({
-        animationViewProgressing : 'var(--box-view-progressing)',
-        animationViewRegressing  : 'var(--box-view-regressing)',
+        animationViewAdvancing : 'var(--box-view-advancing)',
+        animationViewReceding  : 'var(--box-view-receding)',
     });
     
     return style({
@@ -274,13 +274,13 @@ export const slideBoxStyle = () => {
         // To show the correct view, we translate this box based on the current viewIndex.
         // We `translate` using `marginInlineStart` for better RTL support, because `translate` is physical, not logical.
         
-        // Define view-progressing animation:
+        // Define view-advancing animation:
         ...vars({
-            '--box-view-progressing': [
-                ['0.3s', 'ease-out', 'both', 'translate-view-progressing'],
+            '--box-view-advancing': [
+                ['0.3s', 'ease-out', 'both', 'translate-view-advancing'],
             ],
         }),
-        ...keyframes('translate-view-progressing', {
+        ...keyframes('translate-view-advancing', {
             from: {
                 marginInlineStart: 0,
             },
@@ -289,13 +289,13 @@ export const slideBoxStyle = () => {
             },
         }),
         
-        // Define view-regressing animation:
+        // Define view-receding animation:
         ...vars({
-            '--box-view-regressing': [
-                ['0.3s', 'ease-out', 'both', 'translate-view-regressing'],
+            '--box-view-receding': [
+                ['0.3s', 'ease-out', 'both', 'translate-view-receding'],
             ],
         }),
-        ...keyframes('translate-view-regressing', {
+        ...keyframes('translate-view-receding', {
             from: {
                 marginInlineStart: `calc((${prevViewIndex} - ${viewIndex}) * -100px)`,
             },
@@ -305,7 +305,7 @@ export const slideBoxStyle = () => {
         }),
         
         // Define final translation based on current viewIndex:
-        marginInlineStart: `${isViewProgressing} calc((${viewIndex} - ${prevViewIndex}) * -100px)`, // Translate to the current view.
+        marginInlineStart: `${isViewAdvancing} calc((${viewIndex} - ${prevViewIndex}) * -100px)`, // Translate to the current view.
         contain: 'layout', // Contain layout to prevent reflows.
         willChange: 'margin-inline-start', // Hint to browser for better performance.
         
@@ -317,7 +317,7 @@ export const slideBoxStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationViewProgressing` and `animationViewRegressing` variables are only defined during their respective transition phases.
+The `animationViewAdvancing` and `animationViewReceding` variables are only defined during their respective transition phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
 Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining view-switching animations with other state-driven transitions.

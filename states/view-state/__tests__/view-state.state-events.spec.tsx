@@ -55,11 +55,11 @@ interface ViewStateEventTestCase {
         
         /**
          * The expected view-switching state.
-         * - `'view-progressing'` : onViewProgressingStart event has been invoked
-         * - `'view-regressing'`  : onViewRegressingStart event has been invoked
-         * - `'view-settled'`     : onViewProgressingEnd or onViewRegressingEnd event has been invoked
-         * - `null`               : no event has been invoked
-         * - `undefined`          : nothing to expect
+         * - `'view-advancing'` : onViewAdvancingStart event has been invoked
+         * - `'view-receding'`  : onViewRecedingStart event has been invoked
+         * - `'view-settled'`   : onViewAdvancingEnd or onViewRecedingEnd event has been invoked
+         * - `null`             : no event has been invoked
+         * - `undefined`        : nothing to expect
          */
         expectedEvent ?: ViewPhase | null
     }[]
@@ -97,22 +97,22 @@ test.describe('useViewStatePhaseEvents', () => {
                     action        : toIndex,
                     
                     delay         : 0,
-                    expectedEvent : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedEvent : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
-                    title         : `The ${(toIndex > fromIndex) ? 'progressing (next)' : 'regressing (previous)'} view animation should be running and the viewIndex is still ${toIndex}`,
+                    title         : `The ${(toIndex > fromIndex) ? 'advancing (next)' : 'receding (previous)'} view animation should be running and the viewIndex is still ${toIndex}`,
                     
                     delay         : 200,
-                    expectedEvent : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedEvent : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
-                    title         : `The ${(toIndex > fromIndex) ? 'progressing (next)' : 'regressing (previous)'} view animation should be running and the viewIndex is still ${toIndex}`,
+                    title         : `The ${(toIndex > fromIndex) ? 'advancing (next)' : 'receding (previous)'} view animation should be running and the viewIndex is still ${toIndex}`,
                     
                     delay         : 500, // 200 + 500 = 700 ms, the animation should still running.
-                    expectedEvent : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedEvent : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
-                    title         : `The ${(toIndex > fromIndex) ? 'progressing (next)' : 'regressing (previous)'} view animation should be stopped and the viewIndex is still ${toIndex}`,
+                    title         : `The ${(toIndex > fromIndex) ? 'advancing (next)' : 'receding (previous)'} view animation should be stopped and the viewIndex is still ${toIndex}`,
                     
                     delay         : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedEvent : 'view-settled',
@@ -128,22 +128,22 @@ test.describe('useViewStatePhaseEvents', () => {
                     action        : toIndex,
                     
                     delay         : 0,
-                    expectedEvent : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedEvent : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
-                    title         : `The progressing (next) view animation should be running and the viewIndex is still ${toIndex}`,
+                    title         : `The advancing (next) view animation should be running and the viewIndex is still ${toIndex}`,
                     
                     delay         : 200,
-                    expectedEvent : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedEvent : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
-                    title         : `The progressing (next) view animation should be running and the viewIndex is still ${toIndex}`,
+                    title         : `The advancing (next) view animation should be running and the viewIndex is still ${toIndex}`,
                     
                     delay         : 500, // 200 + 500 = 700 ms, the animation should still running.
-                    expectedEvent : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedEvent : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
-                    title         : `The progressing (next) view animation should be stopped and the viewIndex is still ${toIndex}`,
+                    title         : `The advancing (next) view animation should be stopped and the viewIndex is still ${toIndex}`,
                     
                     delay         : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedEvent : 'view-settled',
@@ -153,22 +153,22 @@ test.describe('useViewStatePhaseEvents', () => {
                     action        : fromIndex,
                     
                     delay         : 0,
-                    expectedEvent : (toIndex > fromIndex) ? 'view-regressing' : 'view-progressing',
+                    expectedEvent : (toIndex > fromIndex) ? 'view-receding' : 'view-advancing',
                 },
                 {
-                    title         : `The progressing (next) view animation should be running and the viewIndex is still ${fromIndex}`,
+                    title         : `The advancing (next) view animation should be running and the viewIndex is still ${fromIndex}`,
                     
                     delay         : 200,
-                    expectedEvent : (toIndex > fromIndex) ? 'view-regressing' : 'view-progressing',
+                    expectedEvent : (toIndex > fromIndex) ? 'view-receding' : 'view-advancing',
                 },
                 {
-                    title         : `The progressing (next) view animation should be running and the viewIndex is still ${fromIndex}`,
+                    title         : `The advancing (next) view animation should be running and the viewIndex is still ${fromIndex}`,
                     
                     delay         : 500, // 200 + 500 = 700 ms, the animation should still running.
-                    expectedEvent : (toIndex > fromIndex) ? 'view-regressing' : 'view-progressing',
+                    expectedEvent : (toIndex > fromIndex) ? 'view-receding' : 'view-advancing',
                 },
                 {
-                    title         : `The progressing (next) view animation should be stopped and the viewIndex is still ${fromIndex}`,
+                    title         : `The advancing (next) view animation should be stopped and the viewIndex is still ${fromIndex}`,
                     
                     delay         : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedEvent : 'view-settled',
@@ -184,21 +184,21 @@ test.describe('useViewStatePhaseEvents', () => {
                     action        : toIndex,
                     
                     delay         : 200,
-                    expectedEvent : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedEvent : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
                     title         : `Change to ${fromIndex} before ${toIndex} finishes`,
                     action        : fromIndex,
                     
                     delay         : 200,
-                    expectedEvent : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing', // Still ${toIndex} (600ms remaining) — cannot cancel mid-flight.
+                    expectedEvent : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding', // Still ${toIndex} (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
                     title         : `Re-${toIndex} again before ${fromIndex} finishes`,
                     action        : toIndex,
                     
                     delay         : 200,
-                    expectedEvent : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing', // Still in original ${toIndex} sequence (400ms remaining).
+                    expectedEvent : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding', // Still in original ${toIndex} sequence (400ms remaining).
                 },
                 {
                     title         : `Wait for final ${toIndex} to complete`,
@@ -217,32 +217,32 @@ test.describe('useViewStatePhaseEvents', () => {
                     action        : toIndex,
                     
                     delay         : 200,
-                    expectedEvent : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedEvent : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
                     title         : `Change to ${fromIndex} before ${toIndex} finishes`,
                     action        : fromIndex,
                     
                     delay         : 200,
-                    expectedEvent : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing', // Still ${toIndex} (600ms remaining) — cannot cancel mid-flight.
+                    expectedEvent : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding', // Still ${toIndex} (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
                     title         : `Still ${toIndex}`,
                     
                     delay         : 200,
-                    expectedEvent : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing', // Still in original ${toIndex} sequence (400ms remaining).
+                    expectedEvent : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding', // Still in original ${toIndex} sequence (400ms remaining).
                 },
                 {
                     title         : `Wait for final ${toIndex} to complete and switching to ${fromIndex}`,
                     
                     delay         : 600, // Includes additional margin to guarantee completion.
-                    expectedEvent : (toIndex > fromIndex) ? 'view-regressing' : 'view-progressing',
+                    expectedEvent : (toIndex > fromIndex) ? 'view-receding' : 'view-advancing',
                 },
                 {
                     title         : `Still ${fromIndex}`,
                     
                     delay         : 200,
-                    expectedEvent : (toIndex > fromIndex) ? 'view-regressing' : 'view-progressing', // Still in switching ${fromIndex} sequence.
+                    expectedEvent : (toIndex > fromIndex) ? 'view-receding' : 'view-advancing', // Still in switching ${fromIndex} sequence.
                 },
                 {
                     title         : `Wait for final ${fromIndex} to complete`,
@@ -263,19 +263,19 @@ test.describe('useViewStatePhaseEvents', () => {
             };
             
             let lastViewPhase : ViewPhase | null = null;
-            const handleViewProgressingStart : ValueChangeEventHandler<ViewPhase, unknown> = (viewPhase) => {
-                expect(viewPhase).toBe('view-progressing');
+            const handleViewAdvancingStart : ValueChangeEventHandler<ViewPhase, unknown> = (viewPhase) => {
+                expect(viewPhase).toBe('view-advancing');
                 lastViewPhase = viewPhase;
             };
-            const handleViewProgressingEnd   : ValueChangeEventHandler<ViewPhase, unknown> = (viewPhase) => {
+            const handleViewAdvancingEnd   : ValueChangeEventHandler<ViewPhase, unknown> = (viewPhase) => {
                 expect(viewPhase).toBe('view-settled');
                 lastViewPhase = viewPhase;
             };
-            const handleViewRegressingStart  : ValueChangeEventHandler<ViewPhase, unknown> = (viewPhase) => {
-                expect(viewPhase).toBe('view-regressing');
+            const handleViewRecedingStart  : ValueChangeEventHandler<ViewPhase, unknown> = (viewPhase) => {
+                expect(viewPhase).toBe('view-receding');
                 lastViewPhase = viewPhase;
             };
-            const handleViewRegressingEnd    : ValueChangeEventHandler<ViewPhase, unknown> = (viewPhase) => {
+            const handleViewRecedingEnd    : ValueChangeEventHandler<ViewPhase, unknown> = (viewPhase) => {
                 expect(viewPhase).toBe('view-settled');
                 lastViewPhase = viewPhase;
             };
@@ -289,10 +289,10 @@ test.describe('useViewStatePhaseEvents', () => {
                     
                     onViewIndexChange={handleViewIndexChange}
                     
-                    onViewProgressingStart={handleViewProgressingStart}
-                    onViewProgressingEnd={handleViewProgressingEnd}
-                    onViewRegressingStart={handleViewRegressingStart}
-                    onViewRegressingEnd={handleViewRegressingEnd}
+                    onViewAdvancingStart={handleViewAdvancingStart}
+                    onViewAdvancingEnd={handleViewAdvancingEnd}
+                    onViewRecedingStart={handleViewRecedingStart}
+                    onViewRecedingEnd={handleViewRecedingEnd}
                 />
             );
             

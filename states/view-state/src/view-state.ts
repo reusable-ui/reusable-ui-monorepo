@@ -298,12 +298,12 @@ export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewSt
  *         handleAnimationEnd,
  *         handleAnimationCancel,
  *     } = useViewBehaviorState(props, {
- *         defaultViewIndex  : 0,                                       // Fallback for uncontrolled mode.
- *         minViewIndex      : 0,                                       // Limits minimum view index to 0.
- *         maxViewIndex      : 4,                                       // Limits maximum view index to 4.
- *         viewIndexStep     : 1,                                       // Snaps to integer view indices.
- *         animationPattern  : ['view-progressing', 'view-regressing'], // Matches animation names ending with 'view-progressing' or 'view-regressing'.
- *         animationBubbling : false,                                   // Ignores bubbling animation events from children.
+ *         defaultViewIndex  : 0,                                   // Fallback for uncontrolled mode.
+ *         minViewIndex      : 0,                                   // Limits minimum view index to 0.
+ *         maxViewIndex      : 4,                                   // Limits maximum view index to 4.
+ *         viewIndexStep     : 1,                                   // Snaps to integer view indices.
+ *         animationPattern  : ['view-advancing', 'view-receding'], // Matches animation names ending with 'view-advancing' or 'view-receding'.
+ *         animationBubbling : false,                               // Ignores bubbling animation events from children.
  *     });
  *     
  *     // Determine which views to render based on visibility range:
@@ -346,7 +346,7 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
         minViewIndex      = defaultMinViewIndex,
         maxViewIndex      = defaultMaxViewIndex,
         viewIndexStep     = defaultViewIndexStep,
-        animationPattern  = ['view-progressing', 'view-regressing'], // Matches animation names for transitions
+        animationPattern  = ['view-advancing', 'view-receding'], // Matches animation names for transitions
         animationBubbling = false,
     } = options ?? {};
     
@@ -443,7 +443,7 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     );
     
     // Derive semantic phase from animation lifecycle:
-    const viewPhase            = resolveViewPhase(prevSettledViewIndex, settledViewIndex, isTransitioning); // 'view-progressing', 'view-regressing', 'view-settled'
+    const viewPhase            = resolveViewPhase(prevSettledViewIndex, settledViewIndex, isTransitioning); // 'view-advancing', 'view-receding', 'view-settled'
     
     
     
@@ -528,10 +528,10 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
  * This hook observes the resolved `viewPhase` from `useViewBehaviorState()` and triggers
  * the appropriate callbacks defined in `ViewStatePhaseEventProps`, such as:
  * 
- * - `onViewProgressingStart`
- * - `onViewProgressingEnd`
- * - `onViewRegressingStart`
- * - `onViewRegressingEnd`
+ * - `onViewAdvancingStart`
+ * - `onViewAdvancingEnd`
+ * - `onViewRecedingStart`
+ * - `onViewRecedingEnd`
  * 
  * @param {ViewStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
  * @param {ViewPhase} viewPhase - The current phase value returned from `useViewBehaviorState()`.
@@ -539,10 +539,10 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
 export const useViewStatePhaseEvents = (props: ViewStatePhaseEventProps, viewPhase: ViewPhase): void => {
     // Extract props:
     const {
-        onViewProgressingStart,
-        onViewProgressingEnd,
-        onViewRegressingStart,
-        onViewRegressingEnd,
+        onViewAdvancingStart,
+        onViewAdvancingEnd,
+        onViewRecedingStart,
+        onViewRecedingEnd,
     } = props;
     
     
@@ -563,18 +563,18 @@ export const useViewStatePhaseEvents = (props: ViewStatePhaseEventProps, viewPha
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const handleViewPhaseChange = useStableCallback((viewPhase: ViewPhase): void => {
         switch (viewPhase) {
-            case 'view-progressing':
+            case 'view-advancing':
                 // Remember the current transitioning phase:
                 prevTransitioningViewPhaseRef.current = viewPhase;
                 
-                onViewProgressingStart?.(viewPhase, undefined);
+                onViewAdvancingStart?.(viewPhase, undefined);
                 break;
             
-            case 'view-regressing':
+            case 'view-receding':
                 // Remember the current transitioning phase:
                 prevTransitioningViewPhaseRef.current = viewPhase;
                 
-                onViewRegressingStart?.(viewPhase, undefined);
+                onViewRecedingStart?.(viewPhase, undefined);
                 break;
             
             case 'view-settled':
@@ -586,12 +586,12 @@ export const useViewStatePhaseEvents = (props: ViewStatePhaseEventProps, viewPha
                 
                 // Emit the corresponding end event:
                 switch (prevTransitioningViewPhase) {
-                    case 'view-progressing':
-                        onViewProgressingEnd?.(viewPhase, undefined);
+                    case 'view-advancing':
+                        onViewAdvancingEnd?.(viewPhase, undefined);
                         break;
                     
-                    case 'view-regressing':
-                        onViewRegressingEnd?.(viewPhase, undefined);
+                    case 'view-receding':
+                        onViewRecedingEnd?.(viewPhase, undefined);
                         break;
                 } // switch
                 break;

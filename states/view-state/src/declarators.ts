@@ -35,25 +35,25 @@ import {
 export const isViewSettledSelector       : CssSelectorCollection = '.view-settled';
 
 /**
- * A CSS selector targeting elements currently progressing toward the next view (higher index).
+ * A CSS selector targeting elements currently advancing toward the next view (higher index).
  * 
  * Indicates that the view index is transitioning to a higher index.
  */
-export const isViewProgressingSelector   : CssSelectorCollection = '.view-progressing';
+export const isViewAdvancingSelector     : CssSelectorCollection = '.view-advancing';
 
 /**
- * A CSS selector targeting elements currently regressing toward the previous view (lower index).
+ * A CSS selector targeting elements currently receding toward the previous view (lower index).
  * 
  * Indicates that the view index is transitioning to a lower index.
  */
-export const isViewRegressingSelector    : CssSelectorCollection = '.view-regressing';
+export const isViewRecedingSelector      : CssSelectorCollection = '.view-receding';
 
 /**
- * A CSS selector targeting elements currently transitioning, either progressing or regressing between views.
+ * A CSS selector targeting elements currently transitioning, either advancing or receding between views.
  * 
  * Indicates that the view index is transitioning to a different index.
  */
-export const isViewTransitioningSelector : CssSelectorCollection = ':is(.view-progressing, .view-regressing)';
+export const isViewTransitioningSelector : CssSelectorCollection = ':is(.view-advancing, .view-receding)';
 
 
 
@@ -78,52 +78,52 @@ export const isViewTransitioningSelector : CssSelectorCollection = ':is(.view-pr
 export const ifViewSettled       = (styles: CssStyleCollection): CssRule => rule(isViewSettledSelector       , styles);
 
 /**
- * Applies the given `styles` to elements currently progressing toward the next view (higher index).
+ * Applies the given `styles` to elements currently advancing toward the next view (higher index).
  * 
  * Indicates that the view index is transitioning to a higher index.
  * 
- * @param styles The styles applied to elements currently progressing toward the next view.
- * @returns A `CssRule` that applies the given `styles` for elements currently progressing toward the next view.
+ * @param styles The styles applied to elements currently advancing toward the next view.
+ * @returns A `CssRule` that applies the given `styles` for elements currently advancing toward the next view.
  * 
  * @example
  * ```ts
  * export const componentStyle = () => style({
  *     fontSize: '1rem',
- *     ...ifViewProgressing({
+ *     ...ifViewAdvancing({
  *         opacity: 0.5,
  *     }),
  * });
  * ```
  */
-export const ifViewProgressing   = (styles: CssStyleCollection): CssRule => rule(isViewProgressingSelector   , styles);
+export const ifViewAdvancing     = (styles: CssStyleCollection): CssRule => rule(isViewAdvancingSelector     , styles);
 
 /**
- * Applies the given `styles` to elements currently regressing toward the previous view (lower index).
+ * Applies the given `styles` to elements currently receding toward the previous view (lower index).
  * 
  * Indicates that the view index is transitioning to a lower index.
  * 
- * @param styles The styles applied to elements currently regressing toward the previous view.
- * @returns A `CssRule` that applies the given `styles` for elements currently regressing toward the previous view.
+ * @param styles The styles applied to elements currently receding toward the previous view.
+ * @returns A `CssRule` that applies the given `styles` for elements currently receding toward the previous view.
  * 
  * @example
  * ```ts
  * export const componentStyle = () => style({
  *     fontSize: '1rem',
- *     ...ifViewRegressing({
+ *     ...ifViewReceding({
  *         opacity: 0.5,
  *     }),
  * });
  * ```
  */
-export const ifViewRegressing    = (styles: CssStyleCollection): CssRule => rule(isViewRegressingSelector    , styles);
+export const ifViewReceding      = (styles: CssStyleCollection): CssRule => rule(isViewRecedingSelector      , styles);
 
 /**
- * Applies the given `styles` to elements currently transitioning, either progressing or regressing between views.
+ * Applies the given `styles` to elements currently transitioning, either advancing or receding between views.
  * 
  * Indicates that the view index is transitioning to a different index.
  * 
- * @param styles The styles applied to elements currently transitioning, either progressing or regressing between views.
- * @returns A `CssRule` that applies the given `styles` for elements currently transitioning, either progressing or regressing between views.
+ * @param styles The styles applied to elements currently transitioning, either advancing or receding between views.
+ * @returns A `CssRule` that applies the given `styles` for elements currently transitioning, either advancing or receding between views.
  * 
  * @example
  * ```ts
@@ -165,10 +165,10 @@ export const ifViewTransitioning = (styles: CssStyleCollection): CssRule => rule
  *     
  *     const {
  *         viewStateRule,
- *         viewStateVars: { viewIndex, prevViewIndex, isViewProgressing },
+ *         viewStateVars: { viewIndex, prevViewIndex, isViewAdvancing },
  *     } = usesViewState({
- *         animationViewProgressing : 'var(--box-view-progressing)',
- *         animationViewRegressing  : 'var(--box-view-regressing)',
+ *         animationViewAdvancing : 'var(--box-view-advancing)',
+ *         animationViewReceding  : 'var(--box-view-receding)',
  *     });
  *     
  *     return style({
@@ -185,13 +185,13 @@ export const ifViewTransitioning = (styles: CssStyleCollection): CssRule => rule
  *         // To show the correct view, we translate this box based on the current viewIndex.
  *         // We `translate` using `marginInlineStart` for better RTL support, because `translate` is physical, not logical.
  *         
- *         // Define view-progressing animation:
+ *         // Define view-advancing animation:
  *         ...vars({
- *             '--box-view-progressing': [
- *                 ['0.3s', 'ease-out', 'both', 'translate-view-progressing'],
+ *             '--box-view-advancing': [
+ *                 ['0.3s', 'ease-out', 'both', 'translate-view-advancing'],
  *             ],
  *         }),
- *         ...keyframes('translate-view-progressing', {
+ *         ...keyframes('translate-view-advancing', {
  *             from: {
  *                 marginInlineStart: 0,
  *             },
@@ -200,13 +200,13 @@ export const ifViewTransitioning = (styles: CssStyleCollection): CssRule => rule
  *             },
  *         }),
  *         
- *         // Define view-regressing animation:
+ *         // Define view-receding animation:
  *         ...vars({
- *             '--box-view-regressing': [
- *                 ['0.3s', 'ease-out', 'both', 'translate-view-regressing'],
+ *             '--box-view-receding': [
+ *                 ['0.3s', 'ease-out', 'both', 'translate-view-receding'],
  *             ],
  *         }),
- *         ...keyframes('translate-view-regressing', {
+ *         ...keyframes('translate-view-receding', {
  *             from: {
  *                 marginInlineStart: `calc((${prevViewIndex} - ${viewIndex}) * -100px)`,
  *             },
@@ -216,7 +216,7 @@ export const ifViewTransitioning = (styles: CssStyleCollection): CssRule => rule
  *         }),
  *         
  *         // Define final translation based on current viewIndex:
- *         marginInlineStart: `${isViewProgressing} calc((${viewIndex} - ${prevViewIndex}) * -100px)`, // Translate to the current view.
+ *         marginInlineStart: `${isViewAdvancing} calc((${viewIndex} - ${prevViewIndex}) * -100px)`, // Translate to the current view.
  *         contain: 'layout', // Contain layout to prevent reflows.
  *         willChange: 'margin-inline-start', // Hint to browser for better performance.
  *         
@@ -229,8 +229,8 @@ export const ifViewTransitioning = (styles: CssStyleCollection): CssRule => rule
 export const usesViewState = (options?: CssViewStateOptions): CssViewState => {
     // Extract options and assign defaults:
     const {
-        animationViewProgressing = 'none', // Defaults to `none`.
-        animationViewRegressing  = 'none', // Defaults to `none`.
+        animationViewAdvancing = 'none', // Defaults to `none`.
+        animationViewReceding  = 'none', // Defaults to `none`.
     } = options ?? {};
     
     
@@ -238,17 +238,17 @@ export const usesViewState = (options?: CssViewStateOptions): CssViewState => {
     return {
         viewStateRule : () => style({
             ...states({
-                // Apply animation during the progressing phase (e.g. forward view transition):
-                ...ifViewProgressing(
+                // Apply animation during the advancing phase (e.g. forward view transition):
+                ...ifViewAdvancing(
                     vars({
-                        [viewStateVars.animationViewProgressing] : animationViewProgressing, // Activate the animation (if provided).
+                        [viewStateVars.animationViewAdvancing] : animationViewAdvancing, // Activate the animation (if provided).
                     })
                 ),
                 
-                // Apply animation during the regressing phase (e.g. backward view transition):
-                ...ifViewRegressing(
+                // Apply animation during the receding phase (e.g. backward view transition):
+                ...ifViewReceding(
                     vars({
-                        [viewStateVars.animationViewRegressing ] : animationViewRegressing,  // Activate the animation (if provided).
+                        [viewStateVars.animationViewReceding ] : animationViewReceding,  // Activate the animation (if provided).
                     })
                 ),
                 
@@ -258,29 +258,29 @@ export const usesViewState = (options?: CssViewStateOptions): CssViewState => {
                 ...ifViewSettled(
                     vars({
                         [viewStateVars.isViewSettled      ] : '',      // Valid    when fully settled.
-                        [viewStateVars.isViewProgressing  ] : 'unset', // Poisoned when fully settled.
-                        [viewStateVars.isViewRegressing   ] : 'unset', // Poisoned when fully settled.
+                        [viewStateVars.isViewAdvancing    ] : 'unset', // Poisoned when fully settled.
+                        [viewStateVars.isViewReceding     ] : 'unset', // Poisoned when fully settled.
                         [viewStateVars.isViewTransitioning] : 'unset', // Poisoned when fully settled.
                     })
                 ),
                 
-                // Mark as progressing when in the progressing phase:
-                ...ifViewProgressing(
+                // Mark as advancing when in the advancing phase:
+                ...ifViewAdvancing(
                     vars({
-                        [viewStateVars.isViewSettled      ] : 'unset', // Poisoned when progressing.
-                        [viewStateVars.isViewProgressing  ] : '',      // Valid    when progressing.
-                        [viewStateVars.isViewRegressing   ] : 'unset', // Poisoned when progressing.
-                        [viewStateVars.isViewTransitioning] : '',      // Valid    when progressing.
+                        [viewStateVars.isViewSettled      ] : 'unset', // Poisoned when advancing.
+                        [viewStateVars.isViewAdvancing    ] : '',      // Valid    when advancing.
+                        [viewStateVars.isViewReceding     ] : 'unset', // Poisoned when advancing.
+                        [viewStateVars.isViewTransitioning] : '',      // Valid    when advancing.
                     })
                 ),
                 
-                // Mark as regressing when in the regressing phase:
-                ...ifViewRegressing(
+                // Mark as receding when in the receding phase:
+                ...ifViewReceding(
                     vars({
-                        [viewStateVars.isViewSettled      ] : 'unset', // Poisoned when regressing.
-                        [viewStateVars.isViewProgressing  ] : 'unset', // Poisoned when regressing.
-                        [viewStateVars.isViewRegressing   ] : '',      // Valid    when regressing.
-                        [viewStateVars.isViewTransitioning] : '',      // Valid    when regressing.
+                        [viewStateVars.isViewSettled      ] : 'unset', // Poisoned when receding.
+                        [viewStateVars.isViewAdvancing    ] : 'unset', // Poisoned when receding.
+                        [viewStateVars.isViewReceding     ] : '',      // Valid    when receding.
+                        [viewStateVars.isViewTransitioning] : '',      // Valid    when receding.
                     })
                 ),
             }),

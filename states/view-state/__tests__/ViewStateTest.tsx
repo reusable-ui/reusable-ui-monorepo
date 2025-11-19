@@ -13,8 +13,8 @@ import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useViewStateTestStyles } from './ViewStateTest.loader.js'
 
 const animationPattern = [
-    'test-view-progressing',
-    'test-view-regressing',
+    'test-view-advancing',
+    'test-view-receding',
 ];
 
 export interface ViewStateTestProps

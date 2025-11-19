@@ -15,10 +15,10 @@ function containerStyle() {
 function viewsStyle() {
     const {
         viewStateRule,
-        viewStateVars: { viewIndex, prevViewIndex, isViewProgressing },
+        viewStateVars: { viewIndex, prevViewIndex, isViewAdvancing },
     } = usesViewState({
-        animationViewProgressing : 'var(--test-view-progressing)',
-        animationViewRegressing  : 'var(--test-view-regressing)',
+        animationViewAdvancing : 'var(--test-view-advancing)',
+        animationViewReceding  : 'var(--test-view-receding)',
     });
     
     const {
@@ -42,11 +42,11 @@ function viewsStyle() {
         ...animationFeatureRule(),
         
         ...vars({
-            '--test-view-progressing': [
-                ['1s', 'ease-out', 'both', 'boo-test-view-progressing'],
+            '--test-view-advancing': [
+                ['1s', 'ease-out', 'both', 'boo-test-view-advancing'],
             ],
         }),
-        ...keyframes('boo-test-view-progressing', {
+        ...keyframes('boo-test-view-advancing', {
             from: {
                 marginInlineStart: 0,
             },
@@ -56,11 +56,11 @@ function viewsStyle() {
         }),
         
         ...vars({
-            '--test-view-regressing': [
-                ['1s', 'ease-out', 'both', 'boo-test-view-regressing'],
+            '--test-view-receding': [
+                ['1s', 'ease-out', 'both', 'boo-test-view-receding'],
             ],
         }),
-        ...keyframes('boo-test-view-regressing', {
+        ...keyframes('boo-test-view-receding', {
             from: {
                 marginInlineStart: `calc((${prevViewIndex} - ${viewIndex}) * -100px)`,
             },
@@ -70,7 +70,7 @@ function viewsStyle() {
         }),
         
         // Define final translation based on current viewIndex:
-        marginInlineStart: `${isViewProgressing} calc((${viewIndex} - ${prevViewIndex}) * -100px)`, // Translate to the current view.
+        marginInlineStart: `${isViewAdvancing} calc((${viewIndex} - ${prevViewIndex}) * -100px)`, // Translate to the current view.
         contain: 'layout', // Contain layout to prevent reflows.
         willChange: 'margin-inline-start', // Hint to browser for better performance.
         

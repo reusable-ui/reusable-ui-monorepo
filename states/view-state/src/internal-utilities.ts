@@ -9,7 +9,7 @@ import {
  * Resolves the current view-switching lifecycle phase based on directional movement and transition status.
  * 
  * - If a transition is in progress, returns a transitional phase:
- *   - `'view-progressing'` or `'view-regressing'`
+ *   - `'view-advancing'` or `'view-receding'`
  * - Otherwise, returns the settled phase:
  *   - `'view-settled'`
  * 
@@ -23,8 +23,8 @@ export const resolveViewPhase = (prevSettledViewIndex: number | undefined, settl
         return (
             // Determine the direction of movement (the same index counts as **forward**, which should never happen):
             (settledViewIndex >= prevSettledViewIndex)
-            ? 'view-progressing'
-            : 'view-regressing'
+            ? 'view-advancing'
+            : 'view-receding'
         );
     } // if
     
@@ -40,11 +40,11 @@ export const resolveViewPhase = (prevSettledViewIndex: number | undefined, settl
  * 
  * Maps each `viewPhase` to a semantic class name:
  * - Resolved phases:
- *   - `'view-settled'`     → `'view-settled'`
+ *   - `'view-settled'`   → `'view-settled'`
  * 
  * - Transitioning phases:
- *   - `'view-progressing'` → `'view-progressing'`
- *   - `'view-regressing'`  → `'view-regressing'`
+ *   - `'view-advancing'` → `'view-advancing'`
+ *   - `'view-receding'`  → `'view-receding'`
  * 
  * @param {ViewPhase} viewPhase - The current lifecycle phase of the component.
  * @returns {ViewPhase} A CSS class name reflecting the phase.

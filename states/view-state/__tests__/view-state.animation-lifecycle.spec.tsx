@@ -51,12 +51,12 @@ interface ViewStateAnimationTestCase {
         
         /**
          * The expected presence of running view-switching animation after the delay.
-         * - `'view-progressing'` : there is a progressing animation
-         * - `'view-regressing'`  : there is a regressing animation
-         * - `null`               : there is no running view-switching animation
-         * - `undefined`          : nothing to expect
+         * - `'view-advancing'` : there is a advancing animation
+         * - `'view-receding'`  : there is a receding animation
+         * - `null`             : there is no running view-switching animation
+         * - `undefined`        : nothing to expect
          */
-        expectedRunningView   ?: 'view-progressing' | 'view-regressing' | null
+        expectedRunningView   ?: 'view-advancing' | 'view-receding' | null
         
         /**
          * The expected shift (marginInlineStart) in pixel of the shifting element.
@@ -136,13 +136,13 @@ test.describe('useViewBehaviorState - animation', () => {
                     viewIndex             : toIndex, // The animation duration is 1000 ms.
                     
                     delay                 : 200, // Give a brief time to start the animation.
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
                     title                 : 'Still have running animation',
                     
                     delay                 : 500, // 200 + 500 = 700 ms, the animation should still running.
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
                     title                 : `Wait for ${toIndex} animation to finish`,
@@ -167,21 +167,21 @@ test.describe('useViewBehaviorState - animation', () => {
                     viewIndex             : toIndex,
                     
                     delay                 : 200,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
                     title                 : `Change to ${fromIndex} before ${toIndex} finishes`,
                     viewIndex             : fromIndex,
                     
                     delay                 : 200,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',  // Still ${toIndex} (600ms remaining) — cannot cancel mid-flight.
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',  // Still ${toIndex} (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
                     title                 : `Re-${toIndex} again before ${fromIndex} finishes`,
                     viewIndex             : toIndex,
                     
                     delay                 : 200,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing', // Still in original ${toIndex} sequence (400ms remaining).
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding', // Still in original ${toIndex} sequence (400ms remaining).
                 },
                 {
                     title                 : `Wait for final ${toIndex} to complete`,
@@ -205,13 +205,13 @@ test.describe('useViewBehaviorState - animation', () => {
                     title                 : `Change to ${toIndex} (first time)`,
                     viewIndex             : toIndex,
                     delay                 : 200,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
                     title                 : `Set viewIndex to ${toIndex} again (no change)`,
                     viewIndex             : toIndex,
                     delay                 : 200,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing', // Continues original animation, no reset (800ms remaining).
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding', // Continues original animation, no reset (800ms remaining).
                 },
                 {
                     title                 : 'Wait for final animation to finish',
@@ -304,13 +304,13 @@ test.describe('useViewBehaviorState - animation', () => {
                 // Verify the expected values:
                 if (expectedRunningView!== undefined) {
                     switch (expectedRunningView) {
-                        case 'view-progressing':
-                            expect(runningAnimations.has('boo-test-view-progressing')).toBe(true);
-                            expect(runningAnimations.has('boo-test-view-regressing')).toBe(false);
+                        case 'view-advancing':
+                            expect(runningAnimations.has('boo-test-view-advancing')).toBe(true);
+                            expect(runningAnimations.has('boo-test-view-receding')).toBe(false);
                             break;
-                        case 'view-regressing':
-                            expect(runningAnimations.has('boo-test-view-progressing')).toBe(false);
-                            expect(runningAnimations.has('boo-test-view-regressing')).toBe(true);
+                        case 'view-receding':
+                            expect(runningAnimations.has('boo-test-view-advancing')).toBe(false);
+                            expect(runningAnimations.has('boo-test-view-receding')).toBe(true);
                             break;
                     } // switch
                 } // if

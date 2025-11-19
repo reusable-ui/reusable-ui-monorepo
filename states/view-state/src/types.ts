@@ -98,32 +98,32 @@ export interface ViewStateChangeProps<TChangeEvent = unknown> {
  */
 export interface ViewStatePhaseEventProps {
     /**
-     * Called when the progressing (next) view transition begins.
+     * Called when the advancing (next) view transition begins.
      * 
      * Triggered when the component starts animating toward a higher index.
      */
-    onViewProgressingStart ?: ValueChangeEventHandler<ViewPhase, unknown>
+    onViewAdvancingStart ?: ValueChangeEventHandler<ViewPhase, unknown>
     
     /**
-     * Called when the progressing (next) view transition completes.
+     * Called when the advancing (next) view transition completes.
      * 
      * Triggered when the component settles at the target index after moving forward.
      */
-    onViewProgressingEnd   ?: ValueChangeEventHandler<ViewPhase, unknown>
+    onViewAdvancingEnd   ?: ValueChangeEventHandler<ViewPhase, unknown>
     
     /**
-     * Called when the regressing (previous) view transition begins.
+     * Called when the receding (previous) view transition begins.
      * 
      * Triggered when the component starts animating toward a lower index.
      */
-    onViewRegressingStart  ?: ValueChangeEventHandler<ViewPhase, unknown>
+    onViewRecedingStart  ?: ValueChangeEventHandler<ViewPhase, unknown>
     
     /**
-     * Called when the regressing (previous) view transition completes.
+     * Called when the receding (previous) view transition completes.
      * 
      * Triggered when the component settles at the target index after moving backward.
      */
-    onViewRegressingEnd    ?: ValueChangeEventHandler<ViewPhase, unknown>
+    onViewRecedingEnd    ?: ValueChangeEventHandler<ViewPhase, unknown>
 }
 
 /**
@@ -189,7 +189,7 @@ export interface ViewStateOptions
      * - If the matched pattern starts with a non-word character, it’s always considered boundary-safe.
      * - Otherwise, the character preceding the suffix must be a non-word character or undefined.
      * 
-     * Defaults to `['view-progressing', 'view-regressing']`.
+     * Defaults to `['view-advancing', 'view-receding']`.
      */
     animationPattern  ?: AnimationStateOptions<number>['animationPattern']
     
@@ -206,7 +206,7 @@ export interface ViewStateOptions
  * Represents the resolved (settled) phase of the view-switching lifecycle.
  * 
  * These states indicate that the component has completed its transition:
- * - 'view-settled'     ✅ fully settled at the target index
+ * - 'view-settled'   ✅ fully settled at the target index
  */
 export type ResolvedViewPhase =
     | 'view-settled'
@@ -215,19 +215,19 @@ export type ResolvedViewPhase =
  * Represents the transitional phase of the view-switching lifecycle.
  * 
  * These states indicate that the component is currently animating toward a resolved state:
- * - 'view-progressing' 🔄 transitioning to a higher index
- * - 'view-regressing'  🔄 transitioning to a lower index
+ * - 'view-advancing' 🔄 transitioning to a higher index
+ * - 'view-receding'  🔄 transitioning to a lower index
  */
 export type TransitioningViewPhase =
-    | 'view-progressing'
-    | 'view-regressing'
+    | 'view-advancing'
+    | 'view-receding'
 
 /**
  * Represents the current transition phase of the view-switching lifecycle.
  * 
  * Used to distinguish between transitional and resolved states:
  * - Resolved: 'view-settled'
- * - Transitional: 'view-progressing', 'view-regressing'
+ * - Transitional: 'view-advancing', 'view-receding'
  */
 export type ViewPhase =
     | ResolvedViewPhase
@@ -319,7 +319,7 @@ export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChan
     /**
      * The current transition phase of the view-switching lifecycle.
      * 
-     * Reflects both transitional states (`view-progressing`, `view-regressing`) and resolved state (`view-settled`).
+     * Reflects both transitional states (`view-advancing`, `view-receding`) and resolved state (`view-settled`).
      */
     viewPhase               : ViewPhase
     
@@ -328,8 +328,8 @@ export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChan
      * 
      * Possible values:
      * - `'view-settled'`
-     * - `'view-progressing'`
-     * - `'view-regressing'`
+     * - `'view-advancing'`
+     * - `'view-receding'`
      */
     viewClassname           : ViewPhase
     
@@ -370,22 +370,22 @@ export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChan
  */
 export interface ViewStateVars {
     /**
-     * References an animation used during the progressing (next) view transition.
+     * References an animation used during the advancing (next) view transition.
      * It becomes invalid (`unset`) when not actively animating toward a higher index.
      * 
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationViewProgressing : unknown
+    animationViewAdvancing : unknown
     
     /**
-     * References an animation used during the regressing (previous) view transition.
+     * References an animation used during the receding (previous) view transition.
      * It becomes invalid (`unset`) when not actively animating toward a lower index.
      * 
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationViewRegressing  : unknown
+    animationViewReceding  : unknown
     
     /**
      * Applies when the component is in a fully settled state (not transitioning between views).
@@ -404,10 +404,10 @@ export interface ViewStateVars {
      * });
      * ```
      */
-    isViewSettled            : unknown
+    isViewSettled          : unknown
     
     /**
-     * Applies when the component is currently progressing toward the next view (higher index).
+     * Applies when the component is currently advancing toward the next view (higher index).
      * 
      * Acts as a conditional switch: when declared with an empty value,
      * any CSS property referencing this variable becomes valid and is applied.
@@ -417,16 +417,16 @@ export interface ViewStateVars {
      * @example
      * ```ts
      * export const componentStyle = () => style({
-     *     // These properties are only applied when the component is currently progressing toward the next view:
-     *     opacity : `${viewStateVars.isViewProgressing} 50%`,
-     *     scale   : `${viewStateVars.isViewProgressing} 80%`,
+     *     // These properties are only applied when the component is currently advancing toward the next view:
+     *     opacity : `${viewStateVars.isViewAdvancing} 50%`,
+     *     scale   : `${viewStateVars.isViewAdvancing} 80%`,
      * });
      * ```
      */
-    isViewProgressing        : unknown
+    isViewAdvancing        : unknown
     
     /**
-     * Applies when the component is currently regressing toward the previous view (lower index).
+     * Applies when the component is currently receding toward the previous view (lower index).
      * 
      * Acts as a conditional switch: when declared with an empty value,
      * any CSS property referencing this variable becomes valid and is applied.
@@ -436,16 +436,16 @@ export interface ViewStateVars {
      * @example
      * ```ts
      * export const componentStyle = () => style({
-     *     // These properties are only applied when the component is currently regressing toward the previous view:
-     *     opacity : `${viewStateVars.isViewRegressing} 50%`,
-     *     scale   : `${viewStateVars.isViewRegressing} 80%`,
+     *     // These properties are only applied when the component is currently receding toward the previous view:
+     *     opacity : `${viewStateVars.isViewReceding} 50%`,
+     *     scale   : `${viewStateVars.isViewReceding} 80%`,
      * });
      * ```
      */
-    isViewRegressing         : unknown
+    isViewReceding         : unknown
     
     /**
-     * Applies when the component is currently transitioning, either progressing or regressing between views.
+     * Applies when the component is currently transitioning, either advancing or receding between views.
      * 
      * Acts as a conditional switch: when declared with an empty value,
      * any CSS property referencing this variable becomes valid and is applied.
@@ -455,13 +455,13 @@ export interface ViewStateVars {
      * @example
      * ```ts
      * export const componentStyle = () => style({
-     *     // These properties are only applied when the component is currently transitioning, either progressing or regressing between views:
+     *     // These properties are only applied when the component is currently transitioning, either advancing or receding between views:
      *     opacity : `${viewStateVars.isViewTransitioning} 50%`,
      *     scale   : `${viewStateVars.isViewTransitioning} 80%`,
      * });
      * ```
      */
-    isViewTransitioning      : unknown
+    isViewTransitioning    : unknown
     
     /**
      * The current settled or animating target view index of the component.
@@ -480,7 +480,7 @@ export interface ViewStateVars {
      * });
      * ```
      */
-    viewIndex                : unknown
+    viewIndex              : unknown
     
     /**
      * The previously settled view index before the most recent transition.
@@ -495,7 +495,7 @@ export interface ViewStateVars {
      * ```ts
      * export const componentStyle = () => style({
      *     // Animate sliding from the previous view to the current view:
-     *     ...keyframes('slide-view-progressing', {
+     *     ...keyframes('slide-view-advancing', {
      *         from : {
      *             translate : `calc(${viewStateVars.prevViewIndex} * -100%)`,
      *         },
@@ -506,7 +506,7 @@ export interface ViewStateVars {
      * });
      * ```
      */
-    prevViewIndex            : unknown
+    prevViewIndex          : unknown
 }
 
 
@@ -516,24 +516,24 @@ export interface ViewStateVars {
  */
 export interface CssViewStateOptions {
     /**
-     * Defines the animation to apply during the progressing (next) view transition.
+     * Defines the animation to apply during the advancing (next) view transition.
      * 
      * When the `viewIndex` value changes to a lower index, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationViewProgressing ?: CssKnownProps['animation']
+    animationViewAdvancing ?: CssKnownProps['animation']
     
     /**
-     * Defines the animation to apply during the regressing (previous) view transition.
+     * Defines the animation to apply during the receding (previous) view transition.
      * 
      * When the `viewIndex` value changes to a higher index, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationViewRegressing  ?: CssKnownProps['animation']
+    animationViewReceding  ?: CssKnownProps['animation']
 }
 
 
@@ -553,8 +553,8 @@ export interface CssViewState {
      * Exposes view-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationViewProgressing` : Active during the progressing (next) view transition.
-     * - `animationViewRegressing`  : Active during the regressing (previous) view transition.
+     * - `animationViewAdvancing` : Active during the advancing (next) view transition.
+     * - `animationViewReceding`  : Active during the receding (previous) view transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.

@@ -67,12 +67,12 @@ interface ViewStateControlledTestCase {
         
         /**
          * The expected presence of running view-switching animation after the delay.
-         * - `'view-progressing'` : there is a progressing animation
-         * - `'view-regressing'`  : there is a regressing animation
-         * - `null`               : there is no running view-switching animation
-         * - `undefined`          : nothing to expect
+         * - `'view-advancing'` : there is a advancing animation
+         * - `'view-receding'`  : there is a receding animation
+         * - `null`             : there is no running view-switching animation
+         * - `undefined`        : nothing to expect
          */
-        expectedRunningView   ?: 'view-progressing' | 'view-regressing' | null
+        expectedRunningView   ?: 'view-advancing' | 'view-receding' | null
     }[]
 }
 
@@ -137,21 +137,21 @@ test.describe('useViewBehaviorState - controlled mode', () => {
                     expectedViewIndex     : toIndex,
                 },
                 {
-                    title                 : `The ${(toIndex > fromIndex) ? 'progressing (next)' : 'regressing (previous)'} view animation should be running and the viewIndex is still ${toIndex}`,
+                    title                 : `The ${(toIndex > fromIndex) ? 'advancing (next)' : 'receding (previous)'} view animation should be running and the viewIndex is still ${toIndex}`,
                     
                     delay                 : 200,
                     expectedViewIndex     : toIndex,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
-                    title                 : `The ${(toIndex > fromIndex) ? 'progressing (next)' : 'regressing (previous)'} view animation should be running and the viewIndex is still ${toIndex}`,
+                    title                 : `The ${(toIndex > fromIndex) ? 'advancing (next)' : 'receding (previous)'} view animation should be running and the viewIndex is still ${toIndex}`,
                     
                     delay                 : 500, // 200 + 500 = 700 ms, the animation should still running.
                     expectedViewIndex     : toIndex,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
-                    title                 : `The ${(toIndex > fromIndex) ? 'progressing (next)' : 'regressing (previous)'} view animation should be stopped and the viewIndex is still ${toIndex}`,
+                    title                 : `The ${(toIndex > fromIndex) ? 'advancing (next)' : 'receding (previous)'} view animation should be stopped and the viewIndex is still ${toIndex}`,
                     
                     delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedViewIndex     : toIndex,
@@ -175,21 +175,21 @@ test.describe('useViewBehaviorState - controlled mode', () => {
                     expectedViewIndex     : toIndex,
                 },
                 {
-                    title                 : `The progressing (next) view animation should be running and the viewIndex is still ${toIndex}`,
+                    title                 : `The advancing (next) view animation should be running and the viewIndex is still ${toIndex}`,
                     
                     delay                 : 200,
                     expectedViewIndex     : toIndex,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
-                    title                 : `The progressing (next) view animation should be running and the viewIndex is still ${toIndex}`,
+                    title                 : `The advancing (next) view animation should be running and the viewIndex is still ${toIndex}`,
                     
                     delay                 : 500, // 200 + 500 = 700 ms, the animation should still running.
                     expectedViewIndex     : toIndex,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
-                    title                 : `The progressing (next) view animation should be stopped and the viewIndex is still ${toIndex}`,
+                    title                 : `The advancing (next) view animation should be stopped and the viewIndex is still ${toIndex}`,
                     
                     delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedViewIndex     : toIndex,
@@ -202,21 +202,21 @@ test.describe('useViewBehaviorState - controlled mode', () => {
                     expectedViewIndex     : fromIndex,
                 },
                 {
-                    title                 : `The regressing (previous) view animation should be running and the viewIndex is still ${fromIndex}`,
+                    title                 : `The receding (previous) view animation should be running and the viewIndex is still ${fromIndex}`,
                     
                     delay                 : 200,
                     expectedViewIndex     : fromIndex,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-regressing' : 'view-progressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-receding' : 'view-advancing',
                 },
                 {
-                    title                 : `The regressing (previous) view animation should be running and the viewIndex is still ${fromIndex}`,
+                    title                 : `The receding (previous) view animation should be running and the viewIndex is still ${fromIndex}`,
                     
                     delay                 : 500, // 200 + 500 = 700 ms, the animation should still running.
                     expectedViewIndex     : fromIndex,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-regressing' : 'view-progressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-receding' : 'view-advancing',
                 },
                 {
-                    title                 : `The regressing (previous) view animation should be stopped and the viewIndex is still ${fromIndex}`,
+                    title                 : `The receding (previous) view animation should be stopped and the viewIndex is still ${fromIndex}`,
                     
                     delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedViewIndex     : fromIndex,
@@ -239,7 +239,7 @@ test.describe('useViewBehaviorState - controlled mode', () => {
                     
                     delay                 : 200,
                     expectedViewIndex     : toIndex,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
                     title                 : `Change to ${fromIndex} before ${toIndex} finishes`,
@@ -247,7 +247,7 @@ test.describe('useViewBehaviorState - controlled mode', () => {
                     
                     delay                 : 200,
                     expectedViewIndex     : toIndex, // Still ${toIndex} because the ${toIndex} animation is not finished yet.
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',  // Still ${toIndex} (600ms remaining) — cannot cancel mid-flight.
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',  // Still ${toIndex} (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
                     title                 : `Re-${toIndex} again before ${fromIndex} finishes`,
@@ -255,7 +255,7 @@ test.describe('useViewBehaviorState - controlled mode', () => {
                     
                     delay                 : 200,
                     expectedViewIndex     : toIndex,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing', // Still in original ${toIndex} sequence (400ms remaining).
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding', // Still in original ${toIndex} sequence (400ms remaining).
                 },
                 {
                     title                 : `Wait for final ${toIndex} to complete`,
@@ -286,21 +286,21 @@ test.describe('useViewBehaviorState - controlled mode', () => {
                     expectedViewIndex     : toIndex,
                 },
                 {
-                    title                 : `The progressing (next) view animation should be running and the viewIndex is still ${toIndex}`,
+                    title                 : `The advancing (next) view animation should be running and the viewIndex is still ${toIndex}`,
                     
                     delay                 : 200,
                     expectedViewIndex     : toIndex,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
-                    title                 : `The progressing (next) view animation should be running and the viewIndex is still ${toIndex}`,
+                    title                 : `The advancing (next) view animation should be running and the viewIndex is still ${toIndex}`,
                     
                     delay                 : 500, // 200 + 500 = 700 ms, the animation should still running.
                     expectedViewIndex     : toIndex,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
-                    title                 : `The progressing (next) view animation should be stopped and the viewIndex is still ${toIndex}`,
+                    title                 : `The advancing (next) view animation should be stopped and the viewIndex is still ${toIndex}`,
                     
                     delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedViewIndex     : toIndex,
@@ -325,21 +325,21 @@ test.describe('useViewBehaviorState - controlled mode', () => {
                     expectedViewIndex     : toIndex,
                 },
                 {
-                    title                 : `The progressing (next) view animation should be running and the viewIndex is still ${toIndex}`,
+                    title                 : `The advancing (next) view animation should be running and the viewIndex is still ${toIndex}`,
                     
                     delay                 : 200,
                     expectedViewIndex     : toIndex,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
-                    title                 : `The progressing (next) view animation should be running and the viewIndex is still ${toIndex}`,
+                    title                 : `The advancing (next) view animation should be running and the viewIndex is still ${toIndex}`,
                     
                     delay                 : 500, // 200 + 500 = 700 ms, the animation should still running.
                     expectedViewIndex     : toIndex,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
-                    title                 : `The progressing (next) view animation should be stopped and the viewIndex is still ${toIndex}`,
+                    title                 : `The advancing (next) view animation should be stopped and the viewIndex is still ${toIndex}`,
                     
                     delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedViewIndex     : toIndex,
@@ -353,21 +353,21 @@ test.describe('useViewBehaviorState - controlled mode', () => {
                     expectedViewIndex     : fromIndex,
                 },
                 {
-                    title                 : `The progressing (next) view animation should be running and the viewIndex is still ${fromIndex}`,
+                    title                 : `The advancing (next) view animation should be running and the viewIndex is still ${fromIndex}`,
                     
                     delay                 : 200,
                     expectedViewIndex     : fromIndex,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-regressing' : 'view-progressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-receding' : 'view-advancing',
                 },
                 {
-                    title                 : `The progressing (next) view animation should be running and the viewIndex is still ${fromIndex}`,
+                    title                 : `The advancing (next) view animation should be running and the viewIndex is still ${fromIndex}`,
                     
                     delay                 : 500, // 200 + 500 = 700 ms, the animation should still running.
                     expectedViewIndex     : fromIndex,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-regressing' : 'view-progressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-receding' : 'view-advancing',
                 },
                 {
-                    title                 : `The progressing (next) view animation should be stopped and the viewIndex is still ${fromIndex}`,
+                    title                 : `The advancing (next) view animation should be stopped and the viewIndex is still ${fromIndex}`,
                     
                     delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedViewIndex     : fromIndex,
@@ -390,7 +390,7 @@ test.describe('useViewBehaviorState - controlled mode', () => {
                     
                     delay                 : 200,
                     expectedViewIndex     : toIndex,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',
                 },
                 {
                     title                 : `Change to ${fromIndex} before ${toIndex} finishes`,
@@ -398,7 +398,7 @@ test.describe('useViewBehaviorState - controlled mode', () => {
                     
                     // delay                 : 200,
                     expectedViewIndex     : toIndex, // Still ${toIndex} because the ${toIndex} animation is not finished yet.
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing',  // Still ${toIndex} (600ms remaining) — cannot cancel mid-flight.
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding',  // Still ${toIndex} (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
                     title                 : `Re-${toIndex} again before ${fromIndex} finishes`,
@@ -406,7 +406,7 @@ test.describe('useViewBehaviorState - controlled mode', () => {
                     
                     delay                 : 200,
                     expectedViewIndex     : toIndex,
-                    expectedRunningView   : (toIndex > fromIndex) ? 'view-progressing' : 'view-regressing', // Still in original ${toIndex} sequence (400ms remaining).
+                    expectedRunningView   : (toIndex > fromIndex) ? 'view-advancing' : 'view-receding', // Still in original ${toIndex} sequence (400ms remaining).
                 },
                 {
                     title                 : `Wait for final ${toIndex} to complete`,
@@ -556,13 +556,13 @@ test.describe('useViewBehaviorState - controlled mode', () => {
                 
                 if (expectedRunningView!== undefined) {
                     switch (expectedRunningView) {
-                        case 'view-progressing':
-                            expect(runningAnimations.has('boo-test-view-progressing')).toBe(true);
-                            expect(runningAnimations.has('boo-test-view-regressing')).toBe(false);
+                        case 'view-advancing':
+                            expect(runningAnimations.has('boo-test-view-advancing')).toBe(true);
+                            expect(runningAnimations.has('boo-test-view-receding')).toBe(false);
                             break;
-                        case 'view-regressing':
-                            expect(runningAnimations.has('boo-test-view-progressing')).toBe(false);
-                            expect(runningAnimations.has('boo-test-view-regressing')).toBe(true);
+                        case 'view-receding':
+                            expect(runningAnimations.has('boo-test-view-advancing')).toBe(false);
+                            expect(runningAnimations.has('boo-test-view-receding')).toBe(true);
                             break;
                     } // switch
                 } // if
