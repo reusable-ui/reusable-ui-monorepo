@@ -343,6 +343,24 @@ The `animationValidating`, `animationInvalidating`, and `animationUnvalidating` 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
 Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining validity animations with other state-driven transitions.
 
+##### 🧩 Why `Unvalidated` / `Unvalidating` Exists
+
+The validity lifecycle has three distinct settled states:
+
+- **Valid** → The component has been checked and passed validation.
+- **Invalid** → The component has been checked and failed validation.
+- **Unvalidated** → The component has not been checked at all. No validation logic has been applied.
+
+This distinction is important:
+- `Invalid` ≠ `Unvalidated`.  
+  - *Invalid* means “known to be wrong.”  
+  - *Unvalidated* means “unknown, unchecked.”  
+
+During transitions:
+- **Validating** → animation toward `Valid`.  
+- **Invalidating** → animation toward `Invalid`.  
+- **Unvalidating** → animation toward `Unvalidated` (resetting or clearing validation state).
+
 ---
 
 ## 📖 Part of the Reusable-UI Framework  
