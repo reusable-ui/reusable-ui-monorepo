@@ -71,14 +71,14 @@ export interface HoverObserverState<TElement extends Element = HTMLElement>
  * imperative mouseenter/mouseleave handlers. Skips updates when externally controlled.
  * 
  * Restricted behavior:
- * - When restricted, the observer forces the hover state to leaved (`false`),
+ * - When restricted, the observer forces the hover state to unhovered (`false`),
  *   since restricted elements cannot be hovered.
  * - When re-enabled, immediately re-evaluates based on current pointer position and containment.
  * 
  * @template TElement - The type of the target DOM element.
  * 
  * @param disabledUpdates - Whether to disable internal hover state updates (e.g. when externally controlled).
- * @param isRestricted - Whether the component is currently in a restricted state; enforces a leave override.
+ * @param isRestricted - Whether the component is currently in a restricted state; enforces an unhover override.
  * @returns The observed hover state, ref, and event handlers.
  */
 export const useHoverObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, isRestricted: boolean): HoverObserverState<TElement> => {

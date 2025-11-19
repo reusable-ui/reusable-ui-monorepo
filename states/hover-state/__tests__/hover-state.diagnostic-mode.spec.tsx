@@ -19,7 +19,7 @@ interface HoverStateControlledTestCase {
     /**
      * Initial hover state.
      * - `true`   : hovered
-     * - `false`  : leaved
+     * - `false`  : unhovered
      * - `'auto'` : automatic determine
      */
     hovered        : boolean | 'auto'
@@ -38,7 +38,7 @@ interface HoverStateControlledTestCase {
         /**
          * New value computed hover state.
          * - `true`      : set hover to test element
-         * - `false`     : set leave to test element
+         * - `false`     : set unhover to test element
          * - `undefined` : skip updating this part.
          */
         setHover             ?: boolean
@@ -57,15 +57,15 @@ interface HoverStateControlledTestCase {
         /**
          * The expected hover state.
          * - 'hovered'   : should be hovered
-         * - 'leaved'   : should be leaved
+         * - 'unhovered' : should be unhovered
          * - `undefined` : nothing to expect
          */
-        expectedHover        ?: 'hovered' | 'leaved'
+        expectedHover        ?: 'hovered' | 'unhovered'
         
         /**
          * The expected presence of running hover animation after the delay.
          * - `true`      : there is a running hovering animation
-         * - `false`     : there is a running leaving animation
+         * - `false`     : there is a running unhovering animation
          * - `0`         : there is no running hover animation
          * - `undefined` : nothing to expect
          */
@@ -83,12 +83,12 @@ test.describe('useHoverBehaviorState - diagnostic mode', () => {
             please do it between +200 ms after the expected starts and -200 ms before the expected ends.
         */
         {
-            title         : 'Should be respond to change from leaved to hovered',
+            title         : 'Should be respond to change from unhovered to hovered',
             hovered       : 'auto',
             updates       : [
                 {
-                    title                : 'Should be leaved and no animation',
-                    expectedHover        : 'leaved',
+                    title                : 'Should be unhovered and no animation',
+                    expectedHover        : 'unhovered',
                     expectedRunningHover : 0,
                 },
                 {
@@ -122,7 +122,7 @@ test.describe('useHoverBehaviorState - diagnostic mode', () => {
             ],
         },
         {
-            title         : 'Should be respond to change from hovered to leaved',
+            title         : 'Should be respond to change from hovered to unhovered',
             hovered       : 'auto',
             updates       : [
                 {
@@ -139,42 +139,42 @@ test.describe('useHoverBehaviorState - diagnostic mode', () => {
                     expectedRunningHover : 0,
                 },
                 {
-                    title                : 'Change to leaved',
+                    title                : 'Change to unhovered',
                     setHover             : false,
                     
                     delay                : 0, // wait for async process
-                    expectedHover        : 'leaved',
+                    expectedHover        : 'unhovered',
                 },
                 {
-                    title                : 'The leaving animation should be running and the hover-state is still leaved',
+                    title                : 'The unhovering animation should be running and the hover-state is still unhovered',
                     
                     delay                : 200,
-                    expectedHover        : 'leaved',
+                    expectedHover        : 'unhovered',
                     expectedRunningHover : false,
                 },
                 {
-                    title                : 'The leaving animation should be running and the hover-state is still leaved',
+                    title                : 'The unhovering animation should be running and the hover-state is still unhovered',
                     
                     delay                : 500, // 200 + 500 = 700 ms, the animation should still running.
-                    expectedHover        : 'leaved',
+                    expectedHover        : 'unhovered',
                     expectedRunningHover : false,
                 },
                 {
-                    title                : 'The hovering animation should be stopped and the hover-state is still leaved',
+                    title                : 'The hovering animation should be stopped and the hover-state is still unhovered',
                     
                     delay                : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
-                    expectedHover        : 'leaved',
+                    expectedHover        : 'unhovered',
                     expectedRunningHover : 0,
                 },
             ],
         },
         {
-            title         : 'Should be respond to change from leaved to hovered then leaved',
+            title         : 'Should be respond to change from unhovered to hovered then unhovered',
             hovered       : 'auto',
             updates       : [
                 {
-                    title                : 'Should be leaved and no animation',
-                    expectedHover        : 'leaved',
+                    title                : 'Should be unhovered and no animation',
+                    expectedHover        : 'unhovered',
                     expectedRunningHover : 0,
                 },
                 {
@@ -206,37 +206,37 @@ test.describe('useHoverBehaviorState - diagnostic mode', () => {
                     expectedRunningHover : 0,
                 },
                 {
-                    title                : 'Change to leaved',
+                    title                : 'Change to unhovered',
                     setHover             : false,
                     
                     delay                : 0, // wait for async process
-                    expectedHover        : 'leaved',
+                    expectedHover        : 'unhovered',
                 },
                 {
-                    title                : 'The leaving animation should be running and the hover-state is still leaved',
+                    title                : 'The unhovering animation should be running and the hover-state is still unhovered',
                     
                     delay                : 200,
-                    expectedHover        : 'leaved',
+                    expectedHover        : 'unhovered',
                     expectedRunningHover : false,
                 },
                 {
-                    title                : 'The leaving animation should be running and the hover-state is still leaved',
+                    title                : 'The unhovering animation should be running and the hover-state is still unhovered',
                     
                     delay                : 500, // 200 + 500 = 700 ms, the animation should still running.
-                    expectedHover        : 'leaved',
+                    expectedHover        : 'unhovered',
                     expectedRunningHover : false,
                 },
                 {
-                    title                : 'The leaving animation should be stopped and the hover-state is still leaved',
+                    title                : 'The unhovering animation should be stopped and the hover-state is still unhovered',
                     
                     delay                : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
-                    expectedHover        : 'leaved',
+                    expectedHover        : 'unhovered',
                     expectedRunningHover : 0,
                 },
             ],
         },
         {
-            title         : 'Should be respond to change from hovered to leaved then hovered',
+            title         : 'Should be respond to change from hovered to unhovered then hovered',
             hovered       : 'auto',
             updates       : [
                 {
@@ -253,31 +253,31 @@ test.describe('useHoverBehaviorState - diagnostic mode', () => {
                     expectedRunningHover : 0,
                 },
                 {
-                    title                : 'Change to leaved',
+                    title                : 'Change to unhovered',
                     setHover             : false,
                     
                     delay                : 0, // wait for async process
-                    expectedHover        : 'leaved',
+                    expectedHover        : 'unhovered',
                 },
                 {
-                    title                : 'The leaving animation should be running and the hover-state is still leaved',
+                    title                : 'The unhovering animation should be running and the hover-state is still unhovered',
                     
                     delay                : 200,
-                    expectedHover        : 'leaved',
+                    expectedHover        : 'unhovered',
                     expectedRunningHover : false,
                 },
                 {
-                    title                : 'The leaving animation should be running and the hover-state is still leaved',
+                    title                : 'The unhovering animation should be running and the hover-state is still unhovered',
                     
                     delay                : 500, // 200 + 500 = 700 ms, the animation should still running.
-                    expectedHover        : 'leaved',
+                    expectedHover        : 'unhovered',
                     expectedRunningHover : false,
                 },
                 {
-                    title                : 'The leaving animation should be stopped and the hover-state is still leaved',
+                    title                : 'The unhovering animation should be stopped and the hover-state is still unhovered',
                     
                     delay                : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
-                    expectedHover        : 'leaved',
+                    expectedHover        : 'unhovered',
                     expectedRunningHover : 0,
                 },
                 {
@@ -311,12 +311,12 @@ test.describe('useHoverBehaviorState - diagnostic mode', () => {
             ],
         },
         {
-            title         : 'Should be respond to hover, leave, and re-hover quickly',
+            title         : 'Should be respond to hover, unhover, and re-hover quickly',
             hovered       : 'auto',
             updates       : [
                 {
-                    title                : 'Should be leaved and no animation',
-                    expectedHover        : 'leaved',
+                    title                : 'Should be unhovered and no animation',
+                    expectedHover        : 'unhovered',
                     expectedRunningHover : 0,
                 },
                 {
@@ -328,7 +328,7 @@ test.describe('useHoverBehaviorState - diagnostic mode', () => {
                     expectedRunningHover : true,
                 },
                 {
-                    title                : 'Leave before hovering finishes',
+                    title                : 'Unhover before hovering finishes',
                     setHover             : false,
                     
                     delay                : 200,
@@ -336,7 +336,7 @@ test.describe('useHoverBehaviorState - diagnostic mode', () => {
                     expectedRunningHover : true,  // Still hovering (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
-                    title                : 'Re-hover again before leaving finishes',
+                    title                : 'Re-hover again before unhovering finishes',
                     setHover             : true,
                     
                     delay                : 200,
@@ -353,7 +353,7 @@ test.describe('useHoverBehaviorState - diagnostic mode', () => {
             ],
         },
         {
-            title         : 'Should be respond to leave, hover, and re-leave quickly',
+            title         : 'Should be respond to unhover, hover, and re-unhover quickly',
             hovered       : 'auto',
             updates       : [
                 {
@@ -370,34 +370,34 @@ test.describe('useHoverBehaviorState - diagnostic mode', () => {
                     expectedRunningHover : 0,
                 },
                 {
-                    title                : 'Leave',
+                    title                : 'Unhover',
                     setHover             : false,
                     
                     delay                : 200,
-                    expectedHover        : 'leaved',
+                    expectedHover        : 'unhovered',
                     expectedRunningHover : false,
                 },
                 {
-                    title                : 'Hover before leaving finishes',
+                    title                : 'Hover before unhovering finishes',
                     setHover             : true,
                     
                     delay                : 200,
-                    expectedHover        : 'leaved', // Still leaved because the leaving animation is not finished yet.
-                    expectedRunningHover : false,  // Still leaving (600ms remaining) — cannot cancel mid-flight.
+                    expectedHover        : 'unhovered', // Still unhovered because the unhovering animation is not finished yet.
+                    expectedRunningHover : false,  // Still unhovering (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
-                    title                : 'Re-leave again before hovering finishes',
+                    title                : 'Re-unhover again before hovering finishes',
                     setHover             : false,
                     
                     delay                : 200,
-                    expectedHover        : 'leaved',
-                    expectedRunningHover : false, // Still in original leaving sequence (400ms remaining).
+                    expectedHover        : 'unhovered',
+                    expectedRunningHover : false, // Still in original unhovering sequence (400ms remaining).
                 },
                 {
-                    title                : 'Wait for final leaving to complete',
+                    title                : 'Wait for final unhovering to complete',
                     
                     delay                : 600, // Includes additional margin to guarantee completion.
-                    expectedHover        : 'leaved',
+                    expectedHover        : 'unhovered',
                     expectedRunningHover : 0, // No running animation.
                 },
             ],
@@ -466,7 +466,7 @@ test.describe('useHoverBehaviorState - diagnostic mode', () => {
                         await box.hover();
                     }
                     else {
-                        // Move mouse away to leave:
+                        // Move mouse away to unhover:
                         const exitBox = component.getByTestId('hover-exit');
                         await expect(exitBox).toContainText('An exit area to move mouse cursor away');
                         await exitBox.hover();
@@ -520,15 +520,15 @@ test.describe('useHoverBehaviorState - diagnostic mode', () => {
                     switch (expectedRunningHover) {
                         case true:
                             expect(runningAnimations.has('boo-test-hovering')).toBe(true);
-                            expect(runningAnimations.has('boo-test-leaving')).toBe(false);
+                            expect(runningAnimations.has('boo-test-unhovering')).toBe(false);
                             break;
                         case false:
                             expect(runningAnimations.has('boo-test-hovering')).toBe(false);
-                            expect(runningAnimations.has('boo-test-leaving')).toBe(true);
+                            expect(runningAnimations.has('boo-test-unhovering')).toBe(true);
                             break;
                         case 0:
                             expect(runningAnimations.has('boo-test-hovering')).toBe(false);
-                            expect(runningAnimations.has('boo-test-leaving')).toBe(false);
+                            expect(runningAnimations.has('boo-test-unhovering')).toBe(false);
                             break;
                     } // switch
                 } // if

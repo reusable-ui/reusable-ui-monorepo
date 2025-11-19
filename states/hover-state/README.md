@@ -1,16 +1,16 @@
 # @reusable-ui/hover-state 📦  
 
-Adds hover/leave functionality to UI components, with transition animations and semantic styling hooks.  
+Adds hover/unhover functionality to UI components, with transition animations and semantic styling hooks.  
 Ideal for buttons, selects, menuItems, and any interactive component requiring hover feedback.
 
 ## ✨ Features
-✔ Lifecycle-aware hover/leave animations based on current hover state  
+✔ Lifecycle-aware hover/unhover animations based on current hover state  
 ✔ Gracefully completes running animations before resolving new state  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, animation, and accessibility systems  
 ✔ Built-in internal hover observer via `ref`, `handleMouseEnter()`, and `handleMouseLeave()` — no need for external state unless desired  
 ✔ Optional `computedHover` override for custom hover resolution logic in advanced use cases  
-✔ Deterministic disabled handling: always leaved when disabled, with immediate recomputation on re-enable  
+✔ Deterministic disabled handling: always unhovered when disabled, with immediate recomputation on re-enable  
 
 ## 📦 Installation
 Install **@reusable-ui/hover-state** via npm or yarn:
@@ -85,9 +85,9 @@ export const CustomCard: FC<CustomCardProps> = (props) => {
         computedHover,
         ...restProps,
     }, {
-        defaultHovered    : 'auto',                  // Defaults to diagnostic mode.
-        animationPattern  : ['hovering', 'leaving'], // Matches animation names ending with 'hovering' or 'leaving'.
-        animationBubbling : false,                   // Ignores bubbling animation events from children.
+        defaultHovered    : 'auto',                     // Defaults to diagnostic mode.
+        animationPattern  : ['hovering', 'unhovering'], // Matches animation names ending with 'hovering' or 'unhovering'.
+        animationBubbling : false,                      // Ignores bubbling animation events from children.
     });
     
     return (
@@ -98,7 +98,7 @@ export const CustomCard: FC<CustomCardProps> = (props) => {
             onAnimationEnd={handleAnimationEnd}
         >
             {hovered  && <p className={styles.hovered}>Hovered</p>}
-            {!hovered && <p className={styles.leaved}>Leaved</p>}
+            {!hovered && <p className={styles.unhovered}>Unhovered</p>}
         </div>
     );
 };
@@ -106,14 +106,14 @@ export const CustomCard: FC<CustomCardProps> = (props) => {
 
 #### 🧠 Transition Animation Behavior
 
-The hook manages transitions between `hovered` and `leaved` states using a unified animation flow:
+The hook manages transitions between `hovered` and `unhovered` states using a unified animation flow:
 
-- If a transition is already in progress, new intent (e.g., switching from hovered to leaved) is deferred until the current animation completes.
+- If a transition is already in progress, new intent (e.g., switching from hovered to unhovered) is deferred until the current animation completes.
 - Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
 - This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
 
 #### 🔒 Disabled Behavior
-- **Always leaved when disabled**: Components are forced into a leaved state whenever `disabled` is active, regardless of `hovered` or `computedHover` values.  
+- **Always unhovered when disabled**: Components are forced into a unhovered state whenever `disabled` is active, regardless of `hovered` or `computedHover` values.  
 - **On re-enable**:
     - **Auto mode (internal hover observer)**: The component immediately re-evaluates based on the current pointer position and containment.  
     - **Explicit (`true`/`false`) or external (`computedHover`) modes**: The component resumes following the provided value.  
@@ -121,18 +121,18 @@ The hook manages transitions between `hovered` and `leaved` states using a unifi
 
 ### `useHoverStatePhaseEvents(props, hoverPhase)`
 
-Emits lifecycle events in response to hover/leave phase transitions.
+Emits lifecycle events in response to hover/unhover phase transitions.
 
 This hook observes the resolved `hoverPhase` from `useHoverBehaviorState()` and triggers the appropriate callbacks defined in `HoverStatePhaseEventProps`, such as:
 
 - `onHoveringStart`
 - `onHoveringEnd`
-- `onLeavingStart`
-- `onLeavingEnd`
+- `onUnhoveringStart`
+- `onUnhoveringEnd`
 
 ### `useHoverState(props, options?)`
 
-Resolves the current hovered/leaved state for a fully controlled component.
+Resolves the current hovered/unhovered state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `hovered` state and **forward** it to a base component.
 
@@ -149,20 +149,20 @@ Unlike `useHoverBehaviorState()`, which handles animation and lifecycle, `useHov
 ```ts
 import {
     // Hover Selectors:
-    isHoveredSelector,           // Targets `.is-hovered` class
-    isLeavedSelector,            // Targets `.is-leaved` class
-    isHoveringSelector,          // Targets `.is-hovering` class
-    isLeavingSelector,           // Targets `.is-leaving` class
-    isHoveringOrHoveredSelector, // Targets `.is-hovering` and `.is-hovered` class
-    isLeavingOrLeavedSelector,   // Targets `.is-leaving` and `.is-leaved` class
+    isHoveredSelector,               // Targets `.is-hovered` class
+    isUnhoveredSelector,             // Targets `.is-unhovered` class
+    isHoveringSelector,              // Targets `.is-hovering` class
+    isUnhoveringSelector,            // Targets `.is-unhovering` class
+    isHoveringOrHoveredSelector,     // Targets `.is-hovering` and `.is-hovered` class
+    isUnhoveringOrUnhoveredSelector, // Targets `.is-unhovering` and `.is-unhovered` class
     
     // Conditional styling helpers:
-    ifHovered,           // Applies the given `styles` to elements in the fully hovered state.
-    ifLeaved,            // Applies the given `styles` to elements in the fully leaved state.
-    ifHovering,          // Applies the given `styles` to elements currently in the hovering transition.
-    ifLeaving,           // Applies the given `styles` to elements currently in the leaving transition.
-    ifHoveringOrHovered, // Applies the given `styles` to elements that are either hovering or fully hovered.
-    ifLeavingOrLeaved,   // Applies the given `styles` to elements that are either leaving or fully leaved.
+    ifHovered,               // Applies the given `styles` to elements in the fully hovered state.
+    ifUnhovered,             // Applies the given `styles` to elements in the fully unhovered state.
+    ifHovering,              // Applies the given `styles` to elements currently in the hovering transition.
+    ifUnhovering,            // Applies the given `styles` to elements currently in the unhovering transition.
+    ifHoveringOrHovered,     // Applies the given `styles` to elements that are either hovering or fully hovered.
+    ifUnhoveringOrUnhovered, // Applies the given `styles` to elements that are either unhovering or fully unhovered.
 } from '@reusable-ui/hover-state';
 import { style, rule } from '@cssfn/core';
 
@@ -171,7 +171,7 @@ export const componentStyle = () => style({
     ...ifHoveringOrHovered({
         outline: '2px solid blue',
     }),
-    ...ifLeavingOrLeaved({
+    ...ifUnhoveringOrUnhovered({
         outline: 'none',
     }),
     
@@ -179,7 +179,7 @@ export const componentStyle = () => style({
     ...rule(isHoveringOrHoveredSelector, { // equivalent to `ifHoveringOrHovered`
         boxShadow: '0 0 0 2px blue',
     }),
-    ...rule(isLeavingOrLeavedSelector, { // equivalent to `ifLeavingOrLeaved`
+    ...rule(isUnhoveringOrUnhoveredSelector, { // equivalent to `ifUnhoveringOrUnhovered`
         boxShadow: 'none',
     }),
 });
@@ -191,19 +191,19 @@ export const componentStyle = () => style({
 
 ### `usesHoverState(options?: CssHoverStateOptions): CssHoverState`
 
-Generates CSS rules that conditionally apply the hover/leave animations based on current hovered state, and exposes hover/leave-related CSS variables for conditional animation.
+Generates CSS rules that conditionally apply the hover/unhover animations based on current hovered state, and exposes hover/unhover-related CSS variables for conditional animation.
 
 #### Supporting Variables (Advanced Use)
 
 These variables are only active during their respective transition phases.  
 Use `switchOf(...)` to ensure graceful fallback when inactive.
 
-| Variable            | Active When...                  | Purpose                     |
-|---------------------|---------------------------------|-----------------------------|
-| `animationHovering` | `.is-hovering`                  | Triggers hovering animation |
-| `animationLeaving`  | `.is-leaving`                   | Triggers leaving animation  |
-| `isHovered`         | `.is-hovered` or `.is-hovering` | Styling for hovered state   |
-| `isLeaved`          | `.is-leaved` or `.is-leaving`   | Styling for leaved state    |
+| Variable              | Active When...                      | Purpose                       |
+|-----------------------|-------------------------------------|-------------------------------|
+| `animationHovering`   | `.is-hovering`                      | Triggers hovering animation   |
+| `animationUnhovering` | `.is-unhovering`                    | Triggers unhovering animation |
+| `isHovered`           | `.is-hovered` or `.is-hovering`     | Styling for hovered state     |
+| `isUnhovered`         | `.is-unhovered` or `.is-unhovering` | Styling for unhovered state   |
 
 #### 💡 Usage Example
 
@@ -211,7 +211,7 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 // Animation feature:
 import { usesAnimationFeature } from '@reusable-ui/animation-feature';
 
-// Hovered/leaved state:
+// Hovered/unhovered state:
 import { usesHoverState } from '@reusable-ui/hover-state';
 
 // CSS-in-JS:
@@ -225,10 +225,10 @@ export const hoverableBoxStyle = () => {
     
     const {
         hoverStateRule,
-        hoverStateVars: { isHovered, isLeaved },
+        hoverStateVars: { isHovered, isUnhovered },
     } = usesHoverState({
-        animationHovering : 'var(--box-hovering)',
-        animationLeaving  : 'var(--box-leaving)',
+        animationHovering   : 'var(--box-hovering)',
+        animationUnhovering : 'var(--box-unhovering)',
     });
     
     return style({
@@ -238,7 +238,7 @@ export const hoverableBoxStyle = () => {
         // Apply animation feature rules:
         ...animationFeatureRule(),
         
-        // Apply hovered/leaved state rules:
+        // Apply hovered/unhovered state rules:
         ...hoverStateRule(),
         
         // Define hovering animation:
@@ -256,13 +256,13 @@ export const hoverableBoxStyle = () => {
             },
         }),
         
-        // Define leaving animation:
+        // Define unhovering animation:
         ...vars({
-            '--box-leaving': [
-                ['0.3s', 'ease-out', 'both', 'outline-leaving'],
+            '--box-unhovering': [
+                ['0.3s', 'ease-out', 'both', 'outline-unhovering'],
             ],
         }),
-        ...keyframes('outline-leaving', {
+        ...keyframes('outline-unhovering', {
             from: {
                 outline: '2px solid blue',
             },
@@ -273,12 +273,12 @@ export const hoverableBoxStyle = () => {
         
         // Define final outline based on lifecycle state:
         ...fallback({
-            '--outline-hovered' : `${isHovered} 2px solid blue`,
+            '--outline-hovered'   : `${isHovered} 2px solid blue`,
         }),
         ...fallback({
-            '--outline-leaved'  : `${isLeaved} none`,
+            '--outline-unhovered' : `${isUnhovered} none`,
         }),
-        outline: 'var(--outline-hovered, var(--outline-leaved))',
+        outline: 'var(--outline-hovered, var(--outline-unhovered))',
         
         // Apply composed animations:
         animation,
@@ -288,10 +288,10 @@ export const hoverableBoxStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationHovering` and `animationLeaving` variables are only defined during **hovering** and **leaving** phases.
+The `animationHovering` and `animationUnhovering` variables are only defined during **hovering** and **unhovering** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
-Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining hover/leave animations with other state-driven transitions.
+Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining hover/unhover animations with other state-driven transitions.
 
 ---
 

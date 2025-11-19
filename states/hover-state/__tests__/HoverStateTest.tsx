@@ -14,7 +14,7 @@ import { useHoverStateTestStyles } from './HoverStateTest.loader.js'
 
 const animationPattern = [
     'test-hovering',
-    'test-leaving',
+    'test-unhovering',
 ];
 
 export interface HoverStateTestProps
@@ -98,7 +98,7 @@ export const HoverStateTest = (props: HoverStateTestProps) => {
             <div
                 ref={mergedRef}
                 data-testid="hover-state-test"
-                data-state={hovered ? 'hovered' : 'leaved'}
+                data-state={hovered ? 'hovered' : 'unhovered'}
                 className={`${styles.main} ${hoverClassname}`}
                 onAnimationStart={handleMergedAnimationStart}
                 onAnimationEnd={handleMergedAnimationEnd}

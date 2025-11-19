@@ -38,38 +38,38 @@ import {
  * 
  * Excludes elements currently in the hovering transition.
  */
-export const isHoveredSelector           : CssSelectorCollection = '.is-hovered';
+export const isHoveredSelector               : CssSelectorCollection = '.is-hovered';
 
 /**
- * A CSS selector targeting elements in the fully leaved state.
+ * A CSS selector targeting elements in the fully unhovered state.
  * 
- * Excludes elements currently in the leaving transition.
+ * Excludes elements currently in the unhovering transition.
  */
-export const isLeavedSelector            : CssSelectorCollection = '.is-leaved';
+export const isUnhoveredSelector             : CssSelectorCollection = '.is-unhovered';
 
 /**
  * A CSS selector targeting elements currently in the hovering transition.
  * 
  * Excludes elements that have already reached the hovered state.
  */
-export const isHoveringSelector          : CssSelectorCollection = '.is-hovering';
+export const isHoveringSelector              : CssSelectorCollection = '.is-hovering';
 
 /**
- * A CSS selector targeting elements currently in the leaving transition.
+ * A CSS selector targeting elements currently in the unhovering transition.
  * 
- * Excludes elements that have already reached the leaved state.
+ * Excludes elements that have already reached the unhovered state.
  */
-export const isLeavingSelector           : CssSelectorCollection = '.is-leaving';
+export const isUnhoveringSelector            : CssSelectorCollection = '.is-unhovering';
 
 /**
  * A CSS selector targeting elements that are either hovering or fully hovered.
  */
-export const isHoveringOrHoveredSelector : CssSelectorCollection = ':is(.is-hovering, .is-hovered)';
+export const isHoveringOrHoveredSelector     : CssSelectorCollection = ':is(.is-hovering, .is-hovered)';
 
 /**
- * A CSS selector targeting elements that are either leaving or fully leaved.
+ * A CSS selector targeting elements that are either unhovering or fully unhovered.
  */
-export const isLeavingOrLeavedSelector   : CssSelectorCollection = ':is(.is-leaving, .is-leaved)';
+export const isUnhoveringOrUnhoveredSelector : CssSelectorCollection = ':is(.is-unhovering, .is-unhovered)';
 
 
 
@@ -91,27 +91,27 @@ export const isLeavingOrLeavedSelector   : CssSelectorCollection = ':is(.is-leav
  * });
  * ```
  */
-export const ifHovered           = (styles: CssStyleCollection): CssRule => rule(isHoveredSelector           , styles);
+export const ifHovered               = (styles: CssStyleCollection): CssRule => rule(isHoveredSelector               , styles);
 
 /**
- * Applies the given `styles` to elements in the fully leaved state.
+ * Applies the given `styles` to elements in the fully unhovered state.
  * 
- * Excludes elements currently in the leaving transition.
+ * Excludes elements currently in the unhovering transition.
  * 
- * @param styles The styles applied to elements in the fully leaved state.
- * @returns A `CssRule` that applies the given `styles` for elements in the fully leaved state.
+ * @param styles The styles applied to elements in the fully unhovered state.
+ * @returns A `CssRule` that applies the given `styles` for elements in the fully unhovered state.
  * 
  * @example
  * ```ts
  * export const componentStyle = () => style({
  *     fontSize: '1rem',
- *     ...ifLeaved({
+ *     ...ifUnhovered({
  *         outline: 'none',
  *     }),
  * });
  * ```
  */
-export const ifLeaved            = (styles: CssStyleCollection): CssRule => rule(isLeavedSelector            , styles);
+export const ifUnhovered             = (styles: CssStyleCollection): CssRule => rule(isUnhoveredSelector             , styles);
 
 /**
  * Applies the given `styles` to elements currently in the hovering transition.
@@ -131,27 +131,27 @@ export const ifLeaved            = (styles: CssStyleCollection): CssRule => rule
  * });
  * ```
  */
-export const ifHovering          = (styles: CssStyleCollection): CssRule => rule(isHoveringSelector          , styles);
+export const ifHovering              = (styles: CssStyleCollection): CssRule => rule(isHoveringSelector              , styles);
 
 /**
- * Applies the given `styles` to elements currently in the leaving transition.
+ * Applies the given `styles` to elements currently in the unhovering transition.
  * 
- * Excludes elements that have already reached the leaved state.
+ * Excludes elements that have already reached the unhovered state.
  * 
- * @param styles The styles applied to elements currently in the leaving transition.
- * @returns A `CssRule` that applies the given `styles` for elements currently in the leaving transition.
+ * @param styles The styles applied to elements currently in the unhovering transition.
+ * @returns A `CssRule` that applies the given `styles` for elements currently in the unhovering transition.
  * 
  * @example
  * ```ts
  * export const componentStyle = () => style({
  *     fontSize: '1rem',
- *     ...ifLeaving({
+ *     ...ifUnhovering({
  *         outline: 'none',
  *     }),
  * });
  * ```
  */
-export const ifLeaving           = (styles: CssStyleCollection): CssRule => rule(isLeavingSelector           , styles);
+export const ifUnhovering            = (styles: CssStyleCollection): CssRule => rule(isUnhoveringSelector            , styles);
 
 /**
  * Applies the given `styles` to elements that are either hovering or fully hovered.
@@ -169,53 +169,53 @@ export const ifLeaving           = (styles: CssStyleCollection): CssRule => rule
  * });
  * ```
  */
-export const ifHoveringOrHovered = (styles: CssStyleCollection): CssRule => rule(isHoveringOrHoveredSelector , styles);
+export const ifHoveringOrHovered     = (styles: CssStyleCollection): CssRule => rule(isHoveringOrHoveredSelector     , styles);
 
 /**
- * Applies the given `styles` to elements that are either leaving or fully leaved.
+ * Applies the given `styles` to elements that are either unhovering or fully unhovered.
  * 
- * @param styles The styles applied to elements that are either leaving or fully leaved.
- * @returns A `CssRule` that applies the given `styles` for elements that are either leaving or fully leaved.
+ * @param styles The styles applied to elements that are either unhovering or fully unhovered.
+ * @returns A `CssRule` that applies the given `styles` for elements that are either unhovering or fully unhovered.
  * 
  * @example
  * ```ts
  * export const componentStyle = () => style({
  *     fontSize: '1rem',
- *     ...ifLeavingOrLeaved({
+ *     ...ifUnhoveringOrUnhovered({
  *         outline: 'none',
  *     }),
  * });
  * ```
  */
-export const ifLeavingOrLeaved   = (styles: CssStyleCollection): CssRule => rule(isLeavingOrLeavedSelector   , styles);
+export const ifUnhoveringOrUnhovered = (styles: CssStyleCollection): CssRule => rule(isUnhoveringOrUnhoveredSelector , styles);
 
 
 
 /**
- * A strongly typed global mapping of hover/leave-related CSS variables for conditional animation.
+ * A strongly typed global mapping of hover/unhover-related CSS variables for conditional animation.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
 const [hoverStateVars] = cssVars<HoverStateVars>({ prefix: 'ho', minify: false });
 
-// Register the hover/leave-related animations globally for composing a unified animation stack across state packages:
+// Register the hover/unhover-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(hoverStateVars.animationHovering);
-animationRegistry.registerAnimation(hoverStateVars.animationLeaving);
+animationRegistry.registerAnimation(hoverStateVars.animationUnhovering);
 
 /**
- * Generates CSS rules that conditionally apply the hover/leave animations based on current hovered state,
- * and exposes hover/leave-related CSS variables for conditional animation.
+ * Generates CSS rules that conditionally apply the hover/unhover animations based on current hovered state,
+ * and exposes hover/unhover-related CSS variables for conditional animation.
  * 
- * @param options - An optional configuration for customizing hover/leave animations.
- * @returns A CSS API for conditionally apply the hover/leave animations based on current hovered state.
+ * @param options - An optional configuration for customizing hover/unhover animations.
+ * @returns A CSS API for conditionally apply the hover/unhover animations based on current hovered state.
  *
  * @example
  * ```ts
  * // Animation feature:
  * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
  * 
- * // Hovered/leaved state:
+ * // Hovered/unhovered state:
  * import { usesHoverState } from '@reusable-ui/hover-state';
  * 
  * // CSS-in-JS:
@@ -229,10 +229,10 @@ animationRegistry.registerAnimation(hoverStateVars.animationLeaving);
  *     
  *     const {
  *         hoverStateRule,
- *         hoverStateVars: { isHovered, isLeaved },
+ *         hoverStateVars: { isHovered, isUnhovered },
  *     } = usesHoverState({
- *         animationHovering : 'var(--box-hovering)',
- *         animationLeaving  : 'var(--box-leaving)',
+ *         animationHovering   : 'var(--box-hovering)',
+ *         animationUnhovering : 'var(--box-unhovering)',
  *     });
  *     
  *     return style({
@@ -242,7 +242,7 @@ animationRegistry.registerAnimation(hoverStateVars.animationLeaving);
  *         // Apply animation feature rules:
  *         ...animationFeatureRule(),
  *         
- *         // Apply hovered/leaved state rules:
+ *         // Apply hovered/unhovered state rules:
  *         ...hoverStateRule(),
  *         
  *         // Define hovering animation:
@@ -260,13 +260,13 @@ animationRegistry.registerAnimation(hoverStateVars.animationLeaving);
  *             },
  *         }),
  *         
- *         // Define leaving animation:
+ *         // Define unhovering animation:
  *         ...vars({
- *             '--box-leaving': [
- *                 ['0.3s', 'ease-out', 'both', 'outline-leaving'],
+ *             '--box-unhovering': [
+ *                 ['0.3s', 'ease-out', 'both', 'outline-unhovering'],
  *             ],
  *         }),
- *         ...keyframes('outline-leaving', {
+ *         ...keyframes('outline-unhovering', {
  *             from: {
  *                 outline: '2px solid blue',
  *             },
@@ -277,12 +277,12 @@ animationRegistry.registerAnimation(hoverStateVars.animationLeaving);
  *         
  *         // Define final outline based on lifecycle state:
  *         ...fallback({
- *             '--outline-hovered' : `${isHovered} 2px solid blue`,
+ *             '--outline-hovered'   : `${isHovered} 2px solid blue`,
  *         }),
  *         ...fallback({
- *             '--outline-leaved'  : `${isLeaved} none`,
+ *             '--outline-unhovered' : `${isUnhovered} none`,
  *         }),
- *         outline: 'var(--outline-hovered, var(--outline-leaved))',
+ *         outline: 'var(--outline-hovered, var(--outline-unhovered))',
  *         
  *         // Apply composed animations:
  *         animation,
@@ -293,8 +293,8 @@ animationRegistry.registerAnimation(hoverStateVars.animationLeaving);
 export const usesHoverState = (options?: CssHoverStateOptions): CssHoverState => {
     // Extract options and assign defaults:
     const {
-        animationHovering = 'none', // Defaults to `none`.
-        animationLeaving  = 'none', // Defaults to `none`.
+        animationHovering   = 'none', // Defaults to `none`.
+        animationUnhovering = 'none', // Defaults to `none`.
     } = options ?? {};
     
     
@@ -305,14 +305,14 @@ export const usesHoverState = (options?: CssHoverStateOptions): CssHoverState =>
                 // Apply hovering animation during the hovering phase:
                 ...ifHovering(
                     vars({
-                        [hoverStateVars.animationHovering] : animationHovering, // Activate the animation (if provided).
+                        [hoverStateVars.animationHovering  ] : animationHovering,   // Activate the animation (if provided).
                     })
                 ),
                 
-                // Apply leaving animation during the leaving phase:
-                ...ifLeaving(
+                // Apply unhovering animation during the unhovering phase:
+                ...ifUnhovering(
                     vars({
-                        [hoverStateVars.animationLeaving ] : animationLeaving,  // Activate the animation (if provided).
+                        [hoverStateVars.animationUnhovering] : animationUnhovering, // Activate the animation (if provided).
                     })
                 ),
                 
@@ -321,16 +321,16 @@ export const usesHoverState = (options?: CssHoverStateOptions): CssHoverState =>
                 // Mark as hovered during both hovering and fully hovered states:
                 ...ifHoveringOrHovered(
                     vars({
-                        [hoverStateVars.isHovered] : '',      // Valid    when either hovering or fully hovered.
-                        [hoverStateVars.isLeaved ] : 'unset', // Poisoned when either hovering or fully hovered.
+                        [hoverStateVars.isHovered  ] : '',      // Valid    when either hovering or fully hovered.
+                        [hoverStateVars.isUnhovered] : 'unset', // Poisoned when either hovering or fully hovered.
                     })
                 ),
                 
-                // Mark as leaved during both leaving and fully leaved states:
-                ...ifLeavingOrLeaved(
+                // Mark as unhovered during both unhovering and fully unhovered states:
+                ...ifUnhoveringOrUnhovered(
                     vars({
-                        [hoverStateVars.isHovered] : 'unset', // Poisoned when either leaving or fully leaved.
-                        [hoverStateVars.isLeaved ] : '',      // Valid    when either leaving or fully leaved.
+                        [hoverStateVars.isHovered  ] : 'unset', // Poisoned when either unhovering or fully unhovered.
+                        [hoverStateVars.isUnhovered] : '',      // Valid    when either unhovering or fully unhovered.
                     })
                 ),
             }),

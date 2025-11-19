@@ -6,12 +6,12 @@ import {
 
 
 /**
- * Resolves the current hover/leave lifecycle phase based on hover state and transition status.
+ * Resolves the current hover/unhover lifecycle phase based on hover state and transition status.
  * 
  * - If a transition is in progress, returns a transitional phase:
- *   - `'hovering'` or `'leaving'`
+ *   - `'hovering'` or `'unhovering'`
  * - Otherwise, returns the settled phase:
- *   - `'hovered'` or `'leaved'`
+ *   - `'hovered'` or `'unhovered'`
  * 
  * @param settledHovered - The currently settled (laggy) hover state.
  * @param isTransitioning - Whether a transition is currently in progress.
@@ -19,27 +19,27 @@ import {
  */
 export const resolveHoverPhase = (settledHovered: boolean, isTransitioning: boolean): HoverPhase => {
     if (isTransitioning) {
-        return settledHovered ? 'hovering' : 'leaving';
+        return settledHovered ? 'hovering' : 'unhovering';
     } // if
     
     
     
-    return settledHovered ? 'hovered' : 'leaved';
+    return settledHovered ? 'hovered' : 'unhovered';
 };
 
 
 
 /**
- * Resolves the CSS class name for the given hover/leave lifecycle phase.
+ * Resolves the CSS class name for the given hover/unhover lifecycle phase.
  * 
  * Maps each `hoverPhase` to a semantic class name:
  * - Resolved phases:
- *   - `'hovered'`  → `'is-hovered'`
- *   - `'leaved'`   → `'is-leaved'`
+ *   - `'hovered'`    → `'is-hovered'`
+ *   - `'unhovered'`  → `'is-unhovered'`
  * 
  * - Transitioning phases:
- *   - `'hovering'` → `'is-hovering'`
- *   - `'leaving'`  → `'is-leaving'`
+ *   - `'hovering'`   → `'is-hovering'`
+ *   - `'unhovering'` → `'is-unhovering'`
  * 
  * @param hoverPhase - The current lifecycle phase of the component.
  * @returns A CSS class name reflecting the phase.

@@ -20,7 +20,7 @@ interface HoverStateEventTestCase {
     /**
      * Initial hover state.
      * - `true`   : hovered
-     * - `false`  : leaved
+     * - `false`  : unhovered
      * - `'auto'` : automatic determine
      */
     hovered        : boolean | 'auto'
@@ -28,7 +28,7 @@ interface HoverStateEventTestCase {
     /**
      * Initial computed hover state.
      * - `true`      : hovered
-     * - `false`     : leaved
+     * - `false`     : unhovered
      * - `undefined` : use default behavior.
      */
     computedHover ?: boolean
@@ -53,7 +53,7 @@ interface HoverStateEventTestCase {
         /**
          * New value computed hover state.
          * - `true`      : hovered
-         * - `false`     : leaved
+         * - `false`     : unhovered
          * - `undefined` : skip updating this part.
          */
         computedHover        ?: boolean
@@ -71,12 +71,12 @@ interface HoverStateEventTestCase {
         
         /**
          * The expected hover state.
-         * - `'hovering'` : onHoveringStart event has been invoked
-         * - `'hovered'`  : onHoveringEnd event has been invoked
-         * - `'leaving'` : onLeavingStart event has been invoked
-         * - `'leaved'`  : onLeavingEnd event has been invoked
-         * - `null`       : no event has been invoked
-         * - `undefined`  : nothing to expect
+         * - `'hovering'`   : onHoveringStart event has been invoked
+         * - `'hovered'`    : onHoveringEnd event has been invoked
+         * - `'unhovering'` : onUnhoveringStart event has been invoked
+         * - `'unhovered'`  : onUnhoveringEnd event has been invoked
+         * - `null`         : no event has been invoked
+         * - `undefined`    : nothing to expect
          */
         expectedEvent        ?: HoverPhase | null
     }[]
@@ -92,12 +92,12 @@ test.describe('useHoverStatePhaseEvents', () => {
             please do it between +200 ms after the expected starts and -200 ms before the expected ends.
         */
         {
-            title         : 'Should be respond to change from leaved to hovered',
+            title         : 'Should be respond to change from unhovered to hovered',
             hovered       : 'auto',
             computedHover : false,
             updates       : [
                 {
-                    title                : 'Should be leaved and no animation',
+                    title                : 'Should be unhovered and no animation',
                     expectedEvent        : null,
                 },
                 {
@@ -127,7 +127,7 @@ test.describe('useHoverStatePhaseEvents', () => {
             ],
         },
         {
-            title         : 'Should be respond to change from hovered to leaved',
+            title         : 'Should be respond to change from hovered to unhovered',
             hovered       : 'auto',
             computedHover : true,
             updates       : [
@@ -136,38 +136,38 @@ test.describe('useHoverStatePhaseEvents', () => {
                     expectedEvent        : null,
                 },
                 {
-                    title                : 'Change to leaved',
+                    title                : 'Change to unhovered',
                     computedHover        : false,
                     
                     delay                : 0, // wait for async process
                 },
                 {
-                    title                : 'The leaving animation should be running and the hover-state is still leaved',
+                    title                : 'The unhovering animation should be running and the hover-state is still unhovered',
                     
                     delay                : 200,
-                    expectedEvent        : 'leaving',
+                    expectedEvent        : 'unhovering',
                 },
                 {
-                    title                : 'The leaving animation should be running and the hover-state is still leaved',
+                    title                : 'The unhovering animation should be running and the hover-state is still unhovered',
                     
                     delay                : 500, // 200 + 500 = 700 ms, the animation should still running.
-                    expectedEvent        : 'leaving',
+                    expectedEvent        : 'unhovering',
                 },
                 {
-                    title                : 'The hovering animation should be stopped and the hover-state is still leaved',
+                    title                : 'The hovering animation should be stopped and the hover-state is still unhovered',
                     
                     delay                : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
-                    expectedEvent        : 'leaved',
+                    expectedEvent        : 'unhovered',
                 },
             ],
         },
         {
-            title         : 'Should be respond to change from leaved to hovered then leaved',
+            title         : 'Should be respond to change from unhovered to hovered then unhovered',
             hovered       : 'auto',
             computedHover : false,
             updates       : [
                 {
-                    title                : 'Should be leaved and no animation',
+                    title                : 'Should be unhovered and no animation',
                     expectedEvent        : null,
                 },
                 {
@@ -195,33 +195,33 @@ test.describe('useHoverStatePhaseEvents', () => {
                     expectedEvent        : 'hovered',
                 },
                 {
-                    title                : 'Change to leaved',
+                    title                : 'Change to unhovered',
                     computedHover        : false,
                     
                     delay                : 0, // wait for async process
                 },
                 {
-                    title                : 'The leaving animation should be running and the hover-state is still leaved',
+                    title                : 'The unhovering animation should be running and the hover-state is still unhovered',
                     
                     delay                : 200,
-                    expectedEvent        : 'leaving',
+                    expectedEvent        : 'unhovering',
                 },
                 {
-                    title                : 'The leaving animation should be running and the hover-state is still leaved',
+                    title                : 'The unhovering animation should be running and the hover-state is still unhovered',
                     
                     delay                : 500, // 200 + 500 = 700 ms, the animation should still running.
-                    expectedEvent        : 'leaving',
+                    expectedEvent        : 'unhovering',
                 },
                 {
-                    title                : 'The leaving animation should be stopped and the hover-state is still leaved',
+                    title                : 'The unhovering animation should be stopped and the hover-state is still unhovered',
                     
                     delay                : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
-                    expectedEvent        : 'leaved',
+                    expectedEvent        : 'unhovered',
                 },
             ],
         },
         {
-            title         : 'Should be respond to change from hovered to leaved then hovered',
+            title         : 'Should be respond to change from hovered to unhovered then hovered',
             hovered       : 'auto',
             computedHover : true,
             updates       : [
@@ -230,28 +230,28 @@ test.describe('useHoverStatePhaseEvents', () => {
                     expectedEvent        : null,
                 },
                 {
-                    title                : 'Change to leaved',
+                    title                : 'Change to unhovered',
                     computedHover        : false,
                     
                     delay                : 0, // wait for async process
                 },
                 {
-                    title                : 'The leaving animation should be running and the hover-state is still leaved',
+                    title                : 'The unhovering animation should be running and the hover-state is still unhovered',
                     
                     delay                : 200,
-                    expectedEvent        : 'leaving',
+                    expectedEvent        : 'unhovering',
                 },
                 {
-                    title                : 'The leaving animation should be running and the hover-state is still leaved',
+                    title                : 'The unhovering animation should be running and the hover-state is still unhovered',
                     
                     delay                : 500, // 200 + 500 = 700 ms, the animation should still running.
-                    expectedEvent        : 'leaving',
+                    expectedEvent        : 'unhovering',
                 },
                 {
-                    title                : 'The leaving animation should be stopped and the hover-state is still leaved',
+                    title                : 'The unhovering animation should be stopped and the hover-state is still unhovered',
                     
                     delay                : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
-                    expectedEvent        : 'leaved',
+                    expectedEvent        : 'unhovered',
                 },
                 {
                     title                : 'Change to hovered',
@@ -280,12 +280,12 @@ test.describe('useHoverStatePhaseEvents', () => {
             ],
         },
         {
-            title         : 'Should be respond to hover, leave, and re-hover quickly',
+            title         : 'Should be respond to hover, unhover, and re-hover quickly',
             hovered       : 'auto',
             computedHover : false,
             updates       : [
                 {
-                    title                : 'Should be leaved and no animation',
+                    title                : 'Should be unhovered and no animation',
                     expectedEvent        : null,
                 },
                 {
@@ -296,14 +296,14 @@ test.describe('useHoverStatePhaseEvents', () => {
                     expectedEvent        : 'hovering',
                 },
                 {
-                    title                : 'Leave before hovering finishes',
+                    title                : 'Unhover before hovering finishes',
                     computedHover        : false,
                     
                     delay                : 200,
                     expectedEvent        : 'hovering',  // Still hovering (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
-                    title                : 'Re-hover again before leaving finishes',
+                    title                : 'Re-hover again before unhovering finishes',
                     computedHover        : true,
                     
                     delay                : 200,
@@ -318,7 +318,7 @@ test.describe('useHoverStatePhaseEvents', () => {
             ],
         },
         {
-            title         : 'Should be respond to leave, hover, and re-leave quickly',
+            title         : 'Should be respond to unhover, hover, and re-unhover quickly',
             hovered       : 'auto',
             computedHover : true,
             updates       : [
@@ -327,31 +327,31 @@ test.describe('useHoverStatePhaseEvents', () => {
                     expectedEvent        : null,
                 },
                 {
-                    title                : 'Leave',
+                    title                : 'Unhover',
                     computedHover        : false,
                     
                     delay                : 200,
-                    expectedEvent        : 'leaving',
+                    expectedEvent        : 'unhovering',
                 },
                 {
-                    title                : 'Hover before leaving finishes',
+                    title                : 'Hover before unhovering finishes',
                     computedHover        : true,
                     
                     delay                : 200,
-                    expectedEvent        : 'leaving',  // Still leaving (600ms remaining) — cannot cancel mid-flight.
+                    expectedEvent        : 'unhovering',  // Still unhovering (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
-                    title                : 'Re-leave again before hovering finishes',
+                    title                : 'Re-unhover again before hovering finishes',
                     computedHover        : false,
                     
                     delay                : 200,
-                    expectedEvent        : 'leaving', // Still in original leaving sequence (400ms remaining).
+                    expectedEvent        : 'unhovering', // Still in original unhovering sequence (400ms remaining).
                 },
                 {
-                    title                : 'Wait for final leaving to complete',
+                    title                : 'Wait for final unhovering to complete',
                     
                     delay                : 600, // Includes additional margin to guarantee completion.
-                    expectedEvent        : 'leaved', // No running animation.
+                    expectedEvent        : 'unhovered', // No running animation.
                 },
             ],
         },
@@ -380,12 +380,12 @@ test.describe('useHoverStatePhaseEvents', () => {
                 expect(hoverPhase).toBe('hovered');
                 lastHoverPhase = hoverPhase;
             };
-            const handleLeavingStart : ValueChangeEventHandler<HoverPhase, unknown> = (hoverPhase) => {
-                expect(hoverPhase).toBe('leaving');
+            const handleUnhoveringStart : ValueChangeEventHandler<HoverPhase, unknown> = (hoverPhase) => {
+                expect(hoverPhase).toBe('unhovering');
                 lastHoverPhase = hoverPhase;
             };
-            const handleLeavingEnd : ValueChangeEventHandler<HoverPhase, unknown> = (hoverPhase) => {
-                expect(hoverPhase).toBe('leaved');
+            const handleUnhoveringEnd : ValueChangeEventHandler<HoverPhase, unknown> = (hoverPhase) => {
+                expect(hoverPhase).toBe('unhovered');
                 lastHoverPhase = hoverPhase;
             };
             
@@ -401,8 +401,8 @@ test.describe('useHoverStatePhaseEvents', () => {
                     
                     onHoveringStart={handleHoveringStart}
                     onHoveringEnd={handleHoveringEnd}
-                    onLeavingStart={handleLeavingStart}
-                    onLeavingEnd={handleLeavingEnd}
+                    onUnhoveringStart={handleUnhoveringStart}
+                    onUnhoveringEnd={handleUnhoveringEnd}
                 />
             );
             
@@ -442,8 +442,8 @@ test.describe('useHoverStatePhaseEvents', () => {
                         
                         onHoveringStart={handleHoveringStart}
                         onHoveringEnd={handleHoveringEnd}
-                        onLeavingStart={handleLeavingStart}
-                        onLeavingEnd={handleLeavingEnd}
+                        onUnhoveringStart={handleUnhoveringStart}
+                        onUnhoveringEnd={handleUnhoveringEnd}
                     />
                 );
                 

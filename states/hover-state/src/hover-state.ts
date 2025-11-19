@@ -52,7 +52,7 @@ import {
 
 
 /**
- * Resolves the current hovered/leaved state for a fully controlled component.
+ * Resolves the current hovered/unhovered state for a fully controlled component.
  * 
  * This hook is intended for components that **consume** the resolved `hovered` state and **forward** it to a base component.
  * 
@@ -66,8 +66,8 @@ import {
  * @template TElement - The type of the target DOM element.
  * 
  * @param props - The component props that may include a controlled `hovered` value and derived `computedHover` value.
- * @param options - An optional configuration for customizing hover/leave behavior.
- * @returns The resolved hovered/leaved state and event handlers for mouseenter/mouseleave events.
+ * @param options - An optional configuration for customizing hover/unhover behavior.
+ * @returns The resolved hovered/unhovered state and event handlers for mouseenter/mouseleave events.
  */
 export const useHoverState = <TElement extends Element = HTMLElement>(props: HoverStateProps, options?: Pick<HoverStateOptions, 'defaultHovered'>) : Pick<HoverBehaviorState<TElement>, 'hovered' | 'ref' | 'handleMouseEnter' | 'handleMouseLeave'> => {
     // Extract options and assign defaults:
@@ -110,7 +110,7 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
     // Resolve hover state prior to applying the restricted guard:
     const resolvedHovered       = isExplicitValue ? controlledHovered : resolvedComputedHover;
     
-    // Apply restricted guard — restriction always enforces leave:
+    // Apply restricted guard — restriction always enforces unhover:
     const effectiveHovered      = !isRestricted && resolvedHovered;
     
     
@@ -136,8 +136,8 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
  * @template TElement - The type of the target DOM element.
  * 
  * @param props - The component props that may include a controlled `hovered` value, derived `computedHover` value, and `onHoverUpdate` callback.
- * @param options - An optional configuration for customizing hover/leave behavior and animation lifecycle.
- * @returns The resolved hovered/leaved state, current transition phase, associated CSS class name, and animation event handlers.
+ * @param options - An optional configuration for customizing hover/unhover behavior and animation lifecycle.
+ * @returns The resolved hovered/unhovered state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @example
  * ```tsx
@@ -193,9 +193,9 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
  *         computedHover,
  *         ...restProps,
  *     }, {
- *         defaultHovered    : 'auto',                  // Defaults to diagnostic mode.
- *         animationPattern  : ['hovering', 'leaving'], // Matches animation names ending with 'hovering' or 'leaving'.
- *         animationBubbling : false,                   // Ignores bubbling animation events from children.
+ *         defaultHovered    : 'auto',                     // Defaults to diagnostic mode.
+ *         animationPattern  : ['hovering', 'unhovering'], // Matches animation names ending with 'hovering' or 'unhovering'.
+ *         animationBubbling : false,                      // Ignores bubbling animation events from children.
  *     });
  *     
  *     return (
@@ -206,7 +206,7 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
  *             onAnimationEnd={handleAnimationEnd}
  *         >
  *             {hovered  && <p className={styles.hovered}>Hovered</p>}
- *             {!hovered && <p className={styles.leaved}>Leaved</p>}
+ *             {!hovered && <p className={styles.unhovered}>Unhovered</p>}
  *         </div>
  *     );
  * };
@@ -216,7 +216,7 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
     // Extract options and assign defaults:
     const {
         defaultHovered    = defaultDeclarativeHovered,
-        animationPattern  = ['hovering', 'leaving'], // Matches animation names for transitions
+        animationPattern  = ['hovering', 'unhovering'], // Matches animation names for transitions
         animationBubbling = false,
     } = options ?? {};
     
@@ -256,7 +256,7 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
     // Resolve hover state prior to applying the restricted guard:
     const resolvedHovered       = isExplicitValue ? controlledHovered : resolvedComputedHover;
     
-    // Apply restricted guard — restriction always enforces leave:
+    // Apply restricted guard — restriction always enforces unhover:
     const effectiveHovered      = !isRestricted && resolvedHovered;
     
     // Internal animation lifecycle:
@@ -286,7 +286,7 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
     );
     
     // Derive semantic phase from animation lifecycle:
-    const hoverPhase            = resolveHoverPhase(settledHovered, isTransitioning); // 'hovered', 'leaved', 'hovering', 'leaving'
+    const hoverPhase            = resolveHoverPhase(settledHovered, isTransitioning); // 'hovered', 'unhovered', 'hovering', 'unhovering'
     
     
     
@@ -338,15 +338,15 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
 };
 
 /**
- * Emits lifecycle events in response to hover/leave phase transitions.
+ * Emits lifecycle events in response to hover/unhover phase transitions.
  * 
  * This hook observes the resolved `hoverPhase` from `useHoverBehaviorState()` and triggers
  * the appropriate callbacks defined in `HoverStatePhaseEventProps`, such as:
  * 
  * - `onHoveringStart`
  * - `onHoveringEnd`
- * - `onLeavingStart`
- * - `onLeavingEnd`
+ * - `onUnhoveringStart`
+ * - `onUnhoveringEnd`
  * 
  * @param {HoverStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
  * @param {HoverPhase} hoverPhase - The current phase value returned from `useHoverBehaviorState()`.
@@ -356,8 +356,8 @@ export const useHoverStatePhaseEvents = (props: HoverStatePhaseEventProps, hover
     const {
         onHoveringStart,
         onHoveringEnd,
-        onLeavingStart,
-        onLeavingEnd,
+        onUnhoveringStart,
+        onUnhoveringEnd,
     } = props;
     
     
@@ -373,10 +373,10 @@ export const useHoverStatePhaseEvents = (props: HoverStatePhaseEventProps, hover
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const handleHoverPhaseChange = useStableCallback((hoverPhase: HoverPhase): void => {
         switch (hoverPhase) {
-            case 'hovering' : onHoveringStart?.(hoverPhase, undefined); break;
-            case 'hovered'  : onHoveringEnd?.(hoverPhase, undefined);   break;
-            case 'leaving'  : onLeavingStart?.(hoverPhase, undefined);  break;
-            case 'leaved'   : onLeavingEnd?.(hoverPhase, undefined);    break;
+            case 'hovering'   : onHoveringStart?.(hoverPhase, undefined);   break;
+            case 'hovered'    : onHoveringEnd?.(hoverPhase, undefined);     break;
+            case 'unhovering' : onUnhoveringStart?.(hoverPhase, undefined); break;
+            case 'unhovered'  : onUnhoveringEnd?.(hoverPhase, undefined);   break;
         } // switch
     });
     

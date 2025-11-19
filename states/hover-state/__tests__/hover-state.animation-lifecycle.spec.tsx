@@ -19,7 +19,7 @@ interface HoverStateAnimationTestCase {
     /**
      * Initial hover state.
      * - `true`   : hovered
-     * - `false`  : leaved
+     * - `false`  : unhovered
      * - `'auto'` : automatic determine
      */
     hovered        : boolean | 'auto'
@@ -27,7 +27,7 @@ interface HoverStateAnimationTestCase {
     /**
      * Initial computed hover state.
      * - `true`      : hovered
-     * - `false`     : leaved
+     * - `false`     : unhovered
      * - `undefined` : use default behavior.
      */
     computedHover ?: boolean
@@ -52,7 +52,7 @@ interface HoverStateAnimationTestCase {
         /**
          * New value computed hover state.
          * - `true`      : hovered
-         * - `false`     : leaved
+         * - `false`     : unhovered
          * - `undefined` : skip updating this part.
          */
         computedHover        ?: boolean
@@ -71,7 +71,7 @@ interface HoverStateAnimationTestCase {
         /**
          * The expected presence of running hover animation after the delay.
          * - `true`      : there is a running hovering animation
-         * - `false`     : there is a running leaving animation
+         * - `false`     : there is a running unhovering animation
          * - `0`         : there is no running hover animation
          * - `undefined` : nothing to expect
          */
@@ -88,8 +88,8 @@ interface HoverStateAnimationTestCase {
 
 
 
-const OUTLINE_HOVERED = 'rgb(0, 0, 255) solid 2px'
-const OUTLINE_LEAVED  = 'rgb(0, 0, 0) solid 0px';
+const OUTLINE_HOVERED   = 'rgb(0, 0, 255) solid 2px'
+const OUTLINE_UNHOVERED = 'rgb(0, 0, 0) solid 0px';
 
 
 
@@ -134,46 +134,46 @@ test.describe('useHoverBehaviorState - animation', () => {
             ],
         },
         {
-            title         : 'No running hover animation in all time for initially leaved',
+            title         : 'No running hover animation in all time for initially unhovered',
             hovered       : false,
             computedHover : undefined,
             updates       : [
                 {
                     title                : 'Initially no running animation',
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_LEAVED,
+                    expectedOutline      : OUTLINE_UNHOVERED,
                 },
                 {
                     title                : 'Still no running animation',
                     
                     delay                : 200,
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_LEAVED,
+                    expectedOutline      : OUTLINE_UNHOVERED,
                 },
                 {
                     title                : 'Still no running animation',
                     
                     delay                : 1000,
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_LEAVED,
+                    expectedOutline      : OUTLINE_UNHOVERED,
                 },
                 {
                     title                : 'Still no running animation',
                     
                     delay                : 1000,
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_LEAVED,
+                    expectedOutline      : OUTLINE_UNHOVERED,
                 },
             ],
         },
         {
-            title         : 'Hovered state after update (leaved => hovered)',
+            title         : 'Hovered state after update (unhovered => hovered)',
             hovered       : false,
             updates       : [
                 {
-                    title                : 'Initially leaved',
+                    title                : 'Initially unhovered',
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_LEAVED,
+                    expectedOutline      : OUTLINE_UNHOVERED,
                 },
                 {
                     title                : 'Set hovered to true (immediate)',
@@ -198,7 +198,7 @@ test.describe('useHoverBehaviorState - animation', () => {
             ],
         },
         {
-            title         : 'Leaved state after update (hovered => leaved)',
+            title         : 'Unhovered state after update (hovered => unhovered)',
             hovered       : true,
             updates       : [
                 {
@@ -220,22 +220,22 @@ test.describe('useHoverBehaviorState - animation', () => {
                     expectedRunningHover : false,
                 },
                 {
-                    title                : 'Wait for leaving animation to finish',
+                    title                : 'Wait for unhovering animation to finish',
                     
                     delay                : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_LEAVED,
+                    expectedOutline      : OUTLINE_UNHOVERED,
                 },
             ],
         },
         {
-            title         : 'Hover, leave, and re-hover quickly',
+            title         : 'Hover, unhover, and re-hover quickly',
             hovered       : false,
             updates       : [
                 {
-                    title                : 'Initially leaved',
+                    title                : 'Initially unhovered',
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_LEAVED,
+                    expectedOutline      : OUTLINE_UNHOVERED,
                 },
                 {
                     title                : 'Hover',
@@ -245,14 +245,14 @@ test.describe('useHoverBehaviorState - animation', () => {
                     expectedRunningHover : true,
                 },
                 {
-                    title                : 'Leave before hovering finishes',
+                    title                : 'Unhover before hovering finishes',
                     hovered              : false,
                     
                     delay                : 200,
                     expectedRunningHover : true,  // Still hovering (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
-                    title                : 'Re-hover again before leaving finishes',
+                    title                : 'Re-hover again before unhovering finishes',
                     hovered              : true,
                     
                     delay                : 200,
@@ -268,7 +268,7 @@ test.describe('useHoverBehaviorState - animation', () => {
             ],
         },
         {
-            title         : 'Leave, hover, and re-leave quickly',
+            title         : 'Unhover, hover, and re-unhover quickly',
             hovered       : true,
             updates       : [
                 {
@@ -277,32 +277,32 @@ test.describe('useHoverBehaviorState - animation', () => {
                     expectedOutline      : OUTLINE_HOVERED,
                 },
                 {
-                    title                : 'Leave',
+                    title                : 'Unhover',
                     hovered              : false,
                     
                     delay                : 200,
                     expectedRunningHover : false,
                 },
                 {
-                    title                : 'Hover before leaving finishes',
+                    title                : 'Hover before unhovering finishes',
                     hovered              : true,
                     
                     delay                : 200,
-                    expectedRunningHover : false,  // Still leaving (600ms remaining) — cannot cancel mid-flight.
+                    expectedRunningHover : false,  // Still unhovering (600ms remaining) — cannot cancel mid-flight.
                 },
                 {
-                    title                : 'Re-leave again before hovering finishes',
+                    title                : 'Re-unhover again before hovering finishes',
                     hovered              : false,
                     
                     delay                : 200,
-                    expectedRunningHover : false, // Still in original leaving sequence (400ms remaining).
+                    expectedRunningHover : false, // Still in original unhovering sequence (400ms remaining).
                 },
                 {
-                    title                : 'Wait for final leaving to complete',
+                    title                : 'Wait for final unhovering to complete',
                     
                     delay                : 600, // Includes additional margin to guarantee completion.
                     expectedRunningHover : 0, // No running animation.
-                    expectedOutline      : OUTLINE_LEAVED,
+                    expectedOutline      : OUTLINE_UNHOVERED,
                 },
             ],
         },
@@ -311,9 +311,9 @@ test.describe('useHoverBehaviorState - animation', () => {
             hovered       : false,
             updates       : [
                 {
-                    title                : 'Initially leaved',
+                    title                : 'Initially unhovered',
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_LEAVED,
+                    expectedOutline      : OUTLINE_UNHOVERED,
                 },
                 {
                     title                : 'Hover (first time)',
@@ -336,7 +336,7 @@ test.describe('useHoverBehaviorState - animation', () => {
             ],
         },
         {
-            title         : 'Repeated leaving does not restart animation',
+            title         : 'Repeated unhovering does not restart animation',
             hovered       : true,
             updates       : [
                 {
@@ -345,7 +345,7 @@ test.describe('useHoverBehaviorState - animation', () => {
                     expectedOutline      : OUTLINE_HOVERED,
                 },
                 {
-                    title                : 'Leave (first time)',
+                    title                : 'Unhover (first time)',
                     hovered              : false,
                     delay                : 200,
                     expectedRunningHover : false,
@@ -360,7 +360,7 @@ test.describe('useHoverBehaviorState - animation', () => {
                     title                : 'Wait for final animation to finish',
                     delay                : 800, // Includes additional margin to guarantee completion.
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_LEAVED,
+                    expectedOutline      : OUTLINE_UNHOVERED,
                 },
             ],
         },
@@ -486,15 +486,15 @@ test.describe('useHoverBehaviorState - animation', () => {
                     switch (expectedRunningHover) {
                         case true:
                             expect(runningAnimations.has('boo-test-hovering')).toBe(true);
-                            expect(runningAnimations.has('boo-test-leaving')).toBe(false);
+                            expect(runningAnimations.has('boo-test-unhovering')).toBe(false);
                             break;
                         case false:
                             expect(runningAnimations.has('boo-test-hovering')).toBe(false);
-                            expect(runningAnimations.has('boo-test-leaving')).toBe(true);
+                            expect(runningAnimations.has('boo-test-unhovering')).toBe(true);
                             break;
                         case 0:
                             expect(runningAnimations.has('boo-test-hovering')).toBe(false);
-                            expect(runningAnimations.has('boo-test-leaving')).toBe(false);
+                            expect(runningAnimations.has('boo-test-unhovering')).toBe(false);
                             break;
                     } // switch
                 } // if

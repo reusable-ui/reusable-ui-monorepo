@@ -5,10 +5,10 @@ import { usesAnimationFeature } from '@reusable-ui/animation-feature'
 export default function hoverStateTestStyle() {
     const {
         hoverStateRule,
-        hoverStateVars: { isHovered, isLeaved },
+        hoverStateVars: { isHovered, isUnhovered },
     } = usesHoverState({
-        animationHovering : 'var(--test-hovering)',
-        animationLeaving : 'var(--test-leaving)',
+        animationHovering   : 'var(--test-hovering)',
+        animationUnhovering : 'var(--test-unhovering)',
     });
     
     const {
@@ -35,11 +35,11 @@ export default function hoverStateTestStyle() {
         }),
         
         ...vars({
-            '--test-leaving': [
-                ['1s', 'ease-out', 'both', 'boo-test-leaving'],
+            '--test-unhovering': [
+                ['1s', 'ease-out', 'both', 'boo-test-unhovering'],
             ],
         }),
-        ...keyframes('boo-test-leaving', {
+        ...keyframes('boo-test-unhovering', {
             from : {
                 outline: 'rgb(0, 0, 255) solid 2px',
             },
@@ -50,12 +50,12 @@ export default function hoverStateTestStyle() {
         
         // Define final outline based on lifecycle state:
         ...fallback({
-            '--outline-hovered' : `${isHovered} rgb(0, 0, 255) solid 2px`,
+            '--outline-hovered'   : `${isHovered} rgb(0, 0, 255) solid 2px`,
         }),
         ...fallback({
-            '--outline-leaved' : `${isLeaved} rgb(0, 0, 0) solid 0px`,
+            '--outline-unhovered' : `${isUnhovered} rgb(0, 0, 0) solid 0px`,
         }),
-        outline: 'var(--outline-hovered, var(--outline-leaved))',
+        outline: 'var(--outline-hovered, var(--outline-unhovered))',
         
         // Apply composite animations:
         animation,

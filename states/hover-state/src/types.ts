@@ -36,7 +36,7 @@ import {
 
 
 /**
- * Props for controlling the hovered/leaved state of the component.
+ * Props for controlling the hovered/unhovered state of the component.
  * 
  * Accepts an optional `hovered` prop, defaulting to `'auto'` (automatically determine hover state) when not provided.
  * 
@@ -48,11 +48,11 @@ export interface HoverStateProps {
     /**
      * Specifies the current hover state:
      * - `true`   : the component is hovered
-     * - `false`  : the component is leaved
+     * - `false`  : the component is unhovered
      * - `'auto'` : automatically determine hover state
      * 
      * Disabled behavior:
-     * - When disabled, the component is always treated as leaved (`false`), regardless of `hovered`.
+     * - When disabled, the component is always treated as unhovered (`false`), regardless of `hovered`.
      * - When re-enabled:
      *   - `'auto'` mode (internal hover observer): immediately re-evaluates based on current pointer position and containment.
      *   - Explicit (`true`/`false`) or external (`computedHover`): resumes following the provided value.
@@ -70,7 +70,7 @@ export interface HoverStateProps {
      * If not provided, the component falls back to internal hover observer via `ref`, `handleMouseEnter()`, and `handleMouseLeave()` callbacks.
      * 
      * Disabled behavior:
-     * - When disabled, the component is always treated as leaved (`false`), regardless of `computedHover`.
+     * - When disabled, the component is always treated as unhovered (`false`), regardless of `computedHover`.
      * - When re-enabled, the component resumes following the passed `computedHover` value.
      * 
      * This property is intended for **component developers** who need to customize hover resolution.
@@ -89,7 +89,7 @@ export interface HoverStateUpdateProps {
     /**
      * Reports the updated hover state whenever it changes:
      * - `true`  → the component is now hovered
-     * - `false` → the component is now leaved
+     * - `false` → the component is now unhovered
      * 
      * This is a passive notification; it does not request a change to the hover state.
      */
@@ -97,7 +97,7 @@ export interface HoverStateUpdateProps {
 }
 
 /**
- * Props for listening lifecycle events triggered by hover/leave phase transitions.
+ * Props for listening lifecycle events triggered by hover/unhover phase transitions.
  * 
  * These events allow external listeners to react to phase changes—such as logging, analytics,
  * or chaining animations.
@@ -106,26 +106,26 @@ export interface HoverStatePhaseEventProps {
     /**
      * Called when the hovering transition begins.
      */
-    onHoveringStart ?: ValueChangeEventHandler<HoverPhase, unknown>
+    onHoveringStart   ?: ValueChangeEventHandler<HoverPhase, unknown>
     
     /**
      * Called when the hovering transition completes.
      */
-    onHoveringEnd   ?: ValueChangeEventHandler<HoverPhase, unknown>
+    onHoveringEnd     ?: ValueChangeEventHandler<HoverPhase, unknown>
     
     /**
-     * Called when the leaving transition begins.
+     * Called when the unhovering transition begins.
      */
-    onLeavingStart  ?: ValueChangeEventHandler<HoverPhase, unknown>
+    onUnhoveringStart ?: ValueChangeEventHandler<HoverPhase, unknown>
     
     /**
-     * Called when the leaving transition completes.
+     * Called when the unhovering transition completes.
      */
-    onLeavingEnd    ?: ValueChangeEventHandler<HoverPhase, unknown>
+    onUnhoveringEnd   ?: ValueChangeEventHandler<HoverPhase, unknown>
 }
 
 /**
- * Optional configuration options for customizing hover/leave behavior and animation lifecycle.
+ * Optional configuration options for customizing hover/unhover behavior and animation lifecycle.
  */
 export interface HoverStateOptions
     extends
@@ -138,7 +138,7 @@ export interface HoverStateOptions
     /**
      * Specifies the default hover state when no `hovered` prop is explicitly provided:
      * - `true`   : the component is hovered
-     * - `false`  : the component is leaved
+     * - `false`  : the component is unhovered
      * - `'auto'` : automatically determine hover state
      * 
      * Defaults to `'auto'` (automatically determine hover state).
@@ -146,9 +146,9 @@ export interface HoverStateOptions
     defaultHovered    ?: boolean | 'auto'
     
     /**
-     * Defines the pattern used to identify hover/leave-related animation names.
+     * Defines the pattern used to identify hover/unhover-related animation names.
      * 
-     * This pattern determines which animation names are recognized as part of the hovering/leaving transition lifecycle.
+     * This pattern determines which animation names are recognized as part of the hovering/unhovering transition lifecycle.
      * 
      * Supports:
      * - A string suffix (with word-boundary awareness)
@@ -159,7 +159,7 @@ export interface HoverStateOptions
      * - If the matched pattern starts with a non-word character, it’s always considered boundary-safe.
      * - Otherwise, the character preceding the suffix must be a non-word character or undefined.
      * 
-     * Defaults to `['hovering', 'leaving']`.
+     * Defaults to `['hovering', 'unhovering']`.
      */
     animationPattern  ?: AnimationStateOptions<boolean>['animationPattern']
     
@@ -173,40 +173,40 @@ export interface HoverStateOptions
 }
 
 /**
- * Represents the resolved (settled) phase of the hover/leave lifecycle.
+ * Represents the resolved (settled) phase of the hover/unhover lifecycle.
  * 
  * These states indicate that the component has completed its transition:
- * - 'hovered'  🖱️ fully hovered
- * - 'leaved'   🌫️ fully leaved
+ * - 'hovered'    🖱️ fully hovered
+ * - 'unhovered'  🌫️ fully unhovered
  */
 export type ResolvedHoverPhase =
     | 'hovered'
-    | 'leaved'
+    | 'unhovered'
 
 /**
- * Represents the transitional phase of the hover/leave lifecycle.
+ * Represents the transitional phase of the hover/unhover lifecycle.
  * 
  * These states indicate that the component is currently animating toward a resolved state:
- * - 'hovering' 🔄 transitioning toward hovered
- * - 'leaving'  🔄 transitioning toward leaved
+ * - 'hovering'   🔄 transitioning toward hovered
+ * - 'unhovering' 🔄 transitioning toward unhovered
  */
 export type TransitioningHoverPhase =
     | 'hovering'
-    | 'leaving'
+    | 'unhovering'
 
 /**
- * Represents the current transition phase of the hover/leave lifecycle.
+ * Represents the current transition phase of the hover/unhover lifecycle.
  * 
  * Used to distinguish between transitional and resolved states:
- * - Resolved: 'hovered', 'leaved'
- * - Transitional: 'hovering', 'leaving'
+ * - Resolved: 'hovered', 'unhovered'
+ * - Transitional: 'hovering', 'unhovering'
  */
 export type HoverPhase =
     | ResolvedHoverPhase
     | TransitioningHoverPhase
 
 /**
- * An API for accessing the resolved hovered/leaved state, current transition phase, associated CSS class name, and animation event handlers.
+ * An API for accessing the resolved hovered/unhovered state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
  */
@@ -216,21 +216,21 @@ export interface HoverBehaviorState<TElement extends Element = HTMLElement>
         AnimationStateHandlers<TElement>
 {
     /**
-     * The current settled hovered/leaved state used for animation-aware rendering and behavioral coordination.
+     * The current settled hovered/unhovered state used for animation-aware rendering and behavioral coordination.
      * 
      * This value may slightly lag behind the actual resolved state due to in-flight animations.
      * It updates only after an animation completes, ensuring the styling remains in sync with animation lifecycle.
      * 
-     * Useful for rendering the hovered/leaved state in sync with animation lifecycle.
+     * Useful for rendering the hovered/unhovered state in sync with animation lifecycle.
      * 
      * Possible values:
      * - `true`  : the component has visually settled in hovered state
-     * - `false` : the component has visually settled in leaved state
+     * - `false` : the component has visually settled in unhovered state
      */
     hovered           : boolean
     
     /**
-     * The actual resolved hovered/leaved state, regardless of animation state.
+     * The actual resolved hovered/unhovered state, regardless of animation state.
      * 
      * This reflects the current target state based on the final diagnostic status.
      * Unlike `hovered`, it updates immediately and does not wait for transitions to complete.
@@ -239,23 +239,23 @@ export interface HoverBehaviorState<TElement extends Element = HTMLElement>
      * 
      * Possible values:
      * - `true`  : the component is intended to be hovered
-     * - `false` : the component is intended to be leaved
+     * - `false` : the component is intended to be unhovered
      */
     actualHovered     : boolean
     
     /**
-     * The current transition phase of the hover/leave lifecycle.
+     * The current transition phase of the hover/unhover lifecycle.
      * 
-     * Reflects both transitional states (`hovering`, `leaving`) and resolved states (`hovered`, `leaved`).
+     * Reflects both transitional states (`hovering`, `unhovering`) and resolved states (`hovered`, `unhovered`).
      */
     hoverPhase        : HoverPhase
     
     /**
-     * A CSS class name reflecting the current hover/leave phase.
+     * A CSS class name reflecting the current hover/unhover phase.
      * 
      * Possible values:
-     * - `'is-leaved'`
-     * - `'is-leaving'`
+     * - `'is-unhovered'`
+     * - `'is-unhovering'`
      * - `'is-hovering'`
      * - `'is-hovered'`
      */
@@ -292,7 +292,7 @@ export interface HoverBehaviorState<TElement extends Element = HTMLElement>
 
 
 /**
- * A list of hover/leave-related CSS variables used for hover-aware styling.
+ * A list of hover/unhover-related CSS variables used for hover-aware styling.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
@@ -304,16 +304,16 @@ export interface HoverStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationHovering : unknown
+    animationHovering   : unknown
     
     /**
-     * References an animation used during the leaving transition.
-     * It becomes invalid (`unset`) when not actively leaving.
+     * References an animation used during the unhovering transition.
+     * It becomes invalid (`unset`) when not actively unhovering.
      * 
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationLeaving  : unknown
+    animationUnhovering : unknown
     
     /**
      * Applies when the component is either hovering or fully hovered.
@@ -332,10 +332,10 @@ export interface HoverStateVars {
      * });
      * ```
      */
-    isHovered         : unknown
+    isHovered           : unknown
     
     /**
-     * Applies when the component is either leaving or fully leaved.
+     * Applies when the component is either unhovering or fully unhovered.
      * 
      * Acts as a conditional switch: when declared with an empty value,
      * any CSS property referencing this variable becomes valid and is applied.
@@ -345,19 +345,19 @@ export interface HoverStateVars {
      * @example
      * ```ts
      * export const componentStyle = () => style({
-     *     // These properties are only applied when the component is either leaving or fully leaved:
-     *     outline : `${hoverStateVars.isLeaved} none`,
-     *     opacity : `${hoverStateVars.isLeaved} 50%`,
+     *     // These properties are only applied when the component is either unhovering or fully unhovered:
+     *     outline : `${hoverStateVars.isUnhovered} none`,
+     *     opacity : `${hoverStateVars.isUnhovered} 50%`,
      * });
      * ```
      */
-    isLeaved          : unknown
+    isUnhovered         : unknown
 }
 
 
 
 /**
- * Configuration options for customizing hover/leave animations.
+ * Configuration options for customizing hover/unhover animations.
  */
 export interface CssHoverStateOptions {
     /**
@@ -368,38 +368,38 @@ export interface CssHoverStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationHovering ?: CssKnownProps['animation']
+    animationHovering   ?: CssKnownProps['animation']
     
     /**
-     * Defines the animation to apply during the leaving transition.
+     * Defines the animation to apply during the unhovering transition.
      * 
      * When the `hovered` state changes away from `false`, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationLeaving  ?: CssKnownProps['animation']
+    animationUnhovering ?: CssKnownProps['animation']
 }
 
 
 
 /**
- * Provides a CSS API for conditionally apply the hover/leave animations based on current hovered state.
+ * Provides a CSS API for conditionally apply the hover/unhover animations based on current hovered state.
  */
 export interface CssHoverState {
     /**
-     * Generates CSS rules that conditionally apply the hover/leave animations based on current hovered state.
+     * Generates CSS rules that conditionally apply the hover/unhover animations based on current hovered state.
      * 
-     * Typically used to toggle animation variables during hovering or leaving transitions.
+     * Typically used to toggle animation variables during hovering or unhovering transitions.
      */
     hoverStateRule : Lazy<CssRule>
     
     /**
-     * Exposes hover/leave-related CSS variables for conditional animation.
+     * Exposes hover/unhover-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationHovering` : Active during the hovering transition.
-     * - `animationLeaving`  : Active during the leaving transition.
+     * - `animationHovering`   : Active during the hovering transition.
+     * - `animationUnhovering` : Active during the unhovering transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.

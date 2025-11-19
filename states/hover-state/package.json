@@ -1,10 +1,10 @@
 {
   "name": "@reusable-ui/hover-state",
   "version": "7.0.0",
-  "description": "Adds hover/leave functionality to UI components, with transition animations and semantic styling hooks.",
+  "description": "Adds hover/unhover functionality to UI components, with transition animations and semantic styling hooks.",
   "keywords": [
     "hover",
-    "leave",
+    "unhover",
     "state",
     "transition",
     "animation",
