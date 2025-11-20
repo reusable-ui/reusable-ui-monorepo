@@ -1,27 +1,32 @@
 {
   "name": "@reusable-ui/excitable",
-  "version": "6.5.0",
+  "version": "7.0.0",
   "description": "A capability of UI to highlight itself to attract user's attention.",
   "keywords": [
+    "deprecated",
     "excitable",
     "highlights",
     "design",
     "layouts"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "states/excitable"
   },
-  "main": "dist/excitable.js",
-  "types": "dist/excitable.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/excitable.js",
-    "./index": "./dist/excitable.js",
-    "./index.js": "./dist/excitable.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -35,12 +40,13 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.2.0",
-    "@reusable-ui/hooks": "^6.5.0"
+    "@cssfn/core": "^4.0.0",
+    "@reusable-ui/hooks": "^7.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/animation": "^6.5.0",
-    "@types/react": "^18.0.0",
-    "react": "^18.0.0"
+    "@reusable-ui/animation": "^7.0.0",
+    "@reusable-ui/excite-state": "^7.0.0",
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0"
   }
 }

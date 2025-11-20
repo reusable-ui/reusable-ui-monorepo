@@ -113,6 +113,7 @@
     "states/collapse-state",
     "states/active-state",
     "states/view-state",
+    "states/excitable",
     "__configs/*",
     "__utilities/*",
     "__features/*",

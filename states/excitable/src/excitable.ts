@@ -1,65 +1,66 @@
-// react:
+// React:
 import {
-    // react:
+    // React:
     default as React,
     
     
     
-    // hooks:
+    // Hooks:
     useRef,
     useEffect,
 }                           from 'react'
 
-// cssfn:
+// Cssfn:
 import {
-    // cssfn general types:
+    // Cssfn general types:
     Factory,
     
     
     
-    // cssfn css specific types:
+    // Cssfn css specific types:
     CssKnownProps,
     CssRule,
-    CssStyleCollection,
     
     
     
-    // writes css in javascript:
-    rule,
+    // Writes css in javascript:
     states,
     style,
     vars,
     
     
     
-    // strongly typed of css variables:
+    // Strongly typed of css variables:
     CssVars,
     cssVars,
-}                           from '@cssfn/core'                  // writes css in javascript
+}                           from '@cssfn/core'                      // Writes css in javascript.
 
-// reusable-ui utilities:
+// Reusable-ui utilities:
 import {
-    // hooks:
+    // Hooks:
     useTriggerRender,
     useEvent,
     EventHandler,
     useMountedFlag,
     useScheduleTriggerEvent,
-}                           from '@reusable-ui/hooks'           // react helper hooks
-
-// reusable-ui features:
+}                           from '@reusable-ui/hooks'               // React helper hooks.
 import {
-    // hooks:
+    // Hooks:
     usesAnimation,
-}                           from '@reusable-ui/animation'       // animation stuff of UI
+}                           from '@reusable-ui/animation'           // Animation stuff of UI.
+
+// Reusable-ui features:
+import {
+    // Utilities:
+    ifExcited,
+    ifNotExcited,
+}                           from '@reusable-ui/excite-state'        // Adds excitement (attention grabbing) functionality to UI components, with an attention-triggering animation and semantic styling hooks.
 
 
 
-// hooks:
-
-// states:
-
-//#region excitable
+/**
+ * @deprecated - Use `ExciteStateVars` instead.
+ */
 export interface ExcitableVars {
     filter : any
     
@@ -75,20 +76,30 @@ const [excitableVars] = cssVars<ExcitableVars>({ prefix: 'ex', minify: false });
 
 
 
-// parent is     `.excited` -or-  current is     `.excited`:
-export const ifExcited    = (styles: CssStyleCollection): CssRule => rule(              ':is(.excited&, &.excited)' , styles); // specificityWeight = 1 + (parent's specificityWeight)
-// parent is not `.excited` -and- current is not `.excited`:
-export const ifNotExcited = (styles: CssStyleCollection): CssRule => rule(':where(&):not(:is(.excited&, &.excited))', styles); // specificityWeight = 1 + (parent's specificityWeight)
+// Not deprecated:
+export {
+    ifExcited,
+    ifNotExcited,
+}
 
 
 
+/**
+ * @deprecated - Use `CssExciteState` instead.
+ */
 export interface ExcitableStuff { excitableRule: Factory<CssRule>, excitableVars: CssVars<ExcitableVars> }
+
+/**
+ * @deprecated - Use `CssExciteStateOptions` instead.
+ */
 export interface ExcitableConfig {
     filterExcite ?: CssKnownProps['filter'   ]
     
     animExcite   ?: CssKnownProps['animation']
 }
 /**
+ * @deprecated - Use `usesExciteState` instead.
+ * 
  * Adds a capability of UI to highlight itself to attract user's attention.
  * @param config  A configuration of `excitableRule`.
  * @returns An `ExcitableStuff` represents an excitable state.
@@ -112,10 +123,16 @@ export const usesExcitable = (config?: ExcitableConfig): ExcitableStuff => {
 
 
 
+/**
+ * @deprecated - No longer needed.
+ */
 export interface ExcitedChangeEvent {
     // states:
     excited : boolean
 }
+/**
+ * @deprecated - Use `ExciteStateProps` instead.
+ */
 export interface ExcitableProps<TExcitedChangeEvent extends ExcitedChangeEvent = ExcitedChangeEvent>
     extends
         // states:
@@ -125,12 +142,18 @@ export interface ExcitableProps<TExcitedChangeEvent extends ExcitedChangeEvent =
 {
 }
 
+/**
+ * @deprecated - No longer needed.
+ */
 export const enum ExcitableState {
     Unexcited = 0,
     Continue  = 1,
     Excited   = 2,
 }
 
+/**
+ * @deprecated - Use `ExciteBehaviorState` instead.
+ */
 export interface ExcitableApi<TElement extends Element = HTMLElement> {
     excited               : boolean
     
@@ -142,6 +165,9 @@ export interface ExcitableApi<TElement extends Element = HTMLElement> {
     handleAnimationCancel : React.AnimationEventHandler<TElement>
 }
 
+/**
+ * @deprecated - Use `useExciteBehaviorState` instead.
+ */
 export const useExcitable = <TElement extends Element = HTMLElement, TExcitedChangeEvent extends ExcitedChangeEvent = ExcitedChangeEvent>(props: ExcitableProps<TExcitedChangeEvent>): ExcitableApi<TElement> => {
     // fn props:
     const propExcited = props.excited ?? false;
@@ -251,6 +277,9 @@ export const useExcitable = <TElement extends Element = HTMLElement, TExcitedCha
 
 
 
+/**
+ * @deprecated - No longer needed.
+ */
 export interface ControllableExcitableProps<TExcitedChangeEvent extends ExcitedChangeEvent = ExcitedChangeEvent>
     extends
         // states:
@@ -259,6 +288,9 @@ export interface ControllableExcitableProps<TExcitedChangeEvent extends ExcitedC
     // states:
     onExcitedChange ?: EventHandler<TExcitedChangeEvent>
 }
+/**
+ * @deprecated - No longer needed.
+ */
 export const useControllableExcitable = <TElement extends Element = HTMLElement, TExcitedChangeEvent extends ExcitedChangeEvent = ExcitedChangeEvent>(props: ControllableExcitableProps<TExcitedChangeEvent>, excitableApi: ExcitableApi<TElement>): void => {
     // states:
     const {state} = excitableApi;
@@ -279,4 +311,3 @@ export const useControllableExcitable = <TElement extends Element = HTMLElement,
         });
     } // if
 };
-//#endregion excitable
