@@ -1,31 +1,31 @@
-// react:
+// React:
 import {
-    // react:
+    // React:
     default as React,
     
     
     
-    // hooks:
+    // Hooks:
     useState,
     useRef,
     useEffect,
 }                           from 'react'
 
-// cssfn:
+// Cssfn:
 import {
-    // cssfn general types:
+    // Cssfn general types:
     Factory,
     
     
     
-    // cssfn css specific types:
+    // Cssfn css specific types:
     CssKnownProps,
     CssRule,
     CssStyleCollection,
     
     
     
-    // writes css in javascript:
+    // Writes css in javascript:
     rule,
     states,
     style,
@@ -34,59 +34,81 @@ import {
     
     
     
-    // strongly typed of css variables:
+    // Strongly typed of css variables:
     CssVars,
     cssVars,
     
     
     
-    // reads/writes css variables configuration:
+    // Reads/writes css variables configuration:
     CssConfigProps,
     Refs,
     usesSuffixedProps,
     overwriteProps,
-}                           from '@cssfn/core'                  // writes css in javascript
+}                           from '@cssfn/core'                      // Writes css in javascript.
 
-// reusable-ui utilities:
+// Reusable-ui utilities:
 import {
-    // hooks:
+    // Hooks:
     useEvent,
     EventHandler,
     useScheduleTriggerEvent,
-}                           from '@reusable-ui/hooks'           // react helper hooks
+}                           from '@reusable-ui/hooks'               // React helper hooks.
 import {
-    // hooks:
+    // Hooks:
     SemanticProps,
-    useSemantic,
-}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
+    useResolvedSemanticAttributes,
+}                           from '@reusable-ui/semantics'           // Semantic utility for resolving tag and role behaviors in reusable UI components.
 import {
-    // hooks:
-    usePropEnabled,
-    usePropReadOnly,
-    
-    
-    
-    // react components:
-    AccessibilityProps,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
-import {
-    // hooks:
+    // Hooks:
     useAnimatingState,
-}                           from '@reusable-ui/animating-state' // a hook for creating animating state
+}                           from '@reusable-ui/animating-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
-// reusable-ui features:
+// Reusable-ui features:
 import {
-    // hooks:
+    // Hooks:
     usesAnimation,
-}                           from '@reusable-ui/animation'       // animation stuff of UI
+}                           from '@reusable-ui/animation'           // Animation stuff of UI.
+import {
+    // Utilities:
+    isExpandingSelector,
+    isCollapsingSelector,
+    isExpandingOrExpandedSelector,
+    isCollapsingOrCollapsedSelector,
+    
+    ifExpanded,
+    ifCollapsed,
+    ifExpanding,
+    ifCollapsing,
+    ifExpandingOrExpanded,
+    ifCollapsingOrCollapsed,
+}                           from '@reusable-ui/collapse-state'      // Adds expand/collapse functionality to UI components, with transition animations and semantic styling hooks.
+
+// Reusable-ui states:
+import {
+    // Types:
+    type DisabledStateProps,
+    
+    
+    
+    // Hooks:
+    useDisabledState,
+}                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
+import {
+    // Types:
+    type ReadOnlyStateProps,
+    
+    
+    
+    // Hooks:
+    useReadOnlyState,
+}                           from '@reusable-ui/read-only-state'     // Adds editable/read-only functionality to UI components, with transition animations and semantic styling hooks.
 
 
 
-// hooks:
-
-// states:
-
-//#region collapsible
+/**
+ * @deprecated - Use `CollapseStateVars` instead.
+ */
 export interface CollapsibleVars {
     anim : any
 }
@@ -99,35 +121,51 @@ const [collapsibleVars] = cssVars<CollapsibleVars>({ prefix: 'co', minify: false
 
 
 
-// .expanded will be added after expanding-animation done:
-const selectorIfExpanded   = '.expanded'
-// .expanding = styled expand, [open] = native expand:
-const selectorIfExpanding  = ':is(.expanding, [open]):not(.expanded)'
-// .collapsing will be added after loosing expand and will be removed after collapsing-animation done:
-const selectorIfCollapsing = '.collapsing'
-// if all above are not set => collapsed:
-const selectorIfCollapsed  = ':not(:is(.expanded, .expanding, [open], .collapsing))'
+// Not deprecated:
+export {
+    ifExpanded,
+    ifCollapsed,
+    ifExpanding,
+    ifCollapsing,
+}
+
+/**
+ * @deprecated - Use `ifExpandingOrExpanded` instead.
+ */
+export const ifExpand            = ifExpandingOrExpanded;
+
+/**
+ * @deprecated - Use `ifCollapsingOrCollapsed` instead.
+ */
+export const ifCollapse          = ifCollapsingOrCollapsed;
+
+/**
+ * @deprecated - Use `rule([isExpandingOrExpandedSelector, isCollapsingSelector], styles)` instead.
+ */
+export const ifExpandCollapsing  = (styles: CssStyleCollection): CssRule => rule([isExpandingOrExpandedSelector, isCollapsingSelector], styles);
+
+/**
+ * @deprecated - Use `rule([isCollapsingOrCollapsedSelector, isExpandingSelector], styles)` instead.
+ */
+export const ifExpandingCollapse = (styles: CssStyleCollection): CssRule => rule([isCollapsingOrCollapsedSelector, isExpandingSelector], styles);
 
 
 
-export const ifExpanded          = (styles: CssStyleCollection): CssRule => rule(selectorIfExpanded  , styles);
-export const ifExpanding         = (styles: CssStyleCollection): CssRule => rule(selectorIfExpanding , styles);
-export const ifCollapsing        = (styles: CssStyleCollection): CssRule => rule(selectorIfCollapsing, styles);
-export const ifCollapsed         = (styles: CssStyleCollection): CssRule => rule(selectorIfCollapsed , styles);
-
-export const ifExpand            = (styles: CssStyleCollection): CssRule => rule([selectorIfExpanding, selectorIfExpanded                                           ], styles);
-export const ifCollapse          = (styles: CssStyleCollection): CssRule => rule([                                         selectorIfCollapsing, selectorIfCollapsed], styles);
-export const ifExpandCollapsing  = (styles: CssStyleCollection): CssRule => rule([selectorIfExpanding, selectorIfExpanded, selectorIfCollapsing                     ], styles);
-export const ifExpandingCollapse = (styles: CssStyleCollection): CssRule => rule([selectorIfExpanding,                     selectorIfCollapsing, selectorIfCollapsed], styles);
-
-
-
+/**
+ * @deprecated - Use `CssCollapseState` instead.
+ */
 export interface CollapsibleStuff { collapsibleRule: Factory<CssRule>, collapsibleVars: CssVars<CollapsibleVars> }
+
+/**
+ * @deprecated - Use `CssCollapseStateOptions` instead.
+ */
 export interface CollapsibleConfig {
     animExpand   ?: CssKnownProps['animation']
     animCollapse ?: CssKnownProps['animation']
 }
 /**
+ * @deprecated - Use `usesCollapseState` instead.
+ * 
  * Adds a capability of UI to expand/reduce its size or toggle the visibility.
  * @param config  A configuration of `collapsibleRule`.
  * @returns A `CollapsibleStuff` represents a collapsible state.
@@ -171,10 +209,16 @@ export const usesCollapsible = <TConfigProps extends CssConfigProps = CssConfigP
 
 
 
+/**
+ * @deprecated - No longer needed.
+ */
 export interface ExpandedChangeEvent {
     // states:
     expanded : boolean
 }
+/**
+ * @deprecated - Use `CollapseStateProps` instead.
+ */
 export interface CollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // states:
@@ -184,6 +228,9 @@ export interface CollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEve
 {
 }
 
+/**
+ * @deprecated - Use `ExpandPhase` instead.
+ */
 export const enum CollapsibleState {
     Collapsed  = 0,
     Collapsing = 1,
@@ -191,6 +238,9 @@ export const enum CollapsibleState {
     Expanded   = 3,
 }
 
+/**
+ * @deprecated - Use `CollapseBehaviorState` instead.
+ */
 export interface CollapsibleApi<TElement extends Element = HTMLElement> {
     expanded              : boolean
     isVisible             : boolean
@@ -211,10 +261,13 @@ const collapsibleCtrls = [
     'dialog',
     'details',
 ];
+/**
+ * @deprecated - Use `useCollapseBehaviorState` instead.
+ */
 export const useCollapsible = <TElement extends Element = HTMLElement, TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: CollapsibleProps<TExpandedChangeEvent> & SemanticProps): CollapsibleApi<TElement> => {
     // fn props:
     const propExpanded = props.expanded ?? false;
-    const { tag } = useSemantic(props);
+    const { tag } = useResolvedSemanticAttributes(props);
     
     
     
@@ -341,6 +394,9 @@ export const useCollapsible = <TElement extends Element = HTMLElement, TExpanded
 
 
 
+/**
+ * @deprecated - Use `CollapseStatePhaseEventProps` instead.
+ */
 export interface CollapsibleEventProps
 {
     // handlers:
@@ -349,6 +405,9 @@ export interface CollapsibleEventProps
     onCollapseStart ?: EventHandler<void>
     onCollapseEnd   ?: EventHandler<void>
 }
+/**
+ * @deprecated - Use `useCollapseStatePhaseEvents` instead.
+ */
 export const useCollapsibleEvent = <TElement extends Element = HTMLElement>(props: CollapsibleEventProps, collapsibleApi: CollapsibleApi<TElement>): void => {
     // states:
     const {state} = collapsibleApi;
@@ -416,6 +475,9 @@ export const useCollapsibleEvent = <TElement extends Element = HTMLElement>(prop
 
 
 
+/**
+ * @deprecated - Use `CollapseStateProps & CollapseStateChangeProps` instead.
+ */
 export interface ControllableCollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // states:
@@ -424,6 +486,9 @@ export interface ControllableCollapsibleProps<TExpandedChangeEvent extends Expan
     // states:
     onExpandedChange ?: EventHandler<TExpandedChangeEvent>
 }
+/**
+ * @deprecated - Use `CollapseStateProps & CollapseStateChangeProps & UncontrollableCollapseStateProps` instead.
+ */
 export interface UncontrollableCollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
         // states:
@@ -432,11 +497,20 @@ export interface UncontrollableCollapsibleProps<TExpandedChangeEvent extends Exp
     // states:
     defaultExpanded  ?: boolean
 }
-export const useUncontrollableCollapsible = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: UncontrollableCollapsibleProps<TExpandedChangeEvent> & Pick<AccessibilityProps, 'enabled'|'inheritEnabled'|'readOnly'|'inheritReadOnly'>): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
-    // accessibilities:
-    const propEnabled          = usePropEnabled(props);
-    const propReadOnly         = usePropReadOnly(props);
-    const isDisabledOrReadOnly = (!propEnabled || propReadOnly);
+/**
+ * @deprecated - Use `useUncontrollableCollapseState` instead.
+ */
+export const useUncontrollableCollapsible = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: UncontrollableCollapsibleProps<TExpandedChangeEvent> & DisabledStateProps & ReadOnlyStateProps): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
+    // Flags:
+    
+    // Resolve whether the component is disabled:
+    const isDisabled        = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    
+    // Resolve whether the component is readonly:
+    const isReadonly        = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
+    
+    // Resolve whether the component is in a restricted state:
+    const isRestricted      = isDisabled || isReadonly;
     
     
     
@@ -473,7 +547,7 @@ export const useUncontrollableCollapsible = <TExpandedChangeEvent extends Expand
     // callbacks:
     const setExpanded           = useEvent<React.Dispatch<React.SetStateAction<boolean>>>((expanded) => {
         // conditions:
-        if (isDisabledOrReadOnly) return; // control is disabled or readOnly => no response required
+        if (isRestricted) return; // control is in a restricted state (interaction blocked) => no response required
         
         const newExpanded = (typeof(expanded) === 'function') ? expanded(expandedFn) : expanded;
         if (newExpanded === expandedFn) return; // still the same => nothing to update
@@ -486,7 +560,7 @@ export const useUncontrollableCollapsible = <TExpandedChangeEvent extends Expand
     }); // a stable callback, the `setExpanded` guaranteed to never change
     const toggleExpanded        = useEvent<React.Dispatch<void>>(() => {
         // conditions:
-        if (isDisabledOrReadOnly) return; // control is disabled or readOnly => no response required
+        if (isRestricted) return; // control is in a restricted state (interaction blocked) => no response required
         
         
         
@@ -507,4 +581,3 @@ export const useUncontrollableCollapsible = <TExpandedChangeEvent extends Expand
         toggleExpanded,
     ];
 };
-//#endregion collapsible

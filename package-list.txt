@@ -223,7 +223,7 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/active-state
 @reusable-ui/view-state
 @reusable-ui/excitable          DEPRECATED
-@reusable-ui/collapsible
+@reusable-ui/collapsible        DEPRECATED
 @reusable-ui/scrollable
 @reusable-ui/disableable
 @reusable-ui/activatable
