@@ -116,6 +116,7 @@
     "states/excitable",
     "states/collapsible",
     "states/scrollable",
+    "states/disableable",
     "__configs/*",
     "__utilities/*",
     "__features/*",

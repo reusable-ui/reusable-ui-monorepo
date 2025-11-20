@@ -1,18 +1,18 @@
-// cssfn:
+// Cssfn:
 import {
-    // cssfn general types:
+    // Cssfn general types:
     Factory,
     
     
     
-    // cssfn css specific types:
+    // Cssfn css specific types:
     CssKnownProps,
     CssRule,
     CssStyleCollection,
     
     
     
-    // writes css in javascript:
+    // Writes css in javascript:
     rule,
     states,
     style,
@@ -20,44 +20,57 @@ import {
     
     
     
-    // strongly typed of css variables:
+    // Strongly typed of css variables:
     CssVars,
     cssVars,
-}                           from '@cssfn/core'                  // writes css in javascript
+}                           from '@cssfn/core'                      // Writes css in javascript.
 
-// reusable-ui utilities:
+// Reusable-ui utilities:
 import {
-    // hooks:
+    // Hooks:
     SemanticProps,
-    useSemantic,
-}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
+    useResolvedSemanticAttributes,
+}                           from '@reusable-ui/semantics'           // Semantic utility for resolving tag and role behaviors in reusable UI components.
 import {
-    // hooks:
-    usePropEnabled,
-    
-    
-    
-    // react components:
-    AccessibilityProps,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
-import {
-    // hooks:
+    // Hooks:
     useAnimatingState,
-}                           from '@reusable-ui/animating-state' // a hook for creating animating state
+}                           from '@reusable-ui/animating-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
-// reusable-ui features:
+// Reusable-ui features:
 import {
-    // hooks:
+    // Hooks:
     usesAnimation,
-}                           from '@reusable-ui/animation'       // animation stuff of UI
+}                           from '@reusable-ui/animation'           // Animation stuff of UI.
+
+// Reusable-ui states:
+import {
+    // Types:
+    type DisabledStateProps,
+    
+    
+    
+    // Hooks:
+    useDisabledState,
+    
+    
+    
+    // Utilities:
+    isEnablingSelector,
+    isDisablingOrDisabledSelector,
+    
+    ifEnabled,
+    ifDisabled,
+    ifEnabling,
+    ifDisabling,
+    ifEnablingOrEnabled,
+    ifDisablingOrDisabled,
+}                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
 
 
 
-// hooks:
-
-// states:
-
-//#region disableable
+/**
+ * @deprecated - Use `DisabledStateVars` instead.
+ */
 export interface DisableableVars {
     filter : any
     
@@ -73,27 +86,39 @@ const [disableableVars] = cssVars<DisableableVars>({ prefix: 'di', minify: false
 
 
 
-// if all below are not set => enabled:
-const selectorIfEnabled   = ':not(:is(.enabling, .disabling, [aria-disabled]:not([aria-disabled="false"]), :disabled, .disabled))'
-// .enabling will be added after loosing disable and will be removed after enabling-animation done:
-const selectorIfEnabling  = '.enabling'
-// .disabling, [aria-disabled] = styled disable, :disabled = native disable:
-const selectorIfDisabling = ':is(.disabling, [aria-disabled]:not([aria-disabled="false"]), :disabled):not(:is(.enabling, .disabled))'
-// .disabled will be added after disabling-animation done:
-const selectorIfDisabled  = '.disabled'
+// Not deprecated:
+export {
+    ifEnabled,
+    ifDisabled,
+    ifEnabling,
+    ifDisabling,
+}
 
-export const ifEnabled         = (styles: CssStyleCollection): CssRule => rule(selectorIfEnabled  , styles);
-export const ifEnabling        = (styles: CssStyleCollection): CssRule => rule(selectorIfEnabling , styles);
-export const ifDisabling       = (styles: CssStyleCollection): CssRule => rule(selectorIfDisabling, styles);
-export const ifDisabled        = (styles: CssStyleCollection): CssRule => rule(selectorIfDisabled , styles);
+/**
+ * @deprecated - Use `ifEnablingOrEnabled` instead.
+ */
+export const ifEnable          = ifEnablingOrEnabled;
 
-export const ifEnable          = (styles: CssStyleCollection): CssRule => rule([selectorIfEnabling, selectorIfEnabled                                         ], styles);
-export const ifDisable         = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfDisabling, selectorIfDisabled], styles);
-export const ifEnablingDisable = (styles: CssStyleCollection): CssRule => rule([selectorIfEnabling,                    selectorIfDisabling, selectorIfDisabled], styles);
+/**
+ * @deprecated - Use `ifDisablingOrDisabled` instead.
+ */
+export const ifDisable         = ifDisablingOrDisabled;
+
+/**
+ * @deprecated - Use `rule([isExpandingOrExpandedSelector, isCollapsingSelector], styles)` instead.
+ */
+export const ifEnablingDisable = (styles: CssStyleCollection): CssRule => rule([isDisablingOrDisabledSelector, isEnablingSelector], styles);
 
 
 
+/**
+ * @deprecated - Use `CssDisabledState` instead.
+ */
 export interface DisableableStuff { disableableRule: Factory<CssRule>, disableableVars: CssVars<DisableableVars> }
+
+/**
+ * @deprecated - Use `CssDisabledStateOptions` instead.
+ */
 export interface DisableableConfig {
     filterDisable ?: CssKnownProps['filter'   ]
     
@@ -101,6 +126,8 @@ export interface DisableableConfig {
     animDisable   ?: CssKnownProps['animation']
 }
 /**
+ * @deprecated - Use `usesDisabledState` instead.
+ * 
  * Adds a capability of UI to be disabled.
  * @param config  A configuration of `disableableRule`.
  * @returns A `DisableableStuff` represents a disableable state.
@@ -135,16 +162,28 @@ export const usesDisableable = (config?: DisableableConfig): DisableableStuff =>
 
 
 
+/**
+ * @deprecated - Use `DisabledStateProps` instead.
+ */
 export interface DisableableProps
     extends
         // states:
-        Partial<Pick<AccessibilityProps,
-            |'enabled'
-            |'inheritEnabled'
-        >>
+        DisabledStateProps
 {
+    /**
+     * @deprecated - Use `disabled` instead.
+     */
+    enabled        ?: DisabledStateProps['disabled']
+    
+    /**
+     * @deprecated - Use `cascadeDisabled` instead.
+     */
+    inheritEnabled ?: DisabledStateProps['cascadeDisabled']
 }
 
+/**
+ * @deprecated - Use `DisabledPhase` instead.
+ */
 export const enum DisableableState {
     Disabled  = 0,
     Disabling = 1,
@@ -152,6 +191,9 @@ export const enum DisableableState {
     Enabled   = 3,
 }
 
+/**
+ * @deprecated - Use `DisabledBehaviorState` instead.
+ */
 export interface DisableableApi<TElement extends Element = HTMLElement> {
     enabled               : boolean
     disabled              : boolean
@@ -178,10 +220,13 @@ const htmlCtrls = [
     'option',
     'textarea',
 ];
+/**
+ * @deprecated - Use `useDisabledBehaviorState` instead.
+ */
 export const useDisableable = <TElement extends Element = HTMLElement>(props: DisableableProps & SemanticProps): DisableableApi<TElement> => {
     // fn props:
-    const propEnabled = usePropEnabled(props);
-    const {tag}       = useSemantic(props);
+    const propEnabled = useDisabledState(props);
+    const { tag }     = useResolvedSemanticAttributes(props);
     
     
     
@@ -275,4 +320,3 @@ export const useDisableable = <TElement extends Element = HTMLElement>(props: Di
         handleAnimationCancel,
     };
 };
-//#endregion disableable

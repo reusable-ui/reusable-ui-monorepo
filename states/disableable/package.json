@@ -1,8 +1,9 @@
 {
   "name": "@reusable-ui/disableable",
-  "version": "6.5.0",
+  "version": "7.0.0",
   "description": "A capability of UI to be disabled.",
   "keywords": [
+    "deprecated",
     "disableable",
     "enableable",
     "accessibilities",
@@ -10,19 +11,23 @@
     "layouts"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "states/disableable"
   },
-  "main": "dist/disableable.js",
-  "types": "dist/disableable.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/disableable.js",
-    "./index": "./dist/disableable.js",
-    "./index.js": "./dist/disableable.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -36,12 +41,12 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.2.0",
-    "@reusable-ui/animating-state": "^6.5.0",
-    "@reusable-ui/semantics": "^6.5.0"
+    "@cssfn/core": "^4.0.0",
+    "@reusable-ui/animating-state": "^7.0.0",
+    "@reusable-ui/semantics": "^7.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/accessibilities": "^6.5.0",
-    "@reusable-ui/animation": "^6.5.0"
+    "@reusable-ui/animation": "^7.0.0",
+    "@reusable-ui/disabled-state": "^7.0.0"
   }
 }
