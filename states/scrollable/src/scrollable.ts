@@ -1,36 +1,37 @@
-// react:
+// React:
 import {
-    // hooks:
+    // Hooks:
     useState,
 }                           from 'react'
 
-// reusable-ui utilities:
+// Reusable-ui utilities:
 import {
     clamp,
-}                           from '@reusable-ui/numbers'         // a set of numeric utility functions
+}                           from '@reusable-ui/numbers'             // A lightweight JavaScript library for precise numeric operations.
 import {
-    // hooks:
+    // Hooks:
     useEvent,
     EventHandler,
     useScheduleTriggerEvent,
-}                           from '@reusable-ui/hooks'           // react helper hooks
+}                           from '@reusable-ui/hooks'               // React helper hooks.
 
 
 
-// hooks:
-
-// states:
-
-//#region scrollable
 // defaults:
 const _defaultScrollIndex = 0;
 
 
 
+/**
+ * @deprecated - No longer needed.
+ */
 export interface ScrollIndexChangeEvent {
     // states:
     scrollIndex          : number
 }
+/**
+ * @deprecated - Use `ViewStateProps` instead.
+ */
 export interface ScrollableProps<TScrollIndexChangeEvent extends ScrollIndexChangeEvent = ScrollIndexChangeEvent>
     extends
         // states:
@@ -40,6 +41,9 @@ export interface ScrollableProps<TScrollIndexChangeEvent extends ScrollIndexChan
 {
 }
 
+/**
+ * @deprecated - Use `ViewStateProps & ViewStateChangeProps` instead.
+ */
 export interface ControllableScrollableProps<TScrollIndexChangeEvent extends ScrollIndexChangeEvent = ScrollIndexChangeEvent>
     extends
         // states:
@@ -48,6 +52,9 @@ export interface ControllableScrollableProps<TScrollIndexChangeEvent extends Scr
     // states:
     onScrollIndexChange ?: EventHandler<TScrollIndexChangeEvent>
 }
+/**
+ * @deprecated - Use `ViewStateProps & ViewStateChangeProps & UncontrollableViewStateProps` instead.
+ */
 export interface UncontrollableScrollableProps<TScrollIndexChangeEvent extends ScrollIndexChangeEvent = ScrollIndexChangeEvent>
     extends
         // states:
@@ -56,24 +63,30 @@ export interface UncontrollableScrollableProps<TScrollIndexChangeEvent extends S
     // states:
     defaultScrollIndex  ?: number
 }
+/**
+ * @deprecated - Use `ViewStateOptions` instead.
+ */
 export interface UncontrollableScrollableOptions {
     min  ?: number
     max  ?: number
     step ?: number
 }
+/**
+ * @deprecated - Use `useUncontrollableViewState` instead.
+ */
 export const useUncontrollableScrollable = <TScrollIndexChangeEvent extends ScrollIndexChangeEvent = ScrollIndexChangeEvent>(props: UncontrollableScrollableProps<TScrollIndexChangeEvent>, options?: UncontrollableScrollableOptions): readonly [number, React.Dispatch<React.SetStateAction<number>>] => {
     // options:
     const {
-        min,
-        max,
-        step,
+        min  = -Infinity,
+        max  =  Infinity,
+        step = 0,
     } = options ?? {};
     
     
     
     // utilities:
-    const trimValue = <TOpt extends number|null|undefined>(value: number|TOpt): number|TOpt => {
-        return clamp(min, value, max, step);
+    const trimValue = <TNumber extends number|null|undefined>(value: TNumber): TNumber => {
+        return clamp<TNumber>(min, value, max, step);
     };
     
     
@@ -128,4 +141,3 @@ export const useUncontrollableScrollable = <TScrollIndexChangeEvent extends Scro
         setScrollIndex,
     ];
 };
-//#endregion scrollable

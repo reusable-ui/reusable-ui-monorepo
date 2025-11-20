@@ -1,8 +1,9 @@
 {
   "name": "@reusable-ui/scrollable",
-  "version": "6.5.0",
+  "version": "7.0.0",
   "description": "A capability of UI to scroll/switch its contents.",
   "keywords": [
+    "deprecated",
     "scrollable",
     "scroll",
     "slide",
@@ -10,19 +11,23 @@
     "layouts"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "states/scrollable"
   },
-  "main": "dist/scrollable.js",
-  "types": "dist/scrollable.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/scrollable.js",
-    "./index": "./dist/scrollable.js",
-    "./index.js": "./dist/scrollable.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -36,11 +41,11 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/hooks": "^6.5.0",
-    "@reusable-ui/numbers": "^6.5.0"
+    "@reusable-ui/hooks": "^7.0.0",
+    "@reusable-ui/numbers": "^7.0.0"
   },
   "peerDependencies": {
-    "@types/react": "^18.0.0",
-    "react": "^18.0.0"
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0"
   }
 }
