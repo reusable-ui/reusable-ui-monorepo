@@ -1,29 +1,29 @@
-// react:
+// React:
 import {
-    // react:
+    // React:
     default as React,
     
     
     
-    // hooks:
+    // Hooks:
     useState,
 }                           from 'react'
 
-// cssfn:
+// Cssfn:
 import {
-    // cssfn general types:
+    // Cssfn general types:
     Factory,
     
     
     
-    // cssfn css specific types:
+    // Cssfn css specific types:
     CssKnownProps,
     CssRule,
     CssStyleCollection,
     
     
     
-    // writes css in javascript:
+    // Writes css in javascript:
     rule,
     states,
     style,
@@ -31,63 +31,93 @@ import {
     
     
     
-    // strongly typed of css variables:
+    // Strongly typed of css variables:
     CssVars,
     cssVars,
-}                           from '@cssfn/core'                  // writes css in javascript
+}                           from '@cssfn/core'                      // Writes css in javascript.
 
-// reusable-ui utilities:
+// Reusable-ui utilities:
 import {
-    // hooks:
+    // Hooks:
     useEvent,
     EventHandler,
     useScheduleTriggerEvent,
-}                           from '@reusable-ui/hooks'           // react helper hooks
+}                           from '@reusable-ui/hooks'               // React helper hooks.
 import {
-    // hooks:
+    // Hooks:
     SemanticProps,
-    useSemantic,
-}                           from '@reusable-ui/semantics'       // a semantic management system for react web components
+    useResolvedSemanticAttributes,
+}                           from '@reusable-ui/semantics'           // Semantic utility for resolving tag and role behaviors in reusable UI components.
 import {
-    // hooks:
-    usePropAccessibility,
-    usePropActive,
-    
-    
-    
-    // react components:
-    AccessibilityProps,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
-import {
-    // hooks:
+    // Hooks:
     useAnimatingState,
-}                           from '@reusable-ui/animating-state' // a hook for creating animating state
+}                           from '@reusable-ui/animating-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
-// reusable-ui features:
+// Reusable-ui features:
 import {
-    // hooks:
+    // Hooks:
     usesAnimation,
-}                           from '@reusable-ui/animation'       // animation stuff of UI
+}                           from '@reusable-ui/animation'           // Animation stuff of UI.
 
-// reusable-ui variants:
+// Reusable-ui variants:
 import {
-    // hooks:
+    // Hooks:
     setOutlined,
     OutlineableProps,
-}                           from '@reusable-ui/outlineable'     // outlined (background-less) variant of UI
+}                           from '@reusable-ui/outlineable'         // Outlined (background-less) variant of UI.
 import {
-    // hooks:
+    // Hooks:
     setMild,
     MildableProps,
-}                           from '@reusable-ui/mildable'        // mild (soft color) variant of UI
+}                           from '@reusable-ui/mildable'            // Mild (soft color) variant of UI.
+
+// Reusable-ui states:
+import {
+    // Types:
+    type DisabledStateProps,
+    
+    
+    
+    // Hooks:
+    useDisabledState,
+}                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
+import {
+    // Types:
+    type ReadOnlyStateProps,
+    
+    
+    
+    // Hooks:
+    useReadOnlyState,
+}                           from '@reusable-ui/read-only-state'     // Adds editable/read-only functionality to UI components, with transition animations and semantic styling hooks.
+import {
+    // Types:
+    type ActiveStateProps,
+    
+    
+    
+    // Hooks:
+    useActiveState,
+    
+    
+    
+    // Utilities:
+    isDeactivatingSelector,
+    isActivatingOrActiveSelector,
+    
+    ifActive                 as activeStateIfActive,
+    ifInactive               as activeStateIfInactive,
+    ifActivating             as activeStateIfActivating,
+    ifDeactivating           as activeStateIfDeactivating,
+    ifActivatingOrActive     as activeStateIfActivatingOrActive,
+    ifDeactivatingOrInactive as activeStateIfDeactivatingOrInactive,
+}                           from '@reusable-ui/active-state'        // Adds activation/deactivation (selection) functionality to UI components, with transition animations and semantic styling hooks.
 
 
 
-// hooks:
-
-// states:
-
-//#region activatable
+/**
+ * @deprecated - Use `ActiveStateVars` instead.
+ */
 export interface ActivatableVars {
     /* supports for `usesActiveAsClick()` */
     
@@ -112,29 +142,46 @@ const [activatableVars] = cssVars<ActivatableVars>({ prefix: 'ac', minify: false
 
 
 
-// .activated will be added after activating-animation done:
-const selectorIfActivated   = '.activated'
-// .activating, [aria-checked],[aria-pressed],[aria-selected] = styled active, :checked = native active:
-const selectorIfActivating  = ':is(.activating, [aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), :checked):not(:is(.activated, .passivating))'
-// .passivating will be added after loosing active and will be removed after deactivating-animation done:
-const selectorIfPassivating = '.passivating'
-// if all above are not set => passivated:
-const selectorIfPassivated  = ':not(:is(.activated, .activating, [aria-checked]:not([aria-checked="false"]), [aria-pressed]:not([aria-pressed="false"]), [aria-selected]:not([aria-selected="false"]), :checked, .passivating))'
+/**
+ * @deprecated - Use `ifActive` from `@reusable-ui/active-state` instead.
+ */
+export const ifActivated         = activeStateIfActive;
+/**
+ * @deprecated - Use `ifActivating` from `@reusable-ui/active-state` instead.
+ */
+export const ifActivating        = activeStateIfActivating;
+/**
+ * @deprecated - Use `ifDeactivating` from `@reusable-ui/active-state` instead.
+ */
+export const ifPassivating       = activeStateIfDeactivating;
+/**
+ * @deprecated - Use `ifInactive` from `@reusable-ui/active-state` instead.
+ */
+export const ifPassivated        = activeStateIfInactive;
+
+/**
+ * @deprecated - Use `ifActivatingOrActive` from `@reusable-ui/active-state` instead.
+ */
+export const ifActive            = activeStateIfActivatingOrActive;
+/**
+ * @deprecated - Use `ifDeactivatingOrInactive` from `@reusable-ui/active-state` instead.
+ */
+export const ifPassive           = activeStateIfDeactivatingOrInactive;
+/**
+ * @deprecated - Use `rule([isActivatingOrActiveSelector, isDeactivatingSelector], styles)` instead.
+ */
+export const ifActivePassivating = (styles: CssStyleCollection): CssRule => rule([isActivatingOrActiveSelector, isDeactivatingSelector], styles);
 
 
 
-export const ifActivated         = (styles: CssStyleCollection): CssRule => rule(selectorIfActivated  , styles);
-export const ifActivating        = (styles: CssStyleCollection): CssRule => rule(selectorIfActivating , styles);
-export const ifPassivating       = (styles: CssStyleCollection): CssRule => rule(selectorIfPassivating, styles);
-export const ifPassivated        = (styles: CssStyleCollection): CssRule => rule(selectorIfPassivated , styles);
-
-export const ifActive            = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActivated                                           ], styles);
-export const ifPassive           = (styles: CssStyleCollection): CssRule => rule([                                         selectorIfPassivating, selectorIfPassivated], styles);
-export const ifActivePassivating = (styles: CssStyleCollection): CssRule => rule([selectorIfActivating, selectorIfActivated, selectorIfPassivating                    ], styles);
-
-
-
+/**
+ * @deprecated - Use `CssActiveState` instead.
+ */
 export interface ActivatableStuff { activatableRule: Factory<CssRule>, activatableVars: CssVars<ActivatableVars> }
+
+/**
+ * @deprecated - Use `CssActiveStateOptions` instead.
+ */
 export interface ActivatableConfig {
     filterActive ?: CssKnownProps['filter'   ]
     
@@ -142,6 +189,8 @@ export interface ActivatableConfig {
     animPassive  ?: CssKnownProps['animation']
 }
 /**
+ * @deprecated - Use `usesActiveState` instead.
+ * 
  * Adds a capability of UI to be highlighted/selected/activated.
  * @param config  A configuration of `activatableRule`.
  * @returns A `ActivatableStuff` represents an activatable state.
@@ -186,10 +235,24 @@ export const usesActivatable = (config?: ActivatableConfig): ActivatableStuff =>
     };
 };
 
+/**
+ * @deprecated - No longer needed.
+ */
 export interface MarkActiveOptions {
-    outlined ?: null|OutlineableProps['outlined']
-    mild     ?: null|MildableProps['mild']
+    outlined ?: null|Extract<OutlineableProps['outlined'], boolean>
+    mild     ?: null|Extract<MildableProps['mild'], boolean>
 }
+/**
+ * @deprecated - No longer needed.
+ * When the component is activated, we can easily suppress or force the outline and mild variant by:
+ * ```tsx
+ *     // suppress outlined and mild when active:
+ *     <Component outlined={isActive ? false : undefined} mild={isActive ? false : undefined} />
+ *     
+ *     // force outlined and mild when active:
+ *     <Component outlined={isActive ? true : undefined} mild={isActive ? true : undefined} />
+ * ```
+ */
 export const markActive = (options?: MarkActiveOptions): CssRule => {
     // options:
     const { outlined = false, mild = false } = options ?? {};
@@ -205,24 +268,36 @@ export const markActive = (options?: MarkActiveOptions): CssRule => {
 
 
 
+/**
+ * @deprecated - No longer needed.
+ */
 export interface ActiveChangeEvent
     extends
         // states:
-        Required<Pick<AccessibilityProps,
+        Required<Pick<ActiveStateProps,
             |'active'
         >>
 {
 }
+/**
+ * @deprecated - Use `ActiveStateProps` instead.
+ */
 export interface ActivatableProps
     extends
         // states:
-        Partial<Pick<AccessibilityProps,
+        Partial<Pick<ActiveStateProps,
             |'active'
-            |'inheritActive'
         >>
 {
+    /**
+     * @deprecated - Use `cascadeActive` instead.
+     */
+    inheritActive ?: ActiveStateProps['cascadeActive']
 }
 
+/**
+ * @deprecated - Use `ActivePhase` instead.
+ */
 export const enum ActivatableState {
     Passivated  = 0,
     Passivating = 1,
@@ -230,6 +305,9 @@ export const enum ActivatableState {
     Activated   = 3,
 }
 
+/**
+ * @deprecated - Use `ActiveBehaviorState` instead.
+ */
 export interface ActivatableApi<TElement extends Element = HTMLElement> {
     active                : boolean
     
@@ -252,10 +330,13 @@ const checkableCtrls = [
     'checkbox',
     'radio',
 ];
+/**
+ * @deprecated - Use `useActiveBehaviorState` instead.
+ */
 export const useActivatable = <TElement extends Element = HTMLElement>(props: ActivatableProps & SemanticProps): ActivatableApi<TElement> => {
     // fn props:
-    const propActive  = usePropActive(props);
-    const {tag, role} = useSemantic(props);
+    const propActive    = useActiveState(props as any);
+    const { tag, role } = useResolvedSemanticAttributes(props);
     
     
     
@@ -357,6 +438,9 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
 
 
 
+/**
+ * @deprecated - Use `ActiveStateProps & ActiveStateChangeProps` instead.
+ */
 export interface ControllableActivatableProps<TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>
     extends
         // states:
@@ -365,6 +449,9 @@ export interface ControllableActivatableProps<TActiveChangeEvent extends ActiveC
     // states:
     onActiveChange ?: EventHandler<TActiveChangeEvent>
 }
+/**
+ * @deprecated - Use `ActiveStateProps & ActiveStateChangeProps & UncontrollableActiveStateProps` instead.
+ */
 export interface UncontrollableActivatableProps<TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>
     extends
         // states:
@@ -373,10 +460,22 @@ export interface UncontrollableActivatableProps<TActiveChangeEvent extends Activ
     // states:
     defaultActive  ?: boolean
 }
-export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>(props: UncontrollableActivatableProps<TActiveChangeEvent> & Pick<AccessibilityProps, 'enabled'|'inheritEnabled'|'readOnly'|'inheritReadOnly'>, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
-    // accessibilities:
-    const {enabled: propEnabled, readOnly: propReadOnly, active: propActive} = usePropAccessibility<boolean, boolean, null>(props, undefined, undefined, null);
-    const isDisabledOrReadOnly = (!propEnabled || propReadOnly);
+/**
+ * @deprecated - Use `useUncontrollableActiveState` instead.
+ */
+export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>(props: UncontrollableActivatableProps<TActiveChangeEvent> & DisabledStateProps & ReadOnlyStateProps, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
+    // Flags:
+    
+    // Resolve whether the component is disabled:
+    const isDisabled        = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    
+    // Resolve whether the component is readonly:
+    const isReadonly        = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
+    
+    // Resolve whether the component is in a restricted state:
+    const isRestricted      = isDisabled || isReadonly;
+    
+    const propActive        = useActiveState(props as any);
     
     
     
@@ -445,7 +544,7 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
     // callbacks:
     const setActive            = useEvent<React.Dispatch<React.SetStateAction<boolean>>>((active) => {
         // conditions:
-        if (isDisabledOrReadOnly) return; // control is disabled or readOnly => no response required
+        if (isRestricted) return; // control is in a restricted state (interaction blocked) => no response required
         
         const newActive = (typeof(active) === 'function') ? active(activeFn) : active;
         if (newActive === activeFn) return; // still the same => nothing to update
@@ -458,7 +557,7 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
     }); // a stable callback, the `setActive` guaranteed to never change
     const toggleActive         = useEvent<React.Dispatch<void>>(() => {
         // conditions:
-        if (isDisabledOrReadOnly) return; // control is disabled or readOnly => no response required
+        if (isRestricted) return; // control is in a restricted state (interaction blocked) => no response required
         
         
         
@@ -479,4 +578,3 @@ export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveCh
         toggleActive,
     ];
 };
-//#endregion activatable

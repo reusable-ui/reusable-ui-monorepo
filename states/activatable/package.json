@@ -1,8 +1,9 @@
 {
   "name": "@reusable-ui/activatable",
-  "version": "6.5.1",
+  "version": "7.0.0",
   "description": "A capability of UI to be highlighted/selected/activated.",
   "keywords": [
+    "deprecated",
     "activatable",
     "active",
     "highlighted",
@@ -12,19 +13,23 @@
     "layouts"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "states/activatable"
   },
-  "main": "dist/activatable.js",
-  "types": "dist/activatable.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/activatable.js",
-    "./index": "./dist/activatable.js",
-    "./index.js": "./dist/activatable.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -38,17 +43,19 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.2.0",
-    "@reusable-ui/animating-state": "^6.5.0",
-    "@reusable-ui/hooks": "^6.5.0",
-    "@reusable-ui/semantics": "^6.5.0"
+    "@cssfn/core": "^4.0.0",
+    "@reusable-ui/animating-state": "^7.0.0",
+    "@reusable-ui/hooks": "^7.0.0",
+    "@reusable-ui/semantics": "^7.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/accessibilities": "^6.5.0",
-    "@reusable-ui/animation": "^6.5.0",
-    "@reusable-ui/mildable": "^6.5.0",
-    "@reusable-ui/outlineable": "^6.5.0",
-    "@types/react": "^18.0.0",
-    "react": "^18.0.0"
+    "@reusable-ui/active-state": "^7.0.0",
+    "@reusable-ui/animation": "^7.0.0",
+    "@reusable-ui/disabled-state": "^7.0.0",
+    "@reusable-ui/mildable": "^7.0.0",
+    "@reusable-ui/outlineable": "^7.0.0",
+    "@reusable-ui/read-only-state": "^7.0.0",
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0"
   }
 }
