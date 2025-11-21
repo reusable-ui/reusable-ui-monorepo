@@ -1,30 +1,30 @@
-// react:
+// React:
 import {
-    // react:
+    // React:
     default as React,
     
     
     
-    // hooks:
+    // Hooks:
     useRef,
     useState,
 }                           from 'react'
 
-// cssfn:
+// Cssfn:
 import {
-    // cssfn general types:
+    // Cssfn general types:
     Factory,
     
     
     
-    // cssfn css specific types:
+    // Cssfn css specific types:
     CssKnownProps,
     CssRule,
     CssStyleCollection,
     
     
     
-    // writes css in javascript:
+    // Writes css in javascript:
     rule,
     states,
     style,
@@ -32,65 +32,80 @@ import {
     
     
     
-    // strongly typed of css variables:
+    // Strongly typed of css variables:
     CssVars,
     cssVars,
-}                           from '@cssfn/core'                  // writes css in javascript
+}                           from '@cssfn/core'                      // Writes css in javascript.
 
-// reusable-ui utilities:
+// Reusable-ui utilities:
 import {
-    // hooks:
+    // Hooks:
     useIsomorphicLayoutEffect,
     useEvent,
     useMountedFlag,
-    type TimerPromise,
+    type ScheduledPromise,
     useSetTimeout,
-}                           from '@reusable-ui/hooks'           // react helper hooks
+}                           from '@reusable-ui/hooks'               // React helper hooks.
 import {
-    // hooks:
-    usePropEnabled,
-    usePropReadOnly,
-    
-    
-    
-    // react components:
-    AccessibilityProps,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
-import {
-    // hooks:
-    Result as ValResult,
-    usePropIsValid,
-    
-    
-    
-    // react components:
-    ValidationProps,
-}                           from '@reusable-ui/validations'     // a validation management system
-import {
-    // hooks:
+    // Hooks:
     useAnimatingState,
-}                           from '@reusable-ui/animating-state' // a hook for creating animating state
+}                           from '@reusable-ui/animating-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
-// reusable-ui features:
+// Reusable-ui features:
 import {
-    // hooks:
+    // Hooks:
     usesAnimation,
-}                           from '@reusable-ui/animation'       // animation stuff of UI
+}                           from '@reusable-ui/animation'           // Animation stuff of UI.
 
-// reusable-ui variants:
+// Reusable-ui variants:
 import {
-    // hooks:
+    // Hooks:
     ThemeName,
     usesThemeConditional,
-}                           from '@reusable-ui/themeable'       // color options of UI
+}                           from '@reusable-ui/themeable'           // Color options of UI.
+
+// Reusable-ui states:
+import {
+    // Types:
+    type DisabledStateProps,
+    
+    
+    
+    // Hooks:
+    useDisabledState,
+}                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
+import {
+    // Types:
+    type ReadOnlyStateProps,
+    
+    
+    
+    // Hooks:
+    useReadOnlyState,
+}                           from '@reusable-ui/read-only-state'     // Adds editable/read-only functionality to UI components, with transition animations and semantic styling hooks.
+import {
+    // Types:
+    ValidityStateProps,
+    
+    
+    
+    // Utilities:
+    ifValid        as validityStateIfValid,
+    ifInvalid      as validityStateIfInvalid,
+    ifUnvalidated  as validityStateIfUnvalidated,
+    ifValidating,
+    ifInvalidating,
+    ifUnvalidating as validityStateIfUnvalidating,
+    ifValidatingOrValid,
+    ifInvalidatingOrInvalid,
+    ifUnvalidatingOrUnvalidated,
+}                           from '@reusable-ui/validity-state'      // Adds validation functionality to UI components, with transition animations and semantic styling hooks.
 
 
 
-// hooks:
-
-// states:
-
-//#region invalidable
+/**
+ * @deprecated - Use `ValidityStateVars` instead.
+ */
 export interface InvalidableVars {
     animValid   : any
     animInvalid : any
@@ -105,55 +120,117 @@ const [invalidableVars] = cssVars<InvalidableVars>({ prefix: 'iv', minify: false
 
 
 
-// .validated will be added after validating-animation done:
-const selectorIfValidated      = '.validated'
-// .validating = styled valid, :valid = native valid:
-// the .validated, .unvalidating, .noval are used to overwrite native :valid
-const selectorIfValidating     = ':is(.validating, :valid:not(:is(.validated, .unvalidating, .noval, .invalidated, .invalidating, .uninvalidating)))'
 // .unvalidating will be added after loosing valid and will be removed after unvalidating-animation done:
 const selectorIfUnvalidating   = '.unvalidating'
 // if all above are not set => unvalidated:
 // optionally use .noval to overwrite native :valid
 const selectorIfUnvalidated    = ':is(:not(:is(.validated, .validating, :valid, .unvalidating)), .noval)'
 
-// .invalidated will be added after invalidating-animation done:
-const selectorIfInvalidated    = '.invalidated'
-// .invalidating = styled invalid, :invalid = native invalid:
-// the .invalidated, .uninvalidating, .noval are used to overwrite native :invalid
-const selectorIfInvalidating   = ':is(.invalidating, :invalid:not(:is(.invalidated, .uninvalidating, .noval, .validated, .validating, .unvalidating)))'
 // .uninvalidating will be added after loosing invalid and will be removed after uninvalidating-animation done:
 const selectorIfUninvalidating = '.uninvalidating'
 // if all above are not set => uninvalidated:
 // optionally use .noval to overwrite native :invalid
 const selectorIfUninvalidated  = ':is(:not(:is(.invalidated, .invalidating, :invalid, .uninvalidating)), .noval)'
 
-// if all above are not set => neutralized
-// optionally use .noval to kill pseudo :valid & :invalid:
-const selectorIfNeutralized    = ':is(:not(:is(.validated, .validating, :valid, .unvalidating, .invalidated, .invalidating, :invalid, .uninvalidating)), .noval)'
 
-export const ifValidated       = (styles: CssStyleCollection): CssRule => rule(selectorIfValidated      , styles);
-export const ifValidating      = (styles: CssStyleCollection): CssRule => rule(selectorIfValidating     , styles);
+
+// Not deprecated:
+export {
+    ifValidating,
+    ifInvalidating,
+}
+
+/**
+ * @deprecated - Use `ifValid` from `@reusable-ui/validity-state` instead.
+ */
+export const ifValidated       = validityStateIfValid;
+/**
+ * @deprecated - No longer needed.
+ * 
+ * Since the `@reusable-ui/validity-state` switches to another state without
+ * first *undoing* the current valid state,
+ * this conditional statement is no longer needed (never matches).
+ */
 export const ifUnvalidating    = (styles: CssStyleCollection): CssRule => rule(selectorIfUnvalidating   , styles);
+/**
+ * @deprecated - No longer needed.
+ * 
+ * Since the `@reusable-ui/validity-state` switches to another state without
+ * first *undoing* the current valid state,
+ * this conditional statement is no longer needed (never matches).
+ */
 export const ifUnvalidated     = (styles: CssStyleCollection): CssRule => rule(selectorIfUnvalidated    , styles);
 
-export const ifValid           = (styles: CssStyleCollection): CssRule => rule([selectorIfValidating    , selectorIfValidated     ], styles);
+/**
+ * @deprecated - Use `ifValidatingOrValid` instead.
+ */
+export const ifValid           = ifValidatingOrValid;
+/**
+ * @deprecated - No longer needed.
+ * 
+ * Since the `@reusable-ui/validity-state` switches to another state without
+ * first *undoing* the current valid state,
+ * this conditional statement is no longer needed (never matches).
+ */
 export const ifUnvalid         = (styles: CssStyleCollection): CssRule => rule([selectorIfUnvalidating  , selectorIfUnvalidated   ], styles);
 
-export const ifInvalidated     = (styles: CssStyleCollection): CssRule => rule(selectorIfInvalidated    , styles);
-export const ifInvalidating    = (styles: CssStyleCollection): CssRule => rule(selectorIfInvalidating   , styles);
+/**
+ * @deprecated - Use `ifInvalid` from `@reusable-ui/validity-state` instead.
+ */
+export const ifInvalidated     = validityStateIfInvalid;
+/**
+ * @deprecated - No longer needed.
+ * 
+ * Since the `@reusable-ui/validity-state` switches to another state without
+ * first *undoing* the current invalid state,
+ * this conditional statement is no longer needed (never matches).
+ */
 export const ifUninvalidating  = (styles: CssStyleCollection): CssRule => rule(selectorIfUninvalidating , styles);
+/**
+ * @deprecated - No longer needed.
+ * 
+ * Since the `@reusable-ui/validity-state` switches to another state without
+ * first *undoing* the current invalid state,
+ * this conditional statement is no longer needed (never matches).
+ */
 export const ifUninvalidated   = (styles: CssStyleCollection): CssRule => rule(selectorIfUninvalidated  , styles);
 
-export const ifInvalid         = (styles: CssStyleCollection): CssRule => rule([selectorIfInvalidating  , selectorIfInvalidated   ], styles);
+/**
+ * @deprecated - Use `ifInvalidatingOrInvalid` instead.
+ */
+export const ifInvalid         = ifInvalidatingOrInvalid;
+/**
+ * @deprecated - No longer needed.
+ * 
+ * Since the `@reusable-ui/validity-state` switches to another state without
+ * first *undoing* the current invalid state,
+ * this conditional statement is no longer needed (never matches).
+ */
 export const ifUninvalid       = (styles: CssStyleCollection): CssRule => rule([selectorIfUninvalidating, selectorIfUninvalidated ], styles);
 
-export const ifNeutralizing    = (styles: CssStyleCollection): CssRule => rule([selectorIfUnvalidating  , selectorIfUninvalidating], styles);
-export const ifNeutralized     = (styles: CssStyleCollection): CssRule => rule(selectorIfNeutralized    , styles);
-export const ifNeutralize      = (styles: CssStyleCollection): CssRule => rule([selectorIfUnvalidating  , selectorIfUninvalidating, selectorIfNeutralized], styles);
+/**
+ * @deprecated - Use `ifUnvalidating` from `@reusable-ui/validity-state` instead.
+ */
+export const ifNeutralizing    = validityStateIfUnvalidating;
+/**
+ * @deprecated - Use `ifUnvalidated` from `@reusable-ui/validity-state` instead.
+ */
+export const ifNeutralized     = validityStateIfUnvalidated;
+/**
+ * @deprecated - Use `ifUnvalidatingOrUnvalidated` instead.
+ */
+export const ifNeutralize      = ifUnvalidatingOrUnvalidated;
 
 
 
+/**
+ * @deprecated - Use `CssValidityState` instead.
+ */
 export interface InvalidableStuff { invalidableRule: Factory<CssRule>, invalidableVars: CssVars<InvalidableVars> }
+
+/**
+ * @deprecated - Use `CssValidityStateOptions` instead.
+ */
 export interface InvalidableConfig {
     animValid     ?: CssKnownProps['animation']
     animUnvalid   ?: CssKnownProps['animation']
@@ -162,6 +239,8 @@ export interface InvalidableConfig {
     animUninvalid ?: CssKnownProps['animation']
 }
 /**
+ * @deprecated - Use `usesValidityState` instead.
+ * 
  * Adds a possibility of UI having an invalid state.
  * @param config  A configuration of `invalidableRule`.
  * @returns A `InvalidableStuff` represents an invalidable state.
@@ -198,22 +277,44 @@ export const usesInvalidable = (config?: InvalidableConfig): InvalidableStuff =>
     };
 };
 
+/**
+ * @deprecated - Use `<Component validity={true} />` instead.
+ */
 export const markValid   = (): CssRule => style({
     // variants:
     ...usesThemeValid(),   // switch to valid theme
 });
 /**
+ * @deprecated - Use conditional:
+ * ```
+ * export const componentStyle = () => style({
+ *     backgroundColor : `${validityStateVars.isValid} ${colorVars.successBase}`,
+ *     color           : `${validityStateVars.isValid} ${colorVars.successFlip}`,
+ * });
+ * ```
+ * 
  * Creates a conditional theme color rules at valid state.
  * @param themeName The theme name at valid state.
  * @returns A `CssRule` represents a conditional theme color rules at valid state.
  */
 export const usesThemeValid   = (themeName: ThemeName|null = 'success'): CssRule => usesThemeConditional(themeName);
 
+/**
+ * @deprecated - Use `<Component validity={false} />` instead.
+ */
 export const markInvalid = (): CssRule => style({
     // variants:
     ...usesThemeInvalid(), // switch to invalid theme
 });
 /**
+ * @deprecated - Use conditional:
+ * ```
+ * export const componentStyle = () => style({
+ *     backgroundColor : `${validityStateVars.isInvalid} ${colorVars.dangerBase}`,
+ *     color           : `${validityStateVars.isInvalid} ${colorVars.dangerFlip}`,
+ * });
+ * ```
+ * 
  * Creates a conditional theme color rules at invalid state.
  * @param themeName The theme name at invalid state.
  * @returns A `CssRule` represents a conditional theme color rules at invalid state.
@@ -222,30 +323,74 @@ export const usesThemeInvalid = (themeName: ThemeName|null = 'danger' ): CssRule
 
 
 
-export interface ValidityChangeEvent
-    extends
-        // states:
-        Required<Pick<ValidationProps,
-            |'isValid'
-        >>
-{
+/**
+ * @deprecated - No longer needed.
+ */
+export interface ValidityChangeEvent {
+    /**
+     * @deprecated - Use `validity` instead.
+     */
+    isValid ?: ValidityStateProps['validity']
 }
+
+/**
+ * @deprecated - No longer needed.
+ * 
+ * Since `@reusable-ui/validity-state` uses provided `computedValidity` for
+ * validation logic updates, the dependencies to recompute the `computedValidity` is
+ * on the component's `use(Layout)Effect()` itself.
+ */
 export type ValidationDeps = (bases: unknown[]) => unknown[]
+
+/**
+ * @deprecated - Use `props.onValidityUpdate` instead.
+ */
 export type ValidationEventHandler<TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent> = (event: TValidityChangeEvent) => void|Promise<void>
-export interface InvalidableProps<TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>
-    extends
-        // validations:
-        Partial<ValidationProps>
-{
+
+/**
+ * @deprecated - Use `ValidityStateProps` instead.
+ */
+export interface InvalidableProps<TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent> {
     // validations:
+    /**
+     * @deprecated - No longer needed.
+     * 
+     * Since `@reusable-ui/validity-state` uses provided `computedValidity` for
+     * validation logic updates, the dependencies to recompute the `computedValidity` is
+     * on the component's `use(Layout)Effect()` itself.
+     */
     validationDeps    ?: ValidationDeps
+    
+    /**
+     * @deprecated - Use `props.onValidityUpdate` instead.
+     */
     onValidation      ?: ValidationEventHandler<TValidityChangeEvent>
     
     validDelay        ?: number
     invalidDelay      ?: number
     noValidationDelay ?: number
+    
+    /**
+     * @deprecated - Use `validity` instead.
+     */
+    isValid           ?: ValidityStateProps['validity']
+    
+    /**
+     * @deprecated - No longer supported.
+     * 
+     * Alternative: Pass `<Component validity={forceValidity} />` from resolved `useValidityState()`.
+     */
+    cascadeValidation ?: boolean
+    
+    /**
+     * @deprecated - Use `validity='auto'` to enable validation or `validity={null}` to disable.
+     */
+    enableValidation  ?: boolean
 }
 
+/**
+ * @deprecated - Use `ValidityPhase` instead.
+ */
 export const enum InvalidableState {
     Validated      = 3,
     Validating     = 2,
@@ -258,6 +403,9 @@ export const enum InvalidableState {
     Invalidated    = -3,
 }
 
+/**
+ * @deprecated - Use `ValidityBehaviorState` instead.
+ */
 export interface InvalidableApi<TElement extends Element = HTMLElement> {
     /**
      * Determines whether the validation is statically disabled.
@@ -268,13 +416,13 @@ export interface InvalidableApi<TElement extends Element = HTMLElement> {
      * `false` : invalidating/invalidated  
      * `null`  : uncheck/unvalidating/uninvalidating
     */
-    isValid               : ValResult
+    isValid               : boolean | null
     /**
      * `true`  : validating/validated  
      * `false` : invalidating/invalidated  
      * `null`  : uncheck/unvalidating/uninvalidating
     */
-    isValidDelayed        : ValResult
+    isValidDelayed        : boolean | null
     ariaInvalid           : boolean
     
     state                 : InvalidableState
@@ -285,7 +433,10 @@ export interface InvalidableApi<TElement extends Element = HTMLElement> {
     handleAnimationCancel : React.AnimationEventHandler<TElement>
 }
 
-export const useInvalidable = <TElement extends Element = HTMLElement, TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>(props: InvalidableProps<TValidityChangeEvent> & Pick<AccessibilityProps, 'enabled'|'inheritEnabled'|'readOnly'|'inheritReadOnly'>): InvalidableApi<TElement> => {
+/**
+ * @deprecated - Use `useValidityBehaviorState` instead.
+ */
+export const useInvalidable = <TElement extends Element = HTMLElement, TValidityChangeEvent extends ValidityChangeEvent = ValidityChangeEvent>(props: InvalidableProps<TValidityChangeEvent> & DisabledStateProps & ReadOnlyStateProps): InvalidableApi<TElement> => {
     // props:
     const {
         // validations:
@@ -295,11 +446,20 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         validDelay         = 300,
         invalidDelay       = 600,
         noValidationDelay  = 0,
+        
+        isValid            = 'auto',
     } = props;
     
-    const propEnabled      = usePropEnabled(props);
-    const propReadOnly     = usePropReadOnly(props);
-    const propEditable     = propEnabled && !propReadOnly; // the component is editable if it is enabled and not read-only
+    // Flags:
+    
+    // Resolve whether the component is disabled:
+    const isDisabled        = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    
+    // Resolve whether the component is readonly:
+    const isReadonly        = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
+    
+    // Resolve whether the component is in a restricted state:
+    const isRestricted      = isDisabled || isReadonly;
     
     /**
      * `undefined` : *automatic* detect valid/invalid state.  
@@ -307,14 +467,18 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
      * `true`      : force validation state to *valid*.  
      * `false`     : force validation state to *invalid*.
      */
-    const propIsValid      = usePropIsValid(props);        // the computed validation result based on the props and the context
+    const propIsValid      = (
+        (isValid === 'auto')
+        ? undefined
+        : isValid
+    );
     
     /**
      * Determines whether the validation is statically disabled (always *uncheck*).
      */
     const propNoValidation = (
         // conditions that statically disable the validation:
-        !propEditable           // the component is not editable      => force validation result to *uncheck*
+        isRestricted            // the component is not editable      => force validation result to *uncheck*
         ||
         (propIsValid === null)  // `isValid` is provided as *uncheck* => force validation result to *uncheck*
     );
@@ -328,7 +492,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
      * The result is forced to *uncheck*|*valid*|*invalid* if `isValid` is provided (not `undefined`).
      * Otherwise, the dynamic validation is needed by returning `undefined`.
      */
-    const staticValidationResult : ValResult|undefined = ((): ValResult|undefined => {
+    const staticValidationResult : boolean | null|undefined = ((): boolean | null|undefined => {
         // if control is not editable => no validation
         if (propNoValidation)          return null; // if the component validation is disabled => force validation result to *uncheck*
         
@@ -352,7 +516,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         !!onValidation                         // the dynamic validation is needed only if the `onValidation` is provided
     );
     
-    const [dynamicValidationResult, setDynamicValidationResult] = useState<ValResult>(null); // initially *uncheck* (null)
+    const [dynamicValidationResult, setDynamicValidationResult] = useState<boolean | null>(null); // initially *uncheck* (null)
     
     const isMounted = useMountedFlag();
     const baseValidationDeps : unknown[] = [];
@@ -381,7 +545,10 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
             
             
             
-            const newDynamicValidationResult = event.isValid; // get the result of the dynamic validation
+            const {
+                isValid = 'auto',
+            } = event;
+            const newDynamicValidationResult = (isValid === 'auto') ? null : isValid; // get the result of the dynamic validation
             setDynamicValidationResult(newDynamicValidationResult); // remember the last change
         });
         
@@ -390,7 +557,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [...dynamicValidationDeps, onValidation]);
     
-    const finalValidationResult : ValResult = (
+    const finalValidationResult : boolean | null = (
         isDynamicValidationResultNeeded
         ? dynamicValidationResult          // if the dynamic validation is needed => use the result of the dynamic validation
         : (staticValidationResult ?? null) // otherwise                           => use the result of the static  validation
@@ -398,9 +565,9 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
     
     
     
-    const [delayedValidationResult, setDelayedValidationResult] = useState<ValResult>(finalValidationResult); // initially same as `finalValidationResult`
+    const [delayedValidationResult, setDelayedValidationResult] = useState<boolean | null>(finalValidationResult); // initially same as `finalValidationResult`
     const setTimeoutAsync = useSetTimeout();
-    const delayedPromise  = useRef<TimerPromise<boolean>|null>(null);
+    const delayedPromise  = useRef<ScheduledPromise<boolean>|null>(null);
     const syncDelayedValidationResult = useEvent((): void => {
         // abort the previous delayed validation (if any):
         delayedPromise.current?.abort();
@@ -448,7 +615,7 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         |false // represents *invalid*
         |UndoAnimationState
     const undoAnimationStateRef = useRef<UndoAnimationState>(0); // Assumes the initial value was *unvalid* (positive 0). Whether the initial value is *unvalid* (positive 0) or *uninvalid* (negative 0) is not matter for `useAnimatingState`, the `animation` is always initially `undefined`.
-    const newAnimationState : AnimationState = ( // converts `ValResult` to `AnimationState`
+    const newAnimationState : AnimationState = ( // converts `boolean | null` to `AnimationState`
         delayedValidationResult
         ??
         // Converts *uncheck* to *unvalid* (positive 0) or *uninvalid* (negative 0), depending on the last *undo*.
@@ -580,4 +747,3 @@ export const useInvalidable = <TElement extends Element = HTMLElement, TValidity
         handleAnimationCancel,
     };
 };
-//#endregion invalidable

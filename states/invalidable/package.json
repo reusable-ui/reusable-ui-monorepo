@@ -1,8 +1,9 @@
 {
   "name": "@reusable-ui/invalidable",
-  "version": "6.14.0",
+  "version": "7.0.0",
   "description": "A possibility of UI having an invalid state.",
   "keywords": [
+    "deprecated",
     "invalidable",
     "validity",
     "valid",
@@ -11,19 +12,23 @@
     "layouts"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "states/invalidable"
   },
-  "main": "dist/invalidable.js",
-  "types": "dist/invalidable.d.ts",
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": "./dist/invalidable.js",
-    "./index": "./dist/invalidable.js",
-    "./index.js": "./dist/invalidable.js"
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
   },
   "sideEffects": false,
   "publishConfig": {
@@ -37,16 +42,17 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@cssfn/core": "^3.2.0",
-    "@reusable-ui/animating-state": "^6.5.0",
-    "@reusable-ui/hooks": "^6.5.0"
+    "@cssfn/core": "^4.0.0",
+    "@reusable-ui/animating-state": "^7.0.0",
+    "@reusable-ui/hooks": "^7.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/accessibilities": "^6.5.0",
-    "@reusable-ui/animation": "^6.5.0",
-    "@reusable-ui/themeable": "^6.5.0",
-    "@reusable-ui/validations": "^6.5.0",
-    "@types/react": "^18.0.0",
-    "react": "^18.0.0"
+    "@reusable-ui/animation": "^7.0.0",
+    "@reusable-ui/disabled-state": "^7.0.0",
+    "@reusable-ui/read-only-state": "^7.0.0",
+    "@reusable-ui/themeable": "^7.0.0",
+    "@reusable-ui/validity-state": "^7.0.0",
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0"
   }
 }
