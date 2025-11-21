@@ -120,6 +120,7 @@
     "states/activatable",
     "states/focusable",
     "states/interactable",
+    "states/clickable",
     "__configs/*",
     "__utilities/*",
     "__features/*",

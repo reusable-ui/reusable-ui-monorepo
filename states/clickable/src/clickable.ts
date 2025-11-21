@@ -1,31 +1,31 @@
-// react:
+// React:
 import {
-    // react:
+    // React:
     default as React,
     
     
     
-    // hooks:
+    // Hooks:
     useState,
     useRef,
     useEffect,
 }                           from 'react'
 
-// cssfn:
+// Cssfn:
 import {
-    // cssfn general types:
+    // Cssfn general types:
     Factory,
     
     
     
-    // cssfn css specific types:
+    // Cssfn css specific types:
     CssKnownProps,
     CssRule,
     CssStyleCollection,
     
     
     
-    // writes css in javascript:
+    // Writes css in javascript:
     rule,
     states,
     style,
@@ -33,38 +33,60 @@ import {
     
     
     
-    // strongly typed of css variables:
+    // Strongly typed of css variables:
     CssVars,
     cssVars,
-}                           from '@cssfn/core'                  // writes css in javascript
+}                           from '@cssfn/core'                      // Writes css in javascript.
 
-// reusable-ui utilities:
+// Reusable-ui utilities:
 import {
-    // hooks:
+    // Hooks:
     useEvent,
     EventHandler,
     useScheduleTriggerEvent,
-}                           from '@reusable-ui/hooks'           // react helper hooks
+}                           from '@reusable-ui/hooks'               // React helper hooks.
 import {
-    // hooks:
-    usePropEnabled,
-    usePropReadOnly,
-    
-    
-    
-    // react components:
-    AccessibilityProps,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
-import {
-    // hooks:
+    // Hooks:
     useAnimatingState,
-}                           from '@reusable-ui/animating-state' // a hook for creating animating state
+}                           from '@reusable-ui/animating-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
-// reusable-ui features:
+// Reusable-ui features:
 import {
-    // hooks:
+    // Hooks:
     usesAnimation,
-}                           from '@reusable-ui/animation'       // animation stuff of UI
+}                           from '@reusable-ui/animation'           // Animation stuff of UI.
+
+// Reusable-ui states:
+import {
+    // Types:
+    type DisabledStateProps,
+    
+    
+    
+    // Hooks:
+    useDisabledState,
+}                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
+import {
+    // Types:
+    type ReadOnlyStateProps,
+    
+    
+    
+    // Hooks:
+    useReadOnlyState,
+}                           from '@reusable-ui/read-only-state'     // Adds editable/read-only functionality to UI components, with transition animations and semantic styling hooks.
+import {
+    // Utilities:
+    isReleasingSelector,
+    isPressingOrPressedSelector,
+    
+    ifPressed,
+    ifReleased,
+    ifPressing,
+    ifReleasing,
+    ifPressingOrPressed,
+    ifReleasingOrReleased,
+}                           from '@reusable-ui/press-state'         // Adds press/release functionality to UI components, with transition animations and semantic styling hooks.
 
 
 
@@ -80,11 +102,9 @@ const _defaultReleaseDelay     : number = 1;
 
 
 
-// hooks:
-
-// states:
-
-//#region clickable
+/**
+ * @deprecated - Use `PressStateVars` instead.
+ */
 export interface ClickableVars {
     /* supports for `usesActiveAsClick()` */
     
@@ -112,32 +132,39 @@ const [clickableVars] = cssVars<ClickableVars>({ prefix: 'cl', minify: false });
 
 
 
-// .pressed will be added after pressing-animation done:
-const selectorIfPressed   = '.pressed'
-// .pressing = styled press, :active = native press:
-// the .disabling, [aria-disabled], .disabled are used to kill native :active
-// // // the .pressed, .releasing, .released are used to overwrite native :active
-// // // const selectorIfPressing  = ':is(.pressing, :active:not(:is(.disabling, [aria-disabled]:not([aria-disabled="false"]), .disabled, .pressed, .releasing, .released)))'
-const selectorIfPressing  = '.pressing'
-// .releasing will be added after loosing press and will be removed after releasing-animation done:
-const selectorIfReleasing = '.releasing'
-// if all above are not set => released:
-// // // optionally use .released to overwrite native :active
-// // // const selectorIfReleased  = ':is(:not(:is(.pressed, .pressing, :active:not(:is(.disabling, [aria-disabled]:not([aria-disabled="false"]), .disabled)), .releasing)), .released)'
-const selectorIfReleased  = ':not(:is(.pressed, .pressing, .releasing))'
+// Not deprecated:
+export {
+    ifPressed,
+    ifReleased,
+    ifPressing,
+    ifReleasing,
+}
 
-export const ifPressed        = (styles: CssStyleCollection): CssRule => rule(selectorIfPressed  , styles);
-export const ifPressing       = (styles: CssStyleCollection): CssRule => rule(selectorIfPressing , styles);
-export const ifReleasing      = (styles: CssStyleCollection): CssRule => rule(selectorIfReleasing, styles);
-export const ifReleased       = (styles: CssStyleCollection): CssRule => rule(selectorIfReleased , styles);
+/**
+ * @deprecated - Use `ifPressingOrPressed` instead.
+ */
+export const ifPress          = ifPressingOrPressed;
 
-export const ifPress          = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfPressed                                         ], styles);
-export const ifRelease        = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfReleasing, selectorIfReleased], styles);
-export const ifPressReleasing = (styles: CssStyleCollection): CssRule => rule([selectorIfPressing, selectorIfPressed, selectorIfReleasing                    ], styles);
+/**
+ * @deprecated - Use `ifReleasingOrReleased` instead.
+ */
+export const ifRelease        = ifReleasingOrReleased;
+
+/**
+ * @deprecated - Use `rule([isPressingOrPressedSelector, isReleasingSelector], styles)` instead.
+ */
+export const ifPressReleasing = (styles: CssStyleCollection): CssRule => rule([isPressingOrPressedSelector, isReleasingSelector], styles);
 
 
 
+/**
+ * @deprecated - Use `CssPressState` instead.
+ */
 export interface ClickableStuff { clickableRule: Factory<CssRule>, clickableVars: CssVars<ClickableVars> }
+
+/**
+ * @deprecated - Use `CssPressStateOptions` instead.
+ */
 export interface ClickableConfig {
     filterPress          ?: CssKnownProps['filter'   ]
     
@@ -148,6 +175,8 @@ export interface ClickableConfig {
     animReleaseAsPassive ?: CssKnownProps['animation']
 }
 /**
+ * @deprecated - Use `usesPressState` instead.
+ * 
  * Adds a capability of UI to be clicked.
  * @param config  A configuration of `clickableRule`.
  * @returns A `ClickableStuff` represents a clickable state.
@@ -197,16 +226,11 @@ export const usesClickable = (config?: ClickableConfig): ClickableStuff => {
 
 
 
+/**
+ * @deprecated - Use `PressStateProps` instead.
+ */
 export interface ClickableProps<TElement extends Element = HTMLElement>
     extends
-        // states:
-        Partial<Pick<AccessibilityProps,
-            |'enabled'
-            |'inheritEnabled'
-            |'readOnly'
-            |'inheritReadOnly'
-        >>,
-        
         // handlers:
         Partial<Pick<React.DOMAttributes<TElement>,
             |'onClick'
@@ -223,8 +247,31 @@ export interface ClickableProps<TElement extends Element = HTMLElement>
     actionKeys    ?: string[]|null
     
     releaseDelay  ?: number
+    
+    /**
+     * @deprecated - Use `disabled` instead.
+     */
+    enabled            ?: DisabledStateProps['disabled']
+    
+    /**
+     * @deprecated - Use `cascadeDisabled` instead.
+     */
+    inheritEnabled     ?: DisabledStateProps['cascadeDisabled']
+    
+    /**
+     * @deprecated - Should be never used, since click/press is not an editable behavior.
+     */
+    readOnly           ?: ReadOnlyStateProps['readOnly']
+    
+    /**
+     * @deprecated - Should be never used, since click/press is not an editable behavior.
+     */
+    inheritReadOnly    ?: ReadOnlyStateProps['cascadeReadOnly']
 }
 
+/**
+ * @deprecated - Use `PressPhase` instead.
+ */
 export const enum ClickableState {
     Released  = 0,
     Releasing = 1,
@@ -232,6 +279,9 @@ export const enum ClickableState {
     Pressed   = 3,
 }
 
+/**
+ * @deprecated - Use `PressBehaviorState` instead.
+ */
 export interface ClickableApi<TElement extends Element = HTMLElement> {
     pressed               : boolean
     
@@ -248,10 +298,16 @@ export interface ClickableApi<TElement extends Element = HTMLElement> {
     handleAnimationCancel : React.AnimationEventHandler<TElement>
 }
 
+/**
+ * @deprecated - Use `PressStateOptions` instead.
+ */
 export interface ClickableOptions {
     handleActionCtrlEvents ?: boolean
     handleKeyEnterEvents   ?: boolean
 }
+/**
+ * @deprecated - Use `usePressBehaviorState` instead.
+ */
 export const useClickable = <TElement extends Element = HTMLElement>(props: ClickableProps<TElement>, options : ClickableOptions = _defaultClickableOptions): ClickableApi<TElement> => {
     // options:
     const {
@@ -261,10 +317,15 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     
     
     
-    // fn props:
-    const propEnabled           = usePropEnabled(props);
-    const propReadOnly          = usePropReadOnly(props);       // supports for <Check>
-    const propEditable          = propEnabled && !propReadOnly; // supports for <Check>
+    // Resolve whether the component is disabled:
+    const isDisabled      = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    
+    // Resolve whether the component is readonly:
+    const isReadonly      = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
+    
+    // Resolve whether the component is in a restricted state:
+    const isRestricted    = isDisabled || isReadonly;
+    
     const isControllablePressed = (props.pressed !== undefined);
     
     const actionMouses          = (props.actionMouses  !== undefined) ? props.actionMouses  : _defaultActionMouses;
@@ -281,7 +342,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
      * state is always released if not_editable (disabled and/or readOnly)
      * state is pressed/released based on [controllable pressed] (if set) and fallback to [uncontrollable pressed]
      */
-    const pressedFn : boolean = propEditable && (props.pressed /*controllable*/ ?? pressDn.current /*uncontrollable*/);
+    const pressedFn : boolean = !isRestricted && (props.pressed /*controllable*/ ?? pressDn.current /*uncontrollable*/);
     
     
     
@@ -301,7 +362,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     
     
     // resets:
-    if (pressDn.current && (!propEditable || isControllablePressed)) {
+    if (pressDn.current && (isRestricted || isControllablePressed)) {
         pressDn.current = false; // lost press because the control is not_editable (disabled and/or readOnly) or becomes *controllable*
     } // if
     
@@ -410,7 +471,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     //#region releases the *uncontrollable* pressed
     useEffect(() => {
         // conditions:
-        if (!propEditable)         return; // control is not_editable (disabled and/or readOnly) => no *uncontrollable* release_event required
+        if (isRestricted)          return; // control is not_editable (disabled and/or readOnly) => no *uncontrollable* release_event required
         if (isControllablePressed) return; // control is *controllable*                          => no *uncontrollable* release_event required
         if (!pressed)              return; // control is not_pressed                             => no need watching for releasing
         
@@ -513,7 +574,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
             
             window.removeEventListener('keyup',   handleKeyUp);
         };
-    }, [propEditable, isControllablePressed, pressed]);
+    }, [isRestricted, isControllablePressed, pressed]);
     //#endregion releases the *uncontrollable* pressed
     
     
@@ -521,14 +582,14 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     // handlers:
     const handlePress        = useEvent<EventHandler<void>>(() => {
         // watchdog the *uncontrollable* press state:
-        if (propEditable) pressDn.current = true;
+        if (!isRestricted) pressDn.current = true;
         
         // update state:
-        if (!isControllablePressed) setPressed(propEditable);
+        if (!isControllablePressed) setPressed(!isRestricted);
     });
     const handleRelease      = useEvent<EventHandler<void>>(() => {
         // watchdog the *uncontrollable* release state:
-        if (propEditable) pressDn.current = false;
+        if (!isRestricted) pressDn.current = false;
         
         // update state:
         if (!isControllablePressed) setPressed(false);
@@ -613,7 +674,7 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
     const handleClick        = useEvent<React.MouseEventHandler<TElement>>((event) => {
         if (handleActionCtrlEvents) {
             // actions:
-            if (!propEnabled) {
+            if (isDisabled) {
                 // control is disabled => block the response
                 
                 // prevent from bubbling:
@@ -697,4 +758,3 @@ export const useClickable = <TElement extends Element = HTMLElement>(props: Clic
         handleAnimationCancel,
     };
 };
-//#endregion clickable
