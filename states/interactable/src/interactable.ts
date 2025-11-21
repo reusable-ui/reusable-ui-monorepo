@@ -1,29 +1,29 @@
-// react:
+// React:
 import {
-    // react:
+    // React:
     default as React,
     
     
     
-    // hooks:
+    // Hooks:
     useRef,
 }                           from 'react'
 
-// cssfn:
+// Cssfn:
 import {
-    // cssfn general types:
+    // Cssfn general types:
     Factory,
     
     
     
-    // cssfn css specific types:
+    // Cssfn css specific types:
     CssKnownProps,
     CssRule,
     CssStyleCollection,
     
     
     
-    // writes css in javascript:
+    // Writes css in javascript:
     rule,
     states,
     style,
@@ -31,50 +31,59 @@ import {
     
     
     
-    // strongly typed of css variables:
+    // Strongly typed of css variables:
     CssVars,
     cssVars,
-}                           from '@cssfn/core'                  // writes css in javascript
+}                           from '@cssfn/core'                      // Writes css in javascript.
 
-// reusable-ui utilities:
+// Reusable-ui utilities:
 import {
-    // hooks:
+    // Hooks:
     useEvent,
-}                           from '@reusable-ui/hooks'           // react helper hooks
+}                           from '@reusable-ui/hooks'               // React helper hooks.
 import {
-    // hooks:
-    usePropEnabled,
-    
-    
-    
-    // react components:
-    AccessibilityProps,
-}                           from '@reusable-ui/accessibilities' // an accessibility management system
-import {
-    // hooks:
+    // Hooks:
     useAnimatingState,
-}                           from '@reusable-ui/animating-state' // a hook for creating animating state
+}                           from '@reusable-ui/animating-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
-// reusable-ui features:
+// Reusable-ui features:
 import {
-    // hooks:
+    // Hooks:
     usesAnimation,
-}                           from '@reusable-ui/animation'       // animation stuff of UI
+}                           from '@reusable-ui/animation'           // Animation stuff of UI.
 
-// reusable-ui states:
+// Reusable-ui states:
 import {
-    // hooks:
-    selectorFocusVisibleWithin,
+    // Types:
+    type DisabledStateProps,
+    
+    
+    
+    // Hooks:
+    useDisabledState,
+}                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
+import {
+    // Hooks:
     FocusableApi,
-}                           from '@reusable-ui/focusable'       // a capability of UI to be focused
+}                           from '@reusable-ui/focusable'           // A capability of UI to be focused.
+import {
+    // Utilities:
+    isUnhoveringSelector,
+    isHoveringOrHoveredSelector,
+    
+    ifHovered,
+    ifUnhovered,
+    ifHovering,
+    ifUnhovering,
+    ifHoveringOrHovered,
+    ifUnhoveringOrUnhovered,
+}                           from '@reusable-ui/hover-state'         // Adds hover/unhover functionality to UI components, with transition animations and semantic styling hooks.
 
 
 
-// hooks:
-
-// states:
-
-//#region interactable
+/**
+ * @deprecated - Use `HoverStateVars` instead.
+ */
 export interface InteractableVars {
     filter : any
     
@@ -90,34 +99,51 @@ const [interactableVars] = cssVars<InteractableVars>({ prefix: 'in', minify: fal
 
 
 
-/***  arriving = hover(ing) + focus(ing|ed)  ***/
+/**
+ * @deprecated - Use `ifHovered` instead.
+ */
+export const ifArrived       = ifHovered;
 
-// .arrived will be added after arriving-animation done:
-const selectorIfArrived  = '.arrived'
-// .arriving = styled arrive, :hover = native arrive:
-// the .disabling, [aria-disabled], .disabled are used to kill native :hover
-// the .arrived, .leaving, .leaved are used to overwrite native :hover
-const selectorIfArriving = `:is(.arriving, :is(:hover, .focused, .focusing, ${selectorFocusVisibleWithin}:not(:is(.blurring, .blurred))):not(:is(.disabling, [aria-disabled]:not([aria-disabled="false"]), .disabled, .arrived, .leaving, .leaved)))`
-// .leaving will be added after loosing arrive and will be removed after leaving-animation done:
-const selectorIfLeaving  = '.leaving'
-// if all above are not set => left (leaved):
-// optionally use .leaved to overwrite native :hover
-const selectorIfLeaved   = `:is(:not(:is(.arrived, .arriving, :is(:hover, .focused, .focusing, ${selectorFocusVisibleWithin}:not(:is(.blurring, .blurred))):not(:is(.disabling, [aria-disabled]:not([aria-disabled="false"]), .disabled)), .leaving)), .leaved)`
+/**
+ * @deprecated - Use `ifHovering` instead.
+ */
+export const ifArriving      = ifHovering;
+
+/**
+ * @deprecated - Use `ifUnhovering` instead.
+ */
+export const ifLeaving       = ifUnhovering;
+
+/**
+ * @deprecated - Use `ifUnhovered` instead.
+ */
+export const ifLeaved        = ifUnhovered;
+
+/**
+ * @deprecated - Use `ifHoveringOrHovered` instead.
+ */
+export const ifArrive        = ifHoveringOrHovered;
+
+/**
+ * @deprecated - Use `ifUnhoveringOrUnhovered` instead.
+ */
+export const ifLeave         = ifUnhoveringOrUnhovered;
+
+/**
+ * @deprecated - Use `rule([isHoveringOrHoveredSelector, isUnhoveringSelector], styles)` instead.
+ */
+export const ifArriveLeaving = (styles: CssStyleCollection): CssRule => rule([isHoveringOrHoveredSelector, isUnhoveringSelector], styles);
 
 
 
-export const ifArrived       = (styles: CssStyleCollection): CssRule => rule(selectorIfArrived , styles);
-export const ifArriving      = (styles: CssStyleCollection): CssRule => rule(selectorIfArriving, styles);
-export const ifLeaving       = (styles: CssStyleCollection): CssRule => rule(selectorIfLeaving , styles);
-export const ifLeaved        = (styles: CssStyleCollection): CssRule => rule(selectorIfLeaved  , styles);
-
-export const ifArrive        = (styles: CssStyleCollection): CssRule => rule([selectorIfArriving, selectorIfArrived                                     ], styles);
-export const ifLeave         = (styles: CssStyleCollection): CssRule => rule([                                       selectorIfLeaving, selectorIfLeaved], styles);
-export const ifArriveLeaving = (styles: CssStyleCollection): CssRule => rule([selectorIfArriving, selectorIfArrived, selectorIfLeaving                  ], styles);
-
-
-
+/**
+ * @deprecated - Use `CssHoverState` instead.
+ */
 export interface InteractableStuff { interactableRule: Factory<CssRule>, interactableVars: CssVars<InteractableVars> }
+
+/**
+ * @deprecated - Use `CssHoverStateOptions` instead.
+ */
 export interface InteractableConfig {
     filterArrive ?: CssKnownProps['filter'   ]
     
@@ -125,6 +151,8 @@ export interface InteractableConfig {
     animLeave    ?: CssKnownProps['animation']
 }
 /**
+ * @deprecated - Use `usesHoverState` instead.
+ * 
  * Adds an interactive feel to a UI.
  * @param config  A configuration of `interactableRule`.
  * @returns A `InteractableStuff` represents an interactable state.
@@ -159,18 +187,27 @@ export const usesInteractable = (config?: InteractableConfig): InteractableStuff
 
 
 
-export interface InteractableProps
-    extends
-        // states:
-        Partial<Pick<AccessibilityProps,
-            |'enabled'
-            |'inheritEnabled'
-        >>
-{
+/**
+ * @deprecated - Use `HoverStateProps` instead.
+ */
+export interface InteractableProps {
     // states:
     arrived ?: boolean
+    
+    /**
+     * @deprecated - Use `disabled` instead.
+     */
+    enabled            ?: DisabledStateProps['disabled']
+    
+    /**
+     * @deprecated - Use `cascadeDisabled` instead.
+     */
+    inheritEnabled     ?: DisabledStateProps['cascadeDisabled']
 }
 
+/**
+ * @deprecated - Use `HoverPhase` instead.
+ */
 export const enum InteractableState {
     /**
      * Note: We use `Leaved` instead of `Left` to distinguish between `Left|Right|Top|Bottom` vs verb-3 of `Leave` => `Left`.
@@ -181,6 +218,9 @@ export const enum InteractableState {
     Arrived  = 3,
 }
 
+/**
+ * @deprecated - Use `HoverBehaviorState` instead.
+ */
 export interface InteractableApi<TElement extends Element = HTMLElement> {
     arrived               : boolean
     
@@ -195,14 +235,18 @@ export interface InteractableApi<TElement extends Element = HTMLElement> {
     handleAnimationCancel : React.AnimationEventHandler<TElement>
 }
 
+/**
+ * @deprecated - Use `useHoverBehaviorState` instead.
+ */
 export const useInteractable = <TElement extends Element = HTMLElement>(props: InteractableProps, focusableApi: FocusableApi<TElement>): InteractableApi<TElement> => {
     // states:
     const {focused} = focusableApi;
     
     
     
-    // fn props:
-    const propEnabled           = usePropEnabled(props);
+    // Resolve whether the component is disabled:
+    const isDisabled            = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    
     const isControllableArrived = (props.arrived !== undefined);
     
     
@@ -213,7 +257,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
      * state is always left if disabled
      * state is arrived/left based on [controllable arrived] (if set) and fallback to ([uncontrollable hovered] || [uncontrollable focused])
      */
-    const arrivedFn : boolean = propEnabled && (props.arrived /*controllable*/ ?? (hoverDn.current /*uncontrollable*/ || focused /*uncontrollable*/));
+    const arrivedFn : boolean = !isDisabled && (props.arrived /*controllable*/ ?? (hoverDn.current /*uncontrollable*/ || focused /*uncontrollable*/));
     
     
     
@@ -238,7 +282,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
         hoverDn.current = true;
         
         // update state:
-        if (!isControllableArrived) setArrived(propEnabled);
+        if (!isControllableArrived) setArrived(!isDisabled);
     });
     
     const handleMouseLeave = useEvent<React.MouseEventHandler<TElement>>(() => {
@@ -246,7 +290,7 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
         hoverDn.current = false;
         
         // update state:
-        if (!isControllableArrived) setArrived(propEnabled && focused);
+        if (!isControllableArrived) setArrived(!isDisabled && focused);
     });
     
     
@@ -323,4 +367,3 @@ export const useInteractable = <TElement extends Element = HTMLElement>(props: I
         handleAnimationCancel,
     };
 };
-//#endregion interactable

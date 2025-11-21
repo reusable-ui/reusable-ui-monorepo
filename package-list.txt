@@ -228,7 +228,7 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/disableable        DEPRECATED
 @reusable-ui/activatable        DEPRECATED
 @reusable-ui/focusable          DEPRECATED
-@reusable-ui/interactable
+@reusable-ui/interactable       DEPRECATED
 @reusable-ui/clickable
 @reusable-ui/active-as-click
 @reusable-ui/invalidable
