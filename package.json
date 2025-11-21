@@ -118,6 +118,7 @@
     "states/scrollable",
     "states/disableable",
     "states/activatable",
+    "states/focusable",
     "__configs/*",
     "__utilities/*",
     "__features/*",
