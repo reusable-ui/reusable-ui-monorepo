@@ -123,6 +123,7 @@
     "states/clickable",
     "states/invalidable",
     "states/checkable",
+    "states/validation-icon",
     "__configs/*",
     "__utilities/*",
     "__features/*",
