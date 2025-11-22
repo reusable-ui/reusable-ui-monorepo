@@ -41,11 +41,15 @@ import {
 
 
 
-// hooks:
-
-// states:
-
-//#region checkable
+/**
+ * @deprecated
+ * Use additional `useActiveBehaviorState()` hooks instead.
+ * 
+ * Each DOM element (or pseudo-element) that requires independent animation
+ * should attach its own `useActiveBehaviorState()` with a distinct `animationPattern`.
+ * 
+ * This package is no longer functional and exists only as migration guidance.
+ */
 export interface CheckableVars {
     filterIn     : any
     filterOut    : any
@@ -74,7 +78,16 @@ const [checkableVars] = cssVars<CheckableVars>({ prefix: 'ch', minify: false });
 
 
 
+/**
+ * @deprecated
+ * Use additional `useActiveBehaviorState()` hooks instead.
+ */
 export interface CheckableStuff { checkableRule: Factory<CssRule>, checkableVars: CssVars<CheckableVars> }
+
+/**
+ * @deprecated
+ * Use additional `useActiveBehaviorState()` hooks instead.
+ */
 export interface CheckableConfig {
     checkFilterIn     ?: CssKnownProps['filter'   ]
     checkFilterOut    ?: CssKnownProps['filter'   ]
@@ -85,7 +98,19 @@ export interface CheckableConfig {
     checkAnimIn       ?: CssKnownProps['animation']
     checkAnimOut      ?: CssKnownProps['animation']
 }
+
 /**
+ * @deprecated
+ * Use additional `useActiveBehaviorState()` hooks instead.
+ * 
+ * This helper is obsolete because indicator animations cannot be reliably
+ * synchronized with body animations. Instead, attach separate `useActiveBehaviorState()`
+ * instances to each element (or pseudo-element) with its own `animationPattern`.
+ * 
+ * Example:
+ * - One hook for the checkbox body: `['activating','deactivating']`
+ * - One hook for the tick mark or switch thumb: `['checking','unchecking']`
+ * 
  * Adds a capability of UI to be checked.
  * @param config  A configuration of `checkableRule`.
  * @returns A `CheckableStuff` represents a checkable state.
@@ -188,4 +213,3 @@ export const usesCheckable = (config?: CheckableConfig): CheckableStuff => {
         checkableVars,
     };
 };
-//#endregion checkable

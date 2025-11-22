@@ -122,6 +122,7 @@
     "states/interactable",
     "states/clickable",
     "states/invalidable",
+    "states/checkable",
     "__configs/*",
     "__utilities/*",
     "__features/*",
