@@ -3,6 +3,44 @@
 Adds view-switching functionality to UI components, with transition animations and semantic styling hooks.  
 Ideal for tabs, slides, carousel, and any interactive component requiring controlled view-switching feedback.
 
+## 🔀 Choosing Between View‑state and View Transition API
+
+Both **view‑state** and the **View Transition API** help animate changes between views, but they serve different purposes. This section explains their overlap, strengths, and when to choose one over the other.
+
+### 🧩 View Transition API
+- **What it is**: A browser‑native API that snapshots the old and new DOM states and animates between them using pseudo‑elements (`::view-transition-old` / `::view-transition-new`).  
+- **Use cases**:
+  - Page navigations (MPAs)  
+  - Simple SPA state changes (toggle, replace content)  
+  - Adding polish to apps not originally designed for animation  
+- **Pros**:
+  - Minimal setup (`document.startViewTransition()`)  
+  - Works across page navigations  
+  - No need to refactor existing DOM logic  
+- **Cons**:
+  - Only animates snapshots (like static images)  
+  - Limited CSS properties (opacity, transform, filter, etc.)  
+  - No intermediate states — just old → new  
+
+### 🧩 View‑state
+- **What it is**: A reusable abstraction that preserves old, intermediate, and new views during animation, exposing transition variables (`viewIndex`, `prevViewIndex`, `isViewTransitioning`, etc) to provide fine‑grained control over styling.  
+- **Use cases**:
+  - Carousels and slideshows  
+  - Stepped flows and wizards  
+  - Complex UI transitions with intermediate states  
+- **Pros**:
+  - Animates real DOM nodes, not frozen snapshots  
+  - Supports intermediate states and multi‑step journeys  
+  - Teachable math and lifecycle clarity for contributors  
+- **Cons**:
+  - Requires explicit setup and state modeling  
+  - More code than a one‑liner `startViewTransition()`  
+
+### 🎯 Guidance
+- Use **View Transition API** for **atomic swaps** (page navigation, click‑to‑toggle, simple DOM changes).  
+- Use **view‑state** for **structured flows** (carousel, wizard, stepped transitions) where intermediate states and contributor reasoning matter.  
+- In hybrid apps, combine both: View Transition for simple navigations, view‑state for complex journeys.
+
 ## ✨ Features
 ✔ Lifecycle-aware view-switching animations based on current view index  
 ✔ Gracefully completes running animations before resolving new state  
