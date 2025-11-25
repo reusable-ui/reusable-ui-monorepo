@@ -41,6 +41,42 @@ Both **view‑state** and the **View Transition API** help animate changes betwe
 - Use **view‑state** for **structured flows** (carousel, wizard, stepped transitions) where intermediate states and contributor reasoning matter.  
 - In hybrid apps, combine both: View Transition for simple navigations, view‑state for complex journeys.
 
+## 🧮 Selective Rendering (Optional)
+
+**Selective rendering** means that only the views currently visible or actively transitioning are mounted in the DOM, rather than rendering every possible view at once. This approach helps keep the DOM lightweight during animations and can improve performance.  
+
+The **view‑state** library provides helper variables (`minVisibleViewIndex`, `maxVisibleViewIndex`) to indicate which views are relevant at a given phase. Using these values is optional — implementors may adopt selective rendering for efficiency, or simply render all views for simplicity.
+
+### ✅ Example (Selective Rendering)
+```tsx
+const { minVisibleViewIndex, maxVisibleViewIndex } = useViewBehaviorState(props, ...);
+
+const minRenderViewIndex = Math.floor(minVisibleViewIndex);
+const maxRenderViewIndex = Math.ceil(maxVisibleViewIndex);
+
+return (
+  <div>
+    {['First', 'Second', 'Third', 'Fourth', 'Fifth'].map((label, currentIndex) => (
+      (currentIndex >= minRenderViewIndex && currentIndex <= maxRenderViewIndex) && (
+        <div key={currentIndex} className={styles.item}>
+          <p>{label} view</p>
+        </div>
+      )
+    ))}
+  </div>
+);
+```
+
+### 🎯 Guidance
+- **Selective rendering**:  
+  - Render only views between `minVisibleViewIndex` and `maxVisibleViewIndex`.  
+  - Benefits: smaller DOM, better performance, ideal for carousels or slideshows.  
+- **Full rendering**:  
+  - Render all views regardless of visibility.  
+  - Benefits: simpler implementation, persistent DOM state.  
+
+👉 Both approaches are valid. **view‑state simply provides the tools** (`minVisibleViewIndex`, `maxVisibleViewIndex`) so you can choose the strategy that best fits your component.  
+
 ## ✨ Features
 ✔ Lifecycle-aware view-switching animations based on current view index  
 ✔ Gracefully completes running animations before resolving new state  
