@@ -88,7 +88,7 @@ return (
 ✔ Supports fractional view indices for scroll-sync and smooth preview transitions  
 ✔ Configurable snapping behavior via `viewIndexStep` (defaults to `1`) for integer-based or fractional transitions  
 ✔ Enforces clamped view index boundaries via `minViewIndex` and `maxViewIndex`  
-✔ Exposes `actualViewIndex`, `minVisibleViewIndex`, and `maxVisibleViewIndex` for precise layout and rendering control
+✔ Exposes `actualViewIndex`, `minVisibleViewIndex`, and `maxVisibleViewIndex` for precise layout and rendering control  
 ✔ Restricted state handling — blocks user interaction while restricted (disabled or readonly), preserving the last known view index until unrestricted  
 
 ## 📦 Installation
