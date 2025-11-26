@@ -83,7 +83,7 @@ export interface ViewStateChangeProps<TChangeEvent = unknown> {
      * The parent may choose to honor or ignore this request.
      * 
      * Restricted behavior (`disabled` or `readonly`):
-     * - When restricted, view‑switch requests are ignored internally, so this callback is never invoked.
+     * - When restricted, view-switch requests are ignored internally, so this callback is never invoked.
      * - When restriction is lifted, the callback will be invoked in response to user interactions
      *   requesting navigation to a new view index.
      */
@@ -355,7 +355,7 @@ export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChan
      * - Always triggers `onViewIndexChange`, if provided, regardless of control mode.
      * 
      * Restricted behavior (`disabled` or `readonly`):
-     * - When restricted, view‑switch requests are ignored and the component remains at its last view index.
+     * - When restricted, view-switch requests are ignored and the component remains at its last view index.
      * - When restriction is lifted, `dispatchViewIndexChange()` resumes normal operation.
      */
     dispatchViewIndexChange : ValueChangeDispatcher<number, TChangeEvent>

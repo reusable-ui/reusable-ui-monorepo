@@ -10,12 +10,12 @@ With **view-state**, you get:
 - Transition animations tied to real DOM nodes  
 - Semantic styling variables (`viewIndex`, `prevViewIndex`, `isViewTransitioning`, etc.) for fine-grained control  
 
-## 🔀 Choosing Between View‑state and View Transition API
+## 🔀 Choosing Between View-state and View Transition API
 
-Both **view‑state** and the **View Transition API** help animate changes between views, but they serve different purposes. This section explains their overlap, strengths, and when to choose one over the other.
+Both **view-state** and the **View Transition API** help animate changes between views, but they serve different purposes. This section explains their overlap, strengths, and when to choose one over the other.
 
 ### 🧩 View Transition API
-- **What it is**: A browser‑native API that snapshots the old and new DOM states and animates between them using pseudo‑elements (`::view-transition-old` / `::view-transition-new`).  
+- **What it is**: A browser-native API that snapshots the old and new DOM states and animates between them using pseudo-elements (`::view-transition-old` / `::view-transition-new`).  
 - **Use cases**:
   - Page navigations (MPAs)  
   - Simple SPA state changes (toggle, replace content)  
@@ -29,30 +29,30 @@ Both **view‑state** and the **View Transition API** help animate changes betwe
   - Limited CSS properties (opacity, transform, filter, etc.)  
   - No intermediate states — just old → new  
 
-### 🧩 View‑state
-- **What it is**: A reusable abstraction that preserves old, intermediate, and new views during animation, exposing transition variables (`viewIndex`, `prevViewIndex`, `isViewTransitioning`, etc) to provide fine‑grained control over styling.  
+### 🧩 View-state
+- **What it is**: A reusable abstraction that preserves old, intermediate, and new views during animation, exposing transition variables (`viewIndex`, `prevViewIndex`, `isViewTransitioning`, etc) to provide fine-grained control over styling.  
 - **Use cases**:
   - Carousels and slideshows  
   - Stepped flows and wizards  
   - Complex UI transitions with intermediate states  
 - **Pros**:
   - Animates real DOM nodes, not frozen snapshots  
-  - Supports intermediate states and multi‑step journeys  
+  - Supports intermediate states and multi-step journeys  
   - Teachable math and lifecycle clarity for contributors  
 - **Cons**:
   - Requires explicit setup and state modeling  
-  - More code than a one‑liner `startViewTransition()`  
+  - More code than a one-liner `startViewTransition()`  
 
 ### 🎯 Guidance
-- Use **View Transition API** for **atomic swaps** (page navigation, click‑to‑toggle, simple DOM changes).  
-- Use **view‑state** for **structured flows** (carousel, wizard, stepped transitions) where intermediate states and contributor reasoning matter.  
-- In hybrid apps, combine both: View Transition for simple navigations, view‑state for complex journeys.
+- Use **View Transition API** for **atomic swaps** (page navigation, click-to-toggle, simple DOM changes).  
+- Use **view-state** for **structured flows** (carousel, wizard, stepped transitions) where intermediate states and contributor reasoning matter.  
+- In hybrid apps, combine both: View Transition for simple navigations, view-state for complex journeys.
 
 ## 🧮 Selective Rendering (Optional)
 
 **Selective rendering** means that only the views currently visible or actively transitioning are mounted in the DOM, rather than rendering every possible view at once. This approach helps keep the DOM lightweight during animations and can improve performance.  
 
-The **view‑state** library provides helper variables (`minVisibleViewIndex`, `maxVisibleViewIndex`) to indicate which views are relevant at a given phase. Using these values is optional — implementors may adopt selective rendering for efficiency, or simply render all views for simplicity.
+The **view-state** library provides helper variables (`minVisibleViewIndex`, `maxVisibleViewIndex`) to indicate which views are relevant at a given phase. Using these values is optional — implementors may adopt selective rendering for efficiency, or simply render all views for simplicity.
 
 ### ✅ Example (Selective Rendering)
 ```tsx
@@ -82,7 +82,7 @@ return (
   - Render all views regardless of visibility.  
   - Benefits: simpler implementation, persistent DOM state.  
 
-👉 Both approaches are valid. **view‑state simply provides the tools** (`minVisibleViewIndex`, `maxVisibleViewIndex`) so you can choose the strategy that best fits your component.  
+👉 Both approaches are valid. **view-state simply provides the tools** (`minVisibleViewIndex`, `maxVisibleViewIndex`) so you can choose the strategy that best fits your component.  
 
 ## ✨ Features
 ✔ Lifecycle-aware view-switching animations based on current view index  
@@ -202,7 +202,7 @@ The hook manages transitions when `viewIndex` changes using a unified animation 
 
 #### 🔒 Restricted Behavior (`disabled` or `readonly`)
 - **Block dispatch; preserve last state**: When restricted, view-switch requests are ignored. The component remains at its last view index.  
-- **On unrestricted (re‑enabled or exit readonly)**: `dispatchViewIndexChange()` works normally.  
+- **On unrestricted (re-enabled or exit readonly)**: `dispatchViewIndexChange()` works normally.  
 - **Rationale**: Restricted components freeze interaction — they don’t reset view index, but prevent user interactions until unrestricted.
 
 ### `useViewStatePhaseEvents(props, viewPhase)`
