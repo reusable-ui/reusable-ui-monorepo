@@ -1,7 +1,14 @@
 # @reusable-ui/view-state 📦  
 
-Adds view-switching functionality to UI components, with transition animations and semantic styling hooks.  
-Ideal for tabs, slides, carousel, and any interactive component requiring controlled view-switching feedback.
+**view-state** is a reusable abstraction for managing view-switching in UI components.  
+It provides a lifecycle-aware way to animate transitions between views, exposing semantic variables that make styling and contributor reasoning clear.  
+
+Instead of manually handling DOM swaps or relying only on snapshot-based APIs, view-state preserves old, intermediate, and new views during transitions. This makes it ideal for components that need smooth, teachable animations — such as carousels, slides, tabs, or stepped flows — while still giving implementors the flexibility to choose how views are rendered.  
+
+With **view-state**, you get:  
+- Controlled view-switching feedback  
+- Transition animations tied to real DOM nodes  
+- Semantic styling variables (`viewIndex`, `prevViewIndex`, `isViewTransitioning`, etc.) for fine-grained control  
 
 ## 🔀 Choosing Between View‑state and View Transition API
 
