@@ -42,7 +42,7 @@ export const collapsibleBoxStyle = () => {
          */
         display: 'grid',
         gridTemplate: [[
-            '"content" calc(1fr * var(--expandFactor0))',
+            '"content" calc(1fr * var(--expandFactor))',
             '/',
             '1fr',
         ]],
