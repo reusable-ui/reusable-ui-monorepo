@@ -1,7 +1,15 @@
 # @reusable-ui/disabled-state 📦  
 
-Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.  
-Ideal for buttons, inputs, toggles, and any interactive component requiring controlled disabled state.
+**disabled-state** is a reusable abstraction for managing enabled/disabled states in UI components.  
+It provides a lifecycle-aware way to animate transitions between *enabled* and *disabled* states, exposing semantic variables that make styling and contributor reasoning clear.  
+
+Instead of manually toggling classes or setting up disable context, disabled-state automatically manages enabled/disabled classes and cascaded context, ensuring transitions are smooth, predictable, and easy to maintain. This makes it ideal for controllable components — such as buttons, inputs, and toggles — where interactivity must be constrained, while still giving implementors the flexibility to propagate or override disabled state across contexts.  
+
+With **disabled-state**, you get:  
+- Controlled enabled/disabled constraints  
+- Transition animations tied to the disabled lifecycle  
+- Semantic styling variables (`isEnabled`, `isDisabled`, etc.) for fine-grained control  
+- Cascaded context support for parent-driven disabled state  
 
 ## ✨ Features
 ✔ Lifecycle-aware enable/disable animations based on current disabled state  
