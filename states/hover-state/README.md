@@ -1,7 +1,14 @@
 # @reusable-ui/hover-state 📦  
 
-Adds hover/unhover functionality to UI components, with transition animations and semantic styling hooks.  
-Ideal for buttons, selects, menuItems, and any interactive component requiring hover feedback.
+**hover-state** is a reusable abstraction for managing hover feedback in UI components.  
+It provides a lifecycle-aware way to animate transitions between *hovered* and *unhovered* states, exposing semantic variables that make styling and contributor reasoning clear.  
+
+Instead of manually toggling classes or wiring one-off hover logic, hover-state automatically manages hover/unhover classes, ensuring transitions are smooth, predictable, and easy to maintain. This makes it ideal for components that need expressive hover feedback — such as buttons, selects, and menu items — while still giving implementors the flexibility to override hover resolution with custom logic.  
+
+With **hover-state**, you get:  
+- Controlled hover/unhover feedback  
+- Transition animations tied to the hover lifecycle  
+- Semantic styling variables (`isHovered`, `isUnhovered`, etc.) for fine-grained control  
 
 ## ✨ Features
 ✔ Lifecycle-aware hover/unhover animations based on current hover state  
