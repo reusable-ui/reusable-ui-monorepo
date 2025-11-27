@@ -1,7 +1,14 @@
 # @reusable-ui/collapse-state 📦  
 
-Adds expand/collapse functionality to UI components, with transition animations and semantic styling hooks.  
-Ideal for tooltips, accordions, dialogs, and any interactive component requiring controlled expansion feedback.
+**collapse-state** is a reusable abstraction for managing expand/collapse states in UI components.  
+It provides a lifecycle-aware way to animate transitions between *expanded* and *collapsed* states, exposing semantic variables that make styling and contributor reasoning clear.  
+
+Instead of manually toggling classes or wiring one-off expand/collapse logic, collapse-state automatically manages expand/collapse classes, ensuring transitions are smooth, predictable, and easy to maintain. This makes it ideal for interactive components — such as tooltips, accordions, and dialogs — where users can directly control expansion, while still giving implementors the flexibility to handle the expansion.  
+
+With **collapse-state**, you get:  
+- Controlled expand/collapse feedback  
+- Transition animations tied to the expansion lifecycle  
+- Semantic styling variables (`isExpanded`, `isCollapsed`, etc.) for fine-grained control  
 
 ## ✨ Features
 ✔ Lifecycle-aware expand/collapse animations based on current expanded state  
