@@ -3,6 +3,18 @@
 Adds focus/blur functionality to UI components, with transition animations and semantic styling hooks.  
 Ideal for buttons, selects, inputs, and any interactive component requiring focus feedback.
 
+# @reusable-ui/focus-state 📦  
+
+**focus-state** is a reusable abstraction for managing focus feedback in UI components.  
+It provides a lifecycle-aware way to animate transitions between *focused* and *blurred* states, exposing semantic variables that make styling and contributor reasoning clear.  
+
+Instead of manually toggling classes or wiring one-off focus logic, focus-state automatically manages focus/blur classes, ensuring transitions are smooth, predictable, and easy to maintain. This makes it ideal for components that need expressive focus feedback — such as inputs, buttons, and selects — while still giving implementors the flexibility to override focus resolution with custom logic.  
+
+With **focus-state**, you get:  
+- Controlled focus/blur feedback  
+- Transition animations tied to the focus lifecycle  
+- Semantic styling variables (`isFocused`, `isBlurred`, etc.) for fine-grained control  
+
 ## ✨ Features
 ✔ Lifecycle-aware focus/blur animations based on current focus state  
 ✔ Gracefully completes running animations before resolving new state  
