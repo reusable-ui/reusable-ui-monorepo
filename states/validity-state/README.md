@@ -3,7 +3,7 @@
 **validity-state** is a reusable abstraction for managing validation states in UI components.  
 It provides a lifecycle-aware way to animate transitions between *valid*, *invalid*, and *unvalidated* states, exposing semantic variables that make styling and contributor reasoning clear.  
 
-Instead of manually toggling classes, validity-state automatically applies validity-related classes at the right time, ensuring animations run smoothly and consistently. This makes it ideal for components that need clear validation feedback — such as inputs, selections, and options — while still giving implementors the flexibility to define their own validation logic.  
+Instead of manually toggling classes, validity-state automatically manages validity classes, ensuring transitions are smooth, predictable, and easy to maintain. This makes it ideal for components that need clear validation feedback — such as inputs, selections, and options — while still giving implementors the flexibility to define their own validation logic.  
 
 With **validity-state**, you get:  
 - Controlled validation feedback  
