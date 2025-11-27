@@ -9,6 +9,7 @@ With **active-state**, you get:
 - Controlled activation feedback  
 - Transition animations tied to the activation lifecycle  
 - Semantic styling variables (`isActive`, `isInactive`, etc.) for fine-grained control  
+- Cascaded context support for parent-driven active state  
 
 ## ✨ Features
 ✔ Lifecycle-aware activate/deactivate animations based on current active state  
