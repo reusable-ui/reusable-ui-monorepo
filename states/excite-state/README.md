@@ -1,7 +1,13 @@
 # @reusable-ui/excite-state 📦  
 
-Adds excitement (attention grabbing) functionality to UI components, with an attention-triggering animation and semantic styling hooks.  
-Ideal for badges, shopping carts, dialogs, and any action component designed to grab user attention.
+**excite-state** is a reusable abstraction for managing excitement feedback in UI components.  
+It provides a lifecycle-aware way to manage the *excited* state, exposing semantic variables that make styling and contributor reasoning clear.  
+
+When active, excite-state continuously replays its attention-grabbing animation until the component is no longer excited, ensuring feedback is smooth, predictable, and easy to maintain. This makes it ideal for components that need to grab user attention — such as badges, notifications, and alerts — whether triggered by user action or system events.  
+
+With **excite-state**, you get:  
+- Controlled excitement feedback  
+- Continuous animation replay tied to the excitement lifecycle  
 
 ## ✨ Features
 ✔ Dynamically displays excitement animation based on current excited state  
