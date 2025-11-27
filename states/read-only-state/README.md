@@ -1,7 +1,15 @@
 # @reusable-ui/read-only-state 📦  
 
-Adds editable/read-only functionality to UI components, with transition animations and semantic styling hooks.  
-Ideal for inputs, text areas, editors, and any editable component requiring controlled read-only state.
+**read-only-state** is a reusable abstraction for managing editable/read-only states in UI components.  
+It provides a lifecycle-aware way to animate transitions between *editable* and *read-only* states, exposing semantic variables that make styling and contributor reasoning clear.  
+
+Instead of manually toggling classes or setting up read-only context, read-only-state automatically manages editable/read-only classes and cascaded context, ensuring transitions are smooth, predictable, and easy to maintain. This makes it ideal for editable components — such as inputs, text areas, and editors — where editing must be constrained, while still giving implementors the flexibility to propagate or override read-only state across contexts.  
+
+With **read-only-state**, you get:  
+- Controlled editable/read-only constraints  
+- Transition animations tied to the read-only lifecycle  
+- Semantic styling variables (`isEditable`, `isReadOnly`, etc.) for fine-grained control  
+- Cascaded context support for parent-driven read-only state  
 
 ## ✨ Features
 ✔ Lifecycle-aware editable/read-only animations based on current read-only state  
