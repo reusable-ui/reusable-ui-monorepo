@@ -1,7 +1,14 @@
 # @reusable-ui/press-state 📦  
 
-Adds press/release functionality to UI components, with transition animations and semantic styling hooks.  
-Ideal for buttons, selects, menuItems, and any interactive component requiring press feedback.
+**press-state** is a reusable abstraction for managing press feedback in UI components.  
+It provides a lifecycle-aware way to animate transitions between *pressed* and *released* states, exposing semantic variables that make styling and contributor reasoning clear.  
+
+Instead of manually toggling classes or wiring one-off press logic, press-state automatically manages press/release classes, ensuring transitions are smooth, predictable, and easy to maintain. This makes it ideal for components that need expressive press feedback — such as buttons, selects, and menu items — while still giving implementors the flexibility to override press resolution with custom logic.  
+
+With **press-state**, you get:  
+- Controlled press/release feedback  
+- Transition animations tied to the press lifecycle  
+- Semantic styling variables (`isPressed`, `isReleased`, etc.) for fine-grained control  
 
 ## Why Use `@reusable-ui/press-state` Instead of `:active`
 
