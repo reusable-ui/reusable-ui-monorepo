@@ -80,10 +80,10 @@ export const disableableBoxStyle = () => {
         // Disabling animation: 0 → 1
         ...vars({
             '--box-disabling': [
-                ['0.3s', 'ease-out', 'both', 'fade-disabling'],
+                ['0.3s', 'ease-out', 'both', 'transition-disabling'],
             ],
         }),
-        ...keyframes('fade-disabling', {
+        ...keyframes('transition-disabling', {
             from: {
                 '--disableFactor' : 0,
             },
