@@ -118,6 +118,21 @@ export const collapsibleBoxStyle = () => {
          * 
          * This variable is agnostic to animation style:
          * - Can drive height, opacity, transform, rotation, etc.
+         * 
+         * Why `--expandFactor` instead of `--collapseFactor`?
+         * - Factors across the ecosystem consistently represent the *active* lifecycle state:
+         *   `--focusFactor` (active = focused),
+         *   `--hoverFactor` (active = hovered),
+         *   `--pressFactor` (active = pressed),
+         *   `--disableFactor` (active = disabled).
+         * - In collapse-state, the *active* state is expanded, while collapsed is the baseline.
+         * - Contributors "rarely need" to measure "how collapsed" something is; they care about
+         *   "how expanded" it becomes during transitions.
+         * - Using `--expandFactor` ensures a normalized convention:
+         *   0 → baseline/inactive (collapsed),
+         *   1 → active state (expanded).
+         * - This keeps animations intuitive (0 → 1 when expanding, 1 → 0 when collapsing)
+         *   and makes contributor reasoning predictable and teachable.
          */
         '--expandFactor': [[
             // Only applies if in expanded state:
