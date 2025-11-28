@@ -79,10 +79,10 @@ export const collapsibleBoxStyle = () => {
         // Expanding animation: 0 → 1
         ...vars({
             '--box-expanding': [
-                ['0.3s', 'ease-out', 'both', 'height-expanding'],
+                ['0.3s', 'ease-out', 'both', 'transition-expanding'],
             ],
         }),
-        ...keyframes('height-expanding', {
+        ...keyframes('transition-expanding', {
             from: {
                 '--expandFactor' : 0,
             },
@@ -94,10 +94,10 @@ export const collapsibleBoxStyle = () => {
         // Collapsing animation: 1 → 0
         ...vars({
             '--box-collapsing': [
-                ['0.3s', 'ease-out', 'both', 'height-collapsing'],
+                ['0.3s', 'ease-out', 'both', 'transition-collapsing'],
             ],
         }),
-        ...keyframes('height-collapsing', {
+        ...keyframes('transition-collapsing', {
             from: {
                 '--expandFactor' : 1,
             },
