@@ -1,11 +1,11 @@
-import { keyframes, style, vars, fallback } from '@cssfn/core'
+import { keyframes, style, vars } from '@cssfn/core'
 import { usesHoverState } from '../dist/index.js'
 import { usesAnimationFeature } from '@reusable-ui/animation-feature'
 
 export default function hoverStateTestStyle() {
     const {
         hoverStateRule,
-        hoverStateVars: { isHovered, isUnhovered },
+        hoverStateVars: { hoverFactor },
     } = usesHoverState({
         animationHovering   : 'var(--test-hovering)',
         animationUnhovering : 'var(--test-unhovering)',
@@ -20,42 +20,32 @@ export default function hoverStateTestStyle() {
         ...hoverStateRule(),
         ...animationFeatureRule(),
         
+        // Hovering animation: interpolate hoverFactor from 0 → 1
         ...vars({
             '--test-hovering': [
                 ['1s', 'ease-out', 'both', 'boo-test-hovering'],
             ],
         }),
         ...keyframes('boo-test-hovering', {
-            from : {
-                outline: 'rgb(0, 0, 0) solid 0px',
-            },
-            to   : {
-                outline: 'rgb(0, 0, 255) solid 2px',
-            },
+            from : { [hoverFactor]: 0 },
+            to   : { [hoverFactor]: 1 },
         }),
         
+        // Unhovering animation: interpolate hoverFactor from 1 → 0
         ...vars({
             '--test-unhovering': [
                 ['1s', 'ease-out', 'both', 'boo-test-unhovering'],
             ],
         }),
         ...keyframes('boo-test-unhovering', {
-            from : {
-                outline: 'rgb(0, 0, 255) solid 2px',
-            },
-            to   : {
-                outline: 'rgb(0, 0, 0) solid 0px',
-            },
+            from : { [hoverFactor]: 1 },
+            to   : { [hoverFactor]: 0 },
         }),
         
-        // Define final outline based on lifecycle state:
-        ...fallback({
-            '--outline-hovered'   : `${isHovered} rgb(0, 0, 255) solid 2px`,
-        }),
-        ...fallback({
-            '--outline-unhovered' : `${isUnhovered} rgb(0, 0, 0) solid 0px`,
-        }),
-        outline: 'var(--outline-hovered, var(--outline-unhovered))',
+        // Example usage:
+        // - Outline thickness and color interpolates with `hoverFactor`.
+        // - 0 → 0px solid black, 1 → 2px solid blue.
+        outline: `calc(${hoverFactor} * 2px) solid color-mix(in srgb, color(srgb 0 0 0) calc((1 - ${hoverFactor}) * 100%), color(srgb 0 0 1) calc(${hoverFactor} * 100%))`,
         
         // Apply composite animations:
         animation,

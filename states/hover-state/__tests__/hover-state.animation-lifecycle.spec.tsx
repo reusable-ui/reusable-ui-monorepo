@@ -88,8 +88,8 @@ interface HoverStateAnimationTestCase {
 
 
 
-const OUTLINE_HOVERED   = 'rgb(0, 0, 255) solid 2px'
-const OUTLINE_UNHOVERED = 'rgb(0, 0, 0) solid 0px';
+const OUTLINE_HOVERED   = 'color(srgb 0 0 1) solid 2px'
+const OUTLINE_UNHOVERED = 'color(srgb 0 0 0) solid 0px';
 
 
 

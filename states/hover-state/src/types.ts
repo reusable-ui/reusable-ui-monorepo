@@ -352,6 +352,34 @@ export interface HoverStateVars {
      * ```
      */
     isUnhovered         : unknown
+    
+    /**
+     * A normalized, animatable factor representing the **hover lifecycle state**.
+     * 
+     * ### Expected values:
+     * - **0**     : settled unhovered
+     * - **1**     : settled hovered
+     * - **0 → 1** : hovering transition (unhovered → hovered)
+     * - **1 → 0** : unhovering transition (hovered → unhovered)
+     * 
+     * ### Usage:
+     * - Applicable to numeric-based properties such as `outline`, `opacity`, `color`, `transform`, `box-shadow`, etc.
+     * - Implementators are responsible for assigning transitional values in their animations.
+     *   For example, a hovering animation might interpolate `hoverFactor` from 0 → 1.
+     * - Values outside the 0–1 range are allowed, and implementators must handle them appropriately.  
+     *   Example of an animation with a spring/bump effect:  
+     *     `0%: 0`, `90%: 1.2`, `100%: 1`  
+     *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
+     * 
+     * ### Notes:
+     * - Already registered as an animatable custom property; no need to apply `@property` manually.
+     * - **Value rationale:**  
+     *   - The factor represents the active lifecycle state (hovered), not the baseline (unhovered).  
+     *   - This keeps naming predictable and teachable across the ecosystem:
+     *     - `hoverFactor = 0`: unhovered (baseline lifecycle state)  
+     *     - `hoverFactor = 1`: hovered (active lifecycle state)  
+     */
+    hoverFactor         : unknown
 }
 
 

@@ -9,6 +9,7 @@ import {
     
     // Writes css in javascript:
     rule,
+    atRule,
     states,
     style,
     vars,
@@ -222,14 +223,16 @@ animationRegistry.registerAnimation(hoverStateVars.animationUnhovering);
  * import { style, vars, keyframes, fallback } from '@cssfn/core';
  * 
  * export const hoverableBoxStyle = () => {
+ *     // Feature: animation handling
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
  *     } = usesAnimationFeature();
  *     
+ *     // Feature: hover/unhover lifecycle
  *     const {
  *         hoverStateRule,
- *         hoverStateVars: { isHovered, isUnhovered },
+ *         hoverStateVars: { isHovered, isUnhovered, hoverFactor },
  *     } = usesHoverState({
  *         animationHovering   : 'var(--box-hovering)',
  *         animationUnhovering : 'var(--box-unhovering)',
@@ -245,44 +248,32 @@ animationRegistry.registerAnimation(hoverStateVars.animationUnhovering);
  *         // Apply hovered/unhovered state rules:
  *         ...hoverStateRule(),
  *         
- *         // Define hovering animation:
+ *         // Hovering animation: interpolate hoverFactor from 0 → 1
  *         ...vars({
  *             '--box-hovering': [
- *                 ['0.3s', 'ease-out', 'both', 'outline-hovering'],
+ *                 ['0.3s', 'ease-out', 'both', 'transition-hovering'],
  *             ],
  *         }),
- *         ...keyframes('outline-hovering', {
- *             from: {
- *                 outline: 'none',
- *             },
- *             to: {
- *                 outline: '2px solid blue',
- *             },
+ *         ...keyframes('transition-hovering', {
+ *             from : { [hoverFactor]: 0 },
+ *             to   : { [hoverFactor]: 1 },
  *         }),
  *         
- *         // Define unhovering animation:
+ *         // Unhovering animation: interpolate hoverFactor from 1 → 0
  *         ...vars({
  *             '--box-unhovering': [
- *                 ['0.3s', 'ease-out', 'both', 'outline-unhovering'],
+ *                 ['0.3s', 'ease-out', 'both', 'transition-unhovering'],
  *             ],
  *         }),
- *         ...keyframes('outline-unhovering', {
- *             from: {
- *                 outline: '2px solid blue',
- *             },
- *             to: {
- *                 outline: 'none',
- *             },
+ *         ...keyframes('transition-unhovering', {
+ *             from : { [hoverFactor]: 1 },
+ *             to   : { [hoverFactor]: 0 },
  *         }),
  *         
- *         // Define final outline based on lifecycle state:
- *         ...fallback({
- *             '--outline-hovered'   : `${isHovered} 2px solid blue`,
- *         }),
- *         ...fallback({
- *             '--outline-unhovered' : `${isUnhovered} none`,
- *         }),
- *         outline: 'var(--outline-hovered, var(--outline-unhovered))',
+ *         // Example usage:
+ *         // - Outline thickness interpolates with `hoverFactor`.
+ *         // - 0 → none, 1 → 2px solid blue.
+ *         outline: `calc(${hoverFactor} * 2px) solid blue`,
  *         
  *         // Apply composed animations:
  *         animation,
@@ -333,6 +324,29 @@ export const usesHoverState = (options?: CssHoverStateOptions): CssHoverState =>
                         [hoverStateVars.isUnhovered] : '',      // Valid    when either unhovering or fully unhovered.
                     })
                 ),
+            }),
+            
+            
+            
+            // Register `hoverFactor` as an animatable custom property:
+            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
+            ...atRule(`@property ${hoverStateVars.hoverFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
+                // @ts-ignore
+                syntax       : '"<number>"',
+                inherits     : true,
+                initialValue : 0,
+            }),
+            
+            ...vars({
+                // Assign the settled value for `hoverFactor`:
+                // - Sticks to `1` when the component is fully hovered.
+                [hoverStateVars.hoverFactor]: [[
+                    // Only applies if in hovered state:
+                    hoverStateVars.isHovered,
+                    
+                    // The fully hovered value:
+                    1,
+                ]],
             }),
         }),
         
