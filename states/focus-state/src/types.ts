@@ -389,6 +389,34 @@ export interface FocusStateVars {
      * ```
      */
     isBlurred         : unknown
+    
+    /**
+     * A normalized, animatable factor representing the **focus lifecycle state**.
+     * 
+     * ### Expected values:
+     * - **0**     : settled blurred
+     * - **1**     : settled focused
+     * - **0 → 1** : focusing transition (blurred → focused)
+     * - **1 → 0** : blurring transition (focused → blurred)
+     * 
+     * ### Usage:
+     * - Applicable to numeric-based properties such as `outline`, `opacity`, `color`, `transform`, `box-shadow`, etc.
+     * - Implementators are responsible for assigning transitional values in their animations.
+     *   For example, a focusing animation might interpolate `focusFactor` from 0 → 1.
+     * - Values outside the 0–1 range are allowed, and implementators must handle them appropriately.  
+     *   Example of an animation with a spring/bump effect:  
+     *     `0%: 0`, `90%: 1.2`, `100%: 1`  
+     *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
+     * 
+     * ### Notes:
+     * - Already registered as an animatable custom property; no need to apply `@property` manually.
+     * - **Value rationale:**  
+     *   - The factor represents the active lifecycle state (focused), not the baseline (blurred).  
+     *   - This keeps naming predictable and teachable across the ecosystem:
+     *     - `focusFactor = 0`: blurred (baseline lifecycle state)  
+     *     - `focusFactor = 1`: focused (active lifecycle state)  
+     */
+    focusFactor       : unknown
 }
 
 

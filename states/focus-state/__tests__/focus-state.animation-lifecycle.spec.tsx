@@ -88,8 +88,8 @@ interface FocusStateAnimationTestCase {
 
 
 
-const OUTLINE_FOCUSED = 'rgb(0, 0, 255) solid 2px'
-const OUTLINE_BLURRED = 'rgb(0, 0, 0) solid 0px';
+const OUTLINE_FOCUSED = 'color(srgb 0 0 1) solid 2px'
+const OUTLINE_BLURRED = 'color(srgb 0 0 0) solid 0px';
 
 
 

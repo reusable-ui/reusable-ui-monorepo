@@ -212,12 +212,13 @@ Generates CSS rules that conditionally apply the focus/blur animations based on 
 These variables are only active during their respective transition phases.  
 Use `switchOf(...)` to ensure graceful fallback when inactive.
 
-| Variable            | Active When...                  | Purpose                     |
-|---------------------|---------------------------------|-----------------------------|
-| `animationFocusing` | `.is-focusing`                  | Triggers focusing animation |
-| `animationBlurring` | `.is-blurring`                  | Triggers blurring animation |
-| `isFocused`         | `.is-focused` or `.is-focusing` | Styling for focused state   |
-| `isBlurred`         | `.is-blurred` or `.is-blurring` | Styling for blurred state   |
+| Variable             | Active When...                    | Purpose                                                                       |
+|----------------------|-----------------------------------|-------------------------------------------------------------------------------|
+| `animationFocusing`  | `.is-focusing`                    | Runs the focusing animation sequence                                          |
+| `animationBlurring`  | `.is-blurring`                    | Runs the blurring animation sequence                                          |
+| `isBlurred`          | `.is-blurred` or `.is-blurring`   | Conditional variable for the blurred state                                    |
+| `isFocused`          | `.is-focused` or `.is-focusing`   | Conditional variable for the focused state                                    |
+| `focusFactor`        | Always available (animatable)     | Normalized factor: 0 = blurred, 1 = focused, interpolates during transitions  |
 
 #### 💡 Usage Example
 
@@ -232,14 +233,16 @@ import { usesFocusState } from '@reusable-ui/focus-state';
 import { style, vars, keyframes, fallback } from '@cssfn/core';
 
 export const focusableBoxStyle = () => {
+    // Feature: animation handling
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
     } = usesAnimationFeature();
     
+    // Feature: focus/blur lifecycle
     const {
         focusStateRule,
-        focusStateVars: { isFocused, isBlurred },
+        focusStateVars: { isFocused, isBlurred, focusFactor },
     } = usesFocusState({
         animationFocusing : 'var(--box-focusing)',
         animationBlurring : 'var(--box-blurring)',
@@ -255,44 +258,32 @@ export const focusableBoxStyle = () => {
         // Apply focused/blurred state rules:
         ...focusStateRule(),
         
-        // Define focusing animation:
+        // Focusing animation: interpolate focusFactor from 0 → 1
         ...vars({
             '--box-focusing': [
-                ['0.3s', 'ease-out', 'both', 'outline-focusing'],
+                ['0.3s', 'ease-out', 'both', 'transition-focusing'],
             ],
         }),
-        ...keyframes('outline-focusing', {
-            from: {
-                outline: 'none',
-            },
-            to: {
-                outline: '2px solid blue',
-            },
+        ...keyframes('transition-focusing', {
+            from : { [focusFactor]: 0 },
+            to   : { [focusFactor]: 1 },
         }),
         
-        // Define blurring animation:
+        // Blurring animation: interpolate focusFactor from 1 → 0
         ...vars({
             '--box-blurring': [
-                ['0.3s', 'ease-out', 'both', 'outline-blurring'],
+                ['0.3s', 'ease-out', 'both', 'transition-blurring'],
             ],
         }),
-        ...keyframes('outline-blurring', {
-            from: {
-                outline: '2px solid blue',
-            },
-            to: {
-                outline: 'none',
-            },
+        ...keyframes('transition-blurring', {
+            from : { [focusFactor]: 1 },
+            to   : { [focusFactor]: 0 },
         }),
         
-        // Define final outline based on lifecycle state:
-        ...fallback({
-            '--outline-focused' : `${isFocused} 2px solid blue`,
-        }),
-        ...fallback({
-            '--outline-blurred' : `${isBlurred} none`,
-        }),
-        outline: 'var(--outline-focused, var(--outline-blurred))',
+        // Example usage:
+        // - Outline thickness interpolates with `focusFactor`.
+        // - 0 → none, 1 → 2px solid blue.
+        outline: `calc(${focusFactor} * 2px) solid blue`,
         
         // Apply composed animations:
         animation,

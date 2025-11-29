@@ -9,6 +9,7 @@ import {
     
     // Writes css in javascript:
     rule,
+    atRule,
     states,
     style,
     vars,
@@ -222,14 +223,16 @@ animationRegistry.registerAnimation(focusStateVars.animationBlurring);
  * import { style, vars, keyframes, fallback } from '@cssfn/core';
  * 
  * export const focusableBoxStyle = () => {
+ *     // Feature: animation handling
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
  *     } = usesAnimationFeature();
  *     
+ *     // Feature: focus/blur lifecycle
  *     const {
  *         focusStateRule,
- *         focusStateVars: { isFocused, isBlurred },
+ *         focusStateVars: { isFocused, isBlurred, focusFactor },
  *     } = usesFocusState({
  *         animationFocusing : 'var(--box-focusing)',
  *         animationBlurring : 'var(--box-blurring)',
@@ -245,44 +248,32 @@ animationRegistry.registerAnimation(focusStateVars.animationBlurring);
  *         // Apply focused/blurred state rules:
  *         ...focusStateRule(),
  *         
- *         // Define focusing animation:
+ *         // Focusing animation: interpolate focusFactor from 0 → 1
  *         ...vars({
  *             '--box-focusing': [
- *                 ['0.3s', 'ease-out', 'both', 'outline-focusing'],
+ *                 ['0.3s', 'ease-out', 'both', 'transition-focusing'],
  *             ],
  *         }),
- *         ...keyframes('outline-focusing', {
- *             from: {
- *                 outline: 'none',
- *             },
- *             to: {
- *                 outline: '2px solid blue',
- *             },
+ *         ...keyframes('transition-focusing', {
+ *             from : { [focusFactor]: 0 },
+ *             to   : { [focusFactor]: 1 },
  *         }),
  *         
- *         // Define blurring animation:
+ *         // Blurring animation: interpolate focusFactor from 1 → 0
  *         ...vars({
  *             '--box-blurring': [
- *                 ['0.3s', 'ease-out', 'both', 'outline-blurring'],
+ *                 ['0.3s', 'ease-out', 'both', 'transition-blurring'],
  *             ],
  *         }),
- *         ...keyframes('outline-blurring', {
- *             from: {
- *                 outline: '2px solid blue',
- *             },
- *             to: {
- *                 outline: 'none',
- *             },
+ *         ...keyframes('transition-blurring', {
+ *             from : { [focusFactor]: 1 },
+ *             to   : { [focusFactor]: 0 },
  *         }),
  *         
- *         // Define final outline based on lifecycle state:
- *         ...fallback({
- *             '--outline-focused' : `${isFocused} 2px solid blue`,
- *         }),
- *         ...fallback({
- *             '--outline-blurred' : `${isBlurred} none`,
- *         }),
- *         outline: 'var(--outline-focused, var(--outline-blurred))',
+ *         // Example usage:
+ *         // - Outline thickness interpolates with `focusFactor`.
+ *         // - 0 → none, 1 → 2px solid blue.
+ *         outline: `calc(${focusFactor} * 2px) solid blue`,
  *         
  *         // Apply composed animations:
  *         animation,
@@ -333,6 +324,29 @@ export const usesFocusState = (options?: CssFocusStateOptions): CssFocusState =>
                         [focusStateVars.isBlurred] : '',      // Valid    when either blurring or fully blurred.
                     })
                 ),
+            }),
+            
+            
+            
+            // Register `focusFactor` as an animatable custom property:
+            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
+            ...atRule(`@property ${focusStateVars.focusFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
+                // @ts-ignore
+                syntax       : '"<number>"',
+                inherits     : true,
+                initialValue : 0,
+            }),
+            
+            ...vars({
+                // Assign the settled value for `focusFactor`:
+                // - Sticks to `1` when the component is fully focused.
+                [focusStateVars.focusFactor]: [[
+                    // Only applies if in focused state:
+                    focusStateVars.isFocused,
+                    
+                    // The fully focused value:
+                    1,
+                ]],
             }),
         }),
         
