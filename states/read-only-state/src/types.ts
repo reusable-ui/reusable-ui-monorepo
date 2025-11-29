@@ -307,6 +307,36 @@ export interface ReadOnlyStateVars {
      * ```
      */
     isReadOnly        : unknown
+    
+    /**
+     * A normalized, animatable factor representing the **read-only lifecycle state**.
+     * 
+     * ### Expected values:
+     * - **0**     : settled editable
+     * - **1**     : settled read-only
+     * - **0 → 1** : freezing transition (editable → read-only)
+     * - **1 → 0** : thawing transition (read-only → editable)
+     * 
+     * ### Usage:
+     * - Applicable to numeric-based properties such as `opacity`, `color`, `transform`, `box-shadow`, etc.
+     * - Implementators are responsible for assigning transitional values in their animations.
+     *   For example, a freezing animation might interpolate `readOnlyFactor` from 0 → 1.
+     * - Values outside the 0–1 range are allowed, and implementators must handle them appropriately.  
+     *   Example of an animation with a spring/bump effect:  
+     *     `0%: 0`, `90%: 1.2`, `100%: 1`  
+     *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
+     * 
+     * ### Notes:
+     * - Already registered as an animatable custom property; no need to apply `@property` manually.
+     * - **Value rationale:**  
+     *   - The factor represents the active lifecycle state (read-only), not the baseline (editable).  
+     *   - This keeps naming predictable and teachable across the ecosystem:
+     *     - `readOnlyFactor = 0`: editable (baseline lifecycle state)  
+     *     - `readOnlyFactor = 1`: read-only (active lifecycle state)  
+     * - **Naming rationale:**  
+     *   - `readOnlyFactor` instead of `editableFactor`: factors consistently use the *base form* of the active state (`disable`, `readOnly`, `expand`, etc.).  
+     */
+    readOnlyFactor    : unknown
 }
 
 

@@ -219,12 +219,13 @@ Generates CSS rules that conditionally apply the editable/read-only animations b
 These variables are only active during their respective transition phases.  
 Use `switchOf(...)` to ensure graceful fallback when inactive.
 
-| Variable            | Active When...                   | Purpose                      |
-|---------------------|----------------------------------|------------------------------|
-| `animationThawing`  | `.is-thawing`                    | Triggers thawing animation   |
-| `animationFreezing` | `.is-freezing`                   | Triggers freezing animation  |
-| `isEditable`        | `.is-editable` or `.is-thawing`  | Styling for editable state   |
-| `isReadOnly`        | `.is-readonly` or `.is-freezing` | Styling for read-only state  |
+| Variable             | Active When...                    | Purpose                                                                         |
+|----------------------|-----------------------------------|---------------------------------------------------------------------------------|
+| `animationThawing`   | `.is-thawing`                     | Runs the thawing animation sequence                                             |
+| `animationFreezing`  | `.is-freezing`                    | Runs the freezing animation sequence                                            |
+| `isEditable`         | `.is-editable` or `.is-thawing`   | Conditional variable for the editable state                                     |
+| `isReadOnly`         | `.is-read-only` or `.is-freezing` | Conditional variable for the read-only state                                    |
+| `readOnlyFactor`     | Always available (animatable)     | Normalized factor: 0 = editable, 1 = read-only, interpolates during transitions |
 
 #### 💡 Usage Example
 
@@ -239,14 +240,16 @@ import { usesReadOnlyState } from '@reusable-ui/read-only-state';
 import { style, vars, keyframes, fallback } from '@cssfn/core';
 
 export const readOnlyBoxStyle = () => {
+    // Feature: animation handling
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
     } = usesAnimationFeature();
     
+    // Feature: editable/read-only lifecycle
     const {
         readOnlyStateRule,
-        readOnlyStateVars: { isEditable, isReadOnly },
+        readOnlyStateVars: { isEditable, isReadOnly, readOnlyFactor },
     } = usesReadOnlyState({
         animationThawing  : 'var(--box-thawing)',
         animationFreezing : 'var(--box-freezing)',
@@ -262,44 +265,32 @@ export const readOnlyBoxStyle = () => {
         // Apply editable/read-only state rules:
         ...readOnlyStateRule(),
         
-        // Define thawing animation:
+        // Thawing animation: interpolate readOnlyFactor from 1 → 0
         ...vars({
             '--box-thawing': [
-                ['0.3s', 'ease-out', 'both', 'fade-thawing'],
+                ['0.3s', 'ease-out', 'both', 'transition-thawing'],
             ],
         }),
-        ...keyframes('fade-thawing', {
-            from: {
-                opacity: 0.5,
-            },
-            to: {
-                opacity: 1,
-            },
+        ...keyframes('transition-thawing', {
+            from : { [readOnlyFactor]: 1 },
+            to   : { [readOnlyFactor]: 0 },
         }),
         
-        // Define freezing animation:
+        // Freezing animation: interpolate readOnlyFactor from 0 → 1
         ...vars({
             '--box-freezing': [
-                ['0.3s', 'ease-out', 'both', 'fade-freezing'],
+                ['0.3s', 'ease-out', 'both', 'transition-freezing'],
             ],
         }),
-        ...keyframes('fade-freezing', {
-            from: {
-                opacity: 1,
-            },
-            to: {
-                opacity: 0.5,
-            },
+        ...keyframes('transition-freezing', {
+            from : { [readOnlyFactor]: 0 },
+            to   : { [readOnlyFactor]: 1 },
         }),
         
-        // Define final opacity based on lifecycle state:
-        ...fallback({
-            '--opacity-editable'  : `${isEditable} 1`,
-        }),
-        ...fallback({
-            '--opacity-readonly' : `${isReadOnly} 0.5`,
-        }),
-        opacity: 'var(--opacity-editable, var(--opacity-readonly))',
+        // Example usage:
+        // - Opacity interpolates with `readOnlyFactor`.
+        // - 0 → fully visible (editable), 1 → dimmed (read-only).
+        opacity: `calc(1 - (${readOnlyFactor} * 0.5))`,
         
         // Apply composed animations:
         animation,
