@@ -9,6 +9,7 @@ import {
     
     // Writes css in javascript:
     rule,
+    atRule,
     states,
     style,
     vars,
@@ -222,14 +223,16 @@ animationRegistry.registerAnimation(disabledStateVars.animationDisabling);
  * import { style, vars, keyframes, fallback } from '@cssfn/core';
  * 
  * export const disableableBoxStyle = () => {
+ *     // Feature: animation handling
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
  *     } = usesAnimationFeature();
  *     
+ *     // Feature: enable/disable lifecycle
  *     const {
  *         disabledStateRule,
- *         disabledStateVars: { isEnabled, isDisabled },
+ *         disabledStateVars: { isEnabled, isDisabled, disableFactor },
  *     } = usesDisabledState({
  *         animationEnabling  : 'var(--box-enabling)',
  *         animationDisabling : 'var(--box-disabling)',
@@ -245,44 +248,32 @@ animationRegistry.registerAnimation(disabledStateVars.animationDisabling);
  *         // Apply enabled/disabled state rules:
  *         ...disabledStateRule(),
  *         
- *         // Define enabling animation:
+ *         // Enabling animation: interpolate disableFactor from 1 → 0
  *         ...vars({
  *             '--box-enabling': [
- *                 ['0.3s', 'ease-out', 'both', 'fade-enabling'],
+ *                 ['0.3s', 'ease-out', 'both', 'transition-enabling'],
  *             ],
  *         }),
- *         ...keyframes('fade-enabling', {
- *             from: {
- *                 opacity: 0.5,
- *             },
- *             to: {
- *                 opacity: 1,
- *             },
+ *         ...keyframes('transition-enabling', {
+ *             from : { [disableFactor]: 1 },
+ *             to   : { [disableFactor]: 0 },
  *         }),
  *         
- *         // Define disabling animation:
+ *         // Disabling animation: interpolate disableFactor from 0 → 1
  *         ...vars({
  *             '--box-disabling': [
- *                 ['0.3s', 'ease-out', 'both', 'fade-disabling'],
+ *                 ['0.3s', 'ease-out', 'both', 'transition-disabling'],
  *             ],
  *         }),
- *         ...keyframes('fade-disabling', {
- *             from: {
- *                 opacity: 1,
- *             },
- *             to: {
- *                 opacity: 0.5,
- *             },
+ *         ...keyframes('transition-disabling', {
+ *             from : { [disableFactor]: 0 },
+ *             to   : { [disableFactor]: 1 },
  *         }),
  *         
- *         // Define final opacity based on lifecycle state:
- *         ...fallback({
- *             '--opacity-enabled'  : `${isEnabled} 1`,
- *         }),
- *         ...fallback({
- *             '--opacity-disabled' : `${isDisabled} 0.5`,
- *         }),
- *         opacity: 'var(--opacity-enabled, var(--opacity-disabled))',
+ *         // Example usage:
+ *         // - Opacity interpolates with `disableFactor`.
+ *         // - 0 → fully visible, 1 → dimmed.
+ *         opacity: `calc(1 - (${disableFactor} * 0.5))`,
  *         
  *         // Apply composed animations:
  *         animation,
@@ -333,6 +324,29 @@ export const usesDisabledState = (options?: CssDisabledStateOptions): CssDisable
                         [disabledStateVars.isDisabled] : '',      // Valid    when either disabling or fully disabled.
                     })
                 ),
+            }),
+            
+            
+            
+            // Register `disableFactor` as an animatable custom property:
+            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
+            ...atRule(`@property ${disabledStateVars.disableFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
+                // @ts-ignore
+                syntax       : '"<number>"',
+                inherits     : true,
+                initialValue : 0,
+            }),
+            
+            ...vars({
+                // Assign the settled value for `disableFactor`:
+                // - Sticks to `1` when the component is fully disabled.
+                [disabledStateVars.disableFactor]: [[
+                    // Only applies if in disabled state:
+                    disabledStateVars.isDisabled,
+                    
+                    // The fully disabled value:
+                    1,
+                ]],
             }),
         }),
         
