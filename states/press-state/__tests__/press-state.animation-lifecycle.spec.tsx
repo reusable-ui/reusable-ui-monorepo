@@ -88,8 +88,8 @@ interface PressStateAnimationTestCase {
 
 
 
-const BACKGROUND_COLOR_PRESSED  = 'rgb(0, 0, 140)'
-const BACKGROUND_COLOR_RELEASED = 'rgb(0, 0, 255)';
+const BACKGROUND_COLOR_PRESSED  = 'color(srgb 0 0 0.25)'
+const BACKGROUND_COLOR_RELEASED = 'color(srgb 0 0 1)';
 
 
 

@@ -9,6 +9,7 @@ import {
     
     // Writes css in javascript:
     rule,
+    atRule,
     states,
     style,
     vars,
@@ -222,14 +223,16 @@ animationRegistry.registerAnimation(pressStateVars.animationReleasing);
  * import { style, vars, keyframes, fallback } from '@cssfn/core';
  * 
  * export const pressableBoxStyle = () => {
+ *     // Feature: animation handling
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
  *     } = usesAnimationFeature();
  *     
+ *     // Feature: press/release lifecycle
  *     const {
  *         pressStateRule,
- *         pressStateVars: { isPressed, isReleased },
+ *         pressStateVars: { isPressed, isReleased, pressFactor },
  *     } = usesPressState({
  *         animationPressing  : 'var(--box-pressing)',
  *         animationReleasing : 'var(--box-releasing)',
@@ -245,44 +248,35 @@ animationRegistry.registerAnimation(pressStateVars.animationReleasing);
  *         // Apply pressed/released state rules:
  *         ...pressStateRule(),
  *         
- *         // Define pressing animation:
+ *         // Pressing animation: interpolate pressFactor from 0 → 1
  *         ...vars({
  *             '--box-pressing': [
- *                 ['0.3s', 'ease-out', 'both', 'background-color-pressing'],
+ *                 ['0.3s', 'ease-out', 'both', 'transition-pressing'],
  *             ],
  *         }),
- *         ...keyframes('background-color-pressing', {
- *             from: {
- *                 backgroundColor: 'blue',
- *             },
- *             to: {
- *                 backgroundColor: 'darkblue',
- *             },
+ *         ...keyframes('transition-pressing', {
+ *             from : { [pressFactor]: 0 },
+ *             to   : { [pressFactor]: 1 },
  *         }),
  *         
- *         // Define releasing animation:
+ *         // Releasing animation: interpolate pressFactor from 1 → 0
  *         ...vars({
  *             '--box-releasing': [
- *                 ['0.3s', 'ease-out', 'both', 'background-color-releasing'],
+ *                 ['0.3s', 'ease-out', 'both', 'transition-releasing'],
  *             ],
  *         }),
- *         ...keyframes('background-color-releasing', {
- *             from: {
- *                 backgroundColor: 'darkblue',
- *             },
- *             to: {
- *                 backgroundColor: 'blue',
- *             },
+ *         ...keyframes('transition-releasing', {
+ *             from : { [pressFactor]: 1 },
+ *             to   : { [pressFactor]: 0 },
  *         }),
  *         
- *         // Define final background color based on lifecycle state:
- *         ...fallback({
- *             '--background-color-pressed'  : `${isPressed} darkblue`,
- *         }),
- *         ...fallback({
- *             '--background-color-released' : `${isReleased} blue`,
- *         }),
- *         backgroundColor: 'var(--background-color-pressed, var(--background-color-released))',
+ *         // Example usage:
+ *         // - Background color interpolates with `pressFactor`.
+ *         // - 0 → blue, 1 → darkblue.
+ *         backgroundColor: `color-mix(in oklch,
+ *             blue calc((1 - ${pressFactor}) * 100%),
+ *             darkblue calc(${pressFactor} * 100%)
+ *         )`,
  *         
  *         // Apply composed animations:
  *         animation,
@@ -333,6 +327,29 @@ export const usesPressState = (options?: CssPressStateOptions): CssPressState =>
                         [pressStateVars.isReleased] : '',      // Valid    when either releasing or fully released.
                     })
                 ),
+            }),
+            
+            
+            
+            // Register `pressFactor` as an animatable custom property:
+            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
+            ...atRule(`@property ${pressStateVars.pressFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
+                // @ts-ignore
+                syntax       : '"<number>"',
+                inherits     : true,
+                initialValue : 0,
+            }),
+            
+            ...vars({
+                // Assign the settled value for `pressFactor`:
+                // - Sticks to `1` when the component is fully pressed.
+                [pressStateVars.pressFactor]: [[
+                    // Only applies if in pressed state:
+                    pressStateVars.isPressed,
+                    
+                    // The fully pressed value:
+                    1,
+                ]],
             }),
         }),
         

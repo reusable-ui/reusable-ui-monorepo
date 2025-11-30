@@ -260,12 +260,13 @@ Generates CSS rules that conditionally apply the press/release animations based 
 These variables are only active during their respective transition phases.  
 Use `switchOf(...)` to ensure graceful fallback when inactive.
 
-| Variable             | Active When...                    | Purpose                      |
-|----------------------|-----------------------------------|------------------------------|
-| `animationPressing`  | `.is-pressing`                    | Triggers pressing animation  |
-| `animationReleasing` | `.is-releasing`                   | Triggers releasing animation |
-| `isPressed`          | `.is-pressed` or `.is-pressing`   | Styling for pressed state    |
-| `isReleased`         | `.is-released` or `.is-releasing` | Styling for released state   |
+| Variable              | Active When...                    | Purpose                                                                       |
+|-----------------------|-----------------------------------|-------------------------------------------------------------------------------|
+| `animationPressing`   | `.is-pressing`                    | Runs the pressing animation sequence                                          |
+| `animationReleasing`  | `.is-releasing`                   | Runs the releasing animation sequence                                         |
+| `isPressed`           | `.is-pressed` or `.is-pressing`   | Conditional variable for the pressed state                                    |
+| `isReleased`          | `.is-released` or `.is-releasing` | Conditional variable for the released state                                   |
+| `pressFactor`         | Always available (animatable)     | Normalized factor: 0 = released, 1 = pressed, interpolates during transitions |
 
 #### 💡 Usage Example
 
@@ -280,14 +281,16 @@ import { usesPressState } from '@reusable-ui/press-state';
 import { style, vars, keyframes, fallback } from '@cssfn/core';
 
 export const pressableBoxStyle = () => {
+    // Feature: animation handling
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
     } = usesAnimationFeature();
     
+    // Feature: press/release lifecycle
     const {
         pressStateRule,
-        pressStateVars: { isPressed, isReleased },
+        pressStateVars: { isPressed, isReleased, pressFactor },
     } = usesPressState({
         animationPressing  : 'var(--box-pressing)',
         animationReleasing : 'var(--box-releasing)',
@@ -303,44 +306,35 @@ export const pressableBoxStyle = () => {
         // Apply pressed/released state rules:
         ...pressStateRule(),
         
-        // Define pressing animation:
+        // Pressing animation: interpolate pressFactor from 0 → 1
         ...vars({
             '--box-pressing': [
-                ['0.3s', 'ease-out', 'both', 'background-color-pressing'],
+                ['0.3s', 'ease-out', 'both', 'transition-pressing'],
             ],
         }),
-        ...keyframes('background-color-pressing', {
-            from: {
-                backgroundColor: 'blue',
-            },
-            to: {
-                backgroundColor: 'darkblue',
-            },
+        ...keyframes('transition-pressing', {
+            from : { [pressFactor]: 0 },
+            to   : { [pressFactor]: 1 },
         }),
         
-        // Define releasing animation:
+        // Releasing animation: interpolate pressFactor from 1 → 0
         ...vars({
             '--box-releasing': [
-                ['0.3s', 'ease-out', 'both', 'background-color-releasing'],
+                ['0.3s', 'ease-out', 'both', 'transition-releasing'],
             ],
         }),
-        ...keyframes('background-color-releasing', {
-            from: {
-                backgroundColor: 'darkblue',
-            },
-            to: {
-                backgroundColor: 'blue',
-            },
+        ...keyframes('transition-releasing', {
+            from : { [pressFactor]: 1 },
+            to   : { [pressFactor]: 0 },
         }),
         
-        // Define final background color based on lifecycle state:
-        ...fallback({
-            '--background-color-pressed'  : `${isPressed} darkblue`,
-        }),
-        ...fallback({
-            '--background-color-released' : `${isReleased} blue`,
-        }),
-        backgroundColor: 'var(--background-color-pressed, var(--background-color-released))',
+        // Example usage:
+        // - Background color interpolates with `pressFactor`.
+        // - 0 → blue, 1 → darkblue.
+        backgroundColor: `color-mix(in oklch,
+            blue calc((1 - ${pressFactor}) * 100%),
+            darkblue calc(${pressFactor} * 100%)
+        )`,
         
         // Apply composed animations:
         animation,

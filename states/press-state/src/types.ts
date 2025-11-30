@@ -476,6 +476,34 @@ export interface PressStateVars {
      * ```
      */
     isReleased         : unknown
+    
+    /**
+     * A normalized, animatable factor representing the **press lifecycle state**.
+     * 
+     * ### Expected values:
+     * - **0**     : settled released
+     * - **1**     : settled pressed
+     * - **0 → 1** : pressing transition (released → pressed)
+     * - **1 → 0** : releasing transition (pressed → released)
+     * 
+     * ### Usage:
+     * - Applicable to numeric-based properties such as `background`, `transform`, `box-shadow`, `opacity`, etc.
+     * - Implementators are responsible for assigning transitional values in their animations.
+     *   For example, a pressing animation might interpolate `pressFactor` from 0 → 1.
+     * - Values outside the 0–1 range are allowed, and implementators must handle them appropriately.  
+     *   Example of an animation with a spring/bump effect:  
+     *     `0%: 0`, `90%: 1.2`, `100%: 1`  
+     *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
+     * 
+     * ### Notes:
+     * - Already registered as an animatable custom property; no need to apply `@property` manually.
+     * - **Value rationale:**  
+     *   - The factor represents the active lifecycle state (pressed), not the baseline (released).  
+     *   - This keeps naming predictable and teachable across the ecosystem:
+     *     - `pressFactor = 0`: released (baseline lifecycle state)  
+     *     - `pressFactor = 1`: pressed (active lifecycle state)  
+     */
+    pressFactor        : unknown
 }
 
 

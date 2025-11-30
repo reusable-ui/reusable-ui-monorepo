@@ -1,11 +1,11 @@
-import { keyframes, style, vars, fallback } from '@cssfn/core'
+import { keyframes, style, vars } from '@cssfn/core'
 import { usesPressState } from '../dist/index.js'
 import { usesAnimationFeature } from '@reusable-ui/animation-feature'
 
 export default function pressStateTestStyle() {
     const {
         pressStateRule,
-        pressStateVars: { isPressed, isReleased },
+        pressStateVars: { pressFactor },
     } = usesPressState({
         animationPressing  : 'var(--test-pressing)',
         animationReleasing : 'var(--test-releasing)',
@@ -20,42 +20,35 @@ export default function pressStateTestStyle() {
         ...pressStateRule(),
         ...animationFeatureRule(),
         
+        // Pressing animation: interpolate pressFactor from 0 → 1
         ...vars({
             '--test-pressing': [
                 ['1s', 'ease-out', 'both', 'boo-test-pressing'],
             ],
         }),
         ...keyframes('boo-test-pressing', {
-            from : {
-                backgroundColor: 'rgb(0, 0, 255)',
-            },
-            to   : {
-                backgroundColor: 'rgb(0, 0, 140)',
-            },
+            from : { [pressFactor]: 0 },
+            to   : { [pressFactor]: 1 },
         }),
         
+        // Releasing animation: interpolate pressFactor from 1 → 0
         ...vars({
             '--test-releasing': [
                 ['1s', 'ease-out', 'both', 'boo-test-releasing'],
             ],
         }),
         ...keyframes('boo-test-releasing', {
-            from : {
-                backgroundColor: 'rgb(0, 0, 140)',
-            },
-            to   : {
-                backgroundColor: 'rgb(0, 0, 255)',
-            },
+            from : { [pressFactor]: 1 },
+            to   : { [pressFactor]: 0 },
         }),
         
-        // Define final background color based on lifecycle state:
-        ...fallback({
-            '--background-color-pressed'  : `${isPressed} rgb(0, 0, 140)`,
-        }),
-        ...fallback({
-            '--background-color-released' : `${isReleased} rgb(0, 0, 255)`,
-        }),
-        backgroundColor: 'var(--background-color-pressed, var(--background-color-released))',
+        // Example usage:
+        // - Background color interpolates with `pressFactor`.
+        // - 0 → blue, 1 → darkblue.
+        backgroundColor: `color-mix(in srgb,
+            color(srgb 0 0 1) calc((1 - ${pressFactor}) * 100%),
+            color(srgb 0 0 0.25) calc(${pressFactor} * 100%)
+        )`,
         
         // Apply composite animations:
         animation,
