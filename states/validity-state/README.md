@@ -222,17 +222,18 @@ Generates CSS rules that conditionally apply the validation animations based on 
 These variables are only active during their respective transition phases.  
 Use `switchOf(...)` to ensure graceful fallback when inactive.
 
-| Variable                | Active When...                          | Purpose                                  |
-|-------------------------|-----------------------------------------|------------------------------------------|
-| `animationValidating`   | `.is-validating`                        | Triggers validating animation            |
-| `animationInvalidating` | `.is-invalidating`                      | Triggers invalidating animation          |
-| `animationUnvalidating` | `.is-unvalidating`                      | Triggers unvalidating animation          |
-| `isValid`               | `.is-valid` or `.is-validating`         | Styling for valid state                  |
-| `isInvalid`             | `.is-invalid` or `.is-invalidating`     | Styling for invalid state                |
-| `isUnvalidated`         | `.is-unvalidated` or `.is-unvalidating` | Styling for unvalidated state            |
-| `wasValid`              | `.was-valid`                            | Styling for previously valid state       |
-| `wasInvalid`            | `.was-invalid`                          | Styling for previously invalid state     |
-| `wasUnvalidated`        | `.was-unvalidated`                      | Styling for previously unvalidated state |
+| Variable                | Active When...                          | Purpose                                                                                       |
+|-------------------------|-----------------------------------------|-----------------------------------------------------------------------------------------------|
+| `animationValidating`   | `.is-validating`                        | Runs the validating animation sequence                                                        |
+| `animationInvalidating` | `.is-invalidating`                      | Runs the invalidating animation sequence                                                      |
+| `animationUnvalidating` | `.is-unvalidating`                      | Runs the unvalidating animation sequence                                                      |
+| `isValid`               | `.is-valid` or `.is-validating`         | Conditional variable for the valid state                                                      |
+| `isInvalid`             | `.is-invalid` or `.is-invalidating`     | Conditional variable for the invalid state                                                    |
+| `isUnvalidated`         | `.is-unvalidated` or `.is-unvalidating` | Conditional variable for the unvalidated state                                                |
+| `wasValid`              | `.was-valid`                            | Conditional variable for the previously valid state                                           |
+| `wasInvalid`            | `.was-invalid`                          | Conditional variable for the previously invalid state                                         |
+| `wasUnvalidated`        | `.was-unvalidated`                      | Conditional variable for the previously unvalidated state                                     |
+| `validityFactor`        | Always available (animatable)           | Normalized factor: -1 = invalid, 0 = unvalidated, +1 = valid, interpolates during transitions |
 
 #### 💡 Usage Example
 
@@ -247,14 +248,16 @@ import { usesValidityState } from '@reusable-ui/validity-state';
 import { style, vars, keyframes, fallback } from '@cssfn/core';
 
 export const validatableBoxStyle = () => {
+    // Feature: animation handling
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
     } = usesAnimationFeature();
     
+    // Feature: validity lifecycle
     const {
         validityStateRule,
-        validityStateVars: { isValid, isInvalid, isUnvalidated, wasValid, wasInvalid, wasUnvalidated },
+        validityStateVars: { isValid, isInvalid, isUnvalidated, wasValid, wasInvalid, wasUnvalidated, validityFactor },
     } = usesValidityState({
         animationValidating   : 'var(--box-validating)',
         animationInvalidating : 'var(--box-invalidating)',
@@ -271,71 +274,197 @@ export const validatableBoxStyle = () => {
         // Apply validity state rules:
         ...validityStateRule(),
         
-        // Define validating animation:
+        // Validating animation: interpolate validityFactor from 0/-1 to +1
         ...vars({
             '--box-validating': [
-                ['0.3s', 'ease-out', 'both', 'splash-validating'],
+                ['0.3s', 'ease-out', 'both', 'transition-validating'],
             ],
         }),
-        ...keyframes('splash-validating', {
-            from: {
-                // Define origin background color based on previous validity state:
-                '--was-invalid-backg-color': `${wasInvalid} red`,
-                '--was-unvalidated-backg-color': `${wasUnvalidated} blue`,
-                backgroundColor: 'var(--was-invalid-backg-color, var(--was-unvalidated-backg-color))',
+        ...keyframes('transition-validating', {
+            from : {
+                // Previous validity state could be unvalidated (0) or invalid (-1).
+                
+                // Private intermediate resolver for previous invalid state:
+                '--_wasInvalidFactor': [[
+                    // Only applies if previously invalid:
+                    wasInvalid,
+                    
+                    // The fully invalid value:
+                    -1,
+                ]],
+                
+                // Resolve the origin of the transition:
+                // - Rendered as: `var(--_wasInvalidFactor, 0)`
+                [validityFactor]: switchOf(
+                    'var(--_wasInvalidFactor)', // fallback to previous invalid
+                    0,                          // otherwise assume unvalidated
+                ),
             },
-            to: {
-                backgroundColor: green,
+            to   : {
+                // Re‑declare the private resolver to prevent interpolation glitches:
+                '--_wasInvalidFactor': [[
+                    // Only applies if previously invalid:
+                    wasInvalid,
+                    
+                    // The fully invalid value:
+                    -1,
+                ]],
+                
+                // Transition target: valid state:
+                [validityFactor]: 1,
             },
         }),
         
-        // Define invalidating animation:
+        // Invalidating animation: interpolate validityFactor from 0/+1 to -1
         ...vars({
             '--box-invalidating': [
-                ['0.3s', 'ease-out', 'both', 'splash-invalidating'],
+                ['0.3s', 'ease-out', 'both', 'transition-invalidating'],
             ],
         }),
-        ...keyframes('splash-invalidating', {
-            from: {
-                // Define origin background color based on previous validity state:
-                '--was-valid-backg-color': `${wasValid} green`,
-                '--was-unvalidated-backg-color': `${wasUnvalidated} blue`,
-                backgroundColor: 'var(--was-valid-backg-color, var(--was-unvalidated-backg-color))',
+        ...keyframes('transition-invalidating', {
+            from : {
+                // Previous validity state could be unvalidated (0) or valid (+1).
+                
+                // Private intermediate resolver for previous valid state:
+                '--_wasValidFactor': [[
+                    // Only applies if previously valid:
+                    wasValid,
+                    
+                    // The fully valid value:
+                    1,
+                ]],
+                
+                // Resolve the origin of the transition:
+                // - Rendered as: `var(--_wasValidFactor, 0)`
+                [validityFactor]: switchOf(
+                    'var(--_wasValidFactor)', // fallback to previous valid
+                    0,                        // otherwise assume unvalidated
+                ),
             },
-            to: {
-                backgroundColor: red,
+            to   : {
+                // Re‑declare the private resolver to prevent interpolation glitches:
+                '--_wasValidFactor': [[
+                    // Only applies if previously valid:
+                    wasValid,
+                    
+                    // The fully valid value:
+                    1,
+                ]],
+                
+                // Transition target: invalid state:
+                [validityFactor]: -1,
             },
         }),
         
-        // Define unvalidating animation:
+        // Unvalidating animation: interpolate validityFactor from +1/-1 to 0
         ...vars({
             '--box-unvalidating': [
-                ['0.3s', 'ease-out', 'both', 'splash-unvalidating'],
+                ['0.3s', 'ease-out', 'both', 'transition-unvalidating'],
             ],
         }),
-        ...keyframes('splash-unvalidating', {
-            from: {
-                // Define origin background color based on previous validity state:
-                '--was-valid-backg-color': `${wasValid} green`,
-                '--was-invalid-backg-color': `${wasInvalid} red`,
-                backgroundColor: 'var(--was-valid-backg-color, var(--was-invalid-backg-color))',
+        ...keyframes('transition-unvalidating', {
+            from : {
+                // Previous validity state could be valid (+1) or invalid (-1).
+                
+                // Private intermediate resolver for previous valid state:
+                '--_wasValidFactor': [[
+                    // Only applies if previously valid:
+                    wasValid,
+                    
+                    // The fully valid value:
+                    1,
+                ]],
+                
+                // Resolve the origin of the transition:
+                // - Rendered as: `var(--_wasValidFactor, -1)`
+                [validityFactor]: switchOf(
+                    'var(--_wasValidFactor)', // fallback to previous valid
+                    -1,                       // otherwise assume invalid
+                ),
             },
-            to: {
-                backgroundColor: blue,
+            to   : {
+                // Re‑declare the private resolver to prevent interpolation glitches:
+                '--_wasValidFactor': [[
+                    // Only applies if previously valid:
+                    wasValid,
+                    
+                    // The fully valid value:
+                    1,
+                ]],
+                
+                // Transition target: unvalidated state:
+                [validityFactor]: 0,
             },
         }),
         
-        // Define final background color based on lifecycle state:
-        ...fallback({
-            '--backg-valid'       : `${isValid} green`,
-        }),
-        ...fallback({
-            '--backg-invalid'     : `${isInvalid} red`,
-        }),
-        ...fallback({
-            '--backg-unvalidated' : `${isUnvalidated} blue`,
-        }),
-        backgroundColor: 'var(--backg-valid, var(--backg-invalid, var(--backg-unvalidated)))',
+        // Example usage:
+        // - Background color interpolates with `validityFactor`.
+        // - -1 → red, 0 → blue, +1 → green.
+        // 
+        // Red Weight: `(-1 * clamp(-1, var(--validityFactor), 0))`
+        // - Peaks at -1
+        // - Active range: -1 → 0
+        // - At -1: clamp = -1 → red = 1
+        // - At 0: clamp = 0 → red = 0
+        // - At >0: clamp = 0 → red stays 0
+        // - Fades from full red at -1 to none at 0, then off
+        // 
+        // Green Weight: `clamp(0.001, var(--validityFactor), 1)`
+        // - Peaks at +1
+        // - Active range: 0 → +1
+        // - At 0: clamp = 0.001 → green ≈ 0 (epsilon contribution only)
+        // - At +1: clamp = 1 → green = 1
+        // - At <0: clamp = 0.001 → green ≈ 0 (epsilon contribution only)
+        // - Fades in from near‑zero to full green as factor approaches +1
+        // - The `0.001` is a small epsilon added to avoid producing
+        //   `color-mix(... red 0%, green 0%)`, which the CSS Color 5 spec
+        //   defines as invalid (all weights = 0%). This keeps the inner mix
+        //   valid across browsers while remaining visually imperceptible.
+        // 
+        // Composite Red + Green Weight: `abs(var(--validityFactor))`
+        // - Peaks at ±1
+        // - Active range: -1 → +1
+        // - At 0: abs = 0 → composite = 0
+        // - In between: fades linearly
+        // - Dominates when factor is strongly valid/invalid, fades at center
+        // 
+        // Blue Weight: `1 - abs(var(--validityFactor))`
+        // - Peaks at 0
+        // - At 0: abs = 0 → blue = 1
+        // - At ±1: abs = 1 → blue = 0
+        // - In between: fades linearly
+        // - Dominates when unvalidated, fades toward valid/invalid extremes
+        // 
+        // Total Weight:
+        // - Always sums to 1 across factor range [-1, 0, +1]
+        // - Ensures proportional mixing of red, green, and blue
+        // 
+        // Implementation Notes:
+        // - Use `oklch` color space for perceptual consistency
+        // - Replace `abs(var(--value))` with `max(var(--value), calc(-1 * var(--value)))`
+        //   for wider browser support
+        backgroundColor:
+`color-mix(in oklch,
+    color-mix(in oklch,
+        red
+        calc((
+            (-1 * clamp(-1, ${validityFactor}, 0))
+        ) * 100%),
+        
+        green
+        calc((
+            clamp(0.001, ${validityFactor}, 1)
+        ) * 100%)
+    )
+    calc((
+        max(${validityFactor}, calc(-1 * ${validityFactor}))
+    ) * 100%),
+    
+    blue
+    calc((
+        1 - max(${validityFactor}, calc(-1 * ${validityFactor}))
+    ) * 100%)
+)`,
         
         // Apply composed animations:
         animation,

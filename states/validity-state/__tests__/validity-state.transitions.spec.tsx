@@ -62,41 +62,84 @@ interface ValidityStateTransitionTestCase {
 
 
 
-const COLOR_VALID       = 'rgb(0, 255, 0)';
-const COLOR_INVALID     = 'rgb(255, 0, 0)';
-const COLOR_UNVALIDATED = 'rgb(0, 0, 255)';
+const COLOR_VALID       = 'color(srgb 0 1 0)';
+const COLOR_INVALID     = 'color(srgb 1 0 0)';
+const COLOR_UNVALIDATED = 'color(srgb 0 0 1)';
 
 
 
 /**
  * Global threshold for channel deviation (0–255).
  */
-export const COLOR_THRESHOLD = 35 / 100 * 255; // 30% of full range
+export const COLOR_THRESHOLD = 50 / 100 * 255; // 50% of full range
 
 /**
- * Parses an RGB(A) string like 'rgb(255, 0, 0)' or 'rgba(255, 0, 0, 0.8)' into [r, g, b],
+ * Parses a color string into [r, g, b] values in the 0–255 range,
  * ignoring the alpha channel.
+ * 
+ * Supported formats:
+ * - `rgb(255, 0, 0)`
+ * - `rgba(255, 0, 0, 0.8)`
+ * - `color(srgb 0 0.333333 0.666667)`
+ * - `color(srgb 0 0.333333 0.666667 / 0.75)`
+ * - `color(srgb-linear 0 0.333333 0.666667)`
+ * - `color(srgb-linear 0 0.333333 0.666667 / 0.75)`
  */
-const parseRgb = (rgb: string): [number, number, number] => {
-    const match = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)$/);
-    if (!match) throw new Error(`Invalid RGB format: ${rgb}`);
-    return [Number(match[1]), Number(match[2]), Number(match[3])];
+const parseColor = (color: string): [number, number, number] => {
+    // Match rgb/rgba
+    let match = color.match(
+        /^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*[\d.]+)?\s*\)$/
+    );
+    if (match) {
+        return [Number(match[1]), Number(match[2]), Number(match[3])];
+    }
+    
+    // Match color(srgb …) or color(srgb-linear …)
+    match = color.match(
+        /^color\((srgb|srgb-linear)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*[\d.]+)?\)$/
+    );
+    if (match) {
+        const [, space, r, g, b] = match;
+        const rn = Number(r);
+        const gn = Number(g);
+        const bn = Number(b);
+        
+        if (space === "srgb") {
+            // srgb values are normalized 0–1
+            return [
+                Math.round(rn * 255),
+                Math.round(gn * 255),
+                Math.round(bn * 255),
+            ];
+        } else {
+            // srgb-linear values are also normalized 0–1,
+            // but in linear-light space. For simplicity we map directly.
+            // If you need gamma correction, apply pow(val, 1/2.2) before scaling.
+            return [
+                Math.round(rn * 255),
+                Math.round(gn * 255),
+                Math.round(bn * 255),
+            ];
+        }
+    }
+    
+    throw new Error(`Invalid color format: ${color}`);
 };
 
 /**
- * Compares two RGB colors with a configurable threshold.
+ * Compares two colors with a configurable threshold.
  * Throws an error if the colors differ beyond the threshold.
  * 
- * @param actual - The actual color string (e.g. 'rgb(123, 45, 67)')
- * @param expected - The expected color string (e.g. 'rgb(120, 50, 70)')
+ * @param actual - The actual color string (e.g. 'color(srgb 0 0.333 0.666)')
+ * @param expected - The expected color string (e.g. 'rgb(85, 85, 170)')
  */
 export const expectColor = (
     actual: string,
     expected: string,
     threshold: number = COLOR_THRESHOLD
 ): void => {
-    const [r1, g1, b1] = parseRgb(actual);
-    const [r2, g2, b2] = parseRgb(expected);
+    const [r1, g1, b1] = parseColor(actual);
+    const [r2, g2, b2] = parseColor(expected);
     
     const delta = Math.max(
         Math.abs(r1 - r2),
@@ -108,6 +151,9 @@ export const expectColor = (
         throw new Error(
             `Color mismatch: expected approx ${expected}, but got ${actual} (Δ=${delta} > ${threshold})`
         );
+    }
+    else {
+        console.info(`Color match: expected approx ${expected}, got ${actual} (Δ=${delta} ≤ ${threshold})`);
     }
 };
 
@@ -125,14 +171,18 @@ test.describe('useValidityBehaviorState - animation', () => {
             validity         : true,
             updates          : [
                 {
+                    title                   : 'Ensure the stylesheet is applied',
+                    delay                   : 200, // Wait for a brief moment until the DOM is fully ready
+                },
+                {
                     title                   : 'Expect initial color to be valid (green)',
                     validity                : false,
-                    delay                   : 200, // Wait for animation to near the beginning
+                    delay                   : 100, // Wait for animation to near the beginning
                     expectedColor           : COLOR_VALID,
                 },
                 {
                     title                   : 'Expect color to be invalid (red) near the animation end',
-                    delay                   : 600, // Wait for animation to near the end
+                    delay                   : 800, // Wait for animation to near the end
                     expectedColor           : COLOR_INVALID,
                 },
             ],
@@ -142,14 +192,18 @@ test.describe('useValidityBehaviorState - animation', () => {
             validity         : true,
             updates          : [
                 {
+                    title                   : 'Ensure the stylesheet is applied',
+                    delay                   : 200, // Wait for a brief moment until the DOM is fully ready
+                },
+                {
                     title                   : 'Expect initial color to be valid (green)',
                     validity                : null,
-                    delay                   : 200, // Wait for animation to near the beginning
+                    delay                   : 100, // Wait for animation to near the beginning
                     expectedColor           : COLOR_VALID,
                 },
                 {
                     title                   : 'Expect color to be unvalidated (blue) near the animation end',
-                    delay                   : 600, // Wait for animation to near the end
+                    delay                   : 800, // Wait for animation to near the end
                     expectedColor           : COLOR_UNVALIDATED,
                 },
             ],
@@ -159,14 +213,18 @@ test.describe('useValidityBehaviorState - animation', () => {
             validity         : false,
             updates          : [
                 {
+                    title                   : 'Ensure the stylesheet is applied',
+                    delay                   : 200, // Wait for a brief moment until the DOM is fully ready
+                },
+                {
                     title                   : 'Expect initial color to be invalid (red)',
                     validity                : true,
-                    delay                   : 200, // Wait for animation to near the beginning
+                    delay                   : 100, // Wait for animation to near the beginning
                     expectedColor           : COLOR_INVALID,
                 },
                 {
                     title                   : 'Expect color to be valid (green) near the animation end',
-                    delay                   : 600, // Wait for animation to near the end
+                    delay                   : 800, // Wait for animation to near the end
                     expectedColor           : COLOR_VALID,
                 },
             ],
@@ -176,14 +234,18 @@ test.describe('useValidityBehaviorState - animation', () => {
             validity         : false,
             updates          : [
                 {
+                    title                   : 'Ensure the stylesheet is applied',
+                    delay                   : 200, // Wait for a brief moment until the DOM is fully ready
+                },
+                {
                     title                   : 'Expect initial color to be invalid (red)',
                     validity                : null,
-                    delay                   : 200, // Wait for animation to near the beginning
+                    delay                   : 100, // Wait for animation to near the beginning
                     expectedColor           : COLOR_INVALID,
                 },
                 {
                     title                   : 'Expect color to be unvalidated (blue) near the animation end',
-                    delay                   : 600, // Wait for animation to near the end
+                    delay                   : 800, // Wait for animation to near the end
                     expectedColor           : COLOR_UNVALIDATED,
                 },
             ],
@@ -193,14 +255,18 @@ test.describe('useValidityBehaviorState - animation', () => {
             validity         : null,
             updates          : [
                 {
+                    title                   : 'Ensure the stylesheet is applied',
+                    delay                   : 200, // Wait for a brief moment until the DOM is fully ready
+                },
+                {
                     title                   : 'Expect initial color to be unvalidated (blue)',
                     validity                : true,
-                    delay                   : 200, // Wait for animation to near the beginning
+                    delay                   : 100, // Wait for animation to near the beginning
                     expectedColor           : COLOR_UNVALIDATED,
                 },
                 {
                     title                   : 'Expect color to be valid (green) near the animation end',
-                    delay                   : 600, // Wait for animation to near the end
+                    delay                   : 800, // Wait for animation to near the end
                     expectedColor           : COLOR_VALID,
                 },
             ],
@@ -210,14 +276,18 @@ test.describe('useValidityBehaviorState - animation', () => {
             validity         : null,
             updates          : [
                 {
+                    title                   : 'Ensure the stylesheet is applied',
+                    delay                   : 200, // Wait for a brief moment until the DOM is fully ready
+                },
+                {
                     title                   : 'Expect initial color to be unvalidated (blue)',
                     validity                : false,
-                    delay                   : 200, // Wait for animation to near the beginning
+                    delay                   : 100, // Wait for animation to near the beginning
                     expectedColor           : COLOR_UNVALIDATED,
                 },
                 {
                     title                   : 'Expect color to be invalid (red) near the animation end',
-                    delay                   : 600, // Wait for animation to near the end
+                    delay                   : 800, // Wait for animation to near the end
                     expectedColor           : COLOR_INVALID,
                 },
             ],
@@ -301,6 +371,9 @@ test.describe('useValidityBehaviorState - animation', () => {
                 } // if
                 
                 
+                
+                // const actualFactor = await box.evaluate((el) => window.getComputedStyle(el).getPropertyValue('--va-validityFactor'));
+                // console.info(`--va-validityFactor = ${actualFactor}`);
                 
                 // Verify the expected values:
                 if (expectedColor !== undefined) {

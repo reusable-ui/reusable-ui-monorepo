@@ -433,6 +433,37 @@ export interface ValidityStateVars {
      * ```
      */
     wasUnvalidated        : unknown
+    
+    /**
+     * A normalized, animatable factor representing the **validity lifecycle state**.
+     * 
+     * ### Expected values:
+     * - **+1**        : settled valid
+     * - **0**         : settled unvalidated (unknown, unchecked)
+     * - **-1**        : settled invalid
+     * - **0/-1 → +1** : validating transition (unvalidated/invalid → valid)
+     * - **±1 → 0**    : unvalidating transition (valid/invalid → unvalidated)
+     * - **0/+1 → -1** : invalidating transition (unvalidated/valid → invalid)
+     * 
+     * ### Usage:
+     * - Applicable to numeric-based properties such as `color`, `opacity`, `transform`, `scale`, etc.
+     * - Implementators are responsible for assigning transitional values in their animations.
+     *   For example, a validating animation might interpolate `validityFactor` from 0/-1 → +1.
+     * - Values outside the -1…+1 range are allowed, and implementators must handle them appropriately.  
+     *   Example of an animation with a spring/bump effect:  
+     *     `0%: 0`, `90%: 1.2`, `100%: 1`  
+     *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
+     * 
+     * ### Notes:
+     * - Already registered as an animatable custom property; no need to apply `@property` manually.
+     * - **Value rationale:**  
+     *   - The factor represents the active lifecycle states (valid/invalid), not the baseline (unvalidated).  
+     *   - This keeps naming predictable and teachable across the ecosystem:
+     *     - `validityFactor = -1` : invalid (active lifecycle state)  
+     *     - `validityFactor = 0`  : unvalidated (baseline lifecycle state)  
+     *     - `validityFactor = +1` : valid (active lifecycle state)  
+     */
+    validityFactor        : unknown
 }
 
 

@@ -92,9 +92,100 @@ interface ValidityStateAnimationTestCase {
 
 
 
-const COLOR_VALID       = 'rgb(0, 255, 0)';
-const COLOR_INVALID     = 'rgb(255, 0, 0)';
-const COLOR_UNVALIDATED = 'rgb(0, 0, 255)';
+const COLOR_VALID       = 'color(srgb 0 1 0)';
+const COLOR_INVALID     = 'color(srgb 1 0 0)';
+const COLOR_UNVALIDATED = 'color(srgb 0 0 1)';
+
+
+
+/**
+ * Global threshold for channel deviation (0–255).
+ */
+export const COLOR_THRESHOLD = 5 / 100 * 255; // 5% of full range
+
+/**
+ * Parses a color string into [r, g, b] values in the 0–255 range,
+ * ignoring the alpha channel.
+ * 
+ * Supported formats:
+ * - `rgb(255, 0, 0)`
+ * - `rgba(255, 0, 0, 0.8)`
+ * - `color(srgb 0 0.333333 0.666667)`
+ * - `color(srgb 0 0.333333 0.666667 / 0.75)`
+ * - `color(srgb-linear 0 0.333333 0.666667)`
+ * - `color(srgb-linear 0 0.333333 0.666667 / 0.75)`
+ */
+const parseColor = (color: string): [number, number, number] => {
+    // Match rgb/rgba
+    let match = color.match(
+        /^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*[\d.]+)?\s*\)$/
+    );
+    if (match) {
+        return [Number(match[1]), Number(match[2]), Number(match[3])];
+    }
+    
+    // Match color(srgb …) or color(srgb-linear …)
+    match = color.match(
+        /^color\((srgb|srgb-linear)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*[\d.]+)?\)$/
+    );
+    if (match) {
+        const [, space, r, g, b] = match;
+        const rn = Number(r);
+        const gn = Number(g);
+        const bn = Number(b);
+        
+        if (space === "srgb") {
+            // srgb values are normalized 0–1
+            return [
+                Math.round(rn * 255),
+                Math.round(gn * 255),
+                Math.round(bn * 255),
+            ];
+        } else {
+            // srgb-linear values are also normalized 0–1,
+            // but in linear-light space. For simplicity we map directly.
+            // If you need gamma correction, apply pow(val, 1/2.2) before scaling.
+            return [
+                Math.round(rn * 255),
+                Math.round(gn * 255),
+                Math.round(bn * 255),
+            ];
+        }
+    }
+    
+    throw new Error(`Invalid color format: ${color}`);
+};
+
+/**
+ * Compares two colors with a configurable threshold.
+ * Throws an error if the colors differ beyond the threshold.
+ * 
+ * @param actual - The actual color string (e.g. 'color(srgb 0 0.333 0.666)')
+ * @param expected - The expected color string (e.g. 'rgb(85, 85, 170)')
+ */
+export const expectColor = (
+    actual: string,
+    expected: string,
+    threshold: number = COLOR_THRESHOLD
+): void => {
+    const [r1, g1, b1] = parseColor(actual);
+    const [r2, g2, b2] = parseColor(expected);
+    
+    const delta = Math.max(
+        Math.abs(r1 - r2),
+        Math.abs(g1 - g2),
+        Math.abs(b1 - b2)
+    );
+    
+    if (delta > threshold) {
+        throw new Error(
+            `Color mismatch: expected approx ${expected}, but got ${actual} (Δ=${delta} > ${threshold})`
+        );
+    }
+    else {
+        console.info(`Color match: expected approx ${expected}, got ${actual} (Δ=${delta} ≤ ${threshold})`);
+    }
+};
 
 
 
@@ -634,7 +725,7 @@ test.describe('useValidityBehaviorState - animation', () => {
             ],
         },
     ] as ValidityStateAnimationTestCase[]) {
-        test(title, async ({ mount }) => {
+        test(title, async ({ mount, page }) => {
             // States:
             let currentValidity         : boolean | null | 'auto' | undefined = initialValidity;
             let currentComputedValidity : boolean | null          | undefined = initialComputedValidity;
@@ -776,9 +867,10 @@ test.describe('useValidityBehaviorState - animation', () => {
                     } // switch
                 } // if
                 
+                // Verify the expected values:
                 if (expectedColor !== undefined) {
                     const actualColor = await box.evaluate((el) => window.getComputedStyle(el).backgroundColor);
-                    expect(actualColor).toBe((expectedColor));
+                    expectColor(actualColor, expectedColor);
                 } // if
             } // for
         });
