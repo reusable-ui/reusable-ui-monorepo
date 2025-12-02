@@ -101,8 +101,10 @@ export const CollapseStateTest = (props: CollapseStateTestProps) => {
             >
                 Collapse State Test
                 
-                <button data-testid="expand-btn" onClick={(event) => dispatchExpandedChange(true, event)}>Expand</button>
-                <button data-testid="collapse-btn" onClick={(event) => dispatchExpandedChange(false, event)}>Collapse</button>
+                <div className='nav'>
+                    <button data-testid="expand-btn" onClick={(event) => dispatchExpandedChange(true, event)}>Expand</button>
+                    <button data-testid="collapse-btn" onClick={(event) => dispatchExpandedChange(false, event)}>Collapse</button>
+                </div>
             </div>
         </div>
     );

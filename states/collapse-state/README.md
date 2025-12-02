@@ -206,10 +206,13 @@ Generates CSS rules that conditionally apply the expand/collapse animations base
 These variables are only active during their respective transition phases.  
 Use `switchOf(...)` to ensure graceful fallback when inactive.
 
-| Variable              | Active When...   | Purpose                       |
-|-----------------------|------------------|-------------------------------|
-| `animationExpanding`  | `.is-expanding`  | Triggers expanding animation  |
-| `animationCollapsing` | `.is-collapsing` | Triggers collapsing animation |
+| Variable              | Active When...                      | Purpose                                                                         |
+|-----------------------|-------------------------------------|---------------------------------------------------------------------------------|
+| `animationExpanding`  | `.is-expanding`                     | Runs the expanding animation sequence                                           |
+| `animationCollapsing` | `.is-collapsing`                    | Runs the collapsing animation sequence                                          |
+| `isExpanded`          | `.is-expanded` or `.is-expanding`   | Conditional variable for the expanded state                                     |
+| `isCollapsed`         | `.is-collapsed` or `.is-collapsing` | Conditional variable for the collapsed state                                    |
+| `expandFactor`        | Always available (animatable)       | Normalized factor: 0 = collapsed, 1 = expanded, interpolates during transitions |
 
 #### 💡 Usage Example
 
@@ -224,14 +227,16 @@ import { usesCollapseState } from '@reusable-ui/collapse-state';
 import { style, vars, keyframes, fallback } from '@cssfn/core';
 
 export const collapsibleBoxStyle = () => {
+    // Feature: animation handling
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
     } = usesAnimationFeature();
     
+    // Feature: expand/collapse lifecycle
     const {
         collapseStateRule,
-        collapseStateVars: { isExpanded, isCollapsed },
+        collapseStateVars: { isExpanded, isCollapsed, expandFactor },
     } = usesCollapseState({
         animationExpanding  : 'var(--box-expanding)',
         animationCollapsing : 'var(--box-collapsing)',
@@ -247,46 +252,34 @@ export const collapsibleBoxStyle = () => {
         // Apply expanded/collapsed state rules:
         ...collapseStateRule(),
         
-        // Define expanding animation:
+        // Expanding animation: interpolate expandFactor from 0 → 1
         ...vars({
             '--box-expanding': [
-                ['0.3s', 'ease-out', 'both', 'height-expanding'],
+                ['0.3s', 'ease-out', 'both', 'transition-expanding'],
             ],
         }),
-        ...keyframes('height-expanding', {
-            from: {
-                blockSize: '0px',
-            },
-            to: {
-                blockSize: '100px',
-            },
+        ...keyframes('transition-expanding', {
+            from : { [expandFactor]: 0 },
+            to   : { [expandFactor]: 1 },
         }),
         
-        // Define collapsing animation:
+        // Collapsing animation: interpolate expandFactor from 1 → 0
         ...vars({
             '--box-collapsing': [
-                ['0.3s', 'ease-out', 'both', 'height-collapsing'],
+                ['0.3s', 'ease-out', 'both', 'transition-collapsing'],
             ],
         }),
-        ...keyframes('height-collapsing', {
-            from: {
-                blockSize: '100px',
-            },
-            to: {
-                blockSize: '0px',
-            },
+        ...keyframes('transition-collapsing', {
+            from : { [expandFactor]: 1 },
+            to   : { [expandFactor]: 0 },
         }),
         
-        // Define final block size based on lifecycle state:
-        boxSizing: 'border-box',
-        overflow: 'hidden',
-        ...fallback({
-            '--blockSize-expanded' : `${isExpanded} 100px`,
-        }),
-        ...fallback({
-            '--blockSize-collapsed' : `${isCollapsed} 0px`,
-        }),
-        blockSize: 'var(--blockSize-expanded, var(--blockSize-collapsed))',
+        // Example usage:
+        // - Height interpolates with `expandFactor`.
+        // - 0 → hidden, 1 → full height.
+        height: `calc-size(auto, size * ${expandFactor})`,
+        boxSizing: 'border-box', // Include paddings and borders in the height calculation.
+        overflow: 'hidden', // Crop overflowing content.
         
         // Apply composed animations:
         animation,

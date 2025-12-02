@@ -9,6 +9,7 @@ import {
     
     // Writes css in javascript:
     rule,
+    atRule,
     states,
     style,
     vars,
@@ -222,14 +223,16 @@ animationRegistry.registerAnimation(collapseStateVars.animationCollapsing);
  * import { style, vars, keyframes, fallback } from '@cssfn/core';
  * 
  * export const collapsibleBoxStyle = () => {
+ *     // Feature: animation handling
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
  *     } = usesAnimationFeature();
  *     
+ *     // Feature: expand/collapse lifecycle
  *     const {
  *         collapseStateRule,
- *         collapseStateVars: { isExpanded, isCollapsed },
+ *         collapseStateVars: { isExpanded, isCollapsed, expandFactor },
  *     } = usesCollapseState({
  *         animationExpanding  : 'var(--box-expanding)',
  *         animationCollapsing : 'var(--box-collapsing)',
@@ -245,46 +248,34 @@ animationRegistry.registerAnimation(collapseStateVars.animationCollapsing);
  *         // Apply expanded/collapsed state rules:
  *         ...collapseStateRule(),
  *         
- *         // Define expanding animation:
+ *         // Expanding animation: interpolate expandFactor from 0 → 1
  *         ...vars({
  *             '--box-expanding': [
- *                 ['0.3s', 'ease-out', 'both', 'height-expanding'],
+ *                 ['0.3s', 'ease-out', 'both', 'transition-expanding'],
  *             ],
  *         }),
- *         ...keyframes('height-expanding', {
- *             from: {
- *                 blockSize: '0px',
- *             },
- *             to: {
- *                 blockSize: '100px',
- *             },
+ *         ...keyframes('transition-expanding', {
+ *             from : { [expandFactor]: 0 },
+ *             to   : { [expandFactor]: 1 },
  *         }),
  *         
- *         // Define collapsing animation:
+ *         // Collapsing animation: interpolate expandFactor from 1 → 0
  *         ...vars({
  *             '--box-collapsing': [
- *                 ['0.3s', 'ease-out', 'both', 'height-collapsing'],
+ *                 ['0.3s', 'ease-out', 'both', 'transition-collapsing'],
  *             ],
  *         }),
- *         ...keyframes('height-collapsing', {
- *             from: {
- *                 blockSize: '100px',
- *             },
- *             to: {
- *                 blockSize: '0px',
- *             },
+ *         ...keyframes('transition-collapsing', {
+ *             from : { [expandFactor]: 1 },
+ *             to   : { [expandFactor]: 0 },
  *         }),
  *         
- *         // Define final block size based on lifecycle state:
- *         boxSizing: 'border-box',
- *         overflow: 'hidden',
- *         ...fallback({
- *             '--blockSize-expanded' : `${isExpanded} 100px`,
- *         }),
- *         ...fallback({
- *             '--blockSize-collapsed' : `${isCollapsed} 0px`,
- *         }),
- *         blockSize: 'var(--blockSize-expanded, var(--blockSize-collapsed))',
+ *         // Example usage:
+ *         // - Height interpolates with `expandFactor`.
+ *         // - 0 → hidden, 1 → full height.
+ *         height: `calc-size(auto, size * ${expandFactor})`,
+ *         boxSizing: 'border-box', // Include paddings and borders in the height calculation.
+ *         overflow: 'hidden', // Crop overflowing content.
  *         
  *         // Apply composed animations:
  *         animation,
@@ -335,6 +326,29 @@ export const usesCollapseState = (options?: CssCollapseStateOptions): CssCollaps
                         [collapseStateVars.isCollapsed] : '',      // Valid    when either collapsing or fully collapsed.
                     })
                 ),
+            }),
+            
+            
+            
+            // Register `expandFactor` as an animatable custom property:
+            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
+            ...atRule(`@property ${collapseStateVars.expandFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
+                // @ts-ignore
+                syntax       : '"<number>"',
+                inherits     : true,
+                initialValue : 0,
+            }),
+            
+            ...vars({
+                // Assign the settled value for `expandFactor`:
+                // - Sticks to `1` when the component is fully expanded.
+                [collapseStateVars.expandFactor]: [[
+                    // Only applies if in expanded state:
+                    collapseStateVars.isExpanded,
+                    
+                    // The fully expanded value:
+                    1,
+                ]],
             }),
         }),
         

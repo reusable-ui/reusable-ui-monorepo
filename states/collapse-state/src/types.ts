@@ -329,6 +329,36 @@ export interface CollapseStateVars {
      * ```
      */
     isCollapsed         : unknown
+    
+    /**
+     * A normalized, animatable factor representing the **expand/collapse lifecycle state**.
+     * 
+     * ### Expected values:
+     * - **0**     : settled collapsed
+     * - **1**     : settled expanded
+     * - **0 → 1** : expanding transition (collapsed → expanded)
+     * - **1 → 0** : collapsing transition (expanded → collapsed)
+     * 
+     * ### Usage:
+     * - Applicable to numeric-based properties such as `height`, `opacity`, `transform`, `rotation`, etc.
+     * - Implementators are responsible for assigning transitional values in their animations.
+     *   For example, an expanding animation might interpolate `expandFactor` from 0 → 1.
+     * - Values outside the 0–1 range are allowed, and implementators must handle them appropriately.  
+     *   Example of an animation with a spring/bump effect:  
+     *     `0%: 0`, `90%: 1.2`, `100%: 1`  
+     *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
+     * 
+     * ### Notes:
+     * - Already registered as an animatable custom property; no need to apply `@property` manually.
+     * - **Value rationale:**  
+     *   - The factor represents the active lifecycle state (expanded), not the baseline (collapsed).  
+     *   - This keeps naming predictable and teachable across the ecosystem:
+     *     - `expandFactor = 0`: collapsed (baseline lifecycle state)  
+     *     - `expandFactor = 1`: expanded (active lifecycle state)  
+     * - **Naming rationale:**  
+     *   - `expandFactor` instead of `collapseFactor`: factors consistently use the *base form* of the active state (`disable`, `readOnly`, `expand`, etc.).  
+     */
+    expandFactor        : unknown
 }
 
 
