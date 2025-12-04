@@ -347,6 +347,34 @@ export interface ActiveStateVars {
      * ```
      */
     isInactive            : unknown
+    
+    /**
+     * A normalized, animatable factor representing the **active lifecycle state**.
+     * 
+     * ### Expected values:
+     * - **0**     : settled inactive
+     * - **1**     : settled active
+     * - **0 → 1** : activating transition (inactive → active)
+     * - **1 → 0** : deactivating transition (active → inactive)
+     * 
+     * ### Usage:
+     * - Applicable to numeric-based properties such as `color`, `opacity`, `transform`, `scale`, etc.
+     * - Implementators are responsible for assigning transitional values in their animations.
+     *   For example, an activating animation might interpolate `activeFactor` from 0 → 1.
+     * - Values outside the 0–1 range are allowed, and implementators must handle them appropriately.  
+     *   Example of an animation with a spring/bump effect:  
+     *     `0%: 0`, `90%: 1.2`, `100%: 1`  
+     *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
+     * 
+     * ### Notes:
+     * - Already registered as an animatable custom property; no need to apply `@property` manually.
+     * - **Value rationale:**  
+     *   - The factor represents the active lifecycle state (active), not the baseline (inactive).  
+     *   - This keeps naming predictable and teachable across the ecosystem:
+     *     - `activeFactor = 0`: inactive (baseline lifecycle state)  
+     *     - `activeFactor = 1`: active (active lifecycle state)  
+     */
+    activeFactor          : unknown
 }
 
 

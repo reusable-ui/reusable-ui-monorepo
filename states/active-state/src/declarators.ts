@@ -9,6 +9,7 @@ import {
     
     // Writes css in javascript:
     rule,
+    atRule,
     states,
     style,
     vars,
@@ -218,22 +219,48 @@ animationRegistry.registerAnimation(activeStateVars.animationDeactivating);
  * // Active/inactive state:
  * import { usesActiveState } from '@reusable-ui/active-state';
  * 
+ * // Background colors:
+ * import { usesBackgroundFeature } from '@reusable-ui/background-feature';
+ * 
+ * // Outlined variant:
+ * import { usesOutlineVariant } from '@reusable-ui/outline-variant';
+ * 
+ * // Mild variant:
+ * import { usesMildVariant } from '@reusable-ui/mild-variant';
+ * 
  * // CSS-in-JS:
  * import { style, vars, keyframes, fallback } from '@cssfn/core';
  * 
  * export const activatableBoxStyle = () => {
+ *     // Feature: animation handling
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
  *     } = usesAnimationFeature();
  *     
+ *     // Feature: active/inactive lifecycle
  *     const {
  *         activeStateRule,
- *         activeStateVars: { isActive, isInactive },
+ *         activeStateVars: { isActive, isInactive, activeFactor },
  *     } = usesActiveState({
  *         animationActivating   : 'var(--box-activating)',
  *         animationDeactivating : 'var(--box-deactivating)',
  *     });
+ *     
+ *     // Feature: background colors
+ *     const {
+ *         backgroundFeatureVars : { backgRegularCond, backgColor },
+ *     } = usesBackgroundFeature();
+ *     
+ *     // Feature: outlined variant
+ *     const {
+ *         outlineVariantVars : { isOutlined },
+ *     } = usesOutlineVariant();
+ *     
+ *     // Feature: mild variant
+ *     const {
+ *         mildVariantVars    : { isMild },
+ *     } = usesMildVariant();
  *     
  *     return style({
  *         display: 'flex',
@@ -245,44 +272,72 @@ animationRegistry.registerAnimation(activeStateVars.animationDeactivating);
  *         // Apply active/inactive state rules:
  *         ...activeStateRule(),
  *         
- *         // Define activating animation:
+ *         // Activating animation: interpolate activeFactor from 0 → 1
  *         ...vars({
  *             '--box-activating': [
- *                 ['0.3s', 'ease-out', 'both', 'opacity-activating'],
+ *                 ['0.3s', 'ease-out', 'both', 'transition-activating'],
  *             ],
  *         }),
- *         ...keyframes('opacity-activating', {
- *             from: {
- *                 opacity: '60%',
- *             },
- *             to: {
- *                 opacity: '100%',
- *             },
+ *         ...keyframes('transition-activating', {
+ *             from : { [activeFactor]: 0 },
+ *             to   : { [activeFactor]: 1 },
  *         }),
  *         
- *         // Define deactivating animation:
+ *         // Deactivating animation: interpolate activeFactor from 1 → 0
  *         ...vars({
  *             '--box-deactivating': [
- *                 ['0.3s', 'ease-out', 'both', 'opacity-deactivating'],
+ *                 ['0.3s', 'ease-out', 'both', 'transition-deactivating'],
  *             ],
  *         }),
- *         ...keyframes('opacity-deactivating', {
- *             from: {
- *                 opacity: '100%',
- *             },
- *             to: {
- *                 opacity: '60%',
- *             },
+ *         ...keyframes('transition-deactivating', {
+ *             from : { [activeFactor]: 1 },
+ *             to   : { [activeFactor]: 0 },
  *         }),
  *         
- *         // Define final opacity based on lifecycle state:
- *         ...fallback({
- *             '--opacity-active' : `${isActive} 100%`,
- *         }),
- *         ...fallback({
- *             '--opacity-inactive' : `${isInactive} 60%`,
- *         }),
- *         opacity: 'var(--opacity-active, var(--opacity-inactive))',
+ *         // Example usage:
+ *         // - Background color interpolates with `activeFactor`.
+ *         // - 0 → base (variant-aware) color, 1 → active (regular) color.
+ *         backgroundColor:
+ * `color-mix(in oklch,
+ *     ${backgColor}
+ *     calc((1 - ${activeFactor}) * 100%),
+ *     
+ *     ${switchOf(backgRegularCond, backgColor)}
+ *     calc(${activeFactor} * 100%)
+ * )`,
+ *         
+ *         // Example usage:
+ *         // - filter (brightness, contrast, saturate) interpolates with `activeFactor`.
+ *         // - 0 → noop filter, 1 → active filter.
+ *         // - only applies when neither outlined nor mild (regular only).
+ *         //
+ *         // Example for active brightness value of 0.65:
+ *         // brightness(calc(1 - ((1 - 0.65) * factor)))
+ *         // → factor=0 → 1 (no change)
+ *         // → factor=1 → 0.65 (dimmed)
+ *         // → smooth linear interpolation in between
+ *         '--_activeBrightness' : 0.65,
+ *         '--_activeContrast'   : 1.5,
+ *         '--_activeSaturate'   : 1,
+ *         '--_noFilter': [[
+ *             // Only applies if either outlined or mild:
+ *             switchOf(
+ *                 isOutlined,
+ *                 // or
+ *                 isMild,
+ *             ),
+ *             
+ *             // No effect filter value:
+ *             'brightness(1) contrast(1) saturate(1)',
+ *         ]],
+ *         filter: switchOf(
+ *             'var(--_noFilter)',
+ * `
+ * brightness(calc(1 - ((1 - var(--_activeBrightness)) * ${activeFactor})))
+ * contrast(calc(1 - ((1 - var(--_activeContrast)) * ${activeFactor})))
+ * saturate(calc(1 - ((1 - var(--_activeSaturate)) * ${activeFactor})))
+ * `
+ *         ),
  *         
  *         // Apply composed animations:
  *         animation,
@@ -333,6 +388,29 @@ export const usesActiveState = (options?: CssActiveStateOptions): CssActiveState
                         [activeStateVars.isInactive] : '',      // Valid    when either deactivating or fully inactive.
                     })
                 ),
+            }),
+            
+            
+            
+            // Register `activeFactor` as an animatable custom property:
+            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
+            ...atRule(`@property ${activeStateVars.activeFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
+                // @ts-ignore
+                syntax       : '"<number>"',
+                inherits     : true,
+                initialValue : 0,
+            }),
+            
+            ...vars({
+                // Assign the settled value for `activeFactor`:
+                // - Sticks to `1` when the component is fully active.
+                [activeStateVars.activeFactor]: [[
+                    // Only applies if in active state:
+                    activeStateVars.isActive,
+                    
+                    // The fully active value:
+                    1,
+                ]],
             }),
         }),
         

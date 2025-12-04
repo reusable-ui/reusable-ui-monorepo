@@ -84,28 +84,28 @@ test.describe('useActiveBehaviorState - animation', () => {
                 {
                     title                   : 'Initially no running animation',
                     expectedRunningActivate : null,
-                    expectedOpacity         : 60,
+                    expectedOpacity         : 0.5,
                 },
                 {
                     title                   : 'Still no running animation',
                     
                     delay                   : 200,
                     expectedRunningActivate : null,
-                    expectedOpacity         : 60,
+                    expectedOpacity         : 0.5,
                 },
                 {
                     title                   : 'Still no running animation',
                     
                     delay                   : 1000,
                     expectedRunningActivate : null,
-                    expectedOpacity         : 60,
+                    expectedOpacity         : 0.5,
                 },
                 {
                     title                   : 'Still no running animation',
                     
                     delay                   : 1000,
                     expectedRunningActivate : null,
-                    expectedOpacity         : 60,
+                    expectedOpacity         : 0.5,
                 },
             ],
         },
@@ -116,7 +116,7 @@ test.describe('useActiveBehaviorState - animation', () => {
                 {
                     title                   : 'Initially inactive',
                     expectedRunningActivate : null,
-                    expectedOpacity         : 60,
+                    expectedOpacity         : 0.5,
                 },
                 {
                     title                   : 'Set active to true (immediate)',
@@ -136,7 +136,7 @@ test.describe('useActiveBehaviorState - animation', () => {
                     
                     delay                   : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedRunningActivate : null,
-                    expectedOpacity         : 100,
+                    expectedOpacity         : 1,
                 },
             ],
         },
@@ -147,7 +147,7 @@ test.describe('useActiveBehaviorState - animation', () => {
                 {
                     title                   : 'Initially active',
                     expectedRunningActivate : null,
-                    expectedOpacity         : 100,
+                    expectedOpacity         : 1,
                 },
                 {
                     title                   : 'Set active to false (immediate)',
@@ -167,7 +167,7 @@ test.describe('useActiveBehaviorState - animation', () => {
                     
                     delay                   : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedRunningActivate : null,
-                    expectedOpacity         : 60,
+                    expectedOpacity         : 0.5,
                 },
             ],
         },
@@ -178,7 +178,7 @@ test.describe('useActiveBehaviorState - animation', () => {
                 {
                     title                   : 'Initially inactive',
                     expectedRunningActivate : null,
-                    expectedOpacity         : 60,
+                    expectedOpacity         : 0.5,
                 },
                 {
                     title                   : 'Activate',
@@ -206,7 +206,7 @@ test.describe('useActiveBehaviorState - animation', () => {
                     
                     delay                   : 600, // Includes additional margin to guarantee completion.
                     expectedRunningActivate : null, // No running animation.
-                    expectedOpacity         : 100,
+                    expectedOpacity         : 1,
                 },
             ],
         },
@@ -217,7 +217,7 @@ test.describe('useActiveBehaviorState - animation', () => {
                 {
                     title                   : 'Initially active',
                     expectedRunningActivate : null,
-                    expectedOpacity         : 100,
+                    expectedOpacity         : 1,
                 },
                 {
                     title                   : 'Deactivate',
@@ -245,7 +245,7 @@ test.describe('useActiveBehaviorState - animation', () => {
                     
                     delay                   : 600, // Includes additional margin to guarantee completion.
                     expectedRunningActivate : null, // No running animation.
-                    expectedOpacity         : 60,
+                    expectedOpacity         : 0.5,
                 },
             ],
         },
@@ -256,7 +256,7 @@ test.describe('useActiveBehaviorState - animation', () => {
                 {
                     title                   : 'Initially inactive',
                     expectedRunningActivate : null,
-                    expectedOpacity         : 60,
+                    expectedOpacity         : 0.5,
                 },
                 {
                     title                   : 'Activate (first time)',
@@ -274,7 +274,7 @@ test.describe('useActiveBehaviorState - animation', () => {
                     title                   : 'Wait for final animation to finish',
                     delay                   : 800, // Includes additional margin to guarantee completion.
                     expectedRunningActivate : null,
-                    expectedOpacity         : 100,
+                    expectedOpacity         : 1,
                 },
             ],
         },
@@ -285,7 +285,7 @@ test.describe('useActiveBehaviorState - animation', () => {
                 {
                     title                   : 'Initially active',
                     expectedRunningActivate : null,
-                    expectedOpacity         : 100,
+                    expectedOpacity         : 1,
                 },
                 {
                     title                   : 'Deactivate (first time)',
@@ -303,7 +303,7 @@ test.describe('useActiveBehaviorState - animation', () => {
                     title                   : 'Wait for final animation to finish',
                     delay                   : 800, // Includes additional margin to guarantee completion.
                     expectedRunningActivate : null,
-                    expectedOpacity         : 60,
+                    expectedOpacity         : 0.5,
                 },
             ],
         },
@@ -407,8 +407,7 @@ test.describe('useActiveBehaviorState - animation', () => {
                 
                 if (expectedOpacity !== undefined) {
                     const actualOpacity = await box.evaluate((el) => window.getComputedStyle(el).opacity);
-                    const actualOpacityNum = Number.parseFloat(actualOpacity) * 100;
-                    expect(actualOpacityNum.toFixed(2)).toBe((expectedOpacity).toFixed(2));
+                    expect(actualOpacity).toBe(`${expectedOpacity}`);
                 } // if
             } // for
         });
