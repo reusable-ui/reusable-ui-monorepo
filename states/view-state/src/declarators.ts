@@ -9,6 +9,7 @@ import {
     
     // Writes css in javascript:
     rule,
+    atRule,
     states,
     style,
     vars,
@@ -155,17 +156,19 @@ export const ifViewTransitioning = (styles: CssStyleCollection): CssRule => rule
  * import { usesViewState } from '@reusable-ui/view-state';
  * 
  * // CSS-in-JS:
- * import { style, vars, keyframes } from '@cssfn/core';
+ * import { style, vars, keyframes, switchOf } from '@cssfn/core';
  * 
  * export const slideBoxStyle = () => {
+ *     // Feature: animation handling
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
  *     } = usesAnimationFeature();
  *     
+ *     // Feature: view-switching lifecycle
  *     const {
  *         viewStateRule,
- *         viewStateVars: { viewIndex, prevViewIndex, isViewAdvancing },
+ *         viewStateVars: { viewIndex, prevViewIndex, viewIndexFactor },
  *     } = usesViewState({
  *         animationViewAdvancing : 'var(--box-view-advancing)',
  *         animationViewReceding  : 'var(--box-view-receding)',
@@ -185,38 +188,51 @@ export const ifViewTransitioning = (styles: CssStyleCollection): CssRule => rule
  *         // To show the correct view, we translate this box based on the current viewIndex.
  *         // We `translate` using `marginInlineStart` for better RTL support, because `translate` is physical, not logical.
  *         
- *         // Define view-advancing animation:
+ *         // Advancing animation: interpolate viewIndexFactor from 0 → +1
  *         ...vars({
  *             '--box-view-advancing': [
- *                 ['0.3s', 'ease-out', 'both', 'translate-view-advancing'],
+ *                 ['0.3s', 'ease-out', 'both', 'transition-view-advancing'],
  *             ],
  *         }),
- *         ...keyframes('translate-view-advancing', {
- *             from: {
- *                 marginInlineStart: 0,
- *             },
- *             to: {
- *                 marginInlineStart: `calc((${viewIndex} - ${prevViewIndex}) * -100px)`,
- *             },
+ *         ...keyframes('transition-view-advancing', {
+ *             from : { [viewIndexFactor]:  0 },
+ *             to   : { [viewIndexFactor]:  1 },
  *         }),
  *         
- *         // Define view-receding animation:
+ *         // Receding animation: interpolate viewIndexFactor from 0 → -1
  *         ...vars({
  *             '--box-view-receding': [
- *                 ['0.3s', 'ease-out', 'both', 'translate-view-receding'],
+ *                 ['0.3s', 'ease-out', 'both', 'transition-view-receding'],
  *             ],
  *         }),
- *         ...keyframes('translate-view-receding', {
- *             from: {
- *                 marginInlineStart: `calc((${prevViewIndex} - ${viewIndex}) * -100px)`,
- *             },
- *             to: {
- *                 marginInlineStart: 0,
- *             },
+ *         ...keyframes('transition-view-receding', {
+ *             from : { [viewIndexFactor]:  0 },
+ *             to   : { [viewIndexFactor]: -1 },
  *         }),
  *         
- *         // Define final translation based on current viewIndex:
- *         marginInlineStart: `${isViewAdvancing} calc((${viewIndex} - ${prevViewIndex}) * -100px)`, // Translate to the current view.
+ *         // Shift index factor:
+ *         // - Represents the signed destination index for visual translation.
+ *         // - Advancing : shiftIndexFactor =  viewIndexFactor
+ *         // - Receding  : shiftIndexFactor = -viewIndexFactor - 1
+ *         // 
+ *         // Direction detection is done inline using:
+ *         //   clamp(0, (prevViewIndex - viewIndex) * 999999, 1)
+ *         //   → If prev > view → receding → clamp = 1
+ *         //   → If prev ≤ view → advancing → clamp = 0
+ *         // 
+ *         // The multiplier (999999) ensures fractional diffs (e.g. 0.00001) still trigger receding.
+ *         '--_shiftIndexFactor':
+ * `calc(
+ *     ${viewIndexFactor}
+ *     +
+ *     clamp(0, calc((${switchOf(prevViewIndex, viewIndex)} - ${viewIndex}) * 999999), 1)
+ *     * ((${viewIndexFactor} * -2) - 1)
+ * )`,
+ *         
+ *         // Example usage:
+ *         // - Translate based on the distance between origin and destination views, interpolated by `--_shiftIndexFactor`.
+ *         // - 0 → origin view, ±1 → destination view.
+ *         marginInlineStart: `calc(var(--_shiftIndexFactor) * (${viewIndex} - ${prevViewIndex}) * -100px)`,
  *         contain: 'layout', // Contain layout to prevent reflows.
  *         willChange: 'margin-inline-start', // Hint to browser for better performance.
  *         
@@ -284,6 +300,20 @@ export const usesViewState = (options?: CssViewStateOptions): CssViewState => {
                     })
                 ),
             }),
+            
+            
+            
+            // Register `viewIndexFactor` as an animatable custom property:
+            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
+            ...atRule(`@property ${viewStateVars.viewIndexFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
+                // @ts-ignore
+                syntax       : '"<number>"',
+                inherits     : true,
+                initialValue : 0,
+            }),
+            
+            // ❌ No settled assignment here.
+            // It resets to 0 after animation completes to reflect the collapsed single-view rendering.
         }),
         
         viewStateVars,

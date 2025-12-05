@@ -304,16 +304,17 @@ Generates CSS rules that conditionally apply the view-switching animations based
 These variables are only active during their respective transition phases.  
 Use `switchOf(...)` to ensure graceful fallback when inactive.
 
-| Variable                 | Active When...             | Purpose                                            |
-|--------------------------|----------------------------|----------------------------------------------------|
-| `animationViewAdvancing` | `.view-advancing`          | Triggers animation for advancing to next view      |
-| `animationViewReceding`  | `.view-receding`           | Triggers animation for receding to previous view   |
-| `isViewSettled`          | After transition completes | Indicates the view is fully settled                |
-| `isViewAdvancing`        | During transition          | Indicates a forward transition                     |
-| `isViewReceding`         | During transition          | Indicates a backward transition                    |
-| `isViewTransitioning`    | During transition          | Indicates any transition in progress               |
-| `viewIndex`              | Always                     | Displays the correct view for styling purposes     |
-| `prevViewIndex`          | Having changed `viewIndex` | Previous view index used for directional inference |
+| Variable                 | Active When...                        | Purpose                                                                 |
+|--------------------------|---------------------------------------|-------------------------------------------------------------------------|
+| `animationViewAdvancing` | `.view-advancing`                     | Runs the advancing animation sequence (0 → +1)                          |
+| `animationViewReceding`  | `.view-receding`                      | Runs the receding animation sequence (0 → -1)                           |
+| `isViewSettled`          | `.view-settled`                       | Conditional variable for the settled state                              |
+| `isViewAdvancing`        | `.view-advancing`                     | Conditional variable for the advancing transition                       |
+| `isViewReceding`         | `.view-receding`                      | Conditional variable for the receding transition                        |
+| `isViewTransitioning`    | `.view-advancing` or `.view-receding` | Conditional variable for the advancing/receding transition              |
+| `viewIndex`              | Always available                      | Current destination view index                                          |
+| `prevViewIndex`          | Having changed `viewIndex`            | Previous view index, used for directional inference                     |
+| `viewIndexFactor`        | Always available (animatable)         | Normalized factor: -1 ⇄ 0 ⇄ +1; resets to 0 after transition completes |
 
 #### 💡 Usage Example
 
@@ -325,17 +326,19 @@ import { usesAnimationFeature } from '@reusable-ui/animation-feature';
 import { usesViewState } from '@reusable-ui/view-state';
 
 // CSS-in-JS:
-import { style, vars, keyframes } from '@cssfn/core';
+import { style, vars, keyframes, switchOf } from '@cssfn/core';
 
 export const slideBoxStyle = () => {
+    // Feature: animation handling
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
     } = usesAnimationFeature();
     
+    // Feature: view-switching lifecycle
     const {
         viewStateRule,
-        viewStateVars: { viewIndex, prevViewIndex, isViewAdvancing },
+        viewStateVars: { viewIndex, prevViewIndex, viewIndexFactor },
     } = usesViewState({
         animationViewAdvancing : 'var(--box-view-advancing)',
         animationViewReceding  : 'var(--box-view-receding)',
@@ -355,38 +358,51 @@ export const slideBoxStyle = () => {
         // To show the correct view, we translate this box based on the current viewIndex.
         // We `translate` using `marginInlineStart` for better RTL support, because `translate` is physical, not logical.
         
-        // Define view-advancing animation:
+        // Advancing animation: interpolate viewIndexFactor from 0 → +1
         ...vars({
             '--box-view-advancing': [
-                ['0.3s', 'ease-out', 'both', 'translate-view-advancing'],
+                ['0.3s', 'ease-out', 'both', 'transition-view-advancing'],
             ],
         }),
-        ...keyframes('translate-view-advancing', {
-            from: {
-                marginInlineStart: 0,
-            },
-            to: {
-                marginInlineStart: `calc((${viewIndex} - ${prevViewIndex}) * -100px)`,
-            },
+        ...keyframes('transition-view-advancing', {
+            from : { [viewIndexFactor]:  0 },
+            to   : { [viewIndexFactor]:  1 },
         }),
         
-        // Define view-receding animation:
+        // Receding animation: interpolate viewIndexFactor from 0 → -1
         ...vars({
             '--box-view-receding': [
-                ['0.3s', 'ease-out', 'both', 'translate-view-receding'],
+                ['0.3s', 'ease-out', 'both', 'transition-view-receding'],
             ],
         }),
-        ...keyframes('translate-view-receding', {
-            from: {
-                marginInlineStart: `calc((${prevViewIndex} - ${viewIndex}) * -100px)`,
-            },
-            to: {
-                marginInlineStart: 0,
-            },
+        ...keyframes('transition-view-receding', {
+            from : { [viewIndexFactor]:  0 },
+            to   : { [viewIndexFactor]: -1 },
         }),
         
-        // Define final translation based on current viewIndex:
-        marginInlineStart: `${isViewAdvancing} calc((${viewIndex} - ${prevViewIndex}) * -100px)`, // Translate to the current view.
+        // Shift index factor:
+        // - Represents the signed destination index for visual translation.
+        // - Advancing : shiftIndexFactor =  viewIndexFactor
+        // - Receding  : shiftIndexFactor = -viewIndexFactor - 1
+        // 
+        // Direction detection is done inline using:
+        //   clamp(0, (prevViewIndex - viewIndex) * 999999, 1)
+        //   → If prev > view → receding → clamp = 1
+        //   → If prev ≤ view → advancing → clamp = 0
+        // 
+        // The multiplier (999999) ensures fractional diffs (e.g. 0.00001) still trigger receding.
+        '--_shiftIndexFactor':
+`calc(
+    ${viewIndexFactor}
+    +
+    clamp(0, calc((${switchOf(prevViewIndex, viewIndex)} - ${viewIndex}) * 999999), 1)
+    * ((${viewIndexFactor} * -2) - 1)
+)`,
+        
+        // Example usage:
+        // - Translate based on the distance between origin and destination views, interpolated by `--_shiftIndexFactor`.
+        // - 0 → origin view, ±1 → destination view.
+        marginInlineStart: `calc(var(--_shiftIndexFactor) * (${viewIndex} - ${prevViewIndex}) * -100px)`,
         contain: 'layout', // Contain layout to prevent reflows.
         willChange: 'margin-inline-start', // Hint to browser for better performance.
         

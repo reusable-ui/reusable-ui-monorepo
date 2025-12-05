@@ -507,6 +507,39 @@ export interface ViewStateVars {
      * ```
      */
     prevViewIndex          : unknown
+    
+    /**
+     * A normalized transient, animatable factor representing the **view-switching lifecycle state**.
+     * 
+     * ### Expected values:
+     * - **0**     : settled single view (origin or destination)
+     * - **+1**    : full arrival at the next view (advancing)
+     * - **-1**    : full arrival at the previous view (receding)
+     * - **0 → +1**: advancing transition (origin → next)
+     * - **0 → -1**: receding transition (origin → previous)
+     * 
+     * ### Lifecycle:
+     * - Starts at `0` (origin view).
+     * - Interpolates toward `+1` or `-1` during transition.
+     * - Once the animation completes and the destination view is settled,
+     *   the factor **resets back to `0`** because only a single view remains rendered.
+     * 
+     * ### Usage:
+     * - Applicable to numeric-based properties such as `margin`, `transform`, `rotation`, `opacity`, etc.
+     * - Implementators are responsible for assigning transitional values in their animations.
+     *   For example, an advancing animation might interpolate `viewIndexFactor` from 0 → +1.
+     * - Values outside the -1…+1 range are allowed, and implementators must handle them appropriately.  
+     *   Example of an animation with a spring/bump effect:  
+     *     `0%: 0`, `90%: 1.2`, `100%: 1`  
+     *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
+     * 
+     * ### Notes:
+     * - Already registered as an animatable custom property; no need to apply `@property` manually.
+     * - **Value rationale:**  
+     *   - The factor represents the *relative journey progress*, not the absolute index.  
+     *   - Resets to `0` after completion to reflect the collapsed single-view rendering.  
+     */
+    viewIndexFactor        : unknown
 }
 
 

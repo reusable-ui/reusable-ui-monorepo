@@ -1,4 +1,4 @@
-import { rule, keyframes, style, vars, scope } from '@cssfn/core'
+import { rule, keyframes, style, vars, scope, switchOf } from '@cssfn/core'
 import { usesViewState } from '../dist/index.js'
 import { usesAnimationFeature } from '@reusable-ui/animation-feature'
 
@@ -15,7 +15,7 @@ function containerStyle() {
 function viewsStyle() {
     const {
         viewStateRule,
-        viewStateVars: { viewIndex, prevViewIndex, isViewAdvancing },
+        viewStateVars: { viewIndex, prevViewIndex, viewIndexFactor },
     } = usesViewState({
         animationViewAdvancing : 'var(--test-view-advancing)',
         animationViewReceding  : 'var(--test-view-receding)',
@@ -41,36 +41,51 @@ function viewsStyle() {
         ...viewStateRule(),
         ...animationFeatureRule(),
         
+        // Advancing animation: interpolate viewIndexFactor from 0 → +1
         ...vars({
             '--test-view-advancing': [
                 ['1s', 'ease-out', 'both', 'boo-test-view-advancing'],
             ],
         }),
         ...keyframes('boo-test-view-advancing', {
-            from: {
-                marginInlineStart: 0,
-            },
-            to: {
-                marginInlineStart: `calc((${viewIndex} - ${prevViewIndex}) * -100px)`,
-            },
+            from : { [viewIndexFactor]:  0 },
+            to   : { [viewIndexFactor]:  1 },
         }),
         
+        // Receding animation: interpolate viewIndexFactor from 0 → -1
         ...vars({
             '--test-view-receding': [
                 ['1s', 'ease-out', 'both', 'boo-test-view-receding'],
             ],
         }),
         ...keyframes('boo-test-view-receding', {
-            from: {
-                marginInlineStart: `calc((${prevViewIndex} - ${viewIndex}) * -100px)`,
-            },
-            to: {
-                marginInlineStart: 0,
-            },
+            from : { [viewIndexFactor]:  0 },
+            to   : { [viewIndexFactor]: -1 },
         }),
         
-        // Define final translation based on current viewIndex:
-        marginInlineStart: `${isViewAdvancing} calc((${viewIndex} - ${prevViewIndex}) * -100px)`, // Translate to the current view.
+        // Shift index factor:
+        // - Represents the signed destination index for visual translation.
+        // - Advancing : shiftIndexFactor =  viewIndexFactor
+        // - Receding  : shiftIndexFactor = -viewIndexFactor - 1
+        // 
+        // Direction detection is done inline using:
+        //   clamp(0, (prevViewIndex - viewIndex) * 999999, 1)
+        //   → If prev > view → receding → clamp = 1
+        //   → If prev ≤ view → advancing → clamp = 0
+        // 
+        // The multiplier (999999) ensures fractional diffs (e.g. 0.00001) still trigger receding.
+        '--_shiftIndexFactor':
+`calc(
+    ${viewIndexFactor}
+    +
+    clamp(0, calc((${switchOf(prevViewIndex, viewIndex)} - ${viewIndex}) * 999999), 1)
+    * ((${viewIndexFactor} * -2) - 1)
+)`,
+        
+        // Example usage:
+        // - Translate based on the distance between origin and destination views, interpolated by `--_shiftIndexFactor`.
+        // - 0 → origin view, ±1 → destination view.
+        marginInlineStart: `calc(var(--_shiftIndexFactor) * (${viewIndex} - ${prevViewIndex}) * -100px)`,
         contain: 'layout', // Contain layout to prevent reflows.
         willChange: 'margin-inline-start', // Hint to browser for better performance.
         
