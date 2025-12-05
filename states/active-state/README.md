@@ -290,7 +290,7 @@ import { usesOutlineVariant } from '@reusable-ui/outline-variant';
 import { usesMildVariant } from '@reusable-ui/mild-variant';
 
 // CSS-in-JS:
-import { style, vars, keyframes, fallback } from '@cssfn/core';
+import { style, vars, keyframes, switchOf } from '@cssfn/core';
 
 export const activatableBoxStyle = () => {
     // Feature: animation handling
@@ -315,12 +315,12 @@ export const activatableBoxStyle = () => {
     
     // Feature: outlined variant
     const {
-        outlineVariantVars : { isOutlined },
+        outlineVariantVars : { isOutlined, notOutlined },
     } = usesOutlineVariant();
     
     // Feature: mild variant
     const {
-        mildVariantVars    : { isMild },
+        mildVariantVars    : { isMild, notMild },
     } = usesMildVariant();
     
     return style({
@@ -358,7 +358,15 @@ export const activatableBoxStyle = () => {
         // Example usage:
         // - Background color interpolates with `activeFactor`.
         // - 0 → base (variant-aware) color, 1 → active (regular) color.
-        backgroundColor:
+        // - only applies if outlined or mild (not regular).
+        backgroundColor: [[
+            // Only applies if outlined or mild (not regular):
+            switchOf(
+                isOutlined,
+                // or
+                isMild,
+            ),
+            
 `color-mix(in oklch,
     ${backgColor}
     calc((1 - ${activeFactor}) * 100%),
@@ -366,11 +374,12 @@ export const activatableBoxStyle = () => {
     ${switchOf(backgRegularCond, backgColor)}
     calc(${activeFactor} * 100%)
 )`,
+        ]],
         
         // Example usage:
         // - filter (brightness, contrast, saturate) interpolates with `activeFactor`.
         // - 0 → noop filter, 1 → active filter.
-        // - only applies when neither outlined nor mild (regular only).
+        // - only applies if neither outlined nor mild (regular only).
         //
         // Example for active brightness value of 0.65:
         // brightness(calc(1 - ((1 - 0.65) * factor)))
@@ -380,25 +389,16 @@ export const activatableBoxStyle = () => {
         '--_activeBrightness' : 0.65,
         '--_activeContrast'   : 1.5,
         '--_activeSaturate'   : 1,
-        '--_noFilter': [[
-            // Only applies if either outlined or mild:
-            switchOf(
-                isOutlined,
-                // or
-                isMild,
-            ),
+        filter: [[
+            // Only applies if neither outlined nor mild (regular only):
+            notOutlined,
+            // and
+            notMild,
             
-            // No effect filter value:
-            'brightness(1) contrast(1) saturate(1)',
+            `brightness(calc(1 - ((1 - var(--_activeBrightness)) * ${activeFactor})))`,
+            `contrast(calc(1 - ((1 - var(--_activeContrast)) * ${activeFactor})))`,
+            `saturate(calc(1 - ((1 - var(--_activeSaturate)) * ${activeFactor})))`,
         ]],
-        filter: switchOf(
-            'var(--_noFilter)',
-`
-brightness(calc(1 - ((1 - var(--_activeBrightness)) * ${activeFactor})))
-contrast(calc(1 - ((1 - var(--_activeContrast)) * ${activeFactor})))
-saturate(calc(1 - ((1 - var(--_activeSaturate)) * ${activeFactor})))
-`
-        ),
         
         // Apply composed animations:
         animation,
