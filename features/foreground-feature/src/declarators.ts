@@ -83,11 +83,11 @@ export const usesForegroundFeature = (options?: CssForegroundFeatureOptions): Cs
                     // 🌸 Mild Style:
                     
                     /**
-                     * Applies mild (reading-friendly) foreground color when mild mode is active.
-                     * Poisoned when mild mode is inactive.
+                     * Applies mild (reading-friendly) foreground color when mild variant is active.
+                     * Poisoned when mild variant is inactive.
                      */
                     [foregroundFeatureVars.foregMildCond]: [[
-                        mildVariantVars.isMild,                 // If mild mode is active.
+                        mildVariantVars.isMild,                 // If mild variant is active.
                         switchOf(
                             themeVariantVars.foregMildOverride, // ⚠️ Theme override (if active).
                             themeVariantVars.foregMild,         // A themed foreground color for mild variant.
@@ -99,11 +99,11 @@ export const usesForegroundFeature = (options?: CssForegroundFeatureOptions): Cs
                     // 🧊 Outlined Style:
                     
                     /**
-                     * Applies outlined foreground color when outlined mode is active.
-                     * Poisoned when outlined mode is inactive.
+                     * Applies outlined foreground color when outlined variant is active.
+                     * Poisoned when outlined variant is inactive.
                      */
                     [foregroundFeatureVars.foregOutlinedCond]: [[
-                        outlineVariantVars.isOutlined,              // If outlined mode is active.
+                        outlineVariantVars.isOutlined,              // If outlined variant is active.
                         switchOf(
                             themeVariantVars.foregOutlinedOverride, // ⚠️ Theme override (if active).
                             themeVariantVars.foregOutlined,         // A themed foreground color for outlined variant.
@@ -116,20 +116,27 @@ export const usesForegroundFeature = (options?: CssForegroundFeatureOptions): Cs
                 // Final resolved foreground variables (always valid):
                 ...vars({
                     /**
-                     * Resolves the final foreground color based on variant priority:
-                     * 1. Outlined theme override
-                     * 2. Outlined theme color
-                     * 3. Mild theme override
-                     * 4. Mild theme color
-                     * 5. Regular theme override
-                     * 6. Regular theme color
-                     * 7. Config fallback
+                     * Resolves a variant-aware foreground color based on variant priority:
+                     * 1. Outlined variant
+                     * 2. Mild variant
+                     * 3. Regular variant
+                     * 4. Config fallback
+                     */
+                    [foregroundFeatureVars.foregVariantColor]: switchOf(
+                        foregroundFeatureVars.foregOutlinedCond, // 🧊 Outlined variant (if active).
+                        foregroundFeatureVars.foregMildCond,     // 🌸 Mild variant (if active).
+                        foregroundFeatureVars.foregRegularCond,  // 🎨 Regular variant (if themed).
+                        defaultForegroundColor,                  // 🛠️ Config fallback.
+                    ),
+                    
+                    /**
+                     * Resolves a final foreground color:
+                     * 1. User override color
+                     * 2. Variant-aware color
                      */
                     [foregroundFeatureVars.foregColor]: switchOf(
-                        foregroundFeatureVars.foregOutlinedCond, // 🧊 Outlined style (if active)
-                        foregroundFeatureVars.foregMildCond,     // 🌸 Mild style (if active)
-                        foregroundFeatureVars.foregRegularCond,  // 🎨 Regular style (if themed)
-                        defaultForegroundColor,                  // 🛠️ Config fallback
+                        foregroundFeatureVars.foregColorOverride, // ⚠️ User override (if active).
+                        foregroundFeatureVars.foregVariantColor,  // 🧩 Variant-aware fallback.
                     ),
                 }),
             });

@@ -23,7 +23,7 @@ import {
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
 export interface ForegroundFeatureVars {
-    //#region Conditional variables (may be poisoned) 
+    //#region 🎨 Conditional variables (may be poisoned) 
     /**
      * References the regular foreground color from the theme.
      * Poisoned when theme styling is not implemented.
@@ -31,30 +31,59 @@ export interface ForegroundFeatureVars {
     foregRegularCond    : unknown
     
     /**
-     * References a mild (reading-friendly) foreground color when mild mode is active.
-     * Poisoned when mild mode is inactive.
+     * References a mild (reading-friendly) foreground color when mild variant is active.
+     * Poisoned when mild variant is inactive.
      */
     foregMildCond       : unknown
     
     /**
-     * References an outlined foreground color when outlined mode is active.
-     * Poisoned when outlined mode is inactive.
+     * References an outlined foreground color when outlined variant is active.
+     * Poisoned when outlined variant is inactive.
      */
     foregOutlinedCond   : unknown
-    //#endregion Conditional variables (may be poisoned) 
+    //#endregion 🎨 Conditional variables (may be poisoned) 
     
     
     
-    //#region Final resolved variables (always valid) 
+    //#region 🧩 Intermediate resolved variables (always valid) 
     /**
-     * References the resolved foreground color for the current mode.
-     * Always valid via internal fallback logic.
+     * References a variant-aware foreground color from the active variant.
+     * Always valid:
+     * - Outlined → outlined foreground
+     * - Mild     → mild foreground
+     * - Regular  → regular foreground
+     * - Fallback → defaultForegroundColor
+     * 
+     * Can be further customized using CSS color functions.
+     * Example: `oklch(from ${foregroundFeatureVars.foregVariantColor} l c h / calc(alpha * 0.5))`
+     */
+    foregVariantColor   : unknown
+    //#endregion 🧩 Intermediate resolved variables (always valid) 
+    
+    
+    
+    //#region ⚠️ State overrides (e.g. active, selected) 
+    /**
+     * User-defined override for the foreground color.
+     * Valid if an override exists, otherwise invalid (unset).
+     */
+    foregColorOverride  : unknown
+    //#endregion ⚠️ State overrides (e.g. active, selected) 
+    
+    
+    
+    //#region ✅ Final resolved variables (always valid) 
+    /**
+     * References a final foreground color consumed by components.
+     * Always valid:
+     * - Uses `foregColorOverride` if defined.
+     * - Otherwise falls back to `foregVariantColor`.
      * 
      * Can be further customized using CSS color functions.
      * Example: `oklch(from ${foregroundFeatureVars.foregColor} l c h / calc(alpha * 0.5))`
      */
     foregColor          : unknown
-    //#endregion Final resolved variables (always valid) 
+    //#endregion ✅ Final resolved variables (always valid) 
 }
 
 
@@ -107,8 +136,10 @@ export interface CssForegroundFeature {
      * with support for CSS color function adjustments.
      * 
      * Includes:
-     * - `foreg**Cond`s : Mode-specific foreground colors (conditionally valid or poisoned).
-     * - `foregColor`   : Final resolved foreground color for the current mode.
+     * - `foreg**Cond`s       : Variant-specific foreground colors (conditionally valid or poisoned).
+     * - `foregVariantColor`  : Variant-aware foreground color from the active variant.
+     * - `foregColorOverride` : User-defined override for the foreground color.
+     * - `foregColor`         : Final foreground color consumed by components.
      * 
      * These variables can be consumed directly or composed into advanced use cases
      * using CSS color functions, variable fallbacks, or custom logic.
