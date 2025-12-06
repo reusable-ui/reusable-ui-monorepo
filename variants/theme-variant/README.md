@@ -170,8 +170,8 @@ export const componentStyle = () => {
         ...themeVariantRule(),
         
         // Use semantic theme variables in styling:
-        backgroundColor     : themeVariantVars.backg,
-        color               : themeVariantVars.foreg,
+        backgroundColor     : themeVariantVars.backgRegular,
+        color               : themeVariantVars.foregRegular,
         
         // Apply outlined variant styling:
         ...ifOutlined({
@@ -187,18 +187,18 @@ export const componentStyle = () => {
 - For each registered theme (e.g. `primary`, `danger`, `success`, etc.), the hook generates scoped rules like:
     ```css
     &.t-primary {
-        --t-backg  : var(--col-primaryBase);
-        --t-foreg  : var(--col-primaryFlip);
-        --t-border : var(--col-primaryBold);
+        --t-backgRegular  : var(--col-primaryBase);
+        --t-foregRegular  : var(--col-primaryFlip);
+        --t-borderRegular : var(--col-primaryBold);
         ...
     }
     ```
-- These rules ensure that semantic theme variables (`--t-backg`, `--t-foreg`, etc.) resolve to the correct theme-specific values depending on the active theme variant.
+- These rules ensure that semantic theme variables (`--t-backgRegular`, `--t-foregRegular`, etc.) resolve to the correct theme-specific values depending on the active theme variant.
 - You can then use those theme variables in your component styles:
     ```ts
     style({
-        backgroundColor : themeVariantVars.backg, // gets: `var(--t-backg)`
-        color           : themeVariantVars.foreg, // gets: `var(--t-foreg)`
+        backgroundColor : themeVariantVars.backgRegular, // gets: `var(--t-backgRegular)`
+        color           : themeVariantVars.foregRegular, // gets: `var(--t-foregRegular)`
     });
     ```
 
@@ -233,12 +233,12 @@ export const componentStyle = () => {
         
         // Use semantic theme variables with fallback chaining:
         backgroundColor     : switchOf(
-            themeVariantVars.backgOverride,
-            themeVariantVars.backg,
+            themeVariantVars.backgRegularOverride,
+            themeVariantVars.backgRegular,
         ),
         color               : switchOf(
-            themeVariantVars.foregOverride,
-            themeVariantVars.foreg,
+            themeVariantVars.foregRegularOverride,
+            themeVariantVars.foregRegular,
         ),
         
         // Apply outlined variant styling:
@@ -267,18 +267,18 @@ export const componentStyle = () => {
 
 - `usesThemeOverride('danger')` injects high-priority theme variables like:
     ```css
-    --t-backgOverride  : var(--col-dangerBase);
-    --t-foregOverride  : var(--col-dangerFlip);
-    --t-borderOverride : var(--col-dangerBold);
+    --t-backgRegularOverride  : var(--col-dangerBase);
+    --t-foregRegularOverride  : var(--col-dangerFlip);
+    --t-borderRegularOverride : var(--col-dangerBold);
     ...
     ```
 - These override the default theme resolution using `switchOf(...)`, which selects the first defined value in the chain:
     ```ts
     style({
         backgroundColor : switchOf(
-            themeVariantVars.backgOverride,
-            themeVariantVars.backg,
-        ), // Will be rendered to: `var(--t-backgOverride, var(--t-backg))`
+            themeVariantVars.backgRegularOverride,
+            themeVariantVars.backgRegular,
+        ), // Will be rendered to: `var(--t-backgRegularOverride, var(--t-backgRegular))`
     });
     ```
 

@@ -113,16 +113,16 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                     
                     
                     
-                    // 🧊 Outlined Style:
+                    // 🎨 Regular Style:
                     
                     /**
-                     * Applies transparent background color when outlined mode is active.
-                     * Poisoned when outlined mode is inactive.
+                     * Applies regular background color from the theme.
+                     * Poisoned when theme styling is not implemented.
                      */
-                    [backgroundFeatureVars.backgOutlinedCond]: [[
-                        outlineVariantVars.isOutlined, // If outlined mode is active.
-                        'transparent',                 // A transparent background color for outlined variant.
-                    ]],
+                    [backgroundFeatureVars.backgRegularCond]: switchOf(
+                        themeVariantVars.backgRegularOverride, // ⚠️ Theme override (if active).
+                        themeVariantVars.backgRegular,         // A themed background color for regular variant.
+                    ),
                     
                     
                     
@@ -142,16 +142,16 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                     
                     
                     
-                    // 🎨 Regular Style:
+                    // 🧊 Outlined Style:
                     
                     /**
-                     * Applies regular background color from the theme.
-                     * Poisoned when theme styling is not implemented.
+                     * Applies transparent background color when outlined mode is active.
+                     * Poisoned when outlined mode is inactive.
                      */
-                    [backgroundFeatureVars.backgRegularCond]: switchOf(
-                        themeVariantVars.backgOverride, // ⚠️ Theme override (if active).
-                        themeVariantVars.backg,         // A themed background color for regular variant.
-                    ),
+                    [backgroundFeatureVars.backgOutlinedCond]: [[
+                        outlineVariantVars.isOutlined, // If outlined mode is active.
+                        'transparent',                 // A transparent background color for outlined variant.
+                    ]],
                     
                     
                     

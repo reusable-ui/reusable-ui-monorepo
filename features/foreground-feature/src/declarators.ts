@@ -67,19 +67,16 @@ export const usesForegroundFeature = (options?: CssForegroundFeatureOptions): Cs
             return style({
                 // Conditional foreground variables (may be poisoned):
                 ...vars({
-                    // 🧊 Outlined Style:
+                    // 🎨 Regular Style:
                     
                     /**
-                     * Applies outlined foreground color when outlined mode is active.
-                     * Poisoned when outlined mode is inactive.
+                     * Applies regular foreground color from the theme.
+                     * Poisoned when theme styling is not implemented.
                      */
-                    [foregroundFeatureVars.foregOutlinedCond]: [[
-                        outlineVariantVars.isOutlined,              // If outlined mode is active.
-                        switchOf(
-                            themeVariantVars.foregOutlinedOverride, // ⚠️ Theme override (if active).
-                            themeVariantVars.foregOutlined,         // A themed foreground color for outlined variant.
-                        ),
-                    ]],
+                    [foregroundFeatureVars.foregRegularCond]: switchOf(
+                        themeVariantVars.foregRegularOverride, // ⚠️ Theme override (if active).
+                        themeVariantVars.foregRegular,         // A themed foreground color for regular variant.
+                    ),
                     
                     
                     
@@ -99,16 +96,19 @@ export const usesForegroundFeature = (options?: CssForegroundFeatureOptions): Cs
                     
                     
                     
-                    // 🎨 Regular Style:
+                    // 🧊 Outlined Style:
                     
                     /**
-                     * Applies regular foreground color from the theme.
-                     * Poisoned when theme styling is not implemented.
+                     * Applies outlined foreground color when outlined mode is active.
+                     * Poisoned when outlined mode is inactive.
                      */
-                    [foregroundFeatureVars.foregRegularCond]: switchOf(
-                        themeVariantVars.foregOverride, // ⚠️ Theme override (if active).
-                        themeVariantVars.foreg,         // A themed foreground color for regular variant.
-                    ),
+                    [foregroundFeatureVars.foregOutlinedCond]: [[
+                        outlineVariantVars.isOutlined,              // If outlined mode is active.
+                        switchOf(
+                            themeVariantVars.foregOutlinedOverride, // ⚠️ Theme override (if active).
+                            themeVariantVars.foregOutlined,         // A themed foreground color for outlined variant.
+                        ),
+                    ]],
                 }),
                 
                 

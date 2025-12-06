@@ -110,11 +110,11 @@ export const usesThemeVariant = (): CssThemeVariant => {
                         // Within the scope, define theme-specific variables:
                         vars({
                             // 🎨 Regular Style:
-                            [themeVariantVars.backg         ] : colorVars[`${themeName}Base`], // base strong color
-                            [themeVariantVars.foreg         ] : colorVars[`${themeName}Flip`], // max-contrast color
-                            [themeVariantVars.decor         ] : colorVars[`${themeName}Flip`], // max-contrast color
-                            [themeVariantVars.border        ] : colorVars[`${themeName}Bold`], // strong separator
-                            [themeVariantVars.ring          ] : colorVars[`${themeName}Soft`], // attention color
+                            [themeVariantVars.backgRegular  ] : colorVars[`${themeName}Base`], // base strong color
+                            [themeVariantVars.foregRegular  ] : colorVars[`${themeName}Flip`], // max-contrast color
+                            [themeVariantVars.decorRegular  ] : colorVars[`${themeName}Flip`], // max-contrast color
+                            [themeVariantVars.borderRegular ] : colorVars[`${themeName}Bold`], // strong separator
+                            [themeVariantVars.ringRegular   ] : colorVars[`${themeName}Soft`], // attention color
                             
                             
                             
@@ -155,11 +155,11 @@ export const usesThemeOverride = <TTheme extends string = BasicTheme>(theme: TTh
     return style(
         vars({
             // 🎨 Regular Style:
-            [themeVariantVars.backgOverride         ] : theme ? colorVars[`${theme}Base`] : 'unset', // base strong color
-            [themeVariantVars.foregOverride         ] : theme ? colorVars[`${theme}Flip`] : 'unset', // max-contrast color
-            [themeVariantVars.decorOverride         ] : theme ? colorVars[`${theme}Flip`] : 'unset', // max-contrast color
-            [themeVariantVars.borderOverride        ] : theme ? colorVars[`${theme}Bold`] : 'unset', // strong separator
-            [themeVariantVars.ringOverride          ] : theme ? colorVars[`${theme}Soft`] : 'unset', // attention color
+            [themeVariantVars.backgRegularOverride  ] : theme ? colorVars[`${theme}Base`] : 'unset', // base strong color
+            [themeVariantVars.foregRegularOverride  ] : theme ? colorVars[`${theme}Flip`] : 'unset', // max-contrast color
+            [themeVariantVars.decorRegularOverride  ] : theme ? colorVars[`${theme}Flip`] : 'unset', // max-contrast color
+            [themeVariantVars.borderRegularOverride ] : theme ? colorVars[`${theme}Bold`] : 'unset', // strong separator
+            [themeVariantVars.ringRegularOverride   ] : theme ? colorVars[`${theme}Soft`] : 'unset', // attention color
             
             
             

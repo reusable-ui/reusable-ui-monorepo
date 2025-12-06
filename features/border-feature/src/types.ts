@@ -25,10 +25,10 @@ import {
 export interface BorderFeatureVars {
     //#region Conditional variables (may be poisoned) 
     /**
-     * References an outlined border color when outlined mode is active.
-     * Poisoned when outlined mode is inactive.
+     * References the regular border color from the theme.
+     * Poisoned when theme styling is not implemented.
      */
-    borderOutlinedCond     : unknown
+    borderRegularCond      : unknown
     
     /**
      * References a mild (reading-friendly) border color when mild mode is active.
@@ -37,10 +37,10 @@ export interface BorderFeatureVars {
     borderMildCond         : unknown
     
     /**
-     * References the regular border color from the theme.
-     * Poisoned when theme styling is not implemented.
+     * References an outlined border color when outlined mode is active.
+     * Poisoned when outlined mode is inactive.
      */
-    borderRegularCond      : unknown
+    borderOutlinedCond     : unknown
     
     /**
      * References a zero-length value (`0px`) when bare mode is active.

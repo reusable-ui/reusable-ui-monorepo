@@ -25,10 +25,10 @@ import {
 export interface DecorationFeatureVars {
     //#region Conditional variables (may be poisoned) 
     /**
-     * References an outlined decoration color when outlined mode is active.
-     * Poisoned when outlined mode is inactive.
+     * References the regular decoration color from the theme.
+     * Poisoned when theme styling is not implemented.
      */
-    decorOutlinedCond   : unknown
+    decorRegularCond    : unknown
     
     /**
      * References a mild (reading-friendly) decoration color when mild mode is active.
@@ -37,10 +37,10 @@ export interface DecorationFeatureVars {
     decorMildCond       : unknown
     
     /**
-     * References the regular decoration color from the theme.
-     * Poisoned when theme styling is not implemented.
+     * References an outlined decoration color when outlined mode is active.
+     * Poisoned when outlined mode is inactive.
      */
-    decorRegularCond    : unknown
+    decorOutlinedCond   : unknown
     //#endregion Conditional variables (may be poisoned) 
     
     

@@ -37,10 +37,10 @@ export interface BackgroundFeatureVars {
     backgCond           : unknown
     
     /**
-     * References a transparent background color when outlined mode is active.
-     * Poisoned when outlined mode is inactive.
+     * References the regular background color from the theme.
+     * Poisoned when theme styling is not implemented.
      */
-    backgOutlinedCond   : unknown
+    backgRegularCond    : unknown
     
     /**
      * References a mild (reading-friendly) background color when mild mode is active.
@@ -49,10 +49,10 @@ export interface BackgroundFeatureVars {
     backgMildCond       : unknown
     
     /**
-     * References the regular background color from the theme.
-     * Poisoned when theme styling is not implemented.
+     * References a transparent background color when outlined mode is active.
+     * Poisoned when outlined mode is inactive.
      */
-    backgRegularCond    : unknown
+    backgOutlinedCond   : unknown
     
     /**
      * References an empty background (`none`) when bare mode is active.

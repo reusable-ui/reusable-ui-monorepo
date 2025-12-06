@@ -25,10 +25,10 @@ import {
 export interface ForegroundFeatureVars {
     //#region Conditional variables (may be poisoned) 
     /**
-     * References an outlined foreground color when outlined mode is active.
-     * Poisoned when outlined mode is inactive.
+     * References the regular foreground color from the theme.
+     * Poisoned when theme styling is not implemented.
      */
-    foregOutlinedCond   : unknown
+    foregRegularCond    : unknown
     
     /**
      * References a mild (reading-friendly) foreground color when mild mode is active.
@@ -37,10 +37,10 @@ export interface ForegroundFeatureVars {
     foregMildCond       : unknown
     
     /**
-     * References the regular foreground color from the theme.
-     * Poisoned when theme styling is not implemented.
+     * References an outlined foreground color when outlined mode is active.
+     * Poisoned when outlined mode is inactive.
      */
-    foregRegularCond    : unknown
+    foregOutlinedCond   : unknown
     //#endregion Conditional variables (may be poisoned) 
     
     

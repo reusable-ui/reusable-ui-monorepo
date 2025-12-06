@@ -185,27 +185,27 @@ export interface ThemeVariantVars {
     /**
      * Themed background color for regular style.
      */
-    backg                  : unknown
+    backgRegular           : unknown
     
     /**
      * Themed foreground color for regular style.
      */
-    foreg                  : unknown
+    foregRegular           : unknown
     
     /**
      * Themed decoration color for regular style.
      */
-    decor                  : unknown
+    decorRegular           : unknown
     
     /**
      * Themed border color for regular style.
      */
-    border                 : unknown
+    borderRegular          : unknown
     
     /**
      * Themed ring color for regular style.
      */
-    ring                   : unknown
+    ringRegular            : unknown
     //#endregion 🎨 Regular Style
     
     
@@ -257,29 +257,29 @@ export interface ThemeVariantVars {
     // 🎨 Regular Style:
     
     /**
-     * Background color override.
+     * Background color override for regular style.
      */
-    backgOverride          : unknown
+    backgRegularOverride   : unknown
     
     /**
-     * Foreground color override.
+     * Foreground color override for regular style.
      */
-    foregOverride          : unknown
+    foregRegularOverride   : unknown
     
     /**
-     * Decoration color override.
+     * Decoration color override for regular style.
      */
-    decorOverride          : unknown
+    decorRegularOverride   : unknown
     
     /**
-     * Border color override.
+     * Border color override for regular style.
      */
-    borderOverride         : unknown
+    borderRegularOverride  : unknown
     
     /**
-     * Ring color override.
+     * Ring color override for regular style.
      */
-    ringOverride           : unknown
+    ringRegularOverride    : unknown
     
     
     

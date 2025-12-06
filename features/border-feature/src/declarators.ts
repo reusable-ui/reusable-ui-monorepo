@@ -98,19 +98,16 @@ export const usesBorderFeature = (options?: CssBorderFeatureOptions): CssBorderF
             return style({
                 // Conditional border variables (may be poisoned):
                 ...vars({
-                    // 🧊 Outlined Style:
+                    // 🎨 Regular Style:
                     
                     /**
-                     * Applies outlined border color when outlined mode is active.
-                     * Poisoned when outlined mode is inactive.
+                     * Applies regular border color from the theme.
+                     * Poisoned when theme styling is not implemented.
                      */
-                    [borderFeatureVars.borderOutlinedCond]: [[
-                        outlineVariantVars.isOutlined,               // If outlined mode is active.
-                        switchOf(
-                            themeVariantVars.borderOutlinedOverride, // ⚠️ Theme override (if active).
-                            themeVariantVars.borderOutlined,         // A themed border color for outlined variant.
-                        ),
-                    ]],
+                    [borderFeatureVars.borderRegularCond]: switchOf(
+                        themeVariantVars.borderRegularOverride, // ⚠️ Theme override (if active).
+                        themeVariantVars.borderRegular,         // A themed border color for regular variant.
+                    ),
                     
                     
                     
@@ -130,16 +127,19 @@ export const usesBorderFeature = (options?: CssBorderFeatureOptions): CssBorderF
                     
                     
                     
-                    // 🎨 Regular Style:
+                    // 🧊 Outlined Style:
                     
                     /**
-                     * Applies regular border color from the theme.
-                     * Poisoned when theme styling is not implemented.
+                     * Applies outlined border color when outlined mode is active.
+                     * Poisoned when outlined mode is inactive.
                      */
-                    [borderFeatureVars.borderRegularCond]: switchOf(
-                        themeVariantVars.borderOverride, // ⚠️ Theme override (if active).
-                        themeVariantVars.border,         // A themed border color for regular variant.
-                    ),
+                    [borderFeatureVars.borderOutlinedCond]: [[
+                        outlineVariantVars.isOutlined,               // If outlined mode is active.
+                        switchOf(
+                            themeVariantVars.borderOutlinedOverride, // ⚠️ Theme override (if active).
+                            themeVariantVars.borderOutlined,         // A themed border color for outlined variant.
+                        ),
+                    ]],
                     
                     
                     

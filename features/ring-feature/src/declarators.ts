@@ -65,8 +65,8 @@ export const usesRingFeature = (options?: CssRingFeatureOptions): CssRingFeature
                      * Poisoned when theme styling is not implemented.
                      */
                     [ringFeatureVars.ringRegularCond]: switchOf(
-                        themeVariantVars.ringOverride, // ⚠️ Theme override (if active).
-                        themeVariantVars.ring,         // A themed ring color for regular variant.
+                        themeVariantVars.ringRegularOverride, // ⚠️ Theme override (if active).
+                        themeVariantVars.ringRegular,         // A themed ring color for regular variant.
                     ),
                 }),
                 

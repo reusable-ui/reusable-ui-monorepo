@@ -66,19 +66,16 @@ export const usesDecorationFeature = (options?: CssDecorationFeatureOptions): Cs
             return style({
                 // Conditional decoration variables (may be poisoned):
                 ...vars({
-                    // 🧊 Outlined Style:
+                    // 🎨 Regular Style:
                     
                     /**
-                     * Applies outlined decoration color when outlined mode is active.
-                     * Poisoned when outlined mode is inactive.
+                     * Applies regular decoration color from the theme.
+                     * Poisoned when theme styling is not implemented.
                      */
-                    [decorationFeatureVars.decorOutlinedCond]: [[
-                        outlineVariantVars.isOutlined,              // If outlined mode is active.
-                        switchOf(
-                            themeVariantVars.decorOutlinedOverride, // ⚠️ Theme override (if active).
-                            themeVariantVars.decorOutlined,         // A themed decoration color for outlined variant.
-                        ),
-                    ]],
+                    [decorationFeatureVars.decorRegularCond]: switchOf(
+                        themeVariantVars.decorRegularOverride, // ⚠️ Theme override (if active).
+                        themeVariantVars.decorRegular,         // A themed decoration color for regular variant.
+                    ),
                     
                     
                     
@@ -98,16 +95,19 @@ export const usesDecorationFeature = (options?: CssDecorationFeatureOptions): Cs
                     
                     
                     
-                    // 🎨 Regular Style:
+                    // 🧊 Outlined Style:
                     
                     /**
-                     * Applies regular decoration color from the theme.
-                     * Poisoned when theme styling is not implemented.
+                     * Applies outlined decoration color when outlined mode is active.
+                     * Poisoned when outlined mode is inactive.
                      */
-                    [decorationFeatureVars.decorRegularCond]: switchOf(
-                        themeVariantVars.decorOverride, // ⚠️ Theme override (if active).
-                        themeVariantVars.decor,         // A themed decoration color for regular variant.
-                    ),
+                    [decorationFeatureVars.decorOutlinedCond]: [[
+                        outlineVariantVars.isOutlined,              // If outlined mode is active.
+                        switchOf(
+                            themeVariantVars.decorOutlinedOverride, // ⚠️ Theme override (if active).
+                            themeVariantVars.decorOutlined,         // A themed decoration color for outlined variant.
+                        ),
+                    ]],
                 }),
                 
                 
