@@ -23,7 +23,7 @@ import {
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
 export interface DecorationFeatureVars {
-    //#region Conditional variables (may be poisoned) 
+    //#region 🎨 Conditional variables (may be poisoned) 
     /**
      * References the regular decoration color from the theme.
      * Poisoned when theme styling is not implemented.
@@ -31,30 +31,59 @@ export interface DecorationFeatureVars {
     decorRegularCond    : unknown
     
     /**
-     * References a mild (reading-friendly) decoration color when mild mode is active.
-     * Poisoned when mild mode is inactive.
+     * References a mild (reading-friendly) decoration color when mild variant is active.
+     * Poisoned when mild variant is inactive.
      */
     decorMildCond       : unknown
     
     /**
-     * References an outlined decoration color when outlined mode is active.
-     * Poisoned when outlined mode is inactive.
+     * References an outlined decoration color when outlined variant is active.
+     * Poisoned when outlined variant is inactive.
      */
     decorOutlinedCond   : unknown
-    //#endregion Conditional variables (may be poisoned) 
+    //#endregion 🎨 Conditional variables (may be poisoned) 
     
     
     
-    //#region Final resolved variables (always valid) 
+    //#region 🧩 Intermediate resolved variables (always valid) 
     /**
-     * References the resolved decoration color for the current mode.
-     * Always valid via internal fallback logic.
+     * References a variant-aware decoration color from the active variant.
+     * Always valid:
+     * - Outlined → outlined decoration
+     * - Mild     → mild decoration
+     * - Regular  → regular decoration
+     * - Fallback → defaultDecorationColor
+     * 
+     * Can be further customized using CSS color functions.
+     * Example: `oklch(from ${decorationFeatureVars.decorVariantColor} l c h / calc(alpha * 0.5))`
+     */
+    decorVariantColor   : unknown
+    //#endregion 🧩 Intermediate resolved variables (always valid) 
+    
+    
+    
+    //#region ⚠️ State overrides (e.g. active, selected) 
+    /**
+     * User-defined override for the decoration color.
+     * Valid if an override exists, otherwise invalid (unset).
+     */
+    decorColorOverride  : unknown
+    //#endregion ⚠️ State overrides (e.g. active, selected) 
+    
+    
+    
+    //#region ✅ Final resolved variables (always valid) 
+    /**
+     * References a final decoration color consumed by components.
+     * Always valid:
+     * - Uses `decorColorOverride` if defined.
+     * - Otherwise falls back to `decorVariantColor`.
      * 
      * Can be further customized using CSS color functions.
      * Example: `oklch(from ${decorationFeatureVars.decorColor} l c h / calc(alpha * 0.5))`
      */
     decorColor          : unknown
-    //#endregion Final resolved variables (always valid) 
+    //#endregion ✅ Final resolved variables (always valid) 
 }
 
 
@@ -92,8 +121,10 @@ export interface CssDecorationFeature {
      * with support for CSS color function adjustments.
      * 
      * Includes:
-     * - `decor**Cond`s : Mode-specific decoration colors (conditionally valid or poisoned).
-     * - `decorColor`   : Final resolved decoration color for the current mode.
+     * - `decor**Cond`s       : Variant-specific decoration colors (conditionally valid or poisoned).
+     * - `decorVariantColor`  : Variant-aware decoration color from the active variant.
+     * - `decorColorOverride` : User-defined override for the decoration color.
+     * - `decorColor`         : Final decoration color consumed by components.
      * 
      * These variables can be consumed directly or composed into advanced use cases
      * using CSS color functions, variable fallbacks, or custom logic.

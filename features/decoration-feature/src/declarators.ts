@@ -82,11 +82,11 @@ export const usesDecorationFeature = (options?: CssDecorationFeatureOptions): Cs
                     // 🌸 Mild Style:
                     
                     /**
-                     * Applies mild (reading-friendly) decoration color when mild mode is active.
-                     * Poisoned when mild mode is inactive.
+                     * Applies mild (reading-friendly) decoration color when mild variant is active.
+                     * Poisoned when mild variant is inactive.
                      */
                     [decorationFeatureVars.decorMildCond]: [[
-                        mildVariantVars.isMild,                 // If mild mode is active.
+                        mildVariantVars.isMild,                 // If mild variant is active.
                         switchOf(
                             themeVariantVars.decorMildOverride, // ⚠️ Theme override (if active).
                             themeVariantVars.decorMild,         // A themed decoration color for mild variant.
@@ -98,11 +98,11 @@ export const usesDecorationFeature = (options?: CssDecorationFeatureOptions): Cs
                     // 🧊 Outlined Style:
                     
                     /**
-                     * Applies outlined decoration color when outlined mode is active.
-                     * Poisoned when outlined mode is inactive.
+                     * Applies outlined decoration color when outlined variant is active.
+                     * Poisoned when outlined variant is inactive.
                      */
                     [decorationFeatureVars.decorOutlinedCond]: [[
-                        outlineVariantVars.isOutlined,              // If outlined mode is active.
+                        outlineVariantVars.isOutlined,              // If outlined variant is active.
                         switchOf(
                             themeVariantVars.decorOutlinedOverride, // ⚠️ Theme override (if active).
                             themeVariantVars.decorOutlined,         // A themed decoration color for outlined variant.
@@ -115,20 +115,27 @@ export const usesDecorationFeature = (options?: CssDecorationFeatureOptions): Cs
                 // Final resolved decoration variables (always valid):
                 ...vars({
                     /**
-                     * Resolves the final decoration color based on variant priority:
-                     * 1. Outlined theme override
-                     * 2. Outlined theme color
-                     * 3. Mild theme override
-                     * 4. Mild theme color
-                     * 5. Regular theme override
-                     * 6. Regular theme color
-                     * 7. Config fallback
+                     * Resolves a variant-aware decoration color based on variant priority:
+                     * 1. Outlined variant
+                     * 2. Mild variant
+                     * 3. Regular variant
+                     * 4. Config fallback
+                     */
+                    [decorationFeatureVars.decorVariantColor]: switchOf(
+                        decorationFeatureVars.decorOutlinedCond, // 🧊 Outlined variant (if active).
+                        decorationFeatureVars.decorMildCond,     // 🌸 Mild variant (if active).
+                        decorationFeatureVars.decorRegularCond,  // 🎨 Regular variant (if themed).
+                        defaultDecorationColor,                  // 🛠️ Config fallback.
+                    ),
+                    
+                    /**
+                     * Resolves a final decoration color:
+                     * 1. User override color
+                     * 2. Variant-aware color
                      */
                     [decorationFeatureVars.decorColor]: switchOf(
-                        decorationFeatureVars.decorOutlinedCond, // 🧊 Outlined style (if active)
-                        decorationFeatureVars.decorMildCond,     // 🌸 Mild style (if active)
-                        decorationFeatureVars.decorRegularCond,  // 🎨 Regular style (if themed)
-                        defaultDecorationColor,                  // 🛠️ Config fallback
+                        decorationFeatureVars.decorColorOverride, // ⚠️ User override (if active).
+                        decorationFeatureVars.decorVariantColor,  // 🧩 Variant-aware fallback.
                     ),
                 }),
             });
