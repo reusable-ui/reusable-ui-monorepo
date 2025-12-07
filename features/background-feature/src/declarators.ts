@@ -84,21 +84,25 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                     // 🚨 Emphasized Style:
                     
                     /**
-                     * Applies gradient background image when emphasized mode is active.
-                     * Poisoned when emphasized mode is inactive.
+                     * Applies gradient background image when emphasized variant is active.
+                     * Poisoned when emphasized variant is inactive.
                      */
                     [backgroundFeatureVars.backgEmphasizedCond]: (
                         Array.isArray(emphasizedBackgroundImage)
                         
                         ? [[
-                            emphasisVariantVars.isEmphasized, // If emphasized mode is active.
+                            emphasisVariantVars.isEmphasized, // If emphasized variant is active.
                             ...emphasizedBackgroundImage[0],
                         ]] as CssCustomValue
                         
-                        : [[
-                            emphasisVariantVars.isEmphasized, // If emphasized mode is active.
-                            emphasizedBackgroundImage,
-                        ]]
+                        : (
+                            emphasizedBackgroundImage
+                            ? [[
+                                emphasisVariantVars.isEmphasized, // If emphasized variant is active.
+                                emphasizedBackgroundImage,
+                            ]]
+                            : null
+                        )
                     ),
                     
                     
@@ -129,11 +133,11 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                     // 🌸 Mild Style:
                     
                     /**
-                     * Applies mild (reading-friendly) background color when mild mode is active.
-                     * Poisoned when mild mode is inactive.
+                     * Applies mild (reading-friendly) background color when mild variant is active.
+                     * Poisoned when mild variant is inactive.
                      */
                     [backgroundFeatureVars.backgMildCond]: [[
-                        mildVariantVars.isMild,                 // If mild mode is active.
+                        mildVariantVars.isMild,                 // If mild variant is active.
                         switchOf(
                             themeVariantVars.backgMildOverride, // ⚠️ Theme override (if active).
                             themeVariantVars.backgMild,         // A themed background color for mild variant.
@@ -145,11 +149,11 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                     // 🧊 Outlined Style:
                     
                     /**
-                     * Applies transparent background color when outlined mode is active.
-                     * Poisoned when outlined mode is inactive.
+                     * Applies transparent background color when outlined variant is active.
+                     * Poisoned when outlined variant is inactive.
                      */
                     [backgroundFeatureVars.backgOutlinedCond]: [[
-                        outlineVariantVars.isOutlined, // If outlined mode is active.
+                        outlineVariantVars.isOutlined, // If outlined variant is active.
                         'transparent',                 // A transparent background color for outlined variant.
                     ]],
                     
@@ -158,8 +162,8 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                     // 🧱 Bare Layout:
                     
                     /**
-                     * Applies an empty background when bare mode is active.
-                     * Poisoned when bare mode is inactive.
+                     * Applies an empty background when bare variant is active.
+                     * Poisoned when bare variant is inactive.
                      * 
                      * Used to suppress background styling.
                      */
@@ -174,19 +178,27 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                 // Final resolved background variables (always valid):
                 ...vars({
                     /**
-                     * Resolves the final background color based on variant priority:
+                     * Resolves a variant-aware background color based on variant priority:
                      * 1. Outlined transparent
-                     * 2. Mild theme override
-                     * 3. Mild theme color
-                     * 4. Regular theme override
-                     * 5. Regular theme color
-                     * 6. Config fallback
+                     * 2. Mild variant
+                     * 3. Regular variant
+                     * 4. Config fallback
+                     */
+                    [backgroundFeatureVars.backgVariantColor]: switchOf(
+                        backgroundFeatureVars.backgOutlinedCond, // 🧊 Outlined transparent (if active).
+                        backgroundFeatureVars.backgMildCond,     // 🌸 Mild variant (if active).
+                        backgroundFeatureVars.backgRegularCond,  // 🎨 Regular variant (if themed).
+                        defaultBackgroundColor,                  // 🛠️ Config fallback.
+                    ),
+                    
+                    /**
+                     * Resolves a final background color:
+                     * 1. User override color
+                     * 2. Variant-aware color
                      */
                     [backgroundFeatureVars.backgColor]: switchOf(
-                        backgroundFeatureVars.backgOutlinedCond, // 🧊 Outlined style (if active)
-                        backgroundFeatureVars.backgMildCond,     // 🌸 Mild style (if active)
-                        backgroundFeatureVars.backgRegularCond,  // 🎨 Regular style (if themed)
-                        defaultBackgroundColor,                  // 🛠️ Config fallback
+                        backgroundFeatureVars.backgColorOverride, // ⚠️ User override (if active).
+                        backgroundFeatureVars.backgVariantColor,  // 🧩 Variant-aware fallback.
                     ),
                     
                     /**
@@ -214,7 +226,7 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
                     
                     /**
                      * Final background resolution:
-                     * - If bare mode is active, suppress all layers
+                     * - If bare variant is active, suppress all layers
                      * - Otherwise, apply layered background
                      */
                     [backgroundFeatureVars.backg]: switchOf(

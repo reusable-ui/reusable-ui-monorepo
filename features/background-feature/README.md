@@ -31,28 +31,31 @@ Resolves the appropriate background color based on the currently active variants
 
 These variables are ready-to-use for coloring your component’s background.
 
-| Variable      | Description                                                              |
-|---------------|--------------------------------------------------------------------------|
-| `backgColor`  | Final resolved background color based on active variants                 |
-| `backgLayers` | Composite background layers: gradient → custom → color                   |
-| `backg`       | Final background value, resolved from layers or suppressed via bare mode |
+| Variable      | Description                                                                 |
+|---------------|-----------------------------------------------------------------------------|
+| `backgColor`  | Final resolved background color based on active variants                    |
+| `backgLayers` | Composite background layers: gradient → custom → color                      |
+| `backg`       | Final background value, resolved from layers or suppressed via bare variant |
 
 You can further adjust `backgColor` using CSS color functions:
 Example: `oklch(from ${backgColor} l c h / calc(alpha * 0.25))`
 
 #### Supporting Variables (Advanced Use)
 
-These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding mode is inactive.  
+These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding variant is inactive.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable              | Active When...           | Purpose                        |
-|-----------------------|--------------------------|--------------------------------|
-| `backgEmphasizedCond` | Emphasize mode active    | Gradient background layer      |
-| `backgCond`           | Custom background layers | User-defined background layers |
-| `backgOutlinedCond`   | Outline mode active      | Transparent background layer   |
-| `backgMildCond`       | Mild mode active         | Reading-friendly background    |
-| `backgRegularCond`    | Theme mode active        | Themed background color        |
-| `backgBareCond`       | Bare mode active         | Suppresses background styling  |
+| Variable              | Active When...           | Purpose                                                                        |
+|-----------------------|--------------------------|--------------------------------------------------------------------------------|
+| `backgEmphasizedCond` | Emphasize variant active | Gradient background layer                                                      |
+| `backgCond`           | Custom background layers | User-defined background layers                                                 |
+| `backgRegularCond`    | Theme variant active     | Themed background color for the regular variant                                |
+| `backgMildCond`       | Mild variant active      | Reading-friendly background color for mild variant                             |
+| `backgOutlinedCond`   | Outline variant active   | Transparent background color for outlined variant                              |
+| `backgBareCond`       | Bare variant active      | Suppresses background styling                                                  |
+| `backgVariantColor`   | Always available         | Variant-aware resolved background color (outlined → mild → regular → fallback) |
+| `backgColorOverride`  | When user override set   | User-defined override background color, highest priority if present            |
+| `backgColor`          | Always available         | Final background color (user-override → variant-aware → fallback)              |
 
 #### 💡 Usage Example
 
@@ -129,7 +132,7 @@ The composite background (`backgLayers`) stacks layers:
 2. Middle : custom background layers (if provided)
 3. Bottom : resolved background color
 
-The final background (`backg`) resolves from these layers, or is suppressed if bare mode is active.
+The final background (`backg`) resolves from these layers, or is suppressed if bare variant is active.
 
 ---
 

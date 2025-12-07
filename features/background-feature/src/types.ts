@@ -23,10 +23,10 @@ import {
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
 export interface BackgroundFeatureVars {
-    //#region Conditional variables (may be poisoned) 
+    //#region 🎨 Conditional variables (may be poisoned) 
     /**
-     * References the gradient background image when emphasized mode is active.
-     * Poisoned when emphasized mode is inactive.
+     * References the gradient background image when emphasized variant is active.
+     * Poisoned when emphasized variant is inactive.
      */
     backgEmphasizedCond : unknown
     
@@ -43,32 +43,61 @@ export interface BackgroundFeatureVars {
     backgRegularCond    : unknown
     
     /**
-     * References a mild (reading-friendly) background color when mild mode is active.
-     * Poisoned when mild mode is inactive.
+     * References a mild (reading-friendly) background color when mild variant is active.
+     * Poisoned when mild variant is inactive.
      */
     backgMildCond       : unknown
     
     /**
-     * References a transparent background color when outlined mode is active.
-     * Poisoned when outlined mode is inactive.
+     * References a transparent background color when outlined variant is active.
+     * Poisoned when outlined variant is inactive.
      */
     backgOutlinedCond   : unknown
     
     /**
-     * References an empty background (`none`) when bare mode is active.
-     * Poisoned when bare mode is inactive.
+     * References an empty background (`none`) when bare variant is active.
+     * Poisoned when bare variant is inactive.
      * 
      * Used to conditionally suppress background styling.
      */
     backgBareCond       : unknown
-    //#endregion Conditional variables (may be poisoned) 
+    //#endregion 🎨 Conditional variables (may be poisoned) 
     
     
     
-    //#region Final resolved variables (always valid) 
+    //#region 🧩 Intermediate resolved variables (always valid) 
     /**
-     * References the resolved background color for the current mode.
-     * Always valid via internal fallback logic.
+     * References a variant-aware background color from the active variant.
+     * Always valid:
+     * - Outlined → transparent background
+     * - Mild     → mild background
+     * - Regular  → regular background
+     * - Fallback → defaultBackgroundColor
+     * 
+     * Can be further customized using CSS color functions.
+     * Example: `oklch(from ${backgroundFeatureVars.backgVariantColor} l c h / calc(alpha * 0.5))`
+     */
+    backgVariantColor   : unknown
+    //#endregion 🧩 Intermediate resolved variables (always valid) 
+    
+    
+    
+    //#region ⚠️ State overrides (e.g. active, selected) 
+    /**
+     * User-defined override for the background color.
+     * Valid if an override exists, otherwise invalid (unset).
+     */
+    backgColorOverride  : unknown
+    //#endregion ⚠️ State overrides (e.g. active, selected) 
+    
+    
+    
+    //#region ✅ Final resolved variables (always valid) 
+    /**
+     * References a final background color consumed by components.
+     * Always valid:
+     * - Uses `backgColorOverride` if defined.
+     * - Otherwise falls back to `backgVariantColor`.
      * 
      * Can be further customized using CSS color functions.
      * Example: `oklch(from ${backgroundFeatureVars.backgColor} l c h / calc(alpha * 0.5))`
@@ -76,7 +105,7 @@ export interface BackgroundFeatureVars {
     backgColor          : unknown
     
     /**
-     * References the composite background layers for the current mode.
+     * References the composite background layers for the current variant.
      * Includes:
      * - Emphasized gradient (top layer)
      * - Custom background layers (middle layer)
@@ -87,14 +116,14 @@ export interface BackgroundFeatureVars {
     backgLayers         : unknown
     
     /**
-     * References the final resolved background for the current mode.
-     * Resolves to `backgLayers` when bare mode is inactive,
-     * or to an empty background (`none`) when bare mode is active.
+     * References the final resolved background for the current variant.
+     * Resolves to `backgLayers` when bare variant is inactive,
+     * or to an empty background (`none`) when bare variant is active.
      * 
      * Always valid via internal fallback logic.
      */
     backg               : unknown
-    //#endregion Final resolved variables (always valid) 
+    //#endregion ✅ Final resolved variables (always valid) 
 }
 
 
@@ -121,7 +150,7 @@ export interface CssBackgroundFeatureOptions
     backgroundColor     ?: CssKnownProps['backgroundColor']
     
     /**
-     * The gradient background image to apply when emphasized mode is active.
+     * The gradient background image to apply when emphasized variant is active.
      */
     backgroundEmphasize ?:
         |  Extract<CssKnownProps['background'], string>
@@ -153,11 +182,13 @@ export interface CssBackgroundFeature {
      * with support for layered background composition and CSS color function adjustments.
      * 
      * Includes:
-     * - `backg**Cond`s  : Mode-specific background colors (conditionally valid or poisoned).
-     * - `backgBareCond` : Suppresses background styling when bare mode is active.
-     * - `backgColor`    : Final resolved background color for the current mode.
-     * - `backgLayers`   : Composite background layers (gradient, custom, and color) for the current mode.
-     * - `backg`         : Final background value, resolved from layers or suppressed via bare mode.
+     * - `backg**Cond`s       : Variant-specific background colors (conditionally valid or poisoned).
+     * - `backgBareCond`      : Suppresses background styling when bare variant is active.
+     * - `backgVariantColor`  : Variant-aware background color from the active variant.
+     * - `backgColorOverride` : User-defined override for the background color.
+     * - `backgColor`         : Final background color consumed by components.
+     * - `backgLayers`   : Composite background layers (gradient, custom, and color) for the current variant.
+     * - `backg`         : Final background value, resolved from layers or suppressed via bare variant.
      * 
      * These variables can be consumed directly or composed into advanced use cases
      * using CSS color functions, variable fallbacks, or custom logic.
