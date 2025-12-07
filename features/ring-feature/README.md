@@ -38,12 +38,15 @@ Example: `oklch(from ${ringColor} l c h / calc(alpha * 0.25))`
 
 #### Supporting Variables (Advanced Use)
 
-These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding mode is inactive.  
+These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding variant is inactive.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable          | Active When...            | Purpose           |
-|-------------------|---------------------------|-------------------|
-| `ringRegularCond` | Theme variant implemented | Themed ring color |
+| Variable            | Active When...         | Purpose                                                       |
+|---------------------|------------------------|---------------------------------------------------------------|
+| `ringRegularCond`   | Theme variant active   | Themed ring color for the regular variant                     |
+| `ringVariantColor`  | Always available       | Variant-aware resolved ring color (regular → fallback)        |
+| `ringColorOverride` | When user override set | User-defined override ring color, highest priority if present |
+| `ringColor`         | Always available       | Final ring color (user-override → variant-aware → fallback)   |
 
 #### 💡 Usage Example
 

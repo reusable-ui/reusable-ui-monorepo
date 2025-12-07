@@ -23,26 +23,53 @@ import {
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
 export interface RingFeatureVars {
-    //#region Conditional variables (may be poisoned) 
+    //#region 🎨 Conditional variables (may be poisoned) 
     /**
      * References the regular ring color from the theme.
      * Poisoned when theme styling is not implemented.
      */
     ringRegularCond    : unknown
-    //#endregion Conditional variables (may be poisoned) 
+    //#endregion 🎨 Conditional variables (may be poisoned) 
     
     
     
-    //#region Final resolved variables (always valid) 
+    //#region 🧩 Intermediate resolved variables (always valid) 
     /**
-     * References the resolved ring color for the current mode.
-     * Always valid via internal fallback logic.
+     * References a variant-aware ring color from the active variant.
+     * Always valid:
+     * - Regular  → regular ring
+     * - Fallback → defaultRingColor
+     * 
+     * Can be further customized using CSS color functions.
+     * Example: `oklch(from ${ringFeatureVars.ringVariantColor} l c h / calc(alpha * 0.5))`
+     */
+    ringVariantColor   : unknown
+    //#endregion 🧩 Intermediate resolved variables (always valid) 
+    
+    
+    
+    //#region ⚠️ State overrides (e.g. active, selected) 
+    /**
+     * User-defined override for the ring color.
+     * Valid if an override exists, otherwise invalid (unset).
+     */
+    ringColorOverride  : unknown
+    //#endregion ⚠️ State overrides (e.g. active, selected) 
+    
+    
+    
+    //#region ✅ Final resolved variables (always valid) 
+    /**
+     * References a final ring color consumed by components.
+     * Always valid:
+     * - Uses `ringColorOverride` if defined.
+     * - Otherwise falls back to `ringVariantColor`.
      * 
      * Can be further customized using CSS color functions.
      * Example: `oklch(from ${ringFeatureVars.ringColor} l c h / calc(alpha * 0.5))`
      */
     ringColor          : unknown
-    //#endregion Final resolved variables (always valid) 
+    //#endregion ✅ Final resolved variables (always valid) 
 }
 
 
@@ -80,8 +107,10 @@ export interface CssRingFeature {
      * with support for CSS color function adjustments.
      * 
      * Includes:
-     * - `ringRegularCond` : Theme-specific ring color (conditionally valid or poisoned).
-     * - `ringColor`       : Final resolved ring color for the current mode.
+     * - `ringRegularCond`   : Theme-specific ring color (conditionally valid or poisoned).
+     * - `ringVariantColor`  : Variant-aware ring color from the active variant.
+     * - `ringColorOverride` : User-defined override for the ring color.
+     * - `ringColor`         : Final ring color consumed by components.
      * 
      * These variables can be consumed directly or composed into advanced use cases
      * using CSS color functions, variable fallbacks, or custom logic.

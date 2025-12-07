@@ -75,14 +75,23 @@ export const usesRingFeature = (options?: CssRingFeatureOptions): CssRingFeature
                 // Final resolved ring variables (always valid):
                 ...vars({
                     /**
-                     * Resolves the final ring color based on variant priority:
-                     * 1. Regular theme override
-                     * 2. Regular theme color
-                     * 3. Config fallback
+                     * Resolves a variant-aware ring color based on variant priority:
+                     * 1. Regular variant
+                     * 2. Config fallback
+                     */
+                    [ringFeatureVars.ringVariantColor]: switchOf(
+                        ringFeatureVars.ringRegularCond, // 🎨 Regular variant (if themed).
+                        defaultRingColor,                // 🛠️ Config fallback.
+                    ),
+                    
+                    /**
+                     * Resolves a final ring color:
+                     * 1. User override color
+                     * 2. Variant-aware color
                      */
                     [ringFeatureVars.ringColor]: switchOf(
-                        ringFeatureVars.ringRegularCond, // 🎨 Regular style (if themed)
-                        defaultRingColor,                // 🛠️ Config fallback
+                        ringFeatureVars.ringColorOverride, // ⚠️ User override (if active).
+                        ringFeatureVars.ringVariantColor,  // 🧩 Variant-aware fallback.
                     ),
                 }),
             });
