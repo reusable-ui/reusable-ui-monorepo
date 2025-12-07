@@ -114,11 +114,11 @@ export const usesBorderFeature = (options?: CssBorderFeatureOptions): CssBorderF
                     // 🌸 Mild Style:
                     
                     /**
-                     * Applies mild (reading-friendly) border color when mild mode is active.
-                     * Poisoned when mild mode is inactive.
+                     * Applies mild (reading-friendly) border color when mild variant is active.
+                     * Poisoned when mild variant is inactive.
                      */
                     [borderFeatureVars.borderMildCond]: [[
-                        mildVariantVars.isMild,                  // If mild mode is active.
+                        mildVariantVars.isMild,                  // If mild variant is active.
                         switchOf(
                             themeVariantVars.borderMildOverride, // ⚠️ Theme override (if active).
                             themeVariantVars.borderMild,         // A themed border color for mild variant.
@@ -130,11 +130,11 @@ export const usesBorderFeature = (options?: CssBorderFeatureOptions): CssBorderF
                     // 🧊 Outlined Style:
                     
                     /**
-                     * Applies outlined border color when outlined mode is active.
-                     * Poisoned when outlined mode is inactive.
+                     * Applies outlined border color when outlined variant is active.
+                     * Poisoned when outlined variant is inactive.
                      */
                     [borderFeatureVars.borderOutlinedCond]: [[
-                        outlineVariantVars.isOutlined,               // If outlined mode is active.
+                        outlineVariantVars.isOutlined,               // If outlined variant is active.
                         switchOf(
                             themeVariantVars.borderOutlinedOverride, // ⚠️ Theme override (if active).
                             themeVariantVars.borderOutlined,         // A themed border color for outlined variant.
@@ -146,8 +146,8 @@ export const usesBorderFeature = (options?: CssBorderFeatureOptions): CssBorderF
                     // 🧱 Bare Layout:
                     
                     /**
-                     * Applies zero-length border geometry when bare mode is active.
-                     * Poisoned when bare mode is inactive.
+                     * Applies zero-length border geometry when bare variant is active.
+                     * Poisoned when bare variant is inactive.
                      * 
                      * Used to suppress directional border widths and radii.
                      */
@@ -176,33 +176,40 @@ export const usesBorderFeature = (options?: CssBorderFeatureOptions): CssBorderF
                     
                     
                     /**
-                     * Resolves the final border color based on variant priority:
-                     * 1. Outlined theme override
-                     * 2. Outlined theme color
-                     * 3. Mild theme override
-                     * 4. Mild theme color
-                     * 5. Regular theme override
-                     * 6. Regular theme color
-                     * 7. Config fallback
+                     * Resolves a variant-aware border color based on variant priority:
+                     * 1. Outlined variant
+                     * 2. Mild variant
+                     * 3. Regular variant
+                     * 4. Config fallback
+                     */
+                    [borderFeatureVars.borderVariantColor]: switchOf(
+                        borderFeatureVars.borderOutlinedCond, // 🧊 Outlined variant (if active).
+                        borderFeatureVars.borderMildCond,     // 🌸 Mild variant (if active).
+                        borderFeatureVars.borderRegularCond,  // 🎨 Regular variant (if themed).
+                        defaultBorderColor,                   // 🛠️ Config fallback.
+                    ),
+                    
+                    /**
+                     * Resolves a final border color:
+                     * 1. User override color
+                     * 2. Variant-aware color
                      */
                     [borderFeatureVars.borderColor]: switchOf(
-                        borderFeatureVars.borderOutlinedCond, // 🧊 Outlined style (if active)
-                        borderFeatureVars.borderMildCond,     // 🌸 Mild style (if active)
-                        borderFeatureVars.borderRegularCond,  // 🎨 Regular style (if themed)
-                        defaultBorderColor,                   // 🛠️ Config fallback
+                        borderFeatureVars.borderColorOverride, // ⚠️ User override (if active).
+                        borderFeatureVars.borderVariantColor,  // 🧩 Variant-aware fallback.
                     ),
                     
                     
                     
                     /**
                      * General-purpose horizontal border width used for layout separators or structural dividers.
-                     * Not affected by bare mode.
+                     * Not affected by bare variant.
                      */
                     [borderFeatureVars.borderInlineBaseWidth] : borderInlineWidth,
                     
                     /**
                      * General-purpose vertical border width used for layout separators or structural dividers.
-                     * Not affected by bare mode.
+                     * Not affected by bare variant.
                      */
                     [borderFeatureVars.borderBlockBaseWidth ] : borderBlockWidth,
                 }),

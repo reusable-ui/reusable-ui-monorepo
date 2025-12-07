@@ -51,15 +51,18 @@ Example: `oklch(from ${borderColor} l c h / calc(alpha * 0.25))`
 
 #### Supporting Variables (Advanced Use)
 
-These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding mode is inactive.  
+These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding variant is inactive.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable             | Active When...      | Purpose                  |
-|----------------------|---------------------|--------------------------|
-| `borderOutlinedCond` | Outline mode active | High-contrast border     |
-| `borderMildCond`     | Mild mode active    | Reading-friendly border  |
-| `borderRegularCond`  | Theme mode active   | Themed border color      |
-| `borderBareCond`     | Bare mode active    | minimal layout rendering |
+| Variable              | Active When...         | Purpose                                                                    |
+|-----------------------|------------------------|----------------------------------------------------------------------------|
+| `borderRegularCond`   | Theme variant active   | Themed border color for the regular variant                                |
+| `borderMildCond`      | Mild variant active    | Reading-friendly border color for mild variant                             |
+| `borderOutlinedCond`  | Outline variant active | High-contrast border color for outlined variant                            |
+| `borderBareCond`      | Bare variant active    | minimal layout rendering                                                   |
+| `borderVariantColor`  | Always available       | Variant-aware resolved border color (outlined → mild → regular → fallback) |
+| `borderColorOverride` | When user override set | User-defined override border color, highest priority if present            |
+| `borderColor`         | Always available       | Final border color (user-override → variant-aware → fallback)              |
 
 #### 💡 Usage Example
 

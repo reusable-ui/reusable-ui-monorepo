@@ -23,7 +23,7 @@ import {
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
 export interface BorderFeatureVars {
-    //#region Conditional variables (may be poisoned) 
+    //#region 🎨 Conditional variables (may be poisoned) 
     /**
      * References the regular border color from the theme.
      * Poisoned when theme styling is not implemented.
@@ -31,29 +31,56 @@ export interface BorderFeatureVars {
     borderRegularCond      : unknown
     
     /**
-     * References a mild (reading-friendly) border color when mild mode is active.
-     * Poisoned when mild mode is inactive.
+     * References a mild (reading-friendly) border color when mild variant is active.
+     * Poisoned when mild variant is inactive.
      */
     borderMildCond         : unknown
     
     /**
-     * References an outlined border color when outlined mode is active.
-     * Poisoned when outlined mode is inactive.
+     * References an outlined border color when outlined variant is active.
+     * Poisoned when outlined variant is inactive.
      */
     borderOutlinedCond     : unknown
     
     /**
-     * References a zero-length value (`0px`) when bare mode is active.
-     * Poisoned when bare mode is inactive.
+     * References a zero-length value (`0px`) when bare variant is active.
+     * Poisoned when bare variant is inactive.
      * 
      * Used to conditionally suppress directional border widths and radii.
      */
     borderBareCond         : unknown
-    //#endregion Conditional variables (may be poisoned) 
+    //#endregion 🎨 Conditional variables (may be poisoned) 
     
     
     
-    //#region Final resolved variables (always valid) 
+    //#region 🧩 Intermediate resolved variables (always valid) 
+    /**
+     * References a variant-aware border color from the active variant.
+     * Always valid:
+     * - Outlined → outlined border
+     * - Mild     → mild border
+     * - Regular  → regular border
+     * - Fallback → defaultBorderColor
+     * 
+     * Can be further customized using CSS color functions.
+     * Example: `oklch(from ${borderFeatureVars.borderVariantColor} l c h / calc(alpha * 0.5))`
+     */
+    borderVariantColor     : unknown
+    //#endregion 🧩 Intermediate resolved variables (always valid) 
+    
+    
+    
+    //#region ⚠️ State overrides (e.g. active, selected) 
+    /**
+     * User-defined override for the border color.
+     * Valid if an override exists, otherwise invalid (unset).
+     */
+    borderColorOverride    : unknown
+    //#endregion ⚠️ State overrides (e.g. active, selected) 
+    
+    
+    
+    //#region ✅ Final resolved variables (always valid) 
     /**
      * References the resolved border style.
      * Always valid via fallback to config default.
@@ -109,8 +136,10 @@ export interface BorderFeatureVars {
     borderEndEndRadius     : unknown
     
     /**
-     * References the resolved border color for the current mode.
-     * Always valid via internal fallback logic.
+     * References a final border color consumed by components.
+     * Always valid:
+     * - Uses `borderColorOverride` if defined.
+     * - Otherwise falls back to `borderVariantColor`.
      * 
      * Can be further customized using CSS color functions.
      * Example: `oklch(from ${borderFeatureVars.borderColor} l c h / calc(alpha * 0.5))`
@@ -120,17 +149,17 @@ export interface BorderFeatureVars {
     /**
      * References the resolved general-purpose horizontal border width used for layout separators or structural dividers.
      * Always valid via fallback to config default.
-     * Not affected by bare mode.
+     * Not affected by bare variant.
      */
     borderInlineBaseWidth  : unknown
     
     /**
      * References the resolved general-purpose vertical border width used for layout separators or structural dividers.
      * Always valid via fallback to config default.
-     * Not affected by bare mode.
+     * Not affected by bare variant.
      */
     borderBlockBaseWidth   : unknown
-    //#endregion Final resolved variables (always valid) 
+    //#endregion ✅ Final resolved variables (always valid) 
 }
 
 
@@ -288,9 +317,11 @@ export interface CssBorderFeature {
      * with support for geometry styling and CSS color function adjustments.
      * 
      * Includes:
-     * - `border**Cond`s  : Mode-specific border colors (conditionally valid or poisoned).
-     * - `borderBareCond` : Suppresses border geometry when bare mode is active.
-     * - `borderColor`    : Final resolved border color for the current mode.
+     * - `border**Cond`s       : Variant-specific border colors (conditionally valid or poisoned).
+     * - `borderBareCond`      : Suppresses border geometry when bare variant is active.
+     * - `borderVariantColor`  : Variant-aware border color from the active variant.
+     * - `borderColorOverride` : User-defined override for the border color.
+     * - `borderColor`         : Final border color consumed by components.
      * - `borderStyle`, `borderWidth`, `borderRadius`, etc.: Resolved geometry styling.
      * 
      * These variables can be consumed directly or composed into advanced use cases
