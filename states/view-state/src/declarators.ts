@@ -253,6 +253,17 @@ export const usesViewState = (options?: CssViewStateOptions): CssViewState => {
     
     return {
         viewStateRule : () => style({
+            // Register `viewIndexFactor` as an animatable custom property:
+            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
+            ...atRule(`@property ${viewStateVars.viewIndexFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
+                // @ts-ignore
+                syntax       : '"<number>"',
+                inherits     : true,
+                initialValue : 0,
+            }),
+            
+            
+            
             ...states({
                 // Apply animation during the advancing phase (e.g. forward view transition):
                 ...ifViewAdvancing(
@@ -299,21 +310,12 @@ export const usesViewState = (options?: CssViewStateOptions): CssViewState => {
                         [viewStateVars.isViewTransitioning] : '',      // Valid    when receding.
                     })
                 ),
+                
+                
+                
+                // ❌ No settled assignment here.
+                // It resets to 0 after animation completes to reflect the collapsed single-view rendering.
             }),
-            
-            
-            
-            // Register `viewIndexFactor` as an animatable custom property:
-            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
-            ...atRule(`@property ${viewStateVars.viewIndexFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-                // @ts-ignore
-                syntax       : '"<number>"',
-                inherits     : true,
-                initialValue : 0,
-            }),
-            
-            // ❌ No settled assignment here.
-            // It resets to 0 after animation completes to reflect the collapsed single-view rendering.
         }),
         
         viewStateVars,
