@@ -292,6 +292,17 @@ export const usesDisabledState = (options?: CssDisabledStateOptions): CssDisable
     
     return {
         disabledStateRule : () => style({
+            // Register `disableFactor` as an animatable custom property:
+            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
+            ...atRule(`@property ${disabledStateVars.disableFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
+                // @ts-ignore
+                syntax       : '"<number>"',
+                inherits     : true,
+                initialValue : 0,
+            }),
+            
+            
+            
             ...states({
                 // Apply enabling animation during the enabling phase:
                 ...ifEnabling(
@@ -324,29 +335,16 @@ export const usesDisabledState = (options?: CssDisabledStateOptions): CssDisable
                         [disabledStateVars.isDisabled] : '',      // Valid    when either disabling or fully disabled.
                     })
                 ),
-            }),
-            
-            
-            
-            // Register `disableFactor` as an animatable custom property:
-            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
-            ...atRule(`@property ${disabledStateVars.disableFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-                // @ts-ignore
-                syntax       : '"<number>"',
-                inherits     : true,
-                initialValue : 0,
-            }),
-            
-            ...vars({
+                
+                
+                
                 // Assign the settled value for `disableFactor`:
                 // - Sticks to `1` when the component is fully disabled.
-                [disabledStateVars.disableFactor]: [[
-                    // Only applies if in disabled state:
-                    disabledStateVars.isDisabled,
-                    
-                    // The fully disabled value:
-                    1,
-                ]],
+                ...ifDisabled(
+                    vars({
+                        [disabledStateVars.disableFactor]: 1,
+                    })
+                ),
             }),
         }),
         
