@@ -292,6 +292,17 @@ export const usesReadOnlyState = (options?: CssReadOnlyStateOptions): CssReadOnl
     
     return {
         readOnlyStateRule : () => style({
+            // Register `readOnlyFactor` as an animatable custom property:
+            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
+            ...atRule(`@property ${readOnlyStateVars.readOnlyFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
+                // @ts-ignore
+                syntax       : '"<number>"',
+                inherits     : true,
+                initialValue : 0,
+            }),
+            
+            
+            
             ...states({
                 // Apply thawing animation during the thawing phase:
                 ...ifThawing(
@@ -324,29 +335,16 @@ export const usesReadOnlyState = (options?: CssReadOnlyStateOptions): CssReadOnl
                         [readOnlyStateVars.isReadOnly] : '',      // Valid    when either freezing or fully read-only.
                     })
                 ),
-            }),
-            
-            
-            
-            // Register `readOnlyFactor` as an animatable custom property:
-            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
-            ...atRule(`@property ${readOnlyStateVars.readOnlyFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-                // @ts-ignore
-                syntax       : '"<number>"',
-                inherits     : true,
-                initialValue : 0,
-            }),
-            
-            ...vars({
+                
+                
+                
                 // Assign the settled value for `readOnlyFactor`:
                 // - Sticks to `1` when the component is fully read-only.
-                [readOnlyStateVars.readOnlyFactor]: [[
-                    // Only applies if in read-only state:
-                    readOnlyStateVars.isReadOnly,
-                    
-                    // The fully read-only value:
-                    1,
-                ]],
+                ...ifReadOnly(
+                    vars({
+                        [readOnlyStateVars.readOnlyFactor]: 1,
+                    })
+                ),
             }),
         }),
         
