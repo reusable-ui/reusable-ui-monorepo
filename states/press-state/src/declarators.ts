@@ -295,6 +295,17 @@ export const usesPressState = (options?: CssPressStateOptions): CssPressState =>
     
     return {
         pressStateRule : () => style({
+            // Register `pressFactor` as an animatable custom property:
+            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
+            ...atRule(`@property ${pressStateVars.pressFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
+                // @ts-ignore
+                syntax       : '"<number>"',
+                inherits     : true,
+                initialValue : 0,
+            }),
+            
+            
+            
             ...states({
                 // Apply pressing animation during the pressing phase:
                 ...ifPressing(
@@ -327,29 +338,16 @@ export const usesPressState = (options?: CssPressStateOptions): CssPressState =>
                         [pressStateVars.isReleased] : '',      // Valid    when either releasing or fully released.
                     })
                 ),
-            }),
-            
-            
-            
-            // Register `pressFactor` as an animatable custom property:
-            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
-            ...atRule(`@property ${pressStateVars.pressFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-                // @ts-ignore
-                syntax       : '"<number>"',
-                inherits     : true,
-                initialValue : 0,
-            }),
-            
-            ...vars({
+                
+                
+                
                 // Assign the settled value for `pressFactor`:
                 // - Sticks to `1` when the component is fully pressed.
-                [pressStateVars.pressFactor]: [[
-                    // Only applies if in pressed state:
-                    pressStateVars.isPressed,
-                    
-                    // The fully pressed value:
-                    1,
-                ]],
+                ...ifPressed(
+                    vars({
+                        [pressStateVars.pressFactor]: 1,
+                    })
+                ),
             }),
         }),
         
