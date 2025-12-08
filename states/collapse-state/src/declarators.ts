@@ -294,6 +294,17 @@ export const usesCollapseState = (options?: CssCollapseStateOptions): CssCollaps
     
     return {
         collapseStateRule : () => style({
+            // Register `expandFactor` as an animatable custom property:
+            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
+            ...atRule(`@property ${collapseStateVars.expandFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
+                // @ts-ignore
+                syntax       : '"<number>"',
+                inherits     : true,
+                initialValue : 0,
+            }),
+            
+            
+            
             ...states({
                 // Apply expanding animation during the expanding phase:
                 ...ifExpanding(
@@ -326,29 +337,16 @@ export const usesCollapseState = (options?: CssCollapseStateOptions): CssCollaps
                         [collapseStateVars.isCollapsed] : '',      // Valid    when either collapsing or fully collapsed.
                     })
                 ),
-            }),
-            
-            
-            
-            // Register `expandFactor` as an animatable custom property:
-            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
-            ...atRule(`@property ${collapseStateVars.expandFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-                // @ts-ignore
-                syntax       : '"<number>"',
-                inherits     : true,
-                initialValue : 0,
-            }),
-            
-            ...vars({
+                
+                
+                
                 // Assign the settled value for `expandFactor`:
                 // - Sticks to `1` when the component is fully expanded.
-                [collapseStateVars.expandFactor]: [[
-                    // Only applies if in expanded state:
-                    collapseStateVars.isExpanded,
-                    
-                    // The fully expanded value:
-                    1,
-                ]],
+                ...ifExpanded(
+                    vars({
+                        [collapseStateVars.expandFactor]: 1,
+                    })
+                ),
             }),
         }),
         
