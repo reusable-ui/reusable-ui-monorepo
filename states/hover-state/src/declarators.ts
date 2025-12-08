@@ -292,6 +292,17 @@ export const usesHoverState = (options?: CssHoverStateOptions): CssHoverState =>
     
     return {
         hoverStateRule : () => style({
+            // Register `hoverFactor` as an animatable custom property:
+            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
+            ...atRule(`@property ${hoverStateVars.hoverFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
+                // @ts-ignore
+                syntax       : '"<number>"',
+                inherits     : true,
+                initialValue : 0,
+            }),
+            
+            
+            
             ...states({
                 // Apply hovering animation during the hovering phase:
                 ...ifHovering(
@@ -324,29 +335,16 @@ export const usesHoverState = (options?: CssHoverStateOptions): CssHoverState =>
                         [hoverStateVars.isUnhovered] : '',      // Valid    when either unhovering or fully unhovered.
                     })
                 ),
-            }),
-            
-            
-            
-            // Register `hoverFactor` as an animatable custom property:
-            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
-            ...atRule(`@property ${hoverStateVars.hoverFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-                // @ts-ignore
-                syntax       : '"<number>"',
-                inherits     : true,
-                initialValue : 0,
-            }),
-            
-            ...vars({
+                
+                
+                
                 // Assign the settled value for `hoverFactor`:
                 // - Sticks to `1` when the component is fully hovered.
-                [hoverStateVars.hoverFactor]: [[
-                    // Only applies if in hovered state:
-                    hoverStateVars.isHovered,
-                    
-                    // The fully hovered value:
-                    1,
-                ]],
+                ...ifHovered(
+                    vars({
+                        [hoverStateVars.hoverFactor]: 1,
+                    })
+                ),
             }),
         }),
         
