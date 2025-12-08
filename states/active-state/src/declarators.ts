@@ -356,6 +356,17 @@ export const usesActiveState = (options?: CssActiveStateOptions): CssActiveState
     
     return {
         activeStateRule : () => style({
+            // Register `activeFactor` as an animatable custom property:
+            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
+            ...atRule(`@property ${activeStateVars.activeFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
+                // @ts-ignore
+                syntax       : '"<number>"',
+                inherits     : true,
+                initialValue : 0,
+            }),
+            
+            
+            
             ...states({
                 // Apply activating animation during the activating phase:
                 ...ifActivating(
@@ -388,29 +399,16 @@ export const usesActiveState = (options?: CssActiveStateOptions): CssActiveState
                         [activeStateVars.isInactive] : '',      // Valid    when either deactivating or fully inactive.
                     })
                 ),
-            }),
-            
-            
-            
-            // Register `activeFactor` as an animatable custom property:
-            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
-            ...atRule(`@property ${activeStateVars.activeFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-                // @ts-ignore
-                syntax       : '"<number>"',
-                inherits     : true,
-                initialValue : 0,
-            }),
-            
-            ...vars({
+                
+                
+                
                 // Assign the settled value for `activeFactor`:
                 // - Sticks to `1` when the component is fully active.
-                [activeStateVars.activeFactor]: [[
-                    // Only applies if in active state:
-                    activeStateVars.isActive,
-                    
-                    // The fully active value:
-                    1,
-                ]],
+                ...ifActive(
+                    vars({
+                        [activeStateVars.activeFactor]: 1,
+                    })
+                ),
             }),
         }),
         
