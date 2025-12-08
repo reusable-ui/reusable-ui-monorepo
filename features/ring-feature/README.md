@@ -29,10 +29,10 @@ Resolves the appropriate ring color based on the currently active theme variant 
 
 These variables are ready-to-use for styling your component’s ring.
 
-| Variable           | Description                                                          |
-|--------------------|----------------------------------------------------------------------|
-| `ringVariantColor` | Variant-aware resolved ring color (regular → fallback)               |
-| `ringColor`        | Final resolved ring color (user-override → variant-aware → fallback) |
+| Variable           | Description                                               |
+|--------------------|-----------------------------------------------------------|
+| `ringVariantColor` | Variant-aware resolved ring color (regular → fallback)    |
+| `ringColor`        | Final resolved ring color (user-override → variant-aware) |
 
 You can further adjust `ringColor` using CSS color functions:
 Example: `oklch(from ${ringColor} l c h / calc(alpha * 0.25))`

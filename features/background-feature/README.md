@@ -34,7 +34,7 @@ These variables are ready-to-use for styling your component’s background.
 | Variable            | Description                                                                    |
 |---------------------|--------------------------------------------------------------------------------|
 | `backgVariantColor` | Variant-aware resolved background color (outlined → mild → regular → fallback) |
-| `backgColor`        | Final resolved background color (user-override → variant-aware → fallback)     |
+| `backgColor`        | Final resolved background color (user-override → variant-aware)                |
 | `backgLayers`       | Composite background layers: gradient → custom → color                         |
 | `backg`             | Final background value, resolved from layers or suppressed via bare variant    |
 

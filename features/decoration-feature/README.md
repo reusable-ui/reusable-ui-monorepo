@@ -32,7 +32,7 @@ These variables are ready-to-use for styling your component’s decoration.
 | Variable            | Description                                                                    |
 |---------------------|--------------------------------------------------------------------------------|
 | `decorVariantColor` | Variant-aware resolved decoration color (outlined → mild → regular → fallback) |
-| `decorColor`        | Final resolved decoration color (user-override → variant-aware → fallback)     |
+| `decorColor`        | Final resolved decoration color (user-override → variant-aware)                |
 
 You can further adjust `decorColor` using CSS color functions:
 Example: `oklch(from ${decorColor} l c h / calc(alpha * 0.25))`

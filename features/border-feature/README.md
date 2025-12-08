@@ -34,7 +34,7 @@ These variables are ready-to-use for styling your component’s border.
 | Variable                 | Description                                                                |
 |--------------------------|----------------------------------------------------------------------------|
 | `borderVariantColor`     | Variant-aware resolved border color (outlined → mild → regular → fallback) |
-| `borderColor`            | Final resolved border color (user-override → variant-aware → fallback)     |
+| `borderColor`            | Final resolved border color (user-override → variant-aware)                |
 | `borderStyle`            | Resolved border style (default: `solid`)                                   |
 | `borderInlineStartWidth` | Resolved border width on the left (or right in RTL)                        |
 | `borderInlineEndWidth`   | Resolved border width on the right (or left in RTL)                        |

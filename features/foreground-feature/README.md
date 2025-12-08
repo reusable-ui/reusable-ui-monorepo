@@ -32,7 +32,7 @@ These variables are ready-to-use for styling your component’s foreground.
 | Variable            | Description                                                                    |
 |---------------------|--------------------------------------------------------------------------------|
 | `foregVariantColor` | Variant-aware resolved foreground color (outlined → mild → regular → fallback) |
-| `foregColor`        | Final resolved foreground color (user-override → variant-aware → fallback)     |
+| `foregColor`        | Final resolved foreground color (user-override → variant-aware)                |
 
 You can further adjust `foregColor` using CSS color functions:
 Example: `oklch(from ${foregColor} l c h / calc(alpha * 0.25))`
