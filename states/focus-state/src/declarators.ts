@@ -292,6 +292,17 @@ export const usesFocusState = (options?: CssFocusStateOptions): CssFocusState =>
     
     return {
         focusStateRule : () => style({
+            // Register `focusFactor` as an animatable custom property:
+            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
+            ...atRule(`@property ${focusStateVars.focusFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
+                // @ts-ignore
+                syntax       : '"<number>"',
+                inherits     : true,
+                initialValue : 0,
+            }),
+            
+            
+            
             ...states({
                 // Apply focusing animation during the focusing phase:
                 ...ifFocusing(
@@ -324,29 +335,16 @@ export const usesFocusState = (options?: CssFocusStateOptions): CssFocusState =>
                         [focusStateVars.isBlurred] : '',      // Valid    when either blurring or fully blurred.
                     })
                 ),
-            }),
-            
-            
-            
-            // Register `focusFactor` as an animatable custom property:
-            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
-            ...atRule(`@property ${focusStateVars.focusFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-                // @ts-ignore
-                syntax       : '"<number>"',
-                inherits     : true,
-                initialValue : 0,
-            }),
-            
-            ...vars({
+                
+                
+                
                 // Assign the settled value for `focusFactor`:
                 // - Sticks to `1` when the component is fully focused.
-                [focusStateVars.focusFactor]: [[
-                    // Only applies if in focused state:
-                    focusStateVars.isFocused,
-                    
-                    // The fully focused value:
-                    1,
-                ]],
+                ...ifFocused(
+                    vars({
+                        [focusStateVars.focusFactor]: 1,
+                    })
+                ),
             }),
         }),
         
