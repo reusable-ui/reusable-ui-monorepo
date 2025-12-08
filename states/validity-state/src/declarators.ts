@@ -18,7 +18,6 @@ import {
     
     // Strongly typed of css variables:
     cssVars,
-    switchOf,
 }                           from '@cssfn/core'                      // Writes css in javascript.
 
 // Types:
@@ -622,6 +621,17 @@ export const usesValidityState = (options?: CssValidityStateOptions): CssValidit
     
     return {
         validityStateRule : () => style({
+            // Register `validityFactor` as an animatable custom property:
+            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
+            ...atRule(`@property ${validityStateVars.validityFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
+                // @ts-ignore
+                syntax       : '"<number>"',
+                inherits     : true,
+                initialValue : 0,
+            }),
+            
+            
+            
             ...states({
                 // Apply validating animation during the validating phase:
                 ...ifValidating(
@@ -701,48 +711,20 @@ export const usesValidityState = (options?: CssValidityStateOptions): CssValidit
                         [validityStateVars.wasUnvalidated] : '',      // Valid    when previously unvalidated.
                     })
                 ),
-            }),
-            
-            
-            
-            // Register `validityFactor` as an animatable custom property:
-            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
-            ...atRule(`@property ${validityStateVars.validityFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-                // @ts-ignore
-                syntax       : '"<number>"',
-                inherits     : true,
-                initialValue : 0,
-            }),
-            
-            ...vars({
+                
+                
+                
                 // Assign settled values for `validityFactor`:
                 // - Sticks to `+1` when the component is fully valid, `-1` when fully invalid.
-                
-                // Private intermediate resolver for valid state:
-                '--_validFactor': [[
-                    // Only applies if in valid state:
-                    validityStateVars.isValid,
-                    
-                    // The fully valid value:
-                    1,
-                ]],
-                
-                // Private intermediate resolver for invalid state:
-                '--_invalidFactor': [[
-                    // Only applies if in invalid state:
-                    validityStateVars.isInvalid,
-                    
-                    // The fully invalid value:
-                    -1,
-                ]],
-                
-                // Public animatable factor:
-                // - Combines private resolvers into a single compound factor.
-                // - Rendered as: `var(--_validFactor, var(--_invalidFactor))`
-                [validityStateVars.validityFactor]: switchOf(
-                    // Only applies if one of the fallbacks below exists:
-                    'var(--_validFactor)',   // first fallback
-                    'var(--_invalidFactor)', // second fallback
+                ...ifValid(
+                    vars({
+                        [validityStateVars.validityFactor] : 1,
+                    })
+                ),
+                ...ifInvalid(
+                    vars({
+                        [validityStateVars.validityFactor] : -1,
+                    })
                 ),
             }),
         }),
