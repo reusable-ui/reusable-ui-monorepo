@@ -31,20 +31,21 @@ Resolves the appropriate border color and geometry based on the currently active
 
 These variables are ready-to-use for styling your component’s border.
 
-| Variable                 | Description                                                               |
-|--------------------------|---------------------------------------------------------------------------|
-| `borderColor`            | Final resolved border color based on active variants                      |
-| `borderStyle`            | Resolved border style (default: `solid`)                                  |
-| `borderInlineStartWidth` | Resolved border width on the left (or right in RTL)                       |
-| `borderInlineEndWidth`   | Resolved border width on the right (or left in RTL)                       |
-| `borderBlockStartWidth`  | Resolved border width on the top.                                         |
-| `borderBlockEndWidth`    | Resolved border width on the bottom.                                      |
-| `borderStartStartRadius` | Resolved border radius on the top-left corner (or top-right in RTL)       |
-| `borderStartEndRadius`   | Resolved border radius on the top-right corner (or top-left in RTL)       |
-| `borderEndStartRadius`   | Resolved border radius on the bottom-left corner (or bottom-right in RTL) |
-| `borderEndEndRadius`     | Resolved border radius on the bottom-right corner (or bottom-left in RTL) |
-| `borderInlineBaseWidth`  | Resolved horizontal border width used for general-purpose styling         |
-| `borderBlockBaseWidth`   | Resolved vertical border width used for general-purpose styling           |
+| Variable                 | Description                                                                |
+|--------------------------|----------------------------------------------------------------------------|
+| `borderVariantColor`     | Variant-aware resolved border color (outlined → mild → regular → fallback) |
+| `borderColor`            | Final resolved border color (user-override → variant-aware → fallback)     |
+| `borderStyle`            | Resolved border style (default: `solid`)                                   |
+| `borderInlineStartWidth` | Resolved border width on the left (or right in RTL)                        |
+| `borderInlineEndWidth`   | Resolved border width on the right (or left in RTL)                        |
+| `borderBlockStartWidth`  | Resolved border width on the top.                                          |
+| `borderBlockEndWidth`    | Resolved border width on the bottom.                                       |
+| `borderStartStartRadius` | Resolved border radius on the top-left corner (or top-right in RTL)        |
+| `borderStartEndRadius`   | Resolved border radius on the top-right corner (or top-left in RTL)        |
+| `borderEndStartRadius`   | Resolved border radius on the bottom-left corner (or bottom-right in RTL)  |
+| `borderEndEndRadius`     | Resolved border radius on the bottom-right corner (or bottom-left in RTL)  |
+| `borderInlineBaseWidth`  | Resolved horizontal border width used for general-purpose styling          |
+| `borderBlockBaseWidth`   | Resolved vertical border width used for general-purpose styling            |
 
 You can further adjust `borderColor` using CSS color functions:
 Example: `oklch(from ${borderColor} l c h / calc(alpha * 0.25))`
@@ -54,15 +55,13 @@ Example: `oklch(from ${borderColor} l c h / calc(alpha * 0.25))`
 These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding variant is inactive.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable              | Active When...         | Purpose                                                                    |
-|-----------------------|------------------------|----------------------------------------------------------------------------|
-| `borderRegularCond`   | Theme variant active   | Themed border color for the regular variant                                |
-| `borderMildCond`      | Mild variant active    | Reading-friendly border color for mild variant                             |
-| `borderOutlinedCond`  | Outline variant active | High-contrast border color for outlined variant                            |
-| `borderBareCond`      | Bare variant active    | minimal layout rendering                                                   |
-| `borderVariantColor`  | Always available       | Variant-aware resolved border color (outlined → mild → regular → fallback) |
-| `borderColorOverride` | When user override set | User-defined override border color, highest priority if present            |
-| `borderColor`         | Always available       | Final border color (user-override → variant-aware → fallback)              |
+| Variable              | Active When...         | Purpose                                                         |
+|-----------------------|------------------------|-----------------------------------------------------------------|
+| `borderRegularCond`   | Theme variant active   | Themed border color for the regular variant                     |
+| `borderMildCond`      | Mild variant active    | Reading-friendly border color for mild variant                  |
+| `borderOutlinedCond`  | Outline variant active | High-contrast border color for outlined variant                 |
+| `borderBareCond`      | Bare variant active    | minimal layout rendering                                        |
+| `borderColorOverride` | When user override set | User-defined override border color, highest priority if present |
 
 #### 💡 Usage Example
 

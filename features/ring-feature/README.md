@@ -27,11 +27,12 @@ Resolves the appropriate ring color based on the currently active theme variant 
 
 #### Primary Variables
 
-These variables are ready-to-use for coloring your component’s ring.
+These variables are ready-to-use for styling your component’s ring.
 
-| Variable    | Description                                             |
-|-------------|---------------------------------------------------------|
-| `ringColor` | Final resolved ring color based on active theme variant |
+| Variable           | Description                                                          |
+|--------------------|----------------------------------------------------------------------|
+| `ringVariantColor` | Variant-aware resolved ring color (regular → fallback)               |
+| `ringColor`        | Final resolved ring color (user-override → variant-aware → fallback) |
 
 You can further adjust `ringColor` using CSS color functions:
 Example: `oklch(from ${ringColor} l c h / calc(alpha * 0.25))`
@@ -44,9 +45,7 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 | Variable            | Active When...         | Purpose                                                       |
 |---------------------|------------------------|---------------------------------------------------------------|
 | `ringRegularCond`   | Theme variant active   | Themed ring color for the regular variant                     |
-| `ringVariantColor`  | Always available       | Variant-aware resolved ring color (regular → fallback)        |
 | `ringColorOverride` | When user override set | User-defined override ring color, highest priority if present |
-| `ringColor`         | Always available       | Final ring color (user-override → variant-aware → fallback)   |
 
 #### 💡 Usage Example
 

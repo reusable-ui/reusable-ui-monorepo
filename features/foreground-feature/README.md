@@ -27,11 +27,12 @@ Resolves the appropriate foreground color based on the currently active variants
 
 #### Primary Variables
 
-These variables are ready-to-use for coloring your component’s foreground.
+These variables are ready-to-use for styling your component’s foreground.
 
-| Variable      | Description                                              |
-|---------------|----------------------------------------------------------|
-| `foregColor`  | Final resolved foreground color based on active variants |
+| Variable            | Description                                                                    |
+|---------------------|--------------------------------------------------------------------------------|
+| `foregVariantColor` | Variant-aware resolved foreground color (outlined → mild → regular → fallback) |
+| `foregColor`        | Final resolved foreground color (user-override → variant-aware → fallback)     |
 
 You can further adjust `foregColor` using CSS color functions:
 Example: `oklch(from ${foregColor} l c h / calc(alpha * 0.25))`
@@ -41,14 +42,12 @@ Example: `oklch(from ${foregColor} l c h / calc(alpha * 0.25))`
 These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding variant is inactive.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable             | Active When...         | Purpose                                                                        |
-|----------------------|------------------------|--------------------------------------------------------------------------------|
-| `foregRegularCond`   | Theme variant active   | Themed foreground color for the regular variant                                |
-| `foregMildCond`      | Mild variant active    | Reading-friendly foreground color for mild variant                             |
-| `foregOutlinedCond`  | Outline variant active | High-contrast foreground color for outlined variant                            |
-| `foregVariantColor`  | Always available       | Variant-aware resolved foreground color (outlined → mild → regular → fallback) |
-| `foregColorOverride` | When user override set | User-defined override foreground color, highest priority if present            |
-| `foregColor`         | Always available       | Final foreground color (user-override → variant-aware → fallback)              |
+| Variable             | Active When...         | Purpose                                                             |
+|----------------------|------------------------|---------------------------------------------------------------------|
+| `foregRegularCond`   | Theme variant active   | Themed foreground color for the regular variant                     |
+| `foregMildCond`      | Mild variant active    | Reading-friendly foreground color for mild variant                  |
+| `foregOutlinedCond`  | Outline variant active | High-contrast foreground color for outlined variant                 |
+| `foregColorOverride` | When user override set | User-defined override foreground color, highest priority if present |
 
 #### 💡 Usage Example
 

@@ -27,11 +27,12 @@ Resolves the appropriate decoration color based on the currently active variants
 
 #### Primary Variables
 
-These variables are ready-to-use for coloring your component’s decoration.
+These variables are ready-to-use for styling your component’s decoration.
 
-| Variable      | Description                                              |
-|---------------|----------------------------------------------------------|
-| `decorColor`  | Final resolved decoration color based on active variants |
+| Variable            | Description                                                                    |
+|---------------------|--------------------------------------------------------------------------------|
+| `decorVariantColor` | Variant-aware resolved decoration color (outlined → mild → regular → fallback) |
+| `decorColor`        | Final resolved decoration color (user-override → variant-aware → fallback)     |
 
 You can further adjust `decorColor` using CSS color functions:
 Example: `oklch(from ${decorColor} l c h / calc(alpha * 0.25))`
@@ -41,14 +42,12 @@ Example: `oklch(from ${decorColor} l c h / calc(alpha * 0.25))`
 These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding variant is inactive.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable             | Active When...         | Purpose                                                                        |
-|----------------------|------------------------|--------------------------------------------------------------------------------|
-| `decorRegularCond`   | Theme variant active   | Themed decoration color for the regular variant                                |
-| `decorMildCond`      | Mild variant active    | Reading-friendly decoration color for mild variant                             |
-| `decorOutlinedCond`  | Outline variant active | High-contrast decoration color for outlined variant                            |
-| `decorVariantColor`  | Always available       | Variant-aware resolved decoration color (outlined → mild → regular → fallback) |
-| `decorColorOverride` | When user override set | User-defined override decoration color, highest priority if present            |
-| `decorColor`         | Always available       | Final decoration color (user-override → variant-aware → fallback)              |
+| Variable             | Active When...         | Purpose                                                             |
+|----------------------|------------------------|---------------------------------------------------------------------|
+| `decorRegularCond`   | Theme variant active   | Themed decoration color for the regular variant                     |
+| `decorMildCond`      | Mild variant active    | Reading-friendly decoration color for mild variant                  |
+| `decorOutlinedCond`  | Outline variant active | High-contrast decoration color for outlined variant                 |
+| `decorColorOverride` | When user override set | User-defined override decoration color, highest priority if present |
 
 #### 💡 Usage Example
 

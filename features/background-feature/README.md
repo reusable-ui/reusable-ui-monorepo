@@ -29,13 +29,14 @@ Resolves the appropriate background color based on the currently active variants
 
 #### Primary Variables
 
-These variables are ready-to-use for coloring your component’s background.
+These variables are ready-to-use for styling your component’s background.
 
-| Variable      | Description                                                                 |
-|---------------|-----------------------------------------------------------------------------|
-| `backgColor`  | Final resolved background color based on active variants                    |
-| `backgLayers` | Composite background layers: gradient → custom → color                      |
-| `backg`       | Final background value, resolved from layers or suppressed via bare variant |
+| Variable            | Description                                                                    |
+|---------------------|--------------------------------------------------------------------------------|
+| `backgVariantColor` | Variant-aware resolved background color (outlined → mild → regular → fallback) |
+| `backgColor`        | Final resolved background color (user-override → variant-aware → fallback)     |
+| `backgLayers`       | Composite background layers: gradient → custom → color                         |
+| `backg`             | Final background value, resolved from layers or suppressed via bare variant    |
 
 You can further adjust `backgColor` using CSS color functions:
 Example: `oklch(from ${backgColor} l c h / calc(alpha * 0.25))`
@@ -45,17 +46,15 @@ Example: `oklch(from ${backgColor} l c h / calc(alpha * 0.25))`
 These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding variant is inactive.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable              | Active When...           | Purpose                                                                        |
-|-----------------------|--------------------------|--------------------------------------------------------------------------------|
-| `backgEmphasizedCond` | Emphasize variant active | Gradient background layer                                                      |
-| `backgCond`           | Custom background layers | User-defined background layers                                                 |
-| `backgRegularCond`    | Theme variant active     | Themed background color for the regular variant                                |
-| `backgMildCond`       | Mild variant active      | Reading-friendly background color for mild variant                             |
-| `backgOutlinedCond`   | Outline variant active   | Transparent background color for outlined variant                              |
-| `backgBareCond`       | Bare variant active      | Suppresses background styling                                                  |
-| `backgVariantColor`   | Always available         | Variant-aware resolved background color (outlined → mild → regular → fallback) |
-| `backgColorOverride`  | When user override set   | User-defined override background color, highest priority if present            |
-| `backgColor`          | Always available         | Final background color (user-override → variant-aware → fallback)              |
+| Variable              | Active When...           | Purpose                                                             |
+|-----------------------|--------------------------|---------------------------------------------------------------------|
+| `backgEmphasizedCond` | Emphasize variant active | Gradient background layer                                           |
+| `backgCond`           | Custom background layers | User-defined background layers                                      |
+| `backgRegularCond`    | Theme variant active     | Themed background color for the regular variant                     |
+| `backgMildCond`       | Mild variant active      | Reading-friendly background color for mild variant                  |
+| `backgOutlinedCond`   | Outline variant active   | Transparent background color for outlined variant                   |
+| `backgBareCond`       | Bare variant active      | Suppresses background styling                                       |
+| `backgColorOverride`  | When user override set   | User-defined override background color, highest priority if present |
 
 #### 💡 Usage Example
 
