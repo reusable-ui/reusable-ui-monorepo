@@ -313,7 +313,7 @@ export const usesViewState = (options?: CssViewStateOptions): CssViewState => {
                 
                 
                 
-                // ❌ No settled assignment here.
+                // ❌ No settled assignment for `viewIndexFactor`.
                 // It resets to 0 after animation completes to reflect the collapsed single-view rendering.
             }),
         }),
