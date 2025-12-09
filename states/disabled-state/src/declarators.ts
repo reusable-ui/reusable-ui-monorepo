@@ -301,6 +301,12 @@ export const usesDisabledState = (options?: CssDisabledStateOptions): CssDisable
                 initialValue : 0,
             }),
             
+            // Mirror `disableFactor` into `disableFactorCond` by default:
+            // - During transitions and when fully disabled, `disableFactorCond` follows `disableFactor`.
+            ...vars({
+                [disabledStateVars.disableFactorCond]: disabledStateVars.disableFactor,
+            }),
+            
             
             
             ...states({
@@ -343,6 +349,14 @@ export const usesDisabledState = (options?: CssDisabledStateOptions): CssDisable
                 ...ifDisabled(
                     vars({
                         [disabledStateVars.disableFactor]: 1,
+                    })
+                ),
+                
+                // Drop `disableFactorCond` when fully enabled (baseline inactive):
+                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
+                ...ifEnabled(
+                    vars({
+                        [disabledStateVars.disableFactorCond]: 'unset',
                     })
                 ),
             }),
