@@ -226,6 +226,7 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 | `isEditable`         | `.is-editable` or `.is-thawing`   | Conditional variable for the editable state                                     |
 | `isReadOnly`         | `.is-read-only` or `.is-freezing` | Conditional variable for the read-only state                                    |
 | `readOnlyFactor`     | Always available (animatable)     | Normalized factor: 0 = editable, 1 = read-only, interpolates during transitions |
+| `readOnlyFactorCond` | Not fully editable                | Conditional mirror of `readOnlyFactor`, drops to `unset` when fully editable    |
 
 #### 💡 Usage Example
 

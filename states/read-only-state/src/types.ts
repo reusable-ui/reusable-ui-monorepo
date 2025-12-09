@@ -259,7 +259,7 @@ export interface ReadOnlyStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationThawing  : unknown
+    animationThawing   : unknown
     
     /**
      * References an animation used during the freezing transition.
@@ -268,7 +268,7 @@ export interface ReadOnlyStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationFreezing : unknown
+    animationFreezing  : unknown
     
     /**
      * Applies when the component is either thawing or fully editable.
@@ -287,7 +287,7 @@ export interface ReadOnlyStateVars {
      * });
      * ```
      */
-    isEditable        : unknown
+    isEditable         : unknown
     
     /**
      * Applies when the component is either freezing or fully read-only.
@@ -306,7 +306,7 @@ export interface ReadOnlyStateVars {
      * });
      * ```
      */
-    isReadOnly        : unknown
+    isReadOnly         : unknown
     
     /**
      * A normalized, animatable factor representing the **read-only lifecycle state**.
@@ -336,7 +336,45 @@ export interface ReadOnlyStateVars {
      * - **Naming rationale:**  
      *   - `readOnlyFactor` instead of `editableFactor`: factors consistently use the *base form* of the active state (`disable`, `readOnly`, `expand`, etc.).  
      */
-    readOnlyFactor    : unknown
+    readOnlyFactor     : unknown
+    
+    /**
+     * A conditional mirror of `readOnlyFactor` representing the **read-only lifecycle state**.
+     * Mirrors `readOnlyFactor` during transitions and when fully read-only, but is explicitly
+     * set to `unset` once the component reaches its baseline editable state.
+     * 
+     * ### Expected values:
+     * - **unset** : settled editable (baseline inactive, declaration dropped)
+     * - **1**     : settled read-only (mirrors `readOnlyFactor`)
+     * - **0 → 1** : freezing transition (mirrors `readOnlyFactor`)
+     * - **1 → 0** : thawing transition (mirrors `readOnlyFactor`)
+     * 
+     * ### Usage:
+     * - Use when dependent properties should be **poisoned** (ignored) in the baseline editable state.
+     *   Example: gating `filter`, `color-mix`, or other overrides that should disappear when editable.
+     * - During animations and in the fully read-only state, `readOnlyFactorCond` mirrors the numeric
+     *   value of `readOnlyFactor`, ensuring smooth transitions and consistency.
+     * - Applicable to numeric-based properties such as `opacity`, `color`, `transform`, `box-shadow`, etc.
+     * - Values outside the 0–1 range are allowed, and implementators must handle them appropriately.  
+     *   Example of an animation with a spring/bump effect:  
+     *     `0%: 0`, `90%: 1.2`, `100%: 1`  
+     *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
+     * 
+     * ### Notes:
+     * - **Value rationale:**  
+     *   - The factor represents the active lifecycle state (read-only), not the baseline (editable).  
+     *   - Mirrors the active lifecycle state (read-only) during transitions and when settled read-only.  
+     *   - Drops to `unset` only when fully editable, so dependent declarations fall back cleanly.  
+     *   - This keeps naming predictable and teachable across the ecosystem:
+     *     - `readOnlyFactorCond = unset`: settled editable (baseline inactive, declaration dropped)
+     *     - `readOnlyFactorCond = 0`: editable during transition (numeric interpolation)
+     *     - `readOnlyFactorCond = 1`: read-only (settled active lifecycle state)  
+     * - **Naming rationale:**  
+     *   - `readOnlyFactorCond` instead of `editableFactorCond`: factors consistently use the *base form* of the active state (`disable`, `readOnly`, `expand`, etc.).  
+     *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
+     *     and when read-only, but conditionally drops to `unset` at baseline editable.
+     */
+    readOnlyFactorCond : unknown
 }
 
 

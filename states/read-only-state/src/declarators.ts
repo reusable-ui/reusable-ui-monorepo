@@ -301,6 +301,12 @@ export const usesReadOnlyState = (options?: CssReadOnlyStateOptions): CssReadOnl
                 initialValue : 0,
             }),
             
+            // Mirror `readOnlyFactor` into `readOnlyFactorCond` by default:
+            // - During transitions and when fully read-only, `readOnlyFactorCond` follows `readOnlyFactor`.
+            ...vars({
+                [readOnlyStateVars.readOnlyFactorCond]: readOnlyStateVars.readOnlyFactor,
+            }),
+            
             
             
             ...states({
@@ -343,6 +349,14 @@ export const usesReadOnlyState = (options?: CssReadOnlyStateOptions): CssReadOnl
                 ...ifReadOnly(
                     vars({
                         [readOnlyStateVars.readOnlyFactor]: 1,
+                    })
+                ),
+                
+                // Drop `readOnlyFactorCond` when fully editable (baseline inactive):
+                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
+                ...ifEditable(
+                    vars({
+                        [readOnlyStateVars.readOnlyFactorCond]: 'unset',
                     })
                 ),
             }),
