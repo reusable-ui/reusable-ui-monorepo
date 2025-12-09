@@ -267,6 +267,7 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 | `isPressed`           | `.is-pressed` or `.is-pressing`   | Conditional variable for the pressed state                                    |
 | `isReleased`          | `.is-released` or `.is-releasing` | Conditional variable for the released state                                   |
 | `pressFactor`         | Always available (animatable)     | Normalized factor: 0 = released, 1 = pressed, interpolates during transitions |
+| `pressFactorCond`     | Not fully released                | Conditional mirror of `pressFactor`, drops to `unset` when fully released     |
 
 #### 💡 Usage Example
 

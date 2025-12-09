@@ -504,6 +504,43 @@ export interface PressStateVars {
      *     - `pressFactor = 1`: pressed (active lifecycle state)  
      */
     pressFactor        : unknown
+    
+    /**
+     * A conditional mirror of `pressFactor` representing the **press lifecycle state**.
+     * Mirrors `pressFactor` during transitions and when fully pressed, but is explicitly
+     * set to `unset` once the component reaches its baseline released state.
+     * 
+     * ### Expected values:
+     * - **unset** : settled released (baseline inactive, declaration dropped)
+     * - **1**     : settled pressed (mirrors `pressFactor`)
+     * - **0 → 1** : pressing transition (mirrors `pressFactor`)
+     * - **1 → 0** : releasing transition (mirrors `pressFactor`)
+     * 
+     * ### Usage:
+     * - Use when dependent properties should be **poisoned** (ignored) in the baseline released state.
+     *   Example: gating `filter`, `color-mix`, or other overrides that should disappear when released.
+     * - During animations and in the fully pressed state, `pressFactorCond` mirrors the numeric
+     *   value of `pressFactor`, ensuring smooth transitions and consistency.
+     * - Applicable to numeric-based properties such as `opacity`, `color`, `transform`, `box-shadow`, etc.
+     * - Values outside the 0–1 range are allowed, and implementators must handle them appropriately.  
+     *   Example of an animation with a spring/bump effect:  
+     *     `0%: 0`, `90%: 1.2`, `100%: 1`  
+     *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
+     * 
+     * ### Notes:
+     * - **Value rationale:**  
+     *   - The factor represents the active lifecycle state (pressed), not the baseline (released).  
+     *   - Mirrors the active lifecycle state (pressed) during transitions and when settled pressed.  
+     *   - Drops to `unset` only when fully released, so dependent declarations fall back cleanly.  
+     *   - This keeps naming predictable and teachable across the ecosystem:
+     *     - `pressFactorCond = unset`: settled released (baseline inactive, declaration dropped)
+     *     - `pressFactorCond = 0`: released during transition (numeric interpolation)
+     *     - `pressFactorCond = 1`: pressed (settled active lifecycle state)  
+     * - **Naming rationale:**  
+     *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
+     *     and when pressed, but conditionally drops to `unset` at baseline released.
+     */
+    pressFactorCond    : unknown
 }
 
 

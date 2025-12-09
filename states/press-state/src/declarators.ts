@@ -304,6 +304,12 @@ export const usesPressState = (options?: CssPressStateOptions): CssPressState =>
                 initialValue : 0,
             }),
             
+            // Mirror `pressFactor` into `pressFactorCond` by default:
+            // - During transitions and when fully pressed, `pressFactorCond` follows `pressFactor`.
+            ...vars({
+                [pressStateVars.pressFactorCond]: pressStateVars.pressFactor,
+            }),
+            
             
             
             ...states({
@@ -346,6 +352,14 @@ export const usesPressState = (options?: CssPressStateOptions): CssPressState =>
                 ...ifPressed(
                     vars({
                         [pressStateVars.pressFactor]: 1,
+                    })
+                ),
+                
+                // Drop `pressFactorCond` when fully released (baseline inactive):
+                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
+                ...ifReleased(
+                    vars({
+                        [pressStateVars.pressFactorCond]: 'unset',
                     })
                 ),
             }),
