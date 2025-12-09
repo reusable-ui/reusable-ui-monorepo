@@ -365,6 +365,12 @@ export const usesActiveState = (options?: CssActiveStateOptions): CssActiveState
                 initialValue : 0,
             }),
             
+            // Mirror `activeFactor` into `activeFactorCond` by default:
+            // - During transitions and when fully active, `activeFactorCond` follows `activeFactor`.
+            ...vars({
+                [activeStateVars.activeFactorCond]: activeStateVars.activeFactor,
+            }),
+            
             
             
             ...states({
@@ -407,6 +413,14 @@ export const usesActiveState = (options?: CssActiveStateOptions): CssActiveState
                 ...ifActive(
                     vars({
                         [activeStateVars.activeFactor]: 1,
+                    })
+                ),
+                
+                // Drop `activeFactorCond` when fully inactive (baseline inactive):
+                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
+                ...ifInactive(
+                    vars({
+                        [activeStateVars.activeFactorCond]: 'unset',
                     })
                 ),
             }),

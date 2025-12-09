@@ -270,6 +270,7 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 | `isActive`              | `.is-active` or `.is-activating`     | Conditional variable for the active state                                    |
 | `isInactive`            | `.is-inactive` or `.is-deactivating` | Conditional variable for the inactive state                                  |
 | `activeFactor`          | Always available (animatable)        | Normalized factor: 0 = inactive, 1 = active, interpolates during transitions |
+| `activeFactorCond`      | Not fully inactive                   | Conditional mirror of `activeFactor`, drops to `unset` when fully inactive   |
 
 #### 💡 Usage Example
 

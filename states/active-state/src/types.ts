@@ -375,6 +375,43 @@ export interface ActiveStateVars {
      *     - `activeFactor = 1`: active (active lifecycle state)  
      */
     activeFactor          : unknown
+    
+    /**
+     * A conditional mirror of `activeFactor` representing the **active lifecycle state**.
+     * Mirrors `activeFactor` during transitions and when fully active, but is explicitly
+     * set to `unset` once the component reaches its baseline inactive state.
+     * 
+     * ### Expected values:
+     * - **unset** : settled inactive (baseline inactive, declaration dropped)
+     * - **1**     : settled active (mirrors `activeFactor`)
+     * - **0 → 1** : activating transition (mirrors `activeFactor`)
+     * - **1 → 0** : deactivating transition (mirrors `activeFactor`)
+     * 
+     * ### Usage:
+     * - Use when dependent properties should be **poisoned** (ignored) in the baseline inactive state.
+     *   Example: gating `filter`, `color-mix`, or other overrides that should disappear when inactive.
+     * - During animations and in the fully active state, `activeFactorCond` mirrors the numeric
+     *   value of `activeFactor`, ensuring smooth transitions and consistency.
+     * - Applicable to numeric-based properties such as `opacity`, `color`, `transform`, `box-shadow`, etc.
+     * - Values outside the 0–1 range are allowed, and implementators must handle them appropriately.  
+     *   Example of an animation with a spring/bump effect:  
+     *     `0%: 0`, `90%: 1.2`, `100%: 1`  
+     *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
+     * 
+     * ### Notes:
+     * - **Value rationale:**  
+     *   - The factor represents the active lifecycle state (active), not the baseline (inactive).  
+     *   - Mirrors the active lifecycle state (active) during transitions and when settled active.  
+     *   - Drops to `unset` only when fully inactive, so dependent declarations fall back cleanly.  
+     *   - This keeps naming predictable and teachable across the ecosystem:
+     *     - `activeFactorCond = unset`: settled inactive (baseline inactive, declaration dropped)
+     *     - `activeFactorCond = 0`: inactive during transition (numeric interpolation)
+     *     - `activeFactorCond = 1`: active (settled active lifecycle state)  
+     * - **Naming rationale:**  
+     *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
+     *     and when active, but conditionally drops to `unset` at baseline inactive.
+     */
+    activeFactorCond      : unknown
 }
 
 
