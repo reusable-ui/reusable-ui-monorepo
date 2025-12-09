@@ -301,6 +301,12 @@ export const usesHoverState = (options?: CssHoverStateOptions): CssHoverState =>
                 initialValue : 0,
             }),
             
+            // Mirror `hoverFactor` into `hoverFactorCond` by default:
+            // - During transitions and when fully hovered, `hoverFactorCond` follows `hoverFactor`.
+            ...vars({
+                [hoverStateVars.hoverFactorCond]: hoverStateVars.hoverFactor,
+            }),
+            
             
             
             ...states({
@@ -343,6 +349,14 @@ export const usesHoverState = (options?: CssHoverStateOptions): CssHoverState =>
                 ...ifHovered(
                     vars({
                         [hoverStateVars.hoverFactor]: 1,
+                    })
+                ),
+                
+                // Drop `hoverFactorCond` when fully unhovered (baseline inactive):
+                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
+                ...ifUnhovered(
+                    vars({
+                        [hoverStateVars.hoverFactorCond]: 'unset',
                     })
                 ),
             }),

@@ -212,6 +212,7 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 | `isHovered`           | `.is-hovered` or `.is-hovering`     | Conditional variable for the hovered state                                     |
 | `isUnhovered`         | `.is-unhovered` or `.is-unhovering` | Conditional variable for the unhovered state                                   |
 | `hoverFactor`         | Always available (animatable)       | Normalized factor: 0 = unhovered, 1 = hovered, interpolates during transitions |
+| `hoverFactorCond`     | Not fully unhovered                 | Conditional mirror of `hoverFactor`, drops to `unset` when fully unhovered     |
 
 #### 💡 Usage Example
 
