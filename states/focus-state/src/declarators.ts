@@ -301,6 +301,12 @@ export const usesFocusState = (options?: CssFocusStateOptions): CssFocusState =>
                 initialValue : 0,
             }),
             
+            // Mirror `focusFactor` into `focusFactorCond` by default:
+            // - During transitions and when fully focused, `focusFactorCond` follows `focusFactor`.
+            ...vars({
+                [focusStateVars.focusFactorCond]: focusStateVars.focusFactor,
+            }),
+            
             
             
             ...states({
@@ -343,6 +349,14 @@ export const usesFocusState = (options?: CssFocusStateOptions): CssFocusState =>
                 ...ifFocused(
                     vars({
                         [focusStateVars.focusFactor]: 1,
+                    })
+                ),
+                
+                // Drop `focusFactorCond` when fully blurred (baseline inactive):
+                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
+                ...ifBlurred(
+                    vars({
+                        [focusStateVars.focusFactorCond]: 'unset',
                     })
                 ),
             }),

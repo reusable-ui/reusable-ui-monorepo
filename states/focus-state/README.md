@@ -212,13 +212,14 @@ Generates CSS rules that conditionally apply the focus/blur animations based on 
 These variables are only active during their respective transition phases.  
 Use `switchOf(...)` to ensure graceful fallback when inactive.
 
-| Variable             | Active When...                    | Purpose                                                                       |
-|----------------------|-----------------------------------|-------------------------------------------------------------------------------|
-| `animationFocusing`  | `.is-focusing`                    | Runs the focusing animation sequence                                          |
-| `animationBlurring`  | `.is-blurring`                    | Runs the blurring animation sequence                                          |
-| `isBlurred`          | `.is-blurred` or `.is-blurring`   | Conditional variable for the blurred state                                    |
-| `isFocused`          | `.is-focused` or `.is-focusing`   | Conditional variable for the focused state                                    |
-| `focusFactor`        | Always available (animatable)     | Normalized factor: 0 = blurred, 1 = focused, interpolates during transitions  |
+| Variable             | Active When...                    | Purpose                                                                      |
+|----------------------|-----------------------------------|------------------------------------------------------------------------------|
+| `animationFocusing`  | `.is-focusing`                    | Runs the focusing animation sequence                                         |
+| `animationBlurring`  | `.is-blurring`                    | Runs the blurring animation sequence                                         |
+| `isBlurred`          | `.is-blurred` or `.is-blurring`   | Conditional variable for the blurred state                                   |
+| `isFocused`          | `.is-focused` or `.is-focusing`   | Conditional variable for the focused state                                   |
+| `focusFactor`        | Always available (animatable)     | Normalized factor: 0 = blurred, 1 = focused, interpolates during transitions |
+| `focusFactorCond`    | Not fully blurred                 | Conditional mirror of `focusFactor`, drops to `unset` when fully blurred     |
 
 #### 💡 Usage Example
 
