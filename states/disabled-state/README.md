@@ -226,7 +226,7 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 | `isEnabled`          | `.is-enabled` or `.is-enabling`   | Conditional variable for the enabled state                                    |
 | `isDisabled`         | `.is-disabled` or `.is-disabling` | Conditional variable for the disabled state                                   |
 | `disableFactor`      | Always available (animatable)     | Normalized factor: 0 = enabled, 1 = disabled, interpolates during transitions |
-| `disableFactorCond`  | not fully enabled                 | Conditional mirror of `disableFactor`, drops to `unset` when fully enabled    |
+| `disableFactorCond`  | Not fully enabled                 | Conditional mirror of `disableFactor`, drops to `unset` when fully enabled    |
 
 #### 💡 Usage Example
 
