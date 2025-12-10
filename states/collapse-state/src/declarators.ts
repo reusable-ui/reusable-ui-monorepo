@@ -303,6 +303,12 @@ export const usesCollapseState = (options?: CssCollapseStateOptions): CssCollaps
                 initialValue : 0,
             }),
             
+            // Mirror `expandFactor` into `expandFactorCond` by default:
+            // - During transitions and when fully expanded, `expandFactorCond` follows `expandFactor`.
+            ...vars({
+                [collapseStateVars.expandFactorCond]: collapseStateVars.expandFactor,
+            }),
+            
             
             
             ...states({
@@ -345,6 +351,14 @@ export const usesCollapseState = (options?: CssCollapseStateOptions): CssCollaps
                 ...ifExpanded(
                     vars({
                         [collapseStateVars.expandFactor]: 1,
+                    })
+                ),
+                
+                // Drop `expandFactorCond` when fully collapsed (baseline inactive):
+                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
+                ...ifCollapsed(
+                    vars({
+                        [collapseStateVars.expandFactorCond]: 'unset',
                     })
                 ),
             }),

@@ -359,6 +359,44 @@ export interface CollapseStateVars {
      *   - `expandFactor` instead of `collapseFactor`: factors consistently use the *base form* of the active state (`disable`, `readOnly`, `expand`, etc.).  
      */
     expandFactor        : unknown
+    
+    /**
+     * A conditional mirror of `expandFactor` representing the **expand/collapse lifecycle state**.
+     * Mirrors `expandFactor` during transitions and when fully expanded, but is explicitly
+     * set to `unset` once the component reaches its baseline collapsed state.
+     * 
+     * ### Expected values:
+     * - **unset** : settled collapsed (baseline inactive, declaration dropped)
+     * - **1**     : settled expanded (mirrors `expandFactor`)
+     * - **0 → 1** : expanding transition (mirrors `expandFactor`)
+     * - **1 → 0** : collapsing transition (mirrors `expandFactor`)
+     * 
+     * ### Usage:
+     * - Use when dependent properties should be **poisoned** (ignored) in the baseline collapsed state.
+     *   Example: gating `filter`, `color-mix`, or other overrides that should disappear when collapsed.
+     * - During animations and in the fully expanded state, `expandFactorCond` mirrors the numeric
+     *   value of `expandFactor`, ensuring smooth transitions and consistency.
+     * - Applicable to numeric-based properties such as `opacity`, `color`, `transform`, `box-shadow`, etc.
+     * - Values outside the 0–1 range are allowed, and implementators must handle them appropriately.  
+     *   Example of an animation with a spring/bump effect:  
+     *     `0%: 0`, `90%: 1.2`, `100%: 1`  
+     *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
+     * 
+     * ### Notes:
+     * - **Value rationale:**  
+     *   - The factor represents the active lifecycle state (expanded), not the baseline (collapsed).  
+     *   - Mirrors the active lifecycle state (expanded) during transitions and when settled expanded.  
+     *   - Drops to `unset` only when fully collapsed, so dependent declarations fall back cleanly.  
+     *   - This keeps naming predictable and teachable across the ecosystem:
+     *     - `expandFactorCond = unset`: settled collapsed (baseline inactive, declaration dropped)
+     *     - `expandFactorCond = 0`: collapsed during transition (numeric interpolation)
+     *     - `expandFactorCond = 1`: expanded (settled active lifecycle state)  
+     * - **Naming rationale:**  
+     *   - `expandFactorCond` instead of `collapseFactorCond`: factors consistently use the *base form* of the active state (`disable`, `readOnly`, `focus`, `hover`, `press`, `active`, `expand`, etc.).  
+     *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
+     *     and when expanded, but conditionally drops to `unset` at baseline collapsed.
+     */
+    expandFactorCond    : unknown
 }
 
 

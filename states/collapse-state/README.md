@@ -213,6 +213,7 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 | `isExpanded`          | `.is-expanded` or `.is-expanding`   | Conditional variable for the expanded state                                     |
 | `isCollapsed`         | `.is-collapsed` or `.is-collapsing` | Conditional variable for the collapsed state                                    |
 | `expandFactor`        | Always available (animatable)       | Normalized factor: 0 = collapsed, 1 = expanded, interpolates during transitions |
+| `expandFactorCond`    | Not fully collapsed                 | Conditional mirror of `expandFactor`, drops to `unset` when fully collapsed     |
 
 #### 💡 Usage Example
 
