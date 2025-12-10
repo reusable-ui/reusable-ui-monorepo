@@ -13,6 +13,7 @@ import {
 import {
     type ActiveStateProps,
     type ActiveStateChangeProps,
+    type ActiveChangeDispatcherOptions,
     type ActiveStatePhaseEventProps,
     type UncontrollableActiveStateProps,
     type ActiveStateOptions,
@@ -120,7 +121,7 @@ const useEffectiveActiveValue = (controlledActive: Required<ActiveStateProps>['a
  * @param options - An optional configuration for customizing activate/deactivate behavior.
  * @returns The resolved active/inactive state.
  */
-export const useActiveState = (props: ActiveStateProps & { defaultActive: never }, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>) : boolean => {
+export const useActiveState = (props: ActiveStateProps & { defaultActive?: never }, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>) : boolean => {
     // Extract options and assign defaults:
     const {
         defaultActive        = defaultInitialActive,
@@ -163,9 +164,10 @@ export const useActiveState = (props: ActiveStateProps & { defaultActive: never 
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  * 
  * @param props - The component props that may include `onActiveChange` callback but must exclude `defaultActive`.
+ * @param options - Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for activation change requests.
  */
-export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveStateChangeProps<TChangeEvent> & { defaultActive: never }) : ValueChangeDispatcher<boolean, TChangeEvent> => {
+export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveStateChangeProps<TChangeEvent> & { defaultActive?: never }, options?: ActiveChangeDispatcherOptions<TChangeEvent>) : ValueChangeDispatcher<boolean, TChangeEvent> => {
     // States and flags:
     
     // Resolve whether the component is disabled:
@@ -183,7 +185,7 @@ export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveS
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const dispatchActiveChange : ValueChangeDispatcher<boolean, TChangeEvent> = useStableCallback((newActive: boolean, event: TChangeEvent): void => {
-        // Halt expansion lifecycle when the component is in a restricted state (interaction blocked):
+        // Halt activation lifecycle when the component is in a restricted state (interaction blocked):
         // - Prevents internal state updates (uncontrolled mode)
         // - Prevents external change requests (controlled mode)
         // - Prevents notifying listeners of a change
@@ -191,8 +193,8 @@ export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveS
         
         
         
-        // No internal state to update in controlled mode:
-        // if (!isControlled) setInternalActive(newActive);
+        // Update the internal state (if provided):
+        options?.onInternalChange?.(newActive, event);
         
         
         
@@ -356,21 +358,11 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
         active        : initialIntent        = defaultInitialIntent,
         active        : controlledActive,
         cascadeActive : cascadeActive        = defaultCascadeActive,
-        onActiveChange,
     } = props;
     
     
     
     // States and flags:
-    
-    // Resolve whether the component is disabled:
-    const isDisabled      = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
-    
-    // Resolve whether the component is readonly:
-    const isReadonly      = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
-    
-    // Resolve whether the component is in a restricted state:
-    const isRestricted    = isDisabled || isReadonly;
     
     // Internal activation state with animation lifecycle:
     const [internalActive, setInternalActive, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
@@ -428,22 +420,11 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
     // A Stable dispatcher for activation change requests.
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const dispatchActiveChange : ValueChangeDispatcher<boolean, TChangeEvent> = useStableCallback((newActive: boolean, event: TChangeEvent): void => {
-        // Halt expansion lifecycle when the component is in a restricted state (interaction blocked):
-        // - Prevents internal state updates (uncontrolled mode)
-        // - Prevents external change requests (controlled mode)
-        // - Prevents notifying listeners of a change
-        if (isRestricted) return;
-        
-        
-        
-        // Update the internal state only if uncontrolled:
-        if (!isControlled) setInternalActive(newActive);
-        
-        
-        
-        // Dispatch external change handler (if provided):
-        onActiveChange?.(newActive, event);
+    const dispatchActiveChange = useActiveChangeDispatcher<TChangeEvent>(props as Omit<typeof props, 'defaultActive'>, {
+        onInternalChange: (newActive) => {
+            // Update the internal state only if uncontrolled:
+            if (!isControlled) setInternalActive(newActive);
+        },
     });
     
     

@@ -130,7 +130,7 @@ Unlike `useActiveBehaviorState()`, which supports both controlled and uncontroll
 - Supports contextual override via `cascadeActive`.
 - Ideal for components that **consume** the resolved `active` state.
 
-### `useActiveChangeDispatcher(props)`
+### `useActiveChangeDispatcher(props, options)`
 
 Creates a stable dispatcher for requesting a change to the active state.
 
