@@ -88,6 +88,22 @@ export interface CollapseStateChangeProps<TChangeEvent = unknown> {
 }
 
 /**
+ * Options for customizing the collapse change dispatcher behavior.
+ * 
+ * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
+ */
+export interface CollapseChangeDispatcherOptions<TChangeEvent = unknown> {
+    /**
+     * Optional callback invoked when an internal state update should occur.
+     * 
+     * - Typically used in **uncontrolled mode** to update internal expansion state.
+     * - In controlled mode, this callback is usually omitted since the parent
+     *   component dictates the expansion state.
+     */
+    onInternalChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
+}
+
+/**
  * Props for listening lifecycle events triggered by expand/collapse phase transitions.
  * 
  * These events allow external listeners to react to phase changes—such as logging, analytics,

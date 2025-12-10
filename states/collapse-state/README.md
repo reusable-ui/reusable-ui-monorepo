@@ -125,7 +125,7 @@ Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontro
 - Supports only controlled mode.
 - Ideal for components that **consume** the resolved `expanded` state.
 
-### `useCollapseChangeDispatcher(props)`
+### `useCollapseChangeDispatcher(props, options)`
 
 Creates a stable dispatcher for requesting a change to the expanded state.
 

@@ -12,6 +12,7 @@ import {
 import {
     type CollapseStateProps,
     type CollapseStateChangeProps,
+    type CollapseChangeDispatcherOptions,
     type CollapseStatePhaseEventProps,
     type UncontrollableCollapseStateProps,
     type CollapseStateOptions,
@@ -74,7 +75,7 @@ import {
  * @param options - An optional configuration for customizing expand/collapse behavior.
  * @returns The resolved expanded/collapsed state.
  */
-export const useCollapseState = (props: CollapseStateProps & { defaultExpanded: never }, options?: Pick<CollapseStateOptions, 'defaultExpanded'>) : boolean => {
+export const useCollapseState = (props: CollapseStateProps & { defaultExpanded?: never }, options?: Pick<CollapseStateOptions, 'defaultExpanded'>) : boolean => {
     // Extract options and assign defaults:
     const {
         defaultExpanded   = defaultInitialExpanded,
@@ -108,9 +109,10 @@ export const useCollapseState = (props: CollapseStateProps & { defaultExpanded: 
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  * 
  * @param props - The component props that may include `onExpandedChange` callback but must exclude `defaultExpanded`.
+ * @param options - Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for expansion change requests.
  */
-export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: CollapseStateChangeProps<TChangeEvent> & { defaultExpanded: never }) : ValueChangeDispatcher<boolean, TChangeEvent> => {
+export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: CollapseStateChangeProps<TChangeEvent> & { defaultExpanded?: never }, options?: CollapseChangeDispatcherOptions<TChangeEvent>) : ValueChangeDispatcher<boolean, TChangeEvent> => {
     // States and flags:
     
     // Resolve whether the component is disabled:
@@ -136,8 +138,8 @@ export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: Colla
         
         
         
-        // No internal state to update in controlled mode:
-        // if (!isControlled) setInternalExpanded(newExpanded);
+        // Update the internal state (if provided):
+        options?.onInternalChange?.(newExpanded, event);
         
         
         
@@ -291,21 +293,11 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
         defaultExpanded : defaultInitialIntent = defaultExpanded,
         expanded        : initialIntent        = defaultInitialIntent,
         expanded        : controlledExpanded,
-        onExpandedChange,
     } = props;
     
     
     
     // States and flags:
-    
-    // Resolve whether the component is disabled:
-    const isDisabled        = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
-    
-    // Resolve whether the component is readonly:
-    const isReadonly        = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
-    
-    // Resolve whether the component is in a restricted state:
-    const isRestricted      = isDisabled || isReadonly;
     
     // Internal expansion state with animation lifecycle:
     const [internalExpanded, setInternalExpanded, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
@@ -362,22 +354,11 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
     // A Stable dispatcher for expansion change requests.
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const dispatchExpandedChange : ValueChangeDispatcher<boolean, TChangeEvent> = useStableCallback((newExpanded: boolean, event: TChangeEvent): void => {
-        // Halt expansion lifecycle when the component is in a restricted state (interaction blocked):
-        // - Prevents internal state updates (uncontrolled mode)
-        // - Prevents external change requests (controlled mode)
-        // - Prevents notifying listeners of a change
-        if (isRestricted) return;
-        
-        
-        
-        // Update the internal state only if uncontrolled:
-        if (!isControlled) setInternalExpanded(newExpanded);
-        
-        
-        
-        // Dispatch external change handler (if provided):
-        onExpandedChange?.(newExpanded, event);
+    const dispatchExpandedChange = useCollapseChangeDispatcher<TChangeEvent>(props as Omit<typeof props, 'defaultExpanded'>, {
+        onInternalChange: (newExpanded) => {
+            // Update the internal state only if uncontrolled:
+            if (!isControlled) setInternalExpanded(newExpanded);
+        },
     });
     
     
