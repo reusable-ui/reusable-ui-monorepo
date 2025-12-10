@@ -630,6 +630,12 @@ export const usesValidityState = (options?: CssValidityStateOptions): CssValidit
                 initialValue : 0,
             }),
             
+            // Mirror `validityFactor` into `validityFactorCond` by default:
+            // - During transitions and when fully valid/invalid, `validityFactorCond` follows `validityFactor`.
+            ...vars({
+                [validityStateVars.validityFactorCond]: validityStateVars.validityFactor,
+            }),
+            
             
             
             ...states({
@@ -724,6 +730,14 @@ export const usesValidityState = (options?: CssValidityStateOptions): CssValidit
                 ...ifInvalid(
                     vars({
                         [validityStateVars.validityFactor] : -1,
+                    })
+                ),
+                
+                // Drop `validityFactorCond` when fully unvalidated (baseline inactive):
+                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
+                ...ifUnvalidated(
+                    vars({
+                        [validityStateVars.validityFactorCond]: 'unset',
                     })
                 ),
             }),

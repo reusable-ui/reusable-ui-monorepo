@@ -464,6 +464,46 @@ export interface ValidityStateVars {
      *     - `validityFactor = +1` : valid (active lifecycle state)  
      */
     validityFactor        : unknown
+    
+    /**
+     * A conditional mirror of `validityFactor` representing the **validity lifecycle state**.
+     * Mirrors `validityFactor` during transitions and when fully valid/invalid, but is explicitly
+     * set to `unset` once the component reaches its baseline unvalidated state.
+     * 
+     * ### Expected values:
+     * - **+1**        : settled valid (mirrors `validityFactor`)
+     * - **unset**     : settled unvalidated (baseline inactive, declaration dropped)
+     * - **-1**        : settled invalid (mirrors `validityFactor`)
+     * - **0/-1 → +1** : validating transition (mirrors `validityFactor`)
+     * - **±1 → 0**    : unvalidating transition (mirrors `validityFactor`)
+     * - **0/+1 → -1** : invalidating transition (mirrors `validityFactor`)
+     * 
+     * ### Usage:
+     * - Use when dependent properties should be **poisoned** (ignored) in the baseline unvalidated state.
+     *   Example: gating `filter`, `color-mix`, or other overrides that should disappear when unvalidated.
+     * - During animations and in the fully valid/invalid states, `validityFactorCond` mirrors the numeric
+     *   value of `validityFactor`, ensuring smooth transitions and consistency.
+     * - Applicable to numeric-based properties such as `opacity`, `color`, `transform`, `box-shadow`, etc.
+     * - Values outside the -1…+1 range are allowed, and implementators must handle them appropriately.  
+     *   Example of an animation with a spring/bump effect:  
+     *     `0%: 0`, `90%: 1.2`, `100%: 1`  
+     *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
+     * 
+     * ### Notes:
+     * - **Value rationale:**  
+     *   - The factor represents the active lifecycle states (valid/invalid), not the baseline (unvalidated).  
+     *   - Mirrors the active lifecycle states (valid/invalid) during transitions and when settled valid/invalid.  
+     *   - Drops to `unset` only when fully unvalidated, so dependent declarations fall back cleanly.  
+     *   - This keeps naming predictable and teachable across the ecosystem:
+     *     - `validityFactorCond = unset`: settled unvalidated (baseline inactive, declaration dropped)
+     *     - `validityFactorCond = 0`: unvalidated during transition (numeric interpolation)
+     *     - `validityFactorCond = -1`: invalid (settled active lifecycle state)
+     *     - `validityFactorCond = +1`: valid (settled active lifecycle state)  
+     * - **Naming rationale:**  
+     *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
+     *     and when valid/invalid, but conditionally drops to `unset` at baseline unvalidated.
+     */
+    validityFactorCond    : unknown
 }
 
 

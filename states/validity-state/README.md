@@ -234,6 +234,7 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 | `wasInvalid`            | `.was-invalid`                          | Conditional variable for the previously invalid state                                         |
 | `wasUnvalidated`        | `.was-unvalidated`                      | Conditional variable for the previously unvalidated state                                     |
 | `validityFactor`        | Always available (animatable)           | Normalized factor: -1 = invalid, 0 = unvalidated, +1 = valid, interpolates during transitions |
+| `validityFactorCond`    | Not fully unvalidated                   | Conditional mirror of `validityFactor`, drops to `unset` when fully unvalidated               |
 
 #### 💡 Usage Example
 
