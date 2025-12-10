@@ -18,6 +18,7 @@ import {
 import {
     type ViewStateProps,
     type ViewStateChangeProps,
+    type ViewIndexChangeDispatcherOptions,
     type ViewStatePhaseEventProps,
     type UncontrollableViewStateProps,
     type ViewStateOptions,
@@ -96,7 +97,7 @@ import {
  * @param options - An optional configuration for customizing view-switching behavior.
  * @returns The resolved view index.
  */
-export const useViewState = (props: ViewStateProps & { defaultViewIndex: never }, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>) : number => {
+export const useViewState = (props: ViewStateProps & { defaultViewIndex?: never }, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>) : number => {
     // Extract options and assign defaults:
     const {
         defaultViewIndex  = defaultInitialViewIndex,
@@ -138,9 +139,10 @@ export const useViewState = (props: ViewStateProps & { defaultViewIndex: never }
  * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
  * 
  * @param props - The component props that may include `onViewIndexChange` callback but must exclude `defaultViewIndex`.
+ * @param options - Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for view index change requests.
  */
-export const useViewIndexChangeDispatcher = <TChangeEvent = unknown>(props: ViewStateChangeProps<TChangeEvent> & { defaultViewIndex: never }) : ValueChangeDispatcher<number, TChangeEvent> => {
+export const useViewIndexChangeDispatcher = <TChangeEvent = unknown>(props: ViewStateChangeProps<TChangeEvent> & { defaultViewIndex?: never }, options?: ViewIndexChangeDispatcherOptions<TChangeEvent>) : ValueChangeDispatcher<number, TChangeEvent> => {
     // States and flags:
     
     // Resolve whether the component is disabled:
@@ -166,8 +168,8 @@ export const useViewIndexChangeDispatcher = <TChangeEvent = unknown>(props: View
         
         
         
-        // No internal state to update in controlled mode:
-        // if (!isControlled) setInternalViewIndex(newViewIndex);
+        // Update the internal state (if provided):
+        options?.onInternalChange?.(newViewIndex, event);
         
         
         
@@ -357,7 +359,6 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
         defaultViewIndex : defaultInitialIntent = defaultViewIndex,
         viewIndex        : rawInitialIntent     = defaultInitialIntent,
         viewIndex        : controlledViewIndex,
-        onViewIndexChange,
     } = props;
     
     
@@ -389,15 +390,6 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
         │ → `prevSettledViewIndex` enables directional inference                                │
         └───────────────────────────────────────────────────────────────────────────────────────┘
     */
-    
-    // Resolve whether the component is disabled:
-    const isDisabled           = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
-    
-    // Resolve whether the component is readonly:
-    const isReadonly           = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
-    
-    // Resolve whether the component is in a restricted state:
-    const isRestricted         = isDisabled || isReadonly;
     
     // Clamp the initial intent within valid range:
     const initialIntent        = clamp(minViewIndex, rawInitialIntent, maxViewIndex, viewIndexStep);
@@ -465,22 +457,11 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     // A stable dispatcher for view index change requests.
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const dispatchViewIndexChange : ValueChangeDispatcher<number, TChangeEvent> = useStableCallback((newViewIndex: number, event: TChangeEvent): void => {
-        // Halt expansion lifecycle when the component is in a restricted state (interaction blocked):
-        // - Prevents internal state updates (uncontrolled mode)
-        // - Prevents external change requests (controlled mode)
-        // - Prevents notifying listeners of a change
-        if (isRestricted) return;
-        
-        
-        
-        // Update the internal state only if uncontrolled:
-        if (!isControlled) setInternalViewIndex(newViewIndex);
-        
-        
-        
-        // Dispatch external change handler (if provided):
-        onViewIndexChange?.(newViewIndex, event);
+    const dispatchViewIndexChange = useViewIndexChangeDispatcher<TChangeEvent>(props as Omit<typeof props, 'defaultViewIndex'>, {
+        onInternalChange: (newViewIndex) => {
+            // Update the internal state only if uncontrolled:
+            if (!isControlled) setInternalViewIndex(newViewIndex);
+        },
     });
     
     

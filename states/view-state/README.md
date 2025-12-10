@@ -227,7 +227,7 @@ Unlike `useViewBehaviorState()`, which supports both controlled and uncontrolled
 - Supports only controlled mode.
 - Ideal for components that **consume** the resolved `viewIndex` value.
 
-### `useViewIndexChangeDispatcher(props)`
+### `useViewIndexChangeDispatcher(props, options)`
 
 Creates a stable dispatcher for requesting a change to the view index.
 

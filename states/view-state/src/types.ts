@@ -91,6 +91,22 @@ export interface ViewStateChangeProps<TChangeEvent = unknown> {
 }
 
 /**
+ * Options for customizing the view index change dispatcher behavior.
+ * 
+ * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
+ */
+export interface ViewIndexChangeDispatcherOptions<TChangeEvent = unknown> {
+    /**
+     * Optional callback invoked when an internal state update should occur.
+     * 
+     * - Typically used in **uncontrolled mode** to update internal view index.
+     * - In controlled mode, this callback is usually omitted since the parent
+     *   component dictates the view index.
+     */
+    onInternalChange ?: ValueChangeEventHandler<number, TChangeEvent>
+}
+
+/**
  * Props for listening lifecycle events triggered by view phase transitions.
  * 
  * These events allow external listeners to react to phase changes—such as logging, analytics,
