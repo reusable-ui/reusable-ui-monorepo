@@ -304,17 +304,18 @@ Generates CSS rules that conditionally apply the view-switching animations based
 These variables are only active during their respective transition phases.  
 Use `switchOf(...)` to ensure graceful fallback when inactive.
 
-| Variable                 | Active When...                        | Purpose                                                                 |
-|--------------------------|---------------------------------------|-------------------------------------------------------------------------|
-| `animationViewAdvancing` | `.view-advancing`                     | Runs the advancing animation sequence (0 → +1)                          |
-| `animationViewReceding`  | `.view-receding`                      | Runs the receding animation sequence (0 → -1)                           |
-| `isViewSettled`          | `.view-settled`                       | Conditional variable for the settled state                              |
-| `isViewAdvancing`        | `.view-advancing`                     | Conditional variable for the advancing transition                       |
-| `isViewReceding`         | `.view-receding`                      | Conditional variable for the receding transition                        |
-| `isViewTransitioning`    | `.view-advancing` or `.view-receding` | Conditional variable for the advancing/receding transition              |
-| `viewIndex`              | Always available                      | Current destination view index                                          |
-| `prevViewIndex`          | Having changed `viewIndex`            | Previous view index, used for directional inference                     |
-| `viewIndexFactor`        | Always available (animatable)         | Normalized factor: -1 ⇄ 0 ⇄ +1; resets to 0 after transition completes |
+| Variable                 | Active When...                        | Purpose                                                                        |
+|--------------------------|---------------------------------------|--------------------------------------------------------------------------------|
+| `animationViewAdvancing` | `.view-advancing`                     | Runs the advancing animation sequence (0 → +1)                                 |
+| `animationViewReceding`  | `.view-receding`                      | Runs the receding animation sequence (0 → -1)                                  |
+| `isViewSettled`          | `.view-settled`                       | Conditional variable for the settled state                                     |
+| `isViewAdvancing`        | `.view-advancing`                     | Conditional variable for the advancing transition                              |
+| `isViewReceding`         | `.view-receding`                      | Conditional variable for the receding transition                               |
+| `isViewTransitioning`    | `.view-advancing` or `.view-receding` | Conditional variable for the advancing/receding transition                     |
+| `viewIndex`              | Always available                      | Current destination view index                                                 |
+| `prevViewIndex`          | Having changed `viewIndex`            | Previous view index, used for directional inference                            |
+| `viewIndexFactor`        | Always available (animatable)         | Normalized factor: -1 ⇄ 0 ⇄ +1; resets to 0 after transition completes        |
+| `viewIndexFactorCond`    | Not fully settled                     | Conditional mirror of `viewIndexFactor`, drops to `unset` when view is settled |
 
 #### 💡 Usage Example
 

@@ -262,6 +262,12 @@ export const usesViewState = (options?: CssViewStateOptions): CssViewState => {
                 initialValue : 0,
             }),
             
+            // Mirror `viewIndexFactor` into `viewIndexFactorCond` by default:
+            // - During advancing/receding transitions, `viewIndexFactorCond` follows `viewIndexFactor`.
+            ...vars({
+                [viewStateVars.viewIndexFactorCond]: viewStateVars.viewIndexFactor,
+            }),
+            
             
             
             ...states({
@@ -315,6 +321,14 @@ export const usesViewState = (options?: CssViewStateOptions): CssViewState => {
                 
                 // ❌ No settled assignment for `viewIndexFactor`.
                 // It resets to 0 after animation completes to reflect the collapsed single-view rendering.
+                
+                // Drop `viewIndexFactorCond` when the view is settled (baseline single-view rendering):
+                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
+                ...ifViewSettled(
+                    vars({
+                        [viewStateVars.viewIndexFactorCond]: 'unset',
+                    })
+                ),
             }),
         }),
         
