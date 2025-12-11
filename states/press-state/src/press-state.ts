@@ -229,7 +229,7 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
     
     // States and flags:
     
-    // Resolve effective hover state:
+    // Resolve effective press state:
     const {
         pressed: effectivePressed,
         handlePointerDown,
