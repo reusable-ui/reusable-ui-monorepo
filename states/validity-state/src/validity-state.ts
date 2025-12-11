@@ -201,42 +201,16 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
 export const useValidityBehaviorState = <TElement extends Element = HTMLElement>(props: ValidityStateProps & ValidityStateUpdateProps, options?: ValidityStateOptions): ValidityBehaviorState<TElement> => {
     // Extract options and assign defaults:
     const {
-        defaultValidity   = defaultDeclarativeValidity,
-        fallbackValidity  = defaultFallbackValidity,
         animationPattern  = ['validating', 'invalidating', 'unvalidating'], // Matches animation names for transitions
         animationBubbling = false,
     } = options ?? {};
     
     
     
-    // Extract props and assign defaults:
-    const {
-        validity         : controlledValidity = defaultValidity,
-        computedValidity                      = fallbackValidity,
-        onValidityUpdate,
-    } = props;
-    
-    
-    
     // States and flags:
     
-    // Resolve whether the component is disabled:
-    const isDisabled           = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
-    
-    // Resolve whether the component is readonly:
-    const isReadonly           = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
-    
-    // Resolve whether the component is in a restricted state:
-    const isRestricted         = isDisabled || isReadonly;
-    
-    // Determine control mode:
-    const isExplicitValue      = (controlledValidity !== 'auto');
-    
-    // Resolve validity state prior to applying the restricted guard:
-    const resolvedValidity     = isExplicitValue ? controlledValidity : computedValidity;
-    
-    // Apply restricted guard — restriction always enforces unvalidated (`null`):
-    const effectiveValidity    = isRestricted ? null : resolvedValidity;
+    // Resolve effective validity state:
+    const effectiveValidity = useValidityState(props, options);
     
     // Internal animation lifecycle:
     const [internalValidity, setInternalValidity, runningIntent, animationHandlers] = useAnimationState<boolean | null, TElement>({
@@ -295,7 +269,7 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const handleValidityUpdate = useStableCallback((currentValidity: boolean | null): void => {
-        onValidityUpdate?.(currentValidity, undefined);
+        props.onValidityUpdate?.(currentValidity, undefined);
     });
     
     
