@@ -230,10 +230,9 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
     
     // States and flags:
     
-    // Resolve effective disabled state:
+    // Resolve effective focus state:
     const {
         focused: effectiveFocused,
-        
         ref,
         handleFocus,
         handleBlur,
