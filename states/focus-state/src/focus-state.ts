@@ -221,7 +221,6 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
 export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(props: FocusStateProps & FocusStateUpdateProps, options?: FocusStateOptions): FocusBehaviorState<TElement> => {
     // Extract options and assign defaults:
     const {
-        defaultFocused    = defaultDeclarativeFocused,
         inputLikeFocus    = defaultInputLikeFocus,
         animationPattern  = ['focusing', 'blurring'], // Matches animation names for transitions
         animationBubbling = false,
@@ -229,43 +228,17 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
     
     
     
-    // Extract props and assign defaults:
-    const {
-        focused       : controlledFocused     = defaultFocused,
-        computedFocus : externalComputedFocus,
-        onFocusUpdate,
-    } = props;
-    
-    
-    
     // States and flags:
     
-    // Resolve whether the component is in a restricted state (interaction blocked):
-    const isRestricted          = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
-    
-    // Determine control mode:
-    const isExplicitValue       = (controlledFocused !== 'auto');
-    
-    // Determine the source of `computedFocus`:
-    const isExternallyComputed  = (externalComputedFocus !== undefined);
-    
-    // Internal focus observer (used only when uncontrolled and not delegated):
+    // Resolve effective disabled state:
     const {
-        observedFocus,
+        focused: effectiveFocused,
+        
         ref,
         handleFocus,
         handleBlur,
         handleKeyDown,
-    } = useFocusObserver<TElement>(isExplicitValue || isExternallyComputed, isRestricted);
-    
-    // Resolve effective `computedFocus`:
-    const resolvedComputedFocus = isExternallyComputed ? externalComputedFocus : observedFocus;
-    
-    // Resolve focus state prior to applying the restricted guard:
-    const resolvedFocused       = isExplicitValue ? controlledFocused : resolvedComputedFocus;
-    
-    // Apply restricted guard — restriction always enforces blur:
-    const effectiveFocused      = !isRestricted && resolvedFocused;
+    } = useFocusState<TElement>(props, options);
     
     // Internal animation lifecycle:
     const [internalFocused, setInternalFocused, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
@@ -317,7 +290,7 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const handleFocusUpdate = useStableCallback((currentFocused: boolean): void => {
-        onFocusUpdate?.(currentFocused, undefined);
+        props.onFocusUpdate?.(currentFocused, undefined);
     });
     
     
