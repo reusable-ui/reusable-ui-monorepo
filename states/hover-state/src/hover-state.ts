@@ -215,49 +215,21 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
 export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(props: HoverStateProps & HoverStateUpdateProps, options?: HoverStateOptions): HoverBehaviorState<TElement> => {
     // Extract options and assign defaults:
     const {
-        defaultHovered    = defaultDeclarativeHovered,
         animationPattern  = ['hovering', 'unhovering'], // Matches animation names for transitions
         animationBubbling = false,
     } = options ?? {};
     
     
     
-    // Extract props and assign defaults:
-    const {
-        hovered       : controlledHovered     = defaultHovered,
-        computedHover : externalComputedHover,
-        onHoverUpdate,
-    } = props;
-    
-    
-    
     // States and flags:
     
-    // Resolve whether the component is in a restricted state (interaction blocked):
-    const isRestricted          = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
-    
-    // Determine control mode:
-    const isExplicitValue       = (controlledHovered !== 'auto');
-    
-    // Determine the source of `computedHover`:
-    const isExternallyComputed  = (externalComputedHover !== undefined);
-    
-    // Internal hover observer (used only when uncontrolled and not delegated):
+    // Resolve effective hover state:
     const {
-        observedHover,
+        hovered: effectiveHovered,
         ref,
         handleMouseEnter,
         handleMouseLeave,
-    } = useHoverObserver<TElement>(isExplicitValue || isExternallyComputed, isRestricted);
-    
-    // Resolve effective `computedHover`:
-    const resolvedComputedHover = isExternallyComputed ? externalComputedHover : observedHover;
-    
-    // Resolve hover state prior to applying the restricted guard:
-    const resolvedHovered       = isExplicitValue ? controlledHovered : resolvedComputedHover;
-    
-    // Apply restricted guard — restriction always enforces unhover:
-    const effectiveHovered      = !isRestricted && resolvedHovered;
+    } = useHoverState<TElement>(props, options);
     
     // Internal animation lifecycle:
     const [internalHovered, setInternalHovered, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
@@ -309,7 +281,7 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const handleHoverUpdate = useStableCallback((currentHovered: boolean): void => {
-        onHoverUpdate?.(currentHovered, undefined);
+        props.onHoverUpdate?.(currentHovered, undefined);
     });
     
     
