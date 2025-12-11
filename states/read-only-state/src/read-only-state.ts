@@ -49,44 +49,6 @@ import {
 
 
 /**
- * Resolves the effective read-only value based on props and context.
- * 
- * Resolution priority:
- * - If `readOnly` is `true`, the component is explicitly read-only.
- * - If `readOnly` is `false` and `cascadeReadOnly` is `false`, the component is explicitly editable.
- * - If `readOnly` is `false` and `cascadeReadOnly` is `true`, the component checks context for inherited read-only state.
- * - If context is unavailable and `cascadeReadOnly` is `true`, the component defaults to editable (`false`).
- * 
- * @param controlledReadOnly - The controlled read-only state.
- * @param cascadeReadOnly - Whether to cascade read-only state from context.
- * @returns The resolved read-only value.
- */
-const useEffectiveReadOnlyValue = (controlledReadOnly: Required<ReadOnlyStateProps>['readOnly'], cascadeReadOnly: boolean): boolean => {
-    // If explicitly read-only, no need to check context:
-    if (controlledReadOnly) return true;
-    
-    
-    
-    // If not cascading, context is ignored, thus editable:
-    if (!cascadeReadOnly) return false;
-    
-    
-    
-    // Get the inherited read-only from context:
-    const inheritedReadOnly = use(ReadOnlyStateContext);
-    
-    
-    
-    // If context value exists, return it:
-    if (inheritedReadOnly !== undefined) return inheritedReadOnly;
-    
-    
-    
-    // Otherwise, fallback to editable:
-    return false;
-};
-
-/**
  * Resolves the current editable/read-only state for a fully controlled component.
  * 
  * This hook is intended for components that **consume** the resolved `readOnly` state and **forward** it to a base component.
@@ -96,6 +58,12 @@ const useEffectiveReadOnlyValue = (controlledReadOnly: Required<ReadOnlyStatePro
  * 
  * - No internal state or uncontrolled fallback.
  * - Ideal for components that **consume** the resolved `readOnly` state.
+ * 
+ * Resolution priority:
+ * - If `readOnly` is `true`, the component is explicitly read-only.
+ * - If `readOnly` is `false` and `cascadeReadOnly` is `false`, the component is explicitly editable.
+ * - If `readOnly` is `false` and `cascadeReadOnly` is `true`, the component checks context for inherited read-only state.
+ * - If context is unavailable and `cascadeReadOnly` is `true`, the component defaults to editable (`false`).
  * 
  * @param props - The component props that may include a controlled `readOnly` value and contextual `cascadeReadOnly` value.
  * @param options - An optional configuration for customizing editable/read-only behavior.
@@ -118,15 +86,30 @@ export const useReadOnlyState = (props: ReadOnlyStateProps, options?: Pick<ReadO
     
     
     
-    // States and flags:
-    
     // Resolve effective read-only state:
-    const effectiveReadOnly = useEffectiveReadOnlyValue(controlledReadOnly, cascadeReadOnly);
+    
+    // If explicitly read-only, no need to check context:
+    if (controlledReadOnly) return true;
     
     
     
-    // Return the resolved editable/read-only state:
-    return effectiveReadOnly;
+    // If not cascading, context is ignored, thus editable:
+    if (!cascadeReadOnly) return false;
+    
+    
+    
+    // Get the inherited read-only from context:
+    const inheritedReadOnly = use(ReadOnlyStateContext);
+    
+    
+    
+    // If context value exists, return it:
+    if (inheritedReadOnly !== undefined) return inheritedReadOnly;
+    
+    
+    
+    // Otherwise, fallback to editable:
+    return false;
 };
 
 
@@ -193,27 +176,16 @@ export const useReadOnlyState = (props: ReadOnlyStateProps, options?: Pick<ReadO
 export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>(props: ReadOnlyStateProps & ReadOnlyStateUpdateProps, options?: ReadOnlyStateOptions): ReadOnlyBehaviorState<TElement> => {
     // Extract options and assign defaults:
     const {
-        defaultReadOnly        = defaultDeclarativeReadOnly,
-        defaultCascadeReadOnly = defaultDeclarativeCascadeReadOnly,
         animationPattern       = ['thawing', 'freezing'], // Matches animation names for transitions
         animationBubbling      = false,
     } = options ?? {};
     
     
     
-    // Extract props and assign defaults:
-    const {
-        readOnly         : controlledReadOnly = defaultReadOnly,
-        cascadeReadOnly  : cascadeReadOnly    = defaultCascadeReadOnly,
-        onReadOnlyUpdate,
-    } = props;
-    
-    
-    
     // States and flags:
     
     // Resolve effective read-only state:
-    const effectiveReadOnly = useEffectiveReadOnlyValue(controlledReadOnly, cascadeReadOnly);
+    const effectiveReadOnly = useReadOnlyState(props, options);
     
     // Internal animation lifecycle:
     const [internalReadOnly, setInternalReadOnly, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
@@ -265,7 +237,7 @@ export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const handleReadOnlyUpdate = useStableCallback((currentReadOnly: boolean): void => {
-        onReadOnlyUpdate?.(currentReadOnly, undefined);
+        props.onReadOnlyUpdate?.(currentReadOnly, undefined);
     });
     
     
