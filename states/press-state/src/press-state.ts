@@ -221,51 +221,23 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
 export const usePressBehaviorState = <TElement extends Element = HTMLElement>(props: PressStateProps & PressStateUpdateProps, options?: PressStateOptions): PressBehaviorState<TElement> => {
     // Extract options and assign defaults:
     const {
-        defaultPressed    = defaultDeclarativePressed,
         animationPattern  = ['pressing', 'releasing'], // Matches animation names for transitions
         animationBubbling = false,
     } = options ?? {};
     
     
     
-    // Extract props and assign defaults:
-    const {
-        pressed       : controlledPressed     = defaultPressed,
-        computedPress : externalComputedPress,
-        onPressUpdate,
-    } = props;
-    
-    
-    
     // States and flags:
     
-    // Resolve whether the component is in a restricted state (interaction blocked):
-    const isRestricted          = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
-    
-    // Determine control mode:
-    const isExplicitValue       = (controlledPressed !== 'auto');
-    
-    // Determine the source of `computedPress`:
-    const isExternallyComputed  = (externalComputedPress !== undefined);
-    
-    // Internal press observer (used only when uncontrolled and not delegated):
+    // Resolve effective hover state:
     const {
-        observedPress,
+        pressed: effectivePressed,
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,
         handleKeyDown,
         handleKeyUp,
-    } = usePressObserver<TElement>(isExplicitValue || isExternallyComputed, isRestricted, options);
-    
-    // Resolve effective `computedPress`:
-    const resolvedComputedPress = isExternallyComputed ? externalComputedPress : observedPress;
-    
-    // Resolve press state prior to applying the restricted guard:
-    const resolvedPressed       = isExplicitValue ? controlledPressed : resolvedComputedPress;
-    
-    // Apply restricted guard — restriction always enforces release:
-    const effectivePressed      = !isRestricted && resolvedPressed;
+    } = usePressState<TElement>(props, options);
     
     // Internal animation lifecycle:
     const [internalPressed, setInternalPressed, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
@@ -317,7 +289,7 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const handlePressUpdate = useStableCallback((currentPressed: boolean): void => {
-        onPressUpdate?.(currentPressed, undefined);
+        props.onPressUpdate?.(currentPressed, undefined);
     });
     
     
