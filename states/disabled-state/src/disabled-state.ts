@@ -49,44 +49,6 @@ import {
 
 
 /**
- * Resolves the effective disabled value based on props and context.
- * 
- * Resolution priority:
- * - If `disabled` is `true`, the component is explicitly disabled.
- * - If `disabled` is `false` and `cascadeDisabled` is `false`, the component is explicitly enabled.
- * - If `disabled` is `false` and `cascadeDisabled` is `true`, the component checks context for inherited disabled state.
- * - If context is unavailable and `cascadeDisabled` is `true`, the component defaults to enabled (`false`).
- * 
- * @param controlledDisabled - The controlled disabled state.
- * @param cascadeDisabled - Whether to cascade disabled state from context.
- * @returns The resolved disabled value.
- */
-const useEffectiveDisabledValue = (controlledDisabled: Required<DisabledStateProps>['disabled'], cascadeDisabled: boolean): boolean => {
-    // If explicitly disabled, no need to check context:
-    if (controlledDisabled) return true;
-    
-    
-    
-    // If not cascading, context is ignored, thus enabled:
-    if (!cascadeDisabled) return false;
-    
-    
-    
-    // Get the inherited disabled from context:
-    const inheritedDisabled = use(DisabledStateContext);
-    
-    
-    
-    // If context value exists, return it:
-    if (inheritedDisabled !== undefined) return inheritedDisabled;
-    
-    
-    
-    // Otherwise, fallback to enabled:
-    return false;
-};
-
-/**
  * Resolves the current enabled/disabled state for a fully controlled component.
  * 
  * This hook is intended for components that **consume** the resolved `disabled` state and **forward** it to a base component.
@@ -96,6 +58,12 @@ const useEffectiveDisabledValue = (controlledDisabled: Required<DisabledStatePro
  * 
  * - No internal state or uncontrolled fallback.
  * - Ideal for components that **consume** the resolved `disabled` state.
+ * 
+ * Resolution priority:
+ * - If `disabled` is `true`, the component is explicitly disabled.
+ * - If `disabled` is `false` and `cascadeDisabled` is `false`, the component is explicitly enabled.
+ * - If `disabled` is `false` and `cascadeDisabled` is `true`, the component checks context for inherited disabled state.
+ * - If context is unavailable and `cascadeDisabled` is `true`, the component defaults to enabled (`false`).
  * 
  * @param props - The component props that may include a controlled `disabled` value and contextual `cascadeDisabled` value.
  * @param options - An optional configuration for customizing enable/disable behavior.
@@ -118,15 +86,30 @@ export const useDisabledState = (props: DisabledStateProps, options?: Pick<Disab
     
     
     
-    // States and flags:
-    
     // Resolve effective disabled state:
-    const effectiveDisabled = useEffectiveDisabledValue(controlledDisabled, cascadeDisabled);
+    
+    // If explicitly disabled, no need to check context:
+    if (controlledDisabled) return true;
     
     
     
-    // Return the resolved enabled/disabled state:
-    return effectiveDisabled;
+    // If not cascading, context is ignored, thus enabled:
+    if (!cascadeDisabled) return false;
+    
+    
+    
+    // Get the inherited disabled from context:
+    const inheritedDisabled = use(DisabledStateContext);
+    
+    
+    
+    // If context value exists, return it:
+    if (inheritedDisabled !== undefined) return inheritedDisabled;
+    
+    
+    
+    // Otherwise, fallback to enabled:
+    return false;
 };
 
 
@@ -193,27 +176,16 @@ export const useDisabledState = (props: DisabledStateProps, options?: Pick<Disab
 export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>(props: DisabledStateProps & DisabledStateUpdateProps, options?: DisabledStateOptions): DisabledBehaviorState<TElement> => {
     // Extract options and assign defaults:
     const {
-        defaultDisabled        = defaultDeclarativeDisabled,
-        defaultCascadeDisabled = defaultDeclarativeCascadeDisabled,
         animationPattern       = ['enabling', 'disabling'], // Matches animation names for transitions
         animationBubbling      = false,
     } = options ?? {};
     
     
     
-    // Extract props and assign defaults:
-    const {
-        disabled         : controlledDisabled = defaultDisabled,
-        cascadeDisabled  : cascadeDisabled    = defaultCascadeDisabled,
-        onDisabledUpdate,
-    } = props;
-    
-    
-    
     // States and flags:
     
     // Resolve effective disabled state:
-    const effectiveDisabled = useEffectiveDisabledValue(controlledDisabled, cascadeDisabled);
+    const effectiveDisabled = useDisabledState(props, options);
     
     // Internal animation lifecycle:
     const [internalDisabled, setInternalDisabled, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
@@ -265,7 +237,7 @@ export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const handleDisabledUpdate = useStableCallback((currentDisabled: boolean): void => {
-        onDisabledUpdate?.(currentDisabled, undefined);
+        props.onDisabledUpdate?.(currentDisabled, undefined);
     });
     
     
