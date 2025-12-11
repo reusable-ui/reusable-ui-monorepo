@@ -68,44 +68,6 @@ import {
 
 
 /**
- * Resolves the effective active value based on props and context.
- * 
- * Resolution priority:
- * - If `active` is `true`, the component is explicitly active.
- * - If `active` is `false` and `cascadeActive` is `false`, the component is explicitly inactive.
- * - If `active` is `false` and `cascadeActive` is `true`, the component checks context for inherited active state.
- * - If context is unavailable and `cascadeActive` is `true`, the component defaults to inactive (`false`).
- * 
- * @param controlledActive - The controlled active state.
- * @param cascadeActive - Whether to cascade active state from context.
- * @returns The resolved active value.
- */
-const useEffectiveActiveValue = (controlledActive: Required<ActiveStateProps>['active'], cascadeActive: boolean): boolean => {
-    // If explicitly active, no need to check context:
-    if (controlledActive) return true;
-    
-    
-    
-    // If not cascading, context is ignored, thus inactive:
-    if (!cascadeActive) return false;
-    
-    
-    
-    // Get the inherited active from context:
-    const inheritedActive = use(ActiveStateContext);
-    
-    
-    
-    // If context value exists, return it:
-    if (inheritedActive !== undefined) return inheritedActive;
-    
-    
-    
-    // Otherwise, fallback to inactive:
-    return false;
-};
-
-/**
  * Resolves the current active/inactive state for a fully controlled component.
  * 
  * This hook is intended for components that **consume** the resolved `active` state and **forward** it to a base component.
@@ -116,6 +78,12 @@ const useEffectiveActiveValue = (controlledActive: Required<ActiveStateProps>['a
  * - Supports only controlled mode.
  * - Supports contextual override via `cascadeActive`.
  * - Ideal for components that **consume** the resolved `active` state.
+ * 
+ * Resolution priority:
+ * - If `active` is `true`, the component is explicitly active.
+ * - If `active` is `false` and `cascadeActive` is `false`, the component is explicitly inactive.
+ * - If `active` is `false` and `cascadeActive` is `true`, the component checks context for inherited active state.
+ * - If context is unavailable and `cascadeActive` is `true`, the component defaults to inactive (`false`).
  * 
  * @param props - The component props that may include a controlled `active` value but must exclude `defaultActive`, and contextual `cascadeActive` value.
  * @param options - An optional configuration for customizing activate/deactivate behavior.
@@ -138,15 +106,30 @@ export const useActiveState = (props: ActiveStateProps & { defaultActive?: never
     
     
     
-    // States:
-    
     // Resolve effective activation state:
-    const effectiveActive = useEffectiveActiveValue(controlledActive, cascadeActive);
+    
+    // If explicitly active, no need to check context:
+    if (controlledActive) return true;
     
     
     
-    // Return the resolved active state:
-    return effectiveActive;
+    // If not cascading, context is ignored, thus inactive:
+    if (!cascadeActive) return false;
+    
+    
+    
+    // Get the inherited active from context:
+    const inheritedActive = use(ActiveStateContext);
+    
+    
+    
+    // If context value exists, return it:
+    if (inheritedActive !== undefined) return inheritedActive;
+    
+    
+    
+    // Otherwise, fallback to inactive:
+    return false;
 };
 
 /**
@@ -233,7 +216,6 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
     // Extract options and assign defaults:
     const {
         defaultActive        = defaultInitialActive,
-        defaultCascadeActive = defaultDeclarativeCascadeActive,
     } = options ?? {};
     
     
@@ -243,7 +225,6 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
         defaultActive : defaultInitialIntent = defaultActive,
         active        : initialIntent        = defaultInitialIntent,
         active        : controlledActive,
-        cascadeActive : cascadeActive        = defaultCascadeActive,
         onActiveChange,
     } = props;
     
@@ -262,7 +243,7 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
     });
     
     // Resolve effective activation state:
-    const effectiveActive = useEffectiveActiveValue(intendedActive, cascadeActive);
+    const effectiveActive = useActiveState({ ...props, defaultActive: undefined, active: intendedActive }, options);
     
     
     
@@ -345,7 +326,6 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
     // Extract options and assign defaults:
     const {
         defaultActive        = defaultInitialActive,
-        defaultCascadeActive = defaultDeclarativeCascadeActive,
         animationPattern     = ['activating', 'deactivating'], // Matches animation names for transitions
         animationBubbling    = false,
     } = options ?? {};
@@ -357,7 +337,6 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
         defaultActive : defaultInitialIntent = defaultActive,
         active        : initialIntent        = defaultInitialIntent,
         active        : controlledActive,
-        cascadeActive : cascadeActive        = defaultCascadeActive,
     } = props;
     
     
@@ -376,7 +355,7 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
     
     // Resolve effective activation state:
     const intendedActive  = isControlled ? controlledActive : internalActive;
-    const effectiveActive = useEffectiveActiveValue(intendedActive, cascadeActive);
+    const effectiveActive = useActiveState({ ...props, defaultActive: undefined, active: intendedActive }, options);
     
     // The current settled or animating active state.
     // During animation, this reflects the active target (`runningIntent`).
