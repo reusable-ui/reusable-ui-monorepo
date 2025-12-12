@@ -184,7 +184,7 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
     // Extract props and assign defaults:
     const {
         defaultExpanded : defaultInitialIntent = defaultExpanded,
-        expanded        : initialIntent        = defaultInitialIntent,
+        expanded        : initialIntent        = defaultInitialIntent, // Initial intent comes from `expanded` (if controlled) or `defaultExpanded` (if uncontrolled).
         expanded        : controlledExpanded,
         onExpandedChange,
     } = props;
@@ -195,13 +195,16 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
     
     // Internal activation state:
     const {
-        value               : effectiveExpanded,
+        value               : intendedExpanded,
         dispatchValueChange : dispatchExpandedChange,
     } = useHybridValueChange<boolean, TChangeEvent>({
         defaultValue  : initialIntent,
         value         : controlledExpanded,
         onValueChange : onExpandedChange,
     });
+    
+    // Resolve effective expansion state:
+    const effectiveExpanded = useCollapseState({ ...props, defaultExpanded: undefined, expanded: intendedExpanded }, options);
     
     
     
@@ -291,7 +294,7 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
     // Extract props and assign defaults:
     const {
         defaultExpanded : defaultInitialIntent = defaultExpanded,
-        expanded        : initialIntent        = defaultInitialIntent,
+        expanded        : initialIntent        = defaultInitialIntent, // Initial intent comes from `expanded` (if controlled) or `defaultExpanded` (if uncontrolled).
         expanded        : controlledExpanded,
     } = props;
     
@@ -310,7 +313,8 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
     const isControlled      = (controlledExpanded !== undefined);
     
     // Resolve effective expansion state:
-    const effectiveExpanded = isControlled ? controlledExpanded : internalExpanded;
+    const intendedExpanded  = isControlled ? controlledExpanded : internalExpanded;
+    const effectiveExpanded = useCollapseState({ ...props, defaultExpanded: undefined, expanded: intendedExpanded }, options);
     
     // The current settled or animating expanded state.
     // During animation, this reflects the active target (`runningIntent`).
