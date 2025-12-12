@@ -223,7 +223,7 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
     // Extract props and assign defaults:
     const {
         defaultActive : defaultInitialIntent = defaultActive,
-        active        : initialIntent        = defaultInitialIntent,
+        active        : initialIntent        = defaultInitialIntent, // Initial intent comes from `active` (if controlled) or `defaultActive` (if uncontrolled).
         active        : controlledActive,
         onActiveChange,
     } = props;
@@ -335,7 +335,7 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
     // Extract props and assign defaults:
     const {
         defaultActive : defaultInitialIntent = defaultActive,
-        active        : initialIntent        = defaultInitialIntent,
+        active        : initialIntent        = defaultInitialIntent, // Initial intent comes from `active` (if controlled) or `defaultActive` (if uncontrolled).
         active        : controlledActive,
     } = props;
     
