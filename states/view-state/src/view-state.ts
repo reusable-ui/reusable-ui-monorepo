@@ -30,15 +30,13 @@ import {
 // Defaults:
 import {
     defaultInitialViewIndex,
-    defaultMinViewIndex,
-    defaultMaxViewIndex,
-    defaultViewIndexStep,
 }                           from './internal-defaults.js'
 
 // Utilities:
 import {
     resolveViewPhase,
     getViewClassname,
+    clampViewIndex,
 }                           from './internal-utilities.js'
 
 // CSS Variables:
@@ -47,9 +45,6 @@ import {
 }                           from './css-variables.js'
 
 // Reusable-ui utilities:
-import {
-    clamp,
-}                           from '@reusable-ui/numbers'             // A lightweight JavaScript library for precise numeric operations.
 import {
     // Hooks:
     useStableCallback,
@@ -101,9 +96,6 @@ export const useViewState = (props: ViewStateProps & { defaultViewIndex?: never 
     // Extract options and assign defaults:
     const {
         defaultViewIndex  = defaultInitialViewIndex,
-        minViewIndex      = defaultMinViewIndex,
-        maxViewIndex      = defaultMaxViewIndex,
-        viewIndexStep     = defaultViewIndexStep,
     } = options ?? {};
     
     
@@ -115,8 +107,8 @@ export const useViewState = (props: ViewStateProps & { defaultViewIndex?: never 
     
     
     
-    // Resolve effective view index:
-    const effectiveViewIndex   = clamp(minViewIndex, controlledViewIndex, maxViewIndex, viewIndexStep);
+    // Clamp the view index within valid range and step:
+    const effectiveViewIndex   = clampViewIndex(controlledViewIndex, options);
     
     
     
@@ -207,9 +199,6 @@ export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewSt
     // Extract options and assign defaults:
     const {
         defaultViewIndex  = defaultInitialViewIndex,
-        minViewIndex      = defaultMinViewIndex,
-        maxViewIndex      = defaultMaxViewIndex,
-        viewIndexStep     = defaultViewIndexStep,
     } = options ?? {};
     
     
@@ -226,8 +215,8 @@ export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewSt
     
     // States:
     
-    // Clamp the initial intent within valid range:
-    const initialIntent        = clamp(minViewIndex, rawInitialIntent, maxViewIndex, viewIndexStep);
+    // Clamp the initial intent within valid range and step:
+    const initialIntent        = clampViewIndex(rawInitialIntent, options);
     
     // Internal view index state:
     const {
@@ -343,9 +332,6 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     // Extract options and assign defaults:
     const {
         defaultViewIndex  = defaultInitialViewIndex,
-        minViewIndex      = defaultMinViewIndex,
-        maxViewIndex      = defaultMaxViewIndex,
-        viewIndexStep     = defaultViewIndexStep,
         animationPattern  = ['view-advancing', 'view-receding'], // Matches animation names for transitions
         animationBubbling = false,
     } = options ?? {};
@@ -389,8 +375,8 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
         └───────────────────────────────────────────────────────────────────────────────────────┘
     */
     
-    // Clamp the initial intent within valid range:
-    const initialIntent        = clamp(minViewIndex, rawInitialIntent, maxViewIndex, viewIndexStep);
+    // Clamp the initial intent within valid range and step:
+    const initialIntent        = clampViewIndex(rawInitialIntent, options);
     
     // Internal view index state with animation lifecycle:
     const [internalViewIndex, setInternalViewIndex, runningIntent, animationHandlers] = useAnimationState<number, TElement>({

@@ -1,7 +1,20 @@
 // Types:
 import {
+    type ViewStateOptions,
     type ViewPhase,
 }                           from './types.js'
+
+// Defaults:
+import {
+    defaultMinViewIndex,
+    defaultMaxViewIndex,
+    defaultViewIndexStep,
+}                           from './internal-defaults.js'
+
+// Reusable-ui utilities:
+import {
+    clamp,
+}                           from '@reusable-ui/numbers'             // A lightweight JavaScript library for precise numeric operations.
 
 
 
@@ -52,4 +65,27 @@ export const resolveViewPhase = (prevSettledViewIndex: number | undefined, settl
 export const getViewClassname = (viewPhase: ViewPhase): ViewPhase => {
     // Return the corresponding class name:
     return viewPhase;
+};
+
+
+
+/**
+ * Clamps a raw view index within the configured range and step.
+ * 
+ * @param rawViewIndex - The raw view index to clamp.
+ * @param options - Configuration for clamping behavior.
+ * @returns The clamped view index.
+ */
+export const clampViewIndex = (rawViewIndex: number, options?: Pick<ViewStateOptions, 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>): number => {
+    // Extract options and assign defaults:
+    const {
+        minViewIndex  = defaultMinViewIndex,
+        maxViewIndex  = defaultMaxViewIndex,
+        viewIndexStep = defaultViewIndexStep,
+    } = options ?? {};
+    
+    
+    
+    // Clamp the value within the range and step:
+    return clamp<number>(minViewIndex, rawViewIndex, maxViewIndex, viewIndexStep);
 };
