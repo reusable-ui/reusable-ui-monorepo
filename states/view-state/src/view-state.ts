@@ -217,7 +217,7 @@ export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewSt
     // Extract props and assign defaults:
     const {
         defaultViewIndex : defaultInitialIntent = defaultViewIndex,
-        viewIndex        : rawInitialIntent     = defaultInitialIntent,
+        viewIndex        : rawInitialIntent     = defaultInitialIntent, // Initial intent comes from `viewIndex` (if controlled) or `defaultViewIndex` (if uncontrolled).
         viewIndex        : controlledViewIndex,
         onViewIndexChange,
     } = props;
@@ -231,7 +231,7 @@ export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewSt
     
     // Internal view index state:
     const {
-        value               : unclampedViewIndex,
+        value               : intendedViewIndex,
         dispatchValueChange : dispatchViewIndexChange,
     } = useHybridValueChange<number, TChangeEvent>({
         defaultValue  : initialIntent,
@@ -239,10 +239,8 @@ export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewSt
         onValueChange : onViewIndexChange,
     });
     
-    
-    
     // Resolve effective view index:
-    const effectiveViewIndex   = clamp(minViewIndex, unclampedViewIndex, maxViewIndex, viewIndexStep);
+    const effectiveViewIndex   = useViewState({ ...props, defaultViewIndex: undefined, viewIndex: intendedViewIndex }, options);
     
     
     
@@ -357,7 +355,7 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     // Extract props and assign defaults:
     const {
         defaultViewIndex : defaultInitialIntent = defaultViewIndex,
-        viewIndex        : rawInitialIntent     = defaultInitialIntent,
+        viewIndex        : rawInitialIntent     = defaultInitialIntent, // Initial intent comes from `viewIndex` (if controlled) or `defaultViewIndex` (if uncontrolled).
         viewIndex        : controlledViewIndex,
     } = props;
     
@@ -405,8 +403,8 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     const isControlled         = (controlledViewIndex !== undefined);
     
     // Resolve effective view index:
-    const unclampedViewIndex   = isControlled ? controlledViewIndex : internalViewIndex;
-    const effectiveViewIndex   = clamp(minViewIndex, unclampedViewIndex, maxViewIndex, viewIndexStep);
+    const intendedViewIndex    = isControlled ? controlledViewIndex : internalViewIndex;
+    const effectiveViewIndex   = useViewState({ ...props, defaultViewIndex: undefined, viewIndex: intendedViewIndex }, options);
     
     // The current settled or animating target view index.
     // During animation, this reflects the active target (`runningIntent`).
