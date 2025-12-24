@@ -103,6 +103,7 @@
     "states/animation-state",
     "states/animating-state",
     "states/transition-state",
+    "states/feedback-state",
     "states/disabled-state",
     "states/read-only-state",
     "states/focus-state",
