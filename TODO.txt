@@ -1,3 +1,5 @@
+[high prior] Remove unnecessary variance annotations (?<=[<,])(\s|\r|\n)*(in\s+out|out\s+in|in|out)(\s|\r|\n)+
+
 [high prior] PointerCapturableProps: update MouseEvent to MouseEvent|TouchEvent so it works correctly with <ListEditor>
 [high prior] fix <List> breadcrumb on very narrow sreen, if the width is not sufficient, the left part should be clipped
 [high prior] .static class conflics with tailwind class
