@@ -102,6 +102,7 @@
     "features/animation",
     "states/animation-state",
     "states/animating-state",
+    "states/transition-state",
     "states/disabled-state",
     "states/read-only-state",
     "states/focus-state",
