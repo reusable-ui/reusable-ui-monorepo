@@ -212,9 +212,9 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 // Reusable-ui states:
 @reusable-ui/animation-state
 @reusable-ui/animating-state    DEPRECATED
-@reusable-ui/transition-state
-@reusable-ui/feedback-state
-@reusable-ui/interaction-state
+@reusable-ui/transition-state   non_peer
+@reusable-ui/feedback-state     non_peer
+@reusable-ui/interaction-state  non_peer
 @reusable-ui/disabled-state
 @reusable-ui/read-only-state
 @reusable-ui/focus-state
