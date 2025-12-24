@@ -1,0 +1,65 @@
+{
+  "name": "@reusable-ui/interaction-state",
+  "version": "7.0.0",
+  "description": "Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.",
+  "keywords": [
+    "interaction-state",
+    "interaction",
+    "active",
+    "state",
+    "ui",
+    "react",
+    "hooks",
+    "styling",
+    "semantic",
+    "reusable-ui",
+    "utility",
+    "css",
+    "css-in-js",
+    "cssfn",
+    "design-system",
+    "component-style",
+    "conditional-style",
+    "ui-state",
+    "state-management"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "states/interaction-state"
+  },
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@reusable-ui/callbacks": "^7.0.0",
+    "@reusable-ui/events": "^7.0.0"
+  },
+  "peerDependencies": {
+    "@reusable-ui/disabled-state": "^7.0.0",
+    "@reusable-ui/read-only-state": "^7.0.0",
+    "@reusable-ui/transition-state": "^7.0.0"
+  }
+}

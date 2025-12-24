@@ -214,6 +214,7 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/animating-state    DEPRECATED
 @reusable-ui/transition-state
 @reusable-ui/feedback-state
+@reusable-ui/interaction-state
 @reusable-ui/disabled-state
 @reusable-ui/read-only-state
 @reusable-ui/focus-state
