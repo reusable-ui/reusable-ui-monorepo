@@ -13,6 +13,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
+    type TransitionStateProps,
     type ResolveDriverStateArgs,
     type TransitionBehaviorStateDefinition,
     
@@ -204,6 +205,15 @@ export const useInteractionBehaviorState = <
         definition       : definition as TBehaviorDefinition,
     });
     
+    // Combine props for transition orchestration:
+    const combinedProps : TransitionStateProps<TState> & typeof props = {
+        // Pass the normalized initial effective state:
+        initialResolvedState  : initialEffectiveState,
+        
+        // Merge all other props (these may override `initialResolvedState` if explicitly provided):
+        ...props,
+    };
+    
     // Transition orchestration:
     const [transitionBehaviorState, setInternalState] = useTransitionBehaviorState<
         TDeclarativeState,
@@ -216,9 +226,8 @@ export const useInteractionBehaviorState = <
         InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>,
         
         TElement
-    >({
-        initialResolvedState  : initialEffectiveState, // Pass the normalized initial effective state.
-    },
+    >(
+    combinedProps,
     options,
     {
         // Force `TBehavior**` => `Interaction**`:
