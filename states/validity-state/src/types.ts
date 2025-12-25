@@ -20,11 +20,13 @@ import {
     // Types:
     type ValueChangeEventHandler,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+
+// Reusable-ui states:
 import {
     // Types:
-    type AnimationStateOptions,
-    type AnimationStateHandlers,
-}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
+    type FeedbackStateOptions,
+    type FeedbackBehaviorState,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
 
@@ -129,10 +131,7 @@ export interface ValidityStatePhaseEventProps {
 export interface ValidityStateOptions
     extends
         // Bases:
-        Partial<Pick<AnimationStateOptions<boolean | null>,
-            | 'animationPattern'
-            | 'animationBubbling'
-        >>
+        FeedbackStateOptions<boolean | null>
 {
     /**
      * Specifies the default validity state when no `validity` prop is explicitly provided:
@@ -173,7 +172,7 @@ export interface ValidityStateOptions
      * 
      * Defaults to `['validating', 'invalidating', 'unvalidating']`.
      */
-    animationPattern  ?: AnimationStateOptions<boolean | null>['animationPattern']
+    animationPattern  ?: FeedbackStateOptions<boolean | null>['animationPattern']
     
     /**
      * Enables listening to animation events bubbling up from nested child elements.
@@ -181,7 +180,7 @@ export interface ValidityStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling ?: AnimationStateOptions<boolean | null>['animationBubbling']
+    animationBubbling ?: FeedbackStateOptions<boolean | null>['animationBubbling']
 }
 
 /**
@@ -222,6 +221,15 @@ export type ValidityPhase =
     | TransitioningValidityPhase
 
 /**
+ * A CSS class name reflecting the current validity phase.
+ * 
+ * Used for styling based on the lifecycle phase.
+ * 
+ * If in a transitioning phase, includes a `was-*` suffix to indicate the previous resolved state.
+ */
+export type ValidityClassname = `is-${ResolvedValidityPhase}` | `is-${TransitioningValidityPhase} was-${ResolvedValidityPhase}`
+
+/**
  * An API for accessing the resolved validity state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
@@ -229,7 +237,13 @@ export type ValidityPhase =
 export interface ValidityBehaviorState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        AnimationStateHandlers<TElement>
+        Omit<FeedbackBehaviorState<boolean | null, ValidityPhase, ValidityClassname, TElement>,
+            | 'prevSettledState'
+            | 'state'
+            | 'actualState'
+            | 'transitionPhase'
+            | 'transitionClassname'
+        >
 {
     /**
      * The current settled validity state used for animation-aware rendering and behavioral coordination.
@@ -278,8 +292,10 @@ export interface ValidityBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-validating'`
      * - `'is-invalidating'`
      * - `'is-unvalidating'`
+     * 
+     * If in a transitioning phase, includes a `was-*` suffix to indicate the previous resolved state.
      */
-    validityClassname : `is-${ResolvedValidityPhase}` | `is-${TransitioningValidityPhase} was-${ResolvedValidityPhase}`
+    validityClassname : ValidityClassname
 }
 
 

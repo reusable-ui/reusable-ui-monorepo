@@ -15,8 +15,12 @@ import {
     type ValidityStatePhaseEventProps,
     type ValidityStateOptions,
     type ValidityPhase,
+    type ValidityClassname,
     type ValidityBehaviorState,
 }                           from './types.js'
+import {
+    type ValidityBehaviorStateDefinition,
+}                           from './internal-types.js'
 
 // Defaults:
 import {
@@ -26,8 +30,8 @@ import {
 
 // Utilities:
 import {
-    resolveValidityPhase,
-    getValidityClassname,
+    resolveValidityTransitionPhase,
+    resolveValidityTransitionClassname,
 }                           from './internal-utilities.js'
 
 // Reusable-ui utilities:
@@ -38,13 +42,13 @@ import {
 import {
     // Hooks:
     usePreviousValue,
-}                           from '@reusable-ui/lifecycles'      // A React utility package for managing component lifecycles, ensuring stable effects, and optimizing state updates.
-import {
-    // Hooks:
-    useAnimationState,
-}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
+}                           from '@reusable-ui/lifecycles'          // A React utility package for managing component lifecycles, ensuring stable effects, and optimizing state updates.
 
 // Reusable-ui states:
+import {
+    // Hooks:
+    useFeedbackBehaviorState,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 import {
     useDisabledState,
 }                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
@@ -199,11 +203,10 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
  * ```
  */
 export const useValidityBehaviorState = <TElement extends Element = HTMLElement>(props: ValidityStateProps & ValidityStateUpdateProps, options?: ValidityStateOptions): ValidityBehaviorState<TElement> => {
-    // Extract options and assign defaults:
+    // Extract props:
     const {
-        animationPattern  = ['validating', 'invalidating', 'unvalidating'], // Matches animation names for transitions
-        animationBubbling = false,
-    } = options ?? {};
+        onValidityUpdate : handleValidityUpdate,
+    } = props;
     
     
     
@@ -212,84 +215,49 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     // Resolve effective validity state:
     const effectiveValidity = useValidityState(props, options);
     
-    // Internal animation lifecycle:
-    const [internalValidity, setInternalValidity, runningIntent, animationHandlers] = useAnimationState<boolean | null, TElement>({
-        initialIntent : effectiveValidity,
-        animationPattern,
-        animationBubbling,
-    });
-    
-    // The current settled or animating validity state.
-    // During animation, this reflects the active target (`runningIntent`).
-    // If no animation is active, it reflects the latest declared intent (`effectiveValidity`), even if not yet committed.
-    // This optimistic fallback ensures transition logic and styling remain in sync with declared transitions.
-    // Deferred or discarded intents are never reflected here.
-    const settledValidity      = (runningIntent !== undefined) ? runningIntent : effectiveValidity;
-    
-    // The previously settled validity state before the most recent transition.
-    // This value trails one step behind `settledValidity`.
-    // It updates only after a transition completes, and persists even after settling.
-    // When no prior validity exists, it resolves to `undefined`.
-    // Useful for directional inference, layout comparisons, and transition-aware animations.
-    const prevSettledValidity  = usePreviousValue<boolean | null>(settledValidity);
-    
-    // Determine whether a transition toward the effective validity state is currently in progress:
-    const isTransitioning      = (
-        // An in-flight animation is active toward a target validity state:
-        (runningIntent !== undefined)
+    // Transition orchestration:
+    const {
+        prevSettledState    : _prevSettledState, // unused in this domain
+        state               : validity,
+        actualState         : actualValidity,
+        transitionPhase     : validityPhase,
+        transitionClassname : validityClassname,
+        ...animationHandlers
+    } = useFeedbackBehaviorState<
+        boolean | null,
+        ValidityPhase,
+        ValidityClassname,
         
-        ||
+        ValidityStateProps,
+        ValidityStateOptions,
+        ValidityBehaviorStateDefinition,
         
-        // An optimistic transition is pending: the intent has changed, but React has not yet re-rendered to reflect it.
-        // This mismatch is expected and resolves once `setInternalValidity(effectiveValidity)` takes effect.
-        (internalValidity !== effectiveValidity)
+        TElement
+    >(
+        // Props:
+        { resolvedState: effectiveValidity, onStateUpdate: handleValidityUpdate },
+        
+        // Options:
+        options,
+        
+        // Definition:
+        {
+            defaultAnimationPattern    : ['validating', 'invalidating', 'unvalidating'], // Matches animation names for transitions.
+            defaultAnimationBubbling   : false,
+            useResolvePreviousState    : usePreviousValue,                               // Tracks previous settled state.
+            resolveTransitionPhase     : resolveValidityTransitionPhase,                 // Resolves phases.
+            resolveTransitionClassname : resolveValidityTransitionClassname,             // Resolves classnames.
+        } satisfies ValidityBehaviorStateDefinition,
     );
-    
-    // Derive semantic phase from animation lifecycle:
-    const validityPhase        = resolveValidityPhase(settledValidity, isTransitioning); // 'valid', 'invalid', 'unvalidated', 'validating', 'invalidating', 'unvalidating'
-    
-    
-    
-    // Sync animation state with effective validity state:
-    // Use `useLayoutEffect()` to ensure the intent is registered before the browser fires `animationstart`.
-    // This guarantees the animation lifecycle handshake completes correctly.
-    // The `useAnimationState()` hook internally treats missing animation events as immediately completed transitions.
-    useLayoutEffect(() => {
-        // The `setInternalValidity()` has internal `Object.is()` check to avoid redundant state updates.
-        setInternalValidity(effectiveValidity);
-        
-        // Note: If `setInternalValidity()` is delayed (e.g. by React's render scheduler),
-        // both `internalValidity` and `runningIntent` may remain stale temporarily.
-        // This introduces a brief pre-transition ambiguity, safely handled by `isTransitioning` logic.
-    }, [effectiveValidity]);
-    
-    
-    
-    // A stable dispatcher for emitting validity update events.
-    // This function remains referentially stable across renders,
-    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const handleValidityUpdate = useStableCallback((currentValidity: boolean | null): void => {
-        props.onValidityUpdate?.(currentValidity, undefined);
-    });
-    
-    
-    
-    // Observer effect: emits validity update events on `effectiveValidity` updates.
-    // Use `useLayoutEffect()` to ensure the update is emitted before browser paint,
-    // in case the event handlers manipulate timing-sensitive DOM operations.
-    useLayoutEffect(() => {
-        // Emits validity update events:
-        handleValidityUpdate(effectiveValidity);
-    }, [effectiveValidity]);
     
     
     
     // Return resolved validity state API:
     return {
-        validity          : settledValidity,   // Use `settledValidity` instead of `effectiveValidity`, because during animation, the settled state reflects the visually committed validity state.
-        actualValidity    : effectiveValidity, // Expose the actual effective state for advanced use cases.
+        validity,
+        actualValidity,
         validityPhase,
-        validityClassname : getValidityClassname(validityPhase, prevSettledValidity),
+        validityClassname,
         ...animationHandlers,
     } satisfies ValidityBehaviorState<TElement>;
 };
