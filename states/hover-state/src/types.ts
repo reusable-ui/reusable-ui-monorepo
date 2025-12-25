@@ -27,11 +27,13 @@ import {
     // Types:
     type ValueChangeEventHandler,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+
+// Reusable-ui states:
 import {
     // Types:
-    type AnimationStateOptions,
-    type AnimationStateHandlers,
-}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
+    type FeedbackStateOptions,
+    type FeedbackBehaviorState,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
 
@@ -130,10 +132,7 @@ export interface HoverStatePhaseEventProps {
 export interface HoverStateOptions
     extends
         // Bases:
-        Partial<Pick<AnimationStateOptions<boolean>,
-            | 'animationPattern'
-            | 'animationBubbling'
-        >>
+        FeedbackStateOptions<boolean>
 {
     /**
      * Specifies the default hover state when no `hovered` prop is explicitly provided:
@@ -161,7 +160,7 @@ export interface HoverStateOptions
      * 
      * Defaults to `['hovering', 'unhovering']`.
      */
-    animationPattern  ?: AnimationStateOptions<boolean>['animationPattern']
+    animationPattern  ?: FeedbackStateOptions<boolean>['animationPattern']
     
     /**
      * Enables listening to animation events bubbling up from nested child elements.
@@ -169,7 +168,7 @@ export interface HoverStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling ?: AnimationStateOptions<boolean>['animationBubbling']
+    animationBubbling ?: FeedbackStateOptions<boolean>['animationBubbling']
 }
 
 /**
@@ -206,6 +205,13 @@ export type HoverPhase =
     | TransitioningHoverPhase
 
 /**
+ * A CSS class name reflecting the current hover/unhover phase.
+ * 
+ * Used for styling based on the lifecycle phase.
+ */
+export type HoverClassname = `is-${HoverPhase}`
+
+/**
  * An API for accessing the resolved hovered/unhovered state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
@@ -213,7 +219,13 @@ export type HoverPhase =
 export interface HoverBehaviorState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        AnimationStateHandlers<TElement>
+        Omit<FeedbackBehaviorState<boolean, HoverPhase, HoverClassname, TElement>,
+            | 'prevSettledState'
+            | 'state'
+            | 'actualState'
+            | 'transitionPhase'
+            | 'transitionClassname'
+        >
 {
     /**
      * The current settled hovered/unhovered state used for animation-aware rendering and behavioral coordination.
@@ -259,7 +271,7 @@ export interface HoverBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-hovering'`
      * - `'is-hovered'`
      */
-    hoverClassname    : `is-${HoverPhase}`
+    hoverClassname    : HoverClassname
     
     /**
      * Ref to the hoverable DOM element.

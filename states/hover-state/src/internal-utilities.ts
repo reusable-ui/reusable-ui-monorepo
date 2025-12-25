@@ -1,50 +1,30 @@
 // Types:
 import {
+    type HoverStateProps,
+    type HoverStateOptions,
     type HoverPhase,
+    type HoverClassname,
 }                           from './types.js'
+import {
+    type HoverBehaviorStateDefinition,
+}                           from './internal-types.js'
+
+// Reusable-ui states:
+import {
+    // Types:
+    type ResolveTransitionPhaseArgs,
+    type ResolveTransitionClassnameArgs,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
 
-/**
- * Resolves the current hover/unhover lifecycle phase based on hover state and transition status.
- * 
- * - If a transition is in progress, returns a transitional phase:
- *   - `'hovering'` or `'unhovering'`
- * - Otherwise, returns the settled phase:
- *   - `'hovered'` or `'unhovered'`
- * 
- * @param settledHovered - The currently settled (laggy) hover state.
- * @param isTransitioning - Whether a transition is currently in progress.
- * @returns The current `HoverPhase` value.
- */
-export const resolveHoverPhase = (settledHovered: boolean, isTransitioning: boolean): HoverPhase => {
-    if (isTransitioning) {
-        return settledHovered ? 'hovering' : 'unhovering';
-    } // if
-    
-    
-    
-    return settledHovered ? 'hovered' : 'unhovered';
+/** Resolves the semantic transition phase for hovered/unhovered state behavior. */
+export const resolveHoverTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, HoverStateProps, HoverStateOptions, HoverBehaviorStateDefinition>): HoverPhase => {
+    if (isTransitioning) return settledState ? 'hovering' : 'unhovering';
+    return settledState ? 'hovered' : 'unhovered';
 };
 
-
-
-/**
- * Resolves the CSS class name for the given hover/unhover lifecycle phase.
- * 
- * Maps each `hoverPhase` to a semantic class name:
- * - Resolved phases:
- *   - `'hovered'`    → `'is-hovered'`
- *   - `'unhovered'`  → `'is-unhovered'`
- * 
- * - Transitioning phases:
- *   - `'hovering'`   → `'is-hovering'`
- *   - `'unhovering'` → `'is-unhovering'`
- * 
- * @param hoverPhase - The current lifecycle phase of the component.
- * @returns A CSS class name reflecting the phase.
- */
-export const getHoverClassname = (hoverPhase: HoverPhase): `is-${HoverPhase}` => {
-    // Return the corresponding class name:
-    return `is-${hoverPhase}`;
+/** Resolves the semantic transition classname for hovered/unhovered state behavior. */
+export const resolveHoverTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, HoverPhase, HoverStateProps, HoverStateOptions, HoverBehaviorStateDefinition>): HoverClassname => {
+    return `is-${transitionPhase}`;
 };
