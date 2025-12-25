@@ -15,19 +15,22 @@ import {
     type FocusStatePhaseEventProps,
     type FocusStateOptions,
     type FocusPhase,
+    type FocusClassname,
     type FocusBehaviorState,
 }                           from './types.js'
+import {
+    type FocusBehaviorStateDefinition,
+}                           from './internal-types.js'
 
 // Defaults:
 import {
     defaultDeclarativeFocused,
-    defaultInputLikeFocus,
 }                           from './internal-defaults.js'
 
 // Utilities:
 import {
-    resolveFocusPhase,
-    getFocusClassname,
+    resolveFocusTransitionPhase,
+    resolveFocusTransitionClassname,
 }                           from './internal-utilities.js'
 
 // Hooks:
@@ -40,12 +43,12 @@ import {
     // Hooks:
     useStableCallback,
 }                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
-import {
-    // Hooks:
-    useAnimationState,
-}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
 // Reusable-ui states:
+import {
+    // Hooks:
+    useFeedbackBehaviorState,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 import {
     useDisabledState,
 }                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
@@ -219,12 +222,10 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
  * ```
  */
 export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(props: FocusStateProps & FocusStateUpdateProps, options?: FocusStateOptions): FocusBehaviorState<TElement> => {
-    // Extract options and assign defaults:
+    // Extract props:
     const {
-        inputLikeFocus    = defaultInputLikeFocus,
-        animationPattern  = ['focusing', 'blurring'], // Matches animation names for transitions
-        animationBubbling = false,
-    } = options ?? {};
+        onFocusUpdate : handleFocusUpdate,
+    } = props;
     
     
     
@@ -239,77 +240,48 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
         handleKeyDown,
     } = useFocusState<TElement>(props, options);
     
-    // Internal animation lifecycle:
-    const [internalFocused, setInternalFocused, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
-        initialIntent : effectiveFocused,
-        animationPattern,
-        animationBubbling,
-    });
-    
-    // The current settled or animating focus state.
-    // During animation, this reflects the active target (`runningIntent`).
-    // If no animation is active, it reflects the latest declared intent (`effectiveFocused`), even if not yet committed.
-    // This optimistic fallback ensures transition logic and styling remain in sync with declared transitions.
-    // Deferred or discarded intents are never reflected here.
-    const settledFocused        = runningIntent ?? effectiveFocused;
-    
-    // Determine whether a transition toward the effective focus state is currently in progress:
-    const isTransitioning       = (
-        // An in-flight animation is active toward a target focus state:
-        (runningIntent !== undefined)
+    // Transition orchestration:
+    const {
+        prevSettledState    : _prevSettledState, // unused in this domain
+        state               : focused,
+        actualState         : actualFocused,
+        transitionPhase     : focusPhase,
+        transitionClassname : focusClassname,
+        ...animationHandlers
+    } = useFeedbackBehaviorState<
+        boolean,
+        FocusPhase,
+        FocusClassname,
         
-        ||
+        FocusStateProps,
+        FocusStateOptions,
+        FocusBehaviorStateDefinition,
         
-        // An optimistic transition is pending: the intent has changed, but React has not yet re-rendered to reflect it.
-        // This mismatch is expected and resolves once `setInternalFocused(effectiveFocused)` takes effect.
-        (internalFocused !== effectiveFocused)
+        TElement
+    >(
+        // Props:
+        { resolvedState: effectiveFocused, onStateUpdate: handleFocusUpdate },
+        
+        // Options:
+        options,
+        
+        // Definition:
+        {
+            defaultAnimationPattern    : ['focusing', 'blurring'],        // Matches animation names for transitions.
+            defaultAnimationBubbling   : false,
+            resolveTransitionPhase     : resolveFocusTransitionPhase,     // Resolves phases.
+            resolveTransitionClassname : resolveFocusTransitionClassname, // Resolves classnames.
+        } satisfies FocusBehaviorStateDefinition,
     );
-    
-    // Derive semantic phase from animation lifecycle:
-    const focusPhase            = resolveFocusPhase(settledFocused, isTransitioning); // 'focused', 'blurred', 'focusing', 'blurring'
-    
-    
-    
-    // Sync animation state with effective focus state:
-    // Use `useLayoutEffect()` to ensure the intent is registered before the browser fires `animationstart`.
-    // This guarantees the animation lifecycle handshake completes correctly.
-    // The `useAnimationState()` hook internally treats missing animation events as immediately completed transitions.
-    useLayoutEffect(() => {
-        // The `setInternalFocused()` has internal `Object.is()` check to avoid redundant state updates.
-        setInternalFocused(effectiveFocused);
-        
-        // Note: If `setInternalFocused()` is delayed (e.g. by React's render scheduler),
-        // both `internalFocused` and `runningIntent` may remain stale temporarily.
-        // This introduces a brief pre-transition ambiguity, safely handled by `isTransitioning` logic.
-    }, [effectiveFocused]);
-    
-    
-    
-    // A stable dispatcher for emitting focus update events.
-    // This function remains referentially stable across renders,
-    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const handleFocusUpdate = useStableCallback((currentFocused: boolean): void => {
-        props.onFocusUpdate?.(currentFocused, undefined);
-    });
-    
-    
-    
-    // Observer effect: emits focus update events on `effectiveFocused` updates.
-    // Use `useLayoutEffect()` to ensure the update is emitted before browser paint,
-    // in case the event handlers manipulate timing-sensitive DOM operations.
-    useLayoutEffect(() => {
-        // Emits focus update events:
-        handleFocusUpdate(effectiveFocused);
-    }, [effectiveFocused]);
     
     
     
     // Return resolved focus state API:
     return {
-        focused        : settledFocused,   // Use `settledFocused` instead of `effectiveFocused`, because during animation, the settled state reflects the visually committed focus state.
-        actualFocused  : effectiveFocused, // Expose the actual effective state for advanced use cases.
+        focused,
+        actualFocused,
         focusPhase,
-        focusClassname : getFocusClassname(focusPhase, inputLikeFocus),
+        focusClassname,
         ...animationHandlers,
         ref,
         handleFocus,

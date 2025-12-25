@@ -1,57 +1,47 @@
 // Types:
 import {
+    type FocusStateProps,
+    type FocusStateOptions,
     type FocusPhase,
+    type FocusClassname,
 }                           from './types.js'
+import {
+    type FocusBehaviorStateDefinition,
+}                           from './internal-types.js'
+
+// Defaults:
+import {
+    defaultInputLikeFocus,
+}                           from './internal-defaults.js'
+
+// Reusable-ui states:
+import {
+    // Types:
+    type ResolveTransitionPhaseArgs,
+    type ResolveTransitionClassnameArgs,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
 
-/**
- * Resolves the current focus/blur lifecycle phase based on focus state and transition status.
- * 
- * - If a transition is in progress, returns a transitional phase:
- *   - `'focusing'` or `'blurring'`
- * - Otherwise, returns the settled phase:
- *   - `'focused'` or `'blurred'`
- * 
- * @param settledFocused - The currently settled (laggy) focus state.
- * @param isTransitioning - Whether a transition is currently in progress.
- * @returns The current `FocusPhase` value.
- */
-export const resolveFocusPhase = (settledFocused: boolean, isTransitioning: boolean): FocusPhase => {
-    if (isTransitioning) {
-        return settledFocused ? 'focusing' : 'blurring';
-    } // if
-    
-    
-    
-    return settledFocused ? 'focused' : 'blurred';
+/** Resolves the semantic transition phase for focused/blurred state behavior. */
+export const resolveFocusTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, FocusStateProps, FocusStateOptions, FocusBehaviorStateDefinition>): FocusPhase => {
+    if (isTransitioning) return settledState ? 'focusing' : 'blurring';
+    return settledState ? 'focused' : 'blurred';
 };
 
-
-
 /**
- * Resolves the CSS class name for the given focus/blur lifecycle phase.
- * 
- * Maps each `focusPhase` to a semantic class name:
- * - Resolved phases:
- *   - `'focused'`  → `'is-focused'`
- *   - `'blurred'`  → `'is-blurred'`
- * 
- * - Transitioning phases:
- *   - `'focusing'` → `'is-focusing'`
- *   - `'blurring'` → `'is-blurring'`
+ * Resolves the semantic transition classname for focused/blurred state behavior.
  * 
  * If `inputLikeFocus` is enabled, appends `'input-like-focus'` to signal input-style focus ring behavior.
- * 
- * @param focusPhase - The current lifecycle phase of the component.
- * @param inputLikeFocus - Whether input-like focus styling should be applied.
- * @returns A CSS class name reflecting the phase.
  */
-export const getFocusClassname = (focusPhase: FocusPhase, inputLikeFocus: boolean): `is-${FocusPhase}` | `is-${FocusPhase} input-like-focus` => {
-    // Return the corresponding class name:
-    return (
-        inputLikeFocus
-        ? `is-${focusPhase} input-like-focus`
-        : `is-${focusPhase}`
-    );
+export const resolveFocusTransitionClassname = ({ transitionPhase, options }: ResolveTransitionClassnameArgs<boolean, FocusPhase, FocusStateProps, FocusStateOptions, FocusBehaviorStateDefinition>): FocusClassname => {
+    // Extract options and assign defaults:
+    const {
+        inputLikeFocus = defaultInputLikeFocus,
+    } = options ?? {};
+    
+    
+    
+    if (inputLikeFocus) return `is-${transitionPhase} input-like-focus`;
+    return `is-${transitionPhase}`;
 };

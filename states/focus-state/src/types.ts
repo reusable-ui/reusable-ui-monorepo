@@ -28,11 +28,13 @@ import {
     // Types:
     type ValueChangeEventHandler,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+
+// Reusable-ui states:
 import {
     // Types:
-    type AnimationStateOptions,
-    type AnimationStateHandlers,
-}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
+    type FeedbackStateOptions,
+    type FeedbackBehaviorState,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
 
@@ -135,10 +137,7 @@ export interface FocusStatePhaseEventProps {
 export interface FocusStateOptions
     extends
         // Bases:
-        Partial<Pick<AnimationStateOptions<boolean>,
-            | 'animationPattern'
-            | 'animationBubbling'
-        >>
+        FeedbackStateOptions<boolean>
 {
     /**
      * Specifies the default focus state when no `focused` prop is explicitly provided:
@@ -176,7 +175,7 @@ export interface FocusStateOptions
      * 
      * Defaults to `['focusing', 'blurring']`.
      */
-    animationPattern  ?: AnimationStateOptions<boolean>['animationPattern']
+    animationPattern  ?: FeedbackStateOptions<boolean>['animationPattern']
     
     /**
      * Enables listening to animation events bubbling up from nested child elements.
@@ -184,7 +183,7 @@ export interface FocusStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling ?: AnimationStateOptions<boolean>['animationBubbling']
+    animationBubbling ?: FeedbackStateOptions<boolean>['animationBubbling']
 }
 
 /**
@@ -221,6 +220,16 @@ export type FocusPhase =
     | TransitioningFocusPhase
 
 /**
+ * A CSS class name reflecting the current focus/blur phase.
+ * 
+ * Used for styling based on the lifecycle phase.
+ * 
+ * If input-like focus behavior is enabled, the class name will include `'input-like-focus'`
+ * to signal that the component should visually behave like a native input.
+ */
+export type FocusClassname = `is-${FocusPhase}` | `is-${FocusPhase} input-like-focus`
+
+/**
  * An API for accessing the resolved focused/blurred state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
@@ -228,7 +237,13 @@ export type FocusPhase =
 export interface FocusBehaviorState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        AnimationStateHandlers<TElement>
+        Omit<FeedbackBehaviorState<boolean, FocusPhase, FocusClassname, TElement>,
+            | 'prevSettledState'
+            | 'state'
+            | 'actualState'
+            | 'transitionPhase'
+            | 'transitionClassname'
+        >
 {
     /**
      * The current settled focused/blurred state used for animation-aware rendering and behavioral coordination.
@@ -277,7 +292,7 @@ export interface FocusBehaviorState<TElement extends Element = HTMLElement>
      * If input-like focus behavior is enabled, the class name will include `'input-like-focus'`
      * to signal that the component should visually behave like a native input.
      */
-    focusClassname : `is-${FocusPhase}` | `is-${FocusPhase} input-like-focus`
+    focusClassname : FocusClassname
     
     /**
      * Ref to the focusable DOM element.
