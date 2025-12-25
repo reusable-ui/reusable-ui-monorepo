@@ -27,11 +27,13 @@ import {
     // Types:
     type ValueChangeEventHandler,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+
+// Reusable-ui states:
 import {
     // Types:
-    type AnimationStateOptions,
-    type AnimationStateHandlers,
-}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
+    type FeedbackStateOptions,
+    type FeedbackBehaviorState,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
 
@@ -134,10 +136,7 @@ export interface PressStatePhaseEventProps {
 export interface PressStateOptions
     extends
         // Bases:
-        Partial<Pick<AnimationStateOptions<boolean>,
-            | 'animationPattern'
-            | 'animationBubbling'
-        >>
+        FeedbackStateOptions<boolean>
 {
     /**
      * Specifies the default press state when no `pressed` prop is explicitly provided:
@@ -268,7 +267,7 @@ export interface PressStateOptions
      * 
      * Defaults to `['pressing', 'releasing']`.
      */
-    animationPattern       ?: AnimationStateOptions<boolean>['animationPattern']
+    animationPattern       ?: FeedbackStateOptions<boolean>['animationPattern']
     
     /**
      * Enables listening to animation events bubbling up from nested child elements.
@@ -276,7 +275,7 @@ export interface PressStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling      ?: AnimationStateOptions<boolean>['animationBubbling']
+    animationBubbling      ?: FeedbackStateOptions<boolean>['animationBubbling']
 }
 
 /**
@@ -313,6 +312,13 @@ export type PressPhase =
     | TransitioningPressPhase
 
 /**
+ * A CSS class name reflecting the current press/release phase.
+ * 
+ * Used for styling based on the lifecycle phase.
+ */
+export type PressClassname = `is-${PressPhase}`
+
+/**
  * An API for accessing the resolved pressed/released state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
@@ -320,7 +326,13 @@ export type PressPhase =
 export interface PressBehaviorState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        AnimationStateHandlers<TElement>
+        Omit<FeedbackBehaviorState<boolean, PressPhase, PressClassname, TElement>,
+            | 'prevSettledState'
+            | 'state'
+            | 'actualState'
+            | 'transitionPhase'
+            | 'transitionClassname'
+        >
 {
     /**
      * The current settled pressed/released state used for animation-aware rendering and behavioral coordination.
@@ -366,7 +378,7 @@ export interface PressBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-pressing'`
      * - `'is-pressed'`
      */
-    pressClassname      : `is-${PressPhase}`
+    pressClassname      : PressClassname
     
     /**
      * Event handler for pointerdown events.

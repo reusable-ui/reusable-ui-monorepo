@@ -15,8 +15,12 @@ import {
     type PressStatePhaseEventProps,
     type PressStateOptions,
     type PressPhase,
+    type PressClassname,
     type PressBehaviorState,
 }                           from './types.js'
+import {
+    type PressBehaviorStateDefinition,
+}                           from './internal-types.js'
 
 // Defaults:
 import {
@@ -25,8 +29,8 @@ import {
 
 // Utilities:
 import {
-    resolvePressPhase,
-    getPressClassname,
+    resolvePressTransitionPhase,
+    resolvePressTransitionClassname,
 }                           from './internal-utilities.js'
 
 // Hooks:
@@ -39,12 +43,12 @@ import {
     // Hooks:
     useStableCallback,
 }                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
-import {
-    // Hooks:
-    useAnimationState,
-}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
 // Reusable-ui states:
+import {
+    // Hooks:
+    useFeedbackBehaviorState,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 import {
     useDisabledState,
 }                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
@@ -219,11 +223,10 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
  * ```
  */
 export const usePressBehaviorState = <TElement extends Element = HTMLElement>(props: PressStateProps & PressStateUpdateProps, options?: PressStateOptions): PressBehaviorState<TElement> => {
-    // Extract options and assign defaults:
+    // Extract props:
     const {
-        animationPattern  = ['pressing', 'releasing'], // Matches animation names for transitions
-        animationBubbling = false,
-    } = options ?? {};
+        onPressUpdate : handlePressUpdate,
+    } = props;
     
     
     
@@ -239,77 +242,48 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
         handleKeyUp,
     } = usePressState<TElement>(props, options);
     
-    // Internal animation lifecycle:
-    const [internalPressed, setInternalPressed, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
-        initialIntent : effectivePressed,
-        animationPattern,
-        animationBubbling,
-    });
-    
-    // The current settled or animating press state.
-    // During animation, this reflects the active target (`runningIntent`).
-    // If no animation is active, it reflects the latest declared intent (`effectivePressed`), even if not yet committed.
-    // This optimistic fallback ensures transition logic and styling remain in sync with declared transitions.
-    // Deferred or discarded intents are never reflected here.
-    const settledPressed        = runningIntent ?? effectivePressed;
-    
-    // Determine whether a transition toward the effective press state is currently in progress:
-    const isTransitioning       = (
-        // An in-flight animation is active toward a target press state:
-        (runningIntent !== undefined)
+    // Transition orchestration:
+    const {
+        prevSettledState    : _prevSettledState, // unused in this domain
+        state               : pressed,
+        actualState         : actualPressed,
+        transitionPhase     : pressPhase,
+        transitionClassname : pressClassname,
+        ...animationHandlers
+    } = useFeedbackBehaviorState<
+        boolean,
+        PressPhase,
+        PressClassname,
         
-        ||
+        PressStateProps,
+        PressStateOptions,
+        PressBehaviorStateDefinition,
         
-        // An optimistic transition is pending: the intent has changed, but React has not yet re-rendered to reflect it.
-        // This mismatch is expected and resolves once `setInternalPressed(effectivePressed)` takes effect.
-        (internalPressed !== effectivePressed)
+        TElement
+    >(
+        // Props:
+        { resolvedState: effectivePressed, onStateUpdate: handlePressUpdate },
+        
+        // Options:
+        options,
+        
+        // Definition:
+        {
+            defaultAnimationPattern    : ['pressing', 'releasing'],       // Matches animation names for transitions.
+            defaultAnimationBubbling   : false,
+            resolveTransitionPhase     : resolvePressTransitionPhase,     // Resolves phases.
+            resolveTransitionClassname : resolvePressTransitionClassname, // Resolves classnames.
+        } satisfies PressBehaviorStateDefinition,
     );
-    
-    // Derive semantic phase from animation lifecycle:
-    const pressPhase            = resolvePressPhase(settledPressed, isTransitioning); // 'pressed', 'released', 'pressing', 'releasing'
-    
-    
-    
-    // Sync animation state with effective press state:
-    // Use `useLayoutEffect()` to ensure the intent is registered before the browser fires `animationstart`.
-    // This guarantees the animation lifecycle handshake completes correctly.
-    // The `useAnimationState()` hook internally treats missing animation events as immediately completed transitions.
-    useLayoutEffect(() => {
-        // The `setInternalPressed()` has internal `Object.is()` check to avoid redundant state updates.
-        setInternalPressed(effectivePressed);
-        
-        // Note: If `setInternalPressed()` is delayed (e.g. by React's render scheduler),
-        // both `internalPressed` and `runningIntent` may remain stale temporarily.
-        // This introduces a brief pre-transition ambiguity, safely handled by `isTransitioning` logic.
-    }, [effectivePressed]);
-    
-    
-    
-    // A stable dispatcher for emitting press update events.
-    // This function remains referentially stable across renders,
-    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const handlePressUpdate = useStableCallback((currentPressed: boolean): void => {
-        props.onPressUpdate?.(currentPressed, undefined);
-    });
-    
-    
-    
-    // Observer effect: emits press update events on `effectivePressed` updates.
-    // Use `useLayoutEffect()` to ensure the update is emitted before browser paint,
-    // in case the event handlers manipulate timing-sensitive DOM operations.
-    useLayoutEffect(() => {
-        // Emits press update events:
-        handlePressUpdate(effectivePressed);
-    }, [effectivePressed]);
     
     
     
     // Return resolved press state API:
     return {
-        pressed        : settledPressed,   // Use `settledPressed` instead of `effectivePressed`, because during animation, the settled state reflects the visually committed press state.
-        actualPressed  : effectivePressed, // Expose the actual effective state for advanced use cases.
+        pressed,
+        actualPressed,
         pressPhase,
-        pressClassname : getPressClassname(pressPhase),
+        pressClassname,
         ...animationHandlers,
         handlePointerDown,
         handlePointerUp,

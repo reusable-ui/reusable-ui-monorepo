@@ -1,52 +1,32 @@
 // Types:
 import {
+    type PressStateProps,
+    type PressStateOptions,
     type PressPhase,
+    type PressClassname,
 }                           from './types.js'
+import {
+    type PressBehaviorStateDefinition,
+}                           from './internal-types.js'
+
+// Reusable-ui states:
+import {
+    // Types:
+    type ResolveTransitionPhaseArgs,
+    type ResolveTransitionClassnameArgs,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
 
-/**
- * Resolves the current press/release lifecycle phase based on press state and transition status.
- * 
- * - If a transition is in progress, returns a transitional phase:
- *   - `'pressing'` or `'releasing'`
- * - Otherwise, returns the settled phase:
- *   - `'pressed'` or `'released'`
- * 
- * @param settledPressed - The currently settled (laggy) press state.
- * @param isTransitioning - Whether a transition is currently in progress.
- * @returns The current `PressPhase` value.
- */
-export const resolvePressPhase = (settledPressed: boolean, isTransitioning: boolean): PressPhase => {
-    if (isTransitioning) {
-        return settledPressed ? 'pressing' : 'releasing';
-    } // if
-    
-    
-    
-    return settledPressed ? 'pressed' : 'released';
+/** Resolves the semantic transition phase for pressed/released state behavior. */
+export const resolvePressTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, PressStateProps, PressStateOptions, PressBehaviorStateDefinition>): PressPhase => {
+    if (isTransitioning) return settledState ? 'pressing' : 'releasing';
+    return settledState ? 'pressed' : 'released';
 };
 
-
-
-/**
- * Resolves the CSS class name for the given press/release lifecycle phase.
- * 
- * Maps each `pressPhase` to a semantic class name:
- * - Resolved phases:
- *   - `'pressed'`   → `'is-pressed'`
- *   - `'released'`  → `'is-released'`
- * 
- * - Transitioning phases:
- *   - `'pressing'`  → `'is-pressing'`
- *   - `'releasing'` → `'is-releasing'`
- * 
- * @param pressPhase - The current lifecycle phase of the component.
- * @returns A CSS class name reflecting the phase.
- */
-export const getPressClassname = (pressPhase: PressPhase): `is-${PressPhase}` => {
-    // Return the corresponding class name:
-    return `is-${pressPhase}`;
+/** Resolves the semantic transition classname for pressed/released state behavior. */
+export const resolvePressTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, PressPhase, PressStateProps, PressStateOptions, PressBehaviorStateDefinition>): PressClassname => {
+    return `is-${transitionPhase}`;
 };
 
 
