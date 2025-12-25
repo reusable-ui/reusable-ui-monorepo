@@ -1,50 +1,30 @@
 // Types:
 import {
+    type ReadOnlyStateProps,
+    type ReadOnlyStateOptions,
     type ReadOnlyPhase,
+    type ReadOnlyClassname,
 }                           from './types.js'
+import {
+    type ReadOnlyBehaviorStateDefinition,
+}                           from './internal-types.js'
+
+// Reusable-ui states:
+import {
+    // Types:
+    type ResolveTransitionPhaseArgs,
+    type ResolveTransitionClassnameArgs,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
 
-/**
- * Resolves the current editable/read-only lifecycle phase based on read-only state and transition status.
- * 
- * - If a transition is in progress, returns a transitional phase:
- *   - `'thawing'` or `'freezing'`
- * - Otherwise, returns the settled phase:
- *   - `'editable'` or `'readonly'`
- * 
- * @param settledReadOnly - The currently settled (laggy) read-only state.
- * @param isTransitioning - Whether a transition is currently in progress.
- * @returns The current `ReadOnlyPhase` value.
- */
-export const resolveReadOnlyPhase = (settledReadOnly: boolean, isTransitioning: boolean): ReadOnlyPhase => {
-    if (isTransitioning) {
-        return settledReadOnly ? 'freezing' : 'thawing';
-    } // if
-    
-    
-    
-    return settledReadOnly ? 'readonly' : 'editable';
+/** Resolves the semantic transition phase for editable/read-only state behavior. */
+export const resolveReadOnlyTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, ReadOnlyStateProps, ReadOnlyStateOptions, ReadOnlyBehaviorStateDefinition>): ReadOnlyPhase => {
+    if (isTransitioning) return settledState ? 'freezing' : 'thawing';
+    return settledState ? 'readonly' : 'editable';
 };
 
-
-
-/**
- * Resolves the CSS class name for the given editable/read-only lifecycle phase.
- * 
- * Maps each `readOnlyPhase` to a semantic class name:
- * - Resolved phases:
- *   - `'editable'` → `'is-editable'`
- *   - `'readonly'` → `'is-readonly'`
- * 
- * - Transitioning phases:
- *   - `'thawing'`  → `'is-thawing'`
- *   - `'freezing'` → `'is-freezing'`
- * 
- * @param {ReadOnlyPhase} readOnlyPhase - The current lifecycle phase of the component.
- * @returns {`is-${ReadOnlyPhase}`} A CSS class name reflecting the phase.
- */
-export const getReadOnlyClassname = (readOnlyPhase: ReadOnlyPhase): `is-${ReadOnlyPhase}` => {
-    // Return the corresponding class name:
-    return `is-${readOnlyPhase}`;
+/** Resolves the semantic transition classname for editable/read-only state behavior. */
+export const resolveReadOnlyTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, ReadOnlyPhase, ReadOnlyStateProps, ReadOnlyStateOptions, ReadOnlyBehaviorStateDefinition>): ReadOnlyClassname => {
+    return `is-${transitionPhase}`;
 };

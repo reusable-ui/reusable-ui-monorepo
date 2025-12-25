@@ -16,8 +16,12 @@ import {
     type ReadOnlyStatePhaseEventProps,
     type ReadOnlyStateOptions,
     type ReadOnlyPhase,
+    type ReadOnlyClassname,
     type ReadOnlyBehaviorState,
 }                           from './types.js'
+import {
+    type ReadOnlyBehaviorStateDefinition,
+}                           from './internal-types.js'
 
 // Defaults:
 import {
@@ -27,8 +31,8 @@ import {
 
 // Utilities:
 import {
-    resolveReadOnlyPhase,
-    getReadOnlyClassname,
+    resolveReadOnlyTransitionPhase,
+    resolveReadOnlyTransitionClassname,
 }                           from './internal-utilities.js'
 
 // Contexts:
@@ -41,10 +45,12 @@ import {
     // Hooks:
     useStableCallback,
 }                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
+
+// Reusable-ui states:
 import {
     // Hooks:
-    useAnimationState,
-}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
+    useFeedbackBehaviorState,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
 
@@ -174,11 +180,10 @@ export const useReadOnlyState = (props: ReadOnlyStateProps, options?: Pick<ReadO
  * ```
  */
 export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>(props: ReadOnlyStateProps & ReadOnlyStateUpdateProps, options?: ReadOnlyStateOptions): ReadOnlyBehaviorState<TElement> => {
-    // Extract options and assign defaults:
+    // Extract props:
     const {
-        animationPattern       = ['thawing', 'freezing'], // Matches animation names for transitions
-        animationBubbling      = false,
-    } = options ?? {};
+        onReadOnlyUpdate : handleReadOnlyUpdate,
+    } = props;
     
     
     
@@ -187,77 +192,48 @@ export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>
     // Resolve effective read-only state:
     const effectiveReadOnly = useReadOnlyState(props, options);
     
-    // Internal animation lifecycle:
-    const [internalReadOnly, setInternalReadOnly, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
-        initialIntent : effectiveReadOnly,
-        animationPattern,
-        animationBubbling,
-    });
-    
-    // The current settled or animating read-only state.
-    // During animation, this reflects the active target (`runningIntent`).
-    // If no animation is active, it reflects the latest declared intent (`effectiveReadOnly`), even if not yet committed.
-    // This optimistic fallback ensures transition logic and styling remain in sync with declared transitions.
-    // Deferred or discarded intents are never reflected here.
-    const settledReadOnly   = runningIntent ?? effectiveReadOnly;
-    
-    // Determine whether a transition toward the effective read-only state is currently in progress:
-    const isTransitioning   = (
-        // An in-flight animation is active toward a target read-only state:
-        (runningIntent !== undefined)
+    // Transition orchestration:
+    const {
+        prevSettledState    : _prevSettledState, // unused in this domain
+        state               : readOnly,
+        actualState         : actualReadOnly,
+        transitionPhase     : readOnlyPhase,
+        transitionClassname : readOnlyClassname,
+        ...animationHandlers
+    } = useFeedbackBehaviorState<
+        boolean,
+        ReadOnlyPhase,
+        ReadOnlyClassname,
         
-        ||
+        ReadOnlyStateProps,
+        ReadOnlyStateOptions,
+        ReadOnlyBehaviorStateDefinition,
         
-        // An optimistic transition is pending: the intent has changed, but React has not yet re-rendered to reflect it.
-        // This mismatch is expected and resolves once `setInternalReadOnly(effectiveReadOnly)` takes effect.
-        (internalReadOnly !== effectiveReadOnly)
+        TElement
+    >(
+        // Props:
+        { resolvedState: effectiveReadOnly, onStateUpdate: handleReadOnlyUpdate },
+        
+        // Options:
+        options,
+        
+        // Definition:
+        {
+            defaultAnimationPattern    : ['thawing', 'freezing'],            // Matches animation names for transitions.
+            defaultAnimationBubbling   : false,
+            resolveTransitionPhase     : resolveReadOnlyTransitionPhase,     // Resolves phases.
+            resolveTransitionClassname : resolveReadOnlyTransitionClassname, // Resolves classnames.
+        } satisfies ReadOnlyBehaviorStateDefinition,
     );
-    
-    // Derive semantic phase from animation lifecycle:
-    const readOnlyPhase     = resolveReadOnlyPhase(settledReadOnly, isTransitioning); // 'editable', 'readonly', 'thawing', 'freezing'
-    
-    
-    
-    // Sync animation state with effective read-only state:
-    // Use `useLayoutEffect()` to ensure the intent is registered before the browser fires `animationstart`.
-    // This guarantees the animation lifecycle handshake completes correctly.
-    // The `useAnimationState()` hook internally treats missing animation events as immediately completed transitions.
-    useLayoutEffect(() => {
-        // The `setInternalReadOnly()` has internal `Object.is()` check to avoid redundant state updates.
-        setInternalReadOnly(effectiveReadOnly);
-        
-        // Note: If `setInternalReadOnly()` is delayed (e.g. by React's render scheduler),
-        // both `internalReadOnly` and `runningIntent` may remain stale temporarily.
-        // This introduces a brief pre-transition ambiguity, safely handled by `isTransitioning` logic.
-    }, [effectiveReadOnly]);
-    
-    
-    
-    // A stable dispatcher for emitting read-only update events.
-    // This function remains referentially stable across renders,
-    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const handleReadOnlyUpdate = useStableCallback((currentReadOnly: boolean): void => {
-        props.onReadOnlyUpdate?.(currentReadOnly, undefined);
-    });
-    
-    
-    
-    // Observer effect: emits read-only update events on `effectiveReadOnly` updates.
-    // Use `useLayoutEffect()` to ensure the update is emitted before browser paint,
-    // in case the event handlers manipulate timing-sensitive DOM operations.
-    useLayoutEffect(() => {
-        // Emits read-only update events:
-        handleReadOnlyUpdate(effectiveReadOnly);
-    }, [effectiveReadOnly]);
     
     
     
     // Return resolved read-only state API:
     return {
-        readOnly          : settledReadOnly,   // Use `settledReadOnly` instead of `effectiveReadOnly`, because during animation, the settled state reflects the visually committed read-only state.
-        actualReadOnly    : effectiveReadOnly, // Expose the actual effective state for advanced use cases.
+        readOnly,
+        actualReadOnly,
         readOnlyPhase,
-        readOnlyClassname : getReadOnlyClassname(readOnlyPhase),
+        readOnlyClassname,
         ...animationHandlers,
     } satisfies ReadOnlyBehaviorState<TElement>;
 };
