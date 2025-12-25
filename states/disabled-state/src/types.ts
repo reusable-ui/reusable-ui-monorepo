@@ -20,11 +20,13 @@ import {
     // Types:
     type ValueChangeEventHandler,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+
+// Reusable-ui states:
 import {
     // Types:
-    type AnimationStateOptions,
-    type AnimationStateHandlers,
-}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
+    type FeedbackStateOptions,
+    type FeedbackBehaviorState,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
 
@@ -104,10 +106,7 @@ export interface DisabledStatePhaseEventProps {
 export interface DisabledStateOptions
     extends
         // Bases:
-        Partial<Pick<AnimationStateOptions<boolean>,
-            | 'animationPattern'
-            | 'animationBubbling'
-        >>
+        FeedbackStateOptions<boolean>
 {
     /**
      * Specifies the default disabled state when no `disabled` prop is explicitly provided:
@@ -143,7 +142,7 @@ export interface DisabledStateOptions
      * 
      * Defaults to `['enabling', 'disabling']`.
      */
-    animationPattern       ?: AnimationStateOptions<boolean>['animationPattern']
+    animationPattern       ?: FeedbackStateOptions<boolean>['animationPattern']
     
     /**
      * Enables listening to animation events bubbling up from nested child elements.
@@ -151,7 +150,7 @@ export interface DisabledStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling      ?: AnimationStateOptions<boolean>['animationBubbling']
+    animationBubbling      ?: FeedbackStateOptions<boolean>['animationBubbling']
 }
 
 /**
@@ -188,6 +187,13 @@ export type DisabledPhase =
     | TransitioningDisabledPhase
 
 /**
+ * A CSS class name reflecting the current enable/disable phase.
+ * 
+ * Used for styling based on the lifecycle phase.
+ */
+export type DisabledClassname = `is-${DisabledPhase}`
+
+/**
  * An API for accessing the resolved enabled/disabled state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
@@ -195,7 +201,13 @@ export type DisabledPhase =
 export interface DisabledBehaviorState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        AnimationStateHandlers<TElement>
+        Omit<FeedbackBehaviorState<boolean, DisabledPhase, DisabledClassname, TElement>,
+            | 'prevSettledState'
+            | 'state'
+            | 'actualState'
+            | 'transitionPhase'
+            | 'transitionClassname'
+        >
 {
     /**
      * The current settled enabled/disabled state used for animation-aware rendering and behavioral coordination.
@@ -241,7 +253,7 @@ export interface DisabledBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-enabling'`
      * - `'is-enabled'`
      */
-    disabledClassname : `is-${DisabledPhase}`
+    disabledClassname : DisabledClassname
 }
 
 
