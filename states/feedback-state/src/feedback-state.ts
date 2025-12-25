@@ -15,6 +15,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
+    type TransitionStateProps,
     type ResolveDriverStateArgs,
     type TransitionBehaviorStateDefinition,
     
@@ -101,6 +102,15 @@ export const useFeedbackBehaviorState = <
     
     // States and flags:
     
+    // Combine props for transition orchestration:
+    const combinedProps : TransitionStateProps<TState> & typeof props = {
+        // Pass the already normalized resolved state:
+        initialResolvedState  : resolvedState,
+        
+        // Merge all other props (these may override `initialResolvedState` if explicitly provided):
+        ...props,
+    };
+    
     // Transition orchestration:
     const [transitionBehaviorState] = useTransitionBehaviorState<
         TState,
@@ -113,9 +123,8 @@ export const useFeedbackBehaviorState = <
         FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>,
         
         TElement
-    >({
-        initialResolvedState  : resolvedState, // Pass the already normalized resolved state.
-    },
+    >(
+    combinedProps,
     options,
     {
         // Force `TBehavior**` => `Feedback**`:
