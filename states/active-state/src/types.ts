@@ -21,11 +21,15 @@ import {
     type ValueChangeDispatcher,
     type ValueChangeEventHandler,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+
+// Reusable-ui states:
 import {
     // Types:
-    type AnimationStateOptions,
-    type AnimationStateHandlers,
-}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
+    type InteractionStateChangeProps,
+    type InteractionStateChangeDispatcherOptions,
+    type InteractionStateOptions,
+    type InteractionBehaviorState,
+}                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
 
@@ -80,7 +84,11 @@ export interface UncontrollableActiveStateProps {
  * 
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  */
-export interface ActiveStateChangeProps<TChangeEvent = unknown> {
+export interface ActiveStateChangeProps<TChangeEvent = unknown>
+    extends
+        // Bases:
+        InteractionStateChangeProps<boolean, TChangeEvent>
+{
     /**
      * Signals intent to change the active state:
      * - `true`  → request to activate
@@ -93,7 +101,7 @@ export interface ActiveStateChangeProps<TChangeEvent = unknown> {
      * - When restriction is lifted, the callback will be invoked in response to user interactions
      *   requesting to activate or deactivate.
      */
-    onActiveChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
+    onActiveChange ?: InteractionStateChangeProps<boolean, TChangeEvent>['onStateChange']
 }
 
 /**
@@ -101,15 +109,12 @@ export interface ActiveStateChangeProps<TChangeEvent = unknown> {
  * 
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  */
-export interface ActiveChangeDispatcherOptions<TChangeEvent = unknown> {
-    /**
-     * Optional callback invoked when an internal state update should occur.
-     * 
-     * - Typically used in **uncontrolled mode** to update internal active state.
-     * - In controlled mode, this callback is usually omitted since the parent
-     *   component dictates the active state.
-     */
-    onInternalChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
+export interface ActiveChangeDispatcherOptions<TChangeEvent = unknown>
+    extends
+        // Bases:
+        InteractionStateChangeDispatcherOptions<boolean, TChangeEvent>
+{
+    /* no additional options yet - reserved for future extensions */
 }
 
 /**
@@ -146,10 +151,7 @@ export interface ActiveStatePhaseEventProps {
 export interface ActiveStateOptions
     extends
         // Bases:
-        Partial<Pick<AnimationStateOptions<boolean>,
-            | 'animationPattern'
-            | 'animationBubbling'
-        >>
+        InteractionStateOptions<boolean>
 {
     /**
      * Specifies the initial active state for uncontrolled mode when no `defaultActive` prop is explicitly provided:
@@ -185,7 +187,7 @@ export interface ActiveStateOptions
      * 
      * Defaults to `['activating', 'deactivating']`.
      */
-    animationPattern     ?: AnimationStateOptions<boolean>['animationPattern']
+    animationPattern     ?: InteractionStateOptions<boolean>['animationPattern']
     
     /**
      * Enables listening to animation events bubbling up from nested child elements.
@@ -193,7 +195,7 @@ export interface ActiveStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling    ?: AnimationStateOptions<boolean>['animationBubbling']
+    animationBubbling    ?: InteractionStateOptions<boolean>['animationBubbling']
 }
 
 /**
@@ -230,6 +232,13 @@ export type ActivePhase =
     | TransitioningActivePhase
 
 /**
+ * A CSS class name reflecting the current activate/deactivate phase.
+ * 
+ * Used for styling based on the lifecycle phase.
+ */
+export type ActiveClassname = `is-${ActivePhase}`
+
+/**
  * An API for accessing the resolved active/inactive state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
@@ -238,7 +247,14 @@ export type ActivePhase =
 export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends
         // Bases:
-        AnimationStateHandlers<TElement>
+        Omit<InteractionBehaviorState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>,
+            | 'prevSettledState'
+            | 'state'
+            | 'actualState'
+            | 'transitionPhase'
+            | 'transitionClassname'
+            | 'dispatchStateChange'
+        >
 {
     /**
      * The current settled active/inactive state used for animation-aware rendering and behavioral coordination.
@@ -284,7 +300,7 @@ export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TCh
      * - `'is-activating'`
      * - `'is-active'`
      */
-    activeClassname      : `is-${ActivePhase}`
+    activeClassname      : ActiveClassname
     
     /**
      * Requests a change to the active state.

@@ -18,8 +18,12 @@ import {
     type UncontrollableActiveStateProps,
     type ActiveStateOptions,
     type ActivePhase,
+    type ActiveClassname,
     type ActiveBehaviorState,
 }                           from './types.js'
+import {
+    type ActiveBehaviorStateDefinition,
+}                           from './internal-types.js'
 
 // Defaults:
 import {
@@ -29,8 +33,8 @@ import {
 
 // Utilities:
 import {
-    resolveActivePhase,
-    getActiveClassname,
+    resolveActiveTransitionPhase,
+    resolveActiveTransitionClassname,
 }                           from './internal-utilities.js'
 
 // Contexts:
@@ -52,18 +56,18 @@ import {
     // Hooks:
     useHybridValueChange,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
-import {
-    // Hooks:
-    useAnimationState,
-}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
 // Reusable-ui states:
 import {
-    useDisabledState,
-}                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
-import {
-    useReadOnlyState,
-}                           from '@reusable-ui/read-only-state'     // Adds editable/read-only functionality to UI components, with transition animations and semantic styling hooks.
+    // Types:
+    type ResolveEffectiveStateArgs,
+    
+    
+    
+    // Hooks:
+    useInteractionStateChangeDispatcher,
+    useInteractionBehaviorState,
+}                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
 
@@ -151,44 +155,13 @@ export const useActiveState = (props: ActiveStateProps & { defaultActive?: never
  * @returns A dispatcher function for activation change requests.
  */
 export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveStateChangeProps<TChangeEvent> & { defaultActive?: never }, options?: ActiveChangeDispatcherOptions<TChangeEvent>) : ValueChangeDispatcher<boolean, TChangeEvent> => {
-    // States and flags:
-    
-    // Resolve whether the component is disabled:
-    const isDisabled      = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
-    
-    // Resolve whether the component is readonly:
-    const isReadonly      = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
-    
-    // Resolve whether the component is in a restricted state:
-    const isRestricted    = isDisabled || isReadonly;
-    
-    
-    
-    // A Stable dispatcher for activation change requests.
-    // This function remains referentially stable across renders,
-    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const dispatchActiveChange : ValueChangeDispatcher<boolean, TChangeEvent> = useStableCallback((newActive: boolean, event: TChangeEvent): void => {
-        // Halt activation lifecycle when the component is in a restricted state (interaction blocked):
-        // - Prevents internal state updates (uncontrolled mode)
-        // - Prevents external change requests (controlled mode)
-        // - Prevents notifying listeners of a change
-        if (isRestricted) return;
+    return useInteractionStateChangeDispatcher<boolean, TChangeEvent>(
+        // Props:
+        { onStateChange: props.onActiveChange },
         
-        
-        
-        // Update the internal state (if provided):
-        options?.onInternalChange?.(newActive, event);
-        
-        
-        
-        // Dispatch external change handler (if provided):
-        props.onActiveChange?.(newActive, event);
-    });
-    
-    
-    
-    // Return the active change dispatcher:
-    return dispatchActiveChange;
+        // Options:
+        options,
+    );
 };
 
 /**
@@ -252,6 +225,18 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
 };
 
 
+
+/** Resolves the effective activation state, normalizing declarative keywords into concrete values. */
+const useResolveEffectiveActiveState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, ActiveStateProps, ActiveStateOptions, ActiveBehaviorStateDefinition>): boolean => {
+    const effectiveActive = useActiveState({
+        ...props,
+        defaultActive : undefined,        // Prevents uncontrolled value.
+        active        : declarativeState, // Pass the declarative state as controlled value.
+    }, options);
+    
+    // Return the resolved effective activation state:
+    return effectiveActive;
+};
 
 /**
  * Resolves the active/inactive state, current transition phase, associated CSS class name, and animation event handlers
@@ -323,97 +308,64 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
  * ```
  */
 export const useActiveBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ActiveStateProps & UncontrollableActiveStateProps & ActiveStateChangeProps<TChangeEvent>, options?: ActiveStateOptions): ActiveBehaviorState<TElement, TChangeEvent> => {
-    // Extract options and assign defaults:
+    // Extract props:
     const {
-        defaultActive        = defaultInitialActive,
-        animationPattern     = ['activating', 'deactivating'], // Matches animation names for transitions
-        animationBubbling    = false,
-    } = options ?? {};
-    
-    
-    
-    // Extract props and assign defaults:
-    const {
-        defaultActive : defaultInitialIntent = defaultActive,
-        active        : initialIntent        = defaultInitialIntent, // Initial intent comes from `active` (if controlled) or `defaultActive` (if uncontrolled).
-        active        : controlledActive,
+        defaultActive  : initialActive,
+        active         : controlledActive,
+        onActiveChange : handleActiveChange,
     } = props;
     
     
     
     // States and flags:
     
-    // Internal activation state with animation lifecycle:
-    const [internalActive, setInternalActive, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
-        initialIntent,
-        animationPattern,
-        animationBubbling,
-    });
-    
-    // Determine control mode:
-    const isControlled    = (controlledActive !== undefined);
-    
-    // Resolve effective activation state:
-    const intendedActive  = isControlled ? controlledActive : internalActive;
-    const effectiveActive = useActiveState({ ...props, defaultActive: undefined, active: intendedActive }, options);
-    
-    // The current settled or animating active state.
-    // During animation, this reflects the active target (`runningIntent`).
-    // If no animation is active, it reflects the latest declared intent (`effectiveActive`), even if not yet committed.
-    // This optimistic fallback ensures transition logic and styling remain in sync with declared transitions.
-    // Deferred or discarded intents are never reflected here.
-    const settledActive   = runningIntent ?? effectiveActive;
-    
-    // Determine whether a transition toward the effective active state is currently in progress:
-    const isTransitioning = (
-        // An in-flight animation is active toward a target active state:
-        (runningIntent !== undefined)
+    // Transition orchestration:
+    const {
+        prevSettledState    : _prevSettledState, // unused in this domain
+        state               : active,
+        actualState         : actualActive,
+        transitionPhase     : activePhase,
+        transitionClassname : activeClassname,
+        dispatchStateChange : dispatchActiveChange,
+        ...animationHandlers
+    } = useInteractionBehaviorState<
+        boolean,
+        boolean,
+        ActivePhase,
+        ActiveClassname,
         
-        ||
+        ActiveStateProps,
+        ActiveStateOptions,
+        ActiveBehaviorStateDefinition,
         
-        // An optimistic transition is pending: the intent has changed, but React has not yet re-rendered to reflect it.
-        // This mismatch is expected and resolves once `setInternalActive(effectiveActive)` takes effect.
-        (internalActive !== effectiveActive)
+        TElement,
+        TChangeEvent
+    >(
+        // Props:
+        { defaultState: initialActive, state: controlledActive, onStateChange: handleActiveChange },
+        
+        // Options:
+        options,
+        
+        // Definition:
+        {
+            defaultAnimationPattern    : ['activating', 'deactivating'],   // Matches animation names for transitions.
+            defaultAnimationBubbling   : false,
+            defaultInitialState        : defaultInitialActive,
+            useResolveEffectiveState   : useResolveEffectiveActiveState,   // Resolves effective state.
+            resolveTransitionPhase     : resolveActiveTransitionPhase,     // Resolves phases.
+            resolveTransitionClassname : resolveActiveTransitionClassname, // Resolves classnames.
+        } satisfies ActiveBehaviorStateDefinition,
     );
-    
-    // Derive semantic phase from animation lifecycle:
-    const activePhase     = resolveActivePhase(settledActive, isTransitioning); // 'active', 'inactive', 'activating', 'deactivating'
-    
-    
-    
-    // Sync animation state with effective activation state:
-    // Use `useLayoutEffect()` to ensure the intent is registered before the browser fires `animationstart`.
-    // This guarantees the animation lifecycle handshake completes correctly.
-    // The `useAnimationState()` hook internally treats missing animation events as immediately completed transitions.
-    useLayoutEffect(() => {
-        // The `setInternalActive()` has internal `Object.is()` check to avoid redundant state updates.
-        setInternalActive(effectiveActive);
-        
-        // Note: If `setInternalActive()` is delayed (e.g. by React's render scheduler),
-        // both `internalActive` and `runningIntent` may remain stale temporarily.
-        // This introduces a brief pre-transition ambiguity, safely handled by `isTransitioning` logic.
-    }, [effectiveActive]);
-    
-    
-    
-    // A Stable dispatcher for activation change requests.
-    // This function remains referentially stable across renders,
-    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const dispatchActiveChange = useActiveChangeDispatcher<TChangeEvent>(props as Omit<typeof props, 'defaultActive'>, {
-        onInternalChange: (newActive) => {
-            // Update the internal state only if uncontrolled:
-            if (!isControlled) setInternalActive(newActive);
-        },
-    });
     
     
     
     // Return resolved active state API:
     return {
-        active          : settledActive,   // Use `settledActive` instead of `effectiveActive`, because during animation, the settled state reflects the visually committed active state.
-        actualActive    : effectiveActive, // Expose the actual effective state for advanced use cases.
+        active,
+        actualActive,
         activePhase,
-        activeClassname : getActiveClassname(activePhase),
+        activeClassname,
         dispatchActiveChange,
         ...animationHandlers,
     } satisfies ActiveBehaviorState<TElement, TChangeEvent>;
