@@ -17,8 +17,12 @@ import {
     type UncontrollableCollapseStateProps,
     type CollapseStateOptions,
     type ExpandPhase,
+    type ExpandClassname,
     type CollapseBehaviorState,
 }                           from './types.js'
+import {
+    type CollapseBehaviorStateDefinition,
+}                           from './internal-types.js'
 
 // Defaults:
 import {
@@ -27,8 +31,8 @@ import {
 
 // Utilities:
 import {
-    resolveExpandPhase,
-    getExpandClassname,
+    resolveExpandTransitionPhase,
+    resolveExpandTransitionClassname,
 }                           from './internal-utilities.js'
 
 // Reusable-ui utilities:
@@ -45,18 +49,18 @@ import {
     // Hooks:
     useHybridValueChange,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
-import {
-    // Hooks:
-    useAnimationState,
-}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
 // Reusable-ui states:
 import {
-    useDisabledState,
-}                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
-import {
-    useReadOnlyState,
-}                           from '@reusable-ui/read-only-state'     // Adds editable/read-only functionality to UI components, with transition animations and semantic styling hooks.
+    // Types:
+    type ResolveEffectiveStateArgs,
+    
+    
+    
+    // Hooks:
+    useInteractionStateChangeDispatcher,
+    useInteractionBehaviorState,
+}                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
 
@@ -113,44 +117,13 @@ export const useCollapseState = (props: CollapseStateProps & { defaultExpanded?:
  * @returns A dispatcher function for expansion change requests.
  */
 export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: CollapseStateChangeProps<TChangeEvent> & { defaultExpanded?: never }, options?: CollapseChangeDispatcherOptions<TChangeEvent>) : ValueChangeDispatcher<boolean, TChangeEvent> => {
-    // States and flags:
-    
-    // Resolve whether the component is disabled:
-    const isDisabled        = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
-    
-    // Resolve whether the component is readonly:
-    const isReadonly        = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
-    
-    // Resolve whether the component is in a restricted state:
-    const isRestricted      = isDisabled || isReadonly;
-    
-    
-    
-    // A Stable dispatcher for expansion change requests.
-    // This function remains referentially stable across renders,
-    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const dispatchExpandedChange : ValueChangeDispatcher<boolean, TChangeEvent> = useStableCallback((newExpanded: boolean, event: TChangeEvent): void => {
-        // Halt expansion lifecycle when the component is in a restricted state (interaction blocked):
-        // - Prevents internal state updates (uncontrolled mode)
-        // - Prevents external change requests (controlled mode)
-        // - Prevents notifying listeners of a change
-        if (isRestricted) return;
+    return useInteractionStateChangeDispatcher<boolean, TChangeEvent>(
+        // Props:
+        { onStateChange: props.onExpandedChange },
         
-        
-        
-        // Update the internal state (if provided):
-        options?.onInternalChange?.(newExpanded, event);
-        
-        
-        
-        // Dispatch external change handler (if provided):
-        props.onExpandedChange?.(newExpanded, event);
-    });
-    
-    
-    
-    // Return the expansion change dispatcher:
-    return dispatchExpandedChange;
+        // Options:
+        options,
+    );
 };
 
 /**
@@ -213,6 +186,18 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
 };
 
 
+
+/** Resolves the effective expansion state, normalizing declarative keywords into concrete values. */
+const useResolveEffectiveCollapseState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, CollapseStateProps, CollapseStateOptions, CollapseBehaviorStateDefinition>): boolean => {
+    const effectiveExpanded = useCollapseState({
+        ...props,
+        defaultExpanded : undefined,        // Prevents uncontrolled value.
+        expanded        : declarativeState, // Pass the declarative state as controlled value.
+    }, options);
+    
+    // Return the resolved effective expansion state:
+    return effectiveExpanded;
+};
 
 /**
  * Resolves the expanded/collapsed state, current transition phase, associated CSS class name, and animation event handlers
@@ -282,97 +267,64 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
  * ```
  */
 export const useCollapseBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: CollapseStateProps & UncontrollableCollapseStateProps & CollapseStateChangeProps<TChangeEvent>, options?: CollapseStateOptions): CollapseBehaviorState<TElement, TChangeEvent> => {
-    // Extract options and assign defaults:
+    // Extract props:
     const {
-        defaultExpanded   = defaultInitialExpanded,
-        animationPattern  = ['expanding', 'collapsing'], // Matches animation names for transitions
-        animationBubbling = false,
-    } = options ?? {};
-    
-    
-    
-    // Extract props and assign defaults:
-    const {
-        defaultExpanded : defaultInitialIntent = defaultExpanded,
-        expanded        : initialIntent        = defaultInitialIntent, // Initial intent comes from `expanded` (if controlled) or `defaultExpanded` (if uncontrolled).
-        expanded        : controlledExpanded,
+        defaultExpanded  : initialExpanded,
+        expanded         : controlledExpanded,
+        onExpandedChange : handleExpandedChange,
     } = props;
     
     
     
     // States and flags:
     
-    // Internal expansion state with animation lifecycle:
-    const [internalExpanded, setInternalExpanded, runningIntent, animationHandlers] = useAnimationState<boolean, TElement>({
-        initialIntent,
-        animationPattern,
-        animationBubbling,
-    });
-    
-    // Determine control mode:
-    const isControlled      = (controlledExpanded !== undefined);
-    
-    // Resolve effective expansion state:
-    const intendedExpanded  = isControlled ? controlledExpanded : internalExpanded;
-    const effectiveExpanded = useCollapseState({ ...props, defaultExpanded: undefined, expanded: intendedExpanded }, options);
-    
-    // The current settled or animating expanded state.
-    // During animation, this reflects the active target (`runningIntent`).
-    // If no animation is active, it reflects the latest declared intent (`effectiveExpanded`), even if not yet committed.
-    // This optimistic fallback ensures transition logic and styling remain in sync with declared transitions.
-    // Deferred or discarded intents are never reflected here.
-    const settledExpanded   = runningIntent ?? effectiveExpanded;
-    
-    // Determine whether a transition toward the effective expansion state is currently in progress:
-    const isTransitioning   = (
-        // An in-flight animation is active toward a target expansion state:
-        (runningIntent !== undefined)
+    // Transition orchestration:
+    const {
+        prevSettledState    : _prevSettledState, // unused in this domain
+        state               : expanded,
+        actualState         : actualExpanded,
+        transitionPhase     : expandPhase,
+        transitionClassname : expandClassname,
+        dispatchStateChange : dispatchExpandedChange,
+        ...animationHandlers
+    } = useInteractionBehaviorState<
+        boolean,
+        boolean,
+        ExpandPhase,
+        ExpandClassname,
         
-        ||
+        CollapseStateProps,
+        CollapseStateOptions,
+        CollapseBehaviorStateDefinition,
         
-        // An optimistic transition is pending: the intent has changed, but React has not yet re-rendered to reflect it.
-        // This mismatch is expected and resolves once `setInternalExpanded(effectiveExpanded)` takes effect.
-        (internalExpanded !== effectiveExpanded)
+        TElement,
+        TChangeEvent
+    >(
+        // Props:
+        { defaultState: initialExpanded, state: controlledExpanded, onStateChange: handleExpandedChange },
+        
+        // Options:
+        options,
+        
+        // Definition:
+        {
+            defaultAnimationPattern    : ['expanding', 'collapsing'],      // Matches animation names for transitions.
+            defaultAnimationBubbling   : false,
+            defaultInitialState        : defaultInitialExpanded,
+            useResolveEffectiveState   : useResolveEffectiveCollapseState, // Resolves effective state.
+            resolveTransitionPhase     : resolveExpandTransitionPhase,     // Resolves phases.
+            resolveTransitionClassname : resolveExpandTransitionClassname, // Resolves classnames.
+        } satisfies CollapseBehaviorStateDefinition,
     );
-    
-    // Derive semantic phase from animation lifecycle:
-    const expandPhase       = resolveExpandPhase(settledExpanded, isTransitioning); // 'expanded', 'collapsed', 'expanding', 'collapsing'
-    
-    
-    
-    // Sync animation state with effective expansion state:
-    // Use `useLayoutEffect()` to ensure the intent is registered before the browser fires `animationstart`.
-    // This guarantees the animation lifecycle handshake completes correctly.
-    // The `useAnimationState()` hook internally treats missing animation events as immediately completed transitions.
-    useLayoutEffect(() => {
-        // The `setInternalExpanded()` has internal `Object.is()` check to avoid redundant state updates.
-        setInternalExpanded(effectiveExpanded);
-        
-        // Note: If `setInternalExpanded()` is delayed (e.g. by React's render scheduler),
-        // both `internalExpanded` and `runningIntent` may remain stale temporarily.
-        // This introduces a brief pre-transition ambiguity, safely handled by `isTransitioning` logic.
-    }, [effectiveExpanded]);
-    
-    
-    
-    // A Stable dispatcher for expansion change requests.
-    // This function remains referentially stable across renders,
-    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const dispatchExpandedChange = useCollapseChangeDispatcher<TChangeEvent>(props as Omit<typeof props, 'defaultExpanded'>, {
-        onInternalChange: (newExpanded) => {
-            // Update the internal state only if uncontrolled:
-            if (!isControlled) setInternalExpanded(newExpanded);
-        },
-    });
     
     
     
     // Return resolved expansion state API:
     return {
-        expanded        : settledExpanded,   // Use `settledExpanded` instead of `effectiveExpanded`, because during animation, the settled state reflects the visually committed expansion state.
-        actualExpanded  : effectiveExpanded, // Expose the actual effective state for advanced use cases.
+        expanded,
+        actualExpanded,
         expandPhase,
-        expandClassname : getExpandClassname(expandPhase),
+        expandClassname,
         dispatchExpandedChange,
         ...animationHandlers,
     } satisfies CollapseBehaviorState<TElement, TChangeEvent>;

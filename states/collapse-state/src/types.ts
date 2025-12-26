@@ -21,11 +21,15 @@ import {
     type ValueChangeDispatcher,
     type ValueChangeEventHandler,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+
+// Reusable-ui states:
 import {
     // Types:
-    type AnimationStateOptions,
-    type AnimationStateHandlers,
-}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
+    type InteractionStateChangeProps,
+    type InteractionStateChangeDispatcherOptions,
+    type InteractionStateOptions,
+    type InteractionBehaviorState,
+}                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
 
@@ -71,7 +75,11 @@ export interface UncontrollableCollapseStateProps {
  * 
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  */
-export interface CollapseStateChangeProps<TChangeEvent = unknown> {
+export interface CollapseStateChangeProps<TChangeEvent = unknown>
+    extends
+        // Bases:
+        InteractionStateChangeProps<boolean, TChangeEvent>
+{
     /**
      * Signals intent to change the expanded state:
      * - `true`  → request to expand
@@ -84,7 +92,7 @@ export interface CollapseStateChangeProps<TChangeEvent = unknown> {
      * - When restriction is lifted, the callback will be invoked in response to user interactions
      *   requesting to expand or collapse.
      */
-    onExpandedChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
+    onExpandedChange ?: InteractionStateChangeProps<boolean, TChangeEvent>['onStateChange']
 }
 
 /**
@@ -92,15 +100,12 @@ export interface CollapseStateChangeProps<TChangeEvent = unknown> {
  * 
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  */
-export interface CollapseChangeDispatcherOptions<TChangeEvent = unknown> {
-    /**
-     * Optional callback invoked when an internal state update should occur.
-     * 
-     * - Typically used in **uncontrolled mode** to update internal expanded state.
-     * - In controlled mode, this callback is usually omitted since the parent
-     *   component dictates the expanded state.
-     */
-    onInternalChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
+export interface CollapseChangeDispatcherOptions<TChangeEvent = unknown>
+    extends
+        // Bases:
+        InteractionStateChangeDispatcherOptions<boolean, TChangeEvent>
+{
+    /* no additional options yet - reserved for future extensions */
 }
 
 /**
@@ -137,10 +142,7 @@ export interface CollapseStatePhaseEventProps {
 export interface CollapseStateOptions
     extends
         // Bases:
-        Partial<Pick<AnimationStateOptions<boolean>,
-            | 'animationPattern'
-            | 'animationBubbling'
-        >>
+        InteractionStateOptions<boolean>
 {
     /**
      * Specifies the initial expanded state for uncontrolled mode when no `defaultExpanded` prop is explicitly provided:
@@ -167,7 +169,7 @@ export interface CollapseStateOptions
      * 
      * Defaults to `['expanding', 'collapsing']`.
      */
-    animationPattern  ?: AnimationStateOptions<boolean>['animationPattern']
+    animationPattern  ?: InteractionStateOptions<boolean>['animationPattern']
     
     /**
      * Enables listening to animation events bubbling up from nested child elements.
@@ -175,7 +177,7 @@ export interface CollapseStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling ?: AnimationStateOptions<boolean>['animationBubbling']
+    animationBubbling ?: InteractionStateOptions<boolean>['animationBubbling']
 }
 
 /**
@@ -212,6 +214,13 @@ export type ExpandPhase =
     | TransitioningExpandPhase
 
 /**
+ * A CSS class name reflecting the current expand/collapse phase.
+ * 
+ * Used for styling based on the lifecycle phase.
+ */
+export type ExpandClassname = `is-${ExpandPhase}`
+
+/**
  * An API for accessing the resolved expanded/collapsed state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
@@ -220,7 +229,14 @@ export type ExpandPhase =
 export interface CollapseBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends
         // Bases:
-        AnimationStateHandlers<TElement>
+        Omit<InteractionBehaviorState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>,
+            | 'prevSettledState'
+            | 'state'
+            | 'actualState'
+            | 'transitionPhase'
+            | 'transitionClassname'
+            | 'dispatchStateChange'
+        >
 {
     /**
      * The current settled expanded/collapsed state used for animation-aware rendering and behavioral coordination.
@@ -266,7 +282,7 @@ export interface CollapseBehaviorState<TElement extends Element = HTMLElement, T
      * - `'is-expanding'`
      * - `'is-expanded'`
      */
-    expandClassname        : `is-${ExpandPhase}`
+    expandClassname        : ExpandClassname
     
     /**
      * Requests a change to the expanded state.
