@@ -148,7 +148,7 @@ interface SelectedBehaviorStateDefinition
  */
 export interface SelectedBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends
-        Omit<InteractionBehaviorState<boolean, SelectedPhase, SelectedClassname, TElement>,
+        Omit<InteractionBehaviorState<boolean, SelectedPhase, SelectedClassname, TElement, TChangeEvent>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'
