@@ -53,12 +53,14 @@
   },
   "dependencies": {
     "@cssfn/core": "^4.0.0",
-    "@reusable-ui/callbacks": "^7.0.0",
     "@reusable-ui/events": "^7.0.0",
     "@reusable-ui/interaction-state": "^7.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/animation-feature": "^7.0.0",
+    "@reusable-ui/animation-feature": "^7.0.0"
+  },
+  "devDependencies": {
+    "@reusable-ui/callbacks": "^7.0.0",
     "@types/react": "^19.0.0",
     "react": "^19.0.0"
   }

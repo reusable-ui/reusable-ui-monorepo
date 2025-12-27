@@ -1,13 +1,5 @@
 'use client' // The exported hooks are client side only.
 
-// React:
-import {
-    // Hooks:
-    useEffect,
-    useLayoutEffect,
-    useRef,
-}                           from 'react'
-
 // Types:
 import {
     type CollapseStateProps,
@@ -37,10 +29,6 @@ import {
 
 // Reusable-ui utilities:
 import {
-    // Hooks:
-    useStableCallback,
-}                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
-import {
     // Types:
     type ValueChangeDispatcher,
     
@@ -60,6 +48,7 @@ import {
     // Hooks:
     useInteractionStateChangeDispatcher,
     useInteractionBehaviorState,
+    useInteractionStatePhaseEvents,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
@@ -345,92 +334,12 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
  * @param {ExpandPhase} expandPhase - The current phase value returned from `useCollapseBehaviorState()`.
  */
 export const useCollapseStatePhaseEvents = (props: CollapseStatePhaseEventProps, expandPhase: ExpandPhase): void => {
-    // Extract props:
-    const {
-        onExpandingStart,
-        onExpandingEnd,
-        onCollapsingStart,
-        onCollapsingEnd,
-    } = props;
-    
-    
-    
-    // Tracks whether the component has passed its initial mount phase.
-    // Prevents phase-specific lifecycle events from wrongfully firing on initial mount.
-    const hasMountedRef = useRef<boolean>(false);
-    
-    
-    
-    // A stable dispatcher for emitting phase change events.
-    // This function remains referentially stable across renders,
-    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const handleExpandPhaseChange = useStableCallback((expandPhase: ExpandPhase): void => {
+    useInteractionStatePhaseEvents(expandPhase, (expandPhase: ExpandPhase): void => {
         switch (expandPhase) {
-            case 'expanding'  : onExpandingStart?.(expandPhase, undefined);  break;
-            case 'expanded'   : onExpandingEnd?.(expandPhase, undefined);    break;
-            case 'collapsing' : onCollapsingStart?.(expandPhase, undefined); break;
-            case 'collapsed'  : onCollapsingEnd?.(expandPhase, undefined);   break;
+            case 'expanding'  : props.onExpandingStart?.(expandPhase, undefined);  break;
+            case 'expanded'   : props.onExpandingEnd?.(expandPhase, undefined);    break;
+            case 'collapsing' : props.onCollapsingStart?.(expandPhase, undefined); break;
+            case 'collapsed'  : props.onCollapsingEnd?.(expandPhase, undefined);   break;
         } // switch
     });
-    
-    
-    
-    /*
-        ⚠️ React Strict Mode Consideration:
-        This hook uses two effects to ensure **consistent behavior** across strict and non-strict modes.
-        The observer effect emits phase change events, while the setup effect tracks the mount status.
-        The setup effect must be placed after observer effect in order to correctly emit events for subsequent updates only.
-        
-        This configuration ensures that phase change events are emitted only for SUBSEQUENT UPDATES.
-        The first update never emits any events.
-        
-        Sequence on initial mount:
-        1. First render
-            → observer effect runs → but SKIPS event emission due to `hasMountedRef = false`
-            → setup effect runs → marks `hasMountedRef = true`, allowing further updates to emit events
-        2. [Strict Mode] Simulated unmount
-            → observer cleanup (noop)
-            → setup cleanup → resets `hasMountedRef = false`, preventing further updates from emitting events
-        3. [Strict Mode] Second render
-            → observer effect runs → SKIPS event emission again due to `hasMountedRef = false`
-            → setup effect runs → marks `hasMountedRef = true`, allowing further updates to emit events
-        So effectively, the initial mount does NOT emit any events in both strict and non-strict modes.
-        
-        Sequence on subsequent updates of `expandPhase`:
-            → observer effect runs → emits phase change event
-            → setup effect does NOT run (no changes in dependencies)
-        
-        Sequence on final unmount:
-            → observer cleanup (noop)
-            → setup cleanup → resets `hasMountedRef = false`
-    */
-    
-    
-    
-    // Observer effect: emits phase change events on `expandPhase` updates.
-    // Use `useLayoutEffect()` to ensure the events are emitted before browser paint,
-    // in case the event handlers manipulate timing-sensitive DOM operations.
-    useLayoutEffect(() => {
-        // Ignore the first mount phase change:
-        if (!hasMountedRef.current) return;
-        
-        
-        
-        // Emits subsequent phase change events:
-        handleExpandPhaseChange(expandPhase);
-    }, [expandPhase]);
-    
-    // Setup effect: marks the component as mounted and resets on unmount.
-    // Use regular `useEffect()` is sufficient, since mount status tracking does not require timing-sensitive operations before painting.
-    useEffect(() => {
-        // Mark as mounted:
-        hasMountedRef.current = true;
-        
-        
-        
-        // Unmark when unmounted:
-        return () => {
-            hasMountedRef.current = false;
-        };
-    }, []);
 };
