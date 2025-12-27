@@ -8,8 +8,6 @@ import {
     
     
     // Hooks:
-    useEffect,
-    useLayoutEffect,
     useRef,
     useMemo,
 }                           from 'react'
@@ -51,10 +49,6 @@ import {
 // Reusable-ui utilities:
 import {
     // Hooks:
-    useStableCallback,
-}                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
-import {
-    // Hooks:
     usePreviousValue,
 }                           from '@reusable-ui/lifecycles'          // A React utility package for managing component lifecycles, ensuring stable effects, and optimizing state updates.
 import {
@@ -77,6 +71,7 @@ import {
     // Hooks:
     useInteractionStateChangeDispatcher,
     useInteractionBehaviorState,
+    useInteractionStatePhaseEvents,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
@@ -460,125 +455,45 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
  * @param {ViewPhase} viewPhase - The current phase value returned from `useViewBehaviorState()`.
  */
 export const useViewStatePhaseEvents = (props: ViewStatePhaseEventProps, viewPhase: ViewPhase): void => {
-    // Extract props:
-    const {
-        onViewAdvancingStart,
-        onViewAdvancingEnd,
-        onViewRecedingStart,
-        onViewRecedingEnd,
-    } = props;
-    
-    
-    
-    // Tracks whether the component has passed its initial mount phase.
-    // Prevents phase-specific lifecycle events from wrongfully firing on initial mount.
-    const hasMountedRef = useRef<boolean>(false);
-    
-    
-    
     // Remembers the previous transitioning phase for proper end event emission.
-    const prevTransitioningViewPhaseRef = useRef<TransitioningViewPhase | undefined>(undefined);
+    const prevPhaseRef = useRef<TransitioningViewPhase | undefined>(undefined);
     
     
     
-    // A stable dispatcher for emitting phase change events.
-    // This function remains referentially stable across renders,
-    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const handleViewPhaseChange = useStableCallback((viewPhase: ViewPhase): void => {
+    useInteractionStatePhaseEvents(viewPhase, (viewPhase: ViewPhase): void => {
         switch (viewPhase) {
             case 'view-advancing':
                 // Remember the current transitioning phase:
-                prevTransitioningViewPhaseRef.current = viewPhase;
+                prevPhaseRef.current = viewPhase;
                 
-                onViewAdvancingStart?.(viewPhase, undefined);
+                props.onViewAdvancingStart?.(viewPhase, undefined);
                 break;
             
             case 'view-receding':
                 // Remember the current transitioning phase:
-                prevTransitioningViewPhaseRef.current = viewPhase;
+                prevPhaseRef.current = viewPhase;
                 
-                onViewRecedingStart?.(viewPhase, undefined);
+                props.onViewRecedingStart?.(viewPhase, undefined);
                 break;
             
             case 'view-settled':
                 // Determine the previous transitioning phase to emit the corresponding end event:
-                const prevTransitioningViewPhase = prevTransitioningViewPhaseRef.current;
+                const prevPhase = prevPhaseRef.current;
                 
                 // Clear the remembered transitioning phase:
-                prevTransitioningViewPhaseRef.current = undefined;
+                prevPhaseRef.current = undefined;
                 
                 // Emit the corresponding end event:
-                switch (prevTransitioningViewPhase) {
+                switch (prevPhase) {
                     case 'view-advancing':
-                        onViewAdvancingEnd?.(viewPhase, undefined);
+                        props.onViewAdvancingEnd?.(viewPhase, undefined);
                         break;
                     
                     case 'view-receding':
-                        onViewRecedingEnd?.(viewPhase, undefined);
+                        props.onViewRecedingEnd?.(viewPhase, undefined);
                         break;
                 } // switch
                 break;
         } // switch
     });
-    
-    
-    
-    /*
-        ⚠️ React Strict Mode Consideration:
-        This hook uses two effects to ensure **consistent behavior** across strict and non-strict modes.
-        The observer effect emits phase change events, while the setup effect tracks the mount status.
-        The setup effect must be placed after observer effect in order to correctly emit events for subsequent updates only.
-        
-        This configuration ensures that phase change events are emitted only for SUBSEQUENT UPDATES.
-        The first update never emits any events.
-        
-        Sequence on initial mount:
-        1. First render
-            → observer effect runs → but SKIPS event emission due to `hasMountedRef = false`
-            → setup effect runs → marks `hasMountedRef = true`, allowing further updates to emit events
-        2. [Strict Mode] Simulated unmount
-            → observer cleanup (noop)
-            → setup cleanup → resets `hasMountedRef = false`, preventing further updates from emitting events
-        3. [Strict Mode] Second render
-            → observer effect runs → SKIPS event emission again due to `hasMountedRef = false`
-            → setup effect runs → marks `hasMountedRef = true`, allowing further updates to emit events
-        So effectively, the initial mount does NOT emit any events in both strict and non-strict modes.
-        
-        Sequence on subsequent updates of `viewPhase`:
-            → observer effect runs → emits phase change event
-            → setup effect does NOT run (no changes in dependencies)
-        
-        Sequence on final unmount:
-            → observer cleanup (noop)
-            → setup cleanup → resets `hasMountedRef = false`
-    */
-    
-    
-    
-    // Observer effect: emits phase change events on `viewPhase` updates.
-    // Use `useLayoutEffect()` to ensure the events are emitted before browser paint,
-    // in case the event handlers manipulate timing-sensitive DOM operations.
-    useLayoutEffect(() => {
-        // Ignore the first mount phase change:
-        if (!hasMountedRef.current) return;
-        
-        
-        
-        // Emits subsequent phase change events:
-        handleViewPhaseChange(viewPhase);
-    }, [viewPhase]);
-    
-    // Setup effect: marks the component as mounted and resets on unmount.
-    // Use regular `useEffect()` is sufficient, since mount status tracking does not require timing-sensitive operations before painting.
-    useEffect(() => {
-        // Mark as mounted:
-        hasMountedRef.current = true;
-        
-        
-        
-        // Unmark when unmounted:
-        return () => {
-            hasMountedRef.current = false;
-        };
-    }, []);
 };
