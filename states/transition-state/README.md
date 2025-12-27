@@ -815,6 +815,14 @@ export const useSelectedStateChangeDispatcher = <TChangeEvent = unknown>(props: 
 };
 ```
 
+#### 🧠 Transition Animation Behavior
+
+The hook manages transitions between concrete states using a unified animation flow:
+
+- If a transition is already in progress, new intent (e.g., switching from one state to another) is deferred until the current animation completes.  
+- Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.  
+- This ensures animations are never interrupted mid-flight and outdated transitions are discarded, keeping the lifecycle predictable and consistent across all specialized states.  
+
 ### `useTransitionStatePhaseEvents(phase, handlePhaseChange)`
 
 A reusable hook for **emitting lifecycle events** in response to **transition phase changes**.  
@@ -892,14 +900,6 @@ useTransitionStatePhaseEvents(viewPhase, (phase) => {
 - Use in any `*-state` package that needs to emit lifecycle events tied to transition phases.  
 - Keeps code DRY, consistent, and easier to maintain.  
 - Special cases (like `view-state`) can add local refs but still delegate through this hook.
-
-## 🧠 Transition Animation Behavior
-
-The hook manages transitions between concrete states using a unified animation flow:
-
-- If a transition is already in progress, new intent (e.g., switching from one state to another) is deferred until the current animation completes.  
-- Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.  
-- This ensures animations are never interrupted mid-flight and outdated transitions are discarded, keeping the lifecycle predictable and consistent across all specialized states.  
 
 ## 📚 Related Packages
 
