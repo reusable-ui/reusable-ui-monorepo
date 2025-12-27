@@ -4,6 +4,9 @@ import { existsSync } from 'fs';
 
 const stateDirs = [
     'animation-state',
+    'transition-state',
+    'feedback-state',
+    'interaction-state',
     'disabled-state',
     'read-only-state',
     'focus-state',
