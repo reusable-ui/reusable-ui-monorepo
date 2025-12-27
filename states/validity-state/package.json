@@ -53,7 +53,6 @@
   },
   "dependencies": {
     "@cssfn/core": "^4.0.0",
-    "@reusable-ui/callbacks": "^7.0.0",
     "@reusable-ui/events": "^7.0.0",
     "@reusable-ui/feedback-state": "^7.0.0",
     "@reusable-ui/lifecycles": "^7.0.0"
@@ -61,7 +60,10 @@
   "peerDependencies": {
     "@reusable-ui/animation-feature": "^7.0.0",
     "@reusable-ui/disabled-state": "^7.0.0",
-    "@reusable-ui/read-only-state": "^7.0.0",
+    "@reusable-ui/read-only-state": "^7.0.0"
+  },
+  "devDependencies": {
+    "@reusable-ui/callbacks": "^7.0.0",
     "@types/react": "^19.0.0",
     "react": "^19.0.0"
   }

@@ -1,13 +1,5 @@
 'use client' // The exported hooks are client side only.
 
-// React:
-import {
-    // Hooks:
-    useEffect,
-    useLayoutEffect,
-    useRef,
-}                           from 'react'
-
 // Types:
 import {
     type ValidityStateProps,
@@ -37,10 +29,6 @@ import {
 // Reusable-ui utilities:
 import {
     // Hooks:
-    useStableCallback,
-}                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
-import {
-    // Hooks:
     usePreviousValue,
 }                           from '@reusable-ui/lifecycles'          // A React utility package for managing component lifecycles, ensuring stable effects, and optimizing state updates.
 
@@ -48,6 +36,7 @@ import {
 import {
     // Hooks:
     useFeedbackBehaviorState,
+    useFeedbackStatePhaseEvents,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 import {
     useDisabledState,
@@ -279,96 +268,14 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
  * @param {ValidityPhase} validityPhase - The current phase value returned from `useValidityBehaviorState()`.
  */
 export const useValidityStatePhaseEvents = (props: ValidityStatePhaseEventProps, validityPhase: ValidityPhase): void => {
-    // Extract props:
-    const {
-        onValidatingStart,
-        onValidatingEnd,
-        onInvalidatingStart,
-        onInvalidatingEnd,
-        onUnvalidatingStart,
-        onUnvalidatingEnd,
-    } = props;
-    
-    
-    
-    // Tracks whether the component has passed its initial mount phase.
-    // Prevents phase-specific lifecycle events from wrongfully firing on initial mount.
-    const hasMountedRef = useRef<boolean>(false);
-    
-    
-    
-    // A stable dispatcher for emitting phase change events.
-    // This function remains referentially stable across renders,
-    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const handleValidityPhaseChange = useStableCallback((validityPhase: ValidityPhase): void => {
+    useFeedbackStatePhaseEvents(validityPhase, (validityPhase: ValidityPhase): void => {
         switch (validityPhase) {
-            case 'validating'   : onValidatingStart?.(validityPhase, undefined);   break;
-            case 'valid'        : onValidatingEnd?.(validityPhase, undefined);     break;
-            case 'invalidating' : onInvalidatingStart?.(validityPhase, undefined); break;
-            case 'invalid'      : onInvalidatingEnd?.(validityPhase, undefined);   break;
-            case 'unvalidating' : onUnvalidatingStart?.(validityPhase, undefined); break;
-            case 'unvalidated'  : onUnvalidatingEnd?.(validityPhase, undefined);   break;
+            case 'validating'   : props.onValidatingStart?.(validityPhase, undefined);   break;
+            case 'valid'        : props.onValidatingEnd?.(validityPhase, undefined);     break;
+            case 'invalidating' : props.onInvalidatingStart?.(validityPhase, undefined); break;
+            case 'invalid'      : props.onInvalidatingEnd?.(validityPhase, undefined);   break;
+            case 'unvalidating' : props.onUnvalidatingStart?.(validityPhase, undefined); break;
+            case 'unvalidated'  : props.onUnvalidatingEnd?.(validityPhase, undefined);   break;
         } // switch
     });
-    
-    
-    
-    /*
-        ⚠️ React Strict Mode Consideration:
-        This hook uses two effects to ensure **consistent behavior** across strict and non-strict modes.
-        The observer effect emits phase change events, while the setup effect tracks the mount status.
-        The setup effect must be placed after observer effect in order to correctly emit events for subsequent updates only.
-        
-        This configuration ensures that phase change events are emitted only for SUBSEQUENT UPDATES.
-        The first update never emits any events.
-        
-        Sequence on initial mount:
-        1. First render
-            → observer effect runs → but SKIPS event emission due to `hasMountedRef = false`
-            → setup effect runs → marks `hasMountedRef = true`, allowing further updates to emit events
-        2. [Strict Mode] Simulated unmount
-            → observer cleanup (noop)
-            → setup cleanup → resets `hasMountedRef = false`, preventing further updates from emitting events
-        3. [Strict Mode] Second render
-            → observer effect runs → SKIPS event emission again due to `hasMountedRef = false`
-            → setup effect runs → marks `hasMountedRef = true`, allowing further updates to emit events
-        So effectively, the initial mount does NOT emit any events in both strict and non-strict modes.
-        
-        Sequence on subsequent updates of `validityPhase`:
-            → observer effect runs → emits phase change event
-            → setup effect does NOT run (no changes in dependencies)
-        
-        Sequence on final unmount:
-            → observer cleanup (noop)
-            → setup cleanup → resets `hasMountedRef = false`
-    */
-    
-    
-    
-    // Observer effect: emits phase change events on `validityPhase` updates.
-    // Use `useLayoutEffect()` to ensure the events are emitted before browser paint,
-    // in case the event handlers manipulate timing-sensitive DOM operations.
-    useLayoutEffect(() => {
-        // Ignore the first mount phase change:
-        if (!hasMountedRef.current) return;
-        
-        
-        
-        // Emits subsequent phase change events:
-        handleValidityPhaseChange(validityPhase);
-    }, [validityPhase]);
-    
-    // Setup effect: marks the component as mounted and resets on unmount.
-    // Use regular `useEffect()` is sufficient, since mount status tracking does not require timing-sensitive operations before painting.
-    useEffect(() => {
-        // Mark as mounted:
-        hasMountedRef.current = true;
-        
-        
-        
-        // Unmark when unmounted:
-        return () => {
-            hasMountedRef.current = false;
-        };
-    }, []);
 };
