@@ -24,6 +24,9 @@ import {
     // Hooks:
     useTransitionBehaviorState,
 }                           from '@reusable-ui/transition-state'    // Lifecycle-aware transition state for React, enabling reusable hooks with consistent animations.
+export {
+    useTransitionStatePhaseEvents as useFeedbackStatePhaseEvents,
+}                           from '@reusable-ui/transition-state'    // Lifecycle-aware transition state for React, enabling reusable hooks with consistent animations.
 
 // Types:
 import {

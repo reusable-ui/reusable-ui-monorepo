@@ -26,7 +26,7 @@ npm install @reusable-ui/feedback-state
 yarn add @reusable-ui/feedback-state
 ```
 
-## 🧩 Exported Hook
+## 🧩 Exported Hooks
 
 ### `useFeedbackBehaviorState(props, options, definition)`
 
@@ -50,9 +50,9 @@ Specialize it into **disabled-state** or **read-only-state** by defining the `de
 - **Default animation bubbling**  
   Whether to enable bubbling from nested child elements.
 
-## 💡 Usage Examples
+#### 💡 Usage Examples
 
-### Feedback-Based States
+##### Feedback-Based States
 
 Represents states that provide feedback based on external conditions or reacting user actions.  
 Typically dynamic and can change frequently.
@@ -278,7 +278,7 @@ const resolveOnlineTransitionClassname = ({ transitionPhase }: ResolveTransition
 };
 ```
 
-### Constraint-Based States
+##### Constraint-Based States
 
 Represents states that limit user interactions.  
 Typically static and not changed frequently.
@@ -474,13 +474,93 @@ const resolveLockedTransitionClassname = ({ transitionPhase }: ResolveTransition
 };
 ```
 
-## 🧠 Transition Animation Behavior
+#### 🧠 Transition Animation Behavior
 
 The hook manages transitions between concrete states using a unified animation flow:
 
 - If a transition is already in progress, new intent (e.g., switching from one state to another) is deferred until the current animation completes.  
 - Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.  
 - This ensures animations are never interrupted mid-flight and outdated transitions are discarded, keeping the lifecycle predictable and consistent across all specialized states.  
+
+### `useFeedbackStatePhaseEvents(phase, handlePhaseChange)`
+
+A reusable hook for **emitting lifecycle events** in response to **transition phase changes**.  
+This hook centralizes the common pattern used across `*-state` packages.
+
+This hook is aliased from `useTransitionStatePhaseEvents()` in `@reusable-ui/transition-state`, canonically renamed here for clarity within the `feedback-state` context.
+
+#### Parameters
+- **`phase: TPhase`**  
+  The current transition phase value returned from a behavior-specific state hook  
+  (e.g. `useDisabledBehaviorState()`, `useFocusBehaviorState()`, etc.).
+
+- **`handlePhaseChange: (phase: TPhase) => void`**  
+  A delegate function that maps the given phase to the appropriate event handler calls.  
+  This function should contain the switch/case logic for invoking `onStart`/`onEnd` callbacks.
+
+#### Behavior
+- Skips event emission on **initial mount** to avoid false positives.
+- Emits events on **subsequent updates** before browser paint (`useLayoutEffect`), ensuring handlers can perform timing-sensitive DOM operations.
+
+#### Example: Disabled State
+```ts
+useFeedbackStatePhaseEvents(disabledPhase, (phase) => {
+    switch (phase) {
+        case 'enabling'  : props.onEnablingStart?.(phase, undefined);  break;
+        case 'enabled'   : props.onEnablingEnd?.(phase, undefined);    break;
+        case 'disabling' : props.onDisablingStart?.(phase, undefined); break;
+        case 'disabled'  : props.onDisablingEnd?.(phase, undefined);   break;
+    }
+});
+```
+
+#### Example: View State (special case)
+```ts
+// Remembers the previous transitioning phase for proper end event emission.
+const prevPhaseRef = useRef<TransitioningViewPhase | undefined>(undefined);
+
+useFeedbackStatePhaseEvents(viewPhase, (phase) => {
+    switch (phase) {
+        case 'view-advancing':
+            // Remember the current transitioning phase:
+            prevPhaseRef.current = phase;
+            
+            props.onViewAdvancingStart?.(phase, undefined);
+            break;
+            
+        case 'view-receding':
+            // Remember the current transitioning phase:
+            prevPhaseRef.current = phase;
+            
+            props.onViewRecedingStart?.(phase, undefined);
+            break;
+            
+        case 'view-settled':
+            // Determine the previous transitioning phase to emit the corresponding end event:
+            const prevPhase = prevPhaseRef.current;
+            
+            // Clear the remembered transitioning phase:
+            prevPhaseRef.current = undefined;
+            
+            // Emit the corresponding end event:
+            switch (prevPhase) {
+                case 'view-advancing':
+                    props.onViewAdvancingEnd?.(phase, undefined);
+                    break;
+                
+                case 'view-receding':
+                    props.onViewRecedingEnd?.(phase, undefined);
+                    break;
+            } // switch
+            break;
+    }
+});
+```
+
+#### When to Use
+- Use in any `*-state` package that needs to emit lifecycle events tied to transition phases.  
+- Keeps code DRY, consistent, and easier to maintain.  
+- Special cases (like `view-state`) can add local refs but still delegate through this hook.
 
 ## 📚 Related Packages
 
