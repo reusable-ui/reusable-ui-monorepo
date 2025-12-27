@@ -56,7 +56,8 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/animation-state": "^7.0.0"
+    "@reusable-ui/animation-state": "^7.0.0",
+    "@reusable-ui/callbacks": "^7.0.0"
   },
   "peerDependencies": {
     "@types/react": "^19.0.0",

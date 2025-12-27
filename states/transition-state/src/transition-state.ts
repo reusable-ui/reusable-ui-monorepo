@@ -9,7 +9,15 @@ import {
     
     // Hooks:
     useLayoutEffect,
+    useEffect,
+    useRef,
 }                           from 'react'
+
+// Reusable-ui utilities:
+import {
+    // Hooks:
+    useStableCallback,
+}                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
 
 // Reusable-ui states:
 import {
@@ -232,4 +240,91 @@ export const useTransitionBehaviorState = <
         // Setter for updating state intent:
         setInternalState,
     ] satisfies readonly [TransitionBehaviorState<TState, TPhase, TClassname, TElement>, Dispatch<SetAnimationIntentAction<TState>>];
+};
+
+
+
+/**
+ * A reusable React hook for **emitting lifecycle events** in response to **transition phase changes**.
+ * 
+ * This hook centralizes the common pattern used across `*-state` packages:
+ * - Skips event emission on **initial mount** to avoid false positives.
+ * - Emits events on **subsequent updates** before browser paint (`useLayoutEffect`),
+ *   ensuring handlers can perform timing-sensitive DOM operations.
+ * 
+ * @template TPhase - The type representing semantic transition phases.
+ * 
+ * @param phase - The current transition phase value returned from a behavior-specific state hook
+ * (e.g. `useDisabledBehaviorState()`, `useFocusBehaviorState()`, etc.).
+ * 
+ * @param handlePhaseChange - A delegate function that maps the given phase to the appropriate event handler calls.
+ * This function should contain the switch/case logic for invoking `onStart`/`onEnd` callbacks.
+ * 
+ * @example
+ * // Disabled-state usage:
+ * useTransitionStatePhaseEvents(disabledPhase, (phase) => {
+ *   switch (phase) {
+ *     case 'enabling'  : props.onEnablingStart?.(phase, undefined);  break;
+ *     case 'enabled'   : props.onEnablingEnd?.(phase, undefined);    break;
+ *     case 'disabling' : props.onDisablingStart?.(phase, undefined); break;
+ *     case 'disabled'  : props.onDisablingEnd?.(phase, undefined);   break;
+ *   }
+ * });
+ * 
+ * @remarks
+ * - On **initial mount**, no events are emitted. This prevents false positives.
+ * - On **subsequent updates**, the delegate is called with the new phase.
+ */
+export const useTransitionStatePhaseEvents = <TPhase extends string>(phase: TPhase, handlePhaseChange: (phase: TPhase) => void): void => {
+    // Tracks whether the component has passed its initial mount phase.
+    // Prevents lifecycle events from wrongfully firing on initial mount.
+    const hasMountedRef = useRef<boolean>(false);
+    
+    
+    
+    // A stable dispatcher for emitting phase change events.
+    // Ensures referential stability across renders, so it can be safely
+    // excluded from the `useEffect` dependency array,
+    // preventing unnecessary effect re-runs.
+    const stableHandlePhaseChange = useStableCallback(handlePhaseChange);
+    
+    
+    
+    /*
+        ⚠️ React Strict Mode Consideration:
+        - Two effects are used to ensure consistent behavior across strict and non-strict modes.
+        - The observer effect emits phase change events.
+        - The setup effect tracks mount status.
+        - The setup effect must run AFTER the observer effect to ensure
+          that events are only emitted for SUBSEQUENT updates.
+        - The first render (mount) should not emit any events.
+    */
+    
+    // Observer effect: emits phase change events on `phase` updates.
+    // Use `useLayoutEffect()` so events fire before browser paint,
+    // useful if handlers manipulate timing-sensitive DOM operations.
+    useLayoutEffect(() => {
+        // Skip initial mount:
+        if (!hasMountedRef.current) return;
+        
+        
+        
+        // Fire phase change event:
+        stableHandlePhaseChange(phase);
+    }, [phase]);
+    
+    // Setup effect: marks the component as mounted and resets on unmount.
+    // Regular `useEffect()` is sufficient here since mount tracking
+    // does not require pre-paint timing.
+    useEffect(() => {
+        // Mark as mounted:
+        hasMountedRef.current = true;
+        
+        
+        
+        return () => {
+            // Reset mount status on unmount:
+            hasMountedRef.current = false;
+        };
+    }, []);
 };
