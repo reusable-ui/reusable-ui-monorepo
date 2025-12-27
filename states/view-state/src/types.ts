@@ -27,11 +27,15 @@ import {
     type ValueChangeDispatcher,
     type ValueChangeEventHandler,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+
+// Reusable-ui states:
 import {
     // Types:
-    type AnimationStateOptions,
-    type AnimationStateHandlers,
-}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
+    type InteractionStateChangeProps,
+    type InteractionStateChangeDispatcherOptions,
+    type InteractionStateOptions,
+    type InteractionBehaviorState,
+}                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
 
@@ -75,7 +79,11 @@ export interface UncontrollableViewStateProps {
  * 
  * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
  */
-export interface ViewStateChangeProps<TChangeEvent = unknown> {
+export interface ViewStateChangeProps<TChangeEvent = unknown>
+    extends
+        // Bases:
+        InteractionStateChangeProps<number, TChangeEvent>
+{
     /**
      * Signals intent to change the view index:
      * - `0`, `1`, `2`, … : request to navigate to the given index
@@ -87,7 +95,7 @@ export interface ViewStateChangeProps<TChangeEvent = unknown> {
      * - When restriction is lifted, the callback will be invoked in response to user interactions
      *   requesting navigation to a new view index.
      */
-    onViewIndexChange ?: ValueChangeEventHandler<number, TChangeEvent>
+    onViewIndexChange ?: InteractionStateChangeProps<number, TChangeEvent>['onStateChange']
 }
 
 /**
@@ -95,15 +103,12 @@ export interface ViewStateChangeProps<TChangeEvent = unknown> {
  * 
  * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
  */
-export interface ViewIndexChangeDispatcherOptions<TChangeEvent = unknown> {
-    /**
-     * Optional callback invoked when an internal state update should occur.
-     * 
-     * - Typically used in **uncontrolled mode** to update internal view index.
-     * - In controlled mode, this callback is usually omitted since the parent
-     *   component dictates the view index.
-     */
-    onInternalChange ?: ValueChangeEventHandler<number, TChangeEvent>
+export interface ViewIndexChangeDispatcherOptions<TChangeEvent = unknown>
+    extends
+        // Bases:
+        InteractionStateChangeDispatcherOptions<number, TChangeEvent>
+{
+    /* no additional options yet - reserved for future extensions */
 }
 
 /**
@@ -148,10 +153,7 @@ export interface ViewStatePhaseEventProps {
 export interface ViewStateOptions
     extends
         // Bases:
-        Partial<Pick<AnimationStateOptions<number>,
-            | 'animationPattern'
-            | 'animationBubbling'
-        >>
+        InteractionStateOptions<number>
 {
     /**
      * Specifies the initial view index for uncontrolled mode when no `defaultViewIndex` prop is explicitly provided:
@@ -207,7 +209,7 @@ export interface ViewStateOptions
      * 
      * Defaults to `['view-advancing', 'view-receding']`.
      */
-    animationPattern  ?: AnimationStateOptions<number>['animationPattern']
+    animationPattern  ?: InteractionStateOptions<number>['animationPattern']
     
     /**
      * Enables listening to animation events bubbling up from nested child elements.
@@ -215,7 +217,7 @@ export interface ViewStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling ?: AnimationStateOptions<number>['animationBubbling']
+    animationBubbling ?: InteractionStateOptions<number>['animationBubbling']
 }
 
 /**
@@ -250,6 +252,13 @@ export type ViewPhase =
     | TransitioningViewPhase
 
 /**
+ * A CSS class name reflecting the current view-switching phase.
+ * 
+ * Used for styling based on the lifecycle phase.
+ */
+export type ViewClassname = ViewPhase
+
+/**
  * An API for accessing the resolved view index, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
@@ -258,7 +267,14 @@ export type ViewPhase =
 export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends
         // Bases:
-        AnimationStateHandlers<TElement>
+        Omit<InteractionBehaviorState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>,
+            | 'prevSettledState'
+            | 'state'
+            | 'actualState'
+            | 'transitionPhase'
+            | 'transitionClassname'
+            | 'dispatchStateChange'
+        >
 {
     /**
      * The current settled view index used for animation-aware rendering and behavioral coordination.
@@ -347,7 +363,7 @@ export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChan
      * - `'view-advancing'`
      * - `'view-receding'`
      */
-    viewClassname           : ViewPhase
+    viewClassname           : ViewClassname
     
     /**
      * A set of inline CSS variables that reflect the current view lifecycle state.

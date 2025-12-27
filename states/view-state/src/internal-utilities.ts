@@ -1,8 +1,13 @@
 // Types:
 import {
+    type ViewStateProps,
     type ViewStateOptions,
     type ViewPhase,
+    type ViewClassname,
 }                           from './types.js'
+import {
+    type ViewBehaviorStateDefinition,
+}                           from './internal-types.js'
 
 // Defaults:
 import {
@@ -16,22 +21,17 @@ import {
     clamp,
 }                           from '@reusable-ui/numbers'             // A lightweight JavaScript library for precise numeric operations.
 
+// Reusable-ui states:
+import {
+    // Types:
+    type ResolveTransitionPhaseArgs,
+    type ResolveTransitionClassnameArgs,
+}                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
-/**
- * Resolves the current view-switching lifecycle phase based on directional movement and transition status.
- * 
- * - If a transition is in progress, returns a transitional phase:
- *   - `'view-advancing'` or `'view-receding'`
- * - Otherwise, returns the settled phase:
- *   - `'view-settled'`
- * 
- * @param prevSettledViewIndex - The previously settled view index.
- * @param settledViewIndex - The currently settled (laggy) view index.
- * @param isTransitioning - Whether a transition is currently in progress.
- * @returns The current `ViewPhase` value.
- */
-export const resolveViewPhase = (prevSettledViewIndex: number | undefined, settledViewIndex: number, isTransitioning: boolean): ViewPhase => {
+
+/** Resolves the semantic transition phase for view-switching behavior. */
+export const resolveViewTransitionPhase = ({ prevSettledState: prevSettledViewIndex, settledState: settledViewIndex, isTransitioning }: ResolveTransitionPhaseArgs<number, ViewStateProps, ViewStateOptions, ViewBehaviorStateDefinition>): ViewPhase => {
     if (isTransitioning && (prevSettledViewIndex !== undefined)) {
         return (
             // Determine the direction of movement (the same index counts as **forward**, which should never happen):
@@ -46,25 +46,9 @@ export const resolveViewPhase = (prevSettledViewIndex: number | undefined, settl
     return 'view-settled';
 };
 
-
-
-/**
- * Resolves the CSS class name for the given view-switching lifecycle phase.
- * 
- * Maps each `viewPhase` to a semantic class name:
- * - Resolved phases:
- *   - `'view-settled'`   → `'view-settled'`
- * 
- * - Transitioning phases:
- *   - `'view-advancing'` → `'view-advancing'`
- *   - `'view-receding'`  → `'view-receding'`
- * 
- * @param {ViewPhase} viewPhase - The current lifecycle phase of the component.
- * @returns {ViewPhase} A CSS class name reflecting the phase.
- */
-export const getViewClassname = (viewPhase: ViewPhase): ViewPhase => {
-    // Return the corresponding class name:
-    return viewPhase;
+/** Resolves the semantic transition classname for view-switching behavior. */
+export const resolveViewTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<number, ViewPhase, ViewStateProps, ViewStateOptions, ViewBehaviorStateDefinition>): ViewClassname => {
+    return transitionPhase;
 };
 
 

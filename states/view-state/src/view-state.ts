@@ -24,8 +24,12 @@ import {
     type ViewStateOptions,
     type TransitioningViewPhase,
     type ViewPhase,
+    type ViewClassname,
     type ViewBehaviorState,
 }                           from './types.js'
+import {
+    type ViewBehaviorStateDefinition,
+}                           from './internal-types.js'
 
 // Defaults:
 import {
@@ -34,8 +38,8 @@ import {
 
 // Utilities:
 import {
-    resolveViewPhase,
-    getViewClassname,
+    resolveViewTransitionPhase,
+    resolveViewTransitionClassname,
     clampViewIndex,
 }                           from './internal-utilities.js'
 
@@ -62,18 +66,18 @@ import {
     // Hooks:
     useHybridValueChange,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
-import {
-    // Hooks:
-    useAnimationState,
-}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
 // Reusable-ui states:
 import {
-    useDisabledState,
-}                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
-import {
-    useReadOnlyState,
-}                           from '@reusable-ui/read-only-state'     // Adds editable/read-only functionality to UI components, with transition animations and semantic styling hooks.
+    // Types:
+    type ResolveEffectiveStateArgs,
+    
+    
+    
+    // Hooks:
+    useInteractionStateChangeDispatcher,
+    useInteractionBehaviorState,
+}                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
 
@@ -102,7 +106,7 @@ export const useViewState = (props: ViewStateProps & { defaultViewIndex?: never 
     
     // Extract props and assign defaults:
     const {
-        viewIndex        : controlledViewIndex = defaultViewIndex,
+        viewIndex         : controlledViewIndex = defaultViewIndex,
     } = props;
     
     
@@ -135,44 +139,13 @@ export const useViewState = (props: ViewStateProps & { defaultViewIndex?: never 
  * @returns A dispatcher function for view index change requests.
  */
 export const useViewIndexChangeDispatcher = <TChangeEvent = unknown>(props: ViewStateChangeProps<TChangeEvent> & { defaultViewIndex?: never }, options?: ViewIndexChangeDispatcherOptions<TChangeEvent>) : ValueChangeDispatcher<number, TChangeEvent> => {
-    // States and flags:
-    
-    // Resolve whether the component is disabled:
-    const isDisabled           = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
-    
-    // Resolve whether the component is readonly:
-    const isReadonly           = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
-    
-    // Resolve whether the component is in a restricted state:
-    const isRestricted         = isDisabled || isReadonly;
-    
-    
-    
-    // A stable dispatcher for view index change requests.
-    // This function remains referentially stable across renders,
-    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const dispatchViewIndexChange : ValueChangeDispatcher<number, TChangeEvent> = useStableCallback((newViewIndex: number, event: TChangeEvent): void => {
-        // Halt expansion lifecycle when the component is in a restricted state (interaction blocked):
-        // - Prevents internal state updates (uncontrolled mode)
-        // - Prevents external change requests (controlled mode)
-        // - Prevents notifying listeners of a change
-        if (isRestricted) return;
+    return useInteractionStateChangeDispatcher<number, TChangeEvent>(
+        // Props:
+        { onStateChange: props.onViewIndexChange },
         
-        
-        
-        // Update the internal state (if provided):
-        options?.onInternalChange?.(newViewIndex, event);
-        
-        
-        
-        // Dispatch external change handler (if provided):
-        props.onViewIndexChange?.(newViewIndex, event);
-    });
-    
-    
-    
-    // Return the view index change dispatcher:
-    return dispatchViewIndexChange;
+        // Options:
+        options,
+    );
 };
 
 /**
@@ -205,9 +178,9 @@ export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewSt
     
     // Extract props and assign defaults:
     const {
-        defaultViewIndex : defaultInitialIntent = defaultViewIndex,
-        viewIndex        : rawInitialIntent     = defaultInitialIntent, // Initial intent comes from `viewIndex` (if controlled) or `defaultViewIndex` (if uncontrolled).
-        viewIndex        : controlledViewIndex,
+        defaultViewIndex  : defaultInitialIntent = defaultViewIndex,
+        viewIndex         : rawInitialIntent     = defaultInitialIntent, // Initial intent comes from `viewIndex` (if controlled) or `defaultViewIndex` (if uncontrolled).
+        viewIndex         : controlledViewIndex,
         onViewIndexChange,
     } = props;
     
@@ -238,6 +211,18 @@ export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewSt
 };
 
 
+
+/** Resolves the effective view index, normalizing declarative keywords into concrete values. */
+const useResolveEffectiveViewState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<number, ViewStateProps, ViewStateOptions, ViewBehaviorStateDefinition>): number => {
+    const effectiveViewIndex = useViewState({
+        ...props,
+        defaultViewIndex  : undefined,        // Prevents uncontrolled value.
+        viewIndex         : declarativeState, // Pass the declarative state as controlled value.
+    }, options);
+    
+    // Return the resolved effective view index:
+    return effectiveViewIndex;
+};
 
 /**
  * Resolves the current view index, current transition phase, associated CSS class name, and animation event handlers
@@ -332,17 +317,16 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     // Extract options and assign defaults:
     const {
         defaultViewIndex  = defaultInitialViewIndex,
-        animationPattern  = ['view-advancing', 'view-receding'], // Matches animation names for transitions
-        animationBubbling = false,
     } = options ?? {};
     
     
     
     // Extract props and assign defaults:
     const {
-        defaultViewIndex : defaultInitialIntent = defaultViewIndex,
-        viewIndex        : rawInitialIntent     = defaultInitialIntent, // Initial intent comes from `viewIndex` (if controlled) or `defaultViewIndex` (if uncontrolled).
-        viewIndex        : controlledViewIndex,
+        defaultViewIndex  : defaultInitialIntent = defaultViewIndex,
+        viewIndex         : rawInitialIntent     = defaultInitialIntent, // Initial intent comes from `viewIndex` (if controlled) or `defaultViewIndex` (if uncontrolled).
+        viewIndex         : controlledViewIndex,
+        onViewIndexChange : handleViewIndexChange,
     } = props;
     
     
@@ -376,83 +360,53 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     */
     
     // Clamp the initial intent within valid range and step:
-    const initialIntent        = clampViewIndex(rawInitialIntent, options);
+    const initialViewIndex = clampViewIndex(rawInitialIntent, options);
     
-    // Internal view index state with animation lifecycle:
-    const [internalViewIndex, setInternalViewIndex, runningIntent, animationHandlers] = useAnimationState<number, TElement>({
-        initialIntent,
-        animationPattern,
-        animationBubbling,
-    });
-    
-    // Determine control mode:
-    const isControlled         = (controlledViewIndex !== undefined);
-    
-    // Resolve effective view index:
-    const intendedViewIndex    = isControlled ? controlledViewIndex : internalViewIndex;
-    const effectiveViewIndex   = useViewState({ ...props, defaultViewIndex: undefined, viewIndex: intendedViewIndex }, options);
-    
-    // The current settled or animating target view index.
-    // During animation, this reflects the active target (`runningIntent`).
-    // If no animation is active, it reflects the latest declared intent (`effectiveViewIndex`), even if not yet committed.
-    // This optimistic fallback ensures directional inference and styling remain in sync with declared transitions.
-    // Deferred or discarded intents are never reflected here.
-    const settledViewIndex     = runningIntent ?? effectiveViewIndex;
-    
-    // The previously settled view index before the most recent transition.
-    // This value trails one step behind `settledViewIndex`.
-    // It updates only after a transition completes, and persists even after settling.
-    // When no prior view exists, it resolves to `undefined`.
-    // Useful for directional inference, layout comparisons, and transition-aware animations.
-    const prevSettledViewIndex = usePreviousValue<number>(settledViewIndex);
-    
-    // Determine whether a transition toward the effective view index is currently in progress:
-    const isTransitioning      = (
-        // An in-flight animation is active toward a target view index:
-        (runningIntent !== undefined)
+    // Transition orchestration:
+    const {
+        prevSettledState    : prevViewIndex,
+        state               : viewIndex,
+        actualState         : actualViewIndex,
+        transitionPhase     : viewPhase,
+        transitionClassname : viewClassname,
+        dispatchStateChange : dispatchViewIndexChange,
+        ...animationHandlers
+    } = useInteractionBehaviorState<
+        number,
+        number,
+        ViewPhase,
+        ViewClassname,
         
-        ||
+        ViewStateProps,
+        ViewStateOptions,
+        ViewBehaviorStateDefinition,
         
-        // An optimistic transition is pending: the intent has changed, but React has not yet re-rendered to reflect it.
-        // This mismatch is expected and resolves once `setInternalViewIndex(effectiveViewIndex)` takes effect.
-        (internalViewIndex !== effectiveViewIndex)
+        TElement,
+        TChangeEvent
+    >(
+        // Props:
+        { defaultState: initialViewIndex, state: controlledViewIndex, onStateChange: handleViewIndexChange },
+        
+        // Options:
+        options,
+        
+        // Definition:
+        {
+            defaultAnimationPattern    : ['view-advancing', 'view-receding'], // Matches animation names for transitions.
+            defaultAnimationBubbling   : false,
+            defaultInitialState        : defaultInitialViewIndex,
+            useResolvePreviousState    : usePreviousValue,                    // Tracks previous settled state.
+            useResolveEffectiveState   : useResolveEffectiveViewState,        // Resolves effective state.
+            resolveTransitionPhase     : resolveViewTransitionPhase,          // Resolves phases.
+            resolveTransitionClassname : resolveViewTransitionClassname,      // Resolves classnames.
+        } satisfies ViewBehaviorStateDefinition,
     );
-    
-    // Derive semantic phase from animation lifecycle:
-    const viewPhase            = resolveViewPhase(prevSettledViewIndex, settledViewIndex, isTransitioning); // 'view-advancing', 'view-receding', 'view-settled'
-    
-    
-    
-    // Sync animation state with effective view index:
-    // Use `useLayoutEffect()` to ensure the intent is registered before the browser fires `animationstart`.
-    // This guarantees the animation lifecycle handshake completes correctly.
-    // The `useAnimationState()` hook internally treats missing animation events as immediately completed transitions.
-    useLayoutEffect(() => {
-        // The `setInternalViewIndex()` has internal `Object.is()` check to avoid redundant state updates.
-        setInternalViewIndex(effectiveViewIndex);
-        
-        // Note: If `setInternalViewIndex()` is delayed (e.g. by React's render scheduler),
-        // both `internalViewIndex` and `runningIntent` may remain stale temporarily.
-        // This introduces a brief pre-transition ambiguity, safely handled by `isTransitioning` logic.
-    }, [effectiveViewIndex]);
-    
-    
-    
-    // A stable dispatcher for view index change requests.
-    // This function remains referentially stable across renders,
-    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const dispatchViewIndexChange = useViewIndexChangeDispatcher<TChangeEvent>(props as Omit<typeof props, 'defaultViewIndex'>, {
-        onInternalChange: (newViewIndex) => {
-            // Update the internal state only if uncontrolled:
-            if (!isControlled) setInternalViewIndex(newViewIndex);
-        },
-    });
     
     
     
     // Determine the range of visible views, including during transitions:
-    const fromIndex = isTransitioning ? (prevSettledViewIndex ?? settledViewIndex) : settledViewIndex;
-    const toIndex   = settledViewIndex;
+    const fromIndex = (viewPhase === 'view-settled') ? viewIndex : (prevViewIndex ?? viewIndex);
+    const toIndex   = viewIndex;
     const [minVisibleViewIndex, maxVisibleViewIndex] = (
         fromIndex < toIndex
         ? [fromIndex, toIndex]
@@ -461,27 +415,31 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     
     
     
+    // Compute inline CSS variables for driving view-switching styles and animations:
+    const viewStyle = useMemo<CSSProperties>(() => ({
+        [
+            viewStateVars.viewIndex
+            .slice(4, -1) // fix: var(--customProp) => --customProp
+        ]: String(viewIndex),
+        
+        [
+            viewStateVars.prevViewIndex
+            .slice(4, -1) // fix: var(--customProp) => --customProp
+        ]: (prevViewIndex !== undefined) ? String(prevViewIndex) : 'unset',
+    }), [viewStateVars.viewIndex, viewStateVars.prevViewIndex, viewIndex, prevViewIndex]);
+    
+    
+    
     // Return resolved view-switching state API:
     return {
-        viewIndex           : settledViewIndex,     // Use `settledViewIndex` instead of `effectiveViewIndex`, because during animation, the settled index reflects the visually committed view.
-        prevViewIndex       : prevSettledViewIndex, // Include the previous settled index for conditionally rendering the origin view during animations.
-        minVisibleViewIndex,                        // The minimum visible view index in the current transition or settled state.
-        maxVisibleViewIndex,                        // The maximum visible view index in the current transition or settled state.
-        actualViewIndex     : effectiveViewIndex,   // Expose the actual effective index for advanced use cases.
+        viewIndex,
+        prevViewIndex,
+        minVisibleViewIndex, // The minimum visible view index in the current transition or settled state.
+        maxVisibleViewIndex, // The maximum visible view index in the current transition or settled state.
+        actualViewIndex,
         viewPhase,
-        viewClassname       : getViewClassname(viewPhase),
-        viewStyle           : useMemo(() => ({
-            // These variables are used in CSS to drive animation and layout:
-            [
-                viewStateVars.viewIndex
-                .slice(4, -1) // fix: var(--customProp) => --customProp
-            ]: String(settledViewIndex),
-            
-            [
-                viewStateVars.prevViewIndex
-                .slice(4, -1) // fix: var(--customProp) => --customProp
-            ]: (prevSettledViewIndex !== undefined) ? String(prevSettledViewIndex) : 'unset',
-        } as CSSProperties), [viewStateVars.viewIndex, viewStateVars.prevViewIndex, settledViewIndex, prevSettledViewIndex]),
+        viewClassname,
+        viewStyle,
         dispatchViewIndexChange,
         ...animationHandlers,
     } satisfies ViewBehaviorState<TElement, TChangeEvent>;
