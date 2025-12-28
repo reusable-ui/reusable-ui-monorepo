@@ -46,9 +46,13 @@ Specialize it into **collapse-state**, **active-state**, or **view-state** by de
 - **Default animation bubbling**  
   Whether to enable bubbling from nested child elements.
 - **Default initial state**  
-  Provides a fallback initial state when neither `defaultState` prop nor `defaultState` option is provided.
+  Provides a fallback initial concrete state when neither `defaultState` prop nor `defaultState` option is provided.
 - **Effective state resolver**  
-  Normalizes declarative values (`'auto'`, `'inherit'`, etc.) into concrete values, applying domain-specific rules.
+  Normalizes declarative values (`'auto'`, `'inherit'`, etc.) into concrete values, applying domain-specific rules such as:
+    - disabled/read-only restrictions
+    - cascade/inheritance from parent context
+    - clamping within valid ranges
+    - other domain-specific adjustments
 
 #### 💡 Usage Examples
 
@@ -367,6 +371,227 @@ useInteractionStatePhaseEvents(viewPhase, (phase) => {
 - Use in any `*-state` package that needs to emit lifecycle events tied to transition phases.  
 - Keeps code DRY, consistent, and easier to maintain.  
 - Special cases (like `view-state`) can add local refs but still delegate through this hook.
+
+### `useUncontrollableInteractionState(props, options, definition)`
+
+Provides abstract controlled/uncontrolled interaction state *without* animation lifecycle integration.  
+Specialize it into **collapse-state**, **active-state**, or **view-state** by defining the `definition` parameter.
+
+This hook is designed for components that **manage** a resolved interaction state
+(for example, the `expanded` state in collapsible components) and **forward** it
+to a base component, while optionally supporting uncontrolled behavior.
+
+Unlike `useInteractionBehaviorState()`, which includes animation lifecycle management,
+`useUncontrollableInteractionState()` provides a **simplified implementation** that focuses solely
+on controlled/uncontrolled state management without animation lifecycle.
+
+**Definition parameters:**
+- **Default initial state**  
+  Provides a fallback initial concrete state when neither `defaultState` prop nor `defaultState` option is provided.
+- **Effective state resolver**  
+  Normalizes declarative values (`'auto'`, `'inherit'`, etc.) into concrete values, applying domain-specific rules such as:
+    - disabled/read-only restrictions
+    - cascade/inheritance from parent context
+    - clamping within valid ranges
+    - other domain-specific adjustments
+
+#### 💡 Usage Examples
+
+Example: **selected/unselected** state *without* animation lifecycle integration.  
+Supports both controlled and uncontrolled modes.  
+Exposes a dispatcher (`dispatchSelectedChange`) for interactive state changes.  
+Declarative keywords (`'auto'`, `'inherit'`) are supported in controlled mode only.  
+In uncontrolled mode, the hook manages internal state holding normalized concrete values.
+
+```ts
+import {
+    useUncontrollableInteractionState,
+    type InteractionStateOptions,
+    type ResolveEffectiveStateArgs,
+    type InteractionBehaviorStateDefinition,
+    type InteractionBehaviorState,
+} from '@reusable-ui/interaction-state'
+import { type ValueChangeDispatcher, type ValueChangeEventHandler } from '@reusable-ui/events'
+
+/**
+ * Example implementation of an interactive selected/unselected state with animation lifecycle integration.
+ * 
+ * Provides a hybrid controlled/uncontrolled selected state with support for declarative keywords (`'auto'`).
+ * 
+ * Exposes semantic phases and classnames for styling, synchronized with animation transitions,
+ * and a dispatcher for interactive state changes.
+ */
+
+/** Props for controlling the selected state of a component. */
+export interface SelectedStateProps {
+    /**
+     * Specifies the selected state for controlled mode.
+     * 
+     * - `true`   → selected
+     * - `false`  → unselected
+     * - `'auto'` → automatically determine selected state based on context
+     */
+    selected ?: boolean | 'auto'
+}
+
+/** Props for initializing the selected state in uncontrolled components. */
+export interface UncontrollableSelectedStateProps {
+    /** Specifies the initial selected state for uncontrolled mode. */
+    defaultSelected ?: boolean
+}
+
+/** Props for reporting proactive change requests to the selected state. */
+export interface SelectedStateChangeProps<TChangeEvent = unknown> {
+    /** Signals intent to change the selected state. */
+    onSelectedChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
+}
+
+/** Options for customizing the selected change dispatcher behavior. */
+export interface SelectedChangeDispatcherOptions<TChangeEvent = unknown> {
+    /** Optional callback invoked when an internal state update should occur. */
+    onInternalChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
+}
+
+/** Options for customizing selected state behavior and animation lifecycle. */
+export interface SelectedStateOptions extends InteractionStateOptions<boolean> {
+    /** The initial selected state if `defaultSelected` prop is not provided. */
+    defaultSelected ?: boolean
+}
+
+/** Semantic phases when the component is fully settled. */
+export type ResolvedSelectedPhase = 'selected' | 'unselected'
+
+/** Transitional phases while the component is animating. */
+export type TransitioningSelectedPhase = 'selecting' | 'deselecting'
+
+/** Union of resolved and transitional phases. */
+export type SelectedPhase = ResolvedSelectedPhase | TransitioningSelectedPhase
+
+/** Semantic CSS classnames tied to selected phases. */
+export type SelectedClassname = `is-${SelectedPhase}`
+
+/** Private definition for selected state behavior. */
+interface SelectedBehaviorStateDefinition
+    extends
+        InteractionBehaviorStateDefinition<boolean | 'auto', boolean, SelectedPhase, SelectedClassname,
+            SelectedStateProps,
+            SelectedStateOptions,
+            SelectedBehaviorStateDefinition
+        >
+{
+    /* no additional definition yet - reserved for future extensions */
+}
+
+/**
+ * Public API returned by `useSelectedBehaviorState`.
+ * 
+ * @remarks
+ * - Mirrors `InteractionBehaviorState` but renames properties into domain-specific terms.
+ * - Excludes generic properties (`state`, `actualState`, etc.) in favor of `selected`, `actualSelected`, etc.
+ */
+export interface SelectedBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
+    extends
+        Omit<InteractionBehaviorState<boolean, SelectedPhase, SelectedClassname, TElement, TChangeEvent>,
+            | 'prevSettledState'
+            | 'state'
+            | 'actualState'
+            | 'transitionPhase'
+            | 'transitionClassname'
+            | 'dispatchStateChange'
+        >
+{
+    /** The current settled selected state (animation-aware). */
+    selected               : boolean
+    
+    /** The actual resolved selected state (immediate, may appear out of sync). */
+    actualSelected         : boolean
+    
+    /** The semantic transition phase (`selected`, `unselected`, `selecting`, `deselecting`). */
+    selectedPhase          : SelectedPhase
+    
+    /** A CSS classname reflecting the current selected phase. */
+    selectedClassname      : SelectedClassname
+    
+    /** Requests a change to the selected state. */
+    dispatchSelectedChange : ValueChangeDispatcher<boolean, TChangeEvent>
+}
+
+/**
+ * Hook for managing selected state *without* animation lifecycle integration.
+ * 
+ * @remarks
+ * - Supports both controlled and uncontrolled modes.
+ * - Declarative keywords (`'auto'`) are normalized by `useSelectedState`.
+ * - Provides semantic phases and classnames for styling.
+ */
+export const useUncontrollableSelectedState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: SelectedStateProps & UncontrollableSelectedStateProps & SelectedStateChangeProps<TChangeEvent>, options?: SelectedStateOptions): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
+    const {
+        defaultSelected  : initialSelected,
+        selected         : controlledSelected,
+        onSelectedChange : handleSelectedChange,
+    } = props;
+    
+    // Transition orchestration:
+    const [selected, dispatchSelectedChange] = useUncontrollableInteractionState<
+        boolean | 'auto',
+        boolean,
+        
+        SelectedStateProps,
+        SelectedStateOptions,
+        SelectedBehaviorStateDefinition,
+        
+        TChangeEvent
+    >(
+        // Props:
+        { defaultState: initialSelected, state: controlledSelected, onStateChange: handleSelectedChange },
+        
+        // Options:
+        options,
+        
+        // Definition:
+        {
+            defaultInitialState        : false,
+            useResolveEffectiveState   : useResolveEffectiveSelectedState,   // Resolves effective state.
+        } satisfies Pick<SelectedBehaviorStateDefinition, 'defaultInitialState' | 'useResolveEffectiveState'>,
+    );
+    
+    // Return domain-specific API:
+    return [
+        selected,
+        dispatchSelectedChange,
+    ] satisfies [boolean, ValueChangeDispatcher<boolean, TChangeEvent>];
+};
+
+/** Resolves the effective selected state, normalizing declarative keywords into concrete values. */
+const useResolveEffectiveSelectedState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean | 'auto', SelectedStateProps, SelectedStateOptions, SelectedBehaviorStateDefinition>): boolean => {
+    const effectiveSelected = useSelectedState({
+        ...props,
+        defaultSelected : undefined,        // Prevents uncontrolled value.
+        selected        : declarativeState, // Pass the declarative state as controlled value.
+    }, options);
+    
+    // Return the resolved effective selected state:
+    return effectiveSelected;
+};
+
+/** Normalizes declarative keywords into a concrete and effective selected state. */
+const useSelectedState = (props: SelectedStateProps & { defaultSelected?: never }, options?: SelectedStateOptions): boolean => {
+    const {
+        defaultSelected = false,
+    } = options ?? {};
+    
+    const {
+        selected: controlledSelected = defaultSelected,
+    } = props;
+    
+    if (controlledSelected === 'auto') {
+        // Example normalization: treat 'auto' as selected by default.
+        return true;
+    }
+    
+    return controlledSelected;
+};
+```
 
 ## 📚 Related Packages
 

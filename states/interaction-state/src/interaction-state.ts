@@ -8,6 +8,11 @@ import {
 import {
     // Types:
     type ValueChangeDispatcher,
+    
+    
+    
+    // Hooks:
+    useHybridValueChange,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
 
 // Reusable-ui states:
@@ -125,16 +130,21 @@ export const useInteractionStateChangeDispatcher = <TState extends {} | null, TC
  * - **Default animation bubbling**  
  *   Whether to enable bubbling from nested child elements.
  * - **Default initial state**  
- *   Provides a fallback initial state when neither `defaultState` prop nor `defaultState` option is provided.
+ *   Provides a fallback initial concrete state when neither `defaultState` prop nor `defaultState` option is provided.
  * - **Effective state resolver**  
- *   Normalizes declarative values (`'auto'`, `'inherit'`, etc.) into concrete values, applying domain-specific rules.
+ *   Normalizes declarative values (`'auto'`, `'inherit'`, etc.) into concrete values, applying domain-specific rules such as:
+ *   - disabled/read-only restrictions
+ *   - cascade/inheritance from parent context
+ *   - clamping within valid ranges
+ *   - other domain-specific adjustments
  * 
- * Supports both controlled and uncontrolled mode.
+ * Supports both controlled and uncontrolled mode:
+ * - **Controlled mode**: `state` prop is provided and may include declarative keywords.  
+ *   These are normalized into concrete values on every render.
+ * - **Uncontrolled mode**: `state` prop is `undefined`.  
+ *   The component manages its own state internally, initialized from `defaultState` prop (which must be a concrete value).
  * 
- * Declarative keywords (`'auto'`, `'inherit'`, etc.) are normalized into concrete values
- * via `useResolveEffectiveState` defined in the behavior definition.
- * 
- * Supports user interaction handling via `dispatchStateChange()`.
+ * Supports user interaction handling via `dispatchStateChange()`.  
  * Ignores user interaction when the component is disabled or read-only.
  * 
  * @param props - The behavior-specific props, including controlled/uncontrolled state and change request callbacks.
@@ -189,20 +199,20 @@ export const useInteractionBehaviorState = <
     
     // Extract props and assign defaults:
     const {
-        defaultState : defaultInitialIntent = defaultState,
-        state        : initialState         = defaultInitialIntent, // Initial intent comes from `state` (if controlled) or `defaultState` (if uncontrolled).
-        state        : controlledState,
+        defaultState  : fallbackState    = defaultState,
+        state         : declarativeState = fallbackState, // Controlled: from `state`; Uncontrolled: from `defaultState`.
+        state         : controlledState,
     } = props;
     
     
     
     // States and flags:
     
-    // Resolve initial effective state:
-    // - Use initial state as the source (for both controlled and uncontrolled modes)
-    // - Effective state normalizes declarative values into concrete ones
-    const initialEffectiveState = useResolveEffectiveState({
-        declarativeState : initialState,
+    // Resolve the declarative state into a concrete effective state:
+    // - Normalizes keywords into concrete values.
+    // - Applies influence rules (disabled/read-only, cascade, clamp, etc.).
+    const effectiveState = useResolveEffectiveState({
+        declarativeState,
         props            : props      as TBehaviorProps,
         options          : options    as TBehaviorOptions,
         definition       : definition as TBehaviorDefinition,
@@ -211,10 +221,10 @@ export const useInteractionBehaviorState = <
     // Combine props for transition orchestration:
     const combinedProps : TransitionStateProps<TState> & typeof props = {
         // Pass the normalized initial effective state:
-        initialResolvedState  : initialEffectiveState,
+        initialResolvedState  : effectiveState,
         
         // Merge all other props (these may override `initialResolvedState` if explicitly provided):
-        ...props,
+        ...props, // May include `onStateChange` and other foreign props.
     };
     
     // Transition orchestration:
@@ -328,4 +338,122 @@ const useResolveInteractionDriverState = <TDeclarativeState extends {} | null, T
     
     // Return the resolved effective state:
     return effectiveState;
+};
+
+
+
+/**
+ * Provides abstract controlled/uncontrolled interaction state *without* animation lifecycle integration.  
+ * Specialize it into **collapse-state**, **active-state**, or **view-state** by defining the `definition` parameter.
+ * 
+ * This hook is designed for components that **manage** a resolved interaction state
+ * (for example, the `expanded` state in collapsible components) and **forward** it
+ * to a base component, while optionally supporting uncontrolled behavior.
+ * 
+ * Unlike `useInteractionBehaviorState()`, which includes animation lifecycle management,
+ * `useUncontrollableInteractionState()` provides a **simplified implementation** that focuses solely
+ * on controlled/uncontrolled state management without animation lifecycle.
+ * 
+ * **Definition parameters:**
+ * - **Default initial state**  
+ *   Provides a fallback initial concrete state when neither `defaultState` prop nor `defaultState` option is provided.
+ * - **Effective state resolver**  
+ *   Normalizes declarative values (`'auto'`, `'inherit'`, etc.) into concrete values, applying domain-specific rules such as:
+ *   - disabled/read-only restrictions
+ *   - cascade/inheritance from parent context
+ *   - clamping within valid ranges
+ *   - other domain-specific adjustments
+ * 
+ * Supports both controlled and uncontrolled mode:
+ * - **Controlled mode**: `state` prop is provided and may include declarative keywords.  
+ *   These are normalized into concrete values on every render.
+ * - **Uncontrolled mode**: `state` prop is `undefined`.  
+ *   The component manages its own state internally, initialized from `defaultState` prop (which must be a concrete value).
+ * 
+ * Supports user interaction handling via `dispatchStateChange()`.  
+ * Ignores user interaction when the component is disabled or read-only.
+ * 
+ * @param props - The behavior-specific props, including controlled/uncontrolled state and change request callbacks.
+ * @param options - Optional per-component customization for default state behavior.
+ * @param definition - The interaction-specific definition that declares how effective state is resolved.
+ * 
+ * @template TDeclarativeState - The declarative type of the state value (may include keywords).
+ * @template TState - The concrete type of the state value (must not be declarative).
+ * @template TBehaviorProps - The type of the behavior-specific props.
+ * @template TBehaviorOptions - The type of the behavior-specific options.
+ * @template TBehaviorDefinition - The type of the behavior-specific definition.
+ * @template TChangeEvent - The type of the event triggering the change request (e.g. mouse click, keyboard event).
+ * 
+ * @returns A tuple containing:
+ * - The resolved concrete interaction state.
+ * - A dispatcher for requesting state changes.
+ */
+export const useUncontrollableInteractionState = <
+    TDeclarativeState extends {} | null,
+    TState            extends TDeclarativeState,
+    
+    TBehaviorProps,
+    TBehaviorOptions,
+    TBehaviorDefinition,
+    
+    TChangeEvent = unknown
+>(
+    props      : InteractionStateProps<TDeclarativeState> & UncontrollableInteractionStateProps<TState> & InteractionStateChangeProps<TState, TChangeEvent>,
+    options    : Pick<InteractionStateOptions<TState>, 'defaultState'> | undefined,
+    definition : Pick<InteractionBehaviorStateDefinition<TDeclarativeState, TState, string, string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>, 'defaultInitialState' | 'useResolveEffectiveState'>
+): [TState, ValueChangeDispatcher<TState, TChangeEvent>] => {
+    // Extract definition:
+    const {
+        defaultInitialState,
+        
+        useResolveEffectiveState,
+    } = definition;
+    
+    
+    
+    // Extract options and assign defaults:
+    const {
+        defaultState = defaultInitialState,
+    } = options ?? {};
+    
+    
+    
+    // Extract props and assign defaults:
+    const {
+        defaultState  : fallbackState    = defaultState,
+        state         : declarativeState = fallbackState, // Controlled: from `state`; Uncontrolled: from `defaultState`.
+        state         : controlledState,
+        onStateChange : handleStateChange,
+    } = props;
+    
+    
+    
+    // States:
+    
+    // Resolve the declarative state into a concrete effective state:
+    // - Normalizes keywords into concrete values.
+    // - Applies influence rules (disabled/read-only, cascade, clamp, etc.).
+    const effectiveState = useResolveEffectiveState({
+        declarativeState,
+        props            : props      as TBehaviorProps,
+        options          : options    as TBehaviorOptions,
+        definition       : definition as TBehaviorDefinition,
+    });
+    
+    // Manage the state using hybrid controlled/uncontrolled logic:
+    // - In uncontrolled mode: initialize internal state from `defaultValue` (first render only).
+    // - In controlled mode: always mirror the external `value`.
+    const {
+        value               : driverState, // The managed state becomes the driver state.
+        dispatchValueChange : dispatchStateChange,
+    } = useHybridValueChange<TState, TChangeEvent>({
+        defaultValue        : effectiveState, // Used only for initial uncontrolled state.
+        value               : (controlledState !== undefined) ? effectiveState : undefined, // Controlled mode: always follow external value.
+        onValueChange       : handleStateChange,
+    });
+    
+    
+    
+    // Return the resolved state and dispatcher:
+    return [driverState, dispatchStateChange];
 };
