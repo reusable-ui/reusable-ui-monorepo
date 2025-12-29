@@ -15,7 +15,6 @@ import {
 // Reusable-ui states:
 import {
     // Types:
-    type TransitionStateProps,
     type ResolveDriverStateArgs,
     type TransitionBehaviorStateDefinition,
     
@@ -43,12 +42,12 @@ import {
 
 /**
  * Provides abstract controlled feedback state with animation lifecycle integration.  
- * Specialize it into **focus-state**, **hover-state**, **press-state**, or **validity-state** by defining the `definition` parameter and supplying normalized concrete state to `resolvedState`.  
+ * Specialize it into **focus-state**, **hover-state**, **press-state**, or **validity-state** by defining the `definition` parameter and supplying normalized concrete state to `effectiveState`.  
  * 
- * To implement live updates, dynamically supply the domain-specific observer result into `resolvedState`.  
+ * To implement live updates, dynamically supply the domain-specific observer result into `effectiveState`.  
  * 
  * Constraint-based states can also be implemented using this base, without observers.  
- * Specialize it into **disabled-state** or **read-only-state** by defining the `definition` parameter and directly supplying normalized concrete state to `resolvedState`.  
+ * Specialize it into **disabled-state** or **read-only-state** by defining the `definition` parameter and directly supplying normalized concrete state to `effectiveState`.  
  * 
  * **Definition parameters:**
  * - **Transition phase resolver**  
@@ -65,9 +64,9 @@ import {
  * Supports controlled mode only.
  * 
  * Declarative keywords (`'auto'`, `'inherit'`, etc.) must be resolved externally
- * before passing into `resolvedState`.
+ * before passing into `effectiveState`.
  * 
- * @param props - The behavior-specific props, including the externally controlled `resolvedState` and optional update callback.
+ * @param props - The behavior-specific props, including the externally controlled `effectiveState` and optional update callback.
  * @param options - Optional per-component customization for animation lifecycle (pattern, bubbling, etc.).
  * @param definition - The feedback-specific definition that declares how phases and classnames are resolved.
  * 
@@ -98,21 +97,12 @@ export const useFeedbackBehaviorState = <
 ): FeedbackBehaviorState<TState, TPhase, TClassname, TElement> => {
     // Extract props:
     const {
-        resolvedState,
+        effectiveState,
     } = props;
     
     
     
     // States and flags:
-    
-    // Combine props for transition orchestration:
-    const combinedProps : TransitionStateProps<TState> & typeof props = {
-        // Pass the already normalized resolved state:
-        effectiveState  : resolvedState,
-        
-        // Merge all other props (these may override `effectiveState` if explicitly provided):
-        ...props,
-    };
     
     // Transition orchestration:
     const [transitionBehaviorState] = useTransitionBehaviorState<
@@ -127,7 +117,7 @@ export const useFeedbackBehaviorState = <
         
         TElement
     >(
-    combinedProps,
+    props,
     options,
     {
         // Force `TBehavior**` => `Feedback**`:
@@ -158,13 +148,13 @@ export const useFeedbackBehaviorState = <
     
     
     
-    // Observer effect: emits state update events on `resolvedState` updates.
+    // Observer effect: emits state update events on `effectiveState` updates.
     // Use `useLayoutEffect()` to ensure the update is emitted before browser paint,
     // in case the event handlers manipulate timing-sensitive DOM operations.
     useLayoutEffect(() => {
         // Emits state update events:
-        handleStateUpdate(resolvedState);
-    }, [resolvedState]);
+        handleStateUpdate(effectiveState);
+    }, [effectiveState]);
     
     
     
@@ -176,15 +166,15 @@ export const useFeedbackBehaviorState = <
  * Resolves the **driver state** for feedback-based components.
  * 
  * In feedback-state (focus, hover, press, validity, disabled, read-only):
- * - The driver is always the externally provided `props.resolvedState`.
+ * - The driver is always the externally provided `props.effectiveState`.
  * - Controlled-only mode: there is no fallback to internal state.
  * 
  * Declarative keywords (`'auto'`, `'inherit'`, etc.) must be normalized externally
- * before being passed into `resolvedState`.
+ * before being passed into `effectiveState`.
  * 
  * @returns The resolved driver state taken directly from props.
  */
 const useResolveFeedbackDriverState = <TState extends {} | null, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>(args: ResolveDriverStateArgs<TState, FeedbackStateProps<TState>, FeedbackStateOptions<TState>, FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>>): TState => {
     // Return the resolved state from props:
-    return args.props.resolvedState;
+    return args.props.effectiveState;
 };

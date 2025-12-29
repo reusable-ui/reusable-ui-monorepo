@@ -306,7 +306,7 @@ export interface TransitionBehaviorStateDefinition<TDeclarativeState extends {} 
      * Observation logic hook (e.g. live online status) can be applied here.
      * 
      * Implementation notes:
-     * - In feedback-state: always returns `props.resolvedState` (controlled mode).
+     * - In feedback-state: always returns `props.effectiveState` (controlled mode).
      * - In interaction-state: prefers `props.state` if provided (controlled mode),
      *   otherwise falls back to `internalState` (uncontrolled mode).
      */

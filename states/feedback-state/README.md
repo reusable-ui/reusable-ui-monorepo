@@ -11,7 +11,7 @@ Instead of re-implementing similar logic for each feedback or constraint state, 
 By reusing the same core contract, you ensure consistent behavior, predictable animation lifecycles, and reduced code duplication across your UI ecosystem.  
 
 ## ✨ Features
-✔ Controlled mode only via `resolvedState`  
+✔ Controlled mode only via `effectiveState`  
 ✔ Lifecycle-aware transition animations based on current state  
 ✔ Gracefully completes running animations before resolving new state  
 ✔ Semantic phase and classname resolution for consistent styling across states  
@@ -31,12 +31,12 @@ yarn add @reusable-ui/feedback-state
 ### `useFeedbackBehaviorState(props, options, definition)`
 
 Provides abstract controlled feedback state with animation lifecycle integration.  
-Specialize it into **focus-state**, **hover-state**, **press-state**, or **validity-state** by defining the `definition` parameter and supplying normalized concrete state to `resolvedState`.  
+Specialize it into **focus-state**, **hover-state**, **press-state**, or **validity-state** by defining the `definition` parameter and supplying normalized concrete state to `effectiveState`.  
 
-To implement live updates, dynamically supply the domain-specific observer result into `resolvedState`.  
+To implement live updates, dynamically supply the domain-specific observer result into `effectiveState`.  
 
 Constraint-based states can also be implemented using this base, without observers.  
-Specialize it into **disabled-state** or **read-only-state** by defining the `definition` parameter and directly supplying normalized concrete state to `resolvedState`.  
+Specialize it into **disabled-state** or **read-only-state** by defining the `definition` parameter and directly supplying normalized concrete state to `effectiveState`.  
 
 **Definition parameters:**
 - **Transition phase resolver**  
@@ -200,7 +200,7 @@ export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(p
         TElement
     >(
         // Props:
-        { resolvedState: effectiveLiveOnline, onStateUpdate: handleOnlineUpdate },
+        { effectiveState: effectiveLiveOnline, onStateUpdate: handleOnlineUpdate },
         
         // Options:
         options,
@@ -420,7 +420,7 @@ export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(p
         TElement
     >(
         // Props:
-        { resolvedState: effectiveLocked, onStateUpdate: handleLockedUpdate },
+        { effectiveState: effectiveLocked, onStateUpdate: handleLockedUpdate },
         
         // Options:
         options,

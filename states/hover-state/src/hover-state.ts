@@ -241,7 +241,7 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
         TElement
     >(
         // Props:
-        { resolvedState: effectiveHovered, onStateUpdate: handleHoverUpdate },
+        { effectiveState: effectiveHovered, onStateUpdate: handleHoverUpdate },
         
         // Options:
         options,

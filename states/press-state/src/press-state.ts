@@ -249,7 +249,7 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
         TElement
     >(
         // Props:
-        { resolvedState: effectivePressed, onStateUpdate: handlePressUpdate },
+        { effectiveState: effectivePressed, onStateUpdate: handlePressUpdate },
         
         // Options:
         options,

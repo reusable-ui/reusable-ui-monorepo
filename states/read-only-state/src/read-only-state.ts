@@ -204,7 +204,7 @@ export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>
         TElement
     >(
         // Props:
-        { resolvedState: effectiveReadOnly, onStateUpdate: handleReadOnlyUpdate },
+        { effectiveState: effectiveReadOnly, onStateUpdate: handleReadOnlyUpdate },
         
         // Options:
         options,

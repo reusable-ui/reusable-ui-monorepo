@@ -247,7 +247,7 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
         TElement
     >(
         // Props:
-        { resolvedState: effectiveFocused, onStateUpdate: handleFocusUpdate },
+        { effectiveState: effectiveFocused, onStateUpdate: handleFocusUpdate },
         
         // Options:
         options,

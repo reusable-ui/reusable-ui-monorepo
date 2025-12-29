@@ -204,7 +204,7 @@ export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>
         TElement
     >(
         // Props:
-        { resolvedState: effectiveDisabled, onStateUpdate: handleDisabledUpdate },
+        { effectiveState: effectiveDisabled, onStateUpdate: handleDisabledUpdate },
         
         // Options:
         options,

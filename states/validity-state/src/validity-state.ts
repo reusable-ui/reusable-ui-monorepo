@@ -224,7 +224,7 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
         TElement
     >(
         // Props:
-        { resolvedState: effectiveValidity, onStateUpdate: handleValidityUpdate },
+        { effectiveState: effectiveValidity, onStateUpdate: handleValidityUpdate },
         
         // Options:
         options,

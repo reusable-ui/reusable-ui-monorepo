@@ -7,6 +7,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
+    type TransitionStateProps,
     type TransitionStateOptions,
     type TransitionBehaviorStateDefinition,
     type TransitionBehaviorState,
@@ -28,16 +29,24 @@ export {
  * 
  * @template TState - The concrete type of the state value (must not be declarative).
  */
-export interface FeedbackStateProps<TState extends {} | null> {
+export interface FeedbackStateProps<TState extends {} | null>
+    extends
+        // Bases:
+        TransitionStateProps<TState>
+{
     /**
-     * Specifies the externally controlled state.
-     * Must be a concrete value (already resolved, not a declarative keyword).
+     * Specifies the **effective state** supplied externally to the feedback system.
+     * 
+     * - Must be a concrete value (already normalized, not a declarative keyword).
+     * - Influence rules (disabled/read‑only, cascade, clamp, etc.) must already be applied.
+     * - Respected on **every render** so that feedback‑state can respond
+     *   to live updates from external sources.
      * 
      * Common sources:
      * - `props.state` for constraint-state
      * - live observer result for feedback-state
      */
-    resolvedState : TState
+    effectiveState : TransitionStateProps<TState>['effectiveState']
 }
 
 /**
