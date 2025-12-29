@@ -305,11 +305,20 @@ const useResolveEffectiveActiveState = ({ declarativeState, props, options }: Re
  * ```
  */
 export const useActiveBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ActiveStateProps & UncontrollableActiveStateProps & ActiveStateChangeProps<TChangeEvent>, options?: ActiveStateOptions): ActiveBehaviorState<TElement, TChangeEvent> => {
+    // Extract options:
+    const {
+        defaultActive,
+        ...restOptions
+    } = options ?? {};
+    
+    
+    
     // Extract props:
     const {
         defaultActive  : initialActive,
         active         : controlledActive,
         onActiveChange : handleActiveChange,
+        ...restProps
     } = props;
     
     
@@ -339,17 +348,18 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
         TChangeEvent
     >(
         // Props:
-        { defaultState: initialActive, state: controlledActive, onStateChange: handleActiveChange },
+        { defaultState: initialActive, state: controlledActive, onStateChange: handleActiveChange, ...restProps },
         
         // Options:
-        options,
+        { defaultState: defaultActive, ...restOptions },
         
         // Definition:
         {
-            defaultAnimationPattern    : ['activating', 'deactivating'],   // Matches animation names for transitions.
-            defaultAnimationBubbling   : false,
             defaultInitialState        : defaultInitialActive,
             useResolveEffectiveState   : useResolveEffectiveActiveState,   // Resolves effective state.
+            
+            defaultAnimationPattern    : ['activating', 'deactivating'],   // Matches animation names for transitions.
+            defaultAnimationBubbling   : false,
             resolveTransitionPhase     : resolveActiveTransitionPhase,     // Resolves phases.
             resolveTransitionClassname : resolveActiveTransitionClassname, // Resolves classnames.
         } satisfies ActiveBehaviorStateDefinition,
