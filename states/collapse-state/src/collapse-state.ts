@@ -259,11 +259,20 @@ const useResolveEffectiveCollapseState = ({ declarativeState, props, options }: 
  * ```
  */
 export const useCollapseBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: CollapseStateProps & UncontrollableCollapseStateProps & CollapseStateChangeProps<TChangeEvent>, options?: CollapseStateOptions): CollapseBehaviorState<TElement, TChangeEvent> => {
+    // Extract options:
+    const {
+        defaultExpanded,
+        ...restOptions
+    } = options ?? {};
+    
+    
+    
     // Extract props:
     const {
         defaultExpanded  : initialExpanded,
         expanded         : controlledExpanded,
         onExpandedChange : handleExpandedChange,
+        ...restProps
     } = props;
     
     
@@ -293,17 +302,18 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
         TChangeEvent
     >(
         // Props:
-        { defaultState: initialExpanded, state: controlledExpanded, onStateChange: handleExpandedChange },
+        { defaultState: initialExpanded, state: controlledExpanded, onStateChange: handleExpandedChange, ...restProps },
         
         // Options:
-        options,
+        { defaultState: defaultExpanded, ...restOptions },
         
         // Definition:
         {
-            defaultAnimationPattern    : ['expanding', 'collapsing'],      // Matches animation names for transitions.
-            defaultAnimationBubbling   : false,
             defaultInitialState        : defaultInitialExpanded,
             useResolveEffectiveState   : useResolveEffectiveCollapseState, // Resolves effective state.
+            
+            defaultAnimationPattern    : ['expanding', 'collapsing'],      // Matches animation names for transitions.
+            defaultAnimationBubbling   : false,
             resolveTransitionPhase     : resolveExpandTransitionPhase,     // Resolves phases.
             resolveTransitionClassname : resolveExpandTransitionClassname, // Resolves classnames.
         } satisfies CollapseBehaviorStateDefinition,
