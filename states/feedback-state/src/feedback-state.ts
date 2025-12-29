@@ -108,9 +108,9 @@ export const useFeedbackBehaviorState = <
     // Combine props for transition orchestration:
     const combinedProps : TransitionStateProps<TState> & typeof props = {
         // Pass the already normalized resolved state:
-        initialResolvedState  : resolvedState,
+        effectiveState  : resolvedState,
         
-        // Merge all other props (these may override `initialResolvedState` if explicitly provided):
+        // Merge all other props (these may override `effectiveState` if explicitly provided):
         ...props,
     };
     

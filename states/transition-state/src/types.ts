@@ -18,14 +18,18 @@ import {
  */
 export interface TransitionStateProps<TState extends {} | null> {
     /**
-     * Specifies the initial resolved state.
-     * Must be a concrete value (already resolved, not a declarative keyword).
+     * Specifies the **effective state** used to initialize the transition system.
+     * 
+     * - Must be a concrete value (already normalized, not a declarative keyword).
+     * - Influence rules (disabled/read‑only, cascade, clamp, etc.) must already be applied.
+     * - Consumed only once at mount to seed the `initialIntent` of `useAnimationState`.
+     *   Subsequent changes to this prop are ignored by the transition system.
      * 
      * Common sources:
      * - `props.defaultState` for constraint-state
      * - initial observer result for feedback-state
      */
-    initialResolvedState : TState
+    effectiveState : TState
 }
 
 /**

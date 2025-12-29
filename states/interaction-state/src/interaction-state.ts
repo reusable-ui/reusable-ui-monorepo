@@ -221,9 +221,9 @@ export const useInteractionBehaviorState = <
     // Combine props for transition orchestration:
     const combinedProps : TransitionStateProps<TState> & typeof props = {
         // Pass the normalized initial effective state:
-        initialResolvedState  : effectiveState,
+        effectiveState  : effectiveState,
         
-        // Merge all other props (these may override `initialResolvedState` if explicitly provided):
+        // Merge all other props (these may override `effectiveState` if explicitly provided):
         ...props, // May include `onStateChange` and other foreign props.
     };
     

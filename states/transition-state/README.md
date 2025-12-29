@@ -204,7 +204,7 @@ export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(p
         TElement
     >(
         // Props:
-        { initialResolvedState: effectiveLocked },
+        { effectiveState: effectiveLocked },
         
         // Options:
         options,
@@ -417,7 +417,7 @@ export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(p
         TElement
     >(
         // Props:
-        { initialResolvedState: effectiveOnline },
+        { effectiveState: effectiveOnline },
         
         // Options:
         options,
@@ -675,7 +675,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
     // Resolve initial effective selected state:
     // - Use initial selected state as the source (for both controlled and uncontrolled modes)
     // - Effective state normalizes declarative values into concrete ones
-    const initialEffectiveSelected = useSelectedState({
+    const effectiveSelected = useSelectedState({
         ...props,
         defaultSelected : undefined,    // Prevents uncontrolled value.
         selected        : initialState, // Pass the initial state as controlled value.
@@ -702,7 +702,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
         TElement
     >(
         // Props:
-        { initialResolvedState: initialEffectiveSelected },
+        { effectiveState: effectiveSelected },
         
         // Options:
         options,

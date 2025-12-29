@@ -83,7 +83,7 @@ const useUndefinedPreviousState = <TState extends {} | null>(_settledState: TSta
  * - **Default animation bubbling**  
  *   Whether to enable bubbling from nested child elements.
  * 
- * @param props - The behavior-specific props, including the `initialResolvedState` for setting up the transition state.
+ * @param props - The behavior-specific props, including the `effectiveState` for initializing the transition state.
  * @param options - Optional per-component customization for animation lifecycle (pattern, bubbling, etc.).
  * @param definition - The behavior-specific definition that declares how driver state, transition phases, and transition classnames are resolved.
  * 
@@ -140,7 +140,7 @@ export const useTransitionBehaviorState = <
     
     // Extract props:
     const {
-        initialResolvedState,
+        effectiveState,
     } = props;
     
     
@@ -149,7 +149,7 @@ export const useTransitionBehaviorState = <
     
     // Internal state with animation lifecycle:
     const [internalState, setInternalState, runningIntent, animationHandlers] = useAnimationState<TState, TElement>({
-        initialIntent: initialResolvedState,
+        initialIntent: effectiveState,
         animationPattern,
         animationBubbling,
     });
