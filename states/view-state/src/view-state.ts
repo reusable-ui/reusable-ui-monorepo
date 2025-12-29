@@ -311,17 +311,18 @@ const useResolveEffectiveViewState = ({ declarativeState, props, options }: Reso
 export const useViewBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ViewStateProps & UncontrollableViewStateProps & ViewStateChangeProps<TChangeEvent>, options?: ViewStateOptions): ViewBehaviorState<TElement, TChangeEvent> => {
     // Extract options and assign defaults:
     const {
-        defaultViewIndex  = defaultInitialViewIndex,
+        defaultViewIndex,
+        ...restOptions
     } = options ?? {};
     
     
     
     // Extract props and assign defaults:
     const {
-        defaultViewIndex  : fallbackViewIndex = defaultViewIndex,
-        viewIndex         : rawInitialIntent  = fallbackViewIndex, // Controlled: from `viewIndex`; Uncontrolled: from `defaultViewIndex`.
+        defaultViewIndex  : initialViewIndex,
         viewIndex         : controlledViewIndex,
         onViewIndexChange : handleViewIndexChange,
+        ...restProps
     } = props;
     
     
@@ -354,9 +355,6 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
         └───────────────────────────────────────────────────────────────────────────────────────┘
     */
     
-    // Clamp the initial intent within valid range and step:
-    const initialViewIndex = clampViewIndex(rawInitialIntent, options);
-    
     // Transition orchestration:
     const {
         prevSettledState    : prevViewIndex,
@@ -380,20 +378,22 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
         TChangeEvent
     >(
         // Props:
-        { defaultState: initialViewIndex, state: controlledViewIndex, onStateChange: handleViewIndexChange },
+        { defaultState: initialViewIndex, state: controlledViewIndex, onStateChange: handleViewIndexChange, ...restProps },
         
         // Options:
-        options,
+        { defaultState: defaultViewIndex, ...restOptions },
         
         // Definition:
         {
+            defaultInitialState        : defaultInitialViewIndex,
+            useResolveEffectiveState   : useResolveEffectiveViewState,        // Resolves effective state.
+            
             defaultAnimationPattern    : ['view-advancing', 'view-receding'], // Matches animation names for transitions.
             defaultAnimationBubbling   : false,
-            defaultInitialState        : defaultInitialViewIndex,
-            useResolvePreviousState    : usePreviousValue,                    // Tracks previous settled state.
-            useResolveEffectiveState   : useResolveEffectiveViewState,        // Resolves effective state.
             resolveTransitionPhase     : resolveViewTransitionPhase,          // Resolves phases.
             resolveTransitionClassname : resolveViewTransitionClassname,      // Resolves classnames.
+            
+            useResolvePreviousState    : usePreviousValue,                    // Tracks previous settled state.
         } satisfies ViewBehaviorStateDefinition,
     );
     
