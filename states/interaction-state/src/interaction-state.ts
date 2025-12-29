@@ -213,9 +213,9 @@ export const useInteractionBehaviorState = <
     // - Applies influence rules (disabled/read-only, cascade, clamp, etc.).
     const effectiveState = useResolveEffectiveState({
         declarativeState,
-        props            : props      as TBehaviorProps,
-        options          : options    as TBehaviorOptions,
-        definition       : definition as TBehaviorDefinition,
+        props      : props      as TBehaviorProps,
+        options    : options    as TBehaviorOptions,
+        definition : definition as TBehaviorDefinition,
     });
     
     // Combine props for transition orchestration:
@@ -413,9 +413,9 @@ export const useUncontrollableInteractionState = <
     // - Applies influence rules (disabled/read-only, cascade, clamp, etc.).
     const effectiveState = useResolveEffectiveState({
         declarativeState,
-        props            : props      as TBehaviorProps,
-        options          : options    as TBehaviorOptions,
-        definition       : definition as TBehaviorDefinition,
+        props      : props      as TBehaviorProps,
+        options    : options    as TBehaviorOptions,
+        definition : definition as TBehaviorDefinition,
     });
     
     // Manage the state using hybrid controlled/uncontrolled logic:
