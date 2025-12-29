@@ -539,6 +539,7 @@ In uncontrolled mode, the hook manages internal state holding normalized concret
 ```ts
 import {
     useTransitionBehaviorState,
+    type TransitionStateProps,
     type TransitionStateOptions,
     type ResolveDriverStateArgs,
     type ResolveTransitionPhaseArgs,
@@ -609,12 +610,12 @@ export type SelectedPhase = ResolvedSelectedPhase | TransitioningSelectedPhase
 export type SelectedClassname = `is-${SelectedPhase}`
 
 /** Private definition for online state behavior. */
-interface SelectedBehaviorStateDefinition
+interface SelectedBehaviorStateDefinition<TBehaviorProps extends SelectedStateProps>
     extends
         TransitionBehaviorStateDefinition<boolean | 'auto', boolean, SelectedPhase, SelectedClassname,
-            SelectedStateProps,
+            TBehaviorProps,
             SelectedStateOptions,
-            SelectedBehaviorStateDefinition
+            SelectedBehaviorStateDefinition<TBehaviorProps>
         >
 {
     /* no additional definition yet - reserved for future extensions */
@@ -667,19 +668,28 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
     } = options ?? {};
     
     const {
-        defaultSelected : defaultInitialIntent = defaultSelected,
-        selected        : initialState         = defaultInitialIntent, // Initial intent comes from `selected` (if controlled) or `defaultSelected` (if uncontrolled).
+        defaultSelected : fallbackState    = defaultSelected,
+        selected        : declarativeState = fallbackState, // Controlled: from `selected`; Uncontrolled: from `defaultSelected`.
         selected        : controlledSelected,
     } = props;
     
-    // Resolve initial effective selected state:
-    // - Use initial selected state as the source (for both controlled and uncontrolled modes)
-    // - Effective state normalizes declarative values into concrete ones
+    // Resolve the declarative state into a concrete effective state:
+    // - Normalizes keywords into concrete values.
+    // - Applies influence rules (disabled/read-only, cascade, clamp, etc.).
     const effectiveSelected = useSelectedState({
         ...props,
-        defaultSelected : undefined,    // Prevents uncontrolled value.
-        selected        : initialState, // Pass the initial state as controlled value.
+        defaultSelected : undefined,        // Prevents uncontrolled value.
+        selected        : declarativeState, // Pass the declarative state as controlled value.
     }, options);
+    
+    // Combine props for transition orchestration:
+    const combinedProps : typeof props & Pick<TransitionStateProps<boolean>, 'effectiveState'> = {
+        // Pass the normalized effective state as the initial state:
+        effectiveState : effectiveSelected,
+        
+        // Merge all other props (these may override `effectiveState` if explicitly provided):
+        ...props, // May include `onSelectedChange` and other foreign props.
+    };
     
     // Transition orchestration:
     const [{
@@ -697,12 +707,12 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
         
         SelectedStateProps,
         SelectedStateOptions,
-        SelectedBehaviorStateDefinition,
+        SelectedBehaviorStateDefinition<SelectedStateProps>,
         
         TElement
     >(
         // Props:
-        { effectiveState: effectiveSelected },
+        combinedProps,
         
         // Options:
         options,
@@ -714,17 +724,14 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
             useResolveDriverState      : useResolveSelectedDriverState,      // Prefers controlled mode, falls back to uncontrolled mode.
             resolveTransitionPhase     : resolveSelectedTransitionPhase,     // Resolves phases.
             resolveTransitionClassname : resolveSelectedTransitionClassname, // Resolves classnames.
-        } satisfies SelectedBehaviorStateDefinition,
+        } satisfies SelectedBehaviorStateDefinition<SelectedStateProps & Pick<TransitionStateProps<boolean>, 'effectiveState'>> as unknown as SelectedBehaviorStateDefinition<SelectedStateProps>,
     );
-    
-    // Determine control mode:
-    const isControlled = (controlledSelected !== undefined);
     
     // A stable dispatcher for selection change requests:
     const dispatchSelectedChange = useSelectedStateChangeDispatcher<TChangeEvent>(props as Omit<typeof props, 'defaultSelected'>, {
         onInternalChange: (newState) => {
             // Update the internal state only if uncontrolled:
-            if (!isControlled) setInternalState(newState);
+            if (controlledSelected === undefined) setInternalState(newState);
         },
     });
     
@@ -758,36 +765,26 @@ const useSelectedState = (props: SelectedStateProps & { defaultSelected?: never 
 };
 
 /** Resolves the driver state for selected behavior. */
-const useResolveSelectedDriverState = ({ internalState, props, options }: ResolveDriverStateArgs<boolean, SelectedStateProps & UncontrollableSelectedStateProps, SelectedStateOptions, SelectedBehaviorStateDefinition>): boolean => {
+const useResolveSelectedDriverState = <TChangeEvent = unknown>({ internalState, props }: ResolveDriverStateArgs<boolean, SelectedStateProps & UncontrollableSelectedStateProps & SelectedStateChangeProps<TChangeEvent> & Pick<TransitionStateProps<boolean>, 'effectiveState'>, SelectedStateOptions, SelectedBehaviorStateDefinition<SelectedStateProps & Pick<TransitionStateProps<boolean>, 'effectiveState'>>>): boolean => {
     const {
         selected: controlledSelected,
+        effectiveState,
     } = props;
     
-    // Determine control mode:
-    const isControlled = (controlledSelected !== undefined);
-    
-    // Resolve effective state:
-    // - Prefers controlled state if available, otherwise uses internal state
-    // - Effective state normalizes declarative values into concrete ones
-    const driverState       = isControlled ? controlledSelected : internalState;
-    const effectiveSelected = useSelectedState({
-        ...props,
-        defaultSelected : undefined,   // Prevents uncontrolled value.
-        selected        : driverState, // Pass the driver state as controlled value.
-    }, options);
-    
-    // Return the resolved effective selected state:
-    return effectiveSelected;
+    // Determine and return the driver state:
+    // - Controlled mode → use normalized effective state.
+    // - Uncontrolled mode → use internal state.
+    return (controlledSelected !== undefined) ? effectiveState : internalState;
 };
 
 /** Resolves the semantic transition phase for selected behavior. */
-const resolveSelectedTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, SelectedStateProps, SelectedStateOptions, SelectedBehaviorStateDefinition>): SelectedPhase => {
+const resolveSelectedTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, SelectedStateProps, SelectedStateOptions, SelectedBehaviorStateDefinition<SelectedStateProps & Pick<TransitionStateProps<boolean>, 'effectiveState'>>>): SelectedPhase => {
     if (isTransitioning) return settledState ? 'selecting' : 'deselecting';
     return settledState ? 'selected' : 'unselected';
 };
 
 /** Resolves the semantic transition classname for selected behavior. */
-const resolveSelectedTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, SelectedPhase, SelectedStateProps, SelectedStateOptions, SelectedBehaviorStateDefinition>): SelectedClassname => {
+const resolveSelectedTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, SelectedPhase, SelectedStateProps, SelectedStateOptions, SelectedBehaviorStateDefinition<SelectedStateProps & Pick<TransitionStateProps<boolean>, 'effectiveState'>>>): SelectedClassname => {
     return `is-${transitionPhase}`;
 };
 
