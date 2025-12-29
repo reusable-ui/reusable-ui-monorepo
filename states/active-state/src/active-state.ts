@@ -126,6 +126,8 @@ export const useActiveState = (props: ActiveStateProps & { defaultActive?: never
     return false;
 };
 
+
+
 /**
  * Creates a stable dispatcher for requesting a change to the active state.
  * 
@@ -152,73 +154,6 @@ export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveS
         // Options:
         options,
     );
-};
-
-/**
- * Resolves the current active/inactive state and provides a dispatcher for requesting changes.
- * 
- * This hook is intended for components that **manage** the resolved `active` state and **forward** it to a base component,
- * while optionally supporting uncontrolled behavior.
- * 
- * Unlike `useActiveBehaviorState()`, which resolves full lifecycle,
- * `useUncontrollableActiveState()` provides a **simplified implementation** for managing activation state and dispatching changes.
- * 
- * - Supports both controlled and uncontrolled modes.
- * - Supports contextual override via `cascadeActive`.
- * - If `active` is provided, the internal state is disabled and the component becomes fully controlled.
- * - If `active` is omitted, the internal state is initialized via `defaultActive`.
- * - Ideal for components that **manage** the resolved `active` state.
- * 
- * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
- * 
- * @param props - The component props that may include a controlled `active` value, optional `defaultActive` value, contextual `cascadeActive` value, and `onActiveChange` callback.
- * @param options - An optional configuration for customizing activate/deactivate behavior.
- * @returns A tuple of the resolved active/inactive state and a dispatcher for requesting changes.
- */
-export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: ActiveStateProps & UncontrollableActiveStateProps & ActiveStateChangeProps<TChangeEvent>, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
-    // Extract options:
-    const {
-        defaultActive,
-        ...restOptions
-    } = options ?? {};
-    
-    
-    
-    // Extract props:
-    const {
-        defaultActive  : initialActive,
-        active         : controlledActive,
-        onActiveChange : handleActiveChange,
-        ...restProps
-    } = props;
-    
-    
-    
-    // States and flags:
-    
-    // Transition orchestration:
-    return useUncontrollableInteractionState<
-        boolean,
-        boolean,
-        
-        ActiveStateProps,
-        ActiveStateOptions,
-        ActiveBehaviorStateDefinition,
-        
-        TChangeEvent
-    >(
-        // Props:
-        { defaultState: initialActive, state: controlledActive, onStateChange: handleActiveChange, ...restProps },
-        
-        // Options:
-        { defaultState: defaultActive, ...restOptions },
-        
-        // Definition:
-        {
-            defaultInitialState        : defaultInitialActive,
-            useResolveEffectiveState   : useResolveEffectiveActiveState,   // Resolves effective state.
-        } satisfies Pick<ActiveBehaviorStateDefinition, 'defaultInitialState' | 'useResolveEffectiveState'>,
-    ) satisfies [boolean, ValueChangeDispatcher<boolean, TChangeEvent>];
 };
 
 
@@ -378,6 +313,8 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
     } satisfies ActiveBehaviorState<TElement, TChangeEvent>;
 };
 
+
+
 /**
  * Emits lifecycle events in response to activate/deactivate phase transitions.
  * 
@@ -401,4 +338,73 @@ export const useActiveStatePhaseEvents = (props: ActiveStatePhaseEventProps, act
             case 'inactive'     : props.onDeactivatingEnd?.(activePhase, undefined);   break;
         } // switch
     });
+};
+
+
+
+/**
+ * Resolves the current active/inactive state and provides a dispatcher for requesting changes.
+ * 
+ * This hook is intended for components that **manage** the resolved `active` state and **forward** it to a base component,
+ * while optionally supporting uncontrolled behavior.
+ * 
+ * Unlike `useActiveBehaviorState()`, which resolves full lifecycle,
+ * `useUncontrollableActiveState()` provides a **simplified implementation** for managing activation state and dispatching changes.
+ * 
+ * - Supports both controlled and uncontrolled modes.
+ * - Supports contextual override via `cascadeActive`.
+ * - If `active` is provided, the internal state is disabled and the component becomes fully controlled.
+ * - If `active` is omitted, the internal state is initialized via `defaultActive`.
+ * - Ideal for components that **manage** the resolved `active` state.
+ * 
+ * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
+ * 
+ * @param props - The component props that may include a controlled `active` value, optional `defaultActive` value, contextual `cascadeActive` value, and `onActiveChange` callback.
+ * @param options - An optional configuration for customizing activate/deactivate behavior.
+ * @returns A tuple of the resolved active/inactive state and a dispatcher for requesting changes.
+ */
+export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: ActiveStateProps & UncontrollableActiveStateProps & ActiveStateChangeProps<TChangeEvent>, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
+    // Extract options:
+    const {
+        defaultActive,
+        ...restOptions
+    } = options ?? {};
+    
+    
+    
+    // Extract props:
+    const {
+        defaultActive  : initialActive,
+        active         : controlledActive,
+        onActiveChange : handleActiveChange,
+        ...restProps
+    } = props;
+    
+    
+    
+    // States and flags:
+    
+    // Transition orchestration:
+    return useUncontrollableInteractionState<
+        boolean,
+        boolean,
+        
+        ActiveStateProps,
+        ActiveStateOptions,
+        ActiveBehaviorStateDefinition,
+        
+        TChangeEvent
+    >(
+        // Props:
+        { defaultState: initialActive, state: controlledActive, onStateChange: handleActiveChange, ...restProps },
+        
+        // Options:
+        { defaultState: defaultActive, ...restOptions },
+        
+        // Definition:
+        {
+            defaultInitialState        : defaultInitialActive,
+            useResolveEffectiveState   : useResolveEffectiveActiveState,   // Resolves effective state.
+        } satisfies Pick<ActiveBehaviorStateDefinition, 'defaultInitialState' | 'useResolveEffectiveState'>,
+    ) satisfies [boolean, ValueChangeDispatcher<boolean, TChangeEvent>];
 };
