@@ -78,7 +78,7 @@ export interface UncontrollableCollapseStateProps {
 export interface CollapseStateChangeProps<TChangeEvent = unknown>
     extends
         // Bases:
-        InteractionStateChangeProps<boolean, TChangeEvent>
+        Omit<InteractionStateChangeProps<boolean, TChangeEvent>, 'onStateChange'>
 {
     /**
      * Signals intent to change the expanded state:
@@ -142,7 +142,7 @@ export interface CollapseStatePhaseEventProps {
 export interface CollapseStateOptions
     extends
         // Bases:
-        InteractionStateOptions<boolean>
+        Omit<InteractionStateOptions<boolean>, 'defaultState'>
 {
     /**
      * Specifies the initial expanded state for uncontrolled mode when no `defaultExpanded` prop is explicitly provided:
@@ -151,7 +151,7 @@ export interface CollapseStateOptions
      * 
      * Defaults to `false` (collapsed).
      */
-    defaultExpanded   ?: boolean
+    defaultExpanded   ?: InteractionStateOptions<boolean>['defaultState']
     
     /**
      * Defines the pattern used to identify expand/collapse-related animation names.

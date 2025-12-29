@@ -31,11 +31,6 @@ import {
 import {
     // Types:
     type ValueChangeDispatcher,
-    
-    
-    
-    // Hooks:
-    useHybridValueChange,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
 
 // Reusable-ui states:
@@ -49,6 +44,7 @@ import {
     useInteractionStateChangeDispatcher,
     useInteractionBehaviorState,
     useInteractionStatePhaseEvents,
+    useUncontrollableInteractionState,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
@@ -136,42 +132,49 @@ export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: Colla
  * @returns A tuple of the resolved expanded/collapsed state and a dispatcher for requesting changes.
  */
 export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: CollapseStateProps & UncontrollableCollapseStateProps & CollapseStateChangeProps<TChangeEvent>, options?: Pick<CollapseStateOptions, 'defaultExpanded'>): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
-    // Extract options and assign defaults:
+    // Extract options:
     const {
-        defaultExpanded   = defaultInitialExpanded,
+        defaultExpanded,
+        ...restOptions
     } = options ?? {};
     
     
     
-    // Extract props and assign defaults:
+    // Extract props:
     const {
-        defaultExpanded : defaultInitialIntent = defaultExpanded,
-        expanded        : initialIntent        = defaultInitialIntent, // Initial intent comes from `expanded` (if controlled) or `defaultExpanded` (if uncontrolled).
-        expanded        : controlledExpanded,
-        onExpandedChange,
+        defaultExpanded  : initialExpanded,
+        expanded         : controlledExpanded,
+        onExpandedChange : handleExpandedChange,
+        ...restProps
     } = props;
     
     
     
-    // States:
+    // States and flags:
     
-    // Internal activation state:
-    const {
-        value               : intendedExpanded,
-        dispatchValueChange : dispatchExpandedChange,
-    } = useHybridValueChange<boolean, TChangeEvent>({
-        defaultValue  : initialIntent,
-        value         : controlledExpanded,
-        onValueChange : onExpandedChange,
-    });
-    
-    // Resolve effective expansion state:
-    const effectiveExpanded = useCollapseState({ ...props, defaultExpanded: undefined, expanded: intendedExpanded }, options);
-    
-    
-    
-    // Return resolved expansion state and dispatcher:
-    return [effectiveExpanded, dispatchExpandedChange];
+    // Transition orchestration:
+    return useUncontrollableInteractionState<
+        boolean,
+        boolean,
+        
+        CollapseStateProps,
+        CollapseStateOptions,
+        CollapseBehaviorStateDefinition,
+        
+        TChangeEvent
+    >(
+        // Props:
+        { defaultState: initialExpanded, state: controlledExpanded, onStateChange: handleExpandedChange, ...restProps },
+        
+        // Options:
+        { defaultState: defaultExpanded, ...restOptions },
+        
+        // Definition:
+        {
+            defaultInitialState        : defaultInitialExpanded,
+            useResolveEffectiveState   : useResolveEffectiveCollapseState, // Resolves effective state.
+        } satisfies Pick<CollapseBehaviorStateDefinition, 'defaultInitialState' | 'useResolveEffectiveState'>,
+    ) satisfies [boolean, ValueChangeDispatcher<boolean, TChangeEvent>];
 };
 
 
