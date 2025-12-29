@@ -82,7 +82,7 @@ export interface UncontrollableViewStateProps {
 export interface ViewStateChangeProps<TChangeEvent = unknown>
     extends
         // Bases:
-        InteractionStateChangeProps<number, TChangeEvent>
+        Omit<InteractionStateChangeProps<number, TChangeEvent>, 'onStateChange'>
 {
     /**
      * Signals intent to change the view index:
@@ -153,7 +153,7 @@ export interface ViewStatePhaseEventProps {
 export interface ViewStateOptions
     extends
         // Bases:
-        InteractionStateOptions<number>
+        Omit<InteractionStateOptions<number>, 'defaultState'>
 {
     /**
      * Specifies the initial view index for uncontrolled mode when no `defaultViewIndex` prop is explicitly provided:
@@ -161,7 +161,7 @@ export interface ViewStateOptions
      * 
      * Defaults to `0` (first view).
      */
-    defaultViewIndex  ?: number
+    defaultViewIndex  ?: InteractionStateOptions<number>['defaultState']
     
     /**
      * The minimum allowed view index.

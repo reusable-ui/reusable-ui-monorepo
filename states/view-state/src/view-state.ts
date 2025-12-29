@@ -54,11 +54,6 @@ import {
 import {
     // Types:
     type ValueChangeDispatcher,
-    
-    
-    
-    // Hooks:
-    useHybridValueChange,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
 
 // Reusable-ui states:
@@ -72,6 +67,7 @@ import {
     useInteractionStateChangeDispatcher,
     useInteractionBehaviorState,
     useInteractionStatePhaseEvents,
+    useUncontrollableInteractionState,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
@@ -166,43 +162,47 @@ export const useViewIndexChangeDispatcher = <TChangeEvent = unknown>(props: View
 export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewStateProps & UncontrollableViewStateProps & ViewStateChangeProps<TChangeEvent>, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>): [number, ValueChangeDispatcher<number, TChangeEvent>] => {
     // Extract options and assign defaults:
     const {
-        defaultViewIndex  = defaultInitialViewIndex,
+        defaultViewIndex,
+        ...restOptions
     } = options ?? {};
     
     
     
     // Extract props and assign defaults:
     const {
-        defaultViewIndex  : defaultInitialIntent = defaultViewIndex,
-        viewIndex         : rawInitialIntent     = defaultInitialIntent, // Initial intent comes from `viewIndex` (if controlled) or `defaultViewIndex` (if uncontrolled).
+        defaultViewIndex  : initialViewIndex,
         viewIndex         : controlledViewIndex,
-        onViewIndexChange,
+        onViewIndexChange : handleViewIndexChange,
+        ...restProps
     } = props;
     
     
     
-    // States:
+    // States and flags:
     
-    // Clamp the initial intent within valid range and step:
-    const initialIntent        = clampViewIndex(rawInitialIntent, options);
-    
-    // Internal view index state:
-    const {
-        value               : intendedViewIndex,
-        dispatchValueChange : dispatchViewIndexChange,
-    } = useHybridValueChange<number, TChangeEvent>({
-        defaultValue  : initialIntent,
-        value         : controlledViewIndex,
-        onValueChange : onViewIndexChange,
-    });
-    
-    // Resolve effective view index:
-    const effectiveViewIndex   = useViewState({ ...props, defaultViewIndex: undefined, viewIndex: intendedViewIndex }, options);
-    
-    
-    
-    // Return resolved view index and dispatcher:
-    return [effectiveViewIndex, dispatchViewIndexChange];
+    // Transition orchestration:
+    return useUncontrollableInteractionState<
+        number,
+        number,
+        
+        ViewStateProps,
+        ViewStateOptions,
+        ViewBehaviorStateDefinition,
+        
+        TChangeEvent
+    >(
+        // Props:
+        { defaultState: initialViewIndex, state: controlledViewIndex, onStateChange: handleViewIndexChange, ...restProps },
+        
+        // Options:
+        { defaultState: defaultViewIndex, ...restOptions },
+        
+        // Definition:
+        {
+            defaultInitialState        : defaultInitialViewIndex,
+            useResolveEffectiveState   : useResolveEffectiveViewState,        // Resolves effective state.
+        } satisfies Pick<ViewBehaviorStateDefinition, 'defaultInitialState' | 'useResolveEffectiveState'>,
+    ) satisfies [number, ValueChangeDispatcher<number, TChangeEvent>];
 };
 
 
@@ -318,8 +318,8 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     
     // Extract props and assign defaults:
     const {
-        defaultViewIndex  : defaultInitialIntent = defaultViewIndex,
-        viewIndex         : rawInitialIntent     = defaultInitialIntent, // Initial intent comes from `viewIndex` (if controlled) or `defaultViewIndex` (if uncontrolled).
+        defaultViewIndex  : fallbackViewIndex = defaultViewIndex,
+        viewIndex         : rawInitialIntent  = fallbackViewIndex, // Controlled: from `viewIndex`; Uncontrolled: from `defaultViewIndex`.
         viewIndex         : controlledViewIndex,
         onViewIndexChange : handleViewIndexChange,
     } = props;
