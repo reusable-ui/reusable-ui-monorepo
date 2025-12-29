@@ -206,7 +206,7 @@ export const useInteractionBehaviorState = <
     
     
     
-    // States and flags:
+    // States:
     
     // Resolve the declarative state into a concrete effective state:
     // - Normalizes keywords into concrete values.
@@ -219,9 +219,9 @@ export const useInteractionBehaviorState = <
     });
     
     // Combine props for transition orchestration:
-    const combinedProps : TransitionStateProps<TState> & typeof props = {
-        // Pass the normalized initial effective state:
-        effectiveState  : effectiveState,
+    const combinedProps : typeof props & Pick<TransitionStateProps<TState>, 'effectiveState'> = {
+        // Pass the normalized effective state as the initial state:
+        effectiveState,
         
         // Merge all other props (these may override `effectiveState` if explicitly provided):
         ...props, // May include `onStateChange` and other foreign props.
@@ -234,7 +234,7 @@ export const useInteractionBehaviorState = <
         TPhase,
         TClassname,
         
-        InteractionStateProps<TDeclarativeState>,
+        typeof combinedProps,
         InteractionStateOptions<TState>,
         InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>,
         
@@ -255,13 +255,10 @@ export const useInteractionBehaviorState = <
         >,
         useResolveDriverState : useResolveInteractionDriverState, // Prefers controlled mode, falls back to uncontrolled mode.
     } satisfies TransitionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname,
-        InteractionStateProps<TDeclarativeState>,
+        typeof combinedProps,
         InteractionStateOptions<TState>,
         InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
     >);
-    
-    // Determine control mode:
-    const isControlled = (controlledState !== undefined);
     
     
     
@@ -271,7 +268,7 @@ export const useInteractionBehaviorState = <
     const dispatchStateChange = useInteractionStateChangeDispatcher<TState, TChangeEvent>(props as Omit<typeof props, 'defaultState'>, {
         onInternalChange: (newState) => {
             // Update the internal state only if uncontrolled:
-            if (!isControlled) setInternalState(newState);
+            if (controlledState === undefined) setInternalState(newState);
         },
     });
     
@@ -288,56 +285,37 @@ export const useInteractionBehaviorState = <
  * Resolves the **driver state** for interaction-based components.
  * 
  * In interaction-state (collapse, active, view):
- * - Prefers `props.state` if provided (controlled mode).
- * - Falls back to `internalState` if no controlled state is provided (uncontrolled mode).
- * - The chosen driver state may be declarative (`'auto'`, `'inherit'`, etc.),
- *   so it is normalized via `useResolveEffectiveState` to produce a usable concrete value.
+ * - Controlled mode: prefers `props.effectiveState`, if `props.state` is provided.
+ * - Uncontrolled mode: falls back to `internalState`.
  * 
- * @returns The resolved driver state (controlled or uncontrolled), normalized into a concrete value.
+ * The driver state must always be a concrete value (no declarative keywords).
+ * Declarative inputs are normalized into concrete values before being stored or returned.
+ * 
+ * @returns The resolved driver state (controlled or uncontrolled), guaranteed to be concrete.
  */
-const useResolveInteractionDriverState = <TDeclarativeState extends {} | null, TState extends TDeclarativeState, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>(args: ResolveDriverStateArgs<TState, InteractionStateProps<TDeclarativeState> & UncontrollableInteractionStateProps<TState>, InteractionStateOptions<TState>, InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>>): TState => {
+const useResolveInteractionDriverState = <TDeclarativeState extends {} | null, TState extends TDeclarativeState, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition, TChangeEvent = unknown>(args: ResolveDriverStateArgs<TState, InteractionStateProps<TDeclarativeState> & UncontrollableInteractionStateProps<TState> & InteractionStateChangeProps<TState, TChangeEvent> & Pick<TransitionStateProps<TState>, 'effectiveState'>, InteractionStateOptions<TState>, InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>>): TState => {
     // Extract args:
     const {
         internalState,
         props,
-        options,
-        definition,
     } = args;
-    
-    
-    
-    // Extract definition:
-    const {
-        useResolveEffectiveState,
-    } = definition;
     
     
     
     // Extract props:
     const {
         state : controlledState,
+        effectiveState,
     } = props;
     
     
     
-    // States and flags:
+    // States:
     
-    // Determine control mode:
-    const isControlled   = (controlledState !== undefined);
-    
-    // Resolve effective state:
-    // - Prefers controlled state if available, otherwise uses internal state
-    // - Effective state normalizes declarative values into concrete ones
-    const driverState    = isControlled ? controlledState : internalState;
-    const effectiveState = useResolveEffectiveState({
-        declarativeState : driverState,
-        props            : props      as TBehaviorProps,
-        options          : options    as TBehaviorOptions,
-        definition       : definition as TBehaviorDefinition,
-    });
-    
-    // Return the resolved effective state:
-    return effectiveState;
+    // Determine and return the driver state:
+    // - Controlled mode → use normalized effective state.
+    // - Uncontrolled mode → use internal state.
+    return (controlledState !== undefined) ? effectiveState : internalState;
 };
 
 

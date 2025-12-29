@@ -8,6 +8,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
+    type TransitionStateProps,
     type TransitionStateOptions,
     type TransitionBehaviorStateDefinition,
     type TransitionBehaviorState,
@@ -32,7 +33,11 @@ export {
  * 
  * @template TDeclarativeState - The declarative type of the state value (may include keywords).
  */
-export interface InteractionStateProps<TDeclarativeState extends {} | null> {
+export interface InteractionStateProps<TDeclarativeState extends {} | null>
+    extends
+        // Bases:
+        Omit<TransitionStateProps<{}>, 'effectiveState'>
+{
     /**
      * Specifies the current state for controlled mode.
      * Can be a concrete value (already resolved) or a declarative keyword (`'auto'`, `'inherit'`, etc).
