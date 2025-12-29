@@ -43,11 +43,6 @@ import {
 import {
     // Types:
     type ValueChangeDispatcher,
-    
-    
-    
-    // Hooks:
-    useHybridValueChange,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
 
 // Reusable-ui states:
@@ -61,6 +56,7 @@ import {
     useInteractionStateChangeDispatcher,
     useInteractionBehaviorState,
     useInteractionStatePhaseEvents,
+    useUncontrollableInteractionState,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
@@ -180,42 +176,49 @@ export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveS
  * @returns A tuple of the resolved active/inactive state and a dispatcher for requesting changes.
  */
 export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: ActiveStateProps & UncontrollableActiveStateProps & ActiveStateChangeProps<TChangeEvent>, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
-    // Extract options and assign defaults:
+    // Extract options:
     const {
-        defaultActive        = defaultInitialActive,
+        defaultActive,
+        ...restOptions
     } = options ?? {};
     
     
     
-    // Extract props and assign defaults:
+    // Extract props:
     const {
-        defaultActive : defaultInitialIntent = defaultActive,
-        active        : initialIntent        = defaultInitialIntent, // Initial intent comes from `active` (if controlled) or `defaultActive` (if uncontrolled).
-        active        : controlledActive,
-        onActiveChange,
+        defaultActive  : initialActive,
+        active         : controlledActive,
+        onActiveChange : handleActiveChange,
+        ...restProps
     } = props;
     
     
     
-    // States:
+    // States and flags:
     
-    // Internal activation state:
-    const {
-        value               : intendedActive,
-        dispatchValueChange : dispatchActiveChange,
-    } = useHybridValueChange<boolean, TChangeEvent>({
-        defaultValue  : initialIntent,
-        value         : controlledActive,
-        onValueChange : onActiveChange,
-    });
-    
-    // Resolve effective activation state:
-    const effectiveActive = useActiveState({ ...props, defaultActive: undefined, active: intendedActive }, options);
-    
-    
-    
-    // Return resolved active state and dispatcher:
-    return [effectiveActive, dispatchActiveChange];
+    // Transition orchestration:
+    return useUncontrollableInteractionState<
+        boolean,
+        boolean,
+        
+        ActiveStateProps,
+        ActiveStateOptions,
+        ActiveBehaviorStateDefinition,
+        
+        TChangeEvent
+    >(
+        // Props:
+        { defaultState: initialActive, state: controlledActive, onStateChange: handleActiveChange, ...restProps },
+        
+        // Options:
+        { defaultState: defaultActive, ...restOptions },
+        
+        // Definition:
+        {
+            defaultInitialState        : defaultInitialActive,
+            useResolveEffectiveState   : useResolveEffectiveActiveState,   // Resolves effective state.
+        } satisfies Pick<ActiveBehaviorStateDefinition, 'defaultInitialState' | 'useResolveEffectiveState'>,
+    ) satisfies [boolean, ValueChangeDispatcher<boolean, TChangeEvent>];
 };
 
 

@@ -87,7 +87,7 @@ export interface UncontrollableActiveStateProps {
 export interface ActiveStateChangeProps<TChangeEvent = unknown>
     extends
         // Bases:
-        InteractionStateChangeProps<boolean, TChangeEvent>
+        Omit<InteractionStateChangeProps<boolean, TChangeEvent>, 'onStateChange'>
 {
     /**
      * Signals intent to change the active state:
@@ -151,7 +151,7 @@ export interface ActiveStatePhaseEventProps {
 export interface ActiveStateOptions
     extends
         // Bases:
-        InteractionStateOptions<boolean>
+        Omit<InteractionStateOptions<boolean>, 'defaultState'>
 {
     /**
      * Specifies the initial active state for uncontrolled mode when no `defaultActive` prop is explicitly provided:
@@ -160,7 +160,7 @@ export interface ActiveStateOptions
      * 
      * Defaults to `false` (inactive).
      */
-    defaultActive        ?: boolean
+    defaultActive        ?: InteractionStateOptions<boolean>['defaultState']
     
     /**
      * Specifies the default cascade behavior when no `cascadeActive` prop is explicitly provided:
