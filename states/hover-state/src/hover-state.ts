@@ -117,6 +117,15 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
 
 
 
+/** The behavior state definition for hover/unhover state management. */
+const hoverBehaviorStateDefinition : HoverBehaviorStateDefinition = {
+    // Behavior definitions:
+    defaultAnimationPattern    : ['hovering', 'unhovering'],      // Matches animation names for transitions.
+    defaultAnimationBubbling   : false,
+    resolveTransitionPhase     : resolveHoverTransitionPhase,     // Resolves phases.
+    resolveTransitionClassname : resolveHoverTransitionClassname, // Resolves classnames.
+};
+
 /**
  * Resolves the hover state, current transition phase, associated CSS class name, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
@@ -206,7 +215,8 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
 export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(props: HoverStateProps & HoverStateUpdateProps, options?: HoverStateOptions): HoverBehaviorState<TElement> => {
     // Extract props:
     const {
-        onHoverUpdate : handleHoverUpdate,
+        onHoverUpdate : onStateUpdate,
+        // ...restProps // Not needed the rest since all resolvers in the definition are *not* dependent of the props.
     } = props;
     
     
@@ -215,7 +225,7 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
     
     // Resolve effective hover state:
     const {
-        hovered: effectiveHovered,
+        hovered: effectiveState,
         ref,
         handleMouseEnter,
         handleMouseLeave,
@@ -241,18 +251,13 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
         TElement
     >(
         // Props:
-        { effectiveState: effectiveHovered, onStateUpdate: handleHoverUpdate },
+        { effectiveState, onStateUpdate, /* ...restProps */ },
         
         // Options:
         options,
         
         // Definition:
-        {
-            defaultAnimationPattern    : ['hovering', 'unhovering'],      // Matches animation names for transitions.
-            defaultAnimationBubbling   : false,
-            resolveTransitionPhase     : resolveHoverTransitionPhase,     // Resolves phases.
-            resolveTransitionClassname : resolveHoverTransitionClassname, // Resolves classnames.
-        } satisfies HoverBehaviorStateDefinition,
+        hoverBehaviorStateDefinition,
     );
     
     
@@ -269,6 +274,8 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
         handleMouseLeave,
     } satisfies HoverBehaviorState<TElement>;
 };
+
+
 
 /**
  * Emits lifecycle events in response to hover/unhover phase transitions.

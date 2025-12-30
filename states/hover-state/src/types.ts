@@ -31,6 +31,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
+    type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
@@ -87,7 +88,11 @@ export interface HoverStateProps {
  * Typically used in interactive components (e.g. Button, Select, MenuItem ) to notify external systems
  * when the resolved hover state changes—whether due to user interaction, pointer movement, or layout triggers.
  */
-export interface HoverStateUpdateProps {
+export interface HoverStateUpdateProps
+    extends
+        // Bases:
+        Omit<FeedbackStateUpdateProps<boolean>, 'onStateUpdate'>
+{
     /**
      * Reports the updated hover state whenever it changes:
      * - `true`  → the component is now hovered
@@ -95,7 +100,7 @@ export interface HoverStateUpdateProps {
      * 
      * This is a passive notification; it does not request a change to the hover state.
      */
-    onHoverUpdate ?: ValueChangeEventHandler<boolean, unknown>
+    onHoverUpdate ?: FeedbackStateUpdateProps<boolean>['onStateUpdate']
 }
 
 /**
