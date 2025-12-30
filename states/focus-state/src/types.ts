@@ -32,6 +32,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
+    type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
@@ -92,7 +93,11 @@ export interface FocusStateProps {
  * Typically used in interactive components (e.g. Button, Select, Input ) to notify external systems
  * when the resolved focus state changes—whether due to user interaction, keyboard navigation, or accessibility triggers.
  */
-export interface FocusStateUpdateProps {
+export interface FocusStateUpdateProps
+    extends
+        // Bases:
+        Omit<FeedbackStateUpdateProps<boolean>, 'onStateUpdate'>
+{
     /**
      * Reports the updated focus state whenever it changes:
      * - `true`  → the component is now focused
@@ -100,7 +105,7 @@ export interface FocusStateUpdateProps {
      * 
      * This is a passive notification; it does not request a change to the focus state.
      */
-    onFocusUpdate ?: ValueChangeEventHandler<boolean, unknown>
+    onFocusUpdate ?: FeedbackStateUpdateProps<boolean>['onStateUpdate']
 }
 
 /**

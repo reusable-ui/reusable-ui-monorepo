@@ -119,6 +119,15 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
 
 
 
+/** The behavior state definition for focus/blur state management. */
+const focusBehaviorStateDefinition : FocusBehaviorStateDefinition = {
+    // Behavior definitions:
+    defaultAnimationPattern    : ['focusing', 'blurring'],        // Matches animation names for transitions.
+    defaultAnimationBubbling   : false,
+    resolveTransitionPhase     : resolveFocusTransitionPhase,     // Resolves phases.
+    resolveTransitionClassname : resolveFocusTransitionClassname, // Resolves classnames.
+};
+
 /**
  * Resolves the focus state, current transition phase, associated CSS class name, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
@@ -211,7 +220,8 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
 export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(props: FocusStateProps & FocusStateUpdateProps, options?: FocusStateOptions): FocusBehaviorState<TElement> => {
     // Extract props:
     const {
-        onFocusUpdate : handleFocusUpdate,
+        onFocusUpdate : onStateUpdate,
+        // ...restProps // Not needed the rest since all resolvers in the definition are *not* dependent of the props.
     } = props;
     
     
@@ -220,7 +230,7 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
     
     // Resolve effective focus state:
     const {
-        focused: effectiveFocused,
+        focused: effectiveState,
         ref,
         handleFocus,
         handleBlur,
@@ -247,18 +257,13 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
         TElement
     >(
         // Props:
-        { effectiveState: effectiveFocused, onStateUpdate: handleFocusUpdate },
+        { effectiveState, onStateUpdate, /* ...restProps */ },
         
         // Options:
         options,
         
         // Definition:
-        {
-            defaultAnimationPattern    : ['focusing', 'blurring'],        // Matches animation names for transitions.
-            defaultAnimationBubbling   : false,
-            resolveTransitionPhase     : resolveFocusTransitionPhase,     // Resolves phases.
-            resolveTransitionClassname : resolveFocusTransitionClassname, // Resolves classnames.
-        } satisfies FocusBehaviorStateDefinition,
+        focusBehaviorStateDefinition,
     );
     
     
@@ -276,6 +281,8 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
         handleKeyDown,
     } satisfies FocusBehaviorState<TElement>;
 };
+
+
 
 /**
  * Emits lifecycle events in response to focus/blur phase transitions.
