@@ -31,6 +31,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
+    type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
@@ -91,7 +92,11 @@ export interface PressStateProps {
  * Typically used in interactive components (e.g. Button, Select, MenuItem ) to notify external systems
  * when the resolved press state changes—whether due to user interaction, pointer events, or layout triggers.
  */
-export interface PressStateUpdateProps {
+export interface PressStateUpdateProps
+    extends
+        // Bases:
+        Omit<FeedbackStateUpdateProps<boolean>, 'onStateUpdate'>
+{
     /**
      * Reports the updated press state whenever it changes:
      * - `true`  → the component is now pressed
@@ -99,7 +104,7 @@ export interface PressStateUpdateProps {
      * 
      * This is a passive notification; it does not request a change to the press state.
      */
-    onPressUpdate ?: ValueChangeEventHandler<boolean, unknown>
+    onPressUpdate ?: FeedbackStateUpdateProps<boolean>['onStateUpdate']
 }
 
 /**

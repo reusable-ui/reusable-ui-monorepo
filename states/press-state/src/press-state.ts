@@ -121,6 +121,15 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
 
 
 
+/** The behavior state definition for press/release state management. */
+const pressBehaviorStateDefinition : PressBehaviorStateDefinition = {
+    // Behavior definitions:
+    defaultAnimationPattern    : ['pressing', 'releasing'],       // Matches animation names for transitions.
+    defaultAnimationBubbling   : false,
+    resolveTransitionPhase     : resolvePressTransitionPhase,     // Resolves phases.
+    resolveTransitionClassname : resolvePressTransitionClassname, // Resolves classnames.
+};
+
 /**
  * Resolves the press state, current transition phase, associated CSS class name, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
@@ -212,7 +221,8 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
 export const usePressBehaviorState = <TElement extends Element = HTMLElement>(props: PressStateProps & PressStateUpdateProps, options?: PressStateOptions): PressBehaviorState<TElement> => {
     // Extract props:
     const {
-        onPressUpdate : handlePressUpdate,
+        onPressUpdate : onStateUpdate,
+        // ...restProps // Not needed the rest since all resolvers in the definition are *not* dependent of the props.
     } = props;
     
     
@@ -221,7 +231,7 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
     
     // Resolve effective press state:
     const {
-        pressed: effectivePressed,
+        pressed: effectiveState,
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,
@@ -249,18 +259,13 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
         TElement
     >(
         // Props:
-        { effectiveState: effectivePressed, onStateUpdate: handlePressUpdate },
+        { effectiveState, onStateUpdate, /* ...restProps */ },
         
         // Options:
         options,
         
         // Definition:
-        {
-            defaultAnimationPattern    : ['pressing', 'releasing'],       // Matches animation names for transitions.
-            defaultAnimationBubbling   : false,
-            resolveTransitionPhase     : resolvePressTransitionPhase,     // Resolves phases.
-            resolveTransitionClassname : resolvePressTransitionClassname, // Resolves classnames.
-        } satisfies PressBehaviorStateDefinition,
+        pressBehaviorStateDefinition,
     );
     
     
@@ -279,6 +284,8 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
         handleKeyUp,
     } satisfies PressBehaviorState<TElement>;
 };
+
+
 
 /**
  * Emits lifecycle events in response to press/release phase transitions.
