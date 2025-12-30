@@ -155,6 +155,22 @@ const useResolveEffectiveViewState = ({ declarativeState, props, options }: Reso
     return effectiveViewIndex;
 };
 
+/** The behavior state definition for view-switching state management. */
+const viewBehaviorStateDefinition : ViewBehaviorStateDefinition = {
+    // State definitions:
+    defaultInitialState        : defaultInitialViewIndex,
+    useResolveEffectiveState   : useResolveEffectiveViewState,        // Resolves effective state.
+    
+    // Behavior definitions:
+    defaultAnimationPattern    : ['view-advancing', 'view-receding'], // Matches animation names for transitions.
+    defaultAnimationBubbling   : false,
+    resolveTransitionPhase     : resolveViewTransitionPhase,          // Resolves phases.
+    resolveTransitionClassname : resolveViewTransitionClassname,      // Resolves classnames.
+    
+    // Direction definitions:
+    useResolvePreviousState    : usePreviousValue,                    // Tracks previous settled state.
+};
+
 /**
  * Resolves the current view index, current transition phase, associated CSS class name, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
@@ -247,7 +263,7 @@ const useResolveEffectiveViewState = ({ declarativeState, props, options }: Reso
 export const useViewBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ViewStateProps & UncontrollableViewStateProps & ViewStateChangeProps<TChangeEvent>, options?: ViewStateOptions): ViewBehaviorState<TElement, TChangeEvent> => {
     // Extract options and assign defaults:
     const {
-        defaultViewIndex,
+        defaultViewIndex : fallbackState,
         ...restOptions
     } = options ?? {};
     
@@ -255,9 +271,9 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
     
     // Extract props and assign defaults:
     const {
-        defaultViewIndex  : initialViewIndex,
-        viewIndex         : controlledViewIndex,
-        onViewIndexChange : handleViewIndexChange,
+        defaultViewIndex  : defaultState,
+        viewIndex         : state,
+        onViewIndexChange : onStateChange,
         ...restProps
     } = props;
     
@@ -314,23 +330,13 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
         TChangeEvent
     >(
         // Props:
-        { defaultState: initialViewIndex, state: controlledViewIndex, onStateChange: handleViewIndexChange, ...restProps },
+        { defaultState, state, onStateChange, ...restProps },
         
         // Options:
-        { defaultState: defaultViewIndex, ...restOptions },
+        { defaultState: fallbackState, ...restOptions },
         
         // Definition:
-        {
-            defaultInitialState        : defaultInitialViewIndex,
-            useResolveEffectiveState   : useResolveEffectiveViewState,        // Resolves effective state.
-            
-            defaultAnimationPattern    : ['view-advancing', 'view-receding'], // Matches animation names for transitions.
-            defaultAnimationBubbling   : false,
-            resolveTransitionPhase     : resolveViewTransitionPhase,          // Resolves phases.
-            resolveTransitionClassname : resolveViewTransitionClassname,      // Resolves classnames.
-            
-            useResolvePreviousState    : usePreviousValue,                    // Tracks previous settled state.
-        } satisfies ViewBehaviorStateDefinition,
+        viewBehaviorStateDefinition,
     );
     
     
@@ -374,6 +380,69 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
         dispatchViewIndexChange,
         ...animationHandlers,
     } satisfies ViewBehaviorState<TElement, TChangeEvent>;
+};
+
+/**
+ * Resolves the current view index and provides a dispatcher for requesting changes.
+ * 
+ * This hook is intended for components that **manage** the resolved `viewIndex` value and **forward** it to a base component,
+ * while optionally supporting uncontrolled behavior.
+ * 
+ * Unlike `useViewBehaviorState()`, which resolves full lifecycle,
+ * `useUncontrollableViewState()` provides a **simplified implementation** for managing view index state and dispatching changes.
+ * 
+ * - Supports both controlled and uncontrolled modes.
+ * - If `viewIndex` is provided, the internal state is disabled and the component becomes fully controlled.
+ * - If `viewIndex` is omitted, the internal state is initialized via `defaultViewIndex`.
+ * - Ideal for components that **manage** the resolved `viewIndex` value.
+ * 
+ * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
+ * 
+ * @param props - The component props that may include a controlled `viewIndex` value, optional `defaultViewIndex` value, and `onViewIndexChange` callback.
+ * @param options - An optional configuration for customizing view-switching behavior.
+ * @returns A tuple of the resolved view index and a dispatcher for requesting changes.
+ */
+export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewStateProps & UncontrollableViewStateProps & ViewStateChangeProps<TChangeEvent>, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>): [number, ValueChangeDispatcher<number, TChangeEvent>] => {
+    // Extract options and assign defaults:
+    const {
+        defaultViewIndex : fallbackState,
+        ...restOptions
+    } = options ?? {};
+    
+    
+    
+    // Extract props and assign defaults:
+    const {
+        defaultViewIndex  : defaultState,
+        viewIndex         : state,
+        onViewIndexChange : onStateChange,
+        ...restProps
+    } = props;
+    
+    
+    
+    // States and flags:
+    
+    // Transition orchestration:
+    return useUncontrollableInteractionState<
+        number,
+        number,
+        
+        ViewStateProps,
+        ViewStateOptions,
+        ViewBehaviorStateDefinition,
+        
+        TChangeEvent
+    >(
+        // Props:
+        { defaultState, state, onStateChange, ...restProps },
+        
+        // Options:
+        { defaultState: fallbackState, ...restOptions },
+        
+        // Definition:
+        viewBehaviorStateDefinition,
+    ) satisfies [number, ValueChangeDispatcher<number, TChangeEvent>];
 };
 
 
@@ -434,72 +503,4 @@ export const useViewStatePhaseEvents = (props: ViewStatePhaseEventProps, viewPha
                 break;
         } // switch
     });
-};
-
-
-
-/**
- * Resolves the current view index and provides a dispatcher for requesting changes.
- * 
- * This hook is intended for components that **manage** the resolved `viewIndex` value and **forward** it to a base component,
- * while optionally supporting uncontrolled behavior.
- * 
- * Unlike `useViewBehaviorState()`, which resolves full lifecycle,
- * `useUncontrollableViewState()` provides a **simplified implementation** for managing view index state and dispatching changes.
- * 
- * - Supports both controlled and uncontrolled modes.
- * - If `viewIndex` is provided, the internal state is disabled and the component becomes fully controlled.
- * - If `viewIndex` is omitted, the internal state is initialized via `defaultViewIndex`.
- * - Ideal for components that **manage** the resolved `viewIndex` value.
- * 
- * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
- * 
- * @param props - The component props that may include a controlled `viewIndex` value, optional `defaultViewIndex` value, and `onViewIndexChange` callback.
- * @param options - An optional configuration for customizing view-switching behavior.
- * @returns A tuple of the resolved view index and a dispatcher for requesting changes.
- */
-export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewStateProps & UncontrollableViewStateProps & ViewStateChangeProps<TChangeEvent>, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>): [number, ValueChangeDispatcher<number, TChangeEvent>] => {
-    // Extract options and assign defaults:
-    const {
-        defaultViewIndex,
-        ...restOptions
-    } = options ?? {};
-    
-    
-    
-    // Extract props and assign defaults:
-    const {
-        defaultViewIndex  : initialViewIndex,
-        viewIndex         : controlledViewIndex,
-        onViewIndexChange : handleViewIndexChange,
-        ...restProps
-    } = props;
-    
-    
-    
-    // States and flags:
-    
-    // Transition orchestration:
-    return useUncontrollableInteractionState<
-        number,
-        number,
-        
-        ViewStateProps,
-        ViewStateOptions,
-        ViewBehaviorStateDefinition,
-        
-        TChangeEvent
-    >(
-        // Props:
-        { defaultState: initialViewIndex, state: controlledViewIndex, onStateChange: handleViewIndexChange, ...restProps },
-        
-        // Options:
-        { defaultState: defaultViewIndex, ...restOptions },
-        
-        // Definition:
-        {
-            defaultInitialState        : defaultInitialViewIndex,
-            useResolveEffectiveState   : useResolveEffectiveViewState,        // Resolves effective state.
-        } satisfies Pick<ViewBehaviorStateDefinition, 'defaultInitialState' | 'useResolveEffectiveState'>,
-    ) satisfies [number, ValueChangeDispatcher<number, TChangeEvent>];
 };
