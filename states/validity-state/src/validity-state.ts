@@ -108,6 +108,18 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
 
 
 
+/** The behavior state definition for validity state management. */
+const validityBehaviorStateDefinition : ValidityBehaviorStateDefinition = {
+    // Behavior definitions:
+    defaultAnimationPattern    : ['validating', 'invalidating', 'unvalidating'], // Matches animation names for transitions.
+    defaultAnimationBubbling   : false,
+    resolveTransitionPhase     : resolveValidityTransitionPhase,                 // Resolves phases.
+    resolveTransitionClassname : resolveValidityTransitionClassname,             // Resolves classnames.
+    
+    // Direction definitions:
+    useResolvePreviousState    : usePreviousValue,                               // Tracks previous settled state.
+};
+
 /**
  * Resolves the validity state, current transition phase, associated CSS class name, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
@@ -194,7 +206,8 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
 export const useValidityBehaviorState = <TElement extends Element = HTMLElement>(props: ValidityStateProps & ValidityStateUpdateProps, options?: ValidityStateOptions): ValidityBehaviorState<TElement> => {
     // Extract props:
     const {
-        onValidityUpdate : handleValidityUpdate,
+        onValidityUpdate : onStateUpdate,
+        // ...restProps // Not needed the rest since all resolvers in the definition are *not* dependent of the props.
     } = props;
     
     
@@ -202,7 +215,7 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     // States and flags:
     
     // Resolve effective validity state:
-    const effectiveValidity = useValidityState(props, options);
+    const effectiveState = useValidityState(props, options);
     
     // Transition orchestration:
     const {
@@ -224,19 +237,13 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
         TElement
     >(
         // Props:
-        { effectiveState: effectiveValidity, onStateUpdate: handleValidityUpdate },
+        { effectiveState, onStateUpdate, /* ...restProps */ },
         
         // Options:
         options,
         
         // Definition:
-        {
-            defaultAnimationPattern    : ['validating', 'invalidating', 'unvalidating'], // Matches animation names for transitions.
-            defaultAnimationBubbling   : false,
-            useResolvePreviousState    : usePreviousValue,                               // Tracks previous settled state.
-            resolveTransitionPhase     : resolveValidityTransitionPhase,                 // Resolves phases.
-            resolveTransitionClassname : resolveValidityTransitionClassname,             // Resolves classnames.
-        } satisfies ValidityBehaviorStateDefinition,
+        validityBehaviorStateDefinition,
     );
     
     
@@ -250,6 +257,8 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
         ...animationHandlers,
     } satisfies ValidityBehaviorState<TElement>;
 };
+
+
 
 /**
  * Emits lifecycle events in response to validity phase transitions.

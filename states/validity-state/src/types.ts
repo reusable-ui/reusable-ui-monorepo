@@ -24,6 +24,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
+    type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
@@ -75,7 +76,11 @@ export interface ValidityStateProps {
  * Typically used in editable components (e.g. Input, Select, Option) to notify external systems
  * when the resolved validity state changes—whether due to user input, async validation, or validity constraints changes.
  */
-export interface ValidityStateUpdateProps {
+export interface ValidityStateUpdateProps
+    extends
+        // Bases:
+        Omit<FeedbackStateUpdateProps<boolean | null>, 'onStateUpdate'>
+{
     /**
      * Reports the updated validity state whenever it changes:
      * - `true`  → the component is now valid
@@ -84,7 +89,7 @@ export interface ValidityStateUpdateProps {
      * 
      * This is a passive notification; it does not request a change to the validity state.
      */
-    onValidityUpdate ?: ValueChangeEventHandler<boolean | null, unknown>
+    onValidityUpdate ?: FeedbackStateUpdateProps<boolean | null>['onStateUpdate']
 }
 
 /**
