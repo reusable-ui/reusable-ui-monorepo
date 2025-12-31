@@ -86,7 +86,7 @@ import { type ValueChangeDispatcher, type ValueChangeEventHandler } from '@reusa
 /** Props for controlling the selected state of a component. */
 export interface SelectedStateProps {
     /**
-     * Specifies the selected state for controlled mode.
+     * Specifies the current selected state for controlled mode.
      * 
      * - `true`   → selected
      * - `false`  → unselected
@@ -114,7 +114,7 @@ export interface SelectedChangeDispatcherOptions<TChangeEvent = unknown> {
 }
 
 /** Options for customizing selected state behavior and animation lifecycle. */
-export interface SelectedStateOptions extends InteractionStateOptions<boolean> {
+export interface SelectedStateOptions extends Omit<InteractionStateOptions<boolean>, 'defaultState'> {
     /** The initial selected state if `defaultSelected` prop is not provided. */
     defaultSelected ?: boolean
 }
@@ -183,13 +183,20 @@ export interface SelectedBehaviorState<TElement extends Element = HTMLElement, T
  * @remarks
  * - Supports both controlled and uncontrolled modes.
  * - Declarative keywords (`'auto'`) are normalized by `useSelectedState`.
+ * - Provides resolved selected state and a dispatcher for interactive state changes.
  * - Provides semantic phases and classnames for styling.
  */
 export const useSelectedBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: SelectedStateProps & UncontrollableSelectedStateProps & SelectedStateChangeProps<TChangeEvent>, options?: SelectedStateOptions): SelectedBehaviorState<TElement, TChangeEvent> => {
     const {
-        defaultSelected  : initialSelected,
-        selected         : controlledSelected,
-        onSelectedChange : handleSelectedChange,
+        defaultSelected : fallbackState,
+        ...restOptions
+    } = options ?? {};
+    
+    const {
+        defaultSelected  : defaultState,
+        selected         : state,
+        onSelectedChange : onStateChange,
+        ...restProps
     } = props;
     
     // Transition orchestration:
@@ -215,17 +222,20 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
         TChangeEvent
     >(
         // Props:
-        { defaultState: initialSelected, state: controlledSelected, onStateChange: handleSelectedChange },
+        { defaultState, state, onStateChange, ...restProps },
         
         // Options:
-        options,
+        { defaultState: fallbackState, ...restOptions },
         
         // Definition:
         {
-            defaultAnimationPattern    : ['selecting', 'deselecting'],
-            defaultAnimationBubbling   : false,
+            // State definitions:
             defaultInitialState        : false,
             useResolveEffectiveState   : useResolveEffectiveSelectedState,   // Resolves effective state.
+            
+            // Behavior definitions:
+            defaultAnimationPattern    : ['selecting', 'deselecting'],
+            defaultAnimationBubbling   : false,
             resolveTransitionPhase     : resolveSelectedTransitionPhase,     // Resolves phases.
             resolveTransitionClassname : resolveSelectedTransitionClassname, // Resolves classnames.
         } satisfies SelectedBehaviorStateDefinition,
@@ -409,23 +419,21 @@ import {
     type InteractionStateOptions,
     type ResolveEffectiveStateArgs,
     type InteractionBehaviorStateDefinition,
-    type InteractionBehaviorState,
 } from '@reusable-ui/interaction-state'
 import { type ValueChangeDispatcher, type ValueChangeEventHandler } from '@reusable-ui/events'
 
 /**
- * Example implementation of an interactive selected/unselected state with animation lifecycle integration.
+ * Example implementation of an interactive selected/unselected state **without** animation lifecycle integration.
  * 
  * Provides a hybrid controlled/uncontrolled selected state with support for declarative keywords (`'auto'`).
  * 
- * Exposes semantic phases and classnames for styling, synchronized with animation transitions,
- * and a dispatcher for interactive state changes.
+ * Exposes resolved selected state and a dispatcher for interactive state changes.
  */
 
 /** Props for controlling the selected state of a component. */
 export interface SelectedStateProps {
     /**
-     * Specifies the selected state for controlled mode.
+     * Specifies the current selected state for controlled mode.
      * 
      * - `true`   → selected
      * - `false`  → unselected
@@ -453,7 +461,7 @@ export interface SelectedChangeDispatcherOptions<TChangeEvent = unknown> {
 }
 
 /** Options for customizing selected state behavior and animation lifecycle. */
-export interface SelectedStateOptions extends InteractionStateOptions<boolean> {
+export interface SelectedStateOptions extends Omit<InteractionStateOptions<boolean>, 'defaultState'> {
     /** The initial selected state if `defaultSelected` prop is not provided. */
     defaultSelected ?: boolean
 }
@@ -483,52 +491,24 @@ interface SelectedBehaviorStateDefinition
 }
 
 /**
- * Public API returned by `useSelectedBehaviorState`.
- * 
- * @remarks
- * - Mirrors `InteractionBehaviorState` but renames properties into domain-specific terms.
- * - Excludes generic properties (`state`, `actualState`, etc.) in favor of `selected`, `actualSelected`, etc.
- */
-export interface SelectedBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
-    extends
-        Omit<InteractionBehaviorState<boolean, SelectedPhase, SelectedClassname, TElement, TChangeEvent>,
-            | 'prevSettledState'
-            | 'state'
-            | 'actualState'
-            | 'transitionPhase'
-            | 'transitionClassname'
-            | 'dispatchStateChange'
-        >
-{
-    /** The current settled selected state (animation-aware). */
-    selected               : boolean
-    
-    /** The actual resolved selected state (immediate, may appear out of sync). */
-    actualSelected         : boolean
-    
-    /** The semantic transition phase (`selected`, `unselected`, `selecting`, `deselecting`). */
-    selectedPhase          : SelectedPhase
-    
-    /** A CSS classname reflecting the current selected phase. */
-    selectedClassname      : SelectedClassname
-    
-    /** Requests a change to the selected state. */
-    dispatchSelectedChange : ValueChangeDispatcher<boolean, TChangeEvent>
-}
-
-/**
- * Hook for managing selected state *without* animation lifecycle integration.
+ * Hook for managing selected state **without** animation lifecycle integration.
  * 
  * @remarks
  * - Supports both controlled and uncontrolled modes.
  * - Declarative keywords (`'auto'`) are normalized by `useSelectedState`.
- * - Provides semantic phases and classnames for styling.
+ * - Provides resolved selected state and a dispatcher for interactive state changes.
  */
 export const useUncontrollableSelectedState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: SelectedStateProps & UncontrollableSelectedStateProps & SelectedStateChangeProps<TChangeEvent>, options?: SelectedStateOptions): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
     const {
-        defaultSelected  : initialSelected,
-        selected         : controlledSelected,
-        onSelectedChange : handleSelectedChange,
+        defaultSelected : fallbackState,
+        ...restOptions
+    } = options ?? {};
+    
+    const {
+        defaultSelected  : defaultState,
+        selected         : state,
+        onSelectedChange : onStateChange,
+        ...restProps
     } = props;
     
     // Transition orchestration:
@@ -543,13 +523,14 @@ export const useUncontrollableSelectedState = <TElement extends Element = HTMLEl
         TChangeEvent
     >(
         // Props:
-        { defaultState: initialSelected, state: controlledSelected, onStateChange: handleSelectedChange },
+        { defaultState, state, onStateChange, ...restProps },
         
         // Options:
-        options,
+        { defaultState: fallbackState, ...restOptions },
         
         // Definition:
         {
+            // State definitions:
             defaultInitialState        : false,
             useResolveEffectiveState   : useResolveEffectiveSelectedState,   // Resolves effective state.
         } satisfies Pick<SelectedBehaviorStateDefinition, 'defaultInitialState' | 'useResolveEffectiveState'>,
