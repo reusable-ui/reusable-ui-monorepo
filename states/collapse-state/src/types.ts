@@ -18,13 +18,14 @@ import {
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeDispatcher,
     type ValueChangeEventHandler,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
 
 // Reusable-ui states:
 import {
     // Types:
+    type InteractionStateProps,
+    type UncontrollableInteractionStateProps,
     type InteractionStateChangeProps,
     type InteractionStateChangeDispatcherOptions,
     type InteractionStateOptions,
@@ -38,15 +39,19 @@ import {
  * 
  * Accepts an optional `expanded` prop, defaulting to `false` (collapsed) when not provided.
  */
-export interface CollapseStateProps {
+export interface CollapseStateProps
+    extends
+        // Bases:
+        Omit<InteractionStateProps<boolean>, 'state'>
+{
     /**
-     * Specifies the current expanded state:
+     * Specifies the current expanded state for controlled mode:
      * - `true`  : the component is expanded
      * - `false` : the component is collapsed
      * 
      * Defaults to `undefined` (uncontrolled mode).
      */
-    expanded ?: boolean
+    expanded ?: InteractionStateProps<boolean>['state']
 }
 
 /**
@@ -56,7 +61,11 @@ export interface CollapseStateProps {
  * Commonly used in components like `<Accordion>` or `<Detail>` that enhance content
  * without requiring external control or feedback loops.
  */
-export interface UncontrollableCollapseStateProps {
+export interface UncontrollableCollapseStateProps
+    extends
+        // Bases:
+        Omit<UncontrollableInteractionStateProps<boolean>, 'defaultState'>
+{
     /**
      * Specifies the initial expanded state for uncontrolled mode:
      * - `true`  : the component is initially expanded
@@ -64,7 +73,7 @@ export interface UncontrollableCollapseStateProps {
      * 
      * Defaults to `false` (collapsed).
      */
-    defaultExpanded ?: boolean
+    defaultExpanded ?: UncontrollableInteractionStateProps<boolean>['defaultState']
 }
 
 /**
@@ -250,7 +259,7 @@ export interface CollapseBehaviorState<TElement extends Element = HTMLElement, T
      * - `true`  : the component has visually settled in expanded state
      * - `false` : the component has visually settled in collapsed state
      */
-    expanded               : boolean
+    expanded               : InteractionBehaviorState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>['state']
     
     /**
      * The actual resolved expanded/collapsed state, regardless of animation state.
@@ -264,14 +273,14 @@ export interface CollapseBehaviorState<TElement extends Element = HTMLElement, T
      * - `true`  : the component is intended to be expanded
      * - `false` : the component is intended to be collapsed
      */
-    actualExpanded         : boolean
+    actualExpanded         : InteractionBehaviorState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>['actualState']
     
     /**
      * The current transition phase of the expand/collapse lifecycle.
      * 
      * Reflects both transitional states (`expanding`, `collapsing`) and resolved states (`expanded`, `collapsed`).
      */
-    expandPhase            : ExpandPhase
+    expandPhase            : InteractionBehaviorState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current expand/collapse phase.
@@ -282,7 +291,7 @@ export interface CollapseBehaviorState<TElement extends Element = HTMLElement, T
      * - `'is-expanding'`
      * - `'is-expanded'`
      */
-    expandClassname        : ExpandClassname
+    expandClassname        : InteractionBehaviorState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>['transitionClassname']
     
     /**
      * Requests a change to the expanded state.
@@ -295,7 +304,7 @@ export interface CollapseBehaviorState<TElement extends Element = HTMLElement, T
      * - When restricted, expansion requests are ignored and the component remains in its last expanded/collapsed state.
      * - When restriction is lifted, `dispatchExpandedChange()` resumes normal operation.
      */
-    dispatchExpandedChange : ValueChangeDispatcher<boolean, TChangeEvent>
+    dispatchExpandedChange : InteractionBehaviorState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>['dispatchStateChange']
 }
 
 
