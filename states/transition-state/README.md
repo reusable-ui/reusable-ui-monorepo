@@ -177,11 +177,12 @@ export interface LockedBehaviorState<TElement extends Element = HTMLElement>
  * @remarks
  * - Controlled-only: state is always driven by props.
  * - Declarative keywords (`'auto'`) are normalized by `useLockedState`.
+ * - Provides resolved locked state.
  * - Provides semantic phases and classnames for styling.
  */
 export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(props: LockedStateProps & LockedStateUpdateProps, options?: LockedStateOptions): LockedBehaviorState<TElement> => {
     // Normalize declarative keywords into a concrete boolean:
-    const effectiveLocked = useLockedState(props, options);
+    const effectiveState = useLockedState(props, options);
     
     // Transition orchestration:
     const [{
@@ -204,13 +205,14 @@ export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(p
         TElement
     >(
         // Props:
-        { effectiveState: effectiveLocked },
+        { effectiveState },
         
         // Options:
         options,
         
         // Definition:
         {
+            // Behavior definitions:
             defaultAnimationPattern    : ['locking', 'unlocking'],
             defaultAnimationBubbling   : false,
             useResolveDriverState      : useResolveLockedDriverState,      // Controlled mode only.
@@ -219,11 +221,11 @@ export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(p
         } satisfies LockedBehaviorStateDefinition,
     );
     
-    // Observer effect: emits state update events on `effectiveLocked` updates.
+    // Observer effect: emits state update events on `effectiveState` updates.
     useLayoutEffect(() => {
         // Emits state update events:
-        props.onLockedUpdate?.(effectiveLocked, undefined);
-    }, [effectiveLocked]);
+        props.onLockedUpdate?.(effectiveState, undefined);
+    }, [effectiveState]);
     
     // Return domain-specific API:
     return {
@@ -390,11 +392,12 @@ export interface OnlineBehaviorState<TElement extends Element = HTMLElement>
  * @remarks
  * - Controlled-only: state is always driven by props.
  * - Declarative keywords (`'auto'`) are observed live by `useLiveOnlineState`.
+ * - Provides resolved online state.
  * - Provides semantic phases and classnames for styling.
  */
 export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(props: OnlineStateProps & OnlineStateUpdateProps, options?: OnlineStateOptions): OnlineBehaviorState<TElement> => {
     // Normalize declarative keywords into a concrete boolean:
-    const effectiveOnline = useCurrentOnlineState(props, options);
+    const effectiveState = useCurrentOnlineState(props, options);
     
     // Transition orchestration:
     const [{
@@ -417,13 +420,14 @@ export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(p
         TElement
     >(
         // Props:
-        { effectiveState: effectiveOnline },
+        { effectiveState },
         
         // Options:
         options,
         
         // Definition:
         {
+            // Behavior definitions:
             defaultAnimationPattern    : ['connecting', 'disconnecting'],
             defaultAnimationBubbling   : false,
             useResolveDriverState      : useResolveOnlineDriverState,      // Controlled mode only.
@@ -432,11 +436,11 @@ export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(p
         } satisfies OnlineBehaviorStateDefinition,
     );
         
-        // Observer effect: emits state update events on `effectiveOnline` updates.
+        // Observer effect: emits state update events on `effectiveState` updates.
         useLayoutEffect(() => {
             // Emits state update events:
-            props.onOnlineUpdate?.(effectiveOnline, undefined);
-        }, [effectiveOnline]);
+            props.onOnlineUpdate?.(effectiveState, undefined);
+        }, [effectiveState]);
     
     // Return domain-specific API:
     return {
