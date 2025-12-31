@@ -24,6 +24,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
+    type FeedbackStateProps,
     type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
@@ -36,7 +37,11 @@ import {
  * 
  * Accepts an optional `validity` prop, defaulting to `'auto'` (automatically determine validity state) when not provided.
  */
-export interface ValidityStateProps {
+export interface ValidityStateProps
+    extends
+        // Bases:
+        Omit<FeedbackStateProps<boolean | null>, 'effectiveState'>
+{
     /**
      * Specifies the current validity state:
      * - `true`   : the component is valid
@@ -52,7 +57,7 @@ export interface ValidityStateProps {
      * 
      * Defaults to `'auto'` (automatically determine validity state).
      */
-    validity         ?: boolean | null | 'auto'
+    validity         ?: FeedbackStateProps<boolean | null>['effectiveState'] | 'auto'
     
     /**
      * The derived validity value used when `validity` is set to `'auto'`.
@@ -67,7 +72,7 @@ export interface ValidityStateProps {
      * This property is intended for **component developers** who need to customize validity resolution.
      * For **application developers**, prefer using the `validity` prop directly.
      */
-    computedValidity ?: boolean | null
+    computedValidity ?: FeedbackStateProps<boolean | null>['effectiveState']
 }
 
 /**
@@ -263,7 +268,7 @@ export interface ValidityBehaviorState<TElement extends Element = HTMLElement>
      * - `false` : the component has visually settled in invalid state
      * - `null`  : the component has visually settled in unvalidated state
      */
-    validity          : boolean | null
+    validity          : FeedbackBehaviorState<boolean | null, ValidityPhase, ValidityClassname, TElement>['state']
     
     /**
      * The actual resolved validity state, regardless of animation state.
@@ -278,14 +283,14 @@ export interface ValidityBehaviorState<TElement extends Element = HTMLElement>
      * - `false` : the component is intended to be invalid
      * - `null`  : the component is intended to be unvalidated
      */
-    actualValidity    : boolean | null
+    actualValidity    : FeedbackBehaviorState<boolean | null, ValidityPhase, ValidityClassname, TElement>['actualState']
     
     /**
      * The current transition phase of the validity lifecycle.
      * 
      * Reflects both transitional states (`validating`, `invalidating`, `unvalidating`) and resolved states (`valid`, `invalid`, `unvalidated`).
      */
-    validityPhase     : ValidityPhase
+    validityPhase     : FeedbackBehaviorState<boolean | null, ValidityPhase, ValidityClassname, TElement>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current validity phase.
@@ -300,7 +305,7 @@ export interface ValidityBehaviorState<TElement extends Element = HTMLElement>
      * 
      * If in a transitioning phase, includes a `was-*` suffix to indicate the previous resolved state.
      */
-    validityClassname : ValidityClassname
+    validityClassname : FeedbackBehaviorState<boolean | null, ValidityPhase, ValidityClassname, TElement>['transitionClassname']
 }
 
 
