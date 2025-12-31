@@ -91,14 +91,14 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
     // Resolve whether the component is in a restricted state:
     const isRestricted         = isDisabled || isReadonly;
     
+    // Always force unvalidated (`null`) when restricted:
+    if (isRestricted) return null;
+    
     // Determine control mode:
     const isExplicitValue      = (controlledValidity !== 'auto');
     
-    // Resolve validity state prior to applying the restricted guard:
-    const resolvedValidity     = isExplicitValue ? controlledValidity : computedValidity;
-    
-    // Apply restricted guard — restriction always enforces unvalidated (`null`):
-    const effectiveValidity    = isRestricted ? null : resolvedValidity;
+    // Resolve effective validity state:
+    const effectiveValidity    = isExplicitValue ? controlledValidity : computedValidity;
     
     
     
