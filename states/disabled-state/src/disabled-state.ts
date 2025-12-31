@@ -112,6 +112,15 @@ export const useDisabledState = (props: DisabledStateProps, options?: Pick<Disab
 
 
 
+/** The behavior state definition for enabled/disabled state management. */
+const disabledBehaviorStateDefinition : DisabledBehaviorStateDefinition = {
+    // Behavior definitions:
+    defaultAnimationPattern    : ['enabling', 'disabling'],          // Matches animation names for transitions.
+    defaultAnimationBubbling   : false,
+    resolveTransitionPhase     : resolveDisabledTransitionPhase,     // Resolves phases.
+    resolveTransitionClassname : resolveDisabledTransitionClassname, // Resolves classnames.
+};
+
 /**
  * Resolves the enabled/disabled state, current transition phase, associated CSS class name, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
@@ -174,7 +183,8 @@ export const useDisabledState = (props: DisabledStateProps, options?: Pick<Disab
 export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>(props: DisabledStateProps & DisabledStateUpdateProps, options?: DisabledStateOptions): DisabledBehaviorState<TElement> => {
     // Extract props:
     const {
-        onDisabledUpdate : handleDisabledUpdate,
+        onDisabledUpdate : onStateUpdate,
+        // ...restProps // Not needed the rest since all resolvers in the definition are *not* dependent of the props.
     } = props;
     
     
@@ -182,7 +192,7 @@ export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>
     // States and flags:
     
     // Resolve effective disabled state:
-    const effectiveDisabled = useDisabledState(props, options);
+    const effectiveState = useDisabledState(props, options);
     
     // Transition orchestration:
     const {
@@ -204,18 +214,13 @@ export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>
         TElement
     >(
         // Props:
-        { effectiveState: effectiveDisabled, onStateUpdate: handleDisabledUpdate },
+        { effectiveState, onStateUpdate, /* ...restProps */ },
         
         // Options:
         options,
         
         // Definition:
-        {
-            defaultAnimationPattern    : ['enabling', 'disabling'],          // Matches animation names for transitions.
-            defaultAnimationBubbling   : false,
-            resolveTransitionPhase     : resolveDisabledTransitionPhase,     // Resolves phases.
-            resolveTransitionClassname : resolveDisabledTransitionClassname, // Resolves classnames.
-        } satisfies DisabledBehaviorStateDefinition,
+        disabledBehaviorStateDefinition,
     );
     
     
@@ -229,6 +234,8 @@ export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>
         ...animationHandlers,
     } satisfies DisabledBehaviorState<TElement>;
 };
+
+
 
 /**
  * Emits lifecycle events in response to enable/disable phase transitions.
