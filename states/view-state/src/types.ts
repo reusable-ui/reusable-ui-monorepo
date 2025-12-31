@@ -24,13 +24,14 @@ import {
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeDispatcher,
     type ValueChangeEventHandler,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
 
 // Reusable-ui states:
 import {
     // Types:
+    type InteractionStateProps,
+    type UncontrollableInteractionStateProps,
     type InteractionStateChangeProps,
     type InteractionStateChangeDispatcherOptions,
     type InteractionStateOptions,
@@ -44,14 +45,18 @@ import {
  * 
  * Accepts an optional `viewIndex` prop, defaulting to `0` (first view) when not provided.
  */
-export interface ViewStateProps {
+export interface ViewStateProps
+    extends
+        // Bases:
+        Omit<InteractionStateProps<number>, 'state'>
+{
     /**
-     * Specifies the current view index:
+     * Specifies the current view index for controlled mode:
      * - `0`, `1`, `2`, … : the component is showing the view at the given index
      * 
      * Defaults to `undefined` (uncontrolled mode).
      */
-    viewIndex ?: number
+    viewIndex ?: InteractionStateProps<number>['state']
 }
 
 /**
@@ -61,14 +66,18 @@ export interface ViewStateProps {
  * Commonly used in components like `<Tabs>`, `<Slide>`, or `<Carousel>` that switch content
  * without requiring external control or feedback loops.
  */
-export interface UncontrollableViewStateProps {
+export interface UncontrollableViewStateProps
+    extends
+        // Bases:
+        Omit<UncontrollableInteractionStateProps<number>, 'defaultState'>
+{
     /**
      * Specifies the initial view index for uncontrolled mode:
      * - `0`, `1`, `2`, … : the component is initially showing the view at the given index
      * 
      * Defaults to `0` (first view).
      */
-    defaultViewIndex ?: number
+    defaultViewIndex ?: UncontrollableInteractionStateProps<number>['defaultState']
 }
 
 /**
@@ -287,7 +296,7 @@ export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChan
      * Possible values:
      * - `0`, `1`, `2`, … : the component has visually settled on the view at the given index
      */
-    viewIndex               : number
+    viewIndex               : InteractionBehaviorState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['state']
     
     /**
      * The previously settled view index before the most recent transition.
@@ -303,7 +312,7 @@ export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChan
      * - `undefined` : there is no prior view (e.g., on initial render)
      * - `0`, `1`, `2`, … : the component was previously settled on the view at the given index
      */
-    prevViewIndex           : number | undefined
+    prevViewIndex           : InteractionBehaviorState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['prevSettledState']
     
     /**
      * The lower bound of the currently visible view range.
@@ -346,14 +355,14 @@ export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChan
      * Possible values:
      * - `0`, `1`, `2`, … : the component is intended to be settled on the view at the given index
      */
-    actualViewIndex         : number
+    actualViewIndex         : InteractionBehaviorState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['actualState']
     
     /**
      * The current transition phase of the view-switching lifecycle.
      * 
      * Reflects both transitional states (`view-advancing`, `view-receding`) and resolved state (`view-settled`).
      */
-    viewPhase               : ViewPhase
+    viewPhase               : InteractionBehaviorState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current view-switching phase.
@@ -363,7 +372,7 @@ export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChan
      * - `'view-advancing'`
      * - `'view-receding'`
      */
-    viewClassname           : ViewClassname
+    viewClassname           : InteractionBehaviorState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['transitionClassname']
     
     /**
      * A set of inline CSS variables that reflect the current view lifecycle state.
@@ -390,7 +399,7 @@ export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChan
      * - When restricted, view-switch requests are ignored and the component remains at its last view index.
      * - When restriction is lifted, `dispatchViewIndexChange()` resumes normal operation.
      */
-    dispatchViewIndexChange : ValueChangeDispatcher<number, TChangeEvent>
+    dispatchViewIndexChange : InteractionBehaviorState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['dispatchStateChange']
 }
 
 
