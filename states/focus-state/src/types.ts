@@ -32,6 +32,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
+    type FeedbackStateProps,
     type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
@@ -48,7 +49,11 @@ import {
  * - an externally provided `computedFocus`, or
  * - internal focus observer via `ref`, `handleFocus()`, `handleBlur()`, and `handleKeyDown()` callbacks.
  */
-export interface FocusStateProps {
+export interface FocusStateProps
+    extends
+        // Bases:
+        Omit<FeedbackStateProps<boolean>, 'effectiveState'>
+{
     /**
      * Specifies the current focus state:
      * - `true`   : the component is focused
@@ -65,7 +70,7 @@ export interface FocusStateProps {
      * 
      * Defaults to `'auto'` (automatically determine focus state).
      */
-    focused       ?: boolean | 'auto'
+    focused       ?: FeedbackStateProps<boolean>['effectiveState'] | 'auto'
     
     /**
      * The derived focus value used when `focused` is set to `'auto'`.
@@ -84,7 +89,7 @@ export interface FocusStateProps {
      * This property is intended for **component developers** who need to customize focus resolution.
      * For **application developers**, prefer using the `focused` prop directly.
      */
-    computedFocus ?: boolean
+    computedFocus ?: FeedbackStateProps<boolean>['effectiveState']
 }
 
 /**
@@ -262,7 +267,7 @@ export interface FocusBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component has visually settled in focused state
      * - `false` : the component has visually settled in blurred state
      */
-    focused        : boolean
+    focused        : FeedbackBehaviorState<boolean, FocusPhase, FocusClassname, TElement>['state']
     
     /**
      * The actual resolved focused/blurred state, regardless of animation state.
@@ -276,14 +281,14 @@ export interface FocusBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component is intended to be focused
      * - `false` : the component is intended to be blurred
      */
-    actualFocused  : boolean
+    actualFocused  : FeedbackBehaviorState<boolean, FocusPhase, FocusClassname, TElement>['actualState']
     
     /**
      * The current transition phase of the focus/blur lifecycle.
      * 
      * Reflects both transitional states (`focusing`, `blurring`) and resolved states (`focused`, `blurred`).
      */
-    focusPhase     : FocusPhase
+    focusPhase     : FeedbackBehaviorState<boolean, FocusPhase, FocusClassname, TElement>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current focus/blur phase.
@@ -297,7 +302,7 @@ export interface FocusBehaviorState<TElement extends Element = HTMLElement>
      * If input-like focus behavior is enabled, the class name will include `'input-like-focus'`
      * to signal that the component should visually behave like a native input.
      */
-    focusClassname : FocusClassname
+    focusClassname : FeedbackBehaviorState<boolean, FocusPhase, FocusClassname, TElement>['transitionClassname']
     
     /**
      * Ref to the focusable DOM element.
