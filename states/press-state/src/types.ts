@@ -31,6 +31,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
+    type FeedbackStateProps,
     type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
@@ -47,7 +48,11 @@ import {
  * - an externally provided `computedPress`, or
  * - internal press observer via pointer and keyboard handlers.
  */
-export interface PressStateProps {
+export interface PressStateProps
+    extends
+        // Bases:
+        Omit<FeedbackStateProps<boolean>, 'effectiveState'>
+{
     /**
      * Specifies the current press state:
      * - `true`   : the component is pressed
@@ -64,7 +69,7 @@ export interface PressStateProps {
      * 
      * Defaults to `'auto'` (automatically determine press state).
      */
-    pressed       ?: boolean | 'auto'
+    pressed       ?: FeedbackStateProps<boolean>['effectiveState'] | 'auto'
     
     /**
      * The derived press value used when `pressed` is set to `'auto'`.
@@ -83,7 +88,7 @@ export interface PressStateProps {
      * This property is intended for **component developers** who need to customize press resolution.
      * For **application developers**, prefer using the `pressed` prop directly.
      */
-    computedPress ?: boolean
+    computedPress ?: FeedbackStateProps<boolean>['effectiveState']
 }
 
 /**
@@ -351,7 +356,7 @@ export interface PressBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component has visually settled in pressed state
      * - `false` : the component has visually settled in released state
      */
-    pressed             : boolean
+    pressed             : FeedbackBehaviorState<boolean, PressPhase, PressClassname, TElement>['state']
     
     /**
      * The actual resolved pressed/released state, regardless of animation state.
@@ -365,14 +370,14 @@ export interface PressBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component is intended to be pressed
      * - `false` : the component is intended to be released
      */
-    actualPressed       : boolean
+    actualPressed       : FeedbackBehaviorState<boolean, PressPhase, PressClassname, TElement>['actualState']
     
     /**
      * The current transition phase of the press/release lifecycle.
      * 
      * Reflects both transitional states (`pressing`, `releasing`) and resolved states (`pressed`, `released`).
      */
-    pressPhase          : PressPhase
+    pressPhase          : FeedbackBehaviorState<boolean, PressPhase, PressClassname, TElement>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current press/release phase.
@@ -383,7 +388,7 @@ export interface PressBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-pressing'`
      * - `'is-pressed'`
      */
-    pressClassname      : PressClassname
+    pressClassname      : FeedbackBehaviorState<boolean, PressPhase, PressClassname, TElement>['transitionClassname']
     
     /**
      * Event handler for pointerdown events.
