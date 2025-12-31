@@ -24,6 +24,8 @@ import {
 // Reusable-ui states:
 import {
     // Types:
+    type FeedbackStateProps,
+    type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
@@ -35,7 +37,11 @@ import {
  * 
  * Accepts an optional `readOnly` prop, defaulting to `false` (editable) when not provided.
  */
-export interface ReadOnlyStateProps {
+export interface ReadOnlyStateProps
+    extends
+        // Bases:
+        Omit<FeedbackStateProps<boolean>, 'effectiveState'>
+{
     /**
      * Specifies the current read-only state:
      * - `true`  : the component is read-only
@@ -43,7 +49,7 @@ export interface ReadOnlyStateProps {
      * 
      * Defaults to `false` (editable).
      */
-    readOnly        ?: boolean
+    readOnly        ?: FeedbackStateProps<boolean>['effectiveState']
     
     /**
      * Specifies whether the component can become read-only via parent context:
@@ -61,7 +67,11 @@ export interface ReadOnlyStateProps {
  * Typically used in editable components (e.g. Input, TextArea, Select) to notify external systems
  * when the resolved editable/read-only state changes—whether due to `readOnly` prop changes or contextual override.
  */
-export interface ReadOnlyStateUpdateProps {
+export interface ReadOnlyStateUpdateProps
+    extends
+        // Bases:
+        Omit<FeedbackStateUpdateProps<boolean>, 'onStateUpdate'>
+{
     /**
      * Reports the updated read-only state whenever it changes:
      * - `true`  → the component is now read-only
@@ -69,7 +79,7 @@ export interface ReadOnlyStateUpdateProps {
      * 
      * This is a passive notification; it does not request a change to the read-only state.
      */
-    onReadOnlyUpdate ?: ValueChangeEventHandler<boolean, unknown>
+    onReadOnlyUpdate ?: FeedbackStateUpdateProps<boolean>['onStateUpdate']
 }
 
 /**
@@ -221,7 +231,7 @@ export interface ReadOnlyBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component has visually settled in read-only state
      * - `false` : the component has visually settled in editable state
      */
-    readOnly          : boolean
+    readOnly          : FeedbackBehaviorState<boolean, ReadOnlyPhase, ReadOnlyClassname, TElement>['state']
     
     /**
      * The actual resolved editable/read-only state, regardless of animation state.
@@ -235,14 +245,14 @@ export interface ReadOnlyBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component is intended to be read-only
      * - `false` : the component is intended to be editable
      */
-    actualReadOnly    : boolean
+    actualReadOnly    : FeedbackBehaviorState<boolean, ReadOnlyPhase, ReadOnlyClassname, TElement>['actualState']
     
     /**
      * The current transition phase of the editable/read-only lifecycle.
      * 
      * Reflects both transitional states (`thawing`, `freezing`) and resolved states (`editable`, `readonly`).
      */
-    readOnlyPhase     : ReadOnlyPhase
+    readOnlyPhase     : FeedbackBehaviorState<boolean, ReadOnlyPhase, ReadOnlyClassname, TElement>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current editable/read-only phase.
@@ -253,7 +263,7 @@ export interface ReadOnlyBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-thawing'`
      * - `'is-editable'`
      */
-    readOnlyClassname : ReadOnlyClassname
+    readOnlyClassname : FeedbackBehaviorState<boolean, ReadOnlyPhase, ReadOnlyClassname, TElement>['transitionClassname']
 }
 
 
