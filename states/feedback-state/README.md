@@ -170,15 +170,16 @@ export interface OnlineBehaviorState<TElement extends Element = HTMLElement>
  * @remarks
  * - Controlled-only: state is always driven by props.
  * - Declarative keywords (`'auto'`) are observed live by `useLiveOnlineState`.
+ * - Provides resolved online state.
  * - Provides semantic phases and classnames for styling.
  */
 export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(props: OnlineStateProps & OnlineStateUpdateProps, options?: OnlineStateOptions): OnlineBehaviorState<TElement> => {
     const {
-        onOnlineUpdate : handleOnlineUpdate,
+        onOnlineUpdate : onStateUpdate,
     } = props;
     
     // Get live online state (normalized declarative keywords into a concrete boolean):
-    const effectiveLiveOnline = useLiveOnlineState(props, options);
+    const effectiveState = useLiveOnlineState(props, options);
     
     // Transition orchestration:
     const {
@@ -200,13 +201,14 @@ export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(p
         TElement
     >(
         // Props:
-        { effectiveState: effectiveLiveOnline, onStateUpdate: handleOnlineUpdate },
+        { effectiveState, onStateUpdate },
         
         // Options:
         options,
         
         // Definition:
         {
+            // Behavior definitions:
             defaultAnimationPattern    : ['connecting', 'disconnecting'],
             defaultAnimationBubbling   : false,
             resolveTransitionPhase     : resolveOnlineTransitionPhase,     // Resolves phases.
@@ -390,15 +392,16 @@ export interface LockedBehaviorState<TElement extends Element = HTMLElement>
  * @remarks
  * - Controlled-only: state is always driven by props.
  * - Declarative keywords (`'auto'`) are normalized by `useLockedState`.
+ * - Provides resolved locked state.
  * - Provides semantic phases and classnames for styling.
  */
 export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(props: LockedStateProps & LockedStateUpdateProps, options?: LockedStateOptions): LockedBehaviorState<TElement> => {
     const {
-        onLockedUpdate : handleLockedUpdate,
+        onLockedUpdate : onStateUpdate,
     } = props;
     
     // Normalize declarative keywords into a concrete boolean:
-    const effectiveLocked = useLockedState(props, options);
+    const effectiveState = useLockedState(props, options);
     
     // Transition orchestration:
     const {
@@ -420,13 +423,14 @@ export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(p
         TElement
     >(
         // Props:
-        { effectiveState: effectiveLocked, onStateUpdate: handleLockedUpdate },
+        { effectiveState, onStateUpdate },
         
         // Options:
         options,
         
         // Definition:
         {
+            // Behavior definitions:
             defaultAnimationPattern    : ['locking', 'unlocking'],
             defaultAnimationBubbling   : false,
             resolveTransitionPhase     : resolveLockedTransitionPhase,     // Resolves phases.
