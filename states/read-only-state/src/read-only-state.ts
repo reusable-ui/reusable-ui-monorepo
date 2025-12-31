@@ -112,6 +112,15 @@ export const useReadOnlyState = (props: ReadOnlyStateProps, options?: Pick<ReadO
 
 
 
+/** The behavior state definition for editable/read-only state management. */
+const readOnlyBehaviorStateDefinition : ReadOnlyBehaviorStateDefinition = {
+    // Behavior definitions:
+    defaultAnimationPattern    : ['thawing', 'freezing'],            // Matches animation names for transitions.
+    defaultAnimationBubbling   : false,
+    resolveTransitionPhase     : resolveReadOnlyTransitionPhase,     // Resolves phases.
+    resolveTransitionClassname : resolveReadOnlyTransitionClassname, // Resolves classnames.
+};
+
 /**
  * Resolves the editable/read-only state, current transition phase, associated CSS class name, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
@@ -174,7 +183,8 @@ export const useReadOnlyState = (props: ReadOnlyStateProps, options?: Pick<ReadO
 export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>(props: ReadOnlyStateProps & ReadOnlyStateUpdateProps, options?: ReadOnlyStateOptions): ReadOnlyBehaviorState<TElement> => {
     // Extract props:
     const {
-        onReadOnlyUpdate : handleReadOnlyUpdate,
+        onReadOnlyUpdate : onStateUpdate,
+        // ...restProps // Not needed the rest since all resolvers in the definition are *not* dependent of the props.
     } = props;
     
     
@@ -182,7 +192,7 @@ export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>
     // States and flags:
     
     // Resolve effective read-only state:
-    const effectiveReadOnly = useReadOnlyState(props, options);
+    const effectiveState = useReadOnlyState(props, options);
     
     // Transition orchestration:
     const {
@@ -204,18 +214,13 @@ export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>
         TElement
     >(
         // Props:
-        { effectiveState: effectiveReadOnly, onStateUpdate: handleReadOnlyUpdate },
+        { effectiveState, onStateUpdate, /* ...restProps */ },
         
         // Options:
         options,
         
         // Definition:
-        {
-            defaultAnimationPattern    : ['thawing', 'freezing'],            // Matches animation names for transitions.
-            defaultAnimationBubbling   : false,
-            resolveTransitionPhase     : resolveReadOnlyTransitionPhase,     // Resolves phases.
-            resolveTransitionClassname : resolveReadOnlyTransitionClassname, // Resolves classnames.
-        } satisfies ReadOnlyBehaviorStateDefinition,
+        readOnlyBehaviorStateDefinition,
     );
     
     
@@ -229,6 +234,8 @@ export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>
         ...animationHandlers,
     } satisfies ReadOnlyBehaviorState<TElement>;
 };
+
+
 
 /**
  * Emits lifecycle events in response to editable/read-only phase transitions.
