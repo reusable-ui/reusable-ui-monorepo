@@ -31,6 +31,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
+    type FeedbackStateProps,
     type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
@@ -47,7 +48,11 @@ import {
  * - an externally provided `computedHover`, or
  * - internal hover observer via `ref`, `handleMouseEnter()`, and `handleMouseLeave()` callbacks.
  */
-export interface HoverStateProps {
+export interface HoverStateProps
+    extends
+        // Bases:
+        Omit<FeedbackStateProps<boolean>, 'effectiveState'>
+{
     /**
      * Specifies the current hover state:
      * - `true`   : the component is hovered
@@ -62,7 +67,7 @@ export interface HoverStateProps {
      * 
      * Defaults to `'auto'` (automatically determine hover state).
      */
-    hovered       ?: boolean | 'auto'
+    hovered       ?: FeedbackStateProps<boolean>['effectiveState'] | 'auto'
     
     /**
      * The derived hover value used when `hovered` is set to `'auto'`.
@@ -79,7 +84,7 @@ export interface HoverStateProps {
      * This property is intended for **component developers** who need to customize hover resolution.
      * For **application developers**, prefer using the `hovered` prop directly.
      */
-    computedHover ?: boolean
+    computedHover ?: FeedbackStateProps<boolean>['effectiveState']
 }
 
 /**
@@ -244,7 +249,7 @@ export interface HoverBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component has visually settled in hovered state
      * - `false` : the component has visually settled in unhovered state
      */
-    hovered           : boolean
+    hovered           : FeedbackBehaviorState<boolean, HoverPhase, HoverClassname, TElement>['state']
     
     /**
      * The actual resolved hovered/unhovered state, regardless of animation state.
@@ -258,14 +263,14 @@ export interface HoverBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component is intended to be hovered
      * - `false` : the component is intended to be unhovered
      */
-    actualHovered     : boolean
+    actualHovered     : FeedbackBehaviorState<boolean, HoverPhase, HoverClassname, TElement>['actualState']
     
     /**
      * The current transition phase of the hover/unhover lifecycle.
      * 
      * Reflects both transitional states (`hovering`, `unhovering`) and resolved states (`hovered`, `unhovered`).
      */
-    hoverPhase        : HoverPhase
+    hoverPhase        : FeedbackBehaviorState<boolean, HoverPhase, HoverClassname, TElement>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current hover/unhover phase.
@@ -276,7 +281,7 @@ export interface HoverBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-hovering'`
      * - `'is-hovered'`
      */
-    hoverClassname    : HoverClassname
+    hoverClassname    : FeedbackBehaviorState<boolean, HoverPhase, HoverClassname, TElement>['transitionClassname']
     
     /**
      * Ref to the hoverable DOM element.
