@@ -24,6 +24,8 @@ import {
 // Reusable-ui states:
 import {
     // Types:
+    type FeedbackStateProps,
+    type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
@@ -35,7 +37,11 @@ import {
  * 
  * Accepts an optional `disabled` prop, defaulting to `false` (enabled) when not provided.
  */
-export interface DisabledStateProps {
+export interface DisabledStateProps
+    extends
+        // Bases:
+        Omit<FeedbackStateProps<boolean>, 'effectiveState'>
+{
     /**
      * Specifies the current disabled state:
      * - `true`  : the component is disabled
@@ -43,7 +49,7 @@ export interface DisabledStateProps {
      * 
      * Defaults to `false` (enabled).
      */
-    disabled        ?: boolean
+    disabled        ?: FeedbackStateProps<boolean>['effectiveState']
     
     /**
      * Specifies whether the component can be disabled via parent context:
@@ -61,7 +67,11 @@ export interface DisabledStateProps {
  * Typically used in interactive components (e.g. Button, Input, Select) to notify external systems
  * when the resolved enabled/disabled state changes—whether due to `disabled` prop changes or contextual override.
  */
-export interface DisabledStateUpdateProps {
+export interface DisabledStateUpdateProps
+    extends
+        // Bases:
+        Omit<FeedbackStateUpdateProps<boolean>, 'onStateUpdate'>
+{
     /**
      * Reports the updated disabled state whenever it changes:
      * - `true`  → the component is now disabled
@@ -69,7 +79,7 @@ export interface DisabledStateUpdateProps {
      * 
      * This is a passive notification; it does not request a change to the disabled state.
      */
-    onDisabledUpdate ?: ValueChangeEventHandler<boolean, unknown>
+    onDisabledUpdate ?: FeedbackStateUpdateProps<boolean>['onStateUpdate']
 }
 
 /**
@@ -221,7 +231,7 @@ export interface DisabledBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component has visually settled in disabled state
      * - `false` : the component has visually settled in enabled state
      */
-    disabled          : boolean
+    disabled          : FeedbackBehaviorState<boolean, DisabledPhase, DisabledClassname, TElement>['state']
     
     /**
      * The actual resolved enabled/disabled state, regardless of animation state.
@@ -235,14 +245,14 @@ export interface DisabledBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component is intended to be disabled
      * - `false` : the component is intended to be enabled
      */
-    actualDisabled    : boolean
+    actualDisabled    : FeedbackBehaviorState<boolean, DisabledPhase, DisabledClassname, TElement>['actualState']
     
     /**
      * The current transition phase of the enable/disable lifecycle.
      * 
      * Reflects both transitional states (`enabling`, `disabling`) and resolved states (`enabled`, `disabled`).
      */
-    disabledPhase     : DisabledPhase
+    disabledPhase     : FeedbackBehaviorState<boolean, DisabledPhase, DisabledClassname, TElement>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current enable/disable phase.
@@ -253,7 +263,7 @@ export interface DisabledBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-enabling'`
      * - `'is-enabled'`
      */
-    disabledClassname : DisabledClassname
+    disabledClassname : FeedbackBehaviorState<boolean, DisabledPhase, DisabledClassname, TElement>['transitionClassname']
 }
 
 
