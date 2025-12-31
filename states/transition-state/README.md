@@ -564,7 +564,7 @@ import { useReadOnlyState } from '@reusable-ui/read-only-state'
 /** Props for controlling the selected state of a component. */
 export interface SelectedStateProps {
     /**
-     * Specifies the selected state for controlled mode.
+     * Specifies the current selected state for controlled mode.
      * 
      * - `true`   → selected
      * - `false`  → unselected
@@ -609,7 +609,7 @@ export type SelectedPhase = ResolvedSelectedPhase | TransitioningSelectedPhase
 /** Semantic CSS classnames tied to selected phases. */
 export type SelectedClassname = `is-${SelectedPhase}`
 
-/** Private definition for online state behavior. */
+/** Private definition for selected state behavior. */
 interface SelectedBehaviorStateDefinition<TBehaviorProps extends SelectedStateProps>
     extends
         TransitionBehaviorStateDefinition<boolean | 'auto', boolean, SelectedPhase, SelectedClassname,
@@ -660,6 +660,7 @@ export interface SelectedBehaviorState<TElement extends Element = HTMLElement, T
  * @remarks
  * - Supports both controlled and uncontrolled modes.
  * - Declarative keywords (`'auto'`) are normalized by `useSelectedState`.
+ * - Provides resolved selected state and a dispatcher for interactive state changes.
  * - Provides semantic phases and classnames for styling.
  */
 export const useSelectedBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: SelectedStateProps & UncontrollableSelectedStateProps & SelectedStateChangeProps<TChangeEvent>, options?: SelectedStateOptions): SelectedBehaviorState<TElement, TChangeEvent> => {
@@ -676,7 +677,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
     // Resolve the declarative state into a concrete effective state:
     // - Normalizes keywords into concrete values.
     // - Applies influence rules (disabled/read-only, cascade, clamp, etc.).
-    const effectiveSelected = useSelectedState({
+    const effectiveState = useSelectedState({
         ...props,
         defaultSelected : undefined,        // Prevents uncontrolled value.
         selected        : declarativeState, // Pass the declarative state as controlled value.
@@ -685,7 +686,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
     // Combine props for transition orchestration:
     const combinedProps : typeof props & Pick<TransitionStateProps<boolean>, 'effectiveState'> = {
         // Pass the normalized effective state as the initial state:
-        effectiveState : effectiveSelected,
+        effectiveState,
         
         // Merge all other props (these may override `effectiveState` if explicitly provided):
         ...props, // May include `onSelectedChange` and other foreign props.
@@ -719,6 +720,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
         
         // Definition:
         {
+            // Behavior definitions:
             defaultAnimationPattern    : ['selecting', 'deselecting'],
             defaultAnimationBubbling   : false,
             useResolveDriverState      : useResolveSelectedDriverState,      // Prefers controlled mode, falls back to uncontrolled mode.
@@ -767,14 +769,14 @@ const useSelectedState = (props: SelectedStateProps & { defaultSelected?: never 
 /** Resolves the driver state for selected behavior. */
 const useResolveSelectedDriverState = <TChangeEvent = unknown>({ internalState, props }: ResolveDriverStateArgs<boolean, SelectedStateProps & UncontrollableSelectedStateProps & SelectedStateChangeProps<TChangeEvent> & Pick<TransitionStateProps<boolean>, 'effectiveState'>, SelectedStateOptions, SelectedBehaviorStateDefinition<SelectedStateProps & Pick<TransitionStateProps<boolean>, 'effectiveState'>>>): boolean => {
     const {
-        selected: controlledSelected,
+        selected: controlledState,
         effectiveState,
     } = props;
     
     // Determine and return the driver state:
     // - Controlled mode → use normalized effective state.
     // - Uncontrolled mode → use internal state.
-    return (controlledSelected !== undefined) ? effectiveState : internalState;
+    return (controlledState !== undefined) ? effectiveState : internalState;
 };
 
 /** Resolves the semantic transition phase for selected behavior. */
@@ -795,7 +797,7 @@ export const useSelectedStateChangeDispatcher = <TChangeEvent = unknown>(props: 
     const isReadonly   = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
     const isRestricted = isDisabled || isReadonly;
     
-    // A stable dispatcher for state change requests:
+    // A stable dispatcher for selection change requests:
     const dispatchStateChange : ValueChangeDispatcher<boolean, TChangeEvent> = useStableCallback((newState: boolean, event: TChangeEvent): void => {
         // Halt interaction lifecycle when the component is in a restricted state (interaction blocked):
         if (isRestricted) return;
