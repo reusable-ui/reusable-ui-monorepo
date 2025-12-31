@@ -18,13 +18,14 @@ import {
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeDispatcher,
     type ValueChangeEventHandler,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
 
 // Reusable-ui states:
 import {
     // Types:
+    type InteractionStateProps,
+    type UncontrollableInteractionStateProps,
     type InteractionStateChangeProps,
     type InteractionStateChangeDispatcherOptions,
     type InteractionStateOptions,
@@ -38,15 +39,19 @@ import {
  * 
  * Accepts an optional `active` prop, defaulting to `false` (inactive) when not provided.
  */
-export interface ActiveStateProps {
+export interface ActiveStateProps
+    extends
+        // Bases:
+        Omit<InteractionStateProps<boolean>, 'state'>
+{
     /**
-     * Specifies the current active state:
+     * Specifies the current active state for controlled mode:
      * - `true`  : the component is active
      * - `false` : the component is inactive
      * 
      * Defaults to `undefined` (uncontrolled mode).
      */
-    active        ?: boolean
+    active        ?: InteractionStateProps<boolean>['state']
     
     /**
      * Specifies whether the component can be activated via parent context:
@@ -65,7 +70,11 @@ export interface ActiveStateProps {
  * Commonly used in components like `<Toggle>`, `<Switch>`, or `<Selection>` that enhance interactivity
  * without requiring external control or feedback loops.
  */
-export interface UncontrollableActiveStateProps {
+export interface UncontrollableActiveStateProps
+    extends
+        // Bases:
+        Omit<UncontrollableInteractionStateProps<boolean>, 'defaultState'>
+{
     /**
      * Specifies the initial active state for uncontrolled mode:
      * - `true`  : the component is initially active
@@ -73,7 +82,7 @@ export interface UncontrollableActiveStateProps {
      * 
      * Defaults to `false` (inactive).
      */
-    defaultActive ?: boolean
+    defaultActive ?: UncontrollableInteractionStateProps<boolean>['defaultState']
 }
 
 /**
@@ -268,7 +277,7 @@ export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TCh
      * - `true`  : the component has visually settled in active state
      * - `false` : the component has visually settled in inactive state
      */
-    active               : boolean
+    active               : InteractionBehaviorState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>['state']
     
     /**
      * The actual resolved active/inactive state, regardless of animation state.
@@ -282,14 +291,14 @@ export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TCh
      * - `true`  : the component is intended to be active
      * - `false` : the component is intended to be inactive
      */
-    actualActive         : boolean
+    actualActive         : InteractionBehaviorState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>['actualState']
     
     /**
      * The current transition phase of the activate/deactivate lifecycle.
      * 
      * Reflects both transitional states (`activating`, `deactivating`) and resolved states (`active`, `inactive`).
      */
-    activePhase          : ActivePhase
+    activePhase          : InteractionBehaviorState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current activate/deactivate phase.
@@ -300,7 +309,7 @@ export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TCh
      * - `'is-activating'`
      * - `'is-active'`
      */
-    activeClassname      : ActiveClassname
+    activeClassname      : InteractionBehaviorState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>['transitionClassname']
     
     /**
      * Requests a change to the active state.
@@ -313,7 +322,7 @@ export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TCh
      * - When restricted, activation requests are ignored and the component remains in its last active/inactive state.
      * - When restriction is lifted, `dispatchActiveChange()` resumes normal operation.
      */
-    dispatchActiveChange : ValueChangeDispatcher<boolean, TChangeEvent>
+    dispatchActiveChange : InteractionBehaviorState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>['dispatchStateChange']
 }
 
 
