@@ -102,6 +102,7 @@
     "features/animation",
     "states/animation-state",
     "states/animating-state",
+    "states/effective-state",
     "states/transition-state",
     "states/feedback-state",
     "states/interaction-state",
