@@ -307,11 +307,11 @@ export const useCascadeState = <TState extends {} | null>(props: CascadeStatePro
     
     // Cascading state resolution:
     
-    // If cascading behavior is disabled, return inactive baseline:
-    if (!cascadeEnabled) return inactiveState;
-    
     // If resolved state is not equal to inactive baseline, return immediately:
     if (!Object.is(resolvedState, inactiveState)) return resolvedState;
+    
+    // If cascading behavior is disabled, return inactive baseline:
+    if (!cascadeEnabled) return inactiveState;
     
     // Attempt to inherit from context:
     const inheritedState = use(stateContext);
