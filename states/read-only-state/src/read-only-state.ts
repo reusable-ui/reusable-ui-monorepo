@@ -1,11 +1,5 @@
 'use client' // The exported hooks are client side only.
 
-// React:
-import {
-    // Hooks:
-    use,
-}                           from 'react'
-
 // Types:
 import {
     type ReadOnlyStateProps,
@@ -39,12 +33,29 @@ import {
 
 // Reusable-ui states:
 import {
+    // Types:
+    type CascadeStateDefinition,
+    
+    
+    
+    // Hooks:
+    useCascadeState,
+}                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
+import {
     // Hooks:
     useFeedbackBehaviorState,
     useFeedbackStatePhaseEvents,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
+
+/** The cascade state definition for editable/read-only state management. */
+const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
+    defaultState          : defaultDeclarativeReadOnly,
+    defaultCascadeEnabled : defaultDeclarativeCascadeReadOnly,
+    inactiveState         : false, // `false`: the value of un-read-only state
+    stateContext          : ReadOnlyStateContext,
+};
 
 /**
  * Resolves the current editable/read-only state for a fully controlled component.
@@ -70,44 +81,31 @@ import {
 export const useReadOnlyState = (props: ReadOnlyStateProps, options?: Pick<ReadOnlyStateOptions, 'defaultReadOnly' | 'defaultCascadeReadOnly'>) : boolean => {
     // Extract options and assign defaults:
     const {
-        defaultReadOnly        = defaultDeclarativeReadOnly,
-        defaultCascadeReadOnly = defaultDeclarativeCascadeReadOnly,
+        defaultReadOnly        : defaultState,
+        defaultCascadeReadOnly : defaultCascadeEnabled,
     } = options ?? {};
     
     
     
     // Extract props and assign defaults:
     const {
-        readOnly         : controlledReadOnly = defaultReadOnly,
-        cascadeReadOnly  : cascadeReadOnly    = defaultCascadeReadOnly,
+        readOnly         : state,
+        cascadeReadOnly  : cascadeEnabled,
     } = props;
     
     
     
     // Resolve effective read-only state:
-    
-    // If explicitly read-only, no need to check context:
-    if (controlledReadOnly) return true;
-    
-    
-    
-    // If not cascading, context is ignored, thus editable:
-    if (!cascadeReadOnly) return false;
-    
-    
-    
-    // Get the inherited read-only from context:
-    const inheritedReadOnly = use(ReadOnlyStateContext);
-    
-    
-    
-    // If context value exists, return it:
-    if (inheritedReadOnly !== undefined) return inheritedReadOnly;
-    
-    
-    
-    // Otherwise, fallback to editable:
-    return false;
+    return useCascadeState<boolean>(
+        // Props:
+        { state, cascadeEnabled },
+        
+        // Options:
+        { defaultState, defaultCascadeEnabled },
+        
+        // Definition:
+        cascadeStateDefinition,
+    );
 };
 
 
