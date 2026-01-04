@@ -1,11 +1,5 @@
 'use client' // The exported hooks are client side only.
 
-// React:
-import {
-    // Hooks:
-    use,
-}                           from 'react'
-
 // Types:
 import {
     type DisabledStateProps,
@@ -43,8 +37,25 @@ import {
     useFeedbackBehaviorState,
     useFeedbackStatePhaseEvents,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
+import {
+    // Types:
+    type CascadeStateDefinition,
+    
+    
+    
+    // Hooks:
+    useCascadeState,
+}                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
 
 
+
+/** The cascade state definition for enabled/disabled state management. */
+const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
+    defaultState          : defaultDeclarativeDisabled,
+    defaultCascadeEnabled : defaultDeclarativeCascadeDisabled,
+    inactiveState         : false, // `false`: the value of un-disabled state
+    stateContext          : DisabledStateContext,
+};
 
 /**
  * Resolves the current enabled/disabled state for a fully controlled component.
@@ -70,44 +81,32 @@ import {
 export const useDisabledState = (props: DisabledStateProps, options?: Pick<DisabledStateOptions, 'defaultDisabled' | 'defaultCascadeDisabled'>) : boolean => {
     // Extract options and assign defaults:
     const {
-        defaultDisabled        = defaultDeclarativeDisabled,
-        defaultCascadeDisabled = defaultDeclarativeCascadeDisabled,
+        defaultDisabled        : defaultState,
+        defaultCascadeDisabled : defaultCascadeEnabled,
     } = options ?? {};
     
     
     
     // Extract props and assign defaults:
     const {
-        disabled         : controlledDisabled = defaultDisabled,
-        cascadeDisabled  : cascadeDisabled    = defaultCascadeDisabled,
+        disabled         : state,
+        cascadeDisabled  : cascadeEnabled,
     } = props;
     
     
     
     // Resolve effective disabled state:
     
-    // If explicitly disabled, no need to check context:
-    if (controlledDisabled) return true;
-    
-    
-    
-    // If not cascading, context is ignored, thus enabled:
-    if (!cascadeDisabled) return false;
-    
-    
-    
-    // Get the inherited disabled from context:
-    const inheritedDisabled = use(DisabledStateContext);
-    
-    
-    
-    // If context value exists, return it:
-    if (inheritedDisabled !== undefined) return inheritedDisabled;
-    
-    
-    
-    // Otherwise, fallback to enabled:
-    return false;
+    return useCascadeState<boolean>(
+        // Props:
+        { state, cascadeEnabled },
+        
+        // Options:
+        { defaultState, defaultCascadeEnabled },
+        
+        // Definition:
+        cascadeStateDefinition,
+    );
 };
 
 
