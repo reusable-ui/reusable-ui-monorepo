@@ -79,7 +79,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * @returns The resolved enabled/disabled state.
  */
 export const useDisabledState = (props: DisabledStateProps, options?: Pick<DisabledStateOptions, 'defaultDisabled' | 'defaultCascadeDisabled'>) : boolean => {
-    // Extract options and assign defaults:
+    // Extract options:
     const {
         defaultDisabled        : defaultState,
         defaultCascadeDisabled : defaultCascadeEnabled,
@@ -87,7 +87,7 @@ export const useDisabledState = (props: DisabledStateProps, options?: Pick<Disab
     
     
     
-    // Extract props and assign defaults:
+    // Extract props:
     const {
         disabled         : state,
         cascadeDisabled  : cascadeEnabled,
@@ -96,7 +96,6 @@ export const useDisabledState = (props: DisabledStateProps, options?: Pick<Disab
     
     
     // Resolve effective disabled state:
-    
     return useCascadeState<boolean>(
         // Props:
         { state, cascadeEnabled },
