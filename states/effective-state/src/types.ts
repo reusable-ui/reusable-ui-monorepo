@@ -209,10 +209,17 @@ export interface CascadeStateDefinition<TState extends {} | null>
     
     /**
      * Declares the context to resolve state from when cascading is enabled.
-     * If the resolved state equals `inactiveState` and `cascadeEnabled` is true,
-     * the hook will attempt to use this context value.
+     * 
+     * Resolution behavior:
+     * - If the resolved state equals `inactiveState` and `cascadeEnabled` is true,
+     *   the hook will attempt to use this context value.
+     * - If no `Provider` is found, `use(stateContext)` will return `undefined`,
+     *   and the hook will fall back to `inactiveState`.
+     * 
+     * Note: contexts are expected to be created with `undefined` as their `defaultValue`,
+     * so that `use(stateContext)` returns `undefined` when no `Provider` is present.
      */
-    stateContext           : Context<TState>
+    stateContext           : Context<TState | undefined>
 }
 
 
