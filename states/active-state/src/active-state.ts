@@ -95,7 +95,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * @returns The resolved active/inactive state.
  */
 export const useActiveState = (props: ActiveStateProps & { defaultActive?: never }, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>) : boolean => {
-    // Extract options and assign defaults:
+    // Extract options:
     const {
         defaultActive        : defaultState,
         defaultCascadeActive : defaultCascadeEnabled,
@@ -103,7 +103,7 @@ export const useActiveState = (props: ActiveStateProps & { defaultActive?: never
     
     
     
-    // Extract props and assign defaults:
+    // Extract props:
     const {
         active        : state,
         cascadeActive : cascadeEnabled,
