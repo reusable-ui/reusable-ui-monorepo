@@ -233,11 +233,12 @@ export interface CascadeStateDefinition<TState extends {} | null>
  * - Additionally, supports dynamic state observation via an external observer.
  * 
  * @template TState - The type of the state value.
+ * @template TToken - A special string token used to trigger observation (e.g. `'auto'`).
  */
-export interface ObservableStateProps<TState extends {} | null>
+export interface ObservableStateProps<TState extends {} | null, TToken extends string>
     extends
         // Bases:
-        ControllableStateProps<TState>
+        ControllableStateProps<TState | TToken>
 {
     /**
      * Supplies a flag indicating whether the component is in a restricted condition
@@ -248,7 +249,7 @@ export interface ObservableStateProps<TState extends {} | null>
     isRestricted  : boolean
     
     /**
-     * Supplies the observed state value from an external source (e.g. custom observer).
+     * Supplies the observed state value from an external source (e.g. a custom observer).
      * Used whenever the resolved state equals `definition.observableStateToken`.
      */
     observedState : TState
@@ -262,11 +263,12 @@ export interface ObservableStateProps<TState extends {} | null>
  *   is provided by the consumer.
  * 
  * @template TState - The type of the state value.
+ * @template TToken - A special string token used to trigger observation (e.g. `'auto'`).
  */
-export interface ObservableStateOptions<TState extends {} | null>
+export interface ObservableStateOptions<TState extends {} | null, TToken extends string>
     extends
         // Bases:
-        ControllableStateOptions<TState>
+        ControllableStateOptions<TState | TToken>
 {
     /* No additional options yet - reserved for future extensions. */
 }
@@ -281,11 +283,12 @@ export interface ObservableStateOptions<TState extends {} | null>
  * - Declares the declarative token that activates dynamic state observation.
  * 
  * @template TState - The type of the state value.
+ * @template TToken - A special string token used to trigger observation (e.g. `'auto'`).
  */
-export interface ObservableStateDefinition<TState extends {} | null>
+export interface ObservableStateDefinition<TState extends {} | null, TToken extends string>
     extends
         // Bases:
-        ControllableStateDefinition<TState>
+        ControllableStateDefinition<TState | TToken>
 {
     /**
      * Declares the baseline inactive state (e.g. `false`).
@@ -296,7 +299,7 @@ export interface ObservableStateDefinition<TState extends {} | null>
     
     /**
      * Declares the token for activating dynamic state observation (e.g. `'auto'`).
-     * - If the resolved state equals this token, the hook delegates the state to `observedState` prop.
+     * - If the resolved state equals this token, the hook delegates the state to the `observedState` prop.
      */
-    observableStateToken : TState
+    observableStateToken : TToken
 }

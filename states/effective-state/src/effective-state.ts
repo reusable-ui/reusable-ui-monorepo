@@ -339,6 +339,7 @@ export const useCascadeState = <TState extends {} | null>(props: CascadeStatePro
  *   6. Delegate to `observedState` (if resolved state equals `observableStateToken`)
  * 
  * @template TState - The type of the state value.
+ * @template TToken - A special string token used to trigger observation (e.g. `'auto'`).
  * 
  * @param props - The volatile props provided by the component consumer.
  * @param options - The per-component options containing optional defaults.
@@ -386,7 +387,7 @@ export const useCascadeState = <TState extends {} | null>(props: CascadeStatePro
  * // → false (restricted forces inactive baseline)
  * ```
  */
-export const useObservableState = <TState extends {} | null>(props: ObservableStateProps<TState>, options: ObservableStateOptions<TState>, definition: ObservableStateDefinition<TState>): TState => {
+export const useObservableState = <TState extends {} | null, TToken extends string>(props: ObservableStateProps<TState, TToken>, options: ObservableStateOptions<TState, TToken>, definition: ObservableStateDefinition<TState, TToken>): TState => {
     // Extract resolver-level definition (mandatory contracts):
     const {
         inactiveState,
@@ -414,7 +415,7 @@ export const useObservableState = <TState extends {} | null>(props: ObservableSt
     if (isRestricted) return inactiveState;
     
     // If resolved state does not equal the observation token, return directly:
-    if (!Object.is(resolvedState, observableStateToken)) return resolvedState;
+    if (!Object.is(resolvedState, observableStateToken)) return resolvedState as TState; // At this point, `resolvedState` cannot be `TToken`, so it's safe to cast.
     
     // Otherwise, delegate to the observed state:
     return observedState;
