@@ -79,7 +79,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * @returns The resolved editable/read-only state.
  */
 export const useReadOnlyState = (props: ReadOnlyStateProps, options?: Pick<ReadOnlyStateOptions, 'defaultReadOnly' | 'defaultCascadeReadOnly'>) : boolean => {
-    // Extract options and assign defaults:
+    // Extract options:
     const {
         defaultReadOnly        : defaultState,
         defaultCascadeReadOnly : defaultCascadeEnabled,
@@ -87,7 +87,7 @@ export const useReadOnlyState = (props: ReadOnlyStateProps, options?: Pick<ReadO
     
     
     
-    // Extract props and assign defaults:
+    // Extract props:
     const {
         readOnly         : state,
         cascadeReadOnly  : cascadeEnabled,
