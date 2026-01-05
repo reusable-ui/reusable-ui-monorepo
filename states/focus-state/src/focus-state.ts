@@ -32,6 +32,15 @@ import {
 
 // Reusable-ui states:
 import {
+    // Types:
+    type ObservableStateDefinition,
+    
+    
+    
+    // Hooks:
+    useObservableState,
+}                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
+import {
     // Hooks:
     useFeedbackBehaviorState,
     useFeedbackStatePhaseEvents,
@@ -41,6 +50,13 @@ import {
 }                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
 
 
+
+/** The observable state definition for focus/blur state management. */
+const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
+    defaultState         : defaultDeclarativeFocused,
+    inactiveState        : false, // `false`: the value of un-focus state
+    observableStateToken : 'auto',
+};
 
 /**
  * Resolves the current focused/blurred state for a fully controlled component.
@@ -61,16 +77,16 @@ import {
  * @returns The resolved focused/blurred state and event handlers for focus/blur events.
  */
 export const useFocusState = <TElement extends Element = HTMLElement>(props: FocusStateProps, options?: Pick<FocusStateOptions, 'defaultFocused'>) : Pick<FocusBehaviorState<TElement>, 'focused' | 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'> => {
-    // Extract options and assign defaults:
+    // Extract options:
     const {
-        defaultFocused    = defaultDeclarativeFocused,
+        defaultFocused : defaultState,
     } = options ?? {};
     
     
     
-    // Extract props and assign defaults:
+    // Extract props:
     const {
-        focused       : controlledFocused     = defaultFocused,
+        focused       : state,
         computedFocus : externalComputedFocus,
     } = props;
     
@@ -82,7 +98,7 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
     const isRestricted          = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     // Determine control mode:
-    const isExplicitValue       = (controlledFocused !== 'auto');
+    const isExplicitValue       = (state !== 'auto');
     
     // Determine the source of `computedFocus`:
     const isExternallyComputed  = (externalComputedFocus !== undefined);
@@ -96,20 +112,26 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
         handleKeyDown,
     } = useFocusObserver<TElement>(isExplicitValue || isExternallyComputed, isRestricted);
     
-    // Resolve effective `computedFocus`:
-    const resolvedComputedFocus = isExternallyComputed ? externalComputedFocus : observedFocus;
+    // Merge external and internal observation:
+    const observedState = isExternallyComputed ? externalComputedFocus : observedFocus;
     
-    // Resolve focus state prior to applying the restricted guard:
-    const resolvedFocused       = isExplicitValue ? controlledFocused : resolvedComputedFocus;
-    
-    // Apply restricted guard — restriction always enforces blur:
-    const effectiveFocused      = !isRestricted && resolvedFocused;
+    // Resolve effective focused state:
+    const focused = useObservableState<boolean, 'auto'>(
+        // Props:
+        { state, isRestricted, observedState },
+        
+        // Options:
+        { defaultState },
+        
+        // Definition:
+        observableStateDefinition,
+    );
     
     
     
     // Return resolved focus state API:
     return {
-        focused        : effectiveFocused,
+        focused,
         ref,
         handleFocus,
         handleBlur,
