@@ -1,11 +1,5 @@
 'use client' // The exported hooks are client side only.
 
-// React:
-import {
-    // Hooks:
-    use,
-}                           from 'react'
-
 // Types:
 import {
     type ActiveStateProps,
@@ -48,6 +42,15 @@ import {
 // Reusable-ui states:
 import {
     // Types:
+    type CascadeStateDefinition,
+    
+    
+    
+    // Hooks:
+    useCascadeState,
+}                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
+import {
+    // Types:
     type ResolveEffectiveStateArgs,
     
     
@@ -60,6 +63,14 @@ import {
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
+
+/** The cascade state definition for active/inactive state management. */
+const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
+    defaultState          : defaultInitialActive,
+    defaultCascadeEnabled : defaultDeclarativeCascadeActive,
+    inactiveState         : false, // `false`: the value of un-active state
+    stateContext          : ActiveStateContext,
+};
 
 /**
  * Resolves the current active/inactive state for a fully controlled component.
@@ -86,44 +97,31 @@ import {
 export const useActiveState = (props: ActiveStateProps & { defaultActive?: never }, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>) : boolean => {
     // Extract options and assign defaults:
     const {
-        defaultActive        = defaultInitialActive,
-        defaultCascadeActive = defaultDeclarativeCascadeActive,
+        defaultActive        : defaultState,
+        defaultCascadeActive : defaultCascadeEnabled,
     } = options ?? {};
     
     
     
     // Extract props and assign defaults:
     const {
-        active        : controlledActive     = defaultActive,
-        cascadeActive : cascadeActive        = defaultCascadeActive,
+        active        : state,
+        cascadeActive : cascadeEnabled,
     } = props;
     
     
     
     // Resolve effective activation state:
-    
-    // If explicitly active, no need to check context:
-    if (controlledActive) return true;
-    
-    
-    
-    // If not cascading, context is ignored, thus inactive:
-    if (!cascadeActive) return false;
-    
-    
-    
-    // Get the inherited active from context:
-    const inheritedActive = use(ActiveStateContext);
-    
-    
-    
-    // If context value exists, return it:
-    if (inheritedActive !== undefined) return inheritedActive;
-    
-    
-    
-    // Otherwise, fallback to inactive:
-    return false;
+    return useCascadeState<boolean>(
+        // Props:
+        { state, cascadeEnabled },
+        
+        // Options:
+        { defaultState, defaultCascadeEnabled },
+        
+        // Definition:
+        cascadeStateDefinition,
+    );
 };
 
 
