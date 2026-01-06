@@ -32,6 +32,15 @@ import {
 
 // Reusable-ui states:
 import {
+    // Types:
+    type ObservableStateDefinition,
+    
+    
+    
+    // Hooks:
+    useObservableState,
+}                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
+import {
     // Hooks:
     useFeedbackBehaviorState,
     useFeedbackStatePhaseEvents,
@@ -41,6 +50,13 @@ import {
 }                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
 
 
+
+/** The observable state definition for hover/unhover state management. */
+const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
+    defaultState         : defaultDeclarativeHovered,
+    inactiveState        : false, // `false`: the value of un-hover state
+    observableStateToken : 'auto',
+};
 
 /**
  * Resolves the current hovered/unhovered state for a fully controlled component.
@@ -61,16 +77,16 @@ import {
  * @returns The resolved hovered/unhovered state and event handlers for mouseenter/mouseleave events.
  */
 export const useHoverState = <TElement extends Element = HTMLElement>(props: HoverStateProps, options?: Pick<HoverStateOptions, 'defaultHovered'>) : Pick<HoverBehaviorState<TElement>, 'hovered' | 'ref' | 'handleMouseEnter' | 'handleMouseLeave'> => {
-    // Extract options and assign defaults:
+    // Extract options:
     const {
-        defaultHovered    = defaultDeclarativeHovered,
+        defaultHovered : defaultState,
     } = options ?? {};
     
     
     
-    // Extract props and assign defaults:
+    // Extract props:
     const {
-        hovered       : controlledHovered     = defaultHovered,
+        hovered       : state,
         computedHover : externalComputedHover,
     } = props;
     
@@ -82,7 +98,7 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
     const isRestricted          = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     // Determine control mode:
-    const isExplicitValue       = (controlledHovered !== 'auto');
+    const isExplicitValue       = (state !== 'auto');
     
     // Determine the source of `computedHover`:
     const isExternallyComputed  = (externalComputedHover !== undefined);
@@ -95,20 +111,26 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
         handleMouseLeave,
     } = useHoverObserver<TElement>(isExplicitValue || isExternallyComputed, isRestricted);
     
-    // Resolve effective `computedHover`:
-    const resolvedComputedHover = isExternallyComputed ? externalComputedHover : observedHover;
+    // Merge external and internal observation:
+    const observedState = isExternallyComputed ? externalComputedHover : observedHover;
     
-    // Resolve hover state prior to applying the restricted guard:
-    const resolvedHovered       = isExplicitValue ? controlledHovered : resolvedComputedHover;
-    
-    // Apply restricted guard — restriction always enforces unhover:
-    const effectiveHovered      = !isRestricted && resolvedHovered;
+    // Resolve effective hovered state:
+    const hovered = useObservableState<boolean, 'auto'>(
+        // Props:
+        { state, isRestricted, observedState },
+        
+        // Options:
+        { defaultState },
+        
+        // Definition:
+        observableStateDefinition,
+    );
     
     
     
     // Return resolved hover state API:
     return {
-        hovered        : effectiveHovered,
+        hovered,
         ref,
         handleMouseEnter,
         handleMouseLeave,
