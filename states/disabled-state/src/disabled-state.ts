@@ -89,8 +89,8 @@ export const useDisabledState = (props: DisabledStateProps, options?: Pick<Disab
     
     // Extract props:
     const {
-        disabled         : state,
-        cascadeDisabled  : cascadeEnabled,
+        disabled        : state,
+        cascadeDisabled : cascadeEnabled,
     } = props;
     
     
