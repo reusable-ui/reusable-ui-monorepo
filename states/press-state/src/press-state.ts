@@ -32,6 +32,15 @@ import {
 
 // Reusable-ui states:
 import {
+    // Types:
+    type ObservableStateDefinition,
+    
+    
+    
+    // Hooks:
+    useObservableState,
+}                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
+import {
     // Hooks:
     useFeedbackBehaviorState,
     useFeedbackStatePhaseEvents,
@@ -41,6 +50,13 @@ import {
 }                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
 
 
+
+/** The observable state definition for press/release state management. */
+const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
+    defaultState         : defaultDeclarativePressed,
+    inactiveState        : false, // `false`: the value of un-press state
+    observableStateToken : 'auto',
+};
 
 /**
  * Resolves the current pressed/released state for a fully controlled component.
@@ -61,16 +77,16 @@ import {
  * @returns The resolved pressed/released state and event handlers for pointer and keyboard events.
  */
 export const usePressState = <TElement extends Element = HTMLElement>(props: PressStateProps, options?: Pick<PressStateOptions, 'defaultPressed' | 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'>) : Pick<PressBehaviorState<TElement>, 'pressed' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'> => {
-    // Extract options and assign defaults:
+    // Extract options:
     const {
-        defaultPressed    = defaultDeclarativePressed,
+        defaultPressed : defaultState,
     } = options ?? {};
     
     
     
-    // Extract props and assign defaults:
+    // Extract props:
     const {
-        pressed       : controlledPressed     = defaultPressed,
+        pressed       : state,
         computedPress : externalComputedPress,
     } = props;
     
@@ -82,7 +98,7 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
     const isRestricted          = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     // Determine control mode:
-    const isExplicitValue       = (controlledPressed !== 'auto');
+    const isExplicitValue       = (state !== 'auto');
     
     // Determine the source of `computedPress`:
     const isExternallyComputed  = (externalComputedPress !== undefined);
@@ -97,20 +113,26 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
         handleKeyUp,
     } = usePressObserver<TElement>(isExplicitValue || isExternallyComputed, isRestricted, options);
     
-    // Resolve effective `computedPress`:
-    const resolvedComputedPress = isExternallyComputed ? externalComputedPress : observedPress;
+    // Merge external and internal observation:
+    const observedState = isExternallyComputed ? externalComputedPress : observedPress;
     
-    // Resolve press state prior to applying the restricted guard:
-    const resolvedPressed       = isExplicitValue ? controlledPressed : resolvedComputedPress;
-    
-    // Apply restricted guard — restriction always enforces release:
-    const effectivePressed      = !isRestricted && resolvedPressed;
+    // Resolve effective pressed state:
+    const pressed = useObservableState<boolean, 'auto'>(
+        // Props:
+        { state, isRestricted, observedState },
+        
+        // Options:
+        { defaultState },
+        
+        // Definition:
+        observableStateDefinition,
+    );
     
     
     
     // Return resolved press state API:
     return {
-        pressed        : effectivePressed,
+        pressed,
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,
