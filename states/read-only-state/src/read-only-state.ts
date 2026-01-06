@@ -89,8 +89,8 @@ export const useReadOnlyState = (props: ReadOnlyStateProps, options?: Pick<ReadO
     
     // Extract props:
     const {
-        readOnly         : state,
-        cascadeReadOnly  : cascadeEnabled,
+        readOnly        : state,
+        cascadeReadOnly : cascadeEnabled,
     } = props;
     
     
