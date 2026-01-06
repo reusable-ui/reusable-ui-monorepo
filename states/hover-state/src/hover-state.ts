@@ -95,13 +95,13 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
     // States and flags:
     
     // Resolve whether the component is in a restricted state (interaction blocked):
-    const isRestricted          = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    const isRestricted         = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     // Determine control mode:
-    const isExplicitValue       = (state !== 'auto');
+    const isExplicitValue      = (state !== 'auto');
     
     // Determine the source of `computedHover`:
-    const isExternallyComputed  = (externalComputedHover !== undefined);
+    const isExternallyComputed = (externalComputedHover !== undefined);
     
     // Internal hover observer (used only when uncontrolled and not delegated):
     const {
