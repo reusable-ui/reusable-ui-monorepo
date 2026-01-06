@@ -44,6 +44,17 @@ import {
     // Hooks:
     useControllableValueChange,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+
+// Reusable-ui states:
+import {
+    // Types:
+    type ControllableStateDefinition,
+    
+    
+    
+    // Hooks:
+    useControllableState,
+}                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
 import {
     // Hooks:
     useAnimationState,
@@ -55,6 +66,11 @@ import {
 }                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
 
+
+/** The controllable state definition for excite state management. */
+const controllableStateDefinition : ControllableStateDefinition<boolean> = {
+    defaultState : defaultDeclarativeExcited,
+};
 
 /**
  * Resolves the current excited state for a fully controlled component.
@@ -69,22 +85,36 @@ import {
  * @returns The resolved excited state.
  */
 export const useExciteState = (props: ExciteStateProps, options?: Pick<ExciteStateOptions, 'defaultExcited'>): boolean => {
-    // Extract options and assign defaults:
+    // Extract options:
     const {
-        defaultExcited      = defaultDeclarativeExcited,
+        defaultExcited : defaultState,
     } = options ?? {};
     
     
     
-    // Extract props and assign defaults:
+    // Extract props:
     const {
-        excited : controlledExcited = defaultExcited,
+        excited : state,
     } = props;
     
     
     
+    // Resolve effective excited state:
+    const excited = useControllableState<boolean>(
+        // Props:
+        { state },
+        
+        // Options:
+        { defaultState },
+        
+        // Definition:
+        controllableStateDefinition,
+    );
+    
+    
+    
     // Return the resolved excited state:
-    return controlledExcited;
+    return excited;
 };
 
 
