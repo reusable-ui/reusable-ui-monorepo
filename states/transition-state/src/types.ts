@@ -64,7 +64,7 @@ export interface TransitionStateOptions<TState extends {} | null>
      * 
      * Defaults to `definition.defaultAnimationPattern`.
      */
-    animationPattern  ?: AnimationStateOptions<boolean>['animationPattern']
+    animationPattern  ?: AnimationStateOptions<TState>['animationPattern']
     
     /**
      * Enables listening to animation events bubbling up from nested child elements.
@@ -72,7 +72,7 @@ export interface TransitionStateOptions<TState extends {} | null>
      * 
      * Defaults to `definition.defaultAnimationBubbling`.
      */
-    animationBubbling ?: AnimationStateOptions<boolean>['animationBubbling']
+    animationBubbling ?: AnimationStateOptions<TState>['animationBubbling']
 }
 
 /**
@@ -282,7 +282,7 @@ export interface TransitionBehaviorStateDefinition<TDeclarativeState extends {} 
      * 
      * This pattern determines which animation names are recognized as part of the corresponding transition lifecycle.
      */
-    defaultAnimationPattern     : AnimationStateOptions<TDeclarativeState>['animationPattern']
+    defaultAnimationPattern     : AnimationStateOptions<TState>['animationPattern']
     
     /**
      * A system default bubbling behavior when `animationBubbling` option is not provided.
@@ -291,7 +291,7 @@ export interface TransitionBehaviorStateDefinition<TDeclarativeState extends {} 
      * 
      * Defaults to `false` (no bubbling).
      */
-    defaultAnimationBubbling   ?: AnimationStateOptions<TDeclarativeState>['animationBubbling']
+    defaultAnimationBubbling   ?: AnimationStateOptions<TState>['animationBubbling']
     
     /**
      * Decides which state drives the lifecycle:
