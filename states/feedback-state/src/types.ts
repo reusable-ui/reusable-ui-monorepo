@@ -101,7 +101,7 @@ export interface FeedbackStateOptions<TState extends {} | null>
  */
 export interface FeedbackBehaviorStateDefinition<TState extends {} | null, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
     extends
-        Omit<TransitionBehaviorStateDefinition<TState, TState, TPhase, TClassname,
+        Omit<TransitionBehaviorStateDefinition<TState, TPhase, TClassname,
             TBehaviorProps,
             TBehaviorOptions,
             TBehaviorDefinition

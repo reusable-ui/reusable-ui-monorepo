@@ -268,7 +268,6 @@ export interface ResolveTransitionClassnameArgs<TState extends {} | null, TPhase
  * 
  * Must be statically defined and remain consistent for each `**-state` hook type.
  * 
- * @template TDeclarativeState - The declarative type of the state value (may include keywords).
  * @template TState - The concrete type of the state value (must not be declarative).
  * @template TPhase - The type representing semantic transition phases.
  * @template TClassname - The type representing semantic transition classnames.
@@ -276,7 +275,7 @@ export interface ResolveTransitionClassnameArgs<TState extends {} | null, TPhase
  * @template TBehaviorOptions - The type of the behavior-specific options.
  * @template TBehaviorDefinition - The type of the behavior-specific definition.
  */
-export interface TransitionBehaviorStateDefinition<TDeclarativeState extends {} | null, TState extends TDeclarativeState, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition> {
+export interface TransitionBehaviorStateDefinition<TState extends {} | null, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition> {
     /**
      * A system default animation pattern when `animationPattern` option is not provided.
      * 

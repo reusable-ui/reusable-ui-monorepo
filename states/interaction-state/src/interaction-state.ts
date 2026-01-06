@@ -229,7 +229,6 @@ export const useInteractionBehaviorState = <
     
     // Transition orchestration:
     const [transitionBehaviorState, setInternalState] = useTransitionBehaviorState<
-        TDeclarativeState,
         TState,
         TPhase,
         TClassname,
@@ -254,7 +253,7 @@ export const useInteractionBehaviorState = <
             InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
         >,
         useResolveDriverState : useResolveInteractionDriverState, // Prefers controlled mode, falls back to uncontrolled mode.
-    } satisfies TransitionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname,
+    } satisfies TransitionBehaviorStateDefinition<TState, TPhase, TClassname,
         typeof combinedProps,
         InteractionStateOptions<TState>,
         InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>

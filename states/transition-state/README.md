@@ -132,7 +132,7 @@ export type LockedClassname = `is-${LockedPhase}`
 /** Private definition for online state behavior. */
 interface LockedBehaviorStateDefinition
     extends
-        TransitionBehaviorStateDefinition<boolean | 'auto', boolean, LockedPhase, LockedClassname,
+        TransitionBehaviorStateDefinition<boolean, LockedPhase, LockedClassname,
             LockedStateProps,
             LockedStateOptions,
             LockedBehaviorStateDefinition
@@ -193,7 +193,6 @@ export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(p
         transitionClassname : lockedClassname,
         ...animationHandlers
     }] = useTransitionBehaviorState<
-        boolean | 'auto',
         boolean,
         LockedPhase,
         LockedClassname,
@@ -347,7 +346,7 @@ export type OnlineClassname = `is-${OnlinePhase}`
 /** Private definition for online state behavior. */
 interface OnlineBehaviorStateDefinition
     extends
-        TransitionBehaviorStateDefinition<boolean | 'auto', boolean, OnlinePhase, OnlineClassname,
+        TransitionBehaviorStateDefinition<boolean, OnlinePhase, OnlineClassname,
             OnlineStateProps,
             OnlineStateOptions,
             OnlineBehaviorStateDefinition
@@ -408,7 +407,6 @@ export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(p
         transitionClassname : onlineClassname,
         ...animationHandlers
     }] = useTransitionBehaviorState<
-        boolean | 'auto',
         boolean,
         OnlinePhase,
         OnlineClassname,
@@ -616,7 +614,7 @@ export type SelectedClassname = `is-${SelectedPhase}`
 /** Private definition for selected state behavior. */
 interface SelectedBehaviorStateDefinition<TBehaviorProps extends SelectedStateProps>
     extends
-        TransitionBehaviorStateDefinition<boolean | 'auto', boolean, SelectedPhase, SelectedClassname,
+        TransitionBehaviorStateDefinition<boolean, SelectedPhase, SelectedClassname,
             TBehaviorProps,
             SelectedStateOptions,
             SelectedBehaviorStateDefinition<TBehaviorProps>
@@ -705,7 +703,6 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
         transitionClassname : selectedClassname,
         ...animationHandlers
     }, setInternalState] = useTransitionBehaviorState<
-        boolean | 'auto',
         boolean,
         SelectedPhase,
         SelectedClassname,

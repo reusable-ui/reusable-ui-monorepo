@@ -107,7 +107,6 @@ export const useFeedbackBehaviorState = <
     // Transition orchestration:
     const [transitionBehaviorState] = useTransitionBehaviorState<
         TState,
-        TState,
         TPhase,
         TClassname,
         
@@ -131,7 +130,7 @@ export const useFeedbackBehaviorState = <
             FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
         >,
         useResolveDriverState : useResolveFeedbackDriverState, // Controlled mode only.
-    } satisfies TransitionBehaviorStateDefinition<TState, TState, TPhase, TClassname,
+    } satisfies TransitionBehaviorStateDefinition<TState, TPhase, TClassname,
         FeedbackStateProps<TState>,
         FeedbackStateOptions<TState>,
         FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>

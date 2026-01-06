@@ -203,7 +203,7 @@ export interface ResolveEffectiveStateArgs<TDeclarativeState extends {} | null, 
  */
 export interface InteractionBehaviorStateDefinition<TDeclarativeState extends {} | null, TState extends TDeclarativeState, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
     extends
-        Omit<TransitionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname,
+        Omit<TransitionBehaviorStateDefinition<TState, TPhase, TClassname,
             TBehaviorProps,
             TBehaviorOptions,
             TBehaviorDefinition

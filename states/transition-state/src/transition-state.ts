@@ -87,7 +87,6 @@ const useUndefinedPreviousState = <TState extends {} | null>(_settledState: TSta
  * @param options - Optional per-component customization for animation lifecycle (pattern, bubbling, etc.).
  * @param definition - The behavior-specific definition that declares how driver state, transition phases, and transition classnames are resolved.
  * 
- * @template TDeclarativeState - The declarative type of the state value (may include keywords).
  * @template TState - The concrete type of the state value (must not be declarative).
  * @template TPhase - The type representing semantic transition phases.
  * @template TClassname - The type representing semantic transition classnames.
@@ -101,20 +100,19 @@ const useUndefinedPreviousState = <TState extends {} | null>(_settledState: TSta
  * - A setter for updating the internal state.
  */
 export const useTransitionBehaviorState = <
-    TDeclarativeState extends {} | null,
-    TState            extends TDeclarativeState,
-    TPhase            extends string,
-    TClassname        extends string,
+    TState     extends {} | null,
+    TPhase     extends string,
+    TClassname extends string,
     
     TBehaviorProps,
     TBehaviorOptions,
     TBehaviorDefinition,
     
-    TElement          extends Element = HTMLElement
+    TElement   extends Element = HTMLElement
 >(
     props      : TransitionStateProps<TState>,
     options    : TransitionStateOptions<TState> | undefined,
-    definition : TransitionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>,
+    definition : TransitionBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>,
 ): readonly [TransitionBehaviorState<TState, TPhase, TClassname, TElement>, Dispatch<SetAnimationIntentAction<TState>>] => {
     // Extract definition and assign defaults:
     const {
