@@ -34,6 +34,15 @@ import {
 
 // Reusable-ui states:
 import {
+    // Types:
+    type ObservableStateDefinition,
+    
+    
+    
+    // Hooks:
+    useObservableState,
+}                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
+import {
     // Hooks:
     useFeedbackBehaviorState,
     useFeedbackStatePhaseEvents,
@@ -46,6 +55,13 @@ import {
 }                           from '@reusable-ui/read-only-state'     // Adds editable/read-only functionality to UI components, with transition animations and semantic styling hooks.
 
 
+
+/** The observable state definition for validity state management. */
+const observableStateDefinition : ObservableStateDefinition<boolean | null, 'auto'> = {
+    defaultState         : defaultDeclarativeValidity,
+    inactiveState        : null, // `null`: the value of un-valid state
+    observableStateToken : 'auto',
+};
 
 /**
  * Resolves the current validity state for a fully controlled component.
@@ -66,16 +82,16 @@ import {
 export const useValidityState = (props: ValidityStateProps, options?: Pick<ValidityStateOptions, 'defaultValidity' | 'fallbackValidity'>) : boolean | null => {
     // Extract options and assign defaults:
     const {
-        defaultValidity   = defaultDeclarativeValidity,
-        fallbackValidity  = defaultFallbackValidity,
+        defaultValidity  : defaultState,
+        fallbackValidity = defaultFallbackValidity,
     } = options ?? {};
     
     
     
     // Extract props and assign defaults:
     const {
-        validity         : controlledValidity = defaultValidity,
-        computedValidity                      = fallbackValidity,
+        validity         : state,
+        computedValidity : observedState = fallbackValidity,
     } = props;
     
     
@@ -83,27 +99,30 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
     // States and flags:
     
     // Resolve whether the component is disabled:
-    const isDisabled           = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    const isDisabled   = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     // Resolve whether the component is readonly:
-    const isReadonly           = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
+    const isReadonly   = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
     
     // Resolve whether the component is in a restricted state:
-    const isRestricted         = isDisabled || isReadonly;
-    
-    // Always force unvalidated (`null`) when restricted:
-    if (isRestricted) return null;
-    
-    // Determine control mode:
-    const isExplicitValue      = (controlledValidity !== 'auto');
+    const isRestricted = isDisabled || isReadonly;
     
     // Resolve effective validity state:
-    const effectiveValidity    = isExplicitValue ? controlledValidity : computedValidity;
+    const validity = useObservableState<boolean | null, 'auto'>(
+        // Props:
+        { state, isRestricted, observedState },
+        
+        // Options:
+        { defaultState },
+        
+        // Definition:
+        observableStateDefinition,
+    );
     
     
     
     // Return the resolved validity state:
-    return effectiveValidity;
+    return validity;
 };
 
 
