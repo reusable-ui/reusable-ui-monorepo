@@ -95,13 +95,13 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
     // States and flags:
     
     // Resolve whether the component is in a restricted state (interaction blocked):
-    const isRestricted          = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
+    const isRestricted         = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     
     // Determine control mode:
-    const isExplicitValue       = (state !== 'auto');
+    const isExplicitValue      = (state !== 'auto');
     
     // Determine the source of `computedFocus`:
-    const isExternallyComputed  = (externalComputedFocus !== undefined);
+    const isExternallyComputed = (externalComputedFocus !== undefined);
     
     // Internal focus observer (used only when uncontrolled and not delegated):
     const {
