@@ -59,6 +59,15 @@ import {
 // Reusable-ui states:
 import {
     // Types:
+    type RangedStateDefinition,
+    
+    
+    
+    // Hooks:
+    useRangedState,
+}                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
+import {
+    // Types:
     type ResolveEffectiveStateArgs,
     
     
@@ -71,6 +80,11 @@ import {
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
+
+/** The controllable state definition for view-switching state management. */
+const rangedStateDefinition : RangedStateDefinition<number> = {
+    defaultState : defaultInitialViewIndex,
+};
 
 /**
  * Resolves the current view index for a fully controlled component.
@@ -88,27 +102,36 @@ import {
  * @returns The resolved view index.
  */
 export const useViewState = (props: ViewStateProps & { defaultViewIndex?: never }, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>) : number => {
-    // Extract options and assign defaults:
+    // Extract options:
     const {
-        defaultViewIndex  = defaultInitialViewIndex,
+        defaultViewIndex : defaultState,
     } = options ?? {};
     
     
     
-    // Extract props and assign defaults:
+    // Extract props:
     const {
-        viewIndex         : controlledViewIndex = defaultViewIndex,
+        viewIndex : state,
     } = props;
     
     
     
-    // Clamp the view index within valid range and step:
-    const effectiveViewIndex   = clampViewIndex(controlledViewIndex, options);
+    // Resolve effective view index:
+    const viewIndex = useRangedState<number>(
+        // Props:
+        { state },
+        
+        // Options:
+        { defaultState, clampState : (rawViewIndex) => clampViewIndex(rawViewIndex, options) },
+        
+        // Definition:
+        rangedStateDefinition,
+    );
     
     
     
     // Return the resolved view index:
-    return effectiveViewIndex;
+    return viewIndex;
 };
 
 
