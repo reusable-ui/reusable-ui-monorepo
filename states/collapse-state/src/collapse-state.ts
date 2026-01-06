@@ -36,6 +36,15 @@ import {
 // Reusable-ui states:
 import {
     // Types:
+    type ControllableStateDefinition,
+    
+    
+    
+    // Hooks:
+    useControllableState,
+}                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
+import {
+    // Types:
     type ResolveEffectiveStateArgs,
     
     
@@ -48,6 +57,11 @@ import {
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
+
+/** The controllable state definition for expand/collapse state management. */
+const controllableStateDefinition : ControllableStateDefinition<boolean> = {
+    defaultState : defaultInitialExpanded,
+};
 
 /**
  * Resolves the current expanded/collapsed state for a fully controlled component.
@@ -65,22 +79,36 @@ import {
  * @returns The resolved expanded/collapsed state.
  */
 export const useCollapseState = (props: CollapseStateProps & { defaultExpanded?: never }, options?: Pick<CollapseStateOptions, 'defaultExpanded'>) : boolean => {
-    // Extract options and assign defaults:
+    // Extract options:
     const {
-        defaultExpanded   = defaultInitialExpanded,
+        defaultExpanded : defaultState,
     } = options ?? {};
     
     
     
-    // Extract props and assign defaults:
+    // Extract props:
     const {
-        expanded        : controlledExpanded = defaultExpanded,
+        expanded : state,
     } = props;
     
     
     
-    // Return the resolved expansion state:
-    return controlledExpanded;
+    // Resolve effective expanded state:
+    const expanded = useControllableState<boolean>(
+        // Props:
+        { state },
+        
+        // Options:
+        { defaultState },
+        
+        // Definition:
+        controllableStateDefinition,
+    );
+    
+    
+    
+    // Return the resolved expanded state:
+    return expanded;
 };
 
 
