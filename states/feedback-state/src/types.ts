@@ -39,7 +39,7 @@ export interface FeedbackStateProps<TState extends {} | null>
      * 
      * - Must be a concrete value (already normalized, not a declarative keyword).
      * - Influence rules (disabled/read‑only, cascade, clamp, etc.) must already be applied.
-     * - Respected on **every render** so that feedback‑state can respond
+     * - Evaluated on **every render** so that feedback‑state can respond
      *   to live updates from external sources.
      * 
      * Common sources:
