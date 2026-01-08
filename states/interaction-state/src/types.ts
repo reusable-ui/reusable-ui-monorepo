@@ -73,17 +73,17 @@ export interface UncontrollableInteractionStateProps<TState extends {} | null> {
 }
 
 /**
- * Props for reporting proactive change requests to the state.
+ * Props for reporting proactive change requests for the current state.
  * 
- * Typically used in interactive components that may initiate state changes
- * through user actions such as mouse clicks, keyboard input, or other events.
+ * Signals intent to request an external update when user interaction occurs.
  * 
  * @template TState - The concrete type of the state value (must not be declarative).
  * @template TChangeEvent - The type of the event triggering the change request (e.g. mouse click, keyboard event).
  */
 export interface InteractionStateChangeProps<TState extends {} | null, TChangeEvent = unknown> {
     /**
-     * Signals intent to change the state.
+     * Signals intent to request an external update when user interaction occurs,
+     * such as clicking, typing, or other events.
      * 
      * The parent may choose to honor or ignore this request.
      * 
