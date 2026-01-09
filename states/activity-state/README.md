@@ -223,9 +223,12 @@ const resolveBusyActivityClassname = ({ visualState }: ResolveActivityClassnameA
 
 The hook manages activity animations between concrete states using a unified lifecycle flow:
 
-- If an animation is already in progress, new intent (e.g., switching from one state to another) is deferred until the current animation completes.  
-- Once the active animation finishes, the latest intent is resumed and the corresponding animation begins.  
-- This ensures animations are never interrupted mid-flight and outdated activities are discarded, keeping the lifecycle predictable and consistent across all specialized states.  
+- If an animation is already in progress, any new intent (e.g., switching from one state to another) is deferred until the current animation completes.  
+- Once the active animation finishes, the latest intent is applied:  
+  - It may **restart the same animation** if the state remains unchanged.  
+  - It may **switch to another animation** if the state has changed.  
+  - Or it may **remain stopped** if the state equals `inactiveState`.  
+- This ensures animations are never interrupted mid-flight, while ensuring that repeated, switched, or stopped activities are handled predictably and consistently across all specialized states.  
 
 ## 📚 Related Packages
 
