@@ -51,7 +51,7 @@ export interface TransitionStateOptions<TState extends {} | null>
     /**
      * Defines the pattern used to identify state-related animation names.
      * 
-     * This pattern determines which animation names are recognized as part of the state transition lifecycle.
+     * This pattern determines which animation names are recognized as part of the corresponding transition lifecycle.
      * 
      * Supports:
      * - A string suffix (with word-boundary awareness)
