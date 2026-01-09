@@ -1,0 +1,59 @@
+{
+  "name": "@reusable-ui/activity-state",
+  "version": "7.0.0",
+  "description": "Reusable abstraction for representing state-driven animations in React components — indicating ongoing activity or draw user attention.",
+  "keywords": [
+    "animation",
+    "activity",
+    "indicator",
+    "attention",
+    "busy-state",
+    "processing-state",
+    "excite-state",
+    "lifecycle",
+    "state-management",
+    "react",
+    "ui",
+    "reusable-ui"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "states/activity-state"
+  },
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
+  },
+  "dependencies": {
+    "@reusable-ui/animation-state": "^7.0.0",
+    "@reusable-ui/callbacks": "^7.0.0",
+    "@reusable-ui/events": "^7.0.0",
+    "@reusable-ui/timers": "^7.0.0"
+  },
+  "peerDependencies": {
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0"
+  }
+}

@@ -103,6 +103,7 @@
     "states/animation-state",
     "states/animating-state",
     "states/effective-state",
+    "states/activity-state",
     "states/transition-state",
     "states/feedback-state",
     "states/interaction-state",
