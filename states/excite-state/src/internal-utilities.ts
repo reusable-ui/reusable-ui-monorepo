@@ -1,14 +1,22 @@
-/**
- * Resolves the CSS class name for the given excited state.
- * 
- * Maps the boolean `isExcited` to a semantic class name:
- * - `true`  → `'is-excited'`
- * - `false` → `'not-excited'`
- * 
- * @param {boolean} isExcited - A boolean flag indicating whether the component should appear excited.
- * @returns {'is-excited' | 'not-excited'} A CSS class name reflecting the excited state.
- */
-export const getExciteClassname = (isExcited: boolean): 'is-excited' | 'not-excited' => {
-    // Return the corresponding class name:
-    return isExcited ? 'is-excited' : 'not-excited';
+// Types:
+import {
+    type ExciteStateProps,
+    type ExciteStateOptions,
+    type ExciteClassname,
+}                           from './types.js'
+import {
+    type ExciteBehaviorStateDefinition,
+}                           from './internal-types.js'
+
+// Reusable-ui states:
+import {
+    // Types:
+    type ResolveActivityClassnameArgs,
+}                           from '@reusable-ui/activity-state'      // Reusable abstraction for representing state-driven animations in React components — indicating ongoing activity or draw user attention.
+
+
+
+/** Resolves the semantic activity classname for excited state behavior. */
+export const resolveExciteActivityClassname = ({ visualState }: ResolveActivityClassnameArgs<boolean, ExciteStateProps, ExciteStateOptions, ExciteBehaviorStateDefinition>): ExciteClassname => {
+    return visualState ? 'is-excited' : 'not-excited';
 };

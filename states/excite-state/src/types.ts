@@ -104,6 +104,13 @@ export interface ExciteStateOptions
 }
 
 /**
+ * A CSS class name reflecting the current excited state.
+ * 
+ * Used for styling based on the current excited state.
+ */
+export type ExciteClassname = 'is-excited' | 'not-excited'
+
+/**
  * An API for accessing the resolved excited state, associated CSS class name, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.

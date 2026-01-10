@@ -1,24 +1,15 @@
 'use client' // The exported hooks are client side only.
 
-// React:
-import {
-    // Types:
-    type AnimationEvent,
-    type AnimationEventHandler,
-    
-    
-    
-    // Hooks:
-    useRef,
-    useLayoutEffect,
-}                           from 'react'
-
 // Types:
 import {
     type ExciteStateProps,
     type ExciteStateOptions,
+    type ExciteClassname,
     type ExciteBehaviorState,
 }                           from './types.js'
+import {
+    type ExciteBehaviorStateDefinition,
+}                           from './internal-types.js'
 
 // Defaults:
 import {
@@ -27,23 +18,8 @@ import {
 
 // Utilities:
 import {
-    getExciteClassname,
+    resolveExciteActivityClassname,
 }                           from './internal-utilities.js'
-
-// Reusable-ui utilities:
-import {
-    // Hooks:
-    useStableEventHandler,
-    useMergeEventHandlers,
-}                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
-import {
-    // Hooks:
-    useRequestAnimationFrame,
-}                           from '@reusable-ui/timers'              // A collection of reusable timing utilities for UI components.
-import {
-    // Hooks:
-    useControllableValueChange,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
 
 // Reusable-ui states:
 import {
@@ -57,13 +33,8 @@ import {
 }                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
 import {
     // Hooks:
-    useAnimationState,
-    
-    
-    
-    // Utilities:
-    animationNameMatches,
-}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
+    useActivityBehaviorState,
+}                           from '@reusable-ui/activity-state'      // Reusable abstraction for representing state-driven animations in React components — indicating ongoing activity or draw user attention.
 
 
 
@@ -118,6 +89,17 @@ export const useExciteState = (props: ExciteStateProps, options?: Pick<ExciteSta
 };
 
 
+
+/** The behavior state definition for excited state management. */
+const exciteBehaviorStateDefinition : ExciteBehaviorStateDefinition = {
+    // State definitions:
+    inactiveState            : false, // `false`: the value of un-excited state
+    
+    // Behavior definitions:
+    defaultAnimationPattern  : 'exciting',                     // Matches animation names for activities.
+    defaultAnimationBubbling : false,
+    resolveActivityClassname : resolveExciteActivityClassname, // Resolves classnames.
+};
 
 /**
  * Resolves the excited state, associated CSS class name, and animation event handlers
@@ -174,177 +156,52 @@ export const useExciteState = (props: ExciteStateProps, options?: Pick<ExciteSta
  * ```
  */
 export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(props: ExciteStateProps, options?: ExciteStateOptions): ExciteBehaviorState<TElement> => {
-    // Extract options and assign defaults:
+    // Extract props:
     const {
-        defaultExcited    = defaultDeclarativeExcited,
-        animationPattern  = 'exciting',
-        animationBubbling = false,
-    } = options ?? {};
-    
-    
-    
-    // Extract props and assign defaults:
-    const {
-        excited : controlledExcited = defaultExcited,
-        onExcitedChange,
+        onExcitedChange : onStateChange,
+        // ...restProps // Not needed the rest since all resolvers in the definition are *not* dependent of the props.
     } = props;
     
     
     
     // States and flags:
     
-    // Controlled excitement state:
+    // Resolve effective excited state:
+    const effectiveState = useExciteState(props, options);
+    
+    // Activity orchestration:
     const {
-        value               : effectiveExcited,
-        dispatchValueChange : requestExcitedReset,
-    } = useControllableValueChange<boolean, AnimationEvent>({
-        value               : controlledExcited,
-        onValueChange       : onExcitedChange,
-    });
-    
-    // Animation lifecycle state:
-    const [, setExcitedAnimation, runningAnimation, animationHandlers] = useAnimationState<boolean, TElement>({
-        initialIntent : false, // Initially is **Stopped** (false).
-        animationPattern,
-        animationBubbling,
-    });
-    
-    // Animation status (fallback to false if idle):
-    const exciteAnimation = runningAnimation ?? false;
-    
-    // Tracks the animation event that triggered the excitement:
-    const exciteAnimationEventRef = useRef<AnimationEvent<TElement> | undefined>(undefined);
-    
-    
-    
-    // Handlers:
-    
-    /**
-     * Capture the first matching animation event.
-     */
-    const handleCaptureAnimationEvent : AnimationEventHandler<TElement> = useStableEventHandler((event) => {
-        // Ensure the event is bubbling if required:
-        if (!animationBubbling && event.target !== event.currentTarget) return;
+        state             : excited,
+        actualState       : actualExcited,
+        activityClassname : exciteClassname,
+        ...animationHandlers
+    } = useActivityBehaviorState<
+        boolean,
+        ExciteClassname,
         
-        // Ignore if the event is already captured:
-        if (exciteAnimationEventRef.current) return;
+        ExciteStateProps,
+        ExciteStateOptions,
+        ExciteBehaviorStateDefinition,
         
-        // Ignore non matching animation:
-        if (!animationNameMatches(event.animationName, animationPattern)) return;
+        TElement
+    >(
+        // Props:
+        { effectiveState, onStateChange, /* ...restProps */ },
         
+        // Options:
+        options,
         
-        
-        // Capture the event object:
-        exciteAnimationEventRef.current = event;
-    });
-    
-    /**
-     * Merge animation end handlers with capture logic.
-     */
-    const mergedHandleAnimationEnd    = useMergeEventHandlers(
-        // The original event handler of animation lifecycle state:
-        animationHandlers.handleAnimationEnd,
-        
-        // The additional event handler for capturing animation event:
-        handleCaptureAnimationEvent,
+        // Definition:
+        exciteBehaviorStateDefinition,
     );
-    
-    /**
-     * Merge animation cancel handlers with capture logic.
-     */
-    const mergedHandleAnimationCancel = useMergeEventHandlers(
-        // The original event handler of animation lifecycle state:
-        animationHandlers.handleAnimationCancel,
-        
-        // The additional event handler for capturing animation event:
-        handleCaptureAnimationEvent,
-    );
-    
-    
-    
-    // Async scheduler:
-    // Managed, promise-based animation frame scheduler (auto-cleans up):
-    const requestAnimationFrameAsync = useRequestAnimationFrame();
-    
-    
-    
-    // Sync animation state with effective excitement state:
-    // Use `useLayoutEffect` instead of `useEffect` to avoid losing an extra frame tick before the restart logic runs.
-    // We manually schedule a one-frame delay using `requestAnimationFrameAsync()` to ensure precise control over timing.
-    // Additionally, we invoke `requestExcitedReset()`, which triggers `onExcitedChange` —
-    // the handler may perform timing-sensitive DOM operations that must run before the next paint.
-    useLayoutEffect(() => {
-        // Exit early if the animation state is already in sync with the intended one:
-        if (exciteAnimation === effectiveExcited) return;
-        
-        
-        
-        // Holds in-flight promise:
-        let framePromise : ReturnType<typeof requestAnimationFrameAsync> | undefined = undefined;
-        
-        
-        
-        if (!effectiveExcited) {
-            // Stop animation immediately:
-            setExcitedAnimation(false); // Not really stopped immediately, the already running animation will finish properly (not interrupted).
-            
-            // Clear the captured animation event object:
-            exciteAnimationEventRef.current = undefined;
-        }
-        else {
-            // Clear animation to allow re-trigger:
-            setExcitedAnimation(false);
-            
-            // Backup and clear the captured animation event object:
-            const stoppedAnimationEvent = exciteAnimationEventRef.current;
-            exciteAnimationEventRef.current = undefined;
-            
-            
-            
-            // Notify parent to reset excitement:
-            if (stoppedAnimationEvent) {
-                requestExcitedReset(false, stoppedAnimationEvent);
-            } // if
-            
-            
-            
-            (async (): Promise<void> => {
-                // Wait at least one frame to allow animation re-trigger:
-                framePromise = requestAnimationFrameAsync();
-                
-                
-                
-                // Ensures the one frame delay has completed:
-                const timestampOrAborted = await framePromise;
-                framePromise = undefined;
-                
-                // Ensures no interruptions occur during the delay:
-                if (timestampOrAborted === false) return;
-                
-                
-                
-                // Restart animation:
-                setExcitedAnimation(true);
-            })();
-        } // if
-        
-        
-        
-        return () => {
-            // Abort the in-flight promise (if any):
-            framePromise?.abort();
-        };
-    }, [exciteAnimation, effectiveExcited]);
     
     
     
     // Return resolved excitement attributes:
     return {
-        excited               : exciteAnimation,  // Use `exciteAnimation` instead of `effectiveExcited` to reflect the visually active excitement-animation on screen.
-        actualExcited         : effectiveExcited, // Expose the actual effective state for advanced use cases.
-        exciteClassname       : getExciteClassname(exciteAnimation),
+        excited,
+        actualExcited,
+        exciteClassname,
         ...animationHandlers,
-        handleAnimationEnd    : mergedHandleAnimationEnd,
-        handleAnimationCancel : mergedHandleAnimationCancel,
     } satisfies ExciteBehaviorState<TElement>;
 };
