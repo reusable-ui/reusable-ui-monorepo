@@ -1,9 +1,3 @@
-// React:
-import {
-    // Types:
-    type AnimationEvent,
-}                           from 'react'
-
 // Cssfn:
 import {
     // Lazies:
@@ -21,16 +15,14 @@ import {
     type CssVars,
 }                           from '@cssfn/core'                      // Writes css in javascript.
 
-// Reusable-ui utilities:
+// Reusable-ui states:
 import {
     // Types:
-    type ValueChangeEventHandler,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
-import {
-    // Types:
-    type AnimationStateOptions,
-    type AnimationStateHandlers,
-}                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
+    type ActivityStateProps,
+    type ActivityStateChangeProps,
+    type ActivityStateOptions,
+    type ActivityBehaviorState,
+}                           from '@reusable-ui/activity-state'      // Reusable abstraction for representing state-driven animations in React components — indicating ongoing activity or draw user attention.
 
 
 
@@ -39,7 +31,11 @@ import {
  * 
  * Accepts an optional `excited` prop, defaulting to `false` when not provided.
  */
-export interface ExciteStateProps {
+export interface ExciteStateProps
+    extends
+        // Bases:
+        Omit<ActivityStateProps<boolean>, 'effectiveState'>
+{
     /**
      * Specifies the current excited state:
      * - `true`  : the component is excited
@@ -47,13 +43,26 @@ export interface ExciteStateProps {
      * 
      * Defaults to `false` (idle).
      */
-    excited         ?: boolean
-    
+    excited         ?: ActivityStateProps<boolean>['effectiveState']
+}
+
+/**
+ * Props for reporting proactive stop requests from the current excited state.
+ * 
+ * Signals intent to change the external `excited` state after an excitement animation cycle completes.
+ */
+export interface ExciteStateChangeProps
+    extends
+        // Bases:
+        Omit<ActivityStateChangeProps<boolean>, 'onStateChange'>
+{
     /**
-     * A callback gets invoked when the excitement animation completes and requests a reset.
-     * Typically used to update the external `excited` state.
+     * Signals intent to change the external `excited` state after an excitement animation cycle completes.
+     * Typically used to reset the external `excited` state.
+     * 
+     * The parent may choose to honor or ignore this request.
      */
-    onExcitedChange ?: ValueChangeEventHandler<boolean, AnimationEvent>
+    onExcitedChange ?: ActivityStateChangeProps<boolean>['onStateChange']
 }
 
 /**
@@ -62,10 +71,7 @@ export interface ExciteStateProps {
 export interface ExciteStateOptions
     extends
         // Bases:
-        Partial<Pick<AnimationStateOptions<boolean>,
-            | 'animationPattern'
-            | 'animationBubbling'
-        >>
+        ActivityStateOptions<boolean>
 {
     /**
      * Specifies the default excited state when no `excited` prop is explicitly provided:
@@ -92,7 +98,7 @@ export interface ExciteStateOptions
      * 
      * Defaults to `'exciting'`.
      */
-    animationPattern  ?: AnimationStateOptions<boolean>['animationPattern']
+    animationPattern  ?: ActivityStateOptions<boolean>['animationPattern']
     
     /**
      * Enables listening to animation events bubbling up from nested child elements.
@@ -100,7 +106,7 @@ export interface ExciteStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling ?: AnimationStateOptions<boolean>['animationBubbling']
+    animationBubbling ?: ActivityStateOptions<boolean>['animationBubbling']
 }
 
 /**
@@ -118,7 +124,11 @@ export type ExciteClassname = 'is-excited' | 'not-excited'
 export interface ExciteBehaviorState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        AnimationStateHandlers<TElement>
+        Omit<ActivityBehaviorState<boolean, ExciteClassname, TElement>,
+            | 'state'
+            | 'actualState'
+            | 'activityClassname'
+        >
 {
     /**
      * The current active excitement-animation state used for animation-aware rendering and behavioral coordination.
@@ -132,7 +142,7 @@ export interface ExciteBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the excitement animation is currently active
      * - `false` : the excitement animation is idle
      */
-    excited           : boolean
+    excited         : ActivityBehaviorState<boolean, ExciteClassname, TElement>['state']
     
     /**
      * The actual resolved excitement state, regardless of animation state.
@@ -146,7 +156,7 @@ export interface ExciteBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component is intended to be excited
      * - `false` : the component is intended to be idle
      */
-    actualExcited     : boolean
+    actualExcited   : ActivityBehaviorState<boolean, ExciteClassname, TElement>['actualState']
     
     /**
      * A CSS class name reflecting the resolved excitement state.
@@ -155,7 +165,7 @@ export interface ExciteBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-excited'`
      * - `'not-excited'`
      */
-    exciteClassname   : 'is-excited' | 'not-excited'
+    exciteClassname : ActivityBehaviorState<boolean, ExciteClassname, TElement>['activityClassname']
 }
 
 

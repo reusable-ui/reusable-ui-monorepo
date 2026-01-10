@@ -1,5 +1,5 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
-import { type ExciteStateProps, useExciteBehaviorState } from '../dist/index.js'
+import { type ExciteStateProps, type ExciteStateChangeProps, useExciteBehaviorState } from '../dist/index.js'
 import { useMergeEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
 import { HydrateStyles } from '@cssfn/cssfn-react'
@@ -8,6 +8,7 @@ import { useExciteStateTestStyles } from './ExciteStateTest.loader.js'
 export interface ExciteStateTestProps
     extends
         ExciteStateProps,
+        ExciteStateChangeProps,
         Pick<React.DOMAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd'>
 {
 }
