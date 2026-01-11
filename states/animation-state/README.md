@@ -157,6 +157,80 @@ CSS example for animations:
 
 ---
 
+## 🧩 Exported CSS Hook
+
+### `usesAnimationState(animationCases: MaybeArray<AnimationCase>): CssRule`
+
+Defines animation cases that automatically run when `useAnimationState()` activates the matching classname.
+
+Accepts either:
+- A single `AnimationCase`
+- An array of `AnimationCase[]`
+
+**`AnimationCase` interface:**
+- **`ifState`**  
+  The state condition function that determines when the animation applies.
+- **`variable`**  
+  The CSS variable to assign when the state condition is met.
+- **`animation`**  
+  The animation value or reference to apply to the variable.
+
+#### 💡 Usage Example
+```ts
+export default () => style({
+    display  : 'grid',
+    fontSize : '1rem',
+    
+    // Apply animations:
+    animation: 'var(--validity-validating, none), var(--validity-invalidating, none), var(--validity-unvalidating, none)',
+    
+    // Define animation cases when the state is met:
+    ...usesAnimationState([
+        { ifState: ifValidating,   variable: 'var(--validity-validating)',   animation: 'var(--anim-validating)'   },
+        { ifState: ifInvalidating, variable: 'var(--validity-invalidating)', animation: 'var(--anim-invalidating)' },
+        { ifState: ifUnvalidating, variable: 'var(--validity-unvalidating)', animation: 'var(--anim-unvalidating)' },
+    ]),
+});
+
+// Define conditional selectors:
+const ifValidating   = (styles: CssStyleCollection) => rule('.is-validating'  , styles);
+const ifInvalidating = (styles: CssStyleCollection) => rule('.is-invalidating', styles);
+const ifUnvalidating = (styles: CssStyleCollection) => rule('.is-unvalidating', styles);
+```
+
+#### 🎨 Rendered CSS
+```css
+.the-component-scope {
+    display   : grid;
+    font-size : 1rem;
+    
+    animation: var(--validity-validating, none), var(--validity-invalidating, none), var(--validity-unvalidating, none);
+    
+    &.is-validating {
+        --validity-validating: var(--anim-validating);
+    }
+    &.is-invalidating {
+        --validity-invalidating: var(--anim-invalidating);
+    }
+    &.is-unvalidating {
+        --validity-unvalidating: var(--anim-unvalidating);
+    }
+}
+```
+
+#### 🧠 How CSS Animation State Works
+Each **`AnimationCase`** defines a mapping between:
+- **Condition (`ifState`)** → determines when the case is active (e.g. `ifValidating`).
+- **Variable (`variable`)** → the CSS variable to assign.
+- **Animation (`animation`)** → the animation value or reference applied to the variable.
+
+When `useAnimationState()` (React side) toggles a classname such as `.is-validating`, the corresponding case in `usesAnimationState()` (CSS side) activates. The browser's CSS engine then applies the animation by assigning the variable to the provided value.  
+
+This separation ensures:
+- **React hook** orchestrates runtime state (`intent`, `running`, lifecycle handlers).  
+- **CSS hook** declares how those states map to animations at the stylesheet level.  
+- Together they form a predictable, declarative animation system.
+
 ## 📖 Part of the Reusable-UI Framework  
 **@reusable-ui/animation-state** is a foundational module within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
