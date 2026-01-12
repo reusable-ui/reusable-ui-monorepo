@@ -157,6 +157,17 @@ CSS example for animations:
 
 ---
 
+#### 🧠 Animation Behavior
+
+The hook manages animations between states using a unified lifecycle flow.  
+When the implementator of `useAnimationState()` toggles a classname (e.g. `.is-validating`, `.is-invalidating`, `.is-unvalidating`) is applied, the corresponding case in `usesAnimationState()` activates, and the browser's CSS engine runs the assigned animation.
+
+The lifecycle flow ensures:
+
+- If an animation is already in progress, any new intent (e.g., switching from one state to another) is deferred until the current animation completes.  
+- Once the active animation finishes, the latest intent is resumed.  
+- This ensures animations are never interrupted mid-flight and outdated animations are discarded.  
+
 ## 🧩 Exported CSS Hook
 
 ### `usesAnimationState(animationCases: MaybeArray<AnimationCase>): CssRule`
@@ -224,7 +235,7 @@ Each **`AnimationCase`** defines a mapping between:
 - **Variable (`variable`)** → the CSS variable to assign.
 - **Animation (`animation`)** → the animation value or reference applied to the variable.
 
-When `useAnimationState()` (React side) toggles a classname such as `.is-validating`, the corresponding case in `usesAnimationState()` (CSS side) activates. The browser's CSS engine then applies the animation by assigning the variable to the provided value.  
+When the implementator of `useAnimationState()` (React side) toggles a classname (e.g. `.is-validating`, `.is-invalidating`, `.is-unvalidating`), the corresponding case in `usesAnimationState()` (CSS side) activates. The browser's CSS engine then applies the animation by assigning the variable to the provided value.  
 
 This separation ensures:
 - **React hook** orchestrates runtime state (`intent`, `running`, lifecycle handlers).  
