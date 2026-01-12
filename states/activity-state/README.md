@@ -222,7 +222,7 @@ const resolveBusyActivityClassname = ({ visualState }: ResolveActivityClassnameA
 #### 🧠 Activity Animation Behavior
 
 The hook manages activity animations between concrete states using a unified lifecycle flow.  
-When an `activityClassname` (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`) is applied, the corresponding case in `usesActivityState()` activates, and the browser's CSS engine runs the assigned animation.
+When `useActivityBehaviorState()` toggles an `activityClassname` (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`), the corresponding case in `usesActivityState()` activates, and the browser's CSS engine runs the assigned animation.
 
 The lifecycle flow ensures:
 
