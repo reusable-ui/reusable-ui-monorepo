@@ -9,9 +9,6 @@ import {
     
     // Writes css in javascript:
     rule,
-    states,
-    style,
-    vars,
     
     
     
@@ -30,6 +27,12 @@ import {
 import {
     animationRegistry,
 }                           from '@reusable-ui/animation-feature'   // A styling utility for composing a unified animation stack from custom and registered state packages.
+
+// Reusable-ui states:
+import {
+    // Hooks:
+    usesActivityState,
+}                           from '@reusable-ui/activity-state'      // Reusable abstraction for representing state-driven animations in React components — indicating ongoing activity or draw user attention.
 
 
 
@@ -160,23 +163,18 @@ animationRegistry.registerAnimation(exciteStateVars.animationExciting);
  * ```
  */
 export const usesExciteState = (options?: CssExciteStateOptions): CssExciteState => {
-    // Extract options and assign defaults:
+    // Extract options:
     const {
-        animationExciting = 'none', // Defaults to `none`.
+        animationExciting,
     } = options ?? {};
     
     
     
     return {
-        exciteStateRule : () => style({
-            ...states({
-                // Apply exciting animation while still in excited state:
-                ...ifExcited(
-                    vars({
-                        [exciteStateVars.animationExciting] : animationExciting, // Activate the animation (if provided).
-                    })
-                ),
-            }),
+        exciteStateRule : () => usesActivityState({
+            ifState   : ifExcited,
+            variable  : exciteStateVars.animationExciting,
+            animation : animationExciting,
         }),
         
         exciteStateVars,
