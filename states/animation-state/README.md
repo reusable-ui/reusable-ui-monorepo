@@ -160,7 +160,7 @@ CSS example for animations:
 #### 🧠 Animation Behavior
 
 The hook manages animations between states using a unified lifecycle flow.  
-When the implementator of `useAnimationState()` toggles a classname (e.g. `.is-validating`, `.is-invalidating`, `.is-unvalidating`) is applied, the corresponding case in `usesAnimationState()` activates, and the browser's CSS engine runs the assigned animation.
+When the implementator of `useAnimationState()` toggles a classname (e.g. `.is-validating`, `.is-invalidating`, `.is-unvalidating`), the corresponding case in `usesAnimationState()` activates, and the browser's CSS engine runs the assigned animation.
 
 The lifecycle flow ensures:
 
