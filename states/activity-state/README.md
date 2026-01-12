@@ -300,7 +300,7 @@ Each **`ActivityCase`** defines a mapping between:
 - **Variable (`variable`)** → the CSS variable to assign.
 - **Animation (`animation`)** → the animation value or reference applied to the variable.
 
-When `useActivityBehaviorState()` (React side) toggles a classname such as `.is-preparing`, the corresponding case in `usesActivityState()` (CSS side) activates. The browser's CSS engine then applies the animation by assigning the variable to the provided value.  
+When `useActivityBehaviorState()` (React side) toggles an `activityClassname` (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`), the corresponding case in `usesActivityState()` (CSS side) activates. The browser's CSS engine then applies the animation by assigning the variable to the provided value.  
 
 This separation ensures:
 - **React hook** orchestrates runtime state (`intent`, `running`, lifecycle handlers).  
