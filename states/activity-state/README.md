@@ -230,6 +230,80 @@ The hook manages activity animations between concrete states using a unified lif
   - Or it may **remain stopped** if the state equals `inactiveState`.  
 - This ensures animations are never interrupted mid-flight, while ensuring that repeated, switched, or stopped activities are handled predictably and consistently across all specialized states.  
 
+## 🧩 Exported CSS Hook
+
+### `usesActivityState(activityCases: MaybeArray<ActivityCase>): CssRule`
+
+Defines activity cases that automatically run when `useActivityBehaviorState()` activates the matching classname.
+
+Accepts either:
+- A single `ActivityCase`
+- An array of `ActivityCase[]`
+
+**`ActivityCase` interface:**
+- **`ifState`**  
+  The state condition function that determines when the animation applies.
+- **`variable`**  
+  The CSS variable to assign when the state condition is met.
+- **`animation`**  
+  The animation value or reference to apply to the variable.
+
+#### 💡 Usage Example
+```ts
+export default () => style({
+    display  : 'grid',
+    fontSize : '1rem',
+    
+    // Apply animations:
+    animation: 'var(--order-preparing, none), var(--order-shipping, none), var(--order-delivering, none)',
+    
+    // Define activity cases when the state is met:
+    ...usesActivityState([
+        { ifState: ifPreparing,  variable: 'var(--order-preparing)',  animation: 'var(--anim-preparing)'  },
+        { ifState: ifShipping,   variable: 'var(--order-shipping)',   animation: 'var(--anim-shipping)'   },
+        { ifState: ifDelivering, variable: 'var(--order-delivering)', animation: 'var(--anim-delivering)' },
+    ]),
+});
+
+// Define conditional selectors:
+const ifPreparing  = (styles: CssStyleCollection) => rule('.is-preparing' , styles);
+const ifShipping   = (styles: CssStyleCollection) => rule('.is-shipping'  , styles);
+const ifDelivering = (styles: CssStyleCollection) => rule('.is-delivering', styles);
+```
+
+#### 🎨 Rendered CSS
+```css
+.the-component-scope {
+    display   : grid;
+    font-size : 1rem;
+    
+    animation: var(--order-preparing, none), var(--order-shipping, none), var(--order-delivering, none);
+    
+    &.is-preparing {
+        --order-preparing: var(--anim-preparing);
+    }
+    &.is-shipping {
+        --order-shipping: var(--anim-shipping);
+    }
+    &.is-delivering {
+        --order-delivering: var(--anim-delivering);
+    }
+}
+```
+
+#### 🧠 How CSS Activity State Works
+Each **`ActivityCase`** defines a mapping between:
+- **Condition (`ifState`)** → determines when the case is active (e.g. `ifPreparing`).
+- **Variable (`variable`)** → the CSS variable to assign.
+- **Animation (`animation`)** → the animation value or reference applied to the variable.
+
+When `useActivityBehaviorState()` (React side) toggles a classname such as `.is-preparing`, the corresponding case in `usesActivityState()` (CSS side) activates. The browser's CSS engine then applies the animation by assigning the variable to the provided value.  
+
+This separation ensures:
+- **React hook** orchestrates runtime state (`intent`, `running`, lifecycle handlers).  
+- **CSS hook** declares how those states map to animations at the stylesheet level.  
+- Together they form a predictable, declarative activity animation system.
+
 ## 📚 Related Packages
 
 - [`@reusable-ui/animation-state`](https://www.npmjs.com/package/@reusable-ui/animation-state) – core animation lifecycle management.  
