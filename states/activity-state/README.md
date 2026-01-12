@@ -55,7 +55,7 @@ Supports controlled mode only with automatic re-triggering if the parent does no
 
 Declarative keywords (`'auto'`, `'inherit'`, etc.) must be resolved externally before passing into `effectiveState`.  
 
-### 💡 Usage Example
+#### 💡 Usage Example
 
 Represents a component that is busy processing something.  
 Prop-driven (controlled-only), with support for declarative keywords like `'auto'`.  
@@ -219,7 +219,7 @@ const resolveBusyActivityClassname = ({ visualState }: ResolveActivityClassnameA
 };
 ```
 
-### 🧠 Activity Animation Behavior
+#### 🧠 Activity Animation Behavior
 
 The hook manages activity animations between concrete states using a unified lifecycle flow.  
 When an `activityClassname` (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`) is applied, the corresponding case in `usesActivityState()` activates, and the browser's CSS engine runs the assigned animation.
