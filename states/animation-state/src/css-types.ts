@@ -10,9 +10,9 @@ import {
 
 
 /**
- * Represents a single animation case definition.
+ * Defines a single animation case.
  * 
- * The animation is automatically applied when the state condition is met.
+ * Runs the animation automatically when the specified state condition is met.
  * 
  * @example
  * ```ts
@@ -25,7 +25,7 @@ import {
  */
 export interface AnimationCase {
     /**
-     * The state condition function that determines when the animation applies.
+     * Determines when the animation applies.
      * 
      * Common sources:
      * - Built-in conditional functions, e.g. `ifValidating`, `ifInvalidating`, `ifUnvalidating`
@@ -35,7 +35,7 @@ export interface AnimationCase {
     ifState    : (styles: CssStyleCollection) => CssRule
     
     /**
-     * The CSS variable to assign when the state condition is met.
+     * Specifies the CSS variable to assign when the state condition is met.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-var)`
@@ -44,7 +44,7 @@ export interface AnimationCase {
     variable   : CssCustomSimpleRef
     
     /**
-     * The animation value or reference to apply to the variable.
+     * Specifies the animation value or reference to apply to the variable.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-animation)`

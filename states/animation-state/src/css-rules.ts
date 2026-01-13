@@ -24,7 +24,9 @@ import {
 
 
 /**
- * Defines animation cases that automatically run when `useAnimationState()` activates the matching classname.
+ * Applies animation cases for styling.
+ * 
+ * Runs the corresponding animation automatically whenever `useAnimationState()` activates the matching classname.
  * 
  * Accepts either:
  * - A single `AnimationCase`

@@ -172,7 +172,9 @@ The lifecycle flow ensures:
 
 ### `usesAnimationState(animationCases: MaybeArray<AnimationCase>): CssRule`
 
-Defines animation cases that automatically run when `useAnimationState()` activates the matching classname.
+Applies animation cases for styling.
+
+Runs the corresponding animation automatically whenever `useAnimationState()` activates the matching classname.
 
 Accepts either:
 - A single `AnimationCase`
@@ -180,11 +182,11 @@ Accepts either:
 
 **`AnimationCase` interface:**
 - **`ifState`**  
-  The state condition function that determines when the animation applies.
+  Determines when the animation applies.
 - **`variable`**  
-  The CSS variable to assign when the state condition is met.
+  Specifies the CSS variable to assign when the state condition is met.
 - **`animation`**  
-  The animation value or reference to apply to the variable.
+  Specifies the animation value or reference to apply to the variable.
 
 #### 💡 Usage Example
 ```ts
