@@ -237,7 +237,9 @@ The lifecycle flow ensures:
 
 ### `usesActivityState(activityCases: MaybeArray<ActivityCase>): CssRule`
 
-Defines activity cases that automatically run when `useActivityBehaviorState()` activates the matching classname.
+Applies activity cases for styling.
+
+Runs the corresponding animation automatically whenever `useActivityBehaviorState()` activates the matching classname.
 
 Accepts either:
 - A single `ActivityCase`
@@ -245,11 +247,11 @@ Accepts either:
 
 **`ActivityCase` interface:**
 - **`ifState`**  
-  The state condition function that determines when the animation applies.
+  Determines when the animation applies.
 - **`variable`**  
-  The CSS variable to assign when the state condition is met.
+  Specifies the CSS variable to assign when the state condition is met.
 - **`animation`**  
-  The animation value or reference to apply to the variable.
+  Specifies the animation value or reference to apply to the variable.
 
 #### 💡 Usage Example
 ```ts

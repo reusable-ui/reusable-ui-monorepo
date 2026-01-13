@@ -7,9 +7,9 @@ import {
 
 
 /**
- * Represents a single activity case definition.
+ * Defines a single activity case.
  * 
- * The animation is automatically applied when the state condition is met.
+ * Runs the animation automatically when the specified state condition is met.
  * 
  * @example
  * ```ts
@@ -26,7 +26,7 @@ export interface ActivityCase
         AnimationCase
 {
     /**
-     * The state condition function that determines when the animation applies.
+     * Determines when the animation applies.
      * 
      * Common sources:
      * - Built-in conditional functions, e.g. `ifPreparing`, `ifShipping`, `ifDelivering`
@@ -36,7 +36,7 @@ export interface ActivityCase
     ifState    : AnimationCase['ifState']
     
     /**
-     * The CSS variable to assign when the state condition is met.
+     * Specifies the CSS variable to assign when the state condition is met.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-var)`
@@ -45,7 +45,7 @@ export interface ActivityCase
     variable   : AnimationCase['variable']
     
     /**
-     * The animation value or reference to apply to the variable.
+     * Specifies the animation value or reference to apply to the variable.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-animation)`
