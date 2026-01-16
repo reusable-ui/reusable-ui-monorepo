@@ -901,6 +901,322 @@ useTransitionStatePhaseEvents(viewPhase, (phase) => {
 - Keeps code DRY, consistent, and easier to maintain.  
 - Special cases (like `view-state`) can add local refs but still delegate through this hook.
 
+## 🧩 Exported CSS Hook
+
+### `usesTransitionState(transitionBehavior: TransitionBehavior): CssRule`
+
+Applies live CSS variables for transitional styling, including:
+- **Animation variables** for *visual effect* whenever a state changes
+- **Flag variables** for *discrete switches* for conditional styling
+- **Factor variables** for *gradual drivers* for smooth transitions
+
+**`TransitionBehavior` interface:**
+- **`transitions`**
+  Defines transitional animation cases for *visual effect* whenever a state changes.
+- **`flags`**
+  Defines flag cases for conditional styling.
+- **`factorVar`**
+  Specifies a CSS variable for smooth transitions.
+- **`factorCondVar`**
+  Specifies a CSS variable for smooth transitions with inactive fallback.
+- **`ifInactiveState`**
+  Defines the condition for the inactive baseline state.
+- **`factors`**
+  Defines factor cases for holding final numeric values once a transition settles.
+
+#### 💡 Usage Example
+
+```ts
+// Describe how transitional validity state should behave:
+const validityStateRule : CssRule = usesTransitionState({
+    // Transitional animations for visual effect whenever a state changes:
+    transitions     : [
+        {
+            ifState   : ifValidating,
+            variable  : validityStateVars.animationValidating,
+            animation : options.animationValidating,
+        },
+        {
+            ifState   : ifInvalidating,
+            variable  : validityStateVars.animationInvalidating,
+            animation : options.animationInvalidating,
+        },
+        {
+            ifState   : ifUnvalidating,
+            variable  : validityStateVars.animationUnvalidating,
+            animation : options.animationUnvalidating,
+        },
+    ],
+    
+    // Flags for discrete switches for conditional styling:
+    flags           : [
+        // Current flags:
+        {
+            ifState  : ifValidatingOrValid,
+            variable : validityStateVars.isValid,
+        },
+        {
+            ifState  : ifInvalidatingOrInvalid,
+            variable : validityStateVars.isInvalid,
+        },
+        {
+            ifState  : ifUnvalidatingOrUnvalidated,
+            variable : validityStateVars.isUnvalidated,
+        },
+        
+        // Past flags:
+        {
+            ifState  : ifWasValid,
+            variable : validityStateVars.wasValid,
+        },
+        {
+            ifState  : ifWasInvalid,
+            variable : validityStateVars.wasInvalid,
+        },
+        {
+            ifState  : ifWasUnvalidated,
+            variable : validityStateVars.wasUnvalidated,
+        },
+    ],
+    
+    // Factor variables for gradual drivers for smooth transitions:
+    factorVar       : validityStateVars.validityFactor,
+    factorCondVar   : validityStateVars.validityFactorCond,
+    ifInactiveState : ifUnvalidated,
+    factors         : [
+        {
+            ifState : ifValid,
+            factor  : 1,
+        },
+        {
+            ifState : ifInvalid,
+            factor  : -1,
+        },
+        // Not needed: Defaults to 0 when no case matches:
+        // {
+        //     ifState : ifUnvalidated,
+        //     factor  : 0,
+        // },
+    ],
+});
+
+// Apply validity states alongside other styles:
+return style({
+    display  : 'grid',
+    fontSize : '1rem',
+    
+    // Apply validity state rule:
+    ...validityStateRule,
+    // `CssRule` is an object with a unique symbol property (`{ [Symbol()]: CssRuleData }`),
+    // so it can be safely spread without risk of overriding other styles.
+});
+```
+
+#### 🎨 Rendered CSS
+
+```css
+.the-component-scope {
+    /* Fallbacks (reset defaults, lowest priority, applied before any declarations): */
+    --validity-isValid: unset;
+    --validity-isInvalid: unset;
+    --validity-isUnvalidated: unset;
+    --validity-wasValid: unset;
+    --validity-wasInvalid: unset;
+    --validity-wasUnvalidated: unset;
+    
+    display   : grid;
+    font-size : 1rem;
+    
+    --validity-validityFactorCond: var(--validity-validityFactor);
+    
+    /* Transition states: */
+    &.is-validating {
+        --validity-validating: var(--anim-validating);
+    }
+    &.is-invalidating {
+        --validity-invalidating: var(--anim-invalidating);
+    }
+    &.is-unvalidating {
+        --validity-unvalidating: var(--anim-unvalidating);
+    }
+    
+    /* Flag states: */
+    &:is(.is-validating, .is-valid) {
+        --validity-isValid: ;
+    }
+    &:is(.is-invalidating, .is-invalid) {
+        --validity-isInvalid: ;
+    }
+    &:is(.is-unvalidating, .is-unvalidated) {
+        --validity-isUnvalidated: ;
+    }
+    &.was-valid {
+        --validity-wasValid: ;
+    }
+    &.was-invalid {
+        --validity-wasInvalid: ;
+    }
+    &.was-unvalidated {
+        --validity-wasUnvalidated: ;
+    }
+    
+    /* Primary factor states: */
+    &.is-valid {
+        --validity-validityFactor: 1;
+    }
+    &.is-invalid {
+        --validity-validityFactor: -1;
+    }
+    
+    /* Conditional factor states: */
+    &.is-unvalidated {
+        --validity-validityFactorCond: unset;
+    }
+}
+
+@property --validity-validityFactor {
+    syntax        : "<number>";
+    inherits      : true;
+    initial-value : 0;
+}
+```
+
+#### 🧠 How CSS Transition State Works
+
+Transition state styling is built from three coordinated parts: **transition animations**, **flags**, and **factors**.  
+Together, they let you declaratively map component states to CSS styling behaviors — from simple on/off switches to smooth interpolations.
+
+##### 1. Transition Animations
+
+Animations provide the *visual effect* whenever a state changes.  
+
+- **Intent**: Animate the component as it moves between states.  
+- **Mechanics**:  
+    - State changes toggle a `classname`.  
+    - When the `classname` matches an `ifState` condition (e.g. `&.is-validating { ... }`),
+    a CSS variable is assigned with the desired animation:  
+        ```css
+        .the-component-scope {
+            /* Conditional animation: */
+            &.is-validating {
+                --validity-validating: var(--anim-validating);
+            }
+        }
+        ```
+    - That variable can then be used to drive the animation:  
+        ```css
+        .the-component-scope {
+            /* Usage: */
+            animation: var(--validity-validating), var(--other-animation);
+        }
+        ```
+
+To define multiple animations consistently, the **`AnimationCase`** interface is used:  
+- `ifState`   → determines when the animation applies  
+- `variable`  → specifies the CSS variable to assign  
+- `animation` → specifies the animation value or reference to apply  
+
+##### 2. Flags
+
+Flags act as *discrete switches* for conditional styling.
+
+- **Intent**: Apply properties on specific states, fully or not at all — never interpolated.  
+- **Mechanics**:  
+    - State changes toggle a `classname`.  
+    - When the `classname` matches an `ifState` condition (e.g. `&:is(.is-validating, .is-valid) { ... }`),
+    a CSS variable is set with an empty string (won't carry any meaningful value) and acts as an **active switch**:  
+        ```css
+        .the-component-scope {
+            /* Unset: */
+            --validity-isValid: unset;
+            
+            /* Set: */
+            &:is(.is-validating, .is-valid) {
+                --validity-isValid: ;
+            }
+        }
+        ```
+    - That variable can then be used to conditionally style properties:  
+        ```css
+        .the-component-scope {
+            /* Usage: */
+            background-image: var(--validity-isValid) url('/res/valid.svg');
+            --valid-color: var(--validity-isValid) green;
+            --invalid-color: var(--validity-isInvalid) red;
+            color: var(--valid-color, var(--invalid-color));
+        }
+        ```
+
+Flags are perfect for binary styling: either the property is applied or ignored, never interpolated.
+
+**Note:**  
+- When set, flag variables hold an empty string (won't carry any meaningful value) — effectively toggling "on".  
+- When unset, flag variables invalidate the declaration, so the browser ignores it — effectively toggling "off".  
+
+##### 3. Factors
+
+Factors act as *gradual drivers* for smooth transitions.
+
+- **Intent**: Interpolate properties across states (fade, blend, scale).  
+- **Mechanics**:  
+    - A factor variable changes within a numeric range:  
+        ```
+        -1 … -0.5 … 0 … +0.5 … +1
+        ```
+    - Driven by animation keyframes:  
+        ```css
+        0%   { --validity-factor: 0; }
+        100% { --validity-factor: 1; }
+        ```
+    - When settled, the classname "sticks" the factor to its final value:  
+        ```css
+        .the-component-scope {
+            &.is-valid {
+                --validity-factor: 1;
+            }
+        }
+        ```
+    - That variable can then be used to blend properties proportionally:  
+        ```css
+        .the-component-scope {
+            /* Usage: */
+            /* -1 → red, 0 → blue, +1 → green */
+            color: color-mix(in oklch, ... calc(var(--validity-factor) * ...) ... );
+            /* Valid → 1, otherwise: 0.5: */
+            opacity: clamp(0.5, var(--validity-factor), 1);
+        }
+        ```
+
+Factors let you fade, blend, or scale smoothly instead of switching abruptly.
+
+There's also a **conditional factor** (`factorCondVar`):  
+- Behaves like a factor, but resets to `unset` when inactive.  
+- This makes it easier to let default styles take over at baseline.
+
+---
+
+##### React + CSS Separation
+
+The system works by splitting responsibilities:
+
+- **React hook (`useTransitionBehaviorState()`)**  
+    Orchestrates runtime state: intent, lifecycle, and toggling classnames.  
+- **CSS hook (`usesTransitionState()`)**  
+    Describes how those states (by classname toggles) map to animations, flags, and factors at the stylesheet level.  
+
+Together, they form a predictable, declarative system:  
+- Animations tell the story of change  
+- Flags provide discrete switches  
+- Factors drive gradual changes  
+
+##### ✅ Summary
+CSS Transition State combines **animations, flags, and factors** into a unified model:  
+- **Animations** → visual effects when state changes  
+- **Flags** → binary switches for conditional styling  
+- **Factors** → numeric drivers for smooth interpolation (with optional fallback)  
+
+This layered approach makes transitions both **expressive** and **maintainable**, giving you fine control over how styles respond to state changes.
+
 ## 📚 Related Packages
 
 - [`@reusable-ui/animation-state`](https://www.npmjs.com/package/@reusable-ui/animation-state) – core animation lifecycle management.  
