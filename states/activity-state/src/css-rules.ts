@@ -25,7 +25,7 @@ import {
 /**
  * Applies activity cases for styling.
  * 
- * Runs the corresponding animation automatically whenever `useActivityBehaviorState()` activates the matching classname.
+ * Automatically runs the corresponding animation whenever a state is still active.
  * 
  * Accepts either:
  * - A single `ActivityCase`

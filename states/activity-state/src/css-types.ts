@@ -7,9 +7,9 @@ import {
 
 
 /**
- * Defines a single activity case.
+ * Defines a single activity animation case for *visual effects* whenever a state is still active.
  * 
- * Runs the animation automatically when the specified state condition is met.
+ * Automatically runs the animation whenever the specified state condition is met.
  * 
  * @example
  * ```ts

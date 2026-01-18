@@ -239,7 +239,7 @@ The lifecycle flow ensures:
 
 Applies activity cases for styling.
 
-Runs the corresponding animation automatically whenever `useActivityBehaviorState()` activates the matching classname.
+Automatically runs the corresponding animation whenever a state is still active.
 
 Accepts either:
 - A single `ActivityCase`
@@ -254,6 +254,7 @@ Accepts either:
   Specifies the animation value or reference to apply to the variable.
 
 #### 💡 Usage Example
+
 ```ts
 export default () => style({
     display  : 'grid',
@@ -297,6 +298,7 @@ const ifDelivering = (styles: CssStyleCollection) => rule('.is-delivering', styl
 ```
 
 #### 🧠 How CSS Activity State Works
+
 Each **`ActivityCase`** defines a mapping between:
 - **Condition (`ifState`)** → determines when the case is active (e.g. `ifPreparing`).
 - **Variable (`variable`)** → the CSS variable to assign.
