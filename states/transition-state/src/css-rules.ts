@@ -29,18 +29,18 @@ import {
 
 /**
  * Applies live CSS variables for transitional styling, including:
- * - **Animation variables** for *visual effect* whenever a state changes
- * - **Flag variables** for *discrete switches* for conditional styling
- * - **Factor variables** for *gradual drivers* for smooth transitions
+ * - **Animation variables** for *visual effects* whenever a transitional state changes
+ * - **Flag variables** for *discrete switches* in conditional styling
+ * - **Factor variables** for *gradual drivers* in transitional styling
  * 
- * @param transitionBehavior - The desired transitional styling behaviors.
- * @returns A `CssRule` that makes transitional styling work correctly and dynamically.
+ * @param transitionBehavior - The transitional styling behaviors to apply.
+ * @returns A `CssRule` that enables transitional styling to work correctly and dynamically.
  * 
  * @example
  * ```ts
  * // Describe how transitional validity state should behave:
  * const validityStateRule : CssRule = usesTransitionState({
- *     // Transitional animations for visual effect whenever a state changes:
+ *     // Transitional animations for visual effects whenever a transitional state changes:
  *     transitions     : [
  *         {
  *             ifState   : ifValidating,
@@ -59,7 +59,7 @@ import {
  *         },
  *     ],
  *     
- *     // Flags for discrete switches for conditional styling:
+ *     // Flags for discrete switches in conditional styling:
  *     flags           : [
  *         // Current flags:
  *         {
@@ -90,7 +90,7 @@ import {
  *         },
  *     ],
  *     
- *     // Factor variables for gradual drivers for smooth transitions:
+ *     // Factor variables for gradual drivers in transitional styling:
  *     factorVar       : validityStateVars.validityFactor,
  *     factorCondVar   : validityStateVars.validityFactorCond,
  *     ifInactiveState : ifUnvalidated,

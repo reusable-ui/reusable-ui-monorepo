@@ -906,13 +906,13 @@ useTransitionStatePhaseEvents(viewPhase, (phase) => {
 ### `usesTransitionState(transitionBehavior: TransitionBehavior): CssRule`
 
 Applies live CSS variables for transitional styling, including:
-- **Animation variables** for *visual effect* whenever a state changes
-- **Flag variables** for *discrete switches* for conditional styling
-- **Factor variables** for *gradual drivers* for smooth transitions
+- **Animation variables** for *visual effects* whenever a transitional state changes
+- **Flag variables** for *discrete switches* in conditional styling
+- **Factor variables** for *gradual drivers* in transitional styling
 
 **`TransitionBehavior` interface:**
 - **`transitions`**
-  Defines transitional animation cases for *visual effect* whenever a state changes.
+  Defines transitional animation cases for *visual effects* whenever a transitional state changes.
 - **`flags`**
   Defines flag cases for conditional styling.
 - **`factorVar`**
@@ -929,7 +929,7 @@ Applies live CSS variables for transitional styling, including:
 ```ts
 // Describe how transitional validity state should behave:
 const validityStateRule : CssRule = usesTransitionState({
-    // Transitional animations for visual effect whenever a state changes:
+    // Transitional animations for visual effects whenever a transitional state changes:
     transitions     : [
         {
             ifState   : ifValidating,
@@ -948,7 +948,7 @@ const validityStateRule : CssRule = usesTransitionState({
         },
     ],
     
-    // Flags for discrete switches for conditional styling:
+    // Flags for discrete switches in conditional styling:
     flags           : [
         // Current flags:
         {
@@ -979,7 +979,7 @@ const validityStateRule : CssRule = usesTransitionState({
         },
     ],
     
-    // Factor variables for gradual drivers for smooth transitions:
+    // Factor variables for gradual drivers in transitional styling:
     factorVar       : validityStateVars.validityFactor,
     factorCondVar   : validityStateVars.validityFactorCond,
     ifInactiveState : ifUnvalidated,
@@ -1088,7 +1088,7 @@ Together, they let you declaratively map component states to CSS styling behavio
 
 ##### 1. Transition Animations
 
-Animations provide the *visual effect* whenever a state changes.  
+Animations provide the *visual effects* whenever a transitional state changes.  
 
 - **Intent**: Animate the component as it moves between states.  
 - **Mechanics**:  
@@ -1111,7 +1111,7 @@ Animations provide the *visual effect* whenever a state changes.
         }
         ```
 
-To define multiple animations consistently, the **`AnimationCase`** interface is used:  
+To define multiple animations consistently, the **`TransitionCase`** interface is used:  
 - `ifState`   → determines when the animation applies  
 - `variable`  → specifies the CSS variable to assign  
 - `animation` → specifies the animation value or reference to apply  
@@ -1165,14 +1165,14 @@ Factors act as *gradual drivers* for smooth transitions.
         ```
     - Driven by animation keyframes:  
         ```css
-        0%   { --validity-factor: 0; }
-        100% { --validity-factor: 1; }
+        0%   { --validity-validityFactor: 0; }
+        100% { --validity-validityFactor: 1; }
         ```
     - When settled, the classname "sticks" the factor to its final value:  
         ```css
         .the-component-scope {
             &.is-valid {
-                --validity-factor: 1;
+                --validity-validityFactor: 1;
             }
         }
         ```
@@ -1181,9 +1181,9 @@ Factors act as *gradual drivers* for smooth transitions.
         .the-component-scope {
             /* Usage: */
             /* -1 → red, 0 → blue, +1 → green */
-            color: color-mix(in oklch, ... calc(var(--validity-factor) * ...) ... );
+            color: color-mix(in oklch, ... calc(var(--validity-validityFactor) * ...) ... );
             /* Valid → 1, otherwise: 0.5: */
-            opacity: clamp(0.5, var(--validity-factor), 1);
+            opacity: clamp(0.5, var(--validity-validityFactor), 1);
         }
         ```
 
@@ -1202,7 +1202,7 @@ The system works by splitting responsibilities:
 - **React hook (`useTransitionBehaviorState()`)**  
     Orchestrates runtime state: intent, lifecycle, and toggling classnames.  
 - **CSS hook (`usesTransitionState()`)**  
-    Describes how those states (by classname toggles) map to animations, flags, and factors at the stylesheet level.  
+    Describes how those states (via classname toggles) map to animations, flags, and factors at the stylesheet level.  
 
 Together, they form a predictable, declarative system:  
 - Animations tell the story of change  

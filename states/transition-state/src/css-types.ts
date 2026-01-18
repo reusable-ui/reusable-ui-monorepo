@@ -15,7 +15,7 @@ import {
 
 
 /**
- * Defines a single transitional animation case for *visual effect* whenever a state changes.
+ * Defines a single transitional animation case for *visual effects* whenever a transitional state changes.
  * 
  * Automatically runs the animation whenever the specified state condition is met.
  * 
@@ -165,9 +165,9 @@ export interface FactorCase {
 
 /**
  * Describes how transitional styling should behave:
- * - **Animations** for *visual effect* whenever a state changes
- * - **Flags** for *discrete switches* for conditional styling
- * - **Factors** for *gradual drivers* for smooth transitions
+ * - **Animations** for *visual effects* whenever a transitional state changes
+ * - **Flags** for *discrete switches* in conditional styling
+ * - **Factors** for *gradual drivers* in transitional styling
  * 
  * Notes:
  * - During an animation, factor values are smoothly driven by the animation's keyframes.
@@ -177,7 +177,7 @@ export interface FactorCase {
  * ```ts
  * // Describe how transitional validity state should behave:
  * const validityStateRule : CssRule = usesTransitionState({
- *     // Transitional animations for visual effect whenever a state changes:
+ *     // Transitional animations for visual effects whenever a transitional state changes:
  *     transitions     : [
  *         {
  *             ifState   : ifValidating,
@@ -196,7 +196,7 @@ export interface FactorCase {
  *         },
  *     ],
  *     
- *     // Flags for discrete switches for conditional styling:
+ *     // Flags for discrete switches in conditional styling:
  *     flags           : [
  *         // Current flags:
  *         {
@@ -227,7 +227,7 @@ export interface FactorCase {
  *         },
  *     ],
  *     
- *     // Factor variables for gradual drivers for smooth transitions:
+ *     // Factor variables for gradual drivers in transitional styling:
  *     factorVar       : validityStateVars.validityFactor,
  *     factorCondVar   : validityStateVars.validityFactorCond,
  *     ifInactiveState : ifUnvalidated,
@@ -251,16 +251,16 @@ export interface FactorCase {
  */
 export interface TransitionBehavior {
     /**
-     * Defines transitional animation cases for *visual effect* whenever a state changes.
+     * Defines transitional animation cases for *visual effects* whenever a transitional state changes.
      * 
-     * Automatically runs the matching animation whenever the component's state changes.
+     * Automatically runs the matching animation whenever the component's transitional state changes.
      */
     transitions     ?: TransitionCase[]
     
     /**
      * Defines flag cases for conditional styling.
      * 
-     * Provides boolean-like CSS variables for *discrete switches* for conditional styling.
+     * Provides boolean-like CSS variables for *discrete switches* in conditional styling.
      * Either fully applied or not at all — never interpolated.
      */
     flags           ?: FlagCase[]
@@ -268,7 +268,7 @@ export interface TransitionBehavior {
     /**
      * Specifies a CSS variable for smooth transitions.
      * 
-     * Provides a numeric variable for *gradual drivers* for smooth transitions.
+     * Provides a numeric variable for *gradual driver* in transitional styling.
      * Properties can fade in, fade out, or blend proportionally instead of switching abruptly.
      * 
      * Typical implementation: integer values represent settled states, fractional values represent transitioning states.
@@ -282,7 +282,7 @@ export interface TransitionBehavior {
     /**
      * Specifies a CSS variable for smooth transitions with inactive fallback.
      * 
-     * Provides a numeric variable for *gradual drivers* for smooth transitions,
+     * Provides a numeric variable for *gradual driver* in transitional styling,
      * with `unset` fallback behavior when the state is fully inactive.
      * Properties can fade in, fade out, or blend proportionally instead of switching abruptly.
      * 
