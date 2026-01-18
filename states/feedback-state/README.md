@@ -566,6 +566,273 @@ useFeedbackStatePhaseEvents(viewPhase, (phase) => {
 - Keeps code DRY, consistent, and easier to maintain.  
 - Special cases (like `view-state`) can add local refs but still delegate through this hook.
 
+## 🧩 Exported CSS Hook
+
+### `usesFeedbackState(feedbackBehavior: FeedbackBehavior): CssRule`
+
+Applies live CSS variables for feedback styling, including:
+- **Animation variables** for *visual effects* whenever a feedback state changes
+- **Flag variables** for *discrete switches* in conditional styling
+- **Factor variables** for *gradual drivers* in transitional styling
+
+**`FeedbackBehavior` interface:**
+- **`transitions`**
+  Defines feedback animation cases for *visual effects* whenever a feedback state changes.
+- **`flags`**
+  Defines flag cases for conditional styling.
+- **`factorVar`**
+  Specifies a CSS variable for smooth transitions.
+- **`factorCondVar`**
+  Specifies a CSS variable for smooth transitions with inactive fallback.
+- **`ifInactiveState`**
+  Defines the condition for the inactive baseline state.
+- **`factors`**
+  Defines factor cases for holding final numeric values once a transition settles.
+
+#### 💡 Usage Example
+
+```ts
+// Describe how feedback focus state should behave:
+const focusStateRule : CssRule = usesFeedbackState({
+    // Feedback animations for visual effects whenever a feedback state changes:
+    transitions     : [
+        {
+            ifState   : ifFocusing,
+            variable  : focusStateVars.animationFocusing,
+            animation : options.animationFocusing,
+        },
+        {
+            ifState   : ifBlurring,
+            variable  : focusStateVars.animationBlurring,
+            animation : options.animationBlurring,
+        },
+    ],
+    
+    // Flags for discrete switches in conditional styling:
+    flags           : [
+        // Current flags:
+        {
+            ifState  : ifFocusingOrFocused,
+            variable : focusStateVars.isFocused,
+        },
+        {
+            ifState  : ifBlurringOrBlurred,
+            variable : focusStateVars.isBlurred,
+        },
+    ],
+    
+    // Factor variables for gradual drivers in transitional styling:
+    factorVar       : focusStateVars.focusFactor,
+    factorCondVar   : focusStateVars.focusFactorCond,
+    ifInactiveState : ifBlurred,
+    factors         : [
+        {
+            ifState : ifFocused,
+            factor  : 1,
+        },
+        // Not needed: Defaults to 0 when no case matches:
+        // {
+        //     ifState : ifBlurred,
+        //     factor  : 0,
+        // },
+    ],
+});
+
+// Apply focus states alongside other styles:
+return style({
+    display  : 'grid',
+    fontSize : '1rem',
+    
+    // Apply focus state rule:
+    ...focusStateRule,
+    // `CssRule` is an object with a unique symbol property (`{ [Symbol()]: CssRuleData }`),
+    // so it can be safely spread without risk of overriding other styles.
+});
+```
+
+#### 🎨 Rendered CSS
+
+```css
+.the-component-scope {
+    /* Fallbacks (reset defaults, lowest priority, applied before any declarations): */
+    --focus-isFocused: unset;
+    --focus-isBlurred: unset;
+    
+    display   : grid;
+    font-size : 1rem;
+    
+    --focus-focusFactorCond: var(--focus-focusFactor);
+    
+    /* Transition states: */
+    &.is-focusing {
+        --focus-focusing: var(--anim-focusing);
+    }
+    &.is-blurring {
+        --focus-blurring: var(--anim-blurring);
+    }
+    
+    /* Flag states: */
+    &:is(.is-focusing, .is-focused) {
+        --focus-isFocused: ;
+    }
+    &:is(.is-blurring, .is-blurred) {
+        --focus-isBlurred: ;
+    }
+    
+    /* Primary factor states: */
+    &.is-focused {
+        --focus-focusFactor: 1;
+    }
+    
+    /* Conditional factor states: */
+    &.is-blurred {
+        --focus-focusFactorCond: unset;
+    }
+}
+
+@property --focus-focusFactor {
+    syntax        : "<number>";
+    inherits      : true;
+    initial-value : 0;
+}
+```
+
+#### 🧠 How CSS Feedback State Works
+
+Feedback state styling is built from three coordinated parts: **feedback animations**, **flags**, and **factors**.  
+Together, they let you declaratively map component states to CSS styling behaviors — from simple on/off switches to smooth interpolations.
+
+##### 1. Feedback Animations
+
+Animations provide the *visual effects* whenever a feedback state changes.  
+
+- **Intent**: Animate the component as it moves between states.  
+- **Mechanics**:  
+    - State changes toggle a `classname`.  
+    - When the `classname` matches an `ifState` condition (e.g. `&.is-focusing { ... }`),
+    a CSS variable is assigned with the desired animation:  
+        ```css
+        .the-component-scope {
+            /* Conditional animation: */
+            &.is-focusing {
+                --focus-focusing: var(--anim-focusing);
+            }
+        }
+        ```
+    - That variable can then be used to drive the animation:  
+        ```css
+        .the-component-scope {
+            /* Usage: */
+            animation: var(--focus-focusing), var(--other-animation);
+        }
+        ```
+
+To define multiple animations consistently, the **`FeedbackCase`** interface is used:  
+- `ifState`   → determines when the animation applies  
+- `variable`  → specifies the CSS variable to assign  
+- `animation` → specifies the animation value or reference to apply  
+
+##### 2. Flags
+
+Flags act as *discrete switches* for conditional styling.
+
+- **Intent**: Apply properties on specific states, fully or not at all — never interpolated.  
+- **Mechanics**:  
+    - State changes toggle a `classname`.  
+    - When the `classname` matches an `ifState` condition (e.g. `&:is(.is-focusing, .is-focused) { ... }`),
+    a CSS variable is set with an empty string (won't carry any meaningful value) and acts as an **active switch**:  
+        ```css
+        .the-component-scope {
+            /* Unset: */
+            --focus-isFocused: unset;
+            
+            /* Set: */
+            &:is(.is-focusing, .is-focused) {
+                --focus-isFocused: ;
+            }
+        }
+        ```
+    - That variable can then be used to conditionally style properties:  
+        ```css
+        .the-component-scope {
+            /* Usage: */
+            background-image: var(--focus-isFocused) url('/res/focused.svg');
+            --focused-color: var(--focus-isFocused) blue;
+            --blurred-color: var(--focus-isBlurred) gray;
+            color: var(--focused-color, var(--blurred-color));
+        }
+        ```
+
+Flags are perfect for binary styling: either the property is applied or ignored, never interpolated.
+
+**Note:**  
+- When set, flag variables hold an empty string (won't carry any meaningful value) — effectively toggling "on".  
+- When unset, flag variables invalidate the declaration, so the browser ignores it — effectively toggling "off".  
+
+##### 3. Factors
+
+Factors act as *gradual drivers* for smooth transitions.
+
+- **Intent**: Interpolate properties across states (fade, blend, scale).  
+- **Mechanics**:  
+    - A factor variable changes within a numeric range:  
+        ```
+        0 … +0.5 … +1
+        ```
+    - Driven by animation keyframes:  
+        ```css
+        0%   { --focus-focusFactor: 0; }
+        100% { --focus-focusFactor: 1; }
+        ```
+    - When settled, the classname "sticks" the factor to its final value:  
+        ```css
+        .the-component-scope {
+            &.is-focused {
+                --focus-focusFactor: 1;
+            }
+        }
+        ```
+    - That variable can then be used to blend properties proportionally:  
+        ```css
+        .the-component-scope {
+            /* Usage: */
+            /* 0 → gray, +1 → blue */
+            color: color-mix(in oklch, ... calc(var(--focus-focusFactor) * ...) ... );
+            /* Focused → 1, otherwise: 0.5: */
+            opacity: clamp(0.5, var(--focus-focusFactor), 1);
+        }
+        ```
+
+Factors let you fade, blend, or scale smoothly instead of switching abruptly.
+
+There's also a **conditional factor** (`factorCondVar`):  
+- Behaves like a factor, but resets to `unset` when inactive.  
+- This makes it easier to let default styles take over at baseline.
+
+---
+
+##### React + CSS Separation
+
+The system works by splitting responsibilities:
+
+- **React hook (`useFeedbackBehaviorState()`)**  
+    Orchestrates runtime state: intent, lifecycle, and toggling classnames.  
+- **CSS hook (`usesFeedbackState()`)**  
+    Describes how those states (via classname toggles) map to animations, flags, and factors at the stylesheet level.  
+
+Together, they form a predictable, declarative system:  
+- Animations tell the story of change  
+- Flags provide discrete switches  
+- Factors drive gradual changes  
+
+##### ✅ Summary
+CSS Feedback State combines **animations, flags, and factors** into a unified model:  
+- **Animations** → visual effects when state changes  
+- **Flags** → binary switches for conditional styling  
+- **Factors** → numeric drivers for smooth interpolation (with optional fallback)  
+
+This layered approach makes transitions both **expressive** and **maintainable**, giving you fine control over how styles respond to state changes.
+
 ## 📚 Related Packages
 
 - [`@reusable-ui/animation-state`](https://www.npmjs.com/package/@reusable-ui/animation-state) – core animation lifecycle management.  
