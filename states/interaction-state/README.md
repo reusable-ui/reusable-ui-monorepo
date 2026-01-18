@@ -574,6 +574,273 @@ const useSelectedState = (props: SelectedStateProps & { defaultSelected?: never 
 };
 ```
 
+## 🧩 Exported CSS Hook
+
+### `usesInteractionState(interactionBehavior: InteractionBehavior): CssRule`
+
+Applies live CSS variables for interaction styling, including:
+- **Animation variables** for *visual effects* whenever an interaction state changes
+- **Flag variables** for *discrete switches* in conditional styling
+- **Factor variables** for *gradual drivers* in transitional styling
+
+**`InteractionBehavior` interface:**
+- **`transitions`**
+  Defines feedback animation cases for *visual effects* whenever an interaction state changes.
+- **`flags`**
+  Defines flag cases for conditional styling.
+- **`factorVar`**
+  Specifies a CSS variable for smooth transitions.
+- **`factorCondVar`**
+  Specifies a CSS variable for smooth transitions with inactive fallback.
+- **`ifInactiveState`**
+  Defines the condition for the inactive baseline state.
+- **`factors`**
+  Defines factor cases for holding final numeric values once a transition settles.
+
+#### 💡 Usage Example
+
+```ts
+// Describe how interaction collapse state should behave:
+const collapseStateRule : CssRule = usesInteractionState({
+    // Interaction animations for visual effects whenever an interaction state changes:
+    transitions     : [
+        {
+            ifState   : ifExpanding,
+            variable  : collapseStateVars.animationExpanding,
+            animation : options.animationExpanding,
+        },
+        {
+            ifState   : ifCollapsing,
+            variable  : collapseStateVars.animationCollapsing,
+            animation : options.animationCollapsing,
+        },
+    ],
+    
+    // Flags for discrete switches in conditional styling:
+    flags           : [
+        // Current flags:
+        {
+            ifState  : ifExpandingOrExpanded,
+            variable : collapseStateVars.isExpanded,
+        },
+        {
+            ifState  : ifCollapsingOrCollapsed,
+            variable : collapseStateVars.isCollapsed,
+        },
+    ],
+    
+    // Factor variables for gradual drivers in transitional styling:
+    factorVar       : collapseStateVars.expandFactor,
+    factorCondVar   : collapseStateVars.expandFactorCond,
+    ifInactiveState : ifCollapsed,
+    factors         : [
+        {
+            ifState : ifExpanded,
+            factor  : 1,
+        },
+        // Not needed: Defaults to 0 when no case matches:
+        // {
+        //     ifState : ifCollapsed,
+        //     factor  : 0,
+        // },
+    ],
+});
+
+// Apply collapse states alongside other styles:
+return style({
+    display  : 'grid',
+    fontSize : '1rem',
+    
+    // Apply collapse state rule:
+    ...collapseStateRule,
+    // `CssRule` is an object with a unique symbol property (`{ [Symbol()]: CssRuleData }`),
+    // so it can be safely spread without risk of overriding other styles.
+});
+```
+
+#### 🎨 Rendered CSS
+
+```css
+.the-component-scope {
+    /* Fallbacks (reset defaults, lowest priority, applied before any declarations): */
+    --collapse-isExpanded: unset;
+    --collapse-isCollapsed: unset;
+    
+    display   : grid;
+    font-size : 1rem;
+    
+    --collapse-expandFactorCond: var(--collapse-expandFactor);
+    
+    /* Transition states: */
+    &.is-expanding {
+        --collapse-expanding: var(--anim-expanding);
+    }
+    &.is-collapsing {
+        --collapse-collapsing: var(--anim-collapsing);
+    }
+    
+    /* Flag states: */
+    &:is(.is-expanding, .is-expanded) {
+        --collapse-isExpanded: ;
+    }
+    &:is(.is-collapsing, .is-collapsed) {
+        --collapse-isCollapsed: ;
+    }
+    
+    /* Primary factor states: */
+    &.is-expanded {
+        --collapse-expandFactor: 1;
+    }
+    
+    /* Conditional factor states: */
+    &.is-collapsed {
+        --collapse-expandFactorCond: unset;
+    }
+}
+
+@property --collapse-expandFactor {
+    syntax        : "<number>";
+    inherits      : true;
+    initial-value : 0;
+}
+```
+
+#### 🧠 How CSS Interaction State Works
+
+Interaction state styling is built from three coordinated parts: **interaction animations**, **flags**, and **factors**.  
+Together, they let you declaratively map component states to CSS styling behaviors — from simple on/off switches to smooth interpolations.
+
+##### 1. Interaction Animations
+
+Animations provide the *visual effects* whenever an interaction state changes.  
+
+- **Intent**: Animate the component as it moves between states.  
+- **Mechanics**:  
+    - State changes toggle a `classname`.  
+    - When the `classname` matches an `ifState` condition (e.g. `&.is-expanding { ... }`),
+    a CSS variable is assigned with the desired animation:  
+        ```css
+        .the-component-scope {
+            /* Conditional animation: */
+            &.is-expanding {
+                --collapse-expanding: var(--anim-expanding);
+            }
+        }
+        ```
+    - That variable can then be used to drive the animation:  
+        ```css
+        .the-component-scope {
+            /* Usage: */
+            animation: var(--collapse-expanding), var(--other-animation);
+        }
+        ```
+
+To define multiple animations consistently, the **`InteractionCase`** interface is used:  
+- `ifState`   → determines when the animation applies  
+- `variable`  → specifies the CSS variable to assign  
+- `animation` → specifies the animation value or reference to apply  
+
+##### 2. Flags
+
+Flags act as *discrete switches* for conditional styling.
+
+- **Intent**: Apply properties on specific states, fully or not at all — never interpolated.  
+- **Mechanics**:  
+    - State changes toggle a `classname`.  
+    - When the `classname` matches an `ifState` condition (e.g. `&:is(.is-expanding, .is-expanded) { ... }`),
+    a CSS variable is set with an empty string (won't carry any meaningful value) and acts as an **active switch**:  
+        ```css
+        .the-component-scope {
+            /* Unset: */
+            --collapse-isExpanded: unset;
+            
+            /* Set: */
+            &:is(.is-expanding, .is-expanded) {
+                --collapse-isExpanded: ;
+            }
+        }
+        ```
+    - That variable can then be used to conditionally style properties:  
+        ```css
+        .the-component-scope {
+            /* Usage: */
+            background-image: var(--collapse-isExpanded) url('/res/expanded.svg');
+            --expanded-color: var(--collapse-isExpanded) blue;
+            --collapsed-color: var(--collapse-isCollapsed) gray;
+            color: var(--expanded-color, var(--collapsed-color));
+        }
+        ```
+
+Flags are perfect for binary styling: either the property is applied or ignored, never interpolated.
+
+**Note:**  
+- When set, flag variables hold an empty string (won't carry any meaningful value) — effectively toggling "on".  
+- When unset, flag variables invalidate the declaration, so the browser ignores it — effectively toggling "off".  
+
+##### 3. Factors
+
+Factors act as *gradual drivers* for smooth transitions.
+
+- **Intent**: Interpolate properties across states (fade, blend, scale).  
+- **Mechanics**:  
+    - A factor variable changes within a numeric range:  
+        ```
+        0 … +0.5 … +1
+        ```
+    - Driven by animation keyframes:  
+        ```css
+        0%   { --collapse-expandFactor: 0; }
+        100% { --collapse-expandFactor: 1; }
+        ```
+    - When settled, the classname "sticks" the factor to its final value:  
+        ```css
+        .the-component-scope {
+            &.is-expanded {
+                --collapse-expandFactor: 1;
+            }
+        }
+        ```
+    - That variable can then be used to blend properties proportionally:  
+        ```css
+        .the-component-scope {
+            /* Usage: */
+            /* 0 → gray, +1 → blue */
+            color: color-mix(in oklch, ... calc(var(--collapse-expandFactor) * ...) ... );
+            /* Expanded → 1, otherwise: 0.5: */
+            opacity: clamp(0.5, var(--collapse-expandFactor), 1);
+        }
+        ```
+
+Factors let you fade, blend, or scale smoothly instead of switching abruptly.
+
+There's also a **conditional factor** (`factorCondVar`):  
+- Behaves like a factor, but resets to `unset` when inactive.  
+- This makes it easier to let default styles take over at baseline.
+
+---
+
+##### React + CSS Separation
+
+The system works by splitting responsibilities:
+
+- **React hook (`useInteractionBehaviorState()`)**  
+    Orchestrates runtime state: intent, lifecycle, and toggling classnames.  
+- **CSS hook (`usesInteractionState()`)**  
+    Describes how those states (via classname toggles) map to animations, flags, and factors at the stylesheet level.  
+
+Together, they form a predictable, declarative system:  
+- Animations tell the story of change  
+- Flags provide discrete switches  
+- Factors drive gradual changes  
+
+##### ✅ Summary
+CSS Interaction State combines **animations, flags, and factors** into a unified model:  
+- **Animations** → visual effects when state changes  
+- **Flags** → binary switches for conditional styling  
+- **Factors** → numeric drivers for smooth interpolation (with optional fallback)  
+
+This layered approach makes transitions both **expressive** and **maintainable**, giving you fine control over how styles respond to state changes.
+
 ## 📚 Related Packages
 
 - [`@reusable-ui/animation-state`](https://www.npmjs.com/package/@reusable-ui/animation-state) – core animation lifecycle management.  
