@@ -9,10 +9,6 @@ import {
     
     // Writes css in javascript:
     rule,
-    atRule,
-    states,
-    style,
-    vars,
     
     
     
@@ -31,6 +27,12 @@ import {
 import {
     animationRegistry,
 }                           from '@reusable-ui/animation-feature'   // A styling utility for composing a unified animation stack from custom and registered state packages.
+
+// Reusable-ui states:
+import {
+    // Hooks:
+    usesFeedbackState,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
 
@@ -284,87 +286,51 @@ animationRegistry.registerAnimation(pressStateVars.animationReleasing);
  * };
  * ```
  */
-export const usesPressState = (options?: CssPressStateOptions): CssPressState => {
-    // Extract options and assign defaults:
-    const {
-        animationPressing  = 'none', // Defaults to `none`.
-        animationReleasing = 'none', // Defaults to `none`.
-    } = options ?? {};
-    
-    
-    
-    return {
-        pressStateRule : () => style({
-            // Register `pressFactor` as an animatable custom property:
-            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
-            ...atRule(`@property ${pressStateVars.pressFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-                // @ts-ignore
-                syntax       : '"<number>"',
-                inherits     : true,
-                initialValue : 0,
-            }),
-            
-            // Mirror `pressFactor` into `pressFactorCond` by default:
-            // - During transitions and when fully pressed, `pressFactorCond` follows `pressFactor`.
-            ...vars({
-                [pressStateVars.pressFactorCond]: pressStateVars.pressFactor,
-            }),
-            
-            
-            
-            ...states({
-                // Apply pressing animation during the pressing phase:
-                ...ifPressing(
-                    vars({
-                        [pressStateVars.animationPressing ] : animationPressing,  // Activate the animation (if provided).
-                    })
-                ),
-                
-                // Apply releasing animation during the releasing phase:
-                ...ifReleasing(
-                    vars({
-                        [pressStateVars.animationReleasing] : animationReleasing, // Activate the animation (if provided).
-                    })
-                ),
-                
-                
-                
-                // Mark as pressed during both pressing and fully pressed states:
-                ...ifPressingOrPressed(
-                    vars({
-                        [pressStateVars.isPressed ] : '',      // Valid    when either pressing or fully pressed.
-                        [pressStateVars.isReleased] : 'unset', // Poisoned when either pressing or fully pressed.
-                    })
-                ),
-                
-                // Mark as released during both releasing and fully released states:
-                ...ifReleasingOrReleased(
-                    vars({
-                        [pressStateVars.isPressed ] : 'unset', // Poisoned when either releasing or fully released.
-                        [pressStateVars.isReleased] : '',      // Valid    when either releasing or fully released.
-                    })
-                ),
-                
-                
-                
-                // Assign the settled value for `pressFactor`:
-                // - Sticks to `1` when the component is fully pressed.
-                ...ifPressed(
-                    vars({
-                        [pressStateVars.pressFactor]: 1,
-                    })
-                ),
-                
-                // Drop `pressFactorCond` when fully released (baseline inactive):
-                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
-                ...ifReleased(
-                    vars({
-                        [pressStateVars.pressFactorCond]: 'unset',
-                    })
-                ),
-            }),
-        }),
+export const usesPressState = (options?: CssPressStateOptions): CssPressState => ({
+    pressStateRule : () => usesFeedbackState({
+        // Feedback animations for visual effects whenever a press state changes:
+        animations      : [
+            {
+                ifState   : ifPressing,
+                variable  : pressStateVars.animationPressing,
+                animation : options?.animationPressing,
+            },
+            {
+                ifState   : ifReleasing,
+                variable  : pressStateVars.animationReleasing,
+                animation : options?.animationReleasing,
+            },
+        ],
         
-        pressStateVars,
-    } satisfies CssPressState;
-};
+        // Flags for discrete switches in conditional styling:
+        flags           : [
+            // Current flags:
+            {
+                ifState  : ifPressingOrPressed,
+                variable : pressStateVars.isPressed,
+            },
+            {
+                ifState  : ifReleasingOrReleased,
+                variable : pressStateVars.isReleased,
+            },
+        ],
+        
+        // Factor variables for gradual drivers in transitional styling:
+        factorVar       : pressStateVars.pressFactor,
+        factorCondVar   : pressStateVars.pressFactorCond,
+        ifInactiveState : ifReleased,
+        factors         : [
+            {
+                ifState : ifPressed,
+                factor  : 1,
+            },
+            // Not needed: Defaults to 0 when no case matches:
+            // {
+            //     ifState : ifReleased,
+            //     factor  : 0,
+            // },
+        ],
+    }),
+    
+    pressStateVars,
+}) satisfies CssPressState;
