@@ -162,21 +162,14 @@ animationRegistry.registerAnimation(exciteStateVars.animationExciting);
  * }
  * ```
  */
-export const usesExciteState = (options?: CssExciteStateOptions): CssExciteState => {
-    // Extract options:
-    const {
-        animationExciting,
-    } = options ?? {};
-    
-    
-    
-    return {
-        exciteStateRule : () => usesActivityState({
+export const usesExciteState = (options?: CssExciteStateOptions): CssExciteState => ({
+    exciteStateRule : () => usesActivityState({
+        animations : {
             ifState   : ifExcited,
             variable  : exciteStateVars.animationExciting,
-            animation : animationExciting,
-        }),
-        
-        exciteStateVars,
-    } satisfies CssExciteState;
-};
+            animation : options?.animationExciting,
+        },
+    }),
+    
+    exciteStateVars,
+}) satisfies CssExciteState;
