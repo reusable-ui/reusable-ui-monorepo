@@ -9,10 +9,6 @@ import {
     
     // Writes css in javascript:
     rule,
-    atRule,
-    states,
-    style,
-    vars,
     
     
     
@@ -31,6 +27,12 @@ import {
 import {
     animationRegistry,
 }                           from '@reusable-ui/animation-feature'   // A styling utility for composing a unified animation stack from custom and registered state packages.
+
+// Reusable-ui states:
+import {
+    // Hooks:
+    usesInteractionState,
+}                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
 
@@ -345,87 +347,51 @@ animationRegistry.registerAnimation(activeStateVars.animationDeactivating);
  * };
  * ```
  */
-export const usesActiveState = (options?: CssActiveStateOptions): CssActiveState => {
-    // Extract options and assign defaults:
-    const {
-        animationActivating   = 'none', // Defaults to `none`.
-        animationDeactivating = 'none', // Defaults to `none`.
-    } = options ?? {};
-    
-    
-    
-    return {
-        activeStateRule : () => style({
-            // Register `activeFactor` as an animatable custom property:
-            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
-            ...atRule(`@property ${activeStateVars.activeFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-                // @ts-ignore
-                syntax       : '"<number>"',
-                inherits     : true,
-                initialValue : 0,
-            }),
-            
-            // Mirror `activeFactor` into `activeFactorCond` by default:
-            // - During transitions and when fully active, `activeFactorCond` follows `activeFactor`.
-            ...vars({
-                [activeStateVars.activeFactorCond]: activeStateVars.activeFactor,
-            }),
-            
-            
-            
-            ...states({
-                // Apply activating animation during the activating phase:
-                ...ifActivating(
-                    vars({
-                        [activeStateVars.animationActivating  ] : animationActivating,   // Activate the animation (if provided).
-                    })
-                ),
-                
-                // Apply deactivating animation during the deactivating phase:
-                ...ifDeactivating(
-                    vars({
-                        [activeStateVars.animationDeactivating] : animationDeactivating, // Activate the animation (if provided).
-                    })
-                ),
-                
-                
-                
-                // Mark as active during both activating and fully active states:
-                ...ifActivatingOrActive(
-                    vars({
-                        [activeStateVars.isActive  ] : '',      // Valid    when either activating or fully active.
-                        [activeStateVars.isInactive] : 'unset', // Poisoned when either activating or fully active.
-                    })
-                ),
-                
-                // Mark as inactive during both deactivating and fully inactive states:
-                ...ifDeactivatingOrInactive(
-                    vars({
-                        [activeStateVars.isActive  ] : 'unset', // Poisoned when either deactivating or fully inactive.
-                        [activeStateVars.isInactive] : '',      // Valid    when either deactivating or fully inactive.
-                    })
-                ),
-                
-                
-                
-                // Assign the settled value for `activeFactor`:
-                // - Sticks to `1` when the component is fully active.
-                ...ifActive(
-                    vars({
-                        [activeStateVars.activeFactor]: 1,
-                    })
-                ),
-                
-                // Drop `activeFactorCond` when fully inactive (baseline inactive):
-                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
-                ...ifInactive(
-                    vars({
-                        [activeStateVars.activeFactorCond]: 'unset',
-                    })
-                ),
-            }),
-        }),
+export const usesActiveState = (options?: CssActiveStateOptions): CssActiveState => ({
+    activeStateRule : () => usesInteractionState({
+        // Feedback animations for visual effects whenever an active state changes:
+        animations      : [
+            {
+                ifState   : ifActivating,
+                variable  : activeStateVars.animationActivating,
+                animation : options?.animationActivating,
+            },
+            {
+                ifState   : ifDeactivating,
+                variable  : activeStateVars.animationDeactivating,
+                animation : options?.animationDeactivating,
+            },
+        ],
         
-        activeStateVars,
-    } satisfies CssActiveState;
-};
+        // Flags for discrete switches in conditional styling:
+        flags           : [
+            // Current flags:
+            {
+                ifState  : ifActivatingOrActive,
+                variable : activeStateVars.isActive,
+            },
+            {
+                ifState  : ifDeactivatingOrInactive,
+                variable : activeStateVars.isInactive,
+            },
+        ],
+        
+        // Factor variables for gradual drivers in transitional styling:
+        factorVar       : activeStateVars.activeFactor,
+        factorCondVar   : activeStateVars.activeFactorCond,
+        ifInactiveState : ifInactive,
+        factors         : [
+            {
+                ifState : ifActive,
+                factor  : 1,
+            },
+            // Not needed: Defaults to 0 when no case matches:
+            // {
+            //     ifState : ifInactive,
+            //     factor  : 0,
+            // },
+        ],
+    }),
+    
+    activeStateVars,
+}) satisfies CssActiveState;
