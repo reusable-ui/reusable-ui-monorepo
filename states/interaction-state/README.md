@@ -603,7 +603,7 @@ Applies live CSS variables for interaction styling, including:
 // Describe how interaction collapse state should behave:
 const collapseStateRule : CssRule = usesInteractionState({
     // Interaction animations for visual effects whenever an interaction state changes:
-    transitions     : [
+    animations      : [
         {
             ifState   : ifExpanding,
             variable  : collapseStateVars.animationExpanding,
@@ -735,7 +735,7 @@ Animations provide the *visual effects* whenever an interaction state changes.
         }
         ```
 
-To define multiple animations consistently, the **`InteractionCase`** interface is used:  
+To define multiple animations consistently, the **`InteractionAnimationCase`** interface is used:  
 - `ifState`   → determines when the animation applies  
 - `variable`  → specifies the CSS variable to assign  
 - `animation` → specifies the animation value or reference to apply  

@@ -1,26 +1,33 @@
+// Cssfn:
+import {
+    // Arrays:
+    type MaybeArray,
+}                           from '@cssfn/core'                      // Writes css in javascript.
+
 // Reusable-ui states:
 import {
     // Types:
     type AnimationCase,
+    type AnimationBehavior,
 }                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
 
 
 /**
- * Defines a single activity animation case for *visual effects* whenever a state is still active.
+ * Defines a single activity animation case for *visual effects* whenever an activity is in progress.
  * 
  * Automatically runs the animation whenever the specified state condition is met.
  * 
  * @example
  * ```ts
- * const preparingCase : ActivityCase = {
+ * const preparingCase : ActivityAnimationCase = {
  *     ifState   : ifPreparing,
  *     variable  : orderStateVars.animationPreparing,
  *     animation : options.animationPreparing,
  * };
  * ```
  */
-export interface ActivityCase
+export interface ActivityAnimationCase
     extends
         // Bases:
         AnimationCase
@@ -56,4 +63,50 @@ export interface ActivityCase
      * Defaults to `'none'`.
      */
     animation ?: AnimationCase['animation']
+}
+
+
+
+/**
+ * Describes how activity styling should behave.
+ * 
+ * Defines **animations** for *visual effects* whenever the corresponding activity is in progress.
+ * 
+ * @example
+ * ```ts
+ * // Describe how order animations should behave:
+ * const orderAnimations : CssRule = usesActivityState({
+ *     {
+ *         ifState   : ifPreparing,
+ *         variable  : orderStateVars.animationPreparing,
+ *         animation : options.animationPreparing,
+ *     },
+ *     {
+ *         ifState   : ifShipping,
+ *         variable  : orderStateVars.animationShipping,
+ *         animation : options.animationShipping,
+ *     },
+ *     {
+ *         ifState   : ifDelivering,
+ *         variable  : orderStateVars.animationDelivering,
+ *         animation : options.animationDelivering,
+ *     },
+ * });
+ * ```
+ */
+export interface ActivityBehavior
+    extends
+        // Bases:
+        AnimationBehavior
+{
+    /**
+     * Defines activity animation cases for *visual effects* whenever the corresponding activity is in progress.
+     * 
+     * Automatically runs the corresponding animation whenever the component's activity is in progress.
+     * 
+     * Accepts either:
+     * - A single `ActivityAnimationCase`
+     * - An array of `ActivityAnimationCase[]`
+     */
+    animations ?: MaybeArray<ActivityAnimationCase>
 }

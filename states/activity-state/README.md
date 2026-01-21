@@ -235,40 +235,51 @@ The lifecycle flow ensures:
 
 ## 🧩 Exported CSS Hook
 
-### `usesActivityState(activityCases: MaybeArray<ActivityCase>): CssRule`
+### `usesActivityState(activityBehavior: ActivityBehavior): CssRule`
 
-Applies activity cases for styling.
+Applies live CSS variables for activity styling.
 
-Automatically runs the corresponding animation whenever a state is still active.
+Activates **animation variables** for *visual effects* whenever the corresponding activity is in progress.
 
-Accepts either:
-- A single `ActivityCase`
-- An array of `ActivityCase[]`
-
-**`ActivityCase` interface:**
-- **`ifState`**  
+Each activity case provides:
+- **`ifState`**
   Determines when the animation applies.
-- **`variable`**  
+- **`variable`**
   Specifies the CSS variable to assign when the state condition is met.
-- **`animation`**  
+- **`animation`**
   Specifies the animation value or reference to apply to the variable.
 
 #### 💡 Usage Example
 
 ```ts
-export default () => style({
+// Describe how order animations should behave:
+const orderAnimations : CssRule = usesActivityState({
+    {
+        ifState   : ifPreparing,
+        variable  : orderStateVars.animationPreparing,
+        animation : options.animationPreparing,
+    },
+    {
+        ifState   : ifShipping,
+        variable  : orderStateVars.animationShipping,
+        animation : options.animationShipping,
+    },
+    {
+        ifState   : ifDelivering,
+        variable  : orderStateVars.animationDelivering,
+        animation : options.animationDelivering,
+    },
+});
+
+// Apply order animations alongside other styles:
+return style({
     display  : 'grid',
     fontSize : '1rem',
     
-    // Apply animations:
-    animation: 'var(--order-preparing, none), var(--order-shipping, none), var(--order-delivering, none)',
-    
-    // Define activity cases when the state is met:
-    ...usesActivityState([
-        { ifState: ifPreparing,  variable: 'var(--order-preparing)',  animation: 'var(--anim-preparing)'  },
-        { ifState: ifShipping,   variable: 'var(--order-shipping)',   animation: 'var(--anim-shipping)'   },
-        { ifState: ifDelivering, variable: 'var(--order-delivering)', animation: 'var(--anim-delivering)' },
-    ]),
+    // Apply activity state rule:
+    ...orderAnimations,
+    // `CssRule` is an object with a unique symbol property (`{ [Symbol()]: CssRuleData }`),
+    // so it can be safely spread without risk of overriding other styles.
 });
 
 // Define conditional selectors:
@@ -299,7 +310,7 @@ const ifDelivering = (styles: CssStyleCollection) => rule('.is-delivering', styl
 
 #### 🧠 How CSS Activity State Works
 
-Each **`ActivityCase`** defines a mapping between:
+Each **`ActivityAnimationCase`** defines a mapping between:
 - **Condition (`ifState`)** → determines when the case is active (e.g. `ifPreparing`).
 - **Variable (`variable`)** → the CSS variable to assign.
 - **Animation (`animation`)** → the animation value or reference applied to the variable.

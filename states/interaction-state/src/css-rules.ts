@@ -31,7 +31,7 @@ import {
  * // Describe how interaction collapse state should behave:
  * const collapseStateRule : CssRule = usesInteractionState({
  *     // Interaction animations for visual effects whenever an interaction state changes:
- *     transitions     : [
+ *     animations      : [
  *         {
  *             ifState   : ifExpanding,
  *             variable  : collapseStateVars.animationExpanding,

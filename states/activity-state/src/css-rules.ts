@@ -1,10 +1,5 @@
 // Cssfn:
 import {
-    // Arrays:
-    type MaybeArray,
-    
-    
-    
     // Cssfn css specific types:
     type CssRule,
 }                           from '@cssfn/core'                      // Writes css in javascript.
@@ -17,34 +12,36 @@ import {
 
 // Types:
 import {
-    type ActivityCase,
+    type ActivityBehavior,
 }                           from './css-types.js'
 
 
 
 /**
- * Applies activity cases for styling.
+ * Applies live CSS variables for activity styling.
  * 
- * Automatically runs the corresponding animation whenever a state is still active.
+ * Activates **animation variables** for *visual effects* whenever the corresponding activity is in progress.
  * 
- * Accepts either:
- * - A single `ActivityCase`
- * - An array of `ActivityCase[]`
+ * Each activity case provides:
+ * - **`ifState`**
+ *   Determines when the animation applies.
+ * - **`variable`**
+ *   Specifies the CSS variable to assign when the state condition is met.
+ * - **`animation`**
+ *   Specifies the animation value or reference to apply to the variable.
  * 
- * @param activityCases - One or more activity case definitions.
- * @returns A `CssRule` that applies the specified animations when their activity state conditions are met.
+ * @param activityBehavior - The activity styling behaviors to apply.
+ * @returns A `CssRule` that enables activity styling to work correctly and dynamically.
  * 
  * @example
  * ```ts
- * // Single activity case:
- * const preparingAnimation : CssRule = usesActivityState({
- *     ifState   : ifPreparing,
- *     variable  : orderStateVars.animationPreparing,
- *     animation : options.animationPreparing,
- * });
- * 
- * // Multiple activity cases:
- * const orderAnimations : CssRule = usesActivityState([
+ * // Describe how order animations should behave:
+ * const orderAnimations : CssRule = usesActivityState({
+ *     {
+ *         ifState   : ifPreparing,
+ *         variable  : orderStateVars.animationPreparing,
+ *         animation : options.animationPreparing,
+ *     },
  *     {
  *         ifState   : ifShipping,
  *         variable  : orderStateVars.animationShipping,
@@ -55,14 +52,18 @@ import {
  *         variable  : orderStateVars.animationDelivering,
  *         animation : options.animationDelivering,
  *     },
- * ]);
+ * });
  * 
+ * // Apply order animations alongside other styles:
  * return style({
- *     ...preparingAnimation,
+ *     display  : 'grid',
+ *     fontSize : '1rem',
+ *     
+ *     // Apply activity state rule:
  *     ...orderAnimations,
  *     // `CssRule` is an object with a unique symbol property (`{ [Symbol()]: CssRuleData }`),
  *     // so it can be safely spread without risk of overriding other styles.
  * });
  * ```
  */
-export const usesActivityState = (activityCases: MaybeArray<ActivityCase>): CssRule => usesAnimationState(activityCases);
+export const usesActivityState = (activityBehavior: ActivityBehavior): CssRule => usesAnimationState(activityBehavior);

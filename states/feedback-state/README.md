@@ -595,7 +595,7 @@ Applies live CSS variables for feedback styling, including:
 // Describe how feedback focus state should behave:
 const focusStateRule : CssRule = usesFeedbackState({
     // Feedback animations for visual effects whenever a feedback state changes:
-    transitions     : [
+    animations      : [
         {
             ifState   : ifFocusing,
             variable  : focusStateVars.animationFocusing,
@@ -727,7 +727,7 @@ Animations provide the *visual effects* whenever a feedback state changes.
         }
         ```
 
-To define multiple animations consistently, the **`FeedbackCase`** interface is used:  
+To define multiple animations consistently, the **`FeedbackAnimationCase`** interface is used:  
 - `ifState`   → determines when the animation applies  
 - `variable`  → specifies the CSS variable to assign  
 - `animation` → specifies the animation value or reference to apply  

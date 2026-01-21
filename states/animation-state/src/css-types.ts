@@ -1,5 +1,10 @@
 // Cssfn:
 import {
+    // Arrays:
+    type MaybeArray,
+    
+    
+    
     // Cssfn css specific types:
     type CssCustomSimpleRef,
     type CssKnownProps,
@@ -12,7 +17,7 @@ import {
 /**
  * Defines a single animation case.
  * 
- * Runs the animation automatically when the specified state condition is met.
+ * Automatically runs the animation whenever the specified state condition is met.
  * 
  * @example
  * ```ts
@@ -55,4 +60,49 @@ export interface AnimationCase {
      * Defaults to `'none'`.
      */
     animation ?: CssKnownProps['animation']
+}
+
+
+
+/**
+ * Describes how animation styling should behave.
+ * 
+ * Defines **animations** for *visual effects* whenever the corresponding state becomes active.
+ * 
+ * @example
+ * ```ts
+ * // Describe how validity animations should behave:
+ * const validityStateRule : CssRule = usesAnimationState({
+ *     // Animations for visual effects whenever a validation process runs:
+ *     animations : [
+ *         {
+ *             ifState   : ifValidating,
+ *             variable  : validityStateVars.animationValidating,
+ *             animation : options.animationValidating,
+ *         },
+ *         {
+ *             ifState   : ifInvalidating,
+ *             variable  : validityStateVars.animationInvalidating,
+ *             animation : options.animationInvalidating,
+ *         },
+ *         {
+ *             ifState   : ifUnvalidating,
+ *             variable  : validityStateVars.animationUnvalidating,
+ *             animation : options.animationUnvalidating,
+ *         },
+ *     ],
+ * });
+ * ```
+ */
+export interface AnimationBehavior {
+    /**
+     * Defines animation cases for *visual effects* whenever the corresponding state becomes active.
+     * 
+     * Automatically runs the corresponding animation whenever the component's state becomes active.
+     * 
+     * Accepts either:
+     * - A single `AnimationCase`
+     * - An array of `AnimationCase[]`
+     */
+    animations ?: MaybeArray<AnimationCase>
 }

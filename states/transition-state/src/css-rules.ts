@@ -41,7 +41,7 @@ import {
  * // Describe how transitional validity state should behave:
  * const validityStateRule : CssRule = usesTransitionState({
  *     // Transitional animations for visual effects whenever a transitional state changes:
- *     transitions     : [
+ *     animations      : [
  *         {
  *             ifState   : ifValidating,
  *             variable  : validityStateVars.animationValidating,
@@ -126,8 +126,6 @@ import {
 export const usesTransitionState = (transitionBehavior: TransitionBehavior): CssRule => {
     // Extract transition behavior and assign defaults:
     const {
-        transitions     = [],
-        
         flags           = [],
         
         factorVar,
@@ -138,10 +136,24 @@ export const usesTransitionState = (transitionBehavior: TransitionBehavior): Css
     
     
     
+    // Normalize input: always work with an array internally:
+    const normalizedFlags = (
+        Array.isArray(flags)
+        ? flags
+        : [flags]
+    );
+    const normalizedFactors = (
+        Array.isArray(factors)
+        ? factors
+        : [factors]
+    );
+    
+    
+    
     // Build composite style from transition behavior:
     return style({
         // Apply transition cases:
-        ...usesAnimationState(transitions),
+        ...usesAnimationState(transitionBehavior),
         
         
         
@@ -151,7 +163,7 @@ export const usesTransitionState = (transitionBehavior: TransitionBehavior): Css
         ...fallback( // `fallback()` ensures these resets are emitted before any other declarations.
             vars(
                 Object.fromEntries(
-                    flags.map(({ variable }) =>
+                    normalizedFlags.map(({ variable }) =>
                         // Reset each flag variable to `unset`.
                         // - [variable, 'unset'] => ['var(--var-name)', 'unset'] → normalized internally to ['--var-name', 'unset']
                         [variable, 'unset']
@@ -162,7 +174,7 @@ export const usesTransitionState = (transitionBehavior: TransitionBehavior): Css
         
         // Conditionally set flags when their state condition matches:
         ...states(
-            flags.map(({ ifState, variable }) =>
+            normalizedFlags.map(({ ifState, variable }) =>
                 // Only set the variable if the state condition is met:
                 ifState(
                     vars({
@@ -193,7 +205,7 @@ export const usesTransitionState = (transitionBehavior: TransitionBehavior): Css
         
         // Conditionally assign discrete factor values when states are fully settled:
         ...states(
-            factors.map(({ ifState, factor }) =>
+            normalizedFactors.map(({ ifState, factor }) =>
                 // Only assign the variable if the state condition is met:
                 ifState(
                     vars({

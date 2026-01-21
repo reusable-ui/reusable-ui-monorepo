@@ -1,13 +1,16 @@
+// Cssfn:
+import {
+    // Arrays:
+    type MaybeArray,
+}                           from '@cssfn/core'                      // Writes css in javascript.
+
 // Reusable-ui states:
 import {
     // Types:
-    type TransitionCase,
+    type TransitionAnimationCase,
+    type TransitionFlagCase,
+    type TransitionFactorCase,
     type TransitionBehavior,
-}                           from '@reusable-ui/transition-state'    // Lifecycle-aware transition state for React, enabling reusable hooks with consistent animations.
-export {
-    // Types:
-    type FlagCase,
-    type FactorCase,
 }                           from '@reusable-ui/transition-state'    // Lifecycle-aware transition state for React, enabling reusable hooks with consistent animations.
 
 
@@ -19,17 +22,17 @@ export {
  * 
  * @example
  * ```ts
- * const focusingCase : FeedbackCase = {
+ * const focusingCase : FeedbackAnimationCase = {
  *     ifState   : ifFocusing,
  *     variable  : focusStateVars.animationFocusing,
  *     animation : options.animationFocusing,
  * };
  * ```
  */
-export interface FeedbackCase
+export interface FeedbackAnimationCase
     extends
         // Bases:
-        TransitionCase
+        TransitionAnimationCase
 {
     /**
      * Determines when the animation applies.
@@ -39,7 +42,7 @@ export interface FeedbackCase
      * - A custom function using `rule()`, e.g. `(styles) => rule('.is-focusing', styles)`
      * - Any function with signature: `(styles: CssStyleCollection) => CssRule`
      */
-    ifState    : TransitionCase['ifState']
+    ifState    : TransitionAnimationCase['ifState']
     
     /**
      * Specifies the CSS variable to assign when the state condition is met.
@@ -48,7 +51,7 @@ export interface FeedbackCase
      * - A hard-coded CSS variable reference, e.g. `var(--my-var)`
      * - A strongly typed reference, e.g. `focusStateVars.animationFocusing` (recommended)
      */
-    variable   : TransitionCase['variable']
+    variable   : TransitionAnimationCase['variable']
     
     /**
      * Specifies the animation value or reference to apply to the variable.
@@ -61,7 +64,98 @@ export interface FeedbackCase
      * 
      * Defaults to `'none'`.
      */
-    animation ?: TransitionCase['animation']
+    animation ?: TransitionAnimationCase['animation']
+}
+
+
+
+/**
+ * Defines a single flag case for conditional styling.
+ * 
+ * Conditionally sets or unsets a boolean-like CSS variable based on the specified state condition.
+ * 
+ * When set, the variable holds an empty string (won't carry any meaningful value) and acts as an **active switch**.  
+ * When unset, the variable invalidates dependent properties, causing the browser to ignore them.
+ * 
+ * @example
+ * ```ts
+ * const isFocusingOrFocused : TransitionFlagCase = {
+ *     ifState  : ifFocusingOrFocused,
+ *     variable : focusStateVars.isFocused,
+ * };
+ * ```
+ */
+export interface FeedbackFlagCase
+    extends
+        // Bases:
+        TransitionFlagCase
+{
+    /**
+     * Determines when the flag variable is set.
+     * 
+     * Guidelines:
+     * - Match settled or transitional states for `is**ed` variables.
+     * - Match only transitional states for `is**ing` variables.
+     * - Match previous settled states for `was**ed` variables.
+     * 
+     * Common sources:
+     * - Built-in conditional functions, e.g. `ifFocusingOrFocused`, `ifBlurringOrBlurred`
+     * - A custom function using `rule()`, e.g. `(styles) => rule(':is(.is-focusing, .is-focused)', styles)`
+     * - Any function with signature: `(styles: CssStyleCollection) => CssRule`
+     */
+    ifState  : TransitionFlagCase['ifState']
+    
+    /**
+     * Specifies the boolean-like CSS variable to set when the state condition is met.
+     * 
+     * Behavior:
+     * - **Set** → assigns an empty string (won't carry any meaningful value) and acts as an **active switch**.
+     * - **Unset** → invalidates dependent properties, causing the browser to ignore them.
+     * 
+     * Accepts:
+     * - A hard-coded CSS variable reference, e.g. `var(--my-var)`
+     * - A strongly typed reference, e.g. `focusStateVars.isFocused` (recommended)
+     */
+    variable : TransitionFlagCase['variable']
+}
+
+
+
+/**
+ * Defines a single factor case for holding final numeric value once a transition settles.
+ * 
+ * Assigns a discrete value for keeping `factorVar` and `factorCondVar`
+ * *stick* at their final value after the transition finishes.
+ * 
+ * Note:
+ * - During an animation, factor values are smoothly driven by the animation's keyframes.
+ * 
+ * @example
+ * ```ts
+ * const focusFactor : TransitionFactorCase = {
+ *     ifState : ifFocused,
+ *     factor  : 1,
+ * };
+ * ```
+ */
+export interface FeedbackFactorCase
+    extends
+        // Bases:
+        TransitionFactorCase
+{
+    /**
+     * Determines when the `factorVar` is set.
+     * 
+     * Guidelines:
+     * - Match only fully settled states.
+     * - Do not match transitional states — let animations drive interpolation.
+     * 
+     * Common sources:
+     * - Built-in conditional functions, e.g. `ifFocused`, `ifBlurred`
+     * - A custom function using `rule()`, e.g. `(styles) => rule('.is-focused', styles)`
+     * - Any function with signature: `(styles: CssStyleCollection) => CssRule`
+     */
+    ifState : TransitionFactorCase['ifState']
 }
 
 
@@ -81,7 +175,7 @@ export interface FeedbackCase
  * // Describe how feedback focus state should behave:
  * const focusStateRule : CssRule = usesFeedbackState({
  *     // Feedback animations for visual effects whenever a feedback state changes:
- *     transitions     : [
+ *     animations      : [
  *         {
  *             ifState   : ifFocusing,
  *             variable  : focusStateVars.animationFocusing,
@@ -133,9 +227,25 @@ export interface FeedbackBehavior
     /**
      * Defines feedback animation cases for *visual effects* whenever a feedback state changes.
      * 
-     * Automatically runs the matching animation whenever the component's feedback state changes.
+     * Automatically runs the corresponding animation whenever the component's feedback state changes.
+     * 
+     * Accepts either:
+     * - A single `FeedbackAnimationCase`
+     * - An array of `FeedbackAnimationCase[]`
      */
-    transitions     ?: FeedbackCase[]
+    animations      ?: MaybeArray<FeedbackAnimationCase>
+    
+    /**
+     * Defines flag cases for conditional styling.
+     * 
+     * Provides boolean-like CSS variables for *discrete switches* in conditional styling.
+     * Either fully applied or not at all — never interpolated.
+     * 
+     * Accepts either:
+     * - A single `FeedbackFlagCase`
+     * - An array of `FeedbackFlagCase[]`
+     */
+    flags           ?: MaybeArray<FeedbackFlagCase>
     
     /**
      * Specifies a CSS variable for smooth transitions.
@@ -166,4 +276,18 @@ export interface FeedbackBehavior
      * making it easier for default styles to take over gracefully.
      */
     factorCondVar    : TransitionBehavior['factorCondVar']
+    
+    /**
+     * Defines factor cases for holding final numeric values once a transition settles.
+     * 
+     * Provides discrete values for keeping `factorVar` and `factorCondVar`
+     * *stick* at their final value after the transition finishes.
+     * 
+     * If no case matches, the factor variables resolve to `0`.
+     * 
+     * Accepts either:
+     * - A single `FeedbackFactorCase`
+     * - An array of `FeedbackFactorCase[]`
+     */
+    factors         ?: MaybeArray<FeedbackFactorCase>
 }

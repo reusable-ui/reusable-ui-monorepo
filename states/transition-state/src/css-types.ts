@@ -1,5 +1,10 @@
 // Cssfn:
 import {
+    // Arrays:
+    type MaybeArray,
+    
+    
+    
     // Cssfn css specific types:
     type CssCustomSimpleRef,
     type CssRule,
@@ -10,6 +15,7 @@ import {
 import {
     // Types:
     type AnimationCase,
+    type AnimationBehavior,
 }                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
 
@@ -21,14 +27,14 @@ import {
  * 
  * @example
  * ```ts
- * const validatingCase : TransitionCase = {
+ * const validatingCase : TransitionAnimationCase = {
  *     ifState   : ifValidating,
  *     variable  : validityStateVars.animationValidating,
  *     animation : options.animationValidating,
  * };
  * ```
  */
-export interface TransitionCase
+export interface TransitionAnimationCase
     extends
         // Bases:
         AnimationCase
@@ -78,13 +84,13 @@ export interface TransitionCase
  * 
  * @example
  * ```ts
- * const isValidatingOrValid : FlagCase = {
+ * const isValidatingOrValid : TransitionFlagCase = {
  *     ifState  : ifValidatingOrValid,
  *     variable : validityStateVars.isValid,
  * };
  * ```
  */
-export interface FlagCase {
+export interface TransitionFlagCase {
     /**
      * Determines when the flag variable is set.
      * 
@@ -127,13 +133,13 @@ export interface FlagCase {
  * 
  * @example
  * ```ts
- * const validFactor : FactorCase = {
+ * const validFactor : TransitionFactorCase = {
  *     ifState : ifValid,
  *     factor  : 1,
  * };
  * ```
  */
-export interface FactorCase {
+export interface TransitionFactorCase {
     /**
      * Determines when the `factorVar` is set.
      * 
@@ -178,7 +184,7 @@ export interface FactorCase {
  * // Describe how transitional validity state should behave:
  * const validityStateRule : CssRule = usesTransitionState({
  *     // Transitional animations for visual effects whenever a transitional state changes:
- *     transitions     : [
+ *     animations      : [
  *         {
  *             ifState   : ifValidating,
  *             variable  : validityStateVars.animationValidating,
@@ -249,21 +255,33 @@ export interface FactorCase {
  * });
  * ```
  */
-export interface TransitionBehavior {
+export interface TransitionBehavior
+    extends
+        // Bases:
+        AnimationBehavior
+{
     /**
      * Defines transitional animation cases for *visual effects* whenever a transitional state changes.
      * 
-     * Automatically runs the matching animation whenever the component's transitional state changes.
+     * Automatically runs the corresponding animation whenever the component's transitional state changes.
+     * 
+     * Accepts either:
+     * - A single `TransitionAnimationCase`
+     * - An array of `TransitionAnimationCase[]`
      */
-    transitions     ?: TransitionCase[]
+    animations      ?: MaybeArray<TransitionAnimationCase>
     
     /**
      * Defines flag cases for conditional styling.
      * 
      * Provides boolean-like CSS variables for *discrete switches* in conditional styling.
      * Either fully applied or not at all — never interpolated.
+     * 
+     * Accepts either:
+     * - A single `TransitionFlagCase`
+     * - An array of `TransitionFlagCase[]`
      */
-    flags           ?: FlagCase[]
+    flags           ?: MaybeArray<TransitionFlagCase>
     
     /**
      * Specifies a CSS variable for smooth transitions.
@@ -309,6 +327,10 @@ export interface TransitionBehavior {
      * *stick* at their final value after the transition finishes.
      * 
      * If no case matches, the factor variables resolve to `0`.
+     * 
+     * Accepts either:
+     * - A single `TransitionFactorCase`
+     * - An array of `TransitionFactorCase[]`
      */
-    factors         ?: FactorCase[]
+    factors         ?: MaybeArray<TransitionFactorCase>
 }

@@ -31,7 +31,7 @@ import {
  * // Describe how feedback focus state should behave:
  * const focusStateRule : CssRule = usesFeedbackState({
  *     // Feedback animations for visual effects whenever a feedback state changes:
- *     transitions     : [
+ *     animations      : [
  *         {
  *             ifState   : ifFocusing,
  *             variable  : focusStateVars.animationFocusing,

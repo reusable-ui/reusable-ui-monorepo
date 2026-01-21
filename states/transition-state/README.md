@@ -930,7 +930,7 @@ Applies live CSS variables for transitional styling, including:
 // Describe how transitional validity state should behave:
 const validityStateRule : CssRule = usesTransitionState({
     // Transitional animations for visual effects whenever a transitional state changes:
-    transitions     : [
+    animations      : [
         {
             ifState   : ifValidating,
             variable  : validityStateVars.animationValidating,
@@ -1111,7 +1111,7 @@ Animations provide the *visual effects* whenever a transitional state changes.
         }
         ```
 
-To define multiple animations consistently, the **`TransitionCase`** interface is used:  
+To define multiple animations consistently, the **`TransitionAnimationCase`** interface is used:  
 - `ifState`   → determines when the animation applies  
 - `variable`  → specifies the CSS variable to assign  
 - `animation` → specifies the animation value or reference to apply  

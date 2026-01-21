@@ -170,39 +170,57 @@ The lifecycle flow ensures:
 
 ## 🧩 Exported CSS Hook
 
-### `usesAnimationState(animationCases: MaybeArray<AnimationCase>): CssRule`
+### `usesAnimationState(animationBehavior: AnimationBehavior): CssRule`
 
-Applies animation cases for styling.
+Applies live CSS variables for animation styling.
 
-Runs the corresponding animation automatically whenever `useAnimationState()` activates the matching classname.
+Activates **animation variables** for *visual effects* whenever the corresponding state becomes active.
 
-Accepts either:
-- A single `AnimationCase`
-- An array of `AnimationCase[]`
-
-**`AnimationCase` interface:**
-- **`ifState`**  
+Each animation case provides:
+- **`ifState`**
   Determines when the animation applies.
-- **`variable`**  
+- **`variable`**
   Specifies the CSS variable to assign when the state condition is met.
-- **`animation`**  
+- **`animation`**
   Specifies the animation value or reference to apply to the variable.
 
 #### 💡 Usage Example
+
 ```ts
-export default () => style({
+// Describe how validity animations should behave:
+const validityStateRule : CssRule = usesAnimationState({
+    // Animations for visual effects whenever a validation process runs:
+    animations : [
+        {
+            ifState   : ifValidating,
+            variable  : validityStateVars.animationValidating,
+            animation : options.animationValidating,
+        },
+        {
+            ifState   : ifInvalidating,
+            variable  : validityStateVars.animationInvalidating,
+            animation : options.animationInvalidating,
+        },
+        {
+            ifState   : ifUnvalidating,
+            variable  : validityStateVars.animationUnvalidating,
+            animation : options.animationUnvalidating,
+        },
+    ],
+});
+
+// Apply validity animations alongside other styles:
+return style({
     display  : 'grid',
     fontSize : '1rem',
     
     // Apply animations:
     animation: 'var(--validity-validating, none), var(--validity-invalidating, none), var(--validity-unvalidating, none)',
     
-    // Define animation cases when the state is met:
-    ...usesAnimationState([
-        { ifState: ifValidating,   variable: 'var(--validity-validating)',   animation: 'var(--anim-validating)'   },
-        { ifState: ifInvalidating, variable: 'var(--validity-invalidating)', animation: 'var(--anim-invalidating)' },
-        { ifState: ifUnvalidating, variable: 'var(--validity-unvalidating)', animation: 'var(--anim-unvalidating)' },
-    ]),
+    // Apply validity state rule:
+    ...validityStateRule,
+    // `CssRule` is an object with a unique symbol property (`{ [Symbol()]: CssRuleData }`),
+    // so it can be safely spread without risk of overriding other styles.
 });
 
 // Define conditional selectors:

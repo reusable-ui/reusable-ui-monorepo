@@ -1,10 +1,5 @@
 // Cssfn:
 import {
-    // Arrays:
-    type MaybeArray,
-    
-    
-    
     // Cssfn css specific types:
     type CssRule,
     
@@ -18,60 +13,76 @@ import {
 
 // Types:
 import {
-    type AnimationCase,
+    type AnimationBehavior,
 }                           from './css-types.js'
 
 
 
 /**
- * Applies animation cases for styling.
+ * Applies live CSS variables for animation styling.
  * 
- * Runs the corresponding animation automatically whenever `useAnimationState()` activates the matching classname.
+ * Activates **animation variables** for *visual effects* whenever the corresponding state becomes active.
  * 
- * Accepts either:
- * - A single `AnimationCase`
- * - An array of `AnimationCase[]`
+ * Each animation case provides:
+ * - **`ifState`**
+ *   Determines when the animation applies.
+ * - **`variable`**
+ *   Specifies the CSS variable to assign when the state condition is met.
+ * - **`animation`**
+ *   Specifies the animation value or reference to apply to the variable.
  * 
- * @param animationCases - One or more animation case definitions.
- * @returns A `CssRule` that applies the specified animations when their state conditions are met.
+ * @param animationBehavior - The animation styling behaviors to apply.
+ * @returns A `CssRule` that enables animation styling to work correctly and dynamically.
  * 
  * @example
  * ```ts
- * // Single animation case:
- * const validatingAnimation : CssRule = usesAnimationState({
- *     ifState   : ifValidating,
- *     variable  : validityStateVars.animationValidating,
- *     animation : options.animationValidating,
+ * // Describe how validity animations should behave:
+ * const validityStateRule : CssRule = usesAnimationState({
+ *     // Animations for visual effects whenever a validation process runs:
+ *     animations : [
+ *         {
+ *             ifState   : ifValidating,
+ *             variable  : validityStateVars.animationValidating,
+ *             animation : options.animationValidating,
+ *         },
+ *         {
+ *             ifState   : ifInvalidating,
+ *             variable  : validityStateVars.animationInvalidating,
+ *             animation : options.animationInvalidating,
+ *         },
+ *         {
+ *             ifState   : ifUnvalidating,
+ *             variable  : validityStateVars.animationUnvalidating,
+ *             animation : options.animationUnvalidating,
+ *         },
+ *     ],
  * });
  * 
- * // Multiple animation cases:
- * const validityAnimations : CssRule = usesAnimationState([
- *     {
- *         ifState   : ifInvalidating,
- *         variable  : validityStateVars.animationInvalidating,
- *         animation : options.animationInvalidating,
- *     },
- *     {
- *         ifState   : ifUnvalidating,
- *         variable  : validityStateVars.animationUnvalidating,
- *         animation : options.animationUnvalidating,
- *     },
- * ]);
- * 
+ * // Apply validity animations alongside other styles:
  * return style({
- *     ...validatingAnimation,
- *     ...validityAnimations,
+ *     display  : 'grid',
+ *     fontSize : '1rem',
+ *     
+ *     // Apply validity state rule:
+ *     ...validityStateRule,
  *     // `CssRule` is an object with a unique symbol property (`{ [Symbol()]: CssRuleData }`),
  *     // so it can be safely spread without risk of overriding other styles.
  * });
  * ```
  */
-export const usesAnimationState = (animationCases: MaybeArray<AnimationCase>): CssRule => {
+export const usesAnimationState = (animationBehavior: AnimationBehavior): CssRule => {
+    // Extract animation behavior and assign defaults:
+    const {
+        animations = [],
+    } = animationBehavior;
+    
+    
+    
     // Normalize input: always work with an array internally:
     const normalizedAnimationCases = (
-        Array.isArray(animationCases)
-        ? animationCases
-        : [animationCases]
+        Array.isArray(animations)
+        ? animations
+        : [animations]
     );
     
     
