@@ -9,10 +9,6 @@ import {
     
     // Writes css in javascript:
     rule,
-    atRule,
-    states,
-    style,
-    vars,
     
     
     
@@ -31,6 +27,12 @@ import {
 import {
     animationRegistry,
 }                           from '@reusable-ui/animation-feature'   // A styling utility for composing a unified animation stack from custom and registered state packages.
+
+// Reusable-ui states:
+import {
+    // Hooks:
+    usesFeedbackState,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
 
@@ -281,87 +283,51 @@ animationRegistry.registerAnimation(readOnlyStateVars.animationFreezing);
  * };
  * ```
  */
-export const usesReadOnlyState = (options?: CssReadOnlyStateOptions): CssReadOnlyState => {
-    // Extract options and assign defaults:
-    const {
-        animationThawing  = 'none', // Defaults to `none`.
-        animationFreezing = 'none', // Defaults to `none`.
-    } = options ?? {};
-    
-    
-    
-    return {
-        readOnlyStateRule : () => style({
-            // Register `readOnlyFactor` as an animatable custom property:
-            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
-            ...atRule(`@property ${readOnlyStateVars.readOnlyFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-                // @ts-ignore
-                syntax       : '"<number>"',
-                inherits     : true,
-                initialValue : 0,
-            }),
-            
-            // Mirror `readOnlyFactor` into `readOnlyFactorCond` by default:
-            // - During transitions and when fully read-only, `readOnlyFactorCond` follows `readOnlyFactor`.
-            ...vars({
-                [readOnlyStateVars.readOnlyFactorCond]: readOnlyStateVars.readOnlyFactor,
-            }),
-            
-            
-            
-            ...states({
-                // Apply thawing animation during the thawing phase:
-                ...ifThawing(
-                    vars({
-                        [readOnlyStateVars.animationThawing ] : animationThawing,  // Activate the animation (if provided).
-                    })
-                ),
-                
-                // Apply freezing animation during the freezing phase:
-                ...ifFreezing(
-                    vars({
-                        [readOnlyStateVars.animationFreezing] : animationFreezing, // Activate the animation (if provided).
-                    })
-                ),
-                
-                
-                
-                // Mark as editable during both thawing and fully editable states:
-                ...ifThawingOrEditable(
-                    vars({
-                        [readOnlyStateVars.isEditable] : '',      // Valid    when either thawing or fully editable.
-                        [readOnlyStateVars.isReadOnly] : 'unset', // Poisoned when either thawing or fully editable.
-                    })
-                ),
-                
-                // Mark as read-only during both freezing and fully read-only states:
-                ...ifFreezingOrReadOnly(
-                    vars({
-                        [readOnlyStateVars.isEditable] : 'unset', // Poisoned when either freezing or fully read-only.
-                        [readOnlyStateVars.isReadOnly] : '',      // Valid    when either freezing or fully read-only.
-                    })
-                ),
-                
-                
-                
-                // Assign the settled value for `readOnlyFactor`:
-                // - Sticks to `1` when the component is fully read-only.
-                ...ifReadOnly(
-                    vars({
-                        [readOnlyStateVars.readOnlyFactor]: 1,
-                    })
-                ),
-                
-                // Drop `readOnlyFactorCond` when fully editable (baseline inactive):
-                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
-                ...ifEditable(
-                    vars({
-                        [readOnlyStateVars.readOnlyFactorCond]: 'unset',
-                    })
-                ),
-            }),
-        }),
+export const usesReadOnlyState = (options?: CssReadOnlyStateOptions): CssReadOnlyState => ({
+    readOnlyStateRule : () => usesFeedbackState({
+        // Feedback animations for visual effects whenever a read-only state changes:
+        animations      : [
+            {
+                ifState   : ifThawing,
+                variable  : readOnlyStateVars.animationThawing,
+                animation : options?.animationThawing,
+            },
+            {
+                ifState   : ifFreezing,
+                variable  : readOnlyStateVars.animationFreezing,
+                animation : options?.animationFreezing,
+            },
+        ],
         
-        readOnlyStateVars,
-    } satisfies CssReadOnlyState;
-};
+        // Flags for discrete switches in conditional styling:
+        flags           : [
+            // Current flags:
+            {
+                ifState  : ifThawingOrEditable,
+                variable : readOnlyStateVars.isEditable,
+            },
+            {
+                ifState  : ifFreezingOrReadOnly,
+                variable : readOnlyStateVars.isReadOnly,
+            },
+        ],
+        
+        // Factor variables for gradual drivers in transitional styling:
+        factorVar       : readOnlyStateVars.readOnlyFactor,
+        factorCondVar   : readOnlyStateVars.readOnlyFactorCond,
+        ifInactiveState : ifEditable,
+        factors         : [
+            {
+                ifState : ifReadOnly,
+                factor  : 1,
+            },
+            // Not needed: Defaults to 0 when no case matches:
+            // {
+            //     ifState : ifEditable,
+            //     factor  : 0,
+            // },
+        ],
+    }),
+    
+    readOnlyStateVars,
+}) satisfies CssReadOnlyState;
