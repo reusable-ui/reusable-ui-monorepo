@@ -9,10 +9,6 @@ import {
     
     // Writes css in javascript:
     rule,
-    atRule,
-    states,
-    style,
-    vars,
     
     
     
@@ -31,6 +27,12 @@ import {
 import {
     animationRegistry,
 }                           from '@reusable-ui/animation-feature'   // A styling utility for composing a unified animation stack from custom and registered state packages.
+
+// Reusable-ui states:
+import {
+    // Hooks:
+    usesFeedbackState,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
 
@@ -281,87 +283,51 @@ animationRegistry.registerAnimation(focusStateVars.animationBlurring);
  * };
  * ```
  */
-export const usesFocusState = (options?: CssFocusStateOptions): CssFocusState => {
-    // Extract options and assign defaults:
-    const {
-        animationFocusing = 'none', // Defaults to `none`.
-        animationBlurring = 'none', // Defaults to `none`.
-    } = options ?? {};
-    
-    
-    
-    return {
-        focusStateRule : () => style({
-            // Register `focusFactor` as an animatable custom property:
-            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
-            ...atRule(`@property ${focusStateVars.focusFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-                // @ts-ignore
-                syntax       : '"<number>"',
-                inherits     : true,
-                initialValue : 0,
-            }),
-            
-            // Mirror `focusFactor` into `focusFactorCond` by default:
-            // - During transitions and when fully focused, `focusFactorCond` follows `focusFactor`.
-            ...vars({
-                [focusStateVars.focusFactorCond]: focusStateVars.focusFactor,
-            }),
-            
-            
-            
-            ...states({
-                // Apply focusing animation during the focusing phase:
-                ...ifFocusing(
-                    vars({
-                        [focusStateVars.animationFocusing] : animationFocusing, // Activate the animation (if provided).
-                    })
-                ),
-                
-                // Apply blurring animation during the blurring phase:
-                ...ifBlurring(
-                    vars({
-                        [focusStateVars.animationBlurring] : animationBlurring, // Activate the animation (if provided).
-                    })
-                ),
-                
-                
-                
-                // Mark as focused during both focusing and fully focused states:
-                ...ifFocusingOrFocused(
-                    vars({
-                        [focusStateVars.isFocused] : '',      // Valid    when either focusing or fully focused.
-                        [focusStateVars.isBlurred] : 'unset', // Poisoned when either focusing or fully focused.
-                    })
-                ),
-                
-                // Mark as blurred during both blurring and fully blurred states:
-                ...ifBlurringOrBlurred(
-                    vars({
-                        [focusStateVars.isFocused] : 'unset', // Poisoned when either blurring or fully blurred.
-                        [focusStateVars.isBlurred] : '',      // Valid    when either blurring or fully blurred.
-                    })
-                ),
-                
-                
-                
-                // Assign the settled value for `focusFactor`:
-                // - Sticks to `1` when the component is fully focused.
-                ...ifFocused(
-                    vars({
-                        [focusStateVars.focusFactor]: 1,
-                    })
-                ),
-                
-                // Drop `focusFactorCond` when fully blurred (baseline inactive):
-                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
-                ...ifBlurred(
-                    vars({
-                        [focusStateVars.focusFactorCond]: 'unset',
-                    })
-                ),
-            }),
-        }),
+export const usesFocusState = (options?: CssFocusStateOptions): CssFocusState => ({
+    focusStateRule : () => usesFeedbackState({
+        // Feedback animations for visual effects whenever a focus state changes:
+        animations      : [
+            {
+                ifState   : ifFocusing,
+                variable  : focusStateVars.animationFocusing,
+                animation : options?.animationFocusing,
+            },
+            {
+                ifState   : ifBlurring,
+                variable  : focusStateVars.animationBlurring,
+                animation : options?.animationBlurring,
+            },
+        ],
         
-        focusStateVars,
-    } satisfies CssFocusState;
-};
+        // Flags for discrete switches in conditional styling:
+        flags           : [
+            // Current flags:
+            {
+                ifState  : ifFocusingOrFocused,
+                variable : focusStateVars.isFocused,
+            },
+            {
+                ifState  : ifBlurringOrBlurred,
+                variable : focusStateVars.isBlurred,
+            },
+        ],
+        
+        // Factor variables for gradual drivers in transitional styling:
+        factorVar       : focusStateVars.focusFactor,
+        factorCondVar   : focusStateVars.focusFactorCond,
+        ifInactiveState : ifBlurred,
+        factors         : [
+            {
+                ifState : ifFocused,
+                factor  : 1,
+            },
+            // Not needed: Defaults to 0 when no case matches:
+            // {
+            //     ifState : ifBlurred,
+            //     factor  : 0,
+            // },
+        ],
+    }),
+    
+    focusStateVars,
+}) satisfies CssFocusState;
