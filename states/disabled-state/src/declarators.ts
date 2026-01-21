@@ -9,10 +9,6 @@ import {
     
     // Writes css in javascript:
     rule,
-    atRule,
-    states,
-    style,
-    vars,
     
     
     
@@ -31,6 +27,12 @@ import {
 import {
     animationRegistry,
 }                           from '@reusable-ui/animation-feature'   // A styling utility for composing a unified animation stack from custom and registered state packages.
+
+// Reusable-ui states:
+import {
+    // Hooks:
+    usesFeedbackState,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
 
@@ -281,87 +283,51 @@ animationRegistry.registerAnimation(disabledStateVars.animationDisabling);
  * };
  * ```
  */
-export const usesDisabledState = (options?: CssDisabledStateOptions): CssDisabledState => {
-    // Extract options and assign defaults:
-    const {
-        animationEnabling  = 'none', // Defaults to `none`.
-        animationDisabling = 'none', // Defaults to `none`.
-    } = options ?? {};
-    
-    
-    
-    return {
-        disabledStateRule : () => style({
-            // Register `disableFactor` as an animatable custom property:
-            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
-            ...atRule(`@property ${disabledStateVars.disableFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-                // @ts-ignore
-                syntax       : '"<number>"',
-                inherits     : true,
-                initialValue : 0,
-            }),
-            
-            // Mirror `disableFactor` into `disableFactorCond` by default:
-            // - During transitions and when fully disabled, `disableFactorCond` follows `disableFactor`.
-            ...vars({
-                [disabledStateVars.disableFactorCond]: disabledStateVars.disableFactor,
-            }),
-            
-            
-            
-            ...states({
-                // Apply enabling animation during the enabling phase:
-                ...ifEnabling(
-                    vars({
-                        [disabledStateVars.animationEnabling ] : animationEnabling,  // Activate the animation (if provided).
-                    })
-                ),
-                
-                // Apply disabling animation during the disabling phase:
-                ...ifDisabling(
-                    vars({
-                        [disabledStateVars.animationDisabling] : animationDisabling, // Activate the animation (if provided).
-                    })
-                ),
-                
-                
-                
-                // Mark as enabled during both enabling and fully enabled states:
-                ...ifEnablingOrEnabled(
-                    vars({
-                        [disabledStateVars.isEnabled ] : '',      // Valid    when either enabling or fully enabled.
-                        [disabledStateVars.isDisabled] : 'unset', // Poisoned when either enabling or fully enabled.
-                    })
-                ),
-                
-                // Mark as disabled during both disabling and fully disabled states:
-                ...ifDisablingOrDisabled(
-                    vars({
-                        [disabledStateVars.isEnabled ] : 'unset', // Poisoned when either disabling or fully disabled.
-                        [disabledStateVars.isDisabled] : '',      // Valid    when either disabling or fully disabled.
-                    })
-                ),
-                
-                
-                
-                // Assign the settled value for `disableFactor`:
-                // - Sticks to `1` when the component is fully disabled.
-                ...ifDisabled(
-                    vars({
-                        [disabledStateVars.disableFactor]: 1,
-                    })
-                ),
-                
-                // Drop `disableFactorCond` when fully enabled (baseline inactive):
-                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
-                ...ifEnabled(
-                    vars({
-                        [disabledStateVars.disableFactorCond]: 'unset',
-                    })
-                ),
-            }),
-        }),
+export const usesDisabledState = (options?: CssDisabledStateOptions): CssDisabledState => ({
+    disabledStateRule : () => usesFeedbackState({
+        // Feedback animations for visual effects whenever a disabled state changes:
+        animations      : [
+            {
+                ifState   : ifEnabling,
+                variable  : disabledStateVars.animationEnabling,
+                animation : options?.animationEnabling,
+            },
+            {
+                ifState   : ifDisabling,
+                variable  : disabledStateVars.animationDisabling,
+                animation : options?.animationDisabling,
+            },
+        ],
         
-        disabledStateVars,
-    } satisfies CssDisabledState;
-};
+        // Flags for discrete switches in conditional styling:
+        flags           : [
+            // Current flags:
+            {
+                ifState  : ifEnablingOrEnabled,
+                variable : disabledStateVars.isEnabled,
+            },
+            {
+                ifState  : ifDisablingOrDisabled,
+                variable : disabledStateVars.isDisabled,
+            },
+        ],
+        
+        // Factor variables for gradual drivers in transitional styling:
+        factorVar       : disabledStateVars.disableFactor,
+        factorCondVar   : disabledStateVars.disableFactorCond,
+        ifInactiveState : ifEnabled,
+        factors         : [
+            {
+                ifState : ifDisabled,
+                factor  : 1,
+            },
+            // Not needed: Defaults to 0 when no case matches:
+            // {
+            //     ifState : ifEnabled,
+            //     factor  : 0,
+            // },
+        ],
+    }),
+    
+    disabledStateVars,
+}) satisfies CssDisabledState;
