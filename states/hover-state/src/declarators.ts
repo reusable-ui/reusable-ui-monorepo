@@ -9,10 +9,6 @@ import {
     
     // Writes css in javascript:
     rule,
-    atRule,
-    states,
-    style,
-    vars,
     
     
     
@@ -31,6 +27,12 @@ import {
 import {
     animationRegistry,
 }                           from '@reusable-ui/animation-feature'   // A styling utility for composing a unified animation stack from custom and registered state packages.
+
+// Reusable-ui states:
+import {
+    // Hooks:
+    usesFeedbackState,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
 
@@ -281,87 +283,51 @@ animationRegistry.registerAnimation(hoverStateVars.animationUnhovering);
  * };
  * ```
  */
-export const usesHoverState = (options?: CssHoverStateOptions): CssHoverState => {
-    // Extract options and assign defaults:
-    const {
-        animationHovering   = 'none', // Defaults to `none`.
-        animationUnhovering = 'none', // Defaults to `none`.
-    } = options ?? {};
-    
-    
-    
-    return {
-        hoverStateRule : () => style({
-            // Register `hoverFactor` as an animatable custom property:
-            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
-            ...atRule(`@property ${hoverStateVars.hoverFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-                // @ts-ignore
-                syntax       : '"<number>"',
-                inherits     : true,
-                initialValue : 0,
-            }),
-            
-            // Mirror `hoverFactor` into `hoverFactorCond` by default:
-            // - During transitions and when fully hovered, `hoverFactorCond` follows `hoverFactor`.
-            ...vars({
-                [hoverStateVars.hoverFactorCond]: hoverStateVars.hoverFactor,
-            }),
-            
-            
-            
-            ...states({
-                // Apply hovering animation during the hovering phase:
-                ...ifHovering(
-                    vars({
-                        [hoverStateVars.animationHovering  ] : animationHovering,   // Activate the animation (if provided).
-                    })
-                ),
-                
-                // Apply unhovering animation during the unhovering phase:
-                ...ifUnhovering(
-                    vars({
-                        [hoverStateVars.animationUnhovering] : animationUnhovering, // Activate the animation (if provided).
-                    })
-                ),
-                
-                
-                
-                // Mark as hovered during both hovering and fully hovered states:
-                ...ifHoveringOrHovered(
-                    vars({
-                        [hoverStateVars.isHovered  ] : '',      // Valid    when either hovering or fully hovered.
-                        [hoverStateVars.isUnhovered] : 'unset', // Poisoned when either hovering or fully hovered.
-                    })
-                ),
-                
-                // Mark as unhovered during both unhovering and fully unhovered states:
-                ...ifUnhoveringOrUnhovered(
-                    vars({
-                        [hoverStateVars.isHovered  ] : 'unset', // Poisoned when either unhovering or fully unhovered.
-                        [hoverStateVars.isUnhovered] : '',      // Valid    when either unhovering or fully unhovered.
-                    })
-                ),
-                
-                
-                
-                // Assign the settled value for `hoverFactor`:
-                // - Sticks to `1` when the component is fully hovered.
-                ...ifHovered(
-                    vars({
-                        [hoverStateVars.hoverFactor]: 1,
-                    })
-                ),
-                
-                // Drop `hoverFactorCond` when fully unhovered (baseline inactive):
-                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
-                ...ifUnhovered(
-                    vars({
-                        [hoverStateVars.hoverFactorCond]: 'unset',
-                    })
-                ),
-            }),
-        }),
+export const usesHoverState = (options?: CssHoverStateOptions): CssHoverState => ({
+    hoverStateRule : () => usesFeedbackState({
+        // Feedback animations for visual effects whenever a hover state changes:
+        animations      : [
+            {
+                ifState   : ifHovering,
+                variable  : hoverStateVars.animationHovering,
+                animation : options?.animationHovering,
+            },
+            {
+                ifState   : ifUnhovering,
+                variable  : hoverStateVars.animationUnhovering,
+                animation : options?.animationUnhovering,
+            },
+        ],
         
-        hoverStateVars,
-    } satisfies CssHoverState;
-};
+        // Flags for discrete switches in conditional styling:
+        flags           : [
+            // Current flags:
+            {
+                ifState  : ifHoveringOrHovered,
+                variable : hoverStateVars.isHovered,
+            },
+            {
+                ifState  : ifUnhoveringOrUnhovered,
+                variable : hoverStateVars.isUnhovered,
+            },
+        ],
+        
+        // Factor variables for gradual drivers in transitional styling:
+        factorVar       : hoverStateVars.hoverFactor,
+        factorCondVar   : hoverStateVars.hoverFactorCond,
+        ifInactiveState : ifUnhovered,
+        factors         : [
+            {
+                ifState : ifHovered,
+                factor  : 1,
+            },
+            // Not needed: Defaults to 0 when no case matches:
+            // {
+            //     ifState : ifUnhovered,
+            //     factor  : 0,
+            // },
+        ],
+    }),
+    
+    hoverStateVars,
+}) satisfies CssHoverState;
