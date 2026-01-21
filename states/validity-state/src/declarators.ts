@@ -9,10 +9,6 @@ import {
     
     // Writes css in javascript:
     rule,
-    atRule,
-    states,
-    style,
-    vars,
     
     
     
@@ -31,6 +27,12 @@ import {
 import {
     animationRegistry,
 }                           from '@reusable-ui/animation-feature'   // A styling utility for composing a unified animation stack from custom and registered state packages.
+
+// Reusable-ui states:
+import {
+    // Hooks:
+    usesFeedbackState,
+}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
 
@@ -609,140 +611,78 @@ animationRegistry.registerAnimation(validityStateVars.animationUnvalidating);
  * };
  * ```
  */
-export const usesValidityState = (options?: CssValidityStateOptions): CssValidityState => {
-    // Extract options and assign defaults:
-    const {
-        animationValidating   = 'none', // Defaults to `none`.
-        animationInvalidating = 'none', // Defaults to `none`.
-        animationUnvalidating = 'none', // Defaults to `none`.
-    } = options ?? {};
-    
-    
-    
-    return {
-        validityStateRule : () => style({
-            // Register `validityFactor` as an animatable custom property:
-            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
-            ...atRule(`@property ${validityStateVars.validityFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-                // @ts-ignore
-                syntax       : '"<number>"',
-                inherits     : true,
-                initialValue : 0,
-            }),
-            
-            // Mirror `validityFactor` into `validityFactorCond` by default:
-            // - During transitions and when fully valid/invalid, `validityFactorCond` follows `validityFactor`.
-            ...vars({
-                [validityStateVars.validityFactorCond]: validityStateVars.validityFactor,
-            }),
-            
-            
-            
-            ...states({
-                // Apply validating animation during the validating phase:
-                ...ifValidating(
-                    vars({
-                        [validityStateVars.animationValidating  ] : animationValidating,   // Activate the animation (if provided).
-                    })
-                ),
-                
-                // Apply invalidating animation during the invalidating phase:
-                ...ifInvalidating(
-                    vars({
-                        [validityStateVars.animationInvalidating] : animationInvalidating, // Activate the animation (if provided).
-                    })
-                ),
-                
-                // Apply unvalidating animation during the unvalidating phase:
-                ...ifUnvalidating(
-                    vars({
-                        [validityStateVars.animationUnvalidating] : animationUnvalidating, // Activate the animation (if provided).
-                    })
-                ),
-                
-                
-                
-                // Mark as valid during both validating and fully valid states:
-                ...ifValidatingOrValid(
-                    vars({
-                        [validityStateVars.isValid      ] : '',      // Valid    when either validating or fully valid.
-                        [validityStateVars.isInvalid    ] : 'unset', // Poisoned when either validating or fully valid.
-                        [validityStateVars.isUnvalidated] : 'unset', // Poisoned when either validating or fully valid.
-                    })
-                ),
-                
-                // Mark as invalid during both invalidating and fully invalid states:
-                ...ifInvalidatingOrInvalid(
-                    vars({
-                        [validityStateVars.isValid      ] : 'unset', // Poisoned when either invalidating or fully invalid.
-                        [validityStateVars.isInvalid    ] : '',      // Valid    when either invalidating or fully invalid.
-                        [validityStateVars.isUnvalidated] : 'unset', // Poisoned when either invalidating or fully invalid.
-                    })
-                ),
-                
-                // Mark as unvalidated during both unvalidating and fully unvalidated states:
-                ...ifUnvalidatingOrUnvalidated(
-                    vars({
-                        [validityStateVars.isValid      ] : 'unset', // Poisoned when either unvalidating or fully unvalidated.
-                        [validityStateVars.isInvalid    ] : 'unset', // Poisoned when either unvalidating or fully unvalidated.
-                        [validityStateVars.isUnvalidated] : '',      // Valid    when either unvalidating or fully unvalidated.
-                    })
-                ),
-                
-                
-                
-                // Mark as previously valid during a transition away from valid:
-                ...ifWasValid(
-                    vars({
-                        [validityStateVars.wasValid      ] : '',      // Valid    when previously valid.
-                        [validityStateVars.wasInvalid    ] : 'unset', // Poisoned when previously valid.
-                        [validityStateVars.wasUnvalidated] : 'unset', // Poisoned when previously valid.
-                    })
-                ),
-                
-                // Mark as previously invalid during a transition away from invalid:
-                ...ifWasInvalid(
-                    vars({
-                        [validityStateVars.wasValid      ] : 'unset', // Poisoned when previously invalid.
-                        [validityStateVars.wasInvalid    ] : '',      // Valid    when previously invalid.
-                        [validityStateVars.wasUnvalidated] : 'unset', // Poisoned when previously invalid.
-                    })
-                ),
-                
-                // Mark as previously unvalidated during a transition away from unvalidated:
-                ...ifWasUnvalidated(
-                    vars({
-                        [validityStateVars.wasValid      ] : 'unset', // Poisoned when previously unvalidated.
-                        [validityStateVars.wasInvalid    ] : 'unset', // Poisoned when previously unvalidated.
-                        [validityStateVars.wasUnvalidated] : '',      // Valid    when previously unvalidated.
-                    })
-                ),
-                
-                
-                
-                // Assign settled values for `validityFactor`:
-                // - Sticks to `+1` when the component is fully valid, `-1` when fully invalid.
-                ...ifValid(
-                    vars({
-                        [validityStateVars.validityFactor] : 1,
-                    })
-                ),
-                ...ifInvalid(
-                    vars({
-                        [validityStateVars.validityFactor] : -1,
-                    })
-                ),
-                
-                // Drop `validityFactorCond` when fully unvalidated (baseline inactive):
-                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
-                ...ifUnvalidated(
-                    vars({
-                        [validityStateVars.validityFactorCond]: 'unset',
-                    })
-                ),
-            }),
-        }),
+export const usesValidityState = (options?: CssValidityStateOptions): CssValidityState => ({
+    validityStateRule : () => usesFeedbackState({
+        // Feedback animations for visual effects whenever a validity state changes:
+        animations      : [
+            {
+                ifState   : ifValidating,
+                variable  : validityStateVars.animationValidating,
+                animation : options?.animationValidating,
+            },
+            {
+                ifState   : ifInvalidating,
+                variable  : validityStateVars.animationInvalidating,
+                animation : options?.animationInvalidating,
+            },
+            {
+                ifState   : ifUnvalidating,
+                variable  : validityStateVars.animationUnvalidating,
+                animation : options?.animationUnvalidating,
+            },
+        ],
         
-        validityStateVars,
-    } satisfies CssValidityState;
-};
+        // Flags for discrete switches in conditional styling:
+        flags           : [
+            // Current flags:
+            {
+                ifState  : ifValidatingOrValid,
+                variable : validityStateVars.isValid,
+            },
+            {
+                ifState  : ifInvalidatingOrInvalid,
+                variable : validityStateVars.isInvalid,
+            },
+            {
+                ifState  : ifUnvalidatingOrUnvalidated,
+                variable : validityStateVars.isUnvalidated,
+            },
+            
+            // Past flags:
+            {
+                ifState  : ifWasValid,
+                variable : validityStateVars.wasValid,
+            },
+            {
+                ifState  : ifWasInvalid,
+                variable : validityStateVars.wasInvalid,
+            },
+            {
+                ifState  : ifWasUnvalidated,
+                variable : validityStateVars.wasUnvalidated,
+            },
+        ],
+        
+        // Factor variables for gradual drivers in transitional styling:
+        factorVar       : validityStateVars.validityFactor,
+        factorCondVar   : validityStateVars.validityFactorCond,
+        ifInactiveState : ifUnvalidated,
+        factors         : [
+            {
+                ifState : ifValid,
+                factor  : 1,
+            },
+            {
+                ifState : ifInvalid,
+                factor  : -1,
+            },
+            // Not needed: Defaults to 0 when no case matches:
+            // {
+            //     ifState : ifUnvalidated,
+            //     factor  : 0,
+            // },
+        ],
+    }),
+    
+    validityStateVars,
+}) satisfies CssValidityState;
