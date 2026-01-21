@@ -9,10 +9,6 @@ import {
     
     // Writes css in javascript:
     rule,
-    atRule,
-    states,
-    style,
-    vars,
     
     
     
@@ -31,6 +27,12 @@ import {
 import {
     animationRegistry,
 }                           from '@reusable-ui/animation-feature'   // A styling utility for composing a unified animation stack from custom and registered state packages.
+
+// Reusable-ui states:
+import {
+    // Hooks:
+    usesInteractionState,
+}                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
 
@@ -283,87 +285,51 @@ animationRegistry.registerAnimation(collapseStateVars.animationCollapsing);
  * };
  * ```
  */
-export const usesCollapseState = (options?: CssCollapseStateOptions): CssCollapseState => {
-    // Extract options and assign defaults:
-    const {
-        animationExpanding  = 'none', // Defaults to `none`.
-        animationCollapsing = 'none', // Defaults to `none`.
-    } = options ?? {};
-    
-    
-    
-    return {
-        collapseStateRule : () => style({
-            // Register `expandFactor` as an animatable custom property:
-            // - Initial value is `0`, ensuring it resolves to `0` when not explicitly defined (`unset`).
-            ...atRule(`@property ${collapseStateVars.expandFactor.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-                // @ts-ignore
-                syntax       : '"<number>"',
-                inherits     : true,
-                initialValue : 0,
-            }),
-            
-            // Mirror `expandFactor` into `expandFactorCond` by default:
-            // - During transitions and when fully expanded, `expandFactorCond` follows `expandFactor`.
-            ...vars({
-                [collapseStateVars.expandFactorCond]: collapseStateVars.expandFactor,
-            }),
-            
-            
-            
-            ...states({
-                // Apply expanding animation during the expanding phase:
-                ...ifExpanding(
-                    vars({
-                        [collapseStateVars.animationExpanding ] : animationExpanding,  // Activate the animation (if provided).
-                    })
-                ),
-                
-                // Apply collapsing animation during the collapsing phase:
-                ...ifCollapsing(
-                    vars({
-                        [collapseStateVars.animationCollapsing] : animationCollapsing, // Activate the animation (if provided).
-                    })
-                ),
-                
-                
-                
-                // Mark as expanded during both expanding and fully expanded states:
-                ...ifExpandingOrExpanded(
-                    vars({
-                        [collapseStateVars.isExpanded ] : '',      // Valid    when either expanding or fully expanded.
-                        [collapseStateVars.isCollapsed] : 'unset', // Poisoned when either expanding or fully expanded.
-                    })
-                ),
-                
-                // Mark as collapsed during both collapsing and fully collapsed states:
-                ...ifCollapsingOrCollapsed(
-                    vars({
-                        [collapseStateVars.isExpanded ] : 'unset', // Poisoned when either collapsing or fully collapsed.
-                        [collapseStateVars.isCollapsed] : '',      // Valid    when either collapsing or fully collapsed.
-                    })
-                ),
-                
-                
-                
-                // Assign the settled value for `expandFactor`:
-                // - Sticks to `1` when the component is fully expanded.
-                ...ifExpanded(
-                    vars({
-                        [collapseStateVars.expandFactor]: 1,
-                    })
-                ),
-                
-                // Drop `expandFactorCond` when fully collapsed (baseline inactive):
-                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
-                ...ifCollapsed(
-                    vars({
-                        [collapseStateVars.expandFactorCond]: 'unset',
-                    })
-                ),
-            }),
-        }),
+export const usesCollapseState = (options?: CssCollapseStateOptions): CssCollapseState => ({
+    collapseStateRule : () => usesInteractionState({
+        // Feedback animations for visual effects whenever a collapse state changes:
+        animations      : [
+            {
+                ifState   : ifExpanding,
+                variable  : collapseStateVars.animationExpanding,
+                animation : options?.animationExpanding,
+            },
+            {
+                ifState   : ifCollapsing,
+                variable  : collapseStateVars.animationCollapsing,
+                animation : options?.animationCollapsing,
+            },
+        ],
         
-        collapseStateVars,
-    } satisfies CssCollapseState;
-};
+        // Flags for discrete switches in conditional styling:
+        flags           : [
+            // Current flags:
+            {
+                ifState  : ifExpandingOrExpanded,
+                variable : collapseStateVars.isExpanded,
+            },
+            {
+                ifState  : ifCollapsingOrCollapsed,
+                variable : collapseStateVars.isCollapsed,
+            },
+        ],
+        
+        // Factor variables for gradual drivers in transitional styling:
+        factorVar       : collapseStateVars.expandFactor,
+        factorCondVar   : collapseStateVars.expandFactorCond,
+        ifInactiveState : ifCollapsed,
+        factors         : [
+            {
+                ifState : ifExpanded,
+                factor  : 1,
+            },
+            // Not needed: Defaults to 0 when no case matches:
+            // {
+            //     ifState : ifCollapsed,
+            //     factor  : 0,
+            // },
+        ],
+    }),
+    
+    collapseStateVars,
+}) satisfies CssCollapseState;
