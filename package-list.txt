@@ -213,6 +213,7 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/animation-state    non_peer
 @reusable-ui/animating-state    DEPRECATED
 @reusable-ui/effective-state    non_peer
+@reusable-ui/observer-state     non_peer
 @reusable-ui/activity-state     non_peer
 @reusable-ui/transition-state   non_peer
 @reusable-ui/feedback-state     non_peer
