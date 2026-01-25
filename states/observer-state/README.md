@@ -79,13 +79,13 @@ const focusObserverDefinition : ObserverDefinition<boolean, Element> = {
 
 // Props interface for the focus observer hook:
 // - Currently identical to ObserverProps, but reserved for future extensions.
-export interface FocusObserverState extends ObserverProps {
+export interface FocusObserverProps extends ObserverProps {
     /* no additional props yet - reserved for future extensions */
 }
 
 // Hook: useFocusObserverState
 // Observes whether the component should display a focus indicator.
-export const useFocusObserverState = <TElement extends Element = HTMLElement>(props: FocusObserverState) => {
+export const useFocusObserverState = <TElement extends Element = HTMLElement>(props: FocusObserverProps) => {
     // `useObserverState` provides the core observer logic:
     // - elementRef: ref to attach to the target element
     // - observedState: the current focus state (true/false)
@@ -99,7 +99,7 @@ export const useFocusObserverState = <TElement extends Element = HTMLElement>(pr
     // Event handlers:
     
     // Marks focus indicator as active when element receives focus:
-    const handleFocus   = useStableCallback((event: React.FocusEvent<TElement>) => safeUpdateState(event.currentTarget, true));
+    const handleFocus   = useStableCallback((event: React.FocusEvent<TElement>) => safeUpdateState(event.currentTarget, undefined)); // Use `undefined` to probe focus-visible state.
     
     // Mark focus indicator as inactive when element loses focus:
     const handleBlur    = useStableCallback((event: React.FocusEvent<TElement>) => safeUpdateState(event.currentTarget, false));
@@ -110,7 +110,7 @@ export const useFocusObserverState = <TElement extends Element = HTMLElement>(pr
     //   can activate the focus indicator.
     const handleKeyDown = useStableCallback((event: React.KeyboardEvent<TElement>) => {
         if (props.isControlled) return; // Skip if externally controlled.
-        if (event.key === 'Tab' && !event.defaultPrevented) return; // Let browser handle Tab focus.
+        if ((event.key === 'Tab') && !event.defaultPrevented) return; // Let browser handle Tab focus.
         safeUpdateState(event.currentTarget, true);
     });
     
