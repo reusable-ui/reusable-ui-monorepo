@@ -7,13 +7,6 @@ import {
     type FocusEventHandler,
     type KeyboardEvent,
     type KeyboardEventHandler,
-    
-    
-    
-    // Hooks:
-    useLayoutEffect,
-    useRef,
-    useState,
 }                           from 'react'
 
 // Types:
@@ -26,6 +19,13 @@ import {
     // Hooks:
     useStableCallback,
 }                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
+
+// Reusable-ui states:
+import {
+    useObserverState,
+    type ObserverProps,
+    type ObserverDefinition,
+}                           from '@reusable-ui/observer-state'      // Observes a specific condition (typically a DOM interaction) and emits a resolved state whenever that condition changes.
 
 
 
@@ -40,7 +40,30 @@ import {
  */
 const focusVisibleWithinSelector = ':is(:focus-visible, .input-like-focus:focus, :has(:focus-visible, .input-like-focus:focus))';
 
+// Define how the focus observer should behave:
+// - This is not a raw "isFocused" check, but a *focus indicator* observer.
+// - Inputs/textareas always show focus indicators.
+// - Other elements (like buttons) only show focus indicators when keyboard navigation is detected.
+const focusObserverDefinition : ObserverDefinition<boolean, Element> = {
+    inactiveState       : false,      // The default state when not focused.
+    restrictionBehavior : 'discrete', // State resets when restriction is lifted.
+    getCurrentState     : (element) => element.matches(focusVisibleWithinSelector),
+};
 
+
+
+/**
+ * Props for the `useFocusObserverState()` hook.
+ * 
+ * Describes the current component condition for focus observation.
+ */
+export interface FocusObserverProps
+    extends
+        // Bases:
+        ObserverProps
+{
+    /* no additional props yet - reserved for future extensions */
+}
 
 /**
  * An observed focus state for uncontrolled components.
@@ -81,105 +104,54 @@ export interface FocusObserverState<TElement extends Element = HTMLElement>
  * 
  * @template TElement - The type of the target DOM element.
  * 
- * @param disabledUpdates - Whether to disable internal focus state updates (e.g. when externally controlled).
- * @param isRestricted - Whether the component is currently in a restricted state; enforces a blur override.
+ * @param props - The focus observer props for describing the current component condition.
  * @returns The observed focus state, ref, and event handlers.
  */
-export const useFocusObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, isRestricted: boolean): FocusObserverState<TElement> => {
+export const useFocusObserverState = <TElement extends Element = HTMLElement>(props: FocusObserverProps): FocusObserverState<TElement> => {
     // States and flags:
-    
-    // Ref to the focusable DOM element:
-    const focusableElementRef = useRef<TElement | null>(null);
-    
-    // Internal fallback for observed focus (used only when uncontrolled):
-    const [observedFocus, setObservedFocus] = useState<boolean>(false);
-    
-    
-    
-    /**
-     * Updates the internal focus state.
-     * 
-     * - If `disabledUpdates` is true, the update will be skipped.
-     * - If the element is focused, it must also match `focusVisibleWithinSelector` to be considered visibly focused.
-     * - If the new state matches the current `observedFocus`, no update will occur.
-     * 
-     * @param focusableElement - The DOM element whose focus state is being updated.
-     * @param newObservedFocus - The desired focus state.
-     */
-    const handleFocusStateUpdate : (focusableElement: TElement | null, newObservedFocus: boolean) => void = useStableCallback((focusableElement, newObservedFocus) => {
-        // Skip if observer updates are disabled (controlled mode):
-        if (disabledUpdates) return;
-        
-        // Skip update if no element to observe:
-        if (!focusableElement) return;
-        
-        // If focused, verify visible focus:
-        if (newObservedFocus) {
-            newObservedFocus = focusableElement.matches(focusVisibleWithinSelector);
-        } // if
-        
-        // Skip update if state is unchanged:
-        if (newObservedFocus === observedFocus) return;
-        
-        
-        
-        // Commit focus state update:
-        setObservedFocus(newObservedFocus);
-    });
+    const {
+        elementRef,
+        observedState,
+        safeUpdateState,
+    } = useObserverState<boolean, TElement>(props, undefined, focusObserverDefinition);
     
     
     
-    // Focus state refresh effect:
-    // Ensures the internal focus state is synchronized when:
-    // - The observer switches back to uncontrolled mode (`disabledUpdates` becomes false).
-    // - The component transitions between restricted and unrestricted (`isRestricted` changes).
-    //
-    // For discrete focus behavior, past focus actions are ignored:
-    // - Disabling always forces the state to blurred (`false`), even if no native `blur` event fires.
-    // - Re-enabling or switching back to uncontrolled also resets to blurred (`false`),
-    //   requiring a fresh user interaction to set focus again.
-    //
-    // Using `useLayoutEffect()` ensures the update runs before the browser paints,
-    // preventing potential visual glitches if the element was focused at mount or
-    // during a restricted/unrestricted transition.
-    useLayoutEffect(() => {
-        // Skip if observer updates are disabled (controlled mode):
-        if (disabledUpdates) return;
-        
-        
-        
-        // Always force blurred (`false`) when restricted or re-unrestricted:
-        handleFocusStateUpdate(focusableElementRef.current, false);
-    }, [disabledUpdates, isRestricted]);
-    // Re-evaluates focus state only when `disabledUpdates` or `isRestricted` changes.
-    // `handleFocusStateUpdate` is stable via useStableCallback, so it is safe to omit from deps.
+    // Event handlers:
     
-    
-    
-    // Imperative handlers for uncontrolled focus tracking:
+    // Marks focus indicator as active when element gains focus:
     const handleFocus   = useStableCallback((event: FocusEvent<TElement, Element> | KeyboardEvent<TElement>) => {
-        handleFocusStateUpdate(event.currentTarget, true);
+        safeUpdateState(event.currentTarget, undefined); // Use `undefined` to probe focus-visible state.
     });
+    
+    // Mark focus indicator as inactive when element loses focus:
     const handleBlur    : FocusEventHandler<TElement> = useStableCallback((event) => {
-        handleFocusStateUpdate(event.currentTarget, false);
+        safeUpdateState(event.currentTarget, false);
     });
+    
+    // Detect keyboard navigation:
+    //   For non-heavy-input elements (like buttons), focus indicators should only appear
+    //   if keyboard input is detected. This handler ensures that pressing keys other than Tab
+    //   can activate the focus indicator.
     const handleKeyDown : KeyboardEventHandler<TElement> = useStableCallback((event) => {
-        // Ignore if observer updates are disabled (controlled mode):
-        if (disabledUpdates) return;
+        // Skip if externally controlled:
+        if (props.isControlled) return;
         
-        // Ignore if the focus is going to move away via Tab key and not prevented:
-        if (event.key === 'Tab' && !event.defaultPrevented) return;
+        // Let browser handle Tab focus:
+        if ((event.key === 'Tab') && !event.defaultPrevented) return;
         
-        // Delegate to the focus handler to ensure consistent logic:
-        handleFocus(event);
+        
+        
+        // Activate focus indicator on other key presses:
+        safeUpdateState(event.currentTarget, true);
     });
     
     
     
-    // Return the internal focus state API:
+    // Return the observed focus indicator state and handlers for integration:
     return {
-        observedFocus,
-        ref : focusableElementRef,
+        observedFocus : observedState,
+        ref           : elementRef,
         handleFocus,
         handleBlur,
         handleKeyDown,

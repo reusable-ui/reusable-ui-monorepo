@@ -27,7 +27,7 @@ import {
 
 // Hooks:
 import {
-    useFocusObserver,
+    useFocusObserverState,
 }                           from './focus-observer.js'
 
 // Reusable-ui states:
@@ -110,7 +110,10 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
         handleFocus,
         handleBlur,
         handleKeyDown,
-    } = useFocusObserver<TElement>(isExplicitValue || isExternallyComputed, isRestricted);
+    } = useFocusObserverState<TElement>({
+        isControlled : isExplicitValue || isExternallyComputed,
+        isRestricted,
+    });
     
     // Merge external and internal observation:
     const observedState = isExternallyComputed ? externalComputedFocus : observedFocus;
