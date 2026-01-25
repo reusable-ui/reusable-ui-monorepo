@@ -56,7 +56,8 @@
     "@reusable-ui/callbacks": "^7.0.0",
     "@reusable-ui/effective-state": "^7.0.0",
     "@reusable-ui/events": "^7.0.0",
-    "@reusable-ui/feedback-state": "^7.0.0"
+    "@reusable-ui/feedback-state": "^7.0.0",
+    "@reusable-ui/observer-state": "^7.0.0"
   },
   "peerDependencies": {
     "@reusable-ui/animation-feature": "^7.0.0",

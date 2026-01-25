@@ -27,7 +27,7 @@ import {
 
 // Hooks:
 import {
-    usePressObserver,
+    usePressObserverState,
 }                           from './press-observer.js'
 
 // Reusable-ui states:
@@ -111,7 +111,10 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
         handlePointerCancel,
         handleKeyDown,
         handleKeyUp,
-    } = usePressObserver<TElement>(isExplicitValue || isExternallyComputed, isRestricted, options);
+    } = usePressObserverState<TElement>({
+        isControlled : isExplicitValue || isExternallyComputed,
+        isRestricted,
+    }, options);
     
     // Merge external and internal observation:
     const observedState = isExternallyComputed ? externalComputedPress : observedPress;

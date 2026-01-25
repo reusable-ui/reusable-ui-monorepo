@@ -10,7 +10,6 @@ import {
     
     // Hooks:
     useLayoutEffect,
-    useState,
     useRef,
     useEffect,
 }                           from 'react'
@@ -63,7 +62,36 @@ import {
     createSyntheticKeyboardEvent,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
 
+// Reusable-ui states:
+import {
+    useObserverState,
+    type ObserverProps,
+    type ObserverDefinition,
+}                           from '@reusable-ui/observer-state'      // Observes a specific condition (typically a DOM interaction) and emits a resolved state whenever that condition changes.
 
+
+
+// Define how the press observer should behave:
+const pressObserverDefinition : ObserverDefinition<boolean, Element> = {
+    inactiveState       : false,      // The default state when not pressed.
+    restrictionBehavior : 'discrete', // State resets when restriction is lifted.
+    getCurrentState     : undefined,  // Not used; press state is determined via event handlers.
+};
+
+
+
+/**
+ * Props for the `usePressObserverState()` hook.
+ * 
+ * Describes the current component condition for press observation.
+ */
+export interface PressObserverProps
+    extends
+        // Bases:
+        ObserverProps
+{
+    /* no additional props yet - reserved for future extensions */
+}
 
 /**
  * An observed press state for uncontrolled components.
@@ -102,12 +130,11 @@ export interface PressObserverState<TElement extends Element = HTMLElement>
  * 
  * @template TElement - The type of the target DOM element.
  * 
- * @param disabledUpdates - Whether to disable internal press state updates (e.g. when externally controlled).
- * @param isRestricted - Whether the component is currently in a restricted state; enforces a release override.
+ * @param props - The press observer props for describing the current component condition.
  * @param options - Configuration for press resolution (keys, buttons, pressure, fingers, global release behavior).
  * @returns The observed press state and event handlers.
  */
-export const usePressObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, isRestricted: boolean, options: Pick<PressStateOptions, 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'> | undefined): PressObserverState<TElement> => {
+export const usePressObserverState = <TElement extends Element = HTMLElement>(props: PressObserverProps, options: Pick<PressStateOptions, 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'> | undefined): PressObserverState<TElement> => {
     // Extract options and assign defaults:
     const {
         pressKeys              = defaultPressKeys,
@@ -124,10 +151,17 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     
     
     
+    // Extract props:
+    const {
+        isControlled,
+    } = props;
+    
+    
+    
     // States and flags:
     
-    // Internal fallback for observed press (used only when uncontrolled):
-    const [observedPress, setObservedPress] = useState<boolean>(false);
+    // Tracks the pending release timeout:
+    const deferredReleaseRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
     
     // PointerPress tracker for determining pressed state by pointers:
     const pointerPressTracker = usePointerPressTracker(pressButtons, pressPressure, pressFingers);
@@ -135,100 +169,63 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     // KeyPress tracker for determining pressed state by keys:
     const keyPressTracker     = useKeyPressTracker(pressKeys);
     
-    // Tracks the pending release timeout:
-    const timeoutRef          = useRef<ReturnType<typeof setTimeout> | null>(null);
     
     
-    
-    /**
-     * Updates the internal press state.
-     * 
-     * - If `disabledUpdates` is true, the update will be skipped.
-     * - If the new state matches the current `observedPress`, no update will occur.
-     * 
-     * @param newObservedPress - The desired press state.
-     */
-    const handlePressStateUpdate : (newObservedPress: boolean) => void = useStableCallback((newObservedPress) => {
-        // Skip if observer updates are disabled (controlled mode):
-        if (disabledUpdates) return;
-        
-        // Skip update if state is unchanged:
-        if (newObservedPress === observedPress) return;
-        
-        
-        
-        // Commit press state update:
-        if (newObservedPress) {
-            setObservedPress(true);
-        }
-        else {
-            /**
-             * Defers the press release update with a *single* macrotask tick.
-             * 
-             * Why:
-             * - Ensures the release runs *after* the click event, so the user has a chance to flip `pressed={true|false}`,
-             *   before the press observer commits a release.
-             * 
-             * How:
-             * - The timeout is cancelled in `useLayoutEffect` when `disabledUpdates` flips,
-             *   preventing unwanted release flicker.
-             * - Cancellation must happen in `useLayoutEffect` (not `useEffect`),
-             *   because `useLayoutEffect` run before paint and before the timeout fires.
-             */
-            timeoutRef.current = setTimeout(() => {
-                setObservedPress(false);
-            }, 0);
-        } // if
-    });
-    
-    
-    
-    // Cancels any pending press release update when the observer updates are disabled (controlled mode).
+    // Cancels any pending press release when updates are disabled (controlled mode):
     // 
-    // Placement matters: this effect must run *before* the subsequent `useLayoutEffect` that refreshes press state,
-    // to avoid accidentally clearing a newly scheduled timeout from that refresh (the *wrong kill* scenario).
+    // Placement matters: this effect must run *before* `useObserverState()` refreshes press state,
+    // to avoid clearing a newly scheduled timeout (the "wrong kill" scenario).
     //
     // Using `useLayoutEffect()` to ensure the cancellation happens before browser paint,
     // preventing potential visual glitches if the element is already pressed.
     useLayoutEffect(() => {
         // Kills pending press release update when the observer updates are disabled (controlled mode):
-        if (!disabledUpdates) return; // Enabled => do not kill.
+        if (!isControlled) return; // Enabled => do not kill.
         
         
         
-        // Cancel the deferred press release update:
-        if (timeoutRef.current !== null) {
-            clearTimeout(timeoutRef.current);
-            timeoutRef.current = null;
+        // Cancel the deferred press release:
+        const deferredRelease = deferredReleaseRef.current;
+        if (deferredRelease !== null) {
+            clearTimeout(deferredRelease);
+            deferredReleaseRef.current = null;
         } // if
-    }, [disabledUpdates]);
+    }, [isControlled]);
     
     
     
-    // Press state refresh effect:
-    // Ensures the internal press state is synchronized when:
-    // - The observer switches back to uncontrolled mode (`disabledUpdates` becomes false).
-    // - The component transitions between restricted and unrestricted (`isRestricted` changes).
-    //
-    // For discrete press behavior, past press actions are ignored:
-    // - Disabling always forces the state to released (`false`), even if no native `pointerup` or `keyup` event fires.
-    // - Re-enabling or switching back to uncontrolled also resets to released (`false`),
-    //   requiring a fresh user interaction to set press again.
-    //
-    // Using `useLayoutEffect()` ensures the update runs before the browser paints,
-    // preventing potential visual glitches if the element was pressed at mount or
-    // during a restricted/unrestricted transition.
-    useLayoutEffect(() => {
-        // Skip if observer updates are disabled (controlled mode):
-        if (disabledUpdates) return;
-        
-        
-        
-        // Always force released (`false`) when restricted or re-unrestricted:
-        handlePressStateUpdate(false);
-    }, [disabledUpdates, isRestricted]);
-    // Re-evaluates press state only when `disabledUpdates` or `isRestricted` changes.
-    // `handlePressStateUpdate` is stable via useStableCallback, so it is safe to omit from deps.
+    // Use the generic observer state hook with press-specific definition:
+    const {
+        observedState,
+        safeUpdateState,
+    } = useObserverState<boolean, TElement>(props, {
+        commitState : (newState, setState) => {
+            if (newState) {
+                // Instant press:
+                setState(true);
+            }
+            else {
+                // Deferred release:
+                
+                /**
+                 * Defers the press release update with a *single* macrotask tick.
+                 * 
+                 * Why:
+                 * - Ensures the release runs *after* the click event, so the user has a chance to flip `pressed={true|false}`,
+                 *   before the press observer commits a release.
+                 * 
+                 * How:
+                 * - The timeout is cancelled in `useLayoutEffect` when `isControlled` flips,
+                 *   preventing unwanted release flicker.
+                 * - Cancellation must happen in `useLayoutEffect` (not `useEffect`),
+                 *   because `useLayoutEffect` run before paint and before the timeout fires.
+                 */
+                const deferredRelease = deferredReleaseRef.current;
+                if (deferredRelease) clearTimeout(deferredRelease);
+                deferredReleaseRef.current = setTimeout(() => setState(false), 0);
+            }
+        },
+    }, pressObserverDefinition);
     
     
     
@@ -239,10 +236,11 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     // provides cleanup logic (no need for `useLayoutEffect`).
     useEffect(() => {
         return () => {
-            // Cancel the deferred press release update:
-            if (timeoutRef.current !== null) {
-                clearTimeout(timeoutRef.current);
-                timeoutRef.current = null;
+            // Cancel the deferred press release:
+            const deferredRelease = deferredReleaseRef.current;
+            if (deferredRelease !== null) {
+                clearTimeout(deferredRelease);
+                deferredReleaseRef.current = null;
             } // if
         };
     }, []);
@@ -256,7 +254,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         
         
-        handlePressStateUpdate(true);
+        safeUpdateState(event.currentTarget, true);
         
         
         
@@ -269,7 +267,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         
         
-        handlePressStateUpdate(false);
+        safeUpdateState(event.currentTarget, false);
         
         
         
@@ -327,7 +325,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         
         
-        handlePressStateUpdate(true);
+        safeUpdateState(event.currentTarget, true);
         
         
         
@@ -361,7 +359,7 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
         
         
         
-        handlePressStateUpdate(false);
+        safeUpdateState(event.currentTarget, false);
         
         
         
@@ -380,15 +378,15 @@ export const usePressObserver = <TElement extends Element = HTMLElement>(disable
     
     
     
-    // States and flags:
+    // Global release controllers:
     const globalPointerReleaseController = useGlobalPointerRelease(handlePointerRelease);
     const globalKeyReleaseController     = useGlobalKeyRelease(handleKeyRelease);
     
     
     
-    // Return the internal press state API:
+    // Return the observed press indicator state and handlers for integration:
     return {
-        observedPress,
+        observedPress : observedState,
         handlePointerDown,
         handlePointerUp,
         handlePointerCancel,
