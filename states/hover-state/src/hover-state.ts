@@ -27,7 +27,7 @@ import {
 
 // Hooks:
 import {
-    useHoverObserver,
+    useHoverObserverState,
 }                           from './hover-observer.js'
 
 // Reusable-ui states:
@@ -109,7 +109,10 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
         ref,
         handleMouseEnter,
         handleMouseLeave,
-    } = useHoverObserver<TElement>(isExplicitValue || isExternallyComputed, isRestricted);
+    } = useHoverObserverState<TElement>({
+        isControlled : isExplicitValue || isExternallyComputed,
+        isRestricted,
+    });
     
     // Merge external and internal observation:
     const observedState = isExternallyComputed ? externalComputedHover : observedHover;

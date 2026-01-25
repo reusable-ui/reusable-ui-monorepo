@@ -4,13 +4,6 @@
 import {
     // Types:
     type MouseEventHandler,
-    
-    
-    
-    // Hooks:
-    useLayoutEffect,
-    useRef,
-    useState,
 }                           from 'react'
 
 // Types:
@@ -24,6 +17,13 @@ import {
     useStableCallback,
 }                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
 
+// Reusable-ui states:
+import {
+    useObserverState,
+    type ObserverProps,
+    type ObserverDefinition,
+}                           from '@reusable-ui/observer-state'      // Observes a specific condition (typically a DOM interaction) and emits a resolved state whenever that condition changes.
+
 
 
 /**
@@ -36,7 +36,27 @@ import {
  */
 const hoverWithinSelector = ':hover';
 
+// Define how the hover observer should behave:
+const hoverObserverDefinition : ObserverDefinition<boolean, Element> = {
+    inactiveState       : false,        // The default state when not hovered.
+    restrictionBehavior : 'continuous', // Hover state may persist after restriction is lifted.
+    getCurrentState     : (element) => element.matches(hoverWithinSelector),
+};
 
+
+
+/**
+ * Props for the `useHoverObserverState()` hook.
+ * 
+ * Describes the current component condition for hover observation.
+ */
+export interface HoverObserverProps
+    extends
+        // Bases:
+        ObserverProps
+{
+    /* no additional props yet - reserved for future extensions */
+}
 
 /**
  * An observed hover state for uncontrolled components.
@@ -77,104 +97,37 @@ export interface HoverObserverState<TElement extends Element = HTMLElement>
  * 
  * @template TElement - The type of the target DOM element.
  * 
- * @param disabledUpdates - Whether to disable internal hover state updates (e.g. when externally controlled).
- * @param isRestricted - Whether the component is currently in a restricted state; enforces an unhover override.
+ * @param props - The hover observer props for describing the current component condition.
  * @returns The observed hover state, ref, and event handlers.
  */
-export const useHoverObserver = <TElement extends Element = HTMLElement>(disabledUpdates: boolean, isRestricted: boolean): HoverObserverState<TElement> => {
-    // States and flags:
-    
-    // Ref to the hoverable DOM element:
-    const hoverableElementRef = useRef<TElement | null>(null);
-    
-    // Internal fallback for observed hover (used only when uncontrolled):
-    const [observedHover, setObservedHover] = useState<boolean>(false);
-    
-    
-    
-    /**
-     * Updates the internal hover state based on the current hover state of the given element.
-     * 
-     * - If `disabledUpdates` is true, the update will be skipped.
-     * - If `newObservedHover` is not provided, it will be auto-detected using `.matches(hoverWithinSelector)`.
-     * - If the new state matches the current `observedHover`, no update will occur.
-     * 
-     * @param hoverableElement - The DOM element to observe for hover state.
-     * @param newObservedHover - Optional override for the detected hover state.
-     */
-    const handleHoverStateUpdate : (hoverableElement: TElement | null, newObservedHover?: boolean) => void = useStableCallback((hoverableElement, newObservedHover) => {
-        // Skip if observer updates are disabled (controlled mode):
-        if (disabledUpdates) return;
-        
-        // Skip update if no element to observe:
-        if (!hoverableElement) return;
-        
-        // Auto-detect hover state if not provided:
-        newObservedHover ??= hoverableElement.matches(hoverWithinSelector);
-        
-        // The code below is redundant as `:hover` inherently means the element is `:hover-within`,
-        // so no additional verification is needed.
-        // // If hovered, verify hover-within:
-        // if (newObservedHover) {
-        //     newObservedHover = hoverableElement.matches(hoverWithinSelector);
-        // } // if
-        
-        // Skip update if state is unchanged:
-        if (newObservedHover === observedHover) return;
-        
-        
-        
-        // Commit hover state update:
-        setObservedHover(newObservedHover);
-    });
+export const useHoverObserverState = <TElement extends Element = HTMLElement>(props: HoverObserverProps): HoverObserverState<TElement> => {
+    // Use the generic observer state hook with hover-specific definition:
+    const {
+        elementRef,
+        observedState,
+        safeUpdateState,
+    } = useObserverState<boolean, TElement>(props, undefined, hoverObserverDefinition);
     
     
     
-    // Hover state refresh effect:
-    // Ensures the internal hover state is synchronized when:
-    // - The observer switches back to uncontrolled mode (`disabledUpdates` becomes false).
-    // - The component transitions from restricted to unrestricted (`isRestricted` becomes false).
-    //
-    // For continuous hover behavior:
-    // - The pointer position may legitimately remain over the element across restricted/unrestricted transitions.
-    // - On re-enable or when returning to uncontrolled mode, the state should be recomputed
-    //   from the actual DOM hover condition rather than reset to false.
-    // 
-    // Using `useLayoutEffect()` ensures the update runs before the browser paints,
-    // preventing potential visual glitches if the element was hovered at mount or
-    // during a restricted/unrestricted transition.
-    useLayoutEffect(() => {
-        // Skip if observer updates are disabled (controlled mode):
-        if (disabledUpdates) return;
-        
-        // Skip if the component is restricted:
-        if (isRestricted) return;
-        
-        
-        
-        // Refresh when re-enabled or observer toggles back to uncontrolled.
-        // Let the observer recompute based on the current DOM hover state.
-        handleHoverStateUpdate(hoverableElementRef.current);
-    }, [disabledUpdates, isRestricted]);
-    // Re-evaluates hover state only when `disabledUpdates` or `isRestricted` changes.
-    // `handleHoverStateUpdate` is stable via useStableCallback, so it is safe to omit from deps.
+    // Event handlers:
     
-    
-    
-    // Imperative handlers for uncontrolled hover tracking:
+    // Marks hover indicator as active when element is hovered:
     const handleMouseEnter : MouseEventHandler<TElement> = useStableCallback((event) => {
-        handleHoverStateUpdate(event.currentTarget, true);
+        safeUpdateState(event.currentTarget, true);
     });
+    
+    // Marks hover indicator as inactive when element is unhovered:
     const handleMouseLeave : MouseEventHandler<TElement> = useStableCallback((event) => {
-        handleHoverStateUpdate(event.currentTarget, false);
+        safeUpdateState(event.currentTarget, false);
     });
     
     
     
-    // Return the internal hover state API:
+    // Return the observed hover indicator state and handlers for integration:
     return {
-        observedHover,
-        ref : hoverableElementRef,
+        observedHover : observedState,
+        ref           : elementRef,
         handleMouseEnter,
         handleMouseLeave,
     } satisfies HoverObserverState<TElement>;
