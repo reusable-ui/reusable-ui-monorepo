@@ -239,10 +239,10 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/invalidable        DEPRECATED
 @reusable-ui/checkable          DEPRECATED
 @reusable-ui/validation-icon    DEPRECATED
-@reusable-ui/active-as-click
 
 // Reusable-ui transitions:
 @reusable-ui/active-transition  non_peer
+@reusable-ui/active-as-click    DEPRECATED
 
 // Reusable-ui capabilities:
 @reusable-ui/floatable

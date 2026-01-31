@@ -131,6 +131,7 @@
     "states/checkable",
     "states/validation-icon",
     "transitions/active-transition",
+    "transitions/active-as-click",
     "__configs/*",
     "__utilities/*",
     "__features/*",
