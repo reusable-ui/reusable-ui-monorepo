@@ -130,6 +130,7 @@
     "states/invalidable",
     "states/checkable",
     "states/validation-icon",
+    "transitions/active-transition",
     "__configs/*",
     "__utilities/*",
     "__features/*",

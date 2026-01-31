@@ -241,6 +241,9 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/validation-icon    DEPRECATED
 @reusable-ui/active-as-click
 
+// Reusable-ui transitions:
+@reusable-ui/active-transition  non_peer
+
 // Reusable-ui capabilities:
 @reusable-ui/floatable
 @reusable-ui/global-stackable
