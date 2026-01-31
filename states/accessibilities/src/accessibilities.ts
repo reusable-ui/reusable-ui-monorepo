@@ -1,9 +1,16 @@
-// React:
+// Reusable-ui states:
 import {
     // Hooks:
-    use,
-    useMemo,
-}                           from 'react'
+    useDisabledState,
+}                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
+import {
+    // Hooks:
+    useReadOnlyState,
+}                           from '@reusable-ui/read-only-state'     // Adds editable/read-only functionality to UI components, with transition animations and semantic styling hooks.
+import {
+    // Hooks:
+    useActiveState,
+}                           from '@reusable-ui/active-state'        // Lifecycle-aware activation state with transition animations and semantic styling hooks for UI components.
 
 // Types:
 import {
@@ -11,27 +18,21 @@ import {
     type ResolvedAccessibilityState,
 }                           from './types.js'
 
-// Defaults:
-import {
-    DEFAULT_DISABLED,
-    DEFAULT_READ_ONLY,
-    DEFAULT_ACTIVE,
-    
-    DEFAULT_CASCADE_DISABLED,
-    DEFAULT_CASCADE_READ_ONLY,
-    DEFAULT_CASCADE_ACTIVE,
-}                           from './defaults.js'
-
-// Contexts:
-import {
-    AccessibilityContext,
-}                           from './contexts.js'
-
 
 
 /**
+ * @deprecated since v7.0.0
+ * This hook is part of the deprecated `@reusable-ui/accessibilities` package.
+ * 
  * Resolves the final accessibility states (`disabled`, `readOnly`, `active`) by
  * combining local props with optional cascading from an `<AccessibilityProvider>`.
+ * 
+ * ⚠️ Notes:
+ * Resolving all three states (`disabled`, `readOnly`, `active`) at once is rare in practice.
+ * Please migrate to the individual behavior hooks:
+ * - `useDisabledState`
+ * - `useReadOnlyState`
+ * - `useActiveState`
  * 
  * @example
  * ```ts
@@ -89,43 +90,17 @@ import {
  * ```
  */
 export const useResolvedAccessibilityState = (props: AccessibilityProps): ResolvedAccessibilityState => {
-    // Extract props and assign defaults:
-    const {
-        disabled        = DEFAULT_DISABLED,
-        readOnly        = DEFAULT_READ_ONLY,
-        active          = DEFAULT_ACTIVE,
-        
-        cascadeDisabled = DEFAULT_CASCADE_DISABLED,
-        cascadeReadOnly = DEFAULT_CASCADE_READ_ONLY,
-        cascadeActive   = DEFAULT_CASCADE_ACTIVE,
-    } = props;
+    // States:
+    const disabled = useDisabledState(props);
+    const readOnly = useReadOnlyState(props);
+    const active   = useActiveState(props);
     
     
     
-    // Retrieve ancestor accessibility context:
-    const {
-        disabled : ancestorDisabled,
-        readOnly : ancestorReadOnly,
-        active   : ancestorActive,
-    } = use(AccessibilityContext);
-    
-    
-    
-    // Compute final resolved accessibilities:
-    const computedDisabled : boolean = (cascadeDisabled ? ancestorDisabled : false) || disabled;
-    const computedReadOnly : boolean = (cascadeReadOnly ? ancestorReadOnly : false) || readOnly;
-    const computedActive   : boolean = (cascadeActive   ? ancestorActive   : false) || active;
-    
-    
-    
-    // Return stable resolved state:
-    return useMemo(() => ({
-        disabled : computedDisabled,
-        readOnly : computedReadOnly,
-        active   : computedActive,
-    } satisfies ResolvedAccessibilityState), [
-        computedDisabled,
-        computedReadOnly,
-        computedActive,
-    ]);
+    // Return resolved state:
+    return {
+        disabled,
+        readOnly,
+        active,
+    } satisfies ResolvedAccessibilityState;
 };

@@ -1,18 +1,19 @@
 {
   "name": "@reusable-ui/accessibilities",
   "version": "7.0.0",
-  "description": "Composable React utilities for resolving disabled, readOnly, and active state with optional cascading context.",
+  "description": "[DEPRECATED] Utilities for resolving disabled, readOnly, and active state with optional cascading context. Deprecated since v7.0.0 — use @reusable-ui/disabled-state, @reusable-ui/read-only-state, and @reusable-ui/active-state instead.",
   "keywords": [
+    "deprecated",
     "accessibility",
     "react",
     "hooks",
     "context",
-    "cascade",
     "disabled",
     "readOnly",
     "active",
     "state-management",
-    "reusable-ui"
+    "reusable-ui",
+    "migration-guide"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
   "homepage": "https://reusableui.com",
@@ -20,7 +21,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "utilities/accessibilities"
+    "directory": "states/accessibilities"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
@@ -45,6 +46,9 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "peerDependencies": {
+    "@reusable-ui/active-state": "^7.0.0",
+    "@reusable-ui/disabled-state": "^7.0.0",
+    "@reusable-ui/read-only-state": "^7.0.0",
     "@types/react": "^19.0.0",
     "react": "^19.0.0"
   }
