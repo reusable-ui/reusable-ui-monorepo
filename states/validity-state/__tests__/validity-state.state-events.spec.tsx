@@ -1,6 +1,6 @@
 import React from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
-import { ValidityStateTest } from './ValidityStateTest.js';
+import { ValidityStateInFormTest } from './ValidityStateInFormTest.js';
 import { ValueChangeEventHandler } from '@reusable-ui/events';
 import { ValidityPhase } from '../dist/index.js'
 
@@ -934,7 +934,7 @@ test.describe('useValidityStatePhaseEvents', () => {
             
             // First render:
             const component = await mount(
-                <ValidityStateTest
+                <ValidityStateInFormTest
                     validity={currentValidity}
                     computedValidity={currentComputedValidity}
                     
@@ -977,7 +977,7 @@ test.describe('useValidityStatePhaseEvents', () => {
                 
                 // Re-render:
                 await component.update(
-                    <ValidityStateTest
+                    <ValidityStateInFormTest
                         validity={currentValidity}
                         computedValidity={currentComputedValidity}
                         

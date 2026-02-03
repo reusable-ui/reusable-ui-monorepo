@@ -18,6 +18,7 @@ With **validity-state**, you get:
 ✔ User definable `computedValidity` for validation logic delegation  
 ✔ Conditional CSS variables (`--va-was-*`) to determine previous validity state (useful for animating from prev validity state to new one)  
 ✔ Deterministic restricted handling: always unvalidated when restricted, with immediate recomputation when unrestricted  
+✔ Context propagation via `<ValidityStateProvider>` for group-level validation policy (enablement, validity, cascading)  
 
 ## 📦 Installation
 Install **@reusable-ui/validity-state** via npm or yarn:
@@ -35,7 +36,15 @@ yarn add @reusable-ui/validity-state
 Resolves the validity state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
 - Supports controlled validity state, when `validity` is set to `true`, `false`, or `null`.
-- Supports diagnostic mode, when `validity` is set to `'auto'`, which derives the effective validity from `computedValidity`.
+- Supports automatic mode, when `validity` is set to `'auto'`, which defers resolution to
+  the nearest `<ValidityStateProvider>` (if cascading is enabled) or falls back to
+  `computedValidity` when no explicit parent validity is available.
+- Honors `enableValidation` to determine whether validation is active for the component.
+  Even if enabled locally, a parent `<ValidityStateProvider>` can still disable validation
+  when `cascadeValidation = true`.
+- Honors `cascadeValidation` to control whether ancestor validation intent cascades down.
+  When enabled, parent providers can disable this component or enforce their own validity
+  when the local validity is `'auto'`.
 
 #### 💡 Usage Example
 
@@ -87,7 +96,7 @@ export const CustomInput: FC<CustomInputProps> = (props) => {
         computedValidity,
         ...restProps,
     }, {
-        defaultValidity   : 'auto',                                         // Defaults to diagnostic mode.
+        defaultValidity   : 'auto',                                         // Defaults to automatic mode.
         fallbackValidity  : null,                                           // Defaults to unresolved state when `validity` is 'auto' but no `computedValidity` is provided.
         animationPattern  : ['validating', 'invalidating', 'unvalidating'], // Matches animation names ending with 'validating', 'invalidating', or 'unvalidating'.
         animationBubbling : false,                                          // Ignores bubbling animation events from children.
@@ -116,12 +125,101 @@ The hook manages transitions between `valid`, `invalid`, and `unvalidated` state
 - Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.
 - This ensures animations are never interrupted mid-flight and outdated transitions are discarded.
 
-#### 🔒 Restricted Behavior (`disabled` or `readonly`)
-- **Always unvalidated when restricted**: Components are forced into an unvalidated state whenever `disabled` or `readonly` is active, regardless of `validity` or `computedValidity` values.  
-- **On unrestricted (re‑enabled or exit readonly)**:
-    - **Auto mode (external validity recomputation)**: The component immediately re-evaluates based on the provided `computedValidity`.  
-    - **Explicit (`true`/`false`/`null`) modes**: The component resumes following the provided value.  
-- **Rationale**: Validity is a continuous state but component-specific — there is no built-in validity observer. Developers must supply `computedValidity` for correctness; otherwise, the component stays unvalidated.
+#### 🔒 Restricted Behavior (`disabled` or `readOnly`)
+- **Always unvalidated when restricted**: Components are forced into an unvalidated state whenever `disabled` or `readOnly` is active, regardless of `validity` or `computedValidity` values.  
+- **On unrestricted (re-enabled or exit readonly)**:
+    - **Auto mode (`validity="auto"`)**: The component immediately re-evaluates based on the nearest `<ValidityStateProvider>` (if cascading is enabled) or falls back to the provided `computedValidity`.  
+    - **Explicit (`true`/`false`/`null`) modes**: The component resumes following the provided value directly.  
+- **Rationale**: Validity is a continuous state but component-specific — there is no built-in validity observer. Developers must supply `computedValidity` for correctness; otherwise, the component stays unvalidated.  
+
+#### 🧬 Context Propagation
+
+Use `<ValidityStateProvider>` to propagate validation policy (e.g., covering enablement, validity, and cascading intent) to descendant components.
+This provides a clear, declarative way to manage validation across groups of inputs.
+
+In the examples below, `<Input />` represents any component that implements `useValidityBehaviorState()` or `useValidityState()`.
+
+**Enable or disable validation for all inputs in a section:**
+
+```tsx
+<ValidityStateProvider enableValidation={true}>
+    <Input />
+    <Input />
+    <Input />
+</ValidityStateProvider>
+```
+
+**Force a group of inputs to be valid or invalid:**
+
+```tsx
+<ValidityStateProvider validity={false}>
+    <Input />
+    <Input />
+</ValidityStateProvider>
+
+<ValidityStateProvider validity={true}>
+    <Input />
+    <Input />
+</ValidityStateProvider>
+```
+
+**Break inheritance with `cascadeValidation={false}` to isolate a subsection:**
+
+```tsx
+<ValidityStateProvider validity={false}>
+    <Input /> {/* invalid by parent */}
+    
+    <ValidityStateProvider cascadeValidation={false} validity='auto'>
+        <Input /> {/* independent, resolves validity on its own */}
+    </ValidityStateProvider>
+</ValidityStateProvider>
+```
+
+**Simulate a standalone `<Dialog>` with validation disabled by default:**
+
+```tsx
+<Dialog>
+    <ValidityStateProvider defaultEnableValidation={false}>
+        <Input /> {/* disabled by default */}
+        <Input enableValidation={true} /> {/* explicit opt-in */}
+    </ValidityStateProvider>
+</Dialog>
+```
+
+#### 📏 Validation Rules
+
+To avoid confusion, here are the rules that govern how `<ValidityStateProvider>` and `<Input />` resolve their validity:
+
+1. **Restricted always wins**  
+   - If a component is `disabled`, `readOnly`, or indirectly disabled by a provider with `enableValidation={false}`, it always resolves to `null` (unvalidated).  
+   - This rule overrides all other validity settings.
+
+2. **Local explicit validity wins**  
+   - If a component sets `validity={true}`, `validity={false}`, or `validity={null}`, that value is authoritative.  
+   - Providers do not override explicit local values.
+
+3. **Local `'auto'` defers to parent**  
+   - If local validity is `'auto'`, the nearest `<ValidityStateProvider>` decides:  
+     - If the provider has an explicit validity (`true | false | null`), the input inherits it.  
+     - If the provider is also `'auto'`, resolution falls back to the input's own `computedValidity`.
+
+4. **Cascade control**  
+   - When `cascadeValidation={true}`, ancestor providers can enforce their validity or disable descendants.  
+   - When `cascadeValidation={false}`, the component ignores ancestor rules and resolves validity independently.
+
+##### ✅ Example Outcomes
+
+```tsx
+<ValidityStateProvider validity={false}>
+    <Input validity={true} /> {/* → true (local explicit wins) */}
+    <Input validity={null} /> {/* → null (local explicit wins) */}
+    <Input validity='auto' /> {/* → false (inherits parent) */}
+</ValidityStateProvider>
+
+<ValidityStateProvider validity='auto'>
+    <Input validity='auto' computedValidity={true} /> {/* → true (`computedValidity` fallback) */}
+</ValidityStateProvider>
+```
 
 ### `useValidityStatePhaseEvents(props, validityPhase)`
 
@@ -145,8 +243,16 @@ This hook is intended for components that **consume** the resolved `validity` st
 Unlike `useValidityBehaviorState()`, which handles animation and lifecycle, `useValidityState()` performs a lightweight resolution of the effective validity value.
 
 - No internal state or uncontrolled fallback.
-- `'auto'` is treated as a declarative diagnostic mode.
 - Ideal for components that **consume** the resolved `validity` state.
+- Supports automatic mode, when `validity` is set to `'auto'`, which defers resolution to
+  the nearest `<ValidityStateProvider>` (if cascading is enabled) or falls back to
+  `computedValidity` when no explicit parent validity is available.
+- Honors `enableValidation` to determine whether validation is active for the component.
+  Even if enabled locally, a parent `<ValidityStateProvider>` can still disable validation
+  when `cascadeValidation = true`.
+- Honors `cascadeValidation` to control whether ancestor validation intent cascades down.
+  When enabled, parent providers can disable this component or enforce their own validity
+  when the local validity is `'auto'`.
 
 ---
 
@@ -302,7 +408,7 @@ export const validatableBoxStyle = () => {
                 ),
             },
             to   : {
-                // Re‑declare the private resolver to prevent interpolation glitches:
+                // Re-declare the private resolver to prevent interpolation glitches:
                 '--_wasInvalidFactor': [[
                     // Only applies if previously invalid:
                     wasInvalid,
@@ -343,7 +449,7 @@ export const validatableBoxStyle = () => {
                 ),
             },
             to   : {
-                // Re‑declare the private resolver to prevent interpolation glitches:
+                // Re-declare the private resolver to prevent interpolation glitches:
                 '--_wasValidFactor': [[
                     // Only applies if previously valid:
                     wasValid,
@@ -384,7 +490,7 @@ export const validatableBoxStyle = () => {
                 ),
             },
             to   : {
-                // Re‑declare the private resolver to prevent interpolation glitches:
+                // Re-declare the private resolver to prevent interpolation glitches:
                 '--_wasValidFactor': [[
                     // Only applies if previously valid:
                     wasValid,
@@ -416,7 +522,7 @@ export const validatableBoxStyle = () => {
         // - At 0: clamp = 0.001 → green ≈ 0 (epsilon contribution only)
         // - At +1: clamp = 1 → green = 1
         // - At <0: clamp = 0.001 → green ≈ 0 (epsilon contribution only)
-        // - Fades in from near‑zero to full green as factor approaches +1
+        // - Fades in from near-zero to full green as factor approaches +1
         // - The `0.001` is a small epsilon added to avoid producing
         //   `color-mix(... red 0%, green 0%)`, which the CSS Color 5 spec
         //   defines as invalid (all weights = 0%). This keeps the inner mix

@@ -1,6 +1,6 @@
 import React, { type AnimationEventHandler } from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
-import { ValidityStateTest } from './ValidityStateTest.js';
+import { ValidityStateInFormTest } from './ValidityStateInFormTest.js';
 import { ValueChangeEventHandler } from '@reusable-ui/events';
 
 
@@ -758,7 +758,7 @@ test.describe('useValidityBehaviorState - animation', () => {
             
             // First render:
             const component = await mount(
-                <ValidityStateTest
+                <ValidityStateInFormTest
                     validity={currentValidity}
                     computedValidity={currentComputedValidity}
                     
@@ -791,7 +791,7 @@ test.describe('useValidityBehaviorState - animation', () => {
                 
                 // Re-render:
                 await component.update(
-                    <ValidityStateTest
+                    <ValidityStateInFormTest
                         validity={currentValidity}
                         computedValidity={currentComputedValidity}
                         

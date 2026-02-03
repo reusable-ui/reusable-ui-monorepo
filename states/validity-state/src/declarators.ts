@@ -440,7 +440,7 @@ animationRegistry.registerAnimation(validityStateVars.animationUnvalidating);
  *                 ),
  *             },
  *             to   : {
- *                 // Re‑declare the private resolver to prevent interpolation glitches:
+ *                 // Re-declare the private resolver to prevent interpolation glitches:
  *                 '--_wasInvalidFactor': [[
  *                     // Only applies if previously invalid:
  *                     wasInvalid,
@@ -481,7 +481,7 @@ animationRegistry.registerAnimation(validityStateVars.animationUnvalidating);
  *                 ),
  *             },
  *             to   : {
- *                 // Re‑declare the private resolver to prevent interpolation glitches:
+ *                 // Re-declare the private resolver to prevent interpolation glitches:
  *                 '--_wasValidFactor': [[
  *                     // Only applies if previously valid:
  *                     wasValid,
@@ -522,7 +522,7 @@ animationRegistry.registerAnimation(validityStateVars.animationUnvalidating);
  *                 ),
  *             },
  *             to   : {
- *                 // Re‑declare the private resolver to prevent interpolation glitches:
+ *                 // Re-declare the private resolver to prevent interpolation glitches:
  *                 '--_wasValidFactor': [[
  *                     // Only applies if previously valid:
  *                     wasValid,
@@ -554,7 +554,7 @@ animationRegistry.registerAnimation(validityStateVars.animationUnvalidating);
  *         // - At 0: clamp = 0.001 → green ≈ 0 (epsilon contribution only)
  *         // - At +1: clamp = 1 → green = 1
  *         // - At <0: clamp = 0.001 → green ≈ 0 (epsilon contribution only)
- *         // - Fades in from near‑zero to full green as factor approaches +1
+ *         // - Fades in from near-zero to full green as factor approaches +1
  *         // - The `0.001` is a small epsilon added to avoid producing
  *         //   `color-mix(... red 0%, green 0%)`, which the CSS Color 5 spec
  *         //   defines as invalid (all weights = 0%). This keeps the inner mix

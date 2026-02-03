@@ -43,21 +43,46 @@ export interface ValidityStateProps
         Omit<FeedbackStateProps<boolean | null>, 'effectiveState'>
 {
     /**
+     * Controls whether validation is active for this component.
+     * 
+     * ### Notes:
+     * - Even if this component is enabled locally, a parent `<ValidityStateProvider>` can still
+     * disable validation when `cascadeValidation = true`.
+     * 
+     * Defaults to:
+     * - `false` → when used outside a `<ValidityStateProvider>` (validation disabled by default).
+     * - `true`  → when used inside  a `<ValidityStateProvider>` (validation enabled by default).
+     */
+    enableValidation  ?: boolean
+    
+    /**
      * Specifies the current validity state:
      * - `true`   : the component is valid
      * - `false`  : the component is invalid
-     * - `null`   : the component is unvalidated
+     * - `null`   : the component is unvalidated (neither valid nor invalid)
      * - `'auto'` : automatically determine validity state
      * 
-     * Restricted behavior (`disabled` or `readonly`):
-     * - When restricted, the component is always treated as invalid (`false`), regardless of `validity`.
+     * Restricted behavior (`disabled`, `readOnly`, or indirectly disabled
+     * by `<ValidityStateProvider enableValidation={false}>`):
+     * - When restricted, the component always resolves to `false` (invalid), regardless of `validity`.
      * - When restriction is lifted:
-     *   - `'auto'` mode (external validity recomputation): immediately re-evaluates based on the provided `computedValidity`.
-     *   - Explicit (`true`/`false`/`null`) or external (`computedValidity`): resumes following the provided value.
+     *   - `'auto'` → re-evaluates validity, preferring parent provider (`true`/`false`/`null`) if available,
+     *     otherwise falling back to `computedValidity`.
+     *   - Explicit (`true`/`false`/`null`) → follows the provided value directly.
      * 
      * Defaults to `'auto'` (automatically determine validity state).
      */
-    validity         ?: FeedbackStateProps<boolean | null>['effectiveState'] | 'auto'
+    validity          ?: FeedbackStateProps<boolean | null>['effectiveState'] | 'auto'
+    
+    /**
+     * Controls whether ancestor validation intent cascades down.
+     * 
+     * When `cascadeValidation = true`:
+     * - A parent `<ValidityStateProvider>` can disable this component.
+     * - A parent `<ValidityStateProvider>` can enforce its own validity
+     *   (`true`/`false`/`null`) when the local `validity` prop is `'auto'`.
+     */
+    cascadeValidation ?: boolean
     
     /**
      * The derived validity value used when `validity` is set to `'auto'`.
@@ -65,14 +90,14 @@ export interface ValidityStateProps
      * This value is typically computed reactively based on input, async validation,
      * or domain-specific logic. It is ignored when `validity` is explicitly set.
      * 
-     * Restricted behavior (`disabled` or `readonly`):
-     * - When restricted, the component is always treated as invalid (`false`), regardless of `computedValidity`.
+     * Restricted behavior (`disabled` or `readOnly`):
+     * - When restricted, the component always resolves to `false` (invalid), regardless of `computedValidity`.
      * - When restriction is lifted, the component resumes following the passed `computedValidity` value.
      * 
      * This property is intended for **component developers** who need to customize validity resolution.
      * For **application developers**, prefer using the `validity` prop directly.
      */
-    computedValidity ?: FeedbackStateProps<boolean | null>['effectiveState']
+    computedValidity  ?: FeedbackStateProps<boolean | null>['effectiveState']
 }
 
 /**
@@ -147,7 +172,7 @@ export interface ValidityStateOptions
      * Specifies the default validity state when no `validity` prop is explicitly provided:
      * - `true`   : the component is valid
      * - `false`  : the component is invalid
-     * - `null`   : the component is unvalidated
+     * - `null`   : the component is unvalidated (neither valid nor invalid)
      * - `'auto'` : automatically determine validity state
      * 
      * Defaults to `'auto'` (automatically determine validity state).
@@ -158,7 +183,7 @@ export interface ValidityStateOptions
      * Specifies the fallback validity state when no effective validity value can be resolved:
      * - `true`  : the component is valid
      * - `false` : the component is invalid
-     * - `null`  : the component is unvalidated
+     * - `null`  : the component is unvalidated (neither valid nor invalid)
      * 
      * This fallback applies when `validity` prop is set to `'auto'` but no `computedValidity` is provided.
      * 
@@ -273,7 +298,7 @@ export interface ValidityBehaviorState<TElement extends Element = HTMLElement>
     /**
      * The actual resolved validity state, regardless of animation state.
      * 
-     * This reflects the current target state based on the final diagnostic status.
+     * This reflects the current target state based on the final validity status.
      * Unlike `validity`, it updates immediately and does not wait for transitions to complete.
      * 
      * Useful for logic that needs the latest intent or target state, independent of animation lifecycle.

@@ -48,7 +48,7 @@ export default function validityStateTestStyle() {
                 ),
             },
             to   : {
-                // Re‑declare the private resolver to prevent interpolation glitches:
+                // Re-declare the private resolver to prevent interpolation glitches:
                 '--_wasInvalidFactor': [[
                     // Only applies if previously invalid:
                     wasInvalid,
@@ -89,7 +89,7 @@ export default function validityStateTestStyle() {
                 ),
             },
             to   : {
-                // Re‑declare the private resolver to prevent interpolation glitches:
+                // Re-declare the private resolver to prevent interpolation glitches:
                 '--_wasValidFactor': [[
                     // Only applies if previously valid:
                     wasValid,
@@ -130,7 +130,7 @@ export default function validityStateTestStyle() {
                 ),
             },
             to   : {
-                // Re‑declare the private resolver to prevent interpolation glitches:
+                // Re-declare the private resolver to prevent interpolation glitches:
                 '--_wasValidFactor': [[
                     // Only applies if previously valid:
                     wasValid,

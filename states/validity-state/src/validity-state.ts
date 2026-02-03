@@ -1,5 +1,11 @@
 'use client' // The exported hooks are client side only.
 
+// React:
+import {
+    // Hooks:
+    use,
+}                           from 'react'
+
 // Types:
 import {
     type ValidityStateProps,
@@ -17,6 +23,7 @@ import {
 // Defaults:
 import {
     defaultDeclarativeValidity,
+    defaultCascadeValidation,
     defaultFallbackValidity,
 }                           from './internal-defaults.js'
 
@@ -25,6 +32,11 @@ import {
     resolveValidityTransitionPhase,
     resolveValidityTransitionClassname,
 }                           from './internal-utilities.js'
+
+// Contexts:
+import {
+    ValidityStateContext,
+}                           from './contexts.js'
 
 // Reusable-ui utilities:
 import {
@@ -72,10 +84,21 @@ const observableStateDefinition : ObservableStateDefinition<boolean | null, 'aut
  * `useValidityState()` performs a lightweight resolution of the effective validity value.
  * 
  * - No internal state or uncontrolled fallback.
- * - `'auto'` is treated as a declarative diagnostic mode.
  * - Ideal for components that **consume** the resolved `validity` state.
+ * - Supports automatic mode, when `validity` is set to `'auto'`, which defers resolution to
+ *   the nearest `<ValidityStateProvider>` (if cascading is enabled) or falls back to
+ *   `computedValidity` when no explicit parent validity is available.
+ * - Honors `enableValidation` to determine whether validation is active for the component.
+ *   Even if enabled locally, a parent `<ValidityStateProvider>` can still disable validation
+ *   when `cascadeValidation = true`.
+ * - Honors `cascadeValidation` to control whether ancestor validation intent cascades down.
+ *   When enabled, parent providers can disable this component or enforce their own validity
+ *   when the local validity is `'auto'`.
  * 
- * @param props - The component props that may include a controlled `validity` value and derived `computedValidity` value.
+ * @param props - The component props that may include:
+ *   - A controlled `validity` value (`true` | `false` | `null` | `'auto'`).
+ *   - A derived `computedValidity` value used when local and parent validity are `'auto'`.
+ *   - `enableValidation` and `cascadeValidation` flags to control validation behavior.
  * @param options - An optional configuration for customizing validity behavior.
  * @returns The resolved validity state.
  */
@@ -88,11 +111,37 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
     
     
     
+    // Read the nearest ancestor policy (if any):
+    // - Used to decide a default `enableValidation`.
+    // - May be applied later if inheritance is enabled.
+    const nearestAncestorPolicy = use(ValidityStateContext);
+    
+    
+    
     // Extract props and assign defaults:
     const {
-        validity         : state,
-        computedValidity : observedState = fallbackValidity,
+        enableValidation                 = (
+            // Use the default hint from the nearest ancestor, if available:
+            nearestAncestorPolicy?.defaultEnableValidation
+            ??
+            // Otherwise, fall back to `false` to simulate being outside a `<Form>`:
+            false
+        ),
+        validity          : state         = defaultDeclarativeValidity,
+        cascadeValidation                 = defaultCascadeValidation,
+        computedValidity  : observedState = fallbackValidity,
     } = props;
+    
+    
+    
+    // Decide whether to inherit from the nearest ancestor policy:
+    // - Contains the cumulative validation policy (enablement + validity).
+    // - `undefined` if inheritance is disabled or no ancestor exists.
+    const parentValidationPolicy = (
+        cascadeValidation
+        ? nearestAncestorPolicy
+        : undefined
+    );
     
     
     
@@ -104,10 +153,20 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
     // Resolve whether the component is readonly:
     const isReadonly   = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
     
+    // Resolve enablement cumulatively (AND logic):
+    // - Both ancestor and local must allow validation.
+    const cumulativeEnableValidation = (
+        parentValidationPolicy
+        ? parentValidationPolicy.enableValidation && enableValidation
+        : enableValidation
+    );
+    
     // Resolve whether the component is in a restricted state:
-    const isRestricted = isDisabled || isReadonly;
+    const isRestricted = isDisabled || isReadonly || !cumulativeEnableValidation;
     
     // Resolve effective validity state:
+    // - Collapses to `null` (unvalidated) if restricted.
+    // - Otherwise resolved via observable state definition.
     const validity = useObservableState<boolean | null, 'auto'>(
         // Props:
         { state, isRestricted, observedState },
@@ -118,6 +177,18 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
         // Definition:
         observableStateDefinition,
     );
+    
+    
+    
+    // Resolve validity with nearest-wins logic:
+    // - Restricted fields always collapse to null (handled by `useObservableState()`).
+    // - If local validity is explicit (true, false, or null), it wins outright.
+    // - If local validity is 'auto', inherit ancestor validity if explicit.
+    // - If both local and ancestor are 'auto', fall back to the field's observer.
+    if (!isRestricted && (state === 'auto')) {
+        const parentValidity = parentValidationPolicy?.validity;
+        if ((parentValidity !== undefined) && (parentValidity !== 'auto')) return parentValidity;
+    } // if
     
     
     
@@ -144,11 +215,23 @@ const validityBehaviorStateDefinition : ValidityBehaviorStateDefinition = {
  * based on component props, optional default configuration, and animation lifecycle.
  * 
  * - Supports controlled validity state, when `validity` is set to `true`, `false`, or `null`.
- * - Supports diagnostic mode, when `validity` is set to `'auto'`, which derives the effective validity from `computedValidity`.
+ * - Supports automatic mode, when `validity` is set to `'auto'`, which defers resolution to
+ *   the nearest `<ValidityStateProvider>` (if cascading is enabled) or falls back to
+ *   `computedValidity` when no explicit parent validity is available.
+ * - Honors `enableValidation` to determine whether validation is active for the component.
+ *   Even if enabled locally, a parent `<ValidityStateProvider>` can still disable validation
+ *   when `cascadeValidation = true`.
+ * - Honors `cascadeValidation` to control whether ancestor validation intent cascades down.
+ *   When enabled, parent providers can disable this component or enforce their own validity
+ *   when the local validity is `'auto'`.
  * 
  * @template TElement - The type of the target DOM element.
  * 
- * @param props - The component props that may include a controlled `validity` value, derived `computedValidity` value, and `onValidityUpdate` callback.
+ * @param props - The component props that may include:
+ *   - A controlled `validity` value (`true` | `false` | `null` | `'auto'`).
+ *   - A derived `computedValidity` value used when local and parent validity are `'auto'`.
+ *   - `enableValidation` and `cascadeValidation` flags to control validation behavior.
+ *   - An `onValidityUpdate` callback for observing validity changes.
  * @param options - An optional configuration for customizing validity behavior and animation lifecycle.
  * @returns The resolved validity state, current transition phase, associated CSS class name, and animation event handlers.
  * 
@@ -201,7 +284,7 @@ const validityBehaviorStateDefinition : ValidityBehaviorStateDefinition = {
  *         computedValidity,
  *         ...restProps,
  *     }, {
- *         defaultValidity   : 'auto',                                         // Defaults to diagnostic mode.
+ *         defaultValidity   : 'auto',                                         // Defaults to automatic mode.
  *         fallbackValidity  : null,                                           // Defaults to unresolved state when `validity` is 'auto' but no `computedValidity` is provided.
  *         animationPattern  : ['validating', 'invalidating', 'unvalidating'], // Matches animation names ending with 'validating', 'invalidating', or 'unvalidating'.
  *         animationBubbling : false,                                          // Ignores bubbling animation events from children.
