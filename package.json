@@ -130,6 +130,7 @@
     "states/validation-icon",
     "states/accessibilities",
     "tests/test-accessibilities",
+    "states/validations",
     "transitions/active-transition",
     "transitions/active-as-click",
     "__configs/*",

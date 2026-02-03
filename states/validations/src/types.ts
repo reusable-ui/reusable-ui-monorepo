@@ -1,20 +1,26 @@
+// Reusable-ui states:
+import {
+    // Types:
+    type ValidityStateProps,
+}                           from '@reusable-ui/validity-state'      // Lifecycle-aware validation state with transition animations and semantic styling hooks for UI components.
+
+
+
 /**
+ * @deprecated
+ * Use {@link ValidityStateProps} instead.
+ * 
  * Properties that define validation-related attributes for controlling validity state and cascading behavior.
  */
-export interface ValidationProps {
+export interface ValidationProps
+    extends
+        // Bases:
+        Pick<ValidityStateProps, 'enableValidation' | 'cascadeValidation'>
+{
     /**
-     * Controls whether validation is enabled for this component.
+     * @deprecated
+     * Use {@link ValidityStateProps.validity} instead.
      * 
-     * If set to `false`, validation is disabled entirely — the component is treated as unvalidated
-     * (`isValid = null`) regardless of its own or inherited state.
-     * 
-     * Defaults to:
-     * - `true` when nested within a `<ValidationProvider>`.
-     * - `false` when not nested within a `<ValidationProvider>`.
-     */
-    enableValidation  ?: boolean
-    
-    /**
      * The validation state of this component.
      * 
      * Accepted values:
@@ -29,27 +35,12 @@ export interface ValidationProps {
      * Defaults to `'auto'`.
      */
     isValid           ?: boolean | null | 'inherit' | 'auto'
-    
-    
-    
-    /**
-     * Controls how the component's `enableValidation` value is influenced by an ancestor `<ValidationProvider>`.
-     * 
-     * - If `true` (default), the component inherits the ancestor’s `enableValidation` state.  
-     *   ```ts
-     *   computedEnableValidation = ancestorEnableValidation && enableValidation;
-     *   ```
-     *   This allows parent components (like `<Form>`) to disable validation for entire subtrees.
-     * 
-     * - If `false`, the component uses its own `enableValidation` independently:
-     *   ```ts
-     *   computedEnableValidation = enableValidation;
-     *   ```
-     */
-    cascadeValidation ?: boolean
 }
 
 /**
+ * @deprecated
+ * Use the resolved state returned by {@link useValidityState} instead.
+ * 
  * Represents the final resolved validation states for a component.
  * 
  * These values reflect the computed `enableValidation` and `isValid` states

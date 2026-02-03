@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/validations",
   "version": "7.0.0",
-  "description": "Declarative validation logic for reusable React components.",
+  "description": "[DEPRECATED] Declarative validation logic for reusable React components.",
   "keywords": [
     "validation",
     "react",
@@ -9,7 +9,9 @@
     "form",
     "state-management",
     "reusable-ui",
-    "react-hooks"
+    "react-hooks",
+    "deprecated",
+    "validity-state"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
   "homepage": "https://reusableui.com",
@@ -17,7 +19,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "utilities/validations"
+    "directory": "states/validations"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
@@ -42,6 +44,7 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "peerDependencies": {
+    "@reusable-ui/validity-state": "^7.0.0",
     "@types/react": "^19.0.0",
     "react": "^19.0.0"
   }

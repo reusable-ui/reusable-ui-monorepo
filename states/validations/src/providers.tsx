@@ -5,11 +5,6 @@ import React, {
     // Types:
     type PropsWithChildren,
     type ReactElement,
-    
-    
-    
-    // Hooks:
-    useMemo,
 }                           from 'react'
 
 // Types:
@@ -17,22 +12,25 @@ import {
     type ValidationProps,
 }                           from './types.js'
 
-// Defaults:
+// Reusable-ui states:
 import {
-    DEFAULT_ENABLE_VALIDATION,
-}                           from './defaults.js'
-
-// Contexts:
-import {
-    type ValidationContextValue,
-    ValidationContext,
-}                           from './contexts.js'
+    // Types:
+    type ValidityStateProviderProps,
+    
+    
+    
+    // Contexts:
+    ValidityStateProvider,
+}                           from '@reusable-ui/validity-state'      // Lifecycle-aware validation state with transition animations and semantic styling hooks for UI components.
 
 
 
 // React components:
 
 /**
+ * @deprecated
+ * Use {@link ValidityStateProviderProps} instead.
+ * 
  * Props for `<ValidationProvider>`.
  * 
  * Accepts optional `enableValidation` and `isValid` states,
@@ -41,9 +39,15 @@ import {
 export interface ValidationProviderProps
     extends
         // Bases:
-        PropsWithChildren<Pick<ValidationProps, 'enableValidation' | 'isValid'>>
+        PropsWithChildren<ValidityStateProviderProps>,
+        Pick<ValidationProps, 'isValid'>
 {
     /**
+     * @deprecated
+     * Use {@link ValidityStateProviderProps.validity} instead.
+     * 
+     * Aliased to `ValidityStateProviderProps.validity`
+     * 
      * The resolved validation result to provide to descendants.
      * 
      * - `true`   → explicitly valid.
@@ -56,6 +60,9 @@ export interface ValidationProviderProps
 }
 
 /**
+ * @deprecated
+ * Use {@link ValidityStateProvider} instead.
+ * 
  * Provides validation context to descendant components,
  * enabling cascading resolution of `enableValidation` and `isValid` states.
  * 
@@ -72,31 +79,21 @@ export interface ValidationProviderProps
 const ValidationProvider = (props: ValidationProviderProps): ReactElement | null => {
     // Extract props and assign defaults:
     const {
-        enableValidation = DEFAULT_ENABLE_VALIDATION,
-        isValid          = null,
+        enableValidation,
+        isValid,
+        validity = isValid,
+        cascadeValidation,
+        defaultEnableValidation,
         children,
     } = props;
     
     
     
-    // Memoize context value to prevent unnecessary re-renders:
-    const validationContextValue = useMemo(() => ({
-        hasParentValidation : true, // Indicates presence of a parent <ValidationProvider>.
-        
-        enableValidation,
-        isValid,
-    } satisfies ValidationContextValue), [
-        enableValidation,
-        isValid,
-    ]);
-    
-    
-    
     // React elements:
     return (
-        <ValidationContext value={validationContextValue}>
+        <ValidityStateProvider enableValidation={enableValidation} validity={validity} cascadeValidation={cascadeValidation} defaultEnableValidation={defaultEnableValidation}>
             {children}
-        </ValidationContext>
+        </ValidityStateProvider>
     );
 };
 
