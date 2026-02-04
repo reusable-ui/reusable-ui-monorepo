@@ -19,13 +19,15 @@ import {
     type SemanticProps,
 }                           from '@reusable-ui/semantics'       // Semantic utility for resolving tag and role behaviors in reusable UI components.
 import {
-    // Types:
-    type AccessibilityProps,
-}                           from '@reusable-ui/accessibilities' // Composable React utilities for resolving enabled, readOnly, and active state with optional cascading context.
-import {
     // Hooks:
     useOptionalLinkWrapper,
 }                           from '@reusable-ui/links'           // Smart, router-agnostic link enhancement for semantic React components.
+
+// Reusable-ui states:
+import {
+    // Types:
+    type ActiveStateProps,
+}                           from '@reusable-ui/active-state'    // Lifecycle-aware activation state with transition animations and semantic styling hooks for UI components.
 
 // Utilities:
 import {
@@ -46,7 +48,7 @@ import {
 export interface ElementWithAutoActiveProps
     extends
         DetermineCurrentPageProps,
-        PropsWithChildren<SemanticProps & AccessibilityProps & Pick<AriaAttributes, 'aria-current'>>
+        PropsWithChildren<SemanticProps & ActiveStateProps & Pick<AriaAttributes, 'aria-current'>>
 {
     // Components:
     
@@ -54,7 +56,7 @@ export interface ElementWithAutoActiveProps
      * The original JSX element to enhance with optional client-side navigation behavior,
      *  along with automatic assignment of `active` and `aria-current` props.
      */
-    elementComponent  : ReactElement<PropsWithChildren<SemanticProps & AccessibilityProps & Pick<AriaAttributes, 'aria-current'>>, any>
+    elementComponent  : ReactElement<PropsWithChildren<SemanticProps & ActiveStateProps & Pick<AriaAttributes, 'aria-current'>>, any>
 }
 
 /**
@@ -130,7 +132,7 @@ const ElementWithAutoActive = (props: ElementWithAutoActiveProps): ReactNode | n
     
     // Return enhanced element with optional link wrapping:
     return useOptionalLinkWrapper(
-        cloneElement<PropsWithChildren<SemanticProps & AccessibilityProps & Pick<AriaAttributes, 'aria-current'>>>(elementComponent,
+        cloneElement<PropsWithChildren<SemanticProps & ActiveStateProps & Pick<AriaAttributes, 'aria-current'>>>(elementComponent,
             // props:
             {
                 // Other props:
@@ -146,7 +148,7 @@ const ElementWithAutoActive = (props: ElementWithAutoActiveProps): ReactNode | n
                 // States:
                 active         : elementComponentActive,
             },
-        ) as ReactElement<PropsWithChildren<SemanticProps & AccessibilityProps & Pick<AriaAttributes, 'aria-current'>>, string | JSXElementConstructor<unknown>>
+        ) as ReactElement<PropsWithChildren<SemanticProps & ActiveStateProps & Pick<AriaAttributes, 'aria-current'>>, string | JSXElementConstructor<unknown>>
     );
 };
 export {

@@ -22,7 +22,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "utilities/navigations"
+    "directory": "routes/navigations"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
@@ -47,7 +47,6 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/accessibilities": "^7.0.0",
     "@reusable-ui/lifecycles": "^7.0.0",
     "@reusable-ui/links": "^7.0.0",
     "@reusable-ui/runtime-checks": "^7.0.0",
@@ -56,6 +55,7 @@
     "url": "^0.11.4"
   },
   "peerDependencies": {
+    "@reusable-ui/active-state": "^7.0.0",
     "@types/react": "^19.0.0",
     "react": "^19.0.0"
   },
