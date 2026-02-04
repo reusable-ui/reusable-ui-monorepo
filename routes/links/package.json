@@ -58,8 +58,6 @@
   "devDependencies": {
     "@reusable-ui/next-link-compat": "^7.0.0",
     "@reusable-ui/router-link-compat": "^7.0.0",
-    "@types/node-fetch": "^2.6.12",
-    "node-fetch": "^3.3.2",
     "react-router": "^7.6.3"
   }
 }
