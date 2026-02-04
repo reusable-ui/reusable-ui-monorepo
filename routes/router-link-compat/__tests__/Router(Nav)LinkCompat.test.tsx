@@ -35,10 +35,6 @@ import {
     type SemanticProps,
     useResolvedSemanticAttributes,
 } from '@reusable-ui/semantics'
-import {
-    type AccessibilityProps,
-    useResolvedAccessibilityState,
-} from '@reusable-ui/accessibilities'
 import { render, renderHook, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { jest } from '@jest/globals'
@@ -60,7 +56,7 @@ const prioritizedLinkThenButton : SemanticPriority = [
 const fallbackButtonRole : Role | 'auto' = 'auto';
 const fallbackButtonTag  : Tag  | 'auto' = 'auto';
 
-interface ButtonProps extends SemanticProps, AccessibilityProps, DOMAttributes<HTMLButtonElement> {
+interface ButtonProps extends SemanticProps, DOMAttributes<HTMLButtonElement> {
     ref      ?: Ref<HTMLButtonElement | null>
     children ?: ReactNode
 }
@@ -74,13 +70,6 @@ const Button = (props: ButtonProps) => {
         role             = fallbackButtonRole,
         tag              = fallbackButtonTag,
         
-        disabled,
-        readOnly,
-        active,
-        cascadeDisabled,
-        cascadeReadOnly,
-        cascadeActive,
-        
         ...restProps
     } = props;
     
@@ -93,20 +82,6 @@ const Button = (props: ButtonProps) => {
         tag,
     });
     
-    const {
-        disabled : isDisabled,
-        readOnly : isReadOnly,
-        active   : isActive,
-    } = useResolvedAccessibilityState({
-        disabled,
-        readOnly,
-        active,
-        
-        cascadeDisabled,
-        cascadeReadOnly,
-        cascadeActive,
-    });
-    
     
     
     const DynamicTag : Tag = resolvedTag ?? 'span';
@@ -117,10 +92,6 @@ const Button = (props: ButtonProps) => {
             role={resolvedRole ?? undefined}
             
             data-testid='interactive-element'
-            
-            data-disabled = {isDisabled || undefined}
-            data-readonly = {isReadOnly || undefined}
-            data-active   = {isActive   || undefined}
             
             data-passed-nav={
                 !!props.ref
