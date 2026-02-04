@@ -19,9 +19,9 @@ import {
     useResolvedSemanticAttributes,
 } from '@reusable-ui/semantics'
 import {
-    type AccessibilityProps,
-    useResolvedAccessibilityState,
-} from '@reusable-ui/accessibilities'
+    type DisabledStateProps,
+    useDisabledState,
+} from '@reusable-ui/disabled-state'
 
 
 
@@ -37,7 +37,7 @@ const prioritizedLinkThenButton : SemanticPriority = [
 const fallbackButtonRole : Role | 'auto' = 'auto';
 const fallbackButtonTag  : Tag  | 'auto' = 'auto';
 
-export interface ButtonProps extends SemanticProps, AccessibilityProps, DOMAttributes<HTMLButtonElement> {
+export interface ButtonProps extends SemanticProps, DisabledStateProps, DOMAttributes<HTMLButtonElement> {
     ref      ?: Ref<HTMLButtonElement | null>
     children ?: ReactNode
 }
@@ -51,13 +51,6 @@ export const Button = (props: ButtonProps) => {
         role             = fallbackButtonRole,
         tag              = fallbackButtonTag,
         
-        disabled,
-        readOnly,
-        active,
-        cascadeDisabled,
-        cascadeReadOnly,
-        cascadeActive,
-        
         ...restProps
     } = props;
     
@@ -70,19 +63,7 @@ export const Button = (props: ButtonProps) => {
         tag,
     });
     
-    const {
-        disabled : isDisabled,
-        readOnly : isReadOnly,
-        active   : isActive,
-    } = useResolvedAccessibilityState({
-        disabled,
-        readOnly,
-        active,
-        
-        cascadeDisabled,
-        cascadeReadOnly,
-        cascadeActive,
-    });
+    const isDisabled = useDisabledState(props);
     
     
     
@@ -93,9 +74,7 @@ export const Button = (props: ButtonProps) => {
             
             role={resolvedRole ?? undefined}
             
-            disabled      = {isDisabled || undefined}
-            data-readonly = {isReadOnly || undefined}
-            data-active   = {isActive   || undefined}
+            disabled={isDisabled || undefined}
         >
             {props.children}
         </DynamicTag>
