@@ -22,7 +22,6 @@
 @reusable-ui/hooks          DEPRECATED
 @reusable-ui/semantics
 @reusable-ui/focuses
-@reusable-ui/client-sides   DEPRECATED
 @reusable-ui/navigations
 
 // Reusable-ui variants: (refactored):
@@ -252,6 +251,7 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/next-link-compat
 @reusable-ui/router-link-compat
 @reusable-ui/links
+@reusable-ui/client-sides       DEPRECATED
 
 @reusable-ui/core
 

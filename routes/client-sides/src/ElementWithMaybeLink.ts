@@ -20,13 +20,15 @@ import {
     type SemanticProps,
 }                           from '@reusable-ui/semantics'       // Semantic utility for resolving tag and role behaviors in reusable UI components.
 import {
-    // Types:
-    type AccessibilityProps,
-}                           from '@reusable-ui/accessibilities' // Composable React utilities for resolving enabled, readOnly, and active state with optional cascading context.
-import {
     // Hooks:
     useOptionalLinkWrapper,
 }                           from '@reusable-ui/links'           // Smart, router-agnostic link enhancement for semantic React components.
+
+// Reusable-ui states:
+import {
+    // Types:
+    type DisabledStateProps,
+}                           from '@reusable-ui/disabled-state'  // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
 
 
 
@@ -44,7 +46,7 @@ export interface ElementWithMaybeLinkProps {
     /**
      * The original JSX element to enhance with optional client navigation behavior.
      */
-    elementComponent  : ReactElement<PropsWithChildren<{ outerRef?: Ref<Element> } & AccessibilityProps & SemanticProps>>
+    elementComponent  : ReactElement<PropsWithChildren<{ outerRef?: Ref<Element> } & DisabledStateProps & SemanticProps>>
     
     
     
