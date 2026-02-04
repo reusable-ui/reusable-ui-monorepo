@@ -1,229 +1,30 @@
 import {
     // Types:
     type ReactNode,
-    type Ref,
-    type DOMAttributes,
-    type PropsWithChildren,
-    type FunctionComponent,
     
     
     
     // React:
     default as React,
-    
-    
-    
-    // Hooks:
-    useRef,
 } from 'react'
+import { test, expect } from '@playwright/experimental-ct-react';
 import {
-    type Role,
-    type Tag,
-    type SemanticPriority,
-    type SemanticProps,
-    useResolvedSemanticAttributes,
-} from '@reusable-ui/semantics'
+    MockSmartButton,
+} from './MockSmartButton.js'
 import {
-    type AccessibilityProps,
-    useResolvedAccessibilityState,
-} from '@reusable-ui/accessibilities'
+    MockNextLinkCompat,
+} from './MockNextLinkCompat.js'
 import {
-    useOptionalLinkWrapper,
-} from '../dist/index.js'
-import { type NextLinkCompatProps, NextLinkCompat } from '@reusable-ui/next-link-compat'
-import { type RouterLinkCompatProps, RouterLinkCompat, RouterNavLinkCompatProps, RouterNavLinkCompat } from '@reusable-ui/router-link-compat'
+    MockRouterLinkCompat,
+} from './MockRouterLinkCompat.js'
 import {
-    createRoutesStub,
-} from 'react-router'
-import { render, renderHook, screen } from '@testing-library/react'
-import '@testing-library/jest-dom'
+    MockRouterNavLinkCompat,
+} from './MockRouterNavLinkCompat.js'
+import {
+    MockRouterContext,
+} from './MockRouterContext.js'
 
 
-
-//#region Mock Components
-
-const fallbackPriority  : SemanticPriority = [
-    ['button', 'button'],
-    ['link', 'a'],
-];
-const linkFirstPriority : SemanticPriority = [
-    ['link', 'a'],
-    ['button', 'button'],
-];
-
-const fallbackRole : Role | 'auto' = 'auto';
-const fallbackTag  : Tag  | 'auto' = 'auto';
-
-interface ButtonProps extends SemanticProps, AccessibilityProps, DOMAttributes<HTMLButtonElement> {
-    ref      ?: Ref<HTMLButtonElement | null>
-    children ?: ReactNode
-}
-const Button = (props: ButtonProps) => {
-    const {
-        semanticPriority = (
-            'href' in props
-            ? linkFirstPriority // If    `href` provided => prefer link over button.
-            : fallbackPriority  // If no `href` provided => prefer button over link.
-        ),
-        role = fallbackRole,
-        tag  = fallbackTag,
-        
-        disabled,
-        readOnly,
-        active,
-        cascadeDisabled,
-        cascadeReadOnly,
-        cascadeActive,
-        
-        ...restProps
-    } = props;
-    
-    const {
-        tag  : resolvedTag,
-        role : resolvedRole,
-    } = useResolvedSemanticAttributes({
-        semanticPriority,
-        role,
-        tag,
-    });
-    
-    const {
-        disabled : isDisabled,
-        readOnly : isReadOnly,
-        active   : isActive,
-    } = useResolvedAccessibilityState({
-        disabled,
-        readOnly,
-        active,
-        
-        cascadeDisabled,
-        cascadeReadOnly,
-        cascadeActive,
-    });
-    
-    
-    
-    const DynamicTag : Tag = resolvedTag ?? 'span';
-    return (
-        <DynamicTag
-            {...(restProps as {})}
-            
-            role={resolvedRole ?? undefined}
-            
-            // @ts-ignore
-            href={(props as any).href ?? undefined}
-            
-            data-testid='interactive-element'
-            
-            data-disabled = {isDisabled || undefined}
-            data-readonly = {isReadOnly || undefined}
-            data-active   = {isActive   || undefined}
-        >
-            {props.children}
-        </DynamicTag>
-    );
-};
-
-
-
-interface MockSmartButtonProps extends ButtonProps {
-}
-const MockSmartButton = (props: MockSmartButtonProps) => {
-    const {
-        semanticPriority = (
-            'href' in props
-            ? linkFirstPriority // If    `href` provided => prefer link over button.
-            : fallbackPriority  // If no `href` provided => prefer button over link.
-        ),
-        role = fallbackRole,
-        tag  = fallbackTag,
-    } = props;
-    
-    const {
-        tag  : resolvedTag,
-        role : resolvedRole,
-    } = useResolvedSemanticAttributes({
-        semanticPriority,
-        role,
-        tag,
-    });
-    
-    return useOptionalLinkWrapper(
-        <Button {...props} tag={resolvedTag} role={resolvedRole} />
-    );
-};
-
-
-
-const MockNextLinkCompat = (props: NextLinkCompatProps) => {
-    return (
-        <div
-            data-mock='NextLinkCompat'
-            data-anchorless={String(props.anchorless ?? false)}
-            data-passhref={String(props.passHref ?? false)}
-        >
-            <NextLinkCompat {...props} />
-        </div>
-    )
-};
-const MockRouterLinkCompat = (props: RouterLinkCompatProps) => {
-    return (
-        <div
-            data-mock='RouterLinkCompat'
-            data-anchorless={String(props.anchorless ?? false)}
-            data-passhref={String(props.passHref ?? false)}
-        >
-            <RouterLinkCompat {...props} />
-        </div>
-    )
-};
-const MockRouterNavLinkCompat = (props: RouterNavLinkCompatProps) => {
-    return (
-        <div
-            data-mock='RouterNavLinkCompat'
-            data-anchorless={String(props.anchorless ?? false)}
-            data-passhref={String(props.passHref ?? false)}
-        >
-            <RouterNavLinkCompat {...props} />
-        </div>
-    )
-};
-
-
-
-const MockRouterContext = (props: PropsWithChildren<{}>) => {
-    const Stub = createRoutesStub([
-        {
-            path: '/',
-            Component: function HomePage() {
-                return (
-                    <main data-testid='home-page'>
-                        {props.children}
-                    </main>
-                );
-            },
-        },
-        {
-            path: '/about',
-            Component: function AboutPage() {
-                return (
-                    <main data-testid='about-page'>
-                        this is me
-                    </main>
-                );
-            },
-        },
-    ]);
-    
-    return(
-        <Stub initialEntries={['/']} />
-    );
-};
-//#endregion Mock Components
-
-
-
-// Tests:
 
 interface SmartButtonTestCase {
     // Test Inputs:
@@ -231,24 +32,24 @@ interface SmartButtonTestCase {
     /**
      * Descriptive name for the test scenario.
      */
-    title        : string
+    title            : string
     
     /**
      * The role of `<SmartButton>`.
      */
-    role         : 'auto' | 'button' | 'link'
+    role             : 'auto' | 'button' | 'link'
     
-    disabled     : boolean,
+    disabled         : boolean,
     
     /**
      * The mix of `<Link>` and other structures to nest inside `<SmartButton>`.
      */
-    children     : ReactNode
+    children         : ReactNode
     
     /**
      * An optional route context in order the `<Link>` component to work correctly.
      */
-    RouteContext : FunctionComponent<PropsWithChildren<{}>> | null
+    useRouterContext : boolean
     
     
     
@@ -257,42 +58,54 @@ interface SmartButtonTestCase {
     /**
      * The expected tag name of the rendered `<SmartButton>` element.
      */
-    expectTag    : 'BUTTON' | 'A'
+    expectTag        : 'BUTTON' | 'A'
     
     /**
      * The expected `href` value on the interactive element (if forwarded).
      */
-    expectHref   : '/about' | 'NO_HREF_PASSED'
+    expectHref       : '/about' | 'NO_HREF_PASSED'
     
     /**
      * The expected JSX structure.
      */
-    expectJSX    : ReactNode
+    expectJSX        : ReactNode
 }
 
 
 
-describe('useOptionalLinkWrapper - semantic composition + link behavior', () => {
-    const createRef = <TRef extends unknown>() => renderHook(() => useRef<TRef | null>(null)).result.current;
-    
-    test.each<SmartButtonTestCase>([
+test.describe('useOptionalLinkWrapper - semantic composition + link behavior', () => {
+    for (const {
+        // Test Inputs:
+        title,
+        role,
+        disabled,
+        children,
+        useRouterContext,
+        
+        
+        
+        // Expects:
+        expectTag,
+        expectHref,
+        expectJSX,
+    } of [
         // Tests without <Link> elements:
         {
             // Tests:
-            title        : 'renders plain children without any <Link>',
-            role         : 'auto',
-            disabled     : false,
-            children     : (
+            title            : 'renders plain children without any <Link>',
+            role             : 'auto',
+            disabled         : false,
+            children         : (
                 'click me'
             ),
-            RouteContext : null,
+            useRouterContext : false,
             
             
             
             // Expects:
-            expectTag    : 'BUTTON',
-            expectHref   : 'NO_HREF_PASSED',
-            expectJSX    : (
+            expectTag        : 'BUTTON',
+            expectHref       : 'NO_HREF_PASSED',
+            expectJSX        : (
                 <button data-testid='interactive-element'>
                     click me
                 </button>
@@ -300,10 +113,10 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
         },
         {
             // Tests:
-            title        : 'renders complex nested structure without any <Link>',
-            role         : 'auto',
-            disabled     : false,
-            children     : [
+            title            : 'renders complex nested structure without any <Link>',
+            role             : 'auto',
+            disabled         : false,
+            children         : [
                 <span key={1}>boo</span>,
                 <span key={2}>okay</span>,
                 'click me',
@@ -319,14 +132,14 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
                     <span>sick</span>
                 </strong>,
             ],
-            RouteContext : null,
+            useRouterContext : false,
             
             
             
             // Expects:
-            expectTag    : 'BUTTON',
-            expectHref   : 'NO_HREF_PASSED',
-            expectJSX    : (
+            expectTag        : 'BUTTON',
+            expectHref       : 'NO_HREF_PASSED',
+            expectJSX        : (
                 <button data-testid='interactive-element'>
                     <span>boo</span>
                     <span>okay</span>
@@ -351,22 +164,22 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
         // Tests with Next.js <Link>:
         {
             // Tests:
-            title        : 'renders with nested Next.js <Link> (anchorless, role="auto")',
-            role         : 'auto',
-            disabled     : false,
-            children     : (
+            title            : 'renders with nested Next.js <Link> (anchorless, role="auto")',
+            role             : 'auto',
+            disabled         : false,
+            children         : (
                 <MockNextLinkCompat href='/about'>
                     click me
                 </MockNextLinkCompat>
             ),
-            RouteContext : null,
+            useRouterContext : false,
             
             
             
             // Expects:
-            expectTag    : 'BUTTON',
-            expectHref   : 'NO_HREF_PASSED',
-            expectJSX    : (
+            expectTag        : 'BUTTON',
+            expectHref       : 'NO_HREF_PASSED',
+            expectJSX        : (
                 <div data-mock='NextLinkCompat' data-anchorless='true' data-passhref='false'>
                     <button data-testid='interactive-element'>
                         click me
@@ -376,22 +189,22 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
         },
         {
             // Tests:
-            title        : 'renders with Next.js <Link> and explicit role="link"',
-            role         : 'link',
-            disabled     : false,
-            children     : (
+            title            : 'renders with Next.js <Link> and explicit role="link"',
+            role             : 'link',
+            disabled         : false,
+            children         : (
                 <MockNextLinkCompat href='/about'>
                     click me
                 </MockNextLinkCompat>
             ),
-            RouteContext : null,
+            useRouterContext : false,
             
             
             
             // Expects:
-            expectTag    : 'A',
-            expectHref   : '/about',
-            expectJSX    : (
+            expectTag        : 'A',
+            expectHref       : '/about',
+            expectJSX        : (
                 <div data-mock='NextLinkCompat' data-anchorless='true' data-passhref='true'>
                     <a href='/about' data-testid='interactive-element'>
                         click me
@@ -401,10 +214,10 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
         },
         {
             // Tests:
-            title        : 'renders deeply nested structure with a single Next.js <Link> + role="link"',
-            role         : 'link',
-            disabled     : false,
-            children     : [
+            title            : 'renders deeply nested structure with a single Next.js <Link> + role="link"',
+            role             : 'link',
+            disabled         : false,
+            children         : [
                 <span key={1}>boo</span>,
                 <MockNextLinkCompat key={2} href='/about'>
                     <span>okay</span>
@@ -422,14 +235,14 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
                     <span>sick</span>
                 </strong>,
             ],
-            RouteContext : null,
+            useRouterContext : false,
             
             
             
             // Expects:
-            expectTag    : 'A',
-            expectHref   : '/about',
-            expectJSX    : (
+            expectTag        : 'A',
+            expectHref       : '/about',
+            expectJSX        : (
                 <div data-mock='NextLinkCompat' data-anchorless='true' data-passhref='true'>
                     <a href='/about' data-testid='interactive-element'>
                         <span>boo</span>
@@ -452,10 +265,10 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
         },
         {
             // Tests:
-            title        : 'renders multiple <Link> children but uses only the first valid Next.js <Link> + role="link"',
-            role         : 'link',
-            disabled     : false,
-            children     : [
+            title            : 'renders multiple <Link> children but uses only the first valid Next.js <Link> + role="link"',
+            role             : 'link',
+            disabled         : false,
+            children         : [
                 <span key={1}>boo</span>,
                 <MockNextLinkCompat key={2} href='/about'>
                     <span>okay</span>
@@ -479,14 +292,14 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
                     error
                 </MockNextLinkCompat>,
             ],
-            RouteContext : null,
+            useRouterContext : false,
             
             
             
             // Expects:
-            expectTag    : 'A',
-            expectHref   : '/about',
-            expectJSX    : (
+            expectTag        : 'A',
+            expectHref       : '/about',
+            expectJSX        : (
                 <div data-mock='NextLinkCompat' data-anchorless='true' data-passhref='true'>
                     <a href='/about' data-testid='interactive-element'>
                         <span>boo</span>
@@ -523,22 +336,22 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
         // Tests with React Router <Link>:
         {
             // Tests:
-            title        : 'renders with nested React Router <Link> (anchorless, role="auto")',
-            role         : 'auto',
-            disabled     : false,
-            children     : (
+            title            : 'renders with nested React Router <Link> (anchorless, role="auto")',
+            role             : 'auto',
+            disabled         : false,
+            children         : (
                 <MockRouterLinkCompat to='/about'>
                     click me
                 </MockRouterLinkCompat>
             ),
-            RouteContext : MockRouterContext,
+            useRouterContext : true,
             
             
             
             // Expects:
-            expectTag    : 'BUTTON',
-            expectHref   : 'NO_HREF_PASSED',
-            expectJSX    : (
+            expectTag        : 'BUTTON',
+            expectHref       : 'NO_HREF_PASSED',
+            expectJSX        : (
                 <div data-mock='RouterLinkCompat' data-anchorless='true' data-passhref='false'>
                     <button data-testid='interactive-element'>
                         click me
@@ -548,22 +361,22 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
         },
         {
             // Tests:
-            title        : 'renders with React Router <Link> and explicit role="link"',
-            role         : 'link',
-            disabled     : false,
-            children     : (
+            title            : 'renders with React Router <Link> and explicit role="link"',
+            role             : 'link',
+            disabled         : false,
+            children         : (
                 <MockRouterLinkCompat to='/about'>
                     click me
                 </MockRouterLinkCompat>
             ),
-            RouteContext : MockRouterContext,
+            useRouterContext : true,
             
             
             
             // Expects:
-            expectTag    : 'A',
-            expectHref   : '/about',
-            expectJSX    : (
+            expectTag        : 'A',
+            expectHref       : '/about',
+            expectJSX        : (
                 <div data-mock='RouterLinkCompat' data-anchorless='true' data-passhref='true'>
                     <a href='/about' data-testid='interactive-element'>
                         click me
@@ -573,10 +386,10 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
         },
         {
             // Tests:
-            title        : 'renders deeply nested structure with a single React Router <Link> + role="link"',
-            role         : 'link',
-            disabled     : false,
-            children     : [
+            title            : 'renders deeply nested structure with a single React Router <Link> + role="link"',
+            role             : 'link',
+            disabled         : false,
+            children         : [
                 <span key={1}>boo</span>,
                 <MockRouterLinkCompat key={2} to='/about'>
                     <span>okay</span>
@@ -594,14 +407,14 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
                     <span>sick</span>
                 </strong>,
             ],
-            RouteContext : MockRouterContext,
+            useRouterContext : true,
             
             
             
             // Expects:
-            expectTag    : 'A',
-            expectHref   : '/about',
-            expectJSX    : (
+            expectTag        : 'A',
+            expectHref       : '/about',
+            expectJSX        : (
                 <div data-mock='RouterLinkCompat' data-anchorless='true' data-passhref='true'>
                     <a href='/about' data-testid='interactive-element'>
                         <span>boo</span>
@@ -624,10 +437,10 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
         },
         {
             // Tests:
-            title        : 'renders multiple <Link> children but uses only the first valid React Router <Link> + role="link"',
-            role         : 'link',
-            disabled     : false,
-            children     : [
+            title            : 'renders multiple <Link> children but uses only the first valid React Router <Link> + role="link"',
+            role             : 'link',
+            disabled         : false,
+            children         : [
                 <span key={1}>boo</span>,
                 <MockRouterLinkCompat key={2} to='/about'>
                     <span>okay</span>
@@ -651,14 +464,14 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
                     error
                 </MockRouterLinkCompat>,
             ],
-            RouteContext : MockRouterContext,
+            useRouterContext : true,
             
             
             
             // Expects:
-            expectTag    : 'A',
-            expectHref   : '/about',
-            expectJSX    : (
+            expectTag        : 'A',
+            expectHref       : '/about',
+            expectJSX        : (
                 <div data-mock='RouterLinkCompat' data-anchorless='true' data-passhref='true'>
                     <a href='/about' data-testid='interactive-element'>
                         <span>boo</span>
@@ -695,22 +508,22 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
         // Tests with React Router <NavLink>:
         {
             // Tests:
-            title        : 'renders with nested React Router <NavLink> (anchorless, role="auto")',
-            role         : 'auto',
-            disabled     : false,
-            children     : (
+            title            : 'renders with nested React Router <NavLink> (anchorless, role="auto")',
+            role             : 'auto',
+            disabled         : false,
+            children         : (
                 <MockRouterNavLinkCompat to='/about'>
                     click me
                 </MockRouterNavLinkCompat>
             ),
-            RouteContext : MockRouterContext,
+            useRouterContext : true,
             
             
             
             // Expects:
-            expectTag    : 'BUTTON',
-            expectHref   : 'NO_HREF_PASSED',
-            expectJSX    : (
+            expectTag        : 'BUTTON',
+            expectHref       : 'NO_HREF_PASSED',
+            expectJSX        : (
                 <div data-mock='RouterNavLinkCompat' data-anchorless='true' data-passhref='false'>
                     <button data-testid='interactive-element'>
                         click me
@@ -720,22 +533,22 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
         },
         {
             // Tests:
-            title        : 'renders with React Router <NavLink> and explicit role="link"',
-            role         : 'link',
-            disabled     : false,
-            children     : (
+            title            : 'renders with React Router <NavLink> and explicit role="link"',
+            role             : 'link',
+            disabled         : false,
+            children         : (
                 <MockRouterNavLinkCompat to='/about'>
                     click me
                 </MockRouterNavLinkCompat>
             ),
-            RouteContext : MockRouterContext,
+            useRouterContext : true,
             
             
             
             // Expects:
-            expectTag    : 'A',
-            expectHref   : '/about',
-            expectJSX    : (
+            expectTag        : 'A',
+            expectHref       : '/about',
+            expectJSX        : (
                 <div data-mock='RouterNavLinkCompat' data-anchorless='true' data-passhref='true'>
                     <a href='/about' data-testid='interactive-element'>
                         click me
@@ -745,10 +558,10 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
         },
         {
             // Tests:
-            title        : 'renders deeply nested structure with a single React Router <NavLink> + role="link"',
-            role         : 'link',
-            disabled     : false,
-            children     : [
+            title            : 'renders deeply nested structure with a single React Router <NavLink> + role="link"',
+            role             : 'link',
+            disabled         : false,
+            children         : [
                 <span key={1}>boo</span>,
                 <MockRouterNavLinkCompat key={2} to='/about'>
                     <span>okay</span>
@@ -766,14 +579,14 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
                     <span>sick</span>
                 </strong>,
             ],
-            RouteContext : MockRouterContext,
+            useRouterContext : true,
             
             
             
             // Expects:
-            expectTag    : 'A',
-            expectHref   : '/about',
-            expectJSX    : (
+            expectTag        : 'A',
+            expectHref       : '/about',
+            expectJSX        : (
                 <div data-mock='RouterNavLinkCompat' data-anchorless='true' data-passhref='true'>
                     <a href='/about' data-testid='interactive-element'>
                         <span>boo</span>
@@ -796,10 +609,10 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
         },
         {
             // Tests:
-            title        : 'renders multiple <NavLink> children but uses only the first valid React Router <NavLink> + role="link"',
-            role         : 'link',
-            disabled     : false,
-            children     : [
+            title            : 'renders multiple <NavLink> children but uses only the first valid React Router <NavLink> + role="link"',
+            role             : 'link',
+            disabled         : false,
+            children         : [
                 <span key={1}>boo</span>,
                 <MockRouterNavLinkCompat key={2} to='/about'>
                     <span>okay</span>
@@ -823,14 +636,14 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
                     error
                 </MockRouterNavLinkCompat>,
             ],
-            RouteContext : MockRouterContext,
+            useRouterContext : true,
             
             
             
             // Expects:
-            expectTag    : 'A',
-            expectHref   : '/about',
-            expectJSX    : (
+            expectTag        : 'A',
+            expectHref       : '/about',
+            expectJSX        : (
                 <div data-mock='RouterNavLinkCompat' data-anchorless='true' data-passhref='true'>
                     <a href='/about' data-testid='interactive-element'>
                         <span>boo</span>
@@ -861,27 +674,11 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
                 </div>
             ),
         },
-    ])(
-        `$title`,
-        ({
-            // Test Inputs:
-            title,
-            role,
-            disabled,
-            children,
-            RouteContext,
-            
-            
-            
-            // Expects:
-            expectTag,
-            expectHref,
-            expectJSX,
-        }) => {
-            const containerRef = createRef<HTMLDivElement>();
-            
+    ] as SmartButtonTestCase[]) {
+        test(title, async ({ mount }) => {
+            // First render:
             const content = (
-                <div data-testid='body' ref={containerRef}>
+                <div data-testid='body'>
                     <MockSmartButton
                         role={role}
                         disabled={disabled}
@@ -890,48 +687,45 @@ describe('useOptionalLinkWrapper - semantic composition + link behavior', () => 
                     </MockSmartButton>
                 </div>
             );
-            if (RouteContext) {
-                render(
-                    <RouteContext>
+            const component = await mount(
+                useRouterContext
+                ? (
+                    <MockRouterContext>
                         {content}
-                    </RouteContext>
-                );
-            }
-            else {
-                render(content);
-            } // if
+                    </MockRouterContext>
+                )
+                : content
+            );
+            const containerHtmlA = await component.evaluate(el => el.innerHTML);
             
-            const buttonElement = screen.getByTestId('interactive-element');
+            // Ensure the component is rendered correctly:
+            const box = component.getByTestId('interactive-element');
             
             // Tag match:
-            expect(buttonElement.tagName).toBe(expectTag);
+            await expect(box).toHaveJSProperty('tagName', expectTag);
             
             // `href` match (if present):
-            if (expectHref !== 'NO_HREF_PASSED') expect(buttonElement).toHaveAttribute('href', expectHref);
+            if (expectHref !== 'NO_HREF_PASSED') await expect(box).toHaveAttribute('href', expectHref);
             
-            // Validate expectJSX:
-            const expectedRef = createRef<HTMLDivElement>();
+            // Re-render:
             const expectedContent = (
-                <div data-testid='body' ref={expectedRef}>
+                <div data-testid='body'>
                     {expectJSX}
                 </div>
             );
-            if (RouteContext) {
-                render(
-                    <RouteContext>
+            component.update(
+                useRouterContext
+                ? (
+                    <MockRouterContext>
                         {expectedContent}
-                    </RouteContext>
-                );
-            }
-            else {
-                render(expectedContent);
-            } // if
+                    </MockRouterContext>
+                )
+                : expectedContent
+            );
+            const containerHtmlB = await component.evaluate(el => el.innerHTML);
             
-            const containerElm = containerRef.current;
-            const expectedElm  = expectedRef.current;
-            expect(containerElm).toBeTruthy();
-            expect(expectedElm).toBeTruthy();
-            expect(containerElm!.innerHTML).toBe(expectedElm!.innerHTML);
-        }
-    );
+            // Compare rendered HTML:
+            expect(containerHtmlA).toBe(containerHtmlB);
+        });
+    } // for
 });

@@ -19,7 +19,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "utilities/links"
+    "directory": "routes/links"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
@@ -41,10 +41,9 @@
     "tsc:watch": "tsc --watch",
     "ncu": "ncu --peer",
     "ncu:upgrade": "ncu --peer --upgrade",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
+    "test": "npx playwright test"
   },
   "dependencies": {
-    "@reusable-ui/accessibilities": "^7.0.0",
     "@reusable-ui/callbacks": "^7.0.0",
     "@reusable-ui/link-compat": "^7.0.0",
     "@reusable-ui/semantics": "^7.0.0",
@@ -52,6 +51,7 @@
     "url": "^0.11.4"
   },
   "peerDependencies": {
+    "@reusable-ui/disabled-state": "^7.0.0",
     "@types/react": "^19.0.0",
     "react": "^19.0.0"
   },

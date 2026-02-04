@@ -32,15 +32,17 @@ import {
     // Hooks:
     useResolvedSemanticAttributes,
 }                           from '@reusable-ui/semantics'       // Semantic utility for resolving tag and role behaviors in reusable UI components.
+
+// Reusable-ui states:
 import {
     // Types:
-    type AccessibilityProps,
+    type DisabledStateProps,
     
     
     
     // Hooks:
-    useResolvedAccessibilityState,
-}                           from '@reusable-ui/accessibilities' // Composable React utilities for resolving enabled, readOnly, and active state with optional cascading context.
+    useDisabledState,
+}                           from '@reusable-ui/disabled-state'  // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
 
 // Utilities:
 import {
@@ -75,7 +77,7 @@ import {
  * @param propOverrides - Optionally overrides props from `originalElement` during cloning.
  * @returns A new React element: either the enhanced `originalElement`, or it wrapped inside a client-side `<Link>`.
  */
-const renderWithLinkIfPresent = <TProps extends PropsWithChildren<AccessibilityProps & SemanticProps>>(originalElement: ReactElement<TProps, string | JSXElementConstructor<unknown>>, propOverrides: Partial<TProps>): ReactElement<TProps | ClientLinkElement['props'], string | JSXElementConstructor<unknown>> => {
+const renderWithLinkIfPresent = <TProps extends PropsWithChildren<DisabledStateProps & SemanticProps>>(originalElement: ReactElement<TProps, string | JSXElementConstructor<unknown>>, propOverrides: Partial<TProps>): ReactElement<TProps | ClientLinkElement['props'], string | JSXElementConstructor<unknown>> => {
     // Extract the `originalElement`’s children for inspection:
     const originalChildren = originalElement.props.children;
     
@@ -105,10 +107,10 @@ const renderWithLinkIfPresent = <TProps extends PropsWithChildren<AccessibilityP
     
     
     // Resolve semantic behavior and accessibility state of the original element:
-    const { tag     : resolvedTag } = useResolvedSemanticAttributes(originalElement.props);
+    const { tag : resolvedTag } = useResolvedSemanticAttributes(originalElement.props);
     const isAnchorElement = (resolvedTag === 'a');
     
-    const { disabled : isDisabled } = useResolvedAccessibilityState(originalElement.props);
+    const isDisabled = useDisabledState(originalElement.props);
     
     
     
@@ -202,9 +204,9 @@ const renderWithLinkIfPresent = <TProps extends PropsWithChildren<AccessibilityP
  * </Link>
  * ```
  */
-export const useOptionalLinkWrapper = <TProps extends PropsWithChildren<AccessibilityProps & SemanticProps>>(originalElement: ReactElement<TProps, string | JSXElementConstructor<unknown>>): ReactElement<Partial<TProps>, JSXElementConstructor<unknown>> => {
+export const useOptionalLinkWrapper = <TProps extends PropsWithChildren<DisabledStateProps & SemanticProps>>(originalElement: ReactElement<TProps, string | JSXElementConstructor<unknown>>): ReactElement<Partial<TProps>, JSXElementConstructor<unknown>> => {
     // Define a stable functional wrapper component that accepts overrides:
-    const LinkAwareComponent = useStableCallback(<TOverrideProps extends Partial<PropsWithChildren<AccessibilityProps & SemanticProps>>>(propOverrides: TOverrideProps) => {
+    const LinkAwareComponent = useStableCallback(<TOverrideProps extends Partial<PropsWithChildren<DisabledStateProps & SemanticProps>>>(propOverrides: TOverrideProps) => {
         return renderWithLinkIfPresent<TOverrideProps>(originalElement as unknown as ReactElement<TOverrideProps, string | JSXElementConstructor<unknown>>, propOverrides);
     });
     
