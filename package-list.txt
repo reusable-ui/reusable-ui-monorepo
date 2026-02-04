@@ -22,7 +22,6 @@
 @reusable-ui/hooks          DEPRECATED
 @reusable-ui/semantics
 @reusable-ui/focuses
-@reusable-ui/link-compat
 @reusable-ui/next-link-compat
 @reusable-ui/router-link-compat
 @reusable-ui/links
@@ -250,6 +249,9 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/auto-focusable
 @reusable-ui/groupable
 @reusable-ui/pointer-capturable
+
+// Reusable-ui routes:
+@reusable-ui/link-compat
 
 @reusable-ui/core
 
