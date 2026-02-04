@@ -29,7 +29,7 @@ Even if you're not coding, you can help by:
 ## 📦 Setting Up Locally  
 ```sh
 git clone https://github.com/reusable-ui/reusable-ui-monorepo.git
-cd utilities/next-link-compat
+cd routes/next-link-compat
 npm install
 npm run dev
 ```

@@ -19,7 +19,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "utilities/next-link-compat"
+    "directory": "routes/next-link-compat"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
@@ -52,7 +52,6 @@
     "react": "^19.0.0"
   },
   "devDependencies": {
-    "@reusable-ui/accessibilities": "^7.0.0",
     "@reusable-ui/semantics": "^7.0.0"
   }
 }
