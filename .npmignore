@@ -13,6 +13,10 @@ variants/*/src/
 variants/*/__tests__/
 states/*/src/
 states/*/__tests__/
+transitions/*/src/
+transitions/*/__tests__/
+routes/*/src/
+routes/*/__tests__/
 
 base-components/*/src/
 base-components/*/__tests__/
