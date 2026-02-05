@@ -93,6 +93,7 @@ export const usesActiveTransition = (options?: CssActiveTransitionOptions): CssA
     } = options ?? {};
     
     
+    
     // Configs:
     const { mode } = colorParamVars;
     
@@ -111,6 +112,7 @@ export const usesActiveTransition = (options?: CssActiveTransitionOptions): CssA
     
     // Variables:
     const { bumpFactorCond, effectiveFactorCond, activeFilter } = activeTransitionVars;
+    
     
     
     return {
@@ -160,7 +162,7 @@ color-mix(in oklch,
              * - Outlined/mild  :
              *   - activeFactor > 1 → grows positively (overshoot).
              *   - activeFactor < 0 → grows negatively (undershoot).
-             *   - otherwise        → stays 0.
+             *   - Otherwise        → stays 0.
              */
             [bumpFactorCond]:
 `
@@ -180,7 +182,7 @@ calc(
              * - Outlined/mild  :
              *   - activeFactor > 1 → grows positively (overshoot).
              *   - activeFactor < 0 → grows negatively (undershoot).
-             *   - otherwise        → stays 0.
+             *   - Otherwise        → stays 0.
              */
             [effectiveFactorCond]: switchOf(
                 bumpFactorCond,

@@ -8,7 +8,7 @@ The transitions are designed to feel natural to users:
 - **Outlined and mild variants** smoothly shift from their lighter appearance into the bolder regular style.  
 
 By using `usesActiveTransition()`, you can apply these transitions consistently across background, foreground, decoration, and border colors — with optional customization for brightness, contrast, and saturation.
-Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation. 
+Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with Active State
 
@@ -216,11 +216,11 @@ making the component **visually stand out** when active.
 
 - **Active-state** provides the *progress factor*.  
 - **Active-transition** applies *color and filter formulas* based on that factor.  
-- Together, they ensure components smoothly highlight themselves when active, while remaining consistent with the theme and variant rules.  
+- Together, they ensure components smoothly highlight themselves when active, while remaining consistent with the current theme colors and variants.  
 
 ## 📚 Related Packages
 
-- [`@reusable-ui/active-state`](https://www.npmjs.com/package/@reusable-ui/active-state) – Provides active/selected state management for components.
+- [`@reusable-ui/active-state`](https://www.npmjs.com/package/@reusable-ui/active-state) – Provides active/selected state tracking for components.
 
 ## 📖 Part of the Reusable-UI Framework  
 **@reusable-ui/active-transition** is a core utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  

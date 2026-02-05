@@ -98,7 +98,7 @@ color-mix(in oklch,
              * - Outlined/mild  :
              *   - activeFactor > 1 → grows positively (overshoot).
              *   - activeFactor < 0 → grows negatively (undershoot).
-             *   - otherwise        → stays 0.
+             *   - Otherwise        → stays 0.
              */
             [bumpFactorCond]: `
 ${switchOf(isOutlined, isMild)}
@@ -116,7 +116,7 @@ calc(
              * - Outlined/mild  :
              *   - activeFactor > 1 → grows positively (overshoot).
              *   - activeFactor < 0 → grows negatively (undershoot).
-             *   - otherwise        → stays 0.
+             *   - Otherwise        → stays 0.
              */
             [effectiveFactorCond]: switchOf(bumpFactorCond, activeFactorCond),
             /**

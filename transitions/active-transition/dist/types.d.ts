@@ -55,7 +55,8 @@ export interface CssActiveTransitionOptions {
      * Notes:
      * - Values `< 1` → darken  in light mode, lighten in dark mode.
      * - Values `> 1` → lighten in light mode, darken  in dark mode.
-     * - Percentages are allowed.
+     * - `1` → no brightness adjustment.
+     * - Percentage units are allowed.
      * - Negative values are not allowed.
      *
      * Defaults to `1` (no brightness adjustment).
@@ -76,6 +77,7 @@ export interface CssActiveTransitionOptions {
      * Notes:
      * - Values `< 1` → decrease contrast (flatter look).
      * - Values `> 1` → increase contrast (sharper look).
+     * - `1` → no contrast adjustment.
      * - Percentage units are allowed.
      * - Negative values are not allowed.
      *
@@ -98,6 +100,7 @@ export interface CssActiveTransitionOptions {
      * - Values `< 1` → decrease saturation (muted colors).
      * - Values `> 1` → increase saturation (more vivid colors).
      * - `0` is equivalent to grayscale.
+     * - `1` → no saturation adjustment.
      * - Percentage units are allowed.
      * - Negative values are not allowed.
      *
@@ -128,7 +131,7 @@ export interface CssActiveTransition {
      * Exposes active-transition CSS variables for conditional animation.
      *
      * Includes:
-     * - `activeFilter` : Brightness filter interpolation during active state.
+     * - `activeFilter` : Brightness/contrast/saturation interpolation during active state.
      *
      * ⚠️ **Caution**: These variables are invalid when the component is fully inactive.
      * If used incorrectly, they can invalidate CSS declarations.
