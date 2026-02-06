@@ -33,43 +33,26 @@ interface ActiveTransitionTestCase {
 
 
 const testCases: ActiveTransitionTestCase[] = [
-    //#region Inactive and factor=0 → should match original base colors
+    //#region Inactive and factor=0 → should match original base colors for all variants
     ...(['unset', 0] as const).flatMap((factor) =>
-        variantKeys.flatMap((variantKey) =>
+        variantKeys.flatMap((variant) =>
             (['light', 'dark'] as const).map((mode) => ({
-                title                : `${variantNameUpper[variantKey]} variant, factor=${factor} → expect base ${variantNameLower[variantKey]} color (${mode} mode)`,
+                title                : `${variantNameUpper[variant]} variant, factor=${factor} → expect base ${variantNameLower[variant]} color (${mode} mode)`,
                 props                : {
                     activeFactorCond : factor,
-                    outlined         : variantKey === 'outlined',
-                    mild             : variantKey === 'mild',
+                    outlined         : variant === 'outlined',
+                    mild             : variant === 'mild',
                     mode,
                 },
-                expectedColor        : variantBaseColor[variantKey],
+                expectedColor        : variantBaseColor[variant],
             } satisfies ActiveTransitionTestCase))
         )
     ),
-    //#endregion Inactive and factor=0 → should match original base colors
+    //#endregion Inactive and factor=0 → should match original base colors for all variants
     
     
     
-    //#region Full factor interpolation for outlined/mild variants
-    ...(['outlined', 'mild'] as const).flatMap((variant) =>
-        (['light', 'dark'] as const).map((mode) => ({
-            title                : `${variantNameUpper[variant]} variant, factor=1 → expect pure regular color (${mode} mode)`,
-            props                : {
-                activeFactorCond : 1,
-                outlined         : true,
-                mild             : false,
-                mode,
-            },
-            expectedColor        : regularBaseColor,
-        } satisfies ActiveTransitionTestCase))
-    ),
-    //#endregion Full factor interpolation for outlined/mild variants
-    
-    
-    
-    //#region Regular variant, full factor interpolation (light & dark modes) 
+    //#region Active and factor=1 → should match fully filtered regular color for regular variant
     ...(['light', 'dark'] as const).map((mode) => ({
         title                : `Regular variant, factor=1 → expect fully filtered regular color (${mode} mode)`,
         props                : {
@@ -85,33 +68,31 @@ const testCases: ActiveTransitionTestCase[] = [
             mode,
         }),
     } satisfies ActiveTransitionTestCase)),
-    //#endregion Regular variant, full factor interpolation (light & dark modes) 
+    //#endregion Active and factor=1 → should match fully filtered regular color for regular variant
     
     
     
-    //#region Mid-factor interpolation for outlined/mild variants
-    ...([0.25, 0.5, 0.75] as const).flatMap((midFactor) =>
-        (['outlined', 'mild'] as const).flatMap((variant) =>
-            (['light', 'dark'] as const).map((mode) => ({
-                title                : `${variantNameUpper[variant]} variant, factor=${midFactor} → expect halfway between ${variantNameLower[variant]} and regular (${mode} mode)`,
-                props                : {
-                    activeFactorCond : midFactor,
-                    outlined         : variant === 'outlined',
-                    mild             : variant === 'mild',
-                    mode,
-                },
-                expectedColor        : colorMix(variantBaseColor[variant], regularBaseColor, midFactor),
-            } satisfies ActiveTransitionTestCase))
-        )
+    //#region Active and factor=1 → should match pure regular color for outlined/mild variants
+    ...(['outlined', 'mild'] as const).flatMap((variant) =>
+        (['light', 'dark'] as const).map((mode) => ({
+            title                : `${variantNameUpper[variant]} variant, factor=1 → expect pure regular color (${mode} mode)`,
+            props                : {
+                activeFactorCond : 1,
+                outlined         : variant === 'outlined',
+                mild             : variant === 'mild',
+                mode,
+            },
+            expectedColor        : regularBaseColor,
+        } satisfies ActiveTransitionTestCase))
     ),
-    //#endregion Mid-factor interpolation for outlined/mild variants
+    //#endregion Active and factor=1 → should match pure regular color for outlined/mild variants
     
     
     
-    //#region Mid-factor interpolation for regular variant (light & dark modes) 
+    //#region Partially active and factor=fractional → should match partially filtered regular color for regular variant
     ...([0.25, 0.5, 0.75] as const).flatMap((midFactor) =>
         (['light', 'dark'] as const).map((mode) => ({
-            title                : `Regular variant, factor=${midFactor} → expect filtered regular color (${mode} mode)`,
+            title                : `Regular variant, factor=${midFactor} → expect partially filtered regular color (${mode} mode)`,
             props                : {
                 activeFactorCond : midFactor,
                 outlined         : false,
@@ -126,33 +107,80 @@ const testCases: ActiveTransitionTestCase[] = [
             }),
         } satisfies ActiveTransitionTestCase))
     ),
-    //#endregion Mid-factor interpolation for regular variant (light & dark modes) 
+    //#endregion Partially active and factor=fractional → should match partially filtered regular color for regular variant
     
     
     
-    //#region Overshoot/undershoot factors
-    ...([-0.25, 1.15] as const).flatMap((factor) =>
-        variantKeys.flatMap((variantKey) =>
+    //#region Partially active and factor=fractional → should match halfway between variant and regular color for outlined/mild variants
+    ...([0.25, 0.5, 0.75] as const).flatMap((midFactor) =>
+        (['outlined', 'mild'] as const).flatMap((variant) =>
             (['light', 'dark'] as const).map((mode) => ({
-            title                : `${variantNameUpper[variantKey]} variant, factor=${factor} → expect extrapolated color (${mode} mode)`,
+                title                : `${variantNameUpper[variant]} variant, factor=${midFactor} → expect halfway between ${variantNameLower[variant]} and regular color (${mode} mode)`,
                 props                : {
-                    activeFactorCond : factor,
-                    outlined         : variantKey === 'outlined',
-                    mild             : variantKey === 'mild',
+                    activeFactorCond : midFactor,
+                    outlined         : variant === 'outlined',
+                    mild             : variant === 'mild',
                     mode,
                 },
-                expectedColor        : variantKey === 'regular'
-                    ? applyFiltersSequential(regularBaseColor, factor, {
+                expectedColor        : colorMix(variantBaseColor[variant], regularBaseColor, midFactor),
+            } satisfies ActiveTransitionTestCase))
+        )
+    ),
+    //#endregion Partially active and factor=fractional → should match halfway between variant and regular color for outlined/mild variants
+    
+    
+    
+    //#region Extrapolated factors → should match extrapolated filtered regular color for regular variant
+    ...([-0.25, 1.15] as const).flatMap((factor) =>
+        (['light', 'dark'] as const).map((mode) => ({
+        title                : `Regular variant, factor=${factor} → expect extrapolated regular color (${mode} mode)`,
+            props                : {
+                activeFactorCond : factor,
+                outlined         : false,
+                mild             : false,
+                mode,
+            },
+            expectedColor        : applyFiltersSequential(regularBaseColor, factor, {
+                brightness   : 0.8,
+                contrast     : 1,
+                saturate     : 1,
+                mode,
+            }),
+        } satisfies ActiveTransitionTestCase))
+    ),
+    //#endregion Extrapolated factors → should match extrapolated filtered regular color for regular variant
+    
+    
+    
+    //#region Extrapolated factors → should match extrapolated filtered regular color for outlined/mild variants
+    ...([-0.5, 1.5] as const).flatMap((factor) =>
+        (['outlined', 'mild'] as const).flatMap((variant) =>
+            (['light', 'dark'] as const).map((mode) => ({
+            title                : `${variantNameUpper[variant]} variant, factor=${factor} → expect extrapolated regular color (${mode} mode)`,
+                props                : {
+                    activeFactorCond : factor,
+                    outlined         : variant === 'outlined',
+                    mild             : variant === 'mild',
+                    mode,
+                },
+                expectedColor        : applyFiltersSequential(
+                    colorMix(variantBaseColor[variant], regularBaseColor, factor),
+                    (
+                        Math.max(0, factor - 1)
+                        +
+                        Math.min(0, factor)
+                    ),
+                    {
                         brightness   : 0.8,
                         contrast     : 1,
                         saturate     : 1,
                         mode,
-                    })
-                    : colorMix(variantBaseColor[variantKey], regularBaseColor, factor),
+                    }
+                ),
             } satisfies ActiveTransitionTestCase))
         )
     ),
-    //#endregion
+    //#endregion Extrapolated factors → should match extrapolated filtered regular color for outlined/mild variants
 ];
 
 
