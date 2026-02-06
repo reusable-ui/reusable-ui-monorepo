@@ -9,17 +9,17 @@
 @reusable-ui/numbers
 @reusable-ui/nodes
 @reusable-ui/resets
-@reusable-ui/stripouts      DEPRECATED
-@reusable-ui/layouts        DEPRECATED
+@reusable-ui/stripouts              DEPRECATED
+@reusable-ui/layouts                DEPRECATED
 @reusable-ui/runtime-checks
-@reusable-ui/callbacks                  deps: none, foundational for stable API functions.
-@reusable-ui/lifecycles                 deps: none, lifecycle-related hooks.
-@reusable-ui/styles                     deps: none, manages styling utilities.
-@reusable-ui/references                 deps: @reusable-ui/callbacks (for stable API functions).
-@reusable-ui/directionality             deps: @reusable-ui/lifecycles (depends on lifecycle updates).
-@reusable-ui/timers                     deps: none, **likely to use @reusable-ui/lifecycles later** for cleanup.
-@reusable-ui/events                     deps: @reusable-ui/callbacks, @reusable-ui/lifecycles, **likely to use @reusable-ui/timers later** for delay management.
-@reusable-ui/hooks          DEPRECATED
+@reusable-ui/callbacks                              deps: none, foundational for stable API functions.
+@reusable-ui/lifecycles                             deps: none, lifecycle-related hooks.
+@reusable-ui/styles                                 deps: none, manages styling utilities.
+@reusable-ui/references                             deps: @reusable-ui/callbacks (for stable API functions).
+@reusable-ui/directionality                         deps: @reusable-ui/lifecycles (depends on lifecycle updates).
+@reusable-ui/timers                                 deps: none, **likely to use @reusable-ui/lifecycles later** for cleanup.
+@reusable-ui/events                                 deps: @reusable-ui/callbacks, @reusable-ui/lifecycles, **likely to use @reusable-ui/timers later** for delay management.
+@reusable-ui/hooks                  DEPRECATED
 @reusable-ui/semantics
 @reusable-ui/focuses
 
@@ -90,14 +90,14 @@ Default inheritance case example:
 ```
 
 // Reusable-ui variants (deprecated):
-@reusable-ui/orientationable    DEPRECATED
-@reusable-ui/resizable          DEPRECATED
-@reusable-ui/themeable          DEPRECATED
-@reusable-ui/gradientable       DEPRECATED
-@reusable-ui/outlineable        DEPRECATED
-@reusable-ui/mildable           DEPRECATED
-@reusable-ui/nudible            DEPRECATED
-@reusable-ui/basic-variants     DEPRECATED
+@reusable-ui/orientationable        DEPRECATED
+@reusable-ui/resizable              DEPRECATED
+@reusable-ui/themeable              DEPRECATED
+@reusable-ui/gradientable           DEPRECATED
+@reusable-ui/outlineable            DEPRECATED
+@reusable-ui/mildable               DEPRECATED
+@reusable-ui/nudible                DEPRECATED
+@reusable-ui/basic-variants         DEPRECATED
 
 // Reusable-ui features:
 @reusable-ui/background-feature
@@ -110,13 +110,13 @@ Default inheritance case example:
 @reusable-ui/filter-feature
 @reusable-ui/transform-feature
 @reusable-ui/box-shadow-feature
-@reusable-ui/background         DEPRECATED
-@reusable-ui/foreground         DEPRECATED
-@reusable-ui/colorable          DEPRECATED
-@reusable-ui/border             DEPRECATED
-@reusable-ui/ring               DEPRECATED
-@reusable-ui/padding            DEPRECATED
-@reusable-ui/animation          DEPRECATED
+@reusable-ui/background             DEPRECATED
+@reusable-ui/foreground             DEPRECATED
+@reusable-ui/colorable              DEPRECATED
+@reusable-ui/border                 DEPRECATED
+@reusable-ui/ring                   DEPRECATED
+@reusable-ui/padding                DEPRECATED
+@reusable-ui/animation              DEPRECATED
 
 |----------------|----------------------|--------------------|-----------|-----------|--------|-------------------|---------------------|--------------------------|--------------|-----------------------------|------------------|-----------------------------------------|
 | State Role     | Behavior             | Main Interface     | Main Prop | 'inherit' | 'auto' | Classname Prop    | Resolved States     | Transitioning States     | Controllable | Uncontrollable              | Updates          | onChange                                |
@@ -202,14 +202,14 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 
 
 // Reusable-ui states:
-@reusable-ui/animation-state    non_peer
-@reusable-ui/animating-state    DEPRECATED
-@reusable-ui/effective-state    non_peer
-@reusable-ui/observer-state     non_peer
-@reusable-ui/activity-state     non_peer
-@reusable-ui/transition-state   non_peer
-@reusable-ui/feedback-state     non_peer
-@reusable-ui/interaction-state  non_peer
+@reusable-ui/animation-state        non_peer
+@reusable-ui/animating-state        DEPRECATED
+@reusable-ui/effective-state        non_peer
+@reusable-ui/observer-state         non_peer
+@reusable-ui/activity-state         non_peer
+@reusable-ui/transition-state       non_peer
+@reusable-ui/feedback-state         non_peer
+@reusable-ui/interaction-state      non_peer
 @reusable-ui/disabled-state
 @reusable-ui/read-only-state
 @reusable-ui/focus-state
@@ -220,23 +220,24 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/collapse-state
 @reusable-ui/active-state
 @reusable-ui/view-state
-@reusable-ui/excitable          DEPRECATED
-@reusable-ui/collapsible        DEPRECATED
-@reusable-ui/scrollable         DEPRECATED
-@reusable-ui/disableable        DEPRECATED
-@reusable-ui/activatable        DEPRECATED
-@reusable-ui/focusable          DEPRECATED
-@reusable-ui/interactable       DEPRECATED
-@reusable-ui/clickable          DEPRECATED
-@reusable-ui/invalidable        DEPRECATED
-@reusable-ui/checkable          DEPRECATED
-@reusable-ui/validation-icon    DEPRECATED
-@reusable-ui/accessibilities    DEPRECATED
-@reusable-ui/validations        DEPRECATED
+@reusable-ui/excitable              DEPRECATED
+@reusable-ui/collapsible            DEPRECATED
+@reusable-ui/scrollable             DEPRECATED
+@reusable-ui/disableable            DEPRECATED
+@reusable-ui/activatable            DEPRECATED
+@reusable-ui/focusable              DEPRECATED
+@reusable-ui/interactable           DEPRECATED
+@reusable-ui/clickable              DEPRECATED
+@reusable-ui/invalidable            DEPRECATED
+@reusable-ui/checkable              DEPRECATED
+@reusable-ui/validation-icon        DEPRECATED
+@reusable-ui/accessibilities        DEPRECATED
+@reusable-ui/validations            DEPRECATED
 
 // Reusable-ui transitions:
-@reusable-ui/active-transition  non_peer
-@reusable-ui/active-as-click    DEPRECATED
+@reusable-ui/active-transition      non_peer
+@reusable-ui/active-as-click        DEPRECATED
+@reusable-ui/disabled-transition    non_peer
 
 // Reusable-ui capabilities:
 @reusable-ui/floatable
@@ -250,7 +251,7 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/next-link-compat
 @reusable-ui/router-link-compat
 @reusable-ui/links
-@reusable-ui/client-sides       DEPRECATED
+@reusable-ui/client-sides           DEPRECATED
 @reusable-ui/navigations
 
 @reusable-ui/core
