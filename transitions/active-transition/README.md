@@ -96,8 +96,8 @@ export const activatableBoxStyle = () => {
     
     // States:
     
-    // Initialize active state:
-    // - Exposes `activeFactor` (0 → 1) to represent activation progress
+    // Active/inactive lifecycle:
+    // - Exposes `activeFactor` (0 → 1) to represent transition progress
     // - Associates activating/deactivating animations to drive `activeFactor` smoothly
     const {
         activeStateRule,
@@ -107,9 +107,9 @@ export const activatableBoxStyle = () => {
         animationDeactivating : 'var(--box-deactivating)',
     });
     
-    // Initialize active transition:
+    // Active/inactive visual transition:
     // - Consumes `activeFactor` from active state
-    // - Gradually adjusts brightness, contrast, and saturation based on activation progress
+    // - Gradually adjusts brightness, contrast, and saturation based on transition progress
     // - Allows customization of how the "active" appearance should look
     const {
         activeTransitionRule,
