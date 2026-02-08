@@ -62,7 +62,7 @@ export interface CssActiveTransitionOptions {
     /**
      * Controls how much the component is brightened or darkened when fully active.
      * 
-     * - Interpolates smoothly during the transition.
+     * - Interpolates smoothly during the transition from inactive → active.
      * - Applies only to regular variants. Outlined and mild variants ignore this setting.
      * - Automatically adapts to light/dark mode:
      *   - In **light mode** (`mode = +1`), values `< 1` darken  and values `> 1` lighten.
@@ -89,7 +89,7 @@ export interface CssActiveTransitionOptions {
     /**
      * Controls how much the component's color contrast is adjusted when fully active.
      * 
-     * - Interpolates smoothly during the transition.
+     * - Interpolates smoothly during the transition from inactive → active.
      * - Applies only to regular variants. Outlined and mild variants ignore this setting.
      * 
      * Accepts:
@@ -112,7 +112,7 @@ export interface CssActiveTransitionOptions {
     /**
      * Controls how much the component's color saturation is adjusted when fully active.
      * 
-     * - Interpolates smoothly during the transition.
+     * - Interpolates smoothly during the transition from inactive → active.
      * - Applies only to regular variants. Outlined and mild variants ignore this setting.
      * 
      * Accepts:
@@ -151,13 +151,13 @@ export interface CssActiveTransition {
      * - Regular variants: darken in light mode or lighten in dark mode.
      * - Outlined/mild variants: interpolate from variant colors to regular colors.
      * 
-     * Smoothly transitions between inactive and active states.
+     * Smoothly transitions between active and inactive states by animating colors and/or filter effect.
      * Affects background, foreground, decoration, and border colors.
      */
     activeTransitionRule : Lazy<CssRule>
     
     /**
-     * Exposes active-transition CSS variables for conditional animation.
+     * Exposes active-transition CSS variables for transitional effects.
      * 
      * Includes:
      * - `activeFilter` : Brightness/contrast/saturation interpolation during active state.

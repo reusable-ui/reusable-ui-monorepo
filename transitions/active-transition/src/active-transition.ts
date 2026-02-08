@@ -45,7 +45,7 @@ import {
     usesBorderFeature,
 }                           from '@reusable-ui/border-feature'      // A styling utility for resolving the appropriate border color, geometry, and radius based on the currently active variants — including theme, outline, mild, and bare.
 import {
-    filterRegistry
+    filterRegistry,
 }                           from '@reusable-ui/filter-feature'      // A styling utility for composing a unified filter stack from custom and registered state packages.
 
 // Reusable-ui states:
@@ -78,7 +78,7 @@ filterRegistry.registerFilter(activeTransitionVars.activeFilter);
  * - Regular variants: darken in light mode or lighten in dark mode.
  * - Outlined/mild variants: interpolate from variant colors to regular colors.
  * 
- * Smoothly transitions between inactive and active states.
+ * Smoothly transitions between active and inactive states by animating colors and/or filter effect.
  * Affects background, foreground, decoration, and border colors.
  * 
  * @param options - An optional configuration for customizing active-state transitions.

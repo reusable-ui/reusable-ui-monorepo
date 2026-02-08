@@ -7,7 +7,7 @@ The transitions are designed to feel natural to users:
 - **Regular variants** darken in light mode or lighten in dark mode, enhancing visual interest.  
 - **Outlined and mild variants** smoothly shift from their lighter appearance into the bolder regular style.  
 
-By using `usesActiveTransition()`, you can apply these transitions consistently across background, foreground, decoration, and border colors — with optional customization for brightness, contrast, and saturation.
+By using `usesActiveTransition()`, you can apply these transitions consistently across your components — making the component appear stronger and more pronounced — with optional customization for brightness, contrast, and saturation.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with Active State
@@ -24,7 +24,7 @@ This separation keeps responsibilities clear:
 - **Visual styling** lives in `active-transition`.  
 
 ## ✨ Features
-✔ Smooth transition between inactive and active states  
+✔ Smooth transition between active and inactive states  
 ✔ Variant-aware behavior for regular, outlined, and mild styles  
 ✔ Customizable options for brightness, contrast, and saturation levels  
 ✔ Adaptive brightness that automatically adjusts for light and dark mode  
@@ -53,7 +53,7 @@ Behavior:
 - Regular variants: darken in light mode or lighten in dark mode.
 - Outlined/mild variants: interpolate from variant colors to regular colors.
 
-Smoothly transitions between inactive and active states.
+Smoothly transitions between active and inactive states by animating colors and/or filter effect.
 Affects background, foreground, decoration, and border colors.
 
 #### 💡 Usage Example
