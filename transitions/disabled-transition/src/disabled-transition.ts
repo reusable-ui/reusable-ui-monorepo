@@ -18,7 +18,7 @@ import {
 
 // Reusable-ui features:
 import {
-    filterRegistry
+    filterRegistry,
 }                           from '@reusable-ui/filter-feature'      // A styling utility for composing a unified filter stack from custom and registered state packages.
 
 // Reusable-ui states:
@@ -47,7 +47,7 @@ filterRegistry.registerFilter(disabledTransitionVars.disabledFilter);
  * 
  * Exposes strongly typed CSS variables for transitional effects.
  * 
- * Smoothly transitions between enabled and disabled states.
+ * Smoothly transitions between enabled and disabled states by animating filter effect.
  * Preserves the current theme colors and variants while reducing emphasis
  * through opacity and/or desaturation.
  * 

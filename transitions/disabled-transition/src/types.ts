@@ -51,7 +51,7 @@ export interface CssDisabledTransitionOptions {
     /**
      * Controls how much the component's opacity is reduced when fully disabled.
      * 
-     * - Interpolates smoothly during the transition.
+     * - Interpolates smoothly during the transition from enabled → disabled.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -73,7 +73,7 @@ export interface CssDisabledTransitionOptions {
     /**
      * Controls how much the component's color saturation is reduced when fully disabled.
      * 
-     * - Interpolates smoothly during the transition.
+     * - Interpolates smoothly during the transition from enabled → disabled.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -104,6 +104,9 @@ export interface CssDisabledTransitionOptions {
      * - A literal string value, e.g. `'wait'`
      * - A strongly typed reference, e.g. `myConfig.disabledCursor`
      * 
+     * Notes:
+     * - Specify `'unset'` to keep the original cursor when disabled.
+     * 
      * Defaults to `'not-allowed'`.
      */
     disabledCursor   ?: CssKnownProps['cursor']
@@ -128,13 +131,13 @@ export interface CssDisabledTransition {
      * - Between 0 and 1 → smooth interpolation between neutral and disabled (for opacity/saturation only).
      * - Cursor → discrete switch based on disabled state (no gradual interpolation).
      * 
-     * Smoothly transitions between enabled and disabled states.
-     * Affects the component's visual presentation (opacity, saturation, cursor).
+     * Smoothly transitions between enabled and disabled states by animating filter effect.
+     * Affects the entire component surface.
      */
     disabledTransitionRule : Lazy<CssRule>
     
     /**
-     * Exposes disabled-transition CSS variables for conditional animation.
+     * Exposes disabled-transition CSS variables for transitional effects.
      * 
      * Includes:
      * - `disabledFilter` : Opacity and saturation interpolation during disabled state.

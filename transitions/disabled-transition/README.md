@@ -8,7 +8,7 @@ The transitions are designed to feel natural to users:
 - The cursor switches to indicate non-interactivity (default: `not-allowed`).  
 - Disabled components continue to block interaction with elements behind them (no `pointer-events: none`).  
 
-By using `usesDisabledTransition()`, you can apply these transitions consistently across the entire component surface — fading and desaturating all visual layers at once — with optional customization for opacity, saturation, and cursor.
+By using `usesDisabledTransition()`, you can apply these transitions consistently across your components — fading and desaturating the entire component surface — with optional customization for opacity, saturation, and cursor.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with Disabled State
@@ -49,7 +49,7 @@ making the component **visually muted** when disabled.
 
 Exposes strongly typed CSS variables for transitional effects.
 
-Smoothly transitions between enabled and disabled states.
+Smoothly transitions between enabled and disabled states by animating filter effect.
 Preserves the current theme colors and variants while reducing emphasis
 through opacity and/or desaturation.
 
