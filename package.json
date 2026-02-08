@@ -126,6 +126,7 @@
     "transitions/active-transition",
     "transitions/active-as-click",
     "transitions/disabled-transition",
+    "transitions/focus-transition",
     "routes/link-compat",
     "routes/next-link-compat",
     "routes/router-link-compat",
