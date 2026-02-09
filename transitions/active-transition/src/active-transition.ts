@@ -201,6 +201,7 @@ calc(
              * - factor = 0      → all filters = 1 (neutral, no adjustment).
              * - factor = 1      → filters = configured values (target).
              * - Between 0 and 1 → smooth interpolation between neutral and target.
+             * - The `max(0, ...)` ensures `brightness()`, `contrast()` and `saturation()` stay non-negative.
              * 
              * 
              * Notes:
@@ -232,15 +233,15 @@ calc(
              */
             [activeFilter]:
 `
-brightness(calc(
+brightness(calc(max(0,
     1 - (1 - (
         (((1 + ${mode}) / 2) * ${activeBrightness})
         +
         (((1 - ${mode}) / 2) * (1.25 - (${activeBrightness} - 0.7) * 0.75))
     )) * ${effectiveFactorCond}
-))
-contrast(calc(1 - (1 - ${activeContrast}) * ${effectiveFactorCond}))
-saturate(calc(1 - (1 - ${activeSaturate}) * ${effectiveFactorCond}))
+)))
+contrast(calc(max(0, 1 - (1 - ${activeContrast}) * ${effectiveFactorCond})))
+saturate(calc(max(0, 1 - (1 - ${activeSaturate}) * ${effectiveFactorCond})))
 `,
         }),
         
