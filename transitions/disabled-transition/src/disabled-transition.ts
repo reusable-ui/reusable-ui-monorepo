@@ -43,7 +43,7 @@ filterRegistry.registerFilter(disabledTransitionVars.disabledFilter);
 
 /**
  * Applies disabled-state transitions that de-emphasize the entire component surface,
- * making the component **visually muted** when disabled.
+ * making components **visually muted** when disabled.
  * 
  * Exposes strongly typed CSS variables for transitional effects.
  * 

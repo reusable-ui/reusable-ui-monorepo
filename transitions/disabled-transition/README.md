@@ -1,7 +1,7 @@
 # @reusable-ui/disabled-transition 📦  
 
-**disabled-transition** provides a **default system styling** for how components visually respond when they become disabled.
-It offers styling authors a **common styling** for disabled transitions that de-emphasize the entire component surface, making the component **visually muted** when disabled.
+**disabled-transition** provides a **default system styling** for how components visually respond when they become disabled.  
+It offers styling authors a **common foundation** for disabled transitions that de-emphasize the entire component surface, making components **visually muted** when disabled.
 
 The transitions are designed to feel natural to users:  
 - Components smoothly fade and desaturate as they move into the disabled state.  
@@ -45,7 +45,7 @@ yarn add @reusable-ui/disabled-transition
 ### `usesDisabledTransition(options?: CssDisabledTransitionOptions): CssDisabledTransition`
 
 Applies disabled-state transitions that de-emphasize the entire component surface,
-making the component **visually muted** when disabled.
+making components **visually muted** when disabled.
 
 Exposes strongly typed CSS variables for transitional effects.
 
@@ -176,11 +176,11 @@ export const disableableBoxStyle = () => {
 The [`@reusable-ui/disabled-state`](https://www.npmjs.com/package/@reusable-ui/disabled-state) package drives the `disableFactorCond` CSS variable, which represents how far the transition has progressed (from enabled → fully disabled).  
 
 `disabled-transition` consumes this factor and applies coordinated formulas that de-emphasize the entire component surface,
-making the component **visually muted** when disabled.
+making components **visually muted** when disabled.
 
 ##### 1. **Filter Formula**
 
-- Gradually adjusts **opacity and saturation** toward the configured "disabled" values, creating a muted visual effect.  
+- Gradually adjusts **opacity and saturation** toward the configured target values, creating a muted visual effect.  
 - At `factor = 0` (fully enabled), filters resolve to neutral values (no adjustment).  
 - At `factor = 1` (fully disabled), filters resolve to the configured target values.  
 - Between `0` and `1`, filters interpolate smoothly between neutral and target.  

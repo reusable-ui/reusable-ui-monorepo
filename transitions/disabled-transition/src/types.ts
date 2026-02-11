@@ -25,7 +25,7 @@ import {
  */
 export interface DisabledTransitionVars {
     /**
-     * References the filter applied when the component is transitioning or fully disabled.
+     * References the filter applied when the component is transitioning toward enabled/disabled or fully disabled.
      * 
      * - Becomes `unset` when the component is fully enabled.
      * - Typically not consumed directly — instead use:
@@ -34,9 +34,9 @@ export interface DisabledTransitionVars {
     disabledFilter : unknown
     
     /**
-     * References the cursor applied when the component is transitioning toward disabled or fully disabled.
+     * References the cursor applied when the component is transitioning toward or fully disabled.
      * 
-     * - Becomes `unset` when the component is transitioning toward enabled or fully enabled.
+     * - Becomes `unset` when the component is transitioning toward or fully enabled.
      * - Typically used with callback: `switchOf(disabledTransitionVars.disabledCursor, componentConfig.normalCursor)`.
      */
     disabledCursor : unknown
@@ -84,7 +84,7 @@ export interface CssDisabledTransitionOptions {
      * Notes:
      * - Values `< 1` → decrease saturation (muted colors).
      * - Values `> 1` → increase saturation (more vivid colors, not typical for disabled).
-     * - `0` is equivalent to grayscale.
+     * - `0` → grayscale.
      * - `1` → no saturation adjustment.
      * - Percentage units are allowed.
      * - Negative values are not allowed.
@@ -116,12 +116,12 @@ export interface CssDisabledTransitionOptions {
 
 /**
  * Provides a CSS API for applying disabled-state transitions that de-emphasize the entire component surface,
- * making the component **visually muted** when disabled.
+ * making components **visually muted** when disabled.
  */
 export interface CssDisabledTransition {
     /**
      * Attaches CSS rules for disabled-state transitions that de-emphasize the entire component surface,
-     * making the component **visually muted** when disabled.
+     * making components **visually muted** when disabled.
      * 
      * Exposes strongly typed CSS variables for transitional effects.
      * 
@@ -141,7 +141,7 @@ export interface CssDisabledTransition {
      * 
      * Includes:
      * - `disabledFilter` : Opacity and saturation interpolation during disabled state.
-     * - `disabledCursor` : Cursor switching when disabled.
+     * - `disabledCursor` : Discrete cursor switching when disabled.
      * 
      * ⚠️ **Caution**: These variables are invalid when the component is fully enabled.
      * If used incorrectly, they can invalidate CSS declarations.
