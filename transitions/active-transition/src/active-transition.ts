@@ -70,7 +70,7 @@ filterRegistry.registerFilter(activeTransitionVars.activeFilter);
 
 /**
  * Applies active-state transitions that emphasize the current theme colors,
- * making the component **visually stand out** when active.
+ * making components **visually stand out** when active.
  * 
  * Exposes strongly typed CSS variables for transitional effects.
  * 

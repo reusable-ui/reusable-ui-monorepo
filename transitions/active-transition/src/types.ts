@@ -44,7 +44,7 @@ export interface ActiveTransitionVars {
     effectiveFactorCond : unknown
     
     /**
-     * References the filter applied when the component is transitioning or fully active.
+     * References the filter applied when the component is transitioning toward active/inactive or fully active.
      * 
      * - Becomes `unset` when the component is fully inactive.
      * - Typically not consumed directly — instead use:
@@ -124,7 +124,7 @@ export interface CssActiveTransitionOptions {
      * Notes:
      * - Values `< 1` → decrease saturation (muted colors).
      * - Values `> 1` → increase saturation (more vivid colors).
-     * - `0` is equivalent to grayscale.
+     * - `0` → grayscale.
      * - `1` → no saturation adjustment.
      * - Percentage units are allowed.
      * - Negative values are not allowed.
@@ -138,12 +138,12 @@ export interface CssActiveTransitionOptions {
 
 /**
  * Provides a CSS API for applying active-state transitions that emphasize the current theme colors,
- * making the component **visually stand out** when active.
+ * making components **visually stand out** when active.
  */
 export interface CssActiveTransition {
     /**
      * Attaches CSS rules for active-state transitions that emphasize the current theme colors,
-     * making the component **visually stand out** when active.
+     * making components **visually stand out** when active.
      * 
      * Exposes strongly typed CSS variables for transitional effects.
      * 

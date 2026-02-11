@@ -1,13 +1,13 @@
 # @reusable-ui/active-transition 📦  
 
-**active-transition** provides a **default system styling** for how components visually respond when they become active or selected.
-It offers styling authors a **common styling** for active transitions that emphasize the current theme colors, making the component **visually stand out** when active.
+**active-transition** provides a **default system styling** for how components visually respond when they become active or selected.  
+It offers styling authors a **common foundation** for active transitions that emphasize the current theme colors, making components **visually stand out** when active.
 
 The transitions are designed to feel natural to users:  
 - **Regular variants** darken in light mode or lighten in dark mode, enhancing visual interest.  
 - **Outlined and mild variants** smoothly shift from their lighter appearance into the bolder regular style.  
 
-By using `usesActiveTransition()`, you can apply these transitions consistently across your components — making the component appear stronger and more pronounced — with optional customization for brightness, contrast, and saturation.  
+By using `usesActiveTransition()`, you can apply these transitions consistently across your components — making components appear stronger and more pronounced — with optional customization for brightness, contrast, and saturation.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with Active State
@@ -45,7 +45,7 @@ yarn add @reusable-ui/active-transition
 ### `usesActiveTransition(options?: CssActiveTransitionOptions): CssActiveTransition`
 
 Applies active-state transitions that emphasize the current theme colors,
-making the component **visually stand out** when active.
+making components **visually stand out** when active.
 
 Exposes strongly typed CSS variables for transitional effects.
 
@@ -200,7 +200,7 @@ export const activatableBoxStyle = () => {
 The [`@reusable-ui/active-state`](https://www.npmjs.com/package/@reusable-ui/active-state) package drives the `activeFactorCond` CSS variable, which represents how far the transition has progressed (from inactive → fully active).  
 
 `active-transition` consumes this factor and applies coordinated formulas that emphasize the current theme colors,
-making the component **visually stand out** when active.
+making components **visually stand out** when active.
 
 ##### 1. **Color Formula**
 
@@ -209,7 +209,7 @@ making the component **visually stand out** when active.
 
 ##### 2. **Filter Formula**
 
-- Gradually adjusts **brightness, contrast, and saturation** toward the configured "active" values, creating a stronger visual emphasis.  
+- Gradually adjusts **brightness, contrast, and saturation** toward the configured target values, creating a stronger visual emphasis.  
 - For **outlined** or **mild variants**, or when the state is fully inactive, the formula again resolves to an invalid state, restoring the component's original appearance.  
 
 ##### ✨ Key Idea
