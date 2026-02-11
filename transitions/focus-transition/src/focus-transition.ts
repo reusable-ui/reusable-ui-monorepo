@@ -51,7 +51,7 @@ boxShadowRegistry.registerBoxShadow(focusTransitionVars.focusBoxShadow);
 
 /**
  * Applies focus-state transitions that highlight the component with a ring indicator,
- * making the component **visually distinct** and signaling readiness for interaction when focused.
+ * making components **visually distinct** and signaling readiness for interaction when focused.
  * 
  * Exposes strongly typed CSS variables for transitional effects.
  * 

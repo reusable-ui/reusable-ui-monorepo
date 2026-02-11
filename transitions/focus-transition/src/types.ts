@@ -25,7 +25,7 @@ import {
 export interface FocusTransitionVars {
     /**
      * References a manipulated box shadow as the focus ring indicator
-     * when the component is transitioning or fully focused.
+     * when the component is transitioning toward focused/blurred or fully focused.
      * 
      * - Becomes `unset` when the component is fully blurred.
      * - Typically not consumed directly — instead use:
@@ -65,12 +65,12 @@ export interface CssFocusTransitionOptions {
 
 /**
  * Provides a CSS API for applying focus-state transitions that highlight the component with a ring indicator,
- * making the component **visually distinct** and signaling readiness for interaction when focused.
+ * making components **visually distinct** and signaling readiness for interaction when focused.
  */
 export interface CssFocusTransition {
     /**
      * Attaches CSS rules for focus-state transitions that highlight the component with a ring indicator,
-     * making the component **visually distinct** and signaling readiness for interaction when focused.
+     * making components **visually distinct** and signaling readiness for interaction when focused.
      * 
      * Exposes strongly typed CSS variables for transitional effects.
      * 

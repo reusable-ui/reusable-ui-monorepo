@@ -1,7 +1,7 @@
 # @reusable-ui/focus-transition 📦  
 
-**focus-transition** provides a **default system styling** for how components visually respond when they gain focus.
-It offers styling authors a **common styling** for focus transitions that highlight the component with a ring indicator, making the component **visually distinct** and signaling readiness for interaction when focused.
+**focus-transition** provides a **default system styling** for how components visually respond when they gain focus.  
+It offers styling authors a **common foundation** for focus transitions that highlight the component with a ring indicator, making components **visually distinct** and signaling readiness for interaction when focused.
 
 The transitions are designed to feel natural to users:  
 - Components smoothly expand a focus ring indicator as they gain focus.  
@@ -44,7 +44,7 @@ yarn add @reusable-ui/focus-transition
 ### `usesFocusTransition(options?: CssFocusTransitionOptions): CssFocusTransition`
 
 Applies focus-state transitions that highlight the component with a ring indicator,
-making the component **visually distinct** and signaling readiness for interaction when focused.
+making components **visually distinct** and signaling readiness for interaction when focused.
 
 Exposes strongly typed CSS variables for transitional effects.
 
@@ -165,7 +165,7 @@ export const focusableBoxStyle = () => {
 The [`@reusable-ui/focus-state`](https://www.npmjs.com/package/@reusable-ui/focus-state) package drives the `focusFactorCond` CSS variable, which represents how far the transition has progressed (from blurred → fully focused).  
 
 `focus-transition` consumes this factor and applies a box shadow expansion formula that highlights the component,
-making the component **visually distinct** and signaling readiness for interaction when focused.
+making components **visually distinct** and signaling readiness for interaction when focused.
 
 ##### **Box Shadow Expansion Formula**
 
