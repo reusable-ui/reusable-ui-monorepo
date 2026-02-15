@@ -230,6 +230,20 @@ calc(
              * - At factor = 0 → brightness = 1 (neutral).
              * - At factor = 1 → brightness = targetBrightness.
              * - Between 0 and 1 → smooth interpolation.
+             * 
+             * Dark mode brightness mapping:
+             * - Light mode dimming (0.7–0.9) → Dark mode brightening (1.25–1.1).
+             * - Light mode neutral (1.0) → Dark mode neutral (~1.0).
+             * - Light mode brightening (1.25) → Dark mode dimming (~0.9).
+             * 
+             * Formula:
+             *   darkModeBrightness = 1.25 - (lightModeBrightness - 0.7) * 0.75
+             * 
+             * Intent:
+             * - Usually darken in light mode.
+             * - Usually lighten in dark mode.
+             * - Brightening in light mode flips into dimming in dark mode for symmetry.
+             * - Keeps values within practical ranges (0.7–1.25 in light, 0.9–1.25 in dark).
              */
             [activeFilter]:
 `
