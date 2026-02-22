@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/hover-effect",
   "version": "7.0.0",
-  "description": "Provides default styling effects when a component's hover state changes. Signaling interactivity by making components visually responsive and clearly distinguishable from static content.",
+  "description": "Provides default styling effects when a component's hover state changes. Signals interactivity by making components visually responsive and clearly distinguishable from static content.",
   "keywords": [
     "transition",
     "hover-effect",

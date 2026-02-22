@@ -93,7 +93,7 @@ filterRegistry.registerFilter(hoverEffectVars.hoverFilter);
  * Preserves the current theme colors and variants while enhancing emphasis
  * through responsive visual cues.
  * 
- * @param options - An optional configuration for customizing hover-state effects.
+ * @param options - An optional configuration for customizing hover effects.
  * @returns A CSS API containing effect rules and CSS variables for signaling component interactivity.
  */
 export const usesHoverEffect = (options?: CssHoverEffectOptions): CssHoverEffect => {

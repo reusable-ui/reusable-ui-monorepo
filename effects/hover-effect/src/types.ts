@@ -417,7 +417,7 @@ export interface CssHoverEffect {
      * Exposes hover-effect CSS variables for transitional effects.
      * 
      * Includes:
-     * - `hoverFilter`         : Opacity, brightness, contrast, saturation, hue-rotate, drop-shadow, blur, and blur radius interpolation during hover state.
+     * - `hoverFilter`         : Opacity, brightness, contrast, saturation, hue-rotate, drop-shadow, blur, and blur radius interpolation during hover transitions.
      * - `hoverTextDecoration` : Discrete text decoration switching when hovered.
      * 
      * ⚠️ **Caution**: These variables are invalid when the component is fully unhovered.

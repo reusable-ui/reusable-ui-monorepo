@@ -1,7 +1,8 @@
 # @reusable-ui/hover-effect 📦  
 
 **hover-effect** provides **default styling effects** for how components visually respond when the hover state changes.  
-It offers styling authors a **common foundation** for hover effects that signal interactivity, making components **visually responsive and clearly distinguishable from static content**.
+It offers styling authors a **common foundation** for hover effects that signal interactivity,
+making components **visually responsive and clearly distinguishable from static content**.
 
 The effects are designed to feel natural to users:  
 - Components smoothly highlight and emphasize as they move into the hovered state.  
