@@ -8,6 +8,7 @@ capabilities/*/dist/
 variants/*/dist/
 states/*/dist/
 transitions/*/dist/
+effects/*/dist/
 routes/*/dist/
 
 base-components/*/dist/

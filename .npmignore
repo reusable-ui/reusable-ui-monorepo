@@ -15,6 +15,8 @@ states/*/src/
 states/*/__tests__/
 transitions/*/src/
 transitions/*/__tests__/
+effects/*/src/
+effects/*/__tests__/
 routes/*/src/
 routes/*/__tests__/
 

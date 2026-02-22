@@ -241,6 +241,8 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/focus-transition       non_peer
 @reusable-ui/hover-transition       non_peer
 
+// Reusable-ui effects:
+
 // Reusable-ui capabilities:
 @reusable-ui/floatable
 @reusable-ui/global-stackable
