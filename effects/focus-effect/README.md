@@ -163,7 +163,7 @@ export const focusableBoxStyle = () => {
 
 #### 🧠 How CSS Focus Effect Works
 
-The [`@reusable-ui/focus-state`](https://www.npmjs.com/package/@reusable-ui/focus-state) package drives the `focusFactorCond` CSS variable, which represents how far the transition has progressed (from blurred → fully focused).  
+The [`@reusable-ui/focus-state`](https://www.npmjs.com/package/@reusable-ui/focus-state) package drives a `focusFactorCond` CSS variable, which represents how far the transition has progressed (from blurred → fully focused).  
 
 `focus-effect` consumes this factor and applies a box shadow expansion formula that highlights the component,
 making it **visually distinct** and signaling readiness for interaction when focused.
@@ -171,18 +171,18 @@ making it **visually distinct** and signaling readiness for interaction when foc
 ##### **Box Shadow Expansion Formula**
 
 - Renders the focus ring indicator using a box shadow as its visual indicator.  
-- Gradually expands the **box shadow spread radius** from `0` to the configured width to form an animated focus ring indicator.  
-- No blur radius is applied, ensuring a crisp focus ring.  
-- At `factor = 0` (fully blurred), the spread radius resolves to `0` (invisible ring).  
-- At `factor = 1` (fully focused), the spread radius resolves to the configured target value (full ring size).  
-- Between `0` and `1`, the spread radius interpolates smoothly between invisible and full size.  
 - The ring color always uses the current theme color, ensuring harmony with the component's appearance.  
+- No blur radius is applied, ensuring a crisp focus ring.  
+- Gradually adjusts **box shadow spread radius** toward the configured spread radius.  
+- At `factor = 0` → zero spread radius (invisible ring).  
+- At `factor = 1` → configured spread radius.  
+- Between `0` and `1` → smooth interpolation.  
 
 ##### ✨ Key Idea
 
 - **Focus-state** provides the *progress factor*.  
 - **Focus-effect** applies the *box shadow expansion formula* based on that factor.  
-- Together, they ensure components smoothly animate a focus ring indicator when focused, while remaining consistent with the current theme colors and variants.  
+- Together, they ensure components smoothly animate a focus ring indicator when focused.  
 
 ## 📚 Related Packages
 
