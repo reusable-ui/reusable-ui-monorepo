@@ -3,12 +3,12 @@ import { usesOutlineVariant } from '@reusable-ui/outline-variant'
 import { usesMildVariant} from '@reusable-ui/mild-variant'
 import { usesFilterFeature } from '@reusable-ui/filter-feature';
 import { usesBackgroundFeature } from '@reusable-ui/background-feature';
-import { usesHoverTransition } from '../dist/index.js'
+import { usesHoverEffect } from '../dist/index.js'
 
-// Test style for HoverTransition
+// Test style for HoverEffect
 // Demonstrates how `hoverFactorCond` drives transition effects
 // with simplified static colors for easier testing.
-export default function hoverTransitionTestStyle() {
+export default function hoverEffectTestStyle() {
     // Variants:
     const {
         outlineVariantRule,
@@ -27,11 +27,11 @@ export default function hoverTransitionTestStyle() {
         backgroundFeatureVars : { backgColor },
     } = usesBackgroundFeature();
     
-    // Transitions:
+    // Effects:
     const {
-        hoverTransitionRule,
-        hoverTransitionVars : { hoverTextDecoration },
-    } = usesHoverTransition({
+        hoverEffectRule,
+        hoverEffectVars : { hoverTextDecoration },
+    } = usesHoverEffect({
         hoverOpacity        : 0.5,
         hoverBrightness     : 1.15,
         hoverContrast       : 1,
@@ -48,8 +48,8 @@ export default function hoverTransitionTestStyle() {
         ...filterFeatureRule(),
         ...backgroundFeatureRule(),
         
-        // Transitions:
-        ...hoverTransitionRule(),
+        // Effects:
+        ...hoverEffectRule(),
         
         // Apply composed variables:
         filter,

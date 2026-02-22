@@ -127,7 +127,7 @@
     "transitions/active-as-click",
     "transitions/disabled-transition",
     "transitions/focus-transition",
-    "transitions/hover-transition",
+    "effects/hover-effect",
     "routes/link-compat",
     "routes/next-link-compat",
     "routes/router-link-compat",

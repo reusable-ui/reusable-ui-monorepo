@@ -6,11 +6,11 @@ import { colorParamVars } from '@reusable-ui/colors'
 import { useOutlineVariant, type OutlineVariantProps } from '@reusable-ui/outline-variant'
 import { useMildVariant, type MildVariantProps} from '@reusable-ui/mild-variant'
 import { regularBaseColor, mildBaseColor } from './base-colors.js'
-import { useHoverTransitionTestStyles } from './HoverTransitionTest.loader.js'
+import { useHoverEffectTestStyles } from './HoverEffectTest.loader.js'
 
 
 
-export interface HoverTransitionTestProps
+export interface HoverEffectTestProps
     extends
         // Variants:
         Required<OutlineVariantProps>,
@@ -36,7 +36,7 @@ export interface HoverTransitionTestProps
 }
 
 /**
- * Test component for HoverTransition.
+ * Test component for HoverEffect.
  * 
  * - Mocks `hoverFactorCond` via inline style for controlled testing.
  * - Uses static colors for simplicity:
@@ -44,13 +44,13 @@ export interface HoverTransitionTestProps
  *   - Outlined background → transparent `oklch(0 0 0 / 0)`
  *   - Mild background     → light blue  `oklch(0.7 0.2 265 / 1)`
  */
-export const HoverTransitionTest = (props: HoverTransitionTestProps) => {
+export const HoverEffectTest = (props: HoverEffectTestProps) => {
     const {
         hoverFactorCond = 'unset',
         mode,
     } = props;
     
-    const styles = useHoverTransitionTestStyles();
+    const styles = useHoverEffectTestStyles();
     
     useLayoutEffect(() => {
         colorParamVars.mode = ((mode === 'light') ? 1 : -1) as any;
@@ -89,11 +89,11 @@ export const HoverTransitionTest = (props: HoverTransitionTestProps) => {
         <div>
             <HydrateStyles />
             <div
-                data-testid="hover-transition-test"
+                data-testid="hover-effect-test"
                 className={`${styles.main} ${outlineClassname} ${mildClassname}`}
                 style={inlineStyle}
             >
-                Hover Transition Test
+                Hover Effect Test
             </div>
         </div>
     );

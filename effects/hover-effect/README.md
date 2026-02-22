@@ -1,33 +1,33 @@
-# @reusable-ui/hover-transition 📦  
+# @reusable-ui/hover-effect 📦  
 
-**hover-transition** provides a **default system styling** for how components visually respond when hovered.  
-It offers styling authors a **common foundation** for hover transitions that indicate component interactivity, making components **visually responsive and distinguishable from static content** when hovered.
+**hover-effect** provides **default styling effects** for how components visually respond when the hover state changes.  
+It offers styling authors a **common foundation** for hover effects that signal interactivity, making components **visually responsive and clearly distinguishable from static content**.
 
-The transitions are designed to feel natural to users:  
+The effects are designed to feel natural to users:  
 - Components smoothly highlight and emphasize as they move into the hovered state.  
 - Text decorations (such as underlines) can be applied to emphasize interactivity.  
 - Visual cues remain consistent across components, ensuring predictable user experience.  
 
-By using `usesHoverTransition()`, you can apply these transitions consistently across your components — enhancing emphasis through filters the entire component surface — with optional customization for color effects and text decoration.  
+By using `usesHoverEffect()`, you can apply these effects consistently across your components — enhancing emphasis through filters across the entire component surface — with optional customization for color effects and text decoration.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with Hover State
 
-`hover-transition` cannot operate in isolation.  
+`hover-effect` cannot operate in isolation.  
 It relies on the [`@reusable-ui/hover-state`](https://www.npmjs.com/package/@reusable-ui/hover-state) package to drive the `hoverFactorCond` CSS variable, which determines how far the transition has progressed (from unhovered → fully hovered).  
 
 - `hover-state` is responsible for tracking whether a component is hovered.  
-- `hover-transition` consumes that state and applies visual adjustments (opacity, brightness, contrast, saturation, etc.) accordingly.  
-- Together, they provide a unified system: `hover-state` supplies the factor, `hover-transition` renders the visual effect.  
+- `hover-effect` consumes that state and applies visual adjustments (opacity, brightness, contrast, saturation, etc.) accordingly.  
+- Together, they provide a unified system: `hover-state` supplies the factor, `hover-effect` renders the visual effect.  
 
 This separation keeps responsibilities clear:
 - **State logic** lives in `hover-state`.  
-- **Visual styling** lives in `hover-transition`.  
+- **Visual effect** lives in `hover-effect`.  
 
 ## ✨ Features
 ✔ Smooth transition between unhover and hover states  
 ✔ Customizable options for color effects and text decorations  
-✔ Unified filter stack that composes seamlessly with other state transitions  
+✔ Unified filter stack that composes seamlessly with other state effects  
 ✔ Ready-to-use defaults for common scenarios, while remaining flexible for custom styling  
 ✔ Works across both text and surface elements for cohesive interactivity cues  
 ✔ Supports **reverse interpolation**:  
@@ -35,20 +35,20 @@ This separation keeps responsibilities clear:
    - Negative configurations → fade *out* the effect during hover (effect is fully un-applied at full hover)  
 
 ## 📦 Installation
-Install **@reusable-ui/hover-transition** via npm or yarn:
+Install **@reusable-ui/hover-effect** via npm or yarn:
 
 ```sh
-npm install @reusable-ui/hover-transition
+npm install @reusable-ui/hover-effect
 # or
-yarn add @reusable-ui/hover-transition
+yarn add @reusable-ui/hover-effect
 ```
 
 ## 🧩 Exported CSS Hooks
 
-### `usesHoverTransition(options?: CssHoverTransitionOptions): CssHoverTransition`
+### `usesHoverEffect(options?: CssHoverEffectOptions): CssHoverEffect`
 
-Applies hover-state transitions that indicate component interactivity,
-making components **visually responsive and distinguishable from static content** when hovered.
+Applies hover-state effects that signal interactivity,
+making components **visually responsive and clearly distinguishable from static content**.
 
 Hover effects convey clickability, editability, or other available actions
 by providing subtle visual feedback during interaction.
@@ -69,8 +69,8 @@ import { usesFilterFeature } from '@reusable-ui/filter-feature';
 // States:
 import { usesHoverState } from '@reusable-ui/hover-state';
 
-// Transitions:
-import { usesHoverTransition } from '@reusable-ui/hover-transition';
+// Effects:
+import { usesHoverEffect } from '@reusable-ui/hover-effect';
 
 // CSS-in-JS:
 import { style, vars, keyframes, switchOf } from '@cssfn/core';
@@ -99,15 +99,15 @@ export const hoverableBoxStyle = () => {
         animationUnhovering : 'var(--box-unhovering)',
     });
     
-    // Hover/unhover visual transition:
+    // Hover/unhover visual effect:
     // - Consumes `hoverFactor` from hover state
     // - Gradually adjusts filter effects based on transition progress
     // - Text decoration switches discretely when hovered
     // - Allows customization of how the "hovered" appearance should look
     const {
-        hoverTransitionRule,
-        hoverTransitionVars: { hoverTextDecoration },
-    } = usesHoverTransition({
+        hoverEffectRule,
+        hoverEffectVars: { hoverTextDecoration },
+    } = usesHoverEffect({
         // Brightness:
         // Values `< 1` → darken  in light mode, lighten in dark mode
         // Values `> 1` → lighten in light mode, darken  in dark mode
@@ -138,18 +138,18 @@ export const hoverableBoxStyle = () => {
         // Attach hover state rules (tracks hovered/unhovered):
         ...hoverStateRule(),
         
-        // Attach hover transition rules (visual feedback when hovered):
-        ...hoverTransitionRule(),
+        // Attach hover effect rules (visual feedback when hovered):
+        ...hoverEffectRule(),
         
         // Define animations for hovering/unhovering:
         
         // 🔼 Hovering: smoothly interpolate hoverFactor from 0 → 1
         ...vars({
             '--box-hovering': [
-                ['0.3s', 'ease-out', 'both', 'transition-hovering'],
+                ['0.3s', 'ease-out', 'both', 'effect-hovering'],
             ],
         }),
-        ...keyframes('transition-hovering', {
+        ...keyframes('effect-hovering', {
             from : { [hoverFactor]: 0 },
             // '90%': { [hoverFactor]: 1.2 }, // Optional overshoot for a "bump" effect
             to   : { [hoverFactor]: 1 },
@@ -158,10 +158,10 @@ export const hoverableBoxStyle = () => {
         // 🔽 Unhovering: smoothly interpolate hoverFactor from 1 → 0
         ...vars({
             '--box-unhovering': [
-                ['0.3s', 'ease-out', 'both', 'transition-unhovering'],
+                ['0.3s', 'ease-out', 'both', 'effect-unhovering'],
             ],
         }),
-        ...keyframes('transition-unhovering', {
+        ...keyframes('effect-unhovering', {
             from : { [hoverFactor]: 1 },
             // '10%': { [hoverFactor]: -0.2 }, // Optional undershoot for a "bounce back" effect
             to   : { [hoverFactor]: 0 },
@@ -181,51 +181,47 @@ export const hoverableBoxStyle = () => {
 };
 ```
 
-#### 🧠 How CSS Hover Transition Works
+#### 🧠 How CSS Hover Effect Works
 
-The [`@reusable-ui/hover-state`](https://www.npmjs.com/package/@reusable-ui/hover-state) package drives the `hoverFactorCond` CSS variable, which represents how far the transition has progressed (from unhovered → fully hovered).  
+The [`@reusable-ui/hover-state`](https://www.npmjs.com/package/@reusable-ui/hover-state) package drives a `hoverFactorCond` CSS variable, which represents how far the transition has progressed (from unhovered → fully hovered).  
 
-`hover-transition` consumes this factor and applies coordinated formulas that indicate component interactivity,
-making components **visually responsive and distinguishable from static content** when hovered.
+`hover-effect` consumes this factor and applies coordinated formulas that signal interactivity,
+making components **visually responsive and clearly distinguishable from static content**.
 
 ##### 1. **Filter Formula**
 
-- Gradually adjusts **visual filters** toward the configured target values, creating a responsive visual effect.  
-- At `factor = 0` (fully unhovered), filters resolve to neutral values (no adjustment).  
-- At `factor = 1` (fully hovered), filters resolve to the configured target values.  
-- Between `0` and `1`, filters interpolate smoothly between neutral and target.  
-- Opacity is clamped between `0` and `1`, while brightness, contrast, saturation, blur, and blur radius may overshoot/undershoot if factor goes beyond the normal range.  
-- **Negative configurations reverse the interpolation direction**:  
-  - Positive values → fade *in* the effect during hover (neutral → target).  
-  - Negative values → fade *out* the effect during hover (target → neutral).  
-  - At full hover with a negative config, the original neutral state is restored (effect fully un-applied).  
+- Gradually adjusts **visual filters** toward the configured target values.  
+- At `factor = 0` → neutral values (no adjustment).  
+- At `factor = 1` → configured target values.  
+- Between `0` and `1` → smooth interpolation.  
+- Negative configs reverse the direction (fade out instead of fade in).  
 
 ##### 2. **Text Decoration Switching**
 
-- Text decoration (such as underline) changes discretely (no gradual interpolation) when the component becomes hovered.  
+- Text decoration (such as underline) changes discretely when hovered.  
 - Provides a clear cue for interactive text elements.  
 
 ##### ✨ Key Idea
 
 - **Hover-state** provides the *progress factor*.  
-- **Hover-transition** applies *filter formulas* (opacity, brightness, contrast, saturation, etc.) and *text decoration switching* based on that factor.  
-- Together, they ensure components smoothly highlight and emphasize when hovered, while remaining consistent with the current theme colors and variants.  
+- **Hover-effect** applies *filter formulas* and *text decoration switching* based on that factor.  
+- Together, they ensure components smoothly highlight and emphasize when hovered.  
 
 ## 📚 Related Packages
 
 - [`@reusable-ui/hover-state`](https://www.npmjs.com/package/@reusable-ui/hover-state) – Provides hover state tracking for components.
 
 ## 📖 Part of the Reusable-UI Framework  
-**@reusable-ui/hover-transition** is a core utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
+**@reusable-ui/hover-effect** is a core utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
 
 ## 🤝 Contributing  
-Want to improve **@reusable-ui/hover-transition**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
+Want to improve **@reusable-ui/hover-effect**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
 
 ## 🛡️ License  
 Licensed under the **MIT License** – see the [LICENSE](./LICENSE) file for details.  
 
 ---
 
-🚀 **@reusable-ui/hover-transition delivers predictable, reusable visual feedback for hover states in your UI.**  
+🚀 **@reusable-ui/hover-effect delivers predictable, reusable visual feedback for hover states in your UI.**  
 Give it a ⭐ on GitHub if you find it useful!  

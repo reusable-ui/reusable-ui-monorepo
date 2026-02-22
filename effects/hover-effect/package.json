@@ -1,15 +1,15 @@
 {
-  "name": "@reusable-ui/hover-transition",
+  "name": "@reusable-ui/hover-effect",
   "version": "7.0.0",
-  "description": "Provides default CSS transitions for hover state styling. Indicates interactivity by making components visually responsive and distinguishable from static content when hovered.",
+  "description": "Provides default styling effects when a component's hover state changes. Signaling interactivity by making components visually responsive and clearly distinguishable from static content.",
   "keywords": [
     "transition",
+    "hover-effect",
     "hover-state",
-    "appearance",
     "animation",
     "filter",
     "opacity",
-    "saturation",
+    "appearance",
     "css",
     "design-system",
     "ui",
@@ -21,7 +21,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "transitions/hover-transition"
+    "directory": "effects/hover-effect"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"

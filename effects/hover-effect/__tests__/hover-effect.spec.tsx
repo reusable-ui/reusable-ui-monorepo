@@ -3,11 +3,11 @@ import { test, expect } from '@playwright/experimental-ct-react';
 import { PNG } from 'pngjs'
 import { variantKeys, variantNameLower, variantNameUpper, variantBaseColor } from './case-map.js'
 import { applyFiltersSequential, expectColor } from './color-utilities.js'
-import { type HoverTransitionTestProps, HoverTransitionTest } from './HoverTransitionTest.js';
+import { type HoverEffectTestProps, HoverEffectTest } from './HoverEffectTest.js';
 
 
 
-interface HoverTransitionTestCase {
+interface HoverEffectTestCase {
     // Test Inputs:
     
     /**
@@ -16,9 +16,9 @@ interface HoverTransitionTestCase {
     title         : string
     
     /**
-     * Props to pass to the `<HoverTransitionTest>` component.
+     * Props to pass to the `<HoverEffectTest>` component.
      */
-    props         : HoverTransitionTestProps
+    props         : HoverEffectTestProps
     
     
     
@@ -31,7 +31,7 @@ interface HoverTransitionTestCase {
 
 
 
-const testCases: HoverTransitionTestCase[] = [
+const testCases: HoverEffectTestCase[] = [
     //#region Unhovered and factor=0 → should match original base colors
     ...(['unset', 0] as const).flatMap((factor) =>
         variantKeys.flatMap((variant) =>
@@ -44,7 +44,7 @@ const testCases: HoverTransitionTestCase[] = [
                     mode,
                 },
                 expectedColor       : variantBaseColor[variant],
-            } satisfies HoverTransitionTestCase))
+            } satisfies HoverEffectTestCase))
         )
     ),
     //#endregion Unhovered and factor=0 → should match original base colors
@@ -68,7 +68,7 @@ const testCases: HoverTransitionTestCase[] = [
                 opacity         : 0.5,
                 mode,
             }),
-        } satisfies HoverTransitionTestCase))
+        } satisfies HoverEffectTestCase))
     ),
     //#endregion Hovered and factor=1 → should match fully filtered variant color for all variants
     
@@ -92,7 +92,7 @@ const testCases: HoverTransitionTestCase[] = [
                     opacity         : 0.5,
                     mode,
                 }),
-            } satisfies HoverTransitionTestCase))
+            } satisfies HoverEffectTestCase))
         )
     ),
     //#endregion Partially hovered and factor=fractional → should match partially filtered variant color for all variants
@@ -117,20 +117,20 @@ const testCases: HoverTransitionTestCase[] = [
                     opacity         : 0.5,
                     mode,
                 }),
-            } satisfies HoverTransitionTestCase))
+            } satisfies HoverEffectTestCase))
         )
     ),
     //#endregion Extrapolated factors → should match extrapolated filtered variant color for all variants
 ];
 
 
-test.describe('usesHoverTransition', () => {
+test.describe('usesHoverEffect', () => {
     for (const { title, props, expectedColor } of testCases) {
         test(title, async ({ mount }) => {
-            const component = await mount(<HoverTransitionTest {...props} />);
-            const box = component.getByTestId('hover-transition-test')
+            const component = await mount(<HoverEffectTest {...props} />);
+            const box = component.getByTestId('hover-effect-test')
             
-            await expect(box).toContainText('Hover Transition Test');
+            await expect(box).toContainText('Hover Effect Test');
             
             // Capture screenshot and analyze pixel color:
             const buffer = await box.screenshot({

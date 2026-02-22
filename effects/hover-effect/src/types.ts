@@ -20,11 +20,11 @@ import {
 
 
 /**
- * A list of CSS variables used for hover-transition styling.
+ * A list of CSS variables used for hover-effect styling.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
-export interface HoverTransitionVars {
+export interface HoverEffectVars {
     /**
      * References the filter applied when the component is transitioning toward hovered/unhovered or fully hovered.
      * 
@@ -38,7 +38,7 @@ export interface HoverTransitionVars {
      * References the text decoration applied when the component is transitioning toward or fully hovered.
      * 
      * - Becomes `unset` when the component is transitioning toward or fully unhovered.
-     * - Typically used with callback: `switchOf(hoverTransitionVars.hoverTextDecoration, componentConfig.normalTextDecoration)`.
+     * - Typically used with callback: `switchOf(hoverEffectVars.hoverTextDecoration, componentConfig.normalTextDecoration)`.
      */
     hoverTextDecoration : unknown
 }
@@ -91,7 +91,7 @@ export type CssAngleParam =
  */
 export type CssColorParam =
     | Exclude<CssKnownBaseProps['color'], undefined | null> // String color.
-    | CssCustomRef;                                         // CSS variable reference (with optional fallback).
+    | CssCustomRef                                          // CSS variable reference (with optional fallback).
 
 
 
@@ -157,7 +157,7 @@ export interface HoverDropShadow {
      * Notes:
      * - `'0px'` → no blur.
      * - Percentage units are not allowed.
-     * - Negative values are supported but have a "special meaning":
+     * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction of the blur itself.
      *   - They also reverse the interpolation direction of the shadow's
      *     `offsetX`, `offsetY`, and `color`.
@@ -185,7 +185,7 @@ export interface HoverDropShadow {
      * - To reverse the interpolation direction of this color during hover,
      *   set the corresponding `blur` property to a negative value.
      * 
-     * Defaults to `null` (use `color` property defined in the element).
+     * Defaults to `null` (use the element's own `color` property).
      */
     color   ?: CssColorParam | null
 }
@@ -193,9 +193,9 @@ export interface HoverDropShadow {
 
 
 /**
- * Configuration options for customizing hover transitions.
+ * Configuration options for customizing hover effects.
  */
-export interface CssHoverTransitionOptions {
+export interface CssHoverEffectOptions {
     /**
      * Controls how much the component's opacity is adjusted when fully hovered.
      * 
@@ -216,7 +216,7 @@ export interface CssHoverTransitionOptions {
      * - `1` → preserves the original opacity (no fade).
      * - Percentage units are allowed.
      * - Values outside 0…1 range are clamped by the browser.
-     * - Negative values are supported but have a "special meaning":
+     * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
      *   - Instead of fading *in* the opacity adjustment during hover, the adjustment fades *out*.
      *   - At full hover, the original opacity is restored (the effect is fully un-applied).
@@ -232,7 +232,7 @@ export interface CssHoverTransitionOptions {
      * - Automatically adapts to light/dark mode:
      *   - In **light mode** (`mode = +1`), values `< 1` darken  and values `> 1` lighten.
      *   - In **dark mode**  (`mode = -1`), values `< 1` lighten and values `> 1` darken.
-     *   - This ensures the same configuration produces a natural highlight in both modes.
+     *   - Ensures the same configuration produces a natural highlight in both modes.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -245,7 +245,7 @@ export interface CssHoverTransitionOptions {
      * - Values `> 1` → lighten in light mode, darken  in dark mode.
      * - `1` → no brightness adjustment.
      * - Percentage units are allowed.
-     * - Negative values are supported but have a "special meaning":
+     * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
      *   - Instead of fading *in* the brightness adjustment during hover, the adjustment fades *out*.
      *   - At full hover, the original brightness is restored (the effect is fully un-applied).
@@ -270,7 +270,7 @@ export interface CssHoverTransitionOptions {
      * - Values `> 1` → increase contrast (sharper look).
      * - `1` → no contrast adjustment.
      * - Percentage units are allowed.
-     * - Negative values are supported but have a "special meaning":
+     * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
      *   - Instead of fading *in* the contrast adjustment during hover, the adjustment fades *out*.
      *   - At full hover, the original contrast is restored (the effect is fully un-applied).
@@ -292,11 +292,11 @@ export interface CssHoverTransitionOptions {
      * 
      * Notes:
      * - Values `< 1` → decrease saturation (muted colors).
-     * - Values `> 1` → increase saturation (more vivid colors, not typical for hovered).
+     * - Values `> 1` → increase saturation (more vivid colors).
      * - `0` → grayscale.
      * - `1` → no saturation adjustment.
      * - Percentage units are allowed.
-     * - Negative values are supported but have a "special meaning":
+     * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
      *   - Instead of fading *in* the saturation adjustment during hover, the adjustment fades *out*.
      *   - At full hover, the original saturation is restored (the effect is fully un-applied).
@@ -321,7 +321,7 @@ export interface CssHoverTransitionOptions {
      * - To rotate hue counter-clockwise, **avoid** using negative values.  
      *   Instead, use the equivalent positive angle: `360 - desiredAngle`.  
      *   Example: `-30deg` can be expressed as `330deg`.
-     * - Negative values are supported but have a "special meaning":
+     * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
      *   - Instead of fading *in* the hue adjustment during hover, the adjustment fades *out*.
      *   - At full hover, the original hue is restored (the effect is fully un-applied).
@@ -346,7 +346,7 @@ export interface CssHoverTransitionOptions {
      * Notes:
      * - `'0px'` → no blur.
      * - Percentage units are not allowed.
-     * - Negative values are supported but have a "special meaning":
+     * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
      *   - Instead of fading *in* the blur effect during hover, the effect fades *out*.
      *   - At full hover, the original sharpness is restored (the effect is fully un-applied).
@@ -386,16 +386,16 @@ export interface CssHoverTransitionOptions {
 
 
 /**
- * Provides a CSS API for applying hover-state transitions that indicate component interactivity,
- * making components **visually responsive and distinguishable from static content** when hovered.
+ * Provides a CSS API for applying hover-state effects that signal interactivity,
+ * making components **visually responsive and clearly distinguishable from static content**.
  * 
  * Hover effects convey clickability, editability, or other available actions
  * by providing subtle visual feedback during interaction.
  */
-export interface CssHoverTransition {
+export interface CssHoverEffect {
     /**
-     * Attaches CSS rules for hover-state transitions that indicate component interactivity,
-     * making components **visually responsive and distinguishable from static content** when hovered.
+     * Attaches CSS rules for hover-state effects that signal interactivity,
+     * making components **visually responsive and clearly distinguishable from static content**.
      * 
      * Hover effects convey clickability, editability, or other available actions
      * by providing subtle visual feedback during interaction.
@@ -406,18 +406,18 @@ export interface CssHoverTransition {
      * - factor = 0 → neutral (no adjustment).
      * - factor = 1 → fully hovered (target opacity/brightness/contrast/saturation/etc. applied).
      * - Between 0 and 1 → smooth interpolation between neutral and hovered, applying all configured effects except `hoverTextDecoration`.
-     * - Text Decoration → discrete switch based on hover state (no gradual interpolation).
+     * - Text Decoration → discrete switch based on hover state (no gradual transition).
      * 
      * Smoothly transitions between unhover and hover states by animating filter effects.
      * Affects the entire component surface.
      */
-    hoverTransitionRule : Lazy<CssRule>
+    hoverEffectRule : Lazy<CssRule>
     
     /**
-     * Exposes hover-transition CSS variables for transitional effects.
+     * Exposes hover-effect CSS variables for transitional effects.
      * 
      * Includes:
-     * - `hoverFilter`         : Opacity, brightness, contrast, saturation, hue-rotate, drop-shadow, blur, and blur radius interpolation during hovered state.
+     * - `hoverFilter`         : Opacity, brightness, contrast, saturation, hue-rotate, drop-shadow, blur, and blur radius interpolation during hover state.
      * - `hoverTextDecoration` : Discrete text decoration switching when hovered.
      * 
      * ⚠️ **Caution**: These variables are invalid when the component is fully unhovered.
@@ -426,5 +426,5 @@ export interface CssHoverTransition {
      * 
      * These variables are strongly typed and automatically resolve to consistent CSS variable names.
      */
-    hoverTransitionVars : CssVars<HoverTransitionVars>
+    hoverEffectVars : CssVars<HoverEffectVars>
 }

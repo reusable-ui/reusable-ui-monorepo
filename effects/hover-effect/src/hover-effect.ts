@@ -17,9 +17,9 @@ import {
 
 // Types:
 import {
-    type HoverTransitionVars,
-    type CssHoverTransitionOptions,
-    type CssHoverTransition,
+    type HoverEffectVars,
+    type CssHoverEffectOptions,
+    type CssHoverEffect,
 }                           from './types.js'
 
 // Utilities:
@@ -68,21 +68,21 @@ import {
 
 
 /**
- * A strongly typed global mapping of hover-transition CSS variables.
+ * A strongly typed global mapping of hover-effect CSS variables.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-const [hoverTransitionVars] = cssVars<HoverTransitionVars>({ prefix: 'hot', minify: false });
+const [hoverEffectVars] = cssVars<HoverEffectVars>({ prefix: 'hoe', minify: false });
 
 // Register the hover filter globally for composing a unified filter stack across state packages:
-filterRegistry.registerFilter(hoverTransitionVars.hoverFilter);
+filterRegistry.registerFilter(hoverEffectVars.hoverFilter);
 
 
 
 /**
- * Applies hover-state transitions that indicate component interactivity,
- * making components **visually responsive and distinguishable from static content** when hovered.
+ * Applies hover-state effects that signal interactivity,
+ * making components **visually responsive and clearly distinguishable from static content**.
  * 
  * Hover effects convey clickability, editability, or other available actions
  * by providing subtle visual feedback during interaction.
@@ -93,10 +93,10 @@ filterRegistry.registerFilter(hoverTransitionVars.hoverFilter);
  * Preserves the current theme colors and variants while enhancing emphasis
  * through responsive visual cues.
  * 
- * @param options - An optional configuration for customizing hover-state transitions.
- * @returns A CSS API containing transition rules and hover-transition CSS variables for signaling component interactivity.
+ * @param options - An optional configuration for customizing hover-state effects.
+ * @returns A CSS API containing effect rules and CSS variables for signaling component interactivity.
  */
-export const usesHoverTransition = (options?: CssHoverTransitionOptions): CssHoverTransition => {
+export const usesHoverEffect = (options?: CssHoverEffectOptions): CssHoverEffect => {
     // Extract options and assign defaults:
     const {
         hoverOpacity        = null,
@@ -120,27 +120,27 @@ export const usesHoverTransition = (options?: CssHoverTransitionOptions): CssHov
     
     
     return {
-        hoverTransitionRule : () => style({
+        hoverEffectRule : () => style({
             /**
              * Hover filter:
-             * - All filter options are not specified → always invalid (`unset`).
+             * - No filter options specified → always invalid (`unset`).
              * - Fully unhovered → ignored (browser skips invalid formula).
-             * - Otherwise       → interpolates configured filter functions toward their target values.
+             * - Otherwise → interpolates configured filter functions toward their target values.
              * 
              * Behavior:
              * - factor = 0      → all filters = neutral (no adjustment).
-             * - factor = 1      → filters = configured values (target).
+             * - factor = 1      → filters = configured target values.
              * - Between 0 and 1 → smooth interpolation between neutral and target.
              * - Saturation, brightness, contrast may overshoot/undershoot if factor goes beyond [0,1].
-             * - The `ensureBetweenZeroAndOne(...)` ensures `opacity()` stays within 0…1 range.
-             * - The `ensureNonNegative(...)` ensures `brightness()`, `contrast()`, and `saturate()` stay non-negative.
-             * - The `ensureNonNegativeLength(...)` ensures `blur()` and blur radius stay non-negative lengths.
+             * - `ensureBetweenZeroAndOne(...)` clamps `opacity()` within 0…1.
+             * - `ensureNonNegative(...)` ensures `brightness()`, `contrast()`, and `saturate()` remain non-negative.
+             * - `ensureNonNegativeLength(...)` ensures `blur()` and blur radius remain non-negative lengths.
              * 
              * Note:
              * - A "double array" (`[[...]]`) is intended.
-             *   When the CSS is rendered, the values inside it will be concatenated, separated by spaces.
+             *   When the CSS is rendered, values inside are concatenated with spaces.
              */
-            [hoverTransitionVars.hoverFilter]: ((): 'unset' | [string[]] => {
+            [hoverEffectVars.hoverFilter]: ((): 'unset' | [string[]] => {
                 // Opacity, brightness, contrast, saturate, hue rotate, and blur schemas:
                 const simpleFilterSchemas : (FilterSchema | false)[] = [
                     // Opacity:
@@ -166,7 +166,7 @@ export const usesHoverTransition = (options?: CssHoverTransitionOptions): CssHov
                          * Dark mode brightness mapping:
                          * - Light mode dimming (0.7–0.9) → Dark mode brightening (1.25–1.1).
                          * - Light mode neutral (1.0) → Dark mode neutral (~1.0).
-                         * - Light mode brightening (1.25) → Dark mode dimming (~0.9).
+                         * - Light mode brightening (≥1.25) → Dark mode dimming (~0.9).
                          * 
                          * Formula:
                          *   darkModeBrightness = 1.25 - (lightModeBrightness - 0.7) * 0.75
@@ -238,7 +238,7 @@ export const usesHoverTransition = (options?: CssHoverTransitionOptions): CssHov
                     
                     // Return drop shadow parameter schemas:
                     return [
-                        // Offset X:
+                        // Offset X (required):
                         {
                             inputType       : 'length',
                             inputLimit      : 'unlimited',
@@ -247,7 +247,7 @@ export const usesHoverTransition = (options?: CssHoverTransitionOptions): CssHov
                             directionValue  : blurOrZero,
                         },
                         
-                        // Offset Y:
+                        // Offset Y (required):
                         {
                             inputType       : 'length',
                             inputLimit      : 'unlimited',
@@ -329,14 +329,18 @@ export const usesHoverTransition = (options?: CssHoverTransitionOptions): CssHov
             
             /**
              * Hover text decoration:
-             * - Text decoration option is not specified → always invalid (`unset`).
+             * - Not specified   → always invalid (`unset`).
              * - Fully unhovered → ignored (browser skips invalid formula).
-             * - Otherwise       → Discrete switch to the configured text decoration
+             * - Otherwise       → discrete switch to the configured text decoration
              *                     when transitioning toward or fully hovered.
              */
-            [hoverTransitionVars.hoverTextDecoration]: (hoverTextDecoration !== null) ? `${isHovered} ${hoverTextDecoration satisfies (Exclude<CssKnownBaseProps['textDecoration'], undefined | null> | CssCustomRef)}` : 'unset',
+            [hoverEffectVars.hoverTextDecoration]: (
+                (hoverTextDecoration !== null)
+                ? `${isHovered} ${hoverTextDecoration satisfies (Exclude<CssKnownBaseProps['textDecoration'], undefined | null> | CssCustomRef)}`
+                : 'unset'
+            ),
         }),
         
-        hoverTransitionVars,
-    } satisfies CssHoverTransition;
+        hoverEffectVars,
+    } satisfies CssHoverEffect;
 };
