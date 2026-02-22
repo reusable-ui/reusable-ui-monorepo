@@ -11,9 +11,9 @@ import {
 
 // Types:
 import {
-    type FocusTransitionVars,
-    type CssFocusTransitionOptions,
-    type CssFocusTransition,
+    type FocusEffectVars,
+    type CssFocusEffectOptions,
+    type CssFocusEffect,
 }                           from './types.js'
 
 // Reusable-ui configs:
@@ -37,31 +37,31 @@ import {
 
 
 /**
- * A strongly typed global mapping of focus-transition CSS variables.
+ * A strongly typed global mapping of focus-effect CSS variables.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-const [focusTransitionVars] = cssVars<FocusTransitionVars>({ prefix: 'fot', minify: false });
+const [focusEffectVars] = cssVars<FocusEffectVars>({ prefix: 'foe', minify: false });
 
 // Register the focus box shadow globally for composing a unified box shadow stack across state packages:
-boxShadowRegistry.registerBoxShadow(focusTransitionVars.focusBoxShadow);
+boxShadowRegistry.registerBoxShadow(focusEffectVars.focusBoxShadow);
 
 
 
 /**
- * Applies focus-state transitions that highlight the component with a ring indicator,
- * making components **visually distinct** and signaling readiness for interaction when focused.
+ * Applies focus-state effects that highlight components with a ring indicator,
+ * making them **visually distinct** and signaling readiness for interaction when focused.
  * 
  * Exposes strongly typed CSS variables for transitional effects.
  * 
  * Smoothly transitions between focus and blur states by animating the ring width.
  * Uses the current theme color, ensuring harmony with the component's appearance.
  * 
- * @param options - An optional configuration for customizing focus-state transitions.
- * @returns A CSS API containing transition rules and focus-transition CSS variables for the focus ring indicator.
+ * @param options - An optional configuration for customizing focus effects.
+ * @returns A CSS API containing effect rules and CSS variables for the focus ring indicator.
  */
-export const usesFocusTransition = (options?: CssFocusTransitionOptions): CssFocusTransition => {
+export const usesFocusEffect = (options?: CssFocusEffectOptions): CssFocusEffect => {
     // Extract options and assign defaults:
     const {
         focusRingWidth = spacerVars.xs,
@@ -78,22 +78,21 @@ export const usesFocusTransition = (options?: CssFocusTransitionOptions): CssFoc
     
     
     return {
-        focusTransitionRule : () => style({
+        focusEffectRule : () => style({
             /**
              * Focus ring:
              * - Fully blurred → ignored (browser skips invalid formula).
              * - Otherwise     → interpolates the ring width toward the configured value.
-             * 
              * 
              * Behavior:
              * - factor = 0      → ring width = 0 (no visible ring).
              * - factor = 1      → ring width = configured value (full ring).
              * - Between 0 and 1 → smooth interpolation between 0 and target width.
              * - Ring width may overshoot if factor exceeds `1`, but is ignored if below `0`.
-             * - The `max(0, ...)` ensures the ring width stays non-negative.
-             * - Uses the current theme color (consistent across variants).
+             * - `max(0, ...)` ensures the ring width stays non-negative.
+             * - Always uses the current theme color for consistency across variants.
              */
-            [focusTransitionVars.focusBoxShadow]:
+            [focusEffectVars.focusBoxShadow]:
 `
 0 0
 0
@@ -102,6 +101,6 @@ ${ringColor}
 `,
         }),
         
-        focusTransitionVars,
-    } satisfies CssFocusTransition;
+        focusEffectVars,
+    } satisfies CssFocusEffect;
 };

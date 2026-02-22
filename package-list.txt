@@ -238,9 +238,9 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/active-transition      non_peer
 @reusable-ui/active-as-click        DEPRECATED
 @reusable-ui/disabled-transition    non_peer
-@reusable-ui/focus-transition       non_peer
 
 // Reusable-ui effects:
+@reusable-ui/focus-effect           non_peer
 @reusable-ui/hover-effect           non_peer
 
 // Reusable-ui capabilities:

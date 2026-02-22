@@ -18,13 +18,13 @@ import {
 
 
 /**
- * A list of CSS variables used for focus-transition styling.
+ * A list of CSS variables used for focus-effect styling.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
-export interface FocusTransitionVars {
+export interface FocusEffectVars {
     /**
-     * References a manipulated box shadow as the focus ring indicator
+     * References a manipulated box shadow that serves as the focus ring indicator
      * when the component is transitioning toward focused/blurred or fully focused.
      * 
      * - Becomes `unset` when the component is fully blurred.
@@ -37,9 +37,9 @@ export interface FocusTransitionVars {
 
 
 /**
- * Configuration options for customizing focus transitions.
+ * Configuration options for customizing focus effects.
  */
-export interface CssFocusTransitionOptions {
+export interface CssFocusEffectOptions {
     /**
      * Controls the width of the focus ring indicator when fully focused.
      * 
@@ -48,7 +48,7 @@ export interface CssFocusTransitionOptions {
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
-     * - A literal string value with length unit, e.g. `'0.25rem'`
+     * - A literal string value with a length unit, e.g. `'0.25rem'`
      * - A strongly typed reference, e.g. `myConfig.focusRingWidth`
      * 
      * Notes:
@@ -64,13 +64,13 @@ export interface CssFocusTransitionOptions {
 
 
 /**
- * Provides a CSS API for applying focus-state transitions that highlight the component with a ring indicator,
- * making components **visually distinct** and signaling readiness for interaction when focused.
+ * Provides a CSS API for applying focus-state effects that highlight components with a ring indicator,
+ * making them **visually distinct** and signaling readiness for interaction when focused.
  */
-export interface CssFocusTransition {
+export interface CssFocusEffect {
     /**
-     * Attaches CSS rules for focus-state transitions that highlight the component with a ring indicator,
-     * making components **visually distinct** and signaling readiness for interaction when focused.
+     * Attaches CSS rules for focus-state effects that highlight components with a ring indicator,
+     * making them **visually distinct** and signaling readiness for interaction when focused.
      * 
      * Exposes strongly typed CSS variables for transitional effects.
      * 
@@ -80,15 +80,15 @@ export interface CssFocusTransition {
      * - Between 0 and 1 → smooth interpolation between 0 and target width.
      * 
      * Smoothly transitions between focus and blur states by animating the ring width.
-     * Highlights the surrounding component area without affecting its size or causing any layout shifts.
+     * Highlights the surrounding component area without affecting its size or causing layout shifts.
      */
-    focusTransitionRule : Lazy<CssRule>
+    focusEffectRule : Lazy<CssRule>
     
     /**
-     * Exposes focus-transition CSS variables for transitional effects.
+     * Exposes focus-effect CSS variables for transitional effects.
      * 
      * Includes:
-     * - `focusBoxShadow` : A manipulated box shadow as the focus ring indicator during focus state.
+     * - `focusBoxShadow` : A manipulated box shadow that serves as the focus ring indicator during focus transitions.
      * 
      * ⚠️ **Caution**: These variables are invalid when the component is fully blurred.
      * If used incorrectly, they can invalidate CSS declarations.
@@ -96,5 +96,5 @@ export interface CssFocusTransition {
      * 
      * These variables are strongly typed and automatically resolve to consistent CSS variable names.
      */
-    focusTransitionVars : CssVars<FocusTransitionVars>
+    focusEffectVars : CssVars<FocusEffectVars>
 }

@@ -5,12 +5,12 @@ import { usesBoxShadowFeature } from '@reusable-ui/box-shadow-feature'
 import { usesBackgroundFeature } from '@reusable-ui/background-feature'
 import { usesRingFeature } from '@reusable-ui/ring-feature'
 import { ringColor } from './base-colors.js'
-import { usesFocusTransition } from '../dist/index.js'
+import { usesFocusEffect } from '../dist/index.js'
 
-// Test style for FocusTransition
+// Test style for FocusEffect
 // Demonstrates how `focusFactorCond` drives transition effects
 // with simplified static colors for easier testing.
-export default function focusTransitionTestStyle() {
+export default function focusEffectTestStyle() {
     // Variants:
     const {
         outlineVariantRule,
@@ -34,10 +34,10 @@ export default function focusTransitionTestStyle() {
         ringColor : ringColor, // Default unthemed ring color.
     });
     
-    // Transitions:
+    // Effects:
     const {
-        focusTransitionRule,
-    } = usesFocusTransition({
+        focusEffectRule,
+    } = usesFocusEffect({
         focusRingWidth : '4px',
     });
     
@@ -51,8 +51,8 @@ export default function focusTransitionTestStyle() {
         ...backgroundFeatureRule(),
         ...ringFeatureRule(),
         
-        // Transitions:
-        ...focusTransitionRule(),
+        // Effects:
+        ...focusEffectRule(),
         
         // Apply composed variables:
         boxShadow,

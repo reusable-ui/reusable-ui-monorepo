@@ -6,11 +6,11 @@ import { colorParamVars } from '@reusable-ui/colors'
 import { useOutlineVariant, type OutlineVariantProps } from '@reusable-ui/outline-variant'
 import { useMildVariant, type MildVariantProps} from '@reusable-ui/mild-variant'
 import { regularBaseColor, mildBaseColor } from './base-colors.js'
-import { useFocusTransitionTestStyles } from './FocusTransitionTest.loader.js'
+import { useFocusEffectTestStyles } from './FocusEffectTest.loader.js'
 
 
 
-export interface FocusTransitionTestProps
+export interface FocusEffectTestProps
     extends
         // Variants:
         Required<OutlineVariantProps>,
@@ -36,7 +36,7 @@ export interface FocusTransitionTestProps
 }
 
 /**
- * Test component for FocusTransition.
+ * Test component for FocusEffect.
  * 
  * - Mocks `focusFactorCond` via inline style for controlled testing.
  * - Uses static colors for simplicity:
@@ -44,13 +44,13 @@ export interface FocusTransitionTestProps
  *   - Outlined background → transparent `oklch(0 0 0 / 0)`
  *   - Mild background     → light blue  `oklch(0.7 0.2 265 / 1)`
  */
-export const FocusTransitionTest = (props: FocusTransitionTestProps) => {
+export const FocusEffectTest = (props: FocusEffectTestProps) => {
     const {
         focusFactorCond = 'unset',
         mode,
     } = props;
     
-    const styles = useFocusTransitionTestStyles();
+    const styles = useFocusEffectTestStyles();
     
     useLayoutEffect(() => {
         colorParamVars.mode = ((mode === 'light') ? 1 : -1) as any;
@@ -89,11 +89,11 @@ export const FocusTransitionTest = (props: FocusTransitionTestProps) => {
         <div>
             <HydrateStyles />
             <div
-                data-testid="focus-transition-test"
+                data-testid="focus-effect-test"
                 className={`${styles.main} ${outlineClassname} ${mildClassname}`}
                 style={inlineStyle}
             >
-                Focus Transition Test
+                Focus Effect Test
             </div>
         </div>
     );

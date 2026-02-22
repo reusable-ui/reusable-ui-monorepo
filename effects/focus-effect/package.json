@@ -1,14 +1,14 @@
 {
-  "name": "@reusable-ui/focus-transition",
+  "name": "@reusable-ui/focus-effect",
   "version": "7.0.0",
-  "description": "Provides default CSS transitions for focus state styling. Highlights components with a ring indicator to make them visually distinct when focused.",
+  "description": "Provides default styling effects when a component's focus state changes. Highlights components with a ring indicator by making components visually distinct and signaling readiness for interaction.",
   "keywords": [
     "transition",
     "focus",
     "focus-ring",
     "box-shadow",
-    "appearance",
     "animation",
+    "appearance",
     "css",
     "design-system",
     "ui",
@@ -20,7 +20,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "transitions/focus-transition"
+    "directory": "effects/focus-effect"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"

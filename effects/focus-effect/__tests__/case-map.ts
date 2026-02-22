@@ -3,7 +3,7 @@ import { regularBaseColor, outlinedBaseColor, mildBaseColor } from './base-color
 
 
 /**
- * Supported variant keys for FocusTransition testing.
+ * Supported variant keys for FocusEffect testing.
  */
 export const variantKeys = ['regular', 'outlined', 'mild'] as const;
 export type VariantKey = typeof variantKeys[number];

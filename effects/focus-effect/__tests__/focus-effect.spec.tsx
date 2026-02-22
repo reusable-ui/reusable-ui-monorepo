@@ -3,11 +3,11 @@ import { test, expect } from '@playwright/experimental-ct-react';
 import { variantKeys, variantNameUpper } from './case-map.js'
 import { ringColor } from './base-colors.js'
 import { expectColor } from './color-utilities.js'
-import { type FocusTransitionTestProps, FocusTransitionTest } from './FocusTransitionTest.js';
+import { type FocusEffectTestProps, FocusEffectTest } from './FocusEffectTest.js';
 
 
 
-interface FocusTransitionTestCase {
+interface FocusEffectTestCase {
     // Test Inputs:
     
     /**
@@ -16,9 +16,9 @@ interface FocusTransitionTestCase {
     title         : string
     
     /**
-     * Props to pass to the `<FocusTransitionTest>` component.
+     * Props to pass to the `<FocusEffectTest>` component.
      */
-    props         : FocusTransitionTestProps
+    props         : FocusEffectTestProps
     
     
     
@@ -41,7 +41,7 @@ interface FocusTransitionTestCase {
 
 
 
-const testCases: FocusTransitionTestCase[] = [
+const testCases: FocusEffectTestCase[] = [
     //#region Blurred → no box shadow for all variants
     ...variantKeys.flatMap((variant) =>
         (['light', 'dark'] as const).map((mode) => ({
@@ -54,7 +54,7 @@ const testCases: FocusTransitionTestCase[] = [
             },
             expectedBoxShadowWidth : null,
             expectedBoxShadowColor : undefined,
-        } satisfies FocusTransitionTestCase))
+        } satisfies FocusEffectTestCase))
     ),
     //#endregion Blurred → no box shadow for all variants
     
@@ -72,7 +72,7 @@ const testCases: FocusTransitionTestCase[] = [
             },
             expectedBoxShadowWidth : 0,
             expectedBoxShadowColor : ringColor,
-        } satisfies FocusTransitionTestCase))
+        } satisfies FocusEffectTestCase))
     ),
     //#endregion Focused and factor=0 → invisible box shadow for all variants
     
@@ -90,7 +90,7 @@ const testCases: FocusTransitionTestCase[] = [
             },
             expectedBoxShadowWidth : 1 * 4, // The configured focus ring width is 4px.
             expectedBoxShadowColor : ringColor,
-        } satisfies FocusTransitionTestCase))
+        } satisfies FocusEffectTestCase))
     ),
     //#endregion Focused and factor=1 → fully expanded box shadow width for all variants
     
@@ -109,7 +109,7 @@ const testCases: FocusTransitionTestCase[] = [
                 },
                 expectedBoxShadowWidth : factor * 4, // The configured focus ring width is 4px.
                 expectedBoxShadowColor : ringColor,
-            } satisfies FocusTransitionTestCase))
+            } satisfies FocusEffectTestCase))
         )
     ),
     //#endregion Partially focused and factor=fractional → partially expanded box shadow width for all variants
@@ -129,20 +129,20 @@ const testCases: FocusTransitionTestCase[] = [
                 },
                 expectedBoxShadowWidth : Math.max(0, factor * 4), // The configured focus ring width is 4px.
                 expectedBoxShadowColor : ringColor,
-            } satisfies FocusTransitionTestCase))
+            } satisfies FocusEffectTestCase))
         )
     ),
     //#endregion Extrapolated factors → overshoot or clamp expanded box shadow width for all variants
 ];
 
 
-test.describe('usesFocusTransition', () => {
+test.describe('usesFocusEffect', () => {
     for (const { title, props, expectedBoxShadowWidth, expectedBoxShadowColor } of testCases) {
         test(title, async ({ mount }) => {
-            const component = await mount(<FocusTransitionTest {...props} />);
-            const box = component.getByTestId('focus-transition-test')
+            const component = await mount(<FocusEffectTest {...props} />);
+            const box = component.getByTestId('focus-effect-test')
             
-            await expect(box).toContainText('Focus Transition Test');
+            await expect(box).toContainText('Focus Effect Test');
             
             // Verify that the rendered box-shadow matches the expected focus ring width:
             if (expectedBoxShadowWidth === null) {
