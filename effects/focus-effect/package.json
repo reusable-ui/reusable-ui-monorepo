@@ -1,14 +1,17 @@
 {
   "name": "@reusable-ui/focus-effect",
   "version": "7.0.0",
-  "description": "Provides default styling effects when a component's focus state changes. Highlights components with a ring indicator by making components visually distinct and signaling readiness for interaction.",
+  "description": "Provides default visual effects when a component's focus state changes. Highlights components with a ring indicator by making components visually distinct and signaling readiness for interaction.",
   "keywords": [
     "transition",
     "focus",
+    "focus-effect",
+    "focus-state",
     "focus-ring",
     "box-shadow",
     "animation",
     "appearance",
+    "accessibility",
     "css",
     "design-system",
     "ui",

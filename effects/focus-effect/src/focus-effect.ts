@@ -44,7 +44,7 @@ import {
  */
 const [focusEffectVars] = cssVars<FocusEffectVars>({ prefix: 'foe', minify: false });
 
-// Register the focus box shadow globally for composing a unified box shadow stack across state packages:
+// Register the focus box shadow globally for composing a unified box shadow stack across effect packages:
 boxShadowRegistry.registerBoxShadow(focusEffectVars.focusBoxShadow);
 
 

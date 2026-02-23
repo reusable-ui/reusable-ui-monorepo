@@ -1,6 +1,6 @@
 # @reusable-ui/focus-effect 📦  
 
-**focus-effect** provides **default styling effects** for how components visually respond when the focus state changes.  
+**focus-effect** provides **default visual effects** for how components visually respond when the focus state changes.  
 It offers styling authors a **common foundation** for focus effects that highlight components with a ring indicator,
 making them **visually distinct** and signaling readiness for interaction when focused.
 
@@ -16,8 +16,8 @@ Authors who need more control can override or extend the defaults, but for most 
 `focus-effect` cannot operate in isolation.  
 It relies on the [`@reusable-ui/focus-state`](https://www.npmjs.com/package/@reusable-ui/focus-state) package to drive the `focusFactorCond` CSS variable, which determines how far the transition has progressed (from blurred → fully focused).  
 
-- `focus-state` is responsible for tracking whether a component is focused.  
-- `focus-effect` consumes that state and applies the visual ring accordingly.  
+- `focus-state` tracks whether a component is focused.  
+- `focus-effect` consumes that state and applies the visual ring.  
 - Together, they provide a unified system: `focus-state` supplies the factor, `focus-effect` renders the visual effect.  
 
 This separation keeps responsibilities clear:
