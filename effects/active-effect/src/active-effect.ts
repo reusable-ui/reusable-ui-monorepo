@@ -14,9 +14,9 @@ import {
 
 // Types:
 import {
-    type ActiveTransitionVars,
-    type CssActiveTransitionOptions,
-    type CssActiveTransition,
+    type ActiveEffectVars,
+    type CssActiveEffectOptions,
+    type CssActiveEffect,
 }                           from './types.js'
 
 // Reusable-ui configs:
@@ -56,20 +56,20 @@ import {
 
 
 /**
- * A strongly typed global mapping of active-transition CSS variables.
+ * A strongly typed global mapping of active-effect CSS variables.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-const [activeTransitionVars] = cssVars<ActiveTransitionVars>({ prefix: 'act', minify: false });
+const [activeEffectVars] = cssVars<ActiveEffectVars>({ prefix: 'ace', minify: false });
 
-// Register the active filter globally for composing a unified filter stack across state packages:
-filterRegistry.registerFilter(activeTransitionVars.activeFilter);
+// Register the active filter globally for composing a unified filter stack across effect packages:
+filterRegistry.registerFilter(activeEffectVars.activeFilter);
 
 
 
 /**
- * Applies active-state transitions that emphasize the current theme colors,
+ * Applies active-state effects that emphasize the current theme colors,
  * making components **visually stand out** when active.
  * 
  * Exposes strongly typed CSS variables for transitional effects.
@@ -78,13 +78,13 @@ filterRegistry.registerFilter(activeTransitionVars.activeFilter);
  * - Regular variants: darken in light mode or lighten in dark mode.
  * - Outlined/mild variants: interpolate from variant colors to regular colors.
  * 
- * Smoothly transitions between active and inactive states by animating colors and/or filter effect.
+ * Smoothly transitions between active and inactive states by animating colors and/or filter effects.
  * Affects background, foreground, decoration, and border colors.
  * 
- * @param options - An optional configuration for customizing active-state transitions.
- * @returns A CSS API containing transition rules and active-transition CSS variables for highlighting theme colors.
+ * @param options - An optional configuration for customizing active effects.
+ * @returns A CSS API containing effect rules and CSS variables for highlighting theme colors.
  */
-export const usesActiveTransition = (options?: CssActiveTransitionOptions): CssActiveTransition => {
+export const usesActiveEffect = (options?: CssActiveEffectOptions): CssActiveEffect => {
     // Extract options and assign defaults:
     const {
         activeBrightness = 1,
@@ -111,12 +111,12 @@ export const usesActiveTransition = (options?: CssActiveTransitionOptions): CssA
     const { activeStateVars : { activeFactorCond } } = usesActiveState();
     
     // Variables:
-    const { bumpFactorCond, effectiveFactorCond, activeFilter } = activeTransitionVars;
+    const { bumpFactorCond, effectiveFactorCond, activeFilter } = activeEffectVars;
     
     
     
     return {
-        activeTransitionRule : () => style({
+        activeEffectRule : () => style({
             ...rules(
                 [
                     // Domain-specific color overrides:
@@ -131,7 +131,6 @@ export const usesActiveTransition = (options?: CssActiveTransitionOptions): CssA
                          * - Fully inactive → ignored (browser skips invalid formula).
                          * - Regular        → ignored.
                          * - Outlined/mild  → interpolates between variant and regular colors.
-                         * 
                          * 
                          * Behavior:
                          * - factor = 0      → color = original variant color.
@@ -157,8 +156,8 @@ color-mix(in oklch,
             
             /**
              * Bump factor:
-             * - Fully inactive : ignored (browser skips invalid formula).
-             * - Regular        : ignored.
+             * - Fully inactive → ignored (browser skips invalid formula).
+             * - Regular        → ignored.
              * - Outlined/mild  :
              *   - activeFactor > 1 → grows positively (overshoot).
              *   - activeFactor < 0 → grows negatively (undershoot).
@@ -177,12 +176,9 @@ calc(
             
             /**
              * Effective factor:
-             * - Fully inactive : ignored (browser skips invalid formula).
-             * - Regular        : mirrors activeFactor directly.
-             * - Outlined/mild  :
-             *   - activeFactor > 1 → grows positively (overshoot).
-             *   - activeFactor < 0 → grows negatively (undershoot).
-             *   - Otherwise        → stays 0.
+             * - Fully inactive → ignored (browser skips invalid formula).
+             * - Regular        → mirrors activeFactor directly.
+             * - Outlined/mild  → responds only to overshoot/undershoot.
              */
             [effectiveFactorCond]: switchOf(
                 bumpFactorCond,
@@ -192,17 +188,15 @@ calc(
             /**
              * Active filter:
              * - Fully inactive → ignored (browser skips invalid formula).
-             * - Regular        → interpolates brightness/contrast/saturate adjustment.
+             * - Regular        → interpolates brightness/contrast/saturation adjustment.
              * - Outlined/mild  → neutral at factor ∈ [0,1], but responds to overshoot/undershoot
-             *                    via `bumpFactorCond` (darken/lighten beyond endpoints).
-             * 
+             *                    via `bumpFactorCond`.
              * 
              * Behavior:
              * - factor = 0      → all filters = 1 (neutral, no adjustment).
              * - factor = 1      → filters = configured values (target).
              * - Between 0 and 1 → smooth interpolation between neutral and target.
-             * - The `max(0, ...)` ensures `brightness()`, `contrast()` and `saturation()` stay non-negative.
-             * 
+             * - `max(0, ...)` ensures filters remain non-negative.
              * 
              * Notes:
              * 
@@ -259,6 +253,6 @@ saturate(calc(max(0, 1 - (1 - ${activeSaturate}) * ${effectiveFactorCond})))
 `,
         }),
         
-        activeTransitionVars,
-    } satisfies CssActiveTransition;
+        activeEffectVars,
+    } satisfies CssActiveEffect;
 };

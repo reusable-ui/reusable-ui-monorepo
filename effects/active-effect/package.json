@@ -1,14 +1,15 @@
 {
-  "name": "@reusable-ui/active-transition",
+  "name": "@reusable-ui/active-effect",
   "version": "7.0.0",
-  "description": "Provides default CSS transitions for active state styling. Emphasizes theme colors to make components visually stand out when active.",
+  "description": "Provides default visual effects when a component's active state changes. Emphasizes theme colors by making components visually stand out when active.",
   "keywords": [
     "transition",
+    "active-effect",
     "active-state",
-    "appearance",
-    "animation",
-    "color-mix",
     "filter",
+    "animation",
+    "appearance",
+    "accessibility",
     "css",
     "design-system",
     "ui",
@@ -20,7 +21,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "transitions/active-transition"
+    "directory": "effects/active-effect"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"

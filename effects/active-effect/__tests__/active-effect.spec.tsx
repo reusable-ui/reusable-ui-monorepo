@@ -4,11 +4,11 @@ import { PNG } from 'pngjs'
 import { regularBaseColor } from './base-colors.js'
 import { variantKeys, variantNameLower, variantNameUpper, variantBaseColor } from './case-map.js'
 import { colorMix, applyFiltersSequential, expectColor } from './color-utilities.js'
-import { type ActiveTransitionTestProps, ActiveTransitionTest } from './ActiveTransitionTest.js';
+import { type ActiveEffectTestProps, ActiveEffectTest } from './ActiveEffectTest.js';
 
 
 
-interface ActiveTransitionTestCase {
+interface ActiveEffectTestCase {
     // Test Inputs:
     
     /**
@@ -17,9 +17,9 @@ interface ActiveTransitionTestCase {
     title         : string
     
     /**
-     * Props to pass to the `<ActiveTransitionTest>` component.
+     * Props to pass to the `<ActiveEffectTest>` component.
      */
-    props         : ActiveTransitionTestProps
+    props         : ActiveEffectTestProps
     
     
     
@@ -32,7 +32,7 @@ interface ActiveTransitionTestCase {
 
 
 
-const testCases: ActiveTransitionTestCase[] = [
+const testCases: ActiveEffectTestCase[] = [
     //#region Inactive and factor=0 → should match original base colors for all variants
     ...(['unset', 0] as const).flatMap((factor) =>
         variantKeys.flatMap((variant) =>
@@ -45,7 +45,7 @@ const testCases: ActiveTransitionTestCase[] = [
                     mode,
                 },
                 expectedColor        : variantBaseColor[variant],
-            } satisfies ActiveTransitionTestCase))
+            } satisfies ActiveEffectTestCase))
         )
     ),
     //#endregion Inactive and factor=0 → should match original base colors for all variants
@@ -67,7 +67,7 @@ const testCases: ActiveTransitionTestCase[] = [
             saturate         : 1,
             mode,
         }),
-    } satisfies ActiveTransitionTestCase)),
+    } satisfies ActiveEffectTestCase)),
     //#endregion Active and factor=1 → should match fully filtered regular color for regular variant
     
     
@@ -83,7 +83,7 @@ const testCases: ActiveTransitionTestCase[] = [
                 mode,
             },
             expectedColor        : regularBaseColor,
-        } satisfies ActiveTransitionTestCase))
+        } satisfies ActiveEffectTestCase))
     ),
     //#endregion Active and factor=1 → should match pure regular color for outlined/mild variants
     
@@ -105,7 +105,7 @@ const testCases: ActiveTransitionTestCase[] = [
                 saturate         : 1,
                 mode,
             }),
-        } satisfies ActiveTransitionTestCase))
+        } satisfies ActiveEffectTestCase))
     ),
     //#endregion Partially active and factor=fractional → should match partially filtered regular color for regular variant
     
@@ -123,7 +123,7 @@ const testCases: ActiveTransitionTestCase[] = [
                     mode,
                 },
                 expectedColor        : colorMix(variantBaseColor[variant], regularBaseColor, midFactor),
-            } satisfies ActiveTransitionTestCase))
+            } satisfies ActiveEffectTestCase))
         )
     ),
     //#endregion Partially active and factor=fractional → should match halfway between variant and regular color for outlined/mild variants
@@ -146,7 +146,7 @@ const testCases: ActiveTransitionTestCase[] = [
                 saturate     : 1,
                 mode,
             }),
-        } satisfies ActiveTransitionTestCase))
+        } satisfies ActiveEffectTestCase))
     ),
     //#endregion Extrapolated factors → should match extrapolated filtered regular color for regular variant
     
@@ -177,20 +177,20 @@ const testCases: ActiveTransitionTestCase[] = [
                         mode,
                     }
                 ),
-            } satisfies ActiveTransitionTestCase))
+            } satisfies ActiveEffectTestCase))
         )
     ),
     //#endregion Extrapolated factors → should match extrapolated filtered regular color for outlined/mild variants
 ];
 
 
-test.describe('usesActiveTransition', () => {
+test.describe('usesActiveEffect', () => {
     for (const { title, props, expectedColor } of testCases) {
         test(title, async ({ mount }) => {
-            const component = await mount(<ActiveTransitionTest {...props} />);
-            const box = component.getByTestId('active-transition-test')
+            const component = await mount(<ActiveEffectTest {...props} />);
+            const box = component.getByTestId('active-effect-test')
             
-            await expect(box).toContainText('Active Transition Test');
+            await expect(box).toContainText('Active Effect Test');
             
             // Capture screenshot and analyze pixel color:
             const buffer = await box.screenshot({

@@ -3,12 +3,12 @@ import { usesOutlineVariant } from '@reusable-ui/outline-variant'
 import { usesMildVariant} from '@reusable-ui/mild-variant'
 import { usesFilterFeature } from '@reusable-ui/filter-feature';
 import { usesBackgroundFeature } from '@reusable-ui/background-feature';
-import { usesActiveTransition } from '../dist/index.js'
+import { usesActiveEffect } from '../dist/index.js'
 
-// Test style for ActiveTransition
+// Test style for ActiveEffect
 // Demonstrates how `activeFactorCond` drives transition effects
 // with simplified static colors for easier testing.
-export default function activeTransitionTestStyle() {
+export default function activeEffectTestStyle() {
     // Variants:
     const {
         outlineVariantRule,
@@ -27,10 +27,10 @@ export default function activeTransitionTestStyle() {
         backgroundFeatureVars : { backgColor },
     } = usesBackgroundFeature();
     
-    // Transitions:
+    // Effects:
     const {
-        activeTransitionRule,
-    } = usesActiveTransition({
+        activeEffectRule,
+    } = usesActiveEffect({
         activeBrightness : 0.8,
         activeContrast   : 1,
         activeSaturate   : 1,
@@ -45,8 +45,8 @@ export default function activeTransitionTestStyle() {
         ...filterFeatureRule(),
         ...backgroundFeatureRule(),
         
-        // Transitions:
-        ...activeTransitionRule(),
+        // Effects:
+        ...activeEffectRule(),
         
         // Apply composed variables:
         filter,

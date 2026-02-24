@@ -3,7 +3,7 @@ import { regularBaseColor, outlinedBaseColor, mildBaseColor } from './base-color
 
 
 /**
- * Supported variant keys for ActiveTransition testing.
+ * Supported variant keys for ActiveEffect testing.
  */
 export const variantKeys = ['regular', 'outlined', 'mild'] as const;
 export type VariantKey = typeof variantKeys[number];

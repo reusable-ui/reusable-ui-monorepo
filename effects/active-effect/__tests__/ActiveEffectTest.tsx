@@ -6,11 +6,11 @@ import { colorParamVars } from '@reusable-ui/colors'
 import { useOutlineVariant, type OutlineVariantProps } from '@reusable-ui/outline-variant'
 import { useMildVariant, type MildVariantProps} from '@reusable-ui/mild-variant'
 import { regularBaseColor, mildBaseColor } from './base-colors.js'
-import { useActiveTransitionTestStyles } from './ActiveTransitionTest.loader.js'
+import { useActiveEffectTestStyles } from './ActiveEffectTest.loader.js'
 
 
 
-export interface ActiveTransitionTestProps
+export interface ActiveEffectTestProps
     extends
         // Variants:
         Required<OutlineVariantProps>,
@@ -36,7 +36,7 @@ export interface ActiveTransitionTestProps
 }
 
 /**
- * Test component for ActiveTransition.
+ * Test component for ActiveEffect.
  * 
  * - Mocks `activeFactorCond` via inline style for controlled testing.
  * - Uses static colors for simplicity:
@@ -44,13 +44,13 @@ export interface ActiveTransitionTestProps
  *   - Outlined background → transparent `oklch(0 0 0 / 0)`
  *   - Mild background     → light blue  `oklch(0.7 0.2 265 / 1)`
  */
-export const ActiveTransitionTest = (props: ActiveTransitionTestProps) => {
+export const ActiveEffectTest = (props: ActiveEffectTestProps) => {
     const {
         activeFactorCond = 'unset',
         mode,
     } = props;
     
-    const styles = useActiveTransitionTestStyles();
+    const styles = useActiveEffectTestStyles();
     
     useLayoutEffect(() => {
         colorParamVars.mode = ((mode === 'light') ? 1 : -1) as any;
@@ -89,11 +89,11 @@ export const ActiveTransitionTest = (props: ActiveTransitionTestProps) => {
         <div>
             <HydrateStyles />
             <div
-                data-testid="active-transition-test"
+                data-testid="active-effect-test"
                 className={`${styles.main} ${outlineClassname} ${mildClassname}`}
                 style={inlineStyle}
             >
-                Active Transition Test
+                Active Effect Test
             </div>
         </div>
     );

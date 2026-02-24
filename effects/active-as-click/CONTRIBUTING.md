@@ -1,7 +1,7 @@
 # Contributing to @reusable-ui/active-as-click
 
 ⚠️ **Deprecated since v7.0.0**  
-This package is no longer functional. It exists only as a **migration tool** to guide contributors toward [`@reusable-ui/active-transition`](https://www.npmjs.com/package/@reusable-ui/active-transition).
+This package is no longer functional. It exists only as a **migration tool** to guide contributors toward [`@reusable-ui/active-effect`](https://www.npmjs.com/package/@reusable-ui/active-effect).
 
 - Last working version: **6.5.0**
 - Current version: **7.0.0** (migration shim only)
@@ -20,7 +20,7 @@ This package is no longer functional. It exists only as a **migration tool** to 
 
 - **New features**: This package will not receive new functionality.  
 - **API extensions**: Do not add new exports or variables.  
-- **Compatibility shims**: Do not attempt to recreate old behavior — migration should point to `@reusable-ui/active-transition`.  
+- **Compatibility shims**: Do not attempt to recreate old behavior — migration should point to `@reusable-ui/active-effect`.  
 
 ---
 
@@ -61,7 +61,7 @@ Follow [Conventional Commits](https://www.conventionalcommits.org):
 
 Contributors should ensure all docs/tests point developers toward:
 
-- [`@reusable-ui/active-transition`](https://www.npmjs.com/package/@reusable-ui/active-transition) – the recommended replacement.  
+- [`@reusable-ui/active-effect`](https://www.npmjs.com/package/@reusable-ui/active-effect) – the recommended replacement.  
 - `@reusable-ui/active-state` and `@reusable-ui/press-state` – React‑side state hooks for active/press interactions.  
 
 ---

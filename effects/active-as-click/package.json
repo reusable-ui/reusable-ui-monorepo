@@ -23,7 +23,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "transitions/active-as-click"
+    "directory": "effects/active-as-click"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
@@ -49,6 +49,6 @@
   },
   "dependencies": {
     "@cssfn/core": "^4.0.0",
-    "@reusable-ui/active-transition": "^7.0.0"
+    "@reusable-ui/active-effect": "^7.0.0"
   }
 }

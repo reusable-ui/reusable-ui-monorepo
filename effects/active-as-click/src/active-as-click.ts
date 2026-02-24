@@ -17,14 +17,14 @@ import {
 
 // Reusable-ui states:
 import {
-    usesActiveTransition,
-}                           from '@reusable-ui/active-transition'   // Provides default CSS transitions for active state styling. Emphasizes theme colors to make components visually stand out when active.
+    usesActiveEffect,
+}                           from '@reusable-ui/active-effect'       // Provides default visual effects for active state styling. Emphasizes theme colors by making components visually stand out when active.
 
 
 
 /**
  * @deprecated since v7.0.0
- * Deprecated in favor of `@reusable-ui/active-transition`.
+ * Deprecated in favor of `@reusable-ui/active-effect`.
  * Represents the CSS variables used by the legacy active-as-click styling.
  * 
  * NOTE: This package is no longer a compatibility layer — it exists only
@@ -61,29 +61,29 @@ const [activeAsClickVars] = cssVars<ActiveAsClickVars>({ prefix: 'ak', minify: f
 
 /**
  * @deprecated since v7.0.0
- * Deprecated in favor of `@reusable-ui/active-transition`.
+ * Deprecated in favor of `@reusable-ui/active-effect`.
  * Represents the legacy active-as-click rule and variables bundle.
  */
 export interface ActiveAsClickStuff { activeAsClickRule: Factory<CssRule>, activeAsClickVars: CssVars<ActiveAsClickVars> }
 
 /**
  * @deprecated since v7.0.0
- * Deprecated in favor of `@reusable-ui/active-transition`.
+ * Deprecated in favor of `@reusable-ui/active-effect`.
  * Previously used to style components as "clicked" when active.
  * 
- * This API now simply delegates to `usesActiveTransition` and exposes
+ * This API now simply delegates to `usesActiveEffect` and exposes
  * the legacy variable bundle for migration purposes.
  * 
  * @returns An `ActiveAsClickStuff` representing the deprecated active-as-click state.
  */
 export const usesActiveAsClick = (): ActiveAsClickStuff => {
-    // Transitions:
-    const { activeTransitionRule } = usesActiveTransition();
+    // Effects:
+    const { activeEffectRule } = usesActiveEffect();
     
     
     
     return {
-        activeAsClickRule: (): CssRule => activeTransitionRule(),
+        activeAsClickRule: (): CssRule => activeEffectRule(),
         activeAsClickVars,
     };
 };

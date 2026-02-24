@@ -18,11 +18,11 @@ import {
 
 
 /**
- * A list of CSS variables used for active-transition styling.
+ * A list of CSS variables used for active-effect styling.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
-export interface ActiveTransitionVars {
+export interface ActiveEffectVars {
     /**
      * Represents the excess delta used for bump effects.
      * 
@@ -56,9 +56,9 @@ export interface ActiveTransitionVars {
 
 
 /**
- * Configuration options for customizing active transitions.
+ * Configuration options for customizing active effects.
  */
-export interface CssActiveTransitionOptions {
+export interface CssActiveEffectOptions {
     /**
      * Controls how much the component is brightened or darkened when fully active.
      * 
@@ -67,7 +67,7 @@ export interface CssActiveTransitionOptions {
      * - Automatically adapts to light/dark mode:
      *   - In **light mode** (`mode = +1`), values `< 1` darken  and values `> 1` lighten.
      *   - In **dark mode**  (`mode = -1`), values `< 1` lighten and values `> 1` darken.
-     *   - This ensures the same configuration produces a natural highlight in both modes.
+     *   - Ensures the same configuration produces a natural highlight in both modes.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -137,12 +137,12 @@ export interface CssActiveTransitionOptions {
 
 
 /**
- * Provides a CSS API for applying active-state transitions that emphasize the current theme colors,
+ * Provides a CSS API for applying active-state effects that emphasize the current theme colors,
  * making components **visually stand out** when active.
  */
-export interface CssActiveTransition {
+export interface CssActiveEffect {
     /**
-     * Attaches CSS rules for active-state transitions that emphasize the current theme colors,
+     * Attaches CSS rules for active-state effects that emphasize the current theme colors,
      * making components **visually stand out** when active.
      * 
      * Exposes strongly typed CSS variables for transitional effects.
@@ -151,16 +151,16 @@ export interface CssActiveTransition {
      * - Regular variants: darken in light mode or lighten in dark mode.
      * - Outlined/mild variants: interpolate from variant colors to regular colors.
      * 
-     * Smoothly transitions between active and inactive states by animating colors and/or filter effect.
+     * Smoothly transitions between active and inactive states by animating colors and/or filter effects.
      * Affects background, foreground, decoration, and border colors.
      */
-    activeTransitionRule : Lazy<CssRule>
+    activeEffectRule : Lazy<CssRule>
     
     /**
-     * Exposes active-transition CSS variables for transitional effects.
+     * Exposes active-effect CSS variables for transitional effects.
      * 
      * Includes:
-     * - `activeFilter` : Brightness/contrast/saturation interpolation during active state.
+     * - `activeFilter` : Brightness/contrast/saturation interpolation during active transitions.
      * 
      * ⚠️ **Caution**: These variables are invalid when the component is fully inactive.
      * If used incorrectly, they can invalidate CSS declarations.
@@ -168,5 +168,5 @@ export interface CssActiveTransition {
      * 
      * These variables are strongly typed and automatically resolve to consistent CSS variable names.
      */
-    activeTransitionVars : CssVars<ActiveTransitionVars>
+    activeEffectVars : CssVars<ActiveEffectVars>
 }

@@ -1,7 +1,7 @@
 # @reusable-ui/active-as-click
 
 ⚠️ **Deprecated since v7.0.0**  
-This package is no longer functional. It exists only as a **migration tool** to guide contributors toward [`@reusable-ui/active-transition`](https://www.npmjs.com/package/@reusable-ui/active-transition).
+This package is no longer functional. It exists only as a **migration tool** to guide contributors toward [`@reusable-ui/active-effect`](https://www.npmjs.com/package/@reusable-ui/active-effect).
 
 - Last working version: **6.5.0**
 - Current version: **7.0.0** (migration shim only)
@@ -24,8 +24,8 @@ As of **v7.0.0**, this package has been deprecated:
 
 - There is **no 1:1 equivalent replacement** — `active-as-click` is broken by design and should not be used in new code.  
 - It now exists **only as a migration guide** to help developers transition.  
-- The recommended replacement is [`@reusable-ui/active-transition`](https://www.npmjs.com/package/@reusable-ui/active-transition), which provides a robust, theme‑aware CSS transition system for active states.  
-- `usesActiveAsClick` delegates internally to `usesActiveTransition`, but all exports are marked `@deprecated`.
+- The recommended replacement is [`@reusable-ui/active-effect`](https://www.npmjs.com/package/@reusable-ui/active-effect), which provides a robust, default visual effects for active states.  
+- `usesActiveAsClick` delegates internally to `usesActiveEffect`, but all exports are marked `@deprecated`.
 
 ---
 
@@ -36,28 +36,28 @@ To migrate from `@reusable-ui/active-as-click`:
 1. **Remove all imports of `@reusable-ui/active-as-click`.**
    ```diff
    - import { usesActiveAsClick } from '@reusable-ui/active-as-click';
-   + import { usesActiveTransition } from '@reusable-ui/active-transition';
+   + import { usesActiveEffect } from '@reusable-ui/active-effect';
    ```
 
-2. **Replace usage of `usesActiveAsClick` with `usesActiveTransition`.**
+2. **Replace usage of `usesActiveAsClick` with `usesActiveEffect`.**
    ```diff
    - const { activeAsClickRule } = usesActiveAsClick();
-   + const { activeTransitionRule } = usesActiveTransition();
+   + const { activeEffectRule } = usesActiveEffect();
    ```
 
-3. **Update styles/tests** to rely on `active-transition`’s perceptual brightness/contrast/saturate system instead of the old “pressed‑as‑click” hack.
+3. **Update styles/tests** to rely on `active-effect`’s perceptual brightness/contrast/saturate system instead of the old “pressed‑as‑click” hack.
 
-4. **Replace usage of `activeAsClickVars` with `activeTransitionVars`**
+4. **Replace usage of `activeAsClickVars` with `activeEffectVars`**
    ```diff
    - const { activeAsClickVars } = usesActiveAsClick();
-   + const { activeTransitionVars } = usesActiveTransition();
+   + const { activeEffectVars } = usesActiveEffect();
    ```
 
 ---
 
 ## 📚 Related Packages
 
-- [`@reusable-ui/active-transition`](https://www.npmjs.com/package/@reusable-ui/active-transition) – Provides default CSS transitions for active state styling.  
+- [`@reusable-ui/active-effect`](https://www.npmjs.com/package/@reusable-ui/active-effect) – Provides default visual effects when a component's active state changes.  
 - [`@reusable-ui/active-state`](https://www.npmjs.com/package/@reusable-ui/active-state) – Provides active/selected state management for components.
 
 ## 🛡️ License  
