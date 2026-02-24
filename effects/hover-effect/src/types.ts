@@ -38,7 +38,7 @@ export interface HoverEffectVars {
      * References the text decoration applied when the component is transitioning toward or fully hovered.
      * 
      * - Becomes `unset` when the component is transitioning toward or fully unhovered.
-     * - Typically used with callback: `switchOf(hoverEffectVars.hoverTextDecoration, componentConfig.normalTextDecoration)`.
+     * - Typically used with a fallback: `switchOf(hoverEffectVars.hoverTextDecoration, componentConfig.normalTextDecoration)`.
      */
     hoverTextDecoration : unknown
 }
@@ -370,7 +370,7 @@ export interface CssHoverEffectOptions {
     /**
      * Specifies the text decoration to apply when the component is hovered.
      * 
-     * - Discrete switching when the `hovered` state changes (no gradual transition).
+     * - Switches discretely when the `hovered` state changes (no gradual transition).
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -406,7 +406,7 @@ export interface CssHoverEffect {
      * - factor = 0 → neutral (no adjustment).
      * - factor = 1 → fully hovered (target opacity/brightness/contrast/saturation/etc. applied).
      * - Between 0 and 1 → smooth interpolation between neutral and hovered, applying all configured effects except `hoverTextDecoration`.
-     * - Text Decoration → discrete switch based on hover state (no gradual transition).
+     * - Text Decoration → switches discretely based on hover state (no gradual transition).
      * 
      * Smoothly transitions between unhover and hover states by animating filter effects.
      * Affects the entire component surface.

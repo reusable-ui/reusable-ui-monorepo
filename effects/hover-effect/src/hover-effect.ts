@@ -75,7 +75,7 @@ import {
  */
 const [hoverEffectVars] = cssVars<HoverEffectVars>({ prefix: 'hoe', minify: false });
 
-// Register the hover filter globally for composing a unified filter stack across state packages:
+// Register the hover filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(hoverEffectVars.hoverFilter);
 
 
@@ -331,7 +331,7 @@ export const usesHoverEffect = (options?: CssHoverEffectOptions): CssHoverEffect
              * Hover text decoration:
              * - Not specified   → always invalid (`unset`).
              * - Fully unhovered → ignored (browser skips invalid formula).
-             * - Otherwise       → discrete switch to the configured text decoration
+             * - Otherwise       → switches discretely to the configured text decoration
              *                     when transitioning toward or fully hovered.
              */
             [hoverEffectVars.hoverTextDecoration]: (
