@@ -234,8 +234,6 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/accessibilities        DEPRECATED
 @reusable-ui/validations            DEPRECATED
 
-// Reusable-ui transitions:
-
 // Reusable-ui effects:
 @reusable-ui/active-effect          non_peer
 @reusable-ui/active-as-click        DEPRECATED
