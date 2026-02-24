@@ -288,7 +288,7 @@ export const ensureNonNegativeLength = (value: CssLength): CssLengthFormula   =>
  * Produces the absolute value of the given CSS numeric expression.
  * 
  * Since `abs()` is not yet widely supported in CSS, we emulate absolute
- * value using `max(value, -value)`. This ensures the result is always
+ * value using `max(value, -value)`. Ensures the result is always
  * non-negative, regardless of the sign of the input.
  * 
  * @param value - The numeric value to normalize.
@@ -299,7 +299,7 @@ export function absoluteValue(value: CssNumeric): CssNumericFormula;
  * Produces the absolute value of the given CSS angle expression.
  * 
  * Since `abs()` is not yet widely supported in CSS, we emulate absolute
- * value using `max(value, -value)`. This ensures the result is always
+ * value using `max(value, -value)`. Ensures the result is always
  * non-negative, regardless of the sign of the input.
  * 
  * @param value - The angle value to normalize.
@@ -310,7 +310,7 @@ export function absoluteValue(value: CssAngle  ): CssAngleFormula;
  * Produces the absolute value of the given CSS length expression.
  * 
  * Since `abs()` is not yet widely supported in CSS, we emulate absolute
- * value using `max(value, -value)`. This ensures the result is always
+ * value using `max(value, -value)`. Ensures the result is always
  * non-negative, regardless of the sign of the input.
  * 
  * @param value - The length value to normalize.
@@ -321,7 +321,7 @@ export function absoluteValue(value: CssLength ): CssLengthFormula;
  * Produces the absolute value of the given CSS numeric/angle/length expression.
  * 
  * Since `abs()` is not yet widely supported in CSS, we emulate absolute
- * value using `max(value, -value)`. This ensures the result is always
+ * value using `max(value, -value)`. Ensures the result is always
  * non-negative, regardless of the sign of the input.
  * 
  * @param value - The numeric/angle/length value to normalize.
