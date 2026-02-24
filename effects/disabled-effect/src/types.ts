@@ -19,11 +19,11 @@ import {
 
 
 /**
- * A list of CSS variables used for disabled-transition styling.
+ * A list of CSS variables used for disabled-effect styling.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
-export interface DisabledTransitionVars {
+export interface DisabledEffectVars {
     /**
      * References the filter applied when the component is transitioning toward enabled/disabled or fully disabled.
      * 
@@ -37,7 +37,7 @@ export interface DisabledTransitionVars {
      * References the cursor applied when the component is transitioning toward or fully disabled.
      * 
      * - Becomes `unset` when the component is transitioning toward or fully enabled.
-     * - Typically used with callback: `switchOf(disabledTransitionVars.disabledCursor, componentConfig.normalCursor)`.
+     * - Typically used with a fallback: `switchOf(disabledEffectVars.disabledCursor, componentConfig.normalCursor)`.
      */
     disabledCursor : unknown
 }
@@ -45,9 +45,9 @@ export interface DisabledTransitionVars {
 
 
 /**
- * Configuration options for customizing disabled transitions.
+ * Configuration options for customizing disabled effects.
  */
-export interface CssDisabledTransitionOptions {
+export interface CssDisabledEffectOptions {
     /**
      * Controls how much the component's opacity is reduced when fully disabled.
      * 
@@ -96,7 +96,7 @@ export interface CssDisabledTransitionOptions {
     /**
      * Specifies the cursor to display when the component is disabled.
      * 
-     * - Discrete switching when the `disabled` state changes (no gradual transition).
+     * - Switches discretely when the `disabled` state changes (no gradual transition).
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -115,12 +115,12 @@ export interface CssDisabledTransitionOptions {
 
 
 /**
- * Provides a CSS API for applying disabled-state transitions that de-emphasize the entire component surface,
+ * Provides a CSS API for applying disabled-state effects that de-emphasize the entire component surface,
  * making components **visually muted** when disabled.
  */
-export interface CssDisabledTransition {
+export interface CssDisabledEffect {
     /**
-     * Attaches CSS rules for disabled-state transitions that de-emphasize the entire component surface,
+     * Attaches CSS rules for disabled-state effects that de-emphasize the entire component surface,
      * making components **visually muted** when disabled.
      * 
      * Exposes strongly typed CSS variables for transitional effects.
@@ -129,18 +129,18 @@ export interface CssDisabledTransition {
      * - factor = 0 → neutral (no adjustment).
      * - factor = 1 → fully disabled (target opacity/saturation applied).
      * - Between 0 and 1 → smooth interpolation between neutral and disabled (for opacity/saturation only).
-     * - Cursor → discrete switch based on disabled state (no gradual interpolation).
+     * - Cursor → switches discretely based on disabled state (no gradual transition).
      * 
-     * Smoothly transitions between enabled and disabled states by animating filter effect.
+     * Smoothly transitions between enabled and disabled states by animating filter effects.
      * Affects the entire component surface.
      */
-    disabledTransitionRule : Lazy<CssRule>
+    disabledEffectRule : Lazy<CssRule>
     
     /**
-     * Exposes disabled-transition CSS variables for transitional effects.
+     * Exposes disabled-effect CSS variables for transitional effects.
      * 
      * Includes:
-     * - `disabledFilter` : Opacity and saturation interpolation during disabled state.
+     * - `disabledFilter` : Opacity and saturation interpolation during disabled transitions.
      * - `disabledCursor` : Discrete cursor switching when disabled.
      * 
      * ⚠️ **Caution**: These variables are invalid when the component is fully enabled.
@@ -149,5 +149,5 @@ export interface CssDisabledTransition {
      * 
      * These variables are strongly typed and automatically resolve to consistent CSS variable names.
      */
-    disabledTransitionVars : CssVars<DisabledTransitionVars>
+    disabledEffectVars : CssVars<DisabledEffectVars>
 }

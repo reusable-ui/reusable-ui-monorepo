@@ -3,11 +3,11 @@ import { test, expect } from '@playwright/experimental-ct-react';
 import { PNG } from 'pngjs'
 import { variantKeys, variantNameLower, variantNameUpper, variantBaseColor } from './case-map.js'
 import { applyFiltersSequential, expectColor } from './color-utilities.js'
-import { type DisabledTransitionTestProps, DisabledTransitionTest } from './DisabledTransitionTest.js';
+import { type DisabledEffectTestProps, DisabledEffectTest } from './DisabledEffectTest.js';
 
 
 
-interface DisabledTransitionTestCase {
+interface DisabledEffectTestCase {
     // Test Inputs:
     
     /**
@@ -16,9 +16,9 @@ interface DisabledTransitionTestCase {
     title         : string
     
     /**
-     * Props to pass to the `<DisabledTransitionTest>` component.
+     * Props to pass to the `<DisabledEffectTest>` component.
      */
-    props         : DisabledTransitionTestProps
+    props         : DisabledEffectTestProps
     
     
     
@@ -31,7 +31,7 @@ interface DisabledTransitionTestCase {
 
 
 
-const testCases: DisabledTransitionTestCase[] = [
+const testCases: DisabledEffectTestCase[] = [
     //#region Enabled and factor=0 → should match original base colors
     ...(['unset', 0] as const).flatMap((factor) =>
         variantKeys.flatMap((variant) =>
@@ -44,7 +44,7 @@ const testCases: DisabledTransitionTestCase[] = [
                     mode,
                 },
                 expectedColor         : variantBaseColor[variant],
-            } satisfies DisabledTransitionTestCase))
+            } satisfies DisabledEffectTestCase))
         )
     ),
     //#endregion Enabled and factor=0 → should match original base colors
@@ -68,7 +68,7 @@ const testCases: DisabledTransitionTestCase[] = [
                 opacity           : 0.3,
                 mode,
             }),
-        } satisfies DisabledTransitionTestCase))
+        } satisfies DisabledEffectTestCase))
     ),
     //#endregion Active and factor=1 → should match fully filtered variant color for all variants
     
@@ -92,7 +92,7 @@ const testCases: DisabledTransitionTestCase[] = [
                     opacity           : 0.3,
                     mode,
                 }),
-            } satisfies DisabledTransitionTestCase))
+            } satisfies DisabledEffectTestCase))
         )
     ),
     //#endregion Partially active and factor=fractional → should match partially filtered variant color for all variants
@@ -117,20 +117,20 @@ const testCases: DisabledTransitionTestCase[] = [
                     opacity           : 0.3,
                     mode,
                 }),
-            } satisfies DisabledTransitionTestCase))
+            } satisfies DisabledEffectTestCase))
         )
     ),
     //#endregion Extrapolated factors → should match extrapolated filtered variant color for all variants
 ];
 
 
-test.describe('usesDisabledTransition', () => {
+test.describe('usesDisabledEffect', () => {
     for (const { title, props, expectedColor } of testCases) {
         test(title, async ({ mount }) => {
-            const component = await mount(<DisabledTransitionTest {...props} />);
-            const box = component.getByTestId('disabled-transition-test')
+            const component = await mount(<DisabledEffectTest {...props} />);
+            const box = component.getByTestId('disabled-effect-test')
             
-            await expect(box).toContainText('Disabled Transition Test');
+            await expect(box).toContainText('Disabled Effect Test');
             
             // Capture screenshot and analyze pixel color:
             const buffer = await box.screenshot({

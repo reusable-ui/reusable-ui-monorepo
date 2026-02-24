@@ -1,15 +1,18 @@
 {
-  "name": "@reusable-ui/disabled-transition",
+  "name": "@reusable-ui/disabled-effect",
   "version": "7.0.0",
-  "description": "Provides default CSS transitions for disabled state styling. De-emphasizes the entire component surface to make components visually muted when disabled.",
+  "description": "Provides default visual effects when a component's disabled state changes. De-emphasizes the entire component surface by making components visually muted when disabled.",
   "keywords": [
     "transition",
+    "disabled",
+    "disabled-effect",
     "disabled-state",
-    "appearance",
-    "animation",
     "filter",
+    "animation",
     "opacity",
     "saturation",
+    "appearance",
+    "accessibility",
     "css",
     "design-system",
     "ui",
@@ -21,7 +24,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "transitions/disabled-transition"
+    "directory": "effects/disabled-effect"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"

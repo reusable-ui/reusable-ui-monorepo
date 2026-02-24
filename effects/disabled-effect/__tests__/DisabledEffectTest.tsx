@@ -6,11 +6,11 @@ import { colorParamVars } from '@reusable-ui/colors'
 import { useOutlineVariant, type OutlineVariantProps } from '@reusable-ui/outline-variant'
 import { useMildVariant, type MildVariantProps} from '@reusable-ui/mild-variant'
 import { regularBaseColor, mildBaseColor } from './base-colors.js'
-import { useDisabledTransitionTestStyles } from './DisabledTransitionTest.loader.js'
+import { useDisabledEffectTestStyles } from './DisabledEffectTest.loader.js'
 
 
 
-export interface DisabledTransitionTestProps
+export interface DisabledEffectTestProps
     extends
         // Variants:
         Required<OutlineVariantProps>,
@@ -36,7 +36,7 @@ export interface DisabledTransitionTestProps
 }
 
 /**
- * Test component for DisabledTransition.
+ * Test component for DisabledEffect.
  * 
  * - Mocks `disableFactorCond` via inline style for controlled testing.
  * - Uses static colors for simplicity:
@@ -44,13 +44,13 @@ export interface DisabledTransitionTestProps
  *   - Outlined background → transparent `oklch(0 0 0 / 0)`
  *   - Mild background     → light blue  `oklch(0.7 0.2 265 / 1)`
  */
-export const DisabledTransitionTest = (props: DisabledTransitionTestProps) => {
+export const DisabledEffectTest = (props: DisabledEffectTestProps) => {
     const {
         disableFactorCond = 'unset',
         mode,
     } = props;
     
-    const styles = useDisabledTransitionTestStyles();
+    const styles = useDisabledEffectTestStyles();
     
     useLayoutEffect(() => {
         colorParamVars.mode = ((mode === 'light') ? 1 : -1) as any;
@@ -89,11 +89,11 @@ export const DisabledTransitionTest = (props: DisabledTransitionTestProps) => {
         <div>
             <HydrateStyles />
             <div
-                data-testid="disabled-transition-test"
+                data-testid="disabled-effect-test"
                 className={`${styles.main} ${outlineClassname} ${mildClassname}`}
                 style={inlineStyle}
             >
-                Disabled Transition Test
+                Disabled Effect Test
             </div>
         </div>
     );

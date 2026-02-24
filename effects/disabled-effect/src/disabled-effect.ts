@@ -11,9 +11,9 @@ import {
 
 // Types:
 import {
-    type DisabledTransitionVars,
-    type CssDisabledTransitionOptions,
-    type CssDisabledTransition,
+    type DisabledEffectVars,
+    type CssDisabledEffectOptions,
+    type CssDisabledEffect,
 }                           from './types.js'
 
 // Reusable-ui features:
@@ -29,32 +29,32 @@ import {
 
 
 /**
- * A strongly typed global mapping of disabled-transition CSS variables.
+ * A strongly typed global mapping of disabled-effect CSS variables.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-const [disabledTransitionVars] = cssVars<DisabledTransitionVars>({ prefix: 'dit', minify: false });
+const [disabledEffectVars] = cssVars<DisabledEffectVars>({ prefix: 'die', minify: false });
 
-// Register the disabled filter globally for composing a unified filter stack across state packages:
-filterRegistry.registerFilter(disabledTransitionVars.disabledFilter);
+// Register the disabled filter globally for composing a unified filter stack across effect packages:
+filterRegistry.registerFilter(disabledEffectVars.disabledFilter);
 
 
 
 /**
- * Applies disabled-state transitions that de-emphasize the entire component surface,
+ * Applies disabled-state effects that de-emphasize the entire component surface,
  * making components **visually muted** when disabled.
  * 
  * Exposes strongly typed CSS variables for transitional effects.
  * 
- * Smoothly transitions between enabled and disabled states by animating filter effect.
+ * Smoothly transitions between enabled and disabled states by animating filter effects.
  * Preserves the current theme colors and variants while reducing emphasis
  * through opacity and/or desaturation.
  * 
- * @param options - An optional configuration for customizing disabled-state transitions.
- * @returns A CSS API containing transition rules and disabled-transition CSS variables for muting theme colors.
+ * @param options - An optional configuration for customizing disabled effects.
+ * @returns A CSS API containing effect rules and CSS variables for muting theme colors.
  */
-export const usesDisabledTransition = (options?: CssDisabledTransitionOptions): CssDisabledTransition => {
+export const usesDisabledEffect = (options?: CssDisabledEffectOptions): CssDisabledEffect => {
     // Extract options and assign defaults:
     const {
         disabledOpacity  = 0.5,
@@ -71,22 +71,21 @@ export const usesDisabledTransition = (options?: CssDisabledTransitionOptions): 
     
     
     return {
-        disabledTransitionRule : () => style({
+        disabledEffectRule : () => style({
             /**
              * Disabled filter:
              * - Fully enabled → ignored (browser skips invalid formula).
              * - Otherwise     → interpolates opacity and saturation toward the configured values.
              * 
-             * 
              * Behavior:
-             * - factor = 0      → all filters = 1 (neutral, no adjustment).
-             * - factor = 1      → filters = configured values (target).
+             * - factor = 0      → all filters = neutral (no adjustment).
+             * - factor = 1      → filters = configured target values.
              * - Between 0 and 1 → smooth interpolation between neutral and target.
              * - Saturation may overshoot/undershoot if factor goes beyond [0,1].
              * - The `clamp(0, ..., 1)` ensures `opacity()` stays within 0…1 range.
-             * - The `max(0, ...)` ensures `saturation()` stays non-negative.
+             * - The `max(0, ...)` ensures `saturate()` stays non-negative.
              */
-            [disabledTransitionVars.disabledFilter]:
+            [disabledEffectVars.disabledFilter]:
 `
 opacity(calc(clamp(0, 1 - (1 - ${disabledOpacity}) * ${disableFactorCond}, 1)))
 saturate(calc(max(0, 1 - (1 - ${disabledSaturate}) * ${disableFactorCond})))
@@ -94,12 +93,12 @@ saturate(calc(max(0, 1 - (1 - ${disabledSaturate}) * ${disableFactorCond})))
             /**
              * Disabled cursor:
              * - Fully enabled → ignored (browser skips invalid formula).
-             * - Otherwise     → Discrete switch to the configured cursor
+             * - Otherwise     → switches discretely to the configured cursor
              *                   when transitioning toward or fully disabled.
              */
-            [disabledTransitionVars.disabledCursor]: `${isDisabled} ${disabledCursor}`,
+            [disabledEffectVars.disabledCursor]: `${isDisabled} ${disabledCursor}`,
         }),
         
-        disabledTransitionVars,
-    } satisfies CssDisabledTransition;
+        disabledEffectVars,
+    } satisfies CssDisabledEffect;
 };

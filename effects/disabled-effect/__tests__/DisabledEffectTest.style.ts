@@ -3,12 +3,12 @@ import { usesOutlineVariant } from '@reusable-ui/outline-variant'
 import { usesMildVariant} from '@reusable-ui/mild-variant'
 import { usesFilterFeature } from '@reusable-ui/filter-feature';
 import { usesBackgroundFeature } from '@reusable-ui/background-feature';
-import { usesDisabledTransition } from '../dist/index.js'
+import { usesDisabledEffect } from '../dist/index.js'
 
-// Test style for DisabledTransition
+// Test style for DisabledEffect
 // Demonstrates how `disableFactorCond` drives transition effects
 // with simplified static colors for easier testing.
-export default function disabledTransitionTestStyle() {
+export default function disabledEffectTestStyle() {
     // Variants:
     const {
         outlineVariantRule,
@@ -27,11 +27,11 @@ export default function disabledTransitionTestStyle() {
         backgroundFeatureVars : { backgColor },
     } = usesBackgroundFeature();
     
-    // Transitions:
+    // Effects:
     const {
-        disabledTransitionRule,
-        disabledTransitionVars : { disabledCursor },
-    } = usesDisabledTransition({
+        disabledEffectRule,
+        disabledEffectVars : { disabledCursor },
+    } = usesDisabledEffect({
         disabledOpacity  : 0.3,
         disabledSaturate : 0.8,
         disabledCursor   : 'not-allowed',
@@ -46,8 +46,8 @@ export default function disabledTransitionTestStyle() {
         ...filterFeatureRule(),
         ...backgroundFeatureRule(),
         
-        // Transitions:
-        ...disabledTransitionRule(),
+        // Effects:
+        ...disabledEffectRule(),
         
         // Apply composed variables:
         filter,

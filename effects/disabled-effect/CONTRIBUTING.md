@@ -1,4 +1,4 @@
-# Contributing to @reusable-ui/disabled-transition ✍️  
+# Contributing to @reusable-ui/disabled-effect ✍️  
 
 Thank you for your interest in contributing! 🚀  
 This project thrives on community collaboration, and we welcome contributions of all kinds.  
@@ -29,7 +29,7 @@ Even if you're not coding, you can help by:
 ## 📦 Setting Up Locally  
 ```sh
 git clone https://github.com/reusable-ui/reusable-ui-monorepo.git
-cd transitions/disabled-transition
+cd effects/disabled-effect
 npm install
 npm run dev
 ```
@@ -37,4 +37,4 @@ npm run dev
 ## 💬 Need Help?  
 Join our [GitHub Discussions](https://github.com/reusable-ui/reusable-ui-monorepo/discussions) or ask in an issue! 🎉  
 
-Thanks for helping make **@reusable-ui/disabled-transition** better! 🚀  
+Thanks for helping make **@reusable-ui/disabled-effect** better! 🚀  
