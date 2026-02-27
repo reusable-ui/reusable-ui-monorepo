@@ -15,11 +15,11 @@ Authors who need more control can override or extend the defaults, but for most 
 ## 🔗 Integration with Disabled State
 
 `disabled-effect` cannot operate in isolation.  
-It relies on the [`@reusable-ui/disabled-state`](https://www.npmjs.com/package/@reusable-ui/disabled-state) package to drive the `disableFactorCond` CSS variable, which determines how far the transition has progressed (from enabled → fully disabled).  
+It relies on the [`@reusable-ui/disabled-state`](https://www.npmjs.com/package/@reusable-ui/disabled-state) package to drive the `disableFactorCond` CSS variable, which represents how far the transition has progressed (from enabled → fully disabled).  
 
 - `disabled-state` tracks whether a component is disabled.  
 - `disabled-effect` consumes that state and applies visual adjustments (opacity, saturation, cursor).  
-- Together, they provide a unified system: `disabled-state` supplies the factor, `disabled-effect` renders the visual effect.  
+- Together, they form a unified system: `disabled-state` supplies the factor, and `disabled-effect` renders the visual effect.  
 
 This separation keeps responsibilities clear:
 - **State logic** lives in `disabled-state`.  
@@ -29,8 +29,8 @@ This separation keeps responsibilities clear:
 ✔ Smooth transition between enabled and disabled states  
 ✔ Customizable options for opacity, saturation, and cursor  
 ✔ Disabled components continue to block interaction behind them  
-✔ Unified filter stack that composes seamlessly with other state effects  
-✔ Ready-to-use defaults for common scenarios, while remaining flexible for custom styling  
+✔ Unified filter stack that composes seamlessly with other state-driven effects  
+✔ Ready-to-use defaults for common scenarios, while remaining extensible for custom styling  
 
 ## 📦 Installation
 Install **@reusable-ui/disabled-effect** via npm or yarn:
@@ -174,7 +174,7 @@ export const disableableBoxStyle = () => {
 
 #### 🧠 How CSS Disabled Effect Works
 
-The [`@reusable-ui/disabled-state`](https://www.npmjs.com/package/@reusable-ui/disabled-state) package drives a `disableFactorCond` CSS variable, which represents how far the transition has progressed (from enabled → fully disabled).  
+The [`@reusable-ui/disabled-state`](https://www.npmjs.com/package/@reusable-ui/disabled-state) package drives the `disableFactorCond` CSS variable, which represents how far the transition has progressed (from enabled → fully disabled).  
 
 `disabled-effect` consumes this factor and applies coordinated formulas that de-emphasize the entire component surface,
 making components **visually muted** when disabled.
