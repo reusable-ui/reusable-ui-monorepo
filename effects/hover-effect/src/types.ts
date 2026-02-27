@@ -211,7 +211,7 @@ export interface CssHoverEffectOptions {
      * - A strongly typed reference, e.g. `myConfig.hoverOpacity`
      * 
      * Notes:
-     * - Values between `0` and `1` → reduce opacity (more transparent).
+     * - Values between `0` and `1` → semi transparent.
      * - `0` → fully transparent.
      * - `1` → preserves the original opacity (no fade).
      * - Percentage units are allowed.

@@ -7,7 +7,7 @@ making components **visually responsive and clearly distinguishable from static 
 The effects are designed to feel natural to users:  
 - Components smoothly highlight and emphasize as they move into the hovered state.  
 - Text decorations (such as underlines) can be applied to emphasize interactivity.  
-- Visual cues remain consistent across components, ensuring predictable user experience.  
+- Visual cues remain consistent across components, ensuring a predictable and cohesive user experience.  
 
 By using `usesHoverEffect()`, you can apply these effects consistently across your components — enhancing emphasis through filters the entire component surface — with optional customization for color effects and text decoration.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
@@ -15,11 +15,11 @@ Authors who need more control can override or extend the defaults, but for most 
 ## 🔗 Integration with Hover State
 
 `hover-effect` cannot operate in isolation.  
-It relies on the [`@reusable-ui/hover-state`](https://www.npmjs.com/package/@reusable-ui/hover-state) package to drive the `hoverFactorCond` CSS variable, which determines how far the transition has progressed (from unhovered → fully hovered).  
+It relies on the [`@reusable-ui/hover-state`](https://www.npmjs.com/package/@reusable-ui/hover-state) package to drive the `hoverFactorCond` CSS variable, which represents how far the transition has progressed (from unhovered → fully hovered).  
 
 - `hover-state` tracks whether a component is hovered.  
 - `hover-effect` consumes that state and applies visual adjustments (opacity, brightness, contrast, saturation, etc.).  
-- Together, they provide a unified system: `hover-state` supplies the factor, `hover-effect` renders the visual effect.  
+- Together, they form a unified system: `hover-state` supplies the factor, and `hover-effect` renders the visual effect.  
 
 This separation keeps responsibilities clear:
 - **State logic** lives in `hover-state`.  
@@ -28,12 +28,16 @@ This separation keeps responsibilities clear:
 ## ✨ Features
 ✔ Smooth transition between unhover and hover states  
 ✔ Customizable options for color effects and text decorations  
-✔ Unified filter stack that composes seamlessly with other state effects  
-✔ Ready-to-use defaults for common scenarios, while remaining flexible for custom styling  
+✔ Adaptive brightness that automatically adjusts for light and dark mode  
+✔ Unified filter stack that composes seamlessly with other state-driven effects  
+✔ Ready-to-use defaults for common scenarios, while remaining extensible for custom styling  
 ✔ Works across both text and surface elements for cohesive interactivity cues  
-✔ Supports **reverse interpolation**:  
+✔ Supports **reverse intent**:  
    - Positive configurations → fade *in* the effect during hover  
    - Negative configurations → fade *out* the effect during hover (effect is fully un-applied at full hover)  
+✔ Supports **reverse intent**:  
+   - Positive configurations → effect gradually **applies** as the component becomes hovered  
+   - Negative configurations → effect gradually **withdraws** as the component becomes hovered (fully un-applied at full hovered state)  
 
 ## 📦 Installation
 Install **@reusable-ui/hover-effect** via npm or yarn:
@@ -184,7 +188,7 @@ export const hoverableBoxStyle = () => {
 
 #### 🧠 How CSS Hover Effect Works
 
-The [`@reusable-ui/hover-state`](https://www.npmjs.com/package/@reusable-ui/hover-state) package drives a `hoverFactorCond` CSS variable, which represents how far the transition has progressed (from unhovered → fully hovered).  
+The [`@reusable-ui/hover-state`](https://www.npmjs.com/package/@reusable-ui/hover-state) package drives the `hoverFactorCond` CSS variable, which represents how far the transition has progressed (from unhovered → fully hovered).  
 
 `hover-effect` consumes this factor and applies coordinated formulas that signal interactivity,
 making components **visually responsive and clearly distinguishable from static content**.
