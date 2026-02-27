@@ -14,11 +14,11 @@ Authors who need more control can override or extend the defaults, but for most 
 ## 🔗 Integration with Focus State
 
 `focus-effect` cannot operate in isolation.  
-It relies on the [`@reusable-ui/focus-state`](https://www.npmjs.com/package/@reusable-ui/focus-state) package to drive the `focusFactorCond` CSS variable, which determines how far the transition has progressed (from blurred → fully focused).  
+It relies on the [`@reusable-ui/focus-state`](https://www.npmjs.com/package/@reusable-ui/focus-state) package to drive the `focusFactorCond` CSS variable, which represents how far the transition has progressed (from blurred → fully focused).  
 
 - `focus-state` tracks whether a component is focused.  
 - `focus-effect` consumes that state and applies the visual ring.  
-- Together, they provide a unified system: `focus-state` supplies the factor, `focus-effect` renders the visual effect.  
+- Together, they form a unified system: `focus-state` supplies the factor, and `focus-effect` renders the visual effect.  
 
 This separation keeps responsibilities clear:
 - **State logic** lives in `focus-state`.  
@@ -28,8 +28,8 @@ This separation keeps responsibilities clear:
 ✔ Provides a focus ring indicator (via a manipulated box shadow)  
 ✔ Smooth transition between focus and blur states  
 ✔ Customizable options for ring width  
-✔ Unified box shadow stack that composes seamlessly with other state effects  
-✔ Ready-to-use defaults for common scenarios, while remaining flexible for custom styling  
+✔ Unified box shadow stack that composes seamlessly with other state-driven effects  
+✔ Ready-to-use defaults for common scenarios, while remaining extensible for custom styling  
 
 ## 📦 Installation
 Install **@reusable-ui/focus-effect** via npm or yarn:
@@ -163,7 +163,7 @@ export const focusableBoxStyle = () => {
 
 #### 🧠 How CSS Focus Effect Works
 
-The [`@reusable-ui/focus-state`](https://www.npmjs.com/package/@reusable-ui/focus-state) package drives a `focusFactorCond` CSS variable, which represents how far the transition has progressed (from blurred → fully focused).  
+The [`@reusable-ui/focus-state`](https://www.npmjs.com/package/@reusable-ui/focus-state) package drives the `focusFactorCond` CSS variable, which represents how far the transition has progressed (from blurred → fully focused).  
 
 `focus-effect` consumes this factor and applies a box shadow expansion formula that highlights the component,
 making it **visually distinct** and signaling readiness for interaction when focused.
