@@ -14,11 +14,11 @@ Authors who need more control can override or extend the defaults, but for most 
 ## 🔗 Integration with Active State
 
 `active-effect` cannot operate in isolation.  
-It relies on the [`@reusable-ui/active-state`](https://www.npmjs.com/package/@reusable-ui/active-state) package to drive the `activeFactorCond` CSS variable, which determines how far the transition has progressed (from inactive → fully active).  
+It relies on the [`@reusable-ui/active-state`](https://www.npmjs.com/package/@reusable-ui/active-state) package to drive the `activeFactorCond` CSS variable, which represents how far the transition has progressed (from inactive → fully active).  
 
 - `active-state` tracks whether a component is active or selected.  
 - `active-effect` consumes that state and applies visual adjustments (brightness, contrast, saturation, etc.).  
-- Together, they provide a unified system: `active-state` supplies the factor, `active-effect` renders the visual effect.  
+- Together, they form a unified system: `active-state` supplies the factor, and `active-effect` renders the visual effect.  
 
 This separation keeps responsibilities clear:
 - **State logic** lives in `active-state`.  
@@ -29,8 +29,8 @@ This separation keeps responsibilities clear:
 ✔ Variant-aware behavior for regular, outlined, and mild styles  
 ✔ Customizable options for brightness, contrast, and saturation levels  
 ✔ Adaptive brightness that automatically adjusts for light and dark mode  
-✔ Unified filter stack that composes seamlessly with other state effects  
-✔ Ready-to-use defaults for common scenarios, while remaining flexible for custom styling  
+✔ Unified filter stack that composes seamlessly with other state-driven effects  
+✔ Ready-to-use defaults for common scenarios, while remaining extensible for custom styling  
 
 ## 📦 Installation
 Install **@reusable-ui/active-effect** via npm or yarn:
@@ -198,7 +198,7 @@ export const activatableBoxStyle = () => {
 
 #### 🧠 How CSS Active Effect Works
 
-The [`@reusable-ui/active-state`](https://www.npmjs.com/package/@reusable-ui/active-state) package drives a `activeFactorCond` CSS variable, which represents how far the transition has progressed (from inactive → fully active).  
+The [`@reusable-ui/active-state`](https://www.npmjs.com/package/@reusable-ui/active-state) package drives the `activeFactorCond` CSS variable, which represents how far the transition has progressed (from inactive → fully active).  
 
 `active-effect` consumes this factor and applies coordinated formulas that emphasize the current theme colors,
 making components **visually stand out** when active.
@@ -241,5 +241,5 @@ Licensed under the **MIT License** – see the [LICENSE](./LICENSE) file for det
 
 ---
 
-🚀 **@reusable-ui/active-effect delivers predictable, reusable state effects for your UI.**  
+🚀 **@reusable-ui/active-effect delivers predictable, reusable state-driven effects for your UI.**  
 Give it a ⭐ on GitHub if you find it useful!  
