@@ -24,15 +24,15 @@ export default function filterEffectReversedTestStyle() {
         // Apply filter-based effects driven by a test factor:
         filter : composeFilterEffect('var(--activeFactor)', {
             enablesReverseIntent : true,
-            activeOpacity        : inactiveTargetOpacity,
-            activeInvert         : inactiveTargetInvert,
-            activeSepia          : inactiveTargetSepia,
-            activeBrightness     : inactiveTargetBrightness,
-            activeContrast       : inactiveTargetContrast,
-            activeSaturate       : inactiveTargetSaturate,
-            activeHueRotate      : `${inactiveTargetHueRotate}deg`,
-            activeBlur           : `${inactiveTargetBlur}px`,
-            activeDropShadow     : {
+            opacity              : inactiveTargetOpacity,
+            invert               : inactiveTargetInvert,
+            sepia                : inactiveTargetSepia,
+            brightness           : inactiveTargetBrightness,
+            contrast             : inactiveTargetContrast,
+            saturate             : inactiveTargetSaturate,
+            hueRotate            : `${inactiveTargetHueRotate}deg`,
+            blur                 : `${inactiveTargetBlur}px`,
+            dropShadow           : {
                 offsetX          : `${inactiveTargetDropShadow.offsetX}px`,
                 offsetY          : `${inactiveTargetDropShadow.offsetY}px`,
                 blur             : `${inactiveTargetDropShadow.blur}px`,

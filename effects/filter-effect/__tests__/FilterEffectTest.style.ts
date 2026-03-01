@@ -24,15 +24,15 @@ export default function filterEffectTestStyle() {
         // Apply filter-based effects driven by a test factor:
         filter : composeFilterEffect('var(--activeFactor)', {
             enablesReverseIntent : false,
-            activeOpacity        : activeTargetOpacity,
-            activeInvert         : activeTargetInvert,
-            activeSepia          : activeTargetSepia,
-            activeBrightness     : activeTargetBrightness,
-            activeContrast       : activeTargetContrast,
-            activeSaturate       : activeTargetSaturate,
-            activeHueRotate      : `${activeTargetHueRotate}deg`,
-            activeBlur           : `${activeTargetBlur}px`,
-            activeDropShadow     : {
+            opacity              : activeTargetOpacity,
+            invert               : activeTargetInvert,
+            sepia                : activeTargetSepia,
+            brightness           : activeTargetBrightness,
+            contrast             : activeTargetContrast,
+            saturate             : activeTargetSaturate,
+            hueRotate            : `${activeTargetHueRotate}deg`,
+            blur                 : `${activeTargetBlur}px`,
+            dropShadow           : {
                 offsetX          : `${activeTargetDropShadow.offsetX}px`,
                 offsetY          : `${activeTargetDropShadow.offsetY}px`,
                 blur             : `${activeTargetDropShadow.blur}px`,

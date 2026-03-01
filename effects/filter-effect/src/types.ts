@@ -180,14 +180,14 @@ export interface CssFilterEffectOptions {
      * 
      * - Interpolates smoothly during the transition from inactive → active.
      * - Acts as a multiplier of the component's original opacity.
-     *   For example, if the component has `opacity: 0.8` and `activeOpacity = 0.5`,
+     *   For example, if the component has a base `opacity: 0.8` and the configured `opacity = 0.5`,
      *   the fully active opacity becomes `0.8 * 0.5 = 0.4`.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal numeric value, e.g. `0.5`
-     * - A strongly typed reference, e.g. `myConfig.activeOpacity`
+     * - A strongly typed reference, e.g. `myConfig.opacity`
      * 
      * Notes:
      * - Values between `0` and `1` → semi transparent.
@@ -202,21 +202,21 @@ export interface CssFilterEffectOptions {
      * 
      * Defaults to `null` (preserves the component's original opacity).
      */
-    activeOpacity        ?: CssRatioParam | null
+    opacity              ?: CssRatioParam | null
     
     /**
      * Controls how much the component is inverted at full activation.
      * 
      * - Interpolates smoothly during the transition from inactive → active.
      * - Acts as a multiplier of the component's original inversion.
-     *   For example, if the component has `invert(20%)` and `activeInvert = 0.5`,
+     *   For example, if the component has a base `invert(20%)` and the configured `invert = 0.5`,
      *   the fully active inversion becomes `20% * 0.5 = 10%`.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal numeric value, e.g. `0.5`
-     * - A strongly typed reference, e.g. `myConfig.activeInvert`
+     * - A strongly typed reference, e.g. `myConfig.invert`
      * 
      * Notes:
      * - Values between `0` and `1` → partially inverted.
@@ -231,21 +231,21 @@ export interface CssFilterEffectOptions {
      * 
      * Defaults to `null` (preserves the component's original inversion).
      */
-    activeInvert         ?: CssRatioParam | null
+    invert               ?: CssRatioParam | null
     
     /**
      * Controls how much the component is sepia-toned at full activation.
      * 
      * - Interpolates smoothly during the transition from inactive → active.
      * - Acts as a multiplier of the component's original sepia effect.
-     *   For example, if the component has `sepia(50%)` and `activeSepia = 0.5`,
+     *   For example, if the component has a base `sepia(50%)` and the configured `sepia = 0.5`,
      *   the fully active sepia becomes `50% * 0.5 = 25%`.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal numeric value, e.g. `0.5`
-     * - A strongly typed reference, e.g. `myConfig.activeSepia`
+     * - A strongly typed reference, e.g. `myConfig.sepia`
      * 
      * Notes:
      * - Values between `0` and `1` → partially sepia-toned.
@@ -260,7 +260,7 @@ export interface CssFilterEffectOptions {
      * 
      * Defaults to `null` (preserves the component's original sepia effect).
      */
-    activeSepia          ?: CssRatioParam | null
+    sepia                ?: CssRatioParam | null
     
     /**
      * Controls how much the component is brightened or darkened at full activation.
@@ -275,7 +275,7 @@ export interface CssFilterEffectOptions {
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal numeric value, e.g. `0.8`
-     * - A strongly typed reference, e.g. `myConfig.activeBrightness`
+     * - A strongly typed reference, e.g. `myConfig.brightness`
      * 
      * Notes:
      * - Values `< 1` → darken  in light mode, lighten in dark mode.
@@ -289,7 +289,7 @@ export interface CssFilterEffectOptions {
      * 
      * Defaults to `0.95` (slightly darken for light mode, slightly lighten for dark mode).
      */
-    activeBrightness     ?: CssRatioParam | null
+    brightness           ?: CssRatioParam | null
     
     /**
      * Controls how much the component's color contrast is adjusted at full activation.
@@ -300,7 +300,7 @@ export interface CssFilterEffectOptions {
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal numeric value, e.g. `1.2`
-     * - A strongly typed reference, e.g. `myConfig.activeContrast`
+     * - A strongly typed reference, e.g. `myConfig.contrast`
      * 
      * Notes:
      * - Values `< 1` → decrease contrast (flatter look).
@@ -314,7 +314,7 @@ export interface CssFilterEffectOptions {
      * 
      * Defaults to `null` (preserves the component's original contrast).
      */
-    activeContrast       ?: CssRatioParam | null
+    contrast             ?: CssRatioParam | null
     
     /**
      * Controls how much the component's color saturation is adjusted at full activation.
@@ -325,7 +325,7 @@ export interface CssFilterEffectOptions {
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal numeric value, e.g. `0.5`
-     * - A strongly typed reference, e.g. `myConfig.activeSaturate`
+     * - A strongly typed reference, e.g. `myConfig.saturate`
      * 
      * Notes:
      * - Values `< 1` → decrease saturation (muted colors).
@@ -340,7 +340,7 @@ export interface CssFilterEffectOptions {
      * 
      * Defaults to `null` (preserves the component's original saturation).
      */
-    activeSaturate       ?: CssRatioParam | null
+    saturate             ?: CssRatioParam | null
     
     /**
      * Controls how much the component's color hue is rotated at full activation.
@@ -351,7 +351,7 @@ export interface CssFilterEffectOptions {
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal string value with an angle unit, e.g. `'45deg'`
-     * - A strongly typed reference, e.g. `myConfig.activeHueRotate`
+     * - A strongly typed reference, e.g. `myConfig.hueRotate`
      * 
      * Notes:
      * - Positive values rotate hue clockwise (recommended for normal use).
@@ -367,7 +367,7 @@ export interface CssFilterEffectOptions {
      * 
      * Defaults to `null` (preserves the component's original hue).
      */
-    activeHueRotate      ?: CssAngleParam | null
+    hueRotate            ?: CssAngleParam | null
     
     /**
      * Controls how much the component is blurred at full activation.
@@ -378,7 +378,7 @@ export interface CssFilterEffectOptions {
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal string value with a length unit, e.g. `'2px'`
-     * - A strongly typed reference, e.g. `myConfig.activeBlur`
+     * - A strongly typed reference, e.g. `myConfig.blur`
      * 
      * Notes:
      * - `'0px'` → no blur.
@@ -390,7 +390,7 @@ export interface CssFilterEffectOptions {
      * 
      * Defaults to `null` (preserves the component's original blur).
      */
-    activeBlur           ?: CssLengthParam | null
+    blur                 ?: CssLengthParam | null
     
     /**
      * Specifies the drop shadow to apply at full activation.
@@ -402,9 +402,7 @@ export interface CssFilterEffectOptions {
      * 
      * Defaults to `null` (preserves the component's original drop shadow).
      */
-    activeDropShadow     ?: FilterDropShadow | null
-    // invert   0...1   clamp(0, ..., 1)
-    // sepia    0...1   clamp(0, ..., 1)
+    dropShadow           ?: FilterDropShadow | null
 }
 
 

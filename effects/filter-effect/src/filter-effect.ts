@@ -81,8 +81,8 @@ import {
  *         activeStateVars.activeFactor, // Driver for inactive ⇄ active state.
  *         {
  *             enablesReverseIntent : true, // Enables reverse intent (fade out when active).
- *             activeOpacity        : -0.5, // Semi transparent when inactive (requires reverse intent).
- *             activeBrightness     : 1.2,  // Boost brightness when active.
+ *             opacity              : -0.5, // Semi transparent when inactive (requires reverse intent).
+ *             brightness           : 1.2,  // Boost brightness when active.
  *         }
  *     ),
  * });
@@ -91,16 +91,16 @@ import {
 export const composeFilterEffect = (activeFactor: CssCustomRef, options?: CssFilterEffectOptions): CssFilterEffectFormula | 'unset' => {
     // Extract options and assign defaults:
     const {
-        enablesReverseIntent = false,
-        activeOpacity        = null,
-        activeInvert         = null,
-        activeSepia          = null,
-        activeBrightness     = null,
-        activeContrast       = null,
-        activeSaturate       = null,
-        activeHueRotate      = null,
-        activeBlur           = null,
-        activeDropShadow     = null,
+        enablesReverseIntent          = false,
+        opacity    : activeOpacity    = null,
+        invert     : activeInvert     = null,
+        sepia      : activeSepia      = null,
+        brightness : activeBrightness = null,
+        contrast   : activeContrast   = null,
+        saturate   : activeSaturate   = null,
+        hueRotate  : activeHueRotate  = null,
+        blur       : activeBlur       = null,
+        dropShadow : activeDropShadow = null,
     } = options ?? {};
     
     

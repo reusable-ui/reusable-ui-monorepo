@@ -155,22 +155,22 @@ export const activatableBoxStyle = () => {
                 // Values `= 1` → preserves the original opacity (no fade).
                 // Values between `0` and `1` → semi transparent.
                 // Negative sign reverses intent (targets "inactive" state instead of "active").
-                activeOpacity        : -0.5, // semi transparent when "inactive" (requires reverse intent)
+                opacity              : -0.5, // semi transparent when "inactive" (requires reverse intent)
                 
                 // Brightness:
                 // Values `< 1` → darken  in light mode, lighten in dark mode
                 // Values `> 1` → lighten in light mode, darken  in dark mode
-                activeBrightness     : 0.85, // subtle darkening in light mode, subtle lightening in dark mode
+                brightness           : 0.85, // subtle darkening in light mode, subtle lightening in dark mode
                 
                 // Contrast:
                 // Values `< 1` → softer contrast
                 // Values `> 1` → stronger contrast
-                activeContrast       : 1.1,  // slightly stronger contrast when active
+                contrast             : 1.1,  // slightly stronger contrast when active
                 
                 // Saturation:
                 // Values `< 1` → muted colors
                 // Values `> 1` → more vivid colors
-                activeSaturate       : 1.2,  // slightly more vibrant colors when active
+                saturate             : 1.2,  // slightly more vibrant colors when active
             }
         ),
     });
