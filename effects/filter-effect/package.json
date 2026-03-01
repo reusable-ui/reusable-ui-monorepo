@@ -1,0 +1,59 @@
+{
+  "name": "@reusable-ui/filter-effect",
+  "version": "7.0.0",
+  "description": "Provides default visual effects when a component's active state changes. Adjusts the component's visual presentation by making components visually adapt their appearance in response to state changes.",
+  "keywords": [
+    "transition",
+    "filter-effect",
+    "filter",
+    "animation",
+    "appearance",
+    "accessibility",
+    "css",
+    "design-system",
+    "ui",
+    "react"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "effects/filter-effect"
+  },
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "npx playwright test"
+  },
+  "dependencies": {
+    "@cssfn/core": "^4.0.0"
+  },
+  "peerDependencies": {
+    "@reusable-ui/colors": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/chroma-js": "^3.1.2",
+    "@types/react": "^19.0.0",
+    "chroma-js": "^3.2.0",
+    "react": "^19.0.0"
+  }
+}

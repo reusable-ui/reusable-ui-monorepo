@@ -122,6 +122,7 @@
     "states/validation-icon",
     "states/accessibilities",
     "states/validations",
+    "effects/filter-effect",
     "effects/active-effect",
     "effects/active-as-click",
     "effects/disabled-effect",
