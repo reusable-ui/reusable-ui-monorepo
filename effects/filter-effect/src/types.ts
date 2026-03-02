@@ -71,7 +71,7 @@ export interface FilterDropShadow {
     /**
      * Controls the horizontal offset of the shadow.
      * 
-     * - Interpolates smoothly during the transition from `0px` → configured `offsetX` value.
+     * - Transitions smoothly from the inactive state to the active state.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -93,7 +93,7 @@ export interface FilterDropShadow {
     /**
      * Controls the vertical offset of the shadow.
      * 
-     * - Interpolates smoothly during the transition from `0px` → configured `offsetY` value.
+     * - Transitions smoothly from the inactive state to the active state.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -115,7 +115,7 @@ export interface FilterDropShadow {
     /**
      * Controls the blur radius of the shadow.
      * 
-     * - Interpolates smoothly during the transition from `0px` → configured `blur` value.
+     * - Transitions smoothly from the inactive state to the active state.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -132,7 +132,7 @@ export interface FilterDropShadow {
      *     `offsetX`, `offsetY`, and `color`.
      *   - Instead of fading *in* the shadow effect as the state activates, the entire
      *     shadow (offsets, blur, and color) fades *out*.
-     *   - At full activation, the original sharpness, positioning, and color
+     *   - At full activation, the base sharpness, positioning, and color
      *     are restored (the effect is fully un-applied).
      * 
      * Defaults to `null` (implicitly no blur).
@@ -142,7 +142,7 @@ export interface FilterDropShadow {
     /**
      * Specifies the color of the shadow.
      * 
-     * - Interpolates smoothly during the transition from `transparent` → configured `color` value.
+     * - Transitions smoothly from the inactive state to the active state.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -176,12 +176,14 @@ export interface CssFilterEffectOptions {
     enablesReverseIntent ?: boolean
     
     /**
-     * Controls how much the component's opacity is adjusted at full activation.
+     * Controls how much the component's opacity is adjusted when the state is fully active.
      * 
-     * - Interpolates smoothly during the transition from inactive → active.
-     * - Acts as a multiplier of the component's original opacity.
-     *   For example, if the component has a base `opacity: 0.8` and the configured `opacity = 0.5`,
+     * - Transitions smoothly from the inactive state to the active state.
+     * - Acts a multiplier of the component's base opacity.
+     *   For example, if the component has a base `opacity(0.8)` and this option is set to `opacity = 0.5`,
      *   the fully active opacity becomes `0.8 * 0.5 = 0.4`.
+     * - Opacity adjustments are strictly reductive: you can decrease opacity (more transparent),
+     *   but you cannot increase opacity beyond the base (values > 1 are clamped to 1).
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -192,25 +194,29 @@ export interface CssFilterEffectOptions {
      * Notes:
      * - Values between `0` and `1` → semi transparent.
      * - `0` → fully transparent.
-     * - `1` → preserves the original opacity (no fade).
+     * - `1` → preserves the base opacity (no fade).
      * - Percentage units are allowed.
      * - Values outside 0…1 range are clamped by the browser.
      * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
      *   - Instead of fading *in* the opacity adjustment as the state activates, the adjustment fades *out*.
-     *   - At full activation, the original opacity is restored (the effect is fully un-applied).
+     *   - At full activation, the base opacity is restored (the effect is fully un-applied).
      * 
-     * Defaults to `null` (preserves the component's original opacity).
+     * Defaults to `null` (preserves the component's base opacity).
      */
     opacity              ?: CssRatioParam | null
     
     /**
-     * Controls how much the component is inverted at full activation.
+     * Controls how much the component is inverted when the state is fully active.
      * 
-     * - Interpolates smoothly during the transition from inactive → active.
-     * - Acts as a multiplier of the component's original inversion.
-     *   For example, if the component has a base `invert(20%)` and the configured `invert = 0.5`,
-     *   the fully active inversion becomes `20% * 0.5 = 10%`.
+     * - Transitions smoothly from the inactive state to the active state.
+     * - Acts an additional `invert()` filter on top of any base inversion.
+     *   For example, if the base style applies `invert(0.8)` and this option is set to `invert = 0.5`,
+     *   the active state will apply `invert(0.8)` followed by `invert(0.5)`.
+     *   Note: invert filters compose sequentially, neither additively nor multiplicatively — the result is "more inverted",
+     *   but not equivalent to a single `invert(0.4)` or `invert(0.25)`.
+     * - Only a full inversion (`invert(1)`) is perfectly reversible; partial values blend colors
+     *   and cannot be undone exactly.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -227,19 +233,23 @@ export interface CssFilterEffectOptions {
      * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
      *   - Instead of fading *in* the inversion adjustment as the state activates, the adjustment fades *out*.
-     *   - At full activation, the original inversion is restored (the effect is fully un-applied).
+     *   - At full activation, the base inversion is restored (the effect is fully un-applied).
      * 
-     * Defaults to `null` (preserves the component's original inversion).
+     * Defaults to `null` (preserves the component's base inversion).
      */
     invert               ?: CssRatioParam | null
     
     /**
-     * Controls how much the component is sepia-toned at full activation.
+     * Controls how much the component is sepia-toned when the state is fully active.
      * 
-     * - Interpolates smoothly during the transition from inactive → active.
-     * - Acts as a multiplier of the component's original sepia effect.
-     *   For example, if the component has a base `sepia(50%)` and the configured `sepia = 0.5`,
-     *   the fully active sepia becomes `50% * 0.5 = 25%`.
+     * - Transitions smoothly from the inactive state to the active state.
+     * - Acts an additional `sepia()` filter on top of any base sepia effect.
+     *   For example, if the base style applies `sepia(0.8)` and this option is set to `sepia = 0.5`,
+     *   the active state will apply `sepia(0.8)` followed by `sepia(0.5)`.
+     *   Note: sepia filters compose sequentially, neither additively nor multiplicatively — the result is "more sepia-toned",
+     *   but not equivalent to a single `sepia(0.4)` or `sepia(0.25)`.
+     * - Sepia adjustments are irreversible: once sepia is applied, you can only increase the sepia tone,
+     *   not reduce or cancel it back to the original colors.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -256,16 +266,20 @@ export interface CssFilterEffectOptions {
      * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
      *   - Instead of fading *in* the sepia adjustment as the state activates, the adjustment fades *out*.
-     *   - At full activation, the original sepia effect is restored (the effect is fully un-applied).
+     *   - At full activation, the base sepia effect is restored (the effect is fully un-applied).
      * 
-     * Defaults to `null` (preserves the component's original sepia effect).
+     * Defaults to `null` (preserves the component's base sepia effect).
      */
     sepia                ?: CssRatioParam | null
     
     /**
-     * Controls how much the component is brightened or darkened at full activation.
+     * Controls how much the component is brightened or darkened when the state is fully active.
      * 
-     * - Interpolates smoothly during the transition from inactive → active.
+     * - Transitions smoothly from the inactive state to the active state.
+     * - Acts a multiplier of the component's base brightness.
+     *   For example, if the component has a base `brightness(0.8)` and this option is set to `brightness = 0.5`,
+     *   the fully active brightness becomes `0.8 * 0.5 = 0.4`.
+     * - Brightness is almost reversible but not perfectly due to internal clamping and rounding in the browser's filter implementation.
      * - Automatically adapts to light/dark mode:
      *   - In **light mode** (`mode = +1`), values `< 1` darken  and values `> 1` lighten.
      *   - In **dark mode**  (`mode = -1`), values `< 1` lighten and values `> 1` darken.
@@ -285,16 +299,20 @@ export interface CssFilterEffectOptions {
      * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
      *   - Instead of fading *in* the brightness adjustment as the state activates, the adjustment fades *out*.
-     *   - At full activation, the original brightness is restored (the effect is fully un-applied).
+     *   - At full activation, the base brightness is restored (the effect is fully un-applied).
      * 
-     * Defaults to `0.95` (slightly darken for light mode, slightly lighten for dark mode).
+     * Defaults to `null` (preserves the component's base brightness).
      */
     brightness           ?: CssRatioParam | null
     
     /**
-     * Controls how much the component's color contrast is adjusted at full activation.
+     * Controls how much the component's color contrast is adjusted when the state is fully active.
      * 
-     * - Interpolates smoothly during the transition from inactive → active.
+     * - Transitions smoothly from the inactive state to the active state.
+     * - Acts a multiplier of the component's base contrast.
+     *   For example, if the component has a base `contrast(0.8)` and this option is set to `contrast = 0.5`,
+     *   the fully active contrast becomes `0.8 * 0.5 = 0.4`.
+     * - Contrast is almost reversible but not perfectly due to internal clamping and rounding in the browser's filter implementation.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -310,16 +328,20 @@ export interface CssFilterEffectOptions {
      * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
      *   - Instead of fading *in* the contrast adjustment as the state activates, the adjustment fades *out*.
-     *   - At full activation, the original contrast is restored (the effect is fully un-applied).
+     *   - At full activation, the base contrast is restored (the effect is fully un-applied).
      * 
-     * Defaults to `null` (preserves the component's original contrast).
+     * Defaults to `null` (preserves the component's base contrast).
      */
     contrast             ?: CssRatioParam | null
     
     /**
-     * Controls how much the component's color saturation is adjusted at full activation.
+     * Controls how much the component's color saturation is adjusted when the state is fully active.
      * 
-     * - Interpolates smoothly during the transition from inactive → active.
+     * - Transitions smoothly from the inactive state to the active state.
+     * - Acts a multiplier of the component's base saturation.
+     *   For example, if the component has a base `saturate(0.8)` and this option is set to `saturate = 0.5`,
+     *   the fully active saturation becomes `0.8 * 0.5 = 0.4`.
+     * - Saturation is almost reversible but not perfectly due to internal clamping and rounding in the browser's filter implementation.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -336,16 +358,20 @@ export interface CssFilterEffectOptions {
      * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
      *   - Instead of fading *in* the saturation adjustment as the state activates, the adjustment fades *out*.
-     *   - At full activation, the original saturation is restored (the effect is fully un-applied).
+     *   - At full activation, the base saturation is restored (the effect is fully un-applied).
      * 
-     * Defaults to `null` (preserves the component's original saturation).
+     * Defaults to `null` (preserves the component's base saturation).
      */
     saturate             ?: CssRatioParam | null
     
     /**
-     * Controls how much the component's color hue is rotated at full activation.
+     * Controls how much the component's color hue is rotated when the state is fully active.
      * 
-     * - Interpolates smoothly during the transition from inactive → active.
+     * - Transitions smoothly from the inactive state to the active state.
+     * - Acts an additive of the component's base hue rotation.
+     *   For example, if the component has a base `hue-rotate(80deg)` and this option is set to `hueRotate = 50deg`,
+     *   the fully active hue rotation becomes `80deg + 50deg = 130deg`.
+     * - Hue rotation is almost reversible but not perfectly due to internal clamping and rounding in the browser's filter implementation.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -361,18 +387,24 @@ export interface CssFilterEffectOptions {
      * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
      *   - Instead of fading *in* the hue adjustment as the state activates, the adjustment fades *out*.
-     *   - At full activation, the original hue is restored (the effect is fully un-applied).
+     *   - At full activation, the base hue is restored (the effect is fully un-applied).
      * - `'0deg'` → no hue adjustment.
      * - Only `deg`, `grad`, `rad`, and `turn` units are allowed.
      * 
-     * Defaults to `null` (preserves the component's original hue).
+     * Defaults to `null` (preserves the component's base hue).
      */
     hueRotate            ?: CssAngleParam | null
     
     /**
-     * Controls how much the component is blurred at full activation.
+     * Controls how much the component is blurred when the state is fully active.
      * 
-     * - Interpolates smoothly during the transition from inactive → active.
+     * - Transitions smoothly from the inactive state to the active state.
+     * - Acts an additional `blur()` filter on top of any base blur effect.
+     *   For example, if the base style applies `blur(8px)` and this option is set to `blur = 5px`,
+     *   the active state will apply `blur(8px)` followed by `blur(5px)`.
+     *   Note: blur filters compose sequentially, neither additively nor multiplicatively — the result is "blur of the blurred image",
+     *   but not equivalent to a single `blur(13px)` or `blur(40px)`.
+     * - Blur cannot be "canceled out": once applied, detail is lost and cannot be restored.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -386,21 +418,27 @@ export interface CssFilterEffectOptions {
      * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
      *   - Instead of fading *in* the blur effect as the state activates, the effect fades *out*.
-     *   - At full activation, the original sharpness is restored (the effect is fully un-applied).
+     *   - At full activation, the base sharpness is restored (the effect is fully un-applied).
      * 
-     * Defaults to `null` (preserves the component's original blur).
+     * Defaults to `null` (preserves the component's base blur).
      */
     blur                 ?: CssLengthParam | null
     
     /**
-     * Specifies the drop shadow to apply at full activation.
+     * Specifies the drop shadow to apply when the state is fully active.
      * 
-     * - Interpolates smoothly during the transition from inactive → active.
+     * - Transitions smoothly from the inactive state to the active state.
+     * - Acts an additive adjustment to the component's base drop shadow.
+     *   For example, if the component has a base `drop-shadow(1px 1px 2px black)` and
+     *   this option is set to `dropShadow` has `offsetX = 2px`, `offsetY = 2px`, `blur = 3px`, and `color = 'red'`,
+     *   the fully active drop shadow becomes the combination of both shadows.
+     * - Drop shadow cannot be "canceled out": each new shadow is layered behind the previous shadows,
+     *   so the effect accumulates and cannot be undone.
      * 
      * Accepts:
      * - A `FilterDropShadow` object defining the shadow parameters.
      * 
-     * Defaults to `null` (preserves the component's original drop shadow).
+     * Defaults to `null` (preserves the component's base drop shadow).
      */
     dropShadow           ?: FilterDropShadow | null
 }
