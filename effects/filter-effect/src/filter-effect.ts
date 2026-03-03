@@ -91,16 +91,16 @@ import {
 export const composeFilterEffect = (activeFactor: CssCustomRef, options?: CssFilterEffectOptions): CssFilterEffectFormula | 'unset' => {
     // Extract options and assign defaults:
     const {
-        enablesReverseIntent          = false,
-        opacity    : activeOpacity    = null,
-        invert     : activeInvert     = null,
-        sepia      : activeSepia      = null,
-        brightness : activeBrightness = null,
-        contrast   : activeContrast   = null,
-        saturate   : activeSaturate   = null,
-        hueRotate  : activeHueRotate  = null,
-        blur       : activeBlur       = null,
-        dropShadow : activeDropShadow = null,
+        enablesReverseIntent          = false, // Defaults to `false` (no reverse intent, always fade *in* the effect as the state activates).
+        opacity    : activeOpacity    = null,  // Defaults to `null` (preserves the component's base opacity).
+        invert     : activeInvert     = null,  // Defaults to `null` (preserves the component's base inversion).
+        sepia      : activeSepia      = null,  // Defaults to `null` (preserves the component's base sepia effect).
+        brightness : activeBrightness = null,  // Defaults to `null` (preserves the component's base brightness).
+        contrast   : activeContrast   = null,  // Defaults to `null` (preserves the component's base contrast).
+        saturate   : activeSaturate   = null,  // Defaults to `null` (preserves the component's base saturation).
+        hueRotate  : activeHueRotate  = null,  // Defaults to `null` (preserves the component's base hue).
+        blur       : activeBlur       = null,  // Defaults to `null` (preserves the component's base blur).
+        dropShadow : activeDropShadow = null,  // Defaults to `null` (preserves the component's base drop shadow).
     } = options ?? {};
     
     
@@ -214,10 +214,10 @@ export const composeFilterEffect = (activeFactor: CssCustomRef, options?: CssFil
     const dropShadowParameterSchemas : (FilterSchema | false)[] | false = (activeDropShadow !== null) && ((): (FilterSchema | false)[] => {
         // Extract options and assign defaults:
         const {
-            offsetX,
-            offsetY,
-            blur    = null,
-            color   = null,
+            offsetX,        // Defaults to `'0px'`.
+            offsetY,        // Defaults to `'0px'`.
+            blur    = null, // Defaults to `null` (implicitly no blur).
+            color   = null, // Defaults to `null` (use the element's own `color` property).
         } = activeDropShadow;
         
         // If no blur is specified → treat as `0px`:
