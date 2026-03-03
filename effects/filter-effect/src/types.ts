@@ -71,7 +71,7 @@ export interface FilterDropShadow {
     /**
      * Controls the horizontal offset of the shadow.
      * 
-     * - Transitions smoothly from the inactive state to the active state.
+     * - Transitions smoothly from inactive → active.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -83,7 +83,7 @@ export interface FilterDropShadow {
      * - `'0px'` → no horizontal offset.
      * - Percentage units are not allowed.
      * - Negative values are allowed (to move the shadow left).
-     * - To reverse the interpolation direction of this offset as the state activates,
+     * - To reverse the interpolation direction of this offset when active,
      *   set the corresponding `blur` property to a negative value.
      * 
      * Defaults to `'0px'`.
@@ -93,7 +93,7 @@ export interface FilterDropShadow {
     /**
      * Controls the vertical offset of the shadow.
      * 
-     * - Transitions smoothly from the inactive state to the active state.
+     * - Transitions smoothly from inactive → active.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -105,7 +105,7 @@ export interface FilterDropShadow {
      * - `'0px'` → no vertical offset.
      * - Percentage units are not allowed.
      * - Negative values are allowed (to move the shadow upward).
-     * - To reverse the interpolation direction of this offset as the state activates,
+     * - To reverse the interpolation direction of this offset when active,
      *   set the corresponding `blur` property to a negative value.
      * 
      * Defaults to `'0px'`.
@@ -115,7 +115,7 @@ export interface FilterDropShadow {
     /**
      * Controls the blur radius of the shadow.
      * 
-     * - Transitions smoothly from the inactive state to the active state.
+     * - Transitions smoothly from inactive → active.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -130,19 +130,18 @@ export interface FilterDropShadow {
      *   - They reverse the interpolation direction of the blur itself.
      *   - They also reverse the interpolation direction of the shadow's
      *     `offsetX`, `offsetY`, and `color`.
-     *   - Instead of fading *in* the shadow effect as the state activates, the entire
+     *   - Instead of fading *in* the shadow effect when active, the entire
      *     shadow (offsets, blur, and color) fades *out*.
-     *   - At full activation, the base sharpness, positioning, and color
-     *     are restored (the effect is fully un-applied).
+     *   - When fully inactive, this shadow is gone (the effect is fully un-applied).
      * 
-     * Defaults to `null` (implicitly no blur).
+     * Defaults to `null` (no blur radius).
      */
     blur    ?: CssLengthParam | null
     
     /**
      * Specifies the color of the shadow.
      * 
-     * - Transitions smoothly from the inactive state to the active state.
+     * - Transitions smoothly from inactive → active.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
@@ -151,7 +150,7 @@ export interface FilterDropShadow {
      * - A strongly typed reference, e.g. `myConfig.shadowColor`
      * 
      * Notes:
-     * - To reverse the interpolation direction of this color as the state activates,
+     * - To reverse the interpolation direction of this color when active,
      *   set the corresponding `blur` property to a negative value.
      * 
      * Defaults to `null` (use the element's own `color` property).

@@ -216,7 +216,7 @@ export const composeFilterEffect = (activeFactor: CssCustomRef, options?: CssFil
         const {
             offsetX = '0px', // Defaults to `'0px'`.
             offsetY = '0px', // Defaults to `'0px'`.
-            blur    = null,  // Defaults to `null` (implicitly no blur).
+            blur    = null,  // Defaults to `null` (no blur radius).
             color   = null,  // Defaults to `null` (use the element's own `color` property).
         } = activeDropShadow;
         
