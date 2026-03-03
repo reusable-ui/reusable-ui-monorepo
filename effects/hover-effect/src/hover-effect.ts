@@ -74,7 +74,9 @@ export const usesHoverEffect = (options?: CssHoverEffectOptions): CssHoverEffect
     const {
         enablesReverseIntent = true, // Defaults to `true` (enables reverse intent, allowing negative values to fade *out* the effect on hover).
         brightness           = 0.95, // Defaults to `0.95` (slightly darken for light mode, slightly lighten for dark mode).
+        
         textDecoration       = null, // Defaults to `null` (preserves the component's original text decoration).
+        
         ...restOptions
     } = options ?? {};
     
@@ -87,25 +89,7 @@ export const usesHoverEffect = (options?: CssHoverEffectOptions): CssHoverEffect
     
     return {
         hoverEffectRule : () => style({
-            /**
-             * Hover filter:
-             * - No filter options specified → always invalid (`unset`).
-             * - Fully unhovered → ignored (browser skips invalid formula).
-             * - Otherwise → interpolates configured filter functions toward their target values.
-             * 
-             * Behavior:
-             * - factor = 0      → all filters = neutral (no adjustment).
-             * - factor = 1      → filters = configured target values.
-             * - Between 0 and 1 → smooth interpolation between neutral and target.
-             * - Saturation, brightness, contrast may overshoot/undershoot if factor goes beyond [0,1].
-             * - `ensureBetweenZeroAndOne(...)` clamps `opacity()` within 0…1.
-             * - `ensureNonNegative(...)` ensures `brightness()`, `contrast()`, and `saturate()` remain non-negative.
-             * - `ensureNonNegativeLength(...)` ensures `blur()` and blur radius remain non-negative lengths.
-             * 
-             * Note:
-             * - A "double array" (`[[...]]`) is intended.
-             *   When the CSS is rendered, values inside are concatenated with spaces.
-             */
+            // Hover filter:
             [hoverEffectVars.hoverFilter]: composeFilterEffect(hoverFactor, { ...restOptions, enablesReverseIntent, brightness }),
             
             /**
