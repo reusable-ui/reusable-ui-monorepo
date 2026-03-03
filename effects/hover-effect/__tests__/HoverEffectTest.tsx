@@ -1,44 +1,43 @@
-import React, { type CSSProperties, useMemo, useLayoutEffect } from 'react'
+import React, { type CSSProperties, useMemo } from 'react'
 import { HydrateStyles } from '@cssfn/cssfn-react'
-import { usesHoverState } from '@reusable-ui/hover-state'
-import { usesThemeVariant } from '@reusable-ui/theme-variant'
-import { colorParamVars } from '@reusable-ui/colors'
-import { useOutlineVariant, type OutlineVariantProps } from '@reusable-ui/outline-variant'
-import { useMildVariant, type MildVariantProps} from '@reusable-ui/mild-variant'
-import { regularBaseColor, mildBaseColor } from './base-colors.js'
 import { useHoverEffectTestStyles } from './HoverEffectTest.loader.js'
+import { useHoverEffectReversedTestStyles } from './HoverEffectReversedTest.loader.js'
+import { usesHoverState } from '@reusable-ui/hover-state'
 
 
 
-export interface HoverEffectTestProps
-    extends
-        // Variants:
-        Required<OutlineVariantProps>,
-        Required<MildVariantProps>
-{
+export interface HoverEffectTestProps {
     /**
-     * Simulates the `hoverFactorCond` CSS variable.
+     * Simulates the `activeFactor` CSS variable.
      * 
      * Typical values:
-     * - `'unset'` : fully unhovered
-     * - `0`       : start of unhover state
+     * - `'unset'` : fully inactive
+     * - `0`       : start of inactive state
      * - `0.5`     : halfway through transition
-     * - `1`       : fully hovered
+     * - `1`       : fully active
      * - `> 1`     : overshoot (bump effect)
      * - `< 0`     : undershoot (bounce back effect)
      */
-    hoverFactorCond ?: 'unset' | number
+    activeFactor  ?: 'unset' | number
     
     /**
-     * Specifies the theme mode for the test.
+     * Simulates the `isHovered` CSS variable.
+     * 
+     * - `false` : not hovered (inactive state)
+     * - `true`  : hovered (active state)
      */
-    mode             : 'light' | 'dark'
+    isHovered     ?: boolean
+    
+    /**
+     * Optional flag to simulate reverse intent behavior.
+     */
+    reverseIntent ?: boolean
 }
 
 /**
  * Test component for HoverEffect.
  * 
- * - Mocks `hoverFactorCond` via inline style for controlled testing.
+ * - Mocks `activeFactor` via inline style for controlled testing.
  * - Uses static colors for simplicity:
  *   - Regular background  → pure blue   `oklch(0.5 0.3 265 / 1)`
  *   - Outlined background → transparent `oklch(0 0 0 / 0)`
@@ -46,51 +45,42 @@ export interface HoverEffectTestProps
  */
 export const HoverEffectTest = (props: HoverEffectTestProps) => {
     const {
-        hoverFactorCond = 'unset',
-        mode,
+        activeFactor  = 'unset',
+        isHovered     = false,
+        reverseIntent = true,
     } = props;
     
     const styles = useHoverEffectTestStyles();
+    const reversedStyles = useHoverEffectReversedTestStyles();
     
-    useLayoutEffect(() => {
-        colorParamVars.mode = ((mode === 'light') ? 1 : -1) as any;
-    }, [mode])
-    
-    const { hoverStateVars  : { hoverFactorCond: hoverFactorCondVar } } = usesHoverState();
-    const { themeVariantVars : { backgRegular, backgMild } } = usesThemeVariant();
+    const { hoverStateVars  : { hoverFactor: hoverFactorVar, isHovered: isHoveredVar } } = usesHoverState();
     
     // Inline style overrides:
-    // - Assigns `hoverFactorCond` directly
+    // - Assigns `activeFactor` directly
     // - Statically sets regular/mild background colors for predictable testing
     const inlineStyle : CSSProperties = useMemo(() => ({
         // @ts-ignore
         [
-            hoverFactorCondVar
+            hoverFactorVar
             .slice(4, -1) // fix: var(--customProp) => --customProp
-        ]: String(hoverFactorCond),
-        
+        ]: String(activeFactor),
         // @ts-ignore
         [
-            backgRegular
+            isHoveredVar
             .slice(4, -1) // fix: var(--customProp) => --customProp
-        ]: regularBaseColor,
-        
-        // @ts-ignore
-        [
-            backgMild
-            .slice(4, -1) // fix: var(--customProp) => --customProp
-        ]: mildBaseColor,
-    } as CSSProperties), [hoverFactorCondVar, hoverFactorCond]);
-    
-    const { outlineClassname } = useOutlineVariant(props);
-    const { mildClassname } = useMildVariant(props);
+        ]: (
+            isHovered
+            ? ' ' // avoids an empty string for truthly, use a space instead
+            : 'unset'
+        ),
+    } as CSSProperties), [hoverFactorVar, activeFactor, isHoveredVar, isHovered]);
     
     return (
         <div>
             <HydrateStyles />
             <div
                 data-testid="hover-effect-test"
-                className={`${styles.main} ${outlineClassname} ${mildClassname}`}
+                className={reverseIntent ? reversedStyles.main : styles.main}
                 style={inlineStyle}
             >
                 Hover Effect Test

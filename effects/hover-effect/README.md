@@ -116,19 +116,19 @@ export const hoverableBoxStyle = () => {
         // Brightness:
         // Values `< 1` → darken  in light mode, lighten in dark mode
         // Values `> 1` → lighten in light mode, darken  in dark mode
-        hoverBrightness     : 1.1, // subtle lightening in light mode, subtle darkening in dark mode
+        brightness     : 1.1, // subtle lightening in light mode, subtle darkening in dark mode
         
         // Contrast:
         // Values `< 1` → softer contrast
         // Values `> 1` → stronger contrast
-        hoverContrast       : 1.1,  // slightly stronger contrast when hovered
+        contrast       : 1.1,  // slightly stronger contrast when hovered
         
         // Saturation:
         // Values `< 1` → muted colors
         // Values `> 1` → more vivid colors
-        hoverSaturate       : 1.2,  // slightly more vibrant colors when hovered
+        saturate       : 1.2,  // slightly more vibrant colors when hovered
         
-        hoverTextDecoration : 'underline', // underline text when hovered
+        textDecoration : 'underline', // underline text when hovered
     });
     
     return style({

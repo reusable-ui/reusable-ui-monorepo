@@ -7,7 +7,6 @@ import {
     
     // Cssfn css specific types:
     type CssCustomRef,
-    type CssLength,
     type CssKnownBaseProps,
     type CssRule,
     
@@ -16,6 +15,20 @@ import {
     // Strongly typed of css variables:
     type CssVars,
 }                           from '@cssfn/core'                      // Writes css in javascript.
+
+// Reusable-ui effects:
+import {
+    // Types:
+    type CssFilterEffectOptions,
+}                           from '@reusable-ui/filter-effect'       // Provides default visual effects when a component's active state changes. Adjusts the component's visual presentation by making components visually adapt their appearance in response to state changes.
+export {
+    // Types:
+    type CssLengthParam,
+    type CssRatioParam,
+    type CssAngleParam,
+    type CssColorParam,
+    type FilterDropShadow,
+}                           from '@reusable-ui/filter-effect'       // Provides default visual effects when a component's active state changes. Adjusts the component's visual presentation by making components visually adapt their appearance in response to state changes.
 
 
 
@@ -46,189 +59,128 @@ export interface HoverEffectVars {
 
 
 /**
- * Represents a CSS length parameter.
- * 
- * - Must include a unit (e.g., `'10px'`, `'2rem'`).
- * - A bare number is prohibited, except for `0`.
- * - Allows CSS custom property references (e.g., `'var(--boo)'`), including with fallback (e.g., `'var(--boo, var(--foo))'`).
- */
-export type CssLengthParam =
-    | 0            // Unitless zero is allowed.
-    | CssLength    // Numeric value with unit.
-    | CssCustomRef // CSS variable reference (with optional fallback).
-
-/**
- * Represents a CSS ratio parameter.
- * 
- * - Must be unitless (e.g., `0.5`, `2`) or percentage (e.g., `'50%'`).
- * - Allows CSS custom property references (e.g., `'var(--boo)'`), including with fallback (e.g., `'var(--boo, var(--foo))'`).
- */
-export type CssRatioParam =
-    | number       // Unitless number.
-    | `${number}%` // Percentage string.
-    | CssCustomRef // CSS variable reference (with optional fallback).
-
-/**
- * Represents a CSS angle parameter.
- * 
- * - Must include one of the allowed angle units: `'deg'`, `'grad'`, `'rad'`, or `'turn'`.
- * - A bare number is prohibited, except for `0`.
- * - Allows CSS custom property references (e.g., `'var(--boo)'`), including with fallback (e.g., `'var(--boo, var(--foo))'`).
- */
-export type CssAngleParam =
-    | 0               // Unitless zero is allowed.
-    | `${number}deg`  // Degrees.
-    | `${number}grad` // Gradians.
-    | `${number}rad`  // Radians.
-    | `${number}turn` // Turns.
-    | CssCustomRef    // CSS variable reference (with optional fallback).
-
-/**
- * Represents a CSS color parameter.
- * 
- * - Must be a valid CSS color string (e.g., `'red'`, `'#ff0000'`, `'rgb(255, 0, 0)'`, `'oklch(0.5 0.3 120 / 0.5)'`).
- * - Allows CSS custom property references (e.g., `'var(--boo)'`), including with fallback (e.g., `'var(--boo, var(--foo))'`).
- */
-export type CssColorParam =
-    | Exclude<CssKnownBaseProps['color'], undefined | null> // String color.
-    | CssCustomRef                                          // CSS variable reference (with optional fallback).
-
-
-
-/**
- * Defines the configuration for a hover drop shadow effect.
- */
-export interface HoverDropShadow {
-    /**
-     * Controls the horizontal offset of the shadow.
-     * 
-     * - Interpolates smoothly during the transition from `0px` → configured `offsetX` value.
-     * 
-     * Accepts:
-     * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
-     * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
-     * - A literal string value with a length unit, e.g. `'0.75rem'`
-     * - A strongly typed reference, e.g. `myConfig.shadowX`
-     * 
-     * Notes:
-     * - `'0px'` → no horizontal offset.
-     * - Percentage units are not allowed.
-     * - Negative values are allowed (to move the shadow left).
-     * - To reverse the interpolation direction of this offset during hover,
-     *   set the corresponding `blur` property to a negative value.
-     * 
-     * Defaults to `'0px'`.
-     */
-    offsetX  : CssLengthParam
-    
-    /**
-     * Controls the vertical offset of the shadow.
-     * 
-     * - Interpolates smoothly during the transition from `0px` → configured `offsetY` value.
-     * 
-     * Accepts:
-     * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
-     * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
-     * - A literal string value with a length unit, e.g. `'0.75rem'`
-     * - A strongly typed reference, e.g. `myConfig.shadowY`
-     * 
-     * Notes:
-     * - `'0px'` → no vertical offset.
-     * - Percentage units are not allowed.
-     * - Negative values are allowed (to move the shadow upward).
-     * - To reverse the interpolation direction of this offset during hover,
-     *   set the corresponding `blur` property to a negative value.
-     * 
-     * Defaults to `'0px'`.
-     */
-    offsetY  : CssLengthParam
-    
-    /**
-     * Controls the blur radius of the shadow.
-     * 
-     * - Interpolates smoothly during the transition from `0px` → configured `blur` value.
-     * 
-     * Accepts:
-     * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
-     * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
-     * - A literal string value with a length unit, e.g. `'0.75rem'`
-     * - A strongly typed reference, e.g. `myConfig.shadowBlur`
-     * 
-     * Notes:
-     * - `'0px'` → no blur.
-     * - Percentage units are not allowed.
-     * - Negative values are supported but have a **special meaning**:
-     *   - They reverse the interpolation direction of the blur itself.
-     *   - They also reverse the interpolation direction of the shadow's
-     *     `offsetX`, `offsetY`, and `color`.
-     *   - Instead of fading *in* the shadow effect during hover, the entire
-     *     shadow (offsets, blur, and color) fades *out*.
-     *   - At full hover, the original sharpness, positioning, and color
-     *     are restored (the effect is fully un-applied).
-     * 
-     * Defaults to `null` (implicitly no blur).
-     */
-    blur    ?: CssLengthParam | null
-    
-    /**
-     * Specifies the color of the shadow.
-     * 
-     * - Interpolates smoothly during the transition from `transparent` → configured `color` value.
-     * 
-     * Accepts:
-     * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
-     * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
-     * - A literal string value, e.g. `'oklch(0 0 0)'`, `'#000000'`
-     * - A strongly typed reference, e.g. `myConfig.shadowColor`
-     * 
-     * Notes:
-     * - To reverse the interpolation direction of this color during hover,
-     *   set the corresponding `blur` property to a negative value.
-     * 
-     * Defaults to `null` (use the element's own `color` property).
-     */
-    color   ?: CssColorParam | null
-}
-
-
-
-/**
  * Configuration options for customizing hover effects.
  */
-export interface CssHoverEffectOptions {
+export interface CssHoverEffectOptions
+    extends
+        // Bases:
+        CssFilterEffectOptions
+{
+    /**
+     * Enables support for reverse intent.
+     * 
+     * When true, negative configuration values cause the effect
+     * to fade *out* on hover, instead of fading *in*.
+     * 
+     * Defaults to `true` (enables reverse intent, allowing negative values to fade *out* the effect on hover).
+     */
+    enablesReverseIntent ?: CssFilterEffectOptions['enablesReverseIntent']
+    
     /**
      * Controls how much the component's opacity is adjusted when fully hovered.
      * 
-     * - Interpolates smoothly during the transition from unhovered → hovered.
-     * - Acts as a multiplier of the component's original opacity.
-     *   For example, if the component has `opacity: 0.8` and `hoverOpacity = 0.5`,
+     * - Transitions smoothly from unhovered → hovered.
+     * - Acts a multiplier of the component's base opacity.
+     *   For example, if the component has a base `opacity(0.8)` and this option is set to `opacity = 0.5`,
      *   the fully hovered opacity becomes `0.8 * 0.5 = 0.4`.
+     * - Opacity adjustments are strictly reductive: you can decrease opacity (more transparent),
+     *   but you cannot increase opacity beyond the base (values > 1 are clamped to 1).
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal numeric value, e.g. `0.5`
-     * - A strongly typed reference, e.g. `myConfig.hoverOpacity`
+     * - A strongly typed reference, e.g. `myConfig.opacity`
      * 
      * Notes:
      * - Values between `0` and `1` → semi transparent.
      * - `0` → fully transparent.
-     * - `1` → preserves the original opacity (no fade).
+     * - `1` → preserves the base opacity (no fade).
      * - Percentage units are allowed.
      * - Values outside 0…1 range are clamped by the browser.
      * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
-     *   - Instead of fading *in* the opacity adjustment during hover, the adjustment fades *out*.
-     *   - At full hover, the original opacity is restored (the effect is fully un-applied).
+     *   - Instead of fading *in* the opacity adjustment when hovered, the adjustment fades *out*.
+     *   - When fully unhovered, the base opacity is restored (the effect is fully un-applied).
      * 
-     * Defaults to `null` (preserves the component's original opacity).
+     * Defaults to `null` (preserves the component's base opacity).
      */
-    hoverOpacity        ?: CssRatioParam | null
+    opacity              ?: CssFilterEffectOptions['opacity']
+    
+    /**
+     * Controls how much the component is inverted when fully hovered.
+     * 
+     * - Transitions smoothly from unhovered → hovered.
+     * - Acts an additional `invert()` filter on top of any base inversion.
+     *   For example, if the base style applies `invert(0.8)` and this option is set to `invert = 0.5`,
+     *   the hovered state will apply `invert(0.8)` followed by `invert(0.5)`.
+     *   Note: invert filters compose sequentially, neither additively nor multiplicatively — the result is "more inverted",
+     *   but not equivalent to a single `invert(0.4)` or `invert(0.25)`.
+     * - Only a full inversion (`invert(1)`) is perfectly reversible; partial values blend colors
+     *   and cannot be undone exactly.
+     * 
+     * Accepts:
+     * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
+     * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
+     * - A literal numeric value, e.g. `0.5`
+     * - A strongly typed reference, e.g. `myConfig.invert`
+     * 
+     * Notes:
+     * - Values between `0` and `1` → partially inverted.
+     * - `0` → no inversion.
+     * - `1` → fully inverted.
+     * - Percentage units are allowed.
+     * - Values outside 0…1 range are clamped by the browser.
+     * - Negative values are supported but have a **special meaning**:
+     *   - They reverse the interpolation direction.
+     *   - Instead of fading *in* the inversion adjustment when hovered, the adjustment fades *out*.
+     *   - When fully unhovered, the base inversion is restored (the effect is fully un-applied).
+     * 
+     * Defaults to `null` (preserves the component's base inversion).
+     */
+    invert               ?: CssFilterEffectOptions['invert']
+    
+    /**
+     * Controls how much the component is sepia-toned when fully hovered.
+     * 
+     * - Transitions smoothly from unhovered → hovered.
+     * - Acts an additional `sepia()` filter on top of any base sepia effect.
+     *   For example, if the base style applies `sepia(0.8)` and this option is set to `sepia = 0.5`,
+     *   the hovered state will apply `sepia(0.8)` followed by `sepia(0.5)`.
+     *   Note: sepia filters compose sequentially, neither additively nor multiplicatively — the result is "more sepia-toned",
+     *   but not equivalent to a single `sepia(0.4)` or `sepia(0.25)`.
+     * - Sepia adjustments are irreversible: once sepia is applied, you can only increase the sepia tone,
+     *   not reduce or cancel it back to the original colors.
+     * 
+     * Accepts:
+     * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
+     * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
+     * - A literal numeric value, e.g. `0.5`
+     * - A strongly typed reference, e.g. `myConfig.sepia`
+     * 
+     * Notes:
+     * - Values between `0` and `1` → partially sepia-toned.
+     * - `0` → no sepia effect.
+     * - `1` → fully sepia-toned.
+     * - Percentage units are allowed.
+     * - Values outside 0…1 range are clamped by the browser.
+     * - Negative values are supported but have a **special meaning**:
+     *   - They reverse the interpolation direction.
+     *   - Instead of fading *in* the sepia adjustment when hovered, the adjustment fades *out*.
+     *   - When fully unhovered, the base sepia effect is restored (the effect is fully un-applied).
+     * 
+     * Defaults to `null` (preserves the component's base sepia effect).
+     */
+    sepia                ?: CssFilterEffectOptions['sepia']
     
     /**
      * Controls how much the component is brightened or darkened when fully hovered.
      * 
-     * - Interpolates smoothly during the transition from unhovered → hovered.
+     * - Transitions smoothly from unhovered → hovered.
+     * - Acts a multiplier of the component's base brightness.
+     *   For example, if the component has a base `brightness(0.8)` and this option is set to `brightness = 0.5`,
+     *   the fully hovered brightness becomes `0.8 * 0.5 = 0.4`.
+     * - Brightness is almost reversible but not perfectly due to internal clamping and rounding in the browser's filter implementation.
      * - Automatically adapts to light/dark mode:
      *   - In **light mode** (`mode = +1`), values `< 1` darken  and values `> 1` lighten.
      *   - In **dark mode**  (`mode = -1`), values `< 1` lighten and values `> 1` darken.
@@ -238,7 +190,7 @@ export interface CssHoverEffectOptions {
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal numeric value, e.g. `0.8`
-     * - A strongly typed reference, e.g. `myConfig.hoverBrightness`
+     * - A strongly typed reference, e.g. `myConfig.brightness`
      * 
      * Notes:
      * - Values `< 1` → darken  in light mode, lighten in dark mode.
@@ -247,23 +199,27 @@ export interface CssHoverEffectOptions {
      * - Percentage units are allowed.
      * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
-     *   - Instead of fading *in* the brightness adjustment during hover, the adjustment fades *out*.
-     *   - At full hover, the original brightness is restored (the effect is fully un-applied).
+     *   - Instead of fading *in* the brightness adjustment when hovered, the adjustment fades *out*.
+     *   - When fully unhovered, the base brightness is restored (the effect is fully un-applied).
      * 
      * Defaults to `0.95` (slightly darken for light mode, slightly lighten for dark mode).
      */
-    hoverBrightness     ?: CssRatioParam | null
+    brightness           ?: CssFilterEffectOptions['brightness']
     
     /**
      * Controls how much the component's color contrast is adjusted when fully hovered.
      * 
-     * - Interpolates smoothly during the transition from unhovered → hovered.
+     * - Transitions smoothly from unhovered → hovered.
+     * - Acts a multiplier of the component's base contrast.
+     *   For example, if the component has a base `contrast(0.8)` and this option is set to `contrast = 0.5`,
+     *   the fully hovered contrast becomes `0.8 * 0.5 = 0.4`.
+     * - Contrast is almost reversible but not perfectly due to internal clamping and rounding in the browser's filter implementation.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal numeric value, e.g. `1.2`
-     * - A strongly typed reference, e.g. `myConfig.hoverContrast`
+     * - A strongly typed reference, e.g. `myConfig.contrast`
      * 
      * Notes:
      * - Values `< 1` → decrease contrast (flatter look).
@@ -272,23 +228,27 @@ export interface CssHoverEffectOptions {
      * - Percentage units are allowed.
      * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
-     *   - Instead of fading *in* the contrast adjustment during hover, the adjustment fades *out*.
-     *   - At full hover, the original contrast is restored (the effect is fully un-applied).
+     *   - Instead of fading *in* the contrast adjustment when hovered, the adjustment fades *out*.
+     *   - When fully unhovered, the base contrast is restored (the effect is fully un-applied).
      * 
-     * Defaults to `null` (preserves the component's original contrast).
+     * Defaults to `null` (preserves the component's base contrast).
      */
-    hoverContrast       ?: CssRatioParam | null
+    contrast             ?: CssFilterEffectOptions['contrast']
     
     /**
      * Controls how much the component's color saturation is adjusted when fully hovered.
      * 
-     * - Interpolates smoothly during the transition from unhovered → hovered.
+     * - Transitions smoothly from unhovered → hovered.
+     * - Acts a multiplier of the component's base saturation.
+     *   For example, if the component has a base `saturate(0.8)` and this option is set to `saturate = 0.5`,
+     *   the fully hovered saturation becomes `0.8 * 0.5 = 0.4`.
+     * - Saturation is almost reversible but not perfectly due to internal clamping and rounding in the browser's filter implementation.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal numeric value, e.g. `0.5`
-     * - A strongly typed reference, e.g. `myConfig.hoverSaturate`
+     * - A strongly typed reference, e.g. `myConfig.saturate`
      * 
      * Notes:
      * - Values `< 1` → decrease saturation (muted colors).
@@ -298,23 +258,27 @@ export interface CssHoverEffectOptions {
      * - Percentage units are allowed.
      * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
-     *   - Instead of fading *in* the saturation adjustment during hover, the adjustment fades *out*.
-     *   - At full hover, the original saturation is restored (the effect is fully un-applied).
+     *   - Instead of fading *in* the saturation adjustment when hovered, the adjustment fades *out*.
+     *   - When fully unhovered, the base saturation is restored (the effect is fully un-applied).
      * 
-     * Defaults to `null` (preserves the component's original saturation).
+     * Defaults to `null` (preserves the component's base saturation).
      */
-    hoverSaturate       ?: CssRatioParam | null
+    saturate             ?: CssFilterEffectOptions['saturate']
     
     /**
      * Controls how much the component's color hue is rotated when fully hovered.
      * 
-     * - Interpolates smoothly during the transition from unhovered → hovered.
+     * - Transitions smoothly from unhovered → hovered.
+     * - Acts an additive of the component's base hue rotation.
+     *   For example, if the component has a base `hue-rotate(80deg)` and this option is set to `hueRotate = 50deg`,
+     *   the fully hovered hue rotation becomes `80deg + 50deg = 130deg`.
+     * - Hue rotation is almost reversible but not perfectly due to internal clamping and rounding in the browser's filter implementation.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal string value with an angle unit, e.g. `'45deg'`
-     * - A strongly typed reference, e.g. `myConfig.hoverHueRotate`
+     * - A strongly typed reference, e.g. `myConfig.hueRotate`
      * 
      * Notes:
      * - Positive values rotate hue clockwise (recommended for normal use).
@@ -323,64 +287,79 @@ export interface CssHoverEffectOptions {
      *   Example: `-30deg` can be expressed as `330deg`.
      * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
-     *   - Instead of fading *in* the hue adjustment during hover, the adjustment fades *out*.
-     *   - At full hover, the original hue is restored (the effect is fully un-applied).
+     *   - Instead of fading *in* the hue adjustment when hovered, the adjustment fades *out*.
+     *   - When fully unhovered, the base hue is restored (the effect is fully un-applied).
      * - `'0deg'` → no hue adjustment.
      * - Only `deg`, `grad`, `rad`, and `turn` units are allowed.
      * 
-     * Defaults to `null` (preserves the component's original hue).
+     * Defaults to `null` (preserves the component's base hue).
      */
-    hoverHueRotate      ?: CssAngleParam | null
+    hueRotate            ?: CssFilterEffectOptions['hueRotate']
     
     /**
      * Controls how much the component is blurred when fully hovered.
      * 
-     * - Interpolates smoothly during the transition from unhovered → hovered.
+     * - Transitions smoothly from unhovered → hovered.
+     * - Acts an additional `blur()` filter on top of any base blur effect.
+     *   For example, if the base style applies `blur(8px)` and this option is set to `blur = 5px`,
+     *   the hovered state will apply `blur(8px)` followed by `blur(5px)`.
+     *   Note: blur filters compose sequentially, neither additively nor multiplicatively — the result is "blur of the blurred image",
+     *   but not equivalent to a single `blur(13px)` or `blur(40px)`.
+     * - Blur cannot be "canceled out": once applied, detail is lost and cannot be restored.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal string value with a length unit, e.g. `'2px'`
-     * - A strongly typed reference, e.g. `myConfig.hoverBlur`
+     * - A strongly typed reference, e.g. `myConfig.blur`
      * 
      * Notes:
      * - `'0px'` → no blur.
      * - Percentage units are not allowed.
      * - Negative values are supported but have a **special meaning**:
      *   - They reverse the interpolation direction.
-     *   - Instead of fading *in* the blur effect during hover, the effect fades *out*.
-     *   - At full hover, the original sharpness is restored (the effect is fully un-applied).
+     *   - Instead of fading *in* the blur effect when hovered, the effect fades *out*.
+     *   - When fully unhovered, the base sharpness is restored (the effect is fully un-applied).
      * 
-     * Defaults to `null` (preserves the component's original blur).
+     * Defaults to `null` (preserves the component's base blur).
      */
-    hoverBlur           ?: CssLengthParam | null
+    blur                 ?: CssFilterEffectOptions['blur']
     
     /**
-     * Specifies the drop shadow to apply when the component is hovered.
+     * Specifies the drop shadow to apply when fully hovered.
      * 
-     * - Interpolates smoothly during the transition from unhovered → hovered.
+     * - Transitions smoothly from unhovered → hovered.
+     * - Acts an additive adjustment to the component's base drop shadow.
+     *   For example, if the component has a base `drop-shadow(1px 1px 2px black)` and
+     *   this option is set to `dropShadow` has `offsetX = 2px`, `offsetY = 2px`, `blur = 3px`, and `color = 'red'`,
+     *   the fully hovered drop shadow becomes the combination of both shadows.
+     * - Drop shadow cannot be "canceled out": each new shadow is layered behind the previous shadows,
+     *   so the effect accumulates and cannot be undone.
      * 
      * Accepts:
-     * - A `HoverDropShadow` object defining the shadow parameters.
+     * - A `FilterDropShadow` object defining the shadow parameters.
      * 
-     * Defaults to `null` (preserves the component's original drop shadow).
+     * Defaults to `null` (preserves the component's base drop shadow).
      */
-    hoverDropShadow     ?: HoverDropShadow | null
+    dropShadow           ?: CssFilterEffectOptions['dropShadow']
+    
+    
     
     /**
-     * Specifies the text decoration to apply when the component is hovered.
+     * Specifies the text decoration to apply when transitioning toward hovered or fully hovered.
      * 
-     * - Switches discretely when the `hovered` state changes (no gradual transition).
+     * - Unapplied when the component is transitioning toward unhovered or fully unhovered.
+     * - Switches discretely when the hovered state changes (no gradual transition).
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal string value, e.g. `'underline'`
-     * - A strongly typed reference, e.g. `myConfig.hoverTextDecoration`
+     * - A strongly typed reference, e.g. `myConfig.textDecoration`
      * 
      * Defaults to `null` (preserves the component's original text decoration).
      */
-    hoverTextDecoration ?: Exclude<CssKnownBaseProps['textDecoration'], undefined | null> | CssCustomRef | null
+    textDecoration       ?: Exclude<CssKnownBaseProps['textDecoration'], undefined | null> | CssCustomRef | null
 }
 
 
@@ -405,7 +384,7 @@ export interface CssHoverEffect {
      * Behavior:
      * - factor = 0 → neutral (no adjustment).
      * - factor = 1 → fully hovered (target opacity/brightness/contrast/saturation/etc. applied).
-     * - Between 0 and 1 → smooth interpolation between neutral and hovered, applying all configured effects except `hoverTextDecoration`.
+     * - Between 0 and 1 → smooth interpolation between neutral and hovered, applying all configured effects except `textDecoration`.
      * - Text Decoration → switches discretely based on hover state (no gradual transition).
      * 
      * Smoothly transitions between unhover and hover states by animating filter effects.
