@@ -1,5 +1,11 @@
 // Cssfn:
 import {
+    // Cssfn css specific types:
+    type CssCustomRef,
+    type CssKnownBaseProps,
+    
+    
+    
     // Writes css in javascript:
     style,
     
@@ -25,6 +31,12 @@ import {
 import {
     usesDisabledState,
 }                           from '@reusable-ui/disabled-state'      // Lifecycle-aware enabled/disabled state with transition animations and semantic styling hooks for UI components.
+
+// Reusable-ui effects:
+import {
+    // Utilities:
+    composeFilterEffect,
+}                           from '@reusable-ui/filter-effect'       // Provides default visual effects when a component's active state changes. Adjusts the component's visual presentation by making components visually adapt their appearance in response to state changes.
 
 
 
@@ -57,46 +69,39 @@ filterRegistry.registerFilter(disabledEffectVars.disabledFilter);
 export const usesDisabledEffect = (options?: CssDisabledEffectOptions): CssDisabledEffect => {
     // Extract options and assign defaults:
     const {
-        disabledOpacity  = 0.5,
-        disabledSaturate = 0.5,
+        enablesReverseIntent = false,         // Defaults to `false` (no reverse intent, always fade *in* the effect as the state activates).
+        opacity              = 0.5,           // Defaults to `0.5` (half opacity).
+        saturate             = 0.5,           // Defaults to `0.5` (muted colors).
         
-        disabledCursor   = 'not-allowed',
+        cursor               = 'not-allowed', // Defaults to `'not-allowed'` (indicates that the component is disabled and not interactive).
+        
+        ...restOptions
     } = options ?? {};
     
     
     
     // States:
-    const { disabledStateVars : { isDisabled, disableFactorCond } } = usesDisabledState();
+    const { disabledStateVars : { isDisabled, disableFactor } } = usesDisabledState();
     
     
     
     return {
         disabledEffectRule : () => style({
-            /**
-             * Disabled filter:
-             * - Fully enabled → ignored (browser skips invalid formula).
-             * - Otherwise     → interpolates opacity and saturation toward the configured values.
-             * 
-             * Behavior:
-             * - factor = 0      → all filters = neutral (no adjustment).
-             * - factor = 1      → filters = configured target values.
-             * - Between 0 and 1 → smooth interpolation between neutral and target.
-             * - Saturation may overshoot/undershoot if factor goes beyond [0,1].
-             * - The `clamp(0, ..., 1)` ensures `opacity()` stays within 0…1 range.
-             * - The `max(0, ...)` ensures `saturate()` stays non-negative.
-             */
-            [disabledEffectVars.disabledFilter]:
-`
-opacity(calc(clamp(0, 1 - (1 - ${disabledOpacity}) * ${disableFactorCond}, 1)))
-saturate(calc(max(0, 1 - (1 - ${disabledSaturate}) * ${disableFactorCond})))
-`,
+            // Disabled filter:
+            [disabledEffectVars.disabledFilter]: composeFilterEffect(disableFactor, { ...restOptions, enablesReverseIntent, opacity, saturate }),
+            
             /**
              * Disabled cursor:
+             * - Not specified → always invalid (`unset`).
              * - Fully enabled → ignored (browser skips invalid formula).
              * - Otherwise     → switches discretely to the configured cursor
              *                   when transitioning toward or fully disabled.
              */
-            [disabledEffectVars.disabledCursor]: `${isDisabled} ${disabledCursor}`,
+            [disabledEffectVars.disabledCursor]: (
+                (cursor !== null)
+                ? `${isDisabled} ${cursor satisfies (Exclude<CssKnownBaseProps['cursor'], undefined | null> | CssCustomRef)}`
+                : 'unset'
+            ),
         }),
         
         disabledEffectVars,

@@ -1,44 +1,37 @@
-import React, { type CSSProperties, useMemo, useLayoutEffect } from 'react'
+import React, { type CSSProperties, useMemo } from 'react'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { usesDisabledState } from '@reusable-ui/disabled-state'
-import { usesThemeVariant } from '@reusable-ui/theme-variant'
-import { colorParamVars } from '@reusable-ui/colors'
-import { useOutlineVariant, type OutlineVariantProps } from '@reusable-ui/outline-variant'
-import { useMildVariant, type MildVariantProps} from '@reusable-ui/mild-variant'
-import { regularBaseColor, mildBaseColor } from './base-colors.js'
 import { useDisabledEffectTestStyles } from './DisabledEffectTest.loader.js'
 
 
 
-export interface DisabledEffectTestProps
-    extends
-        // Variants:
-        Required<OutlineVariantProps>,
-        Required<MildVariantProps>
-{
+export interface DisabledEffectTestProps {
     /**
-     * Simulates the `disableFactorCond` CSS variable.
+     * Simulates the `activeFactor` CSS variable.
      * 
      * Typical values:
-     * - `'unset'` : fully enabled
-     * - `0`       : start of enabled state
+     * - `'unset'` : fully inactive
+     * - `0`       : start of inactive state
      * - `0.5`     : halfway through transition
-     * - `1`       : fully disabled
+     * - `1`       : fully active
      * - `> 1`     : overshoot (bump effect)
      * - `< 0`     : undershoot (bounce back effect)
      */
-    disableFactorCond ?: 'unset' | number
+    activeFactor  ?: 'unset' | number
     
     /**
-     * Specifies the theme mode for the test.
+     * Simulates the `isDisabled` CSS variable.
+     * 
+     * - `false` : enabled (inactive state)
+     * - `true`  : disabled (active state)
      */
-    mode              : 'light' | 'dark'
+    isDisabled     ?: boolean
 }
 
 /**
  * Test component for DisabledEffect.
  * 
- * - Mocks `disableFactorCond` via inline style for controlled testing.
+ * - Mocks `activeFactor` via inline style for controlled testing.
  * - Uses static colors for simplicity:
  *   - Regular background  → pure blue   `oklch(0.5 0.3 265 / 1)`
  *   - Outlined background → transparent `oklch(0 0 0 / 0)`
@@ -46,51 +39,40 @@ export interface DisabledEffectTestProps
  */
 export const DisabledEffectTest = (props: DisabledEffectTestProps) => {
     const {
-        disableFactorCond = 'unset',
-        mode,
+        activeFactor  = 'unset',
+        isDisabled    = false,
     } = props;
     
     const styles = useDisabledEffectTestStyles();
     
-    useLayoutEffect(() => {
-        colorParamVars.mode = ((mode === 'light') ? 1 : -1) as any;
-    }, [mode])
-    
-    const { disabledStateVars  : { disableFactorCond: disableFactorCondVar } } = usesDisabledState();
-    const { themeVariantVars : { backgRegular, backgMild } } = usesThemeVariant();
+    const { disabledStateVars  : { disableFactor: disableFactorVar, isDisabled: isDisabledVar } } = usesDisabledState();
     
     // Inline style overrides:
-    // - Assigns `disableFactorCond` directly
+    // - Assigns `activeFactor` directly
     // - Statically sets regular/mild background colors for predictable testing
     const inlineStyle : CSSProperties = useMemo(() => ({
         // @ts-ignore
         [
-            disableFactorCondVar
+            disableFactorVar
             .slice(4, -1) // fix: var(--customProp) => --customProp
-        ]: String(disableFactorCond),
-        
+        ]: String(activeFactor),
         // @ts-ignore
         [
-            backgRegular
+            isDisabledVar
             .slice(4, -1) // fix: var(--customProp) => --customProp
-        ]: regularBaseColor,
-        
-        // @ts-ignore
-        [
-            backgMild
-            .slice(4, -1) // fix: var(--customProp) => --customProp
-        ]: mildBaseColor,
-    } as CSSProperties), [disableFactorCondVar, disableFactorCond]);
-    
-    const { outlineClassname } = useOutlineVariant(props);
-    const { mildClassname } = useMildVariant(props);
+        ]: (
+            isDisabled
+            ? ' ' // avoids an empty string for truthly, use a space instead
+            : 'unset'
+        ),
+    } as CSSProperties), [disableFactorVar, activeFactor, isDisabledVar, isDisabled]);
     
     return (
         <div>
             <HydrateStyles />
             <div
                 data-testid="disabled-effect-test"
-                className={`${styles.main} ${outlineClassname} ${mildClassname}`}
+                className={styles.main}
                 style={inlineStyle}
             >
                 Disabled Effect Test

@@ -107,14 +107,14 @@ export const disableableBoxStyle = () => {
         // Values between `0` and `1` → partially transparent
         // Values `= 0` → fully transparent
         // Values `= 1` → fully opaque (no fade)
-        disabledOpacity  : 0.5, // half opacity when disabled
+        opacity  : 0.5, // half opacity when disabled
         
         // Saturation:
         // Values `< 1` → muted colors
         // Values `> 1` → more vivid colors (not typical for disabled)
-        disabledSaturate : 0.5, // muted colors when disabled
+        saturate : 0.5, // muted colors when disabled
         
-        disabledCursor   : 'not-allowed', // restrictive cursor when disabled
+        cursor   : 'not-allowed', // restrictive cursor when disabled
     });
     
     return style({
