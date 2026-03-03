@@ -214,10 +214,10 @@ export const composeFilterEffect = (activeFactor: CssCustomRef, options?: CssFil
     const dropShadowParameterSchemas : (FilterSchema | false)[] | false = (activeDropShadow !== null) && ((): (FilterSchema | false)[] => {
         // Extract options and assign defaults:
         const {
-            offsetX,        // Defaults to `'0px'`.
-            offsetY,        // Defaults to `'0px'`.
-            blur    = null, // Defaults to `null` (implicitly no blur).
-            color   = null, // Defaults to `null` (use the element's own `color` property).
+            offsetX = '0px', // Defaults to `'0px'`.
+            offsetY = '0px', // Defaults to `'0px'`.
+            blur    = null,  // Defaults to `null` (implicitly no blur).
+            color   = null,  // Defaults to `null` (use the element's own `color` property).
         } = activeDropShadow;
         
         // If no blur is specified → treat as `0px`:

@@ -88,7 +88,7 @@ export interface FilterDropShadow {
      * 
      * Defaults to `'0px'`.
      */
-    offsetX  : CssLengthParam
+    offsetX ?: CssLengthParam
     
     /**
      * Controls the vertical offset of the shadow.
@@ -110,7 +110,7 @@ export interface FilterDropShadow {
      * 
      * Defaults to `'0px'`.
      */
-    offsetY  : CssLengthParam
+    offsetY ?: CssLengthParam
     
     /**
      * Controls the blur radius of the shadow.
