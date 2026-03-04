@@ -118,17 +118,17 @@ export const activatableBoxStyle = () => {
         // Brightness:
         // Values `< 1` → darken  in light mode, lighten in dark mode
         // Values `> 1` → lighten in light mode, darken  in dark mode
-        activeBrightness : 0.85, // subtle darkening in light mode, subtle lightening in dark mode
+        brightness : 0.5, // fairly darkening in light mode, fairly lightening in dark mode
         
         // Contrast:
         // Values `< 1` → softer contrast
         // Values `> 1` → stronger contrast
-        activeContrast   : 1.1,  // slightly stronger contrast when active
+        contrast   : 1.1,  // slightly stronger contrast when active
         
         // Saturation:
         // Values `< 1` → muted colors
         // Values `> 1` → more vivid colors
-        activeSaturate   : 1.2,  // slightly more vibrant colors when active
+        saturate   : 1.2,  // slightly more vibrant colors when active
     });
     
     return style({

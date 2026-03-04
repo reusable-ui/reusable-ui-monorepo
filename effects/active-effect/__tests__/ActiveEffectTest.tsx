@@ -30,9 +30,9 @@ export interface ActiveEffectTestProps
     activeFactorCond ?: 'unset' | number
     
     /**
-     * Specifies the theme mode for the test.
+     * Specifies the theme mode (light or dark) for the test.
      */
-    mode              : 'light' | 'dark'
+    colorMode         : 'light' | 'dark'
 }
 
 /**
@@ -47,14 +47,14 @@ export interface ActiveEffectTestProps
 export const ActiveEffectTest = (props: ActiveEffectTestProps) => {
     const {
         activeFactorCond = 'unset',
-        mode,
+        colorMode,
     } = props;
     
     const styles = useActiveEffectTestStyles();
     
     useLayoutEffect(() => {
-        colorParamVars.mode = ((mode === 'light') ? 1 : -1) as any;
-    }, [mode])
+        colorParamVars.mode = ((colorMode === 'light') ? 1 : -1) as any;
+    }, [colorMode])
     
     const { activeStateVars  : { activeFactorCond: activeFactorCondVar } } = usesActiveState();
     const { themeVariantVars : { backgRegular, backgMild } } = usesThemeVariant();

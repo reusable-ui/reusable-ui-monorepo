@@ -19,10 +19,6 @@ import {
     type CssActiveEffect,
 }                           from './types.js'
 
-// Reusable-ui configs:
-import {
-    colorParamVars,
-}                           from '@reusable-ui/colors'              // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 // Reusable-ui variants:
 import {
     usesOutlineVariant,
@@ -52,6 +48,12 @@ import {
 import {
     usesActiveState,
 }                           from '@reusable-ui/active-state'        // Lifecycle-aware activation state with transition animations and semantic styling hooks for UI components.
+
+// Reusable-ui effects:
+import {
+    // Utilities:
+    composeFilterEffect,
+}                           from '@reusable-ui/filter-effect'       // Provides default visual effects when a component's active state changes. Adjusts the component's visual presentation by making components visually adapt their appearance in response to state changes.
 
 
 
@@ -87,15 +89,12 @@ filterRegistry.registerFilter(activeEffectVars.activeFilter);
 export const usesActiveEffect = (options?: CssActiveEffectOptions): CssActiveEffect => {
     // Extract options and assign defaults:
     const {
-        activeBrightness = 1,
-        activeContrast   = 1,
-        activeSaturate   = 1,
+        brightness = 0.5, // Defaults to `0.5` (fairly darken for light mode, fairly lighten for dark mode).
+        
+        ...restOptions
     } = options ?? {};
     
     
-    
-    // Configs:
-    const { mode } = colorParamVars;
     
     // Variants:
     const { outlineVariantVars : { isOutlined } } = usesOutlineVariant();
@@ -128,14 +127,14 @@ export const usesActiveEffect = (options?: CssActiveEffectOptions): CssActiveEff
                     vars({
                         /**
                          * Color override:
-                         * - Fully inactive → ignored (browser skips invalid formula).
-                         * - Regular        → ignored.
-                         * - Outlined/mild  → interpolates between variant and regular colors.
+                         * - Fully inactive         → `unset`
+                         * - Regular variants       → `unset`
+                         * - Outlined/mild variants → Interpolates between variant and regular colors.
                          * 
                          * Behavior:
-                         * - factor = 0      → color = original variant color.
-                         * - factor = 1      → color = strong regular color.
-                         * - Between 0 and 1 → smooth interpolation between original and strong color.
+                         * - factor = 0      → Original variant color.
+                         * - factor = 1      → Strong regular color.
+                         * - Between 0 and 1 → Smooth interpolation between original and strong color.
                          */
                         [overrideVar]:
 `
@@ -156,12 +155,12 @@ color-mix(in oklch,
             
             /**
              * Bump factor:
-             * - Fully inactive → ignored (browser skips invalid formula).
-             * - Regular        → ignored.
-             * - Outlined/mild  :
-             *   - activeFactor > 1 → grows positively (overshoot).
-             *   - activeFactor < 0 → grows negatively (undershoot).
-             *   - Otherwise        → stays 0.
+             * - Fully inactive         → `unset` (`activeFactorCond` is `unset` when fully inactive, so the bump factor is also `unset`).
+             * - Regular variants       → `unset` (`isOutlined and `isMild` are both `unset` for regular variants, so the bump factor is also `unset`).
+             * - Outlined/mild variants → The bump factor on overshoot/undershoot:
+             *   - Factor > 1      → Positive (over-emphasizes).
+             *   - Factor < 0      → Negative (under-emphasizes).
+             *   - Between 0 and 1 → 0 (neutral).
              */
             [bumpFactorCond]:
 `
@@ -176,9 +175,12 @@ calc(
             
             /**
              * Effective factor:
-             * - Fully inactive → ignored (browser skips invalid formula).
-             * - Regular        → mirrors activeFactor directly.
-             * - Outlined/mild  → responds only to overshoot/undershoot.
+             * - Fully inactive         → `unset` (`bumpFactorCond` and `activeFactorCond` are both `unset` when fully inactive, so the effective factor is also `unset`).
+             * - Regular variants       → Mirrors the active factor (`bumpFactorCond` is `unset` but falls back to `activeFactorCond` for regular variants, so the effective factor directly reflects the active factor).
+             * - Outlined/mild variants → The bump factor on overshoot/undershoot (driven by `bumpFactorCond`):
+             *   - Factor > 1      → Positive (over-emphasizes).
+             *   - Factor < 0      → Negative (under-emphasizes).
+             *   - Between 0 and 1 → 0 (neutral).
              */
             [effectiveFactorCond]: switchOf(
                 bumpFactorCond,
@@ -187,70 +189,11 @@ calc(
             
             /**
              * Active filter:
-             * - Fully inactive → ignored (browser skips invalid formula).
-             * - Regular        → interpolates brightness/contrast/saturation adjustment.
-             * - Outlined/mild  → neutral at factor ∈ [0,1], but responds to overshoot/undershoot
-             *                    via `bumpFactorCond`.
-             * 
-             * Behavior:
-             * - factor = 0      → all filters = 1 (neutral, no adjustment).
-             * - factor = 1      → filters = configured values (target).
-             * - Between 0 and 1 → smooth interpolation between neutral and target.
-             * - `max(0, ...)` ensures filters remain non-negative.
-             * 
-             * Notes:
-             * 
-             * Brightness (adaptive for light/dark mode):
-             *   brightness = 1 - (1 - targetBrightness) * effectiveFactorCond
-             * 
-             * Where targetBrightness is chosen automatically based on `mode`:
-             * - Light mode (mode = +1) → targetBrightness = activeBrightness
-             *   (values < 1 darken, values > 1 lighten).
-             * - Dark mode  (mode = -1) → targetBrightness = 1.25 - (activeBrightness - 0.7) * 0.75
-             *   (reciprocal flips darken ↔ lighten).
-             * 
-             * Implementation detail:
-             * We avoid ternary conditionals by using a weighted-average trick:
-             * 
-             *   (((1 + mode) / 2) * activeBrightness)
-             *   +
-             *   (((1 - mode) / 2) * (1.25 - (activeBrightness - 0.7) * 0.75))
-             * 
-             * Because mode is guaranteed to be ±1:
-             * - mode = +1 → resolves to `activeBrightness`.
-             * - mode = -1 → resolves to `1.25 - (activeBrightness - 0.7) * 0.75`.
-             * 
-             * This ensures:
-             * - At factor = 0 → brightness = 1 (neutral).
-             * - At factor = 1 → brightness = targetBrightness.
-             * - Between 0 and 1 → smooth interpolation.
-             * 
-             * Dark mode brightness mapping:
-             * - Light mode dimming (0.7–0.9) → Dark mode brightening (1.25–1.1).
-             * - Light mode neutral (1.0) → Dark mode neutral (~1.0).
-             * - Light mode brightening (1.25) → Dark mode dimming (~0.9).
-             * 
-             * Formula:
-             *   darkModeBrightness = 1.25 - (lightModeBrightness - 0.7) * 0.75
-             * 
-             * Intent:
-             * - Usually darken in light mode.
-             * - Usually lighten in dark mode.
-             * - Brightening in light mode flips into dimming in dark mode for symmetry.
-             * - Keeps values within practical ranges (0.7–1.25 in light, 0.9–1.25 in dark).
+             * - Fully inactive         → `unset`
+             * - Regular variants       → Interpolates filter effect adjustments.
+             * - Outlined/mild variants → Neutral at factors between 0 and 1, but responds to overshoot/undershoot.
              */
-            [activeFilter]:
-`
-brightness(calc(max(0,
-    1 - (1 - (
-        (((1 + ${mode}) / 2) * ${activeBrightness})
-        +
-        (((1 - ${mode}) / 2) * (1.25 - (${activeBrightness} - 0.7) * 0.75))
-    )) * ${effectiveFactorCond}
-)))
-contrast(calc(max(0, 1 - (1 - ${activeContrast}) * ${effectiveFactorCond})))
-saturate(calc(max(0, 1 - (1 - ${activeSaturate}) * ${effectiveFactorCond})))
-`,
+            [activeFilter]: composeFilterEffect(effectiveFactorCond, { ...restOptions, enablesReverseIntent: false, brightness }),
         }),
         
         activeEffectVars,

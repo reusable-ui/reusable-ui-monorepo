@@ -4,6 +4,17 @@ import { usesMildVariant} from '@reusable-ui/mild-variant'
 import { usesFilterFeature } from '@reusable-ui/filter-feature';
 import { usesBackgroundFeature } from '@reusable-ui/background-feature';
 import { usesActiveEffect } from '../dist/index.js'
+import {
+    activeTargetOpacity,
+    activeTargetInvert,
+    activeTargetSepia,
+    activeTargetBrightness,
+    activeTargetContrast,
+    activeTargetSaturate,
+    activeTargetHueRotate,
+    activeTargetBlur,
+    activeTargetDropShadow,
+} from './effect-intents.js'
 
 // Test style for ActiveEffect
 // Demonstrates how `activeFactorCond` drives transition effects
@@ -31,9 +42,20 @@ export default function activeEffectTestStyle() {
     const {
         activeEffectRule,
     } = usesActiveEffect({
-        activeBrightness : 0.8,
-        activeContrast   : 1,
-        activeSaturate   : 1,
+        opacity     : activeTargetOpacity,
+        invert      : activeTargetInvert,
+        sepia       : activeTargetSepia,
+        brightness  : activeTargetBrightness,
+        contrast    : activeTargetContrast,
+        saturate    : activeTargetSaturate,
+        hueRotate   : `${activeTargetHueRotate}deg`,
+        blur        : `${activeTargetBlur}px`,
+        dropShadow  : {
+            offsetX : `${activeTargetDropShadow.offsetX}px`,
+            offsetY : `${activeTargetDropShadow.offsetY}px`,
+            blur    : `${activeTargetDropShadow.blur}px`,
+            color   : activeTargetDropShadow.color,
+        },
     });
     
     return style({
