@@ -64,7 +64,7 @@ boxShadowRegistry.registerBoxShadow(focusEffectVars.focusBoxShadow);
 export const usesFocusEffect = (options?: CssFocusEffectOptions): CssFocusEffect => {
     // Extract options and assign defaults:
     const {
-        focusRingWidth = spacerVars.xs,
+        ringWidth = spacerVars.xs, // Defaults to `spacerVars.xs` (small ring width).
     } = options ?? {};
     
     
@@ -96,7 +96,7 @@ export const usesFocusEffect = (options?: CssFocusEffectOptions): CssFocusEffect
 `
 0 0
 0
-calc(max(0px, ${focusRingWidth} * ${focusFactorCond}))
+calc(max(0px, ${ringWidth} * ${focusFactorCond}))
 ${ringColor}
 `,
         }),

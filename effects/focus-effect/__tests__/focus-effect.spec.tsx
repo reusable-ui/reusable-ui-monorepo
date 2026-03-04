@@ -42,10 +42,10 @@ interface FocusEffectTestCase {
 
 
 const testCases: FocusEffectTestCase[] = [
-    //#region Blurred → no box shadow for all variants
+    // Blurred → expect no focus ring (no box shadow) for all variants
     ...variantKeys.flatMap((variant) =>
         (['light', 'dark'] as const).map((mode) => ({
-            title                  : `${variantNameUpper[variant]} variant, factor=unset → expect no box shadow (${mode} mode)`,
+            title                  : `${variantNameUpper[variant]} variant, factor=unset → expect no focus ring (${mode} mode)`,
             props                  : {
                 focusFactorCond    : 'unset',
                 outlined           : variant === 'outlined',
@@ -56,11 +56,10 @@ const testCases: FocusEffectTestCase[] = [
             expectedBoxShadowColor : undefined,
         } satisfies FocusEffectTestCase))
     ),
-    //#endregion Blurred → no box shadow for all variants
     
     
     
-    //#region Focused and factor=0 → invisible box shadow for all variants
+    // Focused with factor=0 → expect invisible focus ring for all variants
     ...variantKeys.flatMap((variant) =>
         (['light', 'dark'] as const).map((mode) => ({
             title                  : `${variantNameUpper[variant]} variant, factor=0 → expect invisible focus ring (${mode} mode)`,
@@ -74,14 +73,13 @@ const testCases: FocusEffectTestCase[] = [
             expectedBoxShadowColor : ringColor,
         } satisfies FocusEffectTestCase))
     ),
-    //#endregion Focused and factor=0 → invisible box shadow for all variants
     
     
     
-    //#region Focused and factor=1 → fully expanded box shadow width for all variants
+    // Focused with factor=1 → expect fully expanded focus ring for all variants
     ...variantKeys.flatMap((variant) =>
         (['light', 'dark'] as const).map((mode) => ({
-            title                  : `${variantNameUpper[variant]} variant, factor=1 → expect full focus ring (${mode} mode)`,
+            title                  : `${variantNameUpper[variant]} variant, factor=1 → expect fully expanded focus ring (${mode} mode)`,
             props                  : {
                 focusFactorCond    : 1,
                 outlined           : variant === 'outlined',
@@ -92,15 +90,14 @@ const testCases: FocusEffectTestCase[] = [
             expectedBoxShadowColor : ringColor,
         } satisfies FocusEffectTestCase))
     ),
-    //#endregion Focused and factor=1 → fully expanded box shadow width for all variants
     
     
     
-    //#region Partially focused and factor=fractional → partially expanded box shadow width for all variants
+    // Partially focused with factor=fractional → expect partially expanded focus ring for all variants
     ...([0.25, 0.5, 0.75] as const).flatMap((factor) =>
         variantKeys.flatMap((variant) =>
             (['light', 'dark'] as const).map((mode) => ({
-                title                  : `${variantNameUpper[variant]} variant, factor=${factor} → expect partial focus ring (${mode} mode)`,
+                title                  : `${variantNameUpper[variant]} variant, factor=${factor} → expect partially expanded focus ring (${mode} mode)`,
                 props                  : {
                     focusFactorCond    : factor,
                     outlined           : variant === 'outlined',
@@ -112,11 +109,10 @@ const testCases: FocusEffectTestCase[] = [
             } satisfies FocusEffectTestCase))
         )
     ),
-    //#endregion Partially focused and factor=fractional → partially expanded box shadow width for all variants
     
     
     
-    //#region Extrapolated factors → overshoot or clamp expanded box shadow width for all variants
+    // Extrapolated factors → expect overshoot or clamped focus ring for all variants
     ...([-0.5, 1.5] as const).flatMap((factor) =>
         variantKeys.flatMap((variant) =>
             (['light', 'dark'] as const).map((mode) => ({
@@ -132,8 +128,8 @@ const testCases: FocusEffectTestCase[] = [
             } satisfies FocusEffectTestCase))
         )
     ),
-    //#endregion Extrapolated factors → overshoot or clamp expanded box shadow width for all variants
 ];
+
 
 
 test.describe('usesFocusEffect', () => {
@@ -142,7 +138,11 @@ test.describe('usesFocusEffect', () => {
             const component = await mount(<FocusEffectTest {...props} />);
             const box = component.getByTestId('focus-effect-test')
             
+            // Verify the component renders correctly:
             await expect(box).toContainText('Focus Effect Test');
+            
+            // Allow time for stylesheets to fully apply:
+            await new Promise((resolve) => setTimeout(resolve, 500));
             
             // Verify that the rendered box-shadow matches the expected focus ring width:
             if (expectedBoxShadowWidth === null) {

@@ -38,7 +38,7 @@ export default function focusEffectTestStyle() {
     const {
         focusEffectRule,
     } = usesFocusEffect({
-        focusRingWidth : '4px',
+        ringWidth : '4px',
     });
     
     return style({

@@ -105,7 +105,7 @@ export const focusableBoxStyle = () => {
         focusEffectRule,
     } = usesFocusEffect({
         // The width of the focus ring indicator when fully focused:
-        focusRingWidth : '0.25rem',
+        ringWidth : '0.25rem',
     });
     
     return style({

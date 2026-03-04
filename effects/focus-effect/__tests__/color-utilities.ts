@@ -87,32 +87,41 @@ export const applyFiltersSequential = (
 
 
 /**
- * Compares two colors using perceptual difference (ΔE, CIEDE2000).
- * - ΔE < 1 → visually indistinguishable.
- * - ΔE < 6 → acceptable tolerance for most UI tests.
- * Throws an error if the difference exceeds MAX_DEVIATION.
+ * Specifies the maximum perceptual deviation (ΔE) allowed when comparing two colors in tests.
+ * This accounts for minor differences that are not visually perceptible.
  */
-const MAX_DEVIATION = 6; // perceptual tolerance threshold
+const MAX_DEVIATION = 2; // perceptual tolerance threshold
 
+/**
+ * Specifies the maximum alpha difference allowed when comparing two colors in tests.
+ * This accounts for minor transparency differences that may not be visually perceptible.
+ */
+const ALPHA_TOLERANCE = 0.01;
+
+/**
+ * Asserts that two colors match within perceptual tolerance.
+ * Handles transparent colors and uses CIEDE2000 for channel comparison.
+ */
 export const expectColor = (actualColor: string, expectedColor: string): void => {
-    // Special case: both fully transparent → considered equal.
-    if (actualColor === 'rgba(0, 0, 0, 0)' && expectedColor === 'rgba(0, 0, 0, 0)') return;
+    const actualChroma   = chroma(actualColor);
+    const expectedChroma = chroma(expectedColor);
     
-    const actualAlpha = chroma(actualColor).alpha();
-    const expectedAlpha = chroma(expectedColor).alpha();
+    const actualAlpha    = actualChroma.alpha();
+    const expectedAlpha  = expectedChroma.alpha();
     
-    // If both are transparent, ignore channel differences.
+    // Both fully transparent → considered equal regardless of channels
     if (actualAlpha === 0 && expectedAlpha === 0) return;
     
-    // Compute perceptual difference (ΔE).
-    const delta = chroma.deltaE(actualColor, expectedColor);
+    const delta     = chroma.deltaE(actualColor, expectedColor);
+    const alphaDiff = Math.abs(actualAlpha - expectedAlpha);
     
-    if (delta > MAX_DEVIATION) {
+    // Assert that both color difference and alpha difference are within tolerances
+    if (delta > MAX_DEVIATION || alphaDiff > ALPHA_TOLERANCE) {
         throw new Error(
-`Color mismatch: ΔE=${delta.toFixed(3)}
-Expected: ${expectedColor}
-Actual:   ${actualColor}${!actualColor.startsWith('oklch(') ? ` => ${chroma(actualColor).css('oklch')}` : ''}
-Max allowed: ${MAX_DEVIATION}`
+            `Color mismatch: ΔE=${delta.toFixed(3)}, alpha difference=${alphaDiff.toFixed(3)}\n` +
+            `Expected: ${expectedColor}\n` +
+            `Actual:   ${actualColor}${!actualColor.startsWith('oklch(') ? ` => ${actualChroma.css('oklch')}` : ''}\n` +
+            `Max allowed: ΔE=${MAX_DEVIATION}, alpha difference=${ALPHA_TOLERANCE}`
         );
     }
 };

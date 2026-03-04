@@ -43,22 +43,23 @@ export interface CssFocusEffectOptions {
     /**
      * Controls the width of the focus ring indicator when fully focused.
      * 
-     * - Interpolates smoothly during the transition from blur → focus.
+     * - Transitions smoothly from blur → focus.
+     * - Uses a box shadow to create a ring effect around the component.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal string value with a length unit, e.g. `'0.25rem'`
-     * - A strongly typed reference, e.g. `myConfig.focusRingWidth`
+     * - A strongly typed reference, e.g. `myConfig.ringWidth`
      * 
      * Notes:
      * - `0` → no focus ring indicator.
      * - Percentage units are not allowed.
      * - Negative values are not allowed.
      * 
-     * Defaults to `spacerVars.xs`.
+     * Defaults to `spacerVars.xs` (small ring width).
      */
-    focusRingWidth ?: CssKnownProps['borderWidth']
+    ringWidth ?: CssKnownProps['borderWidth']
 }
 
 
