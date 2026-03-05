@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/active-effect",
   "version": "7.0.0",
-  "description": "Provides default visual effects when a component's active state changes. Emphasizes theme colors by making components visually stand out when active.",
+  "description": "Provides default visual effects for components when their active state changes. Emphasizes theme colors by making components visually stand out when active.",
   "keywords": [
     "transition",
     "active-effect",

@@ -53,7 +53,7 @@ import {
 import {
     // Utilities:
     composeFilterEffect,
-}                           from '@reusable-ui/filter-effect'       // Provides default visual effects when a component's active state changes. Adjusts the component's visual presentation by making components visually adapt their appearance in response to state changes.
+}                           from '@reusable-ui/filter-effect'       // Provides default visual effects for components when their active state changes. Adjusts the component's visual presentation by making components visually adapt their appearance in response to state changes.
 
 
 
@@ -89,7 +89,7 @@ filterRegistry.registerFilter(activeEffectVars.activeFilter);
 export const usesActiveEffect = (options?: CssActiveEffectOptions): CssActiveEffect => {
     // Extract options and assign defaults:
     const {
-        brightness = 0.5, // Defaults to `0.5` (fairly darken for light mode, fairly lighten for dark mode).
+        brightness = 0.5, // Defaults to `0.5` (fairly darken in light mode, fairly lighten in dark mode).
         
         ...restOptions
     } = options ?? {};
