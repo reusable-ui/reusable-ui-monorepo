@@ -178,7 +178,7 @@ export interface CssFilterEffectOptions {
      * Controls how much the component's opacity is adjusted when fully active.
      * 
      * - Transitions smoothly from inactive → active.
-     * - Acts a multiplier of the component's base opacity.
+     * - Acts as a multiplier of the component's base opacity.
      *   For example, if the component has a base `opacity(0.8)` and this option is set to `opacity = 0.5`,
      *   the fully active opacity becomes `0.8 * 0.5 = 0.4`.
      * - Opacity adjustments are strictly reductive: you can decrease opacity (more transparent),
@@ -209,7 +209,7 @@ export interface CssFilterEffectOptions {
      * Controls how much the component is inverted when fully active.
      * 
      * - Transitions smoothly from inactive → active.
-     * - Acts an additional `invert()` filter on top of any base inversion.
+     * - Acts as an additional `invert()` filter on top of any base inversion.
      *   For example, if the base style applies `invert(0.8)` and this option is set to `invert = 0.5`,
      *   the active state will apply `invert(0.8)` followed by `invert(0.5)`.
      *   Note: invert filters compose sequentially, neither additively nor multiplicatively — the result is "more inverted",
@@ -242,7 +242,7 @@ export interface CssFilterEffectOptions {
      * Controls how much the component is sepia-toned when fully active.
      * 
      * - Transitions smoothly from inactive → active.
-     * - Acts an additional `sepia()` filter on top of any base sepia effect.
+     * - Acts as an additional `sepia()` filter on top of any base sepia effect.
      *   For example, if the base style applies `sepia(0.8)` and this option is set to `sepia = 0.5`,
      *   the active state will apply `sepia(0.8)` followed by `sepia(0.5)`.
      *   Note: sepia filters compose sequentially, neither additively nor multiplicatively — the result is "more sepia-toned",
@@ -275,7 +275,7 @@ export interface CssFilterEffectOptions {
      * Controls how much the component is brightened or darkened when fully active.
      * 
      * - Transitions smoothly from inactive → active.
-     * - Acts a multiplier of the component's base brightness.
+     * - Acts as a multiplier of the component's base brightness.
      *   For example, if the component has a base `brightness(0.8)` and this option is set to `brightness = 0.5`,
      *   the fully active brightness becomes `0.8 * 0.5 = 0.4`.
      * - Brightness is almost reversible but not perfectly due to internal clamping and rounding in the browser's filter implementation.
@@ -308,7 +308,7 @@ export interface CssFilterEffectOptions {
      * Controls how much the component's color contrast is adjusted when fully active.
      * 
      * - Transitions smoothly from inactive → active.
-     * - Acts a multiplier of the component's base contrast.
+     * - Acts as a multiplier of the component's base contrast.
      *   For example, if the component has a base `contrast(0.8)` and this option is set to `contrast = 0.5`,
      *   the fully active contrast becomes `0.8 * 0.5 = 0.4`.
      * - Contrast is almost reversible but not perfectly due to internal clamping and rounding in the browser's filter implementation.
@@ -337,7 +337,7 @@ export interface CssFilterEffectOptions {
      * Controls how much the component's color saturation is adjusted when fully active.
      * 
      * - Transitions smoothly from inactive → active.
-     * - Acts a multiplier of the component's base saturation.
+     * - Acts as a multiplier of the component's base saturation.
      *   For example, if the component has a base `saturate(0.8)` and this option is set to `saturate = 0.5`,
      *   the fully active saturation becomes `0.8 * 0.5 = 0.4`.
      * - Saturation is almost reversible but not perfectly due to internal clamping and rounding in the browser's filter implementation.
@@ -398,7 +398,7 @@ export interface CssFilterEffectOptions {
      * Controls how much the component is blurred when fully active.
      * 
      * - Transitions smoothly from inactive → active.
-     * - Acts an additional `blur()` filter on top of any base blur effect.
+     * - Acts as an additional `blur()` filter on top of any base blur effect.
      *   For example, if the base style applies `blur(8px)` and this option is set to `blur = 5px`,
      *   the active state will apply `blur(8px)` followed by `blur(5px)`.
      *   Note: blur filters compose sequentially, neither additively nor multiplicatively — the result is "blur of the blurred image",

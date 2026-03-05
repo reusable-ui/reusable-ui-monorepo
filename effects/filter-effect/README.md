@@ -199,11 +199,11 @@ making components **visually adapt their appearance** in response to state chang
 
 ## 📚 Related Packages
 
-- [`@reusable-ui/disabled-effect`](https://www.npmjs.com/package/@reusable-ui/disabled-effect) – Provides default visual effects when a component's disabled state changes.  
-- [`@reusable-ui/focus-effect`](https://www.npmjs.com/package/@reusable-ui/focus-effect) – Provides default visual effects when a component's focus state changes.  
-- [`@reusable-ui/hover-effect`](https://www.npmjs.com/package/@reusable-ui/hover-effect) – Provides default visual effects when a component's hover state changes.  
-- [`@reusable-ui/press-effect`](https://www.npmjs.com/package/@reusable-ui/press-effect) – Provides default visual effects when a component's press state changes.  
-- [`@reusable-ui/active-effect`](https://www.npmjs.com/package/@reusable-ui/active-effect) – Provides default visual effects when a component's active state changes.  
+- [`@reusable-ui/disabled-effect`](https://www.npmjs.com/package/@reusable-ui/disabled-effect) – Provides default visual effects for components when their disabled state changes.  
+- [`@reusable-ui/focus-effect`](https://www.npmjs.com/package/@reusable-ui/focus-effect) – Provides default visual effects for components when their focus state changes.  
+- [`@reusable-ui/hover-effect`](https://www.npmjs.com/package/@reusable-ui/hover-effect) – Provides default visual effects for components when their hover state changes.  
+- [`@reusable-ui/press-effect`](https://www.npmjs.com/package/@reusable-ui/press-effect) – Provides default visual effects for components when their press state changes.  
+- [`@reusable-ui/active-effect`](https://www.npmjs.com/package/@reusable-ui/active-effect) – Provides default visual effects for components when their active state changes.  
 
 ## 📖 Part of the Reusable-UI Framework  
 **@reusable-ui/filter-effect** is a core utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  

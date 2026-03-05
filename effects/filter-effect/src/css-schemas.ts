@@ -139,7 +139,7 @@ export interface FilterSchemaBase<
     directionValue   : TDirection
     
     /**
-     * Specifies an alternate formula for dark mode.
+     * Specifies an alternate formula in dark mode.
      * 
      * If not specified, the filter behaves the same in both light and dark modes.
      * 
