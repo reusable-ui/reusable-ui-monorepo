@@ -113,7 +113,7 @@ export const hoverableBoxStyle = () => {
         // Brightness:
         // Values `< 1` → darken  in light mode, lighten in dark mode
         // Values `> 1` → lighten in light mode, darken  in dark mode
-        brightness     : 1.1, // subtle lightening in light mode, subtle darkening in dark mode
+        brightness     : 0.95, // slightly darken in light mode, slightly lighten in dark mode
         
         // Contrast:
         // Values `< 1` → softer contrast
