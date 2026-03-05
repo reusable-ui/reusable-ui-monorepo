@@ -88,6 +88,7 @@ export interface CssActiveEffectOptions
      * Controls how much the component's opacity is adjusted when fully active.
      * 
      * - Transitions smoothly from inactive → active.
+     * - Only applies for regular variants. Outlined/mild variants use internal color transformations instead.
      * - Acts a multiplier of the component's base opacity.
      *   For example, if the component has a base `opacity(0.8)` and this option is set to `opacity = 0.5`,
      *   the fully active opacity becomes `0.8 * 0.5 = 0.4`.
@@ -119,6 +120,7 @@ export interface CssActiveEffectOptions
      * Controls how much the component is inverted when fully active.
      * 
      * - Transitions smoothly from inactive → active.
+     * - Only applies for regular variants. Outlined/mild variants use internal color transformations instead.
      * - Acts an additional `invert()` filter on top of any base inversion.
      *   For example, if the base style applies `invert(0.8)` and this option is set to `invert = 0.5`,
      *   the active state will apply `invert(0.8)` followed by `invert(0.5)`.
@@ -152,6 +154,7 @@ export interface CssActiveEffectOptions
      * Controls how much the component is sepia-toned when fully active.
      * 
      * - Transitions smoothly from inactive → active.
+     * - Only applies for regular variants. Outlined/mild variants use internal color transformations instead.
      * - Acts an additional `sepia()` filter on top of any base sepia effect.
      *   For example, if the base style applies `sepia(0.8)` and this option is set to `sepia = 0.5`,
      *   the active state will apply `sepia(0.8)` followed by `sepia(0.5)`.
@@ -185,6 +188,7 @@ export interface CssActiveEffectOptions
      * Controls how much the component is brightened or darkened when fully active.
      * 
      * - Transitions smoothly from inactive → active.
+     * - Only applies for regular variants. Outlined/mild variants use internal color transformations instead.
      * - Acts a multiplier of the component's base brightness.
      *   For example, if the component has a base `brightness(0.8)` and this option is set to `brightness = 0.5`,
      *   the fully active brightness becomes `0.8 * 0.5 = 0.4`.
@@ -218,6 +222,7 @@ export interface CssActiveEffectOptions
      * Controls how much the component's color contrast is adjusted when fully active.
      * 
      * - Transitions smoothly from inactive → active.
+     * - Only applies for regular variants. Outlined/mild variants use internal color transformations instead.
      * - Acts a multiplier of the component's base contrast.
      *   For example, if the component has a base `contrast(0.8)` and this option is set to `contrast = 0.5`,
      *   the fully active contrast becomes `0.8 * 0.5 = 0.4`.
@@ -247,6 +252,7 @@ export interface CssActiveEffectOptions
      * Controls how much the component's color saturation is adjusted when fully active.
      * 
      * - Transitions smoothly from inactive → active.
+     * - Only applies for regular variants. Outlined/mild variants use internal color transformations instead.
      * - Acts a multiplier of the component's base saturation.
      *   For example, if the component has a base `saturate(0.8)` and this option is set to `saturate = 0.5`,
      *   the fully active saturation becomes `0.8 * 0.5 = 0.4`.
@@ -277,6 +283,7 @@ export interface CssActiveEffectOptions
      * Controls how much the component's color hue is rotated when fully active.
      * 
      * - Transitions smoothly from inactive → active.
+     * - Only applies for regular variants. Outlined/mild variants use internal color transformations instead.
      * - Acts an additive of the component's base hue rotation.
      *   For example, if the component has a base `hue-rotate(80deg)` and this option is set to `hueRotate = 50deg`,
      *   the fully active hue rotation becomes `80deg + 50deg = 130deg`.
@@ -308,6 +315,7 @@ export interface CssActiveEffectOptions
      * Controls how much the component is blurred when fully active.
      * 
      * - Transitions smoothly from inactive → active.
+     * - Only applies for regular variants. Outlined/mild variants use internal color transformations instead.
      * - Acts an additional `blur()` filter on top of any base blur effect.
      *   For example, if the base style applies `blur(8px)` and this option is set to `blur = 5px`,
      *   the active state will apply `blur(8px)` followed by `blur(5px)`.
@@ -337,6 +345,7 @@ export interface CssActiveEffectOptions
      * Specifies the drop shadow to apply when fully active.
      * 
      * - Transitions smoothly from inactive → active.
+     * - Only applies for regular variants. Outlined/mild variants use internal color transformations instead.
      * - Acts an additive adjustment to the component's base drop shadow.
      *   For example, if the component has a base `drop-shadow(1px 1px 2px black)` and
      *   this option is set to `dropShadow` has `offsetX = 2px`, `offsetY = 2px`, `blur = 3px`, and `color = 'red'`,
