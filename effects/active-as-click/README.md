@@ -57,7 +57,7 @@ To migrate from `@reusable-ui/active-as-click`:
 
 ## 📚 Related Packages
 
-- [`@reusable-ui/active-effect`](https://www.npmjs.com/package/@reusable-ui/active-effect) – Provides default visual effects when a component's active state changes.  
+- [`@reusable-ui/active-effect`](https://www.npmjs.com/package/@reusable-ui/active-effect) – Provides default visual effects for components when their active state changes.  
 - [`@reusable-ui/active-state`](https://www.npmjs.com/package/@reusable-ui/active-state) – Provides active/selected state management for components.
 
 ## 🛡️ License  
