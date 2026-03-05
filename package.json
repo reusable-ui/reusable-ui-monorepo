@@ -128,6 +128,7 @@
     "effects/disabled-effect",
     "effects/focus-effect",
     "effects/hover-effect",
+    "effects/press-effect",
     "routes/link-compat",
     "routes/next-link-compat",
     "routes/router-link-compat",
