@@ -9,7 +9,7 @@ The effects are designed to feel natural to users:
 - Text decorations (such as underlines) can be applied to emphasize interactivity.  
 - Visual cues remain consistent across components, ensuring a predictable and cohesive user experience.  
 
-By using `usesHoverEffect()`, you can apply these effects consistently across your components — enhancing emphasis through filters the entire component surface — with optional customization for color effects and text decoration.  
+By using `usesHoverEffect()`, you can apply these effects consistently across your components — enhancing emphasis through filters across the entire component surface — with optional customization for color effects and text decoration.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with Hover State
@@ -32,9 +32,6 @@ This separation keeps responsibilities clear:
 ✔ Unified filter stack that composes seamlessly with other state-driven effects  
 ✔ Ready-to-use defaults for common scenarios, while remaining extensible for custom styling  
 ✔ Works across both text and surface elements for cohesive interactivity cues  
-✔ Supports **reverse intent**:  
-   - Positive configurations → fade *in* the effect during hover  
-   - Negative configurations → fade *out* the effect during hover (effect is fully un-applied at full hover)  
 ✔ Supports **reverse intent**:  
    - Positive configurations → effect gradually **applies** as the component becomes hovered  
    - Negative configurations → effect gradually **withdraws** as the component becomes hovered (fully un-applied at full hovered state)  

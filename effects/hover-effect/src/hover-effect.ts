@@ -36,7 +36,7 @@ import {
 import {
     // Utilities:
     composeFilterEffect,
-}                           from '@reusable-ui/filter-effect'       // Provides default visual effects when a component's active state changes. Adjusts the component's visual presentation by making components visually adapt their appearance in response to state changes.
+}                           from '@reusable-ui/filter-effect'       // Provides default visual effects for components when their active state changes. Adjusts the component's visual presentation by making components visually adapt their appearance in response to state changes.
 
 
 
@@ -73,7 +73,7 @@ export const usesHoverEffect = (options?: CssHoverEffectOptions): CssHoverEffect
     // Extract options and assign defaults:
     const {
         enablesReverseIntent = true, // Defaults to `true` (enables reverse intent, allowing negative values to fade *out* the effect on hover).
-        brightness           = 0.95, // Defaults to `0.95` (slightly darken for light mode, slightly lighten for dark mode).
+        brightness           = 0.95, // Defaults to `0.95` (slightly darken in light mode, slightly lighten in dark mode).
         
         textDecoration       = null, // Defaults to `null` (preserves the component's original text decoration).
         

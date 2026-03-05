@@ -20,7 +20,7 @@ import {
 import {
     // Types:
     type CssFilterEffectOptions,
-}                           from '@reusable-ui/filter-effect'       // Provides default visual effects when a component's active state changes. Adjusts the component's visual presentation by making components visually adapt their appearance in response to state changes.
+}                           from '@reusable-ui/filter-effect'       // Provides default visual effects for components when their active state changes. Adjusts the component's visual presentation by making components visually adapt their appearance in response to state changes.
 export {
     // Types:
     type CssLengthParam,
@@ -28,7 +28,7 @@ export {
     type CssAngleParam,
     type CssColorParam,
     type FilterDropShadow,
-}                           from '@reusable-ui/filter-effect'       // Provides default visual effects when a component's active state changes. Adjusts the component's visual presentation by making components visually adapt their appearance in response to state changes.
+}                           from '@reusable-ui/filter-effect'       // Provides default visual effects for components when their active state changes. Adjusts the component's visual presentation by making components visually adapt their appearance in response to state changes.
 
 
 
@@ -80,7 +80,7 @@ export interface CssHoverEffectOptions
      * Controls how much the component's opacity is adjusted when fully hovered.
      * 
      * - Transitions smoothly from unhovered → hovered.
-     * - Acts a multiplier of the component's base opacity.
+     * - Acts as a multiplier of the component's base opacity.
      *   For example, if the component has a base `opacity(0.8)` and this option is set to `opacity = 0.5`,
      *   the fully hovered opacity becomes `0.8 * 0.5 = 0.4`.
      * - Opacity adjustments are strictly reductive: you can decrease opacity (more transparent),
@@ -111,7 +111,7 @@ export interface CssHoverEffectOptions
      * Controls how much the component is inverted when fully hovered.
      * 
      * - Transitions smoothly from unhovered → hovered.
-     * - Acts an additional `invert()` filter on top of any base inversion.
+     * - Acts as an additional `invert()` filter on top of any base inversion.
      *   For example, if the base style applies `invert(0.8)` and this option is set to `invert = 0.5`,
      *   the hovered state will apply `invert(0.8)` followed by `invert(0.5)`.
      *   Note: invert filters compose sequentially, neither additively nor multiplicatively — the result is "more inverted",
@@ -144,7 +144,7 @@ export interface CssHoverEffectOptions
      * Controls how much the component is sepia-toned when fully hovered.
      * 
      * - Transitions smoothly from unhovered → hovered.
-     * - Acts an additional `sepia()` filter on top of any base sepia effect.
+     * - Acts as an additional `sepia()` filter on top of any base sepia effect.
      *   For example, if the base style applies `sepia(0.8)` and this option is set to `sepia = 0.5`,
      *   the hovered state will apply `sepia(0.8)` followed by `sepia(0.5)`.
      *   Note: sepia filters compose sequentially, neither additively nor multiplicatively — the result is "more sepia-toned",
@@ -177,7 +177,7 @@ export interface CssHoverEffectOptions
      * Controls how much the component is brightened or darkened when fully hovered.
      * 
      * - Transitions smoothly from unhovered → hovered.
-     * - Acts a multiplier of the component's base brightness.
+     * - Acts as a multiplier of the component's base brightness.
      *   For example, if the component has a base `brightness(0.8)` and this option is set to `brightness = 0.5`,
      *   the fully hovered brightness becomes `0.8 * 0.5 = 0.4`.
      * - Brightness is almost reversible but not perfectly due to internal clamping and rounding in the browser's filter implementation.
@@ -202,7 +202,7 @@ export interface CssHoverEffectOptions
      *   - Instead of fading *in* the brightness adjustment when hovered, the adjustment fades *out*.
      *   - When fully unhovered, the base brightness is restored (the effect is fully un-applied).
      * 
-     * Defaults to `0.95` (slightly darken for light mode, slightly lighten for dark mode).
+     * Defaults to `0.95` (slightly darken in light mode, slightly lighten in dark mode).
      */
     brightness           ?: CssFilterEffectOptions['brightness']
     
@@ -210,7 +210,7 @@ export interface CssHoverEffectOptions
      * Controls how much the component's color contrast is adjusted when fully hovered.
      * 
      * - Transitions smoothly from unhovered → hovered.
-     * - Acts a multiplier of the component's base contrast.
+     * - Acts as a multiplier of the component's base contrast.
      *   For example, if the component has a base `contrast(0.8)` and this option is set to `contrast = 0.5`,
      *   the fully hovered contrast becomes `0.8 * 0.5 = 0.4`.
      * - Contrast is almost reversible but not perfectly due to internal clamping and rounding in the browser's filter implementation.
@@ -239,7 +239,7 @@ export interface CssHoverEffectOptions
      * Controls how much the component's color saturation is adjusted when fully hovered.
      * 
      * - Transitions smoothly from unhovered → hovered.
-     * - Acts a multiplier of the component's base saturation.
+     * - Acts as a multiplier of the component's base saturation.
      *   For example, if the component has a base `saturate(0.8)` and this option is set to `saturate = 0.5`,
      *   the fully hovered saturation becomes `0.8 * 0.5 = 0.4`.
      * - Saturation is almost reversible but not perfectly due to internal clamping and rounding in the browser's filter implementation.
@@ -300,7 +300,7 @@ export interface CssHoverEffectOptions
      * Controls how much the component is blurred when fully hovered.
      * 
      * - Transitions smoothly from unhovered → hovered.
-     * - Acts an additional `blur()` filter on top of any base blur effect.
+     * - Acts as an additional `blur()` filter on top of any base blur effect.
      *   For example, if the base style applies `blur(8px)` and this option is set to `blur = 5px`,
      *   the hovered state will apply `blur(8px)` followed by `blur(5px)`.
      *   Note: blur filters compose sequentially, neither additively nor multiplicatively — the result is "blur of the blurred image",
