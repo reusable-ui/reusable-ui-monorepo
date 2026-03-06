@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/disabled-effect",
   "version": "7.0.0",
-  "description": "Provides default visual effects for components when their disabled state changes. De-emphasizes the entire component surface by making components visually muted when disabled.",
+  "description": "Provides default visual effects for components when their disabled state changes. De-emphasizes the entire component surface to make components visually muted when disabled.",
   "keywords": [
     "transition",
     "disabled",
