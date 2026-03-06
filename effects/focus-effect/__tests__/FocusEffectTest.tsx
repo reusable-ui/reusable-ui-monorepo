@@ -20,7 +20,7 @@ export interface FocusEffectTestProps
      * Simulates the `focusFactorCond` CSS variable.
      * 
      * Typical values:
-     * - `'unset'` : fully focused
+     * - `'unset'` : fully blurred
      * - `0`       : start of blur state
      * - `0.5`     : halfway through transition
      * - `1`       : fully focused
