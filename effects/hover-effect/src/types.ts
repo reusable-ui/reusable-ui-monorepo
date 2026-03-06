@@ -20,7 +20,7 @@ import {
 import {
     // Types:
     type CssFilterEffectOptions,
-}                           from '@reusable-ui/filter-effect'       // Provides default visual effects for components when their active state changes. Adjusts the component's visual presentation by making components visually adapt their appearance in response to state changes.
+}                           from '@reusable-ui/filter-effect'       // Provides default visual effects for components when their active state changes. Adjusts the component's visual presentation to make components visually adapt their appearance in response to state changes.
 export {
     // Types:
     type CssLengthParam,
@@ -28,7 +28,7 @@ export {
     type CssAngleParam,
     type CssColorParam,
     type FilterDropShadow,
-}                           from '@reusable-ui/filter-effect'       // Provides default visual effects for components when their active state changes. Adjusts the component's visual presentation by making components visually adapt their appearance in response to state changes.
+}                           from '@reusable-ui/filter-effect'       // Provides default visual effects for components when their active state changes. Adjusts the component's visual presentation to make components visually adapt their appearance in response to state changes.
 
 
 
