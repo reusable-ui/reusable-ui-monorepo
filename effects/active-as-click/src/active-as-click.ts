@@ -18,7 +18,7 @@ import {
 // Reusable-ui states:
 import {
     usesActiveEffect,
-}                           from '@reusable-ui/active-effect'       // Provides default visual effects for active state styling. Emphasizes theme colors by making components visually stand out when active.
+}                           from '@reusable-ui/active-effect'       // Provides default visual effects for active state styling. Emphasizes theme colors to make components visually stand out when active.
 
 
 
