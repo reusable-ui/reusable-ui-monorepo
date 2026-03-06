@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/press-effect",
   "version": "7.0.0",
-  "description": "Provides default visual effects for components when their press state changes. Acknowledges user input by making components visually confirming command when pressed (clicked).",
+  "description": "Provides default visual effects for components when their press state changes. Acknowledges user input to make components visually confirming command when pressed (clicked).",
   "keywords": [
     "press",
     "press-effect",
