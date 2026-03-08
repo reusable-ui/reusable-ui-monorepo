@@ -1,3 +1,5 @@
+[high prior] Move `colorRoleMap` from validity-effect to colors
+
 [high prior] Rename `ThemeVariantVars.<surfaceRole: backg,foreg,decor,etc><variantRole: regular,mild,outlined>*` to `ThemeVariantVars.<variantRole: regular,mild,outlined><surfaceRole: backg,foreg,decor,etc>*`
              Use this regex for searching: (backg|foreg|decor|border|ring)(Regular|Mild|Outlined)\S*
 
