@@ -1,3 +1,8 @@
+[high prior] Rename `ThemeVariantVars.<surfaceRole: backg,foreg,decor,etc><variantRole: regular,mild,outlined>*` to `ThemeVariantVars.<variantRole: regular,mild,outlined><surfaceRole: backg,foreg,decor,etc>*`
+             Use this regex for searching: (backg|foreg|decor|border|ring)(Regular|Mild|Outlined)\S*
+
+[high prior] Reorder from [regular, outlined, mild] to [regular, mild, outlined]
+
 [high prior] Remove unnecessary variance annotations (?<=[<,])(\s|\r|\n)*(in\s+out|out\s+in|in|out)(\s|\r|\n)+
 
 [high prior] PointerCapturableProps: update MouseEvent to MouseEvent|TouchEvent so it works correctly with <ListEditor>
