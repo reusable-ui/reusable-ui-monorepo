@@ -352,7 +352,7 @@ import { usesAnimationFeature } from '@reusable-ui/animation-feature';
 import { usesValidityState } from '@reusable-ui/validity-state';
 
 // CSS-in-JS:
-import { style, vars, keyframes, fallback } from '@cssfn/core';
+import { style, vars, keyframes, fallback, switchOf } from '@cssfn/core';
 
 export const validatableBoxStyle = () => {
     // Feature: animation handling
