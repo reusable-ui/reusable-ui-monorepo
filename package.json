@@ -129,6 +129,7 @@
     "effects/focus-effect",
     "effects/hover-effect",
     "effects/press-effect",
+    "effects/validity-effect",
     "routes/link-compat",
     "routes/next-link-compat",
     "routes/router-link-compat",

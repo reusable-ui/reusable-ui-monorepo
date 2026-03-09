@@ -1,0 +1,67 @@
+{
+  "name": "@reusable-ui/validity-effect",
+  "version": "7.0.0",
+  "description": "Provides default visual effects for components when their validity state changes. Switches component's theme colors to success/danger to make components visually verified when valid/invalid.",
+  "keywords": [
+    "transition",
+    "validity",
+    "validity-effect",
+    "validity-state",
+    "success",
+    "danger",
+    "animation",
+    "appearance",
+    "accessibility",
+    "css",
+    "design-system",
+    "ui",
+    "react"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "effects/validity-effect"
+  },
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "npx playwright test"
+  },
+  "dependencies": {
+    "@cssfn/core": "^4.0.0"
+  },
+  "peerDependencies": {
+    "@reusable-ui/colors": "^7.0.0",
+    "@reusable-ui/theme-variant": "^7.0.0",
+    "@reusable-ui/validity-state": "^7.0.0"
+  },
+  "devDependencies": {
+    "@reusable-ui/background-feature": "^7.0.0",
+    "@reusable-ui/mild-variant": "^7.0.0",
+    "@reusable-ui/outline-variant": "^7.0.0",
+    "@types/chroma-js": "^3.1.2",
+    "@types/react": "^19.0.0",
+    "chroma-js": "^3.2.0",
+    "react": "^19.0.0"
+  }
+}
