@@ -185,11 +185,14 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
     /**
      * Counts the number of steps between origin and target views.
      * - Represents how many steps the transition must cover.
-     * - Positive value indicates advancing to a higher index.
-     * - Negative value indicates receding to a lower index.
-     * - Zero value indicates no change (same view).
+     * - Always resolves to a non-negative value (magnitude only, sign discarded).
+     *   - `0` indicates no change (origin and target are the same view).
+     * - Directional information (advancing vs receding) is carried by the **view factor**,
+     *   allowing overshoot/undershoot effects to be preserved.
+     * - The current implementation uses the `max(...)` trick to extract magnitude only.
+     *   - Equivalent to `abs(...)`, but `max(...)` is used until `abs(...)` is fully supported across major browsers.
      */
-    const transitioningStepsFormula   = `${viewIndex} - ${switchOf(prevViewIndex, viewIndex)}`;
+    const transitioningStepsFormula   = `max(${viewIndex} - ${switchOf(prevViewIndex, viewIndex)}, ${switchOf(prevViewIndex, viewIndex)} - ${viewIndex})`;
     
     /**
      * The per-step distance:
@@ -216,7 +219,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
      * Parentheses are not required when combining with other math operations,
      * because they resolve directly to a single unit.
      */
-    const baseTranslationFormula      = `(${initialOffsetFormula}) - ((${precedingViewsFormula}) + ((${transitioningStepsFormula}) * max(${optimizedViewFactor}, ${optimizedViewFactor} * -1))) * (${perStepDistanceFormula})`;
+    const baseTranslationFormula      = `(${initialOffsetFormula}) - ((${precedingViewsFormula}) + ((${transitioningStepsFormula}) * ${optimizedViewFactor})) * (${perStepDistanceFormula})`;
     
     /**
      * Conditional writing direction multiplier:

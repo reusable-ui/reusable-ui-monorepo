@@ -129,6 +129,7 @@ export const slideBoxStyle = () => {
         }),
         ...keyframes('effect-view-advancing', {
             from : { [viewFactor]:  0 },
+            // '90%': { [viewFactor]: 1.2 }, // Optional overshoot for a "bump" effect
             to   : { [viewFactor]:  1 },
         }),
         
@@ -140,6 +141,7 @@ export const slideBoxStyle = () => {
         }),
         ...keyframes('effect-view-receding', {
             from : { [viewFactor]:  0 },
+            // '90%': { [viewFactor]: -1.2 }, // Optional undershoot for a "bounce back" effect
             to   : { [viewFactor]: -1 },
         }),
         
