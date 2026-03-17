@@ -243,6 +243,7 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/validity-effect        non_peer
 @reusable-ui/active-effect          non_peer
 @reusable-ui/active-as-click        DEPRECATED
+@reusable-ui/view-effect            non_peer
 
 // Reusable-ui capabilities:
 @reusable-ui/floatable

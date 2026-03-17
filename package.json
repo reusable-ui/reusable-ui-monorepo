@@ -130,6 +130,7 @@
     "effects/validity-effect",
     "effects/active-effect",
     "effects/active-as-click",
+    "effects/view-effect",
     "routes/link-compat",
     "routes/next-link-compat",
     "routes/router-link-compat",
