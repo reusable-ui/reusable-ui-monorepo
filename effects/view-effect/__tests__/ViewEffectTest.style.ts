@@ -3,7 +3,7 @@ import { usesTransformFeature } from '@reusable-ui/transform-feature'
 import { usesViewEffect } from '../dist/index.js'
 
 // Test style for ViewEffect
-// Demonstrates how `viewIndexFactorCond` drives transition effects
+// Demonstrates how `viewFactorCond` drives transition effects
 // with simplified static colors for easier testing.
 export default function viewEffectTestStyle() {
     // Features:

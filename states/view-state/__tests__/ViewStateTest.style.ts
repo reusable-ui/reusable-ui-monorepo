@@ -15,7 +15,7 @@ function containerStyle() {
 function viewsStyle() {
     const {
         viewStateRule,
-        viewStateVars: { viewIndex, prevViewIndex, viewIndexFactor },
+        viewStateVars: { viewIndex, prevViewIndex, viewFactor },
     } = usesViewState({
         animationViewAdvancing : 'var(--test-view-advancing)',
         animationViewReceding  : 'var(--test-view-receding)',
@@ -41,32 +41,32 @@ function viewsStyle() {
         ...viewStateRule(),
         ...animationFeatureRule(),
         
-        // Advancing animation: interpolate viewIndexFactor from 0 → +1
+        // Advancing animation: interpolate viewFactor from 0 → +1
         ...vars({
             '--test-view-advancing': [
                 ['1s', 'ease-out', 'both', 'boo-test-view-advancing'],
             ],
         }),
         ...keyframes('boo-test-view-advancing', {
-            from : { [viewIndexFactor]:  0 },
-            to   : { [viewIndexFactor]:  1 },
+            from : { [viewFactor]:  0 },
+            to   : { [viewFactor]:  1 },
         }),
         
-        // Receding animation: interpolate viewIndexFactor from 0 → -1
+        // Receding animation: interpolate viewFactor from 0 → -1
         ...vars({
             '--test-view-receding': [
                 ['1s', 'ease-out', 'both', 'boo-test-view-receding'],
             ],
         }),
         ...keyframes('boo-test-view-receding', {
-            from : { [viewIndexFactor]:  0 },
-            to   : { [viewIndexFactor]: -1 },
+            from : { [viewFactor]:  0 },
+            to   : { [viewFactor]: -1 },
         }),
         
-        // Shift index factor:
+        // Shift factor:
         // - Represents the signed destination index for visual translation.
-        // - Advancing : shiftIndexFactor =  viewIndexFactor
-        // - Receding  : shiftIndexFactor = -viewIndexFactor - 1
+        // - Advancing : shiftFactor =  viewFactor
+        // - Receding  : shiftFactor = -viewFactor - 1
         // 
         // Direction detection is done inline using:
         //   clamp(0, (prevViewIndex - viewIndex) * 999999, 1)
@@ -74,18 +74,18 @@ function viewsStyle() {
         //   → If prev ≤ view → advancing → clamp = 0
         // 
         // The multiplier (999999) ensures fractional diffs (e.g. 0.00001) still trigger receding.
-        '--_shiftIndexFactor':
+        '--_shiftFactor':
 `calc(
-    ${viewIndexFactor}
+    ${viewFactor}
     +
     clamp(0, calc((${switchOf(prevViewIndex, viewIndex)} - ${viewIndex}) * 999999), 1)
-    * ((${viewIndexFactor} * -2) - 1)
+    * ((${viewFactor} * -2) - 1)
 )`,
         
         // Example usage:
-        // - Translate based on the distance between origin and destination views, interpolated by `--_shiftIndexFactor`.
+        // - Translate based on the distance between origin and destination views, interpolated by `--_shiftFactor`.
         // - 0 → origin view, ±1 → destination view.
-        marginInlineStart: `calc(var(--_shiftIndexFactor) * (${viewIndex} - ${prevViewIndex}) * -100px)`,
+        marginInlineStart: `calc(var(--_shiftFactor) * (${viewIndex} - ${prevViewIndex}) * -100px)`,
         contain: 'layout', // Contain layout to prevent reflows.
         willChange: 'margin-inline-start', // Hint to browser for better performance.
         

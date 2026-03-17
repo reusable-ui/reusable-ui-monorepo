@@ -14,15 +14,15 @@ export interface ViewEffectTestProps
     /**
      * 
      */
-    prevViewIndex : number | 'unset'
+    prevViewIndex   : number | 'unset'
     
     /**
      * 
      */
-    viewIndex     : number
+    viewIndex       : number
     
     /**
-     * Simulates the `viewIndexFactorCond` CSS variable.
+     * Simulates the `viewFactorCond` CSS variable.
      * 
      * Typical values:
      * - `'unset'` : fully settled
@@ -32,13 +32,13 @@ export interface ViewEffectTestProps
      * - `-0.5`    : halfway through the previous target view
      * - `-1`      : the previous target view is fully slid into place
      */
-    viewIndexFactorCond ?: 'unset' | number
+    viewFactorCond ?: 'unset' | number
 }
 
 /**
  * Test component for ViewEffect.
  * 
- * - Mocks `viewIndexFactorCond` via inline style for controlled testing.
+ * - Mocks `viewFactorCond` via inline style for controlled testing.
  * - Uses static colors for simplicity:
  *   - Regular background  → pure blue   `oklch(0.5 0.3 265 / 1)`
  *   - Outlined background → transparent `oklch(0 0 0 / 0)`
@@ -48,17 +48,17 @@ export const ViewEffectTest = (props: ViewEffectTestProps) => {
     const {
         prevViewIndex,
         viewIndex,
-        viewIndexFactorCond = 'unset',
+        viewFactorCond = 'unset',
         
         enablesSelectiveRendering = false,
     } = props;
     
     const styles = useViewEffectTestStyles();
     
-    const { viewStateVars  : {  prevViewIndex: prevViewIndexVar, viewIndex: viewIndexVar, viewIndexFactor: viewFactorVar, viewIndexFactorCond: viewFactorCondVar } } = usesViewState();
+    const { viewStateVars  : {  prevViewIndex: prevViewIndexVar, viewIndex: viewIndexVar, viewFactor: viewFactorVar, viewFactorCond: viewFactorCondVar } } = usesViewState();
     
     // Inline style overrides:
-    // - Assigns `viewIndexFactorCond` directly
+    // - Assigns `viewFactorCond` directly
     // - Statically sets regular/mild background colors for predictable testing
     const inlineStyle : CSSProperties = useMemo(() => ({
         // @ts-ignore
@@ -77,17 +77,17 @@ export const ViewEffectTest = (props: ViewEffectTestProps) => {
         [
             viewFactorVar
             .slice(4, -1) // fix: var(--customProp) => --customProp
-        ]: String((viewIndexFactorCond === 'unset') ? 0 : viewIndexFactorCond),
+        ]: String((viewFactorCond === 'unset') ? 0 : viewFactorCond),
         
         // @ts-ignore
         [
             viewFactorCondVar
             .slice(4, -1) // fix: var(--customProp) => --customProp
-        ]: String(viewIndexFactorCond),
-    } as CSSProperties), [prevViewIndex, viewIndex, viewIndexFactorCond]);
+        ]: String(viewFactorCond),
+    } as CSSProperties), [prevViewIndex, viewIndex, viewFactorCond]);
     
     // Determine the range of visible views, including during transitions:
-    const fromIndex = (viewIndexFactorCond === 'unset') ? viewIndex : ((prevViewIndex !== 'unset') ? prevViewIndex : viewIndex);
+    const fromIndex = (viewFactorCond === 'unset') ? viewIndex : ((prevViewIndex !== 'unset') ? prevViewIndex : viewIndex);
     const toIndex   = viewIndex;
     const [minVisibleViewIndex, maxVisibleViewIndex] = (
         fromIndex < toIndex

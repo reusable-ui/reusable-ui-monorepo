@@ -100,7 +100,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
     
     
     // States:
-    const { viewStateVars : { viewIndex, prevViewIndex, viewIndexFactor, viewIndexFactorCond } } = usesViewState();
+    const { viewStateVars : { viewIndex, prevViewIndex, viewFactor, viewFactorCond } } = usesViewState();
     
     /**
      * Optimization opportunity:
@@ -112,13 +112,13 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
      * - When optimized, the `baseTranslationFormula` resolves to `unset` instead of `0` when settled,
      *   invalidating `viewTranslateLogical` and `viewTransform`.
      */
-    const optimizedViewIndexFactor = (
+    const optimizedViewFactor = (
         // If conditions are met, the view transformation can be safely omitted:
         (enablesSelectiveRendering && ((viewSpacingMode === 'between') || (viewOffset === null) || (viewOffset === 0) || String(viewOffset).match(/0+\S?/g)))
-        ? viewIndexFactorCond // Will be `unset` when fully settled.
+        ? viewFactorCond // Will be `unset` when fully settled.
         
         // Otherwise, transformation cannot be safely omitted:
-        : viewIndexFactor     // Will be `0` when fully settled.
+        : viewFactor     // Will be `0` when fully settled.
     );
     
     // Variables:
@@ -216,7 +216,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
      * Parentheses are not required when combining with other math operations,
      * because they resolve directly to a single unit.
      */
-    const baseTranslationFormula      = `(${initialOffsetFormula}) - ((${precedingViewsFormula}) + ((${transitioningStepsFormula}) * max(${optimizedViewIndexFactor}, ${optimizedViewIndexFactor} * -1))) * (${perStepDistanceFormula})`;
+    const baseTranslationFormula      = `(${initialOffsetFormula}) - ((${precedingViewsFormula}) + ((${transitioningStepsFormula}) * max(${optimizedViewFactor}, ${optimizedViewFactor} * -1))) * (${perStepDistanceFormula})`;
     
     /**
      * Conditional writing direction multiplier:

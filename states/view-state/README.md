@@ -314,8 +314,8 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 | `isViewTransitioning`    | `.view-advancing` or `.view-receding` | Conditional variable for the advancing/receding transition                     |
 | `viewIndex`              | Always available                      | Current destination view index                                                 |
 | `prevViewIndex`          | Having changed `viewIndex`            | Previous view index, used for directional inference                            |
-| `viewIndexFactor`        | Always available (animatable)         | Normalized factor: -1 ⇄ 0 ⇄ +1; resets to 0 after transition completes        |
-| `viewIndexFactorCond`    | Not fully settled                     | Conditional mirror of `viewIndexFactor`, drops to `unset` when view is settled |
+| `viewFactor`             | Always available (animatable)         | Normalized factor: -1 ⇄ 0 ⇄ +1; resets to 0 after transition completes        |
+| `viewFactorCond`         | Not fully settled                     | Conditional mirror of `viewFactor`, drops to `unset` when view is settled      |
 
 #### 💡 Usage Example
 
@@ -339,7 +339,7 @@ export const slideBoxStyle = () => {
     // Feature: view-switching lifecycle
     const {
         viewStateRule,
-        viewStateVars: { viewIndex, prevViewIndex, viewIndexFactor },
+        viewStateVars: { viewIndex, prevViewIndex, viewFactor },
     } = usesViewState({
         animationViewAdvancing : 'var(--box-view-advancing)',
         animationViewReceding  : 'var(--box-view-receding)',
@@ -359,32 +359,32 @@ export const slideBoxStyle = () => {
         // To show the correct view, we translate this box based on the current viewIndex.
         // We `translate` using `marginInlineStart` for better RTL support, because `translate` is physical, not logical.
         
-        // Advancing animation: interpolate viewIndexFactor from 0 → +1
+        // Advancing animation: interpolate viewFactor from 0 → +1
         ...vars({
             '--box-view-advancing': [
                 ['0.3s', 'ease-out', 'both', 'transition-view-advancing'],
             ],
         }),
         ...keyframes('transition-view-advancing', {
-            from : { [viewIndexFactor]:  0 },
-            to   : { [viewIndexFactor]:  1 },
+            from : { [viewFactor]:  0 },
+            to   : { [viewFactor]:  1 },
         }),
         
-        // Receding animation: interpolate viewIndexFactor from 0 → -1
+        // Receding animation: interpolate viewFactor from 0 → -1
         ...vars({
             '--box-view-receding': [
                 ['0.3s', 'ease-out', 'both', 'transition-view-receding'],
             ],
         }),
         ...keyframes('transition-view-receding', {
-            from : { [viewIndexFactor]:  0 },
-            to   : { [viewIndexFactor]: -1 },
+            from : { [viewFactor]:  0 },
+            to   : { [viewFactor]: -1 },
         }),
         
-        // Shift index factor:
+        // Shift factor:
         // - Represents the signed destination index for visual translation.
-        // - Advancing : shiftIndexFactor =  viewIndexFactor
-        // - Receding  : shiftIndexFactor = -viewIndexFactor - 1
+        // - Advancing : shiftFactor =  viewFactor
+        // - Receding  : shiftFactor = -viewFactor - 1
         // 
         // Direction detection is done inline using:
         //   clamp(0, (prevViewIndex - viewIndex) * 999999, 1)
@@ -392,18 +392,18 @@ export const slideBoxStyle = () => {
         //   → If prev ≤ view → advancing → clamp = 0
         // 
         // The multiplier (999999) ensures fractional diffs (e.g. 0.00001) still trigger receding.
-        '--_shiftIndexFactor':
+        '--_shiftFactor':
 `calc(
-    ${viewIndexFactor}
+    ${viewFactor}
     +
     clamp(0, calc((${switchOf(prevViewIndex, viewIndex)} - ${viewIndex}) * 999999), 1)
-    * ((${viewIndexFactor} * -2) - 1)
+    * ((${viewFactor} * -2) - 1)
 )`,
         
         // Example usage:
-        // - Translate based on the distance between origin and destination views, interpolated by `--_shiftIndexFactor`.
+        // - Translate based on the distance between origin and destination views, interpolated by `--_shiftFactor`.
         // - 0 → origin view, ±1 → destination view.
-        marginInlineStart: `calc(var(--_shiftIndexFactor) * (${viewIndex} - ${prevViewIndex}) * -100px)`,
+        marginInlineStart: `calc(var(--_shiftFactor) * (${viewIndex} - ${prevViewIndex}) * -100px)`,
         contain: 'layout', // Contain layout to prevent reflows.
         willChange: 'margin-inline-start', // Hint to browser for better performance.
         

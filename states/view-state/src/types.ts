@@ -566,7 +566,7 @@ export interface ViewStateVars {
      * ### Usage:
      * - Applicable to numeric-based properties such as `margin`, `transform`, `rotation`, `opacity`, etc.
      * - Implementators are responsible for assigning transitional values in their animations.
-     *   For example, an advancing animation might interpolate `viewIndexFactor` from 0 → +1.
+     *   For example, an advancing animation might interpolate `viewFactor` from 0 → +1.
      * - Values outside the -1…+1 range are allowed, and implementators must handle them appropriately.  
      *   Example of an animation with a spring/bump effect:  
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
@@ -578,22 +578,22 @@ export interface ViewStateVars {
      *   - The factor represents the *relative journey progress*, not the absolute index.  
      *   - Resets to `0` after completion to reflect the collapsed single-view rendering.  
      */
-    viewIndexFactor        : unknown
+    viewFactor             : unknown
     
     /**
-     * A conditional mirror of `viewIndexFactor` representing the **view-switching lifecycle state**.
-     * Mirrors `viewIndexFactor` during advancing/receding transitions, but is explicitly
+     * A conditional mirror of `viewFactor` representing the **view-switching lifecycle state**.
+     * Mirrors `viewFactor` during advancing/receding transitions, but is explicitly
      * set to `unset` once the view is settled (baseline single-view rendering).
      * 
      * ### Expected values:
      * - **unset**   : settled single view (baseline inactive, declaration dropped)
-     * - **0 → +1**  : advancing transition (mirrors `viewIndexFactor`)
-     * - **0 → -1**  : receding transition (mirrors `viewIndexFactor`)
+     * - **0 → +1**  : advancing transition (mirrors `viewFactor`)
+     * - **0 → -1**  : receding transition (mirrors `viewFactor`)
      * 
      * ### Usage:
      * - Use when dependent properties should be **poisoned** (ignored) once the view is settled.
      *   Example: gating `transform`, `opacity`, or other overrides that should disappear after transition.
-     * - During animations, `viewIndexFactorCond` mirrors the numeric value of `viewIndexFactor`,
+     * - During animations, `viewFactorCond` mirrors the numeric value of `viewFactor`,
      *   ensuring smooth transitions and consistency.
      * - Applicable to numeric-based properties such as `margin`, `transform`, `rotation`, `opacity`, etc.
      * - Values outside the -1…+1 range are allowed, and implementators must handle them appropriately.  
@@ -607,14 +607,14 @@ export interface ViewStateVars {
      *   - Mirrors the transient lifecycle states (advancing/receding) during transitions.  
      *   - Drops to `unset` only when the view is settled, so dependent declarations fall back cleanly.  
      *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `viewIndexFactorCond = unset`: settled single view (baseline inactive, declaration dropped)
-     *     - `viewIndexFactorCond = 0`: origin view during transition (numeric interpolation)
-     *     - `viewIndexFactorCond = ±1`: destination view during transition (numeric interpolation)
+     *     - `viewFactorCond = unset`: settled single view (baseline inactive, declaration dropped)
+     *     - `viewFactorCond = 0`: origin view during transition (numeric interpolation)
+     *     - `viewFactorCond = ±1`: destination view during transition (numeric interpolation)
      * - **Naming rationale:**  
      *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
      *     but conditionally drops to `unset` at baseline settled.
      */
-    viewIndexFactorCond    : unknown
+    viewFactorCond         : unknown
 }
 
 

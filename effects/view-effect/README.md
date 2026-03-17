@@ -14,7 +14,7 @@ Authors who need more control can override or extend the defaults, but for most 
 ## 🔗 Integration with View State
 
 `view-effect` cannot operate in isolation.  
-It relies on the [`@reusable-ui/view-state`](https://www.npmjs.com/package/@reusable-ui/view-state) package to drive the `viewIndexFactorCond` CSS variable, which represents how far the transition has progressed (from the current view → toward the target view).  
+It relies on the [`@reusable-ui/view-state`](https://www.npmjs.com/package/@reusable-ui/view-state) package to drive the `viewFactorCond` CSS variable, which represents how far the transition has progressed (from the current view → toward the target view).  
 
 - `view-state` tracks the active view index and transition factor.  
 - `view-effect` consumes that factor and applies the sliding transition.  
@@ -82,18 +82,18 @@ export const slideBoxStyle = () => {
     // States:
     
     // View-switching lifecycle:
-    // - Exposes `viewIndexFactor` (-1 → 0 → +1) to represent transition progress
-    // - Associates advancing/receding animations to drive `viewIndexFactor` smoothly
+    // - Exposes `viewFactor` (-1 → 0 → +1) to represent transition progress
+    // - Associates advancing/receding animations to drive `viewFactor` smoothly
     const {
         viewStateRule,
-        viewStateVars: { viewIndexFactor },
+        viewStateVars: { viewFactor },
     } = usesViewState({
         animationViewAdvancing : 'var(--box-view-advancing)',
         animationViewReceding  : 'var(--box-view-receding)',
     });
     
     // View-switching visual effect:
-    // - Consumes `viewIndexFactor` from view state
+    // - Consumes `viewFactor` from view state
     // - Gradually switches between views based on transition progress
     // - Allows customization of spacing, offsets, orientation, selective rendering, etc
     const {
@@ -121,26 +121,26 @@ export const slideBoxStyle = () => {
         
         // Define animations for view-advancing/view-receding:
         
-        // Advancing animation: interpolate viewIndexFactor from 0 → +1
+        // Advancing animation: interpolate viewFactor from 0 → +1
         ...vars({
             '--box-view-advancing': [
                 ['0.3s', 'ease-out', 'both', 'effect-view-advancing'],
             ],
         }),
         ...keyframes('effect-view-advancing', {
-            from : { [viewIndexFactor]:  0 },
-            to   : { [viewIndexFactor]:  1 },
+            from : { [viewFactor]:  0 },
+            to   : { [viewFactor]:  1 },
         }),
         
-        // Receding animation: interpolate viewIndexFactor from 0 → -1
+        // Receding animation: interpolate viewFactor from 0 → -1
         ...vars({
             '--box-view-receding': [
                 ['0.3s', 'ease-out', 'both', 'effect-view-receding'],
             ],
         }),
         ...keyframes('effect-view-receding', {
-            from : { [viewIndexFactor]:  0 },
-            to   : { [viewIndexFactor]: -1 },
+            from : { [viewFactor]:  0 },
+            to   : { [viewFactor]: -1 },
         }),
         
         // Example usage of composed variables:
@@ -192,7 +192,7 @@ export const slideBoxStyle = () => {
 
 #### 🧠 How CSS View Effect Works
 
-The [`@reusable-ui/view-state`](https://www.npmjs.com/package/@reusable-ui/view-state) package drives the `viewIndexFactorCond` CSS variable, which represents how far the transition has progressed (from the current view → toward the target view).  
+The [`@reusable-ui/view-state`](https://www.npmjs.com/package/@reusable-ui/view-state) package drives the `viewFactorCond` CSS variable, which represents how far the transition has progressed (from the current view → toward the target view).  
 This factor encodes both the **direction** (positive = advancing to next, negative = receding to previous) and the **progress** (0 → ±1) of the transition.
 
 `view-effect` consumes this factor and applies a translation formula that moves the entire set of views along the stacking axis.

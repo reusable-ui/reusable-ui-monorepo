@@ -44,7 +44,7 @@ const testCases: ViewEffectTestCase[] = [
             props                         : {
                 prevViewIndex             : settledViewIndex, // The settled view index.
                 viewIndex                 : settledViewIndex, // Target view index (already settled).
-                viewIndexFactorCond       : 'unset',          // No running transformation.
+                viewFactorCond            : 'unset',          // No running transformation.
                 enablesSelectiveRendering,
             },
             expectedViewId                : `view-${settledViewIndex}`,
@@ -60,7 +60,7 @@ const testCases: ViewEffectTestCase[] = [
                 props                         : {
                     prevViewIndex             : prevViewIndex,   // Previously settled view index.
                     viewIndex                 : targetViewIndex, // Target view index (settling soon).
-                    viewIndexFactorCond       : +0.999,          // Advanced to target (end of transition), not yet settled (one frame before).
+                    viewFactorCond            : +0.999,          // Advanced to target (end of transition), not yet settled (one frame before).
                     enablesSelectiveRendering,
                 },
                 expectedViewId                : `view-${targetViewIndex}`,
@@ -77,7 +77,7 @@ const testCases: ViewEffectTestCase[] = [
                 props                         : {
                     prevViewIndex             : prevViewIndex,   // Previously settled view index.
                     viewIndex                 : targetViewIndex, // Target view index (settling soon).
-                    viewIndexFactorCond       : -0.999,          // Receded to target (end of transition), not yet settled (one frame before).
+                    viewFactorCond            : -0.999,          // Receded to target (end of transition), not yet settled (one frame before).
                     enablesSelectiveRendering,
                 },
                 expectedViewId                : `view-${targetViewIndex}`,
@@ -94,7 +94,7 @@ const testCases: ViewEffectTestCase[] = [
                 props                         : {
                     prevViewIndex             : partialSettledViewIndex, // The fractional settled view index.
                     viewIndex                 : partialSettledViewIndex, // Target fractional view index (already settled).
-                    viewIndexFactorCond       : 0,                       // Starts running transformation.
+                    viewFactorCond            : 0,                       // Starts running transformation.
                     enablesSelectiveRendering,
                 },
                 expectedViewId                : `view-${Math.floor(partialSettledViewIndex)}`,
@@ -112,15 +112,15 @@ const testCases: ViewEffectTestCase[] = [
                     const incompleteFactor = +0.999 + (1 / Math.abs(targetViewIndex - prevViewIndex) * offBy);
                     
                     return {
-                        title                   : `Halfway advanced, off by=${offBy}, factor=${incompleteFactor.toFixed(2)} → from ${prevViewIndex}, expect ${(expectedViewArea * 100).toFixed(2)}% visible at ${targetViewIndex} index (halfway with previous/next) (${enablesSelectiveRendering ? 'with' : 'no'} selective rendering)`,
-                        props                   : {
-                            prevViewIndex       : prevViewIndex,    // Previously settled view index.
-                            viewIndex           : targetViewIndex,  // Target view index (settling soon).
-                            viewIndexFactorCond : incompleteFactor, // Advanced to target (end of transition), not yet settled (one frame before).
+                        title                         : `Halfway advanced, off by=${offBy}, factor=${incompleteFactor.toFixed(2)} → from ${prevViewIndex}, expect ${(expectedViewArea * 100).toFixed(2)}% visible at ${targetViewIndex} index (halfway with previous/next) (${enablesSelectiveRendering ? 'with' : 'no'} selective rendering)`,
+                        props                         : {
+                            prevViewIndex             : prevViewIndex,    // Previously settled view index.
+                            viewIndex                 : targetViewIndex,  // Target view index (settling soon).
+                            viewFactorCond            : incompleteFactor, // Advanced to target (end of transition), not yet settled (one frame before).
                             enablesSelectiveRendering,
                         },
-                        expectedViewId          : `view-${targetViewIndex}`,
-                        expectedViewArea        : expectedViewArea,
+                        expectedViewId                : `view-${targetViewIndex}`,
+                        expectedViewArea              : expectedViewArea,
                     } satisfies ViewEffectTestCase;
                 })
             )
@@ -136,15 +136,15 @@ const testCases: ViewEffectTestCase[] = [
                     const incompleteFactor = -0.999 - (1 / Math.abs(targetViewIndex - prevViewIndex) * offBy);
                     
                     return {
-                        title                   : `Halfway receded, off by=${offBy}, factor=${incompleteFactor.toFixed(2)} → from ${prevViewIndex}, expect ${(expectedViewArea * 100).toFixed(2)}% visible at ${targetViewIndex} index (halfway with previous/next) (${enablesSelectiveRendering ? 'with' : 'no'} selective rendering)`,
-                        props                   : {
-                            prevViewIndex       : prevViewIndex,    // Previously settled view index.
-                            viewIndex           : targetViewIndex,  // Target view index (settling soon).
-                            viewIndexFactorCond : incompleteFactor, // Advanced to target (end of transition), not yet settled (one frame before).
+                        title                         : `Halfway receded, off by=${offBy}, factor=${incompleteFactor.toFixed(2)} → from ${prevViewIndex}, expect ${(expectedViewArea * 100).toFixed(2)}% visible at ${targetViewIndex} index (halfway with previous/next) (${enablesSelectiveRendering ? 'with' : 'no'} selective rendering)`,
+                        props                         : {
+                            prevViewIndex             : prevViewIndex,    // Previously settled view index.
+                            viewIndex                 : targetViewIndex,  // Target view index (settling soon).
+                            viewFactorCond            : incompleteFactor, // Advanced to target (end of transition), not yet settled (one frame before).
                             enablesSelectiveRendering,
                         },
-                        expectedViewId          : `view-${targetViewIndex}`,
-                        expectedViewArea        : expectedViewArea,
+                        expectedViewId                : `view-${targetViewIndex}`,
+                        expectedViewArea              : expectedViewArea,
                     } satisfies ViewEffectTestCase;
                 })
             )
