@@ -318,6 +318,12 @@ export const usesCollapseState = (options?: CssCollapseStateOptions): CssCollaps
         factorVar       : collapseStateVars.expandFactor,
         factorCondVar   : collapseStateVars.expandFactorCond,
         ifInactiveState : ifCollapsed,
+        
+        // The logical baseline (no collapse effect applied) would be `1` (expanded).
+        // For safety against unexpected failures, and to optimize the collapsed state (the most common case),
+        // the baseline is set to `0` (collapsed).
+        baselineFactor  : 0,
+        
         factors         : [
             {
                 ifState : ifExpanded,
