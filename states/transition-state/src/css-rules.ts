@@ -131,6 +131,7 @@ export const usesTransitionState = (transitionBehavior: TransitionBehavior): Css
         factorVar,
         factorCondVar,
         ifInactiveState,
+        baselineFactor  = 0,
         factors         = [],
     } = transitionBehavior;
     
@@ -191,16 +192,16 @@ export const usesTransitionState = (transitionBehavior: TransitionBehavior): Css
         // Apply primary factor variable:
         
         // Register `factorVar` as an animatable custom property:
-        // - `initialValue: 0` ensures baseline resolves to `0` when not explicitly defined (`unset`).
+        // - `initialValue: baselineFactor` ensures baseline resolves to `baselineFactor` when not explicitly defined (`unset`).
         ...atRule(`@property ${factorVar.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
             // @ts-ignore - `csstype` doesn't yet recognize `syntax` @property descriptor.
-            syntax       : '"<number>"', // Restrict to numeric values.
+            syntax       : '"<number>"',   // Restrict to numeric values.
             
             // @ts-ignore - `csstype` doesn't yet recognize `inherits` @property descriptor.
-            inherits     : true,         // Allow inheritance into nested elements.
+            inherits     : true,           // Allow inheritance into nested elements.
             
             // @ts-ignore - `csstype` doesn't yet recognize `initialValue` @property descriptor.
-            initialValue : 0,            // Default baseline factor = 0 (inactive).
+            initialValue : baselineFactor, // Default baseline factor = baselineFactor.
         }),
         
         // Conditionally assign discrete factor values when states are fully settled:

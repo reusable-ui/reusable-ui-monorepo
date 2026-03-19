@@ -292,7 +292,7 @@ export interface TransitionBehavior
      * Typical implementation: integer values represent settled states, fractional values represent transitioning states.
      * Example range: -1 (invalid) … -0.5 (invalidating) … 0 (baseline) … +0.5 (validating) … +1 (valid).
      * 
-     * Always resolves to `0` when the state is fully inactive,
+     * Always resolves to `baselineFactor` when the state is fully inactive,
      * ensuring consistency across state changes.
      */
     factorVar        : CssCustomSimpleRef
@@ -321,12 +321,24 @@ export interface TransitionBehavior
     ifInactiveState  : (styles: CssStyleCollection) => CssRule
     
     /**
+     * Defines the default baseline factor value used when:
+     * - No entry in `factors` matches the current case, and
+     * - No animation is actively running.
+     * 
+     * Serves as the safe fallback value to prevent unexpected behavior
+     * when no other factor can be resolved.
+     * 
+     * Defaults to `0`.
+     */
+    baselineFactor  ?: number
+    
+    /**
      * Defines factor cases for holding final numeric values once a transition settles.
      * 
      * Provides discrete values for keeping `factorVar` and `factorCondVar`
      * *stick* at their final value after the transition finishes.
      * 
-     * If no case matches, the factor variables resolve to `0`.
+     * If no case matches, the factor variables resolve to `baselineFactor`.
      * 
      * Accepts either:
      * - A single `TransitionFactorCase`
