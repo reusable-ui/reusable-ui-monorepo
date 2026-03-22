@@ -79,7 +79,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
     
     
     /**
-     * Normalizes `viewOrientation` into a factor usable in CSS math:
+     * Normalizes `viewOrientation` into a numeric factor usable in CSS math:
      * - Resolves to `0` for `'inline'`.
      * - Resolves to `1` for `'block'`.
      * - Passes through CSS variable references unchanged.
@@ -110,7 +110,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
      *     - The view spacing mode is `between`, or
      *     - The view offset is statically known to `0` or equivalent (no CSS variable passed).
      * - When optimized, the `baseTranslationFormula` resolves to `unset` instead of `0` when settled,
-     *   invalidating `viewTranslateLogical` and `viewTransform`.
+     *   invalidating `viewTranslatePhysical` and `viewTransform`.
      */
     const optimizedViewFactor = (
         // If conditions are met, the view transformation can be safely omitted:
@@ -122,7 +122,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
     );
     
     // Variables:
-    const { writingDirectionFactor, writingModeFactor, viewTranslateLogical, viewTransform } = viewEffectVars;
+    const { writingDirectionFactor, writingModeFactor, viewTranslatePhysical, viewTransform } = viewEffectVars;
     
     
     
@@ -309,12 +309,12 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
                  * Parentheses are not required when combining with other math operations,
                  * because they resolve directly to a single unit.
                  */
-                [viewTranslateLogical   ] : `calc((${baseTranslationFormula}) * (${writingDirectionFlipFormula}) * ${writingModeFactor}${(viewFlowDirection === 'end') ? ' * -1' : ''})`,
+                [viewTranslatePhysical  ] : `calc((${baseTranslationFormula}) * (${writingDirectionFlipFormula}) * ${writingModeFactor}${(viewFlowDirection === 'end') ? ' * -1' : ''})`,
                 
                 /**
                  * Adaptive translation function (converted to horizontal/vertical orientation):
                  * 
-                 * - Based on `viewTranslateLogical`.
+                 * - Based on `viewTranslatePhysical`.
                  * - Switches between horizontal and vertical translation based on `orientationFactor`.
                  * 
                  * ### Factors
@@ -322,7 +322,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
                  * Parentheses are not required when combining with other math operations,
                  * because they resolve directly to a single unit.
                  */
-                [viewTransform          ] : `translate(calc((${viewTranslateLogical}) * (1 - ${orientationFactor})), calc((${viewTranslateLogical}) * ${orientationFactor}))`,
+                [viewTransform          ] : `translate(calc((${viewTranslatePhysical}) * (1 - ${orientationFactor})), calc((${viewTranslatePhysical}) * ${orientationFactor}))`,
             }),
         }),
         

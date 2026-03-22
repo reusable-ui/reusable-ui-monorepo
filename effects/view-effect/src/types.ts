@@ -57,17 +57,17 @@ export interface ViewEffectVars {
      * 
      * - Resolves to a physical side (e.g. left/top) rather than logical properties,
      *   adapting automatically to writing direction, writing mode, and flow direction.
-     * - Becomes `unset` when the component is fully settled.
+     * - Becomes `unset` when the component is fully settled (if `options.enablesSelectiveRendering` is enabled).
      * - Can be used by any physical positioning technique
      *   (e.g. `left`, `top`, negative `margin-left`, etc.) to move the entire set of views.
      */
-    viewTranslateLogical   : unknown
+    viewTranslatePhysical  : unknown
     
     /**
      * References the transform applied when the component is transitioning,
      * either advancing to the next view or receding to the previous one.
      * 
-     * - Becomes `unset` when the component is fully settled.
+     * - Becomes `unset` when the component is fully settled (if `options.enablesSelectiveRendering` is enabled).
      * - Internally uses CSS `translate()` function, adapting automatically
      *   to the current view orientation (horizontal vs vertical).
      * - Typically not consumed directly — instead use:
@@ -186,7 +186,7 @@ export interface CssViewEffectOptions
      * - `1`        → equivalent to `'block'`.
      * - A CSS variable reference resolving to `0` or `1`, e.g. `var(--my-orientation)`.
      * 
-     * Defaults to `'inline'` (horizontal axis for horizontal-tb).
+     * Defaults to `'inline'` (horizontal axis in horizontal-tb).
      */
     viewOrientation           ?: 'inline' | 'block' | 0 | 1 | CssCustomRef
     
@@ -245,8 +245,8 @@ export interface CssViewEffect {
      * Exposes view-effect CSS variables for transitional effects.
      * 
      * Includes:
-     * - `viewTranslateLogical` : The physical translation applied during transitions.
-     * - `viewTransform`        : The transform applied during transitions.
+     * - `viewTranslatePhysical` : The physical translation applied during transitions.
+     * - `viewTransform`         : The transform applied during transitions.
      * 
      * ⚠️ **Caution**: These variables are invalid when the component is fully settled.
      * If used incorrectly, they can invalidate CSS declarations.
