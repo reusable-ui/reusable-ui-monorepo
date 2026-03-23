@@ -292,11 +292,11 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
             
             ...vars({
                 /**
-                 * Adaptive translation formula (converted from logical to physical):
+                 * Adaptive translation formula (converted from logical to physical translation):
                  * 
                  * - Based on `baseTranslationFormula`.
                  * - Sign may be flipped depending on writing direction, writing mode, and flow direction.
-                 * - Can be passed to `translateX` or `translateY` inside `transform(...)`.
+                 * - Pass directly into `translateX(...)`/`translateY(...)` to move the entire set of views.
                  * - `viewFlowDirection` is evaluated at build time (no runtime changes yet).
                  * 
                  * ### Sub-Formulas
@@ -312,7 +312,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
                 [viewTranslatePhysical  ] : `calc((${baseTranslationFormula}) * (${writingDirectionFlipFormula}) * ${writingModeFactor}${(viewFlowDirection === 'end') ? ' * -1' : ''})`,
                 
                 /**
-                 * Adaptive translation function (converted to horizontal/vertical orientation):
+                 * Adaptive transform formula (converted to physical translation):
                  * 
                  * - Based on `viewTranslatePhysical`.
                  * - Switches between horizontal and vertical translation based on `orientationFactor`.

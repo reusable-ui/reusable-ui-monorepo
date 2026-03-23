@@ -55,21 +55,20 @@ export interface ViewEffectVars {
      * References the physical translation applied when the component is transitioning,
      * either advancing to the next view or receding to the previous one.
      * 
-     * - Resolves to a physical side (e.g. left/top) rather than logical properties,
-     *   adapting automatically to writing direction, writing mode, and flow direction.
+     * - Already resolved into a physical axis (X or Y) and sign (+/-),
+     *   adapting automatically to orientation, flow direction, writing direction, and writing mode.
+     * - Pass directly into `translateX(...)`/`translateY(...)` to move the entire set of views.
      * - Becomes `unset` when the component is fully settled (if `options.enablesSelectiveRendering` is enabled).
-     * - Can be used by any physical positioning technique
-     *   (e.g. `left`, `top`, negative `margin-left`, etc.) to move the entire set of views.
      */
     viewTranslatePhysical  : unknown
     
     /**
-     * References the transform applied when the component is transitioning,
+     * References the composed transform applied when the component is transitioning,
      * either advancing to the next view or receding to the previous one.
      * 
+     * - Built from a `translate(...)` function,
+     *   adapting automatically to orientation, flow direction, writing direction, and writing mode.
      * - Becomes `unset` when the component is fully settled (if `options.enablesSelectiveRendering` is enabled).
-     * - Internally uses CSS `translate()` function, adapting automatically
-     *   to the current view orientation (horizontal vs vertical).
      * - Typically not consumed directly — instead use:
      *   `const { transformFeatureVars: { transform } } = usesTransformFeature()`
      */
