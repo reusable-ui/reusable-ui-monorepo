@@ -37,7 +37,7 @@ export {
  */
 export interface ActiveEffectVars {
     /**
-     * Represents the excess delta used for bump effects.
+     * Represents the bump effects during overshoot/undershoot.
      * 
      * - Fully inactive         → `unset`
      * - Regular variants       → `unset`
