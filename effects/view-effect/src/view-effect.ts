@@ -322,7 +322,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
                  * Parentheses are not required when combining with other math operations,
                  * because they resolve directly to a single unit.
                  */
-                [viewTransform          ] : `translate(calc((${viewTranslatePhysical}) * (1 - ${orientationFactor})), calc((${viewTranslatePhysical}) * ${orientationFactor}))`,
+                [viewTransform          ] : `translate(calc(${viewTranslatePhysical} * (1 - ${orientationFactor})), calc(${viewTranslatePhysical} * ${orientationFactor}))`,
             }),
         }),
         
