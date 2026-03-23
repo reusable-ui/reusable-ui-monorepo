@@ -109,7 +109,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
      *   - No initial offset that **always** shifts the entire set of views:
      *     - The view spacing mode is `between`, or
      *     - The view offset is statically known to `0` or equivalent (no CSS variable passed).
-     * - When optimized, the `baseTranslationFormula` resolves to `unset` instead of `0` when settled,
+     * - When optimized, the `baseTranslateFormula` resolves to `unset` instead of `0` when settled,
      *   invalidating `viewTranslatePhysical` and `viewTransform`.
      */
     const optimizedViewFactor = (
@@ -219,7 +219,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
      * Parentheses are not required when combining with other math operations,
      * because they resolve directly to a single unit.
      */
-    const baseTranslationFormula      = `(${initialOffsetFormula}) - ((${precedingViewsFormula}) + ((${transitioningStepsFormula}) * ${optimizedViewFactor})) * (${perStepDistanceFormula})`;
+    const baseTranslateFormula        = `(${initialOffsetFormula}) - ((${precedingViewsFormula}) + ((${transitioningStepsFormula}) * ${optimizedViewFactor})) * (${perStepDistanceFormula})`;
     
     /**
      * Conditional writing direction multiplier:
@@ -294,7 +294,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
                 /**
                  * Adaptive translation formula (converted from logical to physical translation):
                  * 
-                 * - Based on `baseTranslationFormula`.
+                 * - Based on `baseTranslateFormula`.
                  * - Sign may be flipped depending on writing direction, writing mode, and flow direction.
                  * - Pass directly into `translateX(...)`/`translateY(...)` to move the entire set of views.
                  * - `viewFlowDirection` is evaluated at build time (no runtime changes yet).
@@ -309,7 +309,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
                  * Parentheses are not required when combining with other math operations,
                  * because they resolve directly to a single unit.
                  */
-                [viewTranslatePhysical  ] : `calc((${baseTranslationFormula}) * (${writingDirectionFlipFormula}) * ${writingModeFactor}${(viewFlowDirection === 'end') ? ' * -1' : ''})`,
+                [viewTranslatePhysical  ] : `calc((${baseTranslateFormula}) * (${writingDirectionFlipFormula}) * ${writingModeFactor}${(viewFlowDirection === 'end') ? ' * -1' : ''})`,
                 
                 /**
                  * Adaptive transform formula (converted to physical translation):
