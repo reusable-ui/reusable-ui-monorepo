@@ -67,19 +67,19 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
     // Extract options and assign defaults:
     const {
         minViewIndex              = 0,         // Defaults to `0` (zero-based index).
-        viewSize                  = '100%',    // Defaults to `'100%'` (full container size).
-        viewOffset                = '0px',     // Defaults to `'0px'` (no offset).
-        viewSpacing               = '0px',     // Defaults to `'0px'` (no spacing between views).
-        viewSpacingMode           = 'between', // Defaults to `'between'` (no spacing at the edges, only between views).
-        viewOrientation           = 'inline',  // Defaults to `'inline'` (horizontal axis for horizontal-tb).
-        viewFlowDirection         = 'start',   // Defaults to `'start'` (translation begins at the logical start side).
+        size                      = '100%',    // Defaults to `'100%'` (full container size).
+        offset                    = '0px',     // Defaults to `'0px'` (no offset).
+        spacing                   = '0px',     // Defaults to `'0px'` (no spacing between views).
+        spacingMode               = 'between', // Defaults to `'between'` (no spacing at the edges, only between views).
+        orientation               = 'inline',  // Defaults to `'inline'` (horizontal axis for horizontal-tb).
+        flowDirection             = 'start',   // Defaults to `'start'` (translation begins at the logical start side).
         enablesSelectiveRendering = false,     // Defaults to `false` (all views are mounted, no selective rendering).
     } = options ?? {};
     
     
     
     /**
-     * Normalizes `viewOrientation` into a numeric factor usable in CSS math:
+     * Normalizes `orientation` into a numeric factor usable in CSS math:
      * - Resolves to `0` for `'inline'`.
      * - Resolves to `1` for `'block'`.
      * - Passes through CSS variable references unchanged.
@@ -88,12 +88,12 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
      * so it can be safely consumed inside `calc()` or other CSS functions.
      */
     const orientationFactor : 0 | 1 | CssCustomRef = (
-        (viewOrientation === 'inline')
+        (orientation === 'inline')
         ? 0
         : (
-            (viewOrientation === 'block')
+            (orientation === 'block')
             ? 1
-            : viewOrientation
+            : orientation
         )
     );
     
@@ -114,7 +114,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
      */
     const optimizedViewFactor = (
         // If conditions are met, the view transformation can be safely omitted:
-        (enablesSelectiveRendering && ((viewSpacingMode === 'between') || (viewOffset === null) || (viewOffset === 0) || String(viewOffset).match(/0+\S?/g)))
+        (enablesSelectiveRendering && ((spacingMode === 'between') || (offset === null) || (offset === 0) || String(offset).match(/0+\S?/g)))
         ? viewFactorCond // Will be `unset` when fully settled.
         
         // Otherwise, transformation cannot be safely omitted:
@@ -130,21 +130,21 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
     
     /**
      * The initial offset before the first view:
-     * - Always includes the static `viewOffset` for container alignment.
-     * - Adds the front spacing based on `viewSpacingMode`:
+     * - Always includes the static `offset` for container alignment.
+     * - Adds the front spacing based on `spacingMode`:
      *   - mode='between' → no front spacing.
      *   - mode='around'  → half spacing.
      *   - mode='even'    → full spacing.
      * - Ensures the first view is correctly positioned inside the container.
      * - If no views exist, `viewTransform` is not applicable.
      */
-    const initialOffsetFormula        = `(${viewOffset})` + (
-        (viewSpacingMode === 'between')
+    const initialOffsetFormula        = `(${offset})` + (
+        (spacingMode === 'between')
         ? ''
         : (
-            (viewSpacingMode === 'around')
-            ? ` + ((${viewSpacing}) / 2)`
-            : ` + (${viewSpacing})`
+            (spacingMode === 'around')
+            ? ` + ((${spacing}) / 2)`
+            : ` + (${spacing})`
         )
     );
     
@@ -199,7 +199,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
      * - Each step adds the configured spacing plus the view's width.
      * - Represents how much extra distance is required when another view is added.
      */
-    const perStepDistanceFormula      = `(${viewSpacing}) + (${viewSize})`;
+    const perStepDistanceFormula      = `(${spacing}) + (${size})`;
     
     /**
      * Base translation formula (standard case):
@@ -297,7 +297,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
                  * - Based on `baseTranslateFormula`.
                  * - Sign may be flipped depending on writing direction, writing mode, and flow direction.
                  * - Pass directly into `translateX(...)`/`translateY(...)` to move the entire set of views.
-                 * - `viewFlowDirection` is evaluated at build time (no runtime changes yet).
+                 * - `flowDirection` is evaluated at build time (no runtime changes yet).
                  * 
                  * ### Sub-Formulas
                  * Each `*Formula*` may involve complex math.  
@@ -309,7 +309,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
                  * Parentheses are not required when combining with other math operations,
                  * because they resolve directly to a single unit.
                  */
-                [viewTranslatePhysical  ] : `calc((${baseTranslateFormula}) * (${writingDirectionFlipFormula}) * ${writingModeFactor}${(viewFlowDirection === 'end') ? ' * -1' : ''})`,
+                [viewTranslatePhysical  ] : `calc((${baseTranslateFormula}) * (${writingDirectionFlipFormula}) * ${writingModeFactor}${(flowDirection === 'end') ? ' * -1' : ''})`,
                 
                 /**
                  * Adaptive transform formula (converted to physical translation):

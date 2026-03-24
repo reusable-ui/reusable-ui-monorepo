@@ -17,13 +17,13 @@ export default function viewEffectTestStyle() {
         viewEffectRule,
     } = usesViewEffect({
         enablesSelectiveRendering : false,
-        viewSize: '200px',
+        size: '200px',
     });
     const {
         viewEffectRule : viewEffectSelectiveRenderingRule,
     } = usesViewEffect({
         enablesSelectiveRendering : true,
-        viewSize: '200px',
+        size: '200px',
     });
     
     return style({

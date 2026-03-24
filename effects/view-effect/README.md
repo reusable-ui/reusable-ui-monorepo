@@ -103,7 +103,7 @@ export const slideBoxStyle = () => {
         enablesSelectiveRendering : true,
         
         // The width of each view:
-        viewSize                  : '200px',
+        size                      : '200px',
     });
     
     return style({

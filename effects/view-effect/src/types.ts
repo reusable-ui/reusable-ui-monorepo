@@ -108,7 +108,7 @@ export interface CssViewEffectOptions
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal string value with a length unit, e.g. `'8rem'`
-     * - A strongly typed reference, e.g. `myConfig.viewSize`
+     * - A strongly typed reference, e.g. `myConfig.size`
      * 
      * Notes:
      * - Percentage units are allowed.
@@ -116,7 +116,7 @@ export interface CssViewEffectOptions
      * 
      * Defaults to `'100%'` (full container size).
      */
-    viewSize                  ?: CssKnownProps['width']
+    size                      ?: CssKnownProps['width']
     
     /**
      * Specifies a global logical offset applied to the entire set of views.
@@ -129,14 +129,14 @@ export interface CssViewEffectOptions
      * - Inline axis → offset from the left (for LTR and horizontal-tb).
      * - Block axis  → offset from the top  (for horizontal-tb).
      * 
-     * See `viewOrientation` and `viewFlowDirection` for how the
+     * See `orientation` and `flowDirection` for how the
      * logical axis and flow are determined.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal string value with a length unit, e.g. `'2rem'`
-     * - A strongly typed reference, e.g. `myConfig.viewOffset`
+     * - A strongly typed reference, e.g. `myConfig.offset`
      * 
      * Notes:
      * - Percentage units are allowed.
@@ -144,7 +144,7 @@ export interface CssViewEffectOptions
      * 
      * Defaults to `'0px'` (no offset).
      */
-    viewOffset                ?: CssKnownProps['width']
+    offset                    ?: CssKnownProps['width']
     
     /**
      * Specifies the spacing applied to views.
@@ -153,7 +153,7 @@ export interface CssViewEffectOptions
      * - A hard-coded CSS variable reference, e.g. `var(--my-value)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-value, var(--fallback))`
      * - A literal string value with a length unit, e.g. `'2rem'`
-     * - A strongly typed reference, e.g. `myConfig.viewSpacing`
+     * - A strongly typed reference, e.g. `myConfig.spacing`
      * 
      * Notes:
      * - Percentage units are allowed.
@@ -161,10 +161,10 @@ export interface CssViewEffectOptions
      * 
      * Defaults to `'0px'` (no spacing between views).
      */
-    viewSpacing               ?: CssKnownProps['width']
+    spacing                   ?: CssKnownProps['width']
     
     /**
-     * Defines how `viewSpacing` is distributed across views.
+     * Defines how `spacing` is distributed across views.
      * 
      * Accepts:
      * - `'between'` → spacing only between consecutive views (like flexbox `space-between`).
@@ -173,7 +173,7 @@ export interface CssViewEffectOptions
      * 
      * Defaults to `'between'` (no spacing at the edges, only between views).
      */
-    viewSpacingMode           ?: ViewSpacingMode
+    spacingMode               ?: ViewSpacingMode
     
     /**
      * Selects a logical axis along which views are translated.
@@ -187,10 +187,10 @@ export interface CssViewEffectOptions
      * 
      * Defaults to `'inline'` (horizontal axis in horizontal-tb).
      */
-    viewOrientation           ?: 'inline' | 'block' | 0 | 1 | CssCustomRef
+    orientation               ?: 'inline' | 'block' | 0 | 1 | CssCustomRef
     
     /**
-     * Selects a logical flow direction along the chosen `viewOrientation`.
+     * Selects a logical flow direction along the chosen `orientation`.
      * 
      * Accepts:
      * - `'start'` → translation begins at the logical start side.
@@ -198,7 +198,7 @@ export interface CssViewEffectOptions
      * 
      * Defaults to `'start'` (translation begins at the logical start side).
      */
-    viewFlowDirection         ?: 'start' | 'end'
+    flowDirection             ?: 'start' | 'end'
     
     /**
      * Enables selective rendering mode.
