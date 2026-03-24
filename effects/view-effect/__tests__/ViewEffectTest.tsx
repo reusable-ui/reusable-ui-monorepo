@@ -9,7 +9,8 @@ import { type CssViewEffectOptions } from '../dist/index.js'
 
 export interface ViewEffectTestProps
     extends
-        Pick<CssViewEffectOptions, 'enablesSelectiveRendering'>
+        // Bases:
+        Required<Pick<CssViewEffectOptions, 'orientation' | 'flowDirection' | 'enablesSelectiveRendering'>>
 {
     /**
      * 
@@ -50,7 +51,9 @@ export const ViewEffectTest = (props: ViewEffectTestProps) => {
         viewIndex,
         viewFactorCond = 'unset',
         
-        enablesSelectiveRendering = false,
+        orientation,
+        flowDirection,
+        enablesSelectiveRendering,
     } = props;
     
     const styles = useViewEffectTestStyles();
@@ -102,10 +105,12 @@ export const ViewEffectTest = (props: ViewEffectTestProps) => {
             <HydrateStyles />
             <div
                 data-testid="view-effect-test"
-                className={`${styles.main} ${enablesSelectiveRendering ? 'enablesSelectiveRendering' : ''}`}
+                className={`${styles.main} is-${orientation}-orientation is-${flowDirection}-direction ${enablesSelectiveRendering ? 'enablesSelectiveRendering' : ''}`}
                 style={inlineStyle}
             >
-                View Effect Test
+                <span className='label'>
+                    View Effect Test
+                </span>
                 <div className='views'>
                     {viewIndices.map((viewIndex, currentIndex) =>
                         (!enablesSelectiveRendering || (currentIndex >= minRenderViewIndex && currentIndex <= maxRenderViewIndex)) && (<div

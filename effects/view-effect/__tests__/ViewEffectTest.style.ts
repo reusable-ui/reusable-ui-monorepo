@@ -1,4 +1,4 @@
-import { rule, style, children } from '@cssfn/core'
+import { rule, style, vars, children } from '@cssfn/core'
 import { usesTransformFeature } from '@reusable-ui/transform-feature'
 import { usesViewEffect } from '../dist/index.js'
 
@@ -14,16 +14,40 @@ export default function viewEffectTestStyle() {
     
     // Effects:
     const {
-        viewEffectRule,
+        viewEffectRule : viewEffectStartDirectionRule,
     } = usesViewEffect({
+        size: 'var(--size)',
+        
+        orientation   : 'var(--orientation)',
+        flowDirection : 'start',
         enablesSelectiveRendering : false,
-        size: '200px',
     });
     const {
-        viewEffectRule : viewEffectSelectiveRenderingRule,
+        viewEffectRule : viewEffectEndDirectionRule,
     } = usesViewEffect({
+        size: 'var(--size)',
+        
+        orientation   : 'var(--orientation)',
+        flowDirection : 'end',
+        enablesSelectiveRendering : false,
+    });
+    const {
+        viewEffectRule : viewEffectStartDirectionSelectiveRenderingRule,
+    } = usesViewEffect({
+        size: 'var(--size)',
+        
+        orientation   : 'var(--orientation)',
+        flowDirection : 'start',
         enablesSelectiveRendering : true,
-        size: '200px',
+    });
+    const {
+        viewEffectRule : viewEffectEndDirectionSelectiveRenderingRule,
+    } = usesViewEffect({
+        size: 'var(--size)',
+        
+        orientation   : 'var(--orientation)',
+        flowDirection : 'end',
+        enablesSelectiveRendering : true,
     });
     
     return style({
@@ -33,23 +57,85 @@ export default function viewEffectTestStyle() {
         border: 'solid 1px darkblue',
         boxSizing: 'content-box',
         width: '200px',
-        height: 'calc(1lh + 100px)',
+        height: '100px',
         justifySelf: 'center',
+        justifyContent: 'center',
+        alignContent: 'center',
+        ...rule('.is-inline-orientation&', {
+            ...rule('.is-start-direction&', {
+                justifyContent: 'start', // The first view shown first (stacking horizontally)
+            }),
+            ...rule('.is-end-direction&', {
+                justifyContent: 'end', // The last view shown first (stacking horizontally)
+            }),
+        }),
+        ...rule('.is-block-orientation&', {
+            ...rule('.is-start-direction&', {
+                alignContent: 'start', // The first view shown first (stacking vertically)
+            }),
+            ...rule('.is-end-direction&', {
+                alignContent: 'end', // The last view shown first (stacking vertically)
+            }),
+        }),
+        position: 'relative', // Supports for `.label`
         
         // Children:
+        ...children('.label', {
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            zIndex: 999,
+        }),
         ...children('.views', {
-            display: 'grid',
-            gridAutoFlow: 'column',
+            display: 'flex',
+            ...rule('.is-inline-orientation&', {
+                ...rule('.is-start-direction&', {
+                    flexDirection: 'row',
+                }),
+                ...rule('.is-end-direction&', {
+                    flexDirection: 'row-reverse',
+                }),
+            }),
+            ...rule('.is-block-orientation&', {
+                ...rule('.is-start-direction&', {
+                    flexDirection: 'column',
+                }),
+                ...rule('.is-end-direction&', {
+                    flexDirection: 'column-reverse',
+                }),
+            }),
             
             // Features:
             ...transformFeatureRule(),
             
             // Effects:
+            ...rule('.is-inline-orientation&', {
+                ...vars({
+                    '--orientation': 0, // inline
+                    '--size': '200px',
+                }),
+            }),
+            ...rule('.is-block-orientation&', {
+                ...vars({
+                    '--orientation': 1, // block
+                    '--size': '100px',
+                }),
+            }),
             ...rule(':not(.enablesSelectiveRendering)&', {
-                ...viewEffectRule(),
+                ...rule('.is-start-direction&', {
+                    ...viewEffectStartDirectionRule(),
+                }),
+                ...rule('.is-end-direction&', {
+                    ...viewEffectEndDirectionRule(),
+                }),
             }),
             ...rule(':is(.enablesSelectiveRendering)&', {
-                ...viewEffectSelectiveRenderingRule(),
+                ...rule('.is-start-direction&', {
+                    ...viewEffectStartDirectionSelectiveRenderingRule(),
+                }),
+                ...rule('.is-end-direction&', {
+                    ...viewEffectEndDirectionSelectiveRenderingRule(),
+                }),
             }),
             
             // Apply composed variables:
@@ -57,6 +143,8 @@ export default function viewEffectTestStyle() {
             
             // Children:
             ...children('.view', {
+                flex: '0 0 auto', // not growing, not shrinking
+                
                 display: 'grid',
                 justifyContent: 'center',
                 alignContent: 'center',
