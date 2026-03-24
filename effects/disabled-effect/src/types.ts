@@ -343,6 +343,8 @@ export interface CssDisabledEffectOptions
      */
     dropShadow           ?: CssFilterEffectOptions['dropShadow']
     
+    
+    
     /**
      * Specifies the cursor to display when the component is disabled.
      * 
