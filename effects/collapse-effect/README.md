@@ -116,7 +116,7 @@ export const collapsibleBoxStyle = () => {
         // The logical axis along which the sliding-crop is applied:
         orientation   : 'block',
         
-        // The logical flow direction along the chosen `orientation`:
+        // The side from which the content is revealed when expanding, or exits when collapsing:
         flowDirection : 'start',
         
         // The CSS `display` property when fully collapsed:

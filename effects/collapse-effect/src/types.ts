@@ -243,7 +243,7 @@ export interface CollapseEffectVars {
  */
 export interface CssCollapseEffectOptions {
     /**
-     * Selects a logical axis along which the sliding-crop is applied.
+     * Selects the logical axis along which the sliding-crop is applied.
      * 
      * Accepts:
      * - `'inline'` → sliding along the horizontal axis (in horizontal-tb).
