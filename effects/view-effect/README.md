@@ -99,11 +99,17 @@ export const slideBoxStyle = () => {
     const {
         viewEffectRule,
     } = usesViewEffect({
+        // The width (or height for vertical layouts) of each view:
+        size                      : '200px',
+        
+        // The logical axis along which the views are stacked:
+        orientation               : 'inline',
+        
+        // The side from which the view stack begins (the smallest index):
+        flowDirection             : 'start',
+        
         // Only visible and transitioning views are mounted in the DOM:
         enablesSelectiveRendering : true,
-        
-        // The width of each view:
-        size                      : '200px',
     });
     
     return style({
