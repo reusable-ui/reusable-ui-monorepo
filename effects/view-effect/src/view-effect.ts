@@ -71,8 +71,8 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
         offset                    = '0px',     // Defaults to `'0px'` (no offset).
         spacing                   = '0px',     // Defaults to `'0px'` (no spacing between views).
         spacingMode               = 'between', // Defaults to `'between'` (no spacing at the edges, only between views).
-        orientation               = 'inline',  // Defaults to `'inline'` (horizontal axis for horizontal-tb).
-        flowDirection             = 'start',   // Defaults to `'start'` (translation begins at the logical start side).
+        orientation               = 'inline',  // Defaults to `'inline'` (horizontal axis in horizontal-tb).
+        flowDirection             = 'start',   // Defaults to `'start'` (view stack begins at the logical start side).
         enablesSelectiveRendering = false,     // Defaults to `false` (all views are mounted, no selective rendering).
     } = options ?? {};
     

@@ -126,8 +126,8 @@ export interface CssViewEffectOptions
      * 
      * The offset is expressed in logical units,
      * so it adapts to writing direction and mode automatically:
-     * - Inline axis → offset from the left (for LTR and horizontal-tb).
-     * - Block axis  → offset from the top  (for horizontal-tb).
+     * - Inline axis → offset from the left (in LTR and horizontal-tb).
+     * - Block axis  → offset from the top  (in horizontal-tb).
      * 
      * See `orientation` and `flowDirection` for how the
      * logical axis and flow are determined.
@@ -176,11 +176,11 @@ export interface CssViewEffectOptions
     spacingMode               ?: ViewSpacingMode
     
     /**
-     * Selects a logical axis along which views are translated.
+     * Selects the logical axis along which the views are stacked.
      * 
      * Accepts:
-     * - `'inline'` → translation along the horizontal axis (for horizontal-tb).
-     * - `'block'`  → translation along the vertical axis  (for horizontal-tb).
+     * - `'inline'` → views slide along the horizontal axis (in horizontal-tb).
+     * - `'block'`  → views slide along the vertical axis   (in horizontal-tb).
      * - `0`        → equivalent to `'inline'`.
      * - `1`        → equivalent to `'block'`.
      * - A CSS variable reference resolving to `0` or `1`, e.g. `var(--my-orientation)`.
@@ -190,13 +190,13 @@ export interface CssViewEffectOptions
     orientation               ?: 'inline' | 'block' | 0 | 1 | CssCustomRef
     
     /**
-     * Selects a logical flow direction along the chosen `orientation`.
+     * Selects the side from which the view stack begins (the smallest index).
      * 
      * Accepts:
-     * - `'start'` → translation begins at the logical start side.
-     * - `'end'`   → translation begins at the logical end side.
+     * - `'start'` → view stack begins at the logical start side.
+     * - `'end'`   → view stack begins at the logical end side.
      * 
-     * Defaults to `'start'` (translation begins at the logical start side).
+     * Defaults to `'start'` (view stack begins at the logical start side).
      */
     flowDirection             ?: 'start' | 'end'
     
