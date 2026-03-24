@@ -246,8 +246,8 @@ export interface CssCollapseEffectOptions {
      * Selects a logical axis along which the sliding-crop is applied.
      * 
      * Accepts:
-     * - `'inline'` → sliding along the horizontal axis (for horizontal-tb).
-     * - `'block'`  → sliding along the vertical axis  (for horizontal-tb).
+     * - `'inline'` → sliding along the horizontal axis (in horizontal-tb).
+     * - `'block'`  → sliding along the vertical axis   (in horizontal-tb).
      * - `0`        → equivalent to `'inline'`.
      * - `1`        → equivalent to `'block'`.
      * - A CSS variable reference resolving to `0` or `1`, e.g. `var(--my-orientation)`.
