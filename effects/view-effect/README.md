@@ -52,6 +52,15 @@ Smoothly transitions between views by moving (translating) the entire set of vie
 Gradually revealing the target view inside the container viewport while moving the others out of sight.
 This creates a natural **switching illusion** of view changes.
 
+⚠️ Important Usage Note:
+- Apply `usesViewEffect()` on the **slidable view elements** (the view group or individual views),
+  **not** on the parent viewport container.
+- The viewport container typically has `overflow: hidden` to mask out-of-viewport content.
+  Sliding the container itself would move the viewport rather than the views inside it.
+- By applying the effect to the slidable element(s), the correct view is revealed within the viewport.
+- Ensure that `...transformFeatureRule()` and `transform` from `@reusable-ui/transform-feature`
+  are also applied to the slidable element(s) so the sliding transformation works correctly.
+
 #### 💡 Usage Example
 
 ```ts
@@ -113,10 +122,11 @@ export const slideBoxStyle = () => {
     });
     
     return style({
-        display  : 'grid',
-        fontSize : '1rem',
-        width    : '200px',
-        height   : '100px',
+        // The component element acts as the viewport:
+        display    : 'grid',
+        inlineSize : '200px',
+        blockSize  : '100px',
+        overflow   : 'hidden', // Hides out-of-viewport views.
         // Base styling for the component goes here.
         
         // Attach feature rules (animation):
@@ -156,11 +166,10 @@ export const slideBoxStyle = () => {
         // Apply animations (from animation feature):
         animation,
         
-        // The whole views for switching:
-        ...children('.views', {
-            display: 'grid',
-            gridAutoFlow: 'column',
-            // Base styling for the component goes here.
+        ...children('.view-group', { // The view group (slidable element).
+            display: 'flex',
+            flexDirection: 'row', // Stack views horizontally.
+            // Base styling for the view group goes here.
             
             // Attach feature rules (transform):
             ...transformFeatureRule(),
@@ -168,13 +177,19 @@ export const slideBoxStyle = () => {
             // Attach view effect rules (visual view-switching/view-settled):
             ...viewEffectRule(),
             
-            // Apply transformation (from transform feature):
+            // Apply transformations (from transform feature):
             transform,
             
-            // The individual view:
-            ...children('.view', {
-                width  : '200px',
-                height : '100px',
+            ...children('.view', { // The individual views (also slidable elements).
+                inlineSize : '200px',
+                blockSize  : '100px',
+                flex       : '0 0 auto', // Not growing, not shrinking.
+                // Base styling for each view goes here.
+                
+                // Alternatively, you can apply transform + view effect here:
+                // ...transformFeatureRule(),
+                // ...viewEffectRule(),
+                // transform,
                 
                 // Adds colors for visual distinction during testing:
                 ...rule(':nth-child(5n+1)', {

@@ -60,6 +60,83 @@ transformRegistry.registerTransform(viewEffectVars.viewTransform);
  * Gradually revealing the target view inside the container viewport while moving the others out of sight.
  * This creates a natural **switching illusion** of view changes.
  * 
+ * ⚠️ Important Usage Note:
+ * - Apply `usesViewEffect()` on the **slidable view elements** (the view group or individual views),
+ *   **not** on the parent viewport container.
+ * - The viewport container typically has `overflow: hidden` to mask out-of-viewport content.
+ *   Sliding the container itself would move the viewport rather than the views inside it.
+ * - By applying the effect to the slidable element(s), the correct view is revealed within the viewport.
+ * - Ensure that `...transformFeatureRule()` and `transform` from `@reusable-ui/transform-feature`
+ *   are also applied to the slidable element(s) so the sliding transformation works correctly.
+ * 
+ * @example
+ * ```ts
+ * export default function viewComponent() {
+ *     // Features:
+ *     const {
+ *         animationFeatureRule,
+ *         animationFeatureVars: { animation },
+ *     } = usesAnimationFeature();
+ *     const {
+ *         transformFeatureRule,
+ *         transformFeatureVars: { transform },
+ *     } = usesTransformFeature();
+ *     
+ *     // States:
+ *     const {
+ *         viewStateRule,
+ *         viewStateVars: { viewFactor },
+ *     } = usesViewState({
+ *         animationViewAdvancing : 'var(--box-view-advancing)',
+ *         animationViewReceding  : 'var(--box-view-receding)',
+ *     });
+ *     
+ *     // Effects:
+ *     const {
+ *         viewEffectRule,
+ *     } = usesViewEffect({
+ *         size          : '200px',
+ *         orientation   : 'inline',
+ *         flowDirection : 'start',
+ *     });
+ *     
+ *     return style({
+ *         // The component element acts as the viewport:
+ *         display    : 'grid',
+ *         inlineSize : '200px',
+ *         blockSize  : '100px',
+ *         overflow   : 'hidden', // Hides out-of-viewport views.
+ *         // Base styling for the component goes here.
+ *         
+ *         ...animationFeatureRule(), // Attach animation feature rules.
+ *         ...viewStateRule(),        // Attach view state rules (tracks view states).
+ *         animation,                 // Apply animations (from animation feature).
+ *         
+ *         ...children('.view-group', { // The view group (slidable element).
+ *             display: 'flex',
+ *             flexDirection: 'row', // Stack views horizontally.
+ *             // Base styling for the view group goes here.
+ *             
+ *             ...transformFeatureRule(), // Attach transform feature rules.
+ *             ...viewEffectRule(),       // Attach view effect rules (visual view-switching).
+ *             transform,                 // Apply transformations (from transform feature).
+ *             
+ *             ...children('.view', { // The individual views (also slidable elements).
+ *                 inlineSize : '200px',
+ *                 blockSize  : '100px',
+ *                 flex       : '0 0 auto', // Not growing, not shrinking.
+ *                 // Base styling for each view goes here.
+ *                 
+ *                 // Alternatively, you can apply transform + view effect here:
+ *                 // ...transformFeatureRule(),
+ *                 // ...viewEffectRule(),
+ *                 // transform,
+ *             }),
+ *         }),
+ *     });
+ * }
+ * ```
+ * 
  * @param options - An optional configuration for customizing view effects.
  * @returns A CSS API containing effect rules and CSS variables for the sliding transitions.
  */
