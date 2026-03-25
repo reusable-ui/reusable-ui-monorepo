@@ -14,39 +14,21 @@ export default function viewEffectTestStyle() {
     
     // Effects:
     const {
-        viewEffectRule : viewEffectStartDirectionRule,
+        viewEffectRule : viewEffectRule,
     } = usesViewEffect({
         size: 'var(--size)',
         
         orientation   : 'var(--orientation)',
-        flowDirection : 'start',
+        flowDirection : 'var(--flowDirection)',
         enablesSelectiveRendering : false,
     });
     const {
-        viewEffectRule : viewEffectEndDirectionRule,
+        viewEffectRule : viewEffectSelectiveRenderingRule,
     } = usesViewEffect({
         size: 'var(--size)',
         
         orientation   : 'var(--orientation)',
-        flowDirection : 'end',
-        enablesSelectiveRendering : false,
-    });
-    const {
-        viewEffectRule : viewEffectStartDirectionSelectiveRenderingRule,
-    } = usesViewEffect({
-        size: 'var(--size)',
-        
-        orientation   : 'var(--orientation)',
-        flowDirection : 'start',
-        enablesSelectiveRendering : true,
-    });
-    const {
-        viewEffectRule : viewEffectEndDirectionSelectiveRenderingRule,
-    } = usesViewEffect({
-        size: 'var(--size)',
-        
-        orientation   : 'var(--orientation)',
-        flowDirection : 'end',
+        flowDirection : 'var(--flowDirection)',
         enablesSelectiveRendering : true,
     });
     
@@ -121,21 +103,21 @@ export default function viewEffectTestStyle() {
                     '--size': '100px',
                 }),
             }),
-            ...rule(':not(.enablesSelectiveRendering)&', {
-                ...rule('.is-start-direction&', {
-                    ...viewEffectStartDirectionRule(),
-                }),
-                ...rule('.is-end-direction&', {
-                    ...viewEffectEndDirectionRule(),
+            ...rule('.is-start-direction&', {
+                ...vars({
+                    '--flowDirection': 0,
                 }),
             }),
+            ...rule('.is-end-direction&', {
+                ...vars({
+                    '--flowDirection': 1,
+                }),
+            }),
+            ...rule(':not(.enablesSelectiveRendering)&', {
+                ...viewEffectRule(),
+            }),
             ...rule(':is(.enablesSelectiveRendering)&', {
-                ...rule('.is-start-direction&', {
-                    ...viewEffectStartDirectionSelectiveRenderingRule(),
-                }),
-                ...rule('.is-end-direction&', {
-                    ...viewEffectEndDirectionSelectiveRenderingRule(),
-                }),
+                ...viewEffectSelectiveRenderingRule(),
             }),
             
             // Apply composed variables:

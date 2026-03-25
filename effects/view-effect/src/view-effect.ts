@@ -174,6 +174,25 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
         )
     );
     
+    /**
+     * Normalizes `flowDirection` into a numeric factor usable in CSS math:
+     * - Resolves to `+1` for `'start'` (or `0`).
+     * - Resolves to `-1` for `'end'` (or `1`).
+     * - Resolves to a math expression that evaluates to `+1` or `-1`.
+     * 
+     * The result is guaranteed to be either `+1`, `-1`, or a calc-safe math formula,
+     * so it can be safely consumed inside `calc()` or other CSS functions.
+     */
+    const flowDirectionFactor : 1 | -1 | `(${string})` = (
+        ((flowDirection === 'start') || (flowDirection === 0))
+        ? 1
+        : (
+            ((flowDirection === 'end') || (flowDirection === 1))
+            ? -1
+            : `(1 - 2 * ${flowDirection})`
+        )
+    );
+    
     
     
     // States:
@@ -374,7 +393,6 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
                  * - Based on `baseTranslateFormula`.
                  * - Sign may be flipped depending on writing direction, writing mode, and flow direction.
                  * - Pass directly into `translateX(...)`/`translateY(...)` to move the entire set of views.
-                 * - `flowDirection` is evaluated at build time (no runtime changes yet).
                  * 
                  * ### Sub-Formulas
                  * Each `*Formula*` may involve complex math.  
@@ -386,7 +404,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
                  * Parentheses are not required when combining with other math operations,
                  * because they resolve directly to a single unit.
                  */
-                [viewTranslatePhysical  ] : `calc((${baseTranslateFormula}) * (${writingDirectionFlipFormula}) * ${writingModeFactor}${(flowDirection === 'end') ? ' * -1' : ''})`,
+                [viewTranslatePhysical  ] : `calc((${baseTranslateFormula}) * (${writingDirectionFlipFormula}) * ${writingModeFactor} * ${flowDirectionFactor})`,
                 
                 /**
                  * Adaptive transform formula (converted to physical translation):

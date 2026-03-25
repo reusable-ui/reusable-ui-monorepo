@@ -195,10 +195,13 @@ export interface CssViewEffectOptions
      * Accepts:
      * - `'start'` → view stack begins at the logical start side.
      * - `'end'`   → view stack begins at the logical end side.
+     * - `0`        → equivalent to `'start'`.
+     * - `1`        → equivalent to `'end'`.
+     * - A CSS variable reference resolving to `0` or `1`, e.g. `var(--my-flowDirection)`.
      * 
      * Defaults to `'start'` (view stack begins at the logical start side).
      */
-    flowDirection             ?: 'start' | 'end'
+    flowDirection             ?: 'start' | 'end' | 0 | 1 | CssCustomRef
     
     /**
      * Enables selective rendering mode.
