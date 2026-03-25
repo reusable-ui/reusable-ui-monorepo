@@ -80,6 +80,63 @@ export const usesCollapseEffect = (options?: CssCollapseEffectOptions): CssColla
         )
     );
     
+    /**
+     * Normalizes `flowDirection` into a numeric factor usable in CSS math:
+     * - Resolves to `+1` for `'start'` (or `0`).
+     * - Resolves to `-1` for `'end'` (or `1`).
+     * - Resolves to a math expression that evaluates to `+1` or `-1`.
+     * 
+     * The result is guaranteed to be either `+1`, `-1`, or a calc-safe math formula,
+     * so it can be safely consumed inside `calc()` or other CSS functions.
+     */
+    const flowDirectionFactor : 1 | -1 | `(${string})` = (
+        ((flowDirection === 'start') || (flowDirection === 0))
+        ? 1
+        : (
+            ((flowDirection === 'end') || (flowDirection === 1))
+            ? -1
+            : `(1 - 2 * ${flowDirection})`
+        )
+    );
+    
+    /**
+     * Normalizes `flowDirection` into a start-condition numeric gate usable in CSS math:
+     * - Resolves to `1` for `'start'` (or `0`).
+     * - Resolves to `0` for `'end'` (or `1`).
+     * - Resolves to a math expression that evaluates to `1` or `0`.
+     * 
+     * The result is guaranteed to be either `1`, `0`, or a calc-safe math formula,
+     * so it can be safely consumed inside `calc()` or other CSS functions.
+     */
+    const flowDirectionStartGate : 0 | 1 | `(${string})` = (
+        ((flowDirection === 'start') || (flowDirection === 0))
+        ? 1
+        : (
+            ((flowDirection === 'end') || (flowDirection === 1))
+            ? 0
+            : `(1 - ${flowDirection})`
+        )
+    );
+    
+    /**
+     * Normalizes `flowDirection` into an end-condition numeric gate usable in CSS math:
+     * - Resolves to `1` for `'end'` (or `1`).
+     * - Resolves to `0` for `'start'` (or `0`).
+     * - Resolves to a math expression that evaluates to `1` or `0`.
+     * 
+     * The result is guaranteed to be either `1`, `0`, or a calc-safe variable reference,
+     * so it can be safely consumed inside `calc()` or other CSS functions.
+     */
+    const flowDirectionEndGate : 0 | 1 | `var(--${string})` = (
+        ((flowDirection === 'end') || (flowDirection === 1))
+        ? 1
+        : (
+            ((flowDirection === 'start') || (flowDirection === 0))
+            ? 0
+            : flowDirection
+        )
+    );
+    
     
     
     // States:
@@ -209,37 +266,33 @@ export const usesCollapseEffect = (options?: CssCollapseEffectOptions): CssColla
                  * Adaptive margin-left formula:
                  * 
                  * - Based on `collapseTranslate`.
-                 * - Enabled if `orientationFactor === 0` (inline) and `flowDirection === 'start'`.
-                 * - `flowDirection` is evaluated at build time (no runtime changes yet).
+                 * - Enabled if `orientationFactor` is `inline` and `flowDirection` is `start`.
                  */
-                [collapseMarginInlineStart] : (flowDirection === 'start') ? `calc(${collapseTranslate} * (1 - ${orientationFactor}))` : 'unset',
+                [collapseMarginInlineStart] : `calc(${flowDirectionStartGate} * ${collapseTranslate} * (1 - ${orientationFactor}))`,
                 
                 /**
                  * Adaptive margin-right formula:
                  * 
                  * - Based on `collapseTranslate`.
-                 * - Enabled if `orientationFactor === 0` (inline) and `flowDirection === 'end'`.
-                 * - `flowDirection` is evaluated at build time (no runtime changes yet).
+                 * - Enabled if `orientationFactor` is `inline` and `flowDirection` is `end`.
                  */
-                [collapseMarginInlineEnd  ] : (flowDirection === 'end'  ) ? `calc(${collapseTranslate} * (1 - ${orientationFactor}))` : 'unset',
+                [collapseMarginInlineEnd  ] : `calc(${flowDirectionEndGate} * ${collapseTranslate} * (1 - ${orientationFactor}))`,
                 
                 /**
                  * Adaptive margin-top formula:
                  * 
                  * - Based on `collapseTranslate`.
-                 * - Enabled if `orientationFactor === 1` (block) and `flowDirection === 'start'`.
-                 * - `flowDirection` is evaluated at build time (no runtime changes yet).
+                 * - Enabled if `orientationFactor` is `block` and `flowDirection` is `start`.
                  */
-                [collapseMarginBlockStart ] : (flowDirection === 'start') ? `calc(${collapseTranslate} * ${orientationFactor})` : 'unset',
+                [collapseMarginBlockStart ] : `calc(${flowDirectionStartGate} * ${collapseTranslate} * ${orientationFactor})`,
                 
                 /**
                  * Adaptive margin-bottom formula:
                  * 
                  * - Based on `collapseTranslate`.
-                 * - Enabled if `orientationFactor === 1` (block) and `flowDirection === 'end'`.
-                 * - `flowDirection` is evaluated at build time (no runtime changes yet).
+                 * - Enabled if `orientationFactor` is `block` and `flowDirection` is `end`.
                  */
-                [collapseMarginBlockEnd   ] : (flowDirection === 'end'  ) ? `calc(${collapseTranslate} * ${orientationFactor})` : 'unset',
+                [collapseMarginBlockEnd   ] : `calc(${flowDirectionEndGate} * ${collapseTranslate} * ${orientationFactor})`,
                 
                 /**
                  * Clip-path formula:
@@ -323,7 +376,6 @@ export const usesCollapseEffect = (options?: CssCollapseEffectOptions): CssColla
                  * - Based on `baseTranslateFormula`.
                  * - Sign may be flipped depending on writing direction, writing mode, and flow direction.
                  * - Pass directly into `translateX(...)`/`translateY(...)` to compensate the unwanted revealing-side shift.
-                 * - `flowDirection` is evaluated at build time (no runtime changes yet).
                  * 
                  * ### Sub-Formulas
                  * Each `*Formula*` may involve complex math.  
@@ -335,7 +387,7 @@ export const usesCollapseEffect = (options?: CssCollapseEffectOptions): CssColla
                  * Parentheses are not required when combining with other math operations,
                  * because they resolve directly to a single unit.
                  */
-                [overshootTranslatePhysical] : `calc((${baseTranslateFormula}) * (${writingDirectionFlipFormula}) * ${writingModeFactor}${(flowDirection === 'end') ? ' * -1' : ''})`,
+                [overshootTranslatePhysical] : `calc((${baseTranslateFormula}) * (${writingDirectionFlipFormula}) * ${writingModeFactor} * ${flowDirectionFactor})`,
                 
                 /**
                  * Translation formula (axis-relative scaling):

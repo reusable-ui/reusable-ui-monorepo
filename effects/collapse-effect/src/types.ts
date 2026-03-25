@@ -97,7 +97,7 @@ export interface CollapseEffectVars {
      * - Becomes `unset` when the component is:
      *   - fully expanded, or
      *   - fully collapsed with `options.display` is set
-     * - Unused unless `options.orientation === 'inline'` and `options.flowDirection === 'start'`.
+     * - Unused unless `options.orientation` is `inline` and `options.flowDirection` is `start`.
      * - Should be applied to the CSS `marginInlineStart` property of the collapsible element.
      */
     collapseMarginInlineStart  : unknown
@@ -109,7 +109,7 @@ export interface CollapseEffectVars {
      * - Becomes `unset` when the component is:
      *   - fully expanded, or
      *   - fully collapsed with `options.display` is set
-     * - Unused unless `options.orientation === 'inline'` and `options.flowDirection === 'end'`.
+     * - Unused unless `options.orientation` is `inline` and `options.flowDirection` is `end`.
      * - Should be applied to the CSS `marginInlineEnd` property of the collapsible element.
      */
     collapseMarginInlineEnd    : unknown
@@ -121,7 +121,7 @@ export interface CollapseEffectVars {
      * - Becomes `unset` when the component is:
      *   - fully expanded, or
      *   - fully collapsed with `options.display` is set
-     * - Unused unless `options.orientation === 'block'` and `options.flowDirection === 'start'`.
+     * - Unused unless `options.orientation` is `block` and `options.flowDirection` is `start`.
      * - Should be applied to the CSS `marginBlockStart` property of the collapsible element.
      */
     collapseMarginBlockStart   : unknown
@@ -133,7 +133,7 @@ export interface CollapseEffectVars {
      * - Becomes `unset` when the component is:
      *   - fully expanded, or
      *   - fully collapsed with `options.display` is set
-     * - Unused unless `options.orientation === 'block'` and `options.flowDirection === 'end'`.
+     * - Unused unless `options.orientation` is `block` and `options.flowDirection` is `end`.
      * - Should be applied to the CSS `marginBlockEnd` property of the collapsible element.
      */
     collapseMarginBlockEnd     : unknown
@@ -261,10 +261,13 @@ export interface CssCollapseEffectOptions {
      * or exits when collapsing:
      * - `'start'` → content reveals/exits from the logical start side.
      * - `'end'`   → content reveals/exits from the logical end side.
+     * - `0`        → equivalent to `'start'`.
+     * - `1`        → equivalent to `'end'`.
+     * - A CSS variable reference resolving to `0` or `1`, e.g. `var(--my-flowDirection)`.
      * 
      * Defaults to `'start'` (content reveals/exits from the logical start side).
      */
-    flowDirection ?: 'start' | 'end'
+    flowDirection ?: 'start' | 'end' | 0 | 1 | CssCustomRef
     
     /**
      * Applies the CSS `display` property when fully collapsed.

@@ -14,7 +14,7 @@ export default function collapseEffectTestStyle() {
     
     // Effects:
     const {
-        collapseEffectRule : collapseEffectStartDirectionRule,
+        collapseEffectRule,
         collapseEffectVars: {
             collapseMarginInlineStart,
             collapseMarginInlineEnd,
@@ -27,14 +27,7 @@ export default function collapseEffectTestStyle() {
         },
     } = usesCollapseEffect({
         orientation   : 'var(--orientation)',
-        flowDirection : 'start',
-        display       : 'none',
-    });
-    const {
-        collapseEffectRule : collapseEffectEndDirectionRule,
-    } = usesCollapseEffect({
-        orientation   : 'var(--orientation)',
-        flowDirection : 'end',
+        flowDirection : 'var(--flowDirection)',
         display       : 'none',
     });
     
@@ -65,11 +58,16 @@ export default function collapseEffectTestStyle() {
                 '--orientation': 1, // block
             }),
         }),
+        ...collapseEffectRule(),
         ...rule('.is-start-direction', {
-            ...collapseEffectStartDirectionRule(),
+            ...vars({
+                '--flowDirection': 0,
+            }),
         }),
         ...rule('.is-end-direction', {
-            ...collapseEffectEndDirectionRule(),
+            ...vars({
+                '--flowDirection': 1,
+            }),
         }),
         
         // Apply composed variables:
