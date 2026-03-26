@@ -9,7 +9,7 @@ import {
     // Types:
     type TransitionAnimationCase,
     type TransitionFlagCase,
-    type TransitionFactorCase,
+    type ActiveTransitionFactorCase,
     type TransitionBehavior,
 }                           from '@reusable-ui/transition-state'    // Lifecycle-aware transition state for React, enabling reusable hooks with consistent animations.
 
@@ -132,16 +132,16 @@ export interface FeedbackFlagCase
  * 
  * @example
  * ```ts
- * const focusFactor : TransitionFactorCase = {
+ * const focusFactor : ActiveFeedbackFactorCase = {
  *     ifState : ifFocused,
  *     factor  : 1,
  * };
  * ```
  */
-export interface FeedbackFactorCase
+export interface ActiveFeedbackFactorCase
     extends
         // Bases:
-        TransitionFactorCase
+        ActiveTransitionFactorCase
 {
     /**
      * Determines when the `factorVar` is set.
@@ -155,7 +155,7 @@ export interface FeedbackFactorCase
      * - A custom function using `rule()`, e.g. `(styles) => rule('.is-focused', styles)`
      * - Any function with signature: `(styles: CssStyleCollection) => CssRule`
      */
-    ifState : TransitionFactorCase['ifState']
+    ifState : ActiveTransitionFactorCase['ifState']
 }
 
 
@@ -281,8 +281,8 @@ export interface FeedbackBehavior
      * If no case matches, the factor variables resolve to `baselineFactor`.
      * 
      * Accepts either:
-     * - A single `FeedbackFactorCase`
-     * - An array of `FeedbackFactorCase[]`
+     * - A single `ActiveFeedbackFactorCase`
+     * - An array of `ActiveFeedbackFactorCase[]`
      */
-    activeFactors   ?: MaybeArray<FeedbackFactorCase>
+    activeFactors   ?: MaybeArray<ActiveFeedbackFactorCase>
 }

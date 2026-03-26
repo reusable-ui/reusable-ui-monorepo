@@ -9,7 +9,7 @@ import {
     // Types:
     type TransitionAnimationCase,
     type TransitionFlagCase,
-    type TransitionFactorCase,
+    type ActiveTransitionFactorCase,
     type TransitionBehavior,
 }                           from '@reusable-ui/transition-state'    // Lifecycle-aware transition state for React, enabling reusable hooks with consistent animations.
 
@@ -132,16 +132,16 @@ export interface InteractionFlagCase
  * 
  * @example
  * ```ts
- * const expandFactor : TransitionFactorCase = {
+ * const expandFactor : ActiveInteractionFactorCase = {
  *     ifState : ifExpanded,
  *     factor  : 1,
  * };
  * ```
  */
-export interface InteractionFactorCase
+export interface ActiveInteractionFactorCase
     extends
         // Bases:
-        TransitionFactorCase
+        ActiveTransitionFactorCase
 {
     /**
      * Determines when the `factorVar` is set.
@@ -155,7 +155,7 @@ export interface InteractionFactorCase
      * - A custom function using `rule()`, e.g. `(styles) => rule('.is-expanded', styles)`
      * - Any function with signature: `(styles: CssStyleCollection) => CssRule`
      */
-    ifState : TransitionFactorCase['ifState']
+    ifState : ActiveTransitionFactorCase['ifState']
 }
 
 
@@ -281,8 +281,8 @@ export interface InteractionBehavior
      * If no case matches, the factor variables resolve to `baselineFactor`.
      * 
      * Accepts either:
-     * - A single `InteractionFactorCase`
-     * - An array of `InteractionFactorCase[]`
+     * - A single `ActiveInteractionFactorCase`
+     * - An array of `ActiveInteractionFactorCase[]`
      */
-    activeFactors   ?: MaybeArray<InteractionFactorCase>
+    activeFactors   ?: MaybeArray<ActiveInteractionFactorCase>
 }

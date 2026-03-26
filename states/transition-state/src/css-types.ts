@@ -123,23 +123,23 @@ export interface TransitionFlagCase {
 
 
 /**
- * Defines a single factor case for holding final numeric value once a transition settles.
+ * Defines a single active factor case for holding final numeric value once a transition settles.
  * 
  * Assigns a discrete value for keeping `factorVar` and `factorCondVar`
- * *stick* at their final value after the transition finishes.
+ * *stick* at their final active value after the transition finishes.
  * 
  * Note:
  * - During an animation, factor values are smoothly driven by the animation's keyframes.
  * 
  * @example
  * ```ts
- * const validFactor : TransitionFactorCase = {
+ * const validFactor : ActiveTransitionFactorCase = {
  *     ifState : ifValid,
  *     factor  : 1,
  * };
  * ```
  */
-export interface TransitionFactorCase {
+export interface ActiveTransitionFactorCase {
     /**
      * Determines when the `factorVar` is set.
      * 
@@ -336,8 +336,8 @@ export interface TransitionBehavior
      * If no case matches, the factor variables resolve to `baselineFactor`.
      * 
      * Accepts either:
-     * - A single `TransitionFactorCase`
-     * - An array of `TransitionFactorCase[]`
+     * - A single `ActiveTransitionFactorCase`
+     * - An array of `ActiveTransitionFactorCase[]`
      */
-    activeFactors   ?: MaybeArray<TransitionFactorCase>
+    activeFactors   ?: MaybeArray<ActiveTransitionFactorCase>
 }
