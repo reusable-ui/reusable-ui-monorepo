@@ -256,7 +256,7 @@ export interface FeedbackBehavior
      * Typical implementation: integer values represent settled states, fractional values represent transitioning states.
      * Example range: 0 (baseline) … +0.5 (focusing) … +1 (focused).
      * 
-     * Always resolves to `0` when the state is fully inactive,
+     * Always resolves to `baselineFactor` when the state is fully inactive,
      * ensuring consistency across state changes.
      */
     factorVar        : TransitionBehavior['factorVar']
@@ -283,7 +283,7 @@ export interface FeedbackBehavior
      * Provides discrete values for keeping `factorVar` and `factorCondVar`
      * *stick* at their final value after the transition finishes.
      * 
-     * If no case matches, the factor variables resolve to `0`.
+     * If no case matches, the factor variables resolve to `baselineFactor`.
      * 
      * Accepts either:
      * - A single `FeedbackFactorCase`
