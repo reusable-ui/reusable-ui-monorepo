@@ -921,8 +921,8 @@ Applies live CSS variables for transitional styling, including:
   Specifies a CSS variable for smooth transitions with inactive fallback.
 - **`ifInactiveState`**
   Defines the condition for the inactive baseline state.
-- **`factors`**
-  Defines factor cases for holding final numeric values once a transition settles.
+- **`activeFactors`**
+  Defines active factor cases for holding final numeric values once a transition settles.
 
 #### 💡 Usage Example
 
@@ -983,7 +983,7 @@ const validityStateRule : CssRule = usesTransitionState({
     factorVar       : validityStateVars.validityFactor,
     factorCondVar   : validityStateVars.validityFactorCond,
     ifInactiveState : ifUnvalidated,
-    factors         : [
+    activeFactors   : [
         {
             ifState : ifValid,
             factor  : 1,
@@ -992,11 +992,6 @@ const validityStateRule : CssRule = usesTransitionState({
             ifState : ifInvalid,
             factor  : -1,
         },
-        // Not needed: Defaults to 0 when no case matches:
-        // {
-        //     ifState : ifUnvalidated,
-        //     factor  : 0,
-        // },
     ],
 });
 

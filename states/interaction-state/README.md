@@ -594,8 +594,8 @@ Applies live CSS variables for interaction styling, including:
   Specifies a CSS variable for smooth transitions with inactive fallback.
 - **`ifInactiveState`**
   Defines the condition for the inactive baseline state.
-- **`factors`**
-  Defines factor cases for holding final numeric values once a transition settles.
+- **`activeFactors`**
+  Defines active factor cases for holding final numeric values once a transition settles.
 
 #### 💡 Usage Example
 
@@ -633,16 +633,11 @@ const collapseStateRule : CssRule = usesInteractionState({
     factorVar       : collapseStateVars.expandFactor,
     factorCondVar   : collapseStateVars.expandFactorCond,
     ifInactiveState : ifCollapsed,
-    factors         : [
+    activeFactors   : [
         {
             ifState : ifExpanded,
             factor  : 1,
         },
-        // Not needed: Defaults to 0 when no case matches:
-        // {
-        //     ifState : ifCollapsed,
-        //     factor  : 0,
-        // },
     ],
 });
 

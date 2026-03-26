@@ -586,8 +586,8 @@ Applies live CSS variables for feedback styling, including:
   Specifies a CSS variable for smooth transitions with inactive fallback.
 - **`ifInactiveState`**
   Defines the condition for the inactive baseline state.
-- **`factors`**
-  Defines factor cases for holding final numeric values once a transition settles.
+- **`activeFactors`**
+  Defines active factor cases for holding final numeric values once a transition settles.
 
 #### 💡 Usage Example
 
@@ -625,16 +625,11 @@ const focusStateRule : CssRule = usesFeedbackState({
     factorVar       : focusStateVars.focusFactor,
     factorCondVar   : focusStateVars.focusFactorCond,
     ifInactiveState : ifBlurred,
-    factors         : [
+    activeFactors   : [
         {
             ifState : ifFocused,
             factor  : 1,
         },
-        // Not needed: Defaults to 0 when no case matches:
-        // {
-        //     ifState : ifBlurred,
-        //     factor  : 0,
-        // },
     ],
 });
 
