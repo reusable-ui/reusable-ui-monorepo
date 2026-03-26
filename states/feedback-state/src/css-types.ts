@@ -205,16 +205,11 @@ export interface FeedbackFactorCase
  *     factorVar       : focusStateVars.focusFactor,
  *     factorCondVar   : focusStateVars.focusFactorCond,
  *     ifInactiveState : ifBlurred,
- *     factors         : [
+ *     activeFactors   : [
  *         {
  *             ifState : ifFocused,
  *             factor  : 1,
  *         },
- *         // Not needed: Defaults to 0 when no case matches:
- *         // {
- *         //     ifState : ifBlurred,
- *         //     factor  : 0,
- *         // },
  *     ],
  * });
  * ```
@@ -278,10 +273,10 @@ export interface FeedbackBehavior
     factorCondVar    : TransitionBehavior['factorCondVar']
     
     /**
-     * Defines factor cases for holding final numeric values once a transition settles.
+     * Defines active factor cases for holding final numeric values once a transition settles.
      * 
      * Provides discrete values for keeping `factorVar` and `factorCondVar`
-     * *stick* at their final value after the transition finishes.
+     * *stick* at their final active value after the transition finishes.
      * 
      * If no case matches, the factor variables resolve to `baselineFactor`.
      * 
@@ -289,5 +284,5 @@ export interface FeedbackBehavior
      * - A single `FeedbackFactorCase`
      * - An array of `FeedbackFactorCase[]`
      */
-    factors         ?: MaybeArray<FeedbackFactorCase>
+    activeFactors   ?: MaybeArray<FeedbackFactorCase>
 }

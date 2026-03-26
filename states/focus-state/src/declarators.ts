@@ -316,16 +316,11 @@ export const usesFocusState = (options?: CssFocusStateOptions): CssFocusState =>
         factorVar       : focusStateVars.focusFactor,
         factorCondVar   : focusStateVars.focusFactorCond,
         ifInactiveState : ifBlurred,
-        factors         : [
+        activeFactors   : [
             {
                 ifState : ifFocused,
                 factor  : 1,
             },
-            // Not needed: Defaults to 0 when no case matches:
-            // {
-            //     ifState : ifBlurred,
-            //     factor  : 0,
-            // },
         ],
     }),
     

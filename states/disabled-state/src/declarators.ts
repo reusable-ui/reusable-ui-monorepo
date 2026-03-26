@@ -316,16 +316,11 @@ export const usesDisabledState = (options?: CssDisabledStateOptions): CssDisable
         factorVar       : disabledStateVars.disableFactor,
         factorCondVar   : disabledStateVars.disableFactorCond,
         ifInactiveState : ifEnabled,
-        factors         : [
+        activeFactors   : [
             {
                 ifState : ifDisabled,
                 factor  : 1,
             },
-            // Not needed: Defaults to 0 when no case matches:
-            // {
-            //     ifState : ifEnabled,
-            //     factor  : 0,
-            // },
         ],
     }),
     

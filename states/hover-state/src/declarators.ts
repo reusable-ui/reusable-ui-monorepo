@@ -316,16 +316,11 @@ export const usesHoverState = (options?: CssHoverStateOptions): CssHoverState =>
         factorVar       : hoverStateVars.hoverFactor,
         factorCondVar   : hoverStateVars.hoverFactorCond,
         ifInactiveState : ifUnhovered,
-        factors         : [
+        activeFactors   : [
             {
                 ifState : ifHovered,
                 factor  : 1,
             },
-            // Not needed: Defaults to 0 when no case matches:
-            // {
-            //     ifState : ifUnhovered,
-            //     factor  : 0,
-            // },
         ],
     }),
     

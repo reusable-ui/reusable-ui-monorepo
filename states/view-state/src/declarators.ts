@@ -286,15 +286,9 @@ export const usesViewState = (options?: CssViewStateOptions): CssViewState => ({
         factorCondVar   : viewStateVars.viewFactorCond,
         ifInactiveState : ifViewSettled,
         /*
-        factors         : [
+        activeFactors   : [
             // ❌ No final value for `viewFactor`.
             // It resets to 0 after animation completes to reflect the collapsed single-view rendering.
-            
-            // Not needed: Defaults to 0 when no case matches:
-            // {
-            //     ifState : ifViewSettled,
-            //     factor  : 0,
-            // },
         ],
         */
     }),

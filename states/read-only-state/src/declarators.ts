@@ -316,16 +316,11 @@ export const usesReadOnlyState = (options?: CssReadOnlyStateOptions): CssReadOnl
         factorVar       : readOnlyStateVars.readOnlyFactor,
         factorCondVar   : readOnlyStateVars.readOnlyFactorCond,
         ifInactiveState : ifEditable,
-        factors         : [
+        activeFactors   : [
             {
                 ifState : ifReadOnly,
                 factor  : 1,
             },
-            // Not needed: Defaults to 0 when no case matches:
-            // {
-            //     ifState : ifEditable,
-            //     factor  : 0,
-            // },
         ],
     }),
     

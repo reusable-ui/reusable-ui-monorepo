@@ -324,16 +324,11 @@ export const usesCollapseState = (options?: CssCollapseStateOptions): CssCollaps
         // the baseline is set to `0` (collapsed).
         baselineFactor  : 0,
         
-        factors         : [
+        activeFactors   : [
             {
                 ifState : ifExpanded,
                 factor  : 1,
             },
-            // Not needed: Defaults to 0 when no case matches:
-            // {
-            //     ifState : ifCollapsed,
-            //     factor  : 0,
-            // },
         ],
     }),
     

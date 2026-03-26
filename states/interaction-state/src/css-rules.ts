@@ -61,16 +61,11 @@ import {
  *     factorVar       : collapseStateVars.expandFactor,
  *     factorCondVar   : collapseStateVars.expandFactorCond,
  *     ifInactiveState : ifCollapsed,
- *     factors         : [
+ *     activeFactors   : [
  *         {
  *             ifState : ifExpanded,
  *             factor  : 1,
  *         },
- *         // Not needed: Defaults to 0 when no case matches:
- *         // {
- *         //     ifState : ifCollapsed,
- *         //     factor  : 0,
- *         // },
  *     ],
  * });
  * 

@@ -319,16 +319,11 @@ export const usesPressState = (options?: CssPressStateOptions): CssPressState =>
         factorVar       : pressStateVars.pressFactor,
         factorCondVar   : pressStateVars.pressFactorCond,
         ifInactiveState : ifReleased,
-        factors         : [
+        activeFactors   : [
             {
                 ifState : ifPressed,
                 factor  : 1,
             },
-            // Not needed: Defaults to 0 when no case matches:
-            // {
-            //     ifState : ifReleased,
-            //     factor  : 0,
-            // },
         ],
     }),
     

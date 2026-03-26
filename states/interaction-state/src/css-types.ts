@@ -205,16 +205,11 @@ export interface InteractionFactorCase
  *     factorVar       : collapseStateVars.expandFactor,
  *     factorCondVar   : collapseStateVars.expandFactorCond,
  *     ifInactiveState : ifCollapsed,
- *     factors         : [
+ *     activeFactors   : [
  *         {
  *             ifState : ifExpanded,
  *             factor  : 1,
  *         },
- *         // Not needed: Defaults to 0 when no case matches:
- *         // {
- *         //     ifState : ifCollapsed,
- *         //     factor  : 0,
- *         // },
  *     ],
  * });
  * ```
@@ -278,10 +273,10 @@ export interface InteractionBehavior
     factorCondVar    : TransitionBehavior['factorCondVar']
     
     /**
-     * Defines factor cases for holding final numeric values once a transition settles.
+     * Defines active factor cases for holding final numeric values once a transition settles.
      * 
      * Provides discrete values for keeping `factorVar` and `factorCondVar`
-     * *stick* at their final value after the transition finishes.
+     * *stick* at their final active value after the transition finishes.
      * 
      * If no case matches, the factor variables resolve to `baselineFactor`.
      * 
@@ -289,5 +284,5 @@ export interface InteractionBehavior
      * - A single `InteractionFactorCase`
      * - An array of `InteractionFactorCase[]`
      */
-    factors         ?: MaybeArray<InteractionFactorCase>
+    activeFactors   ?: MaybeArray<InteractionFactorCase>
 }

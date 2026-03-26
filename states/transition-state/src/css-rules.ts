@@ -94,7 +94,7 @@ import {
  *     factorVar       : validityStateVars.validityFactor,
  *     factorCondVar   : validityStateVars.validityFactorCond,
  *     ifInactiveState : ifUnvalidated,
- *     factors         : [
+ *     activeFactors   : [
  *         {
  *             ifState : ifValid,
  *             factor  : 1,
@@ -103,11 +103,6 @@ import {
  *             ifState : ifInvalid,
  *             factor  : -1,
  *         },
- *         // Not needed: Defaults to 0 when no case matches:
- *         // {
- *         //     ifState : ifUnvalidated,
- *         //     factor  : 0,
- *         // },
  *     ],
  * });
  * 
@@ -132,7 +127,7 @@ export const usesTransitionState = (transitionBehavior: TransitionBehavior): Css
         factorCondVar,
         ifInactiveState,
         baselineFactor  = 0,
-        factors         = [],
+        activeFactors   = [],
     } = transitionBehavior;
     
     
@@ -144,9 +139,9 @@ export const usesTransitionState = (transitionBehavior: TransitionBehavior): Css
         : [flags]
     );
     const normalizedFactors = (
-        Array.isArray(factors)
-        ? factors
-        : [factors]
+        Array.isArray(activeFactors)
+        ? activeFactors
+        : [activeFactors]
     );
     
     

@@ -237,7 +237,7 @@ export interface TransitionFactorCase {
  *     factorVar       : validityStateVars.validityFactor,
  *     factorCondVar   : validityStateVars.validityFactorCond,
  *     ifInactiveState : ifUnvalidated,
- *     factors         : [
+ *     activeFactors   : [
  *         {
  *             ifState : ifValid,
  *             factor  : 1,
@@ -246,11 +246,6 @@ export interface TransitionFactorCase {
  *             ifState : ifInvalid,
  *             factor  : -1,
  *         },
- *         // Not needed: Defaults to 0 when no case matches:
- *         // {
- *         //     ifState : ifUnvalidated,
- *         //     factor  : 0,
- *         // },
  *     ],
  * });
  * ```
@@ -322,7 +317,7 @@ export interface TransitionBehavior
     
     /**
      * Defines the default baseline factor value used when:
-     * - No entry in `factors` matches the current case, and
+     * - No entry in `activeFactors` matches the current case, and
      * - No animation is actively running.
      * 
      * Serves as the safe fallback value to prevent unexpected behavior
@@ -333,10 +328,10 @@ export interface TransitionBehavior
     baselineFactor  ?: number
     
     /**
-     * Defines factor cases for holding final numeric values once a transition settles.
+     * Defines active factor cases for holding final numeric values once a transition settles.
      * 
      * Provides discrete values for keeping `factorVar` and `factorCondVar`
-     * *stick* at their final value after the transition finishes.
+     * *stick* at their final active value after the transition finishes.
      * 
      * If no case matches, the factor variables resolve to `baselineFactor`.
      * 
@@ -344,5 +339,5 @@ export interface TransitionBehavior
      * - A single `TransitionFactorCase`
      * - An array of `TransitionFactorCase[]`
      */
-    factors         ?: MaybeArray<TransitionFactorCase>
+    activeFactors   ?: MaybeArray<TransitionFactorCase>
 }

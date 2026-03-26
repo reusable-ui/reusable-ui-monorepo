@@ -667,7 +667,7 @@ export const usesValidityState = (options?: CssValidityStateOptions): CssValidit
         factorVar       : validityStateVars.validityFactor,
         factorCondVar   : validityStateVars.validityFactorCond,
         ifInactiveState : ifUnvalidated,
-        factors         : [
+        activeFactors   : [
             {
                 ifState : ifValid,
                 factor  : 1,
@@ -676,11 +676,6 @@ export const usesValidityState = (options?: CssValidityStateOptions): CssValidit
                 ifState : ifInvalid,
                 factor  : -1,
             },
-            // Not needed: Defaults to 0 when no case matches:
-            // {
-            //     ifState : ifUnvalidated,
-            //     factor  : 0,
-            // },
         ],
     }),
     

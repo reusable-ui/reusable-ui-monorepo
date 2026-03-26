@@ -380,16 +380,11 @@ export const usesActiveState = (options?: CssActiveStateOptions): CssActiveState
         factorVar       : activeStateVars.activeFactor,
         factorCondVar   : activeStateVars.activeFactorCond,
         ifInactiveState : ifInactive,
-        factors         : [
+        activeFactors   : [
             {
                 ifState : ifActive,
                 factor  : 1,
             },
-            // Not needed: Defaults to 0 when no case matches:
-            // {
-            //     ifState : ifInactive,
-            //     factor  : 0,
-            // },
         ],
     }),
     
