@@ -7,7 +7,6 @@ import {
     
     
     // Writes css in javascript:
-    atRule,
     states,
     fallback,
     style,
@@ -124,9 +123,6 @@ export const usesTransitionState = (transitionBehavior: TransitionBehavior): Css
         flags           = [],
         
         factorVar,
-        factorCondVar,
-        ifInactiveState,
-        baselineFactor  = 0,
         activeFactors   = [],
     } = transitionBehavior;
     
@@ -184,21 +180,6 @@ export const usesTransitionState = (transitionBehavior: TransitionBehavior): Css
         
         
         
-        // Apply primary factor variable:
-        
-        // Register `factorVar` as an animatable custom property:
-        // - `initialValue: baselineFactor` ensures baseline resolves to `baselineFactor` when not explicitly defined (`unset`).
-        ...atRule(`@property ${factorVar.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
-            // @ts-ignore - `csstype` doesn't yet recognize `syntax` @property descriptor.
-            syntax       : '"<number>"',   // Restrict to numeric values.
-            
-            // @ts-ignore - `csstype` doesn't yet recognize `inherits` @property descriptor.
-            inherits     : true,           // Allow inheritance into nested elements.
-            
-            // @ts-ignore - `csstype` doesn't yet recognize `initialValue` @property descriptor.
-            initialValue : baselineFactor, // Default baseline factor = baselineFactor.
-        }),
-        
         // Conditionally assign discrete factor values when states are fully settled:
         ...states(
             normalizedFactors.map(({ ifState, factor }) =>
@@ -211,27 +192,6 @@ export const usesTransitionState = (transitionBehavior: TransitionBehavior): Css
                     })
                 )
             ),
-        ),
-        
-        
-        
-        // Apply conditional factor variable:
-        
-        // Mirror `factorVar` into `factorCondVar` by default:
-        // - During transitions and active states, `factorCondVar` follows `factorVar`.
-        ...vars({
-            [factorCondVar]: factorVar,
-        }),
-        
-        // Drop `factorCondVar` when baseline inactive state is reached:
-        // - Explicitly set to `unset` so dependent declarations fall back cleanly.
-        ...states(
-            // Only unset the variable if the baseline inactive state condition is met:
-            ifInactiveState(
-                vars({
-                    [factorCondVar]: 'unset',
-                })
-            )
         ),
     });
 };

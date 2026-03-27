@@ -254,27 +254,38 @@ Each activity case provides:
 ```ts
 // Describe how order animations should behave:
 const orderAnimations : CssRule = usesActivityState({
-    {
-        ifState   : ifPreparing,
-        variable  : orderStateVars.animationPreparing,
-        animation : options.animationPreparing,
-    },
-    {
-        ifState   : ifShipping,
-        variable  : orderStateVars.animationShipping,
-        animation : options.animationShipping,
-    },
-    {
-        ifState   : ifDelivering,
-        variable  : orderStateVars.animationDelivering,
-        animation : options.animationDelivering,
-    },
+    animations      : [
+        {
+            ifState   : ifPreparing,
+            variable  : orderStateVars.animationPreparing,
+            animation : options.animationPreparing,
+        },
+        {
+            ifState   : ifShipping,
+            variable  : orderStateVars.animationShipping,
+            animation : options.animationShipping,
+        },
+        {
+            ifState   : ifDelivering,
+            variable  : orderStateVars.animationDelivering,
+            animation : options.animationDelivering,
+        },
+    ],
+    
+    // Optional factor variables for movement drivers of activity animation:
+    factorVar       : orderStateVars.orderFactor,
+    factorCondVar   : orderStateVars.orderFactorCond,
+    ifInactiveState : ifIdle,
+    baselineFactor  : 0,
 });
 
 // Apply order animations alongside other styles:
 return style({
     display  : 'grid',
     fontSize : '1rem',
+    
+    // Apply animations:
+    animation: `${switchOf(orderStateVars.animationPreparing, 'none')}, ${switchOf(orderStateVars.animationShipping, 'none')}, ${switchOf(orderStateVars.animationDelivering, 'none')}`,
     
     // Apply activity state rule:
     ...orderAnimations,
@@ -283,6 +294,7 @@ return style({
 });
 
 // Define conditional selectors:
+const ifIdle       = (styles: CssStyleCollection) => rule('.is-idle'      , styles);
 const ifPreparing  = (styles: CssStyleCollection) => rule('.is-preparing' , styles);
 const ifShipping   = (styles: CssStyleCollection) => rule('.is-shipping'  , styles);
 const ifDelivering = (styles: CssStyleCollection) => rule('.is-delivering', styles);

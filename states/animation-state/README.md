@@ -3,7 +3,7 @@
 Declarative animation lifecycle management for React components.  
 Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing — making motion predictable and enhancing visual feedback.
 
-Perfect for expand/collapse flows, form validation feedback, focus/blur transitions, and any interaction where animation timing matters.
+Perfect for activity indicators, in-motion stages, state transitions, and any interaction where animation timing matters.
 
 ## ✨ Features
 ✔️ Tracks both current intent and running transition  
@@ -160,7 +160,7 @@ CSS example for animations:
 #### 🧠 Animation Behavior
 
 The hook manages animations between states using a unified lifecycle flow.  
-When the implementator of `useAnimationState()` toggles a classname (e.g. `.is-validating`, `.is-invalidating`, `.is-unvalidating`), the corresponding case in `usesAnimationState()` activates, and the browser's CSS engine runs the assigned animation.
+When the implementator of `useAnimationState()` toggles a classname (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`), the corresponding case in `usesAnimationState()` activates, and the browser's CSS engine runs the assigned animation.
 
 The lifecycle flow ensures:
 
@@ -172,61 +172,71 @@ The lifecycle flow ensures:
 
 ### `usesAnimationState(animationBehavior: AnimationBehavior): CssRule`
 
-Applies live CSS variables for animation styling.
+Applies live CSS variables for animation styling, including:
+- **Animation variables** for *visual effects* whenever the corresponding state becomes active
+- **Factor variables** for *movement drivers* of the animation's motion.
 
-Activates **animation variables** for *visual effects* whenever the corresponding state becomes active.
-
-Each animation case provides:
-- **`ifState`**
-  Determines when the animation applies.
-- **`variable`**
-  Specifies the CSS variable to assign when the state condition is met.
-- **`animation`**
-  Specifies the animation value or reference to apply to the variable.
+**`AnimationBehavior` interface:**
+- **`animations`**
+  Defines transitional animation cases for *visual effects* whenever the corresponding state becomes active
+- Optional **factor variables**:
+  Provides numeric drivers that represent the movement of the active animation.
+  - **`factorVar`**
+    Specifies a CSS variable for smooth transitions.
+  - **`factorCondVar`**
+    Specifies a CSS variable for smooth transitions with inactive fallback.
+  - **`ifInactiveState`**
+    Defines the condition for the inactive baseline state.
+  - **`activeFactors`**
+    Defines active factor cases for holding final numeric values once a transition settles.
 
 #### 💡 Usage Example
 
 ```ts
-// Describe how validity animations should behave:
-const validityStateRule : CssRule = usesAnimationState({
-    // Animations for visual effects whenever a validation process runs:
-    animations : [
-        {
-            ifState   : ifValidating,
-            variable  : validityStateVars.animationValidating,
-            animation : options.animationValidating,
-        },
-        {
-            ifState   : ifInvalidating,
-            variable  : validityStateVars.animationInvalidating,
-            animation : options.animationInvalidating,
-        },
-        {
-            ifState   : ifUnvalidating,
-            variable  : validityStateVars.animationUnvalidating,
-            animation : options.animationUnvalidating,
-        },
-    ],
+// Describe how order animations should behave:
+const orderAnimations : CssRule = usesAnimationState({
+    {
+        ifState   : ifPreparing,
+        variable  : orderStateVars.animationPreparing,
+        animation : options.animationPreparing,
+    },
+    {
+        ifState   : ifShipping,
+        variable  : orderStateVars.animationShipping,
+        animation : options.animationShipping,
+    },
+    {
+        ifState   : ifDelivering,
+        variable  : orderStateVars.animationDelivering,
+        animation : options.animationDelivering,
+    },
+    
+    // Optional factor variables for movement drivers of animation:
+    factorVar       : orderStateVars.orderFactor,
+    factorCondVar   : orderStateVars.orderFactorCond,
+    ifInactiveState : ifIdle,
+    baselineFactor  : 0,
 });
 
-// Apply validity animations alongside other styles:
+// Apply order animations alongside other styles:
 return style({
     display  : 'grid',
     fontSize : '1rem',
     
     // Apply animations:
-    animation: 'var(--validity-validating, none), var(--validity-invalidating, none), var(--validity-unvalidating, none)',
+    animation: `${switchOf(orderStateVars.animationPreparing, 'none')}, ${switchOf(orderStateVars.animationShipping, 'none')}, ${switchOf(orderStateVars.animationDelivering, 'none')}`,
     
-    // Apply validity state rule:
-    ...validityStateRule,
+    // Apply animation state rule:
+    ...orderAnimations,
     // `CssRule` is an object with a unique symbol property (`{ [Symbol()]: CssRuleData }`),
     // so it can be safely spread without risk of overriding other styles.
 });
 
 // Define conditional selectors:
-const ifValidating   = (styles: CssStyleCollection) => rule('.is-validating'  , styles);
-const ifInvalidating = (styles: CssStyleCollection) => rule('.is-invalidating', styles);
-const ifUnvalidating = (styles: CssStyleCollection) => rule('.is-unvalidating', styles);
+const ifIdle       = (styles: CssStyleCollection) => rule('.is-idle'      , styles);
+const ifPreparing  = (styles: CssStyleCollection) => rule('.is-preparing' , styles);
+const ifShipping   = (styles: CssStyleCollection) => rule('.is-shipping'  , styles);
+const ifDelivering = (styles: CssStyleCollection) => rule('.is-delivering', styles);
 ```
 
 #### 🎨 Rendered CSS
@@ -235,27 +245,27 @@ const ifUnvalidating = (styles: CssStyleCollection) => rule('.is-unvalidating', 
     display   : grid;
     font-size : 1rem;
     
-    animation: var(--validity-validating, none), var(--validity-invalidating, none), var(--validity-unvalidating, none);
+    animation: var(--order-preparing, none), var(--order-shipping, none), var(--order-delivering, none);
     
-    &.is-validating {
-        --validity-validating: var(--anim-validating);
+    &.is-preparing {
+        --order-preparing: var(--anim-preparing);
     }
-    &.is-invalidating {
-        --validity-invalidating: var(--anim-invalidating);
+    &.is-shipping {
+        --order-shipping: var(--anim-shipping);
     }
-    &.is-unvalidating {
-        --validity-unvalidating: var(--anim-unvalidating);
+    &.is-delivering {
+        --order-delivering: var(--anim-delivering);
     }
 }
 ```
 
 #### 🧠 How CSS Animation State Works
 Each **`AnimationCase`** defines a mapping between:
-- **Condition (`ifState`)** → determines when the case is active (e.g. `ifValidating`).
+- **Condition (`ifState`)** → determines when the case is active (e.g. `ifPreparing`).
 - **Variable (`variable`)** → the CSS variable to assign.
 - **Animation (`animation`)** → the animation value or reference applied to the variable.
 
-When the implementator of `useAnimationState()` (React side) toggles a classname (e.g. `.is-validating`, `.is-invalidating`, `.is-unvalidating`), the corresponding case in `usesAnimationState()` (CSS side) activates. The browser's CSS engine then applies the animation by assigning the variable to the provided value.  
+When the implementator of `useAnimationState()` (React side) toggles a classname (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`), the corresponding case in `usesAnimationState()` (CSS side) activates. The browser's CSS engine then applies the animation by assigning the variable to the provided value.  
 
 This separation ensures:
 - **React hook** orchestrates runtime state (`intent`, `running`, lifecycle handlers).  

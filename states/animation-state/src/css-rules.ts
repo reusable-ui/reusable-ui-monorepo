@@ -6,6 +6,7 @@ import {
     
     
     // Writes css in javascript:
+    atRule,
     states,
     style,
     vars,
@@ -19,52 +20,49 @@ import {
 
 
 /**
- * Applies live CSS variables for animation styling.
- * 
- * Activates **animation variables** for *visual effects* whenever the corresponding state becomes active.
- * 
- * Each animation case provides:
- * - **`ifState`**
- *   Determines when the animation applies.
- * - **`variable`**
- *   Specifies the CSS variable to assign when the state condition is met.
- * - **`animation`**
- *   Specifies the animation value or reference to apply to the variable.
+ * Applies live CSS variables for animation styling, including:
+ * - **Animation variables** for *visual effects* whenever the corresponding state becomes active
+ * - **Factor variables** for *movement drivers* of the animation's motion.
  * 
  * @param animationBehavior - The animation styling behaviors to apply.
  * @returns A `CssRule` that enables animation styling to work correctly and dynamically.
  * 
  * @example
  * ```ts
- * // Describe how validity animations should behave:
- * const validityStateRule : CssRule = usesAnimationState({
- *     // Animations for visual effects whenever a validation process runs:
- *     animations : [
+ * // Describe how order animations should behave:
+ * const orderAnimations : CssRule = usesAnimationState({
+ *     animations      : [
  *         {
- *             ifState   : ifValidating,
- *             variable  : validityStateVars.animationValidating,
- *             animation : options.animationValidating,
+ *             ifState   : ifPreparing,
+ *             variable  : orderStateVars.animationPreparing,
+ *             animation : options.animationPreparing,
  *         },
  *         {
- *             ifState   : ifInvalidating,
- *             variable  : validityStateVars.animationInvalidating,
- *             animation : options.animationInvalidating,
+ *             ifState   : ifShipping,
+ *             variable  : orderStateVars.animationShipping,
+ *             animation : options.animationShipping,
  *         },
  *         {
- *             ifState   : ifUnvalidating,
- *             variable  : validityStateVars.animationUnvalidating,
- *             animation : options.animationUnvalidating,
+ *             ifState   : ifDelivering,
+ *             variable  : orderStateVars.animationDelivering,
+ *             animation : options.animationDelivering,
  *         },
  *     ],
+ *     
+ *     // Optional factor variables for movement drivers of animation:
+ *     factorVar       : orderStateVars.orderFactor,
+ *     factorCondVar   : orderStateVars.orderFactorCond,
+ *     ifInactiveState : ifIdle,
+ *     baselineFactor  : 0,
  * });
  * 
- * // Apply validity animations alongside other styles:
+ * // Apply order animations alongside other styles:
  * return style({
  *     display  : 'grid',
  *     fontSize : '1rem',
  *     
- *     // Apply validity state rule:
- *     ...validityStateRule,
+ *     // Apply animation state rule:
+ *     ...orderAnimations,
  *     // `CssRule` is an object with a unique symbol property (`{ [Symbol()]: CssRuleData }`),
  *     // so it can be safely spread without risk of overriding other styles.
  * });
@@ -103,5 +101,57 @@ export const usesAnimationState = (animationBehavior: AnimationBehavior): CssRul
                 )
             )
         ),
+        
+        
+        
+        ...(('factorVar' in animationBehavior) ? (() => {
+            // Extract animation factor behavior and assign defaults:
+            const {
+                factorVar,
+                factorCondVar,
+                ifInactiveState,
+                baselineFactor  = 0,
+            } = animationBehavior;
+            
+            
+            
+            return {
+                // Apply primary factor variable:
+                
+                // Register `factorVar` as an animatable custom property:
+                // - `initialValue: baselineFactor` ensures baseline resolves to `baselineFactor` when not explicitly defined (`unset`).
+                ...atRule(`@property ${factorVar.slice(4, -1)}`, { // fix: var(--customProp) => --customProp
+                    // @ts-ignore - `csstype` doesn't yet recognize `syntax` @property descriptor.
+                    syntax       : '"<number>"',   // Restrict to numeric values.
+                    
+                    // @ts-ignore - `csstype` doesn't yet recognize `inherits` @property descriptor.
+                    inherits     : true,           // Allow inheritance into nested elements.
+                    
+                    // @ts-ignore - `csstype` doesn't yet recognize `initialValue` @property descriptor.
+                    initialValue : baselineFactor, // Default baseline factor = baselineFactor.
+                }),
+                
+                
+                
+                // Apply conditional factor variable:
+                
+                // Mirror `factorVar` into `factorCondVar` by default:
+                // - During transitions and active states, `factorCondVar` follows `factorVar`.
+                ...vars({
+                    [factorCondVar]: factorVar,
+                }),
+                
+                // Drop `factorCondVar` when baseline inactive state is reached:
+                // - Explicitly set to `unset` so dependent declarations fall back cleanly.
+                ...states(
+                    // Only unset the variable if the baseline inactive state condition is met:
+                    ifInactiveState(
+                        vars({
+                            [factorCondVar]: 'unset',
+                        })
+                    )
+                ),
+            };
+        })() : undefined)
     });
 };
