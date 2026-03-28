@@ -177,13 +177,74 @@ export interface ExciteBehaviorState<TElement extends Element = HTMLElement>
  */
 export interface ExciteStateVars {
     /**
-     * References an animation used during the exciting transition.
+     * References an animation used during the exciting activity.
      * It becomes invalid (`unset`) when no longer excited.
      * 
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
     animationExciting : unknown
+    
+    /**
+     * A normalized, animatable factor representing the **exciting activity state**.
+     * 
+     * ### Expected values:
+     * - **0**     : idle (baseline, no activity)
+     * - **0 ↔ 1** : exciting activity (may oscillate back and forth several times)
+     * 
+     * ### Usage:
+     * - Applicable to numeric-based properties such as `scale`, `opacity`, `transform`, `color`, etc.
+     * - Implementators are responsible for assigning movement values in their animations.
+     *   For example, an exciting activity might interpolate `exciteFactor` between 0 ↔ 1,
+     *   oscillating back and forth several times before settling.
+     * - Values outside the 0–1 range are allowed, and implementators must handle them appropriately.  
+     *   Example of an animation with a spring/bump effect:  
+     *     `0%: 0`, `90%: 1.2`, `100%: 1`  
+     *   The overshoot value `1.2` at `90%` is intentional, creating an over-exciting effect.
+     * 
+     * ### Notes:
+     * - Already registered as an animatable custom property; no need to apply `@property` manually.
+     * - **Value rationale:**  
+     *   - The factor represents the active activity state (exciting), not the baseline (idle).  
+     *   - This keeps naming predictable and teachable across the ecosystem:
+     *     - `exciteFactor = 0`: idle (baseline activity state)  
+     *     - `exciteFactor = 0 ↔ 1`: exciting (active activity state)  
+     */
+    exciteFactor      : unknown
+    
+    /**
+     * A conditional mirror of `exciteFactor` representing the **exciting activity state**.
+     * Mirrors `exciteFactor` during active activities, but is explicitly
+     * set to `unset` once the component returns to its baseline idle state.
+     * 
+     * ### Expected values:
+     * - **unset** : idle (baseline inactive, declaration dropped)
+     * - **0 ↔ 1** : exciting activity (mirrors `exciteFactor`)
+     * 
+     * ### Usage:
+     * - Use when dependent properties should be **poisoned** (ignored) in the baseline idle state.
+     *   Example: gating `scale`, `opacity`, or other overrides that should disappear when idle.
+     * - During active activities, `exciteFactorCond` mirrors the numeric
+     *   value of `exciteFactor`, ensuring smooth movement and consistency.
+     * - Applicable to numeric-based properties such as `scale`, `opacity`, `transform`, `color`, etc.
+     * - Values outside the 0–1 range are allowed, and implementators must handle them appropriately.  
+     *   Example of an animation with a spring/bump effect:  
+     *     `0%: 0`, `90%: 1.2`, `100%: 1`  
+     *   The overshoot value `1.2` at `90%` is intentional, creating an over-exciting effect.
+     * 
+     * ### Notes:
+     * - **Value rationale:**  
+     *   - The factor represents the active activity state (exciting), not the baseline (idle).  
+     *   - Mirrors the active activity state (exciting) during active activities.  
+     *   - Drops to `unset` only when idle, so dependent declarations fall back cleanly.  
+     *   - This keeps naming predictable and teachable across the ecosystem:
+     *     - `exciteFactorCond = unset`: idle (baseline inactive, declaration dropped)
+     *     - `exciteFactorCond = 0 ↔ 1`: exciting (active activity state)  
+     * - **Naming rationale:**  
+     *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during active activities,
+     *     but conditionally drops to `unset` at baseline idle.
+     */
+    exciteFactorCond  : unknown
 }
 
 

@@ -5,7 +5,7 @@ import { ExciteStateParentTest } from './ExciteStateParentTest.js';
 
 
 /**
- * Represents a single test scenario for validating excite state transitions.
+ * Represents a single test scenario for validating excite state activities.
  */
 interface ExciteStateTestCase {
     // Test Inputs:

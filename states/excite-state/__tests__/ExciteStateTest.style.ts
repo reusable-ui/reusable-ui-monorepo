@@ -5,6 +5,7 @@ import { usesAnimationFeature } from '@reusable-ui/animation-feature'
 export default function exciteStateTestStyle() {
     const {
         exciteStateRule,
+        exciteStateVars: { exciteFactor },
     } = usesExciteState({
         animationExciting: 'var(--test-exciting)',
     });
@@ -25,17 +26,12 @@ export default function exciteStateTestStyle() {
             ],
         }),
         ...keyframes('boo-test-exciting', {
-            from : {
-                filter : [[
-                    'invert(0)',
-                ]],
-            },
-            to   : {
-                filter : [[
-                    'invert(0.8)',
-                ]],
-            },
+            from : { [exciteFactor]: 0 },
+            to   : { [exciteFactor]: 1 },
         }),
+        
+        // Oscillates invert effect several times:
+        filter: `invert(calc(0.8 * ${exciteFactor}))`,
         
         // Apply composite animations:
         animation,
