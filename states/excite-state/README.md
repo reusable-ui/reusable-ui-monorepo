@@ -137,11 +137,11 @@ Generates CSS rules that conditionally apply the excitement animation based on c
 These variables are conditionally valid and may be **invalid** (`unset`) when the component is idle.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable            | Active When...                | Purpose                                                                        |
-|---------------------|-------------------------------|--------------------------------------------------------------------------------|
-| `animationExciting` | `.is-excited` active          | Triggers excitement animation                                                  |
-| `exciteFactor`      | Always available (animatable) | Normalized factor: 0 = idle, 0 ↔ 1 = exciting, interpolates during activities  |
-| `exciteFactorCond`  | Is still exciting             | Conditional mirror of `exciteFactor`, drops to `unset` when no longer exciting |
+| Variable            | Active When...                | Purpose                                                                                                    |
+|---------------------|-------------------------------|------------------------------------------------------------------------------------------------------------|
+| `animationExciting` | `.is-excited` active          | Triggers excitement animation                                                                              |
+| `exciteFactor`      | Always available (animatable) | Normalized factor: 0 = idle, oscillates between 0 ↔ 1 = exciting activity, interpolates during activities  |
+| `exciteFactorCond`  | Is still exciting             | Conditional mirror of `exciteFactor`, drops to `unset` when no longer exciting                             |
 
 #### 💡 Usage Example
 

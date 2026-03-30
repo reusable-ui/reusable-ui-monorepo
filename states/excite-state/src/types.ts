@@ -189,8 +189,8 @@ export interface ExciteStateVars {
      * A normalized, animatable factor representing the **exciting activity state**.
      * 
      * ### Expected values:
-     * - **0**     : idle (baseline, no activity)
-     * - **0 ↔ 1** : exciting activity (may oscillate back and forth several times)
+     * - **0**                        : idle state (no activity)
+     * - Oscillates between **0 ↔ 1** : exciting activity (a continuously changing movement value)
      * 
      * ### Usage:
      * - Applicable to numeric-based properties such as `scale`, `opacity`, `transform`, `color`, etc.
@@ -208,7 +208,7 @@ export interface ExciteStateVars {
      *   - The factor represents the active activity state (exciting), not the baseline (idle).  
      *   - This keeps naming predictable and teachable across the ecosystem:
      *     - `exciteFactor = 0`: idle (baseline activity state)  
-     *     - `exciteFactor = 0 ↔ 1`: exciting (active activity state)  
+     *     - `exciteFactor` oscillates between `0 ↔ 1`: exciting activity (active activity state)  
      */
     exciteFactor      : unknown
     
@@ -218,8 +218,8 @@ export interface ExciteStateVars {
      * set to `unset` once the component returns to its baseline idle state.
      * 
      * ### Expected values:
-     * - **unset** : idle (baseline inactive, declaration dropped)
-     * - **0 ↔ 1** : exciting activity (mirrors `exciteFactor`)
+     * - **unset**                    : idle state (no activity, declaration dropped)
+     * - Oscillates between **0 ↔ 1** : exciting activity (a continuously changing movement value, mirrors `exciteFactor`)
      * 
      * ### Usage:
      * - Use when dependent properties should be **poisoned** (ignored) in the baseline idle state.
@@ -239,7 +239,7 @@ export interface ExciteStateVars {
      *   - Drops to `unset` only when idle, so dependent declarations fall back cleanly.  
      *   - This keeps naming predictable and teachable across the ecosystem:
      *     - `exciteFactorCond = unset`: idle (baseline inactive, declaration dropped)
-     *     - `exciteFactorCond = 0 ↔ 1`: exciting (active activity state)  
+     *     - `exciteFactorCond` oscillates between `0 ↔ 1`: exciting activity (running active activity state)  
      * - **Naming rationale:**  
      *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during active activities,
      *     but conditionally drops to `unset` at baseline idle.
