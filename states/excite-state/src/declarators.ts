@@ -169,6 +169,12 @@ export const usesExciteState = (options?: CssExciteStateOptions): CssExciteState
             variable  : exciteStateVars.animationExciting,
             animation : options?.animationExciting,
         },
+        
+        // Factor variables for movement drivers of activity animation:
+        factorVar       : exciteStateVars.exciteFactor,
+        factorCondVar   : exciteStateVars.exciteFactorCond,
+        ifInactiveState : ifNotExcited,
+        baselineFactor  : 0,
     }),
     
     exciteStateVars,
