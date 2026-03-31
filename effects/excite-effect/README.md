@@ -14,7 +14,7 @@ Authors who need more control can override or extend the defaults, but for most 
 ## 🔗 Integration with Excite State
 
 `excite-effect` cannot operate in isolation.  
-It relies on the [`@reusable-ui/excite-state`](https://www.npmjs.com/package/@reusable-ui/excite-state) package to drive the `exciteFactorCond` CSS variable, which represents how the excite activity is running (a continuously changing movement value).  
+It relies on the [`@reusable-ui/excite-state`](https://www.npmjs.com/package/@reusable-ui/excite-state) package to drive the `exciteFactorCond` CSS variable, which reflects the dynamic rhythm of the excite state (a continuously oscillating activity driver).  
 
 - `excite-state` tracks the excitement activity.  
 - `excite-effect` consumes that state and applies visual adjustments (opacity, brightness, contrast, saturation, etc.).  
@@ -163,7 +163,7 @@ export const excitableBoxStyle = () => {
 
 #### 🧠 How CSS Excite Effect Works
 
-The [`@reusable-ui/excite-state`](https://www.npmjs.com/package/@reusable-ui/excite-state) package drives the `exciteFactorCond` CSS variable, which represents how the excite activity is running (a continuously changing movement value).  
+The [`@reusable-ui/excite-state`](https://www.npmjs.com/package/@reusable-ui/excite-state) package drives the `exciteFactorCond` CSS variable, which reflects the dynamic rhythm of the excite state (a continuously oscillating activity driver).  
 
 `excite-effect` consumes this factor and applies a filter formula designed to grab user attention,
 making components **visually highlighted** while excited.
@@ -177,7 +177,7 @@ making components **visually highlighted** while excited.
 
 ##### ✨ Key Idea
 
-- **Excite-state** provides the *movement factor* (the oscillating activity driver).  
+- **Excite-state** provides the *rhythm factor* (a continuously oscillating activity driver).  
 - **Excite-effect** applies the *filter formulas* based on that factor.  
 - Together, they ensure components pulse, zoom, and flash in a way that draws attention while excited.  
 
