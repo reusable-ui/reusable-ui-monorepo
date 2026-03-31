@@ -15,7 +15,7 @@ Authors who need more control can override or extend the defaults, but for most 
 ## 🔗 Integration with Hover State
 
 `hover-effect` cannot operate in isolation.  
-It relies on the [`@reusable-ui/hover-state`](https://www.npmjs.com/package/@reusable-ui/hover-state) package to drive the `hoverFactorCond` CSS variable, which represents how far the transition has progressed (from unhovered → fully hovered).  
+It relies on the [`@reusable-ui/hover-state`](https://www.npmjs.com/package/@reusable-ui/hover-state) package to drive the `hoverFactorCond` CSS variable, which reflects the progression of the hover state (from unhovered → fully hovered).  
 
 - `hover-state` tracks whether a component is hovered.  
 - `hover-effect` consumes that state and applies visual adjustments (opacity, brightness, contrast, saturation, etc.).  
@@ -185,7 +185,7 @@ export const hoverableBoxStyle = () => {
 
 #### 🧠 How CSS Hover Effect Works
 
-The [`@reusable-ui/hover-state`](https://www.npmjs.com/package/@reusable-ui/hover-state) package drives the `hoverFactorCond` CSS variable, which represents how far the transition has progressed (from unhovered → fully hovered).  
+The [`@reusable-ui/hover-state`](https://www.npmjs.com/package/@reusable-ui/hover-state) package drives the `hoverFactorCond` CSS variable, which reflects the progression of the hover state (from unhovered → fully hovered).  
 
 `hover-effect` consumes this factor and applies coordinated formulas that signal interactivity,
 making components **visually responsive and clearly distinguishable from static content**.
