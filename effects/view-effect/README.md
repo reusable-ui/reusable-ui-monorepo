@@ -14,7 +14,7 @@ Authors who need more control can override or extend the defaults, but for most 
 ## 🔗 Integration with View State
 
 `view-effect` cannot operate in isolation.  
-It relies on the [`@reusable-ui/view-state`](https://www.npmjs.com/package/@reusable-ui/view-state) package to drive the `viewFactorCond` CSS variable, which represents how far the transition has progressed (from the current view → toward the target view).  
+It relies on the [`@reusable-ui/view-state`](https://www.npmjs.com/package/@reusable-ui/view-state) package to drive the `viewFactorCond` CSS variable, which reflects the progression of the view state (from the current view → toward the target view).  
 
 - `view-state` tracks the active view index and transition factor.  
 - `view-effect` consumes that factor and applies the sliding transition.  
@@ -215,7 +215,7 @@ export const slideBoxStyle = () => {
 
 #### 🧠 How CSS View Effect Works
 
-The [`@reusable-ui/view-state`](https://www.npmjs.com/package/@reusable-ui/view-state) package drives the `viewFactorCond` CSS variable, which represents how far the transition has progressed (from the current view → toward the target view).  
+The [`@reusable-ui/view-state`](https://www.npmjs.com/package/@reusable-ui/view-state) package drives the `viewFactorCond` CSS variable, which reflects the progression of the view state (from the current view → toward the target view).  
 This factor encodes both the **direction** (positive = advancing to next, negative = receding to previous) and the **progress** (0 → ±1) of the transition.
 
 `view-effect` consumes this factor and applies a translation formula that moves the entire set of views along the stacking axis.
