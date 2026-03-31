@@ -1,0 +1,67 @@
+{
+  "name": "@reusable-ui/excite-effect",
+  "version": "7.0.0",
+  "description": "Provides default visual effects for components when in the excited state. Blinks by zooming in and flashing color to make components visually highlighted when excited.",
+  "keywords": [
+    "excite",
+    "excite-effect",
+    "excite-state",
+    "activity",
+    "animation",
+    "filter",
+    "pulse",
+    "zoom",
+    "flash",
+    "appearance",
+    "accessibility",
+    "css",
+    "design-system",
+    "ui",
+    "react"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "effects/excite-effect"
+  },
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "npx playwright test"
+  },
+  "dependencies": {
+    "@cssfn/core": "^4.0.0",
+    "@reusable-ui/filter-effect": "^7.0.0"
+  },
+  "peerDependencies": {
+    "@reusable-ui/excite-state": "^7.0.0",
+    "@reusable-ui/filter-feature": "^7.0.0",
+    "@reusable-ui/transform-feature": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/chroma-js": "^3.1.2",
+    "@types/react": "^19.0.0",
+    "chroma-js": "^3.2.0",
+    "react": "^19.0.0"
+  }
+}
