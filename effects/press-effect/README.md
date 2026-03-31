@@ -14,7 +14,7 @@ Authors who need more control can override or extend the defaults, but for most 
 ## 🔗 Integration with Press State
 
 `press-effect` cannot operate in isolation.  
-It relies on the [`@reusable-ui/press-state`](https://www.npmjs.com/package/@reusable-ui/press-state) package to drive the `pressFactorCond` CSS variable, which represents how far the transition has progressed (from released → fully pressed).  
+It relies on the [`@reusable-ui/press-state`](https://www.npmjs.com/package/@reusable-ui/press-state) package to drive the `pressFactorCond` CSS variable, which reflects the progression of the press state (from released → fully pressed).  
 
 - `press-state` tracks whether a component is pressed.  
 - `press-effect` consumes that state and applies visual adjustments (opacity, brightness, contrast, saturation, etc.).  
@@ -174,7 +174,7 @@ export const pressableBoxStyle = () => {
 
 #### 🧠 How CSS Press Effect Works
 
-The [`@reusable-ui/press-state`](https://www.npmjs.com/package/@reusable-ui/press-state) package drives the `pressFactorCond` CSS variable, which represents how far the transition has progressed (from released → fully pressed).  
+The [`@reusable-ui/press-state`](https://www.npmjs.com/package/@reusable-ui/press-state) package drives the `pressFactorCond` CSS variable, which reflects the progression of the press state (from released → fully pressed).  
 
 `press-effect` consumes this factor and applies a filter formula that acknowledges user input,
 making components **visually confirming command** when pressed (clicked).
