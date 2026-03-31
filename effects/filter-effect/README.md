@@ -14,7 +14,7 @@ Authors who need more control can override or extend the defaults, but for most 
 ## 🔗 Integration with State Logic
 
 `filter-effect` cannot operate in isolation.  
-It relies on a **state logic provider** to drive the `activeFactor` CSS variable, which represents how far the transition has progressed (from inactive → fully active).  
+It relies on a **state logic provider** to drive the `activeFactor` CSS variable, which reflects the progression of the active state (from inactive → fully active).  
 
 - **State logic provider** tracks whether a component is in a given condition (disabled, focus, hover, active, pressed, etc.).  
 - `filter-effect` consumes that state and applies visual adjustments (opacity, brightness, contrast, saturation, etc.).  
@@ -179,7 +179,7 @@ export const activatableBoxStyle = () => {
 
 #### 🧠 How CSS Filter Effect Works
 
-The **state logic provider** drives the `activeFactor` CSS variable, which represents how far the transition has progressed (from inactive → fully active).  
+The **state logic provider** drives the `activeFactor` CSS variable, which reflects the progression of the active state (from inactive → fully active).  
 
 `filter-effect` consumes this factor and applies a filter formula that adjusts the component's visual presentation,
 making components **visually adapt their appearance** in response to state changes.
