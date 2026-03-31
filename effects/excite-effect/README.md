@@ -177,7 +177,7 @@ making components **visually highlighted** while excited.
 
 ##### ✨ Key Idea
 
-- **Excite-state** provides the *rhythm factor* (a continuously oscillating activity driver).  
+- **Excite-state** provides the *rhythm factor*.  
 - **Excite-effect** applies the *filter formulas* based on that factor.  
 - Together, they ensure components pulse, zoom, and flash in a way that draws attention while excited.  
 
