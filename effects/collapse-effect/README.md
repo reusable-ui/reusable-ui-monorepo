@@ -14,7 +14,7 @@ Authors who need more control can override or extend the defaults, but for most 
 ## 🔗 Integration with Collapse State
 
 `collapse-effect` cannot operate in isolation.  
-It relies on the [`@reusable-ui/collapse-state`](https://www.npmjs.com/package/@reusable-ui/collapse-state) package to drive the `expandFactorCond` CSS variable, which represents how far the transition has progressed (from collapsed → fully expanded).  
+It relies on the [`@reusable-ui/collapse-state`](https://www.npmjs.com/package/@reusable-ui/collapse-state) package to drive the `expandFactorCond` CSS variable, which reflects the progression of the expand state (from collapsed → fully expanded).  
 
 - `collapse-state` tracks whether a component is expanded or collapsed.  
 - `collapse-effect` consumes that state and applies the sliding-crop transition.  
@@ -185,7 +185,7 @@ export const collapsibleBoxStyle = () => {
 
 #### 🧠 How CSS Collapse Effect Works
 
-The [`@reusable-ui/collapse-state`](https://www.npmjs.com/package/@reusable-ui/collapse-state) package drives the `expandFactorCond` CSS variable, which represents how far the transition has progressed (from collapsed → fully expanded).  
+The [`@reusable-ui/collapse-state`](https://www.npmjs.com/package/@reusable-ui/collapse-state) package drives the `expandFactorCond` CSS variable, which reflects the progression of the expand state (from collapsed → fully expanded).  
 
 `collapse-effect` consumes this factor and applies coordinated formulas that crop a portion of the component's area,
 making the component **visually revealed or hidden** as it expand or collapse.
