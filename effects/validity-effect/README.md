@@ -14,7 +14,7 @@ Authors who need more control can override or extend the defaults, but for most 
 ## 🔗 Integration with Validity State
 
 `validity-effect` cannot operate in isolation.  
-It relies on the [`@reusable-ui/validity-state`](https://www.npmjs.com/package/@reusable-ui/validity-state) package to drive the `validityFactorCond` CSS variable, which represents how far the transition has progressed (from unvalidated → fully valid/invalid).  
+It relies on the [`@reusable-ui/validity-state`](https://www.npmjs.com/package/@reusable-ui/validity-state) package to drive the `validityFactorCond` CSS variable, which reflects the progression of the validity state (from unvalidated → fully valid/invalid).  
 
 - `validity-state` tracks whether a component is valid, invalid, or unvalidated.  
 - `validity-effect` consumes that state and applies the success/danger theme transition.  
@@ -277,7 +277,7 @@ export const invalidableBoxStyle = () => {
 
 #### 🧠 How CSS Validity Effect Works
 
-The [`@reusable-ui/validity-state`](https://www.npmjs.com/package/@reusable-ui/validity-state) package drives the `validityFactorCond` CSS variable, which represents how far the transition has progressed (from unvalidated → fully valid/invalid).  
+The [`@reusable-ui/validity-state`](https://www.npmjs.com/package/@reusable-ui/validity-state) package drives the `validityFactorCond` CSS variable, which reflects the progression of the validity state (from unvalidated → fully valid/invalid).  
 
 `validity-effect` consumes this factor and applies a theme color interpolation formula that temporarily adjusts the component's theme colors,
 making it **visually verified** when valid/invalid.
