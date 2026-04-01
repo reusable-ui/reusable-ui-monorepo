@@ -14,39 +14,24 @@ import {
     
     
     // Strongly typed of css variables:
-    cssVars,
     switchOf,
 }                           from '@cssfn/core'                      // Writes css in javascript.
 
 // Types:
 import {
-    type ViewEffectVars,
     type CssViewEffectOptions,
     type CssViewEffect,
 }                           from './types.js'
 
-// Reusable-ui features:
+// CSS Variables:
 import {
-    transformRegistry,
-}                           from '@reusable-ui/transform-feature'   // A styling utility for composing a unified transform stack from custom and registered state packages.
+    viewEffectVars,
+}                           from './css-variables.js'
 
 // Reusable-ui states:
 import {
     usesViewState,
 }                           from '@reusable-ui/view-state'          // Lifecycle-aware view-switching with transition animations and semantic styling hooks for UI components.
-
-
-
-/**
- * A strongly typed global mapping of view-effect CSS variables.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [viewEffectVars] = cssVars<ViewEffectVars>({ prefix: 'vie', minify: false });
-
-// Register the view transform globally for composing a unified transform stack across effect packages:
-transformRegistry.registerTransform(viewEffectVars.viewTransform);
 
 
 
