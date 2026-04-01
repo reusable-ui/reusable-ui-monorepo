@@ -12,18 +12,17 @@ import {
     variants,
     style,
     vars,
-    
-    
-    
-    // Strongly typed of css variables:
-    cssVars,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
 // Types:
 import {
-    type OutlineVariantVars,
     type CssOutlineVariant,
 }                           from './types.js'
+
+// CSS Variables:
+import {
+    outlineVariantVars,
+}                           from './css-variables.js'
 
 
 
@@ -78,14 +77,6 @@ export const ifOutlined    = (styles: CssStyleCollection): CssRule => rule(isOut
 export const ifNotOutlined = (styles: CssStyleCollection): CssRule => rule(isNotOutlinedSelector , styles);
 
 
-
-/**
- * A strongly typed global mapping of outline-related CSS variables for conditional styling.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [outlineVariantVars] = cssVars<OutlineVariantVars>({ minify: false });
 
 /**
  * Generates CSS rules that toggle outline-related CSS variables based on the current outlined state,
