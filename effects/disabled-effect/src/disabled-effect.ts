@@ -8,24 +8,18 @@ import {
     
     // Writes css in javascript:
     style,
-    
-    
-    
-    // Strongly typed of css variables:
-    cssVars,
 }                           from '@cssfn/core'                      // Writes css in javascript.
 
 // Types:
 import {
-    type DisabledEffectVars,
     type CssDisabledEffectOptions,
     type CssDisabledEffect,
 }                           from './types.js'
 
-// Reusable-ui features:
+// CSS Variables:
 import {
-    filterRegistry,
-}                           from '@reusable-ui/filter-feature'      // A styling utility for composing a unified filter stack from custom and registered state packages.
+    disabledEffectVars,
+}                           from './css-variables.js'
 
 // Reusable-ui states:
 import {
@@ -37,19 +31,6 @@ import {
     // Utilities:
     composeFilterEffect,
 }                           from '@reusable-ui/filter-effect'       // Provides default visual effects for components when their active state changes. Adjusts the component's visual presentation to make components visually adapt their appearance in response to state changes.
-
-
-
-/**
- * A strongly typed global mapping of disabled-effect CSS variables.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [disabledEffectVars] = cssVars<DisabledEffectVars>({ prefix: 'die', minify: false });
-
-// Register the disabled filter globally for composing a unified filter stack across effect packages:
-filterRegistry.registerFilter(disabledEffectVars.disabledFilter);
 
 
 
