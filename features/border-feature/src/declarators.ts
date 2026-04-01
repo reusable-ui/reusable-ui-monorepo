@@ -7,16 +7,19 @@ import {
     
     
     // Strongly typed of css variables:
-    cssVars,
     switchOf,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
 // Types:
 import {
-    type BorderFeatureVars,
     type CssBorderFeatureOptions,
     type CssBorderFeature,
 }                           from './types.js'
+
+// CSS Variables:
+import {
+    borderFeatureVars,
+}                           from './css-variables.js'
 
 // Reusable-ui configs:
 import {
@@ -39,14 +42,6 @@ import {
 }                           from '@reusable-ui/bare-variant'        // A utility for managing bare styling (frameless, minimal layout) consistently across React components.
 
 
-
-/**
- * A strongly typed global mapping of border-related CSS variables for conditional styling.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [borderFeatureVars] = cssVars<BorderFeatureVars>({ prefix: 'bd', minify: false });
 
 /**
  * Resolves the appropriate border color and geometry based on the currently active variants
