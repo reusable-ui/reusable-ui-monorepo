@@ -16,19 +16,18 @@ import {
     fallback,
     style,
     vars,
-    
-    
-    
-    // Strongly typed of css variables:
-    cssVars,
 }                           from '@cssfn/core'                  // Writes css in javascript.
 
 // Types:
 import {
-    type AnimationFeatureVars,
     type CssAnimationFeatureOptions,
     type CssAnimationFeature,
 }                           from './types.js'
+
+// CSS Variables:
+import {
+    animationFeatureVars,
+}                           from './css-variables.js'
 
 // Registries:
 import {
@@ -36,14 +35,6 @@ import {
 }                           from './registry.js'
 
 
-
-/**
- * A strongly typed global mapping of animation-related CSS variables used for composing animation stacks.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [animationFeatureVars] = cssVars<AnimationFeatureVars>({ prefix: 'an', minify: false });
 
 /**
  * Composes custom and registered animations into a unified stack
