@@ -15,19 +15,18 @@ import {
     fallback,
     style,
     vars,
-    
-    
-    
-    // Strongly typed of css variables:
-    cssVars,
 }                           from '@cssfn/core'                  // Writes css in javascript.
 
 // Types:
 import {
-    type FilterFeatureVars,
     type CssFilterFeatureOptions,
     type CssFilterFeature,
 }                           from './types.js'
+
+// CSS Variables:
+import {
+    filterFeatureVars,
+}                           from './css-variables.js'
 
 // Registries:
 import {
@@ -35,14 +34,6 @@ import {
 }                           from './registry.js'
 
 
-
-/**
- * A strongly typed global mapping of filter-related CSS variables used for composing filter stacks.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [filterFeatureVars] = cssVars<FilterFeatureVars>({ prefix: 'fr', minify: false });
 
 /**
  * Composes custom and registered filters into a unified stack
