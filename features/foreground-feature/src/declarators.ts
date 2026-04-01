@@ -7,16 +7,19 @@ import {
     
     
     // Strongly typed of css variables:
-    cssVars,
     switchOf,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
 // Types:
 import {
-    type ForegroundFeatureVars,
     type CssForegroundFeatureOptions,
     type CssForegroundFeature,
 }                           from './types.js'
+
+// CSS Variables:
+import {
+    foregroundFeatureVars,
+}                           from './css-variables.js'
 
 // Reusable-ui variants:
 import {
@@ -30,14 +33,6 @@ import {
 }                           from '@reusable-ui/mild-variant'        // A utility for managing mild styling (reading friendly) consistently across React components.
 
 
-
-/**
- * A strongly typed global mapping of foreground-related CSS variables for conditional styling.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [foregroundFeatureVars] = cssVars<ForegroundFeatureVars>({ prefix: 'fg', minify: false });
 
 /**
  * Resolves the appropriate foreground color based on the currently active variants
