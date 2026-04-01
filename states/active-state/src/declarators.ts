@@ -9,24 +9,18 @@ import {
     
     // Writes css in javascript:
     rule,
-    
-    
-    
-    // Strongly typed of css variables:
-    cssVars,
 }                           from '@cssfn/core'                      // Writes css in javascript.
 
 // Types:
 import {
-    type ActiveStateVars,
     type CssActiveStateOptions,
     type CssActiveState,
 }                           from './types.js'
 
-// Reusable-ui features:
+// CSS Variables:
 import {
-    animationRegistry,
-}                           from '@reusable-ui/animation-feature'   // A styling utility for composing a unified animation stack from custom and registered state packages.
+    activeStateVars,
+}                           from './css-variables.js'
 
 // Reusable-ui states:
 import {
@@ -193,18 +187,6 @@ export const ifActivatingOrActive     = (styles: CssStyleCollection): CssRule =>
 export const ifDeactivatingOrInactive = (styles: CssStyleCollection): CssRule => rule(isDeactivatingOrInactiveSelector , styles);
 
 
-
-/**
- * A strongly typed global mapping of activate/deactivate-related CSS variables for conditional animation.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [activeStateVars] = cssVars<ActiveStateVars>({ prefix: 'ac', minify: false });
-
-// Register the activate/deactivate-related animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(activeStateVars.animationActivating);
-animationRegistry.registerAnimation(activeStateVars.animationDeactivating);
 
 /**
  * Generates CSS rules that conditionally apply the activate/deactivate animations based on current active state,
