@@ -15,19 +15,18 @@ import {
     fallback,
     style,
     vars,
-    
-    
-    
-    // Strongly typed of css variables:
-    cssVars,
 }                           from '@cssfn/core'                  // Writes css in javascript.
 
 // Types:
 import {
-    type BoxShadowFeatureVars,
     type CssBoxShadowFeatureOptions,
     type CssBoxShadowFeature,
 }                           from './types.js'
+
+// CSS Variables:
+import {
+    boxShadowFeatureVars,
+}                           from './css-variables.js'
 
 // Registries:
 import {
@@ -35,14 +34,6 @@ import {
 }                           from './registry.js'
 
 
-
-/**
- * A strongly typed global mapping of box-shadow-related CSS variables used for composing box shadow stacks.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [boxShadowFeatureVars] = cssVars<BoxShadowFeatureVars>({ prefix: 'bw', minify: false });
 
 /**
  * Composes custom and registered box shadows into a unified stack
