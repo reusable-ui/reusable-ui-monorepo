@@ -9,24 +9,18 @@ import {
     
     // Writes css in javascript:
     rule,
-    
-    
-    
-    // Strongly typed of css variables:
-    cssVars,
 }                           from '@cssfn/core'                      // Writes css in javascript.
 
 // Types:
 import {
-    type PressStateVars,
     type CssPressStateOptions,
     type CssPressState,
 }                           from './types.js'
 
-// Reusable-ui features:
+// CSS Variables:
 import {
-    animationRegistry,
-}                           from '@reusable-ui/animation-feature'   // A styling utility for composing a unified animation stack from custom and registered state packages.
+    pressStateVars,
+}                           from './css-variables.js'
 
 // Reusable-ui states:
 import {
@@ -193,18 +187,6 @@ export const ifPressingOrPressed   = (styles: CssStyleCollection): CssRule => ru
 export const ifReleasingOrReleased = (styles: CssStyleCollection): CssRule => rule(isReleasingOrReleasedSelector , styles);
 
 
-
-/**
- * A strongly typed global mapping of press/release-related CSS variables for conditional animation.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [pressStateVars] = cssVars<PressStateVars>({ prefix: 'pr', minify: false });
-
-// Register the press/release-related animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(pressStateVars.animationPressing);
-animationRegistry.registerAnimation(pressStateVars.animationReleasing);
 
 /**
  * Generates CSS rules that conditionally apply the press/release animations based on current pressed state,
