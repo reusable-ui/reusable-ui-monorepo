@@ -9,24 +9,18 @@ import {
     
     // Writes css in javascript:
     rule,
-    
-    
-    
-    // Strongly typed of css variables:
-    cssVars,
 }                           from '@cssfn/core'                      // Writes css in javascript.
 
 // Types:
 import {
-    type ReadOnlyStateVars,
     type CssReadOnlyStateOptions,
     type CssReadOnlyState,
 }                           from './types.js'
 
-// Reusable-ui features:
+// CSS Variables:
 import {
-    animationRegistry,
-}                           from '@reusable-ui/animation-feature'   // A styling utility for composing a unified animation stack from custom and registered state packages.
+    readOnlyStateVars,
+}                           from './css-variables.js'
 
 // Reusable-ui states:
 import {
@@ -193,18 +187,6 @@ export const ifThawingOrEditable      = (styles: CssStyleCollection): CssRule =>
 export const ifFreezingOrReadOnly     = (styles: CssStyleCollection): CssRule => rule(isFreezingOrReadOnlySelector     , styles);
 
 
-
-/**
- * A strongly typed global mapping of editable/read-only-related CSS variables for conditional animation.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [readOnlyStateVars] = cssVars<ReadOnlyStateVars>({ prefix: 'ro', minify: false });
-
-// Register the editable/read-only-related animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(readOnlyStateVars.animationThawing);
-animationRegistry.registerAnimation(readOnlyStateVars.animationFreezing);
 
 /**
  * Generates CSS rules that conditionally apply the editable/read-only animations based on current read-only state,
