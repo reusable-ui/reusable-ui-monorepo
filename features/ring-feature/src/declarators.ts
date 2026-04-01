@@ -7,16 +7,19 @@ import {
     
     
     // Strongly typed of css variables:
-    cssVars,
     switchOf,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
 // Types:
 import {
-    type RingFeatureVars,
     type CssRingFeatureOptions,
     type CssRingFeature,
 }                           from './types.js'
+
+// CSS Variables:
+import {
+    ringFeatureVars,
+}                           from './css-variables.js'
 
 // Reusable-ui variants:
 import {
@@ -24,14 +27,6 @@ import {
 }                           from '@reusable-ui/theme-variant'       // A utility for managing themes consistently across React components.
 
 
-
-/**
- * A strongly typed global mapping of ring-related CSS variables for conditional styling.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [ringFeatureVars] = cssVars<RingFeatureVars>({ prefix: 'rg', minify: false });
 
 /**
  * Resolves the appropriate ring color based on the currently active theme variant
