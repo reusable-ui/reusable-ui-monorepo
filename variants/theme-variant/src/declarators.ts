@@ -12,11 +12,6 @@ import {
     variants,
     style,
     vars,
-    
-    
-    
-    // Strongly typed of css variables:
-    cssVars,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
 // Reusable-ui configs:
@@ -28,9 +23,13 @@ import {
 // Types:
 import {
     type BasicTheme,
-    type ThemeVariantVars,
     type CssThemeVariant,
 }                           from './types.js'
+
+// CSS Variables:
+import {
+    themeVariantVars,
+}                           from './css-variables.js'
 
 
 
@@ -75,16 +74,6 @@ export const themeSelector = <TTheme extends string = BasicTheme>(theme: TTheme)
 export const ifTheme = <TTheme extends string = BasicTheme>(theme: TTheme, styles: CssStyleCollection): CssRule => rule(themeSelector(theme), styles);
 
 
-
-/**
- * A strongly typed global mapping of theme-related CSS variables for coloring components.
- * 
- * Prefixed with `--t-` to ensure scoped and consistent naming.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [themeVariantVars] = cssVars<ThemeVariantVars>({ prefix: 't', minify: false });
 
 /**
  * Generates CSS rules that switch color shades based on the currently active theme,
