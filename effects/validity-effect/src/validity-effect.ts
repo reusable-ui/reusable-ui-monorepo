@@ -8,21 +8,20 @@ import {
     
     
     
-    // Strongly typed of css variables:
-    cssVars,
-    
-    
-    
     // Utilities:
     startsCapitalized,
 }                           from '@cssfn/core'                      // Writes css in javascript.
 
 // Types:
 import {
-    type ValidityEffectVars,
     type CssValidityEffectOptions,
     type CssValidityEffect,
 }                           from './types.js'
+
+// CSS Variables:
+import {
+    validityEffectVars,
+}                           from './css-variables.js'
 
 // Utilities:
 import {
@@ -46,16 +45,6 @@ import {
 import {
     usesValidityState,
 }                           from '@reusable-ui/validity-state'      // Lifecycle-aware validation state with transition animations and semantic styling hooks for UI components.
-
-
-
-/**
- * A strongly typed global mapping of validity-effect CSS variables.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [validityEffectVars] = cssVars<ValidityEffectVars>({ prefix: 'vae', minify: false });
 
 
 
