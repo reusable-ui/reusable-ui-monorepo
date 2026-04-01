@@ -9,24 +9,18 @@ import {
     
     // Writes css in javascript:
     rule,
-    
-    
-    
-    // Strongly typed of css variables:
-    cssVars,
 }                           from '@cssfn/core'                      // Writes css in javascript.
 
 // Types:
 import {
-    type ExciteStateVars,
     type CssExciteStateOptions,
     type CssExciteState,
 }                           from './types.js'
 
-// Reusable-ui features:
+// CSS Variables:
 import {
-    animationRegistry,
-}                           from '@reusable-ui/animation-feature'   // A styling utility for composing a unified animation stack from custom and registered state packages.
+    exciteStateVars,
+}                           from './css-variables.js'
 
 // Reusable-ui states:
 import {
@@ -87,17 +81,6 @@ export const ifExcited    = (styles: CssStyleCollection): CssRule => rule(isExci
 export const ifNotExcited = (styles: CssStyleCollection): CssRule => rule(isNotExcitedSelector , styles);
 
 
-
-/**
- * A strongly typed global mapping of excitement-related CSS variables for conditional animation.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [exciteStateVars] = cssVars<ExciteStateVars>({ prefix: 'ex', minify: false });
-
-// Register the excitement-related animation globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(exciteStateVars.animationExciting);
 
 /**
  * Generates CSS rules that conditionally apply the excitement animation based on current excited state,
