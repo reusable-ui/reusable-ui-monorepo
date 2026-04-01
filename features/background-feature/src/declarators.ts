@@ -12,16 +12,19 @@ import {
     
     
     // Strongly typed of css variables:
-    cssVars,
     switchOf,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
 // Types:
 import {
-    type BackgroundFeatureVars,
     type CssBackgroundFeatureOptions,
     type CssBackgroundFeature,
 }                           from './types.js'
+
+// CSS Variables:
+import {
+    backgroundFeatureVars,
+}                           from './css-variables.js'
 
 // Reusable-ui variants:
 import {
@@ -41,14 +44,6 @@ import {
 }                           from '@reusable-ui/bare-variant'        // A utility for managing bare styling (frameless, minimal layout) consistently across React components.
 
 
-
-/**
- * A strongly typed global mapping of background-related CSS variables for conditional styling.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [backgroundFeatureVars] = cssVars<BackgroundFeatureVars>({ prefix: 'bg', minify: false });
 
 /**
  * Resolves the appropriate background color based on the currently active variants
