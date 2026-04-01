@@ -12,18 +12,17 @@ import {
     variants,
     style,
     vars,
-    
-    
-    
-    // Strongly typed of css variables:
-    cssVars,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
 // Types:
 import {
-    type MildVariantVars,
     type CssMildVariant,
 }                           from './types.js'
+
+// CSS Variables:
+import {
+    mildVariantVars,
+}                           from './css-variables.js'
 
 
 
@@ -78,14 +77,6 @@ export const ifMild    = (styles: CssStyleCollection): CssRule => rule(isMildSel
 export const ifNotMild = (styles: CssStyleCollection): CssRule => rule(isNotMildSelector , styles);
 
 
-
-/**
- * A strongly typed global mapping of mild-related CSS variables for conditional styling.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [mildVariantVars] = cssVars<MildVariantVars>({ minify: false });
 
 /**
  * Generates CSS rules that toggle mild-related CSS variables based on the current mild mode,
