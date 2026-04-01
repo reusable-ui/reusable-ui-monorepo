@@ -7,16 +7,19 @@ import {
     
     
     // Strongly typed of css variables:
-    cssVars,
     switchOf,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
 // Types:
 import {
-    type DecorationFeatureVars,
     type CssDecorationFeatureOptions,
     type CssDecorationFeature,
 }                           from './types.js'
+
+// CSS Variables:
+import {
+    decorationFeatureVars,
+}                           from './css-variables.js'
 
 // Reusable-ui variants:
 import {
@@ -30,14 +33,6 @@ import {
 }                           from '@reusable-ui/mild-variant'        // A utility for managing mild styling (reading friendly) consistently across React components.
 
 
-
-/**
- * A strongly typed global mapping of decoration-related CSS variables for conditional styling.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [decorationFeatureVars] = cssVars<DecorationFeatureVars>({ prefix: 'dn', minify: false });
 
 /**
  * Resolves the appropriate decoration color based on the currently active variants
