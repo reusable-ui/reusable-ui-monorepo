@@ -7,16 +7,19 @@ import {
     
     
     // Strongly typed of css variables:
-    cssVars,
     switchOf,
 }                           from '@cssfn/core'                  // Writes css in javascript.
 
 // Types:
 import {
-    type PaddingFeatureVars,
     type CssPaddingFeatureOptions,
     type CssPaddingFeature,
 }                           from './types.js'
+
+// CSS Variables:
+import {
+    paddingFeatureVars,
+}                           from './css-variables.js'
 
 // Reusable-ui configs:
 import {
@@ -29,14 +32,6 @@ import {
 }                           from '@reusable-ui/bare-variant'    // A utility for managing bare styling (frameless, minimal layout) consistently across React components.
 
 
-
-/**
- * A strongly typed global mapping of padding-related CSS variables for conditional styling.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [paddingFeatureVars] = cssVars<PaddingFeatureVars>({ prefix: 'pd', minify: false });
 
 /**
  * Resolves the appropriate padding values based on active bare mode and framework-level overrides
