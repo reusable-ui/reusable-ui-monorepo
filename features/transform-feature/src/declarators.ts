@@ -15,19 +15,18 @@ import {
     fallback,
     style,
     vars,
-    
-    
-    
-    // Strongly typed of css variables:
-    cssVars,
 }                           from '@cssfn/core'                  // Writes css in javascript.
 
 // Types:
 import {
-    type TransformFeatureVars,
     type CssTransformFeatureOptions,
     type CssTransformFeature,
 }                           from './types.js'
+
+// CSS Variables:
+import {
+    transformFeatureVars,
+}                           from './css-variables.js'
 
 // Registries:
 import {
@@ -35,14 +34,6 @@ import {
 }                           from './registry.js'
 
 
-
-/**
- * A strongly typed global mapping of transform-related CSS variables used for composing transform stacks.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [transformFeatureVars] = cssVars<TransformFeatureVars>({ prefix: 'tm', minify: false });
 
 /**
  * Composes custom and registered transforms into a unified stack
