@@ -8,16 +8,19 @@ import {
     
     
     // Strongly typed of css variables:
-    cssVars,
     switchOf,
 }                           from '@cssfn/core'                      // Writes css in javascript.
 
 // Types:
 import {
-    type ActiveEffectVars,
     type CssActiveEffectOptions,
     type CssActiveEffect,
 }                           from './types.js'
+
+// CSS Variables:
+import {
+    activeEffectVars,
+}                           from './css-variables.js'
 
 // Reusable-ui variants:
 import {
@@ -40,9 +43,6 @@ import {
 import {
     usesBorderFeature,
 }                           from '@reusable-ui/border-feature'      // A styling utility for resolving the appropriate border color, geometry, and radius based on the currently active variants — including theme, outline, mild, and bare.
-import {
-    filterRegistry,
-}                           from '@reusable-ui/filter-feature'      // A styling utility for composing a unified filter stack from custom and registered state packages.
 
 // Reusable-ui states:
 import {
@@ -54,19 +54,6 @@ import {
     // Utilities:
     composeFilterEffect,
 }                           from '@reusable-ui/filter-effect'       // Provides default visual effects for components when their active state changes. Adjusts the component's visual presentation to make components visually adapt their appearance in response to state changes.
-
-
-
-/**
- * A strongly typed global mapping of active-effect CSS variables.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [activeEffectVars] = cssVars<ActiveEffectVars>({ prefix: 'ace', minify: false });
-
-// Register the active filter globally for composing a unified filter stack across effect packages:
-filterRegistry.registerFilter(activeEffectVars.activeFilter);
 
 
 
