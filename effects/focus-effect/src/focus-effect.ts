@@ -2,19 +2,18 @@
 import {
     // Writes css in javascript:
     style,
-    
-    
-    
-    // Strongly typed of css variables:
-    cssVars,
 }                           from '@cssfn/core'                      // Writes css in javascript.
 
 // Types:
 import {
-    type FocusEffectVars,
     type CssFocusEffectOptions,
     type CssFocusEffect,
 }                           from './types.js'
+
+// CSS Variables:
+import {
+    focusEffectVars,
+}                           from './css-variables.js'
 
 // Reusable-ui configs:
 import {
@@ -25,27 +24,11 @@ import {
 import {
     usesRingFeature,
 }                           from '@reusable-ui/ring-feature'        // A styling utility for resolving the appropriate ring color based on the currently active theme variant.
-import {
-    boxShadowRegistry,
-}                           from '@reusable-ui/box-shadow-feature'  // A styling utility for composing a unified box shadow stack from custom and registered state packages.
 
 // Reusable-ui states:
 import {
     usesFocusState,
 }                           from '@reusable-ui/focus-state'         // Lifecycle-aware focus/blur state with transition animations and semantic styling hooks for UI components.
-
-
-
-/**
- * A strongly typed global mapping of focus-effect CSS variables.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [focusEffectVars] = cssVars<FocusEffectVars>({ prefix: 'foe', minify: false });
-
-// Register the focus box shadow globally for composing a unified box shadow stack across effect packages:
-boxShadowRegistry.registerBoxShadow(focusEffectVars.focusBoxShadow);
 
 
 
