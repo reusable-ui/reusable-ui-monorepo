@@ -9,24 +9,18 @@ import {
     
     // Writes css in javascript:
     rule,
-    
-    
-    
-    // Strongly typed of css variables:
-    cssVars,
 }                           from '@cssfn/core'                      // Writes css in javascript.
 
 // Types:
 import {
-    type ValidityStateVars,
     type CssValidityStateOptions,
     type CssValidityState,
 }                           from './types.js'
 
-// Reusable-ui features:
+// CSS Variables:
 import {
-    animationRegistry,
-}                           from '@reusable-ui/animation-feature'   // A styling utility for composing a unified animation stack from custom and registered state packages.
+    validityStateVars,
+}                           from './css-variables.js'
 
 // Reusable-ui states:
 import {
@@ -354,19 +348,6 @@ export const ifWasInvalid                = (styles: CssStyleCollection): CssRule
 export const ifWasUnvalidated            = (styles: CssStyleCollection): CssRule => rule(wasUnvalidatedSelector              , styles);
 
 
-
-/**
- * A strongly typed global mapping of validity-related CSS variables for conditional animation.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [validityStateVars] = cssVars<ValidityStateVars>({ prefix: 'va', minify: false });
-
-// Register the validity-related animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(validityStateVars.animationValidating);
-animationRegistry.registerAnimation(validityStateVars.animationInvalidating);
-animationRegistry.registerAnimation(validityStateVars.animationUnvalidating);
 
 /**
  * Generates CSS rules that conditionally apply the validation animations based on current validity state,
