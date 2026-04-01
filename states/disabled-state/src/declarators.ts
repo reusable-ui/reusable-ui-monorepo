@@ -9,24 +9,18 @@ import {
     
     // Writes css in javascript:
     rule,
-    
-    
-    
-    // Strongly typed of css variables:
-    cssVars,
 }                           from '@cssfn/core'                      // Writes css in javascript.
 
 // Types:
 import {
-    type DisabledStateVars,
     type CssDisabledStateOptions,
     type CssDisabledState,
 }                           from './types.js'
 
-// Reusable-ui features:
+// CSS Variables:
 import {
-    animationRegistry,
-}                           from '@reusable-ui/animation-feature'   // A styling utility for composing a unified animation stack from custom and registered state packages.
+    disabledStateVars,
+}                           from './css-variables.js'
 
 // Reusable-ui states:
 import {
@@ -193,18 +187,6 @@ export const ifEnablingOrEnabled   = (styles: CssStyleCollection): CssRule => ru
 export const ifDisablingOrDisabled = (styles: CssStyleCollection): CssRule => rule(isDisablingOrDisabledSelector , styles);
 
 
-
-/**
- * A strongly typed global mapping of enable/disable-related CSS variables for conditional animation.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [disabledStateVars] = cssVars<DisabledStateVars>({ prefix: 'ds', minify: false });
-
-// Register the enable/disable-related animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(disabledStateVars.animationEnabling);
-animationRegistry.registerAnimation(disabledStateVars.animationDisabling);
 
 /**
  * Generates CSS rules that conditionally apply the enable/disable animations based on current disabled state,
