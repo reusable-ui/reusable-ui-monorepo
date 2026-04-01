@@ -14,19 +14,18 @@ import {
     style,
     vars,
     startsCapitalized,
-    
-    
-    
-    // Strongly typed of css variables:
-    cssVars,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
 // Types:
 import {
-    type BareVariantVars,
     type CssBareVariantOptions,
     type CssBareVariant,
 }                           from './types.js'
+
+// CSS Variables:
+import {
+    bareVariantVars,
+}                           from './css-variables.js'
 
 
 
@@ -111,14 +110,6 @@ export const ifNotBare = (styles: CssStyleCollection): CssRule => rule(isNotBare
 export const ifBareOf  = <TBare extends string | true>(specificBare: TBare, styles: CssStyleCollection): CssRule => rule(isBareOfSelector(specificBare), styles);
 
 
-
-/**
- * A strongly typed global mapping of bare-related CSS variables for conditional styling.
- * 
- * These variables are shared across server and client environments to ensure
- * consistent CSS variable names during SSR and hydration.
- */
-const [bareVariantVars] = cssVars<BareVariantVars<true | string>>({ minify: false });
 
 /**
  * Generates CSS rules that toggle bare-related CSS variables based on the current bare mode,
