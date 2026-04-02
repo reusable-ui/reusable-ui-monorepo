@@ -25,7 +25,7 @@ import {
     
     // Interpolations:
     reverseFactor,
-}                           from './css-formulas.js'
+}                           from './css-internal-formulas.js'
 
 // CSS Variables:
 import {
