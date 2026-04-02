@@ -1,0 +1,178 @@
+import { defineConfig } from 'eslint/config'
+import tseslint from 'typescript-eslint'
+import pluginReact from 'eslint-plugin-react'
+import globals from 'globals'
+import js from '@eslint/js'
+import { restrictCssVarsUsage } from './.eslint-rules/restrict-cssvars-usage.js'
+
+
+
+/**
+ * Root ESLint configuration for the monorepo.
+ * 
+ * Structure:
+ * 1. Base configs (TypeScript + React recommended)
+ * 2. Project-specific overrides (rules, plugins, ignores)
+ * 
+ * Notes:
+ * - Always place overrides *after* recommended configs so they take precedence.
+ * - Disable base JS rules that conflict with TypeScript constructs (overloads, generics).
+ * - Custom internal rules live in `.eslint-rules/` and are registered under `eslint-rules`.
+ */
+export default defineConfig([
+    // 1. Base recommended configs:
+    tseslint.configs.recommended,         // TypeScript rules
+    pluginReact.configs.flat.recommended, // React rules
+    
+    // 2. Global ignores (applies to all files)
+    {
+        ignores : [
+            // Ignore external dependencies:
+            '**/node_modules/**',
+            
+            // Ignore test-related directories:
+            '**/__tests__/**',
+            '**/playwright/**',
+            '**/playwright-report/**',
+            '**/test-results/**',
+            
+            // Ignore generated build artifacts:
+            '**/dist/**',
+            
+            // Ignore hidden directories (dot-prefixed):
+            '**/.*/**',
+            
+            // Ignore deprecated packages:
+            '**/utilities/stripouts/**',
+            '**/utilities/layouts/**',
+            '**/utilities/hooks/**',
+            
+            '**/variants/orientationable/**',
+            '**/variants/resizable/**',
+            '**/variants/themeable/**',
+            '**/variants/gradientable/**',
+            '**/variants/outlineable/**',
+            '**/variants/mildable/**',
+            '**/variants/nudible/**',
+            '**/variants/basic-variants/**',
+            
+            '**/features/background/**',
+            '**/features/foreground/**',
+            '**/features/colorable/**',
+            '**/features/border/**',
+            '**/features/ring/**',
+            '**/features/padding/**',
+            '**/features/animation/**',
+            
+            '**/states/animating-state/**',
+            '**/states/excitable/**',
+            '**/states/collapsible/**',
+            '**/states/scrollable/**',
+            '**/states/disableable/**',
+            '**/states/activatable/**',
+            '**/states/focusable/**',
+            '**/states/interactable/**',
+            '**/states/clickable/**',
+            '**/states/invalidable/**',
+            '**/states/checkable/**',
+            '**/states/validation-icon/**',
+            '**/states/accessibilities/**',
+            '**/states/validations/**',
+            
+            '**/effects/active-as-click/**',
+            
+            // '**/capabilities/floatable/**',
+            // '**/capabilities/global-stackable/**',
+            // '**/capabilities/auto-focusable/**',
+            // '**/capabilities/groupable/**',
+            // '**/capabilities/pointer-capturable/**',
+            
+            '**/routes/client-sides/**',
+        ],
+    },
+    
+    // 3. Rules for TypeScript files (only applied if not ignored above)
+    {
+        languageOptions: {
+            globals: {
+                ...globals.browser, // Browser globals (window, document, etc.)
+                ...globals.node,    // Node.js globals (process, __dirname, etc.)
+                
+                // Built-in types without need for importing:
+                DOMHighResTimeStamp: 'readonly',
+            },
+        },
+        files: [
+            // Apply rules only to TypeScript source files:
+            '**/*.{ts,tsx}',
+        ],
+        settings: {
+            react: {
+                version: '19.0', // Explicit React version for linting
+            },
+        },
+        plugins: {
+            js, // Core JS plugin
+            'eslint-rules': { // Custom internal plugin namespace
+                rules: {
+                    'restrict-cssvars-usage': restrictCssVarsUsage,
+                },
+            },
+        },
+        extends: [
+            'js/recommended', // Base JS recommended rules
+        ],
+        rules: {
+            /**
+             * Disable base JS rules that conflict with TypeScript features:
+             * - Overloads trigger false positives in `no-redeclare`
+             * - Generic/unused type params trigger false positives in `no-unused-vars`
+             */
+            'no-redeclare': 'off',
+            'no-unused-vars': 'off',
+            
+            /**
+             * Enable TypeScript-aware equivalents:
+             * - Correctly handle overloads, generics, type imports
+             * - Allow unused args/vars prefixed with `_` (common convention)
+             */
+            '@typescript-eslint/no-redeclare': 'error',
+            '@typescript-eslint/no-unused-vars': [
+                'error',
+                {
+                    argsIgnorePattern: '^_', // Ignore unused function args starting with `_`
+                    varsIgnorePattern: '^_', // Ignore unused variables starting with `_`
+                },
+            ],
+            
+            // Allow empty object types (useful for placeholders or generic constraints):
+            '@typescript-eslint/no-empty-object-type': 'off',
+            
+            // Allow unnecessary type constraints in generics (e.g. `<T extends unknown>`):
+            '@typescript-eslint/no-unnecessary-type-constraint': 'off',
+            
+            '@typescript-eslint/ban-ts-comment': [
+                'error',
+                {
+                    // Allow `@ts-ignore` without restrictions:
+                    'ts-ignore': false,
+                    
+                    // Allow `@ts-nocheck` if it includes a justification comment:
+                    'ts-nocheck': 'allow-with-description',
+                    
+                    // Allow `@ts-check` without restrictions:
+                    'ts-check': false,
+                    
+                    // Allow `@ts-expect-error` without restrictions:
+                    'ts-expect-error': false,
+                },
+            ],
+            
+            // Allow `any` type for flexibility in certain cases (e.g. third-party integrations, complex types):
+            '@typescript-eslint/no-explicit-any': 'off',
+            
+            // Enforce custom internal rule for CSS variable usage:
+            'eslint-rules/restrict-cssvars-usage': 'error',
+        },
+    },
+]);
