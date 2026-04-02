@@ -56,7 +56,7 @@ export const getClassHeadingSelectors    : (levels?: number[]) => CssSelectorCol
 /**
  * Generates **tag-based display heading selectors** (Not yet implemented).
  */
-export const getTagDisplaySelectors      : (levels?: number[]) => CssSelectorCollection = (levels = getDefaultLevels()) => [/* not yet implemented */];
+export const getTagDisplaySelectors      : (levels?: number[]) => CssSelectorCollection = (_levels = getDefaultLevels()) => [/* not yet implemented */];
 
 /**
  * Generates **class-based display heading selectors** (`.display-1 - .display-6`).
