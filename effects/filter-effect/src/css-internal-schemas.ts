@@ -43,7 +43,7 @@ import {
     interpolateFromNeutralZero,
     interpolateFromNeutralOne,
     interpolateFromTransparentColor,
-}                           from './css-formulas.js'
+}                           from './css-internal-formulas.js'
 
 
 

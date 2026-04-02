@@ -10,7 +10,7 @@ import {
 import {
     // Types:
     type CssFilterFormula,
-}                           from './css-formulas.js'
+}                           from './css-internal-formulas.js'
 
 
 

@@ -28,7 +28,7 @@ import {
     hueRotate,
     blur,
     dropShadow,
-}                           from './css-formulas.js'
+}                           from './css-internal-formulas.js'
 import {
     // Types:
     type FilterSchema,
@@ -38,7 +38,7 @@ import {
     
     // Utilities:
     schemaToCssFormula,
-}                           from './css-schemas.js'
+}                           from './css-internal-schemas.js'
 
 // Reusable-ui configs:
 import {
