@@ -506,7 +506,7 @@ export const useViewStatePhaseEvents = (props: ViewStatePhaseEventProps, viewPha
                 props.onViewRecedingStart?.(viewPhase, undefined);
                 break;
             
-            case 'view-settled':
+            case 'view-settled': {
                 // Determine the previous transitioning phase to emit the corresponding end event:
                 const prevPhase = prevPhaseRef.current;
                 
@@ -523,7 +523,8 @@ export const useViewStatePhaseEvents = (props: ViewStatePhaseEventProps, viewPha
                         props.onViewRecedingEnd?.(viewPhase, undefined);
                         break;
                 } // switch
-                break;
+            }
+            break;
         } // switch
     });
 };
