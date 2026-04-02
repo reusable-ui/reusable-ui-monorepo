@@ -48,7 +48,7 @@ export const createTypographyMount = (config: TypographyMountConfig) => {
     
     
     // Create a subscribable object for dynamic updates:
-    let dynamicStylesheet = new Subject<boolean>();
+    const dynamicStylesheet = new Subject<boolean>();
     const stylesheetSubscription : Subscribable<StyleSheetsFactory<''> | boolean> = {
         subscribe : (observer) => {
             // Immediately push the style:
