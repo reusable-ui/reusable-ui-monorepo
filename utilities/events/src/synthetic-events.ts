@@ -162,8 +162,7 @@ export const createSyntheticEvent      = <TElement extends Element, TEvent exten
             if (nativeEvent.preventDefault) {
                 nativeEvent.preventDefault();
             }
-            // @ts-ignore
-            else if (typeof nativeEvent.returnValue !== 'unknown') {
+            else if (typeof nativeEvent.returnValue as string !== 'unknown') {
                 // @ts-ignore
                 nativeEvent.returnValue = false;
             } // if
@@ -182,8 +181,7 @@ export const createSyntheticEvent      = <TElement extends Element, TEvent exten
             if (nativeEvent.stopPropagation) {
                 nativeEvent.stopPropagation();
             }
-            // @ts-ignore
-            else if (typeof nativeEvent.cancelBubble !== 'unknown') {
+            else if (typeof nativeEvent.cancelBubble as string !== 'unknown') {
                 // The ChangeEventPlugin registers a "propertychange" event for
                 // IE. This event does not support bubbling or cancelling, and
                 // any references to cancelBubble throw "Member not found".  A
