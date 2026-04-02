@@ -81,7 +81,5 @@ export const useResolvedSemanticAttributes = (props: SemanticProps, options: Sem
     
     return useMemo((): ResolvedSemanticAttributes => {
         return new LazySemanticEvaluator(semanticPriority, preferredRole, preferredTag);
-        
-        // eslint-disable-next-line
     }, [semanticPriority, preferredRole, preferredTag]);
 };
