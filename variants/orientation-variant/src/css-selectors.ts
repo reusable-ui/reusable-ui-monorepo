@@ -16,12 +16,12 @@ import {
 /**
  * A CSS selector targeting elements with horizontal (inline) orientation.
  */
-export const orientationInlineSelector : CssSelectorCollection = '.o-inline';
+export const isOrientationInlineSelector : CssSelectorCollection = '.o-inline';
 
 /**
  * A CSS selector targeting elements with vertical (block) orientation.
  */
-export const orientationBlockSelector  : CssSelectorCollection = '.o-block';
+export const isOrientationBlockSelector  : CssSelectorCollection = '.o-block';
 
 
 
@@ -41,7 +41,7 @@ export const orientationBlockSelector  : CssSelectorCollection = '.o-block';
  * });
  * ```
  */
-export const ifOrientationInline = (styles: CssStyleCollection): CssRule => rule(orientationInlineSelector , styles);
+export const ifOrientationInline = (styles: CssStyleCollection): CssRule => rule(isOrientationInlineSelector , styles);
 
 /**
  * Applies the given `styles` to elements with vertical (block) orientation.
@@ -59,4 +59,4 @@ export const ifOrientationInline = (styles: CssStyleCollection): CssRule => rule
  * });
  * ```
  */
-export const ifOrientationBlock  = (styles: CssStyleCollection): CssRule => rule(orientationBlockSelector  , styles);
+export const ifOrientationBlock  = (styles: CssStyleCollection): CssRule => rule(isOrientationBlockSelector  , styles);

@@ -125,12 +125,12 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
 ```ts
 import {
     // Orientation Selectors:
-    orientationInlineSelector, // Targets `.o-inline` classes
-    orientationBlockSelector,  // Targets `.o-block` classes
+    isOrientationInlineSelector, // Targets `.o-inline` classes
+    isOrientationBlockSelector,  // Targets `.o-block` classes
     
     // Conditional styling helpers:
-    ifOrientationInline,       // Applies styles to horizontal (inline) oriented elements
-    ifOrientationBlock,        // Applies styles to vertical (block) oriented elements
+    ifOrientationInline,         // Applies styles to horizontal (inline) oriented elements
+    ifOrientationBlock,          // Applies styles to vertical (block) oriented elements
 } from '@reusable-ui/orientation-variant';
 import { style, rule } from '@cssfn/core';
 
@@ -144,10 +144,10 @@ export const componentStyle = () => style({
     }),
     
     // Alternative approach using explicit selectors:
-    ...rule(orientationInlineSelector, { // equivalent to `ifOrientationInline`
+    ...rule(isOrientationInlineSelector, { // equivalent to `ifOrientationInline`
         textAlign: 'start',
     }),
-    ...rule(orientationBlockSelector, { // equivalent to `ifOrientationBlock`
+    ...rule(isOrientationBlockSelector, { // equivalent to `ifOrientationBlock`
         textAlign: 'center',
     }),
 });
