@@ -115,10 +115,10 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
 ```ts
 import {
     // Selector:
-    sizeSelector, // Targets `.s-${size}` class
+    isSizeSelector, // Targets `.s-${size}` class
     
     // Conditional Rule Helper:
-    ifSize,       // Applies styles to a specific size
+    ifSize,         // Applies styles to a specific size
 } from '@reusable-ui/size-variant';
 import { style, rule } from '@cssfn/core';
 
@@ -131,7 +131,7 @@ export const componentStyle = () => style({
     ...ifSize('md', {
         fontSize: '1rem',
     }),
-    ...rule(sizeSelector('lg'), {
+    ...rule(isSizeSelector('lg'), {
         fontSize: '1.25rem',
         padding: '1rem',
     }),
