@@ -11,7 +11,7 @@ import type { ImportDeclaration, ImportSpecifier, FunctionDeclaration, FunctionE
  * - Identify `if*` functions that:
  *   - Have at least one parameter typed as `CssStyleCollection` (imported from `@cssfn/core`)
  *   - Have a return type of `CssRule` (imported from `@cssfn/core`)
- * - For those functions only, enforce that they are declared in `css-selectors.ts`.
+ * - For those functions only, enforce that they are declared in `css-selectors.ts` or `css-internal-selectors.ts`.
  * 
  * Why:
  * - Centralizes conditional selector helpers in one module for maintainability.
@@ -21,12 +21,12 @@ export const enforceIfSelectors: Rule.RuleModule = {
     meta: {
         type: 'problem',
         docs: {
-            description : 'Require `if*` functions (with `CssStyleCollection` param and `CssRule` return from `@cssfn/core`) to be declared only in `css-selectors.ts`',
+            description : 'Require `if*` functions (with `CssStyleCollection` param and `CssRule` return from `@cssfn/core`) to be declared only in `css-selectors.ts` or `css-internal-selectors.ts`',
             recommended : false, // not part of ESLint recommended set
         },
         schema: [], // no options accepted
         messages: {
-            wrongFile: 'CSS `if*` functions must be declared in `css-selectors.ts`.',
+            wrongFile: 'CSS `if*` functions must be declared in `css-selectors.ts` or `css-internal-selectors.ts`.',
         },
     },
     
@@ -69,7 +69,7 @@ export const enforceIfSelectors: Rule.RuleModule = {
             /**
              * Inspect function declarations.
              * If the function name matches `/^if/`, enforce:
-             * - Must be declared in `css-selectors.ts`
+             * - Must be declared in `css-selectors.ts` or `css-internal-selectors.ts`
              */
             FunctionDeclaration(node) {
                 checkFunction(node, filename, context, isCssfnCssStyleCollection, isCssfnCssRule);
@@ -78,7 +78,7 @@ export const enforceIfSelectors: Rule.RuleModule = {
             /**
              * Inspect variable declarations.
              * If the arrow function (variable) name matches `/^if/`, enforce:
-             * - Must be declared in `css-selectors.ts`
+             * - Must be declared in `css-selectors.ts` or `css-internal-selectors.ts`
              */
             VariableDeclarator(node) {
                 if (node.id.type !== 'Identifier') return;
@@ -149,8 +149,8 @@ const checkFunction = (
     );
     if (!isCssRuleReturn) return; // skip enforcement if filter not met
     
-    // Enforcement: must be in css-selectors.ts
-    if (path.basename(filename) !== 'css-selectors.ts') {
+    // Enforcement: must be in `css-selectors.ts` or `css-internal-selectors.ts`
+    if (!['css-selectors.ts', 'css-internal-selectors.ts'].includes(path.basename(filename))) {
         context.report({ node, messageId: 'wrongFile' });
     }
 };

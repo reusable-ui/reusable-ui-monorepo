@@ -12,7 +12,7 @@ import type { ImportDeclaration, ImportSpecifier } from 'estree'
  * - Variables/functions must:
  *   - Start with `is`, `not`, or `was`, followed by PascalCase, and end with `Selector`
  *   - Be typed/return `CssSelectorCollection` (imported from `@cssfn/core`)
- *   - Be declared only in `css-selectors.ts`
+ *   - Be declared only in `css-selectors.ts` or `css-internal-selectors.ts`
  *   - Functions must have at least 1 parameter (unparameterized functions should be constants)
  * 
  * Allowed patterns:
@@ -30,12 +30,12 @@ export const enforceCssSelectors: Rule.RuleModule = {
     meta: {
         type: 'problem',
         docs: {
-            description : 'Require `is*Selector`, `not*Selector`, or `was*Selector` variables/functions to be `CssSelectorCollection` from `@cssfn/core` and only in `css-selectors.ts`',
+            description : 'Require `is*Selector`, `not*Selector`, or `was*Selector` variables/functions to be `CssSelectorCollection` from `@cssfn/core` and only in `css-selectors.ts` or `css-internal-selectors.ts`',
             recommended : false, // not part of ESLint recommended set
         },
         schema: [], // no options accepted
         messages: {
-            wrongFile: 'CSS selector variables/functions must be declared in `css-selectors.ts`.',
+            wrongFile: 'CSS selector variables/functions must be declared in `css-selectors.ts` or `css-internal-selectors.ts`.',
             wrongType: 'CSS selector variables/functions must be typed as `CssSelectorCollection` from `@cssfn/core`.',
             wrongName: 'The selector variable/function name must start with "is", "not", or "was" and followed by PascalCase.',
             noParams: 'CSS selector functions must have at least 1 parameter. Use a constant instead.',
@@ -99,7 +99,7 @@ export const enforceCssSelectors: Rule.RuleModule = {
              * Inspect function declarations.
              * If the function name has "Selector" suffix, enforce:
              * - Must prefix with "is", "not", or "was", and followed by PascalCase
-             * - Must be declared in `css-selectors.ts`
+             * - Must be declared in `css-selectors.ts` or `css-internal-selectors.ts`
              * - Must have return type of `CssSelectorCollection`
              * - Must have at least 1 parameter
              */
@@ -121,7 +121,7 @@ export const enforceCssSelectors: Rule.RuleModule = {
                 
                 
                 // 2. Enforce file location:
-                if (path.basename(filename) !== 'css-selectors.ts') {
+                if (!['css-selectors.ts', 'css-internal-selectors.ts'].includes(path.basename(filename))) {
                     context.report({ node, messageId: 'wrongFile' });
                 } // if
                 
@@ -144,7 +144,7 @@ export const enforceCssSelectors: Rule.RuleModule = {
              * Inspect variable declarations.
              * If the variable name has "Selector" suffix, enforce:
              * - Must prefix with "is", "not", or "was", and followed by PascalCase
-             * - Must be declared in `css-selectors.ts`
+             * - Must be declared in `css-selectors.ts` or `css-internal-selectors.ts`
              * - If it's a constant: must be typed as `CssSelectorCollection`
              * - If it's an arrow function: must have at least 1 parameter and return type `CssSelectorCollection`
              */
@@ -166,7 +166,7 @@ export const enforceCssSelectors: Rule.RuleModule = {
                 
                 
                 // 2. Enforce file location:
-                if (path.basename(filename) !== 'css-selectors.ts') {
+                if (!['css-selectors.ts', 'css-internal-selectors.ts'].includes(path.basename(filename))) {
                     context.report({ node, messageId: 'wrongFile' });
                 } // if
                 
