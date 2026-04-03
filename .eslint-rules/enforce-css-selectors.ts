@@ -10,7 +10,7 @@ import type { ImportDeclaration, ImportSpecifier } from 'estree'
  * Purpose:
  * - Enforce naming and typing conventions for CSS selector constants.
  * - Variables must:
- *   - Start with `is` and end with `Selector`
+ *   - Start with `is`, `not`, or `was`, followed by PascalCase, and end with `Selector`
  *   - Be typed as `CssSelectorCollection` (imported from `@cssfn/core`)
  *   - Be declared only in `css-selectors.ts`
  * 
@@ -23,13 +23,14 @@ export const enforceCssSelectors: Rule.RuleModule = {
     meta: {
         type: 'problem',
         docs: {
-            description : 'Require `is*Selector` variables to be `CssSelectorCollection` from `@cssfn/core` and only in `css-selectors.ts`',
+            description : 'Require `is*Selector`, `not*Selector`, or `was*Selector` variables to be `CssSelectorCollection` from `@cssfn/core` and only in `css-selectors.ts`',
             recommended : false, // not part of ESLint recommended set
         },
         schema: [], // no options accepted
         messages: {
             wrongFile: 'CSS selector variables must be declared in `css-selectors.ts`.',
             wrongType: 'CSS selector variables must be typed as `CssSelectorCollection` from `@cssfn/core`.',
+            wrongName: 'The selector variable name must start with "is", "not", or "was" and followed by PascalCase.',
         },
     },
     
@@ -64,7 +65,8 @@ export const enforceCssSelectors: Rule.RuleModule = {
             
             /**
              * Inspect variable declarations.
-             * If the variable name matches `/^is.*Selector$/`, enforce:
+             * If the variable name having "Selector" suffix, enforce:
+             * - Must prefix with "is", "not", or "was", and followed by PascalCase
              * - Must be declared in `css-selectors.ts`
              * - Must be typed as `CssSelectorCollection`
              */
@@ -73,19 +75,26 @@ export const enforceCssSelectors: Rule.RuleModule = {
                 
                 
                 
-                // Only check variables with names like "isFooSelector"
-                if (!/^is.*Selector$/.test(node.id.name)) return;
+                // Only check variables with "Selector" suffix to avoid false positives on unrelated variables:
+                if (!/^.*Selector$/.test(node.id.name)) return;
                 
                 
                 
-                // 1. Enforce file location
+                // 1. Enforce naming convention: must start with "is", "not", or "was":
+                if (!/^(is|not|was)(?=[A-Z]).*Selector$/.test(node.id.name)) {
+                    context.report({ node, messageId: 'wrongName' });
+                } // if
+                
+                
+                
+                // 2. Enforce file location
                 if (path.basename(filename) !== 'css-selectors.ts') {
                     context.report({ node, messageId: 'wrongFile' });
                 } // if
                 
                 
                 
-                // 2. Enforce type annotation
+                // 3. Enforce type annotation
                 // In TypeScript AST, type annotations are nested:
                 // node.id.typeAnnotation?.typeAnnotation
                 const typeAnn = (node.id as any).typeAnnotation?.typeAnnotation;
