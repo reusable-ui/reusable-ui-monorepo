@@ -4,6 +4,8 @@ import pluginReact from 'eslint-plugin-react'
 import globals from 'globals'
 import js from '@eslint/js'
 import { restrictCssVarsUsage } from './.eslint-rules/restrict-cssvars-usage.js'
+import { enforceCssSelectors } from './.eslint-rules/enforce-css-selectors.js'
+import { enforceIfSelectors } from './.eslint-rules/enforce-if-selectors.js'
 
 
 
@@ -115,7 +117,9 @@ export default defineConfig([
             js, // Core JS plugin
             'eslint-rules': { // Custom internal plugin namespace
                 rules: {
-                    'restrict-cssvars-usage': restrictCssVarsUsage,
+                    'restrict-cssvars-usage' : restrictCssVarsUsage,
+                    'enforce-css-selectors'  : enforceCssSelectors,
+                    'enforce-if-selectors'   : enforceIfSelectors,
                 },
             },
         },
@@ -172,7 +176,9 @@ export default defineConfig([
             '@typescript-eslint/no-explicit-any': 'off',
             
             // Enforce custom internal rule for CSS variable usage:
-            'eslint-rules/restrict-cssvars-usage': 'error',
+            'eslint-rules/restrict-cssvars-usage' : 'error',
+            'eslint-rules/enforce-css-selectors'  : 'error',
+            'eslint-rules/enforce-if-selectors'   : 'error',
         },
     },
 ]);
