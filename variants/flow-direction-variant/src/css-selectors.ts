@@ -16,12 +16,12 @@ import {
 /**
  * A CSS selector targeting elements aligned toward the logical start edge.
  */
-export const flowDirectionStartSelector : CssSelectorCollection = '.f-start';
+export const isFlowDirectionStartSelector : CssSelectorCollection = '.f-start';
 
 /**
  * A CSS selector targeting elements aligned toward the logical end edge.
  */
-export const flowDirectionEndSelector   : CssSelectorCollection = '.f-end';
+export const isFlowDirectionEndSelector   : CssSelectorCollection = '.f-end';
 
 
 
@@ -41,7 +41,7 @@ export const flowDirectionEndSelector   : CssSelectorCollection = '.f-end';
  * });
  * ```
  */
-export const ifFlowDirectionStart = (styles: CssStyleCollection): CssRule => rule(flowDirectionStartSelector , styles);
+export const ifFlowDirectionStart = (styles: CssStyleCollection): CssRule => rule(isFlowDirectionStartSelector , styles);
 
 /**
  * Applies the given `styles` to elements aligned toward the logical end edge.
@@ -59,4 +59,4 @@ export const ifFlowDirectionStart = (styles: CssStyleCollection): CssRule => rul
  * });
  * ```
  */
-export const ifFlowDirectionEnd   = (styles: CssStyleCollection): CssRule => rule(flowDirectionEndSelector   , styles);
+export const ifFlowDirectionEnd   = (styles: CssStyleCollection): CssRule => rule(isFlowDirectionEndSelector   , styles);

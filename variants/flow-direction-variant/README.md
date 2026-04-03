@@ -116,12 +116,12 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
 ```ts
 import {
     // Directional Selectors:
-    flowDirectionStartSelector,  // Targets `.f-start` classes
-    flowDirectionEndSelector,    // Targets `.f-end` classes
+    isFlowDirectionStartSelector, // Targets `.f-start` classes
+    isFlowDirectionEndSelector,   // Targets `.f-end` classes
     
     // Conditional styling helpers:
-    ifFlowDirectionStart,        // Applies styles to start edge aligned elements
-    ifFlowDirectionEnd,          // Applies styles to end edge aligned elements
+    ifFlowDirectionStart,         // Applies styles to start edge aligned elements
+    ifFlowDirectionEnd,           // Applies styles to end edge aligned elements
 } from '@reusable-ui/flow-direction-variant';
 import { style, rule } from '@cssfn/core';
 
@@ -135,10 +135,10 @@ export const componentStyle = () => style({
     }),
     
     // Alternative approach using explicit selectors:
-    ...rule(flowDirectionStartSelector, { // equivalent to `ifFlowDirectionStart`
+    ...rule(isFlowDirectionStartSelector, { // equivalent to `ifFlowDirectionStart`
         textAlign: 'start',
     }),
-    ...rule(flowDirectionEndSelector, {// equivalent to `ifFlowDirectionEnd`
+    ...rule(isFlowDirectionEndSelector, { // equivalent to `ifFlowDirectionEnd`
         textAlign: 'end',
     }),
 });
