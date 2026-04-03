@@ -1,5 +1,6 @@
 export *           from './types.js'
 export *           from './disabled-state.js'
+export *           from './css-selectors.js'
 export *           from './declarators.js'
 export *           from './providers.js'
 export { default } from './providers.js'
