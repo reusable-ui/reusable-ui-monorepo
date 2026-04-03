@@ -111,10 +111,10 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
 ```ts
 import {
     // Theme Selectors:
-    themeSelector, // Targets `.t-${theme}` class
+    isThemeSelector, // Targets `.t-${theme}` class
     
     // Conditional styling helpers:
-    ifTheme,       // Applies styles to a specific theme
+    ifTheme,         // Applies styles to a specific theme
 } from '@reusable-ui/theme-variant';
 import { style, rule } from '@cssfn/core';
 
@@ -130,7 +130,7 @@ export const componentStyle = () => style({
         backgroundColor: 'pink',
         color: 'darkred',
     }),
-    ...rule(themeSelector('warning'), {
+    ...rule(isThemeSelector('warning'), {
         backgroundColor: 'yellow',
         color: 'black',
     }),
