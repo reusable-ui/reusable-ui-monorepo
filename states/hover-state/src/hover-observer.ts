@@ -11,6 +11,11 @@ import {
     type HoverBehaviorState,
 }                           from './types.js'
 
+// CSS Selectors:
+import {
+    isHoverWithinSelector,
+}                           from './css-internal-selectors.js'
+
 // Reusable-ui utilities:
 import {
     // Hooks:
@@ -26,21 +31,11 @@ import {
 
 
 
-/**
- * A selector used to detect whether an element or any of its descendants
- * are currently hovered for styling purposes.
- * 
- * This includes:
- * - Native `:hover` matches
- * - No need descendant matches via `:has(...)` as nested hover is inherently handled by `:hover`
- */
-const hoverWithinSelector = ':hover';
-
 // Define how the hover observer should behave:
 const hoverObserverDefinition : ObserverDefinition<boolean, Element> = {
     inactiveState       : false,        // The default state when not hovered.
     restrictionBehavior : 'continuous', // Hover state may persist after restriction is lifted.
-    getCurrentState     : (element) => element.matches(hoverWithinSelector),
+    getCurrentState     : (element) => element.matches(isHoverWithinSelector as string),
 };
 
 
