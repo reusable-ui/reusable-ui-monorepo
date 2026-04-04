@@ -14,6 +14,11 @@ import {
     type FocusBehaviorState,
 }                           from './types.js'
 
+// CSS Selectors:
+import {
+    isFocusVisibleWithinSelector,
+}                           from './css-internal-selectors.js'
+
 // Reusable-ui utilities:
 import {
     // Hooks:
@@ -29,17 +34,6 @@ import {
 
 
 
-/**
- * A selector used to detect whether an element or any of its descendants
- * are currently visibly focused for styling purposes.
- * 
- * This includes:
- * - Native `:focus-visible` matches
- * - Polyfilled input-like focus via `.input-like-focus:focus`
- * - Descendant matches via `:has(...)`, mimicking `:focus-within`
- */
-const focusVisibleWithinSelector = ':is(:focus-visible, .input-like-focus:focus, :has(:focus-visible, .input-like-focus:focus))';
-
 // Define how the focus observer should behave:
 // - This is not a raw "isFocused" check, but a *focus indicator* observer.
 // - Inputs/textareas always show focus indicators.
@@ -47,7 +41,7 @@ const focusVisibleWithinSelector = ':is(:focus-visible, .input-like-focus:focus,
 const focusObserverDefinition : ObserverDefinition<boolean, Element> = {
     inactiveState       : false,      // The default state when not focused.
     restrictionBehavior : 'discrete', // State resets when restriction is lifted.
-    getCurrentState     : (element) => element.matches(focusVisibleWithinSelector),
+    getCurrentState     : (element) => element.matches(isFocusVisibleWithinSelector as string),
 };
 
 
