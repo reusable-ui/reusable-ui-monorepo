@@ -1,3 +1,3 @@
 export *           from './types.js'
 export *           from './registry.js'
-export *           from './declarators.js'
+export *           from './css-hooks.js'
