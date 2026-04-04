@@ -1,2 +1,2 @@
 export *           from './types.js'
-export *           from './declarators.js'
+export *           from './css-hooks.js'
