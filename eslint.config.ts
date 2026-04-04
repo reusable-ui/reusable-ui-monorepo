@@ -6,6 +6,7 @@ import js from '@eslint/js'
 import { restrictCssVarsUsage } from './.eslint-rules/restrict-cssvars-usage.js'
 import { enforceCssSelectors } from './.eslint-rules/enforce-css-selectors.js'
 import { enforceIfSelectors } from './.eslint-rules/enforce-if-selectors.js'
+import { enforceUsesHooks } from './.eslint-rules/enforce-uses-hooks.js'
 
 
 
@@ -120,6 +121,7 @@ export default defineConfig([
                     'restrict-cssvars-usage' : restrictCssVarsUsage,
                     'enforce-css-selectors'  : enforceCssSelectors,
                     'enforce-if-selectors'   : enforceIfSelectors,
+                    'enforce-uses-hooks'     : enforceUsesHooks,
                 },
             },
         },
@@ -179,6 +181,7 @@ export default defineConfig([
             'eslint-rules/restrict-cssvars-usage' : 'error',
             'eslint-rules/enforce-css-selectors'  : 'error',
             'eslint-rules/enforce-if-selectors'   : 'error',
+            'eslint-rules/enforce-uses-hooks'     : 'error',
         },
     },
 ]);
