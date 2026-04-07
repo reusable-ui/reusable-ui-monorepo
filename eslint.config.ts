@@ -6,7 +6,7 @@ import pluginReact from 'eslint-plugin-react'
 import globals from 'globals'
 import js from '@eslint/js'
 import { restrictCssVarsUsage } from './.eslint-rules/restrict-cssvars-usage.js'
-import { enforceCssSelectors } from './.eslint-rules/enforce-css-selectors.js'
+import { enforceSelectorConventions, enforceIfFunctionConventions } from './.eslint-rules/enforce-css-selectors.js'
 import { enforceUsesHooks } from './.eslint-rules/enforce-uses-hooks.js'
 
 
@@ -118,10 +118,15 @@ export default defineConfig(
         },
         plugins: {
             js, // Core JS plugin
+            'css-selectors': {
+                rules: {
+                    'enforce-selector-conventions'    : enforceSelectorConventions   as unknown as Rule.RuleModule,
+                    'enforce-if-function-conventions' : enforceIfFunctionConventions as unknown as Rule.RuleModule,
+                },
+            },
             'eslint-rules': { // Custom internal plugin namespace
                 rules: {
                     'restrict-cssvars-usage' : restrictCssVarsUsage,
-                    'enforce-css-selectors'  : enforceCssSelectors as unknown as Rule.RuleModule,
                     'enforce-uses-hooks'     : enforceUsesHooks,
                 },
             },
@@ -179,9 +184,10 @@ export default defineConfig(
             '@typescript-eslint/no-explicit-any': 'off',
             
             // Enforce custom internal rule for CSS variable usage:
-            'eslint-rules/restrict-cssvars-usage' : 'error',
-            'eslint-rules/enforce-css-selectors'  : 'error',
-            'eslint-rules/enforce-uses-hooks'     : 'error',
+            'css-selectors/enforce-selector-conventions'    : 'error',
+            'css-selectors/enforce-if-function-conventions' : 'error',
+            'eslint-rules/restrict-cssvars-usage'           : 'error',
+            'eslint-rules/enforce-uses-hooks'               : 'error',
         },
     },
 );
