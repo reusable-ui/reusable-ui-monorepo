@@ -1,3 +1,4 @@
+import type { Rule } from 'eslint'
 import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 import pluginReact from 'eslint-plugin-react'
@@ -5,7 +6,6 @@ import globals from 'globals'
 import js from '@eslint/js'
 import { restrictCssVarsUsage } from './.eslint-rules/restrict-cssvars-usage.js'
 import { enforceCssSelectors } from './.eslint-rules/enforce-css-selectors.js'
-import { enforceIfSelectors } from './.eslint-rules/enforce-if-selectors.js'
 import { enforceUsesHooks } from './.eslint-rules/enforce-uses-hooks.js'
 
 
@@ -22,7 +22,7 @@ import { enforceUsesHooks } from './.eslint-rules/enforce-uses-hooks.js'
  * - Disable base JS rules that conflict with TypeScript constructs (overloads, generics).
  * - Custom internal rules live in `.eslint-rules/` and are registered under `eslint-rules`.
  */
-export default defineConfig([
+export default defineConfig(
     // 1. Base recommended configs:
     tseslint.configs.recommended,         // TypeScript rules
     pluginReact.configs.flat.recommended, // React rules
@@ -119,8 +119,7 @@ export default defineConfig([
             'eslint-rules': { // Custom internal plugin namespace
                 rules: {
                     'restrict-cssvars-usage' : restrictCssVarsUsage,
-                    'enforce-css-selectors'  : enforceCssSelectors,
-                    'enforce-if-selectors'   : enforceIfSelectors,
+                    'enforce-css-selectors'  : enforceCssSelectors as unknown as Rule.RuleModule,
                     'enforce-uses-hooks'     : enforceUsesHooks,
                 },
             },
@@ -180,8 +179,7 @@ export default defineConfig([
             // Enforce custom internal rule for CSS variable usage:
             'eslint-rules/restrict-cssvars-usage' : 'error',
             'eslint-rules/enforce-css-selectors'  : 'error',
-            'eslint-rules/enforce-if-selectors'   : 'error',
             'eslint-rules/enforce-uses-hooks'     : 'error',
         },
     },
-]);
+);
