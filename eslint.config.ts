@@ -6,7 +6,7 @@ import pluginReact from 'eslint-plugin-react'
 import globals from 'globals'
 import js from '@eslint/js'
 import { restrictCssVarsUsage } from './.eslint-rules/restrict-cssvars-usage.js'
-import { enforceSelectorConventions, enforceIfFunctionConventions } from './.eslint-rules/enforce-css-selectors.js'
+import { enforceSelectorConventions, enforceIfFunctionConventions, noForeignCode } from './.eslint-rules/enforce-css-selectors.js'
 import { enforceUsesHooks } from './.eslint-rules/enforce-uses-hooks.js'
 
 
@@ -122,6 +122,7 @@ export default defineConfig(
                 rules: {
                     'enforce-selector-conventions'    : enforceSelectorConventions   as unknown as Rule.RuleModule,
                     'enforce-if-function-conventions' : enforceIfFunctionConventions as unknown as Rule.RuleModule,
+                    'no-foreign-code'                 : noForeignCode                as unknown as Rule.RuleModule,
                 },
             },
             'eslint-rules': { // Custom internal plugin namespace
@@ -186,6 +187,7 @@ export default defineConfig(
             // Enforce custom internal rule for CSS variable usage:
             'css-selectors/enforce-selector-conventions'    : 'error',
             'css-selectors/enforce-if-function-conventions' : 'error',
+            'css-selectors/no-foreign-code'                 : 'error',
             'eslint-rules/restrict-cssvars-usage'           : 'error',
             'eslint-rules/enforce-uses-hooks'               : 'error',
         },

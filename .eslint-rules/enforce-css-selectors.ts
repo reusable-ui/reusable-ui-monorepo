@@ -8,6 +8,8 @@ const createRule = ESLintUtils.RuleCreator(
     name => `css-selectors/${name}`,
 );
 
+
+
 /**
  * ESLint rule: enforce-selector-conventions
  * 
@@ -478,6 +480,119 @@ export const enforceIfFunctionConventions = createRule({
                 if (!isExpectedModule) {
                     context.report({ node, messageId: 'wrongFile' });
                 } // if
+            },
+        };
+    },
+});
+
+
+
+/**
+ * ESLint rule: no-foreign-code
+ * 
+ * Purpose:
+ * - Prevent arbitrary/foreign code inside `css-selectors.ts` and `css-internal-selectors.ts`.
+ * - All supporting logic must live in separate modules and be imported.
+ * 
+ * Requirements:
+ * - Allowed top-level statements:
+ *   - Import declarations.
+ *   - Exported selector variables (ending with `Selector`).
+ *   - Exported `if*` functions.
+ *   - Comments.
+ * - Disallow any other top-level code.
+ * 
+ * Why:
+ * - Keeps selector modules clean and focused.
+ * - Improves maintainability by centralizing selector-related logic only.
+ */
+export const noForeignCode = createRule({
+    name : 'no-foreign-code',
+    meta: {
+        type: 'problem',
+        docs: {
+            description : 'Disallow arbitrary code in `css-selectors.ts` and `css-internal-selectors.ts`. Only imports, selector exports, and `if*` function exports are allowed.',
+        },
+        schema: [], // no options accepted
+        messages: {
+            foreignCode : 'Only imports, selector exports, `if*` function exports, and comments are allowed in `css-selectors.ts` / `css-internal-selectors.ts`. Move supporting code to separate modules.',
+        },
+    },
+    create(context) {
+        const filename         = context.filename;
+        const basename         = path.basename(filename);
+        const isExpectedModule = ['css-selectors.ts', 'css-internal-selectors.ts'].includes(basename);
+        
+        
+        
+        return {
+            /**
+             * When visiting a Program node, validate the entire file structure
+             * if it's a `css-selectors.ts` or `css-internal-selectors.ts` file.
+             */
+            Program(node) {
+                // Only validate file structure if we're in an expected module:
+                if (!isExpectedModule) return;
+                
+                
+                
+                // Validate that all top-level statements are allowed:
+                for (const statement of node.body) {
+                    // Allow empty statements (e.g. from semicolons or empty lines):
+                    if (statement.type === TSESTree.AST_NODE_TYPES.EmptyStatement) continue;
+                    
+                    
+                    
+                    // Allow import statements:
+                    if (statement.type === TSESTree.AST_NODE_TYPES.ImportDeclaration) continue;
+                    
+                    
+                    
+                    // Allow named exports of selectors or `if*` helpers:
+                    if (statement.type === TSESTree.AST_NODE_TYPES.ExportNamedDeclaration) {
+                        // Holds the found exported name:
+                        let exportedName : string | undefined = undefined;
+                        
+                        
+                        
+                        // Function declaration export:
+                        if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.FunctionDeclaration) {
+                            exportedName = statement.declaration.id?.name;
+                        } // if
+                        
+                        
+                        
+                        // TS declare function (overloads):
+                        if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.TSDeclareFunction) {
+                            exportedName = statement.declaration.id?.name;
+                        } // if
+                        
+                        
+                        
+                        // Variable declaration export:
+                        if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.VariableDeclaration) {
+                            const firstDeclarator = statement.declaration.declarations[0];
+                            if (firstDeclarator?.id.type === TSESTree.AST_NODE_TYPES.Identifier) {
+                                exportedName = firstDeclarator.id.name;
+                            } // if
+                        } // if
+                        
+                        
+                        
+                        // Allow `if*` helpers or `*Selector` exports:
+                        if ((exportedName !== undefined) && (/^if(?![a-z])/.test(exportedName) || /Selector$/.test(exportedName))) continue;
+                    } // if
+                    
+                    
+                    
+                    // Allow top-level comments (they don't appear as statements in AST)
+                    // Comments are handled separately
+                    
+                    
+                    
+                    // Reject everything else:
+                    context.report({ node: statement, messageId: 'foreignCode' });
+                } // for
             },
         };
     },
