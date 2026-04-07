@@ -1,3 +1,4 @@
+import eslint from '@eslint/js'
 import type { Rule } from 'eslint'
 import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
@@ -24,6 +25,7 @@ import { enforceUsesHooks } from './.eslint-rules/enforce-uses-hooks.js'
  */
 export default defineConfig(
     // 1. Base recommended configs:
+    eslint.configs.recommended,           // Base JS rules
     tseslint.configs.recommended,         // TypeScript rules
     pluginReact.configs.flat.recommended, // React rules
     
