@@ -19,7 +19,7 @@ const createRule = ESLintUtils.RuleCreator(
  * 
  * Requirements:
  * - Start with `is`, `not`, or `was`, followed by PascalCase, and end with `Selector`.
- * - Be declared only in `css-selectors.ts` or `css-internal-selectors.ts`.
+ * - Must be declared only in `css-selectors.ts` or `css-internal-selectors.ts`.
  * - Selector constants:
  *   - Must be typed as `CssSelectorCollection` (imported from `@cssfn/core`).
  * - Selector functions (arrow, function expression, or declaration):
@@ -271,7 +271,7 @@ export const enforceSelectorConventions = createRule({
  * - Ensure `if*` functions are centralized in the correct files.
  * 
  * Requirements:
- * - Be declared only in `css-selectors.ts` or `css-internal-selectors.ts`.
+ * - Must be declared only in `css-selectors.ts` or `css-internal-selectors.ts`.
  * 
  * Function candidates:
  * - Identified by names that start with "if", followed by a case boundary (next char is not lowercase).
@@ -285,7 +285,6 @@ export const enforceSelectorConventions = createRule({
  * - Arrow function: `export const ifActive = (param: CssStyleCollection): CssRule => ...`
  * 
  * Why:
- * - Ensures type safety and readability by enforcing correct imports and signatures.
  * - Centralizes `if*` functions for discoverability.
  */
 export const enforceIfFunctionConventions = createRule({
@@ -518,14 +517,14 @@ export const enforceIfFunctionConventions = createRule({
  * 
  * Why:
  * - Keeps selector modules clean and focused.
- * - Improves maintainability by centralizing selector-related logic only.
+ * - Improves maintainability by restricting logic to proper selector-related logics only.
  */
 export const noForeignCode = createRule({
     name : 'no-foreign-code',
     meta: {
         type: 'problem',
         docs: {
-            description : 'Disallow arbitrary code in `css-selectors.ts` and `css-internal-selectors.ts`. Only imports, selector exports, and `if*` function exports are allowed.',
+            description : 'Disallow arbitrary code in `css-selectors.ts` and `css-internal-selectors.ts`. Only imports, selector exports, `if*` function exports, and comments are allowed.',
         },
         schema: [], // no options accepted
         messages: {
