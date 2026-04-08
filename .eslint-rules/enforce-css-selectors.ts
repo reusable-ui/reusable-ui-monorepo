@@ -502,9 +502,19 @@ export const enforceIfFunctionConventions = createRule({
  * - Allowed top-level statements:
  *   - Import declarations.
  *   - Exported selector constants/functions (ending with `Selector`).
- *   - Exported `if*` functions.
+ *   - Exported `if*` functions which accept `CssStyleCollection` and return `CssRule` from `@cssfn/core`.
  *   - Comments.
  * - Disallow any other top-level code.
+ * - Disallow general `if*` functions that do not match the required signature.
+ * 
+ * Selector candidates:
+ * - Identified by names that end with "Selector".
+ * 
+ * `*if` Function candidates:
+ * - Identified by names that start with "if", followed by a case boundary (next char is not lowercase).
+ * - Identified as a function declaration, function expression, or arrow function.
+ * - Identified having at least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
+ * - Identified having a return type of `CssRule` (from `@cssfn/core`).
  * 
  * Why:
  * - Keeps selector modules clean and focused.
@@ -529,6 +539,73 @@ export const noForeignCode = createRule({
         
         
         
+        // Flags to track whether types were imported from `@cssfn/core`:
+        let isCssStyleCollectionImported = false;
+        let isCssRuleImported            = false;
+        
+        
+        
+        // Helper functions:
+        
+        /**
+         * Checks if a function candidate matches the `if*` function shape.
+         * 
+         * Requirements:
+         * - At least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
+         * - Return type must be `CssRule` (from `@cssfn/core`).
+         */
+        const isCandidateIfFunction = (node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression | TSESTree.ArrowFunctionExpression): boolean => {
+            // Ensure the required imports are present:
+            if (!isCssStyleCollectionImported) return false;
+            if (!isCssRuleImported) return false;
+            
+            
+            
+            // Identified having a parameter typed as `CssStyleCollection`:
+            if (!node.params.some((param): boolean => {
+                if (param.type !== TSESTree.AST_NODE_TYPES.Identifier) return false;
+                
+                
+                
+                const paramAnn = param.typeAnnotation?.typeAnnotation;
+                if (
+                    !paramAnn
+                    ||
+                    (paramAnn.type !== TSESTree.AST_NODE_TYPES.TSTypeReference)
+                    ||
+                    (paramAnn.typeName.type !== TSESTree.AST_NODE_TYPES.Identifier)
+                    ||
+                    (paramAnn.typeName.name !== 'CssStyleCollection')
+                ) return false;
+                
+                
+                
+                // All checks passed, this parameter is valid:
+                return true;
+            })) return false;
+            
+            
+            
+            // Identified having return type `CssRule`:
+            const returnAnn = node.returnType?.typeAnnotation;
+            if (
+                !returnAnn
+                ||
+                (returnAnn.type !== TSESTree.AST_NODE_TYPES.TSTypeReference)
+                ||
+                (returnAnn.typeName.type !== TSESTree.AST_NODE_TYPES.Identifier)
+                ||
+                (returnAnn.typeName.name !== 'CssRule')
+            ) return false;
+            
+            
+            
+            // All identification checks passed, this is a valid `if*` function candidate:
+            return true;
+        };
+        
+        
+        
         return {
             /**
              * When visiting a Program node, validate the entire file structure
@@ -547,15 +624,48 @@ export const noForeignCode = createRule({
                     
                     
                     
-                    // Allow import statements:
-                    if (statement.type === TSESTree.AST_NODE_TYPES.ImportDeclaration) continue;
+                    // Handle import declarations directly in Program:
+                    // - We set flags for imported types here so they are available
+                    //   **before** validating subsequent export statements.
+                    if (statement.type === TSESTree.AST_NODE_TYPES.ImportDeclaration) {
+                        // Only check imports from `@cssfn/core`:
+                        if (statement.source.value !== '@cssfn/core') continue;
+                        
+                        
+                        
+                        for (const specifier of statement.specifiers) {
+                            // Only consider named imports with identifier references:
+                            if (specifier.type !== TSESTree.AST_NODE_TYPES.ImportSpecifier) continue;
+                            if (specifier.imported.type !== TSESTree.AST_NODE_TYPES.Identifier) continue;
+                            
+                            
+                            
+                            // Check if `CssStyleCollection` is imported:
+                            if (specifier.imported.name === 'CssStyleCollection') {
+                                isCssStyleCollectionImported = true;
+                            } // if
+                            
+                            // Check if `CssRule` is imported:
+                            if (specifier.imported.name === 'CssRule') {
+                                isCssRuleImported = true;
+                            } // if
+                        } // for
+                        
+                        
+                        
+                        // Allow import statements:
+                        continue;
+                    } // if
                     
                     
                     
                     // Allow named exports of selectors or `if*` functions:
                     if (statement.type === TSESTree.AST_NODE_TYPES.ExportNamedDeclaration) {
-                        // Holds the found exported name:
+                        // Hold the found exported name for validation:
                         let exportedName : string | undefined = undefined;
+                        
+                        // Flag to track if this is a function export:
+                        let exportedFunction : TSESTree.FunctionExpression | TSESTree.ArrowFunctionExpression | undefined = undefined;
                         
                         
                         
@@ -578,13 +688,42 @@ export const noForeignCode = createRule({
                             const firstDeclarator = statement.declaration.declarations[0];
                             if (firstDeclarator?.id.type === TSESTree.AST_NODE_TYPES.Identifier) {
                                 exportedName = firstDeclarator.id.name;
+                                
+                                
+                                
+                                // If the variable is initialized with a function expression or arrow function, store it for later checks:
+                                if (
+                                    firstDeclarator.init
+                                    &&
+                                    ((firstDeclarator.init.type === TSESTree.AST_NODE_TYPES.FunctionExpression) || (firstDeclarator.init.type === TSESTree.AST_NODE_TYPES.ArrowFunctionExpression))
+                                ) {
+                                    exportedFunction = firstDeclarator.init;
+                                } // if
                             } // if
                         } // if
                         
                         
                         
-                        // Allow `if*` functions or `*Selector` exports:
-                        if ((exportedName !== undefined) && (/^if(?![a-z])/.test(exportedName) || /Selector$/.test(exportedName))) continue;
+                        // If there's an exported name, check if it's a selector or `if*` function export:
+                        if (exportedName !== undefined) {
+                            // Selector function candidates:
+                            // - Identified by names that end with "Selector".
+                            // - No need for a case boundary check before "Selector":
+                            //   matches camelCase and PascalCase names like `isOutlinedSelector`, `flowDirectionStartSelector`,
+                            //   and even acronym-based names like `isSomeCSSSelector`.
+                            if (/Selector$/.test(exportedName)) continue;
+                            
+                            
+                            
+                            // Function candidates:
+                            // - Identified by names that start with "if", followed by a case boundary (next char is not lowercase).
+                            //   Requires a case boundary check after "if" to avoid matching lowercase continuations
+                            //   like `iffunctionSelector`. Ensures the next character is not lowercase.
+                            //   Matches names like `ifOutlined`, `ifFlowDirectionStart`, etc.
+                            // - Identified having at least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
+                            // - Identified having a return type of `CssRule` (from `@cssfn/core`).
+                            if (/^if(?![a-z])/.test(exportedName) && exportedFunction && isCandidateIfFunction(exportedFunction)) continue;
+                        } // if
                     } // if
                     
                     
