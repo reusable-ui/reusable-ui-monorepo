@@ -18,16 +18,16 @@ const createRule = ESLintUtils.RuleCreator(
  * - Ensure selectors are centralized in the correct files.
  * 
  * Requirements:
- * - Selector identifiers must:
- *   - Start with `is`, `not`, or `was`, followed by PascalCase, and end with `Selector`.
- *   - Be declared only in `css-selectors.ts` or `css-internal-selectors.ts`.
- * 
+ * - Start with `is`, `not`, or `was`, followed by PascalCase, and end with `Selector`.
+ * - Be declared only in `css-selectors.ts` or `css-internal-selectors.ts`.
  * - Selector constants:
  *   - Must be typed as `CssSelectorCollection` (imported from `@cssfn/core`).
- * 
  * - Selector functions (arrow, function expression, or declaration):
  *   - Must return `CssSelectorCollection` (imported from `@cssfn/core`).
  *   - Must have at least one parameter (unparameterized functions should be constants instead).
+ * 
+ * Selector candidates:
+ * - Identified by names that end with "Selector".
  * 
  * Examples:
  * - Constant: `export const isBareSelector: CssSelectorCollection = ".is-bare"`
@@ -45,7 +45,7 @@ export const enforceSelectorConventions = createRule({
     meta: {
         type: 'problem',
         docs: {
-            description : 'Require selector variables/functions to be correctly named, typed, and declared only in `css-selectors.ts` or `css-internal-selectors.ts`.',
+            description : 'Require selector constants/functions to be correctly named, typed, and declared only in `css-selectors.ts` or `css-internal-selectors.ts`.',
         },
         schema: [], // no options accepted
         messages: {
@@ -154,7 +154,7 @@ export const enforceSelectorConventions = createRule({
                 
                 
                 
-                // Identify selector functions:
+                // Selector function candidates:
                 // - Identified by names that end with "Selector".
                 // - No need for a case boundary check before "Selector":
                 //   matches camelCase and PascalCase names like `isOutlinedSelector`, `flowDirectionStartSelector`,
@@ -194,7 +194,7 @@ export const enforceSelectorConventions = createRule({
             
             /**
              * Inspect variable declarations.
-             * Handles selector variables.
+             * Handles selector constants.
              */
             VariableDeclarator(node) {
                 // Ensure the variable has an identifier name:
@@ -207,7 +207,7 @@ export const enforceSelectorConventions = createRule({
                 
                 
                 
-                // Identify selector variables:
+                // Selector constant candidates:
                 // - Identified by names that end with "Selector".
                 // - No need for a case boundary check before "Selector":
                 //   matches camelCase and PascalCase names like `isOutlinedSelector`, `flowDirectionStartSelector`,
@@ -271,13 +271,13 @@ export const enforceSelectorConventions = createRule({
  * - Ensure `if*` functions are centralized in the correct files.
  * 
  * Requirements:
- * - `if*` functions identifiers must:
- *   - Start with `if`.
- *   - Be declared only in `css-selectors.ts` or `css-internal-selectors.ts`.
+ * - Be declared only in `css-selectors.ts` or `css-internal-selectors.ts`.
  * 
- * - Function signature:
- *   - Must have at least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
- *   - Must have a return type of `CssRule` (from `@cssfn/core`).
+ * Function candidates:
+ * - Identified by names that start with "if", followed by a case boundary (next char is not lowercase).
+ * - Identified as a function declaration, function expression, or arrow function.
+ * - Identified having at least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
+ * - Identified having a return type of `CssRule` (from `@cssfn/core`).
  * 
  * Examples:
  * - Function declaration: `export function ifActive(param: CssStyleCollection): CssRule { ... }`
@@ -300,7 +300,6 @@ export const enforceIfFunctionConventions = createRule({
             wrongFile : '`if*` functions must be declared in `css-selectors.ts` or `css-internal-selectors.ts`.',
             wrongType : '`if*` functions must accept `CssStyleCollection` and return `CssRule` from `@cssfn/core`.',
             wrongName : '`if*` functions names must start with `if`.',
-            noParams  : '`if*` functions must have at least one parameter typed as `CssStyleCollection`.',
         },
     },
     create(context) {
@@ -332,7 +331,7 @@ export const enforceIfFunctionConventions = createRule({
             
             
             
-            // Must have a parameter typed as `CssStyleCollection`:
+            // Identified having a parameter typed as `CssStyleCollection`:
             if (!node.params.some((param): boolean => {
                 if (param.type !== TSESTree.AST_NODE_TYPES.Identifier) return false;
                 
@@ -357,7 +356,7 @@ export const enforceIfFunctionConventions = createRule({
             
             
             
-            // Must have return type `CssRule`:
+            // Identified having return type `CssRule`:
             const returnAnn = node.returnType?.typeAnnotation;
             if (
                 !returnAnn
@@ -371,7 +370,7 @@ export const enforceIfFunctionConventions = createRule({
             
             
             
-            // All checks passed, this `if*` function is valid:
+            // All identification checks passed, this is a valid `if*` function candidate:
             return true;
         };
         
@@ -423,11 +422,13 @@ export const enforceIfFunctionConventions = createRule({
                 
                 
                 
-                // Identify `if*` functions:
-                // - Identified by names that start with "if".
-                // - Requires a case boundary check after "if" to avoid matching lowercase continuations
+                // Function candidates:
+                // - Identified by names that start with "if", followed by a case boundary (next char is not lowercase).
+                //   Requires a case boundary check after "if" to avoid matching lowercase continuations
                 //   like `iffunctionSelector`. Ensures the next character is not lowercase.
                 //   Matches names like `ifOutlined`, `ifFlowDirectionStart`, etc.
+                // - Identified having at least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
+                // - Identified having a return type of `CssRule` (from `@cssfn/core`).
                 if (
                     !/^if(?![a-z])/.test(name)
                     ||
@@ -459,11 +460,14 @@ export const enforceIfFunctionConventions = createRule({
                 
                 
                 
-                // Identify `if*` functions:
-                // - Identified by names that start with "if".
-                // - Requires a case boundary check after "if" to avoid matching lowercase continuations
+                // Function candidates:
+                // - Identified by names that start with "if", followed by a case boundary (next char is not lowercase).
+                //   Requires a case boundary check after "if" to avoid matching lowercase continuations
                 //   like `iffunctionSelector`. Ensures the next character is not lowercase.
                 //   Matches names like `ifOutlined`, `ifFlowDirectionStart`, etc.
+                // - Identified as a function expression or arrow function initializer.
+                // - Identified having at least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
+                // - Identified having a return type of `CssRule` (from `@cssfn/core`).
                 if (
                     !/^if(?![a-z])/.test(name)
                     ||
@@ -497,7 +501,7 @@ export const enforceIfFunctionConventions = createRule({
  * Requirements:
  * - Allowed top-level statements:
  *   - Import declarations.
- *   - Exported selector variables (ending with `Selector`).
+ *   - Exported selector constants/functions (ending with `Selector`).
  *   - Exported `if*` functions.
  *   - Comments.
  * - Disallow any other top-level code.
@@ -548,7 +552,7 @@ export const noForeignCode = createRule({
                     
                     
                     
-                    // Allow named exports of selectors or `if*` helpers:
+                    // Allow named exports of selectors or `if*` functions:
                     if (statement.type === TSESTree.AST_NODE_TYPES.ExportNamedDeclaration) {
                         // Holds the found exported name:
                         let exportedName : string | undefined = undefined;
@@ -579,7 +583,7 @@ export const noForeignCode = createRule({
                         
                         
                         
-                        // Allow `if*` helpers or `*Selector` exports:
+                        // Allow `if*` functions or `*Selector` exports:
                         if ((exportedName !== undefined) && (/^if(?![a-z])/.test(exportedName) || /Selector$/.test(exportedName))) continue;
                     } // if
                     
