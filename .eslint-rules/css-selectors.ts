@@ -705,7 +705,7 @@ export const noForeignCode = createRule({
                         
                         // If there's an exported name, check if it's a selector or `if*` function export:
                         if (exportedName !== undefined) {
-                            // Selector function candidates:
+                            // Selector constant/function candidates:
                             // - Identified by names that end with "Selector".
                             // - No need for a case boundary check before "Selector":
                             //   matches camelCase and PascalCase names like `isOutlinedSelector`, `flowDirectionStartSelector`,
