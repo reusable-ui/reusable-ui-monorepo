@@ -323,7 +323,16 @@ export const enforceIfFunctionConventions = createRule({
          * - At least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
          * - Return type must be `CssRule` (from `@cssfn/core`).
          */
-        const isCandidateIfFunction = (node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression | TSESTree.ArrowFunctionExpression): boolean => {
+        const isCandidateIfFunction = (node:
+            // Function declaration exports:
+            | TSESTree.FunctionDeclaration
+            
+            // TypeScript declare function (overloads):
+            | TSESTree.TSDeclareFunction
+            
+            // Variable declaration exports with function initializers:
+            | TSESTree.FunctionExpression | TSESTree.ArrowFunctionExpression
+        ): boolean => {
             // Ensure the required imports are present:
             if (!isCssStyleCollectionImported) return false;
             if (!isCssRuleImported) return false;
@@ -553,7 +562,16 @@ export const noForeignCode = createRule({
          * - At least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
          * - Return type must be `CssRule` (from `@cssfn/core`).
          */
-        const isCandidateIfFunction = (node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression | TSESTree.ArrowFunctionExpression): boolean => {
+        const isCandidateIfFunction = (node:
+            // Function declaration exports:
+            | TSESTree.FunctionDeclaration
+            
+            // TypeScript declare function (overloads):
+            | TSESTree.TSDeclareFunction
+            
+            // Variable declaration exports with function initializers:
+            | TSESTree.FunctionExpression | TSESTree.ArrowFunctionExpression
+        ): boolean => {
             // Ensure the required imports are present:
             if (!isCssStyleCollectionImported) return false;
             if (!isCssRuleImported) return false;
@@ -664,20 +682,35 @@ export const noForeignCode = createRule({
                         let exportedName : string | undefined = undefined;
                         
                         // Flag to track if this is a function export:
-                        let exportedFunction : TSESTree.FunctionExpression | TSESTree.ArrowFunctionExpression | undefined = undefined;
+                        let exportedFunction :
+                            // Function declaration exports:
+                            | TSESTree.FunctionDeclaration
+                            
+                            // TypeScript declare function (overloads):
+                            | TSESTree.TSDeclareFunction
+                            
+                            // Variable declaration exports with function initializers:
+                            | TSESTree.FunctionExpression | TSESTree.ArrowFunctionExpression
+                            
+                            // Non-function flag:
+                            | undefined
+                            
+                            = undefined;
                         
                         
                         
                         // Function declaration export:
                         if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.FunctionDeclaration) {
-                            exportedName = statement.declaration.id?.name;
+                            exportedName     = statement.declaration.id?.name;
+                            exportedFunction = statement.declaration;
                         } // if
                         
                         
                         
                         // TS declare function (overloads):
                         if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.TSDeclareFunction) {
-                            exportedName = statement.declaration.id?.name;
+                            exportedName     = statement.declaration.id?.name;
+                            exportedFunction = statement.declaration;
                         } // if
                         
                         
