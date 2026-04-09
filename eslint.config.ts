@@ -7,7 +7,7 @@ import globals from 'globals'
 import js from '@eslint/js'
 import { restrictCssVarsUsage } from './.eslint-rules/restrict-cssvars-usage.js'
 import { enforceSelectorConventions, enforceIfFunctionConventions, noForeignCode as noForeignCodeInCssSelectors } from './.eslint-rules/css-selectors.js'
-import { enforceUsesHooks } from './.eslint-rules/enforce-uses-hooks.js'
+import { enforceCssHookConventions, noForeignCode as noForeignCodeInCssHooks } from './.eslint-rules/css-hooks.js'
 
 
 
@@ -125,10 +125,15 @@ export default defineConfig(
                     'no-foreign-code'                 : noForeignCodeInCssSelectors  as unknown as Rule.RuleModule,
                 },
             },
+            'css-hooks': {
+                rules: {
+                    'enforce-css-hook-conventions'    : enforceCssHookConventions    as unknown as Rule.RuleModule,
+                    'no-foreign-code'                 : noForeignCodeInCssHooks      as unknown as Rule.RuleModule,
+                },
+            },
             'eslint-rules': { // Custom internal plugin namespace
                 rules: {
                     'restrict-cssvars-usage' : restrictCssVarsUsage,
-                    'enforce-uses-hooks'     : enforceUsesHooks,
                 },
             },
         },
@@ -188,8 +193,9 @@ export default defineConfig(
             'css-selectors/enforce-selector-conventions'    : 'error',
             'css-selectors/enforce-if-function-conventions' : 'error',
             'css-selectors/no-foreign-code'                 : 'error',
+            'css-hooks/enforce-css-hook-conventions'        : 'error',
+            'css-hooks/no-foreign-code'                     : 'error',
             'eslint-rules/restrict-cssvars-usage'           : 'error',
-            'eslint-rules/enforce-uses-hooks'               : 'error',
         },
     },
 );
