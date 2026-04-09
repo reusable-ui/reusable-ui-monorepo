@@ -323,7 +323,7 @@ export const enforceIfFunctionConventions = createRule({
          * - At least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
          * - Return type must be `CssRule` (from `@cssfn/core`).
          */
-        const isCandidateIfFunction = (node:
+        const isCandidateIfFunction = (functionAnn:
             // Function declaration exports:
             | TSESTree.FunctionDeclaration
             
@@ -340,7 +340,7 @@ export const enforceIfFunctionConventions = createRule({
             
             
             // Identified having a parameter typed as `CssStyleCollection`:
-            if (!node.params.some((param): boolean => {
+            if (!functionAnn.params.some((param): boolean => {
                 if (param.type !== TSESTree.AST_NODE_TYPES.Identifier) return false;
                 
                 
@@ -365,7 +365,7 @@ export const enforceIfFunctionConventions = createRule({
             
             
             // Identified having return type `CssRule`:
-            const returnAnn = node.returnType?.typeAnnotation;
+            const returnAnn = functionAnn.returnType?.typeAnnotation;
             if (
                 !returnAnn
                 ||
@@ -562,7 +562,7 @@ export const noForeignCode = createRule({
          * - At least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
          * - Return type must be `CssRule` (from `@cssfn/core`).
          */
-        const isCandidateIfFunction = (node:
+        const isCandidateIfFunction = (functionAnn:
             // Function declaration exports:
             | TSESTree.FunctionDeclaration
             
@@ -579,7 +579,7 @@ export const noForeignCode = createRule({
             
             
             // Identified having a parameter typed as `CssStyleCollection`:
-            if (!node.params.some((param): boolean => {
+            if (!functionAnn.params.some((param): boolean => {
                 if (param.type !== TSESTree.AST_NODE_TYPES.Identifier) return false;
                 
                 
@@ -604,7 +604,7 @@ export const noForeignCode = createRule({
             
             
             // Identified having return type `CssRule`:
-            const returnAnn = node.returnType?.typeAnnotation;
+            const returnAnn = functionAnn.returnType?.typeAnnotation;
             if (
                 !returnAnn
                 ||
@@ -681,8 +681,8 @@ export const noForeignCode = createRule({
                         // Hold the found exported name for validation:
                         let exportedName : string | undefined = undefined;
                         
-                        // Flag to track if this is a function export:
-                        let exportedFunction :
+                        // Hold the found function annotation for later validation:
+                        let functionAnn :
                             // Function declaration exports:
                             | TSESTree.FunctionDeclaration
                             
@@ -701,16 +701,16 @@ export const noForeignCode = createRule({
                         
                         // Function declaration export:
                         if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.FunctionDeclaration) {
-                            exportedName     = statement.declaration.id?.name;
-                            exportedFunction = statement.declaration;
+                            exportedName = statement.declaration.id?.name;
+                            functionAnn  = statement.declaration;
                         } // if
                         
                         
                         
                         // TS declare function (overloads):
                         if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.TSDeclareFunction) {
-                            exportedName     = statement.declaration.id?.name;
-                            exportedFunction = statement.declaration;
+                            exportedName = statement.declaration.id?.name;
+                            functionAnn  = statement.declaration;
                         } // if
                         
                         
@@ -729,7 +729,7 @@ export const noForeignCode = createRule({
                                     &&
                                     ((firstDeclarator.init.type === TSESTree.AST_NODE_TYPES.FunctionExpression) || (firstDeclarator.init.type === TSESTree.AST_NODE_TYPES.ArrowFunctionExpression))
                                 ) {
-                                    exportedFunction = firstDeclarator.init;
+                                    functionAnn = firstDeclarator.init;
                                 } // if
                             } // if
                         } // if
@@ -754,7 +754,7 @@ export const noForeignCode = createRule({
                             //   Matches names like `ifOutlined`, `ifFlowDirectionStart`, etc.
                             // - Identified having at least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
                             // - Identified having a return type of `CssRule` (from `@cssfn/core`).
-                            if (/^if(?![a-z])/.test(exportedName) && exportedFunction && isCandidateIfFunction(exportedFunction)) continue;
+                            if (/^if(?![a-z])/.test(exportedName) && functionAnn && isCandidateIfFunction(functionAnn)) continue;
                         } // if
                     } // if
                     
