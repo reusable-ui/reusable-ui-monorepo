@@ -213,7 +213,6 @@ export const enforceVariableConventions = createRule({
                             // Enforce implicit type annotation from `cssVars()`'s return type:
                             if (!isCssVarsFunctionImported || !node.init || (node.init.type !== TSESTree.AST_NODE_TYPES.CallExpression) || (node.init.callee.type !== TSESTree.AST_NODE_TYPES.Identifier) || (node.init.callee.name !== 'cssVars')) {
                                 context.report({ node: id, messageId: 'wrongType' });
-                                if (node.init) context.report({ node: node.init, messageId: 'wrongType' });
                             } // if
                         } // if
                     } // if
@@ -435,7 +434,7 @@ export const noForeignCode = createRule({
                         
                         
                         // Validate each binding item:
-                        for (const { id, value } of bindingInitializerList) {
+                        for (const { id } of bindingInitializerList) {
                             // If there's no identifier (shouldn't happen for valid exports), skip it:
                             if (!id) continue;
                             
@@ -468,7 +467,6 @@ export const noForeignCode = createRule({
                             // - If there's no initializer (e.g. for function declarations), report the identifier itself.
                             // - If there's an initializer, report it to indicate the problematic code.
                             context.report({ node: id, messageId: 'foreignCode' });
-                            if (value && (value !== id)) context.report({ node: value, messageId: 'foreignCode' });
                         } // for
                     } // if
                 } // for
