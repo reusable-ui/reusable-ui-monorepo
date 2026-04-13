@@ -1,6 +1,7 @@
 import path from 'path'
 import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
+import { type BindingInitializer, collectBindingInitializers } from './binding-initializers.js'
 
 
 
@@ -11,7 +12,7 @@ const createRule = ESLintUtils.RuleCreator(
 
 
 /**
- * ESLint rule: enforce-css-hook-conventions
+ * ESLint rule: enforce-hook-conventions
  * 
  * Purpose:
  * - Ensure CSS hooks (`uses*` identifiers) are functions.
@@ -30,8 +31,8 @@ const createRule = ESLintUtils.RuleCreator(
  * - Prevents accidental assignment of non-function values to CSS hooks (`uses*`) identifiers.
  * - Centralizes CSS hooks for discoverability.
  */
-export const enforceCssHookConventions = createRule({
-    name : 'enforce-css-hook-conventions',
+export const enforceHookConventions = createRule({
+    name : 'enforce-hook-conventions',
     meta : {
         type     : 'problem',
         docs     : {
@@ -40,7 +41,7 @@ export const enforceCssHookConventions = createRule({
         schema   : [], // no options accepted
         messages : {
             wrongFile : 'CSS hooks must be declared in `css-hooks.ts` or `css-internal-hooks.ts`.',
-            wrongType : 'CSS hooks must be functions (declaration, function expression, or arrow function).',
+            wrongType : 'CSS hooks must be functions (function declaration, function expression, or arrow function).',
         },
     },
     create(context) {
@@ -85,48 +86,56 @@ export const enforceCssHookConventions = createRule({
             
             /**
              * Inspect variable declarations.
-             * Handles CSS hooks as `uses*` function expressions or arrow functions.
+             * Handles CSS hooks as function expressions or arrow functions.
              */
             VariableDeclarator(node) {
-                // Ensure the variable has an identifier name:
-                if (!node.id || (node.id.type !== TSESTree.AST_NODE_TYPES.Identifier)) return;
+                // Collect all binding identifiers and their initializers for validation:
+                const bindingInitializerList = collectBindingInitializers(node);
                 
                 
                 
-                // Store the variable name for easy access:
-                const name = node.id.name;
-                
-                
-                
-                // CSS hook candidates:
-                // - Identified by names that start with "uses", followed by a case boundary (next char is not lowercase).
-                //   Requires a case boundary check after "uses" to avoid matching lowercase continuations
-                //   like `usesfunnyStyle`. Ensures the next character is not lowercase.
-                //   Matches names like `usesBoldStyle`, `usesBackgroundFeature`, etc.
-                if (!/^uses(?![a-z])/.test(name)) return;
-                
-                
-                
-                // Enforce function type:
-                // - Must be a function expression or arrow function.
-                if (
-                    !node.init
-                    ||
-                    !(
-                        node.init.type === TSESTree.AST_NODE_TYPES.FunctionExpression
+                // Validate each binding item:
+                for (const { id, value } of bindingInitializerList) {
+                    // If there's no identifier (shouldn't happen for valid exports), skip it:
+                    if (!id) continue;
+                    
+                    
+                    
+                    // Store the variable name for easy access:
+                    const bindingName = id.name;
+                    
+                    
+                    
+                    // CSS hook candidates:
+                    // - Identified by names that start with "uses", followed by a case boundary (next char is not lowercase).
+                    //   Requires a case boundary check after "uses" to avoid matching lowercase continuations
+                    //   like `usesfunnyStyle`. Ensures the next character is not lowercase.
+                    //   Matches names like `usesBoldStyle`, `usesBackgroundFeature`, etc.
+                    if (!/^uses(?![a-z])/.test(bindingName)) return;
+                    
+                    
+                    
+                    // Enforce function type:
+                    // - Must be a function expression or arrow function.
+                    if (
+                        !value
                         ||
-                        node.init.type === TSESTree.AST_NODE_TYPES.ArrowFunctionExpression
-                    )
-                ) {
-                    context.report({ node, messageId: 'wrongType' });
-                } // if
-                
-                
-                
-                // Enforce file location:
-                if (!isExpectedModule) {
-                    context.report({ node, messageId: 'wrongFile' });
-                } // if
+                        !(
+                            value.type === TSESTree.AST_NODE_TYPES.FunctionExpression
+                            ||
+                            value.type === TSESTree.AST_NODE_TYPES.ArrowFunctionExpression
+                        )
+                    ) {
+                        context.report({ node: id, messageId: 'wrongType' });
+                    } // if
+                    
+                    
+                    
+                    // Enforce file location:
+                    if (!isExpectedModule) {
+                        context.report({ node: id, messageId: 'wrongFile' });
+                    } // if
+                } // for
             },
         };
     },
@@ -198,57 +207,74 @@ export const noForeignCode = createRule({
                     
                     
                     
-                    // Allow named exports of `uses*` identifiers:
+                    // Allow named exports of CSS hooks:
                     if (statement.type === TSESTree.AST_NODE_TYPES.ExportNamedDeclaration) {
-                        // Hold the found exported name for validation:
-                        let exportedName : string | undefined = undefined;
+                        // Collect all binding identifiers and their initializers for validation:
+                        const bindingInitializerList : Array<BindingInitializer> = [];
                         
                         
                         
                         // Function declaration export:
                         if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.FunctionDeclaration) {
-                            exportedName = statement.declaration.id?.name;
+                            bindingInitializerList.push({
+                                id    : statement.declaration.id,
+                                value : statement.declaration,
+                            });
                         } // if
                         
                         
                         
                         // TS declare function (overloads):
                         if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.TSDeclareFunction) {
-                            exportedName = statement.declaration.id?.name;
+                            bindingInitializerList.push({
+                                id    : statement.declaration.id,
+                                value : statement.declaration,
+                            });
                         } // if
                         
                         
                         
                         // Variable declaration export:
                         if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.VariableDeclaration) {
-                            const firstDeclarator = statement.declaration.declarations[0];
-                            if (firstDeclarator?.id.type === TSESTree.AST_NODE_TYPES.Identifier) {
-                                exportedName = firstDeclarator.id.name;
-                            } // if
+                            bindingInitializerList.push(...collectBindingInitializers(statement.declaration.declarations));
                         } // if
                         
                         
                         
-                        // If there's an exported name, check if it's a `uses*` identifier export:
-                        if (exportedName !== undefined) {
+                        // Validate each binding item:
+                        for (const { id } of bindingInitializerList) {
+                            // If there's no identifier (shouldn't happen for valid exports), skip it:
+                            if (!id) continue;
+                            
+                            
+                            
+                            // Get the binding name for easy access:
+                            const bindingName = id.name;
+                            
+                            
+                            
                             // CSS hook candidates:
                             // - Identified by names that start with "uses", followed by a case boundary (next char is not lowercase).
                             //   Requires a case boundary check after "uses" to avoid matching lowercase continuations
                             //   like `usesfunnyStyle`. Ensures the next character is not lowercase.
                             //   Matches names like `usesBoldStyle`, `usesBackgroundFeature`, etc.
-                            if (/^uses(?![a-z])/.test(exportedName)) continue;
-                        } // if
+                            if (/^uses(?![a-z])/.test(bindingName)) continue;
+                            
+                            
+                            
+                            // Allow top-level comments (they don't appear as statements in AST)
+                            // Comments are handled separately
+                            
+                            
+                            
+                            // Reject everything else:
+                            
+                            // Report the identifier node for better error highlighting:
+                            // - If there's no initializer (e.g. for function declarations), report the identifier itself.
+                            // - If there's an initializer, report it to indicate the problematic code.
+                            context.report({ node: id, messageId: 'foreignCode' });
+                        } // for
                     } // if
-                    
-                    
-                    
-                    // Allow top-level comments (they don't appear as statements in AST)
-                    // Comments are handled separately
-                    
-                    
-                    
-                    // Reject everything else:
-                    context.report({ node: statement, messageId: 'foreignCode' });
                 } // for
             },
         };

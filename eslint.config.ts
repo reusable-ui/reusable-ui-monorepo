@@ -6,7 +6,7 @@ import pluginReact from 'eslint-plugin-react'
 import globals from 'globals'
 import js from '@eslint/js'
 import { enforceSelectorConventions, enforceIfFunctionConventions, noForeignCode as noForeignCodeInCssSelectors } from './.eslint-rules/css-selectors.js'
-import { enforceCssHookConventions, noForeignCode as noForeignCodeInCssHooks } from './.eslint-rules/css-hooks.js'
+import { enforceHookConventions, noForeignCode as noForeignCodeInCssHooks } from './.eslint-rules/css-hooks.js'
 import { enforceVariableConventions, enforceCssVarsFunctionUsage, noForeignCode as noForeignCodeInCssVars } from './.eslint-rules/css-variables.js'
 
 
@@ -127,7 +127,7 @@ export default defineConfig(
             },
             'css-hooks': {
                 rules: {
-                    'enforce-css-hook-conventions'    : enforceCssHookConventions    as unknown as Rule.RuleModule,
+                    'enforce-hook-conventions'        : enforceHookConventions       as unknown as Rule.RuleModule,
                     'no-foreign-code'                 : noForeignCodeInCssHooks      as unknown as Rule.RuleModule,
                 },
             },
@@ -195,7 +195,7 @@ export default defineConfig(
             'css-selectors/enforce-selector-conventions'    : 'error',
             'css-selectors/enforce-if-function-conventions' : 'error',
             'css-selectors/no-foreign-code'                 : 'error',
-            'css-hooks/enforce-css-hook-conventions'        : 'error',
+            'css-hooks/enforce-hook-conventions'            : 'error',
             'css-hooks/no-foreign-code'                     : 'error',
             'css-variables/enforce-variable-conventions'    : 'error',
             'css-variables/enforce-cssvars-function-usage'  : 'error',
