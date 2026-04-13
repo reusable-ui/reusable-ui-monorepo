@@ -5,9 +5,9 @@ import tseslint from 'typescript-eslint'
 import pluginReact from 'eslint-plugin-react'
 import globals from 'globals'
 import js from '@eslint/js'
-import { restrictCssVarsUsage } from './.eslint-rules/restrict-cssvars-usage.js'
 import { enforceSelectorConventions, enforceIfFunctionConventions, noForeignCode as noForeignCodeInCssSelectors } from './.eslint-rules/css-selectors.js'
 import { enforceCssHookConventions, noForeignCode as noForeignCodeInCssHooks } from './.eslint-rules/css-hooks.js'
+import { enforceVariableConventions, enforceCssVarsFunctionUsage, noForeignCode as noForeignCodeInCssVars } from './.eslint-rules/css-variables.js'
 
 
 
@@ -21,7 +21,7 @@ import { enforceCssHookConventions, noForeignCode as noForeignCodeInCssHooks } f
  * Notes:
  * - Always place overrides *after* recommended configs so they take precedence.
  * - Disable base JS rules that conflict with TypeScript constructs (overloads, generics).
- * - Custom internal rules live in `.eslint-rules/` and are registered under `eslint-rules`.
+ * - Custom internal rules live in `.eslint-rules/`.
  */
 export default defineConfig(
     // 1. Base recommended configs:
@@ -131,9 +131,11 @@ export default defineConfig(
                     'no-foreign-code'                 : noForeignCodeInCssHooks      as unknown as Rule.RuleModule,
                 },
             },
-            'eslint-rules': { // Custom internal plugin namespace
+            'css-variables': {
                 rules: {
-                    'restrict-cssvars-usage' : restrictCssVarsUsage,
+                    'enforce-variable-conventions'    : enforceVariableConventions    as unknown as Rule.RuleModule,
+                    'enforce-cssvars-function-usage'  : enforceCssVarsFunctionUsage   as unknown as Rule.RuleModule,
+                    'no-foreign-code'                 : noForeignCodeInCssVars        as unknown as Rule.RuleModule,
                 },
             },
         },
@@ -195,7 +197,9 @@ export default defineConfig(
             'css-selectors/no-foreign-code'                 : 'error',
             'css-hooks/enforce-css-hook-conventions'        : 'error',
             'css-hooks/no-foreign-code'                     : 'error',
-            'eslint-rules/restrict-cssvars-usage'           : 'error',
+            'css-variables/enforce-variable-conventions'    : 'error',
+            'css-variables/enforce-cssvars-function-usage'  : 'error',
+            'css-variables/no-foreign-code'                 : 'error',
         },
     },
 );
