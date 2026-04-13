@@ -165,7 +165,7 @@ export const enforceVariableConventions = createRule({
              * Inspect variable declarations.
              * Handles CSS variable constants.
              */
-            VariableDeclarator(node: TSESTree.VariableDeclarator) {
+            VariableDeclarator(node) {
                 // Collect all binding identifiers and their initializers for validation:
                 const bindingInitializerList = collectBindingInitializers(node);
                 
