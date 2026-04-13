@@ -1,6 +1,7 @@
 import path from 'path'
 import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
+import { type BindingInitializer, collectBindingInitializers } from './binding-initializers.js'
 
 
 
@@ -15,18 +16,18 @@ const createRule = ESLintUtils.RuleCreator(
  * 
  * Purpose:
  * - Enforce naming and typing conventions for CSS selector constants and functions.
- * - Ensure selectors are centralized in the correct files.
+ * - Ensure CSS selectors are centralized in the correct files.
  * 
  * Requirements:
  * - Start with `is`, `not`, or `was`, followed by PascalCase, and end with `Selector`.
  * - Must be declared only in `css-selectors.ts` or `css-internal-selectors.ts`.
  * - Selector constants:
  *   - Must be typed as `CssSelectorCollection` (imported from `@cssfn/core`).
- * - Selector functions (arrow, function expression, or declaration):
+ * - Selector functions (function declaration, function expression, or arrow function):
  *   - Must return `CssSelectorCollection` (imported from `@cssfn/core`).
  *   - Must have at least one parameter (unparameterized functions should be constants instead).
  * 
- * Selector candidates:
+ * CSS selector candidates:
  * - Identified by names that end with "Selector".
  * 
  * Examples:
@@ -36,23 +37,23 @@ const createRule = ESLintUtils.RuleCreator(
  * - Arrow function: `export const isBareOfSelector = <T>(param: T): CssSelectorCollection => ...`
  * 
  * Why:
- * - Prevents scattering inconsistent selector definitions across the codebase.
+ * - Prevents scattering inconsistent CSS selector definitions across the codebase.
  * - Ensures type safety and readability by enforcing correct imports and naming conventions.
- * - Centralizes selector definitions for discoverability.
+ * - Centralizes CSS selector definitions for discoverability.
  */
 export const enforceSelectorConventions = createRule({
     name : 'enforce-selector-conventions',
     meta: {
         type: 'problem',
         docs: {
-            description : 'Require selector constants/functions to be correctly named, typed, and declared only in `css-selectors.ts` or `css-internal-selectors.ts`.',
+            description : 'Require CSS selector constants/functions to be correctly named, typed, and declared only in `css-selectors.ts` or `css-internal-selectors.ts`.',
         },
         schema: [], // no options accepted
         messages: {
-            wrongFile : 'Selectors must be declared in `css-selectors.ts` or `css-internal-selectors.ts`.',
-            wrongType : 'Selectors must be typed or return `CssSelectorCollection` from `@cssfn/core`.',
-            wrongName : 'Selector names must start with `is`/`not`/`was` and end with `Selector`.',
-            noParams  : 'Selector functions must have at least one parameter. Use a constant instead.',
+            wrongFile : 'CSS selectors must be declared in `css-selectors.ts` or `css-internal-selectors.ts`.',
+            wrongType : 'CSS selectors must be typed or return `CssSelectorCollection` from `@cssfn/core`.',
+            wrongName : 'CSS selector names must start with `is`/`not`/`was` and end with `Selector`.',
+            noParams  : 'CSS selector functions must have at least one parameter. Use a constant instead.',
         },
     },
     
@@ -93,7 +94,7 @@ export const enforceSelectorConventions = createRule({
         };
         
         /**
-         * Validates naming convention for selectors.
+         * Validates naming convention for CSS selectors.
          * 
          * Requirements:
          * - Must start with one of: `is`, `not`, or `was`.
@@ -141,7 +142,7 @@ export const enforceSelectorConventions = createRule({
             
             /**
              * Inspect function declarations.
-             * Handles selector functions.
+             * Handles CSS selector functions.
              */
             FunctionDeclaration(node) {
                 // Ensure the function has an identifier name:
@@ -154,7 +155,7 @@ export const enforceSelectorConventions = createRule({
                 
                 
                 
-                // Selector function candidates:
+                // CSS selector candidates:
                 // - Identified by names that end with "Selector".
                 // - No need for a case boundary check before "Selector":
                 //   matches camelCase and PascalCase names like `isOutlinedSelector`, `flowDirectionStartSelector`,
@@ -194,69 +195,77 @@ export const enforceSelectorConventions = createRule({
             
             /**
              * Inspect variable declarations.
-             * Handles selector constants.
+             * Handles CSS selector as constants, function expressions, or arrow functions.
              */
             VariableDeclarator(node) {
-                // Ensure the variable has an identifier name:
-                if (!node.id || (node.id.type !== TSESTree.AST_NODE_TYPES.Identifier)) return;
+                // Collect all binding identifiers and their initializers for validation:
+                const bindingInitializerList = collectBindingInitializers(node);
                 
                 
                 
-                // Store the variable name for easy access:
-                const name = node.id.name;
-                
-                
-                
-                // Selector constant candidates:
-                // - Identified by names that end with "Selector".
-                // - No need for a case boundary check before "Selector":
-                //   matches camelCase and PascalCase names like `isOutlinedSelector`, `flowDirectionStartSelector`,
-                //   and even acronym-based names like `isSomeCSSSelector`.
-                if (!/Selector$/.test(name)) return;
-                
-                
-                
-                // Enforce naming convention:
-                if (!isValidSelectorName(name)) {
-                    context.report({ node, messageId: 'wrongName' });
-                } // if
-                
-                
-                
-                // Case 1: Function initializer (either arrow or function expression):
-                // - Example function expression : `export const isBareOfSelector = function<T>(param: T): CssSelectorCollection { ... }`
-                // - Example arrow function      : `export const isBareOfSelector = <T>(param: T): CssSelectorCollection => ...`
-                if (node.init && ((node.init.type === TSESTree.AST_NODE_TYPES.FunctionExpression) || (node.init.type === TSESTree.AST_NODE_TYPES.ArrowFunctionExpression))) {
-                    // Enforce return type annotation on the function itself:
-                    if (!isValidReturnType(node.init.returnType?.typeAnnotation)) {
-                        context.report({ node, messageId: 'wrongType' });
+                // Validate each binding item:
+                for (const { id, value } of bindingInitializerList) {
+                    // If there's no identifier (shouldn't happen for valid exports), skip it:
+                    if (!id) continue;
+                    
+                    
+                    
+                    // Store the variable name for easy access:
+                    const bindingName = id.name;
+                    
+                    
+                    
+                    // CSS selector candidates:
+                    // - Identified by names that end with "Selector".
+                    // - No need for a case boundary check before "Selector":
+                    //   matches camelCase and PascalCase names like `isOutlinedSelector`, `flowDirectionStartSelector`,
+                    //   and even acronym-based names like `isSomeCSSSelector`.
+                    if (!/Selector$/.test(bindingName)) return;
+                    
+                    
+                    
+                    // Enforce naming convention:
+                    if (!isValidSelectorName(bindingName)) {
+                        context.report({ node: id, messageId: 'wrongName' });
                     } // if
                     
                     
                     
-                    // Enforce at least one parameter:
-                    if (node.init.params.length === 0) {
-                        context.report({ node, messageId: 'noParams' });
+                    // Case 1: Function initializer (either arrow or function expression):
+                    // - Example function expression : `export const isBareOfSelector = function<T>(param: T): CssSelectorCollection { ... }`
+                    // - Example arrow function      : `export const isBareOfSelector = <T>(param: T): CssSelectorCollection => ...`
+                    if (value && ((value.type === TSESTree.AST_NODE_TYPES.FunctionExpression) || (value.type === TSESTree.AST_NODE_TYPES.ArrowFunctionExpression))) {
+                        // Enforce return type annotation on the function itself:
+                        if (!isValidReturnType(value.returnType?.typeAnnotation)) {
+                            context.report({ node: id, messageId: 'wrongType' });
+                        } // if
+                        
+                        
+                        
+                        // Enforce at least one parameter:
+                        if (value.params.length === 0) {
+                            context.report({ node: id, messageId: 'noParams' });
+                        } // if
                     } // if
-                } // if
-                
-                
-                
-                // Case 2: Constant initializer (string literal, etc.):
-                // - Example: `export const isBareSelector: CssSelectorCollection = '.is-bare'`
-                else {
-                    // Enforce type annotation on the variable identifier:
-                    if (!isValidReturnType(node.id.typeAnnotation?.typeAnnotation)) {
-                        context.report({ node, messageId: 'wrongType' });
+                    
+                    
+                    
+                    // Case 2: Constant initializer (string literal, etc.):
+                    // - Example: `export const isBareSelector: CssSelectorCollection = '.is-bare'`
+                    else {
+                        // Enforce type annotation on the variable identifier:
+                        if (!isValidReturnType(id.typeAnnotation?.typeAnnotation)) {
+                            context.report({ node: id, messageId: 'wrongType' });
+                        } // if
                     } // if
-                } // if
-                
-                
-                
-                // Enforce file location:
-                if (!isExpectedModule) {
-                    context.report({ node, messageId: 'wrongFile' });
-                } // if
+                    
+                    
+                    
+                    // Enforce file location:
+                    if (!isExpectedModule) {
+                        context.report({ node: id, messageId: 'wrongFile' });
+                    } // if
+                } // for
             },
         };
     },
@@ -323,19 +332,23 @@ export const enforceIfFunctionConventions = createRule({
          * - At least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
          * - Return type must be `CssRule` (from `@cssfn/core`).
          */
-        const isCandidateIfFunction = (functionAnn:
-            // Function declaration exports:
-            | TSESTree.FunctionDeclaration
-            
-            // TypeScript declare function (overloads):
-            | TSESTree.TSDeclareFunction
-            
-            // Variable declaration exports with function initializers:
-            | TSESTree.FunctionExpression | TSESTree.ArrowFunctionExpression
-        ): boolean => {
+        const isCandidateIfFunction = (functionAnn: TSESTree.Node): boolean => {
             // Ensure the required imports are present:
             if (!isCssStyleCollectionImported) return false;
             if (!isCssRuleImported) return false;
+            
+            
+            
+            // Ensure the node is a function declaration, function overload, function expression, or arrow function:
+            if (!(
+                functionAnn.type === TSESTree.AST_NODE_TYPES.FunctionDeclaration
+                ||
+                functionAnn.type === TSESTree.AST_NODE_TYPES.TSDeclareFunction
+                ||
+                functionAnn.type === TSESTree.AST_NODE_TYPES.FunctionExpression
+                ||
+                functionAnn.type === TSESTree.AST_NODE_TYPES.ArrowFunctionExpression
+            )) return false;
             
             
             
@@ -458,40 +471,48 @@ export const enforceIfFunctionConventions = createRule({
              * Handles `if*` functions.
              */
             VariableDeclarator(node) {
-                // Ensure the variable has an identifier name:
-                if (!node.id || (node.id.type !== TSESTree.AST_NODE_TYPES.Identifier)) return;
+                // Collect all binding identifiers and their initializers for validation:
+                const bindingInitializerList = collectBindingInitializers(node);
                 
                 
                 
-                // Store the variable name for easy access:
-                const name = node.id.name;
-                
-                
-                
-                // Function candidates:
-                // - Identified by names that start with "if", followed by a case boundary (next char is not lowercase).
-                //   Requires a case boundary check after "if" to avoid matching lowercase continuations
-                //   like `iffunctionSelector`. Ensures the next character is not lowercase.
-                //   Matches names like `ifOutlined`, `ifFlowDirectionStart`, etc.
-                // - Identified as a function expression or arrow function initializer.
-                // - Identified having at least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
-                // - Identified having a return type of `CssRule` (from `@cssfn/core`).
-                if (
-                    !/^if(?![a-z])/.test(name)
-                    ||
-                    !node.init
-                    ||
-                    !((node.init.type === TSESTree.AST_NODE_TYPES.FunctionExpression) || (node.init.type === TSESTree.AST_NODE_TYPES.ArrowFunctionExpression))
-                    ||
-                    !isCandidateIfFunction(node.init)
-                ) return;
-                
-                
-                
-                // Enforce file location:
-                if (!isExpectedModule) {
-                    context.report({ node, messageId: 'wrongFile' });
-                } // if
+                // Validate each binding item:
+                for (const { id, value } of bindingInitializerList) {
+                    // If there's no identifier (shouldn't happen for valid exports), skip it:
+                    if (!id) continue;
+                    
+                    
+                    
+                    // Store the variable name for easy access:
+                    const bindingName = id.name;
+                    
+                    
+                    
+                    // Function candidates:
+                    // - Identified by names that start with "if", followed by a case boundary (next char is not lowercase).
+                    //   Requires a case boundary check after "if" to avoid matching lowercase continuations
+                    //   like `iffunctionSelector`. Ensures the next character is not lowercase.
+                    //   Matches names like `ifOutlined`, `ifFlowDirectionStart`, etc.
+                    // - Identified as a function expression or arrow function initializer.
+                    // - Identified having at least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
+                    // - Identified having a return type of `CssRule` (from `@cssfn/core`).
+                    if (
+                        !/^if(?![a-z])/.test(bindingName)
+                        ||
+                        !value
+                        ||
+                        !((value.type === TSESTree.AST_NODE_TYPES.FunctionExpression) || (value.type === TSESTree.AST_NODE_TYPES.ArrowFunctionExpression))
+                        ||
+                        !isCandidateIfFunction(value)
+                    ) return;
+                    
+                    
+                    
+                    // Enforce file location:
+                    if (!isExpectedModule) {
+                        context.report({ node: id, messageId: 'wrongFile' });
+                    } // if
+                } // for
             },
         };
     },
@@ -509,35 +530,35 @@ export const enforceIfFunctionConventions = createRule({
  * Requirements:
  * - Allowed top-level statements:
  *   - Import declarations.
- *   - Exported selector constants/functions (ending with `Selector`).
+ *   - Exported CSS selector constants/functions (ending with `Selector`).
  *   - Exported `if*` functions which accept `CssStyleCollection` and return `CssRule` from `@cssfn/core`.
  *   - Comments.
  * - Disallow any other top-level code.
  * - Disallow general `if*` functions that do not match the required signature.
  * 
- * Selector candidates:
+ * CSS selector candidates:
  * - Identified by names that end with "Selector".
  * 
- * `*if` Function candidates:
+ * `if*` function candidates:
  * - Identified by names that start with "if", followed by a case boundary (next char is not lowercase).
  * - Identified as a function declaration, function expression, or arrow function.
  * - Identified having at least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
  * - Identified having a return type of `CssRule` (from `@cssfn/core`).
  * 
  * Why:
- * - Keeps selector modules clean and focused.
- * - Improves maintainability by restricting logic to proper selector-related logics only.
+ * - Keeps CSS selector modules clean and focused.
+ * - Improves maintainability by restricting logic to proper CSS-selector-related logics only.
  */
 export const noForeignCode = createRule({
     name : 'no-foreign-code',
     meta: {
         type: 'problem',
         docs: {
-            description : 'Disallow arbitrary code in `css-selectors.ts` and `css-internal-selectors.ts`. Only imports, selector exports, `if*` function exports, and comments are allowed.',
+            description : 'Disallow arbitrary code in `css-selectors.ts` and `css-internal-selectors.ts`. Only imports, CSS selector exports, `if*` function exports, and comments are allowed.',
         },
         schema: [], // no options accepted
         messages: {
-            foreignCode : 'Only imports, selector exports, `if*` function exports, and comments are allowed in `css-selectors.ts` / `css-internal-selectors.ts`. Move supporting code to separate modules.',
+            foreignCode : 'Only imports, CSS selector exports, `if*` function exports, and comments are allowed in `css-selectors.ts` / `css-internal-selectors.ts`. Move supporting code to separate modules.',
         },
     },
     create(context) {
@@ -562,19 +583,23 @@ export const noForeignCode = createRule({
          * - At least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
          * - Return type must be `CssRule` (from `@cssfn/core`).
          */
-        const isCandidateIfFunction = (functionAnn:
-            // Function declaration exports:
-            | TSESTree.FunctionDeclaration
-            
-            // TypeScript declare function (overloads):
-            | TSESTree.TSDeclareFunction
-            
-            // Variable declaration exports with function initializers:
-            | TSESTree.FunctionExpression | TSESTree.ArrowFunctionExpression
-        ): boolean => {
+        const isCandidateIfFunction = (functionAnn: TSESTree.Node): boolean => {
             // Ensure the required imports are present:
             if (!isCssStyleCollectionImported) return false;
             if (!isCssRuleImported) return false;
+            
+            
+            
+            // Ensure the node is a function declaration, function overload, function expression, or arrow function:
+            if (!(
+                functionAnn.type === TSESTree.AST_NODE_TYPES.FunctionDeclaration
+                ||
+                functionAnn.type === TSESTree.AST_NODE_TYPES.TSDeclareFunction
+                ||
+                functionAnn.type === TSESTree.AST_NODE_TYPES.FunctionExpression
+                ||
+                functionAnn.type === TSESTree.AST_NODE_TYPES.ArrowFunctionExpression
+            )) return false;
             
             
             
@@ -676,97 +701,85 @@ export const noForeignCode = createRule({
                     
                     
                     
-                    // Allow named exports of selectors or `if*` functions:
+                    // Allow named exports of CSS selectors or `if*` functions:
                     if (statement.type === TSESTree.AST_NODE_TYPES.ExportNamedDeclaration) {
-                        // Hold the found exported name for validation:
-                        let exportedName : string | undefined = undefined;
-                        
-                        // Hold the found function annotation for later validation:
-                        let functionAnn :
-                            // Function declaration exports:
-                            | TSESTree.FunctionDeclaration
-                            
-                            // TypeScript declare function (overloads):
-                            | TSESTree.TSDeclareFunction
-                            
-                            // Variable declaration exports with function initializers:
-                            | TSESTree.FunctionExpression | TSESTree.ArrowFunctionExpression
-                            
-                            // Non-function flag:
-                            | undefined
-                            
-                            = undefined;
+                        // Collect all binding identifiers and their initializers for validation:
+                        const bindingInitializerList : Array<BindingInitializer> = [];
                         
                         
                         
                         // Function declaration export:
                         if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.FunctionDeclaration) {
-                            exportedName = statement.declaration.id?.name;
-                            functionAnn  = statement.declaration;
+                            bindingInitializerList.push({
+                                id    : statement.declaration.id,
+                                value : statement.declaration,
+                            });
                         } // if
                         
                         
                         
                         // TS declare function (overloads):
                         if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.TSDeclareFunction) {
-                            exportedName = statement.declaration.id?.name;
-                            functionAnn  = statement.declaration;
+                            bindingInitializerList.push({
+                                id    : statement.declaration.id,
+                                value : statement.declaration,
+                            });
                         } // if
                         
                         
                         
                         // Variable declaration export:
                         if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.VariableDeclaration) {
-                            const firstDeclarator = statement.declaration.declarations[0];
-                            if (firstDeclarator?.id.type === TSESTree.AST_NODE_TYPES.Identifier) {
-                                exportedName = firstDeclarator.id.name;
-                                
-                                
-                                
-                                // If the variable is initialized with a function expression or arrow function, store it for later checks:
-                                if (
-                                    firstDeclarator.init
-                                    &&
-                                    ((firstDeclarator.init.type === TSESTree.AST_NODE_TYPES.FunctionExpression) || (firstDeclarator.init.type === TSESTree.AST_NODE_TYPES.ArrowFunctionExpression))
-                                ) {
-                                    functionAnn = firstDeclarator.init;
-                                } // if
-                            } // if
+                            bindingInitializerList.push(...collectBindingInitializers(statement.declaration.declarations));
                         } // if
                         
                         
                         
-                        // If there's an exported name, check if it's a selector or `if*` function export:
-                        if (exportedName !== undefined) {
-                            // Selector constant/function candidates:
+                        // Validate each binding item:
+                        for (const { id, value } of bindingInitializerList) {
+                            // If there's no identifier (shouldn't happen for valid exports), skip it:
+                            if (!id) continue;
+                            
+                            
+                            
+                            // Get the binding name for easy access:
+                            const bindingName = id.name;
+                            
+                            
+                            
+                            // CSS selector candidates:
                             // - Identified by names that end with "Selector".
                             // - No need for a case boundary check before "Selector":
                             //   matches camelCase and PascalCase names like `isOutlinedSelector`, `flowDirectionStartSelector`,
                             //   and even acronym-based names like `isSomeCSSSelector`.
-                            if (/Selector$/.test(exportedName)) continue;
+                            if (/Selector$/.test(bindingName)) continue;
                             
                             
                             
-                            // Function candidates:
+                            // `if*` function candidates:
                             // - Identified by names that start with "if", followed by a case boundary (next char is not lowercase).
                             //   Requires a case boundary check after "if" to avoid matching lowercase continuations
                             //   like `iffunctionSelector`. Ensures the next character is not lowercase.
                             //   Matches names like `ifOutlined`, `ifFlowDirectionStart`, etc.
                             // - Identified having at least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
                             // - Identified having a return type of `CssRule` (from `@cssfn/core`).
-                            if (/^if(?![a-z])/.test(exportedName) && functionAnn && isCandidateIfFunction(functionAnn)) continue;
-                        } // if
+                            if (/^if(?![a-z])/.test(bindingName) && value && isCandidateIfFunction(value)) continue;
+                            
+                            
+                            
+                            // Allow top-level comments (they don't appear as statements in AST)
+                            // Comments are handled separately
+                            
+                            
+                            
+                            // Reject everything else:
+                            
+                            // Report the identifier node for better error highlighting:
+                            // - If there's no initializer (e.g. for function declarations), report the identifier itself.
+                            // - If there's an initializer, report it to indicate the problematic code.
+                            context.report({ node: id, messageId: 'foreignCode' });
+                        } // for
                     } // if
-                    
-                    
-                    
-                    // Allow top-level comments (they don't appear as statements in AST)
-                    // Comments are handled separately
-                    
-                    
-                    
-                    // Reject everything else:
-                    context.report({ node: statement, messageId: 'foreignCode' });
                 } // for
             },
         };
