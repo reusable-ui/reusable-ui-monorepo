@@ -467,8 +467,8 @@ export const noForeignCode = createRule({
                             // Report the identifier node for better error highlighting:
                             // - If there's no initializer (e.g. for function declarations), report the identifier itself.
                             // - If there's an initializer, report it to indicate the problematic code.
-                            context.report({ node: statement, messageId: 'foreignCode' });
-                            if (value) context.report({ node: value, messageId: 'foreignCode' });
+                            context.report({ node: id, messageId: 'foreignCode' });
+                            if (value && (value !== id)) context.report({ node: value, messageId: 'foreignCode' });
                         } // for
                     } // if
                 } // for
