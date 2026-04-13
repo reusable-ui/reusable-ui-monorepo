@@ -91,16 +91,10 @@ export interface BindingInitializer {
  * - Recursively resolves nested array/object patterns.
  * - Each binding is represented as a `BindingInitializer` entry.
  * 
- * @param declarators Variable declarators (with or without initializers).
+ * @param declarators One or more variable declarators (with or without initializers).
  * @returns Flattened list of binding → initializer mappings.
  */
-export const collectBindingInitializers = (declarators: Array<
-    | TSESTree.VariableDeclaratorNoInit
-    | TSESTree.VariableDeclaratorMaybeInit
-    | TSESTree.VariableDeclaratorDefiniteAssignment
-    | TSESTree.UsingInNormalContextDeclarator
-    | TSESTree.UsingInForOfDeclarator
->): Array<BindingInitializer> => declarators.flatMap((declarator) => {
+export const collectBindingInitializers = (declarators: TSESTree.VariableDeclarator | Array<TSESTree.VariableDeclarator>): Array<BindingInitializer> => (Array.isArray(declarators) ? declarators : [declarators]).flatMap((declarator) => {
     // Get the initializer expression for this variable (may be `null` if uninitialized):
     const correspondingValue = declarator.init;
     
