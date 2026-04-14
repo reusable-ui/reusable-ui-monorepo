@@ -166,7 +166,7 @@ export const enforceHookConventions = createRule({
  * Requirements:
  * - Allowed top-level statements:
  *   - Import declarations.
- *   - Exported CSS hooks (`uses*` functions).
+ *   - CSS hooks (`uses*` functions).
  *   - Comments.
  * - Disallow any other top-level code.
  * 
@@ -183,11 +183,11 @@ export const noForeignCode = createRule({
     meta : {
         type     : 'problem',
         docs     : {
-            description : 'Disallow arbitrary code in `css-hooks.ts` and `css-internal-hooks.ts`. Only imports, CSS hook exports, and comments are allowed.',
+            description : 'Disallow arbitrary code in `css-hooks.ts` and `css-internal-hooks.ts`. Only imports, CSS hooks, and comments are allowed.',
         },
         schema   : [], // no options accepted
         messages : {
-            foreignCode : 'Only imports, CSS hook exports, and comments are allowed in `css-hooks.ts` / `css-internal-hooks.ts`. Move supporting code to separate modules.',
+            foreignCode : 'Only imports, CSS hooks, and comments are allowed in `css-hooks.ts` / `css-internal-hooks.ts`. Move supporting code to separate modules.',
         },
     },
     create(context) {
