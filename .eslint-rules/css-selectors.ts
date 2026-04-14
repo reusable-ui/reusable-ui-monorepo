@@ -555,8 +555,8 @@ export const enforceIfFunctionConventions = createRule({
  * Requirements:
  * - Allowed top-level statements:
  *   - Import declarations.
- *   - Exported CSS selector constants/functions (ending with `Selector`).
- *   - Exported `if*` functions which accept `CssStyleCollection` and return `CssRule` from `@cssfn/core`.
+ *   - CSS selector constants/functions (ending with `Selector`).
+ *   - `if*` functions which accept `CssStyleCollection` and return `CssRule` from `@cssfn/core`.
  *   - Comments.
  * - Disallow any other top-level code.
  * - Disallow general `if*` functions that do not match the required signature.
@@ -579,11 +579,11 @@ export const noForeignCode = createRule({
     meta: {
         type: 'problem',
         docs: {
-            description : 'Disallow arbitrary code in `css-selectors.ts` and `css-internal-selectors.ts`. Only imports, CSS selector exports, `if*` function exports, and comments are allowed.',
+            description : 'Disallow arbitrary code in `css-selectors.ts` and `css-internal-selectors.ts`. Only imports, CSS selectors, `if*` functions, and comments are allowed.',
         },
         schema: [], // no options accepted
         messages: {
-            foreignCode : 'Only imports, CSS selector exports, `if*` function exports, and comments are allowed in `css-selectors.ts` / `css-internal-selectors.ts`. Move supporting code to separate modules.',
+            foreignCode : 'Only imports, CSS selectors, `if*` functions, and comments are allowed in `css-selectors.ts` / `css-internal-selectors.ts`. Move supporting code to separate modules.',
         },
     },
     create(context) {
@@ -688,7 +688,7 @@ export const noForeignCode = createRule({
                 for (const statement of node.body) {
                     // Handle import declarations directly in Program:
                     // - We set flags for imported types here so they are available
-                    //   **before** validating subsequent export statements.
+                    //   **before** validating subsequent statements.
                     if (statement.type === TSESTree.AST_NODE_TYPES.ImportDeclaration) {
                         // Only check imports from `@cssfn/core`:
                         if (statement.source.value !== '@cssfn/core') continue;
