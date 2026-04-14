@@ -2,7 +2,7 @@ import path from 'path'
 import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
 import { collectBindingInitializers, collectTopLevelBindings } from './binding-initializers.js'
-import { isTopLevel } from './scope-utilities.js'
+import { isTopLevel, isExported } from './scope-utilities.js'
 
 
 
@@ -22,6 +22,7 @@ const createRule = ESLintUtils.RuleCreator(
  * Requirements:
  * - Start with `is`, `not`, or `was`, followed by PascalCase, and end with `Selector`.
  * - Must be declared only in `css-selectors.ts` or `css-internal-selectors.ts`.
+ * - Must be exported.
  * - Selector constants:
  *   - Must be typed as `CssSelectorCollection` (imported from `@cssfn/core`).
  * - Selector functions (function declaration, function expression, or arrow function):
@@ -51,10 +52,11 @@ export const enforceSelectorConventions = createRule({
         },
         schema: [], // no options accepted
         messages: {
-            wrongFile : 'CSS selectors must be declared in `css-selectors.ts` or `css-internal-selectors.ts`.',
-            wrongType : 'CSS selectors must be typed or return `CssSelectorCollection` from `@cssfn/core`.',
-            wrongName : 'CSS selector names must start with `is`/`not`/`was` and end with `Selector`.',
-            noParams  : 'CSS selector functions must have at least one parameter. Use a constant instead.',
+            wrongFile   : 'CSS selectors must be declared in `css-selectors.ts` or `css-internal-selectors.ts`.',
+            wrongExport : 'CSS selectors must be exported.',
+            wrongType   : 'CSS selectors must be typed or return `CssSelectorCollection` from `@cssfn/core`.',
+            wrongName   : 'CSS selector names must start with `is`/`not`/`was` and end with `Selector`.',
+            noParams    : 'CSS selector functions must have at least one parameter. Use a constant instead.',
         },
     },
     
@@ -192,6 +194,13 @@ export const enforceSelectorConventions = createRule({
                 
                 
                 
+                // Enforce exported:
+                if (!isExported(node)) {
+                    context.report({ node, messageId: 'wrongExport' });
+                } // if
+                
+                
+                
                 // Enforce file location:
                 if (!isExpectedModule) {
                     context.report({ node, messageId: 'wrongFile' });
@@ -274,6 +283,13 @@ export const enforceSelectorConventions = createRule({
                     
                     
                     
+                    // Enforce exported:
+                    if (!isExported(node)) {
+                        context.report({ node: id, messageId: 'wrongExport' });
+                    } // if
+                    
+                    
+                    
                     // Enforce file location:
                     if (!isExpectedModule) {
                         context.report({ node: id, messageId: 'wrongFile' });
@@ -294,6 +310,7 @@ export const enforceSelectorConventions = createRule({
  * 
  * Requirements:
  * - Must be declared only in `css-selectors.ts` or `css-internal-selectors.ts`.
+ * - Must be exported.
  * 
  * Function candidates:
  * - Identified by names that start with "if", followed by a case boundary (next char is not lowercase).
@@ -318,9 +335,10 @@ export const enforceIfFunctionConventions = createRule({
         },
         schema: [], // no options accepted
         messages: {
-            wrongFile : '`if*` functions must be declared in `css-selectors.ts` or `css-internal-selectors.ts`.',
-            wrongType : '`if*` functions must accept `CssStyleCollection` and return `CssRule` from `@cssfn/core`.',
-            wrongName : '`if*` functions names must start with `if`.',
+            wrongFile   : '`if*` functions must be declared in `css-selectors.ts` or `css-internal-selectors.ts`.',
+            wrongExport : '`if*` functions must be exported.',
+            wrongType   : '`if*` functions must accept `CssStyleCollection` and return `CssRule` from `@cssfn/core`.',
+            wrongName   : '`if*` functions names must start with `if`.',
         },
     },
     create(context) {
@@ -477,6 +495,13 @@ export const enforceIfFunctionConventions = createRule({
                 
                 
                 
+                // Enforce exported:
+                if (!isExported(node)) {
+                    context.report({ node, messageId: 'wrongExport' });
+                } // if
+                
+                
+                
                 // Enforce file location:
                 if (!isExpectedModule) {
                     context.report({ node, messageId: 'wrongFile' });
@@ -530,6 +555,13 @@ export const enforceIfFunctionConventions = createRule({
                         ||
                         !isCandidateIfFunction(value)
                     ) return;
+                    
+                    
+                    
+                    // Enforce exported:
+                    if (!isExported(node)) {
+                        context.report({ node: id, messageId: 'wrongExport' });
+                    } // if
                     
                     
                     
