@@ -1,7 +1,7 @@
 import path from 'path'
 import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
-import { type BindingInitializer, collectBindingInitializers } from './binding-initializers.js'
+import { collectBindingInitializers, collectTopLevelBindings } from './binding-initializers.js'
 import { isTopLevel } from './scope-utilities.js'
 
 
@@ -684,127 +684,49 @@ export const noForeignCode = createRule({
                 
                 
                 
-                // Validate that all top-level statements are allowed:
-                for (const statement of node.body) {
-                    // Allow empty statements (e.g. from semicolons or empty lines):
-                    if (statement.type === TSESTree.AST_NODE_TYPES.EmptyStatement) continue;
+                // Validate all top-level bindings in the file:
+                for (const { id, value } of collectTopLevelBindings(node)) {
+                    // If there's no identifier (shouldn't happen for named bindings), skip it:
+                    if (!id) continue;
                     
                     
                     
-                    // Handle import declarations directly in Program:
-                    // - We set flags for imported types here so they are available
-                    //   **before** validating subsequent export statements.
-                    if (statement.type === TSESTree.AST_NODE_TYPES.ImportDeclaration) {
-                        // Only check imports from `@cssfn/core`:
-                        if (statement.source.value !== '@cssfn/core') continue;
-                        
-                        
-                        
-                        for (const specifier of statement.specifiers) {
-                            // Only consider named imports with identifier references:
-                            if (specifier.type !== TSESTree.AST_NODE_TYPES.ImportSpecifier) continue;
-                            if (specifier.imported.type !== TSESTree.AST_NODE_TYPES.Identifier) continue;
-                            
-                            
-                            
-                            // Check if `CssStyleCollection` is imported:
-                            if (specifier.imported.name === 'CssStyleCollection') {
-                                isCssStyleCollectionImported = true;
-                            } // if
-                            
-                            // Check if `CssRule` is imported:
-                            if (specifier.imported.name === 'CssRule') {
-                                isCssRuleImported = true;
-                            } // if
-                        } // for
-                        
-                        
-                        
-                        // Allow import statements:
-                        continue;
-                    } // if
+                    // Get the binding name for easy access:
+                    const bindingName = id.name;
                     
                     
                     
-                    // Allow named exports of CSS selectors or `if*` functions:
-                    if (statement.type === TSESTree.AST_NODE_TYPES.ExportNamedDeclaration) {
-                        // Collect all binding identifiers and their initializers for validation:
-                        const bindingInitializerList : Array<BindingInitializer> = [];
-                        
-                        
-                        
-                        // Function declaration export:
-                        if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.FunctionDeclaration) {
-                            bindingInitializerList.push({
-                                id    : statement.declaration.id,
-                                value : statement.declaration,
-                            });
-                        } // if
-                        
-                        
-                        
-                        // TS declare function (overloads):
-                        if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.TSDeclareFunction) {
-                            bindingInitializerList.push({
-                                id    : statement.declaration.id,
-                                value : statement.declaration,
-                            });
-                        } // if
-                        
-                        
-                        
-                        // Variable declaration export:
-                        if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.VariableDeclaration) {
-                            bindingInitializerList.push(...collectBindingInitializers(statement.declaration.declarations));
-                        } // if
-                        
-                        
-                        
-                        // Validate each binding item:
-                        for (const { id, value } of bindingInitializerList) {
-                            // If there's no identifier (shouldn't happen for valid exports), skip it:
-                            if (!id) continue;
-                            
-                            
-                            
-                            // Get the binding name for easy access:
-                            const bindingName = id.name;
-                            
-                            
-                            
-                            // CSS selector candidates:
-                            // - Identified by names that end with "Selector".
-                            // - No need for a case boundary check before "Selector":
-                            //   matches camelCase and PascalCase names like `isOutlinedSelector`, `flowDirectionStartSelector`,
-                            //   and even acronym-based names like `isSomeCSSSelector`.
-                            if (/Selector$/.test(bindingName)) continue;
-                            
-                            
-                            
-                            // `if*` function candidates:
-                            // - Identified by names that start with "if", followed by a case boundary (next char is not lowercase).
-                            //   Requires a case boundary check after "if" to avoid matching lowercase continuations
-                            //   like `iffunctionSelector`. Ensures the next character is not lowercase.
-                            //   Matches names like `ifOutlined`, `ifFlowDirectionStart`, etc.
-                            // - Identified having at least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
-                            // - Identified having a return type of `CssRule` (from `@cssfn/core`).
-                            if (/^if(?![a-z])/.test(bindingName) && value && isCandidateIfFunction(value)) continue;
-                            
-                            
-                            
-                            // Allow top-level comments (they don't appear as statements in AST)
-                            // Comments are handled separately
-                            
-                            
-                            
-                            // Reject everything else:
-                            
-                            // Report the identifier node for better error highlighting:
-                            // - If there's no initializer (e.g. for function declarations), report the identifier itself.
-                            // - If there's an initializer, report it to indicate the problematic code.
-                            context.report({ node: id, messageId: 'foreignCode' });
-                        } // for
-                    } // if
+                    // CSS selector candidates:
+                    // - Identified by names that end with "Selector".
+                    // - No need for a case boundary check before "Selector":
+                    //   matches camelCase and PascalCase names like `isOutlinedSelector`, `flowDirectionStartSelector`,
+                    //   and even acronym-based names like `isSomeCSSSelector`.
+                    if (/Selector$/.test(bindingName)) continue;
+                    
+                    
+                    
+                    // `if*` function candidates:
+                    // - Identified by names that start with "if", followed by a case boundary (next char is not lowercase).
+                    //   Requires a case boundary check after "if" to avoid matching lowercase continuations
+                    //   like `iffunctionSelector`. Ensures the next character is not lowercase.
+                    //   Matches names like `ifOutlined`, `ifFlowDirectionStart`, etc.
+                    // - Identified having at least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
+                    // - Identified having a return type of `CssRule` (from `@cssfn/core`).
+                    if (/^if(?![a-z])/.test(bindingName) && value && isCandidateIfFunction(value)) continue;
+                    
+                    
+                    
+                    // Allow top-level comments (they don't appear as statements in AST)
+                    // Comments are handled separately
+                    
+                    
+                    
+                    // Reject everything else:
+                    
+                    // Report the identifier node for better error highlighting:
+                    // - If there's no initializer (e.g. for function declarations), report the identifier itself.
+                    // - If there's an initializer, report it to indicate the problematic code.
+                    context.report({ node: id, messageId: 'foreignCode' });
                 } // for
             },
         };
