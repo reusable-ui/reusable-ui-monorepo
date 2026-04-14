@@ -675,3 +675,99 @@ function* resolveSpreadObjectPropertiesGen(properties: (TSESTree.ObjectLiteralEl
         } // if
     } // for
 }
+
+
+
+/**
+ * Collects all top-level bindings in a Program node.
+ * Excludes imports and empty statements.
+ */
+export const collectTopLevelBindings = (program: TSESTree.Program): Array<BindingInitializer> => {
+    // Hold all collected bindings:
+    const bindings: Array<BindingInitializer> = [];
+    
+    
+    
+    // Walk through each top-level statement in the program:
+    for (const statement of program.body) {
+        // Skip empty statements (semicolons, empty lines):
+        if (statement.type === TSESTree.AST_NODE_TYPES.EmptyStatement) continue;
+        
+        // Skip imports (handled separately):
+        if (statement.type === TSESTree.AST_NODE_TYPES.ImportDeclaration) continue;
+        
+        
+        
+        // Function declarations:
+        if (statement.type === TSESTree.AST_NODE_TYPES.FunctionDeclaration && statement.id) {
+            bindings.push({ id: statement.id, value: statement });
+            continue;
+        } // if
+        
+        // TS declare functions (overloads):
+        if (statement.type === TSESTree.AST_NODE_TYPES.TSDeclareFunction && statement.id) {
+            bindings.push({ id: statement.id, value: statement });
+            continue;
+        } // if
+        
+        // Class declarations:
+        if (statement.type === TSESTree.AST_NODE_TYPES.ClassDeclaration && statement.id) {
+            bindings.push({ id: statement.id, value: statement });
+            continue;
+        } // if
+        
+        // Variable declarations:
+        if (statement.type === TSESTree.AST_NODE_TYPES.VariableDeclaration) {
+            bindings.push(...collectBindingInitializers(statement.declarations));
+            continue;
+        } // if
+        
+        
+        
+        // Exported declarations (unwrap and collect):
+        if ((statement.type === TSESTree.AST_NODE_TYPES.ExportNamedDeclaration) || (statement.type === TSESTree.AST_NODE_TYPES.ExportDefaultDeclaration)) {
+            // Get the declaration from the export statement:
+            const decl = statement.declaration;
+            
+            
+            
+            // Skip export statements without declarations, e.g.:
+            // - `export { foo, bar } from './module.js'` (re-exports, no local bindings)
+            // - `export type { Foo, Bar } from './module.js'` (re-exports types, no local bindings)
+            // - `export { foo, bar }` (exports existing bindings, no new declarations)
+            // - `export type { Foo, Bar }` (exports existing types, no new declarations)
+            if (!decl) continue;
+            
+            
+            
+            // Function declarations:
+            if (decl.type === TSESTree.AST_NODE_TYPES.FunctionDeclaration && decl.id) {
+                bindings.push({ id: decl.id, value: decl });
+                continue;
+            } // if
+            
+            // TS declare functions (overloads):
+            if (decl.type === TSESTree.AST_NODE_TYPES.TSDeclareFunction && decl.id) {
+                bindings.push({ id: decl.id, value: decl });
+                continue;
+            } // if
+            
+            // Class declarations:
+            if (decl.type === TSESTree.AST_NODE_TYPES.ClassDeclaration && decl.id) {
+                bindings.push({ id: decl.id, value: decl });
+                continue;
+            } // if
+            
+            // Variable declarations:
+            if (decl.type === TSESTree.AST_NODE_TYPES.VariableDeclaration) {
+                bindings.push(...collectBindingInitializers(decl.declarations));
+                continue;
+            } // if
+        } // if
+    } // for
+    
+    
+    
+    // Return all collected bindings:
+    return bindings;
+};
