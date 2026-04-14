@@ -684,6 +684,39 @@ export const noForeignCode = createRule({
                 
                 
                 
+                // First pass: detect imports of `CssStyleCollection` and `CssRule` from `@cssfn/core`:
+                for (const statement of node.body) {
+                    // Handle import declarations directly in Program:
+                    // - We set flags for imported types here so they are available
+                    //   **before** validating subsequent export statements.
+                    if (statement.type === TSESTree.AST_NODE_TYPES.ImportDeclaration) {
+                        // Only check imports from `@cssfn/core`:
+                        if (statement.source.value !== '@cssfn/core') continue;
+                        
+                        
+                        
+                        for (const specifier of statement.specifiers) {
+                            // Only consider named imports with identifier references:
+                            if (specifier.type !== TSESTree.AST_NODE_TYPES.ImportSpecifier) continue;
+                            if (specifier.imported.type !== TSESTree.AST_NODE_TYPES.Identifier) continue;
+                            
+                            
+                            
+                            // Check if `CssStyleCollection` is imported:
+                            if (specifier.imported.name === 'CssStyleCollection') {
+                                isCssStyleCollectionImported = true;
+                            } // if
+                            
+                            // Check if `CssRule` is imported:
+                            if (specifier.imported.name === 'CssRule') {
+                                isCssRuleImported = true;
+                            } // if
+                        } // for
+                    } // if
+                } // for
+                
+                
+                
                 // Validate all top-level bindings in the file:
                 for (const { id, value } of collectTopLevelBindings(node)) {
                     // If there's no identifier (shouldn't happen for named bindings), skip it:
