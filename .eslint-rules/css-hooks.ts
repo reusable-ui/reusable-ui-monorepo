@@ -1,7 +1,7 @@
 import path from 'path'
 import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
-import { type BindingInitializer, collectBindingInitializers } from './binding-initializers.js'
+import { collectBindingInitializers, collectTopLevelBindings } from './binding-initializers.js'
 import { isTopLevel } from './scope-utilities.js'
 
 
@@ -208,86 +208,38 @@ export const noForeignCode = createRule({
                 
                 
                 
-                // Validate that all top-level statements are allowed:
-                for (const statement of node.body) {
-                    // Allow empty statements (e.g. from semicolons or empty lines):
-                    if (statement.type === TSESTree.AST_NODE_TYPES.EmptyStatement) continue;
+                // Validate all top-level bindings in the file:
+                for (const { id } of collectTopLevelBindings(node)) {
+                    // If there's no identifier (shouldn't happen for named bindings), skip it:
+                    if (!id) continue;
                     
                     
                     
-                    // Allow import statements:
-                    if (statement.type === TSESTree.AST_NODE_TYPES.ImportDeclaration) continue;
+                    // Get the binding name for easy access:
+                    const bindingName = id.name;
                     
                     
                     
-                    // Allow named exports of CSS hooks:
-                    if (statement.type === TSESTree.AST_NODE_TYPES.ExportNamedDeclaration) {
-                        // Collect all binding identifiers and their initializers for validation:
-                        const bindingInitializerList : Array<BindingInitializer> = [];
-                        
-                        
-                        
-                        // Function declaration export:
-                        if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.FunctionDeclaration) {
-                            bindingInitializerList.push({
-                                id    : statement.declaration.id,
-                                value : statement.declaration,
-                            });
-                        } // if
-                        
-                        
-                        
-                        // TS declare function (overloads):
-                        if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.TSDeclareFunction) {
-                            bindingInitializerList.push({
-                                id    : statement.declaration.id,
-                                value : statement.declaration,
-                            });
-                        } // if
-                        
-                        
-                        
-                        // Variable declaration export:
-                        if (statement.declaration?.type === TSESTree.AST_NODE_TYPES.VariableDeclaration) {
-                            bindingInitializerList.push(...collectBindingInitializers(statement.declaration.declarations));
-                        } // if
-                        
-                        
-                        
-                        // Validate each binding item:
-                        for (const { id } of bindingInitializerList) {
-                            // If there's no identifier (shouldn't happen for valid exports), skip it:
-                            if (!id) continue;
-                            
-                            
-                            
-                            // Get the binding name for easy access:
-                            const bindingName = id.name;
-                            
-                            
-                            
-                            // CSS hook candidates:
-                            // - Identified by names that start with "uses", followed by a case boundary (next char is not lowercase).
-                            //   Requires a case boundary check after "uses" to avoid matching lowercase continuations
-                            //   like `usesfunnyStyle`. Ensures the next character is not lowercase.
-                            //   Matches names like `usesBoldStyle`, `usesBackgroundFeature`, etc.
-                            if (/^uses(?![a-z])/.test(bindingName)) continue;
-                            
-                            
-                            
-                            // Allow top-level comments (they don't appear as statements in AST)
-                            // Comments are handled separately
-                            
-                            
-                            
-                            // Reject everything else:
-                            
-                            // Report the identifier node for better error highlighting:
-                            // - If there's no initializer (e.g. for function declarations), report the identifier itself.
-                            // - If there's an initializer, report it to indicate the problematic code.
-                            context.report({ node: id, messageId: 'foreignCode' });
-                        } // for
-                    } // if
+                    // CSS hook candidates:
+                    // - Identified by names that start with "uses", followed by a case boundary (next char is not lowercase).
+                    //   Requires a case boundary check after "uses" to avoid matching lowercase continuations
+                    //   like `usesfunnyStyle`. Ensures the next character is not lowercase.
+                    //   Matches names like `usesBoldStyle`, `usesBackgroundFeature`, etc.
+                    if (/^uses(?![a-z])/.test(bindingName)) continue;
+                    
+                    
+                    
+                    // Allow top-level comments (they don't appear as statements in AST)
+                    // Comments are handled separately
+                    
+                    
+                    
+                    // Reject everything else:
+                    
+                    // Report the identifier node for better error highlighting:
+                    // - If there's no initializer (e.g. for function declarations), report the identifier itself.
+                    // - If there's an initializer, report it to indicate the problematic code.
+                    context.report({ node: id, messageId: 'foreignCode' });
                 } // for
             },
         };
