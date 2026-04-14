@@ -2,6 +2,7 @@ import path from 'path'
 import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
 import { type BindingInitializer, collectBindingInitializers } from './binding-initializers.js'
+import { isTopLevel } from './scope-utilities.js'
 
 
 
@@ -145,6 +146,12 @@ export const enforceSelectorConventions = createRule({
              * Handles CSS selector functions.
              */
             FunctionDeclaration(node) {
+                // Only validate top-level function declarations:
+                // - Prevents false positives from nested functions inside functions, etc.
+                if (!isTopLevel(node)) return;
+                
+                
+                
                 // Ensure the function has an identifier name:
                 if (!node.id || (node.id.type !== TSESTree.AST_NODE_TYPES.Identifier)) return;
                 
@@ -198,6 +205,12 @@ export const enforceSelectorConventions = createRule({
              * Handles CSS selector as constants, function expressions, or arrow functions.
              */
             VariableDeclarator(node) {
+                // Only validate top-level variable declarations:
+                // - Prevents false positives from nested variables inside functions, etc.
+                if (!isTopLevel(node)) return;
+                
+                
+                
                 // Collect all binding identifiers and their initializers for validation:
                 const bindingInitializerList = collectBindingInitializers(node);
                 
@@ -433,6 +446,12 @@ export const enforceIfFunctionConventions = createRule({
              * Handles `if*` functions.
              */
             FunctionDeclaration(node) {
+                // Only validate top-level function declarations:
+                // - Prevents false positives from nested functions inside functions, etc.
+                if (!isTopLevel(node)) return;
+                
+                
+                
                 // Ensure the function has an identifier name:
                 if (!node.id || (node.id.type !== TSESTree.AST_NODE_TYPES.Identifier)) return;
                 
@@ -471,6 +490,12 @@ export const enforceIfFunctionConventions = createRule({
              * Handles `if*` functions.
              */
             VariableDeclarator(node) {
+                // Only validate top-level variable declarations:
+                // - Prevents false positives from nested variables inside functions, etc.
+                if (!isTopLevel(node)) return;
+                
+                
+                
                 // Collect all binding identifiers and their initializers for validation:
                 const bindingInitializerList = collectBindingInitializers(node);
                 
