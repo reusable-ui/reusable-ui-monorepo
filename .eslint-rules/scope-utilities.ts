@@ -45,3 +45,38 @@ export const isTopLevel = (node: TSESTree.Node): boolean => {
             return false;
     }
 };
+
+
+
+/**
+ * Determines whether a given AST node is exported from the module.
+ * Works for functions, variables, classes, etc.
+ */
+export const isExported = (node: TSESTree.Node): boolean => {
+    const parent = node.parent;
+    if (!parent) return false;
+    
+    switch (node.type) {
+        case TSESTree.AST_NODE_TYPES.VariableDeclarator:
+            return (
+                parent.type === TSESTree.AST_NODE_TYPES.VariableDeclaration
+                &&
+                parent.parent?.type === TSESTree.AST_NODE_TYPES.ExportNamedDeclaration
+            );
+        
+        
+        
+        case TSESTree.AST_NODE_TYPES.FunctionDeclaration:
+        case TSESTree.AST_NODE_TYPES.ClassDeclaration:
+            return (
+                parent.type === TSESTree.AST_NODE_TYPES.ExportNamedDeclaration
+                ||
+                parent.type === TSESTree.AST_NODE_TYPES.ExportDefaultDeclaration
+            );
+        
+        
+        
+        default:
+            return false;
+    }
+};
