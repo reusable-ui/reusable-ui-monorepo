@@ -2,7 +2,7 @@ import path from 'path'
 import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
 import { collectBindingInitializers, collectTopLevelBindings } from './binding-initializers.js'
-import { isTopLevel } from './scope-utilities.js'
+import { isTopLevel, isExported } from './scope-utilities.js'
 
 
 
@@ -23,6 +23,7 @@ const createRule = ESLintUtils.RuleCreator(
  * - Must be a function declaration, function expression, or arrow function.
  * - Variables, constants, or other object exports with `uses*` names are not allowed.
  * - Must be declared only in `css-hooks.ts` or `css-internal-hooks.ts`.
+ * - Must be exported.
  * 
  * CSS hook candidates:
  * - Identified by names that start with "uses", followed by a case boundary (next char is not lowercase).
@@ -41,8 +42,9 @@ export const enforceHookConventions = createRule({
         },
         schema   : [], // no options accepted
         messages : {
-            wrongFile : 'CSS hooks must be declared in `css-hooks.ts` or `css-internal-hooks.ts`.',
-            wrongType : 'CSS hooks must be functions (function declaration, function expression, or arrow function).',
+            wrongFile   : 'CSS hooks must be declared in `css-hooks.ts` or `css-internal-hooks.ts`.',
+            wrongExport : 'CSS hooks must be exported.',
+            wrongType   : 'CSS hooks must be functions (function declaration, function expression, or arrow function).',
         },
     },
     create(context) {
@@ -80,6 +82,13 @@ export const enforceHookConventions = createRule({
                 //   like `usesfunnyStyle`. Ensures the next character is not lowercase.
                 //   Matches names like `usesBoldStyle`, `usesBackgroundFeature`, etc.
                 if (!/^uses(?![a-z])/.test(name)) return;
+                
+                
+                
+                // Enforce exported:
+                if (!isExported(node)) {
+                    context.report({ node, messageId: 'wrongExport' });
+                } // if
                 
                 
                 
@@ -140,6 +149,13 @@ export const enforceHookConventions = createRule({
                         )
                     ) {
                         context.report({ node: id, messageId: 'wrongType' });
+                    } // if
+                    
+                    
+                    
+                    // Enforce exported:
+                    if (!isExported(node)) {
+                        context.report({ node: id, messageId: 'wrongExport' });
                     } // if
                     
                     
