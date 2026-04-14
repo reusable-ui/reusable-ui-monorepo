@@ -359,7 +359,7 @@ export const enforceCssVarsFunctionUsage = createRule({
  * Requirements:
  * - Allowed top-level statements:
  *   - Import declarations.
- *   - Exported CSS variables (ending with `Vars`).
+ *   - CSS variables (ending with `Vars`).
  *   - Comments.
  * - Disallow any other top-level code.
  * 
@@ -375,11 +375,11 @@ export const noForeignCode = createRule({
     meta: {
         type: 'problem',
         docs: {
-            description : 'Disallow arbitrary code in `css-variables.ts` and `css-internal-variables.ts`. Only imports, CSS variable exports, and comments are allowed.',
+            description : 'Disallow arbitrary code in `css-variables.ts` and `css-internal-variables.ts`. Only imports, CSS variables, and comments are allowed.',
         },
         schema: [], // no options accepted
         messages: {
-            foreignCode : 'Only imports, CSS variable exports, and comments are allowed in `css-variables.ts` / `css-internal-variables.ts`. Move supporting code to separate modules.',
+            foreignCode : 'Only imports, CSS variables, and comments are allowed in `css-variables.ts` / `css-internal-variables.ts`. Move supporting code to separate modules.',
         },
     },
     create(context) {
