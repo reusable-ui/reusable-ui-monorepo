@@ -2,7 +2,7 @@ import path from 'path'
 import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
 import { collectBindingInitializers, collectTopLevelBindings } from './binding-initializers.js'
-import { isTopLevel } from './scope-utilities.js'
+import { isTopLevel, isExported } from './scope-utilities.js'
 
 
 
@@ -23,6 +23,7 @@ const createRule = ESLintUtils.RuleCreator(
  * - Must be a variable typed as `CssVars` (imported from `@cssfn/core`).
  * - Cannot be a function (function declaration, function expression, or arrow function).
  * - Must be declared only in `css-variables.ts` or `css-internal-variables.ts`.
+ * - Must be exported.
  * 
  * CSS variable candidates:
  * - Identified by names that end with "Vars".
@@ -45,8 +46,9 @@ export const enforceVariableConventions = createRule({
         },
         schema: [], // no options accepted
         messages: {
-            wrongFile : 'CSS variables must be declared in `css-variables.ts` or `css-internal-variables.ts`.',
-            wrongType : 'CSS variables must be typed `CssVars` from `@cssfn/core`.',
+            wrongFile   : 'CSS variables must be declared in `css-variables.ts` or `css-internal-variables.ts`.',
+            wrongExport : 'CSS variables must be exported.',
+            wrongType   : 'CSS variables must be typed `CssVars` from `@cssfn/core`.',
         },
     },
     
@@ -160,6 +162,13 @@ export const enforceVariableConventions = createRule({
                 
                 
                 
+                // Enforce exported:
+                if (!isExported(node)) {
+                    context.report({ node, messageId: 'wrongExport' });
+                } // if
+                
+                
+                
                 // Enforce file location:
                 if (!isExpectedModule) {
                     context.report({ node, messageId: 'wrongFile' });
@@ -228,6 +237,13 @@ export const enforceVariableConventions = createRule({
                                 context.report({ node: id, messageId: 'wrongType' });
                             } // if
                         } // if
+                    } // if
+                    
+                    
+                    
+                    // Enforce exported:
+                    if (!isExported(node)) {
+                        context.report({ node: id, messageId: 'wrongExport' });
                     } // if
                     
                     
