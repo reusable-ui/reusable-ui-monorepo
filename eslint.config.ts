@@ -1,10 +1,10 @@
-import eslint from '@eslint/js'
 import type { Rule } from 'eslint'
 import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 import pluginReact from 'eslint-plugin-react'
 import globals from 'globals'
 import js from '@eslint/js'
+import importPlugin from 'eslint-plugin-import'
 import { enforceSelectorConventions, enforceIfFunctionConventions, noForeignCode as noForeignCodeInCssSelectors } from './.eslint-rules/css-selectors.js'
 import { enforceHookConventions, noForeignCode as noForeignCodeInCssHooks } from './.eslint-rules/css-hooks.js'
 import { enforceVariableConventions, enforceCssVarsFunctionUsage, noForeignCode as noForeignCodeInCssVars } from './.eslint-rules/css-variables.js'
@@ -25,9 +25,10 @@ import { enforceVariableConventions, enforceCssVarsFunctionUsage, noForeignCode 
  */
 export default defineConfig(
     // 1. Base recommended configs:
-    eslint.configs.recommended,           // Base JS rules
+    js.configs.recommended,               // Base JS rules
     tseslint.configs.recommended,         // TypeScript rules
     pluginReact.configs.flat.recommended, // React rules
+    importPlugin.flatConfigs.recommended, // Import rules
     
     // 2. Global ignores (applies to all files)
     {
@@ -115,6 +116,11 @@ export default defineConfig(
             react: {
                 version: '19.0', // Explicit React version for linting
             },
+            'import/resolver': {
+                'typescript': {
+                    'alwaysTryTypes': true,
+                },
+            },
         },
         plugins: {
             js, // Core JS plugin
@@ -150,6 +156,18 @@ export default defineConfig(
              */
             'no-redeclare': 'off',
             'no-unused-vars': 'off',
+            
+            'import/extensions': ['error', 'always', {
+                js  : 'always',
+                ts  : 'never',
+                tsx : 'never',
+            }],
+            'import/no-extraneous-dependencies': ['error', {
+                peerDependencies     : true,  // Allow peer deps imports in source files.
+                devDependencies      : false, // Disallow dev deps imports in source files.
+                optionalDependencies : false, // Disallow optional deps imports in source files.
+                bundledDependencies  : false, // Disallow bundled deps imports in source files.
+            }],
             
             /**
              * Enable TypeScript-aware equivalents:
