@@ -73,7 +73,7 @@ const config = cssConfig<BreakpointConfig>(() => {
  * }
  * ```
  */
-export const breakpointVars        = config[0];
+export const breakpointVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
