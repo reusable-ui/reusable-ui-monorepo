@@ -28,9 +28,10 @@ const benchmarkDirectories = [
  * Structure:
  * 1. Global ignores (node_modules, test files, build artifacts, etc.)
  * 2. Base recommended configs (recommended rules for JS, TypeScript, React, etc.)
- * 3. Project-specific and test-specific configs (with custom rules, settings, and globals)
- * 4. Project-specific configs (for the main source files, with custom rules and settings)
- * 5. Test-specific configs (for test files, with custom rules and testing globals)
+ * 3. All-project configs (shared settings, globals, and rules for all source files)
+ * 4. Project-specific and test-specific configs (with custom rules, settings, and globals)
+ * 5. Project-specific configs (for the main source files, with custom rules and settings)
+ * 6. Test-specific configs (for test files, with custom rules and testing globals)
  * 
  * Notes:
  * - Always place overrides *after* recommended configs so they take precedence.
@@ -165,7 +166,18 @@ export default defineConfig(
     
     
     
-    // 3. Project-specific and test-specific configs:
+    // 3. All-project configs:
+    {
+        settings: {
+            react: {
+                version: '19.0', // Explicit React version for linting
+            },
+        },
+    },
+    
+    
+    
+    // 4. Project-specific and test-specific configs:
     {
         files: [
             '**/src/**/*.{ts,tsx}',
@@ -183,9 +195,6 @@ export default defineConfig(
             },
         },
         settings: {
-            react: {
-                version: '19.0', // Explicit React version for linting
-            },
             'import/resolver': {
                 'typescript': {
                     'alwaysTryTypes': true,
@@ -257,7 +266,7 @@ export default defineConfig(
     
     
     
-    // 4. Project-specific configs:
+    // 5. Project-specific configs:
     {
         files: [
             '**/src/**/*.{ts,tsx}',
@@ -313,7 +322,7 @@ export default defineConfig(
     
     
     
-    // 5. Test-specific configs:
+    // 6. Test-specific configs:
     {
         files: [
             '**/__tests__/**/*.{js,jsx,ts,tsx}',
