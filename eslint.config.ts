@@ -1,13 +1,24 @@
 import type { Rule } from 'eslint'
 import { defineConfig } from 'eslint/config'
-import tseslint from 'typescript-eslint'
-import pluginReact from 'eslint-plugin-react'
 import globals from 'globals'
-import js from '@eslint/js'
+import jsPlugin from '@eslint/js'
+import tsPlugin from 'typescript-eslint'
+import reactPlugin from 'eslint-plugin-react'
 import importPlugin from 'eslint-plugin-import'
+import jestPlugin from 'eslint-plugin-jest'
 import { enforceSelectorConventions, enforceIfFunctionConventions, noForeignCode as noForeignCodeInCssSelectors } from './.eslint-rules/css-selectors.js'
 import { enforceHookConventions, noForeignCode as noForeignCodeInCssHooks } from './.eslint-rules/css-hooks.js'
 import { enforceVariableConventions, enforceCssVarsFunctionUsage, noForeignCode as noForeignCodeInCssVars } from './.eslint-rules/css-variables.js'
+
+
+
+const testDirectories = [
+    '**/__tests__/**',
+];
+
+const benchmarkDirectories = [
+    '**/__benchmarks__/**',
+];
 
 
 
@@ -15,8 +26,11 @@ import { enforceVariableConventions, enforceCssVarsFunctionUsage, noForeignCode 
  * Root ESLint configuration for the monorepo.
  * 
  * Structure:
- * 1. Base configs (TypeScript + React recommended)
- * 2. Project-specific overrides (rules, plugins, ignores)
+ * 1. Global ignores (node_modules, test files, build artifacts, etc.)
+ * 2. Base recommended configs (recommended rules for JS, TypeScript, React, etc.)
+ * 3. Project-specific and test-specific configs (with custom rules, settings, and globals)
+ * 4. Project-specific configs (for the main source files, with custom rules and settings)
+ * 5. Test-specific configs (for test files, with custom rules and testing globals)
  * 
  * Notes:
  * - Always place overrides *after* recommended configs so they take precedence.
@@ -24,31 +38,51 @@ import { enforceVariableConventions, enforceCssVarsFunctionUsage, noForeignCode 
  * - Custom internal rules live in `.eslint-rules/`.
  */
 export default defineConfig(
-    // 1. Base recommended configs:
-    js.configs.recommended,               // Base JS rules
-    tseslint.configs.recommended,         // TypeScript rules
-    pluginReact.configs.flat.recommended, // React rules
-    importPlugin.flatConfigs.recommended, // Import rules
-    
-    // 2. Global ignores (applies to all files)
+    // 1. Global ignores (applies to all configs below):
     {
         ignores : [
-            // Ignore external dependencies:
+            // Ignore external artifacts:
             '**/node_modules/**',
-            
-            // Ignore test-related directories:
-            '**/__tests__/**',
-            '**/playwright/**',
-            '**/playwright-report/**',
-            '**/test-results/**',
             
             // Ignore generated build artifacts:
             '**/dist/**',
             
-            // Ignore hidden directories (dot-prefixed):
+            // Ignore generated test artifacts:
+            '**/playwright/**',
+            '**/playwright-report/**',
+            '**/test-results/**',
+            
+            
+            
+            // Ignore eslint configs:
+            '**/eslint.config.ts',
+            
+            // Ignore test configs:
+            '**/jest.setup.js',
+            '**/playwright.config.ts',
+            '**/playwright.react.config.ts',
+            
+            
+            
+            // Ignore build scripts:
+            '**/check.mjs',
+            '**/build.mjs',
+            
+            
+            
+            // Ignore hidden directories:
             '**/.*/**',
             
-            // Ignore deprecated packages:
+            // Ignore test project directories (not `__tests__`):
+            '**/tests/**',
+            
+            // Ignore not yet refactored project directories:
+            '**/capabilities/**',
+            '**/components/**',
+            '**/*-components/**',
+            '**/barrels/**',
+            
+            // Ignore deprecated package directories:
             '**/utilities/stripouts/**',
             '**/utilities/layouts/**',
             '**/utilities/hooks/**',
@@ -97,21 +131,57 @@ export default defineConfig(
         ],
     },
     
-    // 3. Rules for TypeScript files (only applied if not ignored above)
+    
+    
+    // 2. Base recommended configs:
+    ...[
+        reactPlugin.configs.flat.recommended, // React rules
+    ].flat().map((config) => ({
+        ignores : [
+            // ...(('ignores' in config) ? (config.ignores ?? []) : []),
+            
+            // Ignore test directories:
+            ...testDirectories,
+            
+            // Ignore benchmark directories:
+            ...benchmarkDirectories,
+        ],
+        ...config,
+    })),
+    
+    ...[
+        jsPlugin.configs.recommended,         // Base JS rules
+        tsPlugin.configs.recommended,         // TypeScript rules
+        importPlugin.flatConfigs.recommended, // Import rules
+    ].flat().map((config) => ({
+        ignores : [
+            ...(('ignores' in config) ? (config.ignores ?? []) : []),
+            
+            // Ignore benchmark directories:
+            ...benchmarkDirectories,
+        ],
+        ...config,
+    })),
+    
+    
+    
+    // 3. Project-specific and test-specific configs:
     {
+        files: [
+            '**/src/**/*.{ts,tsx}',
+            '**/__tests__/**/*.{js,jsx,ts,tsx}',
+        ],
         languageOptions: {
             globals: {
                 ...globals.browser, // Browser globals (window, document, etc.)
                 ...globals.node,    // Node.js globals (process, __dirname, etc.)
                 
+                globalThis: 'readonly', // Standard global object across environments
+                
                 // Built-in types without need for importing:
                 DOMHighResTimeStamp: 'readonly',
             },
         },
-        files: [
-            // Apply rules only to TypeScript source files:
-            '**/*.{ts,tsx}',
-        ],
         settings: {
             react: {
                 version: '19.0', // Explicit React version for linting
@@ -123,27 +193,7 @@ export default defineConfig(
             },
         },
         plugins: {
-            js, // Core JS plugin
-            'css-selectors': {
-                rules: {
-                    'enforce-selector-conventions'    : enforceSelectorConventions   as unknown as Rule.RuleModule,
-                    'enforce-if-function-conventions' : enforceIfFunctionConventions as unknown as Rule.RuleModule,
-                    'no-foreign-code'                 : noForeignCodeInCssSelectors  as unknown as Rule.RuleModule,
-                },
-            },
-            'css-hooks': {
-                rules: {
-                    'enforce-hook-conventions'        : enforceHookConventions       as unknown as Rule.RuleModule,
-                    'no-foreign-code'                 : noForeignCodeInCssHooks      as unknown as Rule.RuleModule,
-                },
-            },
-            'css-variables': {
-                rules: {
-                    'enforce-variable-conventions'    : enforceVariableConventions    as unknown as Rule.RuleModule,
-                    'enforce-cssvars-function-usage'  : enforceCssVarsFunctionUsage   as unknown as Rule.RuleModule,
-                    'no-foreign-code'                 : noForeignCodeInCssVars        as unknown as Rule.RuleModule,
-                },
-            },
+            js: jsPlugin, // Core JS plugin
         },
         extends: [
             'js/recommended', // Base JS recommended rules
@@ -161,12 +211,6 @@ export default defineConfig(
                 js  : 'always',
                 ts  : 'never',
                 tsx : 'never',
-            }],
-            'import/no-extraneous-dependencies': ['error', {
-                peerDependencies     : true,  // Allow peer deps imports in source files.
-                devDependencies      : false, // Disallow dev deps imports in source files.
-                optionalDependencies : false, // Disallow optional deps imports in source files.
-                bundledDependencies  : false, // Disallow bundled deps imports in source files.
             }],
             
             /**
@@ -208,6 +252,52 @@ export default defineConfig(
             
             // Allow `any` type for flexibility in certain cases (e.g. third-party integrations, complex types):
             '@typescript-eslint/no-explicit-any': 'off',
+        },
+    },
+    
+    
+    
+    // 4. Project-specific configs:
+    {
+        files: [
+            '**/src/**/*.{ts,tsx}',
+        ],
+        ignores: [
+            // Ignore test directories:
+            ...testDirectories,
+            
+            // Ignore benchmark directories:
+            ...benchmarkDirectories,
+        ],
+        plugins: {
+            'css-selectors': {
+                rules: {
+                    'enforce-selector-conventions'    : enforceSelectorConventions   as unknown as Rule.RuleModule,
+                    'enforce-if-function-conventions' : enforceIfFunctionConventions as unknown as Rule.RuleModule,
+                    'no-foreign-code'                 : noForeignCodeInCssSelectors  as unknown as Rule.RuleModule,
+                },
+            },
+            'css-hooks': {
+                rules: {
+                    'enforce-hook-conventions'        : enforceHookConventions       as unknown as Rule.RuleModule,
+                    'no-foreign-code'                 : noForeignCodeInCssHooks      as unknown as Rule.RuleModule,
+                },
+            },
+            'css-variables': {
+                rules: {
+                    'enforce-variable-conventions'    : enforceVariableConventions    as unknown as Rule.RuleModule,
+                    'enforce-cssvars-function-usage'  : enforceCssVarsFunctionUsage   as unknown as Rule.RuleModule,
+                    'no-foreign-code'                 : noForeignCodeInCssVars        as unknown as Rule.RuleModule,
+                },
+            },
+        },
+        rules: {
+            'import/no-extraneous-dependencies': ['error', {
+                peerDependencies     : true,  // Allow peer deps imports in source files.
+                devDependencies      : false, // Disallow dev deps imports in source files.
+                optionalDependencies : false, // Disallow optional deps imports in source files.
+                bundledDependencies  : false, // Disallow bundled deps imports in source files.
+            }],
             
             // Enforce custom internal rule for CSS variable usage:
             'css-selectors/enforce-selector-conventions'    : 'error',
@@ -218,6 +308,43 @@ export default defineConfig(
             'css-variables/enforce-variable-conventions'    : 'error',
             'css-variables/enforce-cssvars-function-usage'  : 'error',
             'css-variables/no-foreign-code'                 : 'error',
+        },
+    },
+    
+    
+    
+    // 5. Test-specific configs:
+    {
+        files: [
+            '**/__tests__/**/*.{js,jsx,ts,tsx}',
+        ],
+        ignores: [
+            // Ignore benchmark directories:
+            ...benchmarkDirectories,
+        ],
+        languageOptions: {
+            globals: {
+                ...jestPlugin.environments.globals.globals,
+            },
+        },
+        plugins: {
+            'jest': jestPlugin,
+        },
+        rules: {
+            'prefer-const': 'off',
+            
+            // 'import/no-extraneous-dependencies': ['error', {
+            //     peerDependencies     : true,  // Allow peer deps imports in source files.
+            //     devDependencies      : true,  // Allow dev deps imports in source files.
+            //     optionalDependencies : false, // Disallow optional deps imports in source files.
+            //     bundledDependencies  : false, // Disallow bundled deps imports in source files.
+            // }],
+            'import/no-extraneous-dependencies': 'off',
+            'import/no-duplicates': 'off',
+            
+            '@typescript-eslint/no-unused-vars': 'off',
+            
+            '@typescript-eslint/no-unsafe-function-type': 'off',
         },
     },
 );

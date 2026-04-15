@@ -8,7 +8,7 @@
     "update-deps-u": "ncu --root --workspaces --peer -u",
     "build": "npx lerna run tsc",
     "publish": "npm run build && npx lerna publish from-package",
-    "lint": "eslint \"configs/*/src/**/*.{ts,tsx}\" \"utilities/*/src/**/*.{ts,tsx}\" \"variants/*/src/**/*.{ts,tsx}\" \"features/*/src/**/*.{ts,tsx}\" \"states/*/src/**/*.{ts,tsx}\" \"effects/*/src/**/*.{ts,tsx}\" \"routes/*/src/**/*.{ts,tsx}\""
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@cssfn/cssfn": "^4.0.1",
@@ -25,6 +25,7 @@
     "cross-env": "^7.0.3",
     "eslint": "^9.39.4",
     "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jest": "^29.15.2",
     "eslint-plugin-react": "^7.37.5",
     "globals": "^17.4.0",
     "jest": "^29.5.0",
