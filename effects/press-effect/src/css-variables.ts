@@ -22,7 +22,7 @@ import {
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [pressEffectVars] = cssVars<PressEffectVars>({ prefix: 'hoe', minify: false });
+export const [pressEffectVars] = cssVars<PressEffectVars>({ prefix: 'pre', minify: false });
 
 // Register the press filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(pressEffectVars.pressFilter);
