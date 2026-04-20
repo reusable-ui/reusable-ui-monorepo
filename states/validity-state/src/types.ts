@@ -64,7 +64,7 @@ export interface ValidityStateProps
      * 
      * Restricted behavior (`disabled`, `readOnly`, or indirectly disabled
      * by `<ValidityStateProvider enableValidation={false}>`):
-     * - When restricted, the component always resolves to `false` (invalid), regardless of `validity`.
+     * - When restricted, the component always resolves to `null` (unvalidated), regardless of `validity`.
      * - When restriction is lifted:
      *   - `'auto'` → re-evaluates validity, preferring parent provider (`true`/`false`/`null`) if available,
      *     otherwise falling back to `computedValidity`.
@@ -90,8 +90,10 @@ export interface ValidityStateProps
      * This value is typically computed reactively based on input, async validation,
      * or domain-specific logic. It is ignored when `validity` is explicitly set.
      * 
+     * Developers must supply `computedValidity` for correctness; otherwise, the component stays unvalidated.
+     * 
      * Restricted behavior (`disabled` or `readOnly`):
-     * - When restricted, the component always resolves to `false` (invalid), regardless of `computedValidity`.
+     * - When restricted, the component always resolves to `null` (unvalidated), regardless of `computedValidity`.
      * - When restriction is lifted, the component resumes following the passed `computedValidity` value.
      * 
      * This property is intended for **component developers** who need to customize validity resolution.
