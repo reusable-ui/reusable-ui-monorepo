@@ -86,7 +86,7 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
     
     // Extract props:
     const {
-        focused       : state,
+        focused       : state                 = defaultDeclarativeFocused,
         computedFocus : externalComputedFocus,
     } = props;
     
