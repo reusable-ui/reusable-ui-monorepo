@@ -71,12 +71,12 @@ interface PressStateEventTestCase {
         
         /**
          * The expected press state.
-         * - `'pressing'` : onPressingStart event has been invoked
-         * - `'pressed'`  : onPressingEnd event has been invoked
+         * - `'pressing'`  : onPressingStart event has been invoked
+         * - `'pressed'`   : onPressingEnd event has been invoked
          * - `'releasing'` : onReleasingStart event has been invoked
          * - `'released'`  : onReleasingEnd event has been invoked
-         * - `null`       : no event has been invoked
-         * - `undefined`  : nothing to expect
+         * - `null`        : no event has been invoked
+         * - `undefined`   : nothing to expect
          */
         expectedEvent        ?: PressPhase | null
     }[]
