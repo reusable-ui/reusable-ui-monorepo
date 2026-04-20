@@ -161,6 +161,7 @@ Additional flags:
 | hover-state                | feedback     | State updated dynamically via internal observer | feedback-state       | `HoverStateProps`           | `hovered`     | —                 | `hoverClassname`       | `leaved`, `hovered`          | `leaving`, `hovering`                  | ✅ `-ed` form: reflects pointer condition, idiomatic in CSS        | VERIFIED |
 | press-state                | feedback     | State updated dynamically via internal observer | feedback-state       | `PressStateProps`           | `pressed`     | —                 | `pressClassname`       | `released`, `pressed`        | `pressing`, `releasing`                | ✅ `-ed` form: reflects interaction condition, idiomatic in UI     | VERIFIED |
 | validity-state             | feedback     | State updated dynamically via external observer | feedback-state       | `ValidityStateProps`        | `validity`    | —                 | `validityClassname`    | `invalid`, `valid`           | `invalidating`, `validating`           | ❌ Noun form: diagnostic domain, resolved states are adjectives    | VERIFIED |
+| drag-state                 | feedback     | State updated dynamically via external observer | feedback-state       | `DragStateProps`            | `dragged`     | —                 | `dragClassname`        | `dragged`, `dropped`         | `dragging`, `dropping`                 | ❌ Noun form: diagnostic domain, resolved states are adjectives    | VERIFIED |
 |----------------------------|--------------|-------------------------------------------------|----------------------|-----------------------------|---------------|-------------------|------------------------|------------------------------|----------------------------------------|--------------------------------------------------------------------|----------|
 | excite-state               | notification | State driven by prop, continuous animation      | notification-state   | `ExciteStateProps`          | `excited`     | —                 | `exciteClassname`      | —                            | —                                      | ❌ Base form: reflects emotional trigger, not static condition     | VERIFIED |
 |----------------------------|--------------|-------------------------------------------------|----------------------|-----------------------------|---------------|-------------------|------------------------|------------------------------|----------------------------------------|--------------------------------------------------------------------|----------|
@@ -216,6 +217,7 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/hover-state
 @reusable-ui/press-state
 @reusable-ui/validity-state
+@reusable-ui/drag-state
 @reusable-ui/excite-state
 @reusable-ui/collapse-state
 @reusable-ui/active-state

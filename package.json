@@ -115,6 +115,7 @@
     "states/press-state",
     "tests/test-press-state",
     "states/validity-state",
+    "states/drag-state",
     "states/excite-state",
     "states/collapse-state",
     "states/active-state",
