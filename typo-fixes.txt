@@ -1,0 +1,54 @@
+"Agnostic: can drive" => "Applicable to"
+
+"Values outside the 0–1" => "Values outside the 0…1"
+
+`90%: 1.2` => `90%: 1.1` x--- no ---x
+
+"(`disable`, `readOnly`, `expand`, `focus`, `hover`, `press`, etc.)" => "(`disable`, `readOnly`, `expand`, etc.)"
+
+"0 → fully visible, 1 → dimmed" => "0 → fully visible (editable), 1 → dimmed (read-only)"
+
+"focusing transition" => "focusing transition (blurred → focused)"
+
+"contextual override" => "contextual overrides"
+
+"when the resolved" => "whenever the resolved"
+
+"Props for reporting updates"     => "Props for reporting passive updates"
+"Props for reporting a change..." => "Props for reporting proactive change requests"
+"settled of this state" => "settled in this state"
+
+"Accepts an optional `active` prop, defaulting to `false` (inactive) when not provided" => "Accepts an optional `active` prop, defaulting to `undefined` (uncontrolled mode)"
+
+"Props for reporting updates to the" => "Props for reporting passive updates to the"
+
+"Props for reporting a change request to the" => "Props for reporting proactive change requests to the"
+
+`**ChangeDispatcherOptions` => `**StateChangeDispatcherOptions`
+
+
+ * @template TPhase - The type representing semantic transition phases.
+ * @template TPhase - The union type of possible transition phases (e.g. `'enabled' | 'disabled'`).
+
+
+"A literal string value with length unit" => "A literal string value with a length unit"
+
+"by animating filter effect" => "by animating filter effects"
+
+"consistent CSS variable names" => "consistent naming"
+
+"Represents the resolved (settled) phase" => "Represents the resolved (settled) phases"
+"Represents the transitional phase" => "Represents the transitional phases"
+
+"in their own state (e.g. " => "in their own logic (e.g. "
+
+"The derived (.*) value used when" => "The computed $1 value used when"
+
+"Props for listening lifecycle events" => "Props for listening to lifecycle events"
+
+
+"based on the final diagnostic status" => "based on the latest intent"
+
+"for conditional animation" => "for use in conditional styling"
+
+"-state** is a variant utility within" => "-state** is a state management within"
