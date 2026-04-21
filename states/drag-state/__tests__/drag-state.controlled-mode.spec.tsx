@@ -741,7 +741,6 @@ test.describe('useDragBehaviorState - controlled mode', () => {
             const handleDragUpdate : ValueChangeEventHandler<boolean | null, unknown> = (newDrag, event) => {
                 lastNewDrag = newDrag;
                 lastEvent = event;
-                console.log('handleDragUpdate: ', newDrag);
             };
             
             
