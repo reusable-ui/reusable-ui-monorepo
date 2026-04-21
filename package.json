@@ -139,6 +139,7 @@
     "effects/hover-effect",
     "effects/press-effect",
     "effects/validity-effect",
+    "effects/drag-effect",
     "effects/excite-effect",
     "effects/collapse-effect",
     "effects/active-effect",
