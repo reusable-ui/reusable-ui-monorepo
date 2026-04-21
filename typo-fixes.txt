@@ -52,3 +52,5 @@
 "for conditional animation" => "for use in conditional styling"
 
 "-state** is a variant utility within" => "-state** is a state management within"
+
+"References the filter" => "References the composed filter"
