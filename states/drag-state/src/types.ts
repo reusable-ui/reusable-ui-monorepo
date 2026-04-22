@@ -286,7 +286,7 @@ export interface DragBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component has visually settled in dragged state (placed to the pointer position and continuously follows it)
      * - `false` : the component has visually settled in dropped state (placed at the target or original position)
      */
-    dragged            : FeedbackBehaviorState<boolean, DragPhase, DragClassname, TElement>['state']
+    dragged           : FeedbackBehaviorState<boolean, DragPhase, DragClassname, TElement>['state']
     
     /**
      * Represents how far the pointer has moved horizontally and vertically
@@ -300,7 +300,7 @@ export interface DragBehaviorState<TElement extends Element = HTMLElement>
      * Apply this as a translation (e.g. `transform: translate(...)`)
      * to move the element so the cursor remains aligned with the grab point.
      */
-    relativeDragOffset : DragPosition
+    dragOffset        : DragPosition
     
     /**
      * The actual resolved dragged/dropped state, regardless of animation state.
@@ -314,14 +314,14 @@ export interface DragBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component is intended to be dragged (placed to the pointer position and continuously follows it)
      * - `false` : the component is intended to be dropped (placed at the target or original position)
      */
-    actualDragged      : FeedbackBehaviorState<boolean, DragPhase, DragClassname, TElement>['actualState']
+    actualDragged     : FeedbackBehaviorState<boolean, DragPhase, DragClassname, TElement>['actualState']
     
     /**
      * The current transition phase of the drag/drop lifecycle.
      * 
      * Reflects both transitional states (`dragging`, `dropping`) and resolved states (`dragged`, `dropped`).
      */
-    dragPhase          : FeedbackBehaviorState<boolean, DragPhase, DragClassname, TElement>['transitionPhase']
+    dragPhase         : FeedbackBehaviorState<boolean, DragPhase, DragClassname, TElement>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current drag/drop phase.
@@ -332,12 +332,12 @@ export interface DragBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-dragging'`
      * - `'is-dragged'`
      */
-    dragClassname      : FeedbackBehaviorState<boolean, DragPhase, DragClassname, TElement>['transitionClassname']
+    dragClassname     : FeedbackBehaviorState<boolean, DragPhase, DragClassname, TElement>['transitionClassname']
     
     /**
      * A set of inline CSS variables that expose the current drag offsets.
      * 
-     * Includes `--dr-relativeDragOffsetX` and `--dr-relativeDragOffsetY`, enabling animation authors to drive layout,
+     * Includes `--dr-dragOffsetX` and `--dr-dragOffsetY`, enabling animation authors to drive layout,
      * transitions, and directional inference directly from CSS.
      * 
      * The returned style object is referentially stable as long as the variable values remain unchanged.
@@ -346,7 +346,7 @@ export interface DragBehaviorState<TElement extends Element = HTMLElement>
      * These variables are updated synchronously and are safe to use in style definitions,
      * keyframes, and conditional selectors.
      */
-    dragStyle          : CSSProperties
+    dragStyle         : CSSProperties
     
     /**
      * Event handler for pointerdown events.
@@ -355,7 +355,7 @@ export interface DragBehaviorState<TElement extends Element = HTMLElement>
      * 
      * Supports mouse, touch, and stylus inputs.
      */
-    handlePointerDown  : PointerEventHandler<TElement>
+    handlePointerDown : PointerEventHandler<TElement>
     
     /**
      * Event handler for pointermove events.
@@ -369,7 +369,7 @@ export interface DragBehaviorState<TElement extends Element = HTMLElement>
      * subsequent `pointermove` events (with the same or slightly different coordinates) should refresh the grab point.
      * This increases the accuracy of the grab point for stylus devices when the activation happens at different coordinates than the initial `pointerdown`.
      */
-    handlePointerMove  : PointerEventHandler<TElement>
+    handlePointerMove : PointerEventHandler<TElement>
 }
 
 
@@ -387,7 +387,7 @@ export interface DragStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationDragging   : unknown
+    animationDragging : unknown
     
     /**
      * References an animation used during the dropping transition.
@@ -396,7 +396,7 @@ export interface DragStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
      */
-    animationDropping   : unknown
+    animationDropping : unknown
     
     /**
      * Applies when the component is either in the dragging transition or fully dragged.
@@ -415,7 +415,7 @@ export interface DragStateVars {
      * });
      * ```
      */
-    isDragged           : unknown
+    isDragged         : unknown
     
     /**
      * Applies when the component is either in the dropping transition or fully dropped.
@@ -434,7 +434,7 @@ export interface DragStateVars {
      * });
      * ```
      */
-    isDropped           : unknown
+    isDropped         : unknown
     
     /**
      * A normalized, animatable factor representing the **drag lifecycle state**.
@@ -462,7 +462,7 @@ export interface DragStateVars {
      *     - `dragFactor = 0`: dropped (baseline lifecycle state)  
      *     - `dragFactor = 1`: dragged (active lifecycle state)  
      */
-    dragFactor          : unknown
+    dragFactor        : unknown
     
     /**
      * A conditional mirror of `dragFactor` representing the **drag lifecycle state**.
@@ -499,7 +499,7 @@ export interface DragStateVars {
      *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
      *     and when dragged, but conditionally drops to `unset` at baseline dropped.
      */
-    dragFactorCond      : unknown
+    dragFactorCond    : unknown
     
     /**
      * Represents how far the pointer has moved horizontally
@@ -519,11 +519,11 @@ export interface DragStateVars {
      * ```ts
      * export const draggableComponentStyle = () => style({
      *     // Translate the component horizontally based on the relative drag offset:
-     *     transform : `translateX(calc(${dragStateVars.relativeDragOffsetX} * 1px))`,
+     *     transform : `translateX(calc(${dragStateVars.dragOffsetX} * 1px))`,
      * });
      * ```
      */
-    relativeDragOffsetX : unknown
+    dragOffsetX       : unknown
     
     /**
      * Represents how far the pointer has moved vertically
@@ -543,11 +543,11 @@ export interface DragStateVars {
      * ```ts
      * export const draggableComponentStyle = () => style({
      *     // Translate the component horizontally based on the relative drag offset:
-     *     transform : `translateY(calc(${dragStateVars.relativeDragOffsetY} * 1px))`,
+     *     transform : `translateY(calc(${dragStateVars.dragOffsetY} * 1px))`,
      * });
      * ```
      */
-    relativeDragOffsetY : unknown
+    dragOffsetY       : unknown
 }
 
 

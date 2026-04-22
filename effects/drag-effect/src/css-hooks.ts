@@ -51,7 +51,7 @@ export const usesDragEffect = (options?: CssDragEffectOptions): CssDragEffect =>
     
     
     // States:
-    const { dragStateVars : { relativeDragOffsetX, relativeDragOffsetY, dragFactor } } = usesDragState();
+    const { dragStateVars : { dragOffsetX, dragOffsetY, dragFactor } } = usesDragState();
     
     // Variables:
     const { dragFilter, dragTransform } = dragEffectVars;
@@ -64,7 +64,7 @@ export const usesDragEffect = (options?: CssDragEffectOptions): CssDragEffect =>
                 // Drag filter:
                 [dragFilter   ] : composeFilterEffect(dragFactor, { ...restOptions, enablesReverseIntent }),
                 
-                [dragTransform] : `translate(calc(${relativeDragOffsetX} * 1px * ${dragFactor}), calc(${relativeDragOffsetY} * 1px * ${dragFactor}))`,
+                [dragTransform] : `translate(calc(${dragOffsetX} * 1px * ${dragFactor}), calc(${dragOffsetY} * 1px * ${dragFactor}))`,
             }),
         }),
         

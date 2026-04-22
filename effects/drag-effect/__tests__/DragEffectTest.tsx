@@ -57,7 +57,7 @@ export const DragEffectTest = (props: DragEffectTestProps) => {
     const styles = useDragEffectTestStyles();
     const reversedStyles = useDragEffectReversedTestStyles();
     
-    const { dragStateVars  : { dragFactor: dragFactorVar, isDragged: isDraggedVar, relativeDragOffsetX: relativeDragOffsetXVar, relativeDragOffsetY: relativeDragOffsetYVar } } = usesDragState();
+    const { dragStateVars  : { dragFactor: dragFactorVar, isDragged: isDraggedVar, dragOffsetX: dragOffsetXVar, dragOffsetY: dragOffsetYVar } } = usesDragState();
     
     // Inline style overrides:
     // - Assigns `activeFactor` directly
@@ -80,14 +80,14 @@ export const DragEffectTest = (props: DragEffectTestProps) => {
         
         // @ts-ignore
         [
-            relativeDragOffsetXVar
+            dragOffsetXVar
             .slice(4, -1) // fix: var(--customProp) => --customProp
         ]: String(draggedShiftX),
         [
-            relativeDragOffsetYVar
+            dragOffsetYVar
             .slice(4, -1) // fix: var(--customProp) => --customProp
         ]: String(draggedShiftY),
-    } as CSSProperties), [dragFactorVar, activeFactor, isDraggedVar, isDragged, relativeDragOffsetXVar, relativeDragOffsetYVar]);
+    } as CSSProperties), [dragFactorVar, activeFactor, isDraggedVar, isDragged, dragOffsetXVar, dragOffsetYVar]);
     
     return (
         <div>

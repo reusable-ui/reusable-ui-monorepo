@@ -55,7 +55,7 @@ import {
  *     // Feature: drag/drop lifecycle
  *     const {
  *         dragStateRule,
- *         dragStateVars: { isDragged, isDropped, relativeDragOffsetX, relativeDragOffsetY, dragFactor },
+ *         dragStateVars: { isDragged, isDropped, dragOffsetX, dragOffsetY, dragFactor },
  *     } = usesDragState({
  *         animationDragging : 'var(--box-dragging)',
  *         animationDropping : 'var(--box-dropping)',
@@ -96,7 +96,7 @@ import {
  *         // Example usage:
  *         // - Smoothly move the element from its original position to the pointer position.
  *         // - 0 → original position, 1 → pointer position.
- *         transform: `translate(calc(${relativeDragOffsetX} * 1px * ${dragFactor}), calc(${relativeDragOffsetY} * 1px * ${dragFactor}))`,
+ *         transform: `translate(calc(${dragOffsetX} * 1px * ${dragFactor}), calc(${dragOffsetY} * 1px * ${dragFactor}))`,
  *         
  *         // Apply composed animations:
  *         animation,

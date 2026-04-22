@@ -16,7 +16,7 @@ With **drag-state**, you get:
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, animation, and feedback systems  
 ✔ User definable `computedDrag` for external logic delegation  
-✔ Utility CSS variables (`--dr-relativeDragOffsetX`, `--dr-relativeDragOffsetY`) for aligning drag components to the pointer position  
+✔ Utility CSS variables (`--dr-dragOffsetX`, `--dr-dragOffsetY`) for aligning drag components to the pointer position  
 ✔ Deterministic disabled handling: always dropped when disabled, with clear contracts across explicit and external modes  
 
 ## 📦 Installation
@@ -81,7 +81,7 @@ export const DraggableOption: FC<CustomButtonProps> = (props) => {
     
     const {
         dragged,
-        relativeDragOffset,
+        dragOffset,
         actualDragged,
         dragPhase,
         dragClassname,
@@ -215,15 +215,15 @@ Generates CSS rules that conditionally apply the drag/drop animations based on c
 These variables are only active during their respective transition phases.  
 Use `switchOf(...)` to ensure graceful fallback when inactive.
 
-| Variable                | Active When...                  | Purpose                                                                      |
-|-------------------------|---------------------------------|------------------------------------------------------------------------------|
-| `animationDragging`     | `.is-dragging`                  | Runs the dragging animation sequence                                         |
-| `animationDropping`     | `.is-dropping`                  | Runs the dropping animation sequence                                         |
-| `isDragged`             | `.is-dragged` or `.is-dragging` | Conditional variable for the dragged state                                   |
-| `isDropped`             | `.is-dropped` or `.is-dropping` | Conditional variable for the dropped state                                   |
-| `relativeDragOffsetX/Y` | Always available                | Aligns drag components to the pointer position during dragging               |
-| `dragFactor`            | Always available (animatable)   | Normalized factor: 0 = dropped, 1 = dragged, interpolates during transitions |
-| `dragFactorCond`        | Not fully dropped               | Conditional mirror of `dragFactor`, drops to `unset` when fully dropped      |
+| Variable            | Active When...                  | Purpose                                                                      |
+|---------------------|---------------------------------|------------------------------------------------------------------------------|
+| `animationDragging` | `.is-dragging`                  | Runs the dragging animation sequence                                         |
+| `animationDropping` | `.is-dropping`                  | Runs the dropping animation sequence                                         |
+| `isDragged`         | `.is-dragged` or `.is-dragging` | Conditional variable for the dragged state                                   |
+| `isDropped`         | `.is-dropped` or `.is-dropping` | Conditional variable for the dropped state                                   |
+| `dragOffsetX/Y`     | Always available                | Aligns drag components to the pointer position during dragging               |
+| `dragFactor`        | Always available (animatable)   | Normalized factor: 0 = dropped, 1 = dragged, interpolates during transitions |
+| `dragFactorCond`    | Not fully dropped               | Conditional mirror of `dragFactor`, drops to `unset` when fully dropped      |
 
 #### 💡 Usage Example
 
@@ -247,7 +247,7 @@ export const draggableBoxStyle = () => {
     // Feature: drag/drop lifecycle
     const {
         dragStateRule,
-        dragStateVars: { isDragged, isDropped, relativeDragOffsetX, relativeDragOffsetY, dragFactor },
+        dragStateVars: { isDragged, isDropped, dragOffsetX, dragOffsetY, dragFactor },
     } = usesDragState({
         animationDragging : 'var(--box-dragging)',
         animationDropping : 'var(--box-dropping)',
@@ -288,7 +288,7 @@ export const draggableBoxStyle = () => {
         // Example usage:
         // - Smoothly move the element from its original position to the pointer position.
         // - 0 → original position, 1 → pointer position.
-        transform: `translate(calc(${relativeDragOffsetX} * 1px * ${dragFactor}), calc(${relativeDragOffsetY} * 1px * ${dragFactor}))`,
+        transform: `translate(calc(${dragOffsetX} * 1px * ${dragFactor}), calc(${dragOffsetY} * 1px * ${dragFactor}))`,
         
         // Apply composed animations:
         animation,

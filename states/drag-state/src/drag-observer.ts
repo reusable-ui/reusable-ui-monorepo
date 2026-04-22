@@ -39,7 +39,7 @@ export interface DragObserverProps {
      * - `false` : the pointer is released, even outside the element.
      * 
      * Behavior:
-     * - When active, `relativeDragOffset` is continuously updated as the pointer moves.
+     * - When active, `dragOffset` is continuously updated as the pointer moves.
      * - When inactive, updates stop but the last offset is preserved.
      *   This allows `dropping` animations to continue using the final position.
      */
@@ -59,7 +59,7 @@ export interface DragObserverProps {
 export interface DragObserverState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Pick<DragBehaviorState<TElement>, 'relativeDragOffset' | 'handlePointerDown' | 'handlePointerMove'>
+        Pick<DragBehaviorState<TElement>, 'dragOffset' | 'handlePointerDown' | 'handlePointerMove'>
 {
     /* no additional props yet - reserved for future extensions */
 }
@@ -102,7 +102,7 @@ export const useDragObserverState = <TElement extends Element = HTMLElement>(pro
     
     // The live relative offset between the grab point and the current pointer position:
     // - Apply this offset to translate the element so the cursor remains aligned.
-    const [relativeDragOffset, setRelativeDragOffset] = useState<DragPosition>({ x: 0, y: 0 });
+    const [dragOffset, setDragOffset] = useState<DragPosition>({ x: 0, y: 0 });
     
     
     
@@ -143,7 +143,7 @@ export const useDragObserverState = <TElement extends Element = HTMLElement>(pro
         
         
         // Initialize offset to zero (pressed but not yet moved):
-        setRelativeDragOffset({ x: 0, y: 0 });
+        setDragOffset({ x: 0, y: 0 });
         
         
         
@@ -156,7 +156,7 @@ export const useDragObserverState = <TElement extends Element = HTMLElement>(pro
             
             // Compute relative offset (delta from grab point):
             // - Both the pointer and grabbed coordinates relative to the viewport.
-            setRelativeDragOffset({
+            setDragOffset({
                 x : clientX - grabbedX,
                 y : clientY - grabbedY,
             });
@@ -175,7 +175,7 @@ export const useDragObserverState = <TElement extends Element = HTMLElement>(pro
             // Do not reset relative offset here:
             // - Dropping animations may still rely on the last known offset.
             // - When fully dropped, `dragFactor` = 0, so the offset is effectively ignored.
-            // setRelativeDragOffset({ x: 0, y: 0 });
+            // setDragOffset({ x: 0, y: 0 });
             
             
             
@@ -188,7 +188,7 @@ export const useDragObserverState = <TElement extends Element = HTMLElement>(pro
     
     // Return API for integration:
     return {
-        relativeDragOffset,
+        dragOffset,
         handlePointerDown,
         handlePointerMove,
     } satisfies DragObserverState<TElement>;

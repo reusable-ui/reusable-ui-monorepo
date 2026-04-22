@@ -195,7 +195,7 @@ const dragBehaviorStateDefinition : DragBehaviorStateDefinition = {
  *     
  *     const {
  *         dragged,
- *         relativeDragOffset,
+ *         dragOffset,
  *         actualDragged,
  *         dragPhase,
  *         dragClassname,
@@ -283,7 +283,7 @@ export const useDragBehaviorState = <TElement extends Element = HTMLElement>(pro
     // - Use `dragged` instead of `actualDragged` because `dragged` correlates with `dragClassname`
     // which drives the animations based on the relative offset.
     const {
-        relativeDragOffset,
+        dragOffset,
         handlePointerDown,
         handlePointerMove,
     } = useDragObserverState<TElement>({
@@ -294,27 +294,27 @@ export const useDragBehaviorState = <TElement extends Element = HTMLElement>(pro
     
     // Compute inline CSS variables for exposing the current drag offsets:
     const {
-        x : relativeDragOffsetX,
-        y : relativeDragOffsetY,
-    } = relativeDragOffset;
+        x : dragOffsetX,
+        y : dragOffsetY,
+    } = dragOffset;
     const dragStyle = useMemo<CSSProperties>(() => ({
         [
-            dragStateVars.relativeDragOffsetX
+            dragStateVars.dragOffsetX
             .slice(4, -1) // fix: var(--customProp) => --customProp
-        ]: String(relativeDragOffsetX),
+        ]: String(dragOffsetX),
         
         [
-            dragStateVars.relativeDragOffsetY
+            dragStateVars.dragOffsetY
             .slice(4, -1) // fix: var(--customProp) => --customProp
-        ]: String(relativeDragOffsetY),
-    }), [dragStateVars.relativeDragOffsetX, dragStateVars.relativeDragOffsetY, relativeDragOffsetX, relativeDragOffsetY]);
+        ]: String(dragOffsetY),
+    }), [dragStateVars.dragOffsetX, dragStateVars.dragOffsetY, dragOffsetX, dragOffsetY]);
     
     
     
     // Return resolved drag state API:
     return {
         dragged,
-        relativeDragOffset,
+        dragOffset,
         actualDragged,
         dragPhase,
         dragClassname,
