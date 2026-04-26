@@ -239,21 +239,26 @@ export type DragPhase =
 export type DragClassname = `is-${DragPhase}`
 
 /**
- * Represents a 2D coordinate relative to a chosen origin.
+ * Represents a relative translation (delta) for a draggable element.
  * 
  * Note:
- * - These are **physical coordinates** derived from pointer events.
+ * - These are **physical coordinates** (pixel deltas) derived directly from pointer events.
+ * - They describe how far the pointer has moved from the original grab point along the x/y axes.
+ * - Always recomputed whenever the cursor position changes during an active drag.
  * - They are not logical layout values.
- * - Always recompute when the DOM changes.
  */
-export interface DragPosition {
+export interface DragOffset {
     /**
-     * The horizontal coordinate relative to the viewport.
+     * Horizontal delta in pixels.
+     * Positive values move the element to the right,
+     * negative values move it to the left.
      */
     x : number
     
     /**
-     * The vertical coordinate relative to the viewport.
+     * Vertical delta in pixels.
+     * Positive values move the element downward,
+     * negative values move it upward.
      */
     y : number
 }
@@ -302,7 +307,7 @@ export interface DragBehaviorState<TElement extends Element = HTMLElement>
      * Useful for animation authors who need direct numeric offsets for
      * aligning the draggable element with the current pointer position during dragging.
      */
-    dragOffset        : DragPosition
+    dragOffset        : DragOffset
     
     /**
      * The actual resolved dragged/dropped state, regardless of animation state.

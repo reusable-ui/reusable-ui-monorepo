@@ -15,7 +15,7 @@ import {
 
 // Types:
 import {
-    type DragPosition,
+    type DragOffset,
     type DragBehaviorState,
 }                           from './types.js'
 
@@ -98,11 +98,11 @@ export const useDragObserverState = <TElement extends Element = HTMLElement>(pro
     // Stores the most recent grab point inside the element:
     // - Updated on pointerdown and pointermove.
     // - The coordinate is relative to the viewport.
-    const latestGrabPointRef = useRef<DragPosition>({ x: 0, y: 0 });
+    const latestGrabPointRef = useRef<DragOffset>({ x: 0, y: 0 });
     
     // The live relative offset between the grab point and the current pointer position:
     // - Apply this offset to translate the element so the cursor remains aligned.
-    const [dragOffset, setDragOffset] = useState<DragPosition>({ x: 0, y: 0 });
+    const [dragOffset, setDragOffset] = useState<DragOffset>({ x: 0, y: 0 });
     
     
     
