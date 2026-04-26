@@ -289,16 +289,18 @@ export interface DragBehaviorState<TElement extends Element = HTMLElement>
     dragged           : FeedbackBehaviorState<boolean, DragPhase, DragClassname, TElement>['state']
     
     /**
-     * Represents how far the pointer has moved horizontally and vertically
-     * from the original grab point inside the element to the current pointer position.
+     * Translates the draggable element to the current pointer position during dragging.
      * 
-     * Live updates during dragging and remains at the last position during dropping.
+     * Provides the current offset (x, y) from the original grab point to the pointer position.
      * 
-     * This value may slightly lag behind the actual dragged intent due to in-flight animations.
-     * It updates only after an animation completes, ensuring the styling remains in sync with animation lifecycle.
+     * When multiplied by `dragFactor` (transitioning from 0 → 1 during dragging),
+     * these offsets create a transition from the original position to the pointer position.
      * 
-     * Apply this as a translation (e.g. `transform: translate(...)`)
-     * to move the element so the cursor remains aligned with the grab point.
+     * When the pointer position changes (during dragging),
+     * the offsets update to maintain alignment with the pointer.
+     * 
+     * Useful for animation authors who need direct numeric offsets for
+     * aligning the draggable element with the current pointer position during dragging.
      */
     dragOffset        : DragPosition
     
@@ -335,16 +337,24 @@ export interface DragBehaviorState<TElement extends Element = HTMLElement>
     dragClassname     : FeedbackBehaviorState<boolean, DragPhase, DragClassname, TElement>['transitionClassname']
     
     /**
-     * A set of inline CSS variables that expose the current drag offsets.
+     * Provides inline CSS variables for the draggable element
+     * that expose the current drag offsets in a styling-friendly form.
      * 
-     * Includes `--dr-dragOffsetX` and `--dr-dragOffsetY`, enabling animation authors to drive layout,
-     * transitions, and directional inference directly from CSS.
+     * The element receives `--dr-dragOffsetX` and `--dr-dragOffsetY`,
+     * providing the translation from the original grab point to the current pointer position.
      * 
-     * The returned style object is referentially stable as long as the variable values remain unchanged.
-     * This ensures predictable rendering behavior and avoids unnecessary re-renders in React.
+     * When multiplied by `dragFactor` (transitioning from 0 → 1 during dragging),
+     * these offsets create a transition from the original position to the pointer position.
      * 
-     * These variables are updated synchronously and are safe to use in style definitions,
-     * keyframes, and conditional selectors.
+     * When the pointer position changes (during dragging),
+     * the offsets update to maintain alignment with the pointer.
+     * 
+     * Useful for animation authors who need direct numeric offsets for
+     * aligning the draggable element with the current pointer position during dragging.
+     * 
+     * The returned style object is referentially stable
+     * when not actively dragging or if the pointer position remains unchanged (during dragging),
+     * avoiding unnecessary re-renders.
      */
     dragStyle         : CSSProperties
     
@@ -502,18 +512,21 @@ export interface DragStateVars {
     dragFactorCond    : unknown
     
     /**
-     * Represents how far the pointer has moved horizontally
-     * from the original grab point inside the element to the current pointer position.
+     * Translates the draggable element to the current pointer position during dragging.
      * 
-     * Live updates during dragging and remains at the last position during dropping.
+     * Provides the current horizontal offset (x axis) from the original grab point to the pointer position.
      * 
-     * This value may slightly lag behind the actual dragged intent due to in-flight animations.
-     * It updates only after an animation completes, ensuring the styling remains in sync with animation state.
+     * When multiplied by `dragFactor` (transitioning from 0 → 1 during dragging),
+     * this offset creates a transition from the original position to the pointer position.
+     * 
+     * When the pointer position changes (during dragging),
+     * the offset updates to maintain alignment with the pointer.
      * 
      * Always resolves to a numeric unitless value (the value in pixels).
      * Use this with `calc(... * 1px)` to apply as a pixel translation.
      * 
-     * Useful for styling to align the component to the pointer position during dragging.
+     * Useful for animation authors who need direct numeric horizontal offsets for
+     * aligning the draggable element with the current pointer position during dragging.
      * 
      * @example
      * ```ts
@@ -526,23 +539,26 @@ export interface DragStateVars {
     dragOffsetX       : unknown
     
     /**
-     * Represents how far the pointer has moved vertically
-     * from the original grab point inside the element to the current pointer position.
+     * Translates the draggable element to the current pointer position during dragging.
      * 
-     * Live updates during dragging and remains at the last position during dropping.
+     * Provides the current vertical offset (y axis) from the original grab point to the pointer position.
      * 
-     * This value may slightly lag behind the actual dragged intent due to in-flight animations.
-     * It updates only after an animation completes, ensuring the styling remains in sync with animation state.
+     * When the pointer position changes (during dragging),
+     * the offset updates to maintain alignment with the pointer.
+     * 
+     * When multiplied by `dragFactor` (transitioning from 0 → 1 during dragging),
+     * this offset creates a transition from the original position to the pointer position.
      * 
      * Always resolves to a numeric unitless value (the value in pixels).
      * Use this with `calc(... * 1px)` to apply as a pixel translation.
      * 
-     * Useful for styling to align the component to the pointer position during dragging.
+     * Useful for animation authors who need direct numeric vertical offsets for
+     * aligning the draggable element with the current pointer position during dragging.
      * 
      * @example
      * ```ts
      * export const draggableComponentStyle = () => style({
-     *     // Translate the component horizontally based on the relative drag offset:
+     *     // Translate the component vertically based on the relative drag offset:
      *     transform : `translateY(calc(${dragStateVars.dragOffsetY} * 1px))`,
      * });
      * ```
