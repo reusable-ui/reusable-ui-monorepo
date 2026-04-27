@@ -527,11 +527,11 @@ export interface DragStateVars {
      * When the pointer position changes (during dragging),
      * the offset updates to maintain alignment with the pointer.
      * 
-     * Always resolves to a numeric unitless value (the value in pixels).
-     * Use this with `calc(... * 1px)` to apply as a pixel translation.
-     * 
      * Useful for animation authors who need direct numeric horizontal offsets for
      * aligning the draggable element with the current pointer position during dragging.
+     * 
+     * Always resolves to a numeric unitless value (the value in pixels).
+     * Use with `calc(... * 1px)` to apply as a pixel translation.
      * 
      * @example
      * ```ts
@@ -554,11 +554,11 @@ export interface DragStateVars {
      * When multiplied by `dragFactor` (transitioning from 0 → 1 during dragging),
      * this offset creates a transition from the original position to the pointer position.
      * 
-     * Always resolves to a numeric unitless value (the value in pixels).
-     * Use this with `calc(... * 1px)` to apply as a pixel translation.
-     * 
      * Useful for animation authors who need direct numeric vertical offsets for
      * aligning the draggable element with the current pointer position during dragging.
+     * 
+     * Always resolves to a numeric unitless value (the value in pixels).
+     * Use with `calc(... * 1px)` to apply as a pixel translation.
      * 
      * @example
      * ```ts
