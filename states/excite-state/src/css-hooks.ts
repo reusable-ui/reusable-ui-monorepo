@@ -35,22 +35,25 @@ import {
  * // Animation feature:
  * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
  * 
- * // Excitement state:
+ * // Excite state:
  * import { usesExciteState } from '@reusable-ui/excite-state';
  * 
  * // CSS-in-JS:
  * import { style, vars, keyframes } from '@cssfn/core';
  * 
  * export const highlightCardStyle = () => {
+ *     // Feature: animation handling
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
  *     } = usesAnimationFeature();
  *     
+ *     // Feature: excite animation
  *     const {
  *         exciteStateRule,
+ *         exciteStateVars: { exciteFactor },
  *     } = usesExciteState({
- *         animationExciting: 'var(--highlight-exciting)',
+ *         animationExciting: 'var(--box-exciting)',
  *     });
  *     
  *     return style({
@@ -60,25 +63,27 @@ import {
  *         // Apply animation feature rules:
  *         ...animationFeatureRule(),
  *         
- *         // Apply excitement state rules:
+ *         // Apply excite state rules:
  *         ...exciteStateRule(),
  *         
- *         // Define exciting animation:
+ *         // Exciting animation: oscillate exciteFactor between 0 ↔ 1 several times
  *         ...vars({
- *             '--highlight-exciting': [
- *                 ['0.3s', 'ease-in-out', 'both', 'alternate', 4, 'pulse-highlight'],
+ *             '--box-exciting': [
+ *                 ['0.3s', 'ease-in-out', 'both', 'alternate', 4, 'exciting'],
  *             ],
  *         }),
- *         ...keyframes('pulse-highlight', {
- *             from: {
- *                 transform: 'scale(1)',
- *                 backgroundColor: 'transparent',
- *             },
- *             to: {
- *                 transform: 'scale(1.05)',
- *                 backgroundColor: 'gold',
- *             },
+ *         ...keyframes('exciting', {
+ *             from : { [exciteFactor]: 0 },
+ *             to   : { [exciteFactor]: 1 },
  *         }),
+ *         
+ *         // Example usage:
+ *         
+ *         // Oscillates scale between 1 ↔ 1.05 several times:
+ *         transform: `scale(calc(1 + 0.05 * ${exciteFactor}))`,
+ *         
+ *         // Oscillates background color between transparent ↔ gold several times:
+ *         backgroundColor: `color-mix(in oklch, transparent calc((1 - ${exciteFactor}) * 100%), gold calc(${exciteFactor} * 100%))`,
  *         
  *         // Apply composed animations:
  *         animation,
