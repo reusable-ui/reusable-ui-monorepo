@@ -156,16 +156,18 @@ import { usesExciteState } from '@reusable-ui/excite-state';
 import { style, vars, keyframes } from '@cssfn/core';
 
 export const highlightCardStyle = () => {
+    // Feature: animation handling
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
     } = usesAnimationFeature();
     
+    // Feature: excite animation
     const {
         exciteStateRule,
         exciteStateVars: { exciteFactor },
     } = usesExciteState({
-        animationExciting: 'var(--highlight-exciting)',
+        animationExciting: 'var(--box-exciting)',
     });
     
     return style({
@@ -180,11 +182,11 @@ export const highlightCardStyle = () => {
         
         // Exciting animation: oscillate exciteFactor between 0 ↔ 1 several times
         ...vars({
-            '--highlight-exciting': [
-                ['0.3s', 'ease-in-out', 'both', 'alternate', 4, 'pulse-highlight'],
+            '--box-exciting': [
+                ['0.3s', 'ease-in-out', 'both', 'alternate', 4, 'exciting'],
             ],
         }),
-        ...keyframes('pulse-highlight', {
+        ...keyframes('exciting', {
             from : { [exciteFactor]: 0 },
             to   : { [exciteFactor]: 1 },
         }),
