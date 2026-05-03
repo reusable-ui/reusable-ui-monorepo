@@ -9,10 +9,9 @@ import React, {
 }                           from 'react'
 
 // Next.js:
-import {
+import Link, {
     type LinkProps,
-    default as Link,
-}                           from 'next/link'
+}                           from 'next/link.js'
 
 // Reusable-ui utilities:
 import {
@@ -80,6 +79,7 @@ const NextLinkCompat = (props: NextLinkCompatProps): ReactElement => {
     // Transform the `<Link>` element into an "anchorless" structure (if applicable):
     // The `anchorless` and `passHref` props will be automatically removed by `useAnchorlessLink()`.
     return useAnchorlessLink(
+        // @ts-ignore
         <Link {...props} />
     ) as ReactElement; // The returned element is guaranteed to be a valid ReactElement.
 };
