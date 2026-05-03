@@ -34,6 +34,8 @@ const emptyDependency : DependencyList = [];
 // Hooks:
 
 /**
+ * @deprecated Use `useLayoutEffect` directly instead. This hook is no longer necessary since React 18+ handles SSR gracefully.
+ * 
  * A React hook that intelligently switches between `useLayoutEffect` and a no-op function
  * based on the execution environment.
  * 
@@ -114,7 +116,7 @@ export const useMountedFlag = (): RefObject<boolean | undefined> => {
     
     
     // Updates mount status on lifecycle changes:
-    useIsomorphicLayoutEffect(() => {
+    useLayoutEffect(() => {
         // Setups:
         
         // Marks component as mounted:

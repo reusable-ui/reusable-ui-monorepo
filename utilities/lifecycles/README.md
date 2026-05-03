@@ -20,19 +20,6 @@ yarn add @reusable-ui/lifecycles
 
 ## 📦 Exported Hooks & Functions
 
-### `useIsomorphicLayoutEffect(effect: EffectCallback, deps?: DependencyList): void`
-A **cross-platform effect hook** that automatically switches between `useLayoutEffect` (browser) and a no-op (server).
-
-```tsx
-import { useIsomorphicLayoutEffect } from '@reusable-ui/lifecycles';
-
-useIsomorphicLayoutEffect(() => {
-    console.log('This effect runs before paint on the client.');
-}, []);
-```
-
----
-
 ### `useMountedFlag(): RefObject<boolean | undefined>`
 Tracks whether a component is **mounted or unmounted**.
 
