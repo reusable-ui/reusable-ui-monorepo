@@ -72,9 +72,44 @@ const emptyDependency : DependencyList = [];
  * }, []);
  * ```
  */
-export const useStableCallback = <TArgs extends unknown[] = [], TReturn extends unknown = void>(callback: Callback<TArgs, TReturn>): Callback<TArgs, TReturn> => {
+export function useStableCallback<TArgs extends unknown[] = [], TReturn extends unknown = void>(callback: Callback<TArgs, TReturn>): Callback<TArgs, TReturn>;
+/**
+ * Ensures a stable function reference across renders.
+ * 
+ * - Prevents unnecessary re-creations of the callback function.
+ * - Avoids stale closures while keeping the latest function reference.
+ * - Useful for **event handlers**, preventing unnecessary updates when passed as props.
+ * - Useful for **API functions**, ensuring persistent execution without stale closures.
+ * 
+ * @template TArgs - The argument types passed to the callback function.
+ * @template TReturn - The return type of the callback function (must be `void` or `undefined`).
+ * @param {Callback<TArgs, TReturn>} callback - The function to be stabilized or `null`/`undefined` to create a no-op stable function.
+ * @returns {Callback<TArgs, TReturn>} A stable callback function.
+ * 
+ * @example
+ * ```ts
+ * // Ensures stable event handlers for performance:
+ * const handleClick = useStableCallback((event: MouseEvent) => console.log('Clicked', event));
+ * <button onClick={handleClick}>Click Me</button>
+ * ```
+ * 
+ * @example
+ * ```ts
+ * // Ensures API methods remain stable across renders:
+ * const fetchData = useStableCallback(() => fetch('/data'));
+ * useEffect(() => {
+ *     fetchData(); // Always refers to the latest stable function.
+ *     
+ *     // The `fetchData` does not change, so omitting it from the dependency array is safe.
+ *     // To suppress ESLint warnings:
+ *     // eslint-disable-next-line react-hooks/exhaustive-deps
+ * }, []);
+ * ```
+ */
+export function useStableCallback<TArgs extends unknown[] = [], TReturn extends void | undefined = void>(callback: Callback<TArgs, TReturn> | null | undefined): Callback<TArgs, TReturn>;
+export function useStableCallback<TArgs extends unknown[] = [], TReturn extends unknown = void>(callback: Callback<TArgs, TReturn> | null | undefined): Callback<TArgs, TReturn> {
     // Stores the latest callback reference:
-    const callbackRef = useRef<Callback<TArgs, TReturn>>(callback);
+    const callbackRef = useRef<Callback<TArgs, TReturn> | null | undefined>(callback);
     
     
     
@@ -94,11 +129,12 @@ export const useStableCallback = <TArgs extends unknown[] = [], TReturn extends 
     
     
     // Returns a stable callback reference:
-    return useCallback<Callback<TArgs, TReturn>>(((...args) => {
+    return useCallback<Callback<TArgs, TReturn>>(((...args): TReturn => {
         // Calls the latest callback reference with the provided arguments:
-        return callbackRef.current(...args);
+        const latestCallback = callbackRef.current;
+        return latestCallback ? latestCallback(...args) : (undefined as TReturn);
     }) as Callback<TArgs, TReturn>, emptyDependency); // Runs only once, keeping a stable function reference.
-};
+}
 
 
 
