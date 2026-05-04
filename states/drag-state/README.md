@@ -10,6 +10,11 @@ With **drag-state**, you get:
 - Transition animations tied to the drag lifecycle  
 - Semantic styling variables (`isDragged`, `isDropped`, etc.) for fine-grained control  
 
+## ⚠️ Dependency on Press-State
+Drag-state does not compute drag intent on its own.  
+It requires a **press-state (or equivalent)** source to supply `computedDrag` — typically derived from `actualPressed` in `usePressBehaviorState()` or `usePressState()`.  
+Without it, the component will remain in dropped state.
+
 ## ✨ Features
 ✔ Lifecycle-aware drag/drop animations based on current drag state  
 ✔ Gracefully completes running animations before resolving new state  
