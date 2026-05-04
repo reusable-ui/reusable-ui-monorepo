@@ -370,7 +370,8 @@ export interface CssDragEffect {
      * Exposes drag-effect CSS variables for transitional effects.
      * 
      * Includes:
-     * - `dragFilter` : Opacity, brightness, contrast, saturation, hue-rotate, drop-shadow, blur, and blur radius interpolation during drag transitions.
+     * - `dragFilter`    : Opacity, brightness, contrast, saturation, hue-rotate, drop-shadow, blur, and blur radius interpolation during drag transitions.
+     * - `dragTransform` : Positional transform interpolation during drag transitions.
      * 
      * ⚠️ **Caution**: These variables are invalid when the component is fully dropped.
      * If used incorrectly, they can invalidate CSS declarations.

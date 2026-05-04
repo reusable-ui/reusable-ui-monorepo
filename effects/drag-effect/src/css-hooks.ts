@@ -64,6 +64,7 @@ export const usesDragEffect = (options?: CssDragEffectOptions): CssDragEffect =>
                 // Drag filter:
                 [dragFilter   ] : composeFilterEffect(dragFactor, { ...restOptions, enablesReverseIntent }),
                 
+                // Drag transform:
                 [dragTransform] : `translate(calc(${dragOffsetX} * 1px * ${dragFactor}), calc(${dragOffsetY} * 1px * ${dragFactor}))`,
             }),
         }),
