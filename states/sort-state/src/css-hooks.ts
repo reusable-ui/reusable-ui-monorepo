@@ -27,7 +27,7 @@ import {
  * Generates CSS rules that conditionally apply the sorting transition whenever a sorting action occurs,
  * and exposes sort-related CSS variables for conditional animation.
  * 
- * @param options - An optional configuration for customizing sorting transition.
+ * @param options - An optional configuration for customizing sorting transitions.
  * @returns A CSS API for conditionally apply the sorting transition whenever a sorting action occurs.
  *
  * @example

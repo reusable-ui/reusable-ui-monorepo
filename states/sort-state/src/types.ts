@@ -471,7 +471,7 @@ export interface SortStateVars {
 
 
 /**
- * Configuration options for customizing sorting transition.
+ * Configuration options for customizing sorting transitions.
  */
 export interface CssSortStateOptions {
     /**
