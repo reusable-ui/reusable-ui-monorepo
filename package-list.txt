@@ -182,6 +182,8 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 | hover-state      | Reset lost; re-evaluate on re-enable via `match()` | Matches native browser hover behavior under cursor                  |
 | press-state      | Reset lost; remain lost until user re-presses      | Prevents unintended actions; press must be explicit                 |
 | validity-state   | Unvalidated; recompute on re-enable                | Disabled inputs excluded from validation; recompute when re-enabled |
+| drag-state       | Follows press-state                                | Drag-state extends press-state; same rationale applies              |
+| sort-state       | Unaffected                                         | Sort-state provides visual transition of already sorted state       |
 | collapse-state   | Block dispatch; preserve last state                | Disabled freezes interaction but doesn’t reset                      |
 | active-state     | Block dispatch; preserve last state                | Disabled freezes interaction but doesn’t reset                      |
 | view-state       | Block dispatch; preserve last state                | Disabled freezes interaction but doesn’t reset                      |
@@ -195,6 +197,8 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 | hover-state      | Unaffected; hover feedback applies                 | Pointer feedback remains useful for discoverability                 |
 | press-state      | Unaffected; press feedback applies                 | Press can select/focus but must not trigger state changes           |
 | validity-state   | Unvalidated; recompute on re-enable                | Readonly inputs excluded from validation; recompute when re-mutable |
+| drag-state       | Follows press-state                                | Drag-state extends press-state; same rationale applies              |
+| sort-state       | Unaffected                                         | Sort-state provides visual transition of already sorted state       |
 | collapse-state   | Block dispatch; preserve last state                | Readonly prevents mutation; interaction state frozen                |
 | active-state     | Block dispatch; preserve last state                | Same rationale as collapse                                          |
 | view-state       | Block dispatch; preserve last state                | Same rationale as collapse                                          |
