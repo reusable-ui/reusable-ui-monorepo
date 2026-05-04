@@ -8,6 +8,7 @@ import {
     // Hooks:
     useState,
     useMemo,
+    useLayoutEffect,
     
     
     
@@ -20,10 +21,6 @@ import {
     // Flags:
     isClientSide,
 }                           from '@reusable-ui/runtime-checks'  // Detects whether JavaScript is running on the client-side or server-side, including JSDOM environments.
-import {
-    // Hooks:
-    useIsomorphicLayoutEffect,
-}                           from '@reusable-ui/lifecycles'      // A React utility package for managing component lifecycles, ensuring stable effects, and optimizing state updates.
 import {
     // Utilities:
     isClientLinkElement,
@@ -491,7 +488,7 @@ export const useDetermineCurrentPage = (props: DetermineCurrentPageProps): boole
     const [currentPathname, setCurrentPathname] = useState<string | null>(null);
     
     // Keep current pathname up-to-date:
-    useIsomorphicLayoutEffect(() => {
+    useLayoutEffect(() => {
         // Skip if not running on the client-side:
         if (!isClientSide) return;
         
