@@ -93,6 +93,7 @@ import {
  */
 export const usesExciteState = (options?: CssExciteStateOptions): CssExciteState => ({
     exciteStateRule : () => usesActivityState({
+        // Activity animations for visual effects when excited:
         animations : {
             ifState   : ifExcited,
             variable  : exciteStateVars.animationExciting,
