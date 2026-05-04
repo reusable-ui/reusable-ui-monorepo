@@ -16,6 +16,8 @@ const stateDirs = [
     'hover-state',
     'press-state',
     'validity-state',
+    'drag-state',
+    'sort-state',
     'excite-state',
     'collapse-state',
     'active-state',
