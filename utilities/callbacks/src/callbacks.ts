@@ -83,7 +83,7 @@ export function useStableCallback<TArgs extends unknown[] = [], TReturn extends 
  * 
  * @template TArgs - The argument types passed to the callback function.
  * @template TReturn - The return type of the callback function (must be `void` or `undefined`).
- * @param {Callback<TArgs, TReturn>} callback - The function to be stabilized or `null`/`undefined` to create a no-op stable function.
+ * @param {Callback<TArgs, TReturn> | null | undefined} callback - The function to be stabilized or `null`/`undefined` to create a no-op stable function.
  * @returns {Callback<TArgs, TReturn>} A stable callback function.
  * 
  * @example
