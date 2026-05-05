@@ -46,13 +46,14 @@ import {
  * This creates a natural **switching illusion** of view changes.
  * 
  * ⚠️ Important Usage Note:
- * - Apply `usesViewEffect()` on the **slidable view elements** (the view group or individual views),
- *   **not** on the parent viewport container.
+ * - Apply `usesViewEffect()` to the **slidable view elements** (the view group or individual views),
+ *   **not** to the parent viewport container.
  * - The viewport container typically has `overflow: hidden` to mask out-of-viewport content.
  *   Sliding the container itself would move the viewport rather than the views inside it.
- * - By applying the effect to the slidable element(s), the correct view is revealed within the viewport.
- * - Ensure that `...transformFeatureRule()` and `transform` from `@reusable-ui/transform-feature`
- *   are also applied to the slidable element(s) so the sliding transformation works correctly.
+ * - Applying the effect at the slidable view element level ensures that the correct view is revealed within the viewport.
+ * - Make sure to also apply `...transformFeatureRule()` and the `transform` variable
+ *   from `@reusable-ui/transform-feature` to the slidable elements,
+ *   so that the sliding transform works correctly.
  * 
  * @example
  * ```ts
