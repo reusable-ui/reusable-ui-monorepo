@@ -339,7 +339,7 @@ export interface SortBehaviorState<TElement extends Element = HTMLElement>
 
 
 /**
- * A list of sort-related CSS variables used for sorting-aware styling.
+ * A list of sort-related CSS variables used for sorting-transition styling.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */

@@ -52,9 +52,9 @@ export default function sortStateTestStyle() {
                 padding: '20px',
                 backgroundImage: 'linear-gradient(135deg, oklch(0.9 0.2 265 / 1), oklch(0.7 0.3 265 / 1))',
                 
-                // Translate each item from its unsorted position → sorted position:
+                // Translates each item from its unsorted position → sorted order:
                 // - `sortOffsetX` and `sortOffsetY` are applied per item (via sortStyles).
-                // - `sortFactor` applies at container level, interpolating the offsets over time.
+                // - `sortFactor` applies at the container level, interpolating offsets over time.
                 transform: `translate(calc(${sortOffsetX} * 1px * ${sortFactor}), calc(${sortOffsetY} * 1px * ${sortFactor}))`,
             }),
         }),

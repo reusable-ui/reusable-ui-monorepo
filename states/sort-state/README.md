@@ -287,9 +287,9 @@ export const sortableListStyle = () => {
         // Example usage:
         
         ...children('.item', {
-            // Translate each item from its unsorted position → sorted position:
+            // Translates each item from its unsorted position → sorted order:
             // - `sortOffsetX` and `sortOffsetY` are applied per item (via sortStyles).
-            // - `sortFactor` applies at container level, interpolating the offsets over time.
+            // - `sortFactor` applies at the container level, interpolating offsets over time.
             transform: `translate(calc(${sortOffsetX} * 1px * ${sortFactor}), calc(${sortOffsetY} * 1px * ${sortFactor}))`,
         }),
         
