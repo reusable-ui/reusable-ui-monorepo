@@ -32,41 +32,45 @@ import {
  *
  * @example
  * ```ts
- * // Animation feature:
+ * // Features:
  * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
  * 
- * // Sort state:
+ * // States:
  * import { usesSortState } from '@reusable-ui/sort-state';
  * 
  * // CSS-in-JS:
  * import { style, vars, keyframes, children } from '@cssfn/core';
  * 
  * export const sortableListStyle = () => {
- *     // Feature: animation handling
+ *     // Features:
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
  *     } = usesAnimationFeature();
  *     
- *     // Feature: sorting transition
+ *     // States:
+ *     
+ *     // Sorting lifecycle:
+ *     // - Exposes `sortFactor` (1 → 0) to represent sorting transition progress
+ *     // - Associates sorting animation to drive `sortFactor` smoothly
  *     const {
  *         sortStateRule,
  *         sortStateVars: { sortOffsetX, sortOffsetY, sortFactor },
  *     } = usesSortState({
- *         animationSorting: 'var(--list-sorting)',
+ *         animationSorting : 'var(--list-sorting)',
  *     });
  *     
  *     return style({
- *         display: 'flex',
+ *         display: 'grid',
  *         // Define component styling here.
  *         
- *         // Apply animation feature rules:
+ *         // Attach feature rules (animation):
  *         ...animationFeatureRule(),
  *         
- *         // Apply sorting state rules:
+ *         // Attach sorting state rules (tracks items movement during sorting):
  *         ...sortStateRule(),
  *         
- *         // Sorting animation: interpolate sortFactor from 1 → 0
+ *         // Sorting animation: interpolate sortFactor from 1 → 0:
  *         ...vars({
  *             '--list-sorting': [
  *                 ['0.3s', 'ease-out', 'both', 'sorting'],
@@ -74,20 +78,24 @@ import {
  *         }),
  *         ...keyframes('sorting', {
  *             from : { [sortFactor]: 1 }, // Start fully unsorted.
+ *             // '90%': { [sortFactor]: -0.2 }, // Optional overshoot for an "elastic" effect
  *             to   : { [sortFactor]: 0 }, // End fully sorted.
  *         }),
  *         
  *         // Example usage:
  *         
- *         ...children('.item', {
+ *         // Apply animations (from animation feature):
+ *         animation,
+ *         
+ *         ...children('.item', { // The individual items.
+ *             display  : 'grid',
+ *             // Base styling for each item goes here.
+ *             
  *             // Translates each item from its unsorted position → sorted order:
  *             // - `sortOffsetX` and `sortOffsetY` are applied per item (via sortStyles).
  *             // - `sortFactor` applies at the container level, interpolating offsets over time.
  *             transform: `translate(calc(${sortOffsetX} * 1px * ${sortFactor}), calc(${sortOffsetY} * 1px * ${sortFactor}))`,
  *         }),
- *         
- *         // Apply composed animations:
- *         animation,
  *     });
  * }
  * ```

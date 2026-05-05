@@ -368,7 +368,7 @@ export interface SortStateVars {
      * - Values outside the 0–1 range are allowed, and implementors must handle them appropriately.  
      *   Example of an animation with a spring/bump effect:  
      *     `0%: 1`, `90%: -0.2`, `100%: 0`  
-     *   The undershoot value `-0.2` at `90%` is intentional, creating an over-trip effect.
+     *   The undershoot value `-0.2` at `90%` is intentional, creating an "elastic" effect.
      * 
      * ### Notes:
      * - Already registered as an animatable custom property; no need to apply `@property` manually.
