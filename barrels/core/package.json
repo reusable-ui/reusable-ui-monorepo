@@ -66,7 +66,7 @@
     "@reusable-ui/basic-variants": "^6.5.0",
     "@reusable-ui/border": "^6.5.0",
     "@reusable-ui/border-config": "^6.5.0",
-    "@reusable-ui/breakpoints": "^6.5.0",
+    "@reusable-ui/breakpoint-config": "^6.5.0",
     "@reusable-ui/checkable": "^6.5.0",
     "@reusable-ui/clickable": "^6.5.0",
     "@reusable-ui/color-config": "^6.5.0",

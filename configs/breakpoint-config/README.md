@@ -1,8 +1,8 @@
-# @reusable-ui/breakpoints 💻  
+# @reusable-ui/breakpoint-config 💻  
 
 A **flexible and themeable breakpoint system** designed for responsive UI components, seamlessly integrating with the **Reusable-UI framework** and powered by **@cssfn/core (CSS-in-JS)**.  
 
-**@reusable-ui/breakpoints** is part of the **@reusable-ui monorepo**, a collection of React component libraries.
+**@reusable-ui/breakpoint-config** is part of the **@reusable-ui monorepo**, a collection of React component libraries.
 
 ## 🚀 Features  
 ✔ **Themeable** – Dynamically adjust breakpoint widths  
@@ -12,16 +12,16 @@ A **flexible and themeable breakpoint system** designed for responsive UI compon
 ✔ **Powered by @cssfn/core** – Efficient CSS-in-JS rendering  
 
 ## 📦 Installation & Setup  
-Install **@reusable-ui/breakpoints** via npm or yarn:
+Install **@reusable-ui/breakpoint-config** via npm or yarn:
 
 ```sh
-npm install @reusable-ui/breakpoints
+npm install @reusable-ui/breakpoint-config
 # or
-yarn add @reusable-ui/breakpoints
+yarn add @reusable-ui/breakpoint-config
 ```
 
 ## 🚀 Supporting Setup for CSSFN  
-In order for **@reusable-ui/breakpoints** to work, `<StaticStyles />` and `<HydrateStyles />` must be included inside `<head>` for correct CSS rendering:
+In order for **@reusable-ui/breakpoint-config** to work, `<StaticStyles />` and `<HydrateStyles />` must be included inside `<head>` for correct CSS rendering:
 
 ```ts
 import { StaticStyles, HydrateStyles } from '@cssfn/cssfn-react/server';
@@ -42,13 +42,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ## 💻 Usage  
 
 ### **Breakpoint Configurations**  
-`@reusable-ui/breakpoints` provides a scalable system for managing screen and container breakpoints:
+`@reusable-ui/breakpoint-config` provides a scalable system for managing screen and container breakpoints:
 
 - **Predefined Sizes** (`xs`, `sm`, `md`, `lg`, `xl`, `xxl`, `xxxl`) – Standard breakpoint units for responsive design  
 - **Customizable Defaults** – Easily override breakpoint widths  
 
 ### **Retrieving Breakpoints**  
-To access breakpoint configurations, import **@cssfn/core** and **@reusable-ui/breakpoints**:
+To access breakpoint configurations, import **@cssfn/core** and **@reusable-ui/breakpoint-config**:
 
 ```ts
 import { style } from '@cssfn/core';
@@ -62,7 +62,7 @@ import {
   ifContainerWidthSmallerThan,
   ifContainerWidthBetween,
   ifContainerWidthAt,
-} from '@reusable-ui/breakpoints';
+} from '@reusable-ui/breakpoint-config';
 ```
 
 #### **Using Breakpoints**  
@@ -100,7 +100,7 @@ Easily customize breakpoint properties dynamically:
 ```ts
 // index.js or the initial load file of your project
 
-import { breakpointVars } from '@reusable-ui/breakpoints';
+import { breakpointVars } from '@reusable-ui/breakpoint-config';
 
 breakpointVars.lg = '1024px' as any; // Override the lg breakpoint value
 ```
@@ -110,12 +110,12 @@ This package is a **breakpoint system module** inside the [Reusable-UI](https://
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
 
 ## 🤝 Contributing  
-Want to improve **@reusable-ui/breakpoints**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
+Want to improve **@reusable-ui/breakpoint-config**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
 
 ## 🛡️ License  
 Licensed under the **MIT License** – see the [LICENSE](./LICENSE) file for details.  
 
 ---
 
-🚀 **@reusable-ui/breakpoints simplifies responsive design management for modern UI components.**  
+🚀 **@reusable-ui/breakpoint-config simplifies responsive design management for modern UI components.**  
 Give it a ⭐ on GitHub if you find it useful!

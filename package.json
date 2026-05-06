@@ -50,7 +50,7 @@
     "tests/test-borders",
     "configs/spacer-config",
     "tests/test-spacers",
-    "configs/breakpoints",
+    "configs/breakpoint-config",
     "tests/test-breakpoints",
     "configs/typos",
     "tests/test-typos",

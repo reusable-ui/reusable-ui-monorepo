@@ -1,6 +1,6 @@
 import {
     type BreakpointName,
-} from '@reusable-ui/breakpoints'
+} from '@reusable-ui/breakpoint-config'
 
 
 

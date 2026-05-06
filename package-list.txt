@@ -2,7 +2,7 @@
 @reusable-ui/color-config
 @reusable-ui/border-config
 @reusable-ui/spacer-config
-@reusable-ui/breakpoints
+@reusable-ui/breakpoint-config
 @reusable-ui/typos
 
 // Reusable-ui utilities:

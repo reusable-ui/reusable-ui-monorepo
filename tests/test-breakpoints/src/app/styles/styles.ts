@@ -1,5 +1,5 @@
 import { children, ifNthChild, style } from '@cssfn/core'
-import { ifScreenWidthAtLeast, ifScreenWidthSmallerThan, ifScreenWidthBetween, ifScreenWidthAt } from '@reusable-ui/breakpoints';
+import { ifScreenWidthAtLeast, ifScreenWidthSmallerThan, ifScreenWidthBetween, ifScreenWidthAt } from '@reusable-ui/breakpoint-config';
 import { spacerVars, spacerExpressions } from '@reusable-ui/spacer-config'
 
 
