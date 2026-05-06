@@ -80,7 +80,7 @@ const className = themeSelector('primary').slice(1);
 | `createThemeClass()` | `themeSelector(theme).slice(1)` |
 | `createThemeSelector()` | `themeSelector()` |
 | `ThemeName` | `BasicTheme` |
-| `themeOptions()` | `getThemeNames()` from `@reusable-ui/colors` |
+| `themeOptions()` | `getThemeNames()` from `@reusable-ui/color-config` |
 | `usesThemeConditional()` | `usesThemeOverride()` |
 | `defineThemeRule()` | Inline logic or override via `usesThemeVariant()` |
 | `ifHasTheme()` / `ifNoTheme()` | No longer needed — use `ifTheme()` directly |

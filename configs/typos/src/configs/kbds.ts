@@ -7,12 +7,12 @@ import {
     
     // Reads/writes css variables configuration:
     cssConfig,
-}                           from '@cssfn/core'          // Writes css in javascript.
+}                           from '@cssfn/core'                  // Writes css in javascript.
 
 // Configs:
 import {
     colorVars,
-}                           from '@reusable-ui/colors'  // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
+}                           from '@reusable-ui/color-config'    // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 import {
     markVars,
 }                           from './marks.js'

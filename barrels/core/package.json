@@ -69,7 +69,7 @@
     "@reusable-ui/breakpoints": "^6.5.0",
     "@reusable-ui/checkable": "^6.5.0",
     "@reusable-ui/clickable": "^6.5.0",
-    "@reusable-ui/colors": "^6.5.0",
+    "@reusable-ui/color-config": "^6.5.0",
     "@reusable-ui/disableable": "^6.5.0",
     "@reusable-ui/excitable": "^6.5.0",
     "@reusable-ui/focusable": "^6.5.0",

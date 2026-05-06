@@ -11,7 +11,7 @@
   "dependencies": {
     "@cssfn/cssfn": "^4.0.1",
     "@cssfn/cssfn-react": "^4.0.2",
-    "@reusable-ui/colors": "^7.0.0",
+    "@reusable-ui/color-config": "^7.0.0",
     "classnames": "^2.5.1",
     "next": "15.3.2",
     "react": "^19.0.0",

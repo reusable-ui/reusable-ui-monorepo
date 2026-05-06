@@ -48,7 +48,7 @@
     "@cssfn/core": "^4.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/colors": "^7.0.0"
+    "@reusable-ui/color-config": "^7.0.0"
   },
   "devDependencies": {
     "@types/chroma-js": "^3.1.2",

@@ -44,7 +44,7 @@
   },
   "type": "module",
   "workspaces": [
-    "configs/colors",
+    "configs/color-config",
     "tests/test-colors",
     "configs/borders",
     "tests/test-borders",

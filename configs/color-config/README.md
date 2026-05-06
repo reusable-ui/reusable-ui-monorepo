@@ -1,8 +1,8 @@
-# @reusable-ui/colors 🎨  
+# @reusable-ui/color-config 🎨  
 
 A **flexible and themeable color system** designed for UI components, seamlessly integrating with the **Reusable-UI framework** and powered by **@cssfn/core (CSS-in-JS)**.  
 
-**@reusable-ui/colors** is part of the **@reusable-ui monorepo**, a collection of React component libraries.
+**@reusable-ui/color-config** is part of the **@reusable-ui monorepo**, a collection of React component libraries.
 
 ## 🚀 Features  
 ✔ **Themeable** – Dynamically adjust colors based on root definitions  
@@ -12,16 +12,16 @@ A **flexible and themeable color system** designed for UI components, seamlessly
 ✔ **Powered by @cssfn/core** – Efficient CSS-in-JS rendering  
 
 ## 📦 Installation & Setup  
-Install **@reusable-ui/colors** via npm or yarn:
+Install **@reusable-ui/color-config** via npm or yarn:
 
 ```sh
-npm install @reusable-ui/colors
+npm install @reusable-ui/color-config
 # or
-yarn add @reusable-ui/colors
+yarn add @reusable-ui/color-config
 ```
 
 ## 🚀 Supporting Setup for CSSFN  
-In order for **@reusable-ui/colors** to work, `<StaticStyles />` and `<HydrateStyles />` must be included inside `<head>` for correct CSS rendering:
+In order for **@reusable-ui/color-config** to work, `<StaticStyles />` and `<HydrateStyles />` must be included inside `<head>` for correct CSS rendering:
 
 ```ts
 import { StaticStyles, HydrateStyles } from '@cssfn/cssfn-react/server';
@@ -42,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ## 🎨 Usage  
 
 ### **Default Color Themes**  
-`@reusable-ui/colors` provides a set of predefined themes for UI styling:
+`@reusable-ui/color-config` provides a set of predefined themes for UI styling:
 
 - **Primary**
 - **Secondary**
@@ -54,11 +54,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 - **Dark**
 
 ### **Retrieving Colors**  
-To access these themes, import **@cssfn/core** and **@reusable-ui/colors**:
+To access these themes, import **@cssfn/core** and **@reusable-ui/color-config**:
 
 ```ts
 import { style } from '@cssfn/core';
-import { colorVars } from '@reusable-ui/colors';
+import { colorVars } from '@reusable-ui/color-config';
 ```
 
 #### **Root Colors**  
@@ -129,7 +129,7 @@ Easily customize and define new themes dynamically:
 ```ts
 // index.js or the initial load file of your project
 
-import { colorVars, colorParamVars, adjustLightness, defineTheme, deleteTheme } from '@reusable-ui/colors';
+import { colorVars, colorParamVars, adjustLightness, defineTheme, deleteTheme } from '@reusable-ui/color-config';
 
 colorVars.primary = '#0000ff' as any; // `as any` => force to assign bare value
 colorVars.primaryText = 'oklch(0.00 0.000 000)' as any;
@@ -145,12 +145,12 @@ This package is a **color system module** inside the [Reusable-UI](https://githu
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
 
 ## 🤝 Contributing  
-Want to improve **@reusable-ui/colors**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
+Want to improve **@reusable-ui/color-config**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
 
 ## 🛡️ License  
 Licensed under the **MIT License** – see the [LICENSE](./LICENSE) file for details.  
 
 ---
 
-🚀 **@reusable-ui/colors simplifies color management for dynamic UI designs.**  
+🚀 **@reusable-ui/color-config simplifies color management for dynamic UI designs.**  
 Give it a ⭐ on GitHub if you find it useful!  

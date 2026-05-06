@@ -1,6 +1,6 @@
 import { themes } from '@/libs/themes'
 import { rule, style, variants, vars } from '@cssfn/core'
-import { colorVars, colorExpressions, colorParamVars, colorParamExpressions, defineTheme, deleteTheme } from '@reusable-ui/colors'
+import { colorVars, colorExpressions, colorParamVars, colorParamExpressions, defineTheme, deleteTheme } from '@reusable-ui/color-config'
 
 
 

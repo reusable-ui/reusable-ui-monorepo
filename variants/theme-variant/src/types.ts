@@ -12,12 +12,12 @@ import {
     
     // Strongly typed of css variables:
     type CssVars,
-}                           from '@cssfn/core'          // Writes css in javascript.
+}                           from '@cssfn/core'                  // Writes css in javascript.
 
 // Reusable-ui configs:
 import {
     type DefaultRootColors,
-}                           from '@reusable-ui/colors'  // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
+}                           from '@reusable-ui/color-config'    // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 
 
 
@@ -335,7 +335,7 @@ export interface CssThemeVariant {
     /**
      * Generates CSS rules that switch color shades based on the currently active theme.
      * 
-     * Automatically maps color shades (e.g. background, foreground, decoration, border) to the appropriate color variables from `@reusable-ui/colors`,
+     * Automatically maps color shades (e.g. background, foreground, decoration, border) to the appropriate color variables from `@reusable-ui/color-config`,
      * depending on the currently active theme.
      * Supports multiple styling modes like **regular**, **mild**, and **outlined**.
      * 

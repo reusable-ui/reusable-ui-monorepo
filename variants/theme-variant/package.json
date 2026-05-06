@@ -53,7 +53,7 @@
     "@cssfn/core": "^4.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/colors": "^7.0.0",
+    "@reusable-ui/color-config": "^7.0.0",
     "@types/react": "^19.0.0",
     "react": "^19.0.0"
   }

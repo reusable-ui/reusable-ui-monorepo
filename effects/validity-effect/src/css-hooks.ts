@@ -34,7 +34,7 @@ import {
 // Reusable-ui configs:
 import {
     colorVars,
-}                           from '@reusable-ui/colors'              // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
+}                           from '@reusable-ui/color-config'        // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 
 // Reusable-ui variants:
 import {

@@ -1,5 +1,5 @@
 // Reusable-ui configs:
-@reusable-ui/colors
+@reusable-ui/color-config
 @reusable-ui/borders
 @reusable-ui/spacers
 @reusable-ui/breakpoints

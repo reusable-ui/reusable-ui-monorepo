@@ -145,7 +145,7 @@ export const componentStyle = () => style({
 
 Generates CSS rules that switch color shades based on the currently active theme, and exposes theme-related CSS variables for coloring components.
 
-Automatically maps color shades (e.g. background, foreground, decoration, border) to the appropriate color variables from `@reusable-ui/colors`, depending on the currently active theme.
+Automatically maps color shades (e.g. background, foreground, decoration, border) to the appropriate color variables from `@reusable-ui/color-config`, depending on the currently active theme.
 Supports multiple styling modes like **regular**, **mild**, and **outlined**.
 
 #### 💡 Usage Example

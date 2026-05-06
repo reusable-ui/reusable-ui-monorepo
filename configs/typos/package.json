@@ -45,7 +45,7 @@
   },
   "peerDependencies": {
     "@reusable-ui/borders": "^7.0.0",
-    "@reusable-ui/colors": "^7.0.0",
+    "@reusable-ui/color-config": "^7.0.0",
     "rxjs": "^7.8.0"
   }
 }
