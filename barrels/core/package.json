@@ -84,7 +84,7 @@
     "@reusable-ui/padding": "^6.5.0",
     "@reusable-ui/resizable": "^6.5.0",
     "@reusable-ui/ring": "^6.5.0",
-    "@reusable-ui/spacers": "^6.5.0",
+    "@reusable-ui/spacer-config": "^6.5.0",
     "@reusable-ui/themeable": "^6.5.0",
     "@reusable-ui/typos": "^6.5.1",
     "@reusable-ui/validation-icon": "^6.6.0",

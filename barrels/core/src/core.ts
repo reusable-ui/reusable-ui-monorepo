@@ -1,7 +1,7 @@
 // reusable-ui configs:
 /*peer*/ export * from '@reusable-ui/color-config'          // a color management system
 /*peer*/ export * from '@reusable-ui/border-config'         // a border (stroke) management system
-/*peer*/ export * from '@reusable-ui/spacers'               // a spacer (gap) management system
+/*peer*/ export * from '@reusable-ui/spacer-config'         // a spacer (gap) management system
 /*peer*/ export * from '@reusable-ui/breakpoints'           // a responsive management system
 /*peer*/ export * from '@reusable-ui/typos'                 // a typography management system
 

@@ -1,6 +1,6 @@
 import { children, ifNthChild, style } from '@cssfn/core'
 import { ifScreenWidthAtLeast, ifScreenWidthSmallerThan, ifScreenWidthBetween, ifScreenWidthAt } from '@reusable-ui/breakpoints';
-import { spacerVars, spacerExpressions } from '@reusable-ui/spacers'
+import { spacerVars, spacerExpressions } from '@reusable-ui/spacer-config'
 
 
 

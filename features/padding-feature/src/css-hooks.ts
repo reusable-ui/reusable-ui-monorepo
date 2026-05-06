@@ -24,7 +24,7 @@ import {
 // Reusable-ui configs:
 import {
     spacerVars,
-}                           from '@reusable-ui/spacers'         // A flexible spacer management system for web components, utilizing CSS custom properties to enable dynamic spacing, theming, and customization.
+}                           from '@reusable-ui/spacer-config'   // A flexible spacer management system for web components, utilizing CSS custom properties to enable dynamic spacing, theming, and customization.
 
 // Reusable-ui variants:
 import {

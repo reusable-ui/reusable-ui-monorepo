@@ -54,7 +54,7 @@
     "@reusable-ui/box-shadow-feature": "^7.0.0",
     "@reusable-ui/focus-state": "^7.0.0",
     "@reusable-ui/ring-feature": "^7.0.0",
-    "@reusable-ui/spacers": "^7.0.0"
+    "@reusable-ui/spacer-config": "^7.0.0"
   },
   "devDependencies": {
     "@reusable-ui/background-feature": "^7.0.0",

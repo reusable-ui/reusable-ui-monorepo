@@ -48,7 +48,7 @@
     "tests/test-colors",
     "configs/border-config",
     "tests/test-borders",
-    "configs/spacers",
+    "configs/spacer-config",
     "tests/test-spacers",
     "configs/breakpoints",
     "tests/test-breakpoints",

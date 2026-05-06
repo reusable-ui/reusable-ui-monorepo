@@ -1,6 +1,6 @@
 import { sizes } from '@/libs/sizes'
 import { rule, style, variants } from '@cssfn/core'
-import { spacerVars, spacerExpressions } from '@reusable-ui/spacers'
+import { spacerVars, spacerExpressions } from '@reusable-ui/spacer-config'
 
 
 
