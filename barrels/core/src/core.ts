@@ -3,7 +3,7 @@
 /*peer*/ export * from '@reusable-ui/border-config'         // a border (stroke) management system
 /*peer*/ export * from '@reusable-ui/spacer-config'         // a spacer (gap) management system
 /*peer*/ export * from '@reusable-ui/breakpoint-config'     // a responsive management system
-/*peer*/ export * from '@reusable-ui/typos'                 // a typography management system
+/*peer*/ export * from '@reusable-ui/typo-config'           // a typography management system
 
 // reusable-ui utilities:
 export * from '@reusable-ui/types'                          // a collection of TypeScript type utilities, assertions, and validations for ensuring type safety in reusable UI components

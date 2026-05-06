@@ -7,7 +7,7 @@ import {
 } from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import '@reusable-ui/typos/effects'
+import '@reusable-ui/typo-config/effects'
 import {
     ModalCard, ModalExpandedChangeEvent,
 } from '@reusable-ui/modal-card'

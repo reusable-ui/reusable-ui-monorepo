@@ -1,8 +1,8 @@
-# @reusable-ui/typos ✍️  
+# @reusable-ui/typo-config ✍️  
 
 A **flexible and themeable typography system** designed for UI components, seamlessly integrating with the **Reusable-UI framework** and powered by **@cssfn/core (CSS-in-JS)**.  
 
-**@reusable-ui/typos** is part of the **@reusable-ui monorepo**, a collection of React component libraries.
+**@reusable-ui/typo-config** is part of the **@reusable-ui monorepo**, a collection of React component libraries.
 
 ## 🚀 Features  
 ✔ **Themeable** – Dynamically adjusts typography based on root definitions  
@@ -12,16 +12,16 @@ A **flexible and themeable typography system** designed for UI components, seaml
 ✔ **Powered by @cssfn/core** – Efficient CSS-in-JS rendering  
 
 ## 📦 Installation & Setup  
-Install **@reusable-ui/typos** via npm or yarn:
+Install **@reusable-ui/typo-config** via npm or yarn:
 
 ```sh
-npm install @reusable-ui/typos
+npm install @reusable-ui/typo-config
 # or
-yarn add @reusable-ui/typos
+yarn add @reusable-ui/typo-config
 ```
 
 ## 🚀 Supporting Setup for CSSFN  
-In order for **@reusable-ui/typos** to work, `<StaticStyles />` and `<HydrateStyles />` must be included inside `<head>` for correct CSS rendering:
+In order for **@reusable-ui/typo-config** to work, `<StaticStyles />` and `<HydrateStyles />` must be included inside `<head>` for correct CSS rendering:
 
 ```ts
 import { StaticStyles, HydrateStyles } from '@cssfn/cssfn-react/server';
@@ -42,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ## ✍️ Usage  
 
 ### **Typography Sections**  
-`@reusable-ui/typos` provides a set of predefined styles for UI text elements:
+`@reusable-ui/typo-config` provides a set of predefined styles for UI text elements:
 
 - typography
 - secondaries
@@ -59,7 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 - emphases
 
 ### **Applying typography styles**  
-To use the built-in typography styles, import **@cssfn/core** and **@reusable-ui/typos**:
+To use the built-in typography styles, import **@cssfn/core** and **@reusable-ui/typo-config**:
 
 ```ts
 import { style } from '@cssfn/core';
@@ -78,7 +78,7 @@ import {
     mountCodes,
     mountEmphases,
     mountMany,
-} from '@reusable-ui/typos';
+} from '@reusable-ui/typo-config';
 ```
 
 #### **Mounting and Unmounting Styles**  
@@ -135,7 +135,7 @@ import {
     markVars,
     kbdVars,
     codeVars,
-} from '@reusable-ui/typos';
+} from '@reusable-ui/typo-config';
 
 typoVars.fontFamily = 'Arial, sans-serif' as any; // `as any` => force to assign bare value
 typoVars.lineHeight = 1.5 as any;
@@ -150,12 +150,12 @@ This package is a **typography styling module** inside the [Reusable-UI](https:/
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
 
 ## 🤝 Contributing  
-Want to improve **@reusable-ui/typos**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
+Want to improve **@reusable-ui/typo-config**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
 
 ## 🛡️ License  
 Licensed under the **MIT License** – see the [LICENSE](./LICENSE) file for details.  
 
 ---
 
-🚀 **@reusable-ui/typos simplifies color management for dynamic UI designs.**  
+🚀 **@reusable-ui/typo-config simplifies color management for dynamic UI designs.**  
 Give it a ⭐ on GitHub if you find it useful!  

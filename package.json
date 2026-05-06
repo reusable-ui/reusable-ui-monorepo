@@ -52,7 +52,7 @@
     "tests/test-spacers",
     "configs/breakpoint-config",
     "tests/test-breakpoints",
-    "configs/typos",
+    "configs/typo-config",
     "tests/test-typos",
     "utilities/numbers",
     "utilities/nodes",

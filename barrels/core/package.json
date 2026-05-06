@@ -86,7 +86,7 @@
     "@reusable-ui/ring": "^6.5.0",
     "@reusable-ui/spacer-config": "^6.5.0",
     "@reusable-ui/themeable": "^6.5.0",
-    "@reusable-ui/typos": "^6.5.1",
+    "@reusable-ui/typo-config": "^6.5.1",
     "@reusable-ui/validation-icon": "^6.6.0",
     "@reusable-ui/validations": "^6.5.0"
   }

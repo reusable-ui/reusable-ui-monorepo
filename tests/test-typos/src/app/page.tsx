@@ -25,7 +25,7 @@ import {
     mountEmphases,
     
     mountMany,
-} from '@reusable-ui/typos'
+} from '@reusable-ui/typo-config'
 
 
 

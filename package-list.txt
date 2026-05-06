@@ -3,7 +3,7 @@
 @reusable-ui/border-config
 @reusable-ui/spacer-config
 @reusable-ui/breakpoint-config
-@reusable-ui/typos
+@reusable-ui/typo-config
 
 // Reusable-ui utilities:
 @reusable-ui/numbers

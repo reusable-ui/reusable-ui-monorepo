@@ -8,7 +8,7 @@ packages                        VAR     CFG
 @reusable-ui/border-config      -       bor  bor-r     // UPDATED
 @reusable-ui/spacer-config      -       spc
 @reusable-ui/breakpoint-config  -       brp
-@reusable-ui/typos              -       typ
+@reusable-ui/typo-config        -       typ
 
 
 

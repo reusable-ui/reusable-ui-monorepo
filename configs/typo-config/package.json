@@ -1,5 +1,5 @@
 {
-  "name": "@reusable-ui/typos",
+  "name": "@reusable-ui/typo-config",
   "version": "7.0.0",
   "description": "A versatile typography system for handling text styles, paragraphs, fonts, and structured layouts.",
   "keywords": [
@@ -16,7 +16,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "configs/typos"
+    "directory": "configs/typo-config"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
