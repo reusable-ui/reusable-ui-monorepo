@@ -46,7 +46,7 @@
   "workspaces": [
     "configs/color-config",
     "tests/test-colors",
-    "configs/borders",
+    "configs/border-config",
     "tests/test-borders",
     "configs/spacers",
     "tests/test-spacers",

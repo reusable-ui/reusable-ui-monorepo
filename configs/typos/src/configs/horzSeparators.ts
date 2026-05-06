@@ -7,12 +7,12 @@ import {
     
     // Reads/writes css variables configuration:
     cssConfig,
-}                           from '@cssfn/core'          // Writes css in javascript.
+}                           from '@cssfn/core'                  // Writes css in javascript.
 
 // Configs:
 import {
     borderVars,
-}                           from '@reusable-ui/borders' // A flexible and themeable border management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
+}                           from '@reusable-ui/border-config'   // A flexible and themeable border management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 
 
 

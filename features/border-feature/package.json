@@ -56,7 +56,7 @@
   },
   "peerDependencies": {
     "@reusable-ui/bare-variant": "^7.0.0",
-    "@reusable-ui/borders": "^7.0.0",
+    "@reusable-ui/border-config": "^7.0.0",
     "@reusable-ui/mild-variant": "^7.0.0",
     "@reusable-ui/outline-variant": "^7.0.0",
     "@reusable-ui/theme-variant": "^7.0.0"

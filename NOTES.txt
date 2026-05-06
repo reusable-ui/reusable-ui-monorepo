@@ -5,7 +5,7 @@ css namespaces: ----------------------------------------------------------------
 // reusable-ui configs:
 packages                        VAR     CFG
 @reusable-ui/color-config       -       col  col-p
-@reusable-ui/borders            -       bor  bor-r     // UPDATED
+@reusable-ui/border-config      -       bor  bor-r     // UPDATED
 @reusable-ui/spacers            -       spc
 @reusable-ui/breakpoints        -       brp
 @reusable-ui/typos              -       typ

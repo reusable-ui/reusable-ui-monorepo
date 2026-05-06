@@ -1,6 +1,6 @@
 import { sizes } from '@/libs/sizes'
 import { rule, style, variants } from '@cssfn/core'
-import { borderVars, borderExpressions, borderRadiusVars, borderRadiusExpressions } from '@reusable-ui/borders'
+import { borderVars, borderExpressions, borderRadiusVars, borderRadiusExpressions } from '@reusable-ui/border-config'
 
 
 

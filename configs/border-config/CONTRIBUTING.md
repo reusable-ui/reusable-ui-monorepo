@@ -1,4 +1,4 @@
-# Contributing to @reusable-ui/borders 🚧  
+# Contributing to @reusable-ui/border-config 🚧  
 
 Thank you for your interest in contributing! 🚀  
 This project thrives on community collaboration, and we welcome contributions of all kinds.  
@@ -29,7 +29,7 @@ Even if you're not coding, you can help by:
 ## 📦 Setting Up Locally  
 ```sh
 git clone https://github.com/reusable-ui/reusable-ui-monorepo.git
-cd configs/borders
+cd configs/border-config
 npm install
 npm run dev
 ```
@@ -37,4 +37,4 @@ npm run dev
 ## 💬 Need Help?  
 Join our [GitHub Discussions](https://github.com/reusable-ui/reusable-ui-monorepo/discussions) or ask in an issue! 🎉  
 
-Thanks for helping make **@reusable-ui/borders** better! 🚀  
+Thanks for helping make **@reusable-ui/border-config** better! 🚀  
