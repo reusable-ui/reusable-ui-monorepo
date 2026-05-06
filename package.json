@@ -141,6 +141,7 @@
     "effects/press-effect",
     "effects/validity-effect",
     "effects/drag-effect",
+    "effects/sort-effect",
     "effects/excite-effect",
     "effects/collapse-effect",
     "effects/active-effect",

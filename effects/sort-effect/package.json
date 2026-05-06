@@ -1,0 +1,65 @@
+{
+  "name": "@reusable-ui/sort-effect",
+  "version": "7.0.0",
+  "description": "Provides default visual effects for sortable components whenever a sorting action occurs. Animates items into their new sorted order to make components visually rearranged during sorting.",
+  "keywords": [
+    "sorting",
+    "sort",
+    "sortable",
+    "reorder",
+    "state",
+    "animation",
+    "translation",
+    "appearance",
+    "accessibility",
+    "css",
+    "design-system",
+    "ui",
+    "react"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "effects/sort-effect"
+  },
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "npx playwright test"
+  },
+  "dependencies": {
+    "@cssfn/core": "^4.0.0",
+    "@reusable-ui/callbacks": "^7.0.0",
+    "@reusable-ui/events": "^7.0.0"
+  },
+  "peerDependencies": {
+    "@reusable-ui/sort-state": "^7.0.0",
+    "@reusable-ui/transform-feature": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
