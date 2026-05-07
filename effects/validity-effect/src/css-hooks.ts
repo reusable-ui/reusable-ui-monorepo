@@ -33,7 +33,7 @@ import {
 
 // Reusable-ui configs:
 import {
-    colorVars,
+    colorConfigVars,
 }                           from '@reusable-ui/color-config'        // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 
 // Reusable-ui variants:
@@ -162,11 +162,11 @@ export const usesValidityEffect = (options?: CssValidityEffectOptions): CssValid
                                 // Step 1: resolve discrete validity color (valid vs. invalid).
                                 colorMix(
                                     // Valid color:
-                                    colorVars[`${validTheme}${colorRoleMap[variantRole][surfaceRole]}` as keyof typeof colorVars],
+                                    colorConfigVars[`${validTheme}${colorRoleMap[variantRole][surfaceRole]}` as keyof typeof colorConfigVars],
                                     validSwitch,
                                     
                                     // Invalid color:
-                                    colorVars[`${invalidTheme}${colorRoleMap[variantRole][surfaceRole]}` as keyof typeof colorVars],
+                                    colorConfigVars[`${invalidTheme}${colorRoleMap[variantRole][surfaceRole]}` as keyof typeof colorConfigVars],
                                     invalidSwitch
                                 ),
                                 validityWeight,

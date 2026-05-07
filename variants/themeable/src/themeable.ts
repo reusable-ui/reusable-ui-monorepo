@@ -37,9 +37,9 @@ import {
 // Reusable-ui configs:
 import {
     // configs:
-    colorVars,
+    colorConfigVars,
     getThemeNames,
-    colorConfig,
+    colorConfigOptions,
 }                           from '@reusable-ui/color-config'    // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 
 // Reusable-ui variants:
@@ -214,7 +214,7 @@ export const createThemeSelector = themeSelector;
 let hasThemeSelectorsCache       : CssSelector[] | undefined = undefined;
 let noThemeSelectorsCache        : CssSelector   | undefined = undefined;
 
-colorConfig.onChange.subscribe(() => {
+colorConfigOptions.onChange.subscribe(() => {
     themeClassesCache.clear();
     hasThemeSelectorsCache = undefined;
     noThemeSelectorsCache  = undefined;
@@ -274,7 +274,7 @@ const createThemeableRule = (themeDefinition : ((themeName: ThemeName) => CssSty
         ]),
     });
 };
-const getDefaultThemeableRule = memoizeStyle(() => createThemeableRule(), colorConfig.onChange);
+const getDefaultThemeableRule = memoizeStyle(() => createThemeableRule(), colorConfigOptions.onChange);
 
 /**
  * @deprecated - Use `usesThemeVariant` instead.
@@ -309,30 +309,30 @@ export const defineThemeRule = (themeName: ThemeName): CssRule => {
     return style({
         ...vars({
             // 🎨 Regular Style:
-            [themeableVars.backg               ] : colorVars[`${themeName}Base`], // base color
-            [themeableVars.foreg               ] : colorVars[`${themeName}Flip`], // light on dark base color | dark on light base color
-            [themeableVars.border              ] : colorVars[`${themeName}Bold`], // 20% base color + 80% page's foreground
-            [themeableVars.ring                ] : colorVars[`${themeName}Soft`], // 50% transparency of base color
+            [themeableVars.backg               ] : colorConfigVars[`${themeName}Base`], // base color
+            [themeableVars.foreg               ] : colorConfigVars[`${themeName}Flip`], // light on dark base color | dark on light base color
+            [themeableVars.border              ] : colorConfigVars[`${themeName}Bold`], // 20% base color + 80% page's foreground
+            [themeableVars.ring                ] : colorConfigVars[`${themeName}Soft`], // 50% transparency of base color
             
-            [themeableVars.altBackg            ] : colorVars[`${themeName}Mild`], // Invert regular
-            [themeableVars.altForeg            ] : colorVars[`${themeName}Text`], // Invert regular
+            [themeableVars.altBackg            ] : colorConfigVars[`${themeName}Mild`], // Invert regular
+            [themeableVars.altForeg            ] : colorConfigVars[`${themeName}Text`], // Invert regular
             
             
             
             // 🌸 Mild Style:
-            [themeableVars.backgMild           ] : colorVars[`${themeName}Mild`], // 20% base color + 80% page's background
-            [themeableVars.foregMild           ] : colorVars[`${themeName}Text`],
+            [themeableVars.backgMild           ] : colorConfigVars[`${themeName}Mild`], // 20% base color + 80% page's background
+            [themeableVars.foregMild           ] : colorConfigVars[`${themeName}Text`],
             
-            [themeableVars.altBackgMild        ] : colorVars[`${themeName}Base`], // Invert mild
-            [themeableVars.altForegMild        ] : colorVars[`${themeName}Flip`], // Invert mild
+            [themeableVars.altBackgMild        ] : colorConfigVars[`${themeName}Base`], // Invert mild
+            [themeableVars.altForegMild        ] : colorConfigVars[`${themeName}Flip`], // Invert mild
             
             
             
             // 🧊 Outlined Style:
-            [themeableVars.foregOutlined       ] : colorVars[`${themeName}Face`], // Edge-contrast foreground
+            [themeableVars.foregOutlined       ] : colorConfigVars[`${themeName}Face`], // Edge-contrast foreground
             
-            [themeableVars.altBackgOutlined    ] : colorVars[`${themeName}Base`], // Invert outlined
-            [themeableVars.altForegOutlined    ] : colorVars[`${themeName}Flip`], // Invert outlined
+            [themeableVars.altBackgOutlined    ] : colorConfigVars[`${themeName}Base`], // Invert outlined
+            [themeableVars.altForegOutlined    ] : colorConfigVars[`${themeName}Flip`], // Invert outlined
         }),
     });
 };
@@ -345,7 +345,7 @@ export const defineThemeRule = (themeName: ThemeName): CssRule => {
  */
 export const themeOptions = memoizeResult((): ThemeName[] => {
     return (getThemeNames() as ThemeName[]);
-}, colorConfig.onChange);
+}, colorConfigOptions.onChange);
 
 
 
@@ -359,30 +359,30 @@ export const themeOptions = memoizeResult((): ThemeName[] => {
 export const usesThemeConditional = (themeName: ThemeName|null): CssRule => style({
     ...vars({
         // 🎨 Regular Style:
-        [themeableVars.backgCond           ] : !themeName ? null : colorVars[`${themeName}Base`], // base color
-        [themeableVars.foregCond           ] : !themeName ? null : colorVars[`${themeName}Flip`], // light on dark base color | dark on light base color
-        [themeableVars.borderCond          ] : !themeName ? null : colorVars[`${themeName}Bold`], // 20% base color + 80% page's foreground
-        [themeableVars.ringCond            ] : !themeName ? null : colorVars[`${themeName}Soft`], // 50% transparency of base color
+        [themeableVars.backgCond           ] : !themeName ? null : colorConfigVars[`${themeName}Base`], // base color
+        [themeableVars.foregCond           ] : !themeName ? null : colorConfigVars[`${themeName}Flip`], // light on dark base color | dark on light base color
+        [themeableVars.borderCond          ] : !themeName ? null : colorConfigVars[`${themeName}Bold`], // 20% base color + 80% page's foreground
+        [themeableVars.ringCond            ] : !themeName ? null : colorConfigVars[`${themeName}Soft`], // 50% transparency of base color
         
-        [themeableVars.altBackgCond        ] : !themeName ? null : colorVars[`${themeName}Mild`], // Invert regular
-        [themeableVars.altForegCond        ] : !themeName ? null : colorVars[`${themeName}Text`], // Invert regular
+        [themeableVars.altBackgCond        ] : !themeName ? null : colorConfigVars[`${themeName}Mild`], // Invert regular
+        [themeableVars.altForegCond        ] : !themeName ? null : colorConfigVars[`${themeName}Text`], // Invert regular
         
         
         
         // 🌸 Mild Style:
-        [themeableVars.backgMildCond       ] : !themeName ? null : colorVars[`${themeName}Mild`], // 20% base color + 80% page's background
-        [themeableVars.foregMildCond       ] : !themeName ? null : colorVars[`${themeName}Text`],
+        [themeableVars.backgMildCond       ] : !themeName ? null : colorConfigVars[`${themeName}Mild`], // 20% base color + 80% page's background
+        [themeableVars.foregMildCond       ] : !themeName ? null : colorConfigVars[`${themeName}Text`],
         
-        [themeableVars.altBackgMildCond    ] : !themeName ? null : colorVars[`${themeName}Base`], // Invert mild
-        [themeableVars.altForegMildCond    ] : !themeName ? null : colorVars[`${themeName}Flip`], // Invert mild
+        [themeableVars.altBackgMildCond    ] : !themeName ? null : colorConfigVars[`${themeName}Base`], // Invert mild
+        [themeableVars.altForegMildCond    ] : !themeName ? null : colorConfigVars[`${themeName}Flip`], // Invert mild
         
         
         
         // 🧊 Outlined Style:
-        [themeableVars.foregOutlinedCond   ] : !themeName ? null : colorVars[`${themeName}Face`], // Edge-contrast foreground
+        [themeableVars.foregOutlinedCond   ] : !themeName ? null : colorConfigVars[`${themeName}Face`], // Edge-contrast foreground
         
-        [themeableVars.altBackgOutlinedCond] : !themeName ? null : colorVars[`${themeName}Base`], // Invert outlined
-        [themeableVars.altForegOutlinedCond] : !themeName ? null : colorVars[`${themeName}Flip`], // Invert outlined
+        [themeableVars.altBackgOutlinedCond] : !themeName ? null : colorConfigVars[`${themeName}Base`], // Invert outlined
+        [themeableVars.altForegOutlinedCond] : !themeName ? null : colorConfigVars[`${themeName}Flip`], // Invert outlined
     }),
 });
 

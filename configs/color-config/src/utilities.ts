@@ -11,7 +11,7 @@ import {
 
 // Configs:
 import {
-    colorParamVars,
+    colorParamConfigVars,
 }                           from './color-params.js'
 
 
@@ -140,7 +140,7 @@ export const adjustLightness = (originalColor: CssColor, ratio: CssCustomSimpleR
      */
     return [[
         // Cssfn library concatenates these dynamically:
-        'oklch(from ', originalColor, ' calc(((1 - max(', ratio, ', (0 - ', ratio, '))) * l) + (1 - min(1, (1 - (', ratio, ' * ', colorParamVars.mode, '))))) calc((1 - max(', ratio, ', (0 - ', ratio, '))) * c) h / alpha)'
+        'oklch(from ', originalColor, ' calc(((1 - max(', ratio, ', (0 - ', ratio, '))) * l) + (1 - min(1, (1 - (', ratio, ' * ', colorParamConfigVars.mode, '))))) calc((1 - max(', ratio, ', (0 - ', ratio, '))) * c) h / alpha)'
     ]] as CssColor;
 };
 
@@ -241,7 +241,7 @@ export const contrastFlip = (originalColor: CssColor, ratio: CssCustomSimpleRef)
      */
     return [[
         // Cssfn library concatenates these dynamically:
-        'oklch(from ', originalColor, ' calc(((1 - max(', ratio, ', (0 - ', ratio, '))) * l) + (1 - min(1, (1 - (', ratio, ' * clamp(-1, (', colorParamVars.flipThreshold, ' - l) * 999999, 1)))))) calc((1 - max(', ratio, ', (0 - ', ratio, '))) * c) h / alpha)'
+        'oklch(from ', originalColor, ' calc(((1 - max(', ratio, ', (0 - ', ratio, '))) * l) + (1 - min(1, (1 - (', ratio, ' * clamp(-1, (', colorParamConfigVars.flipThreshold, ' - l) * 999999, 1)))))) calc((1 - max(', ratio, ', (0 - ', ratio, '))) * c) h / alpha)'
     ]] as CssColor;
 };
 

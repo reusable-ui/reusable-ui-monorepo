@@ -42,7 +42,7 @@ import {
 
 // Reusable-ui configs:
 import {
-    colorParamVars,
+    colorParamConfigVars,
 }                           from '@reusable-ui/color-config'        // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 
 
@@ -106,7 +106,7 @@ export const composeFilterEffect = (activeFactor: CssCustomRef, options?: CssFil
     
     
     // Configs:
-    const { mode: colorMode } = colorParamVars;
+    const { mode: colorMode } = colorParamConfigVars;
     
     
     

@@ -11,7 +11,7 @@ import {
 
 // Configs:
 import {
-    colorVars,
+    colorConfigVars,
 }                           from '@reusable-ui/color-config'    // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 import {
     typoVars,
@@ -32,7 +32,7 @@ const config = cssConfig(() => {
          * Defines the **background color** for `<code>` elements.
          * Typically uses a **secondary mild color** (`secondaryMild`) for emphasis.
          */
-        backgroundColor        : colorVars.secondaryMild                                    as CssKnownProps['backgroundColor'   ],
+        backgroundColor        : colorConfigVars.secondaryMild                              as CssKnownProps['backgroundColor'   ],
         
         
         
@@ -42,7 +42,7 @@ const config = cssConfig(() => {
          * Defines the **text color** for `<code>` elements.
          * Typically uses a **secondary text color** (`secondaryText`) for readability.
          */
-        color                  : colorVars.secondaryText                                    as CssKnownProps['color'             ],
+        color                  : colorConfigVars.secondaryText                              as CssKnownProps['color'             ],
         
         
         
@@ -64,7 +64,7 @@ const config = cssConfig(() => {
          * Defines the **border color** for `<code>` elements.
          * Typically uses a **secondary thin color** (`secondaryThin`) for subtle emphasis.
          */
-        borderColor            : colorVars.secondaryThin                                    as CssKnownProps['borderColor'       ],
+        borderColor            : colorConfigVars.secondaryThin                              as CssKnownProps['borderColor'       ],
         
         /**
          * Defines the **border radius** for `<code>` elements.

@@ -288,8 +288,8 @@ export const markValid   = (): CssRule => style({
  * @deprecated - Use conditional:
  * ```
  * export const componentStyle = () => style({
- *     backgroundColor : `${validityStateVars.isValid} ${colorVars.successBase}`,
- *     color           : `${validityStateVars.isValid} ${colorVars.successFlip}`,
+ *     backgroundColor : `${validityStateVars.isValid} ${colorConfigVars.successBase}`,
+ *     color           : `${validityStateVars.isValid} ${colorConfigVars.successFlip}`,
  * });
  * ```
  * 
@@ -310,8 +310,8 @@ export const markInvalid = (): CssRule => style({
  * @deprecated - Use conditional:
  * ```
  * export const componentStyle = () => style({
- *     backgroundColor : `${validityStateVars.isInvalid} ${colorVars.dangerBase}`,
- *     color           : `${validityStateVars.isInvalid} ${colorVars.dangerFlip}`,
+ *     backgroundColor : `${validityStateVars.isInvalid} ${colorConfigVars.dangerBase}`,
+ *     color           : `${validityStateVars.isInvalid} ${colorConfigVars.dangerFlip}`,
  * });
  * ```
  * 

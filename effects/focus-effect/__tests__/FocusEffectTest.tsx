@@ -2,7 +2,7 @@ import React, { type CSSProperties, useMemo, useLayoutEffect } from 'react'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { usesFocusState } from '@reusable-ui/focus-state'
 import { usesThemeVariant } from '@reusable-ui/theme-variant'
-import { colorParamVars } from '@reusable-ui/color-config'
+import { colorParamConfigVars } from '@reusable-ui/color-config'
 import { useOutlineVariant, type OutlineVariantProps } from '@reusable-ui/outline-variant'
 import { useMildVariant, type MildVariantProps} from '@reusable-ui/mild-variant'
 import { regularBaseColor, mildBaseColor } from './base-colors.js'
@@ -53,7 +53,7 @@ export const FocusEffectTest = (props: FocusEffectTestProps) => {
     const styles = useFocusEffectTestStyles();
     
     useLayoutEffect(() => {
-        colorParamVars.mode = ((mode === 'light') ? 1 : -1) as any;
+        colorParamConfigVars.mode = ((mode === 'light') ? 1 : -1) as any;
     }, [mode])
     
     const { focusStateVars  : { focusFactorCond: focusFactorCondVar } } = usesFocusState();

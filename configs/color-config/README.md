@@ -58,7 +58,7 @@ To access these themes, import **@cssfn/core** and **@reusable-ui/color-config**
 
 ```ts
 import { style } from '@cssfn/core';
-import { colorVars } from '@reusable-ui/color-config';
+import { colorConfigVars } from '@reusable-ui/color-config';
 ```
 
 #### **Root Colors**  
@@ -66,10 +66,10 @@ Primary theme colors:
 
 ```ts
 const myStyle = style({
-    backgroundColor: colorVars.primary,   // Resolves to 'var(--col-primary)'
-    backgroundColor: colorVars.secondary, // Resolves to 'var(--col-secondary)'
+    backgroundColor: colorConfigVars.primary,   // Resolves to 'var(--col-primary)'
+    backgroundColor: colorConfigVars.secondary, // Resolves to 'var(--col-secondary)'
     ...
-    backgroundColor: colorVars.dark,      // Resolves to 'var(--col-dark)'
+    backgroundColor: colorConfigVars.dark,      // Resolves to 'var(--col-dark)'
 });
 ```
 
@@ -80,10 +80,10 @@ Standard background colors:
 
 ```ts
 const myStyle = style({
-    backgroundColor: colorVars.primaryBase,   // Resolves to 'var(--col-primaryBase)'
-    backgroundColor: colorVars.secondaryBase, // Resolves to 'var(--col-secondaryBase)'
+    backgroundColor: colorConfigVars.primaryBase,   // Resolves to 'var(--col-primaryBase)'
+    backgroundColor: colorConfigVars.secondaryBase, // Resolves to 'var(--col-secondaryBase)'
     ...
-    backgroundColor: colorVars.darkBase,      // Resolves to 'var(--col-darkBase)'
+    backgroundColor: colorConfigVars.darkBase,      // Resolves to 'var(--col-darkBase)'
 });
 ```
 
@@ -94,10 +94,10 @@ Background colors designed for content-heavy sections:
 
 ```ts
 const myStyle = style({
-    backgroundColor: colorVars.primaryMild,   // Resolves to 'var(--col-primaryMild)'
-    backgroundColor: colorVars.secondaryMild, // Resolves to 'var(--col-secondaryMild)'
+    backgroundColor: colorConfigVars.primaryMild,   // Resolves to 'var(--col-primaryMild)'
+    backgroundColor: colorConfigVars.secondaryMild, // Resolves to 'var(--col-secondaryMild)'
     ...
-    backgroundColor: colorVars.darkMild,      // Resolves to 'var(--col-darkMild)'
+    backgroundColor: colorConfigVars.darkMild,      // Resolves to 'var(--col-darkMild)'
 });
 ```
 
@@ -109,17 +109,17 @@ Includes foreground, border, and effect colors:
 ```ts
 const myStyle = style({
     // Foreground colors:
-    color: colorVars.primaryFlip, // Resolves to 'var(--col-primaryFlip)'
-    color: colorVars.primaryText, // Resolves to 'var(--col-primaryText)'
-    color: colorVars.primaryFace, // Resolves to 'var(--col-primaryFace)'
+    color: colorConfigVars.primaryFlip, // Resolves to 'var(--col-primaryFlip)'
+    color: colorConfigVars.primaryText, // Resolves to 'var(--col-primaryText)'
+    color: colorConfigVars.primaryFace, // Resolves to 'var(--col-primaryFace)'
     
     // Border colors:
-    borderColor: colorVars.primaryBold, // Resolves to 'var(--col-primaryBold)'
-    borderColor: colorVars.primaryThin, // Resolves to 'var(--col-primaryThin)'
-    borderColor: colorVars.primaryEdge, // Resolves to 'var(--col-primaryEdge)'
+    borderColor: colorConfigVars.primaryBold, // Resolves to 'var(--col-primaryBold)'
+    borderColor: colorConfigVars.primaryThin, // Resolves to 'var(--col-primaryThin)'
+    borderColor: colorConfigVars.primaryEdge, // Resolves to 'var(--col-primaryEdge)'
     
     // Effect colors (shadows, rings, focus indicators):
-    boxShadow: `0px 0px 0px 5px ${colorVars.primarySoft}`, // Resolves to '0px 0px 0px 5px var(--col-primarySoft)'
+    boxShadow: `0px 0px 0px 5px ${colorConfigVars.primarySoft}`, // Resolves to '0px 0px 0px 5px var(--col-primarySoft)'
 });
 ```
 
@@ -129,12 +129,12 @@ Easily customize and define new themes dynamically:
 ```ts
 // index.js or the initial load file of your project
 
-import { colorVars, colorParamVars, adjustLightness, defineTheme, deleteTheme } from '@reusable-ui/color-config';
+import { colorConfigVars, colorParamConfigVars, adjustLightness, defineTheme, deleteTheme } from '@reusable-ui/color-config';
 
-colorVars.primary = '#0000ff' as any; // `as any` => force to assign bare value
-colorVars.primaryText = 'oklch(0.00 0.000 000)' as any;
-colorVars.primaryBold = 'var(--my-external-color)' as any;
-colorVars.primaryEdge = adjustLightness(colorVars.dark, colorParamVars.edge);
+colorConfigVars.primary = '#0000ff' as any; // `as any` => force to assign bare value
+colorConfigVars.primaryText = 'oklch(0.00 0.000 000)' as any;
+colorConfigVars.primaryBold = 'var(--my-external-color)' as any;
+colorConfigVars.primaryEdge = adjustLightness(colorConfigVars.dark, colorParamConfigVars.edge);
 
 defineTheme('summer', '#00ff00'); // Define a new theme
 deleteTheme('winter');            // Remove an unused theme

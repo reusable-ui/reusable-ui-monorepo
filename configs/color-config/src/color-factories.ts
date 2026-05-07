@@ -12,7 +12,7 @@ import {
 
 // Configs:
 import {
-    colorParamVars,
+    colorParamConfigVars,
 }                           from './color-params.js'
 
 
@@ -49,7 +49,7 @@ import {
  * **Common Colors** - Used across various UI elements.
  * 
  * These colors serve as widely used foundational hues for styling and design consistency.
- * They remain **constant** and are **not affected** by dark/light mode or `colorParamVars` adjustments.
+ * They remain **constant** and are **not affected** by dark/light mode or `colorParamConfigVars` adjustments.
  */
 const getDefaultCommonColors = () => ({
     /**
@@ -135,7 +135,7 @@ export type DefaultCommonColors = ReturnType<typeof getDefaultCommonColors>
  * **Root Colors** - The foundational palette for color derivation.
  * 
  * These colors serve as the **source of truth** for all theme-based color variations (`primaryBase`, `primaryMild`, etc.).
- * They remain **constant**, unaffected by **dark/light mode** or `colorParamVars` adjustments.
+ * They remain **constant**, unaffected by **dark/light mode** or `colorParamConfigVars` adjustments.
  * 
  * ---
  * 
@@ -202,7 +202,7 @@ export type DefaultRootColors = ReturnType<typeof getDefaultRootColors>
 /**
  * **Base Colors** - Regular background colors adapted to the theme.
  * 
- * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamVars.base`  
+ * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamConfigVars.base`  
  * ensuring **optimal contrast in light and dark modes**.
  * 
  * ---
@@ -220,7 +220,7 @@ const getDefaultBaseColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy surfaces, such as **articles and textboxes**, use `primaryMild` instead.
      */
-    primaryBase   : adjustLightness(rootColors.primary  , colorParamVars.base),
+    primaryBase   : adjustLightness(rootColors.primary  , colorParamConfigVars.base),
     
     /**
      * **Secondary base color** - A regular background color for complementing primary UI elements.  
@@ -228,7 +228,7 @@ const getDefaultBaseColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy surfaces, such as **articles and textboxes**, use `secondaryMild` instead.
      */
-    secondaryBase : adjustLightness(rootColors.secondary, colorParamVars.base),
+    secondaryBase : adjustLightness(rootColors.secondary, colorParamConfigVars.base),
     
     /**
      * **Success base color** - A regular background color for positive actions and confirmations.  
@@ -236,7 +236,7 @@ const getDefaultBaseColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy surfaces, such as **articles and textboxes**, use `successMild` instead.
      */
-    successBase   : adjustLightness(rootColors.success  , colorParamVars.base),
+    successBase   : adjustLightness(rootColors.success  , colorParamConfigVars.base),
     
     /**
      * **Info base color** - A regular background color for neutral alerts or general details.  
@@ -244,7 +244,7 @@ const getDefaultBaseColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy surfaces, such as **articles and textboxes**, use `infoMild` instead.
      */
-    infoBase      : adjustLightness(rootColors.info     , colorParamVars.base),
+    infoBase      : adjustLightness(rootColors.info     , colorParamConfigVars.base),
     
     /**
      * **Warning base color** - A regular background color for cautions or potential errors.  
@@ -252,7 +252,7 @@ const getDefaultBaseColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy surfaces, such as **articles and textboxes**, use `warningMild` instead.
      */
-    warningBase   : adjustLightness(rootColors.warning  , colorParamVars.base),
+    warningBase   : adjustLightness(rootColors.warning  , colorParamConfigVars.base),
     
     /**
      * **Danger base color** - A regular background color for errors or destructive actions.  
@@ -260,7 +260,7 @@ const getDefaultBaseColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy surfaces, such as **articles and textboxes**, use `dangerMild` instead.
      */
-    dangerBase    : adjustLightness(rootColors.danger   , colorParamVars.base),
+    dangerBase    : adjustLightness(rootColors.danger   , colorParamConfigVars.base),
     
     /**
      * **Light base color** - A regular background color for floating UI elements over static dark backgrounds, such as images.  
@@ -268,7 +268,7 @@ const getDefaultBaseColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy surfaces, such as **articles and textboxes**, use `lightMild` instead.
      */
-    lightBase     : adjustLightness(rootColors.light    , colorParamVars.base),
+    lightBase     : adjustLightness(rootColors.light    , colorParamConfigVars.base),
     
     /**
      * **Dark base color** - A regular background color for floating UI elements over static light backgrounds, such as images.  
@@ -276,14 +276,14 @@ const getDefaultBaseColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy surfaces, such as **articles and textboxes**, use `darkMild` instead.
      */
-    darkBase      : adjustLightness(rootColors.dark     , colorParamVars.base),
+    darkBase      : adjustLightness(rootColors.dark     , colorParamConfigVars.base),
 });
 export type DefaultBaseColors = ReturnType<typeof getDefaultBaseColors>
 
 /**
  * **Mild Colors** - Comfortable background colors for content-heavy UI elements.
  * 
- * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamVars.mild`  
+ * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamConfigVars.mild`  
  * enhancing **visual comfort and reduces eye strain**.
  * 
  * ---
@@ -300,7 +300,7 @@ const getDefaultMildColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI surfaces, such as **buttons and standard panels**, use `primaryBase` instead.
      */
-    primaryMild   : adjustLightness(rootColors.primary  , colorParamVars.mild),
+    primaryMild   : adjustLightness(rootColors.primary  , colorParamConfigVars.mild),
     
     /**
      * **Secondary mild color** - A content-heavy background color for complementing primary UI elements.  
@@ -308,7 +308,7 @@ const getDefaultMildColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI surfaces, such as **buttons and standard panels**, use `secondaryBase` instead.
      */
-    secondaryMild : adjustLightness(rootColors.secondary, colorParamVars.mild),
+    secondaryMild : adjustLightness(rootColors.secondary, colorParamConfigVars.mild),
     
     /**
      * **Success mild color** - A content-heavy background color for positive actions and confirmations.  
@@ -316,7 +316,7 @@ const getDefaultMildColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI surfaces, such as **buttons and standard panels**, use `successBase` instead.
      */
-    successMild   : adjustLightness(rootColors.success  , colorParamVars.mild),
+    successMild   : adjustLightness(rootColors.success  , colorParamConfigVars.mild),
     
     /**
      * **Info mild color** - A content-heavy background color for neutral alerts or general details.  
@@ -324,7 +324,7 @@ const getDefaultMildColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI surfaces, such as **buttons and standard panels**, use `infoBase` instead.
      */
-    infoMild      : adjustLightness(rootColors.info     , colorParamVars.mild),
+    infoMild      : adjustLightness(rootColors.info     , colorParamConfigVars.mild),
     
     /**
      * **Warning mild color** - A content-heavy background color for cautions or potential errors.  
@@ -332,7 +332,7 @@ const getDefaultMildColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI surfaces, such as **buttons and standard panels**, use `warningBase` instead.
      */
-    warningMild   : adjustLightness(rootColors.warning  , colorParamVars.mild),
+    warningMild   : adjustLightness(rootColors.warning  , colorParamConfigVars.mild),
     
     /**
      * **Danger mild color** - A content-heavy background color for errors or destructive actions.  
@@ -340,7 +340,7 @@ const getDefaultMildColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI surfaces, such as **buttons and standard panels**, use `dangerBase` instead.
      */
-    dangerMild    : adjustLightness(rootColors.danger   , colorParamVars.mild),
+    dangerMild    : adjustLightness(rootColors.danger   , colorParamConfigVars.mild),
     
     /**
      * **Light mild color** - A content-heavy background color for floating UI elements over static dark backgrounds, such as images.  
@@ -348,7 +348,7 @@ const getDefaultMildColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI surfaces, such as **buttons and standard panels**, use `lightBase` instead.
      */
-    lightMild     : adjustLightness(rootColors.light    , colorParamVars.mild),
+    lightMild     : adjustLightness(rootColors.light    , colorParamConfigVars.mild),
     
     /**
      * **Dark mild color** - A content-heavy background color for floating UI elements over static light backgrounds, such as images.  
@@ -356,7 +356,7 @@ const getDefaultMildColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI surfaces, such as **buttons and standard panels**, use `darkBase` instead.
      */
-    darkMild      : adjustLightness(rootColors.dark     , colorParamVars.mild),
+    darkMild      : adjustLightness(rootColors.dark     , colorParamConfigVars.mild),
 });
 export type DefaultMildColors = ReturnType<typeof getDefaultMildColors>
 
@@ -367,14 +367,14 @@ export type DefaultMildColors = ReturnType<typeof getDefaultMildColors>
 /**
  * **Flip Colors** - Optimized foreground colors for contrast against regular backgrounds.
  * 
- * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamVars.flip`  
+ * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamConfigVars.flip`  
  * ensuring **strong contrast against `baseColors` backgrounds**.
  * 
  * ---
  * 
  * **How It Works:**
  * - **Brightness is determined** by extracting the lightness (`L`) element in OKLCH from the given theme  
- *   and comparing it against `colorParamVars.flipThreshold`.
+ *   and comparing it against `colorParamConfigVars.flipThreshold`.
  * - If the given theme is **relatively bright**, the text color is darkened to enhance readability.
  * - If the given theme is **relatively dark**, the text color is lightened to enhance readability.
  * - Each text color retains **a subtle tint** based on its theme for visual harmony.
@@ -388,7 +388,7 @@ const getDefaultFlipColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy texts, such as **articles and textboxes**, use `primaryText` instead.
      */
-    primaryFlip   : contrastFlip(rootColors.primary  , colorParamVars.flip),
+    primaryFlip   : contrastFlip(rootColors.primary  , colorParamConfigVars.flip),
     
     /**
      * **Secondary flip color** - A regular text color for complementing primary UI elements.  
@@ -396,7 +396,7 @@ const getDefaultFlipColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy texts, such as **articles and textboxes**, use `secondaryText` instead.
      */
-    secondaryFlip : contrastFlip(rootColors.secondary, colorParamVars.flip),
+    secondaryFlip : contrastFlip(rootColors.secondary, colorParamConfigVars.flip),
     
     /**
      * **Success flip color** - A regular text color for positive actions and confirmations.  
@@ -404,7 +404,7 @@ const getDefaultFlipColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy texts, such as **articles and textboxes**, use `successText` instead.
      */
-    successFlip   : contrastFlip(rootColors.success  , colorParamVars.flip),
+    successFlip   : contrastFlip(rootColors.success  , colorParamConfigVars.flip),
     
     /**
      * **Info flip color** - A regular text color for neutral alerts or general details.  
@@ -412,7 +412,7 @@ const getDefaultFlipColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy texts, such as **articles and textboxes**, use `infoText` instead.
      */
-    infoFlip      : contrastFlip(rootColors.info     , colorParamVars.flip),
+    infoFlip      : contrastFlip(rootColors.info     , colorParamConfigVars.flip),
     
     /**
      * **Warning flip color** - A regular text color for cautions or potential errors.  
@@ -420,7 +420,7 @@ const getDefaultFlipColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy texts, such as **articles and textboxes**, use `warningText` instead.
      */
-    warningFlip   : contrastFlip(rootColors.warning  , colorParamVars.flip),
+    warningFlip   : contrastFlip(rootColors.warning  , colorParamConfigVars.flip),
     
     /**
      * **Danger flip color** - A regular text color for errors or destructive actions.  
@@ -428,7 +428,7 @@ const getDefaultFlipColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy texts, such as **articles and textboxes**, use `dangerText` instead.
      */
-    dangerFlip    : contrastFlip(rootColors.danger   , colorParamVars.flip),
+    dangerFlip    : contrastFlip(rootColors.danger   , colorParamConfigVars.flip),
     
     /**
      * **Light flip color** - A regular text color for floating UI elements over static dark backgrounds, such as images.  
@@ -436,7 +436,7 @@ const getDefaultFlipColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy texts, such as **articles and textboxes**, use `lightText` instead.
      */
-    lightFlip     : contrastFlip(rootColors.light    , colorParamVars.flip),
+    lightFlip     : contrastFlip(rootColors.light    , colorParamConfigVars.flip),
     
     /**
      * **Dark flip color** - A regular text color for floating UI elements over static light backgrounds, such as images.  
@@ -444,23 +444,23 @@ const getDefaultFlipColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy texts, such as **articles and textboxes**, use `darkText` instead.
      */
-    darkFlip      : contrastFlip(rootColors.dark     , colorParamVars.flip),
+    darkFlip      : contrastFlip(rootColors.dark     , colorParamConfigVars.flip),
 });
 export type DefaultFlipColors = ReturnType<typeof getDefaultFlipColors>
 
 /**
  * **Text Colors** - Optimized foreground colors for content-heavy readability.
  * 
- * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamVars.text`  
+ * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamConfigVars.text`  
  * ensuring **comfortable contrast against `mildColors` backgrounds**.
  * 
  * ---
  * 
  * **How It Works:**
  * - `mildColors` backgrounds **align closely with the theme's brightness level**  
- *   (`colorParamVars.mild ≈ +0.7`), ensuring high readability.
+ *   (`colorParamConfigVars.mild ≈ +0.7`), ensuring high readability.
  * - To maintain optimal contrast, `textColors` **apply a negative brightness adjustment**  
- *   (`colorParamVars.text ≈ -0.9`), enhancing legibility in both light and dark modes.
+ *   (`colorParamConfigVars.text ≈ -0.9`), enhancing legibility in both light and dark modes.
  * - This results in **dark text for light backgrounds** and **light text for dark backgrounds**,  
  *   with **a subtle tint** based on its theme for visual harmony.
  * - Designed for **content-heavy UI elements**, such as articles, textboxes, and dialogs.
@@ -473,7 +473,7 @@ const getDefaultTextColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI texts, such as **buttons and standard panels**, use `primaryFlip` instead.
      */
-    primaryText   : adjustLightness(rootColors.primary  , colorParamVars.text),
+    primaryText   : adjustLightness(rootColors.primary  , colorParamConfigVars.text),
     
     /**
      * **Secondary text color** - A content-heavy text color for complementing primary UI elements.  
@@ -481,7 +481,7 @@ const getDefaultTextColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI texts, such as **buttons and standard panels**, use `secondaryFlip` instead.
      */
-    secondaryText : adjustLightness(rootColors.secondary, colorParamVars.text),
+    secondaryText : adjustLightness(rootColors.secondary, colorParamConfigVars.text),
     
     /**
      * **Success text color** - A content-heavy text color for positive actions and confirmations.  
@@ -489,7 +489,7 @@ const getDefaultTextColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI texts, such as **buttons and standard panels**, use `successFlip` instead.
      */
-    successText   : adjustLightness(rootColors.success  , colorParamVars.text),
+    successText   : adjustLightness(rootColors.success  , colorParamConfigVars.text),
     
     /**
      * **Info text color** - A content-heavy text color for neutral alerts or general details.  
@@ -497,7 +497,7 @@ const getDefaultTextColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI texts, such as **buttons and standard panels**, use `infoFlip` instead.
      */
-    infoText      : adjustLightness(rootColors.info     , colorParamVars.text),
+    infoText      : adjustLightness(rootColors.info     , colorParamConfigVars.text),
     
     /**
      * **Warning text color** - A content-heavy text color for cautions or potential errors.  
@@ -505,7 +505,7 @@ const getDefaultTextColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI texts, such as **buttons and standard panels**, use `warningFlip` instead.
      */
-    warningText   : adjustLightness(rootColors.warning  , colorParamVars.text),
+    warningText   : adjustLightness(rootColors.warning  , colorParamConfigVars.text),
     
     /**
      * **Danger text color** - A content-heavy text color for errors or destructive actions.  
@@ -513,7 +513,7 @@ const getDefaultTextColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI texts, such as **buttons and standard panels**, use `dangerFlip` instead.
      */
-    dangerText    : adjustLightness(rootColors.danger   , colorParamVars.text),
+    dangerText    : adjustLightness(rootColors.danger   , colorParamConfigVars.text),
     
     /**
      * **Light text color** - A content-heavy text color for floating UI elements over static dark backgrounds, such as images.  
@@ -521,7 +521,7 @@ const getDefaultTextColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI texts, such as **buttons and standard panels**, use `lightFlip` instead.
      */
-    lightText     : adjustLightness(rootColors.light    , colorParamVars.text),
+    lightText     : adjustLightness(rootColors.light    , colorParamConfigVars.text),
     
     /**
      * **Dark text color** - A content-heavy text color for floating UI elements over static light backgrounds, such as images.  
@@ -529,14 +529,14 @@ const getDefaultTextColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI texts, such as **buttons and standard panels**, use `darkFlip` instead.
      */
-    darkText      : adjustLightness(rootColors.dark     , colorParamVars.text),
+    darkText      : adjustLightness(rootColors.dark     , colorParamConfigVars.text),
 });
 export type DefaultTextColors = ReturnType<typeof getDefaultTextColors>
 
 /**
  * **Face Colors** - High contrast foreground colors for backgroundless themed UI elements.
  * 
- * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamVars.face`  
+ * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamConfigVars.face`  
  * ensuring **clear visibility while preserving background transparency**.
  * 
  * ---
@@ -555,7 +555,7 @@ const getDefaultFaceColors = (rootColors: DefaultRootColors) => ({
      * 
      * For texts with opaque backgrounds, use `primaryFlip` or `primaryText` instead.
      */
-    primaryFace   : adjustLightness(rootColors.primary  , colorParamVars.face),
+    primaryFace   : adjustLightness(rootColors.primary  , colorParamConfigVars.face),
     
     /**
      * **Secondary face color** - A backgroundless text color for complementing primary UI elements.  
@@ -563,7 +563,7 @@ const getDefaultFaceColors = (rootColors: DefaultRootColors) => ({
      * 
      * For texts with opaque backgrounds, use `secondaryFlip` or `secondaryText` instead.
      */
-    secondaryFace : adjustLightness(rootColors.secondary, colorParamVars.face),
+    secondaryFace : adjustLightness(rootColors.secondary, colorParamConfigVars.face),
     
     /**
      * **Success face color** - A backgroundless text color for positive actions and confirmations.  
@@ -571,7 +571,7 @@ const getDefaultFaceColors = (rootColors: DefaultRootColors) => ({
      * 
      * For texts with opaque backgrounds, use `successFlip` or `successText` instead.
      */
-    successFace   : adjustLightness(rootColors.success  , colorParamVars.face),
+    successFace   : adjustLightness(rootColors.success  , colorParamConfigVars.face),
     
     /**
      * **Info face color** - A backgroundless text color for neutral alerts or general details.  
@@ -579,7 +579,7 @@ const getDefaultFaceColors = (rootColors: DefaultRootColors) => ({
      * 
      * For texts with opaque backgrounds, use `infoFlip` or `infoText` instead.
      */
-    infoFace      : adjustLightness(rootColors.info     , colorParamVars.face),
+    infoFace      : adjustLightness(rootColors.info     , colorParamConfigVars.face),
     
     /**
      * **Warning face color** - A backgroundless text color for cautions or potential errors.  
@@ -587,7 +587,7 @@ const getDefaultFaceColors = (rootColors: DefaultRootColors) => ({
      * 
      * For texts with opaque backgrounds, use `warningFlip` or `warningText` instead.
      */
-    warningFace   : adjustLightness(rootColors.warning  , colorParamVars.face),
+    warningFace   : adjustLightness(rootColors.warning  , colorParamConfigVars.face),
     
     /**
      * **Danger face color** - A backgroundless text color for errors or destructive actions.  
@@ -595,7 +595,7 @@ const getDefaultFaceColors = (rootColors: DefaultRootColors) => ({
      * 
      * For texts with opaque backgrounds, use `dangerFlip` or `dangerText` instead.
      */
-    dangerFace    : adjustLightness(rootColors.danger   , colorParamVars.face),
+    dangerFace    : adjustLightness(rootColors.danger   , colorParamConfigVars.face),
     
     /**
      * **Light face color** - A backgroundless text color for floating UI elements over static dark backgrounds, such as images.  
@@ -603,7 +603,7 @@ const getDefaultFaceColors = (rootColors: DefaultRootColors) => ({
      * 
      * For texts with opaque backgrounds, use `lightFlip` or `lightText` instead.
      */
-    lightFace     : adjustLightness(rootColors.light    , colorParamVars.face),
+    lightFace     : adjustLightness(rootColors.light    , colorParamConfigVars.face),
     
     /**
      * **Dark face color** - A backgroundless text color for floating UI elements over static light backgrounds, such as images.  
@@ -611,7 +611,7 @@ const getDefaultFaceColors = (rootColors: DefaultRootColors) => ({
      * 
      * For texts with opaque backgrounds, use `darkFlip` or `darkText` instead.
      */
-    darkFace      : adjustLightness(rootColors.dark     , colorParamVars.face),
+    darkFace      : adjustLightness(rootColors.dark     , colorParamConfigVars.face),
 });
 export type DefaultFaceColors = ReturnType<typeof getDefaultFaceColors>
 
@@ -622,7 +622,7 @@ export type DefaultFaceColors = ReturnType<typeof getDefaultFaceColors>
 /**
  * **Bold Colors** - High contrast borders for regular themed UI elements.
  * 
- * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamVars.bold`  
+ * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamConfigVars.bold`  
  * ensuring **strong visual separation between UI elements**.
  * 
  * ---
@@ -641,7 +641,7 @@ const getDefaultBoldColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy borders, such as **articles and textboxes**, use `primaryThin` instead.
      */
-    primaryBold   : adjustLightness(rootColors.primary  , colorParamVars.bold),
+    primaryBold   : adjustLightness(rootColors.primary  , colorParamConfigVars.bold),
     
     /**
      * **Secondary bold color** - A regular border color for complementing primary UI elements.  
@@ -649,7 +649,7 @@ const getDefaultBoldColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy borders, such as **articles and textboxes**, use `secondaryThin` instead.
      */
-    secondaryBold : adjustLightness(rootColors.secondary, colorParamVars.bold),
+    secondaryBold : adjustLightness(rootColors.secondary, colorParamConfigVars.bold),
     
     /**
      * **Success bold color** - A regular border color for positive actions and confirmations.  
@@ -657,7 +657,7 @@ const getDefaultBoldColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy borders, such as **articles and textboxes**, use `successThin` instead.
      */
-    successBold   : adjustLightness(rootColors.success  , colorParamVars.bold),
+    successBold   : adjustLightness(rootColors.success  , colorParamConfigVars.bold),
     
     /**
      * **Info bold color** - A regular border color for neutral alerts or general details.  
@@ -665,7 +665,7 @@ const getDefaultBoldColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy borders, such as **articles and textboxes**, use `infoThin` instead.
      */
-    infoBold      : adjustLightness(rootColors.info     , colorParamVars.bold),
+    infoBold      : adjustLightness(rootColors.info     , colorParamConfigVars.bold),
     
     /**
      * **Warning bold color** - A regular border color for cautions or potential errors.  
@@ -673,7 +673,7 @@ const getDefaultBoldColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy borders, such as **articles and textboxes**, use `warningThin` instead.
      */
-    warningBold   : adjustLightness(rootColors.warning  , colorParamVars.bold),
+    warningBold   : adjustLightness(rootColors.warning  , colorParamConfigVars.bold),
     
     /**
      * **Danger bold color** - A regular border color for errors or destructive actions.  
@@ -681,7 +681,7 @@ const getDefaultBoldColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy borders, such as **articles and textboxes**, use `dangerThin` instead.
      */
-    dangerBold    : adjustLightness(rootColors.danger   , colorParamVars.bold),
+    dangerBold    : adjustLightness(rootColors.danger   , colorParamConfigVars.bold),
     
     /**
      * **Light bold color** - A regular border color for floating UI elements over static dark backgrounds, such as images.  
@@ -689,7 +689,7 @@ const getDefaultBoldColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy borders, such as **articles and textboxes**, use `lightThin` instead.
      */
-    lightBold     : adjustLightness(rootColors.light    , colorParamVars.bold),
+    lightBold     : adjustLightness(rootColors.light    , colorParamConfigVars.bold),
     
     /**
      * **Dark bold color** - A regular border color for floating UI elements over static light backgrounds, such as images.  
@@ -697,14 +697,14 @@ const getDefaultBoldColors = (rootColors: DefaultRootColors) => ({
      * 
      * For content-heavy borders, such as **articles and textboxes**, use `darkThin` instead.
      */
-    darkBold      : adjustLightness(rootColors.dark     , colorParamVars.bold),
+    darkBold      : adjustLightness(rootColors.dark     , colorParamConfigVars.bold),
 });
 export type DefaultBoldColors = ReturnType<typeof getDefaultBoldColors>
 
 /**
  * **Thin Colors** - Soft contrast borders for content-heavy themed UI elements.
  * 
- * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamVars.thin`  
+ * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamConfigVars.thin`  
  * ensuring **gentle visual separation between UI elements**.
  * 
  * ---
@@ -723,7 +723,7 @@ const getDefaultThinColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI borders, such as **buttons and standard panels**, use `primaryBold` instead.
      */
-    primaryThin   : adjustLightness(rootColors.primary  , colorParamVars.thin),
+    primaryThin   : adjustLightness(rootColors.primary  , colorParamConfigVars.thin),
     
     /**
      * **Secondary thin color** - A content-heavy border color for complementing primary UI elements.  
@@ -731,7 +731,7 @@ const getDefaultThinColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI borders, such as **buttons and standard panels**, use `secondaryBold` instead.
      */
-    secondaryThin : adjustLightness(rootColors.secondary, colorParamVars.thin),
+    secondaryThin : adjustLightness(rootColors.secondary, colorParamConfigVars.thin),
     
     /**
      * **Success thin color** - A content-heavy border color for positive actions and confirmations.  
@@ -739,7 +739,7 @@ const getDefaultThinColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI borders, such as **buttons and standard panels**, use `successBold` instead.
      */
-    successThin   : adjustLightness(rootColors.success  , colorParamVars.thin),
+    successThin   : adjustLightness(rootColors.success  , colorParamConfigVars.thin),
     
     /**
      * **Info thin color** - A content-heavy border color for neutral alerts or general details.  
@@ -747,7 +747,7 @@ const getDefaultThinColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI borders, such as **buttons and standard panels**, use `infoBold` instead.
      */
-    infoThin      : adjustLightness(rootColors.info     , colorParamVars.thin),
+    infoThin      : adjustLightness(rootColors.info     , colorParamConfigVars.thin),
     
     /**
      * **Warning thin color** - A content-heavy border color for cautions or potential errors.  
@@ -755,7 +755,7 @@ const getDefaultThinColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI borders, such as **buttons and standard panels**, use `warningBold` instead.
      */
-    warningThin   : adjustLightness(rootColors.warning  , colorParamVars.thin),
+    warningThin   : adjustLightness(rootColors.warning  , colorParamConfigVars.thin),
     
     /**
      * **Danger thin color** - A content-heavy border color for errors or destructive actions.  
@@ -763,7 +763,7 @@ const getDefaultThinColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI borders, such as **buttons and standard panels**, use `dangerBold` instead.
      */
-    dangerThin    : adjustLightness(rootColors.danger   , colorParamVars.thin),
+    dangerThin    : adjustLightness(rootColors.danger   , colorParamConfigVars.thin),
     
     /**
      * **Light thin color** - A content-heavy border color for floating UI elements over static dark backgrounds, such as images.  
@@ -771,7 +771,7 @@ const getDefaultThinColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI borders, such as **buttons and standard panels**, use `lightBold` instead.
      */
-    lightThin     : adjustLightness(rootColors.light    , colorParamVars.thin),
+    lightThin     : adjustLightness(rootColors.light    , colorParamConfigVars.thin),
     
     /**
      * **Dark thin color** - A content-heavy border color for floating UI elements over static light backgrounds, such as images.  
@@ -779,14 +779,14 @@ const getDefaultThinColors = (rootColors: DefaultRootColors) => ({
      * 
      * For regular UI borders, such as **buttons and standard panels**, use `darkBold` instead.
      */
-    darkThin      : adjustLightness(rootColors.dark     , colorParamVars.thin),
+    darkThin      : adjustLightness(rootColors.dark     , colorParamConfigVars.thin),
 });
 export type DefaultThinColors = ReturnType<typeof getDefaultThinColors>
 
 /**
  * **Edge Colors** - High contrast borders for backgroundless themed UI elements.
  * 
- * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamVars.edge`  
+ * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamConfigVars.edge`  
  * ensuring **clear outlines while preserving background transparency**.
  * 
  * ---
@@ -805,7 +805,7 @@ const getDefaultEdgeColors = (rootColors: DefaultRootColors) => ({
      * 
      * For borders with opaque backgrounds, use `primaryBold` or `primaryThin` instead.
      */
-    primaryEdge   : adjustLightness(rootColors.primary  , colorParamVars.edge),
+    primaryEdge   : adjustLightness(rootColors.primary  , colorParamConfigVars.edge),
     
     /**
      * **Secondary edge color** - A backgroundless border color for complementing primary UI elements.  
@@ -813,7 +813,7 @@ const getDefaultEdgeColors = (rootColors: DefaultRootColors) => ({
      * 
      * For borders with opaque backgrounds, use `secondaryBold` or `secondaryThin` instead.
      */
-    secondaryEdge : adjustLightness(rootColors.secondary, colorParamVars.edge),
+    secondaryEdge : adjustLightness(rootColors.secondary, colorParamConfigVars.edge),
     
     /**
      * **Success edge color** - A backgroundless border color for positive actions and confirmations.  
@@ -821,7 +821,7 @@ const getDefaultEdgeColors = (rootColors: DefaultRootColors) => ({
      * 
      * For borders with opaque backgrounds, use `successBold` or `successThin` instead.
      */
-    successEdge   : adjustLightness(rootColors.success  , colorParamVars.edge),
+    successEdge   : adjustLightness(rootColors.success  , colorParamConfigVars.edge),
     
     /**
      * **Info edge color** - A backgroundless border color for neutral alerts or general details.  
@@ -829,7 +829,7 @@ const getDefaultEdgeColors = (rootColors: DefaultRootColors) => ({
      * 
      * For borders with opaque backgrounds, use `infoBold` or `infoThin` instead.
      */
-    infoEdge      : adjustLightness(rootColors.info     , colorParamVars.edge),
+    infoEdge      : adjustLightness(rootColors.info     , colorParamConfigVars.edge),
     
     /**
      * **Warning edge color** - A backgroundless border color for cautions or potential errors.  
@@ -837,7 +837,7 @@ const getDefaultEdgeColors = (rootColors: DefaultRootColors) => ({
      * 
      * For borders with opaque backgrounds, use `warningBold` or `warningThin` instead.
      */
-    warningEdge   : adjustLightness(rootColors.warning  , colorParamVars.edge),
+    warningEdge   : adjustLightness(rootColors.warning  , colorParamConfigVars.edge),
     
     /**
      * **Danger edge color** - A backgroundless border color for errors or destructive actions.  
@@ -845,7 +845,7 @@ const getDefaultEdgeColors = (rootColors: DefaultRootColors) => ({
      * 
      * For borders with opaque backgrounds, use `dangerBold` or `dangerThin` instead.
      */
-    dangerEdge    : adjustLightness(rootColors.danger   , colorParamVars.edge),
+    dangerEdge    : adjustLightness(rootColors.danger   , colorParamConfigVars.edge),
     
     /**
      * **Light edge color** - A backgroundless border color for floating UI elements over static dark backgrounds, such as images.  
@@ -853,7 +853,7 @@ const getDefaultEdgeColors = (rootColors: DefaultRootColors) => ({
      * 
      * For borders with opaque backgrounds, use `lightBold` or `lightThin` instead.
      */
-    lightEdge     : adjustLightness(rootColors.light    , colorParamVars.edge),
+    lightEdge     : adjustLightness(rootColors.light    , colorParamConfigVars.edge),
     
     /**
      * **Dark edge color** - A backgroundless border color for floating UI elements over static light backgrounds, such as images.  
@@ -861,7 +861,7 @@ const getDefaultEdgeColors = (rootColors: DefaultRootColors) => ({
      * 
      * For borders with opaque backgrounds, use `darkBold` or `darkThin` instead.
      */
-    darkEdge      : adjustLightness(rootColors.dark     , colorParamVars.edge),
+    darkEdge      : adjustLightness(rootColors.dark     , colorParamConfigVars.edge),
 });
 export type DefaultEdgeColors = ReturnType<typeof getDefaultEdgeColors>
 
@@ -872,7 +872,7 @@ export type DefaultEdgeColors = ReturnType<typeof getDefaultEdgeColors>
 /**
  * **Soft Colors** - Transparent overlay effects for UI emphasis.
  * 
- * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamVars.soft`  
+ * These colors are **derived from `rootColors`** and dynamically adjusted via `colorParamConfigVars.soft`  
  * providing **visual focus and draws attention to surrounding elements**.
  * 
  * ---
@@ -888,49 +888,49 @@ const getDefaultSoftColors = (rootColors: DefaultRootColors) => ({
      * **Primary soft color** - An effect color for primary UI elements.  
      * Provides **visual focus and draws attention to surrounding elements**.
      */
-    primarySoft   : adjustOpacity(rootColors.primary  , colorParamVars.soft),
+    primarySoft   : adjustOpacity(rootColors.primary  , colorParamConfigVars.soft),
     
     /**
      * **Secondary soft color** - An effect color for complementing primary UI elements.  
      * Provides **visual focus and draws attention to surrounding elements**.
      */
-    secondarySoft : adjustOpacity(rootColors.secondary, colorParamVars.soft),
+    secondarySoft : adjustOpacity(rootColors.secondary, colorParamConfigVars.soft),
     
     /**
      * **Success soft color** - An effect color for positive actions and confirmations.  
      * Provides **visual focus and draws attention to surrounding elements**.
      */
-    successSoft   : adjustOpacity(rootColors.success  , colorParamVars.soft),
+    successSoft   : adjustOpacity(rootColors.success  , colorParamConfigVars.soft),
     
     /**
      * **Info soft color** - An effect color for neutral alerts or general details.  
      * Provides **visual focus and draws attention to surrounding elements**.
      */
-    infoSoft      : adjustOpacity(rootColors.info     , colorParamVars.soft),
+    infoSoft      : adjustOpacity(rootColors.info     , colorParamConfigVars.soft),
     
     /**
      * **Warning soft color** - An effect color for cautions or potential errors.  
      * Provides **visual focus and draws attention to surrounding elements**.
      */
-    warningSoft   : adjustOpacity(rootColors.warning  , colorParamVars.soft),
+    warningSoft   : adjustOpacity(rootColors.warning  , colorParamConfigVars.soft),
     
     /**
      * **Danger soft color** - An effect color for errors or destructive actions.  
      * Provides **visual focus and draws attention to surrounding elements**.
      */
-    dangerSoft    : adjustOpacity(rootColors.danger   , colorParamVars.soft),
+    dangerSoft    : adjustOpacity(rootColors.danger   , colorParamConfigVars.soft),
     
     /**
      * **Light soft color** - An effect color for floating UI elements over static dark backgrounds, such as images.  
      * Provides **visual focus and draws attention to surrounding elements**.
      */
-    lightSoft     : adjustOpacity(rootColors.light    , colorParamVars.soft),
+    lightSoft     : adjustOpacity(rootColors.light    , colorParamConfigVars.soft),
     
     /**
      * **Dark soft color** - An effect color for floating UI elements over static light backgrounds, such as images.  
      * Provides **visual focus and draws attention to surrounding elements**.
      */
-    darkSoft      : adjustOpacity(rootColors.dark     , colorParamVars.soft),
+    darkSoft      : adjustOpacity(rootColors.dark     , colorParamConfigVars.soft),
 });
 export type DefaultSoftColors = ReturnType<typeof getDefaultSoftColors>
 

@@ -1,12 +1,12 @@
 import { themes } from '@/libs/themes'
 import { rule, style, variants, vars } from '@cssfn/core'
-import { colorVars, colorExpressions, colorParamVars, colorParamExpressions, defineTheme, deleteTheme } from '@reusable-ui/color-config'
+import { colorConfigVars, colorConfigExpressions, colorParamConfigVars, colorParamConfigExpressions, defineTheme, deleteTheme } from '@reusable-ui/color-config'
 
 
 
 if (typeof window !== 'undefined') {
-    Object.assign(window, {colorVars, colorExpressions, defineTheme, deleteTheme});
-    Object.assign(window, {colorParamVars, colorParamExpressions});
+    Object.assign(window, {colorConfigVars, colorConfigExpressions, defineTheme, deleteTheme});
+    Object.assign(window, {colorParamConfigVars, colorParamConfigExpressions});
 } // if
 
 
@@ -48,24 +48,24 @@ const basicVariants = () => style({
         .map((themeName) =>
             rule(`.${themeName}`, {
                 // Background:
-                '--bg-base': colorVars[`${themeName}Base`],
-                '--bg-mild': colorVars[`${themeName}Mild`],
+                '--bg-base': colorConfigVars[`${themeName}Base`],
+                '--bg-mild': colorConfigVars[`${themeName}Mild`],
                 '--bg-edge': 'transparent',
                 
                 // Foreground:
-                '--fg-base': colorVars[`${themeName}Flip`],
-                '--fg-mild': colorVars[`${themeName}Text`],
-                '--fg-edge': colorVars[`${themeName}Face`],
+                '--fg-base': colorConfigVars[`${themeName}Flip`],
+                '--fg-mild': colorConfigVars[`${themeName}Text`],
+                '--fg-edge': colorConfigVars[`${themeName}Face`],
                 
                 // Border:
-                '--bd-base': colorVars[`${themeName}Bold`],
-                '--bd-mild': colorVars[`${themeName}Thin`],
-                '--bd-edge': colorVars[`${themeName}Edge`],
+                '--bd-base': colorConfigVars[`${themeName}Bold`],
+                '--bd-mild': colorConfigVars[`${themeName}Thin`],
+                '--bd-edge': colorConfigVars[`${themeName}Edge`],
                 
                 // Ring:
-                '--rg-base': colorVars[`${themeName}Soft`],
-                '--rg-mild': colorVars[`${themeName}Soft`],
-                '--rg-edge': colorVars[`${themeName}Soft`],
+                '--rg-base': colorConfigVars[`${themeName}Soft`],
+                '--rg-mild': colorConfigVars[`${themeName}Soft`],
+                '--rg-edge': colorConfigVars[`${themeName}Soft`],
             }),
         ),
         rule('.mild', {

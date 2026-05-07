@@ -11,7 +11,7 @@ import {
 
 // Configs:
 import {
-    colorVars,
+    colorConfigVars,
 }                           from '@reusable-ui/color-config'    // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 import {
     markVars,
@@ -29,7 +29,7 @@ const config = cssConfig(() => {
          * Defines the **background color** for `<kbd>` elements.
          * Typically uses a **primary base color** (`primaryBase`) for emphasis.
          */
-        backgroundColor        : colorVars.primaryBase                                      as CssKnownProps['backgroundColor'   ],
+        backgroundColor        : colorConfigVars.primaryBase                                as CssKnownProps['backgroundColor'   ],
         
         
         
@@ -39,7 +39,7 @@ const config = cssConfig(() => {
          * Defines the **text color** for `<kbd>` elements.
          * Typically uses a **primary contrasting color** (`primaryFlip`) for readability.
          */
-        color                  : colorVars.primaryFlip                                      as CssKnownProps['color'             ],
+        color                  : colorConfigVars.primaryFlip                                as CssKnownProps['color'             ],
         
         
         
@@ -61,7 +61,7 @@ const config = cssConfig(() => {
          * Defines the **border color** for `<kbd>` elements.
          * Typically uses a **primary bold color** (`primaryBold`) for subtle emphasis.
          */
-        borderColor            : colorVars.primaryBold                                      as CssKnownProps['borderColor'       ],
+        borderColor            : colorConfigVars.primaryBold                                as CssKnownProps['borderColor'       ],
         
         /**
          * Defines the **border radius** for `<kbd>` elements.

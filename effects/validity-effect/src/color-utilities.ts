@@ -4,10 +4,10 @@
  * 
  * This mapping defines which semantic roles apply to each variant and surface.
  * 
- * The color variables within `colorVars` follow the naming convention:
+ * The color variables within `colorConfigVars` follow the naming convention:
  * ```ts
  * const semanticRole  = colorRoleMap[variantRole][surfaceRole];
- * const expectedColor = colorVars[`${themeRole}${semanticRole}`];
+ * const expectedColor = colorConfigVars[`${themeRole}${semanticRole}`];
  * ```
  * 
  * ### Roles

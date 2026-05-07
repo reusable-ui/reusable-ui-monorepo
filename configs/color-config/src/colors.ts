@@ -28,28 +28,28 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = colorVars.blue; // Resolves to "var(--col-blue)"
+ * const value = colorConfigVars.blue; // Resolves to "var(--col-blue)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * colorVars.myColor = "oklch(0.45 0.30 264)"; // Generates "--col-myColor: oklch(0.45 0.30 264);"
+ * colorConfigVars.myColor = "oklch(0.45 0.30 264)"; // Generates "--col-myColor: oklch(0.45 0.30 264);"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * colorVars.myExpression = [[
- *    "oklch(from", colorVars.blue, " l c h / clamp(0.05, alpha * (1 + ", colorParamVars.soft, "), 1))"
+ * colorConfigVars.myExpression = [[
+ *    "oklch(from", colorConfigVars.blue, " l c h / clamp(0.05, alpha * (1 + ", colorParamConfigVars.soft, "), 1))"
  * ]]; // Generates "--col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete colorVars.myColor;
- * colorVars.myColor = null;
- * colorVars.myColor = undefined;
+ * delete colorConfigVars.myColor;
+ * colorConfigVars.myColor = null;
+ * colorConfigVars.myColor = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -77,7 +77,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const colorVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const colorConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
@@ -91,28 +91,28 @@ export const colorVars        = config[0]; // eslint-disable-line css-variables/
  * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression.
  * ```ts
- * const expression = colorExpressions.primaryBase; // Resolves to [[ "oklch(from ", "var(--col-primary)", " calc(((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * l) + (1 - min(1, (1 - (", "var(--col-p-base)", " * ", "var(--col-p-mode)", "))))) calc((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * c) h / alpha)" ]]
+ * const expression = colorConfigExpressions.primaryBase; // Resolves to [[ "oklch(from ", "var(--col-primary)", " calc(((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * l) + (1 - min(1, (1 - (", "var(--col-p-base)", " * ", "var(--col-p-mode)", "))))) calc((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * c) h / alpha)" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * colorExpressions.myColor = "oklch(0.45 0.30 264)"; // Generates "--col-myColor: oklch(0.45 0.30 264);"
+ * colorConfigExpressions.myColor = "oklch(0.45 0.30 264)"; // Generates "--col-myColor: oklch(0.45 0.30 264);"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * colorExpressions.myExpression = [[
- *    "oklch(from", colorVars.blue, " l c h / clamp(0.05, alpha * (1 + ", colorParamVars.soft, "), 1))"
+ * colorConfigExpressions.myExpression = [[
+ *    "oklch(from", colorConfigVars.blue, " l c h / clamp(0.05, alpha * (1 + ", colorParamConfigVars.soft, "), 1))"
  * ]]; // Generates "--col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete colorExpressions.myColor;
- * colorExpressions.myColor = null;
- * colorExpressions.myColor = undefined;
+ * delete colorConfigExpressions.myColor;
+ * colorConfigExpressions.myColor = null;
+ * colorConfigExpressions.myColor = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -140,7 +140,7 @@ export const colorVars        = config[0]; // eslint-disable-line css-variables/
  * }
  * ```
  */
-export const colorExpressions = config[1];
+export const colorConfigExpressions = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for color system**.
@@ -149,17 +149,17 @@ export const colorExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all color variables.
  * ```ts
- * colorConfig.prefix = 'col';
+ * colorConfigOptions.prefix = 'col';
  * ```
  * - **Selector Scope:**  
  * Ensures all all color variables are declared inside `:root`.
  * ```ts
- * colorConfig.selector = ':root';
+ * colorConfigOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * colorConfig.onChange.subscribe({
+ * colorConfigOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Color system updated!");
  *     },
@@ -182,25 +182,25 @@ export const colorExpressions = config[1];
  * }
  * ```
  */
-export const colorConfig      = config[2];
+export const colorConfigOptions     = config[2];
 
 
 
 export {
-    colorVars as default, // Default export for simplified imports.
+    colorConfigVars as default, // Default export for simplified imports.
 }
 
 /**
- * @deprecated Use `colorVars` instead.
+ * @deprecated Use `colorConfigVars` instead.
  */
-export const colors         = colorVars;
+export const colors         = colorConfigVars;
 
 /**
- * @deprecated Use `colorExpressions` instead.
+ * @deprecated Use `colorConfigExpressions` instead.
  */
-export const colorValues    = colorExpressions;
+export const colorValues    = colorConfigExpressions;
 
 /**
- * @deprecated Use `colorConfig` instead.
+ * @deprecated Use `colorConfigOptions` instead.
  */
-export const cssColorConfig = colorConfig;
+export const cssColorConfig = colorConfigOptions;

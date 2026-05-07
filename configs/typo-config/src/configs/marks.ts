@@ -11,7 +11,7 @@ import {
 
 // Configs:
 import {
-    colorVars,
+    colorConfigVars,
 }                           from '@reusable-ui/color-config'    // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 import {
     borderVars,
@@ -30,7 +30,7 @@ const config = cssConfig(() => {
          * Defines the **background color** for `<mark>` elements.
          * Typically uses a **highlight mild color** (`warningMild`) for emphasis.
          */
-        backgroundColor        : colorVars.warningMild                                      as CssKnownProps['backgroundColor'   ],
+        backgroundColor        : colorConfigVars.warningMild                                as CssKnownProps['backgroundColor'   ],
         
         
         
@@ -40,7 +40,7 @@ const config = cssConfig(() => {
          * Defines the **text color** for `<mark>` elements.
          * Typically uses a **highlight text color** (`warningText`) for readability.
          */
-        color                  : colorVars.warningText                                      as CssKnownProps['color'             ],
+        color                  : colorConfigVars.warningText                                as CssKnownProps['color'             ],
         
         
         
@@ -62,7 +62,7 @@ const config = cssConfig(() => {
          * Defines the **border color** for `<mark>` elements.
          * Typically uses a **highlight thin color** (`warningThin`) for subtle emphasis.
          */
-        borderColor            : colorVars.warningThin                                      as CssKnownProps['borderColor'       ],
+        borderColor            : colorConfigVars.warningThin                                as CssKnownProps['borderColor'       ],
         
         /**
          * Defines the **border radius** for `<mark>` elements.

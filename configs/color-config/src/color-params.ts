@@ -181,28 +181,28 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = colorParamVars.mild; // Resolves to "var(--col-p-mild)"
+ * const value = colorParamConfigVars.mild; // Resolves to "var(--col-p-mild)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * colorParamVars.myParam = "3rem"; // Generates "--col-p-myParam: 3rem;"
+ * colorParamConfigVars.myParam = "3rem"; // Generates "--col-p-myParam: 3rem;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * colorParamVars.myExpression = [[
- *    "calc(", colorParamVars.mild, " * 2)"
+ * colorParamConfigVars.myExpression = [[
+ *    "calc(", colorParamConfigVars.mild, " * 2)"
  * ]]; // Generates "--col-p-myExpression: calc(var(--col-p-mild) * 2);"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete colorParamVars.myParam;
- * colorParamVars.myParam = null;
- * colorParamVars.myParam = undefined;
+ * delete colorParamConfigVars.myParam;
+ * colorParamConfigVars.myParam = null;
+ * colorParamConfigVars.myParam = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -232,7 +232,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const colorParamVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const colorParamConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
@@ -246,28 +246,28 @@ export const colorParamVars        = config[0]; // eslint-disable-line css-varia
  * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression.
  * ```ts
- * const expression = colorParamExpressions.mild; // Resolves to 0.7
+ * const expression = colorParamConfigExpressions.mild; // Resolves to 0.7
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * colorParamExpressions.myParam = "3rem"; // Generates "--col-p-myParam: 3rem;"
+ * colorParamConfigExpressions.myParam = "3rem"; // Generates "--col-p-myParam: 3rem;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * colorParamExpressions.myExpression = [[
- *    "calc(", colorParamVars.mild, " * 2)"
+ * colorParamConfigExpressions.myExpression = [[
+ *    "calc(", colorParamConfigVars.mild, " * 2)"
  * ]]; // Generates "--col-p-myExpression: calc(var(--col-p-mild) * 2);"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete colorParamExpressions.myParam;
- * colorParamExpressions.myParam = null;
- * colorParamExpressions.myParam = undefined;
+ * delete colorParamConfigExpressions.myParam;
+ * colorParamConfigExpressions.myParam = null;
+ * colorParamConfigExpressions.myParam = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -297,7 +297,7 @@ export const colorParamVars        = config[0]; // eslint-disable-line css-varia
  * }
  * ```
  */
-export const colorParamExpressions = config[1];
+export const colorParamConfigExpressions = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for color parameters**.
@@ -306,17 +306,17 @@ export const colorParamExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all color parameter variables.
  * ```ts
- * colorParamConfig.prefix = 'col-p';
+ * colorParamConfigOptions.prefix = 'col-p';
  * ```
  * - **Selector Scope:**  
  * Ensures all color parameter variables are declared inside `:root`.
  * ```ts
- * colorParamConfig.selector = ':root';
+ * colorParamConfigOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * colorParamConfig.onChange.subscribe({
+ * colorParamConfigOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Color parameters updated!");
  *     },
@@ -339,25 +339,25 @@ export const colorParamExpressions = config[1];
  * }
  * ```
  */
-export const colorParamConfig      = config[2];
+export const colorParamConfigOptions     = config[2];
 
 
 
 export {
-    colorParamVars as default, // Default export for simplified imports.
+    colorParamConfigVars as default, // Default export for simplified imports.
 }
 
 /**
- * @deprecated Use `colorParamVars` instead.
+ * @deprecated Use `colorParamConfigVars` instead.
  */
-export const colorParams         = colorParamVars;
+export const colorParams         = colorParamConfigVars;
 
 /**
- * @deprecated Use `colorParamExpressions` instead.
+ * @deprecated Use `colorParamConfigExpressions` instead.
  */
-export const colorParamValues    = colorParamExpressions;
+export const colorParamValues    = colorParamConfigExpressions;
 
 /**
- * @deprecated Use `colorParamConfig` instead.
+ * @deprecated Use `colorParamConfigOptions` instead.
  */
-export const cssColorParamConfig = colorParamConfig;
+export const cssColorParamConfig = colorParamConfigOptions;

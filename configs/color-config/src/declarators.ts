@@ -12,11 +12,11 @@ import {
 
 // Configs:
 import {
-    colorParamVars,
+    colorParamConfigVars,
 }                           from './color-params.js'
 import {
-    colorVars,
-    colorExpressions,
+    colorConfigVars,
+    colorConfigExpressions,
 }                           from './colors.js'
 
 
@@ -62,59 +62,59 @@ export const defineTheme = (themeName: string, rootColor: CssColor | null | unde
     // Constants:
     
     // Root Color:
-    colorExpressions[themeName] = (
+    colorConfigExpressions[themeName] = (
         // Upsert variable:
         rootColor
         
         ||
         
         // Delete variable:
-        (null as unknown as keyof typeof colorExpressions)
+        (null as unknown as keyof typeof colorConfigExpressions)
     );
-    const rootColorVar = rootColor ? colorVars[themeName] : null;
+    const rootColorVar = rootColor ? colorConfigVars[themeName] : null;
     
     
     
     // Background colors:
     
     // Base Color:
-    colorExpressions[`${themeName}Base`] = rootColorVar ? adjustLightness(rootColorVar, colorParamVars.base) : (null as unknown as keyof typeof colorExpressions);
+    colorConfigExpressions[`${themeName}Base`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.base) : (null as unknown as keyof typeof colorConfigExpressions);
     
     // Mild Color:
-    colorExpressions[`${themeName}Mild`] = rootColorVar ? adjustLightness(rootColorVar, colorParamVars.mild) : (null as unknown as keyof typeof colorExpressions);
+    colorConfigExpressions[`${themeName}Mild`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.mild) : (null as unknown as keyof typeof colorConfigExpressions);
     
     
     
     // Foreground colors:
     
     // Flip Color:
-    colorExpressions[`${themeName}Flip`] = rootColorVar ? contrastFlip(   rootColorVar, colorParamVars.flip) : (null as unknown as keyof typeof colorExpressions);
+    colorConfigExpressions[`${themeName}Flip`] = rootColorVar ? contrastFlip(   rootColorVar, colorParamConfigVars.flip) : (null as unknown as keyof typeof colorConfigExpressions);
     
     // Text Color:
-    colorExpressions[`${themeName}Text`] = rootColorVar ? adjustLightness(rootColorVar, colorParamVars.text) : (null as unknown as keyof typeof colorExpressions);
+    colorConfigExpressions[`${themeName}Text`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.text) : (null as unknown as keyof typeof colorConfigExpressions);
     
     // Face Color:
-    colorExpressions[`${themeName}Face`] = rootColorVar ? adjustLightness(rootColorVar, colorParamVars.face) : (null as unknown as keyof typeof colorExpressions);
+    colorConfigExpressions[`${themeName}Face`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.face) : (null as unknown as keyof typeof colorConfigExpressions);
     
     
     
     // Border colors:
     
     // Bold Color:
-    colorExpressions[`${themeName}Bold`] = rootColorVar ? adjustLightness(rootColorVar, colorParamVars.bold) : (null as unknown as keyof typeof colorExpressions);
+    colorConfigExpressions[`${themeName}Bold`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.bold) : (null as unknown as keyof typeof colorConfigExpressions);
     
     // Thin Color:
-    colorExpressions[`${themeName}Thin`] = rootColorVar ? adjustLightness(rootColorVar, colorParamVars.thin) : (null as unknown as keyof typeof colorExpressions);
+    colorConfigExpressions[`${themeName}Thin`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.thin) : (null as unknown as keyof typeof colorConfigExpressions);
     
     // Edge Color:
-    colorExpressions[`${themeName}Edge`] = rootColorVar ? adjustLightness(rootColorVar, colorParamVars.edge) : (null as unknown as keyof typeof colorExpressions);
+    colorConfigExpressions[`${themeName}Edge`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.edge) : (null as unknown as keyof typeof colorConfigExpressions);
     
     
     
     // Effect colors:
     
     // Soft Color:
-    colorExpressions[`${themeName}Soft`] = rootColorVar ? adjustOpacity(  rootColorVar, colorParamVars.soft) : (null as unknown as keyof typeof colorExpressions);
+    colorConfigExpressions[`${themeName}Soft`] = rootColorVar ? adjustOpacity(  rootColorVar, colorParamConfigVars.soft) : (null as unknown as keyof typeof colorConfigExpressions);
 };
 
 /**
