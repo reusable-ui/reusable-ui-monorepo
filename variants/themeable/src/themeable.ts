@@ -56,7 +56,7 @@ import {
     
     
     // Utilities:
-    themeSelector,
+    isThemeSelector,
     ifTheme,
 }                           from '@reusable-ui/theme-variant'    // A utility for managing themes consistently across React components.
 
@@ -193,7 +193,7 @@ const [themeableVars] = cssVars<ThemeableVars>({ prefix: 'th', minify: false });
 const themeClassesCache          = new Map<ThemeName, CssClassName|null>();
 
 /**
- * @deprecated - Use `themeSelector(themeName).slice(1)` instead.
+ * @deprecated - Use `isThemeSelector(themeName).slice(1)` instead.
  */
 export const createThemeClass    = (themeName: ThemeName): CssClassName|null => {
     const cached = themeClassesCache.get(themeName);
@@ -201,15 +201,15 @@ export const createThemeClass    = (themeName: ThemeName): CssClassName|null => 
     
     
     
-    const themeClass = (themeSelector(themeName) as string).slice(1);
+    const themeClass = (isThemeSelector(themeName) as string).slice(1);
     themeClassesCache.set(themeName, themeClass);
     return themeClass;
 };
 
 /**
- * @deprecated - Use `themeSelector` instead.
+ * @deprecated - Use `isThemeSelector` instead.
  */
-export const createThemeSelector = themeSelector;
+export const createThemeSelector = isThemeSelector;
 
 let hasThemeSelectorsCache       : CssSelector[] | undefined = undefined;
 let noThemeSelectorsCache        : CssSelector   | undefined = undefined;
@@ -232,7 +232,7 @@ export const ifHasTheme = (styles: CssStyleCollection): CssRule => {
     return rule(
         hasThemeSelectorsCache ?? (hasThemeSelectorsCache = (
             getThemeNames()
-            .map((themeName) => themeSelector(themeName))
+            .map((themeName) => isThemeSelector(themeName))
             .filter((selector): selector is CssSelector => (selector !== null))
         ))
         ,
@@ -247,7 +247,7 @@ export const ifNoTheme = (styles: CssStyleCollection): CssRule => {
     return rule(
         noThemeSelectorsCache ?? (noThemeSelectorsCache = (`:not(:is(${
             getThemeNames()
-            .map((themeName) => themeSelector(themeName))
+            .map((themeName) => isThemeSelector(themeName))
             .filter((selector): selector is CssSelector => (selector !== null))
             .join(', ')
         }))`))
