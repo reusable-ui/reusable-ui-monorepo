@@ -196,7 +196,7 @@ export interface CssBorderFeatureOptions
 {
     /**
      * The desired border style to apply.
-     * Defaults to `borderVars.style`.
+     * Defaults to `borderConfigVars.style`.
      */
     borderStyle            ?: CssKnownProps['borderStyle']
     
@@ -207,7 +207,7 @@ export interface CssBorderFeatureOptions
      * 
      * Serves as the default for horizontal and vertical border widths (`borderInlineWidth` and `borderBlockWidth`)
      * 
-     * Defaults to `borderVars.defaultWidth`.
+     * Defaults to `borderConfigVars.defaultWidth`.
      */
     borderWidth            ?: CssKnownProps['borderWidth']
     
@@ -261,7 +261,7 @@ export interface CssBorderFeatureOptions
     
     /**
      * The desired border radius to apply on all corners.
-     * Defaults to `borderRadiusVars.default`.
+     * Defaults to `borderRadiusConfigVars.default`.
      */
     borderRadius           ?: CssKnownProps['borderRadius']
     
@@ -293,7 +293,7 @@ export interface CssBorderFeatureOptions
     
     /**
      * The fallback border color to apply when no variant-specific color is resolved.
-     * Defaults to `borderVars.color`.
+     * Defaults to `borderConfigVars.color`.
      */
     borderColor            ?: CssKnownProps['borderColor']
 }

@@ -11,7 +11,7 @@ import {
 
 // Configs:
 import {
-    borderVars,
+    borderConfigVars,
 }                           from '@reusable-ui/border-config'   // A flexible and themeable border management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 
 
@@ -26,7 +26,7 @@ const config = cssConfig(() => {
          * Defines the **transparency level** for horizontal separators.
          * Ensures subtle visual distinction without overpowering surrounding content.
          */
-        opacity                : 0.25                       as CssKnownProps['opacity'           ],
+        opacity                : 0.25                           as CssKnownProps['opacity'           ],
         
         
         
@@ -36,19 +36,19 @@ const config = cssConfig(() => {
          * Defines the **border style** for horizontal separators.
          * Typically uses the default border style for consistency.
          */
-        borderStyle            : borderVars.style           as CssKnownProps['borderStyle'       ],
+        borderStyle            : borderConfigVars.style         as CssKnownProps['borderStyle'       ],
         
         /**
          * Defines the **border width** for horizontal separators.
          * Typically uses the default border width for visual clarity.
          */
-        borderWidth            : borderVars.defaultWidth    as CssKnownProps['borderWidth'       ],
+        borderWidth            : borderConfigVars.defaultWidth  as CssKnownProps['borderWidth'       ],
         
         /**
          * Defines the **border color** for horizontal separators.
          * Typically uses the **current text color** (`currentcolor`) for subtle emphasis.
          */
-        borderColor            : 'currentcolor'             as CssKnownProps['borderColor'       ],
+        borderColor            : 'currentcolor'                 as CssKnownProps['borderColor'       ],
         
         
         
@@ -58,27 +58,27 @@ const config = cssConfig(() => {
          * Defines the **left margin** for horizontal separators.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineStart      : '0em'                      as CssKnownProps['marginInlineStart' ],
+        marginInlineStart      : '0em'                          as CssKnownProps['marginInlineStart' ],
         
         /**
          * Defines the **right margin** for horizontal separators.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineEnd        : '0em'                      as CssKnownProps['marginInlineEnd'   ],
+        marginInlineEnd        : '0em'                          as CssKnownProps['marginInlineEnd'   ],
         
         /**
          * Defines the **top margin** when a horizontal separator follows another text-block element.
          * Implemented using adjacent sibling selector.
          * Ensures structured vertical spacing.
          */
-        marginBlockStart       : '1em'                      as CssKnownProps['marginBlockStart'  ],
+        marginBlockStart       : '1em'                          as CssKnownProps['marginBlockStart'  ],
         
         /**
          * Defines the **bottom margin** when a horizontal separator precedes another text-block element.
          * Implemented using `:has()` selector, which may have limited browser support.
          * Check compatibility before relying on this approach.
          */
-        marginBlockEnd         : '1em'                      as CssKnownProps['marginBlockEnd'    ],
+        marginBlockEnd         : '1em'                          as CssKnownProps['marginBlockEnd'    ],
     };
 }, { prefix: 'hr' });
 

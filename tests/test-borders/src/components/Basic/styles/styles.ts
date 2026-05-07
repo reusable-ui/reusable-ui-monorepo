@@ -1,12 +1,12 @@
 import { sizes } from '@/libs/sizes'
 import { rule, style, variants } from '@cssfn/core'
-import { borderVars, borderExpressions, borderRadiusVars, borderRadiusExpressions } from '@reusable-ui/border-config'
+import { borderConfigVars, borderConfigExpressions, borderRadiusConfigVars, borderRadiusConfigExpressions } from '@reusable-ui/border-config'
 
 
 
 if (typeof window !== 'undefined') {
-    Object.assign(window, {borderVars, borderExpressions});
-    Object.assign(window, {borderRadiusVars, borderRadiusExpressions});
+    Object.assign(window, {borderConfigVars, borderConfigExpressions});
+    Object.assign(window, {borderRadiusConfigVars, borderRadiusConfigExpressions});
 } // if
 
 
@@ -29,7 +29,7 @@ const basicVariants = () => style({
         sizes
         .map((sizeName) =>
             rule(`.${sizeName}`, {
-                '--bd': borderVars[sizeName],
+                '--bd': borderConfigVars[sizeName],
             }),
         ),
     ]),

@@ -167,7 +167,7 @@ The final border color (`borderColor`) is determined by a prioritized fallback c
 1. Outlined theme override or outlined color (if outlined)
 2. Mild theme override or mild color (if mild)
 3. Regular theme override or regular color (if themed)
-4. Config fallback (default: `borderVars.color`)
+4. Config fallback (default: `borderConfigVars.color`)
 
 ---
 

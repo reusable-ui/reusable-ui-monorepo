@@ -105,28 +105,28 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = borderVars.default; // Resolves to "var(--bor-default)"
+ * const value = borderConfigVars.default; // Resolves to "var(--bor-default)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * borderVars.myBorder = "10px"; // Generates "--bor-myBorder: 10px;"
+ * borderConfigVars.myBorder = "10px"; // Generates "--bor-myBorder: 10px;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * borderVars.myExpression = [[
- *    "clamp(", borderVars.sm, ", ", "0.25%", ", ", borderVars.lg, ")"
+ * borderConfigVars.myExpression = [[
+ *    "clamp(", borderConfigVars.sm, ", ", "0.25%", ", ", borderConfigVars.lg, ")"
  * ]]; // Generates "--bor-myExpression: clamp(var(--bor-sm), 0.25%, var(--bor-lg));"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete borderVars.myBorder;
- * borderVars.myBorder = null;
- * borderVars.myBorder = undefined;
+ * delete borderConfigVars.myBorder;
+ * borderConfigVars.myBorder = null;
+ * borderConfigVars.myBorder = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -153,7 +153,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const borderVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const borderConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
@@ -167,28 +167,28 @@ export const borderVars        = config[0]; // eslint-disable-line css-variables
  * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
- * const expression = borderExpressions.myExpression; // Resolves to [[ "clamp(", borderVars.sm, ", ", "0.25%", ", ", borderVars.lg, ")" ]]
+ * const expression = borderConfigExpressions.myExpression; // Resolves to [[ "clamp(", borderConfigVars.sm, ", ", "0.25%", ", ", borderConfigVars.lg, ")" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * borderExpressions.myBorder = "10px"; // Generates "--bor-myBorder: 10px;"
+ * borderConfigExpressions.myBorder = "10px"; // Generates "--bor-myBorder: 10px;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * borderExpressions.myExpression = [[
- *    "clamp(", borderVars.sm, ", ", "0.25%", ", ", borderVars.lg, ")"
+ * borderConfigExpressions.myExpression = [[
+ *    "clamp(", borderConfigVars.sm, ", ", "0.25%", ", ", borderConfigVars.lg, ")"
  * ]]; // Generates "--bor-myExpression: clamp(var(--bor-sm), 0.25%, var(--bor-lg));"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete borderExpressions.myBorder;
- * borderExpressions.myBorder = null;
- * borderExpressions.myBorder = undefined;
+ * delete borderConfigExpressions.myBorder;
+ * borderConfigExpressions.myBorder = null;
+ * borderConfigExpressions.myBorder = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -215,7 +215,7 @@ export const borderVars        = config[0]; // eslint-disable-line css-variables
  * }
  * ```
  */
-export const borderExpressions = config[1];
+export const borderConfigExpressions = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for border system**.
@@ -224,17 +224,17 @@ export const borderExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all border variables.
  * ```ts
- * borderConfig.prefix = 'bor';
+ * borderConfigOptions.prefix = 'bor';
  * ```
  * - **Selector Scope:**  
  * Ensures all border variables are declared inside `:root`.
  * ```ts
- * borderConfig.selector = ':root';
+ * borderConfigOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * borderConfig.onChange.subscribe({
+ * borderConfigOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Border system updated!");
  *     },
@@ -256,25 +256,25 @@ export const borderExpressions = config[1];
  * }
  * ```
  */
-export const borderConfig      = config[2];
+export const borderConfigOptions     = config[2];
 
 
 
 export {
-    borderVars as default, // Default export for simplified imports.
+    borderConfigVars as default, // Default export for simplified imports.
 }
 
 /**
- * @deprecated Use `borderVars` instead.
+ * @deprecated Use `borderConfigVars` instead.
  */
-export const borders         = borderVars;
+export const borders         = borderConfigVars;
 
 /**
- * @deprecated Use `borderExpressions` instead.
+ * @deprecated Use `borderConfigExpressions` instead.
  */
-export const borderValues    = borderExpressions;
+export const borderValues    = borderConfigExpressions;
 
 /**
- * @deprecated Use `borderConfig` instead.
+ * @deprecated Use `borderConfigOptions` instead.
  */
-export const cssBorderConfig = borderConfig;
+export const cssBorderConfig = borderConfigOptions;

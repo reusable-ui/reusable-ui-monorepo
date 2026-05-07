@@ -112,28 +112,28 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = borderRadiusVars.blue; // Resolves to "var(--bor-r-blue)"
+ * const value = borderRadiusConfigVars.blue; // Resolves to "var(--bor-r-blue)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * borderRadiusVars.myRadius = "10px"; // Generates "--bor-r-myRadius: 10px;"
+ * borderRadiusConfigVars.myRadius = "10px"; // Generates "--bor-r-myRadius: 10px;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * borderRadiusVars.myExpression = [[
- *    "clamp(", borderRadiusVars.sm, ", ", "0.25%", ", ", borderRadiusVars.lg, ")"
+ * borderRadiusConfigVars.myExpression = [[
+ *    "clamp(", borderRadiusConfigVars.sm, ", ", "0.25%", ", ", borderRadiusConfigVars.lg, ")"
  * ]]; // Generates "--bor-r-myExpression: clamp(var(--bor-r-sm), 0.25%, var(--bor-r-lg));"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete borderRadiusVars.myRadius;
- * borderRadiusVars.myRadius = null;
- * borderRadiusVars.myRadius = undefined;
+ * delete borderRadiusConfigVars.myRadius;
+ * borderRadiusConfigVars.myRadius = null;
+ * borderRadiusConfigVars.myRadius = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -160,7 +160,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const borderRadiusVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const borderRadiusConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
@@ -174,28 +174,28 @@ export const borderRadiusVars        = config[0]; // eslint-disable-line css-var
  * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
- * const expression = borderRadiusExpressions.myExpression; // Resolves to [[ "clamp(", borderRadiusVars.sm, ", ", "0.25%", ", ", borderRadiusVars.lg, ")" ]]
+ * const expression = borderRadiusConfigExpressions.myExpression; // Resolves to [[ "clamp(", borderRadiusConfigVars.sm, ", ", "0.25%", ", ", borderRadiusConfigVars.lg, ")" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * borderRadiusExpressions.myRadius = "10px"; // Generates "--bor-r-myRadius: 10px;"
+ * borderRadiusConfigExpressions.myRadius = "10px"; // Generates "--bor-r-myRadius: 10px;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * borderRadiusExpressions.myExpression = [[
- *    "clamp(", borderRadiusVars.sm, ", ", "0.25%", ", ", borderRadiusVars.lg, ")"
+ * borderRadiusConfigExpressions.myExpression = [[
+ *    "clamp(", borderRadiusConfigVars.sm, ", ", "0.25%", ", ", borderRadiusConfigVars.lg, ")"
  * ]]; // Generates "--bor-r-myExpression: clamp(var(--bor-r-sm), 0.25%, var(--bor-r-lg));"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete borderRadiusExpressions.myRadius;
- * borderRadiusExpressions.myRadius = null;
- * borderRadiusExpressions.myRadius = undefined;
+ * delete borderRadiusConfigExpressions.myRadius;
+ * borderRadiusConfigExpressions.myRadius = null;
+ * borderRadiusConfigExpressions.myRadius = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -222,7 +222,7 @@ export const borderRadiusVars        = config[0]; // eslint-disable-line css-var
  * }
  * ```
  */
-export const borderRadiusExpressions = config[1];
+export const borderRadiusConfigExpressions = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for border radius system**.
@@ -231,17 +231,17 @@ export const borderRadiusExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all border radius variables.
  * ```ts
- * borderRadiusConfig.prefix = 'bor-r';
+ * borderRadiusConfigOptions.prefix = 'bor-r';
  * ```
  * - **Selector Scope:**  
  * Ensures all border radius variables are declared inside `:root`.
  * ```ts
- * borderRadiusConfig.selector = ':root';
+ * borderRadiusConfigOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * borderRadiusConfig.onChange.subscribe({
+ * borderRadiusConfigOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Border radius system updated!");
  *     },
@@ -263,30 +263,30 @@ export const borderRadiusExpressions = config[1];
  * }
  * ```
  */
-export const borderRadiusConfig      = config[2];
+export const borderRadiusConfigOptions     = config[2];
 
 
 
 export {
-    borderRadiusVars as default, // Default export for simplified imports.
+    borderRadiusConfigVars as default, // Default export for simplified imports.
 }
 
 /**
- * @deprecated Use `borderRadiusVars` instead.
+ * @deprecated Use `borderRadiusConfigVars` instead.
  */
-export const radiuses              = borderRadiusVars;
+export const radiuses              = borderRadiusConfigVars;
 
 /**
- * @deprecated Use `borderRadiusVars` instead.
+ * @deprecated Use `borderRadiusConfigVars` instead.
  */
-export const borderRadiuses        = borderRadiusVars;
+export const borderRadiuses        = borderRadiusConfigVars;
 
 /**
- * @deprecated Use `borderRadiusExpressions` instead.
+ * @deprecated Use `borderRadiusConfigExpressions` instead.
  */
-export const radiusValues          = borderRadiusExpressions;
+export const radiusValues          = borderRadiusConfigExpressions;
 
 /**
- * @deprecated Use `borderRadiusConfig` instead.
+ * @deprecated Use `borderRadiusConfigOptions` instead.
  */
-export const cssBorderRadiusConfig = borderRadiusConfig;
+export const cssBorderRadiusConfig = borderRadiusConfigOptions;

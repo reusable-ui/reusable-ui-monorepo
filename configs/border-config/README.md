@@ -53,7 +53,7 @@ To access border configurations, import **@cssfn/core** and **@reusable-ui/borde
 
 ```ts
 import { style } from '@cssfn/core';
-import { borderVars, borderRadiusVars } from '@reusable-ui/border-config';
+import { borderConfigVars, borderRadiusConfigVars } from '@reusable-ui/border-config';
 ```
 
 #### **Border Widths**  
@@ -61,10 +61,10 @@ Predefined border thickness options:
 
 ```ts
 const myStyle = style({
-    borderWidth: borderVars.none,  // Resolves to 'var(--bor-none)'
-    borderWidth: borderVars.hair,  // Resolves to 'var(--bor-hair)'
-    borderWidth: borderVars.thin,  // Resolves to 'var(--bor-thin)'
-    borderWidth: borderVars.bold,  // Resolves to 'var(--bor-bold)'
+    borderWidth: borderConfigVars.none,  // Resolves to 'var(--bor-none)'
+    borderWidth: borderConfigVars.hair,  // Resolves to 'var(--bor-hair)'
+    borderWidth: borderConfigVars.thin,  // Resolves to 'var(--bor-thin)'
+    borderWidth: borderConfigVars.bold,  // Resolves to 'var(--bor-bold)'
 });
 ```
 
@@ -73,8 +73,8 @@ Predefined border styling options:
 
 ```ts
 const myStyle = style({
-    borderStyle: borderVars.style,  // Resolves to 'var(--bor-style)'
-    borderColor: borderVars.color,  // Resolves to 'var(--bor-color)'
+    borderStyle: borderConfigVars.style,  // Resolves to 'var(--bor-style)'
+    borderColor: borderConfigVars.color,  // Resolves to 'var(--bor-color)'
 });
 ```
 
@@ -83,11 +83,11 @@ Predefined rounding options:
 
 ```ts
 const myStyle = style({
-    borderRadius: borderRadiusVars.none,   // Resolves to 'var(--bor-r-none)'
-    borderRadius: borderRadiusVars.sm,     // Resolves to 'var(--bor-r-sm)'
+    borderRadius: borderRadiusConfigVars.none,   // Resolves to 'var(--bor-r-none)'
+    borderRadius: borderRadiusConfigVars.sm,     // Resolves to 'var(--bor-r-sm)'
     ...
-    borderRadius: borderRadiusVars.pill,   // Resolves to 'var(--bor-r-pill)'
-    borderRadius: borderRadiusVars.circle, // Resolves to 'var(--bor-r-circle)'
+    borderRadius: borderRadiusConfigVars.pill,   // Resolves to 'var(--bor-r-pill)'
+    borderRadius: borderRadiusConfigVars.circle, // Resolves to 'var(--bor-r-circle)'
 });
 ```
 
@@ -97,11 +97,11 @@ Easily customize border properties dynamically:
 ```ts
 // index.js or the initial load file of your project
 
-import { borderVars } from '@reusable-ui/border-config';
+import { borderConfigVars } from '@reusable-ui/border-config';
 
-borderVars.defaultWidth = '3px' as any; // Force assignment of a custom width
-borderVars.defaultStyle = 'dashed' as any;
-borderVars.myColor = 'var(--my-external-color)' as any;
+borderConfigVars.defaultWidth = '3px' as any; // Force assignment of a custom width
+borderConfigVars.defaultStyle = 'dashed' as any;
+borderConfigVars.myColor = 'var(--my-external-color)' as any;
 ```
 
 ## 📖 Part of the Reusable-UI Framework  

@@ -23,8 +23,8 @@ import {
 
 // Reusable-ui configs:
 import {
-    borderVars,
-    borderRadiusVars,
+    borderConfigVars,
+    borderRadiusConfigVars,
 }                           from '@reusable-ui/border-config'       // A flexible and themeable border management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 
 // Reusable-ui variants:
@@ -53,11 +53,11 @@ import {
 export const usesBorderFeature = (options?: CssBorderFeatureOptions): CssBorderFeature => {
     // Extract options and assign defaults:
     const {
-        borderStyle                      = borderVars.style,
+        borderStyle                      = borderConfigVars.style,
         
         
         
-        borderWidth                      = borderVars.defaultWidth,
+        borderWidth                      = borderConfigVars.defaultWidth,
         borderInlineWidth                = borderWidth,
         borderBlockWidth                 = borderWidth,
         borderInlineStartWidth           = borderInlineWidth,
@@ -67,7 +67,7 @@ export const usesBorderFeature = (options?: CssBorderFeatureOptions): CssBorderF
         
         
         
-        borderRadius                     = borderRadiusVars.default,
+        borderRadius                     = borderRadiusConfigVars.default,
         borderStartStartRadius           = borderRadius,
         borderStartEndRadius             = borderRadius,
         borderEndStartRadius             = borderRadius,
@@ -75,7 +75,7 @@ export const usesBorderFeature = (options?: CssBorderFeatureOptions): CssBorderF
         
         
         
-        borderColor : defaultBorderColor = borderVars.color, // Ensures a concrete fallback to avoid invalid value.
+        borderColor : defaultBorderColor = borderConfigVars.color, // Ensures a concrete fallback to avoid invalid value.
     } = options ?? {};
     
     
