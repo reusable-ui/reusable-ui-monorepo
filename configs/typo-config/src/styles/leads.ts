@@ -30,7 +30,7 @@ export default [
         ...paragraphRule({
             elementFilter    : getLeadFilter(),
             spacingFilters   : getTextBlockFilter(),
-            elementVars      : leadConfigVars,
+            configVars       : leadConfigVars,
         }),
     }),
 ];

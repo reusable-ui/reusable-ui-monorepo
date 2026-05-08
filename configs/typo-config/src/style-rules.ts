@@ -68,7 +68,7 @@ export interface ElementRuleOptions {
     /**
      * References CSS variables for managing spacing and typography.
      */
-    elementVars      : Refs<CssConfigProps>
+    configVars       : Refs<CssConfigProps>
 }
 
 /**
@@ -78,7 +78,7 @@ export interface ElementRuleOptions {
  * @param options - Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for the target elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic margin adjustments.
- *   - `elementVars`: References CSS variables for managing spacing and typography.
+ *   - `configVars`: References CSS variables for managing spacing and typography.
  * @param extendedLayoutStyles - Optional styles for additional layout-related customizations.
  * @param extendedConditionalStyles - Optional conditional styles wrapped within logic (`...ifSomething({ ... })`).
  * 
@@ -92,7 +92,7 @@ const elementRule = (isBlock: boolean, options: ElementRuleOptions, extendedLayo
             exclusions,
         },
         spacingFilters,
-        elementVars,
+        configVars,
     } = options;
     
     
@@ -138,7 +138,7 @@ const elementRule = (isBlock: boolean, options: ElementRuleOptions, extendedLayo
             
             
             // Configs:
-            ...usesCssProps(elementVars),
+            ...usesCssProps(configVars),
             
             
             
@@ -147,13 +147,13 @@ const elementRule = (isBlock: boolean, options: ElementRuleOptions, extendedLayo
             // Conditional start margin:
             [marginStartProp] : 0, // Resets default start margin.
             ...ifFollows(spacingElements, {
-                [marginStartProp] : elementVars[marginStartProp], // Applies spacing when follows another related element.
+                [marginStartProp] : configVars[marginStartProp], // Applies spacing when follows another related element.
             }),
             
             // Conditional end margin:
             [marginEndProp] : 0, // Resets default end margin.
             ...ifPrecedes(spacingElements, {
-                [marginEndProp] : elementVars[marginEndProp], // Applies spacing when precedes another related element.
+                [marginEndProp] : configVars[marginEndProp], // Applies spacing when precedes another related element.
             }),
             
             
@@ -186,7 +186,7 @@ export interface BlockElementRuleOptions extends ElementRuleOptions {
  * @param options - Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for block-like elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic top/bottom margin adjustments.
- *   - `elementVars`: References CSS variables for managing spacing and typography.
+ *   - `configVars`: References CSS variables for managing spacing and typography.
  * @param extendedLayoutStyles - Optional styles for additional layout-related customizations.
  * @param extendedConditionalStyles - Optional conditional styles wrapped within logic (`...ifSomething({ ... })`).
  * 
@@ -218,7 +218,7 @@ export interface InlineElementRuleOptions extends ElementRuleOptions {
  * @param options - Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for inline-like elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic left/right margin adjustments.
- *   - `elementVars`: References CSS variables for managing spacing and typography.
+ *   - `configVars`: References CSS variables for managing spacing and typography.
  * @param extendedLayoutStyles - Optional styles for additional layout-related customizations.
  * @param extendedConditionalStyles - Optional conditional styles wrapped within logic (`...ifSomething({ ... })`).
  * 
@@ -248,7 +248,7 @@ export interface ParagraphRuleOptions extends BlockElementRuleOptions {
  * @param options - Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for paragraph-like elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic top/bottom margin adjustments.
- *   - `elementVars`: References CSS variables for managing spacing and typography.
+ *   - `configVars`: References CSS variables for managing spacing and typography.
  * 
  * @returns A `CssRule` object for styling paragraph-like elements.
  */
@@ -285,7 +285,7 @@ export interface HeadingRuleOptions extends BlockElementRuleOptions {
  * @param options - Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for heading-like elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic top/bottom margin adjustments.
- *   - `elementVars`: References CSS variables for managing spacing and typography.
+ *   - `configVars`: References CSS variables for managing spacing and typography.
  * 
  * @returns A `CssRule` object for styling heading-like elements.
  */
@@ -293,7 +293,7 @@ export const headingRule = (options: HeadingRuleOptions): CssRule => {
     // Extract Options:
     const {
         companionFilters,
-        elementVars,
+        configVars,
     } = options;
     
     
@@ -310,7 +310,7 @@ export const headingRule = (options: HeadingRuleOptions): CssRule => {
         
         // Conditional opacity:
         ...ifFollows(companionElements, {
-            opacity : elementVars.subOpacity, // Applies transparency when follows another heading-like element.
+            opacity : configVars.subOpacity, // Applies transparency when follows another heading-like element.
         }),
     });
 };
@@ -338,7 +338,7 @@ export interface HeadingLevelRuleOptions {
     /**
      * References CSS variables for managing spacing and typography across multiple levels.
      */
-    elementVars      : Refs<CssConfigProps>,
+    configVars      : Refs<CssConfigProps>,
 }
 
 /**
@@ -347,7 +347,7 @@ export interface HeadingLevelRuleOptions {
  * @param options - The configuration object containing:
  *   - `levels`: Array of numeric heading levels (e.g., `[1, 2, 3, 4, 5, 6]`).
  *   - `selectorFactory`: Function to generate CSS selectors based on heading level.
- *   - `elementVars`: References CSS variables for managing spacing and typography across multiple levels.
+ *   - `configVars`: References CSS variables for managing spacing and typography across multiple levels.
  * 
  * @returns A `CssRule` object for resolving font sizes per heading level.
  */
@@ -356,7 +356,7 @@ export const headingLevelRule = (options: HeadingLevelRuleOptions): CssRule => {
     const {
         levels,
         selectorFactory,
-        elementVars,
+        configVars,
     } = options;
     
     
@@ -367,7 +367,7 @@ export const headingLevelRule = (options: HeadingLevelRuleOptions): CssRule => {
         .map((level) =>
             rule(selectorFactory(level), {
                 // Configs:
-                ...overwriteProps(elementVars, usesSuffixedProps(elementVars, `${level}`)), // Apply the corresponding font size for each heading level.
+                ...overwriteProps(configVars, usesSuffixedProps(configVars, `${level}`)), // Apply the corresponding font size for each heading level.
                 // Example: `--h-fontSize : var(--h-fontSize1);`
             }, { specificityWeight: 1 }), // One specificity to allow easy overrides and sync specificity with main styling.
         )
@@ -392,14 +392,14 @@ export interface BlockquoteRuleOptions extends BlockElementRuleOptions {
  * @param options - Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for blockquote-like elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic top/bottom margin adjustments.
- *   - `elementVars`: References CSS variables for managing spacing and typography.
+ *   - `configVars`: References CSS variables for managing spacing and typography.
  * 
  * @returns A `CssRule` object for styling blockquote-like elements.
  */
 export const blockquoteRule = (options: BlockquoteRuleOptions): CssRule => {
     // Extract Options:
     const {
-        elementVars,
+        configVars,
     } = options;
     
     
@@ -451,7 +451,7 @@ export const blockquoteRule = (options: BlockquoteRuleOptions): CssRule => {
             
             
             // Configs:
-            ...usesCssProps(usesPrefixedProps(elementVars, 'quote')), // Apply config's cssProps starting with `quote**`.
+            ...usesCssProps(usesPrefixedProps(configVars, 'quote')), // Apply config's cssProps starting with `quote**`.
         }),
     });
 };
@@ -474,14 +474,14 @@ export interface PlainListRuleOptions extends BlockElementRuleOptions {
  * @param options - Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for list-like elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic top/bottom margin adjustments.
- *   - `elementVars`: References CSS variables for managing spacing and typography.
+ *   - `configVars`: References CSS variables for managing spacing and typography.
  * 
  * @returns A `CssRule` object for styling list-like elements.
  */
 export const plainListRule = (options: PlainListRuleOptions): CssRule => {
     // Extract Options:
     const {
-        elementVars,
+        configVars,
     } = options;
     
     
@@ -503,17 +503,17 @@ export const plainListRule = (options: PlainListRuleOptions): CssRule => {
             
             
             // Configs:
-            ...usesCssProps(usesPrefixedProps(elementVars, 'li')), // Apply config's cssProps starting with `li**`.
+            ...usesCssProps(usesPrefixedProps(configVars, 'li')), // Apply config's cssProps starting with `li**`.
         }),
         
         
         
         // Configs:
         ...rule(['ul', '.ul'], {
-            ...usesCssProps(usesPrefixedProps(elementVars, 'ul')), // Apply config's cssProps starting with `ul**`.
+            ...usesCssProps(usesPrefixedProps(configVars, 'ul')), // Apply config's cssProps starting with `ul**`.
         }, { specificityWeight: 0 }), // Zero specificity to allow easy overrides.
         ...rule(['ol', '.ol'], {
-            ...usesCssProps(usesPrefixedProps(elementVars, 'ol')), // Apply config's cssProps starting with `ol**`.
+            ...usesCssProps(usesPrefixedProps(configVars, 'ol')), // Apply config's cssProps starting with `ol**`.
         }, { specificityWeight: 0 }), // Zero specificity to allow easy overrides.
     });
 };
@@ -536,7 +536,7 @@ export interface HorzSeparatorRuleOptions extends BlockElementRuleOptions {
  * @param options - Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for horizontal-separator-like elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic top/bottom margin adjustments.
- *   - `elementVars`: References CSS variables for managing spacing and typography.
+ *   - `configVars`: References CSS variables for managing spacing and typography.
  * 
  * @returns A `CssRule` object for styling horizontal-separator-like elements.
  */
@@ -560,7 +560,7 @@ export interface MarkRuleOptions extends InlineElementRuleOptions {
  * @param options - Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for mark-like elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic left/right margin adjustments.
- *   - `elementVars`: References CSS variables for managing spacing and typography.
+ *   - `configVars`: References CSS variables for managing spacing and typography.
  * 
  * @returns A `CssRule` object for styling mark-like elements.
  */

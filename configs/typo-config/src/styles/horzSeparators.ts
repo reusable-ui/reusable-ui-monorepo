@@ -30,7 +30,7 @@ export default [
         ...horzSeparatorRule({
             elementFilter    : getHorzSeparatorFilter(),
             spacingFilters   : getTextBlockFilter(),
-            elementVars      : horzSeparatorConfigVars,
+            configVars       : horzSeparatorConfigVars,
         }),
     }),
 ];

@@ -30,7 +30,7 @@ export default [
         ...plainListRule({
             elementFilter    : getPlainListFilter(),
             spacingFilters   : getTextBlockFilter(),
-            elementVars      : plainListConfigVars,
+            configVars       : plainListConfigVars,
         }),
     }),
 ];

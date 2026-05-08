@@ -30,7 +30,7 @@ export default [
         ...blockquoteRule({
             elementFilter    : getBlockquoteFilter(),
             spacingFilters   : getTextBlockFilter(),
-            elementVars      : blockquoteConfigVars,
+            configVars       : blockquoteConfigVars,
         }),
     }),
 ];

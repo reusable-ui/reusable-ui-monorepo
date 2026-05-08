@@ -30,7 +30,7 @@ export default [
         ...markRule({
             elementFilter    : getKbdFilter(),
             spacingFilters   : getTextInlineFilter(),
-            elementVars      : kbdConfigVars,
+            configVars       : kbdConfigVars,
         }),
     }),
 ];

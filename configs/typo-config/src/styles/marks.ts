@@ -30,7 +30,7 @@ export default [
         ...markRule({
             elementFilter    : getMarkFilter(),
             spacingFilters   : getTextInlineFilter(),
-            elementVars      : markConfigVars,
+            configVars       : markConfigVars,
         }),
     }),
 ];

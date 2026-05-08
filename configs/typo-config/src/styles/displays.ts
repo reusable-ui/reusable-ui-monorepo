@@ -43,7 +43,7 @@ export default [
             elementFilter    : getDisplayFilter(),
             companionFilters : getHeadingCompanionFilter(),
             spacingFilters   : getNonHeadingTextBlockFilter(),
-            elementVars      : displayConfigVars,
+            configVars       : displayConfigVars,
         }),
         ...headingLevelRule({
             levels           : getDefaultLevels(),
@@ -51,7 +51,7 @@ export default [
                 getTagDisplaySelectors([level]),
                 getClassDisplaySelectors([level]),
             ],
-            elementVars      : displayConfigVars,
+            configVars       : displayConfigVars,
         }),
     }),
 ];
