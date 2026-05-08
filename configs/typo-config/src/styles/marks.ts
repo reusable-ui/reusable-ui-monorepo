@@ -18,7 +18,7 @@ import {
 
 // Configs:
 import {
-    markVars,
+    markConfigVars,
 }                           from '../configs/marks.js'
 
 
@@ -30,7 +30,7 @@ export default [
         ...markRule({
             elementFilter    : getMarkFilter(),
             spacingFilters   : getTextInlineFilter(),
-            elementVars      : markVars,
+            elementVars      : markConfigVars,
         }),
     }),
 ];

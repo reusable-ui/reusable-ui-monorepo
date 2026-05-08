@@ -18,7 +18,7 @@ import {
 
 // Configs:
 import {
-    leadVars,
+    leadConfigVars,
 }                           from '../configs/leads.js'
 
 
@@ -30,7 +30,7 @@ export default [
         ...paragraphRule({
             elementFilter    : getLeadFilter(),
             spacingFilters   : getTextBlockFilter(),
-            elementVars      : leadVars,
+            elementVars      : leadConfigVars,
         }),
     }),
 ];

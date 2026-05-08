@@ -18,7 +18,7 @@ import {
 
 // Configs:
 import {
-    codeVars,
+    codeConfigVars,
 }                           from '../configs/codes.js'
 
 
@@ -30,7 +30,7 @@ export default [
         ...markRule({
             elementFilter    : getCodeFilter(),
             spacingFilters   : getTextInlineFilter(),
-            elementVars      : codeVars,
+            elementVars      : codeConfigVars,
         }),
     }),
 ];

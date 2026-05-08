@@ -18,7 +18,7 @@ import {
 
 // Configs:
 import {
-    paragraphVars,
+    paragraphConfigVars,
 }                           from '../configs/paragraphs.js'
 
 
@@ -30,7 +30,7 @@ export default [
         ...paragraphRule({
             elementFilter    : getParagraphFilter(),
             spacingFilters   : getTextBlockFilter(),
-            elementVars      : paragraphVars,
+            elementVars      : paragraphConfigVars,
         }),
     }),
 ];

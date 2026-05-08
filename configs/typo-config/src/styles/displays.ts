@@ -30,7 +30,7 @@ import {
 
 // Configs:
 import {
-    displayVars,
+    displayConfigVars,
 }                           from '../configs/displays.js'
 
 
@@ -43,7 +43,7 @@ export default [
             elementFilter    : getDisplayFilter(),
             companionFilters : getHeadingCompanionFilter(),
             spacingFilters   : getNonHeadingTextBlockFilter(),
-            elementVars      : displayVars,
+            elementVars      : displayConfigVars,
         }),
         ...headingLevelRule({
             levels           : getDefaultLevels(),
@@ -51,7 +51,7 @@ export default [
                 getTagDisplaySelectors([level]),
                 getClassDisplaySelectors([level]),
             ],
-            elementVars      : displayVars,
+            elementVars      : displayConfigVars,
         }),
     }),
 ];

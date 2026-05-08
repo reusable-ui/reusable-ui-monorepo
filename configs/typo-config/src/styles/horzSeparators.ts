@@ -18,7 +18,7 @@ import {
 
 // Configs:
 import {
-    horzSeparatorVars,
+    horzSeparatorConfigVars,
 }                           from '../configs/horzSeparators.js'
 
 
@@ -30,7 +30,7 @@ export default [
         ...horzSeparatorRule({
             elementFilter    : getHorzSeparatorFilter(),
             spacingFilters   : getTextBlockFilter(),
-            elementVars      : horzSeparatorVars,
+            elementVars      : horzSeparatorConfigVars,
         }),
     }),
 ];

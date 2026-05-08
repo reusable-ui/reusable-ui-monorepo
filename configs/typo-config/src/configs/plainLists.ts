@@ -164,26 +164,26 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = plainListVars.marginBlockStart; // Resolves to "var(--plist-marginBlockStart)"
+ * const value = plainListConfigVars.marginBlockStart; // Resolves to "var(--plist-marginBlockStart)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * plainListVars.fontWeightCustom = 900; // Generates "--plist-fontWeightCustom: 900;"
+ * plainListConfigVars.fontWeightCustom = 900; // Generates "--plist-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * plainListVars.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", plainListVars.marginBlockStart, " / 4)", "gray"
+ * plainListConfigVars.boxShadow = [[
+ *    "0px", "0px", "0px", "calc(", plainListConfigVars.marginBlockStart, " / 4)", "gray"
  * ]]; // Generates "--plist-boxShadow: 0px 0px 0px calc(var(--plist-marginBlockStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * plainListVars.opacity = 0.5;
+ * plainListConfigVars.opacity = 0.5;
  * ```
  * This generates the following styles:
  * 
@@ -205,7 +205,7 @@ const config = cssConfig(() => {
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * plainListVars.booh = 1234;
+ * plainListConfigVars.booh = 1234;
  * ```
  * This generates:
  * 
@@ -222,9 +222,9 @@ const config = cssConfig(() => {
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete plainListVars.fontWeightCustom;
- * plainListVars.fontWeightCustom = null;
- * plainListVars.fontWeightCustom = undefined;
+ * delete plainListConfigVars.fontWeightCustom;
+ * plainListConfigVars.fontWeightCustom = null;
+ * plainListConfigVars.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -253,7 +253,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const plainListVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const plainListConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
@@ -267,26 +267,26 @@ export const plainListVars        = config[0]; // eslint-disable-line css-variab
  * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
- * const expression = plainListExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--plist-marginBlockStart)", " / 4)", "gray" ]]
+ * const expression = plainListConfigExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--plist-marginBlockStart)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * plainListExpressions.fontWeightCustom = 900; // Generates "--plist-fontWeightCustom: 900;"
+ * plainListConfigExpressions.fontWeightCustom = 900; // Generates "--plist-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * plainListExpressions.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", plainListVars.marginBlockStart, " / 4)", "gray"
+ * plainListConfigExpressions.boxShadow = [[
+ *    "0px", "0px", "0px", "calc(", plainListConfigVars.marginBlockStart, " / 4)", "gray"
  * ]]; // Generates "--plist-boxShadow: 0px 0px 0px calc(var(--plist-marginBlockStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * plainListExpressions.opacity = 0.5;
+ * plainListConfigExpressions.opacity = 0.5;
  * ```
  * This generates the following styles:
  * 
@@ -308,7 +308,7 @@ export const plainListVars        = config[0]; // eslint-disable-line css-variab
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * plainListExpressions.booh = 1234;
+ * plainListConfigExpressions.booh = 1234;
  * ```
  * This generates:
  * 
@@ -325,9 +325,9 @@ export const plainListVars        = config[0]; // eslint-disable-line css-variab
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete plainListExpressions.fontWeightCustom;
- * plainListExpressions.fontWeightCustom = null;
- * plainListExpressions.fontWeightCustom = undefined;
+ * delete plainListConfigExpressions.fontWeightCustom;
+ * plainListConfigExpressions.fontWeightCustom = null;
+ * plainListConfigExpressions.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -356,7 +356,7 @@ export const plainListVars        = config[0]; // eslint-disable-line css-variab
  * }
  * ```
  */
-export const plainListExpressions = config[1];
+export const plainListConfigExpressions = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.
@@ -365,17 +365,17 @@ export const plainListExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * plainListConfig.prefix = 'plist';
+ * plainListConfigOptions.prefix = 'plist';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * plainListConfig.selector = ':root';
+ * plainListConfigOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * plainListConfig.onChange.subscribe({
+ * plainListConfigOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("List typography system updated!");
  *     },
@@ -397,25 +397,25 @@ export const plainListExpressions = config[1];
  * }
  * ```
  */
-export const plainListConfig      = config[2];
+export const plainListConfigOptions     = config[2];
 
 
 
 export {
-    plainListVars as default, // Default export for simplified imports.
+    plainListConfigVars as default, // Default export for simplified imports.
 }
 
 /**
- * @deprecated Use `plainListVars` instead.
+ * @deprecated Use `plainListConfigVars` instead.
  */
-export const plainLists         = plainListVars;
+export const plainLists         = plainListConfigVars;
 
 /**
- * @deprecated Use `plainListExpressions` instead.
+ * @deprecated Use `plainListConfigExpressions` instead.
  */
-export const plainListValues    = plainListExpressions;
+export const plainListValues    = plainListConfigExpressions;
 
 /**
- * @deprecated Use `plainListConfig` instead.
+ * @deprecated Use `plainListConfigOptions` instead.
  */
-export const cssPlainListConfig = plainListConfig;
+export const cssPlainListConfig = plainListConfigOptions;

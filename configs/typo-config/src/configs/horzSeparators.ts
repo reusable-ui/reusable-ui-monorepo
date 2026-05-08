@@ -93,26 +93,26 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = horzSeparatorVars.marginBlockStart; // Resolves to "var(--hr-marginBlockStart)"
+ * const value = horzSeparatorConfigVars.marginBlockStart; // Resolves to "var(--hr-marginBlockStart)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * horzSeparatorVars.fontWeightCustom = 900; // Generates "--hr-fontWeightCustom: 900;"
+ * horzSeparatorConfigVars.fontWeightCustom = 900; // Generates "--hr-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * horzSeparatorVars.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", horzSeparatorVars.marginBlockStart, " / 4)", "gray"
+ * horzSeparatorConfigVars.boxShadow = [[
+ *    "0px", "0px", "0px", "calc(", horzSeparatorConfigVars.marginBlockStart, " / 4)", "gray"
  * ]]; // Generates "--hr-boxShadow: 0px 0px 0px calc(var(--hr-marginBlockStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * horzSeparatorVars.visibility = 'visible';
+ * horzSeparatorConfigVars.visibility = 'visible';
  * ```
  * This generates the following styles:
  * 
@@ -134,7 +134,7 @@ const config = cssConfig(() => {
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * horzSeparatorVars.booh = 1234;
+ * horzSeparatorConfigVars.booh = 1234;
  * ```
  * This generates:
  * 
@@ -151,9 +151,9 @@ const config = cssConfig(() => {
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete horzSeparatorVars.fontWeightCustom;
- * horzSeparatorVars.fontWeightCustom = null;
- * horzSeparatorVars.fontWeightCustom = undefined;
+ * delete horzSeparatorConfigVars.fontWeightCustom;
+ * horzSeparatorConfigVars.fontWeightCustom = null;
+ * horzSeparatorConfigVars.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -182,7 +182,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const horzSeparatorVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const horzSeparatorConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
@@ -196,26 +196,26 @@ export const horzSeparatorVars        = config[0]; // eslint-disable-line css-va
  * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
- * const expression = horzSeparatorExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--hr-marginBlockStart)", " / 4)", "gray" ]]
+ * const expression = horzSeparatorConfigExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--hr-marginBlockStart)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * horzSeparatorExpressions.fontWeightCustom = 900; // Generates "--hr-fontWeightCustom: 900;"
+ * horzSeparatorConfigExpressions.fontWeightCustom = 900; // Generates "--hr-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * horzSeparatorExpressions.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", horzSeparatorVars.marginBlockStart, " / 4)", "gray"
+ * horzSeparatorConfigExpressions.boxShadow = [[
+ *    "0px", "0px", "0px", "calc(", horzSeparatorConfigVars.marginBlockStart, " / 4)", "gray"
  * ]]; // Generates "--hr-boxShadow: 0px 0px 0px calc(var(--hr-marginBlockStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * horzSeparatorExpressions.visibility = 'visible';
+ * horzSeparatorConfigExpressions.visibility = 'visible';
  * ```
  * This generates the following styles:
  * 
@@ -237,7 +237,7 @@ export const horzSeparatorVars        = config[0]; // eslint-disable-line css-va
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * horzSeparatorExpressions.booh = 1234;
+ * horzSeparatorConfigExpressions.booh = 1234;
  * ```
  * This generates:
  * 
@@ -254,9 +254,9 @@ export const horzSeparatorVars        = config[0]; // eslint-disable-line css-va
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete horzSeparatorExpressions.fontWeightCustom;
- * horzSeparatorExpressions.fontWeightCustom = null;
- * horzSeparatorExpressions.fontWeightCustom = undefined;
+ * delete horzSeparatorConfigExpressions.fontWeightCustom;
+ * horzSeparatorConfigExpressions.fontWeightCustom = null;
+ * horzSeparatorConfigExpressions.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -285,7 +285,7 @@ export const horzSeparatorVars        = config[0]; // eslint-disable-line css-va
  * }
  * ```
  */
-export const horzSeparatorExpressions = config[1];
+export const horzSeparatorConfigExpressions = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.
@@ -294,17 +294,17 @@ export const horzSeparatorExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * horzSeparatorConfig.prefix = 'hr';
+ * horzSeparatorConfigOptions.prefix = 'hr';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * horzSeparatorConfig.selector = ':root';
+ * horzSeparatorConfigOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * horzSeparatorConfig.onChange.subscribe({
+ * horzSeparatorConfigOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Horizontal separator typography system updated!");
  *     },
@@ -326,30 +326,30 @@ export const horzSeparatorExpressions = config[1];
  * }
  * ```
  */
-export const horzSeparatorConfig      = config[2];
+export const horzSeparatorConfigOptions     = config[2];
 
 
 
 export {
-    horzSeparatorVars as default, // Default export for simplified imports.
+    horzSeparatorConfigVars as default, // Default export for simplified imports.
 }
 
 /**
- * @deprecated Use `horzSeparatorVars` instead.
+ * @deprecated Use `horzSeparatorConfigVars` instead.
  */
-export const horzRules         = horzSeparatorVars;
+export const horzRules         = horzSeparatorConfigVars;
 
 /**
- * @deprecated Use `horzSeparatorExpressions` instead.
+ * @deprecated Use `horzSeparatorConfigExpressions` instead.
  */
-export const horzRuleValues    = horzSeparatorExpressions;
+export const horzRuleValues    = horzSeparatorConfigExpressions;
 
 /**
- * @deprecated Use `horzSeparatorConfig` instead.
+ * @deprecated Use `horzSeparatorConfigOptions` instead.
  */
-export const horzRuleConfig    = horzSeparatorConfig;
+export const horzRuleConfig    = horzSeparatorConfigOptions;
 
 /**
- * @deprecated Use `horzSeparatorConfig` instead.
+ * @deprecated Use `horzSeparatorConfigOptions` instead.
  */
-export const cssHorzRuleConfig = horzSeparatorConfig;
+export const cssHorzRuleConfig = horzSeparatorConfigOptions;

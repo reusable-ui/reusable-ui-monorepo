@@ -229,26 +229,26 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = typoVars.fontSizeLg; // Resolves to "var(--typ-fontSizeLg)"
+ * const value = typoConfigVars.fontSizeLg; // Resolves to "var(--typ-fontSizeLg)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * typoVars.fontWeightCustom = 900; // Generates "--typ-fontWeightCustom: 900;"
+ * typoConfigVars.fontWeightCustom = 900; // Generates "--typ-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * typoVars.myExpression = [[
- *    "calc(", typoVars.lineHeightMd, " * 2)"
+ * typoConfigVars.myExpression = [[
+ *    "calc(", typoConfigVars.lineHeightMd, " * 2)"
  * ]]; // Generates "--typ-myExpression: calc(var(--typ-lineHeightMd) * 2);"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * typoVars.padding = '1rem';
+ * typoConfigVars.padding = '1rem';
  * ```
  * This generates the following styles:
  * 
@@ -270,7 +270,7 @@ const config = cssConfig(() => {
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * typoVars.booh = 1234;
+ * typoConfigVars.booh = 1234;
  * ```
  * This generates:
  * 
@@ -287,9 +287,9 @@ const config = cssConfig(() => {
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete typoVars.fontWeightCustom;
- * typoVars.fontWeightCustom = null;
- * typoVars.fontWeightCustom = undefined;
+ * delete typoConfigVars.fontWeightCustom;
+ * typoConfigVars.fontWeightCustom = null;
+ * typoConfigVars.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -320,7 +320,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const typoVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const typoConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
@@ -334,26 +334,26 @@ export const typoVars        = config[0]; // eslint-disable-line css-variables/e
  * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
- * const expression = typoExpressions.fontSizeLg; // Resolves to [[ "calc(", "var(--typ-fontSize)", " * 1.25)" ]]
+ * const expression = typoConfigExpressions.fontSizeLg; // Resolves to [[ "calc(", "var(--typ-fontSize)", " * 1.25)" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * typoExpressions.fontWeightCustom = 900; // Generates "--typ-fontWeightCustom: 900;"
+ * typoConfigExpressions.fontWeightCustom = 900; // Generates "--typ-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * typoExpressions.myExpression = [[
- *    "calc(", typoVars.lineHeightMd, " * 2)"
+ * typoConfigExpressions.myExpression = [[
+ *    "calc(", typoConfigVars.lineHeightMd, " * 2)"
  * ]]; // Generates "--typ-myExpression: calc(var(--typ-lineHeightMd) * 2);"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * typoExpressions.padding = '1rem';
+ * typoConfigExpressions.padding = '1rem';
  * ```
  * This generates the following styles:
  * 
@@ -375,7 +375,7 @@ export const typoVars        = config[0]; // eslint-disable-line css-variables/e
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * typoExpressions.booh = 1234;
+ * typoConfigExpressions.booh = 1234;
  * ```
  * This generates:
  * 
@@ -392,9 +392,9 @@ export const typoVars        = config[0]; // eslint-disable-line css-variables/e
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete typoExpressions.fontWeightCustom;
- * typoExpressions.fontWeightCustom = null;
- * typoExpressions.fontWeightCustom = undefined;
+ * delete typoConfigExpressions.fontWeightCustom;
+ * typoConfigExpressions.fontWeightCustom = null;
+ * typoConfigExpressions.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -425,7 +425,7 @@ export const typoVars        = config[0]; // eslint-disable-line css-variables/e
  * }
  * ```
  */
-export const typoExpressions = config[1];
+export const typoConfigExpressions = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.
@@ -434,17 +434,17 @@ export const typoExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * typoConfig.prefix = 'typ';
+ * typoConfigOptions.prefix = 'typ';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * typoConfig.selector = ':root';
+ * typoConfigOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * typoConfig.onChange.subscribe({
+ * typoConfigOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Typography system updated!");
  *     },
@@ -468,25 +468,25 @@ export const typoExpressions = config[1];
  * }
  * ```
  */
-export const typoConfig      = config[2];
+export const typoConfigOptions     = config[2];
 
 
 
 export {
-    typoVars as default, // Default export for simplified imports.
+    typoConfigVars as default, // Default export for simplified imports.
 }
 
 /**
- * @deprecated Use `typoVars` instead.
+ * @deprecated Use `typoConfigVars` instead.
  */
-export const typos         = typoVars;
+export const typos         = typoConfigVars;
 
 /**
- * @deprecated Use `typoExpressions` instead.
+ * @deprecated Use `typoConfigExpressions` instead.
  */
-export const typoValues    = typoExpressions;
+export const typoValues    = typoConfigExpressions;
 
 /**
- * @deprecated Use `typoConfig` instead.
+ * @deprecated Use `typoConfigOptions` instead.
  */
-export const cssTypoConfig = typoConfig;
+export const cssTypoConfig = typoConfigOptions;

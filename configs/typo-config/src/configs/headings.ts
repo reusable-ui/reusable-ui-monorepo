@@ -11,7 +11,7 @@ import {
 
 // Configs:
 import {
-    typoVars,
+    typoConfigVars,
 }                           from './typography.js'
 
 
@@ -32,7 +32,7 @@ const config = cssConfig(() => {
          * Applied when a heading follows another heading-like element.
          * Helps visually differentiate hierarchy within text blocks.
          */
-        subOpacity        : 0.65                            as CssKnownProps['opacity'          ],
+        subOpacity        : 0.65                                as CssKnownProps['opacity'          ],
         
         
         
@@ -42,27 +42,27 @@ const config = cssConfig(() => {
          * Defines the **left margin** for headings.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineStart : '0em'                           as CssKnownProps['marginInlineStart'],
+        marginInlineStart : '0em'                               as CssKnownProps['marginInlineStart'],
         
         /**
          * Defines the **right margin** for headings.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineEnd   : '0em'                           as CssKnownProps['marginInlineEnd'  ],
+        marginInlineEnd   : '0em'                               as CssKnownProps['marginInlineEnd'  ],
         
         /**
          * Defines the **top margin** when a heading follows another non-heading-text-block element.
          * Implemented using adjacent sibling selector.
          * Ensures structured vertical spacing.
          */
-        marginBlockStart  : '1.5em'                         as CssKnownProps['marginBlockStart' ],
+        marginBlockStart  : '1.5em'                             as CssKnownProps['marginBlockStart' ],
         
         /**
          * Defines the **bottom margin** when a heading precedes another non-heading-text-block element.
          * Implemented using `:has()` selector, which may have limited browser support.
          * Check compatibility before relying on this approach.
          */
-        marginBlockEnd    : '0.75em'                        as CssKnownProps['marginBlockEnd'   ],
+        marginBlockEnd    : '0.75em'                            as CssKnownProps['marginBlockEnd'   ],
         
         
         
@@ -73,41 +73,41 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize          : 'unset'                         as CssKnownProps['fontSize'         ],
+        fontSize          : 'unset'                             as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font family** for headings.
          * Can be set to a primary typeface or a fallback stack.
          * Example: `'Arial, sans-serif'`.
          */
-        fontFamily        : undefined                       as CssKnownProps['fontFamily'       ],
+        fontFamily        : undefined                           as CssKnownProps['fontFamily'       ],
         
         /**
          * Defines the **font weight** for headings.
          * Accepts predefined weights (`normal`, `bold`, `lighter`) or numeric values (`100-900`).
          * Typically heavier than paragraph text.
          */
-        fontWeight        : typoVars.fontWeightSemibold     as CssKnownProps['fontWeight'       ],
+        fontWeight        : typoConfigVars.fontWeightSemibold   as CssKnownProps['fontWeight'       ],
         
         /**
          * Defines the **font style** for headings (normal, italic, oblique).
          * Used to define emphasis within visual hierarchy.
          */
-        fontStyle         : undefined                       as CssKnownProps['fontStyle'        ],
+        fontStyle         : undefined                           as CssKnownProps['fontStyle'        ],
         
         /**
          * Defines the **text decoration** for headings.
          * Controls styling such as `underline`, `line-through`, or `none`.
          * Useful for adding emphasis or distinguishing elements visually.
          */
-        textDecoration    : undefined                       as CssKnownProps['textDecoration'   ],
+        textDecoration    : undefined                           as CssKnownProps['textDecoration'   ],
         
         /**
          * Defines the **line height** for headings.
          * Helps with text readability by adjusting vertical spacing.
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
-        lineHeight        : 1.25                            as CssKnownProps['lineHeight'       ],
+        lineHeight        : 1.25                                as CssKnownProps['lineHeight'       ],
     };
     
     
@@ -127,7 +127,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize1         : '2.25rem'                       as CssKnownProps['fontSize'         ],
+        fontSize1         : '2.25rem'                           as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font size** for `<h2>` headings.
@@ -135,7 +135,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize2         : '2.00rem'                       as CssKnownProps['fontSize'         ],
+        fontSize2         : '2.00rem'                           as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font size** for `<h3>` headings.
@@ -143,7 +143,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize3         : '1.75rem'                       as CssKnownProps['fontSize'         ],
+        fontSize3         : '1.75rem'                           as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font size** for `<h4>` headings.
@@ -151,7 +151,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize4         : '1.50rem'                       as CssKnownProps['fontSize'         ],
+        fontSize4         : '1.50rem'                           as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font size** for `<h5>` headings.
@@ -159,7 +159,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize5         : '1.25rem'                       as CssKnownProps['fontSize'         ],
+        fontSize5         : '1.25rem'                           as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font size** for `<h6>` headings.
@@ -167,7 +167,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize6         : '1.00rem'                       as CssKnownProps['fontSize'         ],
+        fontSize6         : '1.00rem'                           as CssKnownProps['fontSize'         ],
     };
     
     
@@ -190,26 +190,26 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = headingVars.marginBlockEnd; // Resolves to "var(--h-marginBlockEnd)"
+ * const value = headingConfigVars.marginBlockEnd; // Resolves to "var(--h-marginBlockEnd)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * headingVars.fontWeightCustom = 900; // Generates "--h-fontWeightCustom: 900;"
+ * headingConfigVars.fontWeightCustom = 900; // Generates "--h-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * headingVars.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", headingVars.marginBlockEnd, " / 4)", "gray"
+ * headingConfigVars.boxShadow = [[
+ *    "0px", "0px", "0px", "calc(", headingConfigVars.marginBlockEnd, " / 4)", "gray"
  * ]]; // Generates "--h-boxShadow: 0px 0px 0px calc(var(--h-marginBlockEnd) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * headingVars.padding = '1rem';
+ * headingConfigVars.padding = '1rem';
  * ```
  * This generates the following styles:
  * 
@@ -231,7 +231,7 @@ const config = cssConfig(() => {
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * headingVars.booh = 1234;
+ * headingConfigVars.booh = 1234;
  * ```
  * This generates:
  * 
@@ -248,9 +248,9 @@ const config = cssConfig(() => {
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete headingVars.fontWeightCustom;
- * headingVars.fontWeightCustom = null;
- * headingVars.fontWeightCustom = undefined;
+ * delete headingConfigVars.fontWeightCustom;
+ * headingConfigVars.fontWeightCustom = null;
+ * headingConfigVars.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -285,7 +285,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const headingVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const headingConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
@@ -299,26 +299,26 @@ export const headingVars        = config[0]; // eslint-disable-line css-variable
  * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
- * const expression = headingExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--h-marginBlockEnd)", " / 4)", "gray" ]]
+ * const expression = headingConfigExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--h-marginBlockEnd)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * headingExpressions.fontWeightCustom = 900; // Generates "--h-fontWeightCustom: 900;"
+ * headingConfigExpressions.fontWeightCustom = 900; // Generates "--h-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * headingExpressions.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", headingVars.marginBlockEnd, " / 4)", "gray"
+ * headingConfigExpressions.boxShadow = [[
+ *    "0px", "0px", "0px", "calc(", headingConfigVars.marginBlockEnd, " / 4)", "gray"
  * ]]; // Generates "--h-boxShadow: 0px 0px 0px calc(var(--h-marginBlockEnd) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * headingExpressions.padding = '1rem';
+ * headingConfigExpressions.padding = '1rem';
  * ```
  * This generates the following styles:
  * 
@@ -340,7 +340,7 @@ export const headingVars        = config[0]; // eslint-disable-line css-variable
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * headingExpressions.booh = 1234;
+ * headingConfigExpressions.booh = 1234;
  * ```
  * This generates:
  * 
@@ -357,9 +357,9 @@ export const headingVars        = config[0]; // eslint-disable-line css-variable
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete headingExpressions.fontWeightCustom;
- * headingExpressions.fontWeightCustom = null;
- * headingExpressions.fontWeightCustom = undefined;
+ * delete headingConfigExpressions.fontWeightCustom;
+ * headingConfigExpressions.fontWeightCustom = null;
+ * headingConfigExpressions.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -394,7 +394,7 @@ export const headingVars        = config[0]; // eslint-disable-line css-variable
  * }
  * ```
  */
-export const headingExpressions = config[1];
+export const headingConfigExpressions = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.
@@ -403,17 +403,17 @@ export const headingExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * headingConfig.prefix = 'h';
+ * headingConfigOptions.prefix = 'h';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * headingConfig.selector = ':root';
+ * headingConfigOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * headingConfig.onChange.subscribe({
+ * headingConfigOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Heading typography system updated!");
  *     },
@@ -441,25 +441,25 @@ export const headingExpressions = config[1];
  * }
  * ```
  */
-export const headingConfig      = config[2];
+export const headingConfigOptions     = config[2];
 
 
 
 export {
-    headingVars as default, // Default export for simplified imports.
+    headingConfigVars as default, // Default export for simplified imports.
 }
 
 /**
- * @deprecated Use `headingVars` instead.
+ * @deprecated Use `headingConfigVars` instead.
  */
-export const headings         = headingVars;
+export const headings         = headingConfigVars;
 
 /**
- * @deprecated Use `headingExpressions` instead.
+ * @deprecated Use `headingConfigExpressions` instead.
  */
-export const headingValues    = headingExpressions;
+export const headingValues    = headingConfigExpressions;
 
 /**
- * @deprecated Use `headingConfig` instead.
+ * @deprecated Use `headingConfigOptions` instead.
  */
-export const cssHeadingConfig = headingConfig;
+export const cssHeadingConfig = headingConfigOptions;

@@ -100,26 +100,26 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = paragraphVars.marginBlockStart; // Resolves to "var(--p-marginBlockStart)"
+ * const value = paragraphConfigVars.marginBlockStart; // Resolves to "var(--p-marginBlockStart)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * paragraphVars.fontWeightCustom = 900; // Generates "--p-fontWeightCustom: 900;"
+ * paragraphConfigVars.fontWeightCustom = 900; // Generates "--p-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * paragraphVars.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", paragraphVars.marginBlockStart, " / 4)", "gray"
+ * paragraphConfigVars.boxShadow = [[
+ *    "0px", "0px", "0px", "calc(", paragraphConfigVars.marginBlockStart, " / 4)", "gray"
  * ]]; // Generates "--p-boxShadow: 0px 0px 0px calc(var(--p-marginBlockStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * paragraphVars.padding = '1rem';
+ * paragraphConfigVars.padding = '1rem';
  * ```
  * This generates the following styles:
  * 
@@ -141,7 +141,7 @@ const config = cssConfig(() => {
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * paragraphVars.booh = 1234;
+ * paragraphConfigVars.booh = 1234;
  * ```
  * This generates:
  * 
@@ -158,9 +158,9 @@ const config = cssConfig(() => {
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete paragraphVars.fontWeightCustom;
- * paragraphVars.fontWeightCustom = null;
- * paragraphVars.fontWeightCustom = undefined;
+ * delete paragraphConfigVars.fontWeightCustom;
+ * paragraphConfigVars.fontWeightCustom = null;
+ * paragraphConfigVars.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -185,7 +185,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const paragraphVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const paragraphConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
@@ -199,26 +199,26 @@ export const paragraphVars        = config[0]; // eslint-disable-line css-variab
  * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
- * const expression = paragraphExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--p-marginBlockStart)", " / 4)", "gray" ]]
+ * const expression = paragraphConfigExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--p-marginBlockStart)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * paragraphExpressions.fontWeightCustom = 900; // Generates "--p-fontWeightCustom: 900;"
+ * paragraphConfigExpressions.fontWeightCustom = 900; // Generates "--p-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * paragraphExpressions.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", paragraphVars.marginBlockStart, " / 4)", "gray"
+ * paragraphConfigExpressions.boxShadow = [[
+ *    "0px", "0px", "0px", "calc(", paragraphConfigVars.marginBlockStart, " / 4)", "gray"
  * ]]; // Generates "--p-boxShadow: 0px 0px 0px calc(var(--p-marginBlockStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * paragraphExpressions.padding = '1rem';
+ * paragraphConfigExpressions.padding = '1rem';
  * ```
  * This generates the following styles:
  * 
@@ -240,7 +240,7 @@ export const paragraphVars        = config[0]; // eslint-disable-line css-variab
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * paragraphExpressions.booh = 1234;
+ * paragraphConfigExpressions.booh = 1234;
  * ```
  * This generates:
  * 
@@ -257,9 +257,9 @@ export const paragraphVars        = config[0]; // eslint-disable-line css-variab
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete paragraphExpressions.fontWeightCustom;
- * paragraphExpressions.fontWeightCustom = null;
- * paragraphExpressions.fontWeightCustom = undefined;
+ * delete paragraphConfigExpressions.fontWeightCustom;
+ * paragraphConfigExpressions.fontWeightCustom = null;
+ * paragraphConfigExpressions.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -284,7 +284,7 @@ export const paragraphVars        = config[0]; // eslint-disable-line css-variab
  * }
  * ```
  */
-export const paragraphExpressions = config[1];
+export const paragraphConfigExpressions = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.
@@ -293,17 +293,17 @@ export const paragraphExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * paragraphConfig.prefix = 'p';
+ * paragraphConfigOptions.prefix = 'p';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * paragraphConfig.selector = ':root';
+ * paragraphConfigOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * paragraphConfig.onChange.subscribe({
+ * paragraphConfigOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Paragraph typography system updated!");
  *     },
@@ -321,25 +321,25 @@ export const paragraphExpressions = config[1];
  * }
  * ```
  */
-export const paragraphConfig      = config[2];
+export const paragraphConfigOptions     = config[2];
 
 
 
 export {
-    paragraphVars as default, // Default export for simplified imports.
+    paragraphConfigVars as default, // Default export for simplified imports.
 }
 
 /**
- * @deprecated Use `paragraphVars` instead.
+ * @deprecated Use `paragraphConfigVars` instead.
  */
-export const paragraphs         = paragraphVars;
+export const paragraphs         = paragraphConfigVars;
 
 /**
- * @deprecated Use `paragraphExpressions` instead.
+ * @deprecated Use `paragraphConfigExpressions` instead.
  */
-export const paragraphValues    = paragraphExpressions;
+export const paragraphValues    = paragraphConfigExpressions;
 
 /**
- * @deprecated Use `paragraphConfig` instead.
+ * @deprecated Use `paragraphConfigOptions` instead.
  */
-export const cssParagraphConfig = paragraphConfig;
+export const cssParagraphConfig = paragraphConfigOptions;

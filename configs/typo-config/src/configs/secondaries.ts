@@ -88,26 +88,26 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = secondaryVars.opacity; // Resolves to "var(--sec-opacity)"
+ * const value = secondaryConfigVars.opacity; // Resolves to "var(--sec-opacity)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * secondaryVars.fontWeightCustom = 900; // Generates "--sec-fontWeightCustom: 900;"
+ * secondaryConfigVars.fontWeightCustom = 900; // Generates "--sec-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * secondaryVars.boxShadow = [[
- *    "0px", "0px", "0px", "5px", "oklch(from gray l c h / calc(alpha * ", secondaryVars.opacity, "))"
+ * secondaryConfigVars.boxShadow = [[
+ *    "0px", "0px", "0px", "5px", "oklch(from gray l c h / calc(alpha * ", secondaryConfigVars.opacity, "))"
  * ]]; // Generates "--sec-boxShadow: 0px 0px 0px 5px oklch(from gray l c h / calc(alpha * var(--sec-opacity)));"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * secondaryVars.padding = '1rem';
+ * secondaryConfigVars.padding = '1rem';
  * ```
  * This generates the following styles:
  * 
@@ -129,7 +129,7 @@ const config = cssConfig(() => {
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * secondaryVars.booh = 1234;
+ * secondaryConfigVars.booh = 1234;
  * ```
  * This generates:
  * 
@@ -146,9 +146,9 @@ const config = cssConfig(() => {
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete secondaryVars.fontWeightCustom;
- * secondaryVars.fontWeightCustom = null;
- * secondaryVars.fontWeightCustom = undefined;
+ * delete secondaryConfigVars.fontWeightCustom;
+ * secondaryConfigVars.fontWeightCustom = null;
+ * secondaryConfigVars.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -171,7 +171,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const secondaryVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const secondaryConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
@@ -185,26 +185,26 @@ export const secondaryVars        = config[0]; // eslint-disable-line css-variab
  * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
- * const expression = secondaryExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "5px", "oklch(from gray l c h / calc(alpha * ", "var(--sec-opacity)", "))" ]]
+ * const expression = secondaryConfigExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "5px", "oklch(from gray l c h / calc(alpha * ", "var(--sec-opacity)", "))" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * secondaryExpressions.fontWeightCustom = 900; // Generates "--sec-fontWeightCustom: 900;"
+ * secondaryConfigExpressions.fontWeightCustom = 900; // Generates "--sec-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * secondaryExpressions.boxShadow = [[
- *    "0px", "0px", "0px", "5px", "oklch(from gray l c h / calc(alpha * ", secondaryVars.opacity, "))"
+ * secondaryConfigExpressions.boxShadow = [[
+ *    "0px", "0px", "0px", "5px", "oklch(from gray l c h / calc(alpha * ", secondaryConfigVars.opacity, "))"
  * ]]; // Generates "--sec-boxShadow: 0px 0px 0px 5px oklch(from gray l c h / calc(alpha * var(--sec-opacity)));"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * secondaryExpressions.padding = '1rem';
+ * secondaryConfigExpressions.padding = '1rem';
  * ```
  * This generates the following styles:
  * 
@@ -226,7 +226,7 @@ export const secondaryVars        = config[0]; // eslint-disable-line css-variab
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * secondaryExpressions.booh = 1234;
+ * secondaryConfigExpressions.booh = 1234;
  * ```
  * This generates:
  * 
@@ -243,9 +243,9 @@ export const secondaryVars        = config[0]; // eslint-disable-line css-variab
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete secondaryExpressions.fontWeightCustom;
- * secondaryExpressions.fontWeightCustom = null;
- * secondaryExpressions.fontWeightCustom = undefined;
+ * delete secondaryConfigExpressions.fontWeightCustom;
+ * secondaryConfigExpressions.fontWeightCustom = null;
+ * secondaryConfigExpressions.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -268,7 +268,7 @@ export const secondaryVars        = config[0]; // eslint-disable-line css-variab
  * }
  * ```
  */
-export const secondaryExpressions = config[1];
+export const secondaryConfigExpressions = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.
@@ -277,17 +277,17 @@ export const secondaryExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * secondaryConfig.prefix = 'sec';
+ * secondaryConfigOptions.prefix = 'sec';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * secondaryConfig.selector = ':root';
+ * secondaryConfigOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * secondaryConfig.onChange.subscribe({
+ * secondaryConfigOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Secondary typography system updated!");
  *     },
@@ -303,25 +303,25 @@ export const secondaryExpressions = config[1];
  * }
  * ```
  */
-export const secondaryConfig      = config[2];
+export const secondaryConfigOptions     = config[2];
 
 
 
 export {
-    secondaryVars as default, // Default export for simplified imports.
+    secondaryConfigVars as default, // Default export for simplified imports.
 }
 
 /**
- * @deprecated Use `secondaryVars` instead.
+ * @deprecated Use `secondaryConfigVars` instead.
  */
-export const secondaries         = secondaryVars;
+export const secondaries        = secondaryConfigVars;
 
 /**
- * @deprecated Use `secondaryExpressions` instead.
+ * @deprecated Use `secondaryConfigExpressions` instead.
  */
-export const secondaryValues    = secondaryExpressions;
+export const secondaryValues    = secondaryConfigExpressions;
 
 /**
- * @deprecated Use `secondaryConfig` instead.
+ * @deprecated Use `secondaryConfigOptions` instead.
  */
-export const cssSecondaryConfig = secondaryConfig;
+export const cssSecondaryConfig = secondaryConfigOptions;

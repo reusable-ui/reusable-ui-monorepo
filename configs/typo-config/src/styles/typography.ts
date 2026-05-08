@@ -12,7 +12,7 @@ import {
 
 // Configs:
 import {
-    typoVars,
+    typoConfigVars,
 }                           from '../configs/typography.js'
 
 
@@ -23,7 +23,7 @@ export default [
     globalScope({
         ...atRoot({
             // Configs:
-            ...usesCssProps(typoVars),
+            ...usesCssProps(typoConfigVars),
         }),
     }),
 ];

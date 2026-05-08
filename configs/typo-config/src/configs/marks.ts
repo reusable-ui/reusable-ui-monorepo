@@ -182,26 +182,26 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = markVars.marginInlineStart; // Resolves to "var(--mrk-marginInlineStart)"
+ * const value = markConfigVars.marginInlineStart; // Resolves to "var(--mrk-marginInlineStart)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * markVars.fontWeightCustom = 900; // Generates "--mrk-fontWeightCustom: 900;"
+ * markConfigVars.fontWeightCustom = 900; // Generates "--mrk-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * markVars.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", markVars.marginInlineStart, " / 4)", "gray"
+ * markConfigVars.boxShadow = [[
+ *    "0px", "0px", "0px", "calc(", markConfigVars.marginInlineStart, " / 4)", "gray"
  * ]]; // Generates "--mrk-boxShadow: 0px 0px 0px calc(var(--mrk-marginInlineStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * markVars.opacity = 0.5;
+ * markConfigVars.opacity = 0.5;
  * ```
  * This generates the following styles:
  * 
@@ -223,7 +223,7 @@ const config = cssConfig(() => {
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * markVars.booh = 1234;
+ * markConfigVars.booh = 1234;
  * ```
  * This generates:
  * 
@@ -240,9 +240,9 @@ const config = cssConfig(() => {
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete markVars.fontWeightCustom;
- * markVars.fontWeightCustom = null;
- * markVars.fontWeightCustom = undefined;
+ * delete markConfigVars.fontWeightCustom;
+ * markConfigVars.fontWeightCustom = null;
+ * markConfigVars.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -277,7 +277,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const markVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const markConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
@@ -291,26 +291,26 @@ export const markVars        = config[0]; // eslint-disable-line css-variables/e
  * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
- * const expression = markExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--mrk-marginInlineStart)", " / 4)", "gray" ]]
+ * const expression = markConfigExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--mrk-marginInlineStart)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * markExpressions.fontWeightCustom = 900; // Generates "--mrk-fontWeightCustom: 900;"
+ * markConfigExpressions.fontWeightCustom = 900; // Generates "--mrk-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * markExpressions.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", markVars.marginInlineStart, " / 4)", "gray"
+ * markConfigExpressions.boxShadow = [[
+ *    "0px", "0px", "0px", "calc(", markConfigVars.marginInlineStart, " / 4)", "gray"
  * ]]; // Generates "--mrk-boxShadow: 0px 0px 0px calc(var(--mrk-marginInlineStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * markExpressions.opacity = 0.5;
+ * markConfigExpressions.opacity = 0.5;
  * ```
  * This generates the following styles:
  * 
@@ -332,7 +332,7 @@ export const markVars        = config[0]; // eslint-disable-line css-variables/e
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * markExpressions.booh = 1234;
+ * markConfigExpressions.booh = 1234;
  * ```
  * This generates:
  * 
@@ -349,9 +349,9 @@ export const markVars        = config[0]; // eslint-disable-line css-variables/e
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete markExpressions.fontWeightCustom;
- * markExpressions.fontWeightCustom = null;
- * markExpressions.fontWeightCustom = undefined;
+ * delete markConfigExpressions.fontWeightCustom;
+ * markConfigExpressions.fontWeightCustom = null;
+ * markConfigExpressions.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -386,7 +386,7 @@ export const markVars        = config[0]; // eslint-disable-line css-variables/e
  * }
  * ```
  */
-export const markExpressions = config[1];
+export const markConfigExpressions = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.
@@ -395,17 +395,17 @@ export const markExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * markConfig.prefix = 'mrk';
+ * markConfigOptions.prefix = 'mrk';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * markConfig.selector = ':root';
+ * markConfigOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * markConfig.onChange.subscribe({
+ * markConfigOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Mark typography system updated!");
  *     },
@@ -433,25 +433,25 @@ export const markExpressions = config[1];
  * }
  * ```
  */
-export const markConfig      = config[2];
+export const markConfigOptions     = config[2];
 
 
 
 export {
-    markVars as default, // Default export for simplified imports.
+    markConfigVars as default, // Default export for simplified imports.
 }
 
 /**
- * @deprecated Use `markVars` instead.
+ * @deprecated Use `markConfigVars` instead.
  */
-export const marks         = markVars;
+export const marks         = markConfigVars;
 
 /**
- * @deprecated Use `markExpressions` instead.
+ * @deprecated Use `markConfigExpressions` instead.
  */
-export const markValues    = markExpressions;
+export const markValues    = markConfigExpressions;
 
 /**
- * @deprecated Use `markConfig` instead.
+ * @deprecated Use `markConfigOptions` instead.
  */
-export const cssMarkConfig = markConfig;
+export const cssMarkConfig = markConfigOptions;

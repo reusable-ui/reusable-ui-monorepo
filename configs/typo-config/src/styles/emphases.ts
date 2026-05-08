@@ -7,7 +7,7 @@ import {
 
 // Configs:
 import {
-    typoVars,
+    typoConfigVars,
 }                           from '../configs/typography.js'
 
 
@@ -54,17 +54,17 @@ export default [
         
         
         // Emphases:
-        ...rule(['small', '.small'], {                  // Reduced font size
+        ...rule(['small', '.small'], {                        // Reduced font size
             // Typos:
-            fontSize       : typoVars.fontSizeSm,       // Reduces font size for de-emphasis.
+            fontSize       : typoConfigVars.fontSizeSm,       // Reduces font size for de-emphasis.
         }),
-        ...rule(['strong', 'b', '.strong'], {           // Bold text
+        ...rule(['strong', 'b', '.strong'], {                 // Bold text
             // Typos:
-            fontWeight     : typoVars.fontWeightBolder, // Increases font weight for strong emphasis.
+            fontWeight     : typoConfigVars.fontWeightBolder, // Increases font weight for strong emphasis.
         }),
-        ...rule(['em', 'i', '.emphasis'], {             // Italicized text
+        ...rule(['em', 'i', '.emphasis'], {                   // Italicized text
             // Typos:
-            fontStyle      : 'italic',                  // Applies italics for emphasized text.
+            fontStyle      : 'italic',                        // Applies italics for emphasized text.
         }),
         
         

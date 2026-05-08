@@ -18,7 +18,7 @@ import {
 
 // Configs:
 import {
-    blockquoteVars,
+    blockquoteConfigVars,
 }                           from '../configs/blockquotes.js'
 
 
@@ -30,7 +30,7 @@ export default [
         ...blockquoteRule({
             elementFilter    : getBlockquoteFilter(),
             spacingFilters   : getTextBlockFilter(),
-            elementVars      : blockquoteVars,
+            elementVars      : blockquoteConfigVars,
         }),
     }),
 ];

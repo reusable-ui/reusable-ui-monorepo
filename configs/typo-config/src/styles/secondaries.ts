@@ -12,7 +12,7 @@ import {
 
 // Configs:
 import {
-    secondaryVars,
+    secondaryConfigVars,
 }                           from '../configs/secondaries.js'
 
 
@@ -23,7 +23,7 @@ export default [
     globalScope({
         ...rule(['small', '.secondary', '.txt-sec'], {
             // Configs:
-            ...usesCssProps(secondaryVars),
+            ...usesCssProps(secondaryConfigVars),
         }),
     }),
 ];

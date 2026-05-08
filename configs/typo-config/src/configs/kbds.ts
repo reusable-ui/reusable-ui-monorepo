@@ -14,7 +14,7 @@ import {
     colorConfigVars,
 }                           from '@reusable-ui/color-config'    // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 import {
-    markVars,
+    markConfigVars,
 }                           from './marks.js'
 
 
@@ -49,13 +49,13 @@ const config = cssConfig(() => {
          * Defines the **border style** for `<kbd>` elements.
          * Typically uses the default border style for consistency.
          */
-        borderStyle            : markVars.borderStyle                                       as CssKnownProps['borderStyle'       ],
+        borderStyle            : markConfigVars.borderStyle                                 as CssKnownProps['borderStyle'       ],
         
         /**
          * Defines the **border width** for `<kbd>` elements.
          * Typically uses the default border width for visual clarity.
          */
-        borderWidth            : markVars.borderWidth                                       as CssKnownProps['borderWidth'       ],
+        borderWidth            : markConfigVars.borderWidth                                 as CssKnownProps['borderWidth'       ],
         
         /**
          * Defines the **border color** for `<kbd>` elements.
@@ -67,7 +67,7 @@ const config = cssConfig(() => {
          * Defines the **border radius** for `<kbd>` elements.
          * Typically uses a **small radius** (`sm`) to create softened edges.
          */
-        borderRadius           : markVars.borderRadius                                      as CssKnownProps['borderRadius'      ],
+        borderRadius           : markConfigVars.borderRadius                                as CssKnownProps['borderRadius'      ],
         
         
         
@@ -78,51 +78,51 @@ const config = cssConfig(() => {
          * Implemented using adjacent sibling selector.
          * Ensures structured horizontal spacing.
          */
-        marginInlineStart      : markVars.marginInlineStart                                 as CssKnownProps['marginInlineStart' ],
+        marginInlineStart      : markConfigVars.marginInlineStart                           as CssKnownProps['marginInlineStart' ],
         
         /**
          * Defines the **right margin** when a `<kbd>` element precedes another highlight-based element.
          * Implemented using `:has()` selector, which may have limited browser support.
          * Check compatibility before relying on this approach.
          */
-        marginInlineEnd        : markVars.marginInlineEnd                                   as CssKnownProps['marginInlineEnd'   ],
+        marginInlineEnd        : markConfigVars.marginInlineEnd                             as CssKnownProps['marginInlineEnd'   ],
         
         /**
          * Defines the **top margin** for `<kbd>` elements.
          * Typically `0em` to maintain alignment within inline text flow.
          */
-        marginBlockStart       : markVars.marginBlockStart                                  as CssKnownProps['marginBlockStart'  ],
+        marginBlockStart       : markConfigVars.marginBlockStart                            as CssKnownProps['marginBlockStart'  ],
         
         /**
          * Defines the **bottom margin** for `<kbd>` elements.
          * Typically `0em` to maintain alignment within inline text flow.
          */
-        marginBlockEnd         : markVars.marginBlockEnd                                    as CssKnownProps['marginBlockEnd'    ],
+        marginBlockEnd         : markConfigVars.marginBlockEnd                              as CssKnownProps['marginBlockEnd'    ],
         
         
         /**
          * Defines **left padding** inside `<kbd>` elements.
          * Adds breathing room between the **text and left boundary**.
          */
-        paddingInlineStart     : markVars.paddingInlineStart                                as CssKnownProps['paddingInlineStart'],
+        paddingInlineStart     : markConfigVars.paddingInlineStart                          as CssKnownProps['paddingInlineStart'],
         
         /**
          * Defines **right padding** inside `<kbd>` elements.
          * Adds breathing room between the **text and right boundary**.
          */
-        paddingInlineEnd       : markVars.paddingInlineEnd                                  as CssKnownProps['paddingInlineEnd'  ],
+        paddingInlineEnd       : markConfigVars.paddingInlineEnd                            as CssKnownProps['paddingInlineEnd'  ],
         
         /**
          * Defines **top padding** inside `<kbd>` elements.
          * Adds breathing room between the **text and top boundary**.
          */
-        paddingBlockStart      : markVars.paddingBlockStart                                 as CssKnownProps['paddingBlockStart' ],
+        paddingBlockStart      : markConfigVars.paddingBlockStart                           as CssKnownProps['paddingBlockStart' ],
         
         /**
          * Defines **bottom padding** inside `<kbd>` elements.
          * Adds breathing room between the **text and bottom boundary**.
          */
-        paddingBlockEnd        : markVars.paddingBlockEnd                                   as CssKnownProps['paddingBlockEnd'   ],
+        paddingBlockEnd        : markConfigVars.paddingBlockEnd                             as CssKnownProps['paddingBlockEnd'   ],
         
         
         
@@ -133,40 +133,40 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize               : markVars.fontSize                                          as CssKnownProps['fontSize'          ],
+        fontSize               : markConfigVars.fontSize                                    as CssKnownProps['fontSize'          ],
         
         /**
          * Defines the **font family** for `<kbd>` elements.
          * Can be set to a primary typeface or a fallback stack.
          * Example: `'Arial, sans-serif'`.
          */
-        fontFamily             : markVars.fontFamily                                        as CssKnownProps['fontFamily'        ],
+        fontFamily             : markConfigVars.fontFamily                                  as CssKnownProps['fontFamily'        ],
         
         /**
          * Defines the **font weight** for `<kbd>` elements.
          * Accepts predefined weights (`normal`, `bold`, `lighter`) or numeric values (`100-900`).
          */
-        fontWeight             : markVars.fontWeight                                        as CssKnownProps['fontWeight'        ],
+        fontWeight             : markConfigVars.fontWeight                                  as CssKnownProps['fontWeight'        ],
         
         /**
          * Defines the **font style** for `<kbd>` elements (normal, italic, oblique).
          * Used to define emphasis within visual hierarchy.
          */
-        fontStyle              : markVars.fontStyle                                         as CssKnownProps['fontStyle'         ],
+        fontStyle              : markConfigVars.fontStyle                                   as CssKnownProps['fontStyle'         ],
         
         /**
          * Defines the **text decoration** for `<kbd>` elements.
          * Controls styling such as `underline`, `line-through`, or `none`.
          * Useful for adding emphasis or distinguishing elements visually.
          */
-        textDecoration         : markVars.textDecoration                                    as CssKnownProps['textDecoration'    ],
+        textDecoration         : markConfigVars.textDecoration                              as CssKnownProps['textDecoration'    ],
         
         /**
          * Defines the **line height** for `<kbd>` elements.
          * Helps with text readability by adjusting vertical spacing.
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
-        lineHeight             : markVars.lineHeight                                        as CssKnownProps['lineHeight'        ],
+        lineHeight             : markConfigVars.lineHeight                                  as CssKnownProps['lineHeight'        ],
     };
 }, { prefix: 'kbd' });
 
@@ -181,26 +181,26 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = kbdVars.marginInlineStart; // Resolves to "var(--kbd-marginInlineStart)"
+ * const value = kbdConfigVars.marginInlineStart; // Resolves to "var(--kbd-marginInlineStart)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * kbdVars.fontWeightCustom = 900; // Generates "--kbd-fontWeightCustom: 900;"
+ * kbdConfigVars.fontWeightCustom = 900; // Generates "--kbd-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * kbdVars.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", kbdVars.marginInlineStart, " / 4)", "gray"
+ * kbdConfigVars.boxShadow = [[
+ *    "0px", "0px", "0px", "calc(", kbdConfigVars.marginInlineStart, " / 4)", "gray"
  * ]]; // Generates "--kbd-boxShadow: 0px 0px 0px calc(var(--kbd-marginInlineStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * kbdVars.opacity = 0.5;
+ * kbdConfigVars.opacity = 0.5;
  * ```
  * This generates the following styles:
  * 
@@ -222,7 +222,7 @@ const config = cssConfig(() => {
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * kbdVars.booh = 1234;
+ * kbdConfigVars.booh = 1234;
  * ```
  * This generates:
  * 
@@ -239,9 +239,9 @@ const config = cssConfig(() => {
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete kbdVars.fontWeightCustom;
- * kbdVars.fontWeightCustom = null;
- * kbdVars.fontWeightCustom = undefined;
+ * delete kbdConfigVars.fontWeightCustom;
+ * kbdConfigVars.fontWeightCustom = null;
+ * kbdConfigVars.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -276,7 +276,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const kbdVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const kbdConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
@@ -290,26 +290,26 @@ export const kbdVars        = config[0]; // eslint-disable-line css-variables/en
  * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
- * const expression = kbdExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--kbd-marginInlineStart)", " / 4)", "gray" ]]
+ * const expression = kbdConfigExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--kbd-marginInlineStart)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * kbdExpressions.fontWeightCustom = 900; // Generates "--kbd-fontWeightCustom: 900;"
+ * kbdConfigExpressions.fontWeightCustom = 900; // Generates "--kbd-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * kbdExpressions.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", kbdVars.marginInlineStart, " / 4)", "gray"
+ * kbdConfigExpressions.boxShadow = [[
+ *    "0px", "0px", "0px", "calc(", kbdConfigVars.marginInlineStart, " / 4)", "gray"
  * ]]; // Generates "--kbd-boxShadow: 0px 0px 0px calc(var(--kbd-marginInlineStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * kbdExpressions.opacity = 0.5;
+ * kbdConfigExpressions.opacity = 0.5;
  * ```
  * This generates the following styles:
  * 
@@ -331,7 +331,7 @@ export const kbdVars        = config[0]; // eslint-disable-line css-variables/en
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * kbdExpressions.booh = 1234;
+ * kbdConfigExpressions.booh = 1234;
  * ```
  * This generates:
  * 
@@ -348,9 +348,9 @@ export const kbdVars        = config[0]; // eslint-disable-line css-variables/en
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete kbdExpressions.fontWeightCustom;
- * kbdExpressions.fontWeightCustom = null;
- * kbdExpressions.fontWeightCustom = undefined;
+ * delete kbdConfigExpressions.fontWeightCustom;
+ * kbdConfigExpressions.fontWeightCustom = null;
+ * kbdConfigExpressions.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -385,7 +385,7 @@ export const kbdVars        = config[0]; // eslint-disable-line css-variables/en
  * }
  * ```
  */
-export const kbdExpressions = config[1];
+export const kbdConfigExpressions = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.
@@ -394,17 +394,17 @@ export const kbdExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * kbdConfig.prefix = 'kbd';
+ * kbdConfigOptions.prefix = 'kbd';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * kbdConfig.selector = ':root';
+ * kbdConfigOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * kbdConfig.onChange.subscribe({
+ * kbdConfigOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Kbd typography system updated!");
  *     },
@@ -432,25 +432,25 @@ export const kbdExpressions = config[1];
  * }
  * ```
  */
-export const kbdConfig      = config[2];
+export const kbdConfigOptions     = config[2];
 
 
 
 export {
-    kbdVars as default, // Default export for simplified imports.
+    kbdConfigVars as default, // Default export for simplified imports.
 }
 
 /**
- * @deprecated Use `kbdVars` instead.
+ * @deprecated Use `kbdConfigVars` instead.
  */
-export const kbds         = kbdVars;
+export const kbds         = kbdConfigVars;
 
 /**
- * @deprecated Use `kbdExpressions` instead.
+ * @deprecated Use `kbdConfigExpressions` instead.
  */
-export const kbdValues    = kbdExpressions;
+export const kbdValues    = kbdConfigExpressions;
 
 /**
- * @deprecated Use `kbdConfig` instead.
+ * @deprecated Use `kbdConfigOptions` instead.
  */
-export const cssKbdConfig = kbdConfig;
+export const cssKbdConfig = kbdConfigOptions;

@@ -11,10 +11,10 @@ import {
 
 // Configs:
 import {
-    typoVars,
+    typoConfigVars,
 }                           from './typography.js'
 import {
-    headingVars,
+    headingConfigVars,
 }                           from './headings.js'
 
 
@@ -35,7 +35,7 @@ const config = cssConfig(() => {
          * Applied when a display heading follows another display-heading-like element.
          * Helps visually differentiate hierarchy within text blocks.
          */
-        subOpacity        : headingVars.subOpacity                              as CssKnownProps['opacity'          ],
+        subOpacity        : headingConfigVars.subOpacity                        as CssKnownProps['opacity'          ],
         
         
         
@@ -45,27 +45,27 @@ const config = cssConfig(() => {
          * Defines the **left margin** for display headings.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineStart : headingVars.marginInlineStart                       as CssKnownProps['marginInlineStart'],
+        marginInlineStart : headingConfigVars.marginInlineStart                 as CssKnownProps['marginInlineStart'],
         
         /**
          * Defines the **right margin** for display headings.
          * Typically `0em` to maintain alignment with text blocks.
          */
-        marginInlineEnd   : headingVars.marginInlineEnd                         as CssKnownProps['marginInlineEnd'  ],
+        marginInlineEnd   : headingConfigVars.marginInlineEnd                   as CssKnownProps['marginInlineEnd'  ],
         
         /**
          * Defines the **top margin** when a display heading follows another non-display-text-block element.
          * Implemented using adjacent sibling selector.
          * Ensures structured vertical spacing.
          */
-        marginBlockStart  : headingVars.marginBlockStart                        as CssKnownProps['marginBlockStart' ],
+        marginBlockStart  : headingConfigVars.marginBlockStart                  as CssKnownProps['marginBlockStart' ],
         
         /**
          * Defines the **bottom margin** when a display heading precedes another non-display-text-block element.
          * Implemented using `:has()` selector, which may have limited browser support.
          * Check compatibility before relying on this approach.
          */
-        marginBlockEnd    : headingVars.marginBlockEnd                          as CssKnownProps['marginBlockEnd'   ],
+        marginBlockEnd    : headingConfigVars.marginBlockEnd                    as CssKnownProps['marginBlockEnd'   ],
         
         
         
@@ -83,34 +83,34 @@ const config = cssConfig(() => {
          * Can be set to a primary typeface or a fallback stack.
          * Example: `'Arial, sans-serif'`.
          */
-        fontFamily        : headingVars.fontFamily                              as CssKnownProps['fontFamily'       ],
+        fontFamily        : headingConfigVars.fontFamily                        as CssKnownProps['fontFamily'       ],
         
         /**
          * Defines the **font weight** for display headings.
          * Accepts predefined weights (`normal`, `bold`, `lighter`) or numeric values (`100-900`).
          * Typically lighter than standard headings to maintain balance.
          */
-        fontWeight        : typoVars.fontWeightLight                            as CssKnownProps['fontWeight'       ],
+        fontWeight        : typoConfigVars.fontWeightLight                      as CssKnownProps['fontWeight'       ],
         
         /**
          * Defines the **font style** for display headings (normal, italic, oblique).
          * Used to define emphasis within visual hierarchy.
          */
-        fontStyle         : headingVars.fontStyle                               as CssKnownProps['fontStyle'        ],
+        fontStyle         : headingConfigVars.fontStyle                         as CssKnownProps['fontStyle'        ],
         
         /**
          * Defines the **text decoration** for display headings.
          * Controls styling such as `underline`, `line-through`, or `none`.
          * Useful for adding emphasis or distinguishing elements visually.
          */
-        textDecoration    : headingVars.textDecoration                          as CssKnownProps['textDecoration'   ],
+        textDecoration    : headingConfigVars.textDecoration                    as CssKnownProps['textDecoration'   ],
         
         /**
          * Defines the **line height** for display headings.
          * Helps with text readability by adjusting vertical spacing.
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
-        lineHeight        : headingVars.lineHeight                              as CssKnownProps['lineHeight'       ],
+        lineHeight        : headingConfigVars.lineHeight                        as CssKnownProps['lineHeight'       ],
     };
     
     
@@ -130,7 +130,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize1         : '5.00rem'                       as CssKnownProps['fontSize'         ],
+        fontSize1         : '5.00rem'                                           as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font size** for `.display-2` display headings.
@@ -138,7 +138,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize2         : '4.50rem'                       as CssKnownProps['fontSize'         ],
+        fontSize2         : '4.50rem'                                           as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font size** for `.display-3` display headings.
@@ -146,7 +146,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize3         : '4.00rem'                       as CssKnownProps['fontSize'         ],
+        fontSize3         : '4.00rem'                                           as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font size** for `.display-4` display headings.
@@ -154,7 +154,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize4         : '3.50rem'                       as CssKnownProps['fontSize'         ],
+        fontSize4         : '3.50rem'                                           as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font size** for `.display-5` display headings.
@@ -162,7 +162,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize5         : '3.00rem'                       as CssKnownProps['fontSize'         ],
+        fontSize5         : '3.00rem'                                           as CssKnownProps['fontSize'         ],
         
         /**
          * Defines the **font size** for `.display-6` display headings.
@@ -170,7 +170,7 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize6         : '2.50rem'                       as CssKnownProps['fontSize'         ],
+        fontSize6         : '2.50rem'                                           as CssKnownProps['fontSize'         ],
     };
     
     
@@ -193,26 +193,26 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = displayVars.marginBlockEnd; // Resolves to "var(--d-marginBlockEnd)"
+ * const value = displayConfigVars.marginBlockEnd; // Resolves to "var(--d-marginBlockEnd)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * displayVars.fontWeightCustom = 900; // Generates "--d-fontWeightCustom: 900;"
+ * displayConfigVars.fontWeightCustom = 900; // Generates "--d-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * displayVars.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", displayVars.marginBlockEnd, " / 4)", "gray"
+ * displayConfigVars.boxShadow = [[
+ *    "0px", "0px", "0px", "calc(", displayConfigVars.marginBlockEnd, " / 4)", "gray"
  * ]]; // Generates "--d-boxShadow: 0px 0px 0px calc(var(--d-marginBlockEnd) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * displayVars.padding = '1rem';
+ * displayConfigVars.padding = '1rem';
  * ```
  * This generates the following styles:
  * 
@@ -234,7 +234,7 @@ const config = cssConfig(() => {
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * displayVars.booh = 1234;
+ * displayConfigVars.booh = 1234;
  * ```
  * This generates:
  * 
@@ -251,9 +251,9 @@ const config = cssConfig(() => {
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete displayVars.fontWeightCustom;
- * displayVars.fontWeightCustom = null;
- * displayVars.fontWeightCustom = undefined;
+ * delete displayConfigVars.fontWeightCustom;
+ * displayConfigVars.fontWeightCustom = null;
+ * displayConfigVars.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -288,7 +288,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const displayVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const displayConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
@@ -302,26 +302,26 @@ export const displayVars        = config[0]; // eslint-disable-line css-variable
  * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
- * const expression = displayExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--d-marginBlockEnd)", " / 4)", "gray" ]]
+ * const expression = displayConfigExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--d-marginBlockEnd)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * displayExpressions.fontWeightCustom = 900; // Generates "--d-fontWeightCustom: 900;"
+ * displayConfigExpressions.fontWeightCustom = 900; // Generates "--d-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * displayExpressions.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", displayVars.marginBlockEnd, " / 4)", "gray"
+ * displayConfigExpressions.boxShadow = [[
+ *    "0px", "0px", "0px", "calc(", displayConfigVars.marginBlockEnd, " / 4)", "gray"
  * ]]; // Generates "--d-boxShadow: 0px 0px 0px calc(var(--d-marginBlockEnd) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * displayExpressions.padding = '1rem';
+ * displayConfigExpressions.padding = '1rem';
  * ```
  * This generates the following styles:
  * 
@@ -343,7 +343,7 @@ export const displayVars        = config[0]; // eslint-disable-line css-variable
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * displayExpressions.booh = 1234;
+ * displayConfigExpressions.booh = 1234;
  * ```
  * This generates:
  * 
@@ -360,9 +360,9 @@ export const displayVars        = config[0]; // eslint-disable-line css-variable
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete displayExpressions.fontWeightCustom;
- * displayExpressions.fontWeightCustom = null;
- * displayExpressions.fontWeightCustom = undefined;
+ * delete displayConfigExpressions.fontWeightCustom;
+ * displayConfigExpressions.fontWeightCustom = null;
+ * displayConfigExpressions.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -397,7 +397,7 @@ export const displayVars        = config[0]; // eslint-disable-line css-variable
  * }
  * ```
  */
-export const displayExpressions = config[1];
+export const displayConfigExpressions = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.
@@ -406,17 +406,17 @@ export const displayExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * displayConfig.prefix = 'd';
+ * displayConfigOptions.prefix = 'd';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * displayConfig.selector = ':root';
+ * displayConfigOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * displayConfig.onChange.subscribe({
+ * displayConfigOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Display typography system updated!");
  *     },
@@ -444,25 +444,25 @@ export const displayExpressions = config[1];
  * }
  * ```
  */
-export const displayConfig      = config[2];
+export const displayConfigOptions     = config[2];
 
 
 
 export {
-    displayVars as default, // Default export for simplified imports.
+    displayConfigVars as default, // Default export for simplified imports.
 }
 
 /**
- * @deprecated Use `displayVars` instead.
+ * @deprecated Use `displayConfigVars` instead.
  */
-export const displays         = displayVars;
+export const displays         = displayConfigVars;
 
 /**
- * @deprecated Use `displayExpressions` instead.
+ * @deprecated Use `displayConfigExpressions` instead.
  */
-export const displayValues    = displayExpressions;
+export const displayValues    = displayConfigExpressions;
 
 /**
- * @deprecated Use `displayConfig` instead.
+ * @deprecated Use `displayConfigOptions` instead.
  */
-export const cssDisplayConfig = displayConfig;
+export const cssDisplayConfig = displayConfigOptions;

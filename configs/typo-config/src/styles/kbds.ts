@@ -18,7 +18,7 @@ import {
 
 // Configs:
 import {
-    kbdVars,
+    kbdConfigVars,
 }                           from '../configs/kbds.js'
 
 
@@ -30,7 +30,7 @@ export default [
         ...markRule({
             elementFilter    : getKbdFilter(),
             spacingFilters   : getTextInlineFilter(),
-            elementVars      : kbdVars,
+            elementVars      : kbdConfigVars,
         }),
     }),
 ];

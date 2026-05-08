@@ -30,7 +30,7 @@ import {
 
 // Configs:
 import {
-    headingVars,
+    headingConfigVars,
 }                           from '../configs/headings.js'
 
 
@@ -43,7 +43,7 @@ export default [
             elementFilter    : getHeadingFilter(),
             companionFilters : getHeadingCompanionFilter(),
             spacingFilters   : getNonHeadingTextBlockFilter(),
-            elementVars      : headingVars,
+            elementVars      : headingConfigVars,
         }),
         ...headingLevelRule({
             levels           : getDefaultLevels(),
@@ -51,7 +51,7 @@ export default [
                 getTagHeadingSelectors([level]),
                 getClassHeadingSelectors([level]),
             ],
-            elementVars      : headingVars,
+            elementVars      : headingConfigVars,
         }),
     }),
 ];

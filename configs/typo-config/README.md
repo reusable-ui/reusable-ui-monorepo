@@ -52,10 +52,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 - displays
 - blockquotes
 - plainLists
-- horzSeparators
 - marks
 - kbds
 - codes
+- horzSeparators
 - emphases
 
 ### **Applying typography styles**  
@@ -72,10 +72,10 @@ import {
     mountDisplays,
     mountBlockquotes,
     mountPlainLists,
-    mountHorzSeparators,
     mountMarks,
     mountKbds,
     mountCodes,
+    mountHorzSeparators,
     mountEmphases,
     mountMany,
 } from '@reusable-ui/typo-config';
@@ -105,10 +105,10 @@ const mountedTypos = mountMany(
     mountDisplays,
     mountBlockquotes,
     mountPlainLists,
-    mountHorzSeparators,
     mountMarks,
     mountKbds,
     mountCodes,
+    mountHorzSeparators,
     mountEmphases,
 );
 
@@ -123,26 +123,26 @@ Easily modify typography variables dynamically:
 // index.js or the initial load file of your project
 
 import {
-    typoVars,
-    secondaryVars,
-    paragraphVars,
-    leadVars,
-    headingVars,
-    displayVars,
-    blockquoteVars,
-    plainListVars,
-    horzSeparatorVars,
-    markVars,
-    kbdVars,
-    codeVars,
+    typoConfigVars,
+    secondaryConfigVars,
+    paragraphConfigVars,
+    leadConfigVars,
+    headingConfigVars,
+    displayConfigVars,
+    blockquoteConfigVars,
+    plainListConfigVars,
+    markConfigVars,
+    kbdConfigVars,
+    codeConfigVars,
+    horzSeparatorConfigVars,
 } from '@reusable-ui/typo-config';
 
-typoVars.fontFamily = 'Arial, sans-serif' as any; // `as any` => force to assign bare value
-typoVars.lineHeight = 1.5 as any;
-paragraphVars.marginBlockStart = '2em' as any;
-paragraphVars.marginBlockEnd = paragraphVars.marginBlockStart;
-horzSeparatorVars.opacity = 0.5 as any;
-secondaryVars.borderColor = 'var(--custom-secondary-color)';
+typoConfigVars.fontFamily = 'Arial, sans-serif' as any; // `as any` => force to assign bare value
+typoConfigVars.lineHeight = 1.5 as any;
+paragraphConfigVars.marginBlockStart = '2em' as any;
+paragraphConfigVars.marginBlockEnd = paragraphConfigVars.marginBlockStart;
+secondaryConfigVars.borderColor = 'var(--custom-secondary-color)';
+horzSeparatorConfigVars.opacity = 0.5 as any;
 ```
 
 ## 📖 Part of the Reusable-UI Framework  

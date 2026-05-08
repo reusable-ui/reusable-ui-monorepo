@@ -14,10 +14,10 @@ import {
     colorConfigVars,
 }                           from '@reusable-ui/color-config'    // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 import {
-    typoVars,
+    typoConfigVars,
 }                           from './typography.js'
 import {
-    markVars,
+    markConfigVars,
 }                           from './marks.js'
 
 
@@ -52,13 +52,13 @@ const config = cssConfig(() => {
          * Defines the **border style** for `<code>` elements.
          * Typically uses the default border style for consistency.
          */
-        borderStyle            : markVars.borderStyle                                       as CssKnownProps['borderStyle'       ],
+        borderStyle            : markConfigVars.borderStyle                                 as CssKnownProps['borderStyle'       ],
         
         /**
          * Defines the **border width** for `<code>` elements.
          * Typically uses the default border width for visual clarity.
          */
-        borderWidth            : markVars.borderWidth                                       as CssKnownProps['borderWidth'       ],
+        borderWidth            : markConfigVars.borderWidth                                 as CssKnownProps['borderWidth'       ],
         
         /**
          * Defines the **border color** for `<code>` elements.
@@ -70,7 +70,7 @@ const config = cssConfig(() => {
          * Defines the **border radius** for `<code>` elements.
          * Typically uses a **small radius** (`sm`) to create softened edges.
          */
-        borderRadius           : markVars.borderRadius                                      as CssKnownProps['borderRadius'      ],
+        borderRadius           : markConfigVars.borderRadius                                as CssKnownProps['borderRadius'      ],
         
         
         
@@ -81,51 +81,51 @@ const config = cssConfig(() => {
          * Implemented using adjacent sibling selector.
          * Ensures structured horizontal spacing.
          */
-        marginInlineStart      : markVars.marginInlineStart                                 as CssKnownProps['marginInlineStart' ],
+        marginInlineStart      : markConfigVars.marginInlineStart                           as CssKnownProps['marginInlineStart' ],
         
         /**
          * Defines the **right margin** when a `<code>` element precedes another highlight-based element.
          * Implemented using `:has()` selector, which may have limited browser support.
          * Check compatibility before relying on this approach.
          */
-        marginInlineEnd        : markVars.marginInlineEnd                                   as CssKnownProps['marginInlineEnd'   ],
+        marginInlineEnd        : markConfigVars.marginInlineEnd                             as CssKnownProps['marginInlineEnd'   ],
         
         /**
          * Defines the **top margin** for `<code>` elements.
          * Typically `0em` to maintain alignment within inline text flow.
          */
-        marginBlockStart       : markVars.marginBlockStart                                  as CssKnownProps['marginBlockStart'  ],
+        marginBlockStart       : markConfigVars.marginBlockStart                            as CssKnownProps['marginBlockStart'  ],
         
         /**
          * Defines the **bottom margin** for `<code>` elements.
          * Typically `0em` to maintain alignment within inline text flow.
          */
-        marginBlockEnd         : markVars.marginBlockEnd                                    as CssKnownProps['marginBlockEnd'    ],
+        marginBlockEnd         : markConfigVars.marginBlockEnd                              as CssKnownProps['marginBlockEnd'    ],
         
         
         /**
          * Defines **left padding** inside `<code>` elements.
          * Adds breathing room between the **text and left boundary**.
          */
-        paddingInlineStart     : markVars.paddingInlineStart                                as CssKnownProps['paddingInlineStart'],
+        paddingInlineStart     : markConfigVars.paddingInlineStart                          as CssKnownProps['paddingInlineStart'],
         
         /**
          * Defines **right padding** inside `<code>` elements.
          * Adds breathing room between the **text and right boundary**.
          */
-        paddingInlineEnd       : markVars.paddingInlineEnd                                  as CssKnownProps['paddingInlineEnd'  ],
+        paddingInlineEnd       : markConfigVars.paddingInlineEnd                            as CssKnownProps['paddingInlineEnd'  ],
         
         /**
          * Defines **top padding** inside `<code>` elements.
          * Adds breathing room between the **text and top boundary**.
          */
-        paddingBlockStart      : markVars.paddingBlockStart                                 as CssKnownProps['paddingBlockStart' ],
+        paddingBlockStart      : markConfigVars.paddingBlockStart                           as CssKnownProps['paddingBlockStart' ],
         
         /**
          * Defines **bottom padding** inside `<code>` elements.
          * Adds breathing room between the **text and bottom boundary**.
          */
-        paddingBlockEnd        : markVars.paddingBlockEnd                                   as CssKnownProps['paddingBlockEnd'   ],
+        paddingBlockEnd        : markConfigVars.paddingBlockEnd                             as CssKnownProps['paddingBlockEnd'   ],
         
         
         
@@ -136,40 +136,40 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        fontSize               : markVars.fontSize                                          as CssKnownProps['fontSize'          ],
+        fontSize               : markConfigVars.fontSize                                    as CssKnownProps['fontSize'          ],
         
         /**
          * Defines the **font family** for `<code>` elements.
          * Can be set to a primary typeface or a fallback stack.
          * Example: `'Arial, sans-serif'`.
          */
-        fontFamily             : typoVars.fontFamilyMonospace                               as CssKnownProps['fontFamily'        ],
+        fontFamily             : typoConfigVars.fontFamilyMonospace                         as CssKnownProps['fontFamily'        ],
         
         /**
          * Defines the **font weight** for `<code>` elements.
          * Accepts predefined weights (`normal`, `bold`, `lighter`) or numeric values (`100-900`).
          */
-        fontWeight             : markVars.fontWeight                                        as CssKnownProps['fontWeight'        ],
+        fontWeight             : markConfigVars.fontWeight                                  as CssKnownProps['fontWeight'        ],
         
         /**
          * Defines the **font style** for `<code>` elements (normal, italic, oblique).
          * Used to define emphasis within visual hierarchy.
          */
-        fontStyle              : markVars.fontStyle                                         as CssKnownProps['fontStyle'         ],
+        fontStyle              : markConfigVars.fontStyle                                   as CssKnownProps['fontStyle'         ],
         
         /**
          * Defines the **text decoration** for `<code>` elements.
          * Controls styling such as `underline`, `line-through`, or `none`.
          * Useful for adding emphasis or distinguishing elements visually.
          */
-        textDecoration         : markVars.textDecoration                                    as CssKnownProps['textDecoration'    ],
+        textDecoration         : markConfigVars.textDecoration                              as CssKnownProps['textDecoration'    ],
         
         /**
          * Defines the **line height** for `<code>` elements.
          * Helps with text readability by adjusting vertical spacing.
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
-        lineHeight             : markVars.lineHeight                                        as CssKnownProps['lineHeight'        ],
+        lineHeight             : markConfigVars.lineHeight                                  as CssKnownProps['lineHeight'        ],
     };
 }, { prefix: 'code' });
 
@@ -184,26 +184,26 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = codeVars.marginInlineStart; // Resolves to "var(--code-marginInlineStart)"
+ * const value = codeConfigVars.marginInlineStart; // Resolves to "var(--code-marginInlineStart)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * codeVars.fontWeightCustom = 900; // Generates "--code-fontWeightCustom: 900;"
+ * codeConfigVars.fontWeightCustom = 900; // Generates "--code-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * codeVars.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", codeVars.marginInlineStart, " / 4)", "gray"
+ * codeConfigVars.boxShadow = [[
+ *    "0px", "0px", "0px", "calc(", codeConfigVars.marginInlineStart, " / 4)", "gray"
  * ]]; // Generates "--code-boxShadow: 0px 0px 0px calc(var(--code-marginInlineStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * codeVars.opacity = 0.5;
+ * codeConfigVars.opacity = 0.5;
  * ```
  * This generates the following styles:
  * 
@@ -225,7 +225,7 @@ const config = cssConfig(() => {
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * codeVars.booh = 1234;
+ * codeConfigVars.booh = 1234;
  * ```
  * This generates:
  * 
@@ -242,9 +242,9 @@ const config = cssConfig(() => {
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete codeVars.fontWeightCustom;
- * codeVars.fontWeightCustom = null;
- * codeVars.fontWeightCustom = undefined;
+ * delete codeConfigVars.fontWeightCustom;
+ * codeConfigVars.fontWeightCustom = null;
+ * codeConfigVars.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -280,7 +280,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const codeVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const codeConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
@@ -294,26 +294,26 @@ export const codeVars        = config[0]; // eslint-disable-line css-variables/e
  * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
- * const expression = codeExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--code-marginInlineStart)", " / 4)", "gray" ]]
+ * const expression = codeConfigExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--code-marginInlineStart)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * codeExpressions.fontWeightCustom = 900; // Generates "--code-fontWeightCustom: 900;"
+ * codeConfigExpressions.fontWeightCustom = 900; // Generates "--code-fontWeightCustom: 900;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * codeExpressions.boxShadow = [[
- *    "0px", "0px", "0px", "calc(", codeVars.marginInlineStart, " / 4)", "gray"
+ * codeConfigExpressions.boxShadow = [[
+ *    "0px", "0px", "0px", "calc(", codeConfigVars.marginInlineStart, " / 4)", "gray"
  * ]]; // Generates "--code-boxShadow: 0px 0px 0px calc(var(--code-marginInlineStart) / 4) gray;"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * codeExpressions.opacity = 0.5;
+ * codeConfigExpressions.opacity = 0.5;
  * ```
  * This generates the following styles:
  * 
@@ -335,7 +335,7 @@ export const codeVars        = config[0]; // eslint-disable-line css-variables/e
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * codeExpressions.booh = 1234;
+ * codeConfigExpressions.booh = 1234;
  * ```
  * This generates:
  * 
@@ -352,9 +352,9 @@ export const codeVars        = config[0]; // eslint-disable-line css-variables/e
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete codeExpressions.fontWeightCustom;
- * codeExpressions.fontWeightCustom = null;
- * codeExpressions.fontWeightCustom = undefined;
+ * delete codeConfigExpressions.fontWeightCustom;
+ * codeConfigExpressions.fontWeightCustom = null;
+ * codeConfigExpressions.fontWeightCustom = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -390,7 +390,7 @@ export const codeVars        = config[0]; // eslint-disable-line css-variables/e
  * }
  * ```
  */
-export const codeExpressions = config[1];
+export const codeConfigExpressions = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.
@@ -399,17 +399,17 @@ export const codeExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * codeConfig.prefix = 'code';
+ * codeConfigOptions.prefix = 'code';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * codeConfig.selector = ':root';
+ * codeConfigOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * codeConfig.onChange.subscribe({
+ * codeConfigOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Code typography system updated!");
  *     },
@@ -438,25 +438,25 @@ export const codeExpressions = config[1];
  * }
  * ```
  */
-export const codeConfig      = config[2];
+export const codeConfigOptions     = config[2];
 
 
 
 export {
-    codeVars as default, // Default export for simplified imports.
+    codeConfigVars as default, // Default export for simplified imports.
 }
 
 /**
- * @deprecated Use `codeVars` instead.
+ * @deprecated Use `codeConfigVars` instead.
  */
-export const codes         = codeVars;
+export const codes         = codeConfigVars;
 
 /**
- * @deprecated Use `codeExpressions` instead.
+ * @deprecated Use `codeConfigExpressions` instead.
  */
-export const codeValues    = codeExpressions;
+export const codeValues    = codeConfigExpressions;
 
 /**
- * @deprecated Use `codeConfig` instead.
+ * @deprecated Use `codeConfigOptions` instead.
  */
-export const cssCodeConfig = codeConfig;
+export const cssCodeConfig = codeConfigOptions;

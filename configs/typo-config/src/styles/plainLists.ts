@@ -18,7 +18,7 @@ import {
 
 // Configs:
 import {
-    plainListVars,
+    plainListConfigVars,
 }                           from '../configs/plainLists.js'
 
 
@@ -30,7 +30,7 @@ export default [
         ...plainListRule({
             elementFilter    : getPlainListFilter(),
             spacingFilters   : getTextBlockFilter(),
-            elementVars      : plainListVars,
+            elementVars      : plainListConfigVars,
         }),
     }),
 ];
