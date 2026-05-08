@@ -1,5 +1,6 @@
 node_modules/
 
+defaults/*/dist/
 configs/*/dist/
 utilities/*/dist/
 

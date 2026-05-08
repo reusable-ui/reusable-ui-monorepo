@@ -1,5 +1,7 @@
 node_modules/
 
+defaults/*/src/
+defaults/*/__tests__/
 configs/*/src/
 configs/*/__tests__/
 utilities/*/src/
