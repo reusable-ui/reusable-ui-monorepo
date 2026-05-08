@@ -20,7 +20,7 @@ import {
 
 
 /**
- * Defines the configuration for creating a dynamic typography mount.
+ * Defines a configuration object for mounting a typography stylesheet.
  */
 export interface TypographyMountConfig {
     /**
@@ -33,10 +33,10 @@ export interface TypographyMountConfig {
 }
 
 /**
- * Creates a dynamically updatable typography stylesheet.
+ * Creates a mount function for a typography stylesheet, allowing dynamic activation based on component usage.
  * 
  * @param config Configuration object containing the `id` and `importPath`.
- * @returns A mount function that handles dynamic stylesheet activation.
+ * @returns A function that mounts the typography stylesheet when invoked, and returns an object with an `unmount` method to deactivate it.
  */
 export const createTypographyMount = (config: TypographyMountConfig) => {
     // Configs:
@@ -47,9 +47,9 @@ export const createTypographyMount = (config: TypographyMountConfig) => {
     
     
     
-    // Create a subscribable object for dynamic updates:
-    const dynamicStylesheet = new Subject<boolean>();
-    const stylesheetSubscription : Subscribable<StyleSheetsFactory<''> | boolean> = {
+    // Create a live stylesheet that can be enabled or disabled based on active usage:
+    const enabledSignal = new Subject<boolean>();
+    const liveStylesheet : Subscribable<StyleSheetsFactory<''> | boolean> = {
         subscribe : (observer) => {
             // Immediately push the style:
             // Ensure the observer is actively listening:
@@ -76,16 +76,16 @@ export const createTypographyMount = (config: TypographyMountConfig) => {
             
             
             
-            // Subscribe to future updates:
-            return dynamicStylesheet.subscribe({
-                next: (update) => {
+            // Subscribe to future enabled/disabled updates:
+            return enabledSignal.subscribe({
+                next: (enabled) => {
                     // Ensure the observer is actively listening:
                     if (!observer.next) return;
                     
                     
                     
-                    // Forward incoming updates:
-                    observer.next(update);
+                    // Forward incoming enabled/disabled updates:
+                    observer.next(enabled);
                 },
             });
         },
@@ -93,9 +93,9 @@ export const createTypographyMount = (config: TypographyMountConfig) => {
     
     
     
-    // Register a dynamically updatable stylesheet:
+    // Register the live stylesheet, initially disabled:
     styleSheets(
-        stylesheetSubscription
+        liveStylesheet
     , { id, enabled: false });
     
     
@@ -117,7 +117,7 @@ export const createTypographyMount = (config: TypographyMountConfig) => {
         
         
         // Enable stylesheet when the first instance is mounted:
-        if (activeInstances === 1) dynamicStylesheet.next(true);
+        if (activeInstances === 1) enabledSignal.next(true);
         
         
         
@@ -132,7 +132,7 @@ export const createTypographyMount = (config: TypographyMountConfig) => {
                 
                 
                 // Disable stylesheet when the last instance is unmounted:
-                if (activeInstances === 0) dynamicStylesheet.next(false);
+                if (activeInstances === 0) enabledSignal.next(false);
             },
         };
     };
