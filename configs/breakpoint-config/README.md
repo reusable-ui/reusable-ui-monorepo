@@ -53,7 +53,7 @@ To access breakpoint configurations, import **@cssfn/core** and **@reusable-ui/b
 ```ts
 import { style } from '@cssfn/core';
 import {
-  breakpointVars,
+  breakpointConfigVars,
   ifScreenWidthAtLeast,
   ifScreenWidthSmallerThan,
   ifScreenWidthBetween,
@@ -71,13 +71,13 @@ Standard breakpoint options:
 ```ts
 const myStyle = style({
     // Getting the width of breakpoints:
-    inlineSize: breakpointVars.xs,   // Resolves to 'var(--brp-xs)'
-    inlineSize: breakpointVars.sm,   // Resolves to 'var(--brp-sm)'
-    inlineSize: breakpointVars.md,   // Resolves to 'var(--brp-md)'
-    inlineSize: breakpointVars.lg,   // Resolves to 'var(--brp-lg)'
-    inlineSize: breakpointVars.xl,   // Resolves to 'var(--brp-xl)'
-    inlineSize: breakpointVars.xxl,  // Resolves to 'var(--brp-xxl)'
-    inlineSize: breakpointVars.xxxl, // Resolves to 'var(--brp-xxxl)'
+    inlineSize: breakpointConfigVars.xs,   // Resolves to 'var(--brp-xs)'
+    inlineSize: breakpointConfigVars.sm,   // Resolves to 'var(--brp-sm)'
+    inlineSize: breakpointConfigVars.md,   // Resolves to 'var(--brp-md)'
+    inlineSize: breakpointConfigVars.lg,   // Resolves to 'var(--brp-lg)'
+    inlineSize: breakpointConfigVars.xl,   // Resolves to 'var(--brp-xl)'
+    inlineSize: breakpointConfigVars.xxl,  // Resolves to 'var(--brp-xxl)'
+    inlineSize: breakpointConfigVars.xxxl, // Resolves to 'var(--brp-xxxl)'
     
     // Conditional styling:
     gridArea: 'mobile',
@@ -100,9 +100,9 @@ Easily customize breakpoint properties dynamically:
 ```ts
 // index.js or the initial load file of your project
 
-import { breakpointVars } from '@reusable-ui/breakpoint-config';
+import { breakpointConfigVars } from '@reusable-ui/breakpoint-config';
 
-breakpointVars.lg = '1024px' as any; // Override the lg breakpoint value
+breakpointConfigVars.lg = '1024px' as any; // Override the lg breakpoint value
 ```
 
 ## 📖 Part of the Reusable-UI Framework  

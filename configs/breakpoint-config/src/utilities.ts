@@ -6,7 +6,7 @@ import {
 
 // Configs:
 import {
-    breakpointExpressions,
+    breakpointConfigExpressions,
 }                           from './breakpoints.js'
 
 
@@ -20,7 +20,7 @@ import {
  * @returns Sorted array of breakpoints as `[BreakpointName, CssBreakpoint]` tuples.
  */
 export const getSortedBreakpoints = (): [BreakpointName, CssBreakpoint][] => (
-    Object.entries(breakpointExpressions)
+    Object.entries(breakpointConfigExpressions)
     .filter((breakpoint): breakpoint is [BreakpointName, CssBreakpoint] =>
         (breakpoint[1] !== null)      // Excludes null values
         &&
@@ -80,7 +80,7 @@ export const getBreakpointNextName = getNextBreakpoint;
  */
 export const getBreakpointStartWidth = (breakpointName: BreakpointName): CssBreakpoint | null => {
     // Retrieve the starting width of the specified `breakpointName`:
-    const startWidth = breakpointExpressions[breakpointName] as CssBreakpoint | undefined;
+    const startWidth = breakpointConfigExpressions[breakpointName] as CssBreakpoint | undefined;
     if (startWidth === undefined) throw TypeError(`Breakpoint '${breakpointName}' not found in breakpoints.`); // Invalid breakpointName.
     
     

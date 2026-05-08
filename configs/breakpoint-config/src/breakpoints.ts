@@ -38,13 +38,13 @@ const config = cssConfig<BreakpointConfig>(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = breakpointVars.lg; // Resolves to "var(--brp-lg)"
+ * const value = breakpointConfigVars.lg; // Resolves to "var(--brp-lg)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * breakpointVars.customBreakpoint = "2560px"; // Generates "--brp-customBreakpoint: 2560px;"
+ * breakpointConfigVars.customBreakpoint = "2560px"; // Generates "--brp-customBreakpoint: 2560px;"
  * ```
  * 
  * **Expression Assignment:**
@@ -53,9 +53,9 @@ const config = cssConfig<BreakpointConfig>(() => {
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete breakpointVars.customBreakpoint;
- * breakpointVars.customBreakpoint = null;
- * breakpointVars.customBreakpoint = undefined;
+ * delete breakpointConfigVars.customBreakpoint;
+ * breakpointConfigVars.customBreakpoint = null;
+ * breakpointConfigVars.customBreakpoint = undefined;
  * ```
  * 
  * #### **Rendered CSS Variables Example**
@@ -73,7 +73,7 @@ const config = cssConfig<BreakpointConfig>(() => {
  * }
  * ```
  */
-export const breakpointVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const breakpointConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
@@ -87,13 +87,13 @@ export const breakpointVars        = config[0]; // eslint-disable-line css-varia
  * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
- * const expression = breakpointExpressions.lg; // Resolves to "992px"
+ * const expression = breakpointConfigExpressions.lg; // Resolves to "992px"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * breakpointExpressions.customBreakpoint = "2560px"; // Generates "--brp-customBreakpoint: 2560px;"
+ * breakpointConfigExpressions.customBreakpoint = "2560px"; // Generates "--brp-customBreakpoint: 2560px;"
  * ```
  * 
  * **Expression Assignment:**
@@ -102,9 +102,9 @@ export const breakpointVars        = config[0]; // eslint-disable-line css-varia
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete breakpointExpressions.customBreakpoint;
- * breakpointExpressions.customBreakpoint = null;
- * breakpointExpressions.customBreakpoint = undefined;
+ * delete breakpointConfigExpressions.customBreakpoint;
+ * breakpointConfigExpressions.customBreakpoint = null;
+ * breakpointConfigExpressions.customBreakpoint = undefined;
  * ```
  * 
  * #### **Rendered CSS Variables Example**
@@ -122,7 +122,7 @@ export const breakpointVars        = config[0]; // eslint-disable-line css-varia
  * }
  * ```
  */
-export const breakpointExpressions = config[1];
+export const breakpointConfigExpressions = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for breakpoint system**.
@@ -131,17 +131,17 @@ export const breakpointExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all breakpoint variables.
  * ```ts
- * breakpointConfig.prefix = 'brp';
+ * breakpointConfigOptions.prefix = 'brp';
  * ```
  * - **Selector Scope:**  
  * Ensures all breakpoint variables are declared inside `:root`.
  * ```ts
- * breakpointConfig.selector = ':root';
+ * breakpointConfigOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * breakpointConfig.onChange.subscribe({
+ * breakpointConfigOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Breakpoint system updated!");
  *     },
@@ -162,25 +162,25 @@ export const breakpointExpressions = config[1];
  * }
  * ```
  */
-export const breakpointConfig      = config[2];
+export const breakpointConfigOptions     = config[2];
 
 
 
 export {
-    breakpointVars as default, // Default export for simplified imports.
+    breakpointConfigVars as default, // Default export for simplified imports.
 }
 
 /**
- * @deprecated Use `breakpointVars` instead.
+ * @deprecated Use `breakpointConfigVars` instead.
  */
-export const breakpoints         = breakpointVars;
+export const breakpoints         = breakpointConfigVars;
 
 /**
- * @deprecated Use `breakpointExpressions` instead.
+ * @deprecated Use `breakpointConfigExpressions` instead.
  */
-export const breakpointValues    = breakpointExpressions;
+export const breakpointValues    = breakpointConfigExpressions;
 
 /**
- * @deprecated Use `breakpointConfig` instead.
+ * @deprecated Use `breakpointConfigOptions` instead.
  */
-export const cssBreakpointConfig = breakpointConfig;
+export const cssBreakpointConfig = breakpointConfigOptions;
