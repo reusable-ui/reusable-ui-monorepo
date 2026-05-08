@@ -53,7 +53,7 @@ To access spacing configurations, import **@cssfn/core** and **@reusable-ui/spac
 
 ```ts
 import { style } from '@cssfn/core';
-import { spacerVars } from '@reusable-ui/spacer-config';
+import { spacerConfigVars } from '@reusable-ui/spacer-config';
 ```
 
 #### **Using Spacers**  
@@ -61,9 +61,9 @@ Standard spacing options:
 
 ```ts
 const myStyle = style({
-    margin: spacerVars.none,  // Resolves to 'var(--spc-none)'
-    padding: spacerVars.md,   // Resolves to 'var(--spc-md)'
-    gap: spacerVars.lg,       // Resolves to 'var(--spc-lg)'
+    margin: spacerConfigVars.none,  // Resolves to 'var(--spc-none)'
+    padding: spacerConfigVars.md,   // Resolves to 'var(--spc-md)'
+    gap: spacerConfigVars.lg,       // Resolves to 'var(--spc-lg)'
 });
 ```
 
@@ -73,9 +73,9 @@ Easily customize spacing properties dynamically:
 ```ts
 // index.js or the initial load file of your project
 
-import { spacerVars } from '@reusable-ui/spacer-config';
+import { spacerConfigVars } from '@reusable-ui/spacer-config';
 
-spacerVars.default = '2rem' as any; // Override the default spacing value
+spacerConfigVars.default = '2rem' as any; // Override the default spacing value
 ```
 
 ## 📖 Part of the Reusable-UI Framework  

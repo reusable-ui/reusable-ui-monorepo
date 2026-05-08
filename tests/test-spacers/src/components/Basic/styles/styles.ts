@@ -1,11 +1,11 @@
 import { sizes } from '@/libs/sizes'
 import { rule, style, variants } from '@cssfn/core'
-import { spacerVars, spacerExpressions } from '@reusable-ui/spacer-config'
+import { spacerConfigVars, spacerConfigExpressions } from '@reusable-ui/spacer-config'
 
 
 
 if (typeof window !== 'undefined') {
-    Object.assign(window, {spacerVars, spacerExpressions});
+    Object.assign(window, {spacerConfigVars, spacerConfigExpressions});
 } // if
 
 
@@ -27,7 +27,7 @@ const basicVariants = () => style({
         sizes
         .map((sizeName) =>
             rule(`.${sizeName}`, {
-                '--sp': spacerVars[sizeName],
+                '--sp': spacerConfigVars[sizeName],
             }),
         ),
     ]),

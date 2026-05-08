@@ -17,7 +17,7 @@ import {
 
 // Reusable-ui configs:
 import {
-    spacerVars,
+    spacerConfigVars,
 }                           from '@reusable-ui/spacer-config'       // A flexible spacer management system for web components, utilizing CSS custom properties to enable dynamic spacing, theming, and customization.
 
 // Reusable-ui features:
@@ -47,7 +47,7 @@ import {
 export const usesFocusEffect = (options?: CssFocusEffectOptions): CssFocusEffect => {
     // Extract options and assign defaults:
     const {
-        ringWidth = spacerVars.xs, // Defaults to `spacerVars.xs` (small ring width).
+        ringWidth = spacerConfigVars.xs, // Defaults to `spacerConfigVars.xs` (small ring width).
     } = options ?? {};
     
     

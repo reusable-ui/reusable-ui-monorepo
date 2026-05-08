@@ -118,28 +118,28 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = spacerVars.lg; // Resolves to "var(--spc-lg)"
+ * const value = spacerConfigVars.lg; // Resolves to "var(--spc-lg)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * spacerVars.customSpacer = "50px"; // Generates "--spc-customSpacer: 50px;"
+ * spacerConfigVars.customSpacer = "50px"; // Generates "--spc-customSpacer: 50px;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * spacerVars.myExpression = [[
- *    "clamp(", spacerVars.xs, ", ", "0.25%", ", ", spacerVars.xl, ")"
+ * spacerConfigVars.myExpression = [[
+ *    "clamp(", spacerConfigVars.xs, ", ", "0.25%", ", ", spacerConfigVars.xl, ")"
  * ]]; // Generates "--spc-myExpression: clamp(var(--spc-xs), 0.25%, var(--spc-xl));"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete spacerVars.customSpacer;
- * spacerVars.customSpacer = null;
- * spacerVars.customSpacer = undefined;
+ * delete spacerConfigVars.customSpacer;
+ * spacerConfigVars.customSpacer = null;
+ * spacerConfigVars.customSpacer = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -168,7 +168,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const spacerVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const spacerConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
@@ -182,28 +182,28 @@ export const spacerVars        = config[0]; // eslint-disable-line css-variables
  * #### **Retrieving a CSS Expression (Getter)**
  * Access the assembled CSS expression:  
  * ```ts
- * const expression = spacerExpressions.lg; // Resolves to [[ "calc(", spacerVars.md, " * 1.5)" ]]
+ * const expression = spacerConfigExpressions.lg; // Resolves to [[ "calc(", spacerConfigVars.md, " * 1.5)" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * spacerExpressions.customSpacer = "50px"; // Generates "--spc-customSpacer: 50px;"
+ * spacerConfigExpressions.customSpacer = "50px"; // Generates "--spc-customSpacer: 50px;"
  * ```
  * 
  * **Expression Assignment:**
  * ```ts
- * spacerExpressions.myExpression = [[
- *    "clamp(", spacerVars.xs, ", ", "0.25%", ", ", spacerVars.xl, ")"
+ * spacerConfigExpressions.myExpression = [[
+ *    "clamp(", spacerConfigVars.xs, ", ", "0.25%", ", ", spacerConfigVars.xl, ")"
  * ]]; // Generates "--spc-myExpression: clamp(var(--spc-xs), 0.25%, var(--spc-xl));"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete spacerExpressions.customSpacer;
- * spacerExpressions.customSpacer = null;
- * spacerExpressions.customSpacer = undefined;
+ * delete spacerConfigExpressions.customSpacer;
+ * spacerConfigExpressions.customSpacer = null;
+ * spacerConfigExpressions.customSpacer = undefined;
  * ```
  * 
  * #### **Expression Handling**
@@ -232,7 +232,7 @@ export const spacerVars        = config[0]; // eslint-disable-line css-variables
  * }
  * ```
  */
-export const spacerExpressions = config[1];
+export const spacerConfigExpressions = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for spacer system**.
@@ -241,17 +241,17 @@ export const spacerExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all spacer variables.
  * ```ts
- * spacerConfig.prefix = 'spc';
+ * spacerConfigOptions.prefix = 'spc';
  * ```
  * - **Selector Scope:**  
  * Ensures all spacer variables are declared inside `:root`.
  * ```ts
- * spacerConfig.selector = ':root';
+ * spacerConfigOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * spacerConfig.onChange.subscribe({
+ * spacerConfigOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Spacer system updated!");
  *     },
@@ -275,25 +275,25 @@ export const spacerExpressions = config[1];
  * }
  * ```
  */
-export const spacerConfig      = config[2];
+export const spacerConfigOptions     = config[2];
 
 
 
 export {
-    spacerVars as default, // Default export for simplified imports.
+    spacerConfigVars as default, // Default export for simplified imports.
 }
 
 /**
- * @deprecated Use `spacerVars` instead.
+ * @deprecated Use `spacerConfigVars` instead.
  */
-export const spacers         = spacerVars;
+export const spacers         = spacerConfigVars;
 
 /**
- * @deprecated Use `spacerExpressions` instead.
+ * @deprecated Use `spacerConfigExpressions` instead.
  */
-export const spacerValues    = spacerExpressions;
+export const spacerValues    = spacerConfigExpressions;
 
 /**
- * @deprecated Use `spacerConfig` instead.
+ * @deprecated Use `spacerConfigOptions` instead.
  */
-export const cssSpacerConfig = spacerConfig;
+export const cssSpacerConfig = spacerConfigOptions;
