@@ -3,7 +3,7 @@ export const domainOrder = new Set<string>([
 'colorConfig',
 'colorParamConfig',
 'borderConfig',
-'borderRadiusConfig',
+'radiusConfig',
 'spacerConfig',
 'breakpointConfig',
 'typoConfig',

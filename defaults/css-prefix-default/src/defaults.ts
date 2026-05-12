@@ -17,9 +17,9 @@ export const defaultColorParamConfigPrefix     = 'cp'    // color parameter (lon
 
 // Primitive Layouts:
 export const defaultBorderConfigPrefix         = 'b'     // border (avoid collision with border feature prefix 'bd')
-export const defaultBorderRadiusConfigPrefix   = 'br'    // border radius
+export const defaultRadiusConfigPrefix         = 'r'     // radius
 export const defaultSpacerConfigPrefix         = 's'     // spacer
-export const defaultBreakpointConfigPrefix     = 'r'     // responsive breakpoint
+export const defaultBreakpointConfigPrefix     = 'bp'    // responsive breakpoint
 
 // Primitive Typography:
 export const defaultTypoConfigPrefix           = 't'     // regular typography

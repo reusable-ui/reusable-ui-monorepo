@@ -81,9 +81,9 @@ This avoids **hard-coded prefix strings**, reducing the risk of accidental colli
 | defaultColorConfigPrefix          | c     |
 | defaultColorParamConfigPrefix     | cp    |
 | defaultBorderConfigPrefix         | b     |
-| defaultBorderRadiusConfigPrefix   | br    |
+| defaultRadiusConfigPrefix         | r     |
 | defaultSpacerConfigPrefix         | s     |
-| defaultBreakpointConfigPrefix     | r     |
+| defaultBreakpointConfigPrefix     | bp    |
 | defaultTypoConfigPrefix           | t     |
 | defaultSecondaryConfigPrefix      | sec   |
 | defaultParagraphConfigPrefix      | p     |
