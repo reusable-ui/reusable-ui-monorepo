@@ -44,6 +44,7 @@
   },
   "type": "module",
   "workspaces": [
+    "defaults/css-prefix-default",
     "configs/color-config",
     "tests/test-colors",
     "configs/border-config",

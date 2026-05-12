@@ -9,6 +9,7 @@ import jestPlugin from 'eslint-plugin-jest'
 import { enforceSelectorConventions, enforceIfFunctionConventions, noForeignCode as noForeignCodeInCssSelectors } from './.eslint-rules/css-selectors.js'
 import { enforceHookConventions, noForeignCode as noForeignCodeInCssHooks } from './.eslint-rules/css-hooks.js'
 import { enforceVariableConventions, enforceCssVarsFunctionUsage, noForeignCode as noForeignCodeInCssVars } from './.eslint-rules/css-variables.js'
+import { enforceCssPrefixDefaults } from './.eslint-rules/css-prefix-default.js'
 
 
 
@@ -299,6 +300,11 @@ export default defineConfig(
                     'no-foreign-code'                 : noForeignCodeInCssVars        as unknown as Rule.RuleModule,
                 },
             },
+            'css-prefix-default': {
+                rules: {
+                    'enforce-css-prefix-defaults'     : enforceCssPrefixDefaults      as unknown as Rule.RuleModule,
+                },
+            },
         },
         rules: {
             'import/no-extraneous-dependencies': ['error', {
@@ -309,14 +315,18 @@ export default defineConfig(
             }],
             
             // Enforce custom internal rule for CSS variable usage:
-            'css-selectors/enforce-selector-conventions'    : 'error',
-            'css-selectors/enforce-if-function-conventions' : 'error',
-            'css-selectors/no-foreign-code'                 : 'error',
-            'css-hooks/enforce-hook-conventions'            : 'error',
-            'css-hooks/no-foreign-code'                     : 'error',
-            'css-variables/enforce-variable-conventions'    : 'error',
-            'css-variables/enforce-cssvars-function-usage'  : 'error',
-            'css-variables/no-foreign-code'                 : 'error',
+            'css-selectors/enforce-selector-conventions'     : 'error',
+            'css-selectors/enforce-if-function-conventions'  : 'error',
+            'css-selectors/no-foreign-code'                  : 'error',
+            'css-hooks/enforce-hook-conventions'             : 'error',
+            'css-hooks/no-foreign-code'                      : 'error',
+            'css-variables/enforce-variable-conventions'     : 'error',
+            'css-variables/enforce-cssvars-function-usage'   : 'error',
+            'css-variables/no-foreign-code'                  : 'error',
+            'css-prefix-default/enforce-css-prefix-defaults' : ['error', {
+                minLength : 1,
+                maxLength : 4,
+            }],
         },
     },
     

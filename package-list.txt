@@ -1,3 +1,6 @@
+// Reusable-ui defaults:
+@reusable-ui/css-prefix-default
+
 // Reusable-ui configs:
 @reusable-ui/color-config
 @reusable-ui/border-config
