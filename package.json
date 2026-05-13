@@ -48,6 +48,7 @@
     "configs/color-config",
     "tests/test-colors",
     "configs/border-config",
+    "configs/radius-config",
     "tests/test-borders",
     "configs/spacer-config",
     "tests/test-spacers",
