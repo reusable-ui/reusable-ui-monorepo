@@ -1,12 +1,13 @@
 import { sizes } from '@/libs/sizes'
 import { rule, style, variants } from '@cssfn/core'
-import { borderConfigVars, borderConfigExpressions, borderRadiusConfigVars, borderRadiusConfigExpressions } from '@reusable-ui/border-config'
+import { borderConfigVars, borderConfigExpressions } from '@reusable-ui/border-config'
+import { radiusConfigVars, radiusConfigExpressions } from '@reusable-ui/radius-config'
 
 
 
 if (typeof window !== 'undefined') {
     Object.assign(window, {borderConfigVars, borderConfigExpressions});
-    Object.assign(window, {borderRadiusConfigVars, borderRadiusConfigExpressions});
+    Object.assign(window, {radiusConfigVars, radiusConfigExpressions});
 } // if
 
 

@@ -5,9 +5,8 @@ A **flexible and themeable border system** designed for UI components, seamlessl
 **@reusable-ui/border-config** is part of the **@reusable-ui monorepo**, a collection of React component libraries.
 
 ## 🚀 Features  
-✔ **Themeable** – Dynamically adjust border widths, styles, and radii based on root definitions  
+✔ **Themeable** – Dynamically adjust border widths and styles based on root definitions  
 ✔ **Customizable Border Widths** – Enables fine control over thickness levels  
-✔ **Border Radius System** – Predefined radius options for UI elements  
 ✔ **CSS-First Approach** – Minimal JavaScript dependency; most logic handled via CSS variables & native functions  
 ✔ **Powered by @cssfn/core** – Efficient CSS-in-JS rendering  
 
@@ -46,14 +45,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 - **Border Widths** (hairline, thin, bold)
 - **Border Styles** (solid, dashed, custom)
-- **Border Radius System** (none, small, medium, large, pill, circle)
 
 ### **Retrieving Borders**  
 To access border configurations, import **@cssfn/core** and **@reusable-ui/border-config**:
 
 ```ts
 import { style } from '@cssfn/core';
-import { borderConfigVars, borderRadiusConfigVars } from '@reusable-ui/border-config';
+import { borderConfigVars } from '@reusable-ui/border-config';
 ```
 
 #### **Border Widths**  
@@ -75,19 +73,6 @@ Predefined border styling options:
 const myStyle = style({
     borderStyle: borderConfigVars.style,  // Resolves to 'var(--bor-style)'
     borderColor: borderConfigVars.color,  // Resolves to 'var(--bor-color)'
-});
-```
-
-#### **Border Radius System**  
-Predefined rounding options:
-
-```ts
-const myStyle = style({
-    borderRadius: borderRadiusConfigVars.none,   // Resolves to 'var(--bor-r-none)'
-    borderRadius: borderRadiusConfigVars.sm,     // Resolves to 'var(--bor-r-sm)'
-    ...
-    borderRadius: borderRadiusConfigVars.pill,   // Resolves to 'var(--bor-r-pill)'
-    borderRadius: borderRadiusConfigVars.circle, // Resolves to 'var(--bor-r-circle)'
 });
 ```
 

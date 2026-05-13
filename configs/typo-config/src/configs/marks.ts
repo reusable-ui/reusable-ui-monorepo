@@ -15,8 +15,10 @@ import {
 }                           from '@reusable-ui/color-config'    // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 import {
     borderConfigVars,
-    borderRadiusConfigVars,
 }                           from '@reusable-ui/border-config'   // A flexible and themeable border management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
+import {
+    radiusConfigVars,
+}                           from '@reusable-ui/radius-config'   // A flexible rounding system for UI components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 
 
 
@@ -68,7 +70,7 @@ const config = cssConfig(() => {
          * Defines the **border radius** for `<mark>` elements.
          * Typically uses a **small radius** (`sm`) to create softened edges.
          */
-        borderRadius           : borderRadiusConfigVars.sm                                      as CssKnownProps['borderRadius'      ],
+        borderRadius           : radiusConfigVars.sm                                            as CssKnownProps['borderRadius'      ],
         
         
         

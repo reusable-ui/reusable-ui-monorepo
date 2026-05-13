@@ -13,8 +13,6 @@ export type CssBorderColor  = CssKnownValueOf<'borderColor'>
 export type CssBorderStyle  = CssKnownValueOf<'borderStyle'>
 export type CssBorder       = CssComplexValueOf<CssKnownValueOf<'border'>>
 
-export type CssBorderRadius = CssComplexValueOf<CssKnownValueOf<'borderRadius'>>
-
 
 
 /**
@@ -36,9 +34,3 @@ export type BorderStyle  = CssBorderStyle
  * @deprecated Use `CssBorder` instead.
  */
 export type Border       = CssBorder
-
-
-/**
- * @deprecated Use `CssBorderRadius` instead.
- */
-export type BorderRadius = CssBorderRadius

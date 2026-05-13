@@ -24,8 +24,10 @@ import {
 // Reusable-ui configs:
 import {
     borderConfigVars,
-    borderRadiusConfigVars,
 }                           from '@reusable-ui/border-config'       // A flexible and themeable border management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
+import {
+    radiusConfigVars,
+}                           from '@reusable-ui/radius-config'       // A flexible rounding system for UI components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 
 // Reusable-ui variants:
 import {
@@ -67,7 +69,7 @@ export const usesBorderFeature = (options?: CssBorderFeatureOptions): CssBorderF
         
         
         
-        borderRadius                     = borderRadiusConfigVars.default,
+        borderRadius                     = radiusConfigVars.default,
         borderStartStartRadius           = borderRadius,
         borderStartEndRadius             = borderRadius,
         borderEndStartRadius             = borderRadius,
