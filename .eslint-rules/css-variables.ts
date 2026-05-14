@@ -347,7 +347,7 @@ export const enforceCssVarsFunctionUsage = createRule({
                 // - Identified by names that exactly match "cssVars".
                 // - Identified imported from `@cssfn/core`.
                 if (
-                    (name === 'cssVars')
+                    (name !== 'cssVars')
                     ||
                     !isCssVarsFunctionImported
                 ) return;
