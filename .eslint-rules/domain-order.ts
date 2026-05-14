@@ -40,7 +40,7 @@ export const domainOrder = new Set<string>([
 'animationFeature',
 'filterFeature',
 'transformFeature',
-'shadowFeature',
+'boxShadowFeature',
 
 // States:
 'disabledState',

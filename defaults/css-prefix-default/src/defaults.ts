@@ -94,7 +94,7 @@ export const defaultPaddingFeaturePrefix       = 'pd'    // padding → pd (avoi
 export const defaultAnimationFeaturePrefix     = 'an'    // animation → an
 export const defaultFilterFeaturePrefix        = 'fi'    // filter → fi
 export const defaultTransformFeaturePrefix     = 'tr'    // transform → tr
-export const defaultShadowFeaturePrefix        = 'sh'    // shadow → sh (main intent of box-shadow; 'box' is technical detail)
+export const defaultBoxShadowFeaturePrefix     = 'bs'    // box shadow → bs
 
 
 

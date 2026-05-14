@@ -114,7 +114,7 @@ This avoids **hard-coded prefix strings**, reducing the risk of accidental colli
 | defaultAnimationFeaturePrefix     | an    |
 | defaultFilterFeaturePrefix        | fi    |
 | defaultTransformFeaturePrefix     | tr    |
-| defaultShadowFeaturePrefix        | sh    |
+| defaultBoxShadowFeaturePrefix     | bs    |
 | defaultDisabledStatePrefix        | dis   |
 | defaultReadOnlyStatePrefix        | ro    |
 | defaultFocusStatePrefix           | foc   |
@@ -168,7 +168,7 @@ This ensures that contributors don't need to memorize every detail — violation
 
 ### Features
 - Represent **actual CSS property implementations** for certain CSS properties that exclusively managed by system.  
-- **General rule:** 2–4 characters, short and mnemonic (e.g. `bg`, `fg`, `bd`, `rg`, `pd`, `sh`).  
+- **General rule:** 2–4 characters, short and mnemonic (e.g. `bg`, `fg`, `bd`, `rg`, `pd`, `bs`).  
 - **System-managed**: dynamically applied based on active **variants** and **states → effects**.  
 - Only listed features are managed; other CSS properties remain free for manual styling.  
 - See inline comments in `// Features:` for details.
