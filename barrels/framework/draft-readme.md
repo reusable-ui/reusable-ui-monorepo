@@ -1,8 +1,12 @@
 # Introduction
 
-**@reusable-ui/framework** is a **declarative-first CSS framework** built on (powered by) **CSS variables**.  
-Instead of writing **utility classes** like Tailwind, you declare styling intents (e.g. `className="th-primary sz-lg is-disabled"`) and consume ready-to-use **css variables** for background, text color, border, padding, radius, and more.  
+**@reusable-ui/framework** is a **declarative-first CSS framework**, powered by **CSS variables**.  
+Instead of writing **utility classes** like Tailwind, you declare styling intents (e.g. `className="th-primary sz-lg is-disabled"`) and consume ready-to-use **CSS variables** for background, text color, border, padding, radius, and more.  
 Variants, states, and effects drive these variables automatically, so your components adapt without manual CSS conditionals.
+
+At the same time, the framework is **reactive by design**, whenever classnames or configuration values change, the system reacts through a layered variable pipeline.  
+This reactivity ensures that updates cascade instantly — colors, spacing, and effects adjust in real time — without any JavaScript runtime overhead.
+
 
 ## Comparison with Tailwind
 
@@ -102,6 +106,45 @@ export const componentStyle = () => {
 
 The CSS-in-JS above compiles ahead-of-time or JIT into native CSS that browsers understand.
 
+## How It Works
+
+Think of the system as a **layered variable cascade** — a pipeline where styling intents and configs flow through interconnected CSS variables until they resolve into final feature values:
+
+```text
+Intent classnames (React side)
+   ↓
+Intent variables (e.g. `.th-primary { --th-bg-regular: ..., --th-bg-outlined: ... }`)
+   ↓
+Intermediate logic layers (e.g. switching background color for scenarios: regular / outlined / invalid / unthemed)
+   ↓
+Feature variables (e.g. --bg-backg, --fg-color, --bd-border)
+   ↓
+Final CSS properties (background, color, border, shadow, etc.)
+```
+
+1. **Intent variables**  
+   - Declared by developers via classnames (`th-primary`, `sz-lg`, `is-disabled`).  
+   - Represent *what you want*, not how it's implemented.  
+
+2. **Intermediate logic layers**  
+   - Hidden resolution layers, often multi-step.  
+   - Infer values from **configs** (colors, borders, spacings, etc.).  
+   - Apply conditional logic (e.g. ignore theme intent when invalid → force `--c-danger-*`).  
+   - Behave like a neural network: each layer refines the signal before passing it forward.  
+
+3. **Feature variables**  
+   - Final resolved values consumed by CSS properties.  
+   - Examples: `--bg-backg`, `--fg-color`, `--bd-border`, `--sh-shadow`.  
+   - Directly assignable to `background`, `color`, `border`, `box-shadow`, etc.  
+
+### Reactivity
+Because everything is powered by **CSS variables**, the system is inherently **reactive**:  
+- Classname changes instantly propagate through the variable cascade.  
+- Config updates (colors, borders, spacings, etc.) ripple across intermediate layers.  
+- Feature variables update in real time, ensuring styles adapt automatically without JavaScript runtime overhead.  
+
+This makes **@reusable-ui/framework** both **declarative-first** (developer declares intent) and **reactive by design** (system adapts through cascading variables and inferred configs).
+
 ## Philosophy
 
 - **Declarative-first**: you declare variants and states, the system resolves the correct colors, spacing, and other values automatically.  
@@ -115,6 +158,7 @@ The CSS-in-JS above compiles ahead-of-time or JIT into native CSS that browsers 
 
 ## Tagline Ideas
 - **“Build adaptive UIs declaratively, powered by CSS variables.”** (📌 top recommendation)  
+- **“Declarative-first for developers, reactive by design under the hood.”** (📌 alternate recommendation)
 - **“Design with intent — let variants and states resolve the styles.”**  
 - **“Declarative styling made simple: utility variables, not utility classes.”**  
 - **“Reusable-UI Framework: a CSS variable engine for modern design systems.”**  
@@ -132,8 +176,14 @@ The CSS-in-JS above compiles ahead-of-time or JIT into native CSS that browsers 
 Instead of writing utility classes, you declare variants and states (`th-primary`, `sz-lg`, `is-disabled`) and let the framework resolve the correct background, text color, border, padding, radius, and more.  
 With logic living entirely in CSS variables, your components adapt automatically — no manual conditionals, no runtime overhead, just clean, predictable styling powered by intent.  
 
+**@reusable-ui/framework** is a **declarative-first CSS framework**: you declare styling intents (`th-primary sz-lg is-disabled`), and the system resolves the correct background, text, border, spacing, and effects automatically.  
+At the same time, it's **reactive by design**: classnames and config changes trigger a chain reaction through CSS variables, ensuring styles adapt instantly without manual conditionals or runtime overhead.  
+
 ### 📌 This version emphasizes:  
 - **Declarative-first philosophy** (intent → resolved styles).  
 - **Utility variables vs utility classes** (your differentiator from Tailwind).  
 - **Automatic adaptation** (variants/states drive features).  
 - **No runtime overhead** (CSS-driven, not JS-driven).  
+- **Declarative-first** is the **developer-facing identity** (what you do).  
+- **Reactive by design** is the **system-facing philosophy** (how it works).  
+- Together, they give you a unique positioning: *intent-driven styling that adapts automatically*.  
