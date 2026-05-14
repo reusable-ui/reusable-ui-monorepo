@@ -36,7 +36,7 @@ The following **10 CSS properties** are system-managed:
 7. animation  
 8. filter  
 9. transform  
-10. shadow (box-shadow layers)
+10. box shadow
 
 These properties must be assigned via their **feature variables**.  
 Other CSS properties remain free for manual styling.
@@ -46,12 +46,12 @@ See the example below:
 ```ts
 return style({
     // Managed (feature variables must be applied):
-    // - Colors, paddings, animations, shadow, etc are automatically resolved.
-    background : backgroundFeatureVars.backg, // → var(--bg-backg)
-    color      : foregroundFeatureVars.color, // → var(--fg-color)
-    border     : borderFeatureVars.border,    // → var(--bd-border)
-    animation  : animationFeatureVars.anim,   // → var(--an-anim)
-    boxShadow  : shadowFeatureVars.shadow,    // → var(--sh-shadow)
+    // - Colors, paddings, animations, box shadow, etc are automatically resolved.
+    background : backgroundFeatureVars.backg,    // → var(--bg-backg)
+    color      : foregroundFeatureVars.color,    // → var(--fg-color)
+    border     : borderFeatureVars.border,       // → var(--bd-border)
+    animation  : animationFeatureVars.anim,      // → var(--an-anim)
+    boxShadow  : boxShadowFeatureVars.boxShadow, // → var(--bs-boxShadow)
     // .........
     
     // Unmanaged (free styling):
@@ -119,7 +119,7 @@ Intermediate logic layers (e.g. switching background color for scenarios: regula
    ↓
 Feature variables (e.g. `--bg-backg`, `--fg-color`, `--bd-border`)
    ↓
-Final CSS properties (background, color, border, shadow, etc.)
+Final CSS properties (background, color, border, box shadow, etc.)
 ```
 
 1. **Intent classnames**  
@@ -139,7 +139,7 @@ Final CSS properties (background, color, border, shadow, etc.)
 
 4. **Feature variables**  
    - Exposed by corresponding features and effects.  
-   - Final resolved values ready for consumption (e.g. `--bg-backg`, `--fg-color`, `--bd-border`, `--sh-shadow`).  
+   - Final resolved values ready for consumption (e.g. `--bg-backg`, `--fg-color`, `--bd-border`, `--bs-boxShadow`).  
    - Directly assignable to `background`, `color`, `border`, `box-shadow`, etc.  
 
 5. **Final CSS properties**  
