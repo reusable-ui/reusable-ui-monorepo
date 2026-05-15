@@ -5,6 +5,11 @@ import {
     cssConfig,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
+// Reusable-ui defaults:
+import {
+    defaultBreakpointConfigPrefix,
+}                           from '@reusable-ui/css-prefix-default'  // A centralized default CSS variable prefixes across the Reusable-UI core system, ensuring unique, predictable, and consistent prefixes.
+
 // Types:
 import {
     type CssBreakpoint,
@@ -25,7 +30,7 @@ const config = cssConfig<BreakpointConfig>(() => {
         xxl  : '1400px'     as CssBreakpoint,
         xxxl : '1600px'     as CssBreakpoint,
     };
-}, { prefix: 'brp' });
+}, { prefix: defaultBreakpointConfigPrefix });
 
 /**
  * A `Refs<>` object represents CSS variables mapped to a **breakpoint system**, allowing dynamic adjustments through JavaScript.
