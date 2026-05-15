@@ -2,7 +2,12 @@
 import {
     // Reads/writes css variables configuration:
     cssConfig,
-}                           from '@cssfn/core'          // Writes css in javascript.
+}                           from '@cssfn/core'                      // Writes css in javascript.
+
+// Reusable-ui defaults:
+import {
+    defaultColorConfigPrefix,
+}                           from '@reusable-ui/css-prefix-default'  // A centralized default CSS variable prefixes across the Reusable-UI core system, ensuring unique, predictable, and consistent prefixes.
 
 
 
@@ -168,7 +173,7 @@ const config = cssConfig(() => {
          */
         soft            : -0.5      as number,
     };
-}, { prefix: 'col-p' });
+}, { prefix: defaultColorConfigPrefix });
 
 /**
  * A `Refs<>` object represents CSS variables mapped to **color parameters**, allowing dynamic adjustments through JavaScript.
