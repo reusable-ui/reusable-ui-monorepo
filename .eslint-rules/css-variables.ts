@@ -296,11 +296,13 @@ export const enforceCssVarsFunctionUsage = createRule({
     create(context) {
         const filename         = context.filename;
         const basename         = path.basename(filename);
+        const relativeFilename = path.relative(process.cwd(), filename);
         
         
         
         // Flags to track whether functions were imported from `@cssfn/core`:
-        let isCssVarsFunctionImported = false;
+        let isCssVarsFunctionImported   = false;
+        let isCssConfigFunctionImported = false;
         const prefixesImported = new Set<string>();
         
         
@@ -323,6 +325,11 @@ export const enforceCssVarsFunctionUsage = createRule({
                     // Check if `cssVars()` is imported:
                     if (importedSpecifiers.some((importedSpecifier) => (importedSpecifier.imported.name === 'cssVars'))) {
                         isCssVarsFunctionImported = true;
+                    } // if
+                    
+                    // Check if `cssConfig()` is imported:
+                    if (importedSpecifiers.some((importedSpecifier) => (importedSpecifier.imported.name === 'cssConfig'))) {
+                        isCssConfigFunctionImported = true;
                     } // if
                 } // if
                 
@@ -408,6 +415,39 @@ export const enforceCssVarsFunctionUsage = createRule({
                     // Enforce file location:
                     if (!isExpectedModule) {
                         context.report({ node, messageId: 'wrongFile' });
+                    } // if
+                } // if
+                
+                
+                
+                // `cssConfig()` function candidates:
+                // - Identified by names that exactly match "cssConfig".
+                // - Identified imported from `@cssfn/core`.
+                if ((name === 'cssConfig')  && isCssConfigFunctionImported) {
+                    // Enforce `prefix` option assignment:
+                    const options = node.arguments[1];
+                    if (!options || (options.type !== TSESTree.AST_NODE_TYPES.ObjectExpression)) {
+                        context.report({ node, messageId: 'missingPrefix' });
+                    }
+                    else {
+                        const prefixAnn = options.properties.find((property): property is TSESTree.Property => (property.type === TSESTree.AST_NODE_TYPES.Property) && (property.key.type === TSESTree.AST_NODE_TYPES.Identifier) && (property.key.name === 'prefix'))
+                        if (!prefixAnn) {
+                            context.report({ node, messageId: 'missingPrefix' });
+                        }
+                        else {
+                            if ((prefixAnn.value.type !== TSESTree.AST_NODE_TYPES.Identifier) || !prefixesImported.has(prefixAnn.value.name)) {
+                                context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
+                            }
+                            else if (domainIdentifier === undefined) {
+                                context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
+                            }
+                            else {
+                                const expectedConstantName = `default${domainIdentifier}Prefix`;
+                                if (prefixAnn.value.name !== expectedConstantName) {
+                                    context.report({ node: prefixAnn.value, messageId: 'wrongPrefixConstant', data: { expectedConstantName } });
+                                } // if
+                            } // if
+                        } // if
                     } // if
                 } // if
                 
