@@ -54,5 +54,8 @@
   },
   "dependencies": {
     "@cssfn/core": "^4.0.0"
+  },
+  "peerDependencies": {
+    "@reusable-ui/css-prefix-default": "^7.0.0"
   }
 }
