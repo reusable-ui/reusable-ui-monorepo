@@ -54,6 +54,7 @@
     "@cssfn/core": "^4.0.0"
   },
   "peerDependencies": {
+    "@reusable-ui/css-prefix-default": "^7.0.0",
     "@reusable-ui/mild-variant": "^7.0.0",
     "@reusable-ui/outline-variant": "^7.0.0",
     "@reusable-ui/theme-variant": "^7.0.0"
