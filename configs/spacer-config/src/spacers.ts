@@ -4,6 +4,11 @@ import {
     cssConfig,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
+// Reusable-ui defaults:
+import {
+    defaultSpacerConfigPrefix,
+}                           from '@reusable-ui/css-prefix-default'  // A centralized default CSS variable prefixes across the Reusable-UI core system, ensuring unique, predictable, and consistent prefixes.
+
 // Types:
 import {
     type CssLength,
@@ -105,7 +110,7 @@ const config = cssConfig(() => {
         ...computedSpacerWidths,
         ...defaultSpacers,
     };
-}, { prefix: 'spc' });
+}, { prefix: defaultSpacerConfigPrefix });
 
 /**
  * A `Refs<>` object represents CSS variables mapped to a **spacer system**, allowing dynamic adjustments through JavaScript.
