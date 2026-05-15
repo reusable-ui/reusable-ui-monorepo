@@ -287,10 +287,9 @@ export const enforceCssVarsFunctionUsage = createRule({
         },
         schema: [], // no options accepted
         messages: {
-            missingPrefix       : 'The `prefix` option must be provided.',
-            wrongPrefix         : 'The `prefix` option must be assigned from a constant imported from `@reusable-ui/css-prefix-default`.',
-            wrongPrefixConstant : 'The `prefix` option must be assigned from "{{expectedConstantName}}" constant imported from `@reusable-ui/css-prefix-default`.',
-            wrongFile           : '`cssVars` function usages must be in `css-variables.ts` or `css-internal-variables.ts`.',
+            missingPrefix : 'The `prefix` option must be provided.',
+            wrongPrefix   : 'The `prefix` option must be assigned from `{{expectedConstantName}}` constant imported from `@reusable-ui/css-prefix-default`.',
+            wrongFile     : '`cssVars` function usages must be in `css-variables.ts` or `css-internal-variables.ts`.',
         },
     },
     create(context) {
@@ -394,17 +393,13 @@ export const enforceCssVarsFunctionUsage = createRule({
                         context.report({ node, messageId: 'missingPrefix' });
                     }
                     else {
+                        const expectedConstantName = (domainIdentifier !== undefined) ? `default${domainIdentifier}Prefix` : 'N/A';
+                        
                         if ((prefixAnn.value.type !== TSESTree.AST_NODE_TYPES.Identifier) || !prefixesImported.has(prefixAnn.value.name)) {
-                            context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
+                            context.report({ node: prefixAnn.value, messageId: 'wrongPrefix', data: { expectedConstantName } });
                         }
-                        else if (domainIdentifier === undefined) {
-                            context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
-                        }
-                        else {
-                            const expectedConstantName = `default${domainIdentifier}Prefix`;
-                            if (prefixAnn.value.name !== expectedConstantName) {
-                                context.report({ node: prefixAnn.value, messageId: 'wrongPrefixConstant', data: { expectedConstantName } });
-                            } // if
+                        else if (prefixAnn.value.name !== expectedConstantName) {
+                            context.report({ node: prefixAnn.value, messageId: 'wrongPrefix', data: { expectedConstantName } });
                         } // if
                     } // if
                 } // if
@@ -448,10 +443,9 @@ export const enforceCssConfigFunctionUsage = createRule({
         },
         schema: [], // no options accepted
         messages: {
-            missingPrefix       : 'The `prefix` option must be provided.',
-            wrongPrefix         : 'The `prefix` option must be assigned from a constant imported from `@reusable-ui/css-prefix-default`.',
-            wrongPrefixConstant : 'The `prefix` option must be assigned from "{{expectedConstantName}}" constant imported from `@reusable-ui/css-prefix-default`.',
-            wrongFile           : '`cssConfig` function usages must be in `css-variables.ts` or `css-internal-variables.ts`.',
+            missingPrefix : 'The `prefix` option must be provided.',
+            wrongPrefix   : 'The `prefix` option must be assigned from `{{expectedConstantName}}` constant imported from `@reusable-ui/css-prefix-default`.',
+            wrongFile     : '`cssConfig` function usages must be in `css-variables.ts` or `css-internal-variables.ts`.',
         },
     },
     create(context) {
@@ -551,17 +545,13 @@ export const enforceCssConfigFunctionUsage = createRule({
                         context.report({ node, messageId: 'missingPrefix' });
                     }
                     else {
+                        const expectedConstantName = (domainIdentifier !== undefined) ? `default${domainIdentifier}Prefix` : 'N/A';
+                        
                         if ((prefixAnn.value.type !== TSESTree.AST_NODE_TYPES.Identifier) || !prefixesImported.has(prefixAnn.value.name)) {
-                            context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
+                            context.report({ node: prefixAnn.value, messageId: 'wrongPrefix', data: { expectedConstantName } });
                         }
-                        else if (domainIdentifier === undefined) {
-                            context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
-                        }
-                        else {
-                            const expectedConstantName = `default${domainIdentifier}Prefix`;
-                            if (prefixAnn.value.name !== expectedConstantName) {
-                                context.report({ node: prefixAnn.value, messageId: 'wrongPrefixConstant', data: { expectedConstantName } });
-                            } // if
+                        else if (prefixAnn.value.name !== expectedConstantName) {
+                            context.report({ node: prefixAnn.value, messageId: 'wrongPrefix', data: { expectedConstantName } });
                         } // if
                     } // if
                 } // if
