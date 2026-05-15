@@ -296,7 +296,6 @@ export const enforceCssVarsFunctionUsage = createRule({
     create(context) {
         const filename         = context.filename;
         const basename         = path.basename(filename);
-        const isExpectedModule = ['css-variables.ts', 'css-internal-variables.ts'].includes(basename);
         
         
         
@@ -362,54 +361,56 @@ export const enforceCssVarsFunctionUsage = createRule({
                 
                 
                 
-                // Function candidates:
+                // `cssVars()` function candidates:
                 // - Identified by names that exactly match "cssVars".
                 // - Identified imported from `@cssfn/core`.
-                if (
-                    (name !== 'cssVars')
-                    ||
-                    !isCssVarsFunctionImported
-                ) return;
-                
-                
-                
-                // Enforce `prefix` option assignment:
-                const options = node.arguments[0];
-                if (!options || (options.type !== TSESTree.AST_NODE_TYPES.ObjectExpression)) {
-                    context.report({ node, messageId: 'missingPrefix' });
-                }
-                else {
-                    const prefixAnn = options.properties.find((property): property is TSESTree.Property => (property.type === TSESTree.AST_NODE_TYPES.Property) && (property.key.type === TSESTree.AST_NODE_TYPES.Identifier) && (property.key.name === 'prefix'))
-                    if (!prefixAnn) {
+                if ((name === 'cssVars')  && isCssVarsFunctionImported) {
+                    const isExpectedModule = ['css-variables.ts', 'css-internal-variables.ts'].includes(basename);
+                    
+                    
+                    
+                    // Enforce `prefix` option assignment:
+                    const options = node.arguments[0];
+                    if (!options || (options.type !== TSESTree.AST_NODE_TYPES.ObjectExpression)) {
                         context.report({ node, messageId: 'missingPrefix' });
                     }
                     else {
-                        if ((prefixAnn.value.type !== TSESTree.AST_NODE_TYPES.Identifier) || !prefixesImported.has(prefixAnn.value.name)) {
-                            context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
+                        const prefixAnn = options.properties.find((property): property is TSESTree.Property => (property.type === TSESTree.AST_NODE_TYPES.Property) && (property.key.type === TSESTree.AST_NODE_TYPES.Identifier) && (property.key.name === 'prefix'))
+                        if (!prefixAnn) {
+                            context.report({ node, messageId: 'missingPrefix' });
                         }
                         else {
-                            const domainTypeAnn = node.typeArguments?.params?.[0];
-                            if (!domainTypeAnn || (domainTypeAnn.type !== TSESTree.AST_NODE_TYPES.TSTypeReference) || (domainTypeAnn.typeName.type !== TSESTree.AST_NODE_TYPES.Identifier)) {
+                            if ((prefixAnn.value.type !== TSESTree.AST_NODE_TYPES.Identifier) || !prefixesImported.has(prefixAnn.value.name)) {
                                 context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
                             }
                             else {
-                                const domainGroupVars      = domainTypeAnn.typeName.name;
-                                const domainGroup          = domainGroupVars.slice(0, -4);
-                                const expectedConstantName = `default${domainGroup}Prefix`;
-                                if (prefixAnn.value.name !== expectedConstantName) {
-                                    context.report({ node: prefixAnn.value, messageId: 'wrongPrefixConstant', data: { expectedConstantName } });
+                                const domainTypeAnn = node.typeArguments?.params?.[0];
+                                if (!domainTypeAnn || (domainTypeAnn.type !== TSESTree.AST_NODE_TYPES.TSTypeReference) || (domainTypeAnn.typeName.type !== TSESTree.AST_NODE_TYPES.Identifier)) {
+                                    context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
+                                }
+                                else {
+                                    const domainGroupVars      = domainTypeAnn.typeName.name;
+                                    const domainGroup          = domainGroupVars.slice(0, -4);
+                                    const expectedConstantName = `default${domainGroup}Prefix`;
+                                    if (prefixAnn.value.name !== expectedConstantName) {
+                                        context.report({ node: prefixAnn.value, messageId: 'wrongPrefixConstant', data: { expectedConstantName } });
+                                    } // if
                                 } // if
-                            } // if
-                        }
+                            }
+                        } // if
+                    } // if
+                    
+                    
+                    
+                    // Enforce file location:
+                    if (!isExpectedModule) {
+                        context.report({ node, messageId: 'wrongFile' });
                     } // if
                 } // if
                 
                 
                 
-                // Enforce file location:
-                if (!isExpectedModule) {
-                    context.report({ node, messageId: 'wrongFile' });
-                } // if
+                // Other function candidate goes here...
             },
         };
     },
