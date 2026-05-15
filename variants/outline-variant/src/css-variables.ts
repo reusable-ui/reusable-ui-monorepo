@@ -4,6 +4,11 @@ import {
     cssVars,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
+// Reusable-ui defaults:
+import {
+    defaultOutlineVariantPrefix,
+}                           from '@reusable-ui/css-prefix-default'  // A centralized default CSS variable prefixes across the Reusable-UI core system, ensuring unique, predictable, and consistent prefixes.
+
 // Types:
 import {
     type OutlineVariantVars,
@@ -17,4 +22,4 @@ import {
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [outlineVariantVars] = cssVars<OutlineVariantVars>({ minify: false });
+export const [outlineVariantVars] = cssVars<OutlineVariantVars>({ prefix: defaultOutlineVariantPrefix, minify: false });
