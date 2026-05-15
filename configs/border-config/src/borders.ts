@@ -4,6 +4,11 @@ import {
     cssConfig,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
+// Reusable-ui defaults:
+import {
+    defaultBorderConfigPrefix,
+}                           from '@reusable-ui/css-prefix-default'  // A centralized default CSS variable prefixes across the Reusable-UI core system, ensuring unique, predictable, and consistent prefixes.
+
 // Types:
 import {
     type CssBorderWidth,
@@ -92,7 +97,7 @@ const config = cssConfig(() => {
         ...borderStyles,
         ...defaultBorders,
     };
-}, { prefix: 'bor' });
+}, { prefix: defaultBorderConfigPrefix });
 
 /**
  * A `Refs<>` object represents CSS variables mapped to a **border system**, allowing dynamic adjustments through JavaScript.
