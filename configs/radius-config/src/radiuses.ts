@@ -4,6 +4,11 @@ import {
     cssConfig,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
+// Reusable-ui defaults:
+import {
+    defaultRadiusConfigPrefix,
+}                           from '@reusable-ui/css-prefix-default'  // A centralized default CSS variable prefixes across the Reusable-UI core system, ensuring unique, predictable, and consistent prefixes.
+
 // Types:
 import {
     type CssBorderRadius,
@@ -99,7 +104,7 @@ const config = cssConfig(() => {
         ...relativeRadiuses,
         ...defaultRadiuses,
     };
-}, { prefix: 'r' });
+}, { prefix: defaultRadiusConfigPrefix });
 
 /**
  * A `Refs<>` object represents CSS variables mapped to a **radius system**, allowing dynamic adjustments through JavaScript.
