@@ -7,12 +7,17 @@ import {
     
     // Reads/writes css variables configuration:
     cssConfig,
-}                           from '@cssfn/core'                  // Writes css in javascript.
+}                           from '@cssfn/core'                      // Writes css in javascript.
+
+// Reusable-ui defaults:
+import {
+    defaultHorzSeparatorConfigPrefix,
+}                           from '@reusable-ui/css-prefix-default'  // A centralized default CSS variable prefixes across the Reusable-UI core system, ensuring unique, predictable, and consistent prefixes.
 
 // Configs:
 import {
     borderConfigVars,
-}                           from '@reusable-ui/border-config'   // A flexible and themeable border management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
+}                           from '@reusable-ui/border-config'       // A flexible and themeable border management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 
 
 
@@ -80,7 +85,7 @@ const config = cssConfig(() => {
          */
         marginBlockEnd         : '1em'                          as CssKnownProps['marginBlockEnd'    ],
     };
-}, { prefix: 'hr' });
+}, { prefix: defaultHorzSeparatorConfigPrefix });
 
 /**
  * A `Refs<>` object represents CSS variables mapped to a **typography system**, allowing dynamic adjustments through JavaScript.

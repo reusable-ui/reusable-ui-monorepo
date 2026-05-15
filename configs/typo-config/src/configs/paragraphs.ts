@@ -7,7 +7,12 @@ import {
     
     // Reads/writes css variables configuration:
     cssConfig,
-}                           from '@cssfn/core'          // Writes css in javascript.
+}                           from '@cssfn/core'                      // Writes css in javascript.
+
+// Reusable-ui defaults:
+import {
+    defaultParagraphConfigPrefix,
+}                           from '@reusable-ui/css-prefix-default'  // A centralized default CSS variable prefixes across the Reusable-UI core system, ensuring unique, predictable, and consistent prefixes.
 
 
 
@@ -87,7 +92,7 @@ const config = cssConfig(() => {
          */
         lineHeight        : undefined   as CssKnownProps['lineHeight'       ],
     };
-}, { prefix: 'p' });
+}, { prefix: defaultParagraphConfigPrefix });
 
 /**
  * A `Refs<>` object represents CSS variables mapped to a **typography system**, allowing dynamic adjustments through JavaScript.
