@@ -359,6 +359,14 @@ export const enforceCssVarsFunctionUsage = createRule({
                 // Store the function name for easy access:
                 const name = node.callee.name;
                 
+                // Extract the domain segment from the relative path:
+                // - Example: 'configs\border-config\src\borders.ts' → 'border-config'
+                const domainSegment    = relativeFilename.match(/^[/\\]?\w+[/\\](.*?-\w+)[/\\]/)?.[1];
+                
+                // Generate a PascalCase identifier from the domain segment:
+                // - Example: 'border-config' → 'BorderConfig'
+                const domainIdentifier = domainSegment?.replaceAll(/(^.|-.)/gi, (text) => text.replace('-', '').toUpperCase());
+                
                 
                 
                 // `cssVars()` function candidates:
@@ -383,20 +391,15 @@ export const enforceCssVarsFunctionUsage = createRule({
                             if ((prefixAnn.value.type !== TSESTree.AST_NODE_TYPES.Identifier) || !prefixesImported.has(prefixAnn.value.name)) {
                                 context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
                             }
-                            else {
-                                const domainTypeAnn = node.typeArguments?.params?.[0];
-                                if (!domainTypeAnn || (domainTypeAnn.type !== TSESTree.AST_NODE_TYPES.TSTypeReference) || (domainTypeAnn.typeName.type !== TSESTree.AST_NODE_TYPES.Identifier)) {
-                                    context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
-                                }
-                                else {
-                                    const domainGroupVars      = domainTypeAnn.typeName.name;
-                                    const domainGroup          = domainGroupVars.slice(0, -4);
-                                    const expectedConstantName = `default${domainGroup}Prefix`;
-                                    if (prefixAnn.value.name !== expectedConstantName) {
-                                        context.report({ node: prefixAnn.value, messageId: 'wrongPrefixConstant', data: { expectedConstantName } });
-                                    } // if
-                                } // if
+                            else if (domainIdentifier === undefined) {
+                                context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
                             }
+                            else {
+                                const expectedConstantName = `default${domainIdentifier}Prefix`;
+                                if (prefixAnn.value.name !== expectedConstantName) {
+                                    context.report({ node: prefixAnn.value, messageId: 'wrongPrefixConstant', data: { expectedConstantName } });
+                                } // if
+                            } // if
                         } // if
                     } // if
                     
