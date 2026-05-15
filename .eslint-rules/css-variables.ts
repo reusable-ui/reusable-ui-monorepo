@@ -268,6 +268,7 @@ export const enforceVariableConventions = createRule({
  * 
  * Requirements:
  * - Must be used only in `css-variables.ts` or `css-internal-variables.ts`.
+ * - The `prefix` option must be assigned from a constant imported from `@reusable-ui/css-prefix-default`.
  * 
  * Function candidates:
  * - Identified by names that exactly match "cssVars".
@@ -286,7 +287,10 @@ export const enforceCssVarsFunctionUsage = createRule({
         },
         schema: [], // no options accepted
         messages: {
-            wrongFile : '`cssVars` function usages must be in `css-variables.ts` or `css-internal-variables.ts`.',
+            missingPrefix       : 'The `prefix` option must be provided.',
+            wrongPrefix         : 'The `prefix` option must be assigned from a constant imported from `@reusable-ui/css-prefix-default`.',
+            wrongPrefixConstant : 'The `prefix` option must be assigned from "{{expectedConstantName}}" constant imported from `@reusable-ui/css-prefix-default`.',
+            wrongFile           : '`cssVars` function usages must be in `css-variables.ts` or `css-internal-variables.ts`.',
         },
     },
     create(context) {
@@ -298,7 +302,7 @@ export const enforceCssVarsFunctionUsage = createRule({
         
         // Flags to track whether functions were imported from `@cssfn/core`:
         let isCssVarsFunctionImported = false;
-        // let isFutureFunctionImported = false;
+        const prefixesImported = new Set<string>();
         
         
         
@@ -308,21 +312,36 @@ export const enforceCssVarsFunctionUsage = createRule({
              * Set the flags so later checks know these identifiers are the correct ones.
              */
             ImportDeclaration(node) {
-                // Only check imports from `@cssfn/core`:
-                if (node.source.value !== '@cssfn/core') return;
+                // Handle imports from `@cssfn/core`:
+                if (node.source.value === '@cssfn/core') {
+                    // Determine which relevant types are imported:
+                    const importedSpecifiers = node.specifiers.filter((specifier): specifier is TSESTree.ImportSpecifier & { imported: TSESTree.Identifier } =>
+                        ('imported' in specifier)
+                        &&
+                        specifier.imported instanceof Object
+                    );
+                    
+                    // Check if `cssVars()` is imported:
+                    if (importedSpecifiers.some((importedSpecifier) => (importedSpecifier.imported.name === 'cssVars'))) {
+                        isCssVarsFunctionImported = true;
+                    } // if
+                } // if
                 
                 
                 
-                // Determine which relevant types are imported:
-                const importedSpecifiers = node.specifiers.filter((specifier): specifier is TSESTree.ImportSpecifier & { imported: TSESTree.Identifier } =>
-                    ('imported' in specifier)
-                    &&
-                    specifier.imported instanceof Object
-                );
-                
-                // Check if `cssVars()` is imported:
-                if (importedSpecifiers.some((importedSpecifier) => (importedSpecifier.imported.name === 'cssVars'))) {
-                    isCssVarsFunctionImported = true;
+                // Handle imports from `@reusable-ui/css-prefix-default`:
+                else if (node.source.value === '@reusable-ui/css-prefix-default') {
+                    // Determine which relevant types are imported:
+                    const importedSpecifiers = node.specifiers.filter((specifier): specifier is TSESTree.ImportSpecifier & { imported: TSESTree.Identifier } =>
+                        ('imported' in specifier)
+                        &&
+                        specifier.imported instanceof Object
+                    );
+                    
+                    // Collect imported prefixes from `@reusable-ui/css-prefix-default`:
+                    for (const importedPrefix of importedSpecifiers.map((importedSpecifier) => importedSpecifier.imported.name).filter((importedName) => /^default([A-Z][a-z]*){1,2}[A-Z][a-z]*Prefix$/.test(importedName))) {
+                        prefixesImported.add(importedPrefix);
+                    } // if
                 } // if
             },
             
@@ -351,6 +370,39 @@ export const enforceCssVarsFunctionUsage = createRule({
                     ||
                     !isCssVarsFunctionImported
                 ) return;
+                
+                
+                
+                // Enforce `prefix` option assignment:
+                const options = node.arguments[0];
+                if (!options || (options.type !== TSESTree.AST_NODE_TYPES.ObjectExpression)) {
+                    context.report({ node, messageId: 'missingPrefix' });
+                }
+                else {
+                    const prefixAnn = options.properties.find((property): property is TSESTree.Property => (property.type === TSESTree.AST_NODE_TYPES.Property) && (property.key.type === TSESTree.AST_NODE_TYPES.Identifier) && (property.key.name === 'prefix'))
+                    if (!prefixAnn) {
+                        context.report({ node, messageId: 'missingPrefix' });
+                    }
+                    else {
+                        if ((prefixAnn.value.type !== TSESTree.AST_NODE_TYPES.Identifier) || !prefixesImported.has(prefixAnn.value.name)) {
+                            context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
+                        }
+                        else {
+                            const domainTypeAnn = node.typeArguments?.params?.[0];
+                            if (!domainTypeAnn || (domainTypeAnn.type !== TSESTree.AST_NODE_TYPES.TSTypeReference) || (domainTypeAnn.typeName.type !== TSESTree.AST_NODE_TYPES.Identifier)) {
+                                context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
+                            }
+                            else {
+                                const domainGroupVars      = domainTypeAnn.typeName.name;
+                                const domainGroup          = domainGroupVars.slice(0, -4);
+                                const expectedConstantName = `default${domainGroup}Prefix`;
+                                if (prefixAnn.value.name !== expectedConstantName) {
+                                    context.report({ node: prefixAnn.value, messageId: 'wrongPrefixConstant', data: { expectedConstantName } });
+                                } // if
+                            } // if
+                        }
+                    } // if
+                } // if
                 
                 
                 
