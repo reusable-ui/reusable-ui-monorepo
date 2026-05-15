@@ -300,10 +300,19 @@ export const enforceCssVarsFunctionUsage = createRule({
         
         
         
+        // Extract the domain segment from the relative path:
+        // - Example: 'configs\border-config\src\borders.ts' → 'border-config'
+        const domainSegment    = relativeFilename.match(/^[/\\]?\w+[/\\](.*?-\w+)[/\\]/)?.[1];
+        
+        // Generate a PascalCase identifier from the domain segment:
+        // - Example: 'border-config' → 'BorderConfig'
+        const domainIdentifier = domainSegment?.replaceAll(/(^.|-.)/gi, (text) => text.replace('-', '').toUpperCase());
+        
+        
+        
         // Flags to track whether functions were imported from `@cssfn/core`:
         let isCssVarsFunctionImported   = false;
-        let isCssConfigFunctionImported = false;
-        const prefixesImported = new Set<string>();
+        const prefixesImported          = new Set<string>();
         
         
         
@@ -325,11 +334,6 @@ export const enforceCssVarsFunctionUsage = createRule({
                     // Check if `cssVars()` is imported:
                     if (importedSpecifiers.some((importedSpecifier) => (importedSpecifier.imported.name === 'cssVars'))) {
                         isCssVarsFunctionImported = true;
-                    } // if
-                    
-                    // Check if `cssConfig()` is imported:
-                    if (importedSpecifiers.some((importedSpecifier) => (importedSpecifier.imported.name === 'cssConfig'))) {
-                        isCssConfigFunctionImported = true;
                     } // if
                 } // if
                 
@@ -366,94 +370,201 @@ export const enforceCssVarsFunctionUsage = createRule({
                 // Store the function name for easy access:
                 const name = node.callee.name;
                 
-                // Extract the domain segment from the relative path:
-                // - Example: 'configs\border-config\src\borders.ts' → 'border-config'
-                const domainSegment    = relativeFilename.match(/^[/\\]?\w+[/\\](.*?-\w+)[/\\]/)?.[1];
-                
-                // Generate a PascalCase identifier from the domain segment:
-                // - Example: 'border-config' → 'BorderConfig'
-                const domainIdentifier = domainSegment?.replaceAll(/(^.|-.)/gi, (text) => text.replace('-', '').toUpperCase());
-                
                 
                 
                 // `cssVars()` function candidates:
                 // - Identified by names that exactly match "cssVars".
                 // - Identified imported from `@cssfn/core`.
-                if ((name === 'cssVars')  && isCssVarsFunctionImported) {
-                    const isExpectedModule = ['css-variables.ts', 'css-internal-variables.ts'].includes(basename);
-                    
-                    
-                    
-                    // Enforce `prefix` option assignment:
-                    const options = node.arguments[0];
-                    if (!options || (options.type !== TSESTree.AST_NODE_TYPES.ObjectExpression)) {
+                if ((name !== 'cssVars') || !isCssVarsFunctionImported) return;
+                
+                
+                
+                const isExpectedModule = ['css-variables.ts', 'css-internal-variables.ts'].includes(basename);
+                
+                
+                
+                // Enforce `prefix` option assignment:
+                const options = node.arguments[0];
+                if (!options || (options.type !== TSESTree.AST_NODE_TYPES.ObjectExpression)) {
+                    context.report({ node, messageId: 'missingPrefix' });
+                }
+                else {
+                    const prefixAnn = options.properties.find((property): property is TSESTree.Property => (property.type === TSESTree.AST_NODE_TYPES.Property) && (property.key.type === TSESTree.AST_NODE_TYPES.Identifier) && (property.key.name === 'prefix'))
+                    if (!prefixAnn) {
                         context.report({ node, messageId: 'missingPrefix' });
                     }
                     else {
-                        const prefixAnn = options.properties.find((property): property is TSESTree.Property => (property.type === TSESTree.AST_NODE_TYPES.Property) && (property.key.type === TSESTree.AST_NODE_TYPES.Identifier) && (property.key.name === 'prefix'))
-                        if (!prefixAnn) {
-                            context.report({ node, messageId: 'missingPrefix' });
+                        if ((prefixAnn.value.type !== TSESTree.AST_NODE_TYPES.Identifier) || !prefixesImported.has(prefixAnn.value.name)) {
+                            context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
+                        }
+                        else if (domainIdentifier === undefined) {
+                            context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
                         }
                         else {
-                            if ((prefixAnn.value.type !== TSESTree.AST_NODE_TYPES.Identifier) || !prefixesImported.has(prefixAnn.value.name)) {
-                                context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
-                            }
-                            else if (domainIdentifier === undefined) {
-                                context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
-                            }
-                            else {
-                                const expectedConstantName = `default${domainIdentifier}Prefix`;
-                                if (prefixAnn.value.name !== expectedConstantName) {
-                                    context.report({ node: prefixAnn.value, messageId: 'wrongPrefixConstant', data: { expectedConstantName } });
-                                } // if
+                            const expectedConstantName = `default${domainIdentifier}Prefix`;
+                            if (prefixAnn.value.name !== expectedConstantName) {
+                                context.report({ node: prefixAnn.value, messageId: 'wrongPrefixConstant', data: { expectedConstantName } });
                             } // if
                         } // if
                     } // if
+                } // if
+                
+                
+                
+                // Enforce file location:
+                if (!isExpectedModule) {
+                    context.report({ node, messageId: 'wrongFile' });
+                } // if
+            },
+        };
+    },
+});
+
+
+
+/**
+ * ESLint rule: enforce-cssconfig-function-usage
+ * 
+ * Purpose:
+ * - Ensure `cssConfig` function usages are centralized in the correct files.
+ * 
+ * Requirements:
+ * - The `prefix` option must be assigned from a constant imported from `@reusable-ui/css-prefix-default`.
+ * 
+ * Function candidates:
+ * - Identified by names that exactly match "cssConfig".
+ * - Identified as a function declaration, function expression, or arrow function.
+ * - Identified imported from `@cssfn/core`.
+ * 
+ * Why:
+ * - Centralizes `cssConfig` function usages for discoverability.
+ */
+export const enforceCssConfigFunctionUsage = createRule({
+    name : 'enforce-cssconfig-function-usage',
+    meta: {
+        type: 'problem',
+        docs: {
+            description : 'Require `cssConfig` function usages only in `css-variables.ts` or `css-internal-variables.ts`.',
+        },
+        schema: [], // no options accepted
+        messages: {
+            missingPrefix       : 'The `prefix` option must be provided.',
+            wrongPrefix         : 'The `prefix` option must be assigned from a constant imported from `@reusable-ui/css-prefix-default`.',
+            wrongPrefixConstant : 'The `prefix` option must be assigned from "{{expectedConstantName}}" constant imported from `@reusable-ui/css-prefix-default`.',
+            wrongFile           : '`cssConfig` function usages must be in `css-variables.ts` or `css-internal-variables.ts`.',
+        },
+    },
+    create(context) {
+        const filename         = context.filename;
+        // const basename         = path.basename(filename);
+        const relativeFilename = path.relative(process.cwd(), filename);
+        
+        
+        
+        // Extract the domain segment from the relative path:
+        // - Example: 'configs\border-config\src\borders.ts' → 'border-config'
+        const domainSegment    = relativeFilename.match(/^[/\\]?\w+[/\\](.*?-\w+)[/\\]/)?.[1];
+        
+        // Generate a PascalCase identifier from the domain segment:
+        // - Example: 'border-config' → 'BorderConfig'
+        const domainIdentifier = domainSegment?.replaceAll(/(^.|-.)/gi, (text) => text.replace('-', '').toUpperCase());
+        
+        
+        
+        // Flags to track whether functions were imported from `@cssfn/core`:
+        let isCssConfigFunctionImported = false;
+        const prefixesImported          = new Set<string>();
+        
+        
+        
+        return {
+            /**
+             * Detect imports of `cssConfig()` from `@cssfn/core`.
+             * Set the flags so later checks know these identifiers are the correct ones.
+             */
+            ImportDeclaration(node) {
+                // Handle imports from `@cssfn/core`:
+                if (node.source.value === '@cssfn/core') {
+                    // Determine which relevant types are imported:
+                    const importedSpecifiers = node.specifiers.filter((specifier): specifier is TSESTree.ImportSpecifier & { imported: TSESTree.Identifier } =>
+                        ('imported' in specifier)
+                        &&
+                        specifier.imported instanceof Object
+                    );
                     
-                    
-                    
-                    // Enforce file location:
-                    if (!isExpectedModule) {
-                        context.report({ node, messageId: 'wrongFile' });
+                    // Check if `cssConfig()` is imported:
+                    if (importedSpecifiers.some((importedSpecifier) => (importedSpecifier.imported.name === 'cssConfig'))) {
+                        isCssConfigFunctionImported = true;
                     } // if
                 } // if
+                
+                
+                
+                // Handle imports from `@reusable-ui/css-prefix-default`:
+                else if (node.source.value === '@reusable-ui/css-prefix-default') {
+                    // Determine which relevant types are imported:
+                    const importedSpecifiers = node.specifiers.filter((specifier): specifier is TSESTree.ImportSpecifier & { imported: TSESTree.Identifier } =>
+                        ('imported' in specifier)
+                        &&
+                        specifier.imported instanceof Object
+                    );
+                    
+                    // Collect imported prefixes from `@reusable-ui/css-prefix-default`:
+                    for (const importedPrefix of importedSpecifiers.map((importedSpecifier) => importedSpecifier.imported.name).filter((importedName) => /^default([A-Z][a-z]*){1,2}[A-Z][a-z]*Prefix$/.test(importedName))) {
+                        prefixesImported.add(importedPrefix);
+                    } // if
+                } // if
+            },
+            
+            
+            
+            /**
+             * Detects function usages.
+             * Handles `cssConfig()` usages.
+             */
+            CallExpression(node) {
+                // Ensure the function has an identifier name:
+                if ((node.callee.type !== 'Identifier') || (node.callee.type !== TSESTree.AST_NODE_TYPES.Identifier)) return;
+                
+                
+                
+                // Store the function name for easy access:
+                const name = node.callee.name;
                 
                 
                 
                 // `cssConfig()` function candidates:
                 // - Identified by names that exactly match "cssConfig".
                 // - Identified imported from `@cssfn/core`.
-                if ((name === 'cssConfig')  && isCssConfigFunctionImported) {
-                    // Enforce `prefix` option assignment:
-                    const options = node.arguments[1];
-                    if (!options || (options.type !== TSESTree.AST_NODE_TYPES.ObjectExpression)) {
+                if ((name !== 'cssConfig') || !isCssConfigFunctionImported) return;
+                
+                
+                
+                // Enforce `prefix` option assignment:
+                const options = node.arguments[1];
+                if (!options || (options.type !== TSESTree.AST_NODE_TYPES.ObjectExpression)) {
+                    context.report({ node, messageId: 'missingPrefix' });
+                }
+                else {
+                    const prefixAnn = options.properties.find((property): property is TSESTree.Property => (property.type === TSESTree.AST_NODE_TYPES.Property) && (property.key.type === TSESTree.AST_NODE_TYPES.Identifier) && (property.key.name === 'prefix'))
+                    if (!prefixAnn) {
                         context.report({ node, messageId: 'missingPrefix' });
                     }
                     else {
-                        const prefixAnn = options.properties.find((property): property is TSESTree.Property => (property.type === TSESTree.AST_NODE_TYPES.Property) && (property.key.type === TSESTree.AST_NODE_TYPES.Identifier) && (property.key.name === 'prefix'))
-                        if (!prefixAnn) {
-                            context.report({ node, messageId: 'missingPrefix' });
+                        if ((prefixAnn.value.type !== TSESTree.AST_NODE_TYPES.Identifier) || !prefixesImported.has(prefixAnn.value.name)) {
+                            context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
+                        }
+                        else if (domainIdentifier === undefined) {
+                            context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
                         }
                         else {
-                            if ((prefixAnn.value.type !== TSESTree.AST_NODE_TYPES.Identifier) || !prefixesImported.has(prefixAnn.value.name)) {
-                                context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
-                            }
-                            else if (domainIdentifier === undefined) {
-                                context.report({ node: prefixAnn.value, messageId: 'wrongPrefix' });
-                            }
-                            else {
-                                const expectedConstantName = `default${domainIdentifier}Prefix`;
-                                if (prefixAnn.value.name !== expectedConstantName) {
-                                    context.report({ node: prefixAnn.value, messageId: 'wrongPrefixConstant', data: { expectedConstantName } });
-                                } // if
+                            const expectedConstantName = `default${domainIdentifier}Prefix`;
+                            if (prefixAnn.value.name !== expectedConstantName) {
+                                context.report({ node: prefixAnn.value, messageId: 'wrongPrefixConstant', data: { expectedConstantName } });
                             } // if
                         } // if
                     } // if
                 } // if
-                
-                
-                
-                // Other function candidate goes here...
             },
         };
     },

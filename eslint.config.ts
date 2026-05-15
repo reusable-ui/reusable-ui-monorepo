@@ -8,7 +8,7 @@ import importPlugin from 'eslint-plugin-import'
 import jestPlugin from 'eslint-plugin-jest'
 import { enforceSelectorConventions, enforceIfFunctionConventions, noForeignCode as noForeignCodeInCssSelectors } from './.eslint-rules/css-selectors.js'
 import { enforceHookConventions, noForeignCode as noForeignCodeInCssHooks } from './.eslint-rules/css-hooks.js'
-import { enforceVariableConventions, enforceCssVarsFunctionUsage, noForeignCode as noForeignCodeInCssVars } from './.eslint-rules/css-variables.js'
+import { enforceVariableConventions, enforceCssVarsFunctionUsage, enforceCssConfigFunctionUsage, noForeignCode as noForeignCodeInCssVars } from './.eslint-rules/css-variables.js'
 import { enforceCssPrefixDefaults } from './.eslint-rules/css-prefix-default.js'
 
 
@@ -282,27 +282,28 @@ export default defineConfig(
         plugins: {
             'css-selectors': {
                 rules: {
-                    'enforce-selector-conventions'    : enforceSelectorConventions   as unknown as Rule.RuleModule,
-                    'enforce-if-function-conventions' : enforceIfFunctionConventions as unknown as Rule.RuleModule,
-                    'no-foreign-code'                 : noForeignCodeInCssSelectors  as unknown as Rule.RuleModule,
+                    'enforce-selector-conventions'     : enforceSelectorConventions   as unknown as Rule.RuleModule,
+                    'enforce-if-function-conventions'  : enforceIfFunctionConventions as unknown as Rule.RuleModule,
+                    'no-foreign-code'                  : noForeignCodeInCssSelectors  as unknown as Rule.RuleModule,
                 },
             },
             'css-hooks': {
                 rules: {
-                    'enforce-hook-conventions'        : enforceHookConventions       as unknown as Rule.RuleModule,
-                    'no-foreign-code'                 : noForeignCodeInCssHooks      as unknown as Rule.RuleModule,
+                    'enforce-hook-conventions'         : enforceHookConventions       as unknown as Rule.RuleModule,
+                    'no-foreign-code'                  : noForeignCodeInCssHooks      as unknown as Rule.RuleModule,
                 },
             },
             'css-variables': {
                 rules: {
-                    'enforce-variable-conventions'    : enforceVariableConventions    as unknown as Rule.RuleModule,
-                    'enforce-cssvars-function-usage'  : enforceCssVarsFunctionUsage   as unknown as Rule.RuleModule,
-                    'no-foreign-code'                 : noForeignCodeInCssVars        as unknown as Rule.RuleModule,
+                    'enforce-variable-conventions'     : enforceVariableConventions    as unknown as Rule.RuleModule,
+                    'enforce-cssvars-function-usage'   : enforceCssVarsFunctionUsage   as unknown as Rule.RuleModule,
+                    'enforce-cssconfig-function-usage' : enforceCssConfigFunctionUsage as unknown as Rule.RuleModule,
+                    'no-foreign-code'                  : noForeignCodeInCssVars        as unknown as Rule.RuleModule,
                 },
             },
             'css-prefix-default': {
                 rules: {
-                    'enforce-css-prefix-defaults'     : enforceCssPrefixDefaults      as unknown as Rule.RuleModule,
+                    'enforce-css-prefix-defaults'      : enforceCssPrefixDefaults      as unknown as Rule.RuleModule,
                 },
             },
         },
@@ -322,6 +323,7 @@ export default defineConfig(
             'css-hooks/no-foreign-code'                      : 'error',
             'css-variables/enforce-variable-conventions'     : 'error',
             'css-variables/enforce-cssvars-function-usage'   : 'error',
+            'css-variables/enforce-cssconfig-function-usage' : 'error',
             'css-variables/no-foreign-code'                  : 'error',
             'css-prefix-default/enforce-css-prefix-defaults' : ['error', {
                 minLength : 1,
