@@ -52,6 +52,7 @@
   },
   "peerDependencies": {
     "@reusable-ui/color-config": "^7.0.0",
+    "@reusable-ui/css-prefix-default": "^7.0.0",
     "@reusable-ui/theme-variant": "^7.0.0",
     "@reusable-ui/validity-state": "^7.0.0"
   },
