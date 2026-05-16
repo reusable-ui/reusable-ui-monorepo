@@ -149,23 +149,40 @@ export const enforceVariableConventions = createRule({
          * Requirements:
          * - Must follow `<Domain><Group>Vars` naming convention.
          * - Must be camelCase.
-         * - The Domain must be one or two words (lowercase → uppercase boundary).
-         * - The Group must be one of:
-         *   - Config
-         *   - Variant
-         *   - Feature
-         *   - State
-         *   - Effect
+         * - The `domainIdentifier` is PascalCase (e.g. `ColorConfig`, `BorderFeature`).
+         *   • The trailing part (`Config`, `Feature`, `Variant`, `State`, `Effect`) is the **group name**.
+         *   • The leading part (`Color`, `Border`, `FlowDirection`) is the **domain base**.
+         * - The optional `subdomainIdentifier` is appended directly after the domain base (PascalCase).
          * 
          * Examples:
-         * - ✅ `colorConfigVars`
-         * - ✅ `borderConfigVars`
-         * - ✅ `flowDirectionVariantVars`
-         * - ❌ `colorVarsConfig` (wrong order)
-         * - ❌ `disabledstateVars` (missing case boundary)
+         * - ✅ `colorConfigVars`          → domain=`Color`, group=`Config`
+         * - ✅ `borderFeatureVars`        → domain=`Border`, group=`Feature`
+         * - ✅ `flowDirectionVariantVars` → domain=`FlowDirection`, group=`Variant`
+         * - ✅ `colorParamConfigVars`     → domain=`Color`, subdomain=`Param`, group=`Config`
+         * - ❌ `colorVarsConfig`          (wrong order)
+         * - ❌ `disabledstateVars`        (missing case boundary)
          */
         const isValidVariableGroupName = (name: string): boolean => {
-            return /^[a-z]+([A-Z][a-z]*)?(Config|Variant|Feature|State|Effect)Vars$/.test(name);
+            // Loose validation (no domain context available):
+            if (!domainIdentifier)  return /^[a-z]+([A-Z][a-z]*)?(Config|Variant|Feature|State|Effect)Vars$/.test(name);
+            
+            
+            
+            // Tight validation (domain context available):
+            
+            // Extract group name from the domainIdentifier (e.g. "ColorConfig" → "Config"):
+            const groupName    = domainIdentifier.match(/(Config|Variant|Feature|State|Effect)$/)?.[1] ?? '';
+            
+            // Extract domain base (remove the group suffix):
+            const domainBase   = domainIdentifier.slice(0, -groupName.length);
+            
+            // Convert domain base to camelCase (first letter lowercase):
+            const domainCamel  = domainBase[0].toLowerCase() + domainBase.slice(1);
+            
+            // Build expected name: <domain><subdomain?><group>Vars:
+            const expectedName = `${domainCamel}${subdomainIdentifier ?? ''}${groupName}Vars`;
+            
+            return (name === expectedName);
         };
         
         
