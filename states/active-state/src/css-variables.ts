@@ -9,6 +9,11 @@ import {
     type ActiveStateVars,
 }                           from './types.js'
 
+// Reusable-ui defaults:
+import {
+    defaultActiveStatePrefix,
+}                           from '@reusable-ui/css-prefix-default'  // A centralized default CSS variable prefixes across the Reusable-UI core system, ensuring unique, predictable, and consistent prefixes.
+
 // Reusable-ui features:
 import {
     animationRegistry,
@@ -22,7 +27,7 @@ import {
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [activeStateVars] = cssVars<ActiveStateVars>({ prefix: 'ac', minify: false });
+export const [activeStateVars] = cssVars<ActiveStateVars>({ prefix: defaultActiveStatePrefix, minify: false });
 
 // Register the activate/deactivate-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(activeStateVars.animationActivating);
