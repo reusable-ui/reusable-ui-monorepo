@@ -51,8 +51,9 @@
     "@cssfn/core": "^4.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/transform-feature": "^7.0.0",
     "@reusable-ui/collapse-state": "^7.0.0",
+    "@reusable-ui/css-prefix-default": "^7.0.0",
+    "@reusable-ui/transform-feature": "^7.0.0",
     "@types/react": "^19.0.0",
     "react": "^19.0.0"
   }
