@@ -3,6 +3,7 @@ import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
 import { collectBindingInitializers, collectTopLevelBindings } from './binding-initializers.js'
 import { isTopLevel, isExported } from './scope-utilities.js'
+import { getDomainIdentifier } from './domain-utilities.js'
 
 
 
@@ -339,13 +340,8 @@ export const enforceCssVarsFunctionUsage = createRule({
         
         
         
-        // Extract the domain segment from the relative path:
-        // - Example: 'configs\border-config\src\borders.ts' → 'border-config'
-        const domainSegment    = relativeFilename.match(/^[/\\]?\w+[/\\](.*?-\w+)[/\\]/)?.[1];
-        
-        // Generate a PascalCase identifier from the domain segment:
-        // - Example: 'border-config' → 'BorderConfig'
-        const domainIdentifier = domainSegment?.replaceAll(/(^.|-.)/gi, (text) => text.replace('-', '').toUpperCase());
+        // Get domain identifier from a relative filename:
+        const domainIdentifier = getDomainIdentifier(relativeFilename);
         
         
         
@@ -495,13 +491,8 @@ export const enforceCssConfigFunctionUsage = createRule({
         
         
         
-        // Extract the domain segment from the relative path:
-        // - Example: 'configs\border-config\src\borders.ts' → 'border-config'
-        const domainSegment    = relativeFilename.match(/^[/\\]?\w+[/\\](.*?-\w+)[/\\]/)?.[1];
-        
-        // Generate a PascalCase identifier from the domain segment:
-        // - Example: 'border-config' → 'BorderConfig'
-        const domainIdentifier = domainSegment?.replaceAll(/(^.|-.)/gi, (text) => text.replace('-', '').toUpperCase());
+        // Get domain identifier from a relative filename:
+        const domainIdentifier = getDomainIdentifier(relativeFilename);
         
         
         
