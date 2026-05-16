@@ -53,6 +53,7 @@
     "@reusable-ui/filter-effect": "^7.0.0"
   },
   "peerDependencies": {
+    "@reusable-ui/css-prefix-default": "^7.0.0",
     "@reusable-ui/filter-feature": "^7.0.0",
     "@reusable-ui/press-state": "^7.0.0"
   },
