@@ -13,11 +13,11 @@ import {
 // Configs:
 import {
     colorParamConfigVars,
-}                           from './color-params.js'
+}                           from './css-param-config.js'
 import {
     colorConfigVars,
     colorConfigExpressions,
-}                           from './colors.js'
+}                           from './css-config.js'
 
 
 

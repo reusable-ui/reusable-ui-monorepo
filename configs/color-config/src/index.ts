@@ -1,9 +1,9 @@
 export *            from './types.js'
 
-export *            from './color-params.js'
+export *            from './css-param-config.js'
 
-export *            from './colors.js'
-export { default }  from './colors.js'
+export *            from './css-config.js'
+export { default }  from './css-config.js'
 
 export *            from './declarators.js'
 
