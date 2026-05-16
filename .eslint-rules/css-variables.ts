@@ -3,7 +3,7 @@ import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
 import { collectBindingInitializers, collectTopLevelBindings } from './binding-initializers.js'
 import { isTopLevel, isExported } from './scope-utilities.js'
-import { getDomainIdentifier } from './domain-utilities.js'
+import { getDomainIdentifier, getSubDomainIdentifier } from './domain-utilities.js'
 
 
 
@@ -23,7 +23,17 @@ const createRule = ESLintUtils.RuleCreator(
  * Requirements:
  * - Must be a variable typed as `CssVars` (imported from `@cssfn/core`).
  * - Cannot be a function (function declaration, function expression, or arrow function).
- * - Must be declared only in `css-variables.ts` or `css-internal-variables.ts`.
+ * - Must be declared only in:
+ *   - For general‑purpose variables → must be declared only in:
+ *     • `css-variables.ts`
+ *     • `css-internal-variables.ts`
+ *     • `css-<Subdomain>-variables.ts`
+ *     • `css-internal-<Subdomain>-variables.ts`
+ *   - For config‑specific variables → must be declared only in:
+ *     • `css-config.ts`
+ *     • `css-internal-config.ts`
+ *     • `css-<Subdomain>-config.ts`
+ *     • `css-internal-<Subdomain>-config.ts`
  * - Must be exported.
  * 
  * CSS variable candidates:
@@ -47,7 +57,7 @@ export const enforceVariableConventions = createRule({
         },
         schema: [], // no options accepted
         messages: {
-            wrongFile   : 'CSS variables must be declared in `css-variables.ts` or `css-internal-variables.ts`.',
+            wrongFile   : 'CSS variables must be declared in the expected module file (e.g. `css-config.ts`, `css-internal-config.ts`, `css-variables.ts`, or their sub-domain variants).',
             wrongExport : 'CSS variables must be exported.',
             wrongType   : 'CSS variables must be typed `CssVars` from `@cssfn/core`.',
             wrongName   : 'CSS variable names must follow `<Domain><Group>Vars` naming convention.',
@@ -57,7 +67,44 @@ export const enforceVariableConventions = createRule({
     create(context) {
         const filename         = context.filename;
         const basename         = path.basename(filename);
-        const isExpectedModule = ['css-variables.ts', 'css-internal-variables.ts'].includes(basename);
+        const relativeFilename = path.relative(process.cwd(), filename);
+        
+        
+        
+        // Get domain identifier from a relative filename:
+        const domainIdentifier    = getDomainIdentifier(relativeFilename);
+        const subdomainIdentifier = getSubDomainIdentifier(relativeFilename);
+        
+        
+        
+        // Determine if the CSS variable is declared within the expected module:
+        //
+        // Rules:
+        // - Config‑related variables → must be inside one of:
+        //   • `css-config.ts`
+        //   • `css-internal-config.ts`
+        //   • `css-<Subdomain>-config.ts`
+        //   • `css-internal-<Subdomain>-config.ts`
+        // - General‑purpose variables → must be inside one of:
+        //   • `css-variables.ts`
+        //   • `css-internal-variables.ts`
+        //   • `css-<Subdomain>-variables.ts`
+        //   • `css-internal-<Subdomain>-variables.ts`
+        const subdomainSuffix = subdomainIdentifier ? `-${subdomainIdentifier}` : '';
+        const isExpectedModule = (
+            // Config‑related variables:
+            domainIdentifier?.endsWith('Config')
+            ? [
+                `css${subdomainSuffix}-config.ts`,
+                `css-internal${subdomainSuffix}-config.ts`,
+            ]
+            
+            // General‑purpose variables:
+            : [
+                `css${subdomainSuffix}-variables.ts`,
+                `css-internal${subdomainSuffix}-variables.ts`,
+            ]
+        ).includes(basename);
         
         
         
