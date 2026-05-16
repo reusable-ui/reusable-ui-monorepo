@@ -27,13 +27,13 @@ const createRule = ESLintUtils.RuleCreator(
  *   - For general‑purpose variables → must be declared only in:
  *     • `css-variables.ts`
  *     • `css-internal-variables.ts`
- *     • `css-<Subdomain>-variables.ts`
- *     • `css-internal-<Subdomain>-variables.ts`
+ *     • `css-<subdomain>-variables.ts`
+ *     • `css-internal-<subdomain>-variables.ts`
  *   - For config‑specific variables → must be declared only in:
  *     • `css-config.ts`
  *     • `css-internal-config.ts`
- *     • `css-<Subdomain>-config.ts`
- *     • `css-internal-<Subdomain>-config.ts`
+ *     • `css-<subdomain>-config.ts`
+ *     • `css-internal-<subdomain>-config.ts`
  * - Must be exported.
  * 
  * CSS variable candidates:
@@ -83,14 +83,14 @@ export const enforceVariableConventions = createRule({
         // - Config‑related variables → must be inside one of:
         //   • `css-config.ts`
         //   • `css-internal-config.ts`
-        //   • `css-<Subdomain>-config.ts`
-        //   • `css-internal-<Subdomain>-config.ts`
+        //   • `css-<subdomain>-config.ts`
+        //   • `css-internal-<subdomain>-config.ts`
         // - General‑purpose variables → must be inside one of:
         //   • `css-variables.ts`
         //   • `css-internal-variables.ts`
-        //   • `css-<Subdomain>-variables.ts`
-        //   • `css-internal-<Subdomain>-variables.ts`
-        const subdomainSuffix = subdomainIdentifier ? `-${subdomainIdentifier}` : '';
+        //   • `css-<subdomain>-variables.ts`
+        //   • `css-internal-<subdomain>-variables.ts`
+        const subdomainSuffix = subdomainIdentifier ? `-${subdomainIdentifier[0].toLowerCase() + subdomainIdentifier.slice(1)}` : '';
         const isExpectedModule = (
             // Config‑related variables:
             domainIdentifier?.endsWith('Config')
