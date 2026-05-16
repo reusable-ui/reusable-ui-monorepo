@@ -49,6 +49,7 @@ export const enforceVariableConventions = createRule({
             wrongFile   : 'CSS variables must be declared in `css-variables.ts` or `css-internal-variables.ts`.',
             wrongExport : 'CSS variables must be exported.',
             wrongType   : 'CSS variables must be typed `CssVars` from `@cssfn/core`.',
+            wrongName   : 'CSS variable names must follow `<Domain><Group>Vars` naming convention.',
         },
     },
     
@@ -92,6 +93,31 @@ export const enforceVariableConventions = createRule({
                 &&
                 (returnAnn.typeName.name === 'CssVars')
             );
+        };
+        
+        /**
+         * Validates naming convention for CSS variable groups.
+         * 
+         * Requirements:
+         * - Must follow `<Domain><Group>Vars` naming convention.
+         * - Must be camelCase.
+         * - The Domain must be one or two words (lowercase → uppercase boundary).
+         * - The Group must be one of:
+         *   - Config
+         *   - Variant
+         *   - Feature
+         *   - State
+         *   - Effect
+         * 
+         * Examples:
+         * - ✅ `colorConfigVars`
+         * - ✅ `borderConfigVars`
+         * - ✅ `flowDirectionVariantVars`
+         * - ❌ `colorVarsConfig` (wrong order)
+         * - ❌ `disabledstateVars` (missing case boundary)
+         */
+        const isValidVariableGroupName = (name: string): boolean => {
+            return /^[a-z]+([A-Z][a-z]*)?(Config|Variant|Feature|State|Effect)Vars$/.test(name);
         };
         
         
@@ -157,6 +183,13 @@ export const enforceVariableConventions = createRule({
                 
                 
                 
+                // Enforce naming convention:
+                if (!isValidVariableGroupName(name)) {
+                    context.report({ node, messageId: 'wrongName' });
+                } // if
+                
+                
+                
                 // Enforce not being a function:
                 context.report({ node, messageId: 'wrongType' });
                 
@@ -211,6 +244,13 @@ export const enforceVariableConventions = createRule({
                     //   matches camelCase and PascalCase names like `outlineVars`, `flowDirectionVars`,
                     //   and even acronym-based names like `someCSSVars`.
                     if (!/Vars$/.test(bindingName)) return;
+                    
+                    
+                    
+                    // Enforce naming convention:
+                    if (!isValidVariableGroupName(bindingName)) {
+                        context.report({ node: id, messageId: 'wrongName' });
+                    } // if
                     
                     
                     
