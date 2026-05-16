@@ -9,6 +9,11 @@ import {
     type DragEffectVars,
 }                           from './types.js'
 
+// Reusable-ui defaults:
+import {
+    defaultDragEffectPrefix,
+}                           from '@reusable-ui/css-prefix-default'  // A centralized default CSS variable prefixes across the Reusable-UI core system, ensuring unique, predictable, and consistent prefixes.
+
 // Reusable-ui features:
 import {
     filterRegistry,
@@ -25,7 +30,7 @@ import {
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [dragEffectVars] = cssVars<DragEffectVars>({ prefix: 'dre', minify: false });
+export const [dragEffectVars] = cssVars<DragEffectVars>({ prefix: defaultDragEffectPrefix, minify: false });
 
 // Register the drag filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(dragEffectVars.dragFilter);
