@@ -21,7 +21,7 @@ const createRule = ESLintUtils.RuleCreator(
  * - Ensure CSS variables are centralized in the correct files.
  * 
  * Requirements:
- * - Must be a variable typed as `CssVars` (imported from `@cssfn/core`).
+ * - Must be a variable typed as `CssVars` (imported from `@cssfn/core`) or typed as `Refs` (taken from `config[0]`) - for configuration module.
  * - Cannot be a function (function declaration, function expression, or arrow function).
  * - Must be declared only in:
  *   - For general‑purpose variables → must be declared only in:
@@ -42,6 +42,7 @@ const createRule = ESLintUtils.RuleCreator(
  * Examples:
  * - `export const activeStateVars: CssVars = ...`
  * - `export const [activeStateVars] = cssVars<ActiveStateVars>(...)`
+ * - `export const colorConfigVars = config[0]`
  * 
  * Why:
  * - Prevents scattering inconsistent CSS variable definitions across the codebase.
@@ -57,10 +58,11 @@ export const enforceVariableConventions = createRule({
         },
         schema: [], // no options accepted
         messages: {
-            wrongFile   : 'CSS variables must be declared in the expected module file (e.g. `css-config.ts`, `css-internal-config.ts`, `css-variables.ts`, or their sub-domain variants).',
-            wrongExport : 'CSS variables must be exported.',
-            wrongType   : 'CSS variables must be typed `CssVars` from `@cssfn/core`.',
-            wrongName   : 'CSS variable names must follow `<Domain><Group>Vars` naming convention.',
+            wrongFile    : 'CSS variables must be declared in the expected module file (e.g. `css-config.ts`, `css-internal-config.ts`, `css-variables.ts`, or their sub-domain variants).',
+            wrongExport  : 'CSS variables must be exported.',
+            wrongType    : 'CSS variables must be typed `CssVars` from `@cssfn/core`.',
+            wrongTypeRef : 'CSS variables must be typed `Refs` from `config[0]`.',
+            wrongName    : 'CSS variable names must follow `<Domain><Group>Vars` naming convention.',
         },
     },
     
@@ -337,9 +339,17 @@ export const enforceVariableConventions = createRule({
                             } // if
                         }
                         else {
-                            // Enforce implicit type annotation from `cssVars()`'s return type:
-                            if (!isCssVarsFunctionImported || !node.init || (node.init.type !== TSESTree.AST_NODE_TYPES.CallExpression) || (node.init.callee.type !== TSESTree.AST_NODE_TYPES.Identifier) || (node.init.callee.name !== 'cssVars')) {
-                                context.report({ node: id, messageId: 'wrongType' });
+                            if (domainIdentifier?.endsWith('Config')) {
+                                // Enforce implicit type annotation from `config[0]`:
+                                if (!node.init || (node.init.type !== TSESTree.AST_NODE_TYPES.MemberExpression) || (node.init.object.type !== TSESTree.AST_NODE_TYPES.Identifier) || (node.init.object.name !== 'config') || (node.init.property.type !== TSESTree.AST_NODE_TYPES.Literal) || (node.init.property.value !== 0)) {
+                                    context.report({ node: id, messageId: 'wrongTypeRef' });
+                                } // if
+                            }
+                            else {
+                                // Enforce implicit type annotation from `cssVars()`'s return type:
+                                if (!isCssVarsFunctionImported || !node.init || (node.init.type !== TSESTree.AST_NODE_TYPES.CallExpression) || (node.init.callee.type !== TSESTree.AST_NODE_TYPES.Identifier) || (node.init.callee.name !== 'cssVars')) {
+                                    context.report({ node: id, messageId: 'wrongType' });
+                                } // if
                             } // if
                         } // if
                     } // if
