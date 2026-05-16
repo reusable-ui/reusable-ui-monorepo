@@ -1,4 +1,4 @@
 export *            from './types.js'
 
-export *            from './borders.js'
-export { default }  from './borders.js'
+export *            from './css-config.js'
+export { default }  from './css-config.js'

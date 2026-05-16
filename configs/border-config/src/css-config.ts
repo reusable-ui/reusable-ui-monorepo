@@ -158,7 +158,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const borderConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const borderConfigVars        = config[0];
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
