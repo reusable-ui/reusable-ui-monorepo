@@ -405,7 +405,8 @@ export const enforceCssVarsFunctionUsage = createRule({
         
         
         // Get domain identifier from a relative filename:
-        const domainIdentifier = getDomainIdentifier(relativeFilename);
+        const domainIdentifier    = getDomainIdentifier(relativeFilename);
+        const subdomainIdentifier = getSubDomainIdentifier(relativeFilename);
         
         
         
@@ -493,7 +494,18 @@ export const enforceCssVarsFunctionUsage = createRule({
                         context.report({ node, messageId: 'missingPrefix' });
                     }
                     else {
-                        const expectedConstantName = (domainIdentifier !== undefined) ? `default${domainIdentifier}Prefix` : 'N/A';
+                        const expectedConstantName = ((): string => {
+                            if (!domainIdentifier) return 'N/A';
+                            
+                            // Extract group name from the domainIdentifier (e.g. "ColorConfig" → "Config"):
+                            const groupName    = domainIdentifier.match(/(Config|Variant|Feature|State|Effect)$/)?.[1] ?? '';
+                            
+                            // Extract domain base (remove the group suffix):
+                            const domainBase   = domainIdentifier.slice(0, -groupName.length);
+                            
+                            // Build expected prefix name: <domain><subdomain?><group>Prefix:
+                            return `default${domainBase}${subdomainIdentifier ?? ''}${groupName}Prefix`;
+                        })();
                         
                         if ((prefixAnn.value.type !== TSESTree.AST_NODE_TYPES.Identifier) || !prefixesImported.has(prefixAnn.value.name)) {
                             context.report({ node: prefixAnn.value, messageId: 'wrongPrefix', data: { expectedConstantName } });
@@ -556,7 +568,8 @@ export const enforceCssConfigFunctionUsage = createRule({
         
         
         // Get domain identifier from a relative filename:
-        const domainIdentifier = getDomainIdentifier(relativeFilename);
+        const domainIdentifier    = getDomainIdentifier(relativeFilename);
+        const subdomainIdentifier = getSubDomainIdentifier(relativeFilename);
         
         
         
@@ -640,7 +653,18 @@ export const enforceCssConfigFunctionUsage = createRule({
                         context.report({ node, messageId: 'missingPrefix' });
                     }
                     else {
-                        const expectedConstantName = (domainIdentifier !== undefined) ? `default${domainIdentifier}Prefix` : 'N/A';
+                        const expectedConstantName = ((): string => {
+                            if (!domainIdentifier) return 'N/A';
+                            
+                            // Extract group name from the domainIdentifier (e.g. "ColorConfig" → "Config"):
+                            const groupName    = domainIdentifier.match(/(Config|Variant|Feature|State|Effect)$/)?.[1] ?? '';
+                            
+                            // Extract domain base (remove the group suffix):
+                            const domainBase   = domainIdentifier.slice(0, -groupName.length);
+                            
+                            // Build expected prefix name: <domain><subdomain?><group>Prefix:
+                            return `default${domainBase}${subdomainIdentifier ?? ''}${groupName}Prefix`;
+                        })();
                         
                         if ((prefixAnn.value.type !== TSESTree.AST_NODE_TYPES.Identifier) || !prefixesImported.has(prefixAnn.value.name)) {
                             context.report({ node: prefixAnn.value, messageId: 'wrongPrefix', data: { expectedConstantName } });
