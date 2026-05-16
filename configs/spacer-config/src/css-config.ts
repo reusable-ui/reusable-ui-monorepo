@@ -173,7 +173,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const spacerConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const spacerConfigVars        = config[0];
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
