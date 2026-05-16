@@ -9,6 +9,11 @@ import {
     type ViewStateVars,
 }                           from './types.js'
 
+// Reusable-ui defaults:
+import {
+    defaultViewStatePrefix,
+}                           from '@reusable-ui/css-prefix-default'  // A centralized default CSS variable prefixes across the Reusable-UI core system, ensuring unique, predictable, and consistent prefixes.
+
 // Reusable-ui features:
 import {
     animationRegistry,
@@ -22,7 +27,7 @@ import {
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [viewStateVars] = cssVars<ViewStateVars>({ prefix: 'vi', minify: false });
+export const [viewStateVars] = cssVars<ViewStateVars>({ prefix: defaultViewStatePrefix, minify: false });
 
 // Register the view-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(viewStateVars.animationViewAdvancing);
