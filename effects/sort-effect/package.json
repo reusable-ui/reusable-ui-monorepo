@@ -53,6 +53,7 @@
     "@reusable-ui/events": "^7.0.0"
   },
   "peerDependencies": {
+    "@reusable-ui/css-prefix-default": "^7.0.0",
     "@reusable-ui/sort-state": "^7.0.0",
     "@reusable-ui/transform-feature": "^7.0.0"
   },
