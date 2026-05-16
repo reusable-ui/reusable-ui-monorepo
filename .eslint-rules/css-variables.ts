@@ -173,18 +173,28 @@ export const enforceVariableConventions = createRule({
             // Tight validation (domain context available):
             
             // Extract group name from the domainIdentifier (e.g. "ColorConfig" → "Config"):
-            const groupName    = domainIdentifier.match(/(Config|Variant|Feature|State|Effect)$/)?.[1] ?? '';
+            const groupName         = domainIdentifier.match(/(Config|Variant|Feature|State|Effect)$/)?.[1] ?? '';
             
             // Extract domain base (remove the group suffix):
-            const domainBase   = domainIdentifier.slice(0, -groupName.length);
+            const domainBase        = domainIdentifier.slice(0, -groupName.length);
             
-            // Convert domain base to camelCase (first letter lowercase):
-            const domainCamel  = domainBase[0].toLowerCase() + domainBase.slice(1);
+            // Decide to use domain prefix:
+            const domainConditional = (
+                // Special case for sub typography config → subdomain only (discard domain prefix):
+                ((domainIdentifier === 'TypoConfig') && subdomainIdentifier)
+                ? ''
+                
+                // General case → preserve domain:
+                : domainBase
+            );
             
             // Build expected name: <domain><subdomain?><group>Vars:
-            const expectedName = `${domainCamel}${subdomainIdentifier ?? ''}${groupName}Vars`;
+            const expectedName      = `${domainConditional}${subdomainIdentifier ?? ''}${groupName}Vars`;
             
-            return (name === expectedName);
+            // Convert expected name to camelCase (first letter lowercase):
+            const expectedNameCamel = expectedName[0].toLowerCase() + expectedName.slice(1);
+            
+            return (name === expectedNameCamel);
         };
         
         
@@ -508,13 +518,23 @@ export const enforceCssVarsFunctionUsage = createRule({
                             if (!domainIdentifier) return 'N/A';
                             
                             // Extract group name from the domainIdentifier (e.g. "ColorConfig" → "Config"):
-                            const groupName    = domainIdentifier.match(/(Config|Variant|Feature|State|Effect)$/)?.[1] ?? '';
+                            const groupName         = domainIdentifier.match(/(Config|Variant|Feature|State|Effect)$/)?.[1] ?? '';
                             
                             // Extract domain base (remove the group suffix):
-                            const domainBase   = domainIdentifier.slice(0, -groupName.length);
+                            const domainBase        = domainIdentifier.slice(0, -groupName.length);
+                            
+                            // Decide to use domain prefix:
+                            const domainConditional = (
+                                // Special case for sub typography config → subdomain only (discard domain prefix):
+                                ((domainIdentifier === 'TypoConfig') && subdomainIdentifier)
+                                ? ''
+                                
+                                // General case → preserve domain:
+                                : domainBase
+                            );
                             
                             // Build expected prefix name: <domain><subdomain?><group>Prefix:
-                            return `default${domainBase}${subdomainIdentifier ?? ''}${groupName}Prefix`;
+                            return `default${domainConditional}${subdomainIdentifier ?? ''}${groupName}Prefix`;
                         })();
                         
                         if ((prefixAnn.value.type !== TSESTree.AST_NODE_TYPES.Identifier) || !prefixesImported.has(prefixAnn.value.name)) {
@@ -667,13 +687,23 @@ export const enforceCssConfigFunctionUsage = createRule({
                             if (!domainIdentifier) return 'N/A';
                             
                             // Extract group name from the domainIdentifier (e.g. "ColorConfig" → "Config"):
-                            const groupName    = domainIdentifier.match(/(Config|Variant|Feature|State|Effect)$/)?.[1] ?? '';
+                            const groupName         = domainIdentifier.match(/(Config|Variant|Feature|State|Effect)$/)?.[1] ?? '';
                             
                             // Extract domain base (remove the group suffix):
-                            const domainBase   = domainIdentifier.slice(0, -groupName.length);
+                            const domainBase        = domainIdentifier.slice(0, -groupName.length);
+                            
+                            // Decide to use domain prefix:
+                            const domainConditional = (
+                                // Special case for sub typography config → subdomain only (discard domain prefix):
+                                ((domainIdentifier === 'TypoConfig') && subdomainIdentifier)
+                                ? ''
+                                
+                                // General case → preserve domain:
+                                : domainBase
+                            );
                             
                             // Build expected prefix name: <domain><subdomain?><group>Prefix:
-                            return `default${domainBase}${subdomainIdentifier ?? ''}${groupName}Prefix`;
+                            return `default${domainConditional}${subdomainIdentifier ?? ''}${groupName}Prefix`;
                         })();
                         
                         if ((prefixAnn.value.type !== TSESTree.AST_NODE_TYPES.Identifier) || !prefixesImported.has(prefixAnn.value.name)) {
