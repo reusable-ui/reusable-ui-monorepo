@@ -9,6 +9,11 @@ import {
     type FocusEffectVars,
 }                           from './types.js'
 
+// Reusable-ui defaults:
+import {
+    defaultFocusEffectPrefix,
+}                           from '@reusable-ui/css-prefix-default'  // A centralized default CSS variable prefixes across the Reusable-UI core system, ensuring unique, predictable, and consistent prefixes.
+
 // Reusable-ui features:
 import {
     boxShadowRegistry,
@@ -22,7 +27,7 @@ import {
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [focusEffectVars] = cssVars<FocusEffectVars>({ prefix: 'foe', minify: false });
+export const [focusEffectVars] = cssVars<FocusEffectVars>({ prefix: defaultFocusEffectPrefix, minify: false });
 
 // Register the focus box shadow globally for composing a unified box shadow stack across effect packages:
 boxShadowRegistry.registerBoxShadow(focusEffectVars.focusBoxShadow);
