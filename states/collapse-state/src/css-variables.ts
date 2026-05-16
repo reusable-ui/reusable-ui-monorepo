@@ -9,6 +9,11 @@ import {
     type CollapseStateVars,
 }                           from './types.js'
 
+// Reusable-ui defaults:
+import {
+    defaultCollapseStatePrefix,
+}                           from '@reusable-ui/css-prefix-default'  // A centralized default CSS variable prefixes across the Reusable-UI core system, ensuring unique, predictable, and consistent prefixes.
+
 // Reusable-ui features:
 import {
     animationRegistry,
@@ -22,7 +27,7 @@ import {
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [collapseStateVars] = cssVars<CollapseStateVars>({ prefix: 'cp', minify: false });
+export const [collapseStateVars] = cssVars<CollapseStateVars>({ prefix: defaultCollapseStatePrefix, minify: false });
 
 // Register the expand/collapse-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(collapseStateVars.animationExpanding);
