@@ -9,6 +9,11 @@ import {
     type HoverEffectVars,
 }                           from './types.js'
 
+// Reusable-ui defaults:
+import {
+    defaultHoverEffectPrefix,
+}                           from '@reusable-ui/css-prefix-default'  // A centralized default CSS variable prefixes across the Reusable-UI core system, ensuring unique, predictable, and consistent prefixes.
+
 // Reusable-ui features:
 import {
     filterRegistry,
@@ -22,7 +27,7 @@ import {
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [hoverEffectVars] = cssVars<HoverEffectVars>({ prefix: 'hoe', minify: false });
+export const [hoverEffectVars] = cssVars<HoverEffectVars>({ prefix: defaultHoverEffectPrefix, minify: false });
 
 // Register the hover filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(hoverEffectVars.hoverFilter);
