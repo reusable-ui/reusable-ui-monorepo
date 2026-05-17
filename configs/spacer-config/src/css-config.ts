@@ -287,18 +287,3 @@ export const spacerConfigOptions     = config[2];
 export {
     spacerConfigVars as default, // Default export for simplified imports.
 }
-
-/**
- * @deprecated Use `spacerConfigVars` instead.
- */
-export const spacers         = spacerConfigVars;
-
-/**
- * @deprecated Use `spacerConfigExpressions` instead.
- */
-export const spacerValues    = spacerConfigExpressions;
-
-/**
- * @deprecated Use `spacerConfigOptions` instead.
- */
-export const cssSpacerConfig = spacerConfigOptions;
