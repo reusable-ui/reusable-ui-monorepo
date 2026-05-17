@@ -724,6 +724,38 @@ export const noForeignCode = createRule({
                     
                     
                     
+                    if (domainMetadata?.group === 'Config') {
+                        // CSS config variable candidates:
+                        // - Identified by names that match "config".
+                        // - CSS config variables should never be functions,
+                        //   the `enforce-variable-conventions` rule will handle that check separately.
+                        if (bindingName === 'config') continue;
+                        
+                        
+                        
+                        // CSS expression variable candidates:
+                        // - Identified by names that end with "Expressions".
+                        // - No need for a case boundary check before "Expressions":
+                        //   matches camelCase and PascalCase names like `outlineExpressions`, `flowDirectionExpressions`,
+                        //   and even acronym-based names like `someCSSExpressions`.
+                        // - CSS expression variables should never be functions,
+                        //   the `enforce-variable-conventions` rule will handle that check separately.
+                        if (/Expressions$/.test(bindingName)) continue;
+                        
+                        
+                        
+                        // CSS option variable candidates:
+                        // - Identified by names that end with "Options".
+                        // - No need for a case boundary check before "Options":
+                        //   matches camelCase and PascalCase names like `outlineOptions`, `flowDirectionOptions`,
+                        //   and even acronym-based names like `someCSSOptions`.
+                        // - CSS option variables should never be functions,
+                        //   the `enforce-variable-conventions` rule will handle that check separately.
+                        if (/Options$/.test(bindingName)) continue;
+                    } // if
+                    
+                    
+                    
                     // Allow top-level comments (they don't appear as statements in AST)
                     // Comments are handled separately
                     
