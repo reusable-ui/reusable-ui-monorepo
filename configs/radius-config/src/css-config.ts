@@ -275,23 +275,3 @@ export const radiusConfigOptions     = config[2];
 export {
     radiusConfigVars as default, // Default export for simplified imports.
 }
-
-/**
- * @deprecated Use `radiusConfigVars` instead.
- */
-export const radiuses              = radiusConfigVars;
-
-/**
- * @deprecated Use `radiusConfigVars` instead.
- */
-export const borderRadiuses        = radiusConfigVars;
-
-/**
- * @deprecated Use `radiusConfigExpressions` instead.
- */
-export const radiusValues          = radiusConfigExpressions;
-
-/**
- * @deprecated Use `radiusConfigOptions` instead.
- */
-export const cssBorderRadiusConfig = radiusConfigOptions;
