@@ -34,21 +34,22 @@ export const getDomainIdentifier = (relativeFilename: string): string | null => 
  * Extracts a PascalCase sub‑domain identifier from a relative filename.
  * 
  * Behavior:
- * - Matches files named `css-<sub>-config.ts` inside a package.
+ * - Matches files named `css-<sub>-<group>.ts` inside a package.
  * - Converts the `<sub>` part (including hyphenated words) into PascalCase.
- * - Returns `null` if the file is just `css-config.ts` or not a sub‑config.
+ * - Returns `null` if the file is just `css-<group>.ts` or not a sub‑<group>.
  * 
  * Examples:
  * - 'configs/border-config/src/css-param-config.ts'    → 'Param'
  * - 'configs/border-config/src/css-level-config.ts'    → 'Level'
  * - 'configs/typo-config/src/css-plain-list-config.ts' → 'PlainList'
+ * - 'configs/border-config/src/css-secondary-mount.ts' → 'Secondary'
  * - 'configs/border-config/src/css-config.ts'          → null
  * - 'variants/theme-variant/src/foo.ts'                → null
  * - 'effects/disabled-effect/src/bar.ts'               → null
  */
 export const getSubDomainIdentifier = (relativeFilename: string): string | null => {
-    // Capture the sub‑domain part from filenames like `css-xxx-config.ts`
-    const subSegment = relativeFilename.match(/css-([a-z]+(-[a-z]+)*)-config\.ts$/)?.[1];
+    // Capture the sub‑domain part from filenames like `css-xxx-<group>.ts`
+    const subSegment = relativeFilename.match(/css-([a-z]+(-[a-z]+)*)-[^/\\]+\.ts$/)?.[1];
     
     
     
