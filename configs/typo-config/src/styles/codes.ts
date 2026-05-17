@@ -19,7 +19,7 @@ import {
 // Configs:
 import {
     codeConfigVars,
-}                           from '../configs/codes.js'
+}                           from '../configs/css-code-config.js'
 
 
 

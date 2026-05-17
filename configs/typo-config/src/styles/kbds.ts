@@ -19,7 +19,7 @@ import {
 // Configs:
 import {
     kbdConfigVars,
-}                           from '../configs/kbds.js'
+}                           from '../configs/css-kbd-config.js'
 
 
 

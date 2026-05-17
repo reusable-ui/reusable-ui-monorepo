@@ -19,7 +19,7 @@ import {
 // Configs:
 import {
     paragraphConfigVars,
-}                           from '../configs/paragraphs.js'
+}                           from '../configs/css-paragraph-config.js'
 
 
 

@@ -19,7 +19,7 @@ import {
 // Configs:
 import {
     blockquoteConfigVars,
-}                           from '../configs/blockquotes.js'
+}                           from '../configs/css-blockquote-config.js'
 
 
 

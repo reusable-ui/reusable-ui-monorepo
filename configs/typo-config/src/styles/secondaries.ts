@@ -13,7 +13,7 @@ import {
 // Configs:
 import {
     secondaryConfigVars,
-}                           from '../configs/secondaries.js'
+}                           from '../configs/css-secondary-config.js'
 
 
 

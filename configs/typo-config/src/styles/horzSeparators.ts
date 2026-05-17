@@ -19,7 +19,7 @@ import {
 // Configs:
 import {
     horzSeparatorConfigVars,
-}                           from '../configs/horzSeparators.js'
+}                           from '../configs/css-horz-separator-config.js'
 
 
 

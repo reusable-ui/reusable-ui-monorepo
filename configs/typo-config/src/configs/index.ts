@@ -1,21 +1,21 @@
 // Internals:
 
-export *            from './typography.js'
-export {default}    from './typography.js'
-export *            from './secondaries.js'
+export *            from './css-config.js'
+export {default}    from './css-config.js'
+export *            from './css-secondary-config.js'
 
-export *            from './paragraphs.js'
-export *            from './leads.js'
+export *            from './css-paragraph-config.js'
+export *            from './css-lead-config.js'
 
-export *            from './headings.js'
-export *            from './displays.js'
+export *            from './css-heading-config.js'
+export *            from './css-display-config.js'
 
-export *            from './blockquotes.js'
+export *            from './css-blockquote-config.js'
 
-export *            from './plainLists.js'
+export *            from './css-plain-list-config.js'
 
-export *            from './marks.js'
-export *            from './kbds.js'
-export *            from './codes.js'
+export *            from './css-mark-config.js'
+export *            from './css-kbd-config.js'
+export *            from './css-code-config.js'
 
-export *            from './horzSeparators.js'
+export *            from './css-horz-separator-config.js'

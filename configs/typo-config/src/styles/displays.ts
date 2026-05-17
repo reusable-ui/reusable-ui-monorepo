@@ -31,7 +31,7 @@ import {
 // Configs:
 import {
     displayConfigVars,
-}                           from '../configs/displays.js'
+}                           from '../configs/css-display-config.js'
 
 
 

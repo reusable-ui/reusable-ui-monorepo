@@ -19,7 +19,7 @@ import {
 // Configs:
 import {
     plainListConfigVars,
-}                           from '../configs/plainLists.js'
+}                           from '../configs/css-plain-list-config.js'
 
 
 

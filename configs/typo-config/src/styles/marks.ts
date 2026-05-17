@@ -19,7 +19,7 @@ import {
 // Configs:
 import {
     markConfigVars,
-}                           from '../configs/marks.js'
+}                           from '../configs/css-mark-config.js'
 
 
 

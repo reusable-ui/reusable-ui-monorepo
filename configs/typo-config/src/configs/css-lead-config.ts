@@ -17,10 +17,10 @@ import {
 // Configs:
 import {
     typoConfigVars,
-}                           from './typography.js'
+}                           from './css-config.js'
 import {
     paragraphConfigVars,
-}                           from './paragraphs.js'
+}                           from './css-paragraph-config.js'
 
 
 
@@ -200,7 +200,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const leadConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const leadConfigVars        = config[0];
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.

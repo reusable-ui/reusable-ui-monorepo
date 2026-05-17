@@ -20,10 +20,10 @@ import {
 }                           from '@reusable-ui/color-config'        // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 import {
     typoConfigVars,
-}                           from './typography.js'
+}                           from './css-config.js'
 import {
     markConfigVars,
-}                           from './marks.js'
+}                           from './css-mark-config.js'
 
 
 
@@ -285,7 +285,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const codeConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const codeConfigVars        = config[0];
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.

@@ -8,7 +8,7 @@ import {
 // Configs:
 import {
     typoConfigVars,
-}                           from '../configs/typography.js'
+}                           from '../configs/css-config.js'
 
 
 

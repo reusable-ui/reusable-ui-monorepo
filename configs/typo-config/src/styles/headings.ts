@@ -31,7 +31,7 @@ import {
 // Configs:
 import {
     headingConfigVars,
-}                           from '../configs/headings.js'
+}                           from '../configs/css-heading-config.js'
 
 
 

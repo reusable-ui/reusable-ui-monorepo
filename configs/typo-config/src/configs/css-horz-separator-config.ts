@@ -187,7 +187,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const horzSeparatorConfigVars        = config[0]; // eslint-disable-line css-variables/enforce-variable-conventions
+export const horzSeparatorConfigVars        = config[0];
 
 /**
  * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.

@@ -19,7 +19,7 @@ import {
 // Configs:
 import {
     leadConfigVars,
-}                           from '../configs/leads.js'
+}                           from '../configs/css-lead-config.js'
 
 
 
