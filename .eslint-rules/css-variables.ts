@@ -210,11 +210,11 @@ export const enforceVariableConventions = createRule({
                 
                 
                 // CSS variable candidates:
-                // - Identified by names that end with "Vars".
-                // - No need for a case boundary check before "Vars":
+                // - Identified by names that end with "Vars", "Expressions", or "Options".
+                // - No need for a case boundary check before the suffix:
                 //   matches camelCase and PascalCase names like `outlineVars`, `flowDirectionVars`,
                 //   and even acronym-based names like `someCSSVars`.
-                if (!/(Vars)$/.test(name)) return;
+                if (!/(Vars|Expressions|Options)$/.test(name)) return;
                 
                 
                 
