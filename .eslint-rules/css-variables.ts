@@ -80,7 +80,7 @@ export const enforceVariableConventions = createRule({
         
         // Determine if the CSS variable is declared within the expected module:
         const expectedModules  = getExpectedModules(domainMetadata);
-        const isExpectedModule = expectedModules.includes(basename);
+        const isExpectedModule = expectedModules.includes(basename) && !basename.split('-').includes('deprecated');
         
         
         
@@ -389,7 +389,7 @@ export const enforceCssVarsFunctionUsage = createRule({
         
         // Determine if the CSS variable is declared within the expected module:
         const expectedModules  = getExpectedModules(domainMetadata);
-        const isExpectedModule = expectedModules.includes(basename);
+        const isExpectedModule = expectedModules.includes(basename) && !basename.split('-').includes('deprecated');
         
         
         
@@ -686,7 +686,7 @@ export const noForeignCode = createRule({
         
         // Determine if the CSS variable is declared within the expected module:
         const expectedModules  = getExpectedModules(domainMetadata);
-        const isExpectedModule = expectedModules.includes(basename);
+        const isExpectedModule = expectedModules.includes(basename) && !basename.split('-').includes('deprecated');
         
         
         
