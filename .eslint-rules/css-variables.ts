@@ -214,7 +214,7 @@ export const enforceVariableConventions = createRule({
                 // - No need for a case boundary check before "Vars":
                 //   matches camelCase and PascalCase names like `outlineVars`, `flowDirectionVars`,
                 //   and even acronym-based names like `someCSSVars`.
-                if (!/Vars$/.test(name)) return;
+                if (!/(Vars)$/.test(name)) return;
                 
                 
                 
@@ -713,17 +713,6 @@ export const noForeignCode = createRule({
                     
                     
                     
-                    // CSS variable candidates:
-                    // - Identified by names that end with "Vars".
-                    // - No need for a case boundary check before "Vars":
-                    //   matches camelCase and PascalCase names like `outlineVars`, `flowDirectionVars`,
-                    //   and even acronym-based names like `someCSSVars`.
-                    // - CSS variables should never be functions,
-                    //   the `enforce-variable-conventions` rule will handle that check separately.
-                    if (/Vars$/.test(bindingName)) continue;
-                    
-                    
-                    
                     if (domainMetadata?.group === 'Config') {
                         // CSS config variable candidates:
                         // - Identified by names that match "config".
@@ -733,25 +722,46 @@ export const noForeignCode = createRule({
                         
                         
                         
-                        // CSS expression variable candidates:
-                        // - Identified by names that end with "Expressions".
-                        // - No need for a case boundary check before "Expressions":
-                        //   matches camelCase and PascalCase names like `outlineExpressions`, `flowDirectionExpressions`,
-                        //   and even acronym-based names like `someCSSExpressions`.
-                        // - CSS expression variables should never be functions,
+                        // CSS config variable candidates:
+                        // - Identified by names that end with "ConfigVars".
+                        // - No need for a case boundary check before "ConfigVars":
+                        //   matches camelCase and PascalCase names like `outlineConfigVars`, `flowDirectionConfigVars`,
+                        //   and even acronym-based names like `someCSSConfigVars`.
+                        // - CSS config variables should never be functions,
                         //   the `enforce-variable-conventions` rule will handle that check separately.
-                        if (/Expressions$/.test(bindingName)) continue;
+                        if (/ConfigVars$/.test(bindingName)) continue;
                         
                         
                         
-                        // CSS option variable candidates:
-                        // - Identified by names that end with "Options".
-                        // - No need for a case boundary check before "Options":
-                        //   matches camelCase and PascalCase names like `outlineOptions`, `flowDirectionOptions`,
-                        //   and even acronym-based names like `someCSSOptions`.
-                        // - CSS option variables should never be functions,
+                        // CSS config expression variable candidates:
+                        // - Identified by names that end with "ConfigExpressions".
+                        // - No need for a case boundary check before "ConfigExpressions":
+                        //   matches camelCase and PascalCase names like `outlineConfigExpressions`, `flowDirectionConfigExpressions`,
+                        //   and even acronym-based names like `someCSSConfigExpressions`.
+                        // - CSS config expression variables should never be functions,
                         //   the `enforce-variable-conventions` rule will handle that check separately.
-                        if (/Options$/.test(bindingName)) continue;
+                        if (/ConfigExpressions$/.test(bindingName)) continue;
+                        
+                        
+                        
+                        // CSS config option variable candidates:
+                        // - Identified by names that end with "ConfigOptions".
+                        // - No need for a case boundary check before "ConfigOptions":
+                        //   matches camelCase and PascalCase names like `outlineConfigOptions`, `flowDirectionConfigOptions`,
+                        //   and even acronym-based names like `someCSSConfigOptions`.
+                        // - CSS config option variables should never be functions,
+                        //   the `enforce-variable-conventions` rule will handle that check separately.
+                        if (/ConfigOptions$/.test(bindingName)) continue;
+                    }
+                    else {
+                        // CSS variable candidates:
+                        // - Identified by names that end with "Vars".
+                        // - No need for a case boundary check before "Vars":
+                        //   matches camelCase and PascalCase names like `outlineVars`, `flowDirectionVars`,
+                        //   and even acronym-based names like `someCSSVars`.
+                        // - CSS variables should never be functions,
+                        //   the `enforce-variable-conventions` rule will handle that check separately.
+                        if (/Vars$/.test(bindingName)) continue;
                     } // if
                     
                     
