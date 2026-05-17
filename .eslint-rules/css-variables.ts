@@ -125,9 +125,6 @@ export const enforceVariableConventions = createRule({
          * Requirements:
          * - Must follow `<Domain><Group>Vars` naming convention.
          * - Must be camelCase.
-         * - The `domainIdentifier` is PascalCase (e.g. `ColorConfig`, `BorderFeature`).
-         *   • The trailing part (`Config`, `Feature`, `Variant`, `State`, `Effect`) is the **group name**.
-         *   • The leading part (`Color`, `Border`, `FlowDirection`) is the **domain base**.
          * - The optional `subdomainIdentifier` is appended directly after the domain base (PascalCase).
          * 
          * Examples:
