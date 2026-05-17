@@ -3,7 +3,7 @@ import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
 import { collectBindingInitializers, collectTopLevelBindings } from './binding-initializers.js'
 import { isTopLevel, isExported } from './scope-utilities.js'
-import { getDomainMetadata, getExpectedModules } from './domain-utilities.js'
+import { getDomainMetadata, getExpectedCSSVariableModules } from './domain-utilities.js'
 
 
 
@@ -79,7 +79,7 @@ export const enforceVariableConventions = createRule({
         
         
         // Determine if the CSS variable is declared within the expected module:
-        const expectedModules  = getExpectedModules(domainMetadata);
+        const expectedModules  = getExpectedCSSVariableModules(domainMetadata);
         const isExpectedModule = expectedModules.includes(basename) && !basename.split('-').includes('deprecated');
         
         
@@ -388,7 +388,7 @@ export const enforceCssVarsFunctionUsage = createRule({
         
         
         // Determine if the CSS variable is declared within the expected module:
-        const expectedModules  = getExpectedModules(domainMetadata);
+        const expectedModules  = getExpectedCSSVariableModules(domainMetadata);
         const isExpectedModule = expectedModules.includes(basename) && !basename.split('-').includes('deprecated');
         
         
@@ -685,7 +685,7 @@ export const noForeignCode = createRule({
         
         
         // Determine if the CSS variable is declared within the expected module:
-        const expectedModules  = getExpectedModules(domainMetadata);
+        const expectedModules  = getExpectedCSSVariableModules(domainMetadata);
         const isExpectedModule = expectedModules.includes(basename) && !basename.split('-').includes('deprecated');
         
         

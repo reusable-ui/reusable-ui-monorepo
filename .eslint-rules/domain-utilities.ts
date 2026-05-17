@@ -169,7 +169,7 @@ export const pascalToKebab = (input: string): string => {
 };
 
 /**
- * Builds the list of expected module filenames for a given domain metadata.
+ * Builds the list of expected CSS-variable module filenames for a given domain metadata.
  * 
  * Rules:
  * - Config‑related variables → must be declared only in:
@@ -190,7 +190,7 @@ export const pascalToKebab = (input: string): string => {
  * - { group: 'Feature', subdomain: null    } → [ 'css-variables.ts',       'css-internal-variables.ts'       ]
  * - { group: 'Feature', subdomain: 'Level' } → [ 'css-level-variables.ts', 'css-internal-level-variables.ts' ]
  */
-export const getExpectedModules = (domainMetadata: DomainMetadata | null): string[] => {
+export const getExpectedCSSVariableModules = (domainMetadata: DomainMetadata | null): string[] => {
     const subdomain = domainMetadata?.subdomain ?? null;
     const subdomainSuffix = subdomain ? `-${pascalToKebab(subdomain)}` : '';
     
