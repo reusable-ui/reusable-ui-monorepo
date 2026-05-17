@@ -268,18 +268,3 @@ export const borderConfigOptions     = config[2];
 export {
     borderConfigVars as default, // Default export for simplified imports.
 }
-
-/**
- * @deprecated Use `borderConfigVars` instead.
- */
-export const borders         = borderConfigVars;
-
-/**
- * @deprecated Use `borderConfigExpressions` instead.
- */
-export const borderValues    = borderConfigExpressions;
-
-/**
- * @deprecated Use `borderConfigOptions` instead.
- */
-export const cssBorderConfig = borderConfigOptions;
