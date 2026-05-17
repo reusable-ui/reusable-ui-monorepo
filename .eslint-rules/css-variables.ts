@@ -360,7 +360,6 @@ export const enforceVariableConventions = createRule({
                     // Enforce file location:
                     if (!isExpectedModule) {
                         context.report({ node: id, messageId: 'wrongFile' });
-                        console.log('DEBUG: ', domainMetadata, bindingName);
                     } // if
                 } // for
             },
