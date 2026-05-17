@@ -1,7 +1,6 @@
 // Cssfn:
 import {
     // Reads/writes css variables configuration:
-    type CssConfigProps,
     cssConfig,
 }                           from '@cssfn/core'          // Writes css in javascript.
 
@@ -19,8 +18,7 @@ import {
 
 // Configs:
 
-interface BreakpointConfig extends CssConfigProps {}
-const config = cssConfig<BreakpointConfig>(() => {
+const config = cssConfig(() => {
     return {
         xs   :    '0px'     as CssBreakpoint,
         sm   :  '576px'     as CssBreakpoint,
