@@ -450,18 +450,3 @@ export const codeConfigOptions     = config[2];
 export {
     codeConfigVars as default, // Default export for simplified imports.
 }
-
-/**
- * @deprecated Use `codeConfigVars` instead.
- */
-export const codes         = codeConfigVars;
-
-/**
- * @deprecated Use `codeConfigExpressions` instead.
- */
-export const codeValues    = codeConfigExpressions;
-
-/**
- * @deprecated Use `codeConfigOptions` instead.
- */
-export const cssCodeConfig = codeConfigOptions;

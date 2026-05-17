@@ -447,18 +447,3 @@ export const markConfigOptions     = config[2];
 export {
     markConfigVars as default, // Default export for simplified imports.
 }
-
-/**
- * @deprecated Use `markConfigVars` instead.
- */
-export const marks         = markConfigVars;
-
-/**
- * @deprecated Use `markConfigExpressions` instead.
- */
-export const markValues    = markConfigExpressions;
-
-/**
- * @deprecated Use `markConfigOptions` instead.
- */
-export const cssMarkConfig = markConfigOptions;

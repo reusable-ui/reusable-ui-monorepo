@@ -444,18 +444,3 @@ export const kbdConfigOptions     = config[2];
 export {
     kbdConfigVars as default, // Default export for simplified imports.
 }
-
-/**
- * @deprecated Use `kbdConfigVars` instead.
- */
-export const kbds         = kbdConfigVars;
-
-/**
- * @deprecated Use `kbdConfigExpressions` instead.
- */
-export const kbdValues    = kbdConfigExpressions;
-
-/**
- * @deprecated Use `kbdConfigOptions` instead.
- */
-export const cssKbdConfig = kbdConfigOptions;

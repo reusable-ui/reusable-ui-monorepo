@@ -499,18 +499,3 @@ export const blockquoteConfigOptions     = config[2];
 export {
     blockquoteConfigVars as default, // Default export for simplified imports.
 }
-
-/**
- * @deprecated Use `blockquoteConfigVars` instead.
- */
-export const blockquotes         = blockquoteConfigVars;
-
-/**
- * @deprecated Use `blockquoteConfigExpressions` instead.
- */
-export const blockquoteValues    = blockquoteConfigExpressions;
-
-/**
- * @deprecated Use `blockquoteConfigOptions` instead.
- */
-export const cssBlockquoteConfig = blockquoteConfigOptions;

@@ -333,18 +333,3 @@ export const paragraphConfigOptions     = config[2];
 export {
     paragraphConfigVars as default, // Default export for simplified imports.
 }
-
-/**
- * @deprecated Use `paragraphConfigVars` instead.
- */
-export const paragraphs         = paragraphConfigVars;
-
-/**
- * @deprecated Use `paragraphConfigExpressions` instead.
- */
-export const paragraphValues    = paragraphConfigExpressions;
-
-/**
- * @deprecated Use `paragraphConfigOptions` instead.
- */
-export const cssParagraphConfig = paragraphConfigOptions;

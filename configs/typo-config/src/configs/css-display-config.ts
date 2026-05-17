@@ -456,18 +456,3 @@ export const displayConfigOptions     = config[2];
 export {
     displayConfigVars as default, // Default export for simplified imports.
 }
-
-/**
- * @deprecated Use `displayConfigVars` instead.
- */
-export const displays         = displayConfigVars;
-
-/**
- * @deprecated Use `displayConfigExpressions` instead.
- */
-export const displayValues    = displayConfigExpressions;
-
-/**
- * @deprecated Use `displayConfigOptions` instead.
- */
-export const cssDisplayConfig = displayConfigOptions;

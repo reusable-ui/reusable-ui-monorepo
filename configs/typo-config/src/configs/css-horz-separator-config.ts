@@ -338,23 +338,3 @@ export const horzSeparatorConfigOptions     = config[2];
 export {
     horzSeparatorConfigVars as default, // Default export for simplified imports.
 }
-
-/**
- * @deprecated Use `horzSeparatorConfigVars` instead.
- */
-export const horzRules         = horzSeparatorConfigVars;
-
-/**
- * @deprecated Use `horzSeparatorConfigExpressions` instead.
- */
-export const horzRuleValues    = horzSeparatorConfigExpressions;
-
-/**
- * @deprecated Use `horzSeparatorConfigOptions` instead.
- */
-export const horzRuleConfig    = horzSeparatorConfigOptions;
-
-/**
- * @deprecated Use `horzSeparatorConfigOptions` instead.
- */
-export const cssHorzRuleConfig = horzSeparatorConfigOptions;

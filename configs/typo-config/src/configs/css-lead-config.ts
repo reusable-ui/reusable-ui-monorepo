@@ -347,18 +347,3 @@ export const leadConfigOptions     = config[2];
 export {
     leadConfigVars as default, // Default export for simplified imports.
 }
-
-/**
- * @deprecated Use `leadConfigVars` instead.
- */
-export const leads         = leadConfigVars;
-
-/**
- * @deprecated Use `leadConfigExpressions` instead.
- */
-export const leadValues    = leadConfigExpressions;
-
-/**
- * @deprecated Use `leadConfigOptions` instead.
- */
-export const cssLeadConfig = leadConfigOptions;

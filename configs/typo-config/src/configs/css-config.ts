@@ -480,18 +480,3 @@ export const typoConfigOptions     = config[2];
 export {
     typoConfigVars as default, // Default export for simplified imports.
 }
-
-/**
- * @deprecated Use `typoConfigVars` instead.
- */
-export const typos         = typoConfigVars;
-
-/**
- * @deprecated Use `typoConfigExpressions` instead.
- */
-export const typoValues    = typoConfigExpressions;
-
-/**
- * @deprecated Use `typoConfigOptions` instead.
- */
-export const cssTypoConfig = typoConfigOptions;

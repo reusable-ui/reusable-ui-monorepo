@@ -409,18 +409,3 @@ export const plainListConfigOptions     = config[2];
 export {
     plainListConfigVars as default, // Default export for simplified imports.
 }
-
-/**
- * @deprecated Use `plainListConfigVars` instead.
- */
-export const plainLists         = plainListConfigVars;
-
-/**
- * @deprecated Use `plainListConfigExpressions` instead.
- */
-export const plainListValues    = plainListConfigExpressions;
-
-/**
- * @deprecated Use `plainListConfigOptions` instead.
- */
-export const cssPlainListConfig = plainListConfigOptions;

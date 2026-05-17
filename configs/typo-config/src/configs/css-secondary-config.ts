@@ -315,18 +315,3 @@ export const secondaryConfigOptions     = config[2];
 export {
     secondaryConfigVars as default, // Default export for simplified imports.
 }
-
-/**
- * @deprecated Use `secondaryConfigVars` instead.
- */
-export const secondaries        = secondaryConfigVars;
-
-/**
- * @deprecated Use `secondaryConfigExpressions` instead.
- */
-export const secondaryValues    = secondaryConfigExpressions;
-
-/**
- * @deprecated Use `secondaryConfigOptions` instead.
- */
-export const cssSecondaryConfig = secondaryConfigOptions;
