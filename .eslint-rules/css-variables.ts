@@ -413,6 +413,38 @@ export const enforceCssVarsFunctionUsage = createRule({
         
         
         
+        // Determine if the CSS variable is declared within the expected module:
+        //
+        // Rules:
+        // - Config‑related variables → must be inside one of:
+        //   • `css-config.ts`
+        //   • `css-internal-config.ts`
+        //   • `css-<subdomain>-config.ts`
+        //   • `css-internal-<subdomain>-config.ts`
+        // - General‑purpose variables → must be inside one of:
+        //   • `css-variables.ts`
+        //   • `css-internal-variables.ts`
+        //   • `css-<subdomain>-variables.ts`
+        //   • `css-internal-<subdomain>-variables.ts`
+        const subdomain        = domainMetadata?.subdomain ?? null;
+        const subdomainSuffix  = subdomain ? `-${pascalToKebab(subdomain)}` : '';
+        const isExpectedModule = (
+            // Config‑related variables:
+            (domainMetadata?.group === 'Config')
+            ? [
+                `css${subdomainSuffix}-config.ts`,
+                `css-internal${subdomainSuffix}-config.ts`,
+            ]
+            
+            // General‑purpose variables:
+            : [
+                `css${subdomainSuffix}-variables.ts`,
+                `css-internal${subdomainSuffix}-variables.ts`,
+            ]
+        ).includes(basename);
+        
+        
+        
         // Flags to track whether functions were imported from `@cssfn/core`:
         let isCssVarsFunctionImported   = false;
         const prefixesImported          = new Set<string>();
@@ -479,10 +511,6 @@ export const enforceCssVarsFunctionUsage = createRule({
                 // - Identified by names that exactly match "cssVars".
                 // - Identified imported from `@cssfn/core`.
                 if ((name !== 'cssVars') || !isCssVarsFunctionImported) return;
-                
-                
-                
-                const isExpectedModule = ['css-variables.ts', 'css-internal-variables.ts'].includes(basename);
                 
                 
                 
