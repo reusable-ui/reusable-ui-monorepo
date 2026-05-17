@@ -35,25 +35,29 @@ export const getDomainIdentifier = (relativeFilename: string): string | null => 
  * 
  * Behavior:
  * - Matches files named `css-<sub>-config.ts` inside a package.
- * - Converts the `<sub>` part into PascalCase.
+ * - Converts the `<sub>` part (including hyphenated words) into PascalCase.
  * - Returns `null` if the file is just `css-config.ts` or not a sub‑config.
  * 
  * Examples:
- * - 'configs/border-config/src/css-param-config.ts' → 'Param'
- * - 'configs/border-config/src/css-level-config.ts' → 'Level'
- * - 'configs/border-config/src/css-config.ts'       → null
- * - 'variants/theme-variant/src/foo.ts'             → null
- * - 'effects/disabled-effect/src/bar.ts'            → null
+ * - 'configs/border-config/src/css-param-config.ts'    → 'Param'
+ * - 'configs/border-config/src/css-level-config.ts'    → 'Level'
+ * - 'configs/typo-config/src/css-plain-list-config.ts' → 'PlainList'
+ * - 'configs/border-config/src/css-config.ts'          → null
+ * - 'variants/theme-variant/src/foo.ts'                → null
+ * - 'effects/disabled-effect/src/bar.ts'               → null
  */
 export const getSubDomainIdentifier = (relativeFilename: string): string | null => {
     // Capture the sub‑domain part from filenames like `css-xxx-config.ts`
-    const subSegment = relativeFilename.match(/css-([a-z]+)-config\.ts$/)?.[1];
+    const subSegment = relativeFilename.match(/css-([a-z]+(-[a-z]+)*)-config\.ts$/)?.[1];
     
     
     
-    // Convert to PascalCase (e.g. 'param' → 'Param')
+    // Convert hyphenated words into PascalCase (e.g. 'plain-list' → 'PlainList')
     return (
-        subSegment?.replace(/(^[a-z])/, (ch) => ch.toUpperCase())
+        subSegment
+        ?.split('-')
+        .map((word) => word[0].toUpperCase() + word.slice(1))
+        .join('')
         ??
         null
     );
