@@ -351,18 +351,3 @@ export const colorParamConfigOptions     = config[2];
 export {
     colorParamConfigVars as default, // Default export for simplified imports.
 }
-
-/**
- * @deprecated Use `colorParamConfigVars` instead.
- */
-export const colorParams         = colorParamConfigVars;
-
-/**
- * @deprecated Use `colorParamConfigExpressions` instead.
- */
-export const colorParamValues    = colorParamConfigExpressions;
-
-/**
- * @deprecated Use `colorParamConfigOptions` instead.
- */
-export const cssColorParamConfig = colorParamConfigOptions;
