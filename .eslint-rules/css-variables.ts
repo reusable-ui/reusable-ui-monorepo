@@ -3,7 +3,7 @@ import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
 import { collectBindingInitializers, collectTopLevelBindings } from './binding-initializers.js'
 import { isTopLevel, isExported } from './scope-utilities.js'
-import { getDomainIdentifier, getSubDomainIdentifier } from './domain-utilities.js'
+import { getDomainMetadata } from './domain-utilities.js'
 
 
 
@@ -73,9 +73,8 @@ export const enforceVariableConventions = createRule({
         
         
         
-        // Get domain identifier from a relative filename:
-        const domainIdentifier    = getDomainIdentifier(relativeFilename);
-        const subdomainIdentifier = getSubDomainIdentifier(relativeFilename);
+        // Get domain metadata from a relative filename:
+        const domainMetadata = getDomainMetadata(relativeFilename);
         
         
         
@@ -92,10 +91,11 @@ export const enforceVariableConventions = createRule({
         //   • `css-internal-variables.ts`
         //   • `css-<subdomain>-variables.ts`
         //   • `css-internal-<subdomain>-variables.ts`
-        const subdomainSuffix = subdomainIdentifier ? `-${subdomainIdentifier[0].toLowerCase() + subdomainIdentifier.slice(1)}` : '';
+        const subdomain        = domainMetadata?.subdomain ?? null;
+        const subdomainSuffix  = subdomain ? `-${subdomain[0].toLowerCase() + subdomain.slice(1)}` : '';
         const isExpectedModule = (
             // Config‑related variables:
-            domainIdentifier?.endsWith('Config')
+            (domainMetadata?.group === 'Config')
             ? [
                 `css${subdomainSuffix}-config.ts`,
                 `css-internal${subdomainSuffix}-config.ts`,
@@ -166,30 +166,14 @@ export const enforceVariableConventions = createRule({
          */
         const isValidVariableGroupName = (name: string): boolean => {
             // Loose validation (no domain context available):
-            if (!domainIdentifier)  return /^[a-z]+([A-Z][a-z]*)?(Config|Variant|Feature|State|Effect)Vars$/.test(name);
+            if (!domainMetadata)  return /^[a-z]+([A-Z][a-z]*)?(Config|Variant|Feature|State|Effect)Vars$/.test(name);
             
             
             
             // Tight validation (domain context available):
             
-            // Extract group name from the domainIdentifier (e.g. "ColorConfig" → "Config"):
-            const groupName         = domainIdentifier.match(/(Config|Variant|Feature|State|Effect)$/)?.[1] ?? '';
-            
-            // Extract domain base (remove the group suffix):
-            const domainBase        = domainIdentifier.slice(0, -groupName.length);
-            
-            // Decide to use domain prefix:
-            const domainConditional = (
-                // Special case for sub typography config → subdomain only (discard domain prefix):
-                ((domainIdentifier === 'TypoConfig') && subdomainIdentifier)
-                ? ''
-                
-                // General case → preserve domain:
-                : domainBase
-            );
-            
             // Build expected name: <domain><subdomain?><group>Vars:
-            const expectedName      = `${domainConditional}${subdomainIdentifier ?? ''}${groupName}Vars`;
+            const expectedName      = `${domainMetadata.fullIdentifier}Vars`;
             
             // Convert expected name to camelCase (first letter lowercase):
             const expectedNameCamel = expectedName[0].toLowerCase() + expectedName.slice(1);
@@ -349,7 +333,7 @@ export const enforceVariableConventions = createRule({
                             } // if
                         }
                         else {
-                            if (domainIdentifier?.endsWith('Config')) {
+                            if (domainMetadata?.group === 'Config') {
                                 // Enforce implicit type annotation from `config[0]`:
                                 if (!node.init || (node.init.type !== TSESTree.AST_NODE_TYPES.MemberExpression) || (node.init.object.type !== TSESTree.AST_NODE_TYPES.Identifier) || (node.init.object.name !== 'config') || (node.init.property.type !== TSESTree.AST_NODE_TYPES.Literal) || (node.init.property.value !== 0)) {
                                     context.report({ node: id, messageId: 'wrongTypeRef' });
@@ -424,9 +408,8 @@ export const enforceCssVarsFunctionUsage = createRule({
         
         
         
-        // Get domain identifier from a relative filename:
-        const domainIdentifier    = getDomainIdentifier(relativeFilename);
-        const subdomainIdentifier = getSubDomainIdentifier(relativeFilename);
+        // Get domain metadata from a relative filename:
+        const domainMetadata = getDomainMetadata(relativeFilename);
         
         
         
@@ -514,28 +497,8 @@ export const enforceCssVarsFunctionUsage = createRule({
                         context.report({ node, messageId: 'missingPrefix' });
                     }
                     else {
-                        const expectedConstantName = ((): string => {
-                            if (!domainIdentifier) return 'N/A';
-                            
-                            // Extract group name from the domainIdentifier (e.g. "ColorConfig" → "Config"):
-                            const groupName         = domainIdentifier.match(/(Config|Variant|Feature|State|Effect)$/)?.[1] ?? '';
-                            
-                            // Extract domain base (remove the group suffix):
-                            const domainBase        = domainIdentifier.slice(0, -groupName.length);
-                            
-                            // Decide to use domain prefix:
-                            const domainConditional = (
-                                // Special case for sub typography config → subdomain only (discard domain prefix):
-                                ((domainIdentifier === 'TypoConfig') && subdomainIdentifier)
-                                ? ''
-                                
-                                // General case → preserve domain:
-                                : domainBase
-                            );
-                            
-                            // Build expected prefix name: <domain><subdomain?><group>Prefix:
-                            return `default${domainConditional}${subdomainIdentifier ?? ''}${groupName}Prefix`;
-                        })();
+                        // Build expected prefix name: <domain><subdomain?><group>Prefix:
+                        const expectedConstantName = domainMetadata ? `default${domainMetadata.fullIdentifier}Prefix` : 'N/A';
                         
                         if ((prefixAnn.value.type !== TSESTree.AST_NODE_TYPES.Identifier) || !prefixesImported.has(prefixAnn.value.name)) {
                             context.report({ node: prefixAnn.value, messageId: 'wrongPrefix', data: { expectedConstantName } });
@@ -597,9 +560,8 @@ export const enforceCssConfigFunctionUsage = createRule({
         
         
         
-        // Get domain identifier from a relative filename:
-        const domainIdentifier    = getDomainIdentifier(relativeFilename);
-        const subdomainIdentifier = getSubDomainIdentifier(relativeFilename);
+        // Get domain metadata from a relative filename:
+        const domainMetadata = getDomainMetadata(relativeFilename);
         
         
         
@@ -683,28 +645,8 @@ export const enforceCssConfigFunctionUsage = createRule({
                         context.report({ node, messageId: 'missingPrefix' });
                     }
                     else {
-                        const expectedConstantName = ((): string => {
-                            if (!domainIdentifier) return 'N/A';
-                            
-                            // Extract group name from the domainIdentifier (e.g. "ColorConfig" → "Config"):
-                            const groupName         = domainIdentifier.match(/(Config|Variant|Feature|State|Effect)$/)?.[1] ?? '';
-                            
-                            // Extract domain base (remove the group suffix):
-                            const domainBase        = domainIdentifier.slice(0, -groupName.length);
-                            
-                            // Decide to use domain prefix:
-                            const domainConditional = (
-                                // Special case for sub typography config → subdomain only (discard domain prefix):
-                                ((domainIdentifier === 'TypoConfig') && subdomainIdentifier)
-                                ? ''
-                                
-                                // General case → preserve domain:
-                                : domainBase
-                            );
-                            
-                            // Build expected prefix name: <domain><subdomain?><group>Prefix:
-                            return `default${domainConditional}${subdomainIdentifier ?? ''}${groupName}Prefix`;
-                        })();
+                        // Build expected prefix name: <domain><subdomain?><group>Prefix:
+                        const expectedConstantName = domainMetadata ? `default${domainMetadata.fullIdentifier}Prefix` : 'N/A';
                         
                         if ((prefixAnn.value.type !== TSESTree.AST_NODE_TYPES.Identifier) || !prefixesImported.has(prefixAnn.value.name)) {
                             context.report({ node: prefixAnn.value, messageId: 'wrongPrefix', data: { expectedConstantName } });

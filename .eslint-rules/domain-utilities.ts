@@ -58,3 +58,72 @@ export const getSubDomainIdentifier = (relativeFilename: string): string | null 
         null
     );
 };
+
+/**
+ * Extracts structured metadata about a package domain from a relative filename.
+ * 
+ * Behavior:
+ * - Derives the PascalCase domain identifier (e.g. 'ColorConfig', 'BorderFeature').
+ * - Splits the identifier into:
+ *   • `domain` → the leading part (e.g. 'Color', 'Border').
+ *   • `group`  → the trailing suffix (e.g. 'Config', 'Variant', 'Feature', 'State', 'Effect').
+ * - Detects an optional subdomain identifier from the filename (e.g. 'Param', 'Level').
+ * - Provides a conditional domain+subdomain string for special cases (e.g. 'TypoConfig' discards domain if subdomain exists).
+ * 
+ * Examples:
+ * - 'configs/border-config/src/css-config.ts'        → { domain: 'Border', group: 'Config' , subdomain: null    }
+ * - 'configs/color-config/src/css-param-config.ts'   → { domain: 'Color' , group: 'Config' , subdomain: 'Param' }
+ * - 'variants/theme-variant/src/foo.ts'              → { domain: 'Theme' , group: 'Variant', subdomain: null    }
+ */
+export const getDomainMetadata = (relativeFilename: string) => {
+    // Get domain identifier from a relative filename:
+    const domainIdentifier = getDomainIdentifier(relativeFilename);
+    if (!domainIdentifier) return null;
+    
+    
+    
+    // Get subdomain identifier from a relative filename:
+    const subdomain    = getSubDomainIdentifier(relativeFilename);
+    
+    // Extract group suffix (Config, Variant, Feature, State, Effect):
+    const group        = domainIdentifier.match(/(Config|Variant|Feature|State|Effect)$/)?.[1] ?? '';
+    
+    // Extract domain base (remove group suffix):
+    const domain       = domainIdentifier.slice(0, -group.length);
+    
+    // Special case: TypoConfig with subdomain → discard domain prefix:
+    const domainPrefix = (domainIdentifier === 'TypoConfig') && subdomain ? '' : domain;
+    
+    return {
+        /**
+         * The base domain name (PascalCase).
+         * e.g. 'Color', 'Border', 'FlowDirection'
+         */
+        domain,
+        
+        /**
+         * The optional subdomain identifier (PascalCase).
+         * e.g. 'Param', 'Level', or `null`
+         */
+        subdomain,
+        
+        /**
+         * The group suffix that classifies the domain.
+         * e.g. 'Config', 'Feature', 'Variant', 'State', 'Effect'
+         */
+        group,
+        
+        /**
+         * Conditional domain prefix (may be empty for special cases).
+         * Used when recomposing identifiers.
+         */
+        domainPrefix,
+        
+        /**
+         * The recomposed full identifier string.
+         * Format: <domainPrefix><subdomain?><group>
+         * e.g. 'ColorConfig', 'ColorParamConfig', 'BorderFeature'
+         */
+        fullIdentifier: `${domainPrefix}${subdomain ?? ''}${group}`,
+    };
+};
