@@ -167,3 +167,42 @@ export const pascalToKebab = (input: string): string => {
         .toLowerCase()
     );
 };
+
+/**
+ * Builds the list of expected module filenames for a given domain metadata.
+ * 
+ * Rules:
+ * - Config‑related variables → must be declared only in:
+ *   • `css-config.ts`
+ *   • `css-internal-config.ts`
+ *   • `css-<subdomain>-config.ts`
+ *   • `css-internal-<subdomain>-config.ts`
+ * 
+ * - General‑purpose variables → must be declared only in:
+ *   • `css-variables.ts`
+ *   • `css-internal-variables.ts`
+ *   • `css-<subdomain>-variables.ts`
+ *   • `css-internal-<subdomain>-variables.ts`
+ * 
+ * Examples:
+ * - { group: 'Config',  subdomain: null    } → [ 'css-config.ts',          'css-internal-config.ts'          ]
+ * - { group: 'Config',  subdomain: 'Param' } → [ 'css-param-config.ts',    'css-internal-param-config.ts'    ]
+ * - { group: 'Feature', subdomain: null    } → [ 'css-variables.ts',       'css-internal-variables.ts'       ]
+ * - { group: 'Feature', subdomain: 'Level' } → [ 'css-level-variables.ts', 'css-internal-level-variables.ts' ]
+ */
+export const getExpectedModules = (domainMetadata: DomainMetadata | null): string[] => {
+    const subdomain = domainMetadata?.subdomain ?? null;
+    const subdomainSuffix = subdomain ? `-${pascalToKebab(subdomain)}` : '';
+    
+    if (domainMetadata?.group === 'Config') {
+        return [
+            `css${subdomainSuffix}-config.ts`,
+            `css-internal${subdomainSuffix}-config.ts`,
+        ];
+    } // if
+    
+    return [
+        `css${subdomainSuffix}-variables.ts`,
+        `css-internal${subdomainSuffix}-variables.ts`,
+    ];
+};

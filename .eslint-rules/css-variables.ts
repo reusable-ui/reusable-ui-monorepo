@@ -3,7 +3,7 @@ import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
 import { collectBindingInitializers, collectTopLevelBindings } from './binding-initializers.js'
 import { isTopLevel, isExported } from './scope-utilities.js'
-import { getDomainMetadata, pascalToKebab } from './domain-utilities.js'
+import { getDomainMetadata, getExpectedModules } from './domain-utilities.js'
 
 
 
@@ -79,34 +79,8 @@ export const enforceVariableConventions = createRule({
         
         
         // Determine if the CSS variable is declared within the expected module:
-        //
-        // Rules:
-        // - Config‑related variables → must be inside one of:
-        //   • `css-config.ts`
-        //   • `css-internal-config.ts`
-        //   • `css-<subdomain>-config.ts`
-        //   • `css-internal-<subdomain>-config.ts`
-        // - General‑purpose variables → must be inside one of:
-        //   • `css-variables.ts`
-        //   • `css-internal-variables.ts`
-        //   • `css-<subdomain>-variables.ts`
-        //   • `css-internal-<subdomain>-variables.ts`
-        const subdomain        = domainMetadata?.subdomain ?? null;
-        const subdomainSuffix  = subdomain ? `-${pascalToKebab(subdomain)}` : '';
-        const isExpectedModule = (
-            // Config‑related variables:
-            (domainMetadata?.group === 'Config')
-            ? [
-                `css${subdomainSuffix}-config.ts`,
-                `css-internal${subdomainSuffix}-config.ts`,
-            ]
-            
-            // General‑purpose variables:
-            : [
-                `css${subdomainSuffix}-variables.ts`,
-                `css-internal${subdomainSuffix}-variables.ts`,
-            ]
-        ).includes(basename);
+        const expectedModules  = getExpectedModules(domainMetadata);
+        const isExpectedModule = expectedModules.includes(basename);
         
         
         
@@ -414,34 +388,8 @@ export const enforceCssVarsFunctionUsage = createRule({
         
         
         // Determine if the CSS variable is declared within the expected module:
-        //
-        // Rules:
-        // - Config‑related variables → must be inside one of:
-        //   • `css-config.ts`
-        //   • `css-internal-config.ts`
-        //   • `css-<subdomain>-config.ts`
-        //   • `css-internal-<subdomain>-config.ts`
-        // - General‑purpose variables → must be inside one of:
-        //   • `css-variables.ts`
-        //   • `css-internal-variables.ts`
-        //   • `css-<subdomain>-variables.ts`
-        //   • `css-internal-<subdomain>-variables.ts`
-        const subdomain        = domainMetadata?.subdomain ?? null;
-        const subdomainSuffix  = subdomain ? `-${pascalToKebab(subdomain)}` : '';
-        const isExpectedModule = (
-            // Config‑related variables:
-            (domainMetadata?.group === 'Config')
-            ? [
-                `css${subdomainSuffix}-config.ts`,
-                `css-internal${subdomainSuffix}-config.ts`,
-            ]
-            
-            // General‑purpose variables:
-            : [
-                `css${subdomainSuffix}-variables.ts`,
-                `css-internal${subdomainSuffix}-variables.ts`,
-            ]
-        ).includes(basename);
+        const expectedModules  = getExpectedModules(domainMetadata);
+        const isExpectedModule = expectedModules.includes(basename);
         
         
         
@@ -737,34 +685,8 @@ export const noForeignCode = createRule({
         
         
         // Determine if the CSS variable is declared within the expected module:
-        //
-        // Rules:
-        // - Config‑related variables → must be inside one of:
-        //   • `css-config.ts`
-        //   • `css-internal-config.ts`
-        //   • `css-<subdomain>-config.ts`
-        //   • `css-internal-<subdomain>-config.ts`
-        // - General‑purpose variables → must be inside one of:
-        //   • `css-variables.ts`
-        //   • `css-internal-variables.ts`
-        //   • `css-<subdomain>-variables.ts`
-        //   • `css-internal-<subdomain>-variables.ts`
-        const subdomain        = domainMetadata?.subdomain ?? null;
-        const subdomainSuffix  = subdomain ? `-${pascalToKebab(subdomain)}` : '';
-        const isExpectedModule = (
-            // Config‑related variables:
-            (domainMetadata?.group === 'Config')
-            ? [
-                `css${subdomainSuffix}-config.ts`,
-                `css-internal${subdomainSuffix}-config.ts`,
-            ]
-            
-            // General‑purpose variables:
-            : [
-                `css${subdomainSuffix}-variables.ts`,
-                `css-internal${subdomainSuffix}-variables.ts`,
-            ]
-        ).includes(basename);
+        const expectedModules  = getExpectedModules(domainMetadata);
+        const isExpectedModule = expectedModules.includes(basename);
         
         
         
