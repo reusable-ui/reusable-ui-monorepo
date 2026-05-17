@@ -172,18 +172,3 @@ export const breakpointConfigOptions     = config[2];
 export {
     breakpointConfigVars as default, // Default export for simplified imports.
 }
-
-/**
- * @deprecated Use `breakpointConfigVars` instead.
- */
-export const breakpoints         = breakpointConfigVars;
-
-/**
- * @deprecated Use `breakpointConfigExpressions` instead.
- */
-export const breakpointValues    = breakpointConfigExpressions;
-
-/**
- * @deprecated Use `breakpointConfigOptions` instead.
- */
-export const cssBreakpointConfig = breakpointConfigOptions;
