@@ -3,7 +3,7 @@ import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
 import { collectBindingInitializers, collectTopLevelBindings } from './binding-initializers.js'
 import { isTopLevel, isExported } from './scope-utilities.js'
-import { getDomainMetadata } from './domain-utilities.js'
+import { getDomainMetadata, pascalToKebab } from './domain-utilities.js'
 
 
 
@@ -92,7 +92,7 @@ export const enforceVariableConventions = createRule({
         //   • `css-<subdomain>-variables.ts`
         //   • `css-internal-<subdomain>-variables.ts`
         const subdomain        = domainMetadata?.subdomain ?? null;
-        const subdomainSuffix  = subdomain ? `-${subdomain[0].toLowerCase() + subdomain.slice(1)}` : '';
+        const subdomainSuffix  = subdomain ? `-${pascalToKebab(subdomain)}` : '';
         const isExpectedModule = (
             // Config‑related variables:
             (domainMetadata?.group === 'Config')
@@ -360,6 +360,7 @@ export const enforceVariableConventions = createRule({
                     // Enforce file location:
                     if (!isExpectedModule) {
                         context.report({ node: id, messageId: 'wrongFile' });
+                        console.log('DEBUG: ', domainMetadata, bindingName);
                     } // if
                 } // for
             },

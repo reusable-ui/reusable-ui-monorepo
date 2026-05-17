@@ -131,3 +131,28 @@ export const getDomainMetadata = (relativeFilename: string) => {
         fullIdentifier: `${domainPrefix}${subdomain ?? ''}${group}`,
     };
 };
+
+/**
+ * Converts a PascalCase or camelCase string into kebab-case.
+ * 
+ * Rules:
+ * - Word boundaries occur before each uppercase letter.
+ * - Consecutive capitals are treated as a single acronym.
+ * - Output is fully lowercase.
+ * 
+ * Examples:
+ * - 'ColorConfig'     → 'color-config'
+ * - 'BorderFeature'   → 'border-feature'
+ * - 'FlowDirection'   → 'flow-direction'
+ * - 'TheHTML'         → 'the-html'
+ * - 'TheHTMLParser'   → 'the-html-parser'
+ */
+export const pascalToKebab = (input: string): string => {
+    return (
+        input
+        // Split boundaries: lowercase→uppercase OR uppercase→lowercase
+        .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+        .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
+        .toLowerCase()
+    );
+};
