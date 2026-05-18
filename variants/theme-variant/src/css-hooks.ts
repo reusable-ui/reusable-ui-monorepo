@@ -100,7 +100,7 @@ export const usesThemeVariant = (): CssThemeVariant => {
  * @param theme The theme name to override with, or `null` to reset the override.
  * @returns A CSS rule containing theme-specific CSS variables.
  */
-export const usesThemeOverride = <TTheme extends string = BasicTheme>(theme: TTheme | null): CssRule => {
+export const usesThemeOverride = <TTheme extends string = BasicTheme>(theme: TTheme | null): CssRule => { /* eslint css-hooks/enforce-hook-conventions: 'off' */
     return style(
         vars({
             // 🎨 Regular Style:
