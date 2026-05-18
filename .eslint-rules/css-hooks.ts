@@ -81,7 +81,7 @@ export const enforceHookConventions = createRule({
                 //   Requires a case boundary check after "uses" to avoid matching lowercase continuations
                 //   like `usesfunnyStyle`. Ensures the next character is not lowercase.
                 //   Matches names like `usesBoldStyle`, `usesBackgroundFeature`, etc.
-                if (!/^uses(?![a-z])/.test(name)) return;
+                if (!/^uses(?![a-z])/.test(name)) return; // exit function
                 
                 
                 
@@ -133,7 +133,7 @@ export const enforceHookConventions = createRule({
                     //   Requires a case boundary check after "uses" to avoid matching lowercase continuations
                     //   like `usesfunnyStyle`. Ensures the next character is not lowercase.
                     //   Matches names like `usesBoldStyle`, `usesBackgroundFeature`, etc.
-                    if (!/^uses(?![a-z])/.test(bindingName)) return;
+                    if (!/^uses(?![a-z])/.test(bindingName)) continue; // exit for
                     
                     
                     
@@ -241,7 +241,7 @@ export const noForeignCode = createRule({
                     //   Requires a case boundary check after "uses" to avoid matching lowercase continuations
                     //   like `usesfunnyStyle`. Ensures the next character is not lowercase.
                     //   Matches names like `usesBoldStyle`, `usesBackgroundFeature`, etc.
-                    if (/^uses(?![a-z])/.test(bindingName)) continue;
+                    if (/^uses(?![a-z])/.test(bindingName)) continue; // exit for
                     
                     
                     
