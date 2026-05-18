@@ -242,7 +242,7 @@ export const enforceSelectorConventions = createRule({
                     // - No need for a case boundary check before "Selector":
                     //   matches camelCase and PascalCase names like `isOutlinedSelector`, `flowDirectionStartSelector`,
                     //   and even acronym-based names like `isSomeCSSSelector`.
-                    if (!/Selector$/.test(bindingName)) return;
+                    if (!/Selector$/.test(bindingName)) continue;
                     
                     
                     
