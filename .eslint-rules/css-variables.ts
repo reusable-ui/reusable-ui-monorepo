@@ -138,14 +138,15 @@ export const enforceVariableConventions = createRule({
          */
         const isValidVariableGroupName = (name: string): boolean => {
             // Loose validation (no domain context available):
-            if (!domainMetadata)  return /^[a-z]+([A-Z][a-z]*)?(Config|Variant|Feature|State|Effect)Vars$/.test(name);
+            if (!domainMetadata)  return /^[a-z]+([A-Z][a-z]*)?(Config|Variant|Feature|State|Effect)(Vars|Expressions|Options)$/.test(name);
             
             
             
             // Tight validation (domain context available):
             
             // Build expected name: <domain><subdomain?><group>Vars:
-            const expectedName      = `${domainMetadata.fullIdentifier}Vars`;
+            const variableSuffix    = name.match(/(Vars|Expressions|Options)$/)?.[1] ?? ''
+            const expectedName      = `${domainMetadata.fullIdentifier}${variableSuffix}`;
             
             // Convert expected name to camelCase (first letter lowercase):
             const expectedNameCamel = expectedName[0].toLowerCase() + expectedName.slice(1);
@@ -272,11 +273,11 @@ export const enforceVariableConventions = createRule({
                     
                     
                     // CSS variable candidates:
-                    // - Identified by names that end with "Vars".
-                    // - No need for a case boundary check before "Vars":
+                    // - Identified by names that end with "Vars", "Expressions", or "Options".
+                    // - No need for a case boundary check before the suffix:
                     //   matches camelCase and PascalCase names like `outlineVars`, `flowDirectionVars`,
                     //   and even acronym-based names like `someCSSVars`.
-                    if (!/Vars$/.test(bindingName)) return;
+                    if (!/(Vars|Expressions|Options)$/.test(bindingName)) continue;
                     
                     
                     
@@ -306,8 +307,14 @@ export const enforceVariableConventions = createRule({
                         }
                         else {
                             if (domainMetadata?.group === 'Config') {
-                                // Enforce implicit type annotation from `config[0]`:
-                                if (!node.init || (node.init.type !== TSESTree.AST_NODE_TYPES.MemberExpression) || (node.init.object.type !== TSESTree.AST_NODE_TYPES.Identifier) || (node.init.object.name !== 'config') || (node.init.property.type !== TSESTree.AST_NODE_TYPES.Literal) || (node.init.property.value !== 0)) {
+                                // Enforce implicit type annotation from `config[0-2]`:
+                                let expectedIndex = NaN;
+                                switch (bindingName.match(/(Vars|Expressions|Options)$/)?.[1]) {
+                                    case 'Vars'        : expectedIndex = 0; break
+                                    case 'Expressions' : expectedIndex = 1; break
+                                    case 'Options'     : expectedIndex = 2; break
+                                } // switch
+                                if (!node.init || (node.init.type !== TSESTree.AST_NODE_TYPES.MemberExpression) || (node.init.object.type !== TSESTree.AST_NODE_TYPES.Identifier) || (node.init.object.name !== 'config') || (node.init.property.type !== TSESTree.AST_NODE_TYPES.Literal) || (node.init.property.value !== expectedIndex)) {
                                     context.report({ node: id, messageId: 'wrongTypeRef' });
                                 } // if
                             }
