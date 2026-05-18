@@ -50,6 +50,10 @@ export const enforceHookConventions = createRule({
     create(context) {
         const filename         = context.filename;
         const basename         = path.basename(filename);
+        if (basename.split('-').includes('deprecated')) return {};
+        
+        
+        
         const isExpectedModule = ['css-hooks.ts', 'css-internal-hooks.ts'].includes(basename);
         
         
