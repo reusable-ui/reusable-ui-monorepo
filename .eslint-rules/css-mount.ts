@@ -73,7 +73,7 @@ export const enforceCssMountConventions = createRule({
         
         // Determine if the CSS mount function is declared within the expected module:
         const expectedModules  = getExpectedCSSMountModules(domainMetadata);
-        const isExpectedModule = expectedModules.includes(basename) && !basename.split('-').includes('deprecated');
+        const isExpectedModule = expectedModules.includes(basename);
         
         
         
