@@ -232,6 +232,29 @@ export const getExpectedCSSMountModules = (domainMetadata: DomainMetadata | null
 };
 
 /**
+ * Builds the list of expected CSS-style module filenames for a given domain metadata.
+ * 
+ * Rules:
+ * • `css-style.ts`
+ * • `css-internal-style.ts`
+ * • `css-<subdomain>-style.ts`
+ * • `css-internal-<subdomain>-style.ts`
+ * 
+ * Examples:
+ * - { group: 'Feature', subdomain: null    } → [ 'css-style.ts',        'css-internal-style.ts'        ]
+ * - { group: 'Feature', subdomain: 'Level' } → [ 'css-level-style.ts',  'css-internal-level-style.ts'  ]
+ */
+export const getExpectedCSSStyleModules = (domainMetadata: DomainMetadata | null): string[] => {
+    const subdomain = domainMetadata?.subdomain ?? null;
+    const subdomainSuffix = subdomain ? `-${pascalToKebab(subdomain)}` : '';
+    
+    return [
+        `css${subdomainSuffix}-style.ts`,
+        `css-internal${subdomainSuffix}-style.ts`,
+    ];
+};
+
+/**
  * Builds the list of expected CSS-hooks module filenames for a given domain metadata.
  * 
  * Rules:

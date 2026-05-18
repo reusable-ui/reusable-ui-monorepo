@@ -11,6 +11,7 @@ import { enforceHookConventions, noForeignCode as noForeignCodeInCssHooks } from
 import { enforceVariableConventions, enforceCssVarsFunctionUsage, enforceCssConfigFunctionUsage, noForeignCode as noForeignCodeInCssVars } from './.eslint-rules/css-variables.js'
 import { enforceCssPrefixDefaults } from './.eslint-rules/css-prefix-default.js'
 import { enforceCssMountConventions } from './.eslint-rules/css-mount.js'
+import { enforceScopeFunctionUsage, noForeignCode as noForeignCodeInCssStyle } from './.eslint-rules/css-style.js'
 
 
 
@@ -312,6 +313,12 @@ export default defineConfig(
                     'enforce-css-mount-conventions'    : enforceCssMountConventions    as unknown as Rule.RuleModule,
                 },
             },
+            'css-style': {
+                rules: {
+                    'enforce-scope-function-usage'     : enforceScopeFunctionUsage     as unknown as Rule.RuleModule,
+                    'no-foreign-code'                  : noForeignCodeInCssStyle       as unknown as Rule.RuleModule,
+                },
+            },
         },
         rules: {
             'import/no-extraneous-dependencies': ['error', {
@@ -336,6 +343,8 @@ export default defineConfig(
                 maxLength : 4,
             }],
             'css-mount/enforce-css-mount-conventions'        : 'error',
+            'css-style/enforce-scope-function-usage'         : 'error',
+            'css-style/no-foreign-code'                      : 'error',
         },
     },
     
