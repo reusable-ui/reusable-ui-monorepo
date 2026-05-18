@@ -17,6 +17,7 @@ const createRule = ESLintUtils.RuleCreator(
  * ESLint rule: enforce-hook-conventions
  * 
  * Purpose:
+ * - Enforce naming conventions for CSS hooks.
  * - Ensure CSS hooks (`uses*` identifiers) are functions.
  * - Ensure CSS hooks are centralized in the correct files.
  * 
@@ -46,6 +47,7 @@ export const enforceHookConventions = createRule({
             wrongFile   : 'CSS hooks must be declared in `css-hooks.ts` or `css-internal-hooks.ts`.',
             wrongExport : 'CSS hooks must be exported.',
             wrongType   : 'CSS hooks must be functions (function declaration, function expression, or arrow function).',
+            wrongName   : 'CSS hook names must follow `uses<Domain><Group>` naming convention.',
         },
     },
     create(context) {
@@ -64,6 +66,38 @@ export const enforceHookConventions = createRule({
         // Determine if the CSS hook is declared within the expected module:
         const expectedModules  = getExpectedCSSHookModules(domainMetadata);
         const isExpectedModule = expectedModules.includes(basename);
+        
+        
+        
+        // Helper functions:
+        
+        /**
+         * Validates naming convention for CSS hooks.
+         * 
+         * Requirements:
+         * - Must follow `uses<Domain><Group>` naming convention.
+         * - Must be camelCase.
+         * - The optional `subdomainIdentifier` is appended directly after the domain base (PascalCase).
+         * 
+         * Examples:
+         * - ✅ `useSizeVariant`    → domain=`Size`, group=`Variant`
+         * - ✅ `usesDisabledState` → domain=`Disabled`, group=`State`
+         * - ❌ `usesVariantSize`   (wrong order)
+         * - ❌ `usesDisabledstate` (missing case boundary)
+         */
+        const isValidHookName = (name: string): boolean => {
+            // Loose validation (no domain context available):
+            if (!domainMetadata)  return /^uses([A-Z][a-z]*)(Config|Variant|Feature|State|Effect)$/.test(name);
+            
+            
+            
+            // Tight validation (domain context available):
+            
+            // Build expected name: uses<domain><subdomain?><Group>:
+            const expectedName      = `uses${domainMetadata.domainPrefix}${domainMetadata.subdomain ?? ''}${domainMetadata.group}`;
+            
+            return (name === expectedName);
+        };
         
         
         
@@ -95,6 +129,13 @@ export const enforceHookConventions = createRule({
                 //   like `usesfunnyStyle`. Ensures the next character is not lowercase.
                 //   Matches names like `usesBoldStyle`, `usesBackgroundFeature`, etc.
                 if (!/^uses(?![a-z])/.test(name)) return; // exit function
+                
+                
+                
+                // Enforce naming convention:
+                if (!isValidHookName(name)) {
+                    context.report({ node, messageId: 'wrongName' });
+                } // if
                 
                 
                 
@@ -147,6 +188,13 @@ export const enforceHookConventions = createRule({
                     //   like `usesfunnyStyle`. Ensures the next character is not lowercase.
                     //   Matches names like `usesBoldStyle`, `usesBackgroundFeature`, etc.
                     if (!/^uses(?![a-z])/.test(bindingName)) continue; // exit for
+                    
+                    
+                    
+                    // Enforce naming convention:
+                    if (!isValidHookName(bindingName)) {
+                        context.report({ node: id, messageId: 'wrongName' });
+                    } // if
                     
                     
                     
