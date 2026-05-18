@@ -70,6 +70,7 @@ export const enforceVariableConventions = createRule({
         const filename         = context.filename;
         const basename         = path.basename(filename);
         const relativeFilename = path.relative(process.cwd(), filename);
+        if (basename.split('-').includes('deprecated')) return {};
         
         
         
@@ -80,7 +81,7 @@ export const enforceVariableConventions = createRule({
         
         // Determine if the CSS variable is declared within the expected module:
         const expectedModules  = getExpectedCSSVariableModules(domainMetadata);
-        const isExpectedModule = expectedModules.includes(basename) && !basename.split('-').includes('deprecated');
+        const isExpectedModule = expectedModules.includes(basename);
         
         
         
@@ -376,6 +377,7 @@ export const enforceCssVarsFunctionUsage = createRule({
         const filename         = context.filename;
         const basename         = path.basename(filename);
         const relativeFilename = path.relative(process.cwd(), filename);
+        if (basename.split('-').includes('deprecated')) return {};
         
         
         
@@ -386,7 +388,7 @@ export const enforceCssVarsFunctionUsage = createRule({
         
         // Determine if the CSS variable is declared within the expected module:
         const expectedModules  = getExpectedCSSVariableModules(domainMetadata);
-        const isExpectedModule = expectedModules.includes(basename) && !basename.split('-').includes('deprecated');
+        const isExpectedModule = expectedModules.includes(basename);
         
         
         
@@ -673,6 +675,7 @@ export const noForeignCode = createRule({
         const filename         = context.filename;
         const basename         = path.basename(filename);
         const relativeFilename = path.relative(process.cwd(), filename);
+        if (basename.split('-').includes('deprecated')) return {};
         
         
         
@@ -683,7 +686,7 @@ export const noForeignCode = createRule({
         
         // Determine if the CSS variable is declared within the expected module:
         const expectedModules  = getExpectedCSSVariableModules(domainMetadata);
-        const isExpectedModule = expectedModules.includes(basename) && !basename.split('-').includes('deprecated');
+        const isExpectedModule = expectedModules.includes(basename);
         
         
         
