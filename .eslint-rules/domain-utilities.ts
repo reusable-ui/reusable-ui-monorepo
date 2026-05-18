@@ -207,3 +207,28 @@ export const getExpectedCSSVariableModules = (domainMetadata: DomainMetadata | n
         `css-internal${subdomainSuffix}-variables.ts`,
     ];
 };
+
+/**
+ * Builds the list of expected CSS-mount module filenames for a given domain metadata.
+ * 
+ * Rules:
+ * • `css-mount.ts`
+ * • `css-internal-mount.ts`
+ * • `css-<subdomain>-mount.ts`
+ * • `css-internal-<subdomain>-mount.ts`
+ * 
+ * Examples:
+ * - { group: 'Config',  subdomain: null    } → [ 'css-config.ts',          'css-internal-config.ts'          ]
+ * - { group: 'Config',  subdomain: 'Param' } → [ 'css-param-config.ts',    'css-internal-param-config.ts'    ]
+ * - { group: 'Feature', subdomain: null    } → [ 'css-mount.ts',       'css-internal-mount.ts'       ]
+ * - { group: 'Feature', subdomain: 'Level' } → [ 'css-level-mount.ts', 'css-internal-level-mount.ts' ]
+ */
+export const getExpectedCSSMountModules = (domainMetadata: DomainMetadata | null): string[] => {
+    const subdomain = domainMetadata?.subdomain ?? null;
+    const subdomainSuffix = subdomain ? `-${pascalToKebab(subdomain)}` : '';
+    
+    return [
+        `css${subdomainSuffix}-mount.ts`,
+        `css-internal${subdomainSuffix}-mount.ts`,
+    ];
+};

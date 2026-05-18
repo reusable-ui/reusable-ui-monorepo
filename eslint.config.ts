@@ -10,6 +10,7 @@ import { enforceSelectorConventions, enforceIfFunctionConventions, noForeignCode
 import { enforceHookConventions, noForeignCode as noForeignCodeInCssHooks } from './.eslint-rules/css-hooks.js'
 import { enforceVariableConventions, enforceCssVarsFunctionUsage, enforceCssConfigFunctionUsage, noForeignCode as noForeignCodeInCssVars } from './.eslint-rules/css-variables.js'
 import { enforceCssPrefixDefaults } from './.eslint-rules/css-prefix-default.js'
+import { enforceCssMountConventions } from './.eslint-rules/css-mount.js'
 
 
 
@@ -306,6 +307,11 @@ export default defineConfig(
                     'enforce-css-prefix-defaults'      : enforceCssPrefixDefaults      as unknown as Rule.RuleModule,
                 },
             },
+            'css-mount': {
+                rules: {
+                    'enforce-css-mount-conventions'    : enforceCssMountConventions    as unknown as Rule.RuleModule,
+                },
+            },
         },
         rules: {
             'import/no-extraneous-dependencies': ['error', {
@@ -329,6 +335,7 @@ export default defineConfig(
                 minLength : 1,
                 maxLength : 4,
             }],
+            'css-mount/enforce-css-mount-conventions'        : 'error',
         },
     },
     
