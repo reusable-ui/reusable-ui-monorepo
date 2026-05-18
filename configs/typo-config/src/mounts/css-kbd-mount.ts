@@ -10,5 +10,5 @@ import {
  */
 export const mountKbdStyle = createTypographyMount({
     id            : 'dxux9w7w0j', // A unique salt for SSR support, ensuring the same class names across server and client.
-    importFactory : () => import(/* DISABLE_webpackPrefetch: true */ '../styles/kbds.js'),
+    importFactory : () => import(/* DISABLE_webpackPrefetch: true */ '../styles/css-kbd-style.js'),
 });
