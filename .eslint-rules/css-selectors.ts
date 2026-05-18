@@ -169,7 +169,7 @@ export const enforceSelectorConventions = createRule({
                 // - No need for a case boundary check before "Selector":
                 //   matches camelCase and PascalCase names like `isOutlinedSelector`, `flowDirectionStartSelector`,
                 //   and even acronym-based names like `isSomeCSSSelector`.
-                if (!/Selector$/.test(name)) return;
+                if (!/Selector$/.test(name)) return; // exit function
                 
                 
                 
@@ -242,7 +242,7 @@ export const enforceSelectorConventions = createRule({
                     // - No need for a case boundary check before "Selector":
                     //   matches camelCase and PascalCase names like `isOutlinedSelector`, `flowDirectionStartSelector`,
                     //   and even acronym-based names like `isSomeCSSSelector`.
-                    if (!/Selector$/.test(bindingName)) continue;
+                    if (!/Selector$/.test(bindingName)) continue; // exit for
                     
                     
                     
@@ -491,7 +491,7 @@ export const enforceIfFunctionConventions = createRule({
                     !/^if(?![a-z])/.test(name)
                     ||
                     !isCandidateIfFunction(node)
-                ) return;
+                ) return; // exit function
                 
                 
                 
@@ -554,7 +554,7 @@ export const enforceIfFunctionConventions = createRule({
                         !((value.type === TSESTree.AST_NODE_TYPES.FunctionExpression) || (value.type === TSESTree.AST_NODE_TYPES.ArrowFunctionExpression))
                         ||
                         !isCandidateIfFunction(value)
-                    ) return;
+                    ) continue; // exit for
                     
                     
                     
@@ -766,7 +766,7 @@ export const noForeignCode = createRule({
                     // - No need for a case boundary check before "Selector":
                     //   matches camelCase and PascalCase names like `isOutlinedSelector`, `flowDirectionStartSelector`,
                     //   and even acronym-based names like `isSomeCSSSelector`.
-                    if (/Selector$/.test(bindingName)) continue;
+                    if (/Selector$/.test(bindingName)) continue; // exit for
                     
                     
                     
@@ -777,7 +777,7 @@ export const noForeignCode = createRule({
                     //   Matches names like `ifOutlined`, `ifFlowDirectionStart`, etc.
                     // - Identified having at least one parameter typed as `CssStyleCollection` (from `@cssfn/core`).
                     // - Identified having a return type of `CssRule` (from `@cssfn/core`).
-                    if (/^if(?![a-z])/.test(bindingName) && value && isCandidateIfFunction(value)) continue;
+                    if (/^if(?![a-z])/.test(bindingName) && value && isCandidateIfFunction(value)) continue; // exit for
                     
                     
                     
