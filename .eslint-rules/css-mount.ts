@@ -136,8 +136,8 @@ export const enforceCssMountConventions = createRule({
                 //   Requires a case boundary check after "mount" to avoid matching lowercase continuations
                 //   like `mountingFoo`. Ensures the next character is not lowercase.
                 // - Excludes 'mountMany'.
-                if (!/^mount(?![a-z])/.test(name)) return;
-                if (name === 'mountMany') return;
+                if (!/^mount(?![a-z])/.test(name)) return; // exit function
+                if (name === 'mountMany') return; // exit function
                 
                 
                 
@@ -201,8 +201,8 @@ export const enforceCssMountConventions = createRule({
                     //   Requires a case boundary check after "mount" to avoid matching lowercase continuations
                     //   like `mountingFoo`. Ensures the next character is not lowercase.
                     // - Excludes 'mountMany'.
-                    if (!/^mount(?![a-z])/.test(bindingName)) continue;
-                    if (bindingName === 'mountMany') continue;
+                    if (!/^mount(?![a-z])/.test(bindingName)) continue; // exit for
+                    if (bindingName === 'mountMany') continue; // exit for
                     
                     
                     
