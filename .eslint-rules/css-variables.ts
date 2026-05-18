@@ -213,7 +213,7 @@ export const enforceVariableConventions = createRule({
                 // - No need for a case boundary check before the suffix:
                 //   matches camelCase and PascalCase names like `outlineVars`, `flowDirectionVars`,
                 //   and even acronym-based names like `someCSSVars`.
-                if (!/(Vars|Expressions|Options)$/.test(name)) return;
+                if (!/(Vars|Expressions|Options)$/.test(name)) return; // exit function
                 
                 
                 
@@ -277,7 +277,7 @@ export const enforceVariableConventions = createRule({
                     // - No need for a case boundary check before the suffix:
                     //   matches camelCase and PascalCase names like `outlineVars`, `flowDirectionVars`,
                     //   and even acronym-based names like `someCSSVars`.
-                    if (!/(Vars|Expressions|Options)$/.test(bindingName)) continue;
+                    if (!/(Vars|Expressions|Options)$/.test(bindingName)) continue; // exit for
                     
                     
                     
@@ -464,7 +464,7 @@ export const enforceCssVarsFunctionUsage = createRule({
                 // `cssVars()` function candidates:
                 // - Identified by names that exactly match "cssVars".
                 // - Identified imported from `@cssfn/core`.
-                if ((name !== 'cssVars') || !isCssVarsFunctionImported) return;
+                if ((name !== 'cssVars') || !isCssVarsFunctionImported) return; // exit function
                 
                 
                 
@@ -612,7 +612,7 @@ export const enforceCssConfigFunctionUsage = createRule({
                 // `cssConfig()` function candidates:
                 // - Identified by names that exactly match "cssConfig".
                 // - Identified imported from `@cssfn/core`.
-                if ((name !== 'cssConfig') || !isCssConfigFunctionImported) return;
+                if ((name !== 'cssConfig') || !isCssConfigFunctionImported) return; // exit function
                 
                 
                 
@@ -727,7 +727,7 @@ export const noForeignCode = createRule({
                     //   and even acronym-based names like `someCSSVars`.
                     // - CSS variables should never be functions,
                     //   the `enforce-variable-conventions` rule will handle that check separately.
-                    if (/Vars$/.test(bindingName)) continue;
+                    if (/Vars$/.test(bindingName)) continue; // exit for
                     
                     
                     
@@ -736,7 +736,7 @@ export const noForeignCode = createRule({
                         // - Identified by names that match "config".
                         // - CSS config variables should never be functions,
                         //   the `enforce-variable-conventions` rule will handle that check separately.
-                        if (bindingName === 'config') continue;
+                        if (bindingName === 'config') continue; // exit for
                         
                         
                         
@@ -747,7 +747,7 @@ export const noForeignCode = createRule({
                         //   and even acronym-based names like `someCSSExpressions`.
                         // - CSS config expression variables should never be functions,
                         //   the `enforce-variable-conventions` rule will handle that check separately.
-                        if (/Expressions$/.test(bindingName)) continue;
+                        if (/Expressions$/.test(bindingName)) continue; // exit for
                         
                         
                         
@@ -758,7 +758,7 @@ export const noForeignCode = createRule({
                         //   and even acronym-based names like `someCSSOptions`.
                         // - CSS config option variables should never be functions,
                         //   the `enforce-variable-conventions` rule will handle that check separately.
-                        if (/Options$/.test(bindingName)) continue;
+                        if (/Options$/.test(bindingName)) continue; // exit for
                     } // if
                     
                     
