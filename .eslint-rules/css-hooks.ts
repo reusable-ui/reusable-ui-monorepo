@@ -61,7 +61,7 @@ export const enforceHookConventions = createRule({
         
         
         
-        // Determine if the CSS mount function is declared within the expected module:
+        // Determine if the CSS hook is declared within the expected module:
         const expectedModules  = getExpectedCSSHookModules(domainMetadata);
         const isExpectedModule = expectedModules.includes(basename);
         
