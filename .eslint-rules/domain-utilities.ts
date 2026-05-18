@@ -230,3 +230,26 @@ export const getExpectedCSSMountModules = (domainMetadata: DomainMetadata | null
         `css-internal${subdomainSuffix}-mount.ts`,
     ];
 };
+
+/**
+ * Builds the list of expected CSS-hooks module filenames for a given domain metadata.
+ * 
+ * Rules:
+ * • `css-hooks.ts`
+ * • `css-internal-hooks.ts`
+ * • `css-<subdomain>-hooks.ts`
+ * • `css-internal-<subdomain>-hooks.ts`
+ * 
+ * Examples:
+ * - { group: 'Feature', subdomain: null    } → [ 'css-hooks.ts',        'css-internal-hooks.ts'        ]
+ * - { group: 'Feature', subdomain: 'Level' } → [ 'css-level-hooks.ts',  'css-internal-level-hooks.ts'  ]
+ */
+export const getExpectedCSSHookModules = (domainMetadata: DomainMetadata | null): string[] => {
+    const subdomain = domainMetadata?.subdomain ?? null;
+    const subdomainSuffix = subdomain ? `-${pascalToKebab(subdomain)}` : '';
+    
+    return [
+        `css${subdomainSuffix}-hooks.ts`,
+        `css-internal${subdomainSuffix}-hooks.ts`,
+    ];
+};

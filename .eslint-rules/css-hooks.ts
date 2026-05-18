@@ -3,6 +3,7 @@ import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
 import { collectBindingInitializers, collectTopLevelBindings } from './binding-initializers.js'
 import { isTopLevel, isExported } from './scope-utilities.js'
+import { getDomainMetadata, getExpectedCSSHookModules } from './domain-utilities.js'
 
 
 
@@ -50,11 +51,19 @@ export const enforceHookConventions = createRule({
     create(context) {
         const filename         = context.filename;
         const basename         = path.basename(filename);
+        const relativeFilename = path.relative(process.cwd(), filename);
         if (basename.split('-').includes('deprecated')) return {};
         
         
         
-        const isExpectedModule = ['css-hooks.ts', 'css-internal-hooks.ts'].includes(basename);
+        // Get domain metadata from a relative filename:
+        const domainMetadata = getDomainMetadata(relativeFilename);
+        
+        
+        
+        // Determine if the CSS mount function is declared within the expected module:
+        const expectedModules  = getExpectedCSSHookModules(domainMetadata);
+        const isExpectedModule = expectedModules.includes(basename);
         
         
         
