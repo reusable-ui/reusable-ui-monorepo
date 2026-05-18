@@ -64,19 +64,19 @@ To use the built-in typography styles, import **@cssfn/core** and **@reusable-ui
 ```ts
 import { style } from '@cssfn/core';
 import {
-    mountTypography,
-    mountSecondaries,
-    mountParagraphs,
-    mountLeads,
-    mountHeadings,
-    mountDisplays,
-    mountBlockquotes,
-    mountPlainLists,
-    mountMarks,
-    mountKbds,
-    mountCodes,
-    mountHorzSeparators,
-    mountEmphases,
+    mountTypographyStyle,
+    mountSecondaryStyle,
+    mountParagraphStyle,
+    mountLeadStyle,
+    mountHeadingStyle,
+    mountDisplayStyle,
+    mountBlockquoteStyle,
+    mountPlainListStyle,
+    mountMarkStyle,
+    mountKbdStyle,
+    mountCodeStyle,
+    mountHorzSeparatorStyle,
+    mountEmphasisStyle,
     mountMany,
 } from '@reusable-ui/typo-config';
 ```
@@ -86,7 +86,7 @@ Singular mounting/unmounting:
 
 ```ts
 // Mounting:
-const mountedTypos = mountTypography();
+const mountedTypos = mountTypographyStyle();
 
 // Unmounting:
 mountedTypos.unmount();
@@ -97,19 +97,19 @@ Batch mounting/unmounting:
 ```ts
 // Mounting multiple styles:
 const mountedTypos = mountMany(
-    mountTypography,
-    mountSecondaries,
-    mountParagraphs,
-    mountLeads,
-    mountHeadings,
-    mountDisplays,
-    mountBlockquotes,
-    mountPlainLists,
-    mountMarks,
-    mountKbds,
-    mountCodes,
-    mountHorzSeparators,
-    mountEmphases,
+    mountTypographyStyle,
+    mountSecondaryStyle,
+    mountParagraphStyle,
+    mountLeadStyle,
+    mountHeadingStyle,
+    mountDisplayStyle,
+    mountBlockquoteStyle,
+    mountPlainListStyle,
+    mountMarkStyle,
+    mountKbdStyle,
+    mountCodeStyle,
+    mountHorzSeparatorStyle,
+    mountEmphasisStyle,
 );
 
 // Unmounting:
