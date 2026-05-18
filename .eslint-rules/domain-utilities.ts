@@ -218,8 +218,6 @@ export const getExpectedCSSVariableModules = (domainMetadata: DomainMetadata | n
  * • `css-internal-<subdomain>-mount.ts`
  * 
  * Examples:
- * - { group: 'Config',  subdomain: null    } → [ 'css-config.ts',       'css-internal-config.ts'       ]
- * - { group: 'Config',  subdomain: 'Param' } → [ 'css-param-config.ts', 'css-internal-param-config.ts' ]
  * - { group: 'Feature', subdomain: null    } → [ 'css-mount.ts',        'css-internal-mount.ts'        ]
  * - { group: 'Feature', subdomain: 'Level' } → [ 'css-level-mount.ts',  'css-internal-level-mount.ts'  ]
  */
