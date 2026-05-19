@@ -66,20 +66,20 @@ return style({
 ```ts
 export const componentStyle = () => {
     // Theme variant:
-    const { themeVariantRule, themeVariantVars } = usesThemeVariant();
+    const { themeVariantRule, themeVariantVars } = usingThemeVariant();
     
     // Size variant:
-    const { sizeVariantRule } = usesSizeVariant(componentVars, {
+    const { sizeVariantRule } = usingSizeVariant(componentVars, {
         supportedSizes: ['sm', 'md', 'lg'],
     });
     
     // Background feature:
-    const { backgroundFeatureRule, backgroundFeatureVars } = usesBackgroundFeature({
+    const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
         backgroundColor: 'white', // Default unthemed background color.
     });
     
     // Foreground feature:
-    const { foregroundFeatureRule, foregroundFeatureVars } = usesForegroundFeature({
+    const { foregroundFeatureRule, foregroundFeatureVars } = usingForegroundFeature({
         foregroundColor: 'black', // Default unthemed text color.
     });
     
