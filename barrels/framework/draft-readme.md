@@ -64,7 +64,7 @@ return style({
 ## Example: Component Styling
 
 ```ts
-export const componentStyle = () => {
+export const usingComponentStyle = () => {
     // Theme variant:
     const { themeVariantRule, themeVariantVars } = usingThemeVariant();
     
