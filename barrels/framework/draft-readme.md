@@ -104,6 +104,29 @@ export const usingComponentStyle = () => {
 };
 ```
 
+Proposed future SASS version:
+
+```scss
+.the-component {
+    // Your usual styling goes here:
+    display : grid;
+    opacity : 0.5;
+    
+    // Attach desired variants:
+    @include themeVariantRule(); // Reacts to theme classnames (`.th-primary`, `.th-success`, etc.)
+    @include sizeVariantRule($componentVars, (sm, md, lg)); // Reacts to size classnames (`.sz-sm`, `.sz-md`, `.sz-lg`, etc.)
+    
+    // Attach desired features:
+    @include backgroundFeatureRule(white); // Resolves background based on active variants & states.
+    @include foregroundFeatureRule(black); // Resolves foreground based on active variants & states.
+    
+    // Use managed CSS variables:
+    // - Let @reusable-ui/framework provide the correct values automatically for you:
+    background : var(--backgroundFeature-backg);
+    color      : var(--foregroundFeature-color);
+}
+```
+
 The CSS-in-JS above compiles ahead-of-time or JIT into native CSS that browsers understand.
 
 ## How It Works
