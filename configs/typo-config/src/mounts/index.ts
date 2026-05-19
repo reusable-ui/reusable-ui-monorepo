@@ -18,6 +18,7 @@ export * from './css-kbd-mount.js'
 export * from './css-code-mount.js'
 
 export * from './css-horz-separator-mount.js'
+export * from './css-vert-separator-mount.js'
 
 export * from './css-emphasis-mount.js'
 

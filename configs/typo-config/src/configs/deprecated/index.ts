@@ -18,3 +18,4 @@ export *            from './css-deprecated-kbd-config.js'
 export *            from './css-deprecated-code-config.js'
 
 export *            from './css-deprecated-horz-separator-config.js'
+export *            from './css-deprecated-vert-separator-config.js'

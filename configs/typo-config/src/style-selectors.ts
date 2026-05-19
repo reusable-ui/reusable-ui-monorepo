@@ -106,6 +106,14 @@ export const getTagHorzSeparatorSelectors   : () => CssSelectorCollection = () =
 export const getClassHorzSeparatorSelectors : () => CssSelectorCollection = () => ['.hr'];
 
 
+// Regular vertical separators:
+
+/**
+ * Generates **class-based vertical separator selectors** (`.vr`).
+ */
+export const getClassVertSeparatorSelectors : () => CssSelectorCollection = () => ['.vr'];
+
+
 
 // Regular marks:
 

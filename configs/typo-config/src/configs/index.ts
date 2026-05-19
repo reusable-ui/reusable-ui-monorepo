@@ -19,6 +19,7 @@ export *            from './css-kbd-config.js'
 export *            from './css-code-config.js'
 
 export *            from './css-horz-separator-config.js'
+export *            from './css-vert-separator-config.js'
 
 
 

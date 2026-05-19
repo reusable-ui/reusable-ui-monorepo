@@ -34,6 +34,9 @@ import {
     getTagHorzSeparatorSelectors,
     getClassHorzSeparatorSelectors,
     
+    // Regular vertical separators:
+    getClassVertSeparatorSelectors,
+    
     
     
     // Regular marks:
@@ -256,6 +259,19 @@ export const getHorzSeparatorFilter : () => ElementFilter = () => ({
     ],
 });
 
+/**
+ * Generates filtering rules for selecting vertical separators.
+ */
+export const getVertSeparatorFilter : () => ElementFilter = () => ({
+    selectors   : [
+        // Include regular vertical separators:
+        getClassVertSeparatorSelectors(),
+    ],
+    exclusions  : [
+        // Not yet implemented.
+    ],
+});
+
 
 
 /**
@@ -353,6 +369,10 @@ export const getTextInlineFilter : () => ElementFilter[] = () => [
     getMarkFilter(),
     getKbdFilter(),
     getCodeFilter(),
+    
+    
+    
+    // getVertSeparatorFilter(), // Vertical separator is not inline-like element.
 ];
 
 /**

@@ -18,5 +18,6 @@ export * from './css-deprecated-kbd-mount.js'
 export * from './css-deprecated-code-mount.js'
 
 export * from './css-deprecated-horz-separator-mount.js'
+export * from './css-deprecated-vert-separator-mount.js'
 
 export * from './css-deprecated-emphasis-mount.js'

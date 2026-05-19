@@ -56,6 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 - kbds
 - codes
 - horzSeparators
+- vertSeparators
 - emphases
 
 ### **Applying typography styles**  
@@ -76,6 +77,7 @@ import {
     mountKbdStyle,
     mountCodeStyle,
     mountHorzSeparatorStyle,
+    mountVertSeparatorStyle,
     mountEmphasisStyle,
     mountMany,
 } from '@reusable-ui/typo-config';
@@ -109,6 +111,7 @@ const mountedTypos = mountMany(
     mountKbdStyle,
     mountCodeStyle,
     mountHorzSeparatorStyle,
+    mountVertSeparatorStyle,
     mountEmphasisStyle,
 );
 
@@ -135,6 +138,7 @@ import {
     kbdConfigVars,
     codeConfigVars,
     horzSeparatorConfigVars,
+    mountVertSeparatorStyle,
 } from '@reusable-ui/typo-config';
 
 typoConfigVars.fontFamily = 'Arial, sans-serif' as any; // `as any` => force to assign bare value

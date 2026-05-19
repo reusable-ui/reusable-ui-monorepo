@@ -543,6 +543,29 @@ export interface HorzSeparatorRuleOptions extends BlockElementRuleOptions {
 export const horzSeparatorRule = blockElementRule as (options: HorzSeparatorRuleOptions) => CssRule;
 
 
+/**
+ * Configuration options for styling vertical-separator-like elements.
+ */
+export interface VertSeparatorRuleOptions extends HorzSeparatorRuleOptions {
+    /**
+     * Defines selectors and exclusions criteria for vertical-separator-like elements.
+     */
+    elementFilter    : ElementFilter
+}
+
+/**
+ * Generates a styling rule for vertical-separator-like elements, applying configurable exclusions, spacing logic, and CSS variables.
+ *
+ * @param options - Configuration object containing:
+ *   - `elementFilter`: Defines selectors and exclusions criteria for vertical-separator-like elements.
+ *   - `spacingFilters`: Defines neighboring elements that trigger automatic top/bottom margin adjustments.
+ *   - `configVars`: References CSS variables for managing spacing and typography.
+ * 
+ * @returns A `CssRule` object for styling vertical-separator-like elements.
+ */
+export const vertSeparatorRule = horzSeparatorRule as (options: VertSeparatorRuleOptions) => CssRule;
+
+
 
 /**
  * Configuration options for styling mark-like elements.
