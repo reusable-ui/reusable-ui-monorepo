@@ -18,21 +18,21 @@ const createRule = ESLintUtils.RuleCreator(
  * 
  * Purpose:
  * - Enforce naming conventions for CSS hooks.
- * - Ensure CSS hooks (`uses*` identifiers) are functions.
+ * - Ensure CSS hooks (`using*` and `uses*` identifiers) are functions.
  * - Ensure CSS hooks are centralized in the correct files.
  * 
  * Requirements:
  * - Must be a function declaration, function expression, or arrow function.
- * - Variables, constants, or other object exports with `uses*` names are not allowed.
+ * - Variables, constants, or other object exports with `using*` or `uses*` names are not allowed.
  * - Must be declared only in `css-hooks.ts` or `css-internal-hooks.ts`.
  * - Must be exported.
  * 
  * CSS hook candidates:
- * - Identified by names that start with "uses", followed by a case boundary (next char is not lowercase).
+ * - Identified by names that start with "using" or "uses", followed by a case boundary (next char is not lowercase).
  * - Identified as a function declaration, function expression, or arrow function.
  * 
  * Why:
- * - Prevents accidental assignment of non-function values to CSS hooks (`uses*`) identifiers.
+ * - Prevents accidental assignment of non-function values to CSS hooks (`using*` and `uses*`) identifiers.
  * - Centralizes CSS hooks for discoverability.
  */
 export const enforceHookConventions = createRule({
@@ -47,7 +47,7 @@ export const enforceHookConventions = createRule({
             wrongFile   : 'CSS hooks must be declared in `css-hooks.ts` or `css-internal-hooks.ts`.',
             wrongExport : 'CSS hooks must be exported.',
             wrongType   : 'CSS hooks must be functions (function declaration, function expression, or arrow function).',
-            wrongName   : 'CSS hook names must follow `uses<Domain><Group>` naming convention.',
+            wrongName   : 'CSS hook names must follow `(using|uses)<Domain><Group>` naming convention.',
         },
     },
     create(context) {
@@ -75,28 +75,35 @@ export const enforceHookConventions = createRule({
          * Validates naming convention for CSS hooks.
          * 
          * Requirements:
-         * - Must follow `uses<Domain><Group>` naming convention.
+         * - Must follow `(using|uses)<Domain><Group>` naming convention.
          * - Must be camelCase.
          * - The optional `subdomainIdentifier` is appended directly after the domain base (PascalCase).
          * 
          * Examples:
-         * - ✅ `useSizeVariant`    → domain=`Size`, group=`Variant`
-         * - ✅ `usesDisabledState` → domain=`Disabled`, group=`State`
-         * - ❌ `usesVariantSize`   (wrong order)
-         * - ❌ `usesDisabledstate` (missing case boundary)
+         * - ✅ `usingSizeVariant`   → domain=`Size`, group=`Variant`
+         * - ✅ `usingDisabledState` → domain=`Disabled`, group=`State`
+         * - ❌ `usingVariantSize`   (wrong order)
+         * - ❌ `usingDisabledstate` (missing case boundary)
+         * - ✅ `usesSizeVariant`    → domain=`Size`, group=`Variant`
+         * - ✅ `usesDisabledState`  → domain=`Disabled`, group=`State`
+         * - ❌ `usesVariantSize`    (wrong order)
+         * - ❌ `usesDisabledstate`  (missing case boundary)
          */
         const isValidHookName = (name: string): boolean => {
             // Loose validation (no domain context available):
-            if (!domainMetadata)  return /^uses([A-Z][a-z]*)(Config|Variant|Feature|State|Effect)$/.test(name);
+            if (!domainMetadata)  return /^(using|uses)([A-Z][a-z]*)(Config|Variant|Feature|State|Effect)$/.test(name);
             
             
             
             // Tight validation (domain context available):
             
-            // Build expected name: uses<domain><subdomain?><Group>:
-            const expectedName      = `uses${domainMetadata.domainPrefix}${domainMetadata.subdomain ?? ''}${domainMetadata.group}`;
+            // Build expected name: using<domain><subdomain?><Group>:
+            const expectedName      = `using${domainMetadata.domainPrefix}${domainMetadata.subdomain ?? ''}${domainMetadata.group}`;
             
-            return (name === expectedName);
+            // Build expected name: uses<domain><subdomain?><Group>:
+            const expectedNameAlt   = `uses${domainMetadata.domainPrefix}${domainMetadata.subdomain ?? ''}${domainMetadata.group}`;
+            
+            return (name === expectedName) || (name === expectedNameAlt);
         };
         
         
@@ -104,7 +111,7 @@ export const enforceHookConventions = createRule({
         return {
             /**
              * Inspect function declarations.
-             * Handles CSS hooks as `uses*` function declarations.
+             * Handles CSS hooks as `using*` or `uses*` function declarations.
              */
             FunctionDeclaration(node) {
                 // Only validate top-level function declarations:
@@ -124,11 +131,11 @@ export const enforceHookConventions = createRule({
                 
                 
                 // CSS hook candidates:
-                // - Identified by names that start with "uses", followed by a case boundary (next char is not lowercase).
-                //   Requires a case boundary check after "uses" to avoid matching lowercase continuations
-                //   like `usesfunnyStyle`. Ensures the next character is not lowercase.
-                //   Matches names like `usesBoldStyle`, `usesBackgroundFeature`, etc.
-                if (!/^uses(?![a-z])/.test(name)) return; // exit function
+                // - Identified by names that start with "using" or "uses", followed by a case boundary (next char is not lowercase).
+                //   Requires a case boundary check after "using" or "uses" to avoid matching lowercase continuations
+                //   like `usingfunnyStyle`. Ensures the next character is not lowercase.
+                //   Matches names like `usingBoldStyle`, `usingBackgroundFeature`, etc.
+                if (!/^(using|uses)(?![a-z])/.test(name)) return; // exit function
                 
                 
                 
@@ -183,11 +190,11 @@ export const enforceHookConventions = createRule({
                     
                     
                     // CSS hook candidates:
-                    // - Identified by names that start with "uses", followed by a case boundary (next char is not lowercase).
-                    //   Requires a case boundary check after "uses" to avoid matching lowercase continuations
-                    //   like `usesfunnyStyle`. Ensures the next character is not lowercase.
-                    //   Matches names like `usesBoldStyle`, `usesBackgroundFeature`, etc.
-                    if (!/^uses(?![a-z])/.test(bindingName)) continue; // exit for
+                    // - Identified by names that start with "using" or "uses", followed by a case boundary (next char is not lowercase).
+                    //   Requires a case boundary check after "using" or "uses" to avoid matching lowercase continuations
+                    //   like `usingfunnyStyle`. Ensures the next character is not lowercase.
+                    //   Matches names like `usingBoldStyle`, `usingBackgroundFeature`, etc.
+                    if (!/^(using|uses)(?![a-z])/.test(bindingName)) continue; // exit for
                     
                     
                     
@@ -243,12 +250,12 @@ export const enforceHookConventions = createRule({
  * Requirements:
  * - Allowed top-level statements:
  *   - Import declarations.
- *   - CSS hooks (`uses*` functions).
+ *   - CSS hooks (`using*` and `uses*` functions).
  *   - Comments.
  * - Disallow any other top-level code.
  * 
  * CSS hook candidates:
- * - Identified by names that start with "uses", followed by a case boundary (next char is not lowercase).
+ * - Identified by names that start with "using" or "uses", followed by a case boundary (next char is not lowercase).
  * - Identified as a function declaration, function expression, or arrow function.
  * 
  * Why:
@@ -298,11 +305,11 @@ export const noForeignCode = createRule({
                     
                     
                     // CSS hook candidates:
-                    // - Identified by names that start with "uses", followed by a case boundary (next char is not lowercase).
-                    //   Requires a case boundary check after "uses" to avoid matching lowercase continuations
-                    //   like `usesfunnyStyle`. Ensures the next character is not lowercase.
-                    //   Matches names like `usesBoldStyle`, `usesBackgroundFeature`, etc.
-                    if (/^uses(?![a-z])/.test(bindingName)) continue; // exit for
+                    // - Identified by names that start with "using" or "uses", followed by a case boundary (next char is not lowercase).
+                    //   Requires a case boundary check after "using" or "uses" to avoid matching lowercase continuations
+                    //   like `usingfunnyStyle`. Ensures the next character is not lowercase.
+                    //   Matches names like `usingBoldStyle`, `usingBackgroundFeature`, etc.
+                    if (/^(using|uses)(?![a-z])/.test(bindingName)) continue; // exit for
                     
                     
                     
