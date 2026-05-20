@@ -17,6 +17,8 @@ Intent (Classes) → Hidden Logic (Variable Layers) → Final Styles (Feature Va
 **Neural under the hood, declarative on the surface.**  
 You define the intent; the network delivers the result.
 
+> Neural CSS processes your input classes through hidden layers to produce managed style outputs.
+
 
 
 # Introduction (Copilot → Gemini)
@@ -32,6 +34,8 @@ Intent (Classes) → Hidden Logic (Variable Layers) → Final Styles (Feature Va
 * Deterministic Flow: Configs, themes, and states flow down a predictable pipeline to output final, ready-to-use feature variables.
 
 Neural under the hood, declarative on the surface. You define the intent; the network delivers the result.
+
+> Neural CSS processes your input classes through hidden layers to produce managed style outputs.
 
 
 
