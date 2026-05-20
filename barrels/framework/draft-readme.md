@@ -65,6 +65,8 @@ return style({
 
 ```ts
 export const usingComponentStyle = () => {
+    // Declare the intents:
+    
     // Theme variant:
     const { themeVariantRule, themeVariantVars } = usingThemeVariant();
     
@@ -83,6 +85,8 @@ export const usingComponentStyle = () => {
         foregroundColor: 'black', // Default unthemed text color.
     });
     
+    
+    // Return a structured styling:
     return style({
         // Your usual styling goes here:
         display : 'grid',
@@ -100,6 +104,20 @@ export const usingComponentStyle = () => {
         // - Let @reusable-ui/framework provide the correct values automatically for you:
         background : backgroundFeatureVars.backg, // → var(--bg-backg)
         color      : foregroundFeatureVars.color, // → var(--fg-color)
+        
+        // Optionally declare the nested styling, with similar pattern to the root one:
+        ...children('.item', { // CSS equivalent: `> .item { ... }`
+            // Your usual styling goes here...
+            // Attach desired variant, features, etc; here...
+            
+            ...children(['header', 'footer'], { // CSS equivalent: `> :is(header, footer) { ... }`
+                // Your usual styling goes here...
+                // Attach desired variant, features, etc; here...
+                
+                // You can also attach your reusable component style (a CSS hook ending with `*Style`)
+                ...usingOtherComponentStyle(),
+            }),
+        }),
     });
 };
 ```
