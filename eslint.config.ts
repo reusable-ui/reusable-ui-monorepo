@@ -7,7 +7,7 @@ import reactPlugin from 'eslint-plugin-react'
 import importPlugin from 'eslint-plugin-import'
 import jestPlugin from 'eslint-plugin-jest'
 import { enforceSelectorConventions, enforceIfFunctionConventions, noForeignCode as noForeignCodeInCssSelectors } from './.eslint-rules/css-selectors.js'
-import { enforceHookConventions, noForeignCode as noForeignCodeInCssHooks } from './.eslint-rules/css-hooks.js'
+import { enforceHookConventions, migrateUsingPrefix, noForeignCode as noForeignCodeInCssHooks } from './.eslint-rules/css-hooks.js'
 import { enforceVariableConventions, enforceCssVarsFunctionUsage, enforceCssConfigFunctionUsage, noForeignCode as noForeignCodeInCssVars } from './.eslint-rules/css-variables.js'
 import { enforceCssPrefixDefaults } from './.eslint-rules/css-prefix-default.js'
 import { enforceCssMountConventions } from './.eslint-rules/css-mount.js'
@@ -292,6 +292,7 @@ export default defineConfig(
             'css-hooks': {
                 rules: {
                     'enforce-hook-conventions'         : enforceHookConventions       as unknown as Rule.RuleModule,
+                    'migrate-using-prefix'             : migrateUsingPrefix       as unknown as Rule.RuleModule,
                     'no-foreign-code'                  : noForeignCodeInCssHooks      as unknown as Rule.RuleModule,
                 },
             },
@@ -333,6 +334,7 @@ export default defineConfig(
             'css-selectors/enforce-if-function-conventions'  : 'error',
             'css-selectors/no-foreign-code'                  : 'error',
             'css-hooks/enforce-hook-conventions'             : 'error',
+            'css-hooks/migrate-using-prefix'                 : 'warn',
             'css-hooks/no-foreign-code'                      : 'error',
             'css-variables/enforce-variable-conventions'     : 'error',
             'css-variables/enforce-cssvars-function-usage'   : 'error',

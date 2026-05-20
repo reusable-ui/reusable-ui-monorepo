@@ -241,6 +241,129 @@ export const enforceHookConventions = createRule({
 
 
 /**
+ * ESLint rule: migrate-using-prefix
+ * 
+ * Purpose:
+ * - Enforce migration of CSS hook naming conventions from `uses*` to `using*`.
+ * - Ensure all CSS hooks consistently use the `using*` prefix.
+ * 
+ * Detection Criteria:
+ * - Identified by names that start with "uses", followed by a case boundary (next char is not lowercase).
+ * 
+ * Why:
+ * - Standardize CSS hook naming for clarity and consistency.
+ */
+export const migrateUsingPrefix = createRule({
+    name : 'migrate-using-prefix',
+    meta : {
+        type     : 'suggestion',
+        fixable  : 'code',
+        docs     : {
+            description : 'Require CSS hooks to follow the `using*` naming convention instead of `uses*`.',
+        },
+        schema   : [], // no options accepted
+        messages : {
+            wrongName : 'CSS hook names must follow `using*` naming convention.',
+        },
+    },
+    create(context) {
+        const filename         = context.filename;
+        const basename         = path.basename(filename);
+        if (basename.split('-').includes('deprecated')) return {};
+        
+        
+        
+        return {
+            /**
+             * Inspect function declarations.
+             * Handles CSS hooks as `uses*` function declarations.
+             */
+            FunctionDeclaration(node) {
+                // Only validate top-level function declarations:
+                // - Prevents false positives from nested functions inside functions, etc.
+                if (!isTopLevel(node)) return;
+                
+                
+                
+                // Ensure the function has an identifier name:
+                if (!node.id || (node.id.type !== TSESTree.AST_NODE_TYPES.Identifier)) return;
+                
+                
+                
+                // Store the function name for easy access:
+                const name = node.id.name;
+                
+                
+                
+                // CSS hook candidates:
+                // - Identified by names that start with "uses", followed by a case boundary (next char is not lowercase).
+                //   Requires a case boundary check after "uses" to avoid matching lowercase continuations
+                //   like `usesfunnyStyle`. Ensures the next character is not lowercase.
+                //   Matches names like `usesBoldStyle`, `usesBackgroundFeature`, etc.
+                if (!/^uses(?![a-z])/.test(name)) return; // exit function
+                
+                
+                
+                // Enforce naming migration:
+                const newName = name.replace(/^uses/, "using");
+                context.report({ node, messageId: 'wrongName', fix(fixer) {
+                    return fixer.replaceText(node, newName);
+                } });
+            },
+            
+            
+            
+            /**
+             * Inspect variable declarations.
+             * Handles CSS hooks as function expressions or arrow functions.
+             */
+            VariableDeclarator(node) {
+                // Only validate top-level variable declarations:
+                // - Prevents false positives from nested variables inside functions, etc.
+                if (!isTopLevel(node)) return;
+                
+                
+                
+                // Collect all binding identifiers and their initializers for validation:
+                const bindingInitializerList = collectBindingInitializers(node);
+                
+                
+                
+                // Validate each binding item:
+                for (const { id } of bindingInitializerList) {
+                    // If there's no identifier (shouldn't happen for valid exports), skip it:
+                    if (!id) continue;
+                    
+                    
+                    
+                    // Store the variable name for easy access:
+                    const bindingName = id.name;
+                    
+                    
+                    
+                    // CSS hook candidates:
+                    // - Identified by names that start with "uses", followed by a case boundary (next char is not lowercase).
+                    //   Requires a case boundary check after "uses" to avoid matching lowercase continuations
+                    //   like `usesfunnyStyle`. Ensures the next character is not lowercase.
+                    //   Matches names like `usesBoldStyle`, `usesBackgroundFeature`, etc.
+                    if (!/^uses(?![a-z])/.test(bindingName)) continue; // exit for
+                    
+                    
+                    
+                    // Enforce naming migration:
+                    const newName = bindingName.replace(/^uses/, "using");
+                    context.report({ node: id, messageId: 'wrongName', fix(fixer) {
+                        return fixer.replaceText(node, newName);
+                    } });
+                } // for
+            },
+        };
+    },
+});
+
+
+
+/**
  * ESLint rule: no-foreign-code
  * 
  * Purpose:
