@@ -126,6 +126,7 @@ Default inheritance case example:
 | State Role     | Behavior             | Main Interface     | Main Prop | 'inherit' | 'auto' | Classname Prop    | Resolved States     | Transitioning States     | Controllable | Uncontrollable              | Updates          | onChange                                |
 |----------------|----------------------|--------------------|-----------|-----------|--------|-------------------|---------------------|--------------------------|--------------|-----------------------------|------------------|-----------------------------------------|
 | excite-state   | Continuous animation | ExciteStateProps   | excited   | No        |        | exciteClassname   | excited             | none                     | Yes          | No — notification only      | via animationend | Yes — user has been notified to respond |
+|----------------|----------------------|--------------------|-----------|-----------|--------|-------------------|---------------------|--------------------------|--------------|-----------------------------|------------------|-----------------------------------------|
 | collapse-state | Animates transitions | CollapseStateProps | expanded  | No        |        | expandClassname   | collapsed, expanded | collapsing, expanding    | Yes          | Yes — memoize user's intent | via dispatch     | Yes — user toggles via UI               |
 | active-state   | Animates transitions | ActiveStateProps   | active    | Yes       |        | activeClassname   | inactive, active    | deactivating, activating | Yes          | Yes — memoize user's intent | via dispatch     | Yes — user toggles via UI               |
 |----------------|----------------------|--------------------|-----------|-----------|--------|-------------------|---------------------|--------------------------|--------------|-----------------------------|------------------|-----------------------------------------|
@@ -144,6 +145,7 @@ Additional flags:
 | State Package  | Resolve Final State | Uncontrollable                 | Dispatcher                  | Resolve Final State + Meta |
 |----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
 | excite-state   | useExciteState      | not applicable                 | not applicable              | useExciteBehaviorState     |
+|----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
 | collapse-state | useCollapseState    | useUncontrollableCollapseState | useCollapseChangeDispatcher | useCollapseBehaviorState   |
 | active-state   | useActiveState      | useUncontrollableActiveState   | useActiveChangeDispatcher   | useActiveBehaviorState     |
 |----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
@@ -158,6 +160,8 @@ Additional flags:
 |----------------------------|--------------|-------------------------------------------------|----------------------|-----------------------------|---------------|-------------------|------------------------|------------------------------|----------------------------------------|--------------------------------------------------------------------|----------|
 | Package Name               | Purpose      | Change Behavior                                 | Base Package Name    | Main Interface              | Main Prop     | Cascade Prop      | Classname Prop         | Resolved States              | Transitioning States                   | Reason for Base Form or `-ed`                                      | Verify   |
 |----------------------------|--------------|-------------------------------------------------|----------------------|-----------------------------|---------------|-------------------|------------------------|------------------------------|----------------------------------------|--------------------------------------------------------------------|----------|
+| excite-state               | notification | State driven by prop, continuous animation      | notification-state   | `ExciteStateProps`          | `excited`     | —                 | `exciteClassname`      | —                            | —                                      | ❌ Base form: reflects emotional trigger, not static condition     | VERIFIED |
+|----------------------------|--------------|-------------------------------------------------|----------------------|-----------------------------|---------------|-------------------|------------------------|------------------------------|----------------------------------------|--------------------------------------------------------------------|----------|
 | disabled-state             | constraint   | State driven by prop                            | constraint-state     | `DisabledStateProps`        | `disabled`    | `cascadeDisabled` | `disabledClassname`    | `disabled`, `enabled`        | `disabling`, `enabling`                | ✅ `-ed` form: reflects diagnostic condition, matches HTML/ARIA    |          |
 | read-only-state            | constraint   | State driven by prop                            | constraint-state     | `ReadOnlyStateProps`        | `readOnly`    | `cascadeReadOnly` | `readOnlyClassname`    | `readonly`, `writable`       | `thawing`, `freezing`                  | ✅ `-only` form: reflects diagnostic condition, matches HTML/ARIA  | VERIFIED |
 |----------------------------|--------------|-------------------------------------------------|----------------------|-----------------------------|---------------|-------------------|------------------------|------------------------------|----------------------------------------|--------------------------------------------------------------------|----------|
@@ -167,8 +171,6 @@ Additional flags:
 | validity-state             | feedback     | State updated dynamically via external observer | feedback-state       | `ValidityStateProps`        | `validity`    | —                 | `validityClassname`    | `invalid`, `valid`           | `invalidating`, `validating`           | ❌ Noun form: diagnostic domain, resolved states are adjectives    | VERIFIED |
 | drag-state                 | feedback     | State updated dynamically via external observer | feedback-state       | `DragStateProps`            | `dragged`     | —                 | `dragClassname`        | `dragged`, `dropped`         | `dragging`, `dropping`                 | ❌ Noun form: diagnostic domain, resolved states are adjectives    | VERIFIED |
 | sort-state                 | feedback     | State driven by prop changes                    | feedback-state       | `SortStateProps`            | -             | —                 | `sortClassname`        | `sorted`                     | `sorting`                              | ❌ Base form: reflects action, resolved states are adjectives      | VERIFIED |
-|----------------------------|--------------|-------------------------------------------------|----------------------|-----------------------------|---------------|-------------------|------------------------|------------------------------|----------------------------------------|--------------------------------------------------------------------|----------|
-| excite-state               | notification | State driven by prop, continuous animation      | notification-state   | `ExciteStateProps`          | `excited`     | —                 | `exciteClassname`      | —                            | —                                      | ❌ Base form: reflects emotional trigger, not static condition     | VERIFIED |
 |----------------------------|--------------|-------------------------------------------------|----------------------|-----------------------------|---------------|-------------------|------------------------|------------------------------|----------------------------------------|--------------------------------------------------------------------|----------|
 | collapse-state             | interaction  | Uncontrollable + initial state + user dispatch  | interaction-state    | `CollapseStateProps`        | `expanded`    | —                 | `expandClassname`      | `collapsed`, `expanded`      | `collapsing`, `expanding`              | ❌ Base form: domain is “collapse”, resolved states are adjectives | VERIFIED |
 | active-state               | interaction  | Uncontrollable + initial state + user dispatch  | interaction-state    | `ActiveStateProps`          | `active`      | `cascadeActive`   | `activeClassname`      | `inactive`, `active`         | `deactivating`, `activating`           | ❌ Base form: behavioral toggle, matches React idiom | VERIFIED    |          |
@@ -182,6 +184,8 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 |------------------|----------------------------------------------------|---------------------------------------------------------------------|
 | Package Name     | Recommended Behavior when Disabled                 | Reason                                                              |
 |------------------|----------------------------------------------------|---------------------------------------------------------------------|
+| excite-state     | Unaffected                                         | Purely notification/animation                                       |
+|------------------|----------------------------------------------------|---------------------------------------------------------------------|
 | focus-state      | Reset lost; remain lost until user refocuses       | Disabled elements shouldn’t retain focus; accessibility consistency |
 | hover-state      | Reset lost; re-evaluate on re-enable via `match()` | Matches native browser hover behavior under cursor                  |
 | press-state      | Reset lost; remain lost until user re-presses      | Prevents unintended actions; press must be explicit                 |
@@ -191,11 +195,12 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 | collapse-state   | Block dispatch; preserve last state                | Disabled freezes interaction but doesn’t reset                      |
 | active-state     | Block dispatch; preserve last state                | Disabled freezes interaction but doesn’t reset                      |
 | view-state       | Block dispatch; preserve last state                | Disabled freezes interaction but doesn’t reset                      |
-| excite-state     | Unaffected                                         | Purely notification/animation                                       |
 |------------------|----------------------------------------------------|---------------------------------------------------------------------|
 
 |------------------|----------------------------------------------------|---------------------------------------------------------------------|
 | Package Name     | Recommended Behavior when Readonly                 | Reason                                                              |
+|------------------|----------------------------------------------------|---------------------------------------------------------------------|
+| excite-state     | Unaffected                                         | Purely notification/animation                                       |
 |------------------|----------------------------------------------------|---------------------------------------------------------------------|
 | focus-state      | Unaffected; focus feedback applies                 | Readonly inputs are still part of tab order and accessible          |
 | hover-state      | Unaffected; hover feedback applies                 | Pointer feedback remains useful for discoverability                 |
@@ -206,7 +211,6 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 | collapse-state   | Block dispatch; preserve last state                | Readonly prevents mutation; interaction state frozen                |
 | active-state     | Block dispatch; preserve last state                | Same rationale as collapse                                          |
 | view-state       | Block dispatch; preserve last state                | Same rationale as collapse                                          |
-| excite-state     | Unaffected                                         | Purely notification/animation                                       |
 |------------------|----------------------------------------------------|---------------------------------------------------------------------|
 
 
@@ -222,6 +226,7 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/feedback-state         non_peer        BASE
 @reusable-ui/interaction-state      non_peer        BASE
 
+@reusable-ui/excite-state                           ACTIVITY_BASED
 @reusable-ui/disabled-state
 @reusable-ui/read-only-state
 @reusable-ui/focus-state
@@ -230,7 +235,6 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/validity-state
 @reusable-ui/drag-state
 @reusable-ui/sort-state
-@reusable-ui/excite-state
 @reusable-ui/collapse-state
 @reusable-ui/active-state
 @reusable-ui/view-state
@@ -251,6 +255,7 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 
 // Reusable-ui effects:
 @reusable-ui/filter-effect          non_peer
+@reusable-ui/excite-effect          non_peer
 @reusable-ui/disabled-effect        non_peer
 @reusable-ui/focus-effect           non_peer
 @reusable-ui/hover-effect           non_peer
@@ -258,7 +263,6 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/validity-effect        non_peer
 @reusable-ui/drag-effect            non_peer
 @reusable-ui/sort-effect            non_peer
-@reusable-ui/excite-effect          non_peer
 @reusable-ui/collapse-effect        non_peer
 @reusable-ui/active-effect          non_peer
 @reusable-ui/active-as-click        DEPRECATED
