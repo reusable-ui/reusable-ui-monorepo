@@ -566,11 +566,12 @@ import { useReadOnlyState } from '@reusable-ui/read-only-state'
 /** Props for controlling the selected state of a component. */
 export interface SelectedStateProps {
     /**
-     * Specifies the current selected state for controlled mode.
-     * 
+     * Specifies the current selected state:
      * - `true`   → selected
      * - `false`  → unselected
      * - `'auto'` → automatically determine selected state based on context
+     * 
+     * Defaults to `undefined` (uncontrolled mode).
      */
     selected ?: boolean | 'auto'
 }
