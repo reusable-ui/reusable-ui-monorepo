@@ -18,12 +18,10 @@ import {
 
 
 /**
- * Props for representing **state-driven animations** with full lifecycle awareness in React components.  
+ * Props for controlling the activity state of the component.
  * 
- * Provides an **effective controlled state** for determining whether the activity animation
- * should be kept running, switched to another animation, or stopped.
- * 
- * Exposes an optional callback for reporting proactive stop or switch requests for the current state.
+ * Provides a declarative way to control whether the component is running, idle, or switching to another activity,
+ * along with an optional callback to observe when the component requests a state reset or switch.
  * 
  * This prop is intended to be dynamic and may change over the lifetime of the component.
  * 
@@ -31,7 +29,7 @@ import {
  */
 export interface ActivityStateProps<TState extends {} | null> {
     /**
-     * Specifies the **effective state** supplied externally to drive the activity lifecycle.
+     * Controls the current **effective activity state** driving the animation.
      * 
      * - Must be a concrete value (already normalized, not a declarative keyword).
      * - Influence rules (disabled/read-only, cascade, clamp, etc.) must already be applied.
@@ -45,9 +43,9 @@ export interface ActivityStateProps<TState extends {} | null> {
     effectiveState  : TState
     
     /**
-     * Signals intent to change the external state after an animation cycle completes,
-     * such as stopping or switching to another animation.
+     * Signals a request to change the external activity state after completing an activity animation cycle.
      * 
+     * Commonly used to reset the external state back to idle or switching to another activity.
      * The parent may choose to honor or ignore this request.
      */
     onStateChange  ?: ValueChangeEventHandler<TState, AnimationEvent>

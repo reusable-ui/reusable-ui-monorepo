@@ -28,9 +28,8 @@ import {
 /**
  * Props for controlling the excited state of the component.
  * 
- * Accepts an optional `excited` prop, defaulting to `false` when not provided.
- * 
- * Exposes an optional callback for reporting proactive stop requests for the current excited state.
+ * Provides a declarative way to control whether the component is excited or idle,
+ * along with an optional callback to observe when the component requests a state reset.
  */
 export interface ExciteStateProps
     extends
@@ -38,7 +37,7 @@ export interface ExciteStateProps
         Omit<ActivityStateProps<boolean>, 'effectiveState'>
 {
     /**
-     * Specifies the current excited state:
+     * Controls the current excited state of the component:
      * - `true`  : the component is excited
      * - `false` : the component is idle
      * 
@@ -47,9 +46,9 @@ export interface ExciteStateProps
     excited         ?: ActivityStateProps<boolean>['effectiveState']
     
     /**
-     * Signals intent to change the external `excited` state after an excitement animation cycle completes.
-     * Typically used to reset the external `excited` state.
+     * Signals a request to change the external `excited` state after completing an excitement animation cycle.
      * 
+     * Commonly used to reset the external state back to idle.
      * The parent may choose to honor or ignore this request.
      */
     onExcitedChange ?: ActivityStateProps<boolean>['onStateChange']
