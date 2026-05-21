@@ -127,8 +127,8 @@ Default inheritance case example:
 |----------------|----------------------|--------------------|-----------|-----------|--------|-------------------|---------------------|--------------------------|--------------|-----------------------------|------------------|-----------------------------------------|
 | excite-state   | Continuous animation | ExciteStateProps   | excited   | No        |        | exciteClassname   | excited             | none                     | Yes          | No — notification only      | via animationend | Yes — user has been notified to respond |
 |----------------|----------------------|--------------------|-----------|-----------|--------|-------------------|---------------------|--------------------------|--------------|-----------------------------|------------------|-----------------------------------------|
-| collapse-state | Animates transitions | CollapseStateProps | expanded  | No        |        | expandClassname   | collapsed, expanded | collapsing, expanding    | Yes          | Yes — memoize user's intent | via dispatch     | Yes — user toggles via UI               |
 | active-state   | Animates transitions | ActiveStateProps   | active    | Yes       |        | activeClassname   | inactive, active    | deactivating, activating | Yes          | Yes — memoize user's intent | via dispatch     | Yes — user toggles via UI               |
+| collapse-state | Animates transitions | CollapseStateProps | expanded  | No        |        | expandClassname   | collapsed, expanded | collapsing, expanding    | Yes          | Yes — memoize user's intent | via dispatch     | Yes — user toggles via UI               |
 |----------------|----------------------|--------------------|-----------|-----------|--------|-------------------|---------------------|--------------------------|--------------|-----------------------------|------------------|-----------------------------------------|
 | disable-state  | Animates transitions | DisableStateProps  | disabled  | Yes       |        | disableClassname  | disabled, enabled   | disabling, enabling      | Yes          | No — indicator only         | via 'inherit'    | No — indicator only                     |
 | focus-state    | Animates transitions | FocusStateProps    | focused   | No        | Yes    | focusClassname    | blurred, focused    | focusing, blurring       | Yes          | No — indicator only         | via 'auto'       | No — indicator only                     |
@@ -146,8 +146,8 @@ Additional flags:
 |----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
 | excite-state   | useExciteState      | not applicable                 | not applicable              | useExciteBehaviorState     |
 |----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
-| collapse-state | useCollapseState    | useUncontrollableCollapseState | useCollapseChangeDispatcher | useCollapseBehaviorState   |
 | active-state   | useActiveState      | useUncontrollableActiveState   | useActiveChangeDispatcher   | useActiveBehaviorState     |
+| collapse-state | useCollapseState    | useUncontrollableCollapseState | useCollapseChangeDispatcher | useCollapseBehaviorState   |
 |----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
 | disable-state  | useDisableState     | not applicable                 | not applicable              | useDisableBehaviorState    |
 | focus-state    | useFocusState       | not applicable                 | not applicable              | useFocusBehaviorState      |
@@ -172,8 +172,8 @@ Additional flags:
 | drag-state                 | feedback     | State updated dynamically via external observer | feedback-state       | `DragStateProps`            | `dragged`     | —                 | `dragClassname`        | `dragged`, `dropped`         | `dragging`, `dropping`                 | ❌ Noun form: diagnostic domain, resolved states are adjectives    | VERIFIED |
 | sort-state                 | feedback     | State driven by prop changes                    | feedback-state       | `SortStateProps`            | -             | —                 | `sortClassname`        | `sorted`                     | `sorting`                              | ❌ Base form: reflects action, resolved states are adjectives      | VERIFIED |
 |----------------------------|--------------|-------------------------------------------------|----------------------|-----------------------------|---------------|-------------------|------------------------|------------------------------|----------------------------------------|--------------------------------------------------------------------|----------|
-| collapse-state             | interaction  | Uncontrollable + initial state + user dispatch  | interaction-state    | `CollapseStateProps`        | `expanded`    | —                 | `expandClassname`      | `collapsed`, `expanded`      | `collapsing`, `expanding`              | ❌ Base form: domain is “collapse”, resolved states are adjectives | VERIFIED |
 | active-state               | interaction  | Uncontrollable + initial state + user dispatch  | interaction-state    | `ActiveStateProps`          | `active`      | `cascadeActive`   | `activeClassname`      | `inactive`, `active`         | `deactivating`, `activating`           | ❌ Base form: behavioral toggle, matches React idiom | VERIFIED    |          |
+| collapse-state             | interaction  | Uncontrollable + initial state + user dispatch  | interaction-state    | `CollapseStateProps`        | `expanded`    | —                 | `expandClassname`      | `collapsed`, `expanded`      | `collapsing`, `expanding`              | ❌ Base form: domain is “collapse”, resolved states are adjectives | VERIFIED |
 | view-state                 | interaction  | Uncontrollable + initial state + user dispatch  | interaction-state    | `ViewStateProps`            | `viewIndex`   | —                 | `viewClassname`        | `view-settled`               | `view-progressing`, `view-regressing`  | ❌ Base form: navigational state, resolved states are phases       | VERIFIED |
 |----------------------------|--------------|-------------------------------------------------|----------------------|-----------------------------|---------------|-------------------|------------------------|------------------------------|----------------------------------------|--------------------------------------------------------------------|----------|
 
@@ -192,8 +192,8 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 | validity-state   | Unvalidated; recompute on re-enable                | Disabled inputs excluded from validation; recompute when re-enabled |
 | drag-state       | Follows press-state                                | Drag-state depends on press-state for dragging intent               |
 | sort-state       | Unaffected                                         | Sort-state provides visual transition of already sorted state       |
-| collapse-state   | Block dispatch; preserve last state                | Disabled freezes interaction but doesn’t reset                      |
 | active-state     | Block dispatch; preserve last state                | Disabled freezes interaction but doesn’t reset                      |
+| collapse-state   | Block dispatch; preserve last state                | Disabled freezes interaction but doesn’t reset                      |
 | view-state       | Block dispatch; preserve last state                | Disabled freezes interaction but doesn’t reset                      |
 |------------------|----------------------------------------------------|---------------------------------------------------------------------|
 
@@ -208,8 +208,8 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 | validity-state   | Unvalidated; recompute on re-enable                | Readonly inputs excluded from validation; recompute when re-mutable |
 | drag-state       | Follows press-state                                | Drag-state depends on press-state for dragging intent               |
 | sort-state       | Unaffected                                         | Sort-state provides visual transition of already sorted state       |
-| collapse-state   | Block dispatch; preserve last state                | Readonly prevents mutation; interaction state frozen                |
 | active-state     | Block dispatch; preserve last state                | Same rationale as collapse                                          |
+| collapse-state   | Block dispatch; preserve last state                | Readonly prevents mutation; interaction state frozen                |
 | view-state       | Block dispatch; preserve last state                | Same rationale as collapse                                          |
 |------------------|----------------------------------------------------|---------------------------------------------------------------------|
 
@@ -235,8 +235,8 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/validity-state                         FEEDBACK_BASED
 @reusable-ui/drag-state                             FEEDBACK_BASED
 @reusable-ui/sort-state                             FEEDBACK_BASED
-@reusable-ui/collapse-state                         INTERACTION_BASED
 @reusable-ui/active-state                           INTERACTION_BASED
+@reusable-ui/collapse-state                         INTERACTION_BASED
 @reusable-ui/view-state                             INTERACTION_BASED
 
 @reusable-ui/excitable              DEPRECATED
@@ -263,9 +263,9 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/validity-effect        non_peer
 @reusable-ui/drag-effect            non_peer
 @reusable-ui/sort-effect            non_peer
-@reusable-ui/collapse-effect        non_peer
 @reusable-ui/active-effect          non_peer
 @reusable-ui/active-as-click        DEPRECATED
+@reusable-ui/collapse-effect        non_peer
 @reusable-ui/view-effect            non_peer
 
 // Reusable-ui capabilities:
