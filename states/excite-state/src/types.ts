@@ -34,7 +34,7 @@ import {
 export interface ExciteStateProps
     extends
         // Bases:
-        Omit<ActivityStateProps<boolean>, 'effectiveState'>
+        Omit<ActivityStateProps<boolean>, 'effectiveState' | 'onStateChange'>
 {
     /**
      * Controls the current excited state of the component:
