@@ -16,8 +16,9 @@ import {
  */
 export interface ControllableStateProps<TState extends {} | null> {
     /**
-     * Supplies the current state for controlled mode.
-     * If supplied, the component becomes fully controlled by the parent.
+     * Controls the current state.
+     * 
+     * Defaults to `defaultState` (uncontrolled mode).
      */
     state        ?: TState
     
