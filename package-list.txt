@@ -227,17 +227,17 @@ For hypen character, use standard hyphen (-) instead of en dash (‑)
 @reusable-ui/interaction-state      non_peer        BASE
 
 @reusable-ui/excite-state                           ACTIVITY_BASED
-@reusable-ui/disabled-state
-@reusable-ui/read-only-state
-@reusable-ui/focus-state
-@reusable-ui/hover-state
-@reusable-ui/press-state
-@reusable-ui/validity-state
-@reusable-ui/drag-state
-@reusable-ui/sort-state
-@reusable-ui/collapse-state
-@reusable-ui/active-state
-@reusable-ui/view-state
+@reusable-ui/disabled-state                         FEEDBACK_BASED
+@reusable-ui/read-only-state                        FEEDBACK_BASED
+@reusable-ui/focus-state                            FEEDBACK_BASED
+@reusable-ui/hover-state                            FEEDBACK_BASED
+@reusable-ui/press-state                            FEEDBACK_BASED
+@reusable-ui/validity-state                         FEEDBACK_BASED
+@reusable-ui/drag-state                             FEEDBACK_BASED
+@reusable-ui/sort-state                             FEEDBACK_BASED
+@reusable-ui/collapse-state                         INTERACTION_BASED
+@reusable-ui/active-state                           INTERACTION_BASED
+@reusable-ui/view-state                             INTERACTION_BASED
 
 @reusable-ui/excitable              DEPRECATED
 @reusable-ui/collapsible            DEPRECATED
