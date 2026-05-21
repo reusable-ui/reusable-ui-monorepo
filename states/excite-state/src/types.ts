@@ -19,7 +19,6 @@ import {
 import {
     // Types:
     type ActivityStateProps,
-    type ActivityStateChangeProps,
     type ActivityStateOptions,
     type ActivityBehaviorState,
 }                           from '@reusable-ui/activity-state'      // Reusable abstraction for representing state-driven animations in React components — indicating ongoing activity or draw user attention.
@@ -30,6 +29,8 @@ import {
  * Props for controlling the excited state of the component.
  * 
  * Accepts an optional `excited` prop, defaulting to `false` when not provided.
+ * 
+ * Exposes an optional callback for reporting proactive stop requests for the current excited state.
  */
 export interface ExciteStateProps
     extends
@@ -44,25 +45,14 @@ export interface ExciteStateProps
      * Defaults to `false` (idle).
      */
     excited         ?: ActivityStateProps<boolean>['effectiveState']
-}
-
-/**
- * Props for reporting proactive stop requests from the current excited state.
- * 
- * Signals intent to change the external `excited` state after an excitement animation cycle completes.
- */
-export interface ExciteStateChangeProps
-    extends
-        // Bases:
-        Omit<ActivityStateChangeProps<boolean>, 'onStateChange'>
-{
+    
     /**
      * Signals intent to change the external `excited` state after an excitement animation cycle completes.
      * Typically used to reset the external `excited` state.
      * 
      * The parent may choose to honor or ignore this request.
      */
-    onExcitedChange ?: ActivityStateChangeProps<boolean>['onStateChange']
+    onExcitedChange ?: ActivityStateProps<boolean>['onStateChange']
 }
 
 /**

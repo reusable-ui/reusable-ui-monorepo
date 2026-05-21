@@ -16,7 +16,6 @@ import {
 // Types:
 import {
     type ActivityStateProps,
-    type ActivityStateChangeProps,
     type ActivityStateOptions,
     
     type ResolveActivityClassnameArgs,
@@ -102,7 +101,7 @@ export const useActivityBehaviorState = <
     
     TElement   extends Element = HTMLElement
 >(
-    props      : ActivityStateProps<TState> & ActivityStateChangeProps<TState>,
+    props      : ActivityStateProps<TState>,
     options    : ActivityStateOptions<TState> | undefined,
     definition : ActivityBehaviorStateDefinition<TState, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
 ): ActivityBehaviorState<TState, TClassname, TElement> => {

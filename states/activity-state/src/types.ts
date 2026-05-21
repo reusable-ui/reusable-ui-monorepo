@@ -23,6 +23,8 @@ import {
  * Provides an **effective controlled state** for determining whether the activity animation
  * should be kept running, switched to another animation, or stopped.
  * 
+ * Exposes an optional callback for reporting proactive stop or switch requests for the current state.
+ * 
  * This prop is intended to be dynamic and may change over the lifetime of the component.
  * 
  * @template TState - The concrete type of the state value (must not be declarative).
@@ -40,24 +42,15 @@ export interface ActivityStateProps<TState extends {} | null> {
      * - `props.state` for simple busy/processing/playing-state scenarios
      * - live observer result for environment-aware activity scenarios
      */
-    effectiveState : TState
-}
-
-/**
- * Props for reporting proactive stop or switch requests for the current state.
- * 
- * Signals intent to change the external state after an animation cycle completes.
- * 
- * @template TState - The concrete type of the state value (must not be declarative).
- */
-export interface ActivityStateChangeProps<TState extends {} | null> {
+    effectiveState  : TState
+    
     /**
      * Signals intent to change the external state after an animation cycle completes,
      * such as stopping or switching to another animation.
      * 
      * The parent may choose to honor or ignore this request.
      */
-    onStateChange ?: ValueChangeEventHandler<TState, AnimationEvent>
+    onStateChange  ?: ValueChangeEventHandler<TState, AnimationEvent>
 }
 
 /**
