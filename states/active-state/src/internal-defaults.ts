@@ -12,7 +12,7 @@ import {
  * 
  * - `false`: the component is initially inactive by default.
  */
-export const defaultInitialActive            : boolean                                     = false;
+export const defaultInitialActive            : boolean                                              = false;
 
 
 
@@ -24,4 +24,4 @@ export const defaultInitialActive            : boolean                          
  * 
  * - `false`: prevents contextual activation.
  */
-export const defaultDeclarativeCascadeActive : Required<ActiveStateProps>['cascadeActive'] = false;
+export const defaultDeclarativeCascadeActive : Required<ActiveStateProps<unknown>>['cascadeActive'] = false;

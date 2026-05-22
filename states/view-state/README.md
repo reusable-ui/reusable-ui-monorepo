@@ -123,14 +123,12 @@ import {
     useViewBehaviorState,
     ViewStateProps,
     UncontrollableViewStateProps,
-    ViewStateChangeProps,
 } from '@reusable-ui/view-state';
 import styles from './SlideBox.module.css';
 
 export interface SlideBoxProps extends
-    ViewStateProps,
-    UncontrollableViewStateProps, // optional uncontrolled behavior
-    ViewStateChangeProps<MouseEventHandler<HTMLButtonElement>> // optional change dispatching behavior
+    ViewStateProps<React.MouseEvent<HTMLButtonElement>>,
+    UncontrollableViewStateProps // optional uncontrolled behavior
 {}
 
 // A box that can switch views.

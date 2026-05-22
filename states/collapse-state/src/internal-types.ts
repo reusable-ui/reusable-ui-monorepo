@@ -18,7 +18,7 @@ import {
 export interface CollapseBehaviorStateDefinition
     extends
         InteractionBehaviorStateDefinition<boolean, boolean, ExpandPhase, ExpandClassname,
-            CollapseStateProps,
+            CollapseStateProps<any>,
             CollapseStateOptions,
             CollapseBehaviorStateDefinition
         >

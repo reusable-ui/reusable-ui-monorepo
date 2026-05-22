@@ -32,7 +32,6 @@ import {
     // Types:
     type InteractionStateProps,
     type UncontrollableInteractionStateProps,
-    type InteractionStateChangeProps,
     type InteractionStateChangeDispatcherOptions,
     type InteractionStateOptions,
     type InteractionBehaviorState,
@@ -43,20 +42,38 @@ import {
 /**
  * Props for controlling the current view index of the component.
  * 
- * Accepts an optional `viewIndex` prop, defaulting to `0` (first view) when not provided.
+ * Provides a declarative way to control the current view index of the component,
+ * along with an optional callback to observe when user interactions request a change.
+ * 
+ * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
  */
-export interface ViewStateProps
+export interface ViewStateProps<TChangeEvent = unknown>
     extends
         // Bases:
-        Omit<InteractionStateProps<number>, 'state'>
+        Omit<InteractionStateProps<number, number, TChangeEvent>, 'state' | 'onStateChange'>
 {
     /**
-     * Specifies the current view index for controlled mode:
+     * Controls the current view index:
      * - `0`, `1`, `2`, … : the component is showing the view at the given index
      * 
      * Defaults to `undefined` (uncontrolled mode).
      */
-    viewIndex ?: InteractionStateProps<number>['state']
+    viewIndex         ?: InteractionStateProps<number, number, TChangeEvent>['state']
+    
+    /**
+     * Signals a request to change the view index:
+     * - `0`, `1`, `2`, … : request to navigate to the given index
+     * 
+     * Commonly used in interactive components (e.g. Tabs, Slide, Carousel) that may initiate view changes
+     * through user actions such as tab clicks, swipe gestures, or navigation buttons.
+     * The parent may choose to honor or ignore this request.
+     * 
+     * Restricted behavior (`disabled` or `readonly`):
+     * - When restricted, view-switch requests are ignored internally, so this callback is never invoked.
+     * - When restriction is lifted, the callback will be invoked in response to user interactions
+     *   requesting navigation to a new view index.
+     */
+    onViewIndexChange ?: InteractionStateProps<number, number, TChangeEvent>['onStateChange']
 }
 
 /**
@@ -78,33 +95,6 @@ export interface UncontrollableViewStateProps
      * Defaults to `0` (first view).
      */
     defaultViewIndex ?: UncontrollableInteractionStateProps<number>['defaultState']
-}
-
-/**
- * Props for reporting a change request to the view index.
- * 
- * Typically used in interactive components (e.g. Tabs, Slide, Carousel) that may initiate view changes
- * through user actions such as tab clicks, swipe gestures, or navigation buttons.
- * 
- * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
- */
-export interface ViewStateChangeProps<TChangeEvent = unknown>
-    extends
-        // Bases:
-        Omit<InteractionStateChangeProps<number, TChangeEvent>, 'onStateChange'>
-{
-    /**
-     * Signals intent to change the view index:
-     * - `0`, `1`, `2`, … : request to navigate to the given index
-     * 
-     * The parent may choose to honor or ignore this request.
-     * 
-     * Restricted behavior (`disabled` or `readonly`):
-     * - When restricted, view-switch requests are ignored internally, so this callback is never invoked.
-     * - When restriction is lifted, the callback will be invoked in response to user interactions
-     *   requesting navigation to a new view index.
-     */
-    onViewIndexChange ?: InteractionStateChangeProps<number, TChangeEvent>['onStateChange']
 }
 
 /**

@@ -19,12 +19,12 @@ import {
 
 
 /** Resolves the semantic transition phase for active/inactive state behavior. */
-export const resolveActiveTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, ActiveStateProps, ActiveStateOptions, ActiveBehaviorStateDefinition>): ActivePhase => {
+export const resolveActiveTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, ActiveStateProps<unknown>, ActiveStateOptions, ActiveBehaviorStateDefinition>): ActivePhase => {
     if (isTransitioning) return settledState ? 'activating' : 'deactivating';
     return settledState ? 'active' : 'inactive';
 };
 
 /** Resolves the semantic transition classname for active/inactive state behavior. */
-export const resolveActiveTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, ActivePhase, ActiveStateProps, ActiveStateOptions, ActiveBehaviorStateDefinition>): ActiveClassname => {
+export const resolveActiveTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, ActivePhase, ActiveStateProps<unknown>, ActiveStateOptions, ActiveBehaviorStateDefinition>): ActiveClassname => {
     return `is-${transitionPhase}`;
 };

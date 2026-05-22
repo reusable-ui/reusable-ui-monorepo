@@ -3,7 +3,6 @@
 // Types:
 import {
     type ActiveStateProps,
-    type ActiveStateChangeProps,
     type ActiveChangeDispatcherOptions,
     type ActiveStatePhaseEventProps,
     type UncontrollableActiveStateProps,
@@ -94,7 +93,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * @param options - An optional configuration for customizing activate/deactivate behavior.
  * @returns The resolved active/inactive state.
  */
-export const useActiveState = (props: ActiveStateProps & { defaultActive?: never }, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>) : boolean => {
+export const useActiveState = (props: ActiveStateProps<any> & { defaultActive?: never }, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>) : boolean => {
     // Extract options:
     const {
         defaultActive        : defaultState,
@@ -144,7 +143,7 @@ export const useActiveState = (props: ActiveStateProps & { defaultActive?: never
  * @param options - Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for activation change requests.
  */
-export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveStateChangeProps<TChangeEvent> & { defaultActive?: never }, options?: ActiveChangeDispatcherOptions<TChangeEvent>) : ValueChangeDispatcher<boolean, TChangeEvent> => {
+export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent> & { defaultActive?: never }, options?: ActiveChangeDispatcherOptions<TChangeEvent>) : ValueChangeDispatcher<boolean, TChangeEvent> => {
     return useInteractionStateChangeDispatcher<boolean, TChangeEvent>(
         // Props:
         { onStateChange: props.onActiveChange },
@@ -157,7 +156,7 @@ export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveS
 
 
 /** Resolves the effective activation state, normalizing declarative keywords into concrete values. */
-const useResolveEffectiveActiveState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, ActiveStateProps, ActiveStateOptions, ActiveBehaviorStateDefinition>): boolean => {
+const useResolveEffectiveActiveState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, ActiveStateProps<unknown>, ActiveStateOptions, ActiveBehaviorStateDefinition>): boolean => {
     const effectiveActive = useActiveState({
         ...props,
         defaultActive : undefined,        // Prevents uncontrolled value.
@@ -202,14 +201,12 @@ const activeBehaviorStateDefinition : ActiveBehaviorStateDefinition = {
  *     useActiveBehaviorState,
  *     ActiveStateProps,
  *     UncontrollableActiveStateProps,
- *     ActiveStateChangeProps,
  * } from '@reusable-ui/active-state';
  * import styles from './ActivatableBox.module.css';
  * 
  * export interface ActivatableBoxProps extends
- *     ActiveStateProps,
- *     UncontrollableActiveStateProps, // optional uncontrolled behavior
- *     ActiveStateChangeProps<MouseEventHandler<HTMLButtonElement>> // optional change dispatching behavior
+ *     ActiveStateProps<React.MouseEvent<HTMLButtonElement>>,
+ *     UncontrollableActiveStateProps // optional uncontrolled behavior
  * {}
  * 
  * // A box that can be activated and deactivated.
@@ -250,7 +247,7 @@ const activeBehaviorStateDefinition : ActiveBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useActiveBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ActiveStateProps & UncontrollableActiveStateProps & ActiveStateChangeProps<TChangeEvent>, options?: ActiveStateOptions): ActiveBehaviorState<TElement, TChangeEvent> => {
+export const useActiveBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent> & UncontrollableActiveStateProps, options?: ActiveStateOptions): ActiveBehaviorState<TElement, TChangeEvent> => {
     // Extract options:
     const {
         defaultActive : fallbackState,
@@ -286,7 +283,7 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
         ActivePhase,
         ActiveClassname,
         
-        ActiveStateProps,
+        ActiveStateProps<TChangeEvent>,
         ActiveStateOptions,
         ActiveBehaviorStateDefinition,
         
@@ -337,7 +334,7 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
  * @param options - An optional configuration for customizing activate/deactivate behavior.
  * @returns A tuple of the resolved active/inactive state and a dispatcher for requesting changes.
  */
-export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: ActiveStateProps & UncontrollableActiveStateProps & ActiveStateChangeProps<TChangeEvent>, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
+export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent> & UncontrollableActiveStateProps, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
     // Extract options:
     const {
         defaultActive : fallbackState,
@@ -363,7 +360,7 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
         boolean,
         boolean,
         
-        ActiveStateProps,
+        ActiveStateProps<TChangeEvent>,
         ActiveStateOptions,
         ActiveBehaviorStateDefinition,
         

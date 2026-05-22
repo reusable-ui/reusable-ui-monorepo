@@ -46,14 +46,12 @@ import {
     useActiveBehaviorState,
     ActiveStateProps,
     UncontrollableActiveStateProps,
-    ActiveStateChangeProps,
 } from '@reusable-ui/active-state';
 import styles from './ActivatableBox.module.css';
 
 export interface ActivatableBoxProps extends
-    ActiveStateProps,
-    UncontrollableActiveStateProps, // optional uncontrolled behavior
-    ActiveStateChangeProps<MouseEventHandler<HTMLButtonElement>> // optional change dispatching behavior
+    ActiveStateProps<React.MouseEvent<HTMLButtonElement>>,
+    UncontrollableActiveStateProps // optional uncontrolled behavior
 {}
 
 // A box that can be activated and deactivated.
@@ -169,7 +167,7 @@ import {
     useActiveState,
 } from '@reusable-ui/active-state';
 
-export interface ParentComponentProps extends ActiveStateProps {
+export interface ParentComponentProps extends ActiveStateProps<React.MouseEvent<HTMLButtonElement>> {
     children ?: ReactNode
 }
 

@@ -19,12 +19,12 @@ import {
 
 
 /** Resolves the semantic transition phase for expanded/collapsed state behavior. */
-export const resolveExpandTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, CollapseStateProps, CollapseStateOptions, CollapseBehaviorStateDefinition>): ExpandPhase => {
+export const resolveExpandTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, CollapseStateProps<unknown>, CollapseStateOptions, CollapseBehaviorStateDefinition>): ExpandPhase => {
     if (isTransitioning) return settledState ? 'expanding' : 'collapsing';
     return settledState ? 'expanded' : 'collapsed';
 };
 
 /** Resolves the semantic transition classname for expanded/collapsed state behavior. */
-export const resolveExpandTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, ExpandPhase, CollapseStateProps, CollapseStateOptions, CollapseBehaviorStateDefinition>): ExpandClassname => {
+export const resolveExpandTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, ExpandPhase, CollapseStateProps<unknown>, CollapseStateOptions, CollapseBehaviorStateDefinition>): ExpandClassname => {
     return `is-${transitionPhase}`;
 };

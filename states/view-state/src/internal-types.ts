@@ -18,7 +18,7 @@ import {
 export interface ViewBehaviorStateDefinition
     extends
         InteractionBehaviorStateDefinition<number, number, ViewPhase, ViewClassname,
-            ViewStateProps,
+            ViewStateProps<any>,
             ViewStateOptions,
             ViewBehaviorStateDefinition
         >

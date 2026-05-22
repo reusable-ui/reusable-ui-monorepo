@@ -43,14 +43,12 @@ import {
     useCollapseBehaviorState,
     CollapseStateProps,
     UncontrollableCollapseStateProps,
-    CollapseStateChangeProps,
 } from '@reusable-ui/collapse-state';
 import styles from './CollapsibleBox.module.css';
 
 export interface CollapsibleBoxProps extends
-    CollapseStateProps,
-    UncontrollableCollapseStateProps, // optional uncontrolled behavior
-    CollapseStateChangeProps<MouseEventHandler<HTMLButtonElement>> // optional change dispatching behavior
+    CollapseStateProps<React.MouseEvent<HTMLButtonElement>>,
+    UncontrollableCollapseStateProps // optional uncontrolled behavior
 {}
 
 // A box that can be expanded and collapsed.

@@ -48,7 +48,7 @@ export interface ActiveStateProviderProps
  *     useActiveState,
  * } from '@reusable-ui/active-state';
  * 
- * export interface ParentComponentProps extends ActiveStateProps {
+ * export interface ParentComponentProps extends ActiveStateProps<React.MouseEvent<HTMLButtonElement>> {
  *     children ?: ReactNode
  * }
  * 

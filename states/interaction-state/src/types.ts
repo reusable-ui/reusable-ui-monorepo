@@ -29,17 +29,21 @@ export {
  * Declarative values (e.g. `'auto'`, `'inherit'`) are normalized
  * into effective concrete values by the `useResolveEffectiveState` in the behavior definition.
  * 
+ * Exposes an optional callback for reporting proactive change requests for the current state.
+ * 
  * This prop is intended to be dynamic and may change over the lifetime of the component.
  * 
  * @template TDeclarativeState - The declarative type of the state value (may include keywords).
+ * @template TState - The concrete type of the state value (must not be declarative).
+ * @template TChangeEvent - The type of the event triggering the change request (e.g. mouse click, keyboard event).
  */
-export interface InteractionStateProps<TDeclarativeState extends {} | null>
+export interface InteractionStateProps<TDeclarativeState extends {} | null, TState extends TDeclarativeState, TChangeEvent = unknown>
     extends
         // Bases:
         Omit<TransitionStateProps<{}>, 'effectiveState'>
 {
     /**
-     * Specifies the current state for controlled mode.
+     * Controls the current state.
      * Can be a concrete value (already resolved) or a declarative keyword (`'auto'`, `'inherit'`, etc).
      * 
      * Common source:
@@ -47,7 +51,20 @@ export interface InteractionStateProps<TDeclarativeState extends {} | null>
      * 
      * Defaults to `undefined` (uncontrolled mode).
      */
-    state ?: TDeclarativeState
+    state         ?: TDeclarativeState
+    
+    /**
+     * Signals intent to request an external update when user interaction occurs,
+     * such as clicking, typing, or other events.
+     * 
+     * The parent may choose to honor or ignore this request.
+     * 
+     * Restricted behavior (`disabled` or `readonly`):
+     * - When restricted, change requests are ignored internally, so this callback is never invoked.
+     * - When restriction is lifted, the callback will be invoked in response to user interactions
+     *   requesting to change the state.
+     */
+    onStateChange ?: ValueChangeEventHandler<TState, TChangeEvent>
 }
 
 /**
@@ -70,29 +87,6 @@ export interface UncontrollableInteractionStateProps<TState extends {} | null> {
      * Defaults to `options.defaultState`, falls back to `definition.defaultInitialState`.
      */
     defaultState ?: TState
-}
-
-/**
- * Props for reporting proactive change requests for the current state.
- * 
- * Signals intent to request an external update when user interaction occurs.
- * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TChangeEvent - The type of the event triggering the change request (e.g. mouse click, keyboard event).
- */
-export interface InteractionStateChangeProps<TState extends {} | null, TChangeEvent = unknown> {
-    /**
-     * Signals intent to request an external update when user interaction occurs,
-     * such as clicking, typing, or other events.
-     * 
-     * The parent may choose to honor or ignore this request.
-     * 
-     * Restricted behavior (`disabled` or `readonly`):
-     * - When restricted, change requests are ignored internally, so this callback is never invoked.
-     * - When restriction is lifted, the callback will be invoked in response to user interactions
-     *   requesting to change the state.
-     */
-    onStateChange ?: ValueChangeEventHandler<TState, TChangeEvent>
 }
 
 /**

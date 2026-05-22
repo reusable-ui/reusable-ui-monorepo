@@ -15,7 +15,6 @@ import {
 // Types:
 import {
     type ViewStateProps,
-    type ViewStateChangeProps,
     type ViewIndexChangeDispatcherOptions,
     type ViewStatePhaseEventProps,
     type UncontrollableViewStateProps,
@@ -101,7 +100,7 @@ const rangedStateDefinition : RangedStateDefinition<number> = {
  * @param options - An optional configuration for customizing view-switching behavior.
  * @returns The resolved view index.
  */
-export const useViewState = (props: ViewStateProps & { defaultViewIndex?: never }, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>) : number => {
+export const useViewState = (props: ViewStateProps<any> & { defaultViewIndex?: never }, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>) : number => {
     // Extract options:
     const {
         defaultViewIndex : defaultState,
@@ -154,7 +153,7 @@ export const useViewState = (props: ViewStateProps & { defaultViewIndex?: never 
  * @param options - Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for view index change requests.
  */
-export const useViewIndexChangeDispatcher = <TChangeEvent = unknown>(props: ViewStateChangeProps<TChangeEvent> & { defaultViewIndex?: never }, options?: ViewIndexChangeDispatcherOptions<TChangeEvent>) : ValueChangeDispatcher<number, TChangeEvent> => {
+export const useViewIndexChangeDispatcher = <TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent> & { defaultViewIndex?: never }, options?: ViewIndexChangeDispatcherOptions<TChangeEvent>) : ValueChangeDispatcher<number, TChangeEvent> => {
     return useInteractionStateChangeDispatcher<number, TChangeEvent>(
         // Props:
         { onStateChange: props.onViewIndexChange },
@@ -167,7 +166,7 @@ export const useViewIndexChangeDispatcher = <TChangeEvent = unknown>(props: View
 
 
 /** Resolves the effective view index, normalizing declarative keywords into concrete values. */
-const useResolveEffectiveViewState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<number, ViewStateProps, ViewStateOptions, ViewBehaviorStateDefinition>): number => {
+const useResolveEffectiveViewState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<number, ViewStateProps<unknown>, ViewStateOptions, ViewBehaviorStateDefinition>): number => {
     const effectiveViewIndex = useViewState({
         ...props,
         defaultViewIndex  : undefined,        // Prevents uncontrolled value.
@@ -214,14 +213,12 @@ const viewBehaviorStateDefinition : ViewBehaviorStateDefinition = {
  *     useViewBehaviorState,
  *     ViewStateProps,
  *     UncontrollableViewStateProps,
- *     ViewStateChangeProps,
  * } from '@reusable-ui/view-state';
  * import styles from './SlideBox.module.css';
  * 
  * export interface SlideBoxProps extends
- *     ViewStateProps,
- *     UncontrollableViewStateProps, // optional uncontrolled behavior
- *     ViewStateChangeProps<MouseEventHandler<HTMLButtonElement>> // optional change dispatching behavior
+ *     ViewStateProps<React.MouseEvent<HTMLButtonElement>>,
+ *     UncontrollableViewStateProps // optional uncontrolled behavior
  * {}
  * 
  * // A box that can switch views.
@@ -283,7 +280,7 @@ const viewBehaviorStateDefinition : ViewBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useViewBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ViewStateProps & UncontrollableViewStateProps & ViewStateChangeProps<TChangeEvent>, options?: ViewStateOptions): ViewBehaviorState<TElement, TChangeEvent> => {
+export const useViewBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent> & UncontrollableViewStateProps, options?: ViewStateOptions): ViewBehaviorState<TElement, TChangeEvent> => {
     // Extract options and assign defaults:
     const {
         defaultViewIndex : fallbackState,
@@ -345,7 +342,7 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
         ViewPhase,
         ViewClassname,
         
-        ViewStateProps,
+        ViewStateProps<TChangeEvent>,
         ViewStateOptions,
         ViewBehaviorStateDefinition,
         
@@ -425,7 +422,7 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
  * @param options - An optional configuration for customizing view-switching behavior.
  * @returns A tuple of the resolved view index and a dispatcher for requesting changes.
  */
-export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewStateProps & UncontrollableViewStateProps & ViewStateChangeProps<TChangeEvent>, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>): [number, ValueChangeDispatcher<number, TChangeEvent>] => {
+export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent> & UncontrollableViewStateProps, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>): [number, ValueChangeDispatcher<number, TChangeEvent>] => {
     // Extract options and assign defaults:
     const {
         defaultViewIndex : fallbackState,
@@ -451,7 +448,7 @@ export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewSt
         number,
         number,
         
-        ViewStateProps,
+        ViewStateProps<TChangeEvent>,
         ViewStateOptions,
         ViewBehaviorStateDefinition,
         

@@ -31,7 +31,7 @@ import {
 
 
 /** Resolves the semantic transition phase for view-switching behavior. */
-export const resolveViewTransitionPhase = ({ prevSettledState: prevSettledViewIndex, settledState: settledViewIndex, isTransitioning }: ResolveTransitionPhaseArgs<number, ViewStateProps, ViewStateOptions, ViewBehaviorStateDefinition>): ViewPhase => {
+export const resolveViewTransitionPhase = ({ prevSettledState: prevSettledViewIndex, settledState: settledViewIndex, isTransitioning }: ResolveTransitionPhaseArgs<number, ViewStateProps<unknown>, ViewStateOptions, ViewBehaviorStateDefinition>): ViewPhase => {
     if (isTransitioning && (prevSettledViewIndex !== undefined)) {
         return (
             // Determine the direction of movement (the same index counts as **forward**, which should never happen):
@@ -47,7 +47,7 @@ export const resolveViewTransitionPhase = ({ prevSettledState: prevSettledViewIn
 };
 
 /** Resolves the semantic transition classname for view-switching behavior. */
-export const resolveViewTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<number, ViewPhase, ViewStateProps, ViewStateOptions, ViewBehaviorStateDefinition>): ViewClassname => {
+export const resolveViewTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<number, ViewPhase, ViewStateProps<unknown>, ViewStateOptions, ViewBehaviorStateDefinition>): ViewClassname => {
     return transitionPhase;
 };
 

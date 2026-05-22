@@ -26,7 +26,6 @@ import {
     // Types:
     type InteractionStateProps,
     type UncontrollableInteractionStateProps,
-    type InteractionStateChangeProps,
     type InteractionStateChangeDispatcherOptions,
     type InteractionStateOptions,
     type InteractionBehaviorState,
@@ -37,30 +36,49 @@ import {
 /**
  * Props for controlling the active/inactive state of the component.
  * 
- * Accepts an optional `active` prop, defaulting to `false` (inactive) when not provided.
+ * Provides a declarative way to control whether the component is active or inactive,
+ * along with an optional callback to observe when user interactions request a change.
+ * 
+ * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  */
-export interface ActiveStateProps
+export interface ActiveStateProps<TChangeEvent = unknown>
     extends
         // Bases:
-        Omit<InteractionStateProps<boolean>, 'state'>
+        Omit<InteractionStateProps<boolean, boolean, TChangeEvent>, 'state' | 'onStateChange'>
 {
     /**
-     * Specifies the current active state for controlled mode:
+     * Controls the current active state:
      * - `true`  : the component is active
      * - `false` : the component is inactive
      * 
      * Defaults to `undefined` (uncontrolled mode).
      */
-    active        ?: InteractionStateProps<boolean>['state']
+    active         ?: InteractionStateProps<boolean, boolean, TChangeEvent>['state']
     
     /**
-     * Specifies whether the component can be activated via parent context:
+     * Signals a request to change the active state:
+     * - `true`  → request to activate
+     * - `false` → request to deactivate
+     * 
+     * Commonly used in interactive components (e.g. Toggle, Switch, Selection) that may initiate activation/deactivation
+     * through user actions such as select buttons, SPACE key presses, or toggles.
+     * The parent may choose to honor or ignore this request.
+     * 
+     * Restricted behavior (`disabled` or `readonly`):
+     * - When restricted, activation requests are ignored internally, so this callback is never invoked.
+     * - When restriction is lifted, the callback will be invoked in response to user interactions
+     *   requesting to activate or deactivate.
+     */
+    onActiveChange ?: InteractionStateProps<boolean, boolean, TChangeEvent>['onStateChange']
+    
+    /**
+     * Controls whether the component can be activated via parent context:
      * - `true`  : allows the component to be activated via parent context
      * - `false` : the component can only be activated directly via its own `active` prop
      * 
      * Defaults to `false` (prevents contextual activation).
      */
-    cascadeActive ?: boolean
+    cascadeActive  ?: boolean
 }
 
 /**
@@ -83,34 +101,6 @@ export interface UncontrollableActiveStateProps
      * Defaults to `false` (inactive).
      */
     defaultActive ?: UncontrollableInteractionStateProps<boolean>['defaultState']
-}
-
-/**
- * Props for reporting a change request to the active/inactive state.
- * 
- * Typically used in interactive components (e.g. Toggle, Switch, Selection) that may initiate activation/deactivation
- * through user actions such as select buttons, SPACE key presses, or toggles.
- * 
- * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
- */
-export interface ActiveStateChangeProps<TChangeEvent = unknown>
-    extends
-        // Bases:
-        Omit<InteractionStateChangeProps<boolean, TChangeEvent>, 'onStateChange'>
-{
-    /**
-     * Signals intent to change the active state:
-     * - `true`  → request to activate
-     * - `false` → request to deactivate
-     * 
-     * The parent may choose to honor or ignore this request.
-     * 
-     * Restricted behavior (`disabled` or `readonly`):
-     * - When restricted, activation requests are ignored internally, so this callback is never invoked.
-     * - When restriction is lifted, the callback will be invoked in response to user interactions
-     *   requesting to activate or deactivate.
-     */
-    onActiveChange ?: InteractionStateChangeProps<boolean, TChangeEvent>['onStateChange']
 }
 
 /**

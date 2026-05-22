@@ -18,7 +18,7 @@ import {
 export interface ActiveBehaviorStateDefinition
     extends
         InteractionBehaviorStateDefinition<boolean, boolean, ActivePhase, ActiveClassname,
-            ActiveStateProps,
+            ActiveStateProps<any>,
             ActiveStateOptions,
             ActiveBehaviorStateDefinition
         >
