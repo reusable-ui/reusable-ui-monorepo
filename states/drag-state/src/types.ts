@@ -32,7 +32,6 @@ import {
 import {
     // Types:
     type FeedbackStateProps,
-    type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, drag, and validity.
@@ -42,15 +41,18 @@ import {
 /**
  * Props for controlling the dragged/dropped state of the component.
  * 
+ * Provides a declarative way to control whether the component is dragged or dropped,
+ * along with an optional callback to synchronize when that state changes.
+ * 
  * Accepts an optional `dragged` prop, defaulting to `'auto'` (automatically determine drag state) when not provided.
  */
 export interface DragStateProps
     extends
         // Bases:
-        Omit<FeedbackStateProps<boolean>, 'effectiveState'>
+        Omit<FeedbackStateProps<boolean>, 'effectiveState' | 'onStateUpdate'>
 {
     /**
-     * Specifies the current drag state:
+     * Controls the current drag state:
      * - `true`   : the component is dragged (placed to the pointer position and continuously follows it)
      * - `false`  : the component is dropped (placed at the target or original position)
      * - `'auto'` : automatically determine drag state
@@ -66,6 +68,21 @@ export interface DragStateProps
      * Defaults to `'auto'` (automatically determine drag state).
      */
     dragged      ?: FeedbackStateProps<boolean>['effectiveState'] | 'auto'
+    
+    /**
+     * Synchronizes companion components whenever the resolved drag state changes:
+     * - `true`  → the component is now dragged (placed to the pointer position and continuously follows it)
+     * - `false` → the component is now dropped (placed at the target or original position)
+     * 
+     * This is a passive synchronization signal used to keep companion components
+     * (e.g. Button, Toggle, Switch) aligned with the component's state.
+     * 
+     * Triggered on both initial render and subsequent changes.
+     * 
+     * ⚠️ Important: This callback must not directly or indirectly update the `dragged` prop,
+     * otherwise an unwanted circular re-render may occur.
+     */
+    onDragUpdate ?: FeedbackStateProps<boolean>['onStateUpdate']
     
     /**
      * The computed drag value used when `dragged` is set to `'auto'`.
@@ -88,27 +105,6 @@ export interface DragStateProps
      * For **application developers**, prefer using the `dragged` prop directly.
      */
     computedDrag ?: FeedbackStateProps<boolean>['effectiveState']
-}
-
-/**
- * Props for reporting updates to the drag state.
- * 
- * Typically used in draggable components (e.g. PickItem, slider ThumbButton, splitter GripHandle) to notify external systems
- * when the resolved drag state changes—whether due to user interaction, pointer events, or layout triggers.
- */
-export interface DragStateUpdateProps
-    extends
-        // Bases:
-        Omit<FeedbackStateUpdateProps<boolean>, 'onStateUpdate'>
-{
-    /**
-     * Reports the updated drag state whenever it changes:
-     * - `true`  → the component is now dragged (placed to the pointer position and continuously follows it)
-     * - `false` → the component is now dropped (placed at the target or original position)
-     * 
-     * This is a passive notification; it does not request a change to the drag state.
-     */
-    onDragUpdate ?: FeedbackStateUpdateProps<boolean>['onStateUpdate']
 }
 
 /**

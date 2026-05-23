@@ -3,7 +3,6 @@
 // Types:
 import {
     type ReadOnlyStateProps,
-    type ReadOnlyStateUpdateProps,
     type ReadOnlyStatePhaseEventProps,
     type ReadOnlyStateOptions,
     type ReadOnlyPhase,
@@ -138,13 +137,11 @@ const readOnlyBehaviorStateDefinition : ReadOnlyBehaviorStateDefinition = {
  * import {
  *     useReadOnlyBehaviorState,
  *     ReadOnlyStateProps,
- *     ReadOnlyStateUpdateProps,
  * } from '@reusable-ui/read-only-state';
  * import styles from './CustomEditor.module.css';
  * 
  * export interface CustomEditorProps extends
- *     ReadOnlyStateProps,
- *     ReadOnlyStateUpdateProps // optional update reporting behavior
+ *     ReadOnlyStateProps
  * {}
  * 
  * // An editor that can be editable or read-only.
@@ -178,7 +175,7 @@ const readOnlyBehaviorStateDefinition : ReadOnlyBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>(props: ReadOnlyStateProps & ReadOnlyStateUpdateProps, options?: ReadOnlyStateOptions): ReadOnlyBehaviorState<TElement> => {
+export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>(props: ReadOnlyStateProps, options?: ReadOnlyStateOptions): ReadOnlyBehaviorState<TElement> => {
     // Extract props:
     const {
         onReadOnlyUpdate : onStateUpdate,

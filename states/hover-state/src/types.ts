@@ -32,7 +32,6 @@ import {
 import {
     // Types:
     type FeedbackStateProps,
-    type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
@@ -41,6 +40,9 @@ import {
 
 /**
  * Props for controlling the hovered/unhovered state of the component.
+ * 
+ * Provides a declarative way to control whether the component is hovered or unhovered,
+ * along with an optional callback to synchronize when that state changes.
  * 
  * Accepts an optional `hovered` prop, defaulting to `'auto'` (automatically determine hover state) when not provided.
  * 
@@ -51,10 +53,10 @@ import {
 export interface HoverStateProps
     extends
         // Bases:
-        Omit<FeedbackStateProps<boolean>, 'effectiveState'>
+        Omit<FeedbackStateProps<boolean>, 'effectiveState' | 'onStateUpdate'>
 {
     /**
-     * Specifies the current hover state:
+     * Controls the current hover state:
      * - `true`   : the component is hovered
      * - `false`  : the component is unhovered
      * - `'auto'` : automatically determine hover state
@@ -68,6 +70,21 @@ export interface HoverStateProps
      * Defaults to `'auto'` (automatically determine hover state).
      */
     hovered       ?: FeedbackStateProps<boolean>['effectiveState'] | 'auto'
+    
+    /**
+     * Synchronizes companion components whenever the resolved hover state changes:
+     * - `true`  → the component is now hovered
+     * - `false` → the component is now unhovered
+     * 
+     * This is a passive synchronization signal used to keep companion components
+     * (e.g. Button, Toggle, Switch) aligned with the component's state.
+     * 
+     * Triggered on both initial render and subsequent changes.
+     * 
+     * ⚠️ Important: This callback must not directly or indirectly update the `hovered` prop,
+     * otherwise an unwanted circular re-render may occur.
+     */
+    onHoverUpdate ?: FeedbackStateProps<boolean>['onStateUpdate']
     
     /**
      * The derived hover value used when `hovered` is set to `'auto'`.
@@ -85,27 +102,6 @@ export interface HoverStateProps
      * For **application developers**, prefer using the `hovered` prop directly.
      */
     computedHover ?: FeedbackStateProps<boolean>['effectiveState']
-}
-
-/**
- * Props for reporting updates to the hover state.
- * 
- * Typically used in interactive components (e.g. Button, Select, MenuItem ) to notify external systems
- * when the resolved hover state changes—whether due to user interaction, pointer movement, or layout triggers.
- */
-export interface HoverStateUpdateProps
-    extends
-        // Bases:
-        Omit<FeedbackStateUpdateProps<boolean>, 'onStateUpdate'>
-{
-    /**
-     * Reports the updated hover state whenever it changes:
-     * - `true`  → the component is now hovered
-     * - `false` → the component is now unhovered
-     * 
-     * This is a passive notification; it does not request a change to the hover state.
-     */
-    onHoverUpdate ?: FeedbackStateUpdateProps<boolean>['onStateUpdate']
 }
 
 /**

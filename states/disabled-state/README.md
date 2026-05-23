@@ -43,13 +43,11 @@ import React, { FC } from 'react';
 import {
     useDisabledBehaviorState,
     DisabledStateProps,
-    DisabledStateUpdateProps,
 } from '@reusable-ui/disabled-state';
 import styles from './CustomEditor.module.css';
 
 export interface CustomEditorProps extends
-    DisabledStateProps,
-    DisabledStateUpdateProps // optional update reporting behavior
+    DisabledStateProps
 {}
 
 // An editor that can be enabled or disabled.

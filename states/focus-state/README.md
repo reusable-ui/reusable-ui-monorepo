@@ -46,13 +46,11 @@ import React, { FC, useState, useEffect } from 'react';
 import {
     useFocusBehaviorState,
     FocusStateProps,
-    FocusStateUpdateProps,
 } from '@reusable-ui/focus-state';
 import styles from './CustomButton.module.css';
 
 export interface CustomButtonProps extends
-    FocusStateProps,
-    FocusStateUpdateProps // optional update reporting behavior
+    FocusStateProps
 {}
 
 // A button with custom focus logic.

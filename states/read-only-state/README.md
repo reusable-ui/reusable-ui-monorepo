@@ -43,13 +43,11 @@ import React, { FC } from 'react';
 import {
     useReadOnlyBehaviorState,
     ReadOnlyStateProps,
-    ReadOnlyStateUpdateProps,
 } from '@reusable-ui/read-only-state';
 import styles from './CustomEditor.module.css';
 
 export interface CustomEditorProps extends
-    ReadOnlyStateProps,
-    ReadOnlyStateUpdateProps // optional update reporting behavior
+    ReadOnlyStateProps
 {}
 
 // An editor that can be editable or read-only.

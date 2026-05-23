@@ -25,7 +25,6 @@ import {
 import {
     // Types:
     type FeedbackStateProps,
-    type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
@@ -35,12 +34,15 @@ import {
 /**
  * Props for controlling the validity state of the component.
  * 
+ * Provides a declarative way to control whether the component is valid, invalid, or unvalidated (neither valid nor invalid),
+ * along with an optional callback to synchronize when that state changes.
+ * 
  * Accepts an optional `validity` prop, defaulting to `'auto'` (automatically determine validity state) when not provided.
  */
 export interface ValidityStateProps
     extends
         // Bases:
-        Omit<FeedbackStateProps<boolean | null>, 'effectiveState'>
+        Omit<FeedbackStateProps<boolean | null>, 'effectiveState' | 'onStateUpdate'>
 {
     /**
      * Controls whether validation is active for this component.
@@ -56,7 +58,7 @@ export interface ValidityStateProps
     enableValidation  ?: boolean
     
     /**
-     * Specifies the current validity state:
+     * Controls the current validity state:
      * - `true`   : the component is valid
      * - `false`  : the component is invalid
      * - `null`   : the component is unvalidated (neither valid nor invalid)
@@ -73,6 +75,22 @@ export interface ValidityStateProps
      * Defaults to `'auto'` (automatically determine validity state).
      */
     validity          ?: FeedbackStateProps<boolean | null>['effectiveState'] | 'auto'
+    
+    /**
+     * Synchronizes companion components whenever the resolved validity state changes:
+     * - `true`  → the component is now valid
+     * - `false` → the component is now invalid
+     * - `null`  → the component is now unvalidated
+     * 
+     * This is a passive synchronization signal used to keep companion components
+     * (e.g. Button, Toggle, Switch) aligned with the component's state.
+     * 
+     * Triggered on both initial render and subsequent changes.
+     * 
+     * ⚠️ Important: This callback must not directly or indirectly update the `validity` prop,
+     * otherwise an unwanted circular re-render may occur.
+     */
+    onValidityUpdate  ?: FeedbackStateProps<boolean | null>['onStateUpdate']
     
     /**
      * Controls whether ancestor validation intent cascades down.
@@ -100,28 +118,6 @@ export interface ValidityStateProps
      * For **application developers**, prefer using the `validity` prop directly.
      */
     computedValidity  ?: FeedbackStateProps<boolean | null>['effectiveState']
-}
-
-/**
- * Props for reporting updates to the validity state.
- * 
- * Typically used in editable components (e.g. Input, Select, Option) to notify external systems
- * when the resolved validity state changes—whether due to user input, async validation, or validity constraints changes.
- */
-export interface ValidityStateUpdateProps
-    extends
-        // Bases:
-        Omit<FeedbackStateUpdateProps<boolean | null>, 'onStateUpdate'>
-{
-    /**
-     * Reports the updated validity state whenever it changes:
-     * - `true`  → the component is now valid
-     * - `false` → the component is now invalid
-     * - `null`  → the component is now unvalidated
-     * 
-     * This is a passive notification; it does not request a change to the validity state.
-     */
-    onValidityUpdate ?: FeedbackStateUpdateProps<boolean | null>['onStateUpdate']
 }
 
 /**

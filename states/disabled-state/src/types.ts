@@ -25,7 +25,6 @@ import {
 import {
     // Types:
     type FeedbackStateProps,
-    type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
@@ -35,51 +34,48 @@ import {
 /**
  * Props for controlling the enabled/disabled state of the component.
  * 
+ * Provides a declarative way to control whether the component is enabled or disabled,
+ * along with an optional callback to synchronize when that state changes.
+ * 
  * Accepts an optional `disabled` prop, defaulting to `false` (enabled) when not provided.
  */
 export interface DisabledStateProps
     extends
         // Bases:
-        Omit<FeedbackStateProps<boolean>, 'effectiveState'>
+        Omit<FeedbackStateProps<boolean>, 'effectiveState' | 'onStateUpdate'>
 {
     /**
-     * Specifies the current disabled state:
+     * Controls the current disabled state:
      * - `true`  : the component is disabled
      * - `false` : the component is enabled
      * 
      * Defaults to `false` (enabled).
      */
-    disabled        ?: FeedbackStateProps<boolean>['effectiveState']
+    disabled         ?: FeedbackStateProps<boolean>['effectiveState']
     
     /**
-     * Specifies whether the component can be disabled via parent context:
+     * Synchronizes companion components whenever the resolved disabled state changes:
+     * - `true`  → the component is now disabled
+     * - `false` → the component is now enabled
+     * 
+     * This is a passive synchronization signal used to keep companion components
+     * (e.g. Button, Toggle, Switch) aligned with the component's state.
+     * 
+     * Triggered on both initial render and subsequent changes.
+     * 
+     * ⚠️ Important: This callback must not directly or indirectly update the `disabled` prop,
+     * otherwise an unwanted circular re-render may occur.
+     */
+    onDisabledUpdate ?: FeedbackStateProps<boolean>['onStateUpdate']
+    
+    /**
+     * Controls whether the component can be disabled via parent context:
      * - `true`  : allows the component to be disabled via parent context
      * - `false` : the component can only be disabled directly via its own `disabled` prop
      * 
      * Defaults to `true` (allows contextual disabling).
      */
-    cascadeDisabled ?: boolean
-}
-
-/**
- * Props for reporting updates to the enabled/disabled state.
- * 
- * Typically used in interactive components (e.g. Button, Input, Select) to notify external systems
- * when the resolved enabled/disabled state changes—whether due to `disabled` prop changes or contextual override.
- */
-export interface DisabledStateUpdateProps
-    extends
-        // Bases:
-        Omit<FeedbackStateUpdateProps<boolean>, 'onStateUpdate'>
-{
-    /**
-     * Reports the updated disabled state whenever it changes:
-     * - `true`  → the component is now disabled
-     * - `false` → the component is now enabled
-     * 
-     * This is a passive notification; it does not request a change to the disabled state.
-     */
-    onDisabledUpdate ?: FeedbackStateUpdateProps<boolean>['onStateUpdate']
+    cascadeDisabled  ?: boolean
 }
 
 /**

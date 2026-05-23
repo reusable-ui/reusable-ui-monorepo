@@ -23,7 +23,6 @@ import {
 // Types:
 import {
     type SortStateProps,
-    type SortStateClearProps,
     type SortStateOptions,
     type SortClassname,
     type SortOffset,
@@ -92,7 +91,7 @@ const sortBehaviorStateDefinition : SortBehaviorStateDefinition = {
  * @template TItemElement - The type of the sortable DOM element.
  * @template TSortData - The type of the data driving the sortable elements (commonly an array of item metadata).
  * 
- * @param {SortStateProps<TItemElement, TSortData> & SortStateClearProps} props - The component props for passing staged sort data and commit/clear callbacks.
+ * @param {SortStateProps<TItemElement, TSortData>} props - The component props for passing staged sort data and commit/clear callbacks.
  * @param {SortStateOptions} options - An optional configuration for customizing sort transition behavior and animation lifecycle.
  * @returns {SortBehaviorState<TElement>} - The current sorting activity status, per-item movements, associated CSS class name, inline CSS variables, and animation event handlers.
  * 
@@ -103,7 +102,6 @@ const sortBehaviorStateDefinition : SortBehaviorStateDefinition = {
  * import {
  *     useSortBehaviorState,
  *     SortStateProps,
- *     SortStateClearProps,
  * } from '@reusable-ui/sort-state';
  * import styles from './SortableList.module.css';
  * 
@@ -117,8 +115,7 @@ const sortBehaviorStateDefinition : SortBehaviorStateDefinition = {
  * 
  * export interface SortableListProps
  *     extends
- *         SortStateProps<HTMLDivElement, Product[]>,
- *         SortStateClearProps
+ *         SortStateProps<HTMLDivElement, Product[]>
  * {
  * }
  * 
@@ -223,7 +220,7 @@ const sortBehaviorStateDefinition : SortBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useSortBehaviorState = <TElement extends Element = HTMLElement, TItemElement extends Element = HTMLElement, TSortData = Array<unknown>>(props: SortStateProps<TItemElement, TSortData> & SortStateClearProps, options?: SortStateOptions): SortBehaviorState<TElement> => {
+export const useSortBehaviorState = <TElement extends Element = HTMLElement, TItemElement extends Element = HTMLElement, TSortData = Array<unknown>>(props: SortStateProps<TItemElement, TSortData>, options?: SortStateOptions): SortBehaviorState<TElement> => {
     // Extract props:
     const {
         sortItemRefs,

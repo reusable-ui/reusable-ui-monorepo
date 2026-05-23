@@ -49,7 +49,6 @@ import React, { FC, useEffect } from 'react';
 import {
     useDragBehaviorState,
     DragStateProps,
-    DragStateUpdateProps,
 } from '@reusable-ui/drag-state';
 import {
     usePressBehaviorState,
@@ -57,8 +56,7 @@ import {
 import styles from './DraggableOption.module.css';
 
 export interface CustomButtonProps extends
-    DragStateProps,
-    DragStateUpdateProps // optional update reporting behavior
+    DragStateProps
 {}
 
 // A draggable option component with custom drag logic.

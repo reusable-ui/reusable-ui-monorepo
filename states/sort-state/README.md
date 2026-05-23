@@ -48,7 +48,6 @@ import { flushSync } from 'react-dom';
 import {
     useSortBehaviorState,
     SortStateProps,
-    SortStateClearProps,
 } from '@reusable-ui/sort-state';
 import styles from './SortableList.module.css';
 
@@ -62,8 +61,7 @@ interface Product {
 
 export interface SortableListProps
     extends
-        SortStateProps<HTMLDivElement, Product[]>,
-        SortStateClearProps
+        SortStateProps<HTMLDivElement, Product[]>
 {
 }
 

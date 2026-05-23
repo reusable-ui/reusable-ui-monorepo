@@ -23,7 +23,8 @@ export {
 /**
  * Props for controlling a feedback-based state of the component.
  * 
- * Provides an **effective controlled state** for driving the internal animation lifecycle.
+ * Provides a declarative way to control whether the component state changes,
+ * along with an optional callback to synchronize when the resolved effective state changes.
  * 
  * This prop is intended to be dynamic and may change over the lifetime of the component.
  * 
@@ -35,7 +36,7 @@ export interface FeedbackStateProps<TState extends {} | null>
         TransitionStateProps<TState>
 {
     /**
-     * Specifies the **effective state** supplied externally to the feedback system.
+     * Provides the **effective state** supplied externally to the feedback system.
      * 
      * - Must be a concrete value (already normalized, not a declarative keyword).
      * - Influence rules (disabled/read‑only, cascade, clamp, etc.) must already be applied.
@@ -46,24 +47,20 @@ export interface FeedbackStateProps<TState extends {} | null>
      * - `props.state` for constraint-state
      * - live observer result for feedback-state
      */
-    effectiveState : TransitionStateProps<TState>['effectiveState']
-}
-
-/**
- * Props for reporting passive updates to the state.
- * 
- * Typically used in interactive components to notify external systems
- * when the resolved state changes—whether due to `state` prop changes, user interaction, or contextual overrides.
- * 
- * @template TState - The concrete type of the state value (must not be declarative).
- */
-export interface FeedbackStateUpdateProps<TState extends {} | null> {
+    effectiveState  : TransitionStateProps<TState>['effectiveState']
+    
     /**
-     * Reports the updated state whenever the state changes.
+     * Synchronizes companion components whenever the resolved effective state changes.
      * 
-     * This is a passive notification; it does not request a change to the state.
+     * This is a passive synchronization signal used to keep companion components
+     * (e.g. Button, Toggle, Switch) aligned with the component's state.
+     * 
+     * Triggered on both initial render and subsequent changes.
+     * 
+     * ⚠️ Important: This callback must not directly or indirectly update the `effectiveState` prop,
+     * otherwise an unwanted circular re-render may occur.
      */
-    onStateUpdate ?: ValueChangeEventHandler<TState, unknown>
+    onStateUpdate  ?: ValueChangeEventHandler<TState, unknown>
 }
 
 /**

@@ -32,7 +32,6 @@ import {
 import {
     // Types:
     type FeedbackStateProps,
-    type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
@@ -41,6 +40,9 @@ import {
 
 /**
  * Props for controlling the pressed/released state of the component.
+ * 
+ * Provides a declarative way to control whether the component is pressed or released,
+ * along with an optional callback to synchronize when that state changes.
  * 
  * Accepts an optional `pressed` prop, defaulting to `'auto'` (automatically determine press state) when not provided.
  * 
@@ -51,10 +53,10 @@ import {
 export interface PressStateProps
     extends
         // Bases:
-        Omit<FeedbackStateProps<boolean>, 'effectiveState'>
+        Omit<FeedbackStateProps<boolean>, 'effectiveState' | 'onStateUpdate'>
 {
     /**
-     * Specifies the current press state:
+     * Controls the current press state:
      * - `true`   : the component is pressed
      * - `false`  : the component is released
      * - `'auto'` : automatically determine press state
@@ -70,6 +72,21 @@ export interface PressStateProps
      * Defaults to `'auto'` (automatically determine press state).
      */
     pressed       ?: FeedbackStateProps<boolean>['effectiveState'] | 'auto'
+    
+    /**
+     * Synchronizes companion components whenever the resolved press state changes:
+     * - `true`  → the component is now pressed
+     * - `false` → the component is now released
+     * 
+     * This is a passive synchronization signal used to keep companion components
+     * (e.g. Button, Toggle, Switch) aligned with the component's state.
+     * 
+     * Triggered on both initial render and subsequent changes.
+     * 
+     * ⚠️ Important: This callback must not directly or indirectly update the `pressed` prop,
+     * otherwise an unwanted circular re-render may occur.
+     */
+    onPressUpdate ?: FeedbackStateProps<boolean>['onStateUpdate']
     
     /**
      * The derived press value used when `pressed` is set to `'auto'`.
@@ -89,27 +106,6 @@ export interface PressStateProps
      * For **application developers**, prefer using the `pressed` prop directly.
      */
     computedPress ?: FeedbackStateProps<boolean>['effectiveState']
-}
-
-/**
- * Props for reporting updates to the press state.
- * 
- * Typically used in interactive components (e.g. Button, Select, MenuItem ) to notify external systems
- * when the resolved press state changes—whether due to user interaction, pointer events, or layout triggers.
- */
-export interface PressStateUpdateProps
-    extends
-        // Bases:
-        Omit<FeedbackStateUpdateProps<boolean>, 'onStateUpdate'>
-{
-    /**
-     * Reports the updated press state whenever it changes:
-     * - `true`  → the component is now pressed
-     * - `false` → the component is now released
-     * 
-     * This is a passive notification; it does not request a change to the press state.
-     */
-    onPressUpdate ?: FeedbackStateUpdateProps<boolean>['onStateUpdate']
 }
 
 /**

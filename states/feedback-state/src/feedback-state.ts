@@ -30,7 +30,6 @@ export {
 // Types:
 import {
     type FeedbackStateProps,
-    type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     
     type FeedbackBehaviorStateDefinition,
@@ -91,7 +90,7 @@ export const useFeedbackBehaviorState = <
     
     TElement   extends Element = HTMLElement
 >(
-    props      : FeedbackStateProps<TState> & FeedbackStateUpdateProps<TState>,
+    props      : FeedbackStateProps<TState>,
     options    : FeedbackStateOptions<TState> | undefined,
     definition : FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
 ): FeedbackBehaviorState<TState, TPhase, TClassname, TElement> => {

@@ -1,7 +1,6 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type ReadOnlyStateProps,
-    type ReadOnlyStateUpdateProps,
     type ReadOnlyStatePhaseEventProps,
     useReadOnlyBehaviorState,
     useReadOnlyStatePhaseEvents,
@@ -19,7 +18,6 @@ const animationPattern = [
 export interface ReadOnlyStateTestProps
     extends
         ReadOnlyStateProps,
-        ReadOnlyStateUpdateProps,
         ReadOnlyStatePhaseEventProps,
         Pick<React.DOMAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd'>
 {

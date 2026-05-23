@@ -14,7 +14,6 @@ import {
 // Types:
 import {
     type DragStateProps,
-    type DragStateUpdateProps,
     type DragStatePhaseEventProps,
     type DragStateOptions,
     type DragPhase,
@@ -158,7 +157,6 @@ const dragBehaviorStateDefinition : DragBehaviorStateDefinition = {
  * import {
  *     useDragBehaviorState,
  *     DragStateProps,
- *     DragStateUpdateProps,
  * } from '@reusable-ui/drag-state';
  * import {
  *     usePressBehaviorState,
@@ -166,8 +164,7 @@ const dragBehaviorStateDefinition : DragBehaviorStateDefinition = {
  * import styles from './DraggableOption.module.css';
  * 
  * export interface CustomButtonProps extends
- *     DragStateProps,
- *     DragStateUpdateProps // optional update reporting behavior
+ *     DragStateProps
  * {}
  * 
  * // A draggable option component with custom drag logic.
@@ -233,7 +230,7 @@ const dragBehaviorStateDefinition : DragBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useDragBehaviorState = <TElement extends Element = HTMLElement>(props: DragStateProps & DragStateUpdateProps, options?: DragStateOptions): DragBehaviorState<TElement> => {
+export const useDragBehaviorState = <TElement extends Element = HTMLElement>(props: DragStateProps, options?: DragStateOptions): DragBehaviorState<TElement> => {
     // Extract props:
     const {
         onDragUpdate : onStateUpdate,

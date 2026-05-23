@@ -25,7 +25,6 @@ import {
 import {
     // Types:
     type FeedbackStateProps,
-    type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
@@ -35,51 +34,48 @@ import {
 /**
  * Props for controlling the editable/read-only state of the component.
  * 
+ * Provides a declarative way to control whether the component is editable or read-only,
+ * along with an optional callback to synchronize when that state changes.
+ * 
  * Accepts an optional `readOnly` prop, defaulting to `false` (editable) when not provided.
  */
 export interface ReadOnlyStateProps
     extends
         // Bases:
-        Omit<FeedbackStateProps<boolean>, 'effectiveState'>
+        Omit<FeedbackStateProps<boolean>, 'effectiveState' | 'onStateUpdate'>
 {
     /**
-     * Specifies the current read-only state:
+     * Controls the current read-only state:
      * - `true`  : the component is read-only
      * - `false` : the component is editable
      * 
      * Defaults to `false` (editable).
      */
-    readOnly        ?: FeedbackStateProps<boolean>['effectiveState']
+    readOnly         ?: FeedbackStateProps<boolean>['effectiveState']
     
     /**
-     * Specifies whether the component can become read-only via parent context:
+     * Synchronizes companion components whenever the resolved read-only state changes:
+     * - `true`  → the component is now read-only
+     * - `false` → the component is now editable
+     * 
+     * This is a passive synchronization signal used to keep companion components
+     * (e.g. Button, Toggle, Switch) aligned with the component's state.
+     * 
+     * Triggered on both initial render and subsequent changes.
+     * 
+     * ⚠️ Important: This callback must not directly or indirectly update the `readOnly` prop,
+     * otherwise an unwanted circular re-render may occur.
+     */
+    onReadOnlyUpdate ?: FeedbackStateProps<boolean>['onStateUpdate']
+    
+    /**
+     * Controls whether the component can become read-only via parent context:
      * - `true`  : allows the component to be made read-only via parent context
      * - `false` : the component can only be made read-only directly via its own `readOnly` prop
      * 
      * Defaults to `true` (allows contextual read-only).
      */
-    cascadeReadOnly ?: boolean
-}
-
-/**
- * Props for reporting updates to the editable/read-only state.
- * 
- * Typically used in editable components (e.g. Input, TextArea, Select) to notify external systems
- * when the resolved editable/read-only state changes—whether due to `readOnly` prop changes or contextual override.
- */
-export interface ReadOnlyStateUpdateProps
-    extends
-        // Bases:
-        Omit<FeedbackStateUpdateProps<boolean>, 'onStateUpdate'>
-{
-    /**
-     * Reports the updated read-only state whenever it changes:
-     * - `true`  → the component is now read-only
-     * - `false` → the component is now editable
-     * 
-     * This is a passive notification; it does not request a change to the read-only state.
-     */
-    onReadOnlyUpdate ?: FeedbackStateUpdateProps<boolean>['onStateUpdate']
+    cascadeReadOnly  ?: boolean
 }
 
 /**

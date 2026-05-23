@@ -9,7 +9,6 @@ import {
 // Types:
 import {
     type ValidityStateProps,
-    type ValidityStateUpdateProps,
     type ValidityStatePhaseEventProps,
     type ValidityStateOptions,
     type ValidityPhase,
@@ -241,13 +240,11 @@ const validityBehaviorStateDefinition : ValidityBehaviorStateDefinition = {
  * import {
  *     useValidityBehaviorState,
  *     ValidityStateProps,
- *     ValidityStateUpdateProps,
  * } from '@reusable-ui/validity-state';
  * import styles from './CustomInput.module.css';
  * 
  * export interface CustomInputProps extends
- *     ValidityStateProps,
- *     ValidityStateUpdateProps // optional update reporting behavior
+ *     ValidityStateProps
  * {}
  * 
  * // An input with custom validation logic.
@@ -305,7 +302,7 @@ const validityBehaviorStateDefinition : ValidityBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useValidityBehaviorState = <TElement extends Element = HTMLElement>(props: ValidityStateProps & ValidityStateUpdateProps, options?: ValidityStateOptions): ValidityBehaviorState<TElement> => {
+export const useValidityBehaviorState = <TElement extends Element = HTMLElement>(props: ValidityStateProps, options?: ValidityStateOptions): ValidityBehaviorState<TElement> => {
     // Extract props:
     const {
         onValidityUpdate : onStateUpdate,

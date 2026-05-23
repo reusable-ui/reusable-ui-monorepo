@@ -3,7 +3,6 @@
 // Types:
 import {
     type PressStateProps,
-    type PressStateUpdateProps,
     type PressStatePhaseEventProps,
     type PressStateOptions,
     type PressPhase,
@@ -174,13 +173,11 @@ const pressBehaviorStateDefinition : PressBehaviorStateDefinition = {
  * import {
  *     usePressBehaviorState,
  *     PressStateProps,
- *     PressStateUpdateProps,
  * } from '@reusable-ui/press-state';
  * import styles from './CustomButton.module.css';
  * 
  * export interface CustomButtonProps extends
- *     PressStateProps,
- *     PressStateUpdateProps // optional update reporting behavior
+ *     PressStateProps
  * {}
  * 
  * // A button with custom press logic.
@@ -243,7 +240,7 @@ const pressBehaviorStateDefinition : PressBehaviorStateDefinition = {
  * };
  * ```
  */
-export const usePressBehaviorState = <TElement extends Element = HTMLElement>(props: PressStateProps & PressStateUpdateProps, options?: PressStateOptions): PressBehaviorState<TElement> => {
+export const usePressBehaviorState = <TElement extends Element = HTMLElement>(props: PressStateProps, options?: PressStateOptions): PressBehaviorState<TElement> => {
     // Extract props:
     const {
         onPressUpdate : onStateUpdate,

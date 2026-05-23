@@ -33,7 +33,6 @@ import {
 import {
     // Types:
     type FeedbackStateProps,
-    type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
@@ -67,10 +66,13 @@ export type SortCommitCallback<TSortData = Array<unknown>> = (stagedSortData: TS
 
 
 /**
- * Props for staging sort data and coordinating item transitions.
+ * Props for animating sort transitions of the component's items.
  * 
- * Sorting animation runs once when `stagedSortData` changes,
- * allowing the component to measure item movement and commit the new order.
+ * Provides a declarative way to stage and animate item reordering whenever a sorting action occurs,
+ * along with an optional callback to clear the staged data once it has been committed.
+ * 
+ * Sorting animations run once when `stagedSortData` changes,
+ * allowing the component to snapshot positions, measure item movement, and commit the new order.
  * 
  * @template TItemElement - The type of the sortable DOM element.
  * @template TSortData - The type of the data driving the sortable elements (commonly an array of item metadata).
@@ -78,7 +80,7 @@ export type SortCommitCallback<TSortData = Array<unknown>> = (stagedSortData: TS
 export interface SortStateProps<TItemElement extends Element = HTMLElement, TSortData = Array<unknown>>
     extends
         // Bases:
-        Omit<FeedbackStateProps<boolean>, 'effectiveState'> // Currently equivalent to an empty object, reserved for future extensions.
+        Omit<FeedbackStateProps<boolean>, 'effectiveState' | 'onStateUpdate'> // Currently equivalent to an empty object, reserved for future extensions.
 {
     /**
      * References to the sortable item elements, keyed by their stable React `key`.
@@ -99,10 +101,10 @@ export interface SortStateProps<TItemElement extends Element = HTMLElement, TSor
      * This keyed design makes offsets and styles retrievable by item identity
      * during JSX iteration (e.g. `style={sortStyles.get(item.id)}`)
      */
-    sortItemRefs   ?: RefObject<Map<Key, TItemElement>>
+    sortItemRefs          ?: RefObject<Map<Key, TItemElement>>
     
     /**
-     * Specifies the temporary (staged) sort data that is ready to be committed.
+     * Provides the temporary (staged) sort data that is ready to be committed.
      * 
      * When provided, this value will be merged into the committed state on the next render cycle,
      * triggering the sorting animation and transition measurement.
@@ -122,7 +124,21 @@ export interface SortStateProps<TItemElement extends Element = HTMLElement, TSor
      * 
      * Defaults to `undefined` (no pending order).
      */
-    stagedSortData ?: TSortData
+    stagedSortData        ?: TSortData
+    
+    /**
+     * Signals to clear the external staged sort data.
+     * 
+     * The implementors should reset their staged sort state to an empty sentinel, such as:
+     * - `[]` (empty array)
+     * - `undefined`
+     * - `null`
+     * - or any other value representing "no staged sort"
+     * 
+     * Ensures that commit and clear are coordinated,
+     * preventing stale staged data from persisting after the committed order is applied.
+     */
+    onStagedSortDataClear ?: ValueChangeEventHandler<undefined, unknown>
     
     /**
      * Commits the staged sort data into the committed state (the authoritative state that renders the sortable items).
@@ -144,30 +160,7 @@ export interface SortStateProps<TItemElement extends Element = HTMLElement, TSor
      * },
      * ```
      */
-    onSortCommit   ?: SortCommitCallback<TSortData>
-}
-
-/**
- * Props for clearing the external staged sort data after a commit.
- */
-export interface SortStateClearProps
-    extends
-        // Bases:
-        Omit<FeedbackStateUpdateProps<boolean>, 'onStateUpdate'> // Currently equivalent to an empty object, reserved for future extensions.
-{
-    /**
-     * Signals to clear the external staged sort data.
-     * 
-     * The implementors should reset their staged sort state to an empty sentinel, such as:
-     * - `[]` (empty array)
-     * - `undefined`
-     * - `null`
-     * - or any other value representing "no staged sort"
-     * 
-     * Ensures that commit and clear are coordinated,
-     * preventing stale staged data from persisting after the committed order is applied.
-     */
-    onStagedSortDataClear ?: ValueChangeEventHandler<undefined, unknown>
+    onSortCommit          ?: SortCommitCallback<TSortData>
 }
 
 /**

@@ -1,6 +1,6 @@
 import React, { AnimationEvent as ReactAnimationEvent, Key, useRef, useEffect, useState } from 'react'
 import { flushSync } from 'react-dom'
-import { type SortStateProps, type SortStateClearProps, useSortBehaviorState } from '../dist/index.js'
+import { type SortStateProps, useSortBehaviorState } from '../dist/index.js'
 import { useMergeEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
 import { HydrateStyles } from '@cssfn/cssfn-react'
@@ -13,7 +13,6 @@ import { initialProducts } from './dummy-products.js'
 export interface SortStateTestProps
     extends
         SortStateProps<HTMLDivElement, Product[]>,
-        SortStateClearProps,
         Pick<React.DOMAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd'>
 {
     sortBy ?: 'price' | 'name'

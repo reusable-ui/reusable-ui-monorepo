@@ -33,7 +33,6 @@ import {
 import {
     // Types:
     type FeedbackStateProps,
-    type FeedbackStateUpdateProps,
     type FeedbackStateOptions,
     type FeedbackBehaviorState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
@@ -42,6 +41,9 @@ import {
 
 /**
  * Props for controlling the focused/blurred state of the component.
+ * 
+ * Provides a declarative way to control whether the component is focused or blurred,
+ * along with an optional callback to synchronize when that state changes.
  * 
  * Accepts an optional `focused` prop, defaulting to `'auto'` (automatically determine focus state) when not provided.
  * 
@@ -52,10 +54,10 @@ import {
 export interface FocusStateProps
     extends
         // Bases:
-        Omit<FeedbackStateProps<boolean>, 'effectiveState'>
+        Omit<FeedbackStateProps<boolean>, 'effectiveState' | 'onStateUpdate'>
 {
     /**
-     * Specifies the current focus state:
+     * Controls the current focus state:
      * - `true`   : the component is focused
      * - `false`  : the component is blurred
      * - `'auto'` : automatically determine focus state
@@ -71,6 +73,21 @@ export interface FocusStateProps
      * Defaults to `'auto'` (automatically determine focus state).
      */
     focused       ?: FeedbackStateProps<boolean>['effectiveState'] | 'auto'
+    
+    /**
+     * Synchronizes companion components whenever the resolved focus state changes:
+     * - `true`  → the component is now focused
+     * - `false` → the component is now blurred
+     * 
+     * This is a passive synchronization signal used to keep companion components
+     * (e.g. Button, Toggle, Switch) aligned with the component's state.
+     * 
+     * Triggered on both initial render and subsequent changes.
+     * 
+     * ⚠️ Important: This callback must not directly or indirectly update the `focused` prop,
+     * otherwise an unwanted circular re-render may occur.
+     */
+    onFocusUpdate ?: FeedbackStateProps<boolean>['onStateUpdate']
     
     /**
      * The derived focus value used when `focused` is set to `'auto'`.
@@ -90,27 +107,6 @@ export interface FocusStateProps
      * For **application developers**, prefer using the `focused` prop directly.
      */
     computedFocus ?: FeedbackStateProps<boolean>['effectiveState']
-}
-
-/**
- * Props for reporting updates to the focus state.
- * 
- * Typically used in interactive components (e.g. Button, Select, Input ) to notify external systems
- * when the resolved focus state changes—whether due to user interaction, keyboard navigation, or accessibility triggers.
- */
-export interface FocusStateUpdateProps
-    extends
-        // Bases:
-        Omit<FeedbackStateUpdateProps<boolean>, 'onStateUpdate'>
-{
-    /**
-     * Reports the updated focus state whenever it changes:
-     * - `true`  → the component is now focused
-     * - `false` → the component is now blurred
-     * 
-     * This is a passive notification; it does not request a change to the focus state.
-     */
-    onFocusUpdate ?: FeedbackStateUpdateProps<boolean>['onStateUpdate']
 }
 
 /**

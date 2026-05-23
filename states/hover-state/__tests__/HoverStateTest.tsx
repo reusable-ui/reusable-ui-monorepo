@@ -1,7 +1,6 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type HoverStateProps,
-    type HoverStateUpdateProps,
     type HoverStatePhaseEventProps,
     useHoverBehaviorState,
     useHoverStatePhaseEvents,
@@ -20,7 +19,6 @@ const animationPattern = [
 export interface HoverStateTestProps
     extends
         HoverStateProps,
-        HoverStateUpdateProps,
         HoverStatePhaseEventProps,
         Pick<React.DOMAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd'>
 {

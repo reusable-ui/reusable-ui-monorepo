@@ -44,13 +44,11 @@ import React, { FC, useState, useEffect } from 'react';
 import {
     useHoverBehaviorState,
     HoverStateProps,
-    HoverStateUpdateProps,
 } from '@reusable-ui/hover-state';
 import styles from './CustomCard.module.css';
 
 export interface CustomCardProps extends
-    HoverStateProps,
-    HoverStateUpdateProps // optional update reporting behavior
+    HoverStateProps
 {}
 
 // A card with custom hover logic.

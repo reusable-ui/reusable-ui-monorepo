@@ -98,12 +98,6 @@ export interface OnlineStateProps {
     online ?: boolean | 'auto'
 }
 
-/** Props for reporting passive updates to the online state. */
-export interface OnlineStateUpdateProps {
-    /** Reports the updated state whenever the online state changes. */
-    onOnlineUpdate ?: ValueChangeEventHandler<boolean, unknown>
-}
-
 /** Options for customizing online state behavior and animation lifecycle. */
 export interface OnlineStateOptions extends FeedbackStateOptions<boolean> {
     /** The default online state if `online` prop is not provided. */
@@ -173,7 +167,7 @@ export interface OnlineBehaviorState<TElement extends Element = HTMLElement>
  * - Provides resolved online state.
  * - Provides semantic phases and classnames for styling.
  */
-export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(props: OnlineStateProps & OnlineStateUpdateProps, options?: OnlineStateOptions): OnlineBehaviorState<TElement> => {
+export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(props: OnlineStateProps, options?: OnlineStateOptions): OnlineBehaviorState<TElement> => {
     const {
         onOnlineUpdate : onStateUpdate,
     } = props;
@@ -320,12 +314,6 @@ export interface LockedStateProps {
     locked ?: boolean | 'auto'
 }
 
-/** Props for reporting passive updates to the locked state. */
-export interface LockedStateUpdateProps {
-    /** Reports the updated state whenever the locked state changes. */
-    onLockedUpdate ?: ValueChangeEventHandler<boolean, unknown>
-}
-
 /** Options for customizing locked state behavior and animation lifecycle. */
 export interface LockedStateOptions extends FeedbackStateOptions<boolean> {
     /** The default locked state if `locked` prop is not provided. */
@@ -395,7 +383,7 @@ export interface LockedBehaviorState<TElement extends Element = HTMLElement>
  * - Provides resolved locked state.
  * - Provides semantic phases and classnames for styling.
  */
-export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(props: LockedStateProps & LockedStateUpdateProps, options?: LockedStateOptions): LockedBehaviorState<TElement> => {
+export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(props: LockedStateProps, options?: LockedStateOptions): LockedBehaviorState<TElement> => {
     const {
         onLockedUpdate : onStateUpdate,
     } = props;

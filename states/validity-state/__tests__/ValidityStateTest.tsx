@@ -1,7 +1,6 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type ValidityStateProps,
-    type ValidityStateUpdateProps,
     type ValidityStatePhaseEventProps,
     useValidityBehaviorState,
     useValidityStatePhaseEvents,
@@ -20,7 +19,6 @@ const animationPattern = [
 export interface ValidityStateTestProps
     extends
         ValidityStateProps,
-        ValidityStateUpdateProps,
         ValidityStatePhaseEventProps,
         Pick<React.DOMAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd'>
 {

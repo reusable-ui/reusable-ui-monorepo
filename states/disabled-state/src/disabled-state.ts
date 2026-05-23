@@ -3,7 +3,6 @@
 // Types:
 import {
     type DisabledStateProps,
-    type DisabledStateUpdateProps,
     type DisabledStatePhaseEventProps,
     type DisabledStateOptions,
     type DisabledPhase,
@@ -138,13 +137,11 @@ const disabledBehaviorStateDefinition : DisabledBehaviorStateDefinition = {
  * import {
  *     useDisabledBehaviorState,
  *     DisabledStateProps,
- *     DisabledStateUpdateProps,
  * } from '@reusable-ui/disabled-state';
  * import styles from './CustomEditor.module.css';
  * 
  * export interface CustomEditorProps extends
- *     DisabledStateProps,
- *     DisabledStateUpdateProps // optional update reporting behavior
+ *     DisabledStateProps
  * {}
  * 
  * // An editor that can be enabled or disabled.
@@ -178,7 +175,7 @@ const disabledBehaviorStateDefinition : DisabledBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>(props: DisabledStateProps & DisabledStateUpdateProps, options?: DisabledStateOptions): DisabledBehaviorState<TElement> => {
+export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>(props: DisabledStateProps, options?: DisabledStateOptions): DisabledBehaviorState<TElement> => {
     // Extract props:
     const {
         onDisabledUpdate : onStateUpdate,

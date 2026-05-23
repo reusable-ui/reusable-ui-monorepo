@@ -1,7 +1,6 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type PressStateProps,
-    type PressStateUpdateProps,
     type PressStatePhaseEventProps,
     usePressBehaviorState,
     usePressStatePhaseEvents,
@@ -19,7 +18,6 @@ const animationPattern = [
 export interface PressStateTestProps
     extends
         PressStateProps,
-        PressStateUpdateProps,
         PressStatePhaseEventProps,
         Pick<React.DOMAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd' | 'onClick'>
 {

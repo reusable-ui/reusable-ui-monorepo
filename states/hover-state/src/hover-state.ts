@@ -3,7 +3,6 @@
 // Types:
 import {
     type HoverStateProps,
-    type HoverStateUpdateProps,
     type HoverStatePhaseEventProps,
     type HoverStateOptions,
     type HoverPhase,
@@ -170,13 +169,11 @@ const hoverBehaviorStateDefinition : HoverBehaviorStateDefinition = {
  * import {
  *     useHoverBehaviorState,
  *     HoverStateProps,
- *     HoverStateUpdateProps,
  * } from '@reusable-ui/hover-state';
  * import styles from './CustomCard.module.css';
  * 
  * export interface CustomCardProps extends
- *     HoverStateProps,
- *     HoverStateUpdateProps // optional update reporting behavior
+ *     HoverStateProps
  * {}
  * 
  * // A card with custom hover logic.
@@ -237,7 +234,7 @@ const hoverBehaviorStateDefinition : HoverBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(props: HoverStateProps & HoverStateUpdateProps, options?: HoverStateOptions): HoverBehaviorState<TElement> => {
+export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(props: HoverStateProps, options?: HoverStateOptions): HoverBehaviorState<TElement> => {
     // Extract props:
     const {
         onHoverUpdate : onStateUpdate,

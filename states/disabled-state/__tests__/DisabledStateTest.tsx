@@ -1,7 +1,6 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type DisabledStateProps,
-    type DisabledStateUpdateProps,
     type DisabledStatePhaseEventProps,
     useDisabledBehaviorState,
     useDisabledStatePhaseEvents,
@@ -19,7 +18,6 @@ const animationPattern = [
 export interface DisabledStateTestProps
     extends
         DisabledStateProps,
-        DisabledStateUpdateProps,
         DisabledStatePhaseEventProps,
         Pick<React.DOMAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd'>
 {

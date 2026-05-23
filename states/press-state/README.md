@@ -62,13 +62,11 @@ import React, { FC, useState, useEffect } from 'react';
 import {
     usePressBehaviorState,
     PressStateProps,
-    PressStateUpdateProps,
 } from '@reusable-ui/press-state';
 import styles from './CustomButton.module.css';
 
 export interface CustomButtonProps extends
-    PressStateProps,
-    PressStateUpdateProps // optional update reporting behavior
+    PressStateProps
 {}
 
 // A button with custom press logic.

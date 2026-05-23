@@ -3,7 +3,6 @@
 // Types:
 import {
     type FocusStateProps,
-    type FocusStateUpdateProps,
     type FocusStatePhaseEventProps,
     type FocusStateOptions,
     type FocusPhase,
@@ -173,13 +172,11 @@ const focusBehaviorStateDefinition : FocusBehaviorStateDefinition = {
  * import {
  *     useFocusBehaviorState,
  *     FocusStateProps,
- *     FocusStateUpdateProps,
  * } from '@reusable-ui/focus-state';
  * import styles from './CustomButton.module.css';
  * 
  * export interface CustomButtonProps extends
- *     FocusStateProps,
- *     FocusStateUpdateProps // optional update reporting behavior
+ *     FocusStateProps
  * {}
  * 
  * // A button with custom focus logic.
@@ -242,7 +239,7 @@ const focusBehaviorStateDefinition : FocusBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(props: FocusStateProps & FocusStateUpdateProps, options?: FocusStateOptions): FocusBehaviorState<TElement> => {
+export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(props: FocusStateProps, options?: FocusStateOptions): FocusBehaviorState<TElement> => {
     // Extract props:
     const {
         onFocusUpdate : onStateUpdate,

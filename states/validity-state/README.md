@@ -53,13 +53,11 @@ import React, { FC, useState, useEffect } from 'react';
 import {
     useValidityBehaviorState,
     ValidityStateProps,
-    ValidityStateUpdateProps,
 } from '@reusable-ui/validity-state';
 import styles from './CustomInput.module.css';
 
 export interface CustomInputProps extends
-    ValidityStateProps,
-    ValidityStateUpdateProps // optional update reporting behavior
+    ValidityStateProps
 {}
 
 // An input with custom validation logic.
