@@ -37,7 +37,9 @@ import {
  * Props for controlling the active/inactive state of the component.
  * 
  * Provides a declarative way to control whether the component is active or inactive,
- * along with an optional callback to observe when user interactions request a change.
+ * along with an optional callback to handle user-initiated change requests.
+ * 
+ * Accepts an optional `active` prop, defaulting to `undefined` (uncontrolled mode) when not provided.
  * 
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  */
@@ -56,12 +58,12 @@ export interface ActiveStateProps<TChangeEvent = unknown>
     active         ?: InteractionStateProps<boolean, boolean, TChangeEvent>['state']
     
     /**
-     * Signals a request to change the active state:
+     * Handles user-initiated requests to change the active state:
      * - `true`  → request to activate
      * - `false` → request to deactivate
      * 
-     * Commonly used in interactive components (e.g. Toggle, Switch, Selection) that may initiate activation/deactivation
-     * through user actions such as select buttons, SPACE key presses, or toggles.
+     * This is a user-driven signal dispatched via `dispatchActiveChange()`
+     * by action components (e.g. Button, Switch, Selection).
      * The parent may choose to honor or ignore this request.
      * 
      * Restricted behavior (`disabled` or `readonly`):

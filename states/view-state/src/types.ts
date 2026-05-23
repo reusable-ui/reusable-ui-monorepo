@@ -43,7 +43,9 @@ import {
  * Props for controlling the current view index of the component.
  * 
  * Provides a declarative way to control the current view index of the component,
- * along with an optional callback to observe when user interactions request a change.
+ * along with an optional callback to handle user-initiated change requests.
+ * 
+ * Accepts an optional `viewIndex` prop, defaulting to `undefined` (uncontrolled mode) when not provided.
  * 
  * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
  */
@@ -61,11 +63,11 @@ export interface ViewStateProps<TChangeEvent = unknown>
     viewIndex         ?: InteractionStateProps<number, number, TChangeEvent>['state']
     
     /**
-     * Signals a request to change the view index:
+     * Handles user-initiated requests to change the view index:
      * - `0`, `1`, `2`, … : request to navigate to the given index
      * 
-     * Commonly used in interactive components (e.g. Tabs, Slide, Carousel) that may initiate view changes
-     * through user actions such as tab clicks, swipe gestures, or navigation buttons.
+     * This is a user-driven signal dispatched via `dispatchViewIndexChange()`
+     * by action components (e.g. Button, Switch, Selection).
      * The parent may choose to honor or ignore this request.
      * 
      * Restricted behavior (`disabled` or `readonly`):

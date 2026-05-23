@@ -37,7 +37,9 @@ import {
  * Props for controlling the expanded/collapsed state of the component.
  * 
  * Provides a declarative way to control whether the component is expanded or collapsed,
- * along with an optional callback to observe when user interactions request a change.
+ * along with an optional callback to handle user-initiated change requests.
+ * 
+ * Accepts an optional `expanded` prop, defaulting to `undefined` (uncontrolled mode) when not provided.
  * 
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  */
@@ -56,12 +58,12 @@ export interface CollapseStateProps<TChangeEvent = unknown>
     expanded         ?: InteractionStateProps<boolean, boolean, TChangeEvent>['state']
     
     /**
-     * Signals a request to change the expanded state:
+     * Handles user-initiated requests to change the expanded state:
      * - `true`  → request to expand
      * - `false` → request to collapse
      * 
-     * Commonly used in interactive components (e.g. Alert, Toast, Accordion) that may initiate expansion/collapsion
-     * through user actions such as dismiss buttons, ESC key presses, or header toggles.
+     * This is a user-driven signal dispatched via `dispatchExpandedChange()`
+     * by action components (e.g. Button, Switch, Selection).
      * The parent may choose to honor or ignore this request.
      * 
      * Restricted behavior (`disabled` or `readonly`):

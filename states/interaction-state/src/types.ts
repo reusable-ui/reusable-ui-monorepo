@@ -24,12 +24,13 @@ export {
 /**
  * Props for controlling an interaction-based state of the component.
  * 
- * Accepts an optional **declarative state**, defaulting to `undefined` (uncontrolled mode).
+ * Provides a declarative way to control whether the component state changes,
+ * along with an optional callback to handle user-initiated change requests.
+ * 
+ * Accepts an optional `state` prop, defaulting to `undefined` (uncontrolled mode) when not provided.
  * 
  * Declarative values (e.g. `'auto'`, `'inherit'`) are normalized
  * into effective concrete values by the `useResolveEffectiveState` in the behavior definition.
- * 
- * Exposes an optional callback for reporting proactive change requests for the current state.
  * 
  * This prop is intended to be dynamic and may change over the lifetime of the component.
  * 
@@ -54,9 +55,10 @@ export interface InteractionStateProps<TDeclarativeState extends {} | null, TSta
     state         ?: TDeclarativeState
     
     /**
-     * Signals intent to request an external update when user interaction occurs,
-     * such as clicking, typing, or other events.
+     * Handles user-initiated requests to change the state.
      * 
+     * This is a user-driven signal dispatched via `dispatchStateChange()`
+     * by action components (e.g. Button, Switch, Selection).
      * The parent may choose to honor or ignore this request.
      * 
      * Restricted behavior (`disabled` or `readonly`):
