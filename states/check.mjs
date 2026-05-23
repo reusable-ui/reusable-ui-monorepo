@@ -10,6 +10,7 @@ const stateDirs = [
     'transition-state',
     'feedback-state',
     'interaction-state',
+    'excite-state',
     'disabled-state',
     'read-only-state',
     'focus-state',
@@ -18,9 +19,8 @@ const stateDirs = [
     'validity-state',
     'drag-state',
     'sort-state',
-    'excite-state',
-    'collapse-state',
     'active-state',
+    'collapse-state',
     'view-state',
 ];
 
