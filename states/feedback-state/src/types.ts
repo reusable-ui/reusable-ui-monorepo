@@ -36,7 +36,7 @@ export interface FeedbackStateProps<TState extends {} | null>
         TransitionStateProps<TState>
 {
     /**
-     * Specifies the resolved **effective state** to drive the feedback system.
+     * Specifies the resolved **effective state** used to drive the feedback system.
      * 
      * - Must be a concrete value (already normalized, not a declarative keyword).
      * - Influence rules (disabled/read-only, cascade, clamp, etc.) must already be applied.
