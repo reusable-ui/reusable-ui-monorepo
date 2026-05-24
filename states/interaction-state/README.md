@@ -84,7 +84,7 @@ import { type ValueChangeDispatcher, type ValueChangeEventHandler } from '@reusa
  */
 
 /** Props for controlling the selected state of a component. */
-export interface SelectedStateProps {
+export interface SelectedStateProps<TChangeEvent> {
     /**
      * Specifies the current selected state:
      * - `true`   → selected
@@ -93,19 +93,16 @@ export interface SelectedStateProps {
      * 
      * Defaults to `undefined` (uncontrolled mode).
      */
-    selected ?: boolean | 'auto'
+    selected         ?: boolean | 'auto'
+    
+    /** Handles user-initiated requests to change the selected state. */
+    onSelectedChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
 }
 
 /** Props for initializing the selected state in uncontrolled components. */
 export interface UncontrollableSelectedStateProps {
     /** Specifies the initial selected state for uncontrolled mode. */
     defaultSelected ?: boolean
-}
-
-/** Props for reporting proactive change requests to the selected state. */
-export interface SelectedStateChangeProps<TChangeEvent = unknown> {
-    /** Signals intent to change the selected state. */
-    onSelectedChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
 }
 
 /** Options for customizing the selected change dispatcher behavior. */
@@ -136,7 +133,7 @@ export type SelectedClassname = `is-${SelectedPhase}`
 interface SelectedBehaviorStateDefinition
     extends
         InteractionBehaviorStateDefinition<boolean | 'auto', boolean, SelectedPhase, SelectedClassname,
-            SelectedStateProps,
+            SelectedStateProps<any>,
             SelectedStateOptions,
             SelectedBehaviorStateDefinition
         >
@@ -187,7 +184,7 @@ export interface SelectedBehaviorState<TElement extends Element = HTMLElement, T
  * - Provides resolved selected state and a dispatcher for interactive state changes.
  * - Provides semantic phases and classnames for styling.
  */
-export const useSelectedBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: SelectedStateProps & UncontrollableSelectedStateProps & SelectedStateChangeProps<TChangeEvent>, options?: SelectedStateOptions): SelectedBehaviorState<TElement, TChangeEvent> => {
+export const useSelectedBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent> & UncontrollableSelectedStateProps, options?: SelectedStateOptions): SelectedBehaviorState<TElement, TChangeEvent> => {
     const {
         defaultSelected : fallbackState,
         ...restOptions
@@ -215,7 +212,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
         SelectedPhase,
         SelectedClassname,
         
-        SelectedStateProps,
+        SelectedStateProps<TChangeEvent>,
         SelectedStateOptions,
         SelectedBehaviorStateDefinition,
         
@@ -239,7 +236,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
             defaultAnimationBubbling   : false,
             resolveTransitionPhase     : resolveSelectedTransitionPhase,     // Resolves phases.
             resolveTransitionClassname : resolveSelectedTransitionClassname, // Resolves classnames.
-        } satisfies SelectedBehaviorStateDefinition,
+        } as SelectedBehaviorStateDefinition,
     );
     
     // Return domain-specific API:
@@ -254,7 +251,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
 };
 
 /** Resolves the effective selected state, normalizing declarative keywords into concrete values. */
-const useResolveEffectiveSelectedState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean | 'auto', SelectedStateProps, SelectedStateOptions, SelectedBehaviorStateDefinition>): boolean => {
+const useResolveEffectiveSelectedState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean | 'auto', SelectedStateProps<unknown>, SelectedStateOptions, SelectedBehaviorStateDefinition>): boolean => {
     const effectiveSelected = useSelectedState({
         ...props,
         defaultSelected : undefined,        // Prevents uncontrolled value.
@@ -266,7 +263,7 @@ const useResolveEffectiveSelectedState = ({ declarativeState, props, options }: 
 };
 
 /** Normalizes declarative keywords into a concrete and effective selected state. */
-const useSelectedState = (props: SelectedStateProps & { defaultSelected?: never }, options?: SelectedStateOptions): boolean => {
+const useSelectedState = (props: SelectedStateProps<any> & { defaultSelected?: never }, options?: SelectedStateOptions): boolean => {
     const {
         defaultSelected = false,
     } = options ?? {};
@@ -284,13 +281,13 @@ const useSelectedState = (props: SelectedStateProps & { defaultSelected?: never 
 };
 
 /** Resolves the semantic transition phase for selected behavior. */
-const resolveSelectedTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, SelectedStateProps, SelectedStateOptions, SelectedBehaviorStateDefinition>): SelectedPhase => {
+const resolveSelectedTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, SelectedStateProps<unknown>, SelectedStateOptions, SelectedBehaviorStateDefinition>): SelectedPhase => {
     if (isTransitioning) return settledState ? 'selecting' : 'deselecting';
     return settledState ? 'selected' : 'unselected';
 };
 
 /** Resolves the semantic transition classname for selected behavior. */
-const resolveSelectedTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, SelectedPhase, SelectedStateProps, SelectedStateOptions, SelectedBehaviorStateDefinition>): SelectedClassname => {
+const resolveSelectedTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, SelectedPhase, SelectedStateProps<unknown>, SelectedStateOptions, SelectedBehaviorStateDefinition>): SelectedClassname => {
     return `is-${transitionPhase}`;
 };
 ```
@@ -432,7 +429,7 @@ import { type ValueChangeDispatcher, type ValueChangeEventHandler } from '@reusa
  */
 
 /** Props for controlling the selected state of a component. */
-export interface SelectedStateProps {
+export interface SelectedStateProps<TChangeEvent> {
     /**
      * Specifies the current selected state:
      * - `true`   → selected
@@ -441,19 +438,16 @@ export interface SelectedStateProps {
      * 
      * Defaults to `undefined` (uncontrolled mode).
      */
-    selected ?: boolean | 'auto'
+    selected         ?: boolean | 'auto'
+    
+    /** Handles user-initiated requests to change the selected state. */
+    onSelectedChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
 }
 
 /** Props for initializing the selected state in uncontrolled components. */
 export interface UncontrollableSelectedStateProps {
     /** Specifies the initial selected state for uncontrolled mode. */
     defaultSelected ?: boolean
-}
-
-/** Props for reporting proactive change requests to the selected state. */
-export interface SelectedStateChangeProps<TChangeEvent = unknown> {
-    /** Signals intent to change the selected state. */
-    onSelectedChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
 }
 
 /** Options for customizing the selected change dispatcher behavior. */
@@ -484,7 +478,7 @@ export type SelectedClassname = `is-${SelectedPhase}`
 interface SelectedBehaviorStateDefinition
     extends
         InteractionBehaviorStateDefinition<boolean | 'auto', boolean, SelectedPhase, SelectedClassname,
-            SelectedStateProps,
+            SelectedStateProps<any>,
             SelectedStateOptions,
             SelectedBehaviorStateDefinition
         >
@@ -500,7 +494,7 @@ interface SelectedBehaviorStateDefinition
  * - Declarative keywords (`'auto'`) are normalized by `useSelectedState`.
  * - Provides resolved selected state and a dispatcher for interactive state changes.
  */
-export const useUncontrollableSelectedState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: SelectedStateProps & UncontrollableSelectedStateProps & SelectedStateChangeProps<TChangeEvent>, options?: SelectedStateOptions): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
+export const useUncontrollableSelectedState = <TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent> & UncontrollableSelectedStateProps, options?: SelectedStateOptions): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
     const {
         defaultSelected : fallbackState,
         ...restOptions
@@ -518,7 +512,7 @@ export const useUncontrollableSelectedState = <TElement extends Element = HTMLEl
         boolean | 'auto',
         boolean,
         
-        SelectedStateProps,
+        SelectedStateProps<TChangeEvent>,
         SelectedStateOptions,
         SelectedBehaviorStateDefinition,
         
@@ -535,7 +529,7 @@ export const useUncontrollableSelectedState = <TElement extends Element = HTMLEl
             // State definitions:
             defaultInitialState        : false,
             useResolveEffectiveState   : useResolveEffectiveSelectedState,   // Resolves effective state.
-        } satisfies Pick<SelectedBehaviorStateDefinition, 'defaultInitialState' | 'useResolveEffectiveState'>,
+        } as Pick<SelectedBehaviorStateDefinition, 'defaultInitialState' | 'useResolveEffectiveState'>,
     );
     
     // Return domain-specific API:
@@ -546,7 +540,7 @@ export const useUncontrollableSelectedState = <TElement extends Element = HTMLEl
 };
 
 /** Resolves the effective selected state, normalizing declarative keywords into concrete values. */
-const useResolveEffectiveSelectedState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean | 'auto', SelectedStateProps, SelectedStateOptions, SelectedBehaviorStateDefinition>): boolean => {
+const useResolveEffectiveSelectedState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean | 'auto', SelectedStateProps<unknown>, SelectedStateOptions, SelectedBehaviorStateDefinition>): boolean => {
     const effectiveSelected = useSelectedState({
         ...props,
         defaultSelected : undefined,        // Prevents uncontrolled value.
@@ -558,7 +552,7 @@ const useResolveEffectiveSelectedState = ({ declarativeState, props, options }: 
 };
 
 /** Normalizes declarative keywords into a concrete and effective selected state. */
-const useSelectedState = (props: SelectedStateProps & { defaultSelected?: never }, options?: SelectedStateOptions): boolean => {
+const useSelectedState = (props: SelectedStateProps<any> & { defaultSelected?: never }, options?: SelectedStateOptions): boolean => {
     const {
         defaultSelected = false,
     } = options ?? {};

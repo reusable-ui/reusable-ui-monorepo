@@ -95,7 +95,10 @@ export interface OnlineStateProps {
      * - `false`  → offline
      * - `'auto'` → automatically determine online state based on live observation
      */
-    online ?: boolean | 'auto'
+    online         ?: boolean | 'auto'
+    
+    /** Synchronizes companion components whenever the resolved online state changes. */
+    onOnlineUpdate ?: ValueChangeEventHandler<boolean, unknown>
 }
 
 /** Options for customizing online state behavior and animation lifecycle. */
@@ -311,7 +314,10 @@ export interface LockedStateProps {
      * - `false`  → unlocked
      * - `'auto'` → automatically determine locked state based on context
      */
-    locked ?: boolean | 'auto'
+    locked         ?: boolean | 'auto'
+    
+    /** Synchronizes companion components whenever the resolved locked state changes. */
+    onLockedUpdate ?: ValueChangeEventHandler<boolean, unknown>
 }
 
 /** Options for customizing locked state behavior and animation lifecycle. */

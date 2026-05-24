@@ -80,12 +80,9 @@ export interface BusyStateProps {
      * - `false`  → idle
      * - `'auto'` → automatically determine busy state based on context
      */
-    busy ?: boolean | 'auto'
-}
-
-/** Props for reporting proactive update requests to busy state. */
-export interface BusyStateCompleteProps {
-    /** Signals intent to update the external state after busy state animation completes. */
+    busy         ?: boolean | 'auto'
+    
+    /** Signals a request to update the external state driver after completing a busy animation cycle. */
     onBusyChange ?: ValueChangeEventHandler<boolean, AnimationEvent>
 }
 
@@ -144,7 +141,7 @@ export interface BusyBehaviorState<TElement extends Element = HTMLElement>
  * - Provides resolved busy state.
  * - Provides semantic classnames for styling.
  */
-export const useBusyBehaviorState = <TElement extends Element = HTMLElement>(props: BusyStateProps & BusyStateCompleteProps, options?: BusyStateOptions): BusyBehaviorState<TElement> => {
+export const useBusyBehaviorState = <TElement extends Element = HTMLElement>(props: BusyStateProps, options?: BusyStateOptions): BusyBehaviorState<TElement> => {
     const {
         onBusyChange : onStateComplete,
     } = props;

@@ -102,12 +102,9 @@ export interface LockedStateProps {
      * - `false`  → unlocked
      * - `'auto'` → automatically determine locked state based on context
      */
-    locked ?: boolean | 'auto'
-}
-
-/** Props for reporting passive updates to the locked state. */
-export interface LockedStateUpdateProps {
-    /** Reports the updated state whenever the locked state changes. */
+    locked         ?: boolean | 'auto'
+    
+    /** Synchronizes companion components whenever the resolved locked state changes. */
     onLockedUpdate ?: ValueChangeEventHandler<boolean, unknown>
 }
 
@@ -180,7 +177,7 @@ export interface LockedBehaviorState<TElement extends Element = HTMLElement>
  * - Provides resolved locked state.
  * - Provides semantic phases and classnames for styling.
  */
-export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(props: LockedStateProps & LockedStateUpdateProps, options?: LockedStateOptions): LockedBehaviorState<TElement> => {
+export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(props: LockedStateProps, options?: LockedStateOptions): LockedBehaviorState<TElement> => {
     // Normalize declarative keywords into a concrete boolean:
     const effectiveState = useLockedState(props, options);
     
@@ -316,12 +313,9 @@ export interface OnlineStateProps {
      * - `false`  → offline
      * - `'auto'` → automatically determine online state based on live observation
      */
-    online ?: boolean | 'auto'
-}
-
-/** Props for reporting passive updates to the online state. */
-export interface OnlineStateUpdateProps {
-    /** Reports the updated state whenever the online state changes. */
+    online         ?: boolean | 'auto'
+    
+    /** Synchronizes companion components whenever the resolved online state changes. */
     onOnlineUpdate ?: ValueChangeEventHandler<boolean, unknown>
 }
 
@@ -394,7 +388,7 @@ export interface OnlineBehaviorState<TElement extends Element = HTMLElement>
  * - Provides resolved online state.
  * - Provides semantic phases and classnames for styling.
  */
-export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(props: OnlineStateProps & OnlineStateUpdateProps, options?: OnlineStateOptions): OnlineBehaviorState<TElement> => {
+export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(props: OnlineStateProps, options?: OnlineStateOptions): OnlineBehaviorState<TElement> => {
     // Normalize declarative keywords into a concrete boolean:
     const effectiveState = useCurrentOnlineState(props, options);
     
@@ -564,7 +558,7 @@ import { useReadOnlyState } from '@reusable-ui/read-only-state'
  */
 
 /** Props for controlling the selected state of a component. */
-export interface SelectedStateProps {
+export interface SelectedStateProps<TChangeEvent> {
     /**
      * Specifies the current selected state:
      * - `true`   → selected
@@ -573,19 +567,16 @@ export interface SelectedStateProps {
      * 
      * Defaults to `undefined` (uncontrolled mode).
      */
-    selected ?: boolean | 'auto'
+    selected         ?: boolean | 'auto'
+    
+    /** Handles user-initiated requests to change the selected state. */
+    onSelectedChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
 }
 
 /** Props for initializing the selected state in uncontrolled components. */
 export interface UncontrollableSelectedStateProps {
     /** Specifies the initial selected state for uncontrolled mode. */
     defaultSelected ?: boolean
-}
-
-/** Props for reporting proactive change requests to the selected state. */
-export interface SelectedStateChangeProps<TChangeEvent = unknown> {
-    /** Signals intent to change the selected state. */
-    onSelectedChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
 }
 
 /** Options for customizing the selected change dispatcher behavior. */
@@ -613,12 +604,12 @@ export type SelectedPhase = ResolvedSelectedPhase | TransitioningSelectedPhase
 export type SelectedClassname = `is-${SelectedPhase}`
 
 /** Private definition for selected state behavior. */
-interface SelectedBehaviorStateDefinition<TBehaviorProps extends SelectedStateProps>
+interface SelectedBehaviorStateDefinition
     extends
         TransitionBehaviorStateDefinition<boolean, SelectedPhase, SelectedClassname,
-            TBehaviorProps,
+            SelectedStateProps<any>,
             SelectedStateOptions,
-            SelectedBehaviorStateDefinition<TBehaviorProps>
+            SelectedBehaviorStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */
@@ -666,7 +657,7 @@ export interface SelectedBehaviorState<TElement extends Element = HTMLElement, T
  * - Provides resolved selected state and a dispatcher for interactive state changes.
  * - Provides semantic phases and classnames for styling.
  */
-export const useSelectedBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: SelectedStateProps & UncontrollableSelectedStateProps & SelectedStateChangeProps<TChangeEvent>, options?: SelectedStateOptions): SelectedBehaviorState<TElement, TChangeEvent> => {
+export const useSelectedBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent> & UncontrollableSelectedStateProps, options?: SelectedStateOptions): SelectedBehaviorState<TElement, TChangeEvent> => {
     const {
         defaultSelected = false,
     } = options ?? {};
@@ -708,9 +699,9 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
         SelectedPhase,
         SelectedClassname,
         
-        SelectedStateProps,
+        SelectedStateProps<TChangeEvent>,
         SelectedStateOptions,
-        SelectedBehaviorStateDefinition<SelectedStateProps>,
+        SelectedBehaviorStateDefinition,
         
         TElement
     >(
@@ -728,7 +719,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
             useResolveDriverState      : useResolveSelectedDriverState,      // Prefers controlled mode, falls back to uncontrolled mode.
             resolveTransitionPhase     : resolveSelectedTransitionPhase,     // Resolves phases.
             resolveTransitionClassname : resolveSelectedTransitionClassname, // Resolves classnames.
-        } satisfies SelectedBehaviorStateDefinition<SelectedStateProps & Pick<TransitionStateProps<boolean>, 'effectiveState'>> as unknown as SelectedBehaviorStateDefinition<SelectedStateProps>,
+        } as SelectedBehaviorStateDefinition,
     );
     
     // A stable dispatcher for selection change requests:
@@ -751,7 +742,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
 };
 
 /** Normalizes declarative keywords into a concrete and effective selected state. */
-const useSelectedState = (props: SelectedStateProps & { defaultSelected?: never }, options?: SelectedStateOptions): boolean => {
+const useSelectedState = (props: SelectedStateProps<any> & { defaultSelected?: never }, options?: SelectedStateOptions): boolean => {
     const {
         defaultSelected = false,
     } = options ?? {};
@@ -769,7 +760,7 @@ const useSelectedState = (props: SelectedStateProps & { defaultSelected?: never 
 };
 
 /** Resolves the driver state for selected behavior. */
-const useResolveSelectedDriverState = <TChangeEvent = unknown>({ internalState, props }: ResolveDriverStateArgs<boolean, SelectedStateProps & UncontrollableSelectedStateProps & SelectedStateChangeProps<TChangeEvent> & Pick<TransitionStateProps<boolean>, 'effectiveState'>, SelectedStateOptions, SelectedBehaviorStateDefinition<SelectedStateProps & Pick<TransitionStateProps<boolean>, 'effectiveState'>>>): boolean => {
+const useResolveSelectedDriverState = <TChangeEvent = unknown>({ internalState, props }: ResolveDriverStateArgs<boolean, SelectedStateProps<TChangeEvent> & UncontrollableSelectedStateProps & Pick<TransitionStateProps<boolean>, 'effectiveState'>, SelectedStateOptions, SelectedBehaviorStateDefinition>): boolean => {
     const {
         selected: controlledState,
         effectiveState,
@@ -782,18 +773,18 @@ const useResolveSelectedDriverState = <TChangeEvent = unknown>({ internalState, 
 };
 
 /** Resolves the semantic transition phase for selected behavior. */
-const resolveSelectedTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, SelectedStateProps, SelectedStateOptions, SelectedBehaviorStateDefinition<SelectedStateProps & Pick<TransitionStateProps<boolean>, 'effectiveState'>>>): SelectedPhase => {
+const resolveSelectedTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, SelectedStateProps<unknown>, SelectedStateOptions, SelectedBehaviorStateDefinition>): SelectedPhase => {
     if (isTransitioning) return settledState ? 'selecting' : 'deselecting';
     return settledState ? 'selected' : 'unselected';
 };
 
 /** Resolves the semantic transition classname for selected behavior. */
-const resolveSelectedTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, SelectedPhase, SelectedStateProps, SelectedStateOptions, SelectedBehaviorStateDefinition<SelectedStateProps & Pick<TransitionStateProps<boolean>, 'effectiveState'>>>): SelectedClassname => {
+const resolveSelectedTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, SelectedPhase, SelectedStateProps<unknown>, SelectedStateOptions, SelectedBehaviorStateDefinition>): SelectedClassname => {
     return `is-${transitionPhase}`;
 };
 
 /** Creates a stable dispatcher for requesting a change to the selected state. */
-export const useSelectedStateChangeDispatcher = <TChangeEvent = unknown>(props: SelectedStateChangeProps<TChangeEvent> & { defaultSelected?: never }, options?: SelectedChangeDispatcherOptions<TChangeEvent>) : ValueChangeDispatcher<boolean, TChangeEvent> => {
+export const useSelectedStateChangeDispatcher = <TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent> & { defaultSelected?: never }, options?: SelectedChangeDispatcherOptions<TChangeEvent>) : ValueChangeDispatcher<boolean, TChangeEvent> => {
     // Resolve whether the component is in a restricted state:
     const isDisabled   = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     const isReadonly   = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
