@@ -29,7 +29,7 @@ export {
  * 
  * Accepts an optional `state` prop, defaulting to `undefined` (uncontrolled mode) when not provided.
  * 
- * Declarative values (e.g. `'auto'`, `'inherit'`) are normalized
+ * Declarative values (e.g. `'auto'`, `'inherit'`) will be automatically normalized
  * into effective concrete values by the `useResolveEffectiveState` in the behavior definition.
  * 
  * This prop is intended to be dynamic and may change over the lifetime of the component.
