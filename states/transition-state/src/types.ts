@@ -8,9 +8,11 @@ import {
 
 
 /**
- * Props for initializing a transition-based state of the component.
+ * Props for controlling a transition-based state of the component.
  * 
- * Provides an **effective initial state** for initializing the internal animation lifecycle.
+ * Provides a declarative way to seed the internal transition system.
+ * Subsequent changes can be handled imperatively via the setter callback returned by `useTransitionBehaviorState()`, or
+ * declaratively via `definition.useResolveDriverState` passed into `useTransitionBehaviorState(props, options, definition)`.
  * 
  * This prop is intended to be dynamic and may change over the lifetime of the component.
  * 
@@ -18,12 +20,16 @@ import {
  */
 export interface TransitionStateProps<TState extends {} | null> {
     /**
-     * Specifies the **effective state** used to initialize the transition system.
+     * Specifies the resolved **effective state** used to initialize the transition system.
      * 
      * - Must be a concrete value (already normalized, not a declarative keyword).
-     * - Influence rules (disabled/read‑only, cascade, clamp, etc.) must already be applied.
-     * - Consumed only once at mount to seed the `initialIntent` of `useAnimationState`.
+     * - Influence rules (disabled/read-only, cascade, clamp, etc.) must already be applied.
+     * - Evaluated only **once at mount** to seed the internal transition system.
      *   Subsequent changes to this prop are ignored by the transition system.
+     * - Later changes must be applied either:
+     *   - Imperatively via the setter callback returned by `useTransitionBehaviorState()`, or
+     *   - Declaratively via `definition.useResolveDriverState` passed into
+     *     `useTransitionBehaviorState(props, options, definition)`.
      * 
      * Common sources:
      * - `props.defaultState` for constraint-state
