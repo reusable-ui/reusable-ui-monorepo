@@ -558,7 +558,7 @@ import { useReadOnlyState } from '@reusable-ui/read-only-state'
  */
 
 /** Props for controlling the selected state of a component. */
-export interface SelectedStateProps<TChangeEvent> {
+export interface SelectedStateProps<TChangeEvent = unknown> {
     /**
      * Specifies the current selected state:
      * - `true`   → selected
