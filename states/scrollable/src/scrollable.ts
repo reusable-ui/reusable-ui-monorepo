@@ -42,7 +42,7 @@ export interface ScrollableProps<TScrollIndexChangeEvent extends ScrollIndexChan
 }
 
 /**
- * @deprecated - Use `ViewStateProps & ViewStateChangeProps` instead.
+ * @deprecated - Use `ViewStatePropsHandles user-initiated requests to change the` instead.
  */
 export interface ControllableScrollableProps<TScrollIndexChangeEvent extends ScrollIndexChangeEvent = ScrollIndexChangeEvent>
     extends
@@ -53,7 +53,7 @@ export interface ControllableScrollableProps<TScrollIndexChangeEvent extends Scr
     onScrollIndexChange ?: EventHandler<TScrollIndexChangeEvent>
 }
 /**
- * @deprecated - Use `ViewStateProps & ViewStateChangeProps & UncontrollableViewStateProps` instead.
+ * @deprecated - Use `ViewStatePropsHandles user-initiated requests to change the & UncontrollableViewStateProps` instead.
  */
 export interface UncontrollableScrollableProps<TScrollIndexChangeEvent extends ScrollIndexChangeEvent = ScrollIndexChangeEvent>
     extends

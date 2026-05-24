@@ -439,7 +439,7 @@ export const useActivatable = <TElement extends Element = HTMLElement>(props: Ac
 
 
 /**
- * @deprecated - Use `ActiveStateProps & ActiveStateChangeProps` instead.
+ * @deprecated - Use `ActiveStatePropsHandles user-initiated requests to change the` instead.
  */
 export interface ControllableActivatableProps<TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>
     extends
@@ -450,7 +450,7 @@ export interface ControllableActivatableProps<TActiveChangeEvent extends ActiveC
     onActiveChange ?: EventHandler<TActiveChangeEvent>
 }
 /**
- * @deprecated - Use `ActiveStateProps & ActiveStateChangeProps & UncontrollableActiveStateProps` instead.
+ * @deprecated - Use `ActiveStatePropsHandles user-initiated requests to change the & UncontrollableActiveStateProps` instead.
  */
 export interface UncontrollableActivatableProps<TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>
     extends

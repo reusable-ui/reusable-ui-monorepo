@@ -53,15 +53,13 @@ import {
     useActiveBehaviorState,
     ActiveStateProps,
     UncontrollableActiveStateProps,
-    ActiveStateChangeProps,
 } from '@reusable-ui/active-state';
 import { useMergeEventHandlers } from '@reusable-ui/callbacks';
 import styles from './Checkbox.module.css';
 
 export interface CheckboxProps extends
-    ActiveStateProps,
+    ActiveStateProps<ChangeEvent<HTMLInputElement>>,
     UncontrollableActiveStateProps, // optional uncontrolled behavior
-    ActiveStateChangeProps<ChangeEvent<HTMLInputElement>> // optional change dispatching behavior
 {}
 
 // A checkbox that animates both body and tick indicator independently.

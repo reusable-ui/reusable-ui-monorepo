@@ -40,8 +40,8 @@ The only acceptable contributions to this repository are:
 |----------------------------------------|------------------------------------------------------------------------|
 | `ScrollIndexChangeEvent`               | (no longer needed)                                                     |
 | `ScrollableProps`                      | `ViewStateProps`                                                       |
-| `ControllableScrollableProps`          | `ViewStateProps & ViewStateChangeProps`                                |
-| `UncontrollableScrollableProps`        | `ViewStateProps & ViewStateChangeProps & UncontrollableViewStateProps` |
+| `ControllableScrollableProps`          | `ViewStatePropsHandles user-initiated requests to change the`                                |
+| `UncontrollableScrollableProps`        | `ViewStatePropsHandles user-initiated requests to change the & UncontrollableViewStateProps` |
 | `UncontrollableScrollableOptions`      | `ViewStateOptions`                                                     |
 | `useUncontrollableScrollable`          | `useUncontrollableViewState`                                           |
 

@@ -29,8 +29,8 @@ The old API surface is marked with `@deprecated` JSDoc tags and points to the ne
 | `ActivatableState`                      | `ActivePhase`                                                                |
 | `ActivatableApi`                        | `ActiveBehaviorState`                                                        |
 | `useActivatable`                        | `useActiveBehaviorState`                                                     |
-| `ControllableActivatableProps`          | `ActiveStateProps & ActiveStateChangeProps`                                  |
-| `UncontrollableActivatableProps`        | `ActiveStateProps & ActiveStateChangeProps & UncontrollableActiveStateProps` |
+| `ControllableActivatableProps`          | `ActiveStatePropsHandles user-initiated requests to change the`                                  |
+| `UncontrollableActivatableProps`        | `ActiveStatePropsHandles user-initiated requests to change the & UncontrollableActiveStateProps` |
 | `useUncontrollableActivatable`          | `useUncontrollableActiveState`                                               |
 | `ifActivated`                           | `ifActive`                                                                   |
 | `ifActivating`                          | `ifActivating`                                                               |

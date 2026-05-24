@@ -476,7 +476,7 @@ export const useCollapsibleEvent = <TElement extends Element = HTMLElement>(prop
 
 
 /**
- * @deprecated - Use `CollapseStateProps & CollapseStateChangeProps` instead.
+ * @deprecated - Use `CollapseStatePropsHandles user-initiated requests to change the` instead.
  */
 export interface ControllableCollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends
@@ -487,7 +487,7 @@ export interface ControllableCollapsibleProps<TExpandedChangeEvent extends Expan
     onExpandedChange ?: EventHandler<TExpandedChangeEvent>
 }
 /**
- * @deprecated - Use `CollapseStateProps & CollapseStateChangeProps & UncontrollableCollapseStateProps` instead.
+ * @deprecated - Use `CollapseStatePropsHandles user-initiated requests to change the & UncontrollableCollapseStateProps` instead.
  */
 export interface UncontrollableCollapsibleProps<TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>
     extends

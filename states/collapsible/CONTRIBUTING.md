@@ -48,8 +48,8 @@ The only acceptable contributions to this repository are:
 | `useCollapsible`                        | `useCollapseBehaviorState`                                                         |
 | `CollapsibleEventProps`                 | `CollapseStatePhaseEventProps`                                                     |
 | `useCollapsibleEvent`                   | `useCollapseStatePhaseEvents`                                                      |
-| `ControllableCollapsibleProps`          | `CollapseStateProps & CollapseStateChangeProps`                                    |
-| `UncontrollableCollapsibleProps`        | `CollapseStateProps & CollapseStateChangeProps & UncontrollableCollapseStateProps` |
+| `ControllableCollapsibleProps`          | `CollapseStatePropsHandles user-initiated requests to change the`                                    |
+| `UncontrollableCollapsibleProps`        | `CollapseStatePropsHandles user-initiated requests to change the & UncontrollableCollapseStateProps` |
 | `useUncontrollableCollapsible`          | `useUncontrollableCollapseState`                                                   |
 
 ---
