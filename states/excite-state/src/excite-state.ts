@@ -110,7 +110,7 @@ const exciteBehaviorStateDefinition : ExciteBehaviorStateDefinition = {
  * 
  * @template TElement - The type of the target DOM element.
  * 
- * @param {ExciteStateProps} props - The component props that may include a controlled `excited` value and an `onExcitedChange` callback.
+ * @param {ExciteStateProps} props - The component props that may include a controlled `excited` value and an `onExcitedComplete` callback.
  * @param {ExciteStateOptions} options - An optional configuration for customizing excitement behavior and animation lifecycle.
  * @returns {ExciteBehaviorState<TElement>} - The resolved excited state, associated CSS class name, and animation event handlers.
  * 
@@ -158,7 +158,7 @@ const exciteBehaviorStateDefinition : ExciteBehaviorStateDefinition = {
 export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(props: ExciteStateProps, options?: ExciteStateOptions): ExciteBehaviorState<TElement> => {
     // Extract props:
     const {
-        onExcitedChange : onStateChange,
+        onExcitedComplete : onStateComplete,
         // ...restProps // Not needed the rest since all resolvers in the definition are *not* dependent of the props.
     } = props;
     
@@ -186,7 +186,7 @@ export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(p
         TElement
     >(
         // Props:
-        { effectiveState, onStateChange, /* ...restProps */ },
+        { effectiveState, onStateComplete, /* ...restProps */ },
         
         // Options:
         options,

@@ -127,7 +127,7 @@ export const useActivityBehaviorState = <
     // Extract props:
     const {
         effectiveState,
-        onStateChange,
+        onStateComplete,
     } = props;
     
     
@@ -140,7 +140,7 @@ export const useActivityBehaviorState = <
         dispatchValueChange : requestStopOrChange,
     } = useControllableValueChange<TState, AnimationEvent>({
         value               : effectiveState,
-        onValueChange       : onStateChange,
+        onValueChange       : onStateComplete,
     });
     
     // Internal state with animation lifecycle:
@@ -235,7 +235,7 @@ export const useActivityBehaviorState = <
     // - By waiting one frame, we guarantee the DOM sees a **reset** before re-applying the same animation.
     // 
     // Why call `requestStopOrChange()`?
-    // - Notifies the parent via `onStateChange` when an animation completes.
+    // - Notifies the parent via `onStateComplete` when an animation completes.
     // - Allows the parent to perform timing-sensitive DOM operations before the next paint.
     useLayoutEffect(() => {
         // Exit early if the current visual state is already in sync with the driver intent:

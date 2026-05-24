@@ -19,7 +19,7 @@ By reusing the same core contract, you ensure consistent behavior, predictable a
 ✔ Gracefully completes activity animations before stopping or switching to another activity  
 ✔ Supports multiple animations for multi-valued states  
 ✔ Semantic classname resolution for consistent styling tied to the current animation  
-✔ Emits proactive notifications (`onStateChange()`) whenever an animation completes and requests a stop or switch  
+✔ Emits proactive notifications (`onStateComplete()`) whenever an animation completes and requests a stop or switch  
 
 ## 📦 Installation
 Install **@reusable-ui/activity-state** via npm or yarn:
@@ -83,9 +83,9 @@ export interface BusyStateProps {
     busy ?: boolean | 'auto'
 }
 
-/** Props for reporting proactive change requests to busy state. */
-export interface BusyStateChangeProps {
-    /** Signals intent to change the external state after busy state animation completes. */
+/** Props for reporting proactive update requests to busy state. */
+export interface BusyStateCompleteProps {
+    /** Signals intent to update the external state after busy state animation completes. */
     onBusyChange ?: ValueChangeEventHandler<boolean, AnimationEvent>
 }
 
@@ -144,9 +144,9 @@ export interface BusyBehaviorState<TElement extends Element = HTMLElement>
  * - Provides resolved busy state.
  * - Provides semantic classnames for styling.
  */
-export const useBusyBehaviorState = <TElement extends Element = HTMLElement>(props: BusyStateProps & BusyStateChangeProps, options?: BusyStateOptions): BusyBehaviorState<TElement> => {
+export const useBusyBehaviorState = <TElement extends Element = HTMLElement>(props: BusyStateProps & BusyStateCompleteProps, options?: BusyStateOptions): BusyBehaviorState<TElement> => {
     const {
-        onBusyChange : onStateChange,
+        onBusyChange : onStateComplete,
     } = props;
     
     // Normalize declarative keywords into a concrete boolean:
@@ -169,7 +169,7 @@ export const useBusyBehaviorState = <TElement extends Element = HTMLElement>(pro
         TElement
     >(
         // Props:
-        { effectiveState, onStateChange },
+        { effectiveState, onStateComplete },
         
         // Options:
         options,

@@ -18,10 +18,10 @@ import {
 
 
 /**
- * Props for controlling the activity state of the component.
+ * Props for controlling an activity-based state of the component.
  * 
  * Provides a declarative way to control whether the component is running, idle, or switching to another activity,
- * along with an optional callback to observe when the component requests a state reset or switch.
+ * along with an optional callback to signal a request to update the external state driver.
  * 
  * This prop is intended to be dynamic and may change over the lifetime of the component.
  * 
@@ -29,7 +29,7 @@ import {
  */
 export interface ActivityStateProps<TState extends {} | null> {
     /**
-     * Controls the current **effective activity state** driving the animation.
+     * Specifies the resolved **effective state** to drive the activity system.
      * 
      * - Must be a concrete value (already normalized, not a declarative keyword).
      * - Influence rules (disabled/read-only, cascade, clamp, etc.) must already be applied.
@@ -40,15 +40,17 @@ export interface ActivityStateProps<TState extends {} | null> {
      * - `props.state` for simple busy/processing/playing-state scenarios
      * - live observer result for environment-aware activity scenarios
      */
-    effectiveState  : TState
+    effectiveState   : TState
     
     /**
-     * Signals a request to change the external activity state after completing an activity animation cycle.
+     * Signals a request to update the external state driver
+     * after completing an activity animation cycle.
      * 
-     * Commonly used to reset the external state back to idle or switching to another activity.
+     * Commonly used to reset the external state back to idle or switch to another activity.
      * The parent may choose to honor or ignore this request.
+     * If ignored, the current animation will repeat.
      */
-    onStateChange  ?: ValueChangeEventHandler<TState, AnimationEvent>
+    onStateComplete ?: ValueChangeEventHandler<TState, AnimationEvent>
 }
 
 /**

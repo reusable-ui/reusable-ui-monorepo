@@ -24,19 +24,19 @@ interface ExciteStateTestCase {
         /**
          * A descriptive label for the individual update step.
          */
-        title                  : string
+        title                    : string
         
         /**
          * New value for excited state.
          * Set to `undefined` to skip updating this part.
          */
-        excited               ?: boolean
+        excited                 ?: boolean
         
         /**
-         * Determines whether to response the `onExcitedChange` and update the underlying state.
-         * Defaults to previous `responseExcitedChange` and initially to `true`.
+         * Determines whether to response the `onExcitedComplete` and update the underlying state.
+         * Defaults to previous `responseExcitedComplete` and initially to `true`.
          */
-        responseExcitedChange ?: boolean
+        responseExcitedComplete ?: boolean
         
         /**
          * Delay (in milliseconds) after applying the update before performing result assertions.
@@ -45,7 +45,7 @@ interface ExciteStateTestCase {
          * - `0`: defer until the next event loop tick.
          * - Any other value: wait for the specified duration before checking.
          */
-        delay                 ?: number
+        delay                   ?: number
         
         // Expected Outcomes:
         
@@ -55,7 +55,7 @@ interface ExciteStateTestCase {
          * - `false`     : there is no running excite animation
          * - `undefined` : nothing to expect
          */
-        expectedExcited       ?: boolean
+        expectedExcited         ?: boolean
     }[]
 }
 
@@ -72,26 +72,26 @@ test.describe('usesExciteState', () => {
             title   : 'No running excite animation in all time',
             updates : [
                 {
-                    title                 : 'Initially no running animation',
-                    expectedExcited       : false,
+                    title                   : 'Initially no running animation',
+                    expectedExcited         : false,
                 },
                 {
-                    title                 : 'Still no running animation',
+                    title                   : 'Still no running animation',
                     
-                    delay                 : 100,
-                    expectedExcited       : false,
+                    delay                   : 100,
+                    expectedExcited         : false,
                 },
                 {
-                    title                 : 'Still no running animation',
+                    title                   : 'Still no running animation',
                     
-                    delay                 : 1000,
-                    expectedExcited       : false,
+                    delay                   : 1000,
+                    expectedExcited         : false,
                 },
                 {
-                    title                 : 'Still no running animation',
+                    title                   : 'Still no running animation',
                     
-                    delay                 : 1000,
-                    expectedExcited       : false,
+                    delay                   : 1000,
+                    expectedExcited         : false,
                 },
             ],
         },
@@ -99,24 +99,24 @@ test.describe('usesExciteState', () => {
             title   : 'Runs excite animation once',
             updates : [
                 {
-                    title                 : 'Initially has running animation',
-                    excited               : true, // The animation duration is 1000 ms.
-                    responseExcitedChange : true,
+                    title                   : 'Initially has running animation',
+                    excited                 : true, // The animation duration is 1000 ms.
+                    responseExcitedComplete : true,
                     
-                    delay                 : 200, // Give a brief time to start the animation.
-                    expectedExcited       : true,
+                    delay                   : 200, // Give a brief time to start the animation.
+                    expectedExcited         : true,
                 },
                 {
-                    title                 : 'Still have running animation',
+                    title                   : 'Still have running animation',
                     
-                    delay                 : 500, // 200 + 500 = 700 ms, the animation should still running.
-                    expectedExcited       : true,
+                    delay                   : 500, // 200 + 500 = 700 ms, the animation should still running.
+                    expectedExcited         : true,
                 },
                 {
-                    title                 : 'The animation should have stopped',
+                    title                   : 'The animation should have stopped',
                     
-                    delay                 : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
-                    expectedExcited       : false,
+                    delay                   : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
+                    expectedExcited         : false,
                 },
             ],
         },
@@ -124,50 +124,50 @@ test.describe('usesExciteState', () => {
             title   : 'Runs excite animation in loop until manually stopped',
             updates : [
                 {
-                    title                 : 'Initially has running animation',
-                    excited               : true, // The animation duration is 1000 ms.
-                    responseExcitedChange : false, // refuses to stop the animation
+                    title                   : 'Initially has running animation',
+                    excited                 : true, // The animation duration is 1000 ms.
+                    responseExcitedComplete : false, // refuses to stop the animation
                     
-                    delay                 : 100, // Give a brief time to start the animation.
-                    expectedExcited       : true,
+                    delay                   : 100, // Give a brief time to start the animation.
+                    expectedExcited         : true,
                 },
                 {
-                    title                 : 'Still have running animation',
+                    title                   : 'Still have running animation',
                     
-                    delay                 : 500, // 100 + 500 = 600 ms, the animation should still running.
-                    expectedExcited       : true,
+                    delay                   : 500, // 100 + 500 = 600 ms, the animation should still running.
+                    expectedExcited         : true,
                 },
                 {
-                    title                 : 'The animation should have restarted',
+                    title                   : 'The animation should have restarted',
                     
-                    delay                 : 600,  // 100 + 500 + 600 = 1200 ms, the animation should have restarted 200 ms ago.
-                    expectedExcited       : true,
+                    delay                   : 600,  // 100 + 500 + 600 = 1200 ms, the animation should have restarted 200 ms ago.
+                    expectedExcited         : true,
                 },
                 {
-                    title                 : 'May still have running 2nd animation',
+                    title                   : 'May still have running 2nd animation',
                     
-                    delay                 : 600, // 100 + 500 + 600 + 600 = 1800 ms, the animation should still running.
-                    expectedExcited       : undefined, // The animation may/may not run.
+                    delay                   : 600, // 100 + 500 + 600 + 600 = 1800 ms, the animation should still running.
+                    expectedExcited         : undefined, // The animation may/may not run.
                 },
                 {
-                    title                 : 'The animation should have restarted',
+                    title                   : 'The animation should have restarted',
                     
-                    delay                 : 600, // 100 + 500 + 600 + 600 + 600 = 2400 ms, the animation should have restarted 400 ms ago.
-                    expectedExcited       : true,
+                    delay                   : 600, // 100 + 500 + 600 + 600 + 600 = 2400 ms, the animation should have restarted 400 ms ago.
+                    expectedExcited         : true,
                 },
                 {
-                    title                 : 'Manually to stop the animation',
-                    excited               : false, // Instruct to stop the running animation.
-                    responseExcitedChange : true, // accepts to stop the animation
+                    title                   : 'Manually to stop the animation',
+                    excited                 : false, // Instruct to stop the running animation.
+                    responseExcitedComplete : true, // accepts to stop the animation
                     
-                    delay                 : 100, // Give a brief time to see the effect.
-                    expectedExcited       : undefined, // The animation may/may not run.
+                    delay                   : 100, // Give a brief time to see the effect.
+                    expectedExcited         : undefined, // The animation may/may not run.
                 },
                 {
-                    title                 : 'The animation should have stopped',
+                    title                   : 'The animation should have stopped',
                     
-                    delay                 : 1200,  // 100 + 500 + 600 + 600 + 600 + 100 + 1200 = 2400 ms, the animation should have stopped 700 ms ago.
-                    expectedExcited       : false,
+                    delay                   : 1200,  // 100 + 500 + 600 + 600 + 600 + 100 + 1200 = 2400 ms, the animation should have stopped 700 ms ago.
+                    expectedExcited         : false,
                 },
             ],
         },
@@ -175,7 +175,7 @@ test.describe('usesExciteState', () => {
         test(title, async ({ mount }) => {
             // States:
             let currentExcited : boolean | undefined = undefined;
-            let currentResponseExcitedChange : boolean | undefined = undefined;
+            let currentResponseExcitedComplete : boolean | undefined = undefined;
             
             
             
@@ -200,7 +200,7 @@ test.describe('usesExciteState', () => {
             const component = await mount(
                 <ExciteStateParentTest
                     excited={currentExcited}
-                    responseExcitedChange={currentResponseExcitedChange}
+                    responseExcitedComplete={currentResponseExcitedComplete}
                     
                     onAnimationStart={handleAnimationStart}
                     onAnimationEnd={handleAnimationEnd}
@@ -216,14 +216,14 @@ test.describe('usesExciteState', () => {
             
             
             // Apply update scenarios:
-            for (const { title, excited, responseExcitedChange, delay, expectedExcited } of updates) {
+            for (const { title, excited, responseExcitedComplete, delay, expectedExcited } of updates) {
                 console.log(`[Subtest] ${title}`);
                 
                 
                 
                 // Update props:
                 if (excited !== undefined) currentExcited = excited;
-                if (responseExcitedChange !== undefined) currentResponseExcitedChange = responseExcitedChange;
+                if (responseExcitedComplete !== undefined) currentResponseExcitedComplete = responseExcitedComplete;
                 
                 
                 
@@ -231,7 +231,7 @@ test.describe('usesExciteState', () => {
                 await component.update(
                     <ExciteStateParentTest
                         excited={currentExcited}
-                        responseExcitedChange={currentResponseExcitedChange}
+                        responseExcitedComplete={currentResponseExcitedComplete}
                         
                         onAnimationStart={handleAnimationStart}
                         onAnimationEnd={handleAnimationEnd}

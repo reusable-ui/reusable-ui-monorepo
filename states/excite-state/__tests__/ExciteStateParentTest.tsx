@@ -5,14 +5,14 @@ import { ValueChangeEventHandler } from '@reusable-ui/events';
 
 export interface ExciteStateParentTestProps
     extends
-        Omit<ExciteStateTestProps, 'onExcitedChange'>
+        Omit<ExciteStateTestProps, 'onExcitedComplete'>
 {
-    responseExcitedChange ?: boolean
+    responseExcitedComplete ?: boolean
 }
 export const ExciteStateParentTest = (props: ExciteStateParentTestProps) => {
     const {
         excited : controlledExcited = false,
-        responseExcitedChange = true,
+        responseExcitedComplete = true,
     } = props;
     
     const [excited, setExcited] = useState<boolean>(controlledExcited);
@@ -20,8 +20,8 @@ export const ExciteStateParentTest = (props: ExciteStateParentTestProps) => {
         setExcited(controlledExcited);
     }, [controlledExcited]);
     
-    const handleExcitedChange : ValueChangeEventHandler<boolean, AnimationEvent> = useStableEventHandler((newExcited, event): void => {
-        if (!responseExcitedChange) return;
+    const handleExcitedComplete : ValueChangeEventHandler<boolean, AnimationEvent> = useStableEventHandler((newExcited, event): void => {
+        if (!responseExcitedComplete) return;
         setExcited(newExcited);
     });
     
@@ -29,7 +29,7 @@ export const ExciteStateParentTest = (props: ExciteStateParentTestProps) => {
         <ExciteStateTest
             {...props}
             excited={excited}
-            onExcitedChange={handleExcitedChange}
+            onExcitedComplete={handleExcitedComplete}
         />
     );
 };
