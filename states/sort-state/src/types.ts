@@ -99,7 +99,7 @@ export interface SortStateProps<TItemElement extends Element = HTMLElement, TSor
      *   unsorted position in a styling-friendly form.
      * 
      * This keyed design makes offsets and styles retrievable by item identity
-     * during JSX iteration (e.g. `style={sortStyles.get(item.id)}`)
+     * during JSX iteration (e.g. `style={sortStyles.get(item.id)}`).
      */
     sortItemRefs          ?: RefObject<Map<Key, TItemElement>>
     
