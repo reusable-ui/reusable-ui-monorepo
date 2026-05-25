@@ -127,9 +127,9 @@ export interface SortStateProps<TItemElement extends Element = HTMLElement, TSor
     stagedSortData        ?: TSortData
     
     /**
-     * Signals to clear the external staged sort data.
+     * Signals a command to clear the external staged sort data.
      * 
-     * The implementors should reset their staged sort state to an empty sentinel, such as:
+     * Implementors should reset their staged sort state to an empty sentinel, such as:
      * - `[]` (empty array)
      * - `undefined`
      * - `null`
@@ -137,6 +137,13 @@ export interface SortStateProps<TItemElement extends Element = HTMLElement, TSor
      * 
      * Ensures that commit and clear are coordinated,
      * preventing stale staged data from persisting after the committed order is applied.
+     * 
+     * ⚠️ Note: Clearing staged data can also be done inside `onSortCommit()`
+     * (for example, commit and clear atomically within a `flushSync` block).
+     * However, using this dedicated `onStagedSortDataClear()` callback is recommended,
+     * since derived components may override `onSortCommit()` with custom commit logic.
+     * In such cases, `onStagedSortDataClear()` ensures the staged data is reset reliably,
+     * regardless of how the commit logic is implemented.
      */
     onStagedSortDataClear ?: ValueChangeEventHandler<undefined, unknown>
     
@@ -146,6 +153,9 @@ export interface SortStateProps<TItemElement extends Element = HTMLElement, TSor
      * - Used to update the committed state in the component.
      * - Should be wrapped in `flushSync` to ensure React has fully rendered the committed state
      *   before this callback returns.
+     * - Clearing staged data may also be done here,
+     *   but note that `onStagedSortDataClear()` is the recommended place
+     *   to ensure reset consistency if commit logic is overridden.
      * 
      * @example
      * ```ts
