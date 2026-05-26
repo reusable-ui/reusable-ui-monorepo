@@ -83,7 +83,7 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
     
     
     
-    // Extract props:
+    // Extract props and assign defaults:
     const {
         hovered       : state                 = defaultDeclarativeHovered,
         computedHover : externalComputedHover,

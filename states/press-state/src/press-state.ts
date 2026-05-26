@@ -83,7 +83,7 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
     
     
     
-    // Extract props:
+    // Extract props and assign defaults:
     const {
         pressed       : state                 = defaultDeclarativePressed,
         computedPress : externalComputedPress,
