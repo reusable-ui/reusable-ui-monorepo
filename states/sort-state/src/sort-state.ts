@@ -283,15 +283,15 @@ export const useSortBehaviorState = <TElement extends Element = HTMLElement, TIt
     
     // Lifecycles:
     
-    // A stable callback for commiting the staged sort data.
-    // This function remains referentially stable across renders,
-    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const commitStagedData  = useStableCallback(onSortCommit);
-    
     // A stable callback for clearing the external staged sort data.
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
     const clearStagedData   = useStableCallback(onStagedSortDataClear);
+    
+    // A stable callback for commiting the staged sort data.
+    // This function remains referentially stable across renders,
+    // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
+    const commitStagedData  = useStableCallback(onSortCommit);
     
     // A flag indicating whether the component is currently mounted:
     // - Used to prevent state updates after unmounting during async operations.
