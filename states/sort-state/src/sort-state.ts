@@ -267,7 +267,7 @@ export const useSortBehaviorState = <TElement extends Element = HTMLElement, TIt
         {
             effectiveState : sortingAnimationTrigger,
             
-            // onStateChange, // No-op on animation finishes.
+            // onStateUpdate, // No-op for synchronizing companion components.
             
             /* ...restProps */
         },
