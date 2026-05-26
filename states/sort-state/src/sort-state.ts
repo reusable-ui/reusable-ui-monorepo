@@ -225,8 +225,8 @@ export const useSortBehaviorState = <TElement extends Element = HTMLElement, TIt
     const {
         sortItemRefs,
         stagedSortData,
-        onSortCommit,
         onStagedSortDataClear,
+        onSortCommit,
         // ...restProps // Not needed the rest since all resolvers in the definition are *not* dependent of the props.
     } = props;
     
