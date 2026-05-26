@@ -267,7 +267,8 @@ export const useSortBehaviorState = <TElement extends Element = HTMLElement, TIt
         {
             effectiveState : sortingAnimationTrigger,
             
-            // onStateUpdate, // No-op for synchronizing companion components.
+            // Unused in this domain because sort-state has no persistent "sorted" intent (sorting is triggered only by `stagedSortData` changes and runs as a transient state):
+            // onStateUpdate : onSortUpdate,
             
             /* ...restProps */
         },
