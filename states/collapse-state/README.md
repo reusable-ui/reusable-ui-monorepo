@@ -38,17 +38,15 @@ Resolves the expanded/collapsed state, current transition phase, associated CSS 
 #### 💡 Usage Example
 
 ```tsx
-import React, { FC, MouseEventHandler } from 'react';
+import React, { FC } from 'react';
 import {
     useCollapseBehaviorState,
     CollapseStateProps,
-    UncontrollableCollapseStateProps,
 } from '@reusable-ui/collapse-state';
 import styles from './CollapsibleBox.module.css';
 
 export interface CollapsibleBoxProps extends
-    CollapseStateProps<React.MouseEvent<HTMLButtonElement>>,
-    UncontrollableCollapseStateProps // optional uncontrolled behavior
+    CollapseStateProps<React.MouseEvent<HTMLButtonElement>>
 {}
 
 // A box that can be expanded and collapsed.

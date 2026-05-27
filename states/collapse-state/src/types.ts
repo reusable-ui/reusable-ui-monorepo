@@ -25,7 +25,6 @@ import {
 import {
     // Types:
     type InteractionStateProps,
-    type UncontrollableInteractionStateProps,
     type InteractionStateChangeDispatcherOptions,
     type InteractionStateOptions,
     type InteractionBehaviorState,
@@ -48,6 +47,15 @@ export interface CollapseStateProps<TChangeEvent = unknown>
         // Bases:
         Omit<InteractionStateProps<boolean, boolean, TChangeEvent>, 'state' | 'onStateChange'>
 {
+    /**
+     * Specifies the initial expanded state for uncontrolled mode:
+     * - `true`  : the component is initially expanded
+     * - `false` : the component is initially collapsed
+     * 
+     * Defaults to `false` (collapsed).
+     */
+    defaultExpanded  ?: InteractionStateProps<boolean, boolean, TChangeEvent>['defaultState']
+    
     /**
      * Controls the current expanded state:
      * - `true`  : the component is expanded
@@ -72,28 +80,6 @@ export interface CollapseStateProps<TChangeEvent = unknown>
      *   requesting to expand or collapse.
      */
     onExpandedChange ?: InteractionStateProps<boolean, boolean, TChangeEvent>['onStateChange']
-}
-
-/**
- * Props for initializing the expanded/collapsed state in uncontrolled components.
- * 
- * Enables default expansion behavior when the parent does not actively manage state.
- * Commonly used in components like `<Accordion>` or `<Detail>` that enhance content
- * without requiring external control or feedback loops.
- */
-export interface UncontrollableCollapseStateProps
-    extends
-        // Bases:
-        Omit<UncontrollableInteractionStateProps<boolean>, 'defaultState'>
-{
-    /**
-     * Specifies the initial expanded state for uncontrolled mode:
-     * - `true`  : the component is initially expanded
-     * - `false` : the component is initially collapsed
-     * 
-     * Defaults to `false` (collapsed).
-     */
-    defaultExpanded ?: UncontrollableInteractionStateProps<boolean>['defaultState']
 }
 
 /**

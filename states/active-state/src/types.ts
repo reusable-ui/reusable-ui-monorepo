@@ -25,7 +25,6 @@ import {
 import {
     // Types:
     type InteractionStateProps,
-    type UncontrollableInteractionStateProps,
     type InteractionStateChangeDispatcherOptions,
     type InteractionStateOptions,
     type InteractionBehaviorState,
@@ -48,6 +47,15 @@ export interface ActiveStateProps<TChangeEvent = unknown>
         // Bases:
         Omit<InteractionStateProps<boolean, boolean, TChangeEvent>, 'state' | 'onStateChange'>
 {
+    /**
+     * Specifies the initial active state for uncontrolled mode:
+     * - `true`  : the component is initially active
+     * - `false` : the component is initially inactive
+     * 
+     * Defaults to `false` (inactive).
+     */
+    defaultActive  ?: InteractionStateProps<boolean, boolean, TChangeEvent>['defaultState']
+    
     /**
      * Controls the current active state:
      * - `true`  : the component is active
@@ -81,28 +89,6 @@ export interface ActiveStateProps<TChangeEvent = unknown>
      * Defaults to `false` (prevents contextual activation).
      */
     cascadeActive  ?: boolean
-}
-
-/**
- * Props for initializing the active/inactive state in uncontrolled components.
- * 
- * Enables default activation behavior when the parent does not actively manage state.
- * Commonly used in components like `<Toggle>`, `<Switch>`, or `<Selection>` that enhance interactivity
- * without requiring external control or feedback loops.
- */
-export interface UncontrollableActiveStateProps
-    extends
-        // Bases:
-        Omit<UncontrollableInteractionStateProps<boolean>, 'defaultState'>
-{
-    /**
-     * Specifies the initial active state for uncontrolled mode:
-     * - `true`  : the component is initially active
-     * - `false` : the component is initially inactive
-     * 
-     * Defaults to `false` (inactive).
-     */
-    defaultActive ?: UncontrollableInteractionStateProps<boolean>['defaultState']
 }
 
 /**

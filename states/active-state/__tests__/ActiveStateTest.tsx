@@ -1,7 +1,6 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type ActiveStateProps,
-    type UncontrollableActiveStateProps,
     type ActiveStatePhaseEventProps,
     useActiveBehaviorState,
     useActiveStatePhaseEvents,
@@ -19,7 +18,6 @@ const animationPattern = [
 export interface ActiveStateTestProps
     extends
         ActiveStateProps<React.MouseEvent<HTMLButtonElement>>,
-        UncontrollableActiveStateProps,
         ActiveStatePhaseEventProps,
         Pick<React.DOMAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd'>
 {

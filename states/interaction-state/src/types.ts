@@ -44,6 +44,17 @@ export interface InteractionStateProps<TDeclarativeState extends {} | null, TSta
         Omit<TransitionStateProps<{}>, 'effectiveState'>
 {
     /**
+     * Specifies the initial state for uncontrolled mode.
+     * Must be a concrete value (already resolved, not a declarative keyword).
+     * 
+     * Common source:
+     * - `props.defaultState`
+     * 
+     * Defaults to `options.defaultState`, falls back to `definition.defaultInitialState`.
+     */
+    defaultState  ?: TState
+    
+    /**
      * Controls the current state.
      * Can be a concrete value (already resolved) or a declarative keyword (`'auto'`, `'inherit'`, etc).
      * 
@@ -67,28 +78,6 @@ export interface InteractionStateProps<TDeclarativeState extends {} | null, TSta
      *   requesting to change the state.
      */
     onStateChange ?: ValueChangeEventHandler<TState, TChangeEvent>
-}
-
-/**
- * Props for initializing the state in uncontrolled components.
- * 
- * Enables default state behavior when the parent does not actively manage state.
- * Commonly used in components that enhance interactivity
- * without requiring external control or feedback loops.
- * 
- * @template TState - The concrete type of the state value (must not be declarative).
- */
-export interface UncontrollableInteractionStateProps<TState extends {} | null> {
-    /**
-     * Specifies the initial state for uncontrolled mode.
-     * Must be a concrete value (already resolved, not a declarative keyword).
-     * 
-     * Common source:
-     * - `props.defaultState`
-     * 
-     * Defaults to `options.defaultState`, falls back to `definition.defaultInitialState`.
-     */
-    defaultState ?: TState
 }
 
 /**

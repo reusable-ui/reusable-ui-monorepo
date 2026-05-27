@@ -31,7 +31,6 @@ import {
 import {
     // Types:
     type InteractionStateProps,
-    type UncontrollableInteractionStateProps,
     type InteractionStateChangeDispatcherOptions,
     type InteractionStateOptions,
     type InteractionBehaviorState,
@@ -55,6 +54,14 @@ export interface ViewStateProps<TChangeEvent = unknown>
         Omit<InteractionStateProps<number, number, TChangeEvent>, 'state' | 'onStateChange'>
 {
     /**
+     * Specifies the initial view index for uncontrolled mode:
+     * - `0`, `1`, `2`, … : the component is initially showing the view at the given index
+     * 
+     * Defaults to `0` (first view).
+     */
+    defaultViewIndex  ?: InteractionStateProps<number, number, TChangeEvent>['defaultState']
+    
+    /**
      * Controls the current view index:
      * - `0`, `1`, `2`, … : the component is showing the view at the given index
      * 
@@ -76,27 +83,6 @@ export interface ViewStateProps<TChangeEvent = unknown>
      *   requesting navigation to a new view index.
      */
     onViewIndexChange ?: InteractionStateProps<number, number, TChangeEvent>['onStateChange']
-}
-
-/**
- * Props for initializing the view index in uncontrolled components.
- * 
- * Enables default view behavior when the parent does not actively manage state.
- * Commonly used in components like `<Tabs>`, `<Slide>`, or `<Carousel>` that switch content
- * without requiring external control or feedback loops.
- */
-export interface UncontrollableViewStateProps
-    extends
-        // Bases:
-        Omit<UncontrollableInteractionStateProps<number>, 'defaultState'>
-{
-    /**
-     * Specifies the initial view index for uncontrolled mode:
-     * - `0`, `1`, `2`, … : the component is initially showing the view at the given index
-     * 
-     * Defaults to `0` (first view).
-     */
-    defaultViewIndex ?: UncontrollableInteractionStateProps<number>['defaultState']
 }
 
 /**

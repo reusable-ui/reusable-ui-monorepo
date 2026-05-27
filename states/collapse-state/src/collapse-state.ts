@@ -5,7 +5,6 @@ import {
     type CollapseStateProps,
     type CollapseChangeDispatcherOptions,
     type CollapseStatePhaseEventProps,
-    type UncontrollableCollapseStateProps,
     type CollapseStateOptions,
     type ExpandPhase,
     type ExpandClassname,
@@ -186,13 +185,11 @@ const collapseBehaviorStateDefinition : CollapseBehaviorStateDefinition = {
  * import {
  *     useCollapseBehaviorState,
  *     CollapseStateProps,
- *     UncontrollableCollapseStateProps,
  * } from '@reusable-ui/collapse-state';
  * import styles from './CollapsibleBox.module.css';
  * 
  * export interface CollapsibleBoxProps extends
- *     CollapseStateProps<React.MouseEvent<HTMLButtonElement>>,
- *     UncontrollableCollapseStateProps // optional uncontrolled behavior
+ *     CollapseStateProps<React.MouseEvent<HTMLButtonElement>>
  * {}
  * 
  * // A box that can be expanded and collapsed.
@@ -232,7 +229,7 @@ const collapseBehaviorStateDefinition : CollapseBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useCollapseBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: CollapseStateProps<TChangeEvent> & UncontrollableCollapseStateProps, options?: CollapseStateOptions): CollapseBehaviorState<TElement, TChangeEvent> => {
+export const useCollapseBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: CollapseStateProps<TChangeEvent>, options?: CollapseStateOptions): CollapseBehaviorState<TElement, TChangeEvent> => {
     // Extract options:
     const {
         defaultExpanded : fallbackState,
@@ -318,7 +315,7 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
  * @param options - An optional configuration for customizing expand/collapse behavior.
  * @returns A tuple of the resolved expanded/collapsed state and a dispatcher for requesting changes.
  */
-export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: CollapseStateProps<TChangeEvent> & UncontrollableCollapseStateProps, options?: Pick<CollapseStateOptions, 'defaultExpanded'>): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
+export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: CollapseStateProps<TChangeEvent>, options?: Pick<CollapseStateOptions, 'defaultExpanded'>): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
     // Extract options:
     const {
         defaultExpanded : fallbackState,

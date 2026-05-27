@@ -17,7 +17,6 @@ import {
     type ViewStateProps,
     type ViewIndexChangeDispatcherOptions,
     type ViewStatePhaseEventProps,
-    type UncontrollableViewStateProps,
     type ViewStateOptions,
     type TransitioningViewPhase,
     type ViewPhase,
@@ -212,13 +211,11 @@ const viewBehaviorStateDefinition : ViewBehaviorStateDefinition = {
  * import {
  *     useViewBehaviorState,
  *     ViewStateProps,
- *     UncontrollableViewStateProps,
  * } from '@reusable-ui/view-state';
  * import styles from './SlideBox.module.css';
  * 
  * export interface SlideBoxProps extends
- *     ViewStateProps<React.MouseEvent<HTMLButtonElement>>,
- *     UncontrollableViewStateProps // optional uncontrolled behavior
+ *     ViewStateProps<React.MouseEvent<HTMLButtonElement>>
  * {}
  * 
  * // A box that can switch views.
@@ -280,7 +277,7 @@ const viewBehaviorStateDefinition : ViewBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useViewBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent> & UncontrollableViewStateProps, options?: ViewStateOptions): ViewBehaviorState<TElement, TChangeEvent> => {
+export const useViewBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent>, options?: ViewStateOptions): ViewBehaviorState<TElement, TChangeEvent> => {
     // Extract options and assign defaults:
     const {
         defaultViewIndex : fallbackState,
@@ -422,7 +419,7 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
  * @param options - An optional configuration for customizing view-switching behavior.
  * @returns A tuple of the resolved view index and a dispatcher for requesting changes.
  */
-export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent> & UncontrollableViewStateProps, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>): [number, ValueChangeDispatcher<number, TChangeEvent>] => {
+export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent>, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>): [number, ValueChangeDispatcher<number, TChangeEvent>] => {
     // Extract options and assign defaults:
     const {
         defaultViewIndex : fallbackState,

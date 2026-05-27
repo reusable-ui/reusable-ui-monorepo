@@ -118,17 +118,15 @@ Resolves the current view index, current transition phase, associated CSS class 
 #### 💡 Usage Example
 
 ```tsx
-import React, { FC, MouseEventHandler } from 'react';
+import React, { FC } from 'react';
 import {
     useViewBehaviorState,
     ViewStateProps,
-    UncontrollableViewStateProps,
 } from '@reusable-ui/view-state';
 import styles from './SlideBox.module.css';
 
 export interface SlideBoxProps extends
-    ViewStateProps<React.MouseEvent<HTMLButtonElement>>,
-    UncontrollableViewStateProps // optional uncontrolled behavior
+    ViewStateProps<React.MouseEvent<HTMLButtonElement>>
 {}
 
 // A box that can switch views.

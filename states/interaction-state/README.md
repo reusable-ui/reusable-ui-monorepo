@@ -85,6 +85,9 @@ import { type ValueChangeDispatcher, type ValueChangeEventHandler } from '@reusa
 
 /** Props for controlling the selected state of a component. */
 export interface SelectedStateProps<TChangeEvent = unknown> {
+    /** Specifies the initial selected state for uncontrolled mode. */
+    defaultSelected  ?: boolean
+    
     /**
      * Specifies the current selected state:
      * - `true`   → selected
@@ -97,12 +100,6 @@ export interface SelectedStateProps<TChangeEvent = unknown> {
     
     /** Handles user-initiated requests to change the selected state. */
     onSelectedChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
-}
-
-/** Props for initializing the selected state in uncontrolled components. */
-export interface UncontrollableSelectedStateProps {
-    /** Specifies the initial selected state for uncontrolled mode. */
-    defaultSelected ?: boolean
 }
 
 /** Options for customizing the selected change dispatcher behavior. */
@@ -184,7 +181,7 @@ export interface SelectedBehaviorState<TElement extends Element = HTMLElement, T
  * - Provides resolved selected state and a dispatcher for interactive state changes.
  * - Provides semantic phases and classnames for styling.
  */
-export const useSelectedBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent> & UncontrollableSelectedStateProps, options?: SelectedStateOptions): SelectedBehaviorState<TElement, TChangeEvent> => {
+export const useSelectedBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent>, options?: SelectedStateOptions): SelectedBehaviorState<TElement, TChangeEvent> => {
     const {
         defaultSelected : fallbackState,
         ...restOptions
@@ -430,6 +427,9 @@ import { type ValueChangeDispatcher, type ValueChangeEventHandler } from '@reusa
 
 /** Props for controlling the selected state of a component. */
 export interface SelectedStateProps<TChangeEvent = unknown> {
+    /** Specifies the initial selected state for uncontrolled mode. */
+    defaultSelected  ?: boolean
+    
     /**
      * Specifies the current selected state:
      * - `true`   → selected
@@ -442,12 +442,6 @@ export interface SelectedStateProps<TChangeEvent = unknown> {
     
     /** Handles user-initiated requests to change the selected state. */
     onSelectedChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
-}
-
-/** Props for initializing the selected state in uncontrolled components. */
-export interface UncontrollableSelectedStateProps {
-    /** Specifies the initial selected state for uncontrolled mode. */
-    defaultSelected ?: boolean
 }
 
 /** Options for customizing the selected change dispatcher behavior. */
@@ -494,7 +488,7 @@ interface SelectedBehaviorStateDefinition
  * - Declarative keywords (`'auto'`) are normalized by `useSelectedState`.
  * - Provides resolved selected state and a dispatcher for interactive state changes.
  */
-export const useUncontrollableSelectedState = <TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent> & UncontrollableSelectedStateProps, options?: SelectedStateOptions): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
+export const useUncontrollableSelectedState = <TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent>, options?: SelectedStateOptions): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
     const {
         defaultSelected : fallbackState,
         ...restOptions

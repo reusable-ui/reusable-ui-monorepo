@@ -41,17 +41,15 @@ Resolves the active/inactive state, current transition phase, associated CSS cla
 #### 💡 Usage Example
 
 ```tsx
-import React, { FC, MouseEventHandler } from 'react';
+import React, { FC } from 'react';
 import {
     useActiveBehaviorState,
     ActiveStateProps,
-    UncontrollableActiveStateProps,
 } from '@reusable-ui/active-state';
 import styles from './ActivatableBox.module.css';
 
 export interface ActivatableBoxProps extends
-    ActiveStateProps<React.MouseEvent<HTMLButtonElement>>,
-    UncontrollableActiveStateProps // optional uncontrolled behavior
+    ActiveStateProps<React.MouseEvent<HTMLButtonElement>>
 {}
 
 // A box that can be activated and deactivated.

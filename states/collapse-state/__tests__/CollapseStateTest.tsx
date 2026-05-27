@@ -1,7 +1,6 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type CollapseStateProps,
-    type UncontrollableCollapseStateProps,
     type CollapseStatePhaseEventProps,
     useCollapseBehaviorState,
     useCollapseStatePhaseEvents,
@@ -19,7 +18,6 @@ const animationPattern = [
 export interface CollapseStateTestProps
     extends
         CollapseStateProps<React.MouseEvent<HTMLButtonElement>>,
-        UncontrollableCollapseStateProps,
         CollapseStatePhaseEventProps,
         Pick<React.DOMAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd'>
 {

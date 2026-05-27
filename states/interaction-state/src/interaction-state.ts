@@ -42,7 +42,6 @@ import {
 // Types:
 import {
     type InteractionStateProps,
-    type UncontrollableInteractionStateProps,
     type InteractionStateChangeDispatcherOptions,
     type InteractionStateOptions,
     
@@ -176,7 +175,7 @@ export const useInteractionBehaviorState = <
     
     TChangeEvent = unknown
 >(
-    props      : InteractionStateProps<TDeclarativeState, TState, TChangeEvent> & UncontrollableInteractionStateProps<TState>,
+    props      : InteractionStateProps<TDeclarativeState, TState, TChangeEvent>,
     options    : InteractionStateOptions<TState> | undefined,
     definition : InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
 ): InteractionBehaviorState<TState, TPhase, TClassname, TElement, TChangeEvent> => {
@@ -291,7 +290,7 @@ export const useInteractionBehaviorState = <
  * 
  * @returns The resolved driver state (controlled or uncontrolled), guaranteed to be concrete.
  */
-const useResolveInteractionDriverState = <TDeclarativeState extends {} | null, TState extends TDeclarativeState, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition, TChangeEvent = unknown>(args: ResolveDriverStateArgs<TState, InteractionStateProps<TDeclarativeState, TState, TChangeEvent> & UncontrollableInteractionStateProps<TState> & Pick<TransitionStateProps<TState>, 'effectiveState'>, InteractionStateOptions<TState>, InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>>): TState => {
+const useResolveInteractionDriverState = <TDeclarativeState extends {} | null, TState extends TDeclarativeState, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition, TChangeEvent = unknown>(args: ResolveDriverStateArgs<TState, InteractionStateProps<TDeclarativeState, TState, TChangeEvent> & Pick<TransitionStateProps<TState>, 'effectiveState'>, InteractionStateOptions<TState>, InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>>): TState => {
     // Extract args:
     const {
         internalState,
@@ -374,7 +373,7 @@ export const useUncontrollableInteractionState = <
     
     TChangeEvent = unknown
 >(
-    props      : InteractionStateProps<TDeclarativeState, TState, TChangeEvent> & UncontrollableInteractionStateProps<TState>,
+    props      : InteractionStateProps<TDeclarativeState, TState, TChangeEvent>,
     options    : Pick<InteractionStateOptions<TState>, 'defaultState'> | undefined,
     definition : Pick<InteractionBehaviorStateDefinition<TDeclarativeState, TState, string, string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>, 'defaultInitialState' | 'useResolveEffectiveState'>
 ): [TState, ValueChangeDispatcher<TState, TChangeEvent>] => {
