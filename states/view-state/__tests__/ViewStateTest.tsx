@@ -1,7 +1,6 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type ViewStateProps,
-    type ViewStatePhaseEventProps,
     useViewBehaviorState,
     useViewStatePhaseEvents,
 } from '../dist/index.js'
@@ -18,7 +17,6 @@ const animationPattern = [
 export interface ViewStateTestProps
     extends
         ViewStateProps<React.MouseEvent<HTMLButtonElement>>,
-        ViewStatePhaseEventProps,
         Pick<React.DOMAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd'>
 {
 }

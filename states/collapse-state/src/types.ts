@@ -54,7 +54,7 @@ export interface CollapseStateProps<TChangeEvent = unknown>
      * 
      * Defaults to `false` (collapsed).
      */
-    defaultExpanded  ?: InteractionStateProps<boolean, boolean, TChangeEvent>['defaultState']
+    defaultExpanded   ?: InteractionStateProps<boolean, boolean, TChangeEvent>['defaultState']
     
     /**
      * Controls the current expanded state:
@@ -63,7 +63,7 @@ export interface CollapseStateProps<TChangeEvent = unknown>
      * 
      * Defaults to `undefined` (uncontrolled mode).
      */
-    expanded         ?: InteractionStateProps<boolean, boolean, TChangeEvent>['state']
+    expanded          ?: InteractionStateProps<boolean, boolean, TChangeEvent>['state']
     
     /**
      * Handles user-initiated requests to change the expanded state:
@@ -79,29 +79,10 @@ export interface CollapseStateProps<TChangeEvent = unknown>
      * - When restriction is lifted, the callback will be invoked in response to user interactions
      *   requesting to expand or collapse.
      */
-    onExpandedChange ?: InteractionStateProps<boolean, boolean, TChangeEvent>['onStateChange']
-}
-
-/**
- * Options for customizing the expanded change dispatcher behavior.
- * 
- * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
- */
-export interface CollapseChangeDispatcherOptions<TChangeEvent = unknown>
-    extends
-        // Bases:
-        InteractionStateChangeDispatcherOptions<boolean, TChangeEvent>
-{
-    /* no additional options yet - reserved for future extensions */
-}
-
-/**
- * Props for listening lifecycle events triggered by expand/collapse phase transitions.
- * 
- * These events allow external listeners to react to phase changes—such as logging, analytics,
- * or chaining animations.
- */
-export interface CollapseStatePhaseEventProps {
+    onExpandedChange  ?: InteractionStateProps<boolean, boolean, TChangeEvent>['onStateChange']
+    
+    
+    
     /**
      * Called when the expanding transition begins.
      */
@@ -121,6 +102,19 @@ export interface CollapseStatePhaseEventProps {
      * Called when the collapsing transition completes.
      */
     onCollapsingEnd   ?: ValueChangeEventHandler<ExpandPhase, unknown>
+}
+
+/**
+ * Options for customizing the expanded change dispatcher behavior.
+ * 
+ * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
+ */
+export interface CollapseChangeDispatcherOptions<TChangeEvent = unknown>
+    extends
+        // Bases:
+        InteractionStateChangeDispatcherOptions<boolean, TChangeEvent>
+{
+    /* no additional options yet - reserved for future extensions */
 }
 
 /**

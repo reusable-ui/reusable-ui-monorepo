@@ -107,7 +107,7 @@ The hook manages transitions between `active` and `inactive` states using a unif
 
 Emits lifecycle events in response to activate/deactivate phase transitions.
 
-This hook observes the resolved `activePhase` from `useActiveBehaviorState()` and triggers the appropriate callbacks defined in `ActiveStatePhaseEventProps`, such as:
+This hook observes the resolved `activePhase` from `useActiveBehaviorState()` and triggers the appropriate callbacks defined in `ActiveStateProps`, such as:
 
 - `onActivatingStart`
 - `onActivatingEnd`

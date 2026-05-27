@@ -72,7 +72,7 @@ export interface FocusStateProps
      * 
      * Defaults to `'auto'` (automatically determine focus state).
      */
-    focused       ?: FeedbackStateProps<boolean>['effectiveState'] | 'auto'
+    focused         ?: FeedbackStateProps<boolean>['effectiveState'] | 'auto'
     
     /**
      * Synchronizes companion components whenever the resolved focus state changes:
@@ -87,7 +87,7 @@ export interface FocusStateProps
      * ⚠️ Important: This callback must not directly or indirectly update the `focused` prop,
      * otherwise an unwanted circular re-render may occur.
      */
-    onFocusUpdate ?: FeedbackStateProps<boolean>['onStateUpdate']
+    onFocusUpdate   ?: FeedbackStateProps<boolean>['onStateUpdate']
     
     /**
      * The derived focus value used when `focused` is set to `'auto'`.
@@ -106,16 +106,10 @@ export interface FocusStateProps
      * This property is intended for **component developers** who need to customize focus resolution.
      * For **application developers**, prefer using the `focused` prop directly.
      */
-    computedFocus ?: FeedbackStateProps<boolean>['effectiveState']
-}
-
-/**
- * Props for listening lifecycle events triggered by focus/blur phase transitions.
- * 
- * These events allow external listeners to react to phase changes—such as logging, analytics,
- * or chaining animations.
- */
-export interface FocusStatePhaseEventProps {
+    computedFocus   ?: FeedbackStateProps<boolean>['effectiveState']
+    
+    
+    
     /**
      * Called when the focusing transition begins.
      */

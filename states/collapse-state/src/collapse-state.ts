@@ -4,7 +4,6 @@
 import {
     type CollapseStateProps,
     type CollapseChangeDispatcherOptions,
-    type CollapseStatePhaseEventProps,
     type CollapseStateOptions,
     type ExpandPhase,
     type ExpandClassname,
@@ -364,17 +363,17 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
  * Emits lifecycle events in response to expand/collapse phase transitions.
  * 
  * This hook observes the resolved `expandPhase` from `useCollapseBehaviorState()` and triggers
- * the appropriate callbacks defined in `CollapseStatePhaseEventProps`, such as:
+ * the appropriate callbacks defined in `CollapseStateProps`, such as:
  * 
  * - `onExpandingStart`
  * - `onExpandingEnd`
  * - `onCollapsingStart`
  * - `onCollapsingEnd`
  * 
- * @param {CollapseStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
+ * @param {CollapseStateProps} props - The component props that may include phase-specific lifecycle event handlers.
  * @param {ExpandPhase} expandPhase - The current phase value returned from `useCollapseBehaviorState()`.
  */
-export const useCollapseStatePhaseEvents = (props: CollapseStatePhaseEventProps, expandPhase: ExpandPhase): void => {
+export const useCollapseStatePhaseEvents = (props: CollapseStateProps<any>, expandPhase: ExpandPhase): void => {
     useInteractionStatePhaseEvents(expandPhase, (expandPhase: ExpandPhase): void => {
         switch (expandPhase) {
             case 'expanding'  : props.onExpandingStart?.(expandPhase, undefined);  break;

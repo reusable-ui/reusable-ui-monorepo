@@ -3,7 +3,6 @@
 // Types:
 import {
     type DisabledStateProps,
-    type DisabledStatePhaseEventProps,
     type DisabledStateOptions,
     type DisabledPhase,
     type DisabledClassname,
@@ -236,17 +235,17 @@ export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>
  * Emits lifecycle events in response to enable/disable phase transitions.
  * 
  * This hook observes the resolved `disabledPhase` from `useDisabledBehaviorState()` and triggers
- * the appropriate callbacks defined in `DisabledStatePhaseEventProps`, such as:
+ * the appropriate callbacks defined in `DisabledStateProps`, such as:
  * 
  * - `onEnablingStart`
  * - `onEnablingEnd`
  * - `onDisablingStart`
  * - `onDisablingEnd`
  * 
- * @param {DisabledStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
+ * @param {DisabledStateProps} props - The component props that may include phase-specific lifecycle event handlers.
  * @param {DisabledPhase} disabledPhase - The current phase value returned from `useDisabledBehaviorState()`.
  */
-export const useDisabledStatePhaseEvents = (props: DisabledStatePhaseEventProps, disabledPhase: DisabledPhase): void => {
+export const useDisabledStatePhaseEvents = (props: DisabledStateProps, disabledPhase: DisabledPhase): void => {
     useFeedbackStatePhaseEvents(disabledPhase, (disabledPhase: DisabledPhase): void => {
         switch (disabledPhase) {
             case 'enabling'  : props.onEnablingStart?.(disabledPhase, undefined);  break;

@@ -3,7 +3,6 @@
 // Types:
 import {
     type HoverStateProps,
-    type HoverStatePhaseEventProps,
     type HoverStateOptions,
     type HoverPhase,
     type HoverClassname,
@@ -303,17 +302,17 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
  * Emits lifecycle events in response to hover/unhover phase transitions.
  * 
  * This hook observes the resolved `hoverPhase` from `useHoverBehaviorState()` and triggers
- * the appropriate callbacks defined in `HoverStatePhaseEventProps`, such as:
+ * the appropriate callbacks defined in `HoverStateProps`, such as:
  * 
  * - `onHoveringStart`
  * - `onHoveringEnd`
  * - `onUnhoveringStart`
  * - `onUnhoveringEnd`
  * 
- * @param {HoverStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
+ * @param {HoverStateProps} props - The component props that may include phase-specific lifecycle event handlers.
  * @param {HoverPhase} hoverPhase - The current phase value returned from `useHoverBehaviorState()`.
  */
-export const useHoverStatePhaseEvents = (props: HoverStatePhaseEventProps, hoverPhase: HoverPhase): void => {
+export const useHoverStatePhaseEvents = (props: HoverStateProps, hoverPhase: HoverPhase): void => {
     useFeedbackStatePhaseEvents(hoverPhase, (hoverPhase: HoverPhase): void => {
         switch (hoverPhase) {
             case 'hovering'   : props.onHoveringStart?.(hoverPhase, undefined);   break;

@@ -135,7 +135,7 @@ The hook manages transitions between `focused` and `blurred` states using a unif
 
 Emits lifecycle events in response to focus/blur phase transitions.
 
-This hook observes the resolved `focusPhase` from `useFocusBehaviorState()` and triggers the appropriate callbacks defined in `FocusStatePhaseEventProps`, such as:
+This hook observes the resolved `focusPhase` from `useFocusBehaviorState()` and triggers the appropriate callbacks defined in `FocusStateProps`, such as:
 
 - `onFocusingStart`
 - `onFocusingEnd`

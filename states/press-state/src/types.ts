@@ -71,7 +71,7 @@ export interface PressStateProps
      * 
      * Defaults to `'auto'` (automatically determine press state).
      */
-    pressed       ?: FeedbackStateProps<boolean>['effectiveState'] | 'auto'
+    pressed          ?: FeedbackStateProps<boolean>['effectiveState'] | 'auto'
     
     /**
      * Synchronizes companion components whenever the resolved press state changes:
@@ -86,7 +86,7 @@ export interface PressStateProps
      * ⚠️ Important: This callback must not directly or indirectly update the `pressed` prop,
      * otherwise an unwanted circular re-render may occur.
      */
-    onPressUpdate ?: FeedbackStateProps<boolean>['onStateUpdate']
+    onPressUpdate    ?: FeedbackStateProps<boolean>['onStateUpdate']
     
     /**
      * The derived press value used when `pressed` is set to `'auto'`.
@@ -105,16 +105,10 @@ export interface PressStateProps
      * This property is intended for **component developers** who need to customize press resolution.
      * For **application developers**, prefer using the `pressed` prop directly.
      */
-    computedPress ?: FeedbackStateProps<boolean>['effectiveState']
-}
-
-/**
- * Props for listening lifecycle events triggered by press/release phase transitions.
- * 
- * These events allow external listeners to react to phase changes—such as logging, analytics,
- * or chaining animations.
- */
-export interface PressStatePhaseEventProps {
+    computedPress    ?: FeedbackStateProps<boolean>['effectiveState']
+    
+    
+    
     /**
      * Called when the pressing transition begins.
      */

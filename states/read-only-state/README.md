@@ -85,7 +85,7 @@ export const CustomEditor: FC<CustomEditorProps> = (props) => {
 
 Emits lifecycle events in response to editable/read-only phase transitions.
 
-This hook observes the resolved `readOnlyPhase` from `useReadOnlyBehaviorState()` and triggers the appropriate callbacks defined in `ReadOnlyStatePhaseEventProps`, such as:
+This hook observes the resolved `readOnlyPhase` from `useReadOnlyBehaviorState()` and triggers the appropriate callbacks defined in `ReadOnlyStateProps`, such as:
 
 - `onThawingStart`
 - `onThawingEnd`

@@ -59,7 +59,7 @@ export interface ViewStateProps<TChangeEvent = unknown>
      * 
      * Defaults to `0` (first view).
      */
-    defaultViewIndex  ?: InteractionStateProps<number, number, TChangeEvent>['defaultState']
+    defaultViewIndex     ?: InteractionStateProps<number, number, TChangeEvent>['defaultState']
     
     /**
      * Controls the current view index:
@@ -67,7 +67,7 @@ export interface ViewStateProps<TChangeEvent = unknown>
      * 
      * Defaults to `undefined` (uncontrolled mode).
      */
-    viewIndex         ?: InteractionStateProps<number, number, TChangeEvent>['state']
+    viewIndex            ?: InteractionStateProps<number, number, TChangeEvent>['state']
     
     /**
      * Handles user-initiated requests to change the view index:
@@ -82,29 +82,10 @@ export interface ViewStateProps<TChangeEvent = unknown>
      * - When restriction is lifted, the callback will be invoked in response to user interactions
      *   requesting navigation to a new view index.
      */
-    onViewIndexChange ?: InteractionStateProps<number, number, TChangeEvent>['onStateChange']
-}
-
-/**
- * Options for customizing the view index change dispatcher behavior.
- * 
- * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
- */
-export interface ViewIndexChangeDispatcherOptions<TChangeEvent = unknown>
-    extends
-        // Bases:
-        InteractionStateChangeDispatcherOptions<number, TChangeEvent>
-{
-    /* no additional options yet - reserved for future extensions */
-}
-
-/**
- * Props for listening lifecycle events triggered by view phase transitions.
- * 
- * These events allow external listeners to react to phase changes—such as logging, analytics,
- * or chaining animations.
- */
-export interface ViewStatePhaseEventProps {
+    onViewIndexChange    ?: InteractionStateProps<number, number, TChangeEvent>['onStateChange']
+    
+    
+    
     /**
      * Called when the advancing (next) view transition begins.
      * 
@@ -132,6 +113,19 @@ export interface ViewStatePhaseEventProps {
      * Triggered when the component settles at the target index after moving backward.
      */
     onViewRecedingEnd    ?: ValueChangeEventHandler<ViewPhase, unknown>
+}
+
+/**
+ * Options for customizing the view index change dispatcher behavior.
+ * 
+ * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
+ */
+export interface ViewIndexChangeDispatcherOptions<TChangeEvent = unknown>
+    extends
+        // Bases:
+        InteractionStateChangeDispatcherOptions<number, TChangeEvent>
+{
+    /* no additional options yet - reserved for future extensions */
 }
 
 /**

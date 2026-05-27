@@ -143,7 +143,7 @@ The hook manages transitions between `dragged` and `dropped` states using a unif
 
 Emits lifecycle events in response to drag/drop phase transitions.
 
-This hook observes the resolved `dragPhase` from `useDragBehaviorState()` and triggers the appropriate callbacks defined in `DragStatePhaseEventProps`, such as:
+This hook observes the resolved `dragPhase` from `useDragBehaviorState()` and triggers the appropriate callbacks defined in `DragStateProps`, such as:
 
 - `onDraggingStart`
 - `onDraggingEnd`

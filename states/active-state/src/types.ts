@@ -54,7 +54,7 @@ export interface ActiveStateProps<TChangeEvent = unknown>
      * 
      * Defaults to `false` (inactive).
      */
-    defaultActive  ?: InteractionStateProps<boolean, boolean, TChangeEvent>['defaultState']
+    defaultActive       ?: InteractionStateProps<boolean, boolean, TChangeEvent>['defaultState']
     
     /**
      * Controls the current active state:
@@ -63,7 +63,7 @@ export interface ActiveStateProps<TChangeEvent = unknown>
      * 
      * Defaults to `undefined` (uncontrolled mode).
      */
-    active         ?: InteractionStateProps<boolean, boolean, TChangeEvent>['state']
+    active              ?: InteractionStateProps<boolean, boolean, TChangeEvent>['state']
     
     /**
      * Handles user-initiated requests to change the active state:
@@ -79,7 +79,7 @@ export interface ActiveStateProps<TChangeEvent = unknown>
      * - When restriction is lifted, the callback will be invoked in response to user interactions
      *   requesting to activate or deactivate.
      */
-    onActiveChange ?: InteractionStateProps<boolean, boolean, TChangeEvent>['onStateChange']
+    onActiveChange      ?: InteractionStateProps<boolean, boolean, TChangeEvent>['onStateChange']
     
     /**
      * Controls whether the component can be activated via parent context:
@@ -88,29 +88,10 @@ export interface ActiveStateProps<TChangeEvent = unknown>
      * 
      * Defaults to `false` (prevents contextual activation).
      */
-    cascadeActive  ?: boolean
-}
-
-/**
- * Options for customizing the active change dispatcher behavior.
- * 
- * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
- */
-export interface ActiveChangeDispatcherOptions<TChangeEvent = unknown>
-    extends
-        // Bases:
-        InteractionStateChangeDispatcherOptions<boolean, TChangeEvent>
-{
-    /* no additional options yet - reserved for future extensions */
-}
-
-/**
- * Props for listening lifecycle events triggered by activate/deactivate phase transitions.
- * 
- * These events allow external listeners to react to phase changes—such as logging, analytics,
- * or chaining animations.
- */
-export interface ActiveStatePhaseEventProps {
+    cascadeActive       ?: boolean
+    
+    
+    
     /**
      * Called when the activating transition begins.
      */
@@ -130,6 +111,19 @@ export interface ActiveStatePhaseEventProps {
      * Called when the deactivating transition completes.
      */
     onDeactivatingEnd   ?: ValueChangeEventHandler<ActivePhase, unknown>
+}
+
+/**
+ * Options for customizing the active change dispatcher behavior.
+ * 
+ * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
+ */
+export interface ActiveChangeDispatcherOptions<TChangeEvent = unknown>
+    extends
+        // Bases:
+        InteractionStateChangeDispatcherOptions<boolean, TChangeEvent>
+{
+    /* no additional options yet - reserved for future extensions */
 }
 
 /**

@@ -14,7 +14,6 @@ import {
 // Types:
 import {
     type DragStateProps,
-    type DragStatePhaseEventProps,
     type DragStateOptions,
     type DragPhase,
     type DragClassname,
@@ -328,17 +327,17 @@ export const useDragBehaviorState = <TElement extends Element = HTMLElement>(pro
  * Emits lifecycle events in response to drag/drop phase transitions.
  * 
  * This hook observes the resolved `dragPhase` from `useDragBehaviorState()` and triggers
- * the appropriate callbacks defined in `DragStatePhaseEventProps`, such as:
+ * the appropriate callbacks defined in `DragStateProps`, such as:
  * 
  * - `onDraggingStart`
  * - `onDraggingEnd`
  * - `onDroppingStart`
  * - `onDroppingEnd`
  * 
- * @param {DragStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
+ * @param {DragStateProps} props - The component props that may include phase-specific lifecycle event handlers.
  * @param {DragPhase} dragPhase - The current phase value returned from `useDragBehaviorState()`.
  */
-export const useDragStatePhaseEvents = (props: DragStatePhaseEventProps, dragPhase: DragPhase): void => {
+export const useDragStatePhaseEvents = (props: DragStateProps, dragPhase: DragPhase): void => {
     useFeedbackStatePhaseEvents(dragPhase, (dragPhase: DragPhase): void => {
         switch (dragPhase) {
             case 'dragging' : props.onDraggingStart?.(dragPhase, undefined); break;

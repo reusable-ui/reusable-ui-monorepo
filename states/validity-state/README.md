@@ -223,7 +223,7 @@ To avoid confusion, here are the rules that govern how `<ValidityStateProvider>`
 
 Emits lifecycle events in response to validity phase transitions.
 
-This hook observes the resolved `validityPhase` from `useValidityBehaviorState()` and triggers the appropriate callbacks defined in `ValidityStatePhaseEventProps`, such as:
+This hook observes the resolved `validityPhase` from `useValidityBehaviorState()` and triggers the appropriate callbacks defined in `ValidityStateProps`, such as:
 
 - `onValidatingStart`
 - `onValidatingEnd`

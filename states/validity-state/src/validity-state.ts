@@ -9,7 +9,6 @@ import {
 // Types:
 import {
     type ValidityStateProps,
-    type ValidityStatePhaseEventProps,
     type ValidityStateOptions,
     type ValidityPhase,
     type ValidityClassname,
@@ -363,7 +362,7 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
  * Emits lifecycle events in response to validity phase transitions.
  * 
  * This hook observes the resolved `validityPhase` from `useValidityBehaviorState()` and triggers
- * the appropriate callbacks defined in `ValidityStatePhaseEventProps`, such as:
+ * the appropriate callbacks defined in `ValidityStateProps`, such as:
  * 
  * - `onValidatingStart`
  * - `onValidatingEnd`
@@ -372,10 +371,10 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
  * - `onUnvalidatingStart`
  * - `onUnvalidatingEnd`
  * 
- * @param {ValidityStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
+ * @param {ValidityStateProps} props - The component props that may include phase-specific lifecycle event handlers.
  * @param {ValidityPhase} validityPhase - The current phase value returned from `useValidityBehaviorState()`.
  */
-export const useValidityStatePhaseEvents = (props: ValidityStatePhaseEventProps, validityPhase: ValidityPhase): void => {
+export const useValidityStatePhaseEvents = (props: ValidityStateProps, validityPhase: ValidityPhase): void => {
     useFeedbackStatePhaseEvents(validityPhase, (validityPhase: ValidityPhase): void => {
         switch (validityPhase) {
             case 'validating'   : props.onValidatingStart?.(validityPhase, undefined);   break;

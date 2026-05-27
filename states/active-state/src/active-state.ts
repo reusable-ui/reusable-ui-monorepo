@@ -4,7 +4,6 @@
 import {
     type ActiveStateProps,
     type ActiveChangeDispatcherOptions,
-    type ActiveStatePhaseEventProps,
     type ActiveStateOptions,
     type ActivePhase,
     type ActiveClassname,
@@ -380,17 +379,17 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
  * Emits lifecycle events in response to activate/deactivate phase transitions.
  * 
  * This hook observes the resolved `activePhase` from `useActiveBehaviorState()` and triggers
- * the appropriate callbacks defined in `ActiveStatePhaseEventProps`, such as:
+ * the appropriate callbacks defined in `ActiveStateProps`, such as:
  * 
  * - `onActivatingStart`
  * - `onActivatingEnd`
  * - `onDeactivatingStart`
  * - `onDeactivatingEnd`
  * 
- * @param {ActiveStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
+ * @param {ActiveStateProps} props - The component props that may include phase-specific lifecycle event handlers.
  * @param {ActivePhase} activePhase - The current phase value returned from `useActiveBehaviorState()`.
  */
-export const useActiveStatePhaseEvents = (props: ActiveStatePhaseEventProps, activePhase: ActivePhase): void => {
+export const useActiveStatePhaseEvents = (props: ActiveStateProps<any>, activePhase: ActivePhase): void => {
     useInteractionStatePhaseEvents(activePhase, (activePhase: ActivePhase): void => {
         switch (activePhase) {
             case 'activating'   : props.onActivatingStart?.(activePhase, undefined);   break;

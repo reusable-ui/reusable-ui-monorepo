@@ -85,7 +85,7 @@ export const CustomEditor: FC<CustomEditorProps> = (props) => {
 
 Emits lifecycle events in response to enable/disable phase transitions.
 
-This hook observes the resolved `disabledPhase` from `useDisabledBehaviorState()` and triggers the appropriate callbacks defined in `DisabledStatePhaseEventProps`, such as:
+This hook observes the resolved `disabledPhase` from `useDisabledBehaviorState()` and triggers the appropriate callbacks defined in `DisabledStateProps`, such as:
 
 - `onEnablingStart`
 - `onEnablingEnd`

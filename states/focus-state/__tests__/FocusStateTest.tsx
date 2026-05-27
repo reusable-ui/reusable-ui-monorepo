@@ -1,7 +1,6 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type FocusStateProps,
-    type FocusStatePhaseEventProps,
     useFocusBehaviorState,
     useFocusStatePhaseEvents,
 } from '../dist/index.js'
@@ -19,7 +18,6 @@ const animationPattern = [
 export interface FocusStateTestProps
     extends
         FocusStateProps,
-        FocusStatePhaseEventProps,
         Pick<React.DOMAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd'>
 {
     implementsFocusHandlers ?: boolean

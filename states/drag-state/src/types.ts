@@ -67,7 +67,7 @@ export interface DragStateProps
      * 
      * Defaults to `'auto'` (automatically determine drag state).
      */
-    dragged      ?: FeedbackStateProps<boolean>['effectiveState'] | 'auto'
+    dragged         ?: FeedbackStateProps<boolean>['effectiveState'] | 'auto'
     
     /**
      * Synchronizes companion components whenever the resolved drag state changes:
@@ -82,7 +82,7 @@ export interface DragStateProps
      * ⚠️ Important: This callback must not directly or indirectly update the `dragged` prop,
      * otherwise an unwanted circular re-render may occur.
      */
-    onDragUpdate ?: FeedbackStateProps<boolean>['onStateUpdate']
+    onDragUpdate    ?: FeedbackStateProps<boolean>['onStateUpdate']
     
     /**
      * The computed drag value used when `dragged` is set to `'auto'`.
@@ -104,16 +104,10 @@ export interface DragStateProps
      * This property is intended for **component developers** who need to customize drag resolution.
      * For **application developers**, prefer using the `dragged` prop directly.
      */
-    computedDrag ?: FeedbackStateProps<boolean>['effectiveState']
-}
-
-/**
- * Props for listening to lifecycle events triggered by drag/drop phase transitions.
- * 
- * These events allow external listeners to react to phase changes—such as logging, analytics,
- * or chaining animations.
- */
-export interface DragStatePhaseEventProps {
+    computedDrag    ?: FeedbackStateProps<boolean>['effectiveState']
+    
+    
+    
     /**
      * Called when the dragging transition begins.
      */

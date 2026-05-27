@@ -205,7 +205,7 @@ The hook manages transitions when `viewIndex` changes using a unified animation 
 
 Emits lifecycle events in response to view phase transitions.
 
-This hook observes the resolved `viewPhase` from `useViewBehaviorState()` and triggers the appropriate callbacks defined in `ViewStatePhaseEventProps`, such as:
+This hook observes the resolved `viewPhase` from `useViewBehaviorState()` and triggers the appropriate callbacks defined in `ViewStateProps`, such as:
 
 - `onViewAdvancingStart`
 - `onViewAdvancingEnd`

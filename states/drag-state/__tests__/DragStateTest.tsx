@@ -1,7 +1,6 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type DragStateProps,
-    type DragStatePhaseEventProps,
     useDragBehaviorState,
     useDragStatePhaseEvents,
 } from '../dist/index.js'
@@ -27,7 +26,6 @@ export interface DragStateTestProps
     extends
         PressStateProps,
         DragStateProps,
-        DragStatePhaseEventProps,
         Pick<React.DOMAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd' | 'onClick' | 'onPointerDown'>
 {
     implementsDragHandlers ?: boolean

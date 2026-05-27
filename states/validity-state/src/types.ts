@@ -55,7 +55,7 @@ export interface ValidityStateProps
      * - `false` → when used outside a `<ValidityStateProvider>` (validation disabled by default).
      * - `true`  → when used inside  a `<ValidityStateProvider>` (validation enabled by default).
      */
-    enableValidation  ?: boolean
+    enableValidation    ?: boolean
     
     /**
      * Controls the current validity state:
@@ -74,7 +74,7 @@ export interface ValidityStateProps
      * 
      * Defaults to `'auto'` (automatically determine validity state).
      */
-    validity          ?: FeedbackStateProps<boolean | null>['effectiveState'] | 'auto'
+    validity            ?: FeedbackStateProps<boolean | null>['effectiveState'] | 'auto'
     
     /**
      * Synchronizes companion components whenever the resolved validity state changes:
@@ -90,7 +90,7 @@ export interface ValidityStateProps
      * ⚠️ Important: This callback must not directly or indirectly update the `validity` prop,
      * otherwise an unwanted circular re-render may occur.
      */
-    onValidityUpdate  ?: FeedbackStateProps<boolean | null>['onStateUpdate']
+    onValidityUpdate    ?: FeedbackStateProps<boolean | null>['onStateUpdate']
     
     /**
      * Controls whether ancestor validation intent cascades down.
@@ -100,7 +100,7 @@ export interface ValidityStateProps
      * - A parent `<ValidityStateProvider>` can enforce its own validity
      *   (`true`/`false`/`null`) when the local `validity` prop is `'auto'`.
      */
-    cascadeValidation ?: boolean
+    cascadeValidation   ?: boolean
     
     /**
      * The derived validity value used when `validity` is set to `'auto'`.
@@ -117,16 +117,10 @@ export interface ValidityStateProps
      * This property is intended for **component developers** who need to customize validity resolution.
      * For **application developers**, prefer using the `validity` prop directly.
      */
-    computedValidity  ?: FeedbackStateProps<boolean | null>['effectiveState']
-}
-
-/**
- * Props for listening lifecycle events triggered by validity phase transitions.
- * 
- * These events allow external listeners to react to phase changes—such as logging, analytics,
- * or chaining animations.
- */
-export interface ValidityStatePhaseEventProps {
+    computedValidity    ?: FeedbackStateProps<boolean | null>['effectiveState']
+    
+    
+    
     /**
      * Called when the validating transition begins.
      */

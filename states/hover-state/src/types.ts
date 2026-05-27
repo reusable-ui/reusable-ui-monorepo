@@ -69,7 +69,7 @@ export interface HoverStateProps
      * 
      * Defaults to `'auto'` (automatically determine hover state).
      */
-    hovered       ?: FeedbackStateProps<boolean>['effectiveState'] | 'auto'
+    hovered           ?: FeedbackStateProps<boolean>['effectiveState'] | 'auto'
     
     /**
      * Synchronizes companion components whenever the resolved hover state changes:
@@ -84,7 +84,7 @@ export interface HoverStateProps
      * ⚠️ Important: This callback must not directly or indirectly update the `hovered` prop,
      * otherwise an unwanted circular re-render may occur.
      */
-    onHoverUpdate ?: FeedbackStateProps<boolean>['onStateUpdate']
+    onHoverUpdate     ?: FeedbackStateProps<boolean>['onStateUpdate']
     
     /**
      * The derived hover value used when `hovered` is set to `'auto'`.
@@ -101,16 +101,10 @@ export interface HoverStateProps
      * This property is intended for **component developers** who need to customize hover resolution.
      * For **application developers**, prefer using the `hovered` prop directly.
      */
-    computedHover ?: FeedbackStateProps<boolean>['effectiveState']
-}
-
-/**
- * Props for listening lifecycle events triggered by hover/unhover phase transitions.
- * 
- * These events allow external listeners to react to phase changes—such as logging, analytics,
- * or chaining animations.
- */
-export interface HoverStatePhaseEventProps {
+    computedHover     ?: FeedbackStateProps<boolean>['effectiveState']
+    
+    
+    
     /**
      * Called when the hovering transition begins.
      */

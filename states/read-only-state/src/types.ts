@@ -76,34 +76,28 @@ export interface ReadOnlyStateProps
      * Defaults to `true` (allows contextual read-only).
      */
     cascadeReadOnly  ?: boolean
-}
-
-/**
- * Props for listening lifecycle events triggered by editable/read-only phase transitions.
- * 
- * These events allow external listeners to react to phase changes—such as logging, analytics,
- * or chaining animations.
- */
-export interface ReadOnlyStatePhaseEventProps {
+    
+    
+    
     /**
      * Called when the thawing transition begins.
      */
-    onThawingStart  ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
+    onThawingStart   ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
     
     /**
      * Called when the thawing transition completes.
      */
-    onThawingEnd    ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
+    onThawingEnd     ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
     
     /**
      * Called when the freezing transition begins.
      */
-    onFreezingStart ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
+    onFreezingStart  ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
     
     /**
      * Called when the freezing transition completes.
      */
-    onFreezingEnd   ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
+    onFreezingEnd    ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
 }
 
 /**

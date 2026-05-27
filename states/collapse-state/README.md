@@ -103,7 +103,7 @@ The hook manages transitions between `expanded` and `collapsed` states using a u
 
 Emits lifecycle events in response to expand/collapse phase transitions.
 
-This hook observes the resolved `expandPhase` from `useCollapseBehaviorState()` and triggers the appropriate callbacks defined in `CollapseStatePhaseEventProps`, such as:
+This hook observes the resolved `expandPhase` from `useCollapseBehaviorState()` and triggers the appropriate callbacks defined in `CollapseStateProps`, such as:
 
 - `onExpandingStart`
 - `onExpandingEnd`

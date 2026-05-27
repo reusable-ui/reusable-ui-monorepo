@@ -3,7 +3,6 @@
 // Types:
 import {
     type ReadOnlyStateProps,
-    type ReadOnlyStatePhaseEventProps,
     type ReadOnlyStateOptions,
     type ReadOnlyPhase,
     type ReadOnlyClassname,
@@ -236,17 +235,17 @@ export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>
  * Emits lifecycle events in response to editable/read-only phase transitions.
  * 
  * This hook observes the resolved `readOnlyPhase` from `useReadOnlyBehaviorState()` and triggers
- * the appropriate callbacks defined in `ReadOnlyStatePhaseEventProps`, such as:
+ * the appropriate callbacks defined in `ReadOnlyStateProps`, such as:
  * 
  * - `onThawingStart`
  * - `onThawingEnd`
  * - `onFreezingStart`
  * - `onFreezingEnd`
  * 
- * @param {ReadOnlyStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
+ * @param {ReadOnlyStateProps} props - The component props that may include phase-specific lifecycle event handlers.
  * @param {ReadOnlyPhase} readOnlyPhase - The current phase value returned from `useReadOnlyBehaviorState()`.
  */
-export const useReadOnlyStatePhaseEvents = (props: ReadOnlyStatePhaseEventProps, readOnlyPhase: ReadOnlyPhase): void => {
+export const useReadOnlyStatePhaseEvents = (props: ReadOnlyStateProps, readOnlyPhase: ReadOnlyPhase): void => {
     useFeedbackStatePhaseEvents(readOnlyPhase, (readOnlyPhase: ReadOnlyPhase): void => {
         switch (readOnlyPhase) {
             case 'thawing'  : props.onThawingStart?.(readOnlyPhase, undefined);  break;

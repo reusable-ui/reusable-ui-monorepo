@@ -16,7 +16,6 @@ import {
 import {
     type ViewStateProps,
     type ViewIndexChangeDispatcherOptions,
-    type ViewStatePhaseEventProps,
     type ViewStateOptions,
     type TransitioningViewPhase,
     type ViewPhase,
@@ -468,17 +467,17 @@ export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewSt
  * Emits lifecycle events in response to view phase transitions.
  * 
  * This hook observes the resolved `viewPhase` from `useViewBehaviorState()` and triggers
- * the appropriate callbacks defined in `ViewStatePhaseEventProps`, such as:
+ * the appropriate callbacks defined in `ViewStateProps`, such as:
  * 
  * - `onViewAdvancingStart`
  * - `onViewAdvancingEnd`
  * - `onViewRecedingStart`
  * - `onViewRecedingEnd`
  * 
- * @param {ViewStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
+ * @param {ViewStateProps} props - The component props that may include phase-specific lifecycle event handlers.
  * @param {ViewPhase} viewPhase - The current phase value returned from `useViewBehaviorState()`.
  */
-export const useViewStatePhaseEvents = (props: ViewStatePhaseEventProps, viewPhase: ViewPhase): void => {
+export const useViewStatePhaseEvents = (props: ViewStateProps<any>, viewPhase: ViewPhase): void => {
     // Remembers the previous transitioning phase for proper end event emission.
     const prevPhaseRef = useRef<TransitioningViewPhase | undefined>(undefined);
     

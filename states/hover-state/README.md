@@ -128,7 +128,7 @@ The hook manages transitions between `hovered` and `unhovered` states using a un
 
 Emits lifecycle events in response to hover/unhover phase transitions.
 
-This hook observes the resolved `hoverPhase` from `useHoverBehaviorState()` and triggers the appropriate callbacks defined in `HoverStatePhaseEventProps`, such as:
+This hook observes the resolved `hoverPhase` from `useHoverBehaviorState()` and triggers the appropriate callbacks defined in `HoverStateProps`, such as:
 
 - `onHoveringStart`
 - `onHoveringEnd`

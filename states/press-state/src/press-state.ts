@@ -3,7 +3,6 @@
 // Types:
 import {
     type PressStateProps,
-    type PressStatePhaseEventProps,
     type PressStateOptions,
     type PressPhase,
     type PressClassname,
@@ -313,17 +312,17 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
  * Emits lifecycle events in response to press/release phase transitions.
  * 
  * This hook observes the resolved `pressPhase` from `usePressBehaviorState()` and triggers
- * the appropriate callbacks defined in `PressStatePhaseEventProps`, such as:
+ * the appropriate callbacks defined in `PressStateProps`, such as:
  * 
  * - `onPressingStart`
  * - `onPressingEnd`
  * - `onReleasingStart`
  * - `onReleasingEnd`
  * 
- * @param {PressStatePhaseEventProps} props - The component props that may include phase-specific lifecycle event handlers.
+ * @param {PressStateProps} props - The component props that may include phase-specific lifecycle event handlers.
  * @param {PressPhase} pressPhase - The current phase value returned from `usePressBehaviorState()`.
  */
-export const usePressStatePhaseEvents = (props: PressStatePhaseEventProps, pressPhase: PressPhase): void => {
+export const usePressStatePhaseEvents = (props: PressStateProps, pressPhase: PressPhase): void => {
     useFeedbackStatePhaseEvents(pressPhase, (pressPhase: PressPhase): void => {
         switch (pressPhase) {
             case 'pressing'  : props.onPressingStart?.(pressPhase, undefined);  break;

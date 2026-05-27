@@ -76,15 +76,9 @@ export interface DisabledStateProps
      * Defaults to `true` (allows contextual disabling).
      */
     cascadeDisabled  ?: boolean
-}
-
-/**
- * Props for listening lifecycle events triggered by enable/disable phase transitions.
- * 
- * These events allow external listeners to react to phase changes—such as logging, analytics,
- * or chaining animations.
- */
-export interface DisabledStatePhaseEventProps {
+    
+    
+    
     /**
      * Called when the enabling transition begins.
      */
