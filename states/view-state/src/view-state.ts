@@ -207,7 +207,7 @@ const viewBehaviorStateDefinition : ViewBehaviorStateDefinition = {
  * 
  * @example
  * ```tsx
- * import React, { FC, MouseEventHandler } from 'react';
+ * import React, { FC } from 'react';
  * import {
  *     useViewBehaviorState,
  *     ViewStateProps,

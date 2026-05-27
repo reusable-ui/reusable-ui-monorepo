@@ -195,7 +195,7 @@ const activeBehaviorStateDefinition : ActiveBehaviorStateDefinition = {
  * 
  * @example
  * ```tsx
- * import React, { FC, MouseEventHandler } from 'react';
+ * import React, { FC } from 'react';
  * import {
  *     useActiveBehaviorState,
  *     ActiveStateProps,

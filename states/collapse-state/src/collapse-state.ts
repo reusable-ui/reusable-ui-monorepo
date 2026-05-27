@@ -181,7 +181,7 @@ const collapseBehaviorStateDefinition : CollapseBehaviorStateDefinition = {
  * 
  * @example
  * ```tsx
- * import React, { FC, MouseEventHandler } from 'react';
+ * import React, { FC } from 'react';
  * import {
  *     useCollapseBehaviorState,
  *     CollapseStateProps,
