@@ -21,6 +21,7 @@ import {
 import {
     resolveHoverTransitionPhase,
     resolveHoverTransitionClassname,
+    triggerHoverPhaseEvents,
 }                           from './internal-utilities.js'
 
 // Hooks:
@@ -41,7 +42,6 @@ import {
 import {
     // Hooks:
     useFeedbackBehaviorState,
-    useFeedbackStatePhaseEvents,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 import {
     useDisabledState,
@@ -147,6 +147,7 @@ const hoverBehaviorStateDefinition : HoverBehaviorStateDefinition = {
     defaultAnimationBubbling   : false,
     resolveTransitionPhase     : resolveHoverTransitionPhase,     // Resolves phases.
     resolveTransitionClassname : resolveHoverTransitionClassname, // Resolves classnames.
+    triggerTransitionEvent     : triggerHoverPhaseEvents,         // Triggers lifecycle events.
 };
 
 /**
@@ -237,7 +238,11 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
     // Extract props:
     const {
         onHoverUpdate : onStateUpdate,
-        // ...restProps // Not needed the rest since all resolvers in the definition are *not* dependent of the props.
+        
+        onHoveringStart,
+        onHoveringEnd,
+        onUnhoveringStart,
+        onUnhoveringEnd,
     } = props;
     
     
@@ -272,7 +277,17 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
         TElement
     >(
         // Props:
-        { effectiveState, onStateUpdate, /* ...restProps */ },
+        {
+            effectiveState,
+            onStateUpdate,
+            
+            ...({
+                onHoveringStart,
+                onHoveringEnd,
+                onUnhoveringStart,
+                onUnhoveringEnd,
+            } as {}),
+        },
         
         // Options:
         options,
@@ -294,31 +309,4 @@ export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(pr
         handleMouseEnter,
         handleMouseLeave,
     } satisfies HoverBehaviorState<TElement>;
-};
-
-
-
-/**
- * Emits lifecycle events in response to hover/unhover phase transitions.
- * 
- * This hook observes the resolved `hoverPhase` from `useHoverBehaviorState()` and triggers
- * the appropriate callbacks defined in `HoverStateProps`, such as:
- * 
- * - `onHoveringStart`
- * - `onHoveringEnd`
- * - `onUnhoveringStart`
- * - `onUnhoveringEnd`
- * 
- * @param {HoverStateProps} props - The component props that may include phase-specific lifecycle event handlers.
- * @param {HoverPhase} hoverPhase - The current phase value returned from `useHoverBehaviorState()`.
- */
-export const useHoverStatePhaseEvents = (props: HoverStateProps, hoverPhase: HoverPhase): void => {
-    useFeedbackStatePhaseEvents(hoverPhase, (hoverPhase: HoverPhase): void => {
-        switch (hoverPhase) {
-            case 'hovering'   : props.onHoveringStart?.(hoverPhase, undefined);   break;
-            case 'hovered'    : props.onHoveringEnd?.(hoverPhase, undefined);     break;
-            case 'unhovering' : props.onUnhoveringStart?.(hoverPhase, undefined); break;
-            case 'unhovered'  : props.onUnhoveringEnd?.(hoverPhase, undefined);   break;
-        } // switch
-    });
 };

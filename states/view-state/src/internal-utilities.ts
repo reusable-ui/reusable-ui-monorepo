@@ -26,6 +26,7 @@ import {
     // Types:
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
+    type TriggerTransitionEventArgs,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
@@ -49,6 +50,32 @@ export const resolveViewTransitionPhase = ({ prevSettledState: prevSettledViewIn
 /** Resolves the semantic transition classname for view-switching behavior. */
 export const resolveViewTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<number, ViewPhase, ViewStateProps<unknown>, ViewStateOptions, ViewBehaviorStateDefinition>): ViewClassname => {
     return transitionPhase;
+};
+
+/** Triggers the appropriate lifecycle events for view-switching behavior. */
+export const triggerViewPhaseEvents = ({ prevSettledState: prevSettledViewIndex, settledState: settledViewIndex, props, changedTransitionPhase }: TriggerTransitionEventArgs<number, ViewPhase, ViewStateProps<unknown>, ViewStateOptions, ViewBehaviorStateDefinition>): void => {
+    switch (changedTransitionPhase) {
+        case 'view-advancing':
+            props.onViewAdvancingStart?.(changedTransitionPhase, undefined);
+            break;
+        
+        case 'view-receding':
+            props.onViewRecedingStart?.(changedTransitionPhase, undefined);
+            break;
+        
+        case 'view-settled':
+            // Emit the corresponding end event:
+            // - Determine the direction of movement (the same index counts as **forward**, which should never happen).
+            if (prevSettledViewIndex !== undefined) {
+                if (settledViewIndex >= prevSettledViewIndex) {
+                    props.onViewAdvancingEnd?.(changedTransitionPhase, undefined);
+                }
+                else {
+                    props.onViewRecedingEnd?.(changedTransitionPhase, undefined);
+                } // if
+            } // if
+            break;
+    } // switch
 };
 
 

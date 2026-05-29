@@ -14,6 +14,7 @@ import {
     // Types:
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
+    type TriggerTransitionEventArgs,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -27,4 +28,14 @@ export const resolveHoverTransitionPhase = ({ settledState, isTransitioning }: R
 /** Resolves the semantic transition classname for hovered/unhovered state behavior. */
 export const resolveHoverTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, HoverPhase, HoverStateProps, HoverStateOptions, HoverBehaviorStateDefinition>): HoverClassname => {
     return `is-${transitionPhase}`;
+};
+
+/** Triggers the appropriate lifecycle events for hovered/unhovered state behavior. */
+export const triggerHoverPhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean, HoverPhase, HoverStateProps, HoverStateOptions, HoverBehaviorStateDefinition>): void => {
+    switch (changedTransitionPhase) {
+        case 'hovering'   : props.onHoveringStart?.(changedTransitionPhase, undefined);   break;
+        case 'hovered'    : props.onHoveringEnd?.(changedTransitionPhase, undefined);     break;
+        case 'unhovering' : props.onUnhoveringStart?.(changedTransitionPhase, undefined); break;
+        case 'unhovered'  : props.onUnhoveringEnd?.(changedTransitionPhase, undefined);   break;
+    } // switch
 };

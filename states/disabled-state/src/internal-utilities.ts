@@ -14,6 +14,7 @@ import {
     // Types:
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
+    type TriggerTransitionEventArgs,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -27,4 +28,14 @@ export const resolveDisabledTransitionPhase = ({ settledState, isTransitioning }
 /** Resolves the semantic transition classname for enabled/disabled state behavior. */
 export const resolveDisabledTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, DisabledPhase, DisabledStateProps, DisabledStateOptions, DisabledBehaviorStateDefinition>): DisabledClassname => {
     return `is-${transitionPhase}`;
+};
+
+/** Triggers the appropriate lifecycle events for enabled/disabled state behavior. */
+export const triggerDisabledPhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean, DisabledPhase, DisabledStateProps, DisabledStateOptions, DisabledBehaviorStateDefinition>): void => {
+    switch (changedTransitionPhase) {
+        case 'enabling'  : props.onEnablingStart?.(changedTransitionPhase, undefined);  break;
+        case 'enabled'   : props.onEnablingEnd?.(changedTransitionPhase, undefined);    break;
+        case 'disabling' : props.onDisablingStart?.(changedTransitionPhase, undefined); break;
+        case 'disabled'  : props.onDisablingEnd?.(changedTransitionPhase, undefined);   break;
+    } // switch
 };

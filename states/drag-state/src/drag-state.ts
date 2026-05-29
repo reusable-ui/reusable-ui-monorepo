@@ -33,6 +33,7 @@ import {
 import {
     resolveDragTransitionPhase,
     resolveDragTransitionClassname,
+    triggerDragPhaseEvents,
 }                           from './internal-utilities.js'
 
 // CSS Variables:
@@ -58,7 +59,6 @@ import {
 import {
     // Hooks:
     useFeedbackBehaviorState,
-    useFeedbackStatePhaseEvents,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, drag, and validity.
 import {
     useDisabledState,
@@ -135,6 +135,7 @@ const dragBehaviorStateDefinition : DragBehaviorStateDefinition = {
     defaultAnimationBubbling   : false,
     resolveTransitionPhase     : resolveDragTransitionPhase,     // Resolves phases.
     resolveTransitionClassname : resolveDragTransitionClassname, // Resolves classnames.
+    triggerTransitionEvent     : triggerDragPhaseEvents,         // Triggers lifecycle events.
 };
 
 /**
@@ -233,7 +234,11 @@ export const useDragBehaviorState = <TElement extends Element = HTMLElement>(pro
     // Extract props:
     const {
         onDragUpdate : onStateUpdate,
-        // ...restProps // Not needed the rest since all resolvers in the definition are *not* dependent of the props.
+        
+        onDraggingStart,
+        onDraggingEnd,
+        onDroppingStart,
+        onDroppingEnd,
     } = props;
     
     
@@ -263,7 +268,17 @@ export const useDragBehaviorState = <TElement extends Element = HTMLElement>(pro
         TElement
     >(
         // Props:
-        { effectiveState, onStateUpdate, /* ...restProps */ },
+        {
+            effectiveState,
+            onStateUpdate,
+            
+            ...({
+                onDraggingStart,
+                onDraggingEnd,
+                onDroppingStart,
+                onDroppingEnd,
+            } as {}),
+        },
         
         // Options:
         options,
@@ -319,31 +334,4 @@ export const useDragBehaviorState = <TElement extends Element = HTMLElement>(pro
         handlePointerDown,
         handlePointerMove,
     } satisfies DragBehaviorState<TElement>;
-};
-
-
-
-/**
- * Emits lifecycle events in response to drag/drop phase transitions.
- * 
- * This hook observes the resolved `dragPhase` from `useDragBehaviorState()` and triggers
- * the appropriate callbacks defined in `DragStateProps`, such as:
- * 
- * - `onDraggingStart`
- * - `onDraggingEnd`
- * - `onDroppingStart`
- * - `onDroppingEnd`
- * 
- * @param {DragStateProps} props - The component props that may include phase-specific lifecycle event handlers.
- * @param {DragPhase} dragPhase - The current phase value returned from `useDragBehaviorState()`.
- */
-export const useDragStatePhaseEvents = (props: DragStateProps, dragPhase: DragPhase): void => {
-    useFeedbackStatePhaseEvents(dragPhase, (dragPhase: DragPhase): void => {
-        switch (dragPhase) {
-            case 'dragging' : props.onDraggingStart?.(dragPhase, undefined); break;
-            case 'dragged'  : props.onDraggingEnd?.(dragPhase, undefined);   break;
-            case 'dropping' : props.onDroppingStart?.(dragPhase, undefined); break;
-            case 'dropped'  : props.onDroppingEnd?.(dragPhase, undefined);   break;
-        } // switch
-    });
 };

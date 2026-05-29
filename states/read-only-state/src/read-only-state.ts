@@ -22,6 +22,7 @@ import {
 import {
     resolveReadOnlyTransitionPhase,
     resolveReadOnlyTransitionClassname,
+    triggerReadOnlyPhaseEvents,
 }                           from './internal-utilities.js'
 
 // Contexts:
@@ -42,7 +43,6 @@ import {
 import {
     // Hooks:
     useFeedbackBehaviorState,
-    useFeedbackStatePhaseEvents,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -115,6 +115,7 @@ const readOnlyBehaviorStateDefinition : ReadOnlyBehaviorStateDefinition = {
     defaultAnimationBubbling   : false,
     resolveTransitionPhase     : resolveReadOnlyTransitionPhase,     // Resolves phases.
     resolveTransitionClassname : resolveReadOnlyTransitionClassname, // Resolves classnames.
+    triggerTransitionEvent     : triggerReadOnlyPhaseEvents,         // Triggers lifecycle events.
 };
 
 /**
@@ -178,7 +179,11 @@ export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>
     // Extract props:
     const {
         onReadOnlyUpdate : onStateUpdate,
-        // ...restProps // Not needed the rest since all resolvers in the definition are *not* dependent of the props.
+        
+        onThawingStart,
+        onThawingEnd,
+        onFreezingStart,
+        onFreezingEnd,
     } = props;
     
     
@@ -208,7 +213,17 @@ export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>
         TElement
     >(
         // Props:
-        { effectiveState, onStateUpdate, /* ...restProps */ },
+        {
+            effectiveState,
+            onStateUpdate,
+            
+            ...({
+                onThawingStart,
+                onThawingEnd,
+                onFreezingStart,
+                onFreezingEnd,
+            } as {}),
+        },
         
         // Options:
         options,
@@ -227,31 +242,4 @@ export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>
         readOnlyClassname,
         ...animationHandlers,
     } satisfies ReadOnlyBehaviorState<TElement>;
-};
-
-
-
-/**
- * Emits lifecycle events in response to editable/read-only phase transitions.
- * 
- * This hook observes the resolved `readOnlyPhase` from `useReadOnlyBehaviorState()` and triggers
- * the appropriate callbacks defined in `ReadOnlyStateProps`, such as:
- * 
- * - `onThawingStart`
- * - `onThawingEnd`
- * - `onFreezingStart`
- * - `onFreezingEnd`
- * 
- * @param {ReadOnlyStateProps} props - The component props that may include phase-specific lifecycle event handlers.
- * @param {ReadOnlyPhase} readOnlyPhase - The current phase value returned from `useReadOnlyBehaviorState()`.
- */
-export const useReadOnlyStatePhaseEvents = (props: ReadOnlyStateProps, readOnlyPhase: ReadOnlyPhase): void => {
-    useFeedbackStatePhaseEvents(readOnlyPhase, (readOnlyPhase: ReadOnlyPhase): void => {
-        switch (readOnlyPhase) {
-            case 'thawing'  : props.onThawingStart?.(readOnlyPhase, undefined);  break;
-            case 'editable' : props.onThawingEnd?.(readOnlyPhase, undefined);    break;
-            case 'freezing' : props.onFreezingStart?.(readOnlyPhase, undefined); break;
-            case 'readonly' : props.onFreezingEnd?.(readOnlyPhase, undefined);   break;
-        } // switch
-    });
 };

@@ -139,17 +139,6 @@ The hook manages transitions between `dragged` and `dropped` states using a unif
     - In explicit/external modes, implementors must manage a persistent drop in their own state (for example, suppressing `true` until a new `pointerdown` event is observed).  
 - **Rationale**: Drag is a discrete state — past drag actions are ignored when toggling disabled, preventing phantom restoration and ensuring accessibility consistency.
 
-### `useDragStatePhaseEvents(props, dragPhase)`
-
-Emits lifecycle events in response to drag/drop phase transitions.
-
-This hook observes the resolved `dragPhase` from `useDragBehaviorState()` and triggers the appropriate callbacks defined in `DragStateProps`, such as:
-
-- `onDraggingStart`
-- `onDraggingEnd`
-- `onDroppingStart`
-- `onDroppingEnd`
-
 ### `useDragState(props, options?)`
 
 Resolves the current dragged/dropped state for a fully controlled component.

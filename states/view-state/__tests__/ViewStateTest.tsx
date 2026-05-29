@@ -2,7 +2,6 @@ import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 
 import {
     type ViewStateProps,
     useViewBehaviorState,
-    useViewStatePhaseEvents,
 } from '../dist/index.js'
 import { useMergeEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
@@ -49,8 +48,6 @@ export const ViewStateTest = (props: ViewStateTestProps) => {
         viewIndexStep     : 1,
         animationPattern,
     });
-    
-    useViewStatePhaseEvents(props, viewPhase);
     
     const handleMergedAnimationStart = useMergeEventHandlers(
         handleAnimationStart,

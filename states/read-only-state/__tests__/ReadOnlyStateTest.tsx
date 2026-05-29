@@ -2,7 +2,6 @@ import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 
 import {
     type ReadOnlyStateProps,
     useReadOnlyBehaviorState,
-    useReadOnlyStatePhaseEvents,
 } from '../dist/index.js'
 import { useMergeEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
@@ -30,7 +29,6 @@ export const ReadOnlyStateTest = (props: ReadOnlyStateTestProps) => {
     
     const {
         readOnly,
-        readOnlyPhase,
         readOnlyClassname,
         
         handleAnimationStart,
@@ -39,8 +37,6 @@ export const ReadOnlyStateTest = (props: ReadOnlyStateTestProps) => {
     } = useReadOnlyBehaviorState(props, {
         animationPattern,
     });
-    
-    useReadOnlyStatePhaseEvents(props, readOnlyPhase);
     
     const handleMergedAnimationStart = useMergeEventHandlers(
         handleAnimationStart,

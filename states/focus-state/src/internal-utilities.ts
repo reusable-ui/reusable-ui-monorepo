@@ -19,6 +19,7 @@ import {
     // Types:
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
+    type TriggerTransitionEventArgs,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -44,4 +45,14 @@ export const resolveFocusTransitionClassname = ({ transitionPhase, options }: Re
     
     if (inputLikeFocus) return `is-${transitionPhase} input-like-focus`;
     return `is-${transitionPhase}`;
+};
+
+/** Triggers the appropriate lifecycle events for focused/blurred state behavior. */
+export const triggerFocusPhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean, FocusPhase, FocusStateProps, FocusStateOptions, FocusBehaviorStateDefinition>): void => {
+    switch (changedTransitionPhase) {
+        case 'focusing' : props.onFocusingStart?.(changedTransitionPhase, undefined); break;
+        case 'focused'  : props.onFocusingEnd?.(changedTransitionPhase, undefined);   break;
+        case 'blurring' : props.onBlurringStart?.(changedTransitionPhase, undefined); break;
+        case 'blurred'  : props.onBlurringEnd?.(changedTransitionPhase, undefined);   break;
+    } // switch
 };

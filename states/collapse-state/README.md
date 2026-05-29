@@ -99,17 +99,6 @@ The hook manages transitions between `expanded` and `collapsed` states using a u
 - **On unrestricted (re‑enabled or exit readonly)**: `dispatchExpandedChange()` works normally.  
 - **Rationale**: Restricted components freeze interaction — they don’t reset expansion, but prevent user interactions until unrestricted.
 
-### `useCollapseStatePhaseEvents(props, expandPhase)`
-
-Emits lifecycle events in response to expand/collapse phase transitions.
-
-This hook observes the resolved `expandPhase` from `useCollapseBehaviorState()` and triggers the appropriate callbacks defined in `CollapseStateProps`, such as:
-
-- `onExpandingStart`
-- `onExpandingEnd`
-- `onCollapsingStart`
-- `onCollapsingEnd`
-
 ### `useCollapseState(props, options?)`
 
 Resolves the current expanded/collapsed state for a fully controlled component.

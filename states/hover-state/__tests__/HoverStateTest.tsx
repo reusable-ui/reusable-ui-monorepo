@@ -2,7 +2,6 @@ import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 
 import {
     type HoverStateProps,
     useHoverBehaviorState,
-    useHoverStatePhaseEvents,
 } from '../dist/index.js'
 import { useMergeEventHandlers } from '@reusable-ui/callbacks'
 import { useMergeRefs } from '@reusable-ui/references'
@@ -33,7 +32,6 @@ export const HoverStateTest = (props: HoverStateTestProps) => {
     
     const {
         hovered,
-        hoverPhase,
         hoverClassname,
         
         handleAnimationStart,
@@ -46,8 +44,6 @@ export const HoverStateTest = (props: HoverStateTestProps) => {
     } = useHoverBehaviorState(props, {
         animationPattern,
     });
-    
-    useHoverStatePhaseEvents(props, hoverPhase);
     
     const handleMergedAnimationStart = useMergeEventHandlers(
         handleAnimationStart,

@@ -103,17 +103,6 @@ The hook manages transitions between `active` and `inactive` states using a unif
 - **On unrestricted (re‑enabled or exit readonly)**: `dispatchActiveChange()` works normally.  
 - **Rationale**: Restricted components freeze interaction — they don’t reset activation, but prevent user interactions until unrestricted.
 
-### `useActiveStatePhaseEvents(props, activePhase)`
-
-Emits lifecycle events in response to activate/deactivate phase transitions.
-
-This hook observes the resolved `activePhase` from `useActiveBehaviorState()` and triggers the appropriate callbacks defined in `ActiveStateProps`, such as:
-
-- `onActivatingStart`
-- `onActivatingEnd`
-- `onDeactivatingStart`
-- `onDeactivatingEnd`
-
 ### `useActiveState(props, options?)`
 
 Resolves the current active/inactive state for a fully controlled component.

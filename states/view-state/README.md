@@ -201,17 +201,6 @@ The hook manages transitions when `viewIndex` changes using a unified animation 
 - **On unrestricted (re-enabled or exit readonly)**: `dispatchViewIndexChange()` works normally.  
 - **Rationale**: Restricted components freeze interaction — they don’t reset view index, but prevent user interactions until unrestricted.
 
-### `useViewStatePhaseEvents(props, viewPhase)`
-
-Emits lifecycle events in response to view phase transitions.
-
-This hook observes the resolved `viewPhase` from `useViewBehaviorState()` and triggers the appropriate callbacks defined in `ViewStateProps`, such as:
-
-- `onViewAdvancingStart`
-- `onViewAdvancingEnd`
-- `onViewRecedingStart`
-- `onViewRecedingEnd`
-
 ### `useViewState(props, options?)`
 
 Resolves the current view index for a fully controlled component.

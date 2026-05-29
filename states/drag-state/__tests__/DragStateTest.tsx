@@ -2,7 +2,6 @@ import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 
 import {
     type DragStateProps,
     useDragBehaviorState,
-    useDragStatePhaseEvents,
 } from '../dist/index.js'
 import {
     type PressStateProps,
@@ -63,7 +62,6 @@ export const DragStateTest = (props: DragStateTestProps) => {
     const computedDrag         = isExternallyComputed ? externalComputedDrag : actualPressed;
     const {
         dragged,
-        dragPhase,
         dragClassname,
         dragStyle,
         
@@ -79,8 +77,6 @@ export const DragStateTest = (props: DragStateTestProps) => {
     }, {
         animationPattern,
     });
-    
-    useDragStatePhaseEvents(props, dragPhase);
     
     const handleMergedAnimationStart = useMergeEventHandlers(
         handlePressAnimationStart,

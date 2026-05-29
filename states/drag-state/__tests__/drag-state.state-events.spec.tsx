@@ -84,7 +84,7 @@ interface DragStateEventTestCase {
 
 
 
-test.describe('useDragStatePhaseEvents', () => {
+test.describe('useDragBehaviorState (phase events)', () => {
     for (const { title, dragged : initialDragged, computedDrag: initialComputedDrag, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

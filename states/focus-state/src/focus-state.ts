@@ -21,6 +21,7 @@ import {
 import {
     resolveFocusTransitionPhase,
     resolveFocusTransitionClassname,
+    triggerFocusPhaseEvents,
 }                           from './internal-utilities.js'
 
 // Hooks:
@@ -41,7 +42,6 @@ import {
 import {
     // Hooks:
     useFeedbackBehaviorState,
-    useFeedbackStatePhaseEvents,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 import {
     useDisabledState,
@@ -149,6 +149,7 @@ const focusBehaviorStateDefinition : FocusBehaviorStateDefinition = {
     defaultAnimationBubbling   : false,
     resolveTransitionPhase     : resolveFocusTransitionPhase,     // Resolves phases.
     resolveTransitionClassname : resolveFocusTransitionClassname, // Resolves classnames.
+    triggerTransitionEvent     : triggerFocusPhaseEvents,         // Triggers lifecycle events.
 };
 
 /**
@@ -242,7 +243,11 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
     // Extract props:
     const {
         onFocusUpdate : onStateUpdate,
-        // ...restProps // Not needed the rest since all resolvers in the definition are *not* dependent of the props.
+        
+        onFocusingStart,
+        onFocusingEnd,
+        onBlurringStart,
+        onBlurringEnd,
     } = props;
     
     
@@ -278,7 +283,17 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
         TElement
     >(
         // Props:
-        { effectiveState, onStateUpdate, /* ...restProps */ },
+        {
+            effectiveState,
+            onStateUpdate,
+            
+            ...({
+                onFocusingStart,
+                onFocusingEnd,
+                onBlurringStart,
+                onBlurringEnd,
+            } as {}),
+        },
         
         // Options:
         options,
@@ -301,31 +316,4 @@ export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(pr
         handleBlur,
         handleKeyDown,
     } satisfies FocusBehaviorState<TElement>;
-};
-
-
-
-/**
- * Emits lifecycle events in response to focus/blur phase transitions.
- * 
- * This hook observes the resolved `focusPhase` from `useFocusBehaviorState()` and triggers
- * the appropriate callbacks defined in `FocusStateProps`, such as:
- * 
- * - `onFocusingStart`
- * - `onFocusingEnd`
- * - `onBlurringStart`
- * - `onBlurringEnd`
- * 
- * @param {FocusStateProps} props - The component props that may include phase-specific lifecycle event handlers.
- * @param {FocusPhase} focusPhase - The current phase value returned from `useFocusBehaviorState()`.
- */
-export const useFocusStatePhaseEvents = (props: FocusStateProps, focusPhase: FocusPhase): void => {
-    useFeedbackStatePhaseEvents(focusPhase, (focusPhase: FocusPhase): void => {
-        switch (focusPhase) {
-            case 'focusing' : props.onFocusingStart?.(focusPhase, undefined); break;
-            case 'focused'  : props.onFocusingEnd?.(focusPhase, undefined);   break;
-            case 'blurring' : props.onBlurringStart?.(focusPhase, undefined); break;
-            case 'blurred'  : props.onBlurringEnd?.(focusPhase, undefined);   break;
-        } // switch
-    });
 };

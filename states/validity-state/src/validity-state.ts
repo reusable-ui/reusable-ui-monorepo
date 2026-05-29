@@ -29,6 +29,7 @@ import {
 import {
     resolveValidityTransitionPhase,
     resolveValidityTransitionClassname,
+    triggerValidityPhaseEvents,
 }                           from './internal-utilities.js'
 
 // Contexts:
@@ -55,7 +56,6 @@ import {
 import {
     // Hooks:
     useFeedbackBehaviorState,
-    useFeedbackStatePhaseEvents,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 import {
     useDisabledState,
@@ -203,6 +203,7 @@ const validityBehaviorStateDefinition : ValidityBehaviorStateDefinition = {
     defaultAnimationBubbling   : false,
     resolveTransitionPhase     : resolveValidityTransitionPhase,                 // Resolves phases.
     resolveTransitionClassname : resolveValidityTransitionClassname,             // Resolves classnames.
+    triggerTransitionEvent     : triggerValidityPhaseEvents,                     // Triggers lifecycle events.
     
     // Direction definitions:
     useResolvePreviousState    : usePreviousValue,                               // Tracks previous settled state.
@@ -305,7 +306,13 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
     // Extract props:
     const {
         onValidityUpdate : onStateUpdate,
-        // ...restProps // Not needed the rest since all resolvers in the definition are *not* dependent of the props.
+        
+        onValidatingStart,
+        onValidatingEnd,
+        onInvalidatingStart,
+        onInvalidatingEnd,
+        onUnvalidatingStart,
+        onUnvalidatingEnd,
     } = props;
     
     
@@ -335,7 +342,19 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
         TElement
     >(
         // Props:
-        { effectiveState, onStateUpdate, /* ...restProps */ },
+        {
+            effectiveState,
+            onStateUpdate,
+            
+            ...({
+                onValidatingStart,
+                onValidatingEnd,
+                onInvalidatingStart,
+                onInvalidatingEnd,
+                onUnvalidatingStart,
+                onUnvalidatingEnd,
+            } as {}),
+        },
         
         // Options:
         options,
@@ -354,35 +373,4 @@ export const useValidityBehaviorState = <TElement extends Element = HTMLElement>
         validityClassname,
         ...animationHandlers,
     } satisfies ValidityBehaviorState<TElement>;
-};
-
-
-
-/**
- * Emits lifecycle events in response to validity phase transitions.
- * 
- * This hook observes the resolved `validityPhase` from `useValidityBehaviorState()` and triggers
- * the appropriate callbacks defined in `ValidityStateProps`, such as:
- * 
- * - `onValidatingStart`
- * - `onValidatingEnd`
- * - `onInvalidatingStart`
- * - `onInvalidatingEnd`
- * - `onUnvalidatingStart`
- * - `onUnvalidatingEnd`
- * 
- * @param {ValidityStateProps} props - The component props that may include phase-specific lifecycle event handlers.
- * @param {ValidityPhase} validityPhase - The current phase value returned from `useValidityBehaviorState()`.
- */
-export const useValidityStatePhaseEvents = (props: ValidityStateProps, validityPhase: ValidityPhase): void => {
-    useFeedbackStatePhaseEvents(validityPhase, (validityPhase: ValidityPhase): void => {
-        switch (validityPhase) {
-            case 'validating'   : props.onValidatingStart?.(validityPhase, undefined);   break;
-            case 'valid'        : props.onValidatingEnd?.(validityPhase, undefined);     break;
-            case 'invalidating' : props.onInvalidatingStart?.(validityPhase, undefined); break;
-            case 'invalid'      : props.onInvalidatingEnd?.(validityPhase, undefined);   break;
-            case 'unvalidating' : props.onUnvalidatingStart?.(validityPhase, undefined); break;
-            case 'unvalidated'  : props.onUnvalidatingEnd?.(validityPhase, undefined);   break;
-        } // switch
-    });
 };

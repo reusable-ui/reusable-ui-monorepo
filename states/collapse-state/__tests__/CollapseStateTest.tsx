@@ -2,7 +2,6 @@ import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 
 import {
     type CollapseStateProps,
     useCollapseBehaviorState,
-    useCollapseStatePhaseEvents,
 } from '../dist/index.js'
 import { useMergeEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
@@ -30,7 +29,6 @@ export const CollapseStateTest = (props: CollapseStateTestProps) => {
     
     const {
         expanded,
-        expandPhase,
         expandClassname,
         
         dispatchExpandedChange,
@@ -41,8 +39,6 @@ export const CollapseStateTest = (props: CollapseStateTestProps) => {
     } = useCollapseBehaviorState(props, {
         animationPattern,
     });
-    
-    useCollapseStatePhaseEvents(props, expandPhase);
     
     const handleMergedAnimationStart = useMergeEventHandlers(
         handleAnimationStart,

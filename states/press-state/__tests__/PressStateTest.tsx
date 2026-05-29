@@ -2,7 +2,6 @@ import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 
 import {
     type PressStateProps,
     usePressBehaviorState,
-    usePressStatePhaseEvents,
 } from '../dist/index.js'
 import { useMergeEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
@@ -33,7 +32,6 @@ export const PressStateTest = (props: PressStateTestProps) => {
     
     const {
         pressed,
-        pressPhase,
         pressClassname,
         
         handleAnimationStart,
@@ -48,8 +46,6 @@ export const PressStateTest = (props: PressStateTestProps) => {
     } = usePressBehaviorState(props, {
         animationPattern,
     });
-    
-    usePressStatePhaseEvents(props, pressPhase);
     
     const handleMergedAnimationStart = useMergeEventHandlers(
         handleAnimationStart,

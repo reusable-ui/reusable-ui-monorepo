@@ -179,17 +179,6 @@ This behavior ensures:
 You can override the default keys using the `pressKeys` and `clickKeys` options for custom accessibility or interaction needs.
 
 
-### `usePressStatePhaseEvents(props, pressPhase)`
-
-Emits lifecycle events in response to press/release phase transitions.
-
-This hook observes the resolved `pressPhase` from `usePressBehaviorState()` and triggers the appropriate callbacks defined in `PressStateProps`, such as:
-
-- `onPressingStart`
-- `onPressingEnd`
-- `onReleasingStart`
-- `onReleasingEnd`
-
 ### `usePressState(props, options?)`
 
 Resolves the current pressed/released state for a fully controlled component.

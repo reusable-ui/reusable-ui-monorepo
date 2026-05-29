@@ -22,6 +22,7 @@ import {
 import {
     resolveExpandTransitionPhase,
     resolveExpandTransitionClassname,
+    triggerExpandPhaseEvents,
 }                           from './internal-utilities.js'
 
 // Reusable-ui utilities:
@@ -49,7 +50,6 @@ import {
     // Hooks:
     useInteractionStateChangeDispatcher,
     useInteractionBehaviorState,
-    useInteractionStatePhaseEvents,
     useUncontrollableInteractionState,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
@@ -163,6 +163,7 @@ const collapseBehaviorStateDefinition : CollapseBehaviorStateDefinition = {
     defaultAnimationBubbling   : false,
     resolveTransitionPhase     : resolveExpandTransitionPhase,     // Resolves phases.
     resolveTransitionClassname : resolveExpandTransitionClassname, // Resolves classnames.
+    triggerTransitionEvent     : triggerExpandPhaseEvents,         // Triggers lifecycle events.
 };
 
 /**
@@ -242,7 +243,11 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
         defaultExpanded  : defaultState,
         expanded         : state,
         onExpandedChange : onStateChange,
-        ...restProps
+        
+        onExpandingStart,
+        onExpandingEnd,
+        onCollapsingStart,
+        onCollapsingEnd,
     } = props;
     
     
@@ -272,7 +277,18 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
         TChangeEvent
     >(
         // Props:
-        { defaultState, state, onStateChange, ...restProps },
+        {
+            defaultState,
+            state,
+            onStateChange,
+            
+            ...({
+                onExpandingStart,
+                onExpandingEnd,
+                onCollapsingStart,
+                onCollapsingEnd,
+            } as {}),
+        },
         
         // Options:
         { defaultState: fallbackState, ...restOptions },
@@ -328,7 +344,11 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
         defaultExpanded  : defaultState,
         expanded         : state,
         onExpandedChange : onStateChange,
-        ...restProps
+        
+        onExpandingStart,
+        onExpandingEnd,
+        onCollapsingStart,
+        onCollapsingEnd,
     } = props;
     
     
@@ -347,7 +367,18 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
         TChangeEvent
     >(
         // Props:
-        { defaultState, state, onStateChange, ...restProps },
+        {
+            defaultState,
+            state,
+            onStateChange,
+            
+            ...({
+                onExpandingStart,
+                onExpandingEnd,
+                onCollapsingStart,
+                onCollapsingEnd,
+            } as {}),
+        },
         
         // Options:
         { defaultState: fallbackState, ...restOptions },
@@ -355,31 +386,4 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
         // Definition:
         collapseBehaviorStateDefinition,
     ) satisfies [boolean, ValueChangeDispatcher<boolean, TChangeEvent>];
-};
-
-
-
-/**
- * Emits lifecycle events in response to expand/collapse phase transitions.
- * 
- * This hook observes the resolved `expandPhase` from `useCollapseBehaviorState()` and triggers
- * the appropriate callbacks defined in `CollapseStateProps`, such as:
- * 
- * - `onExpandingStart`
- * - `onExpandingEnd`
- * - `onCollapsingStart`
- * - `onCollapsingEnd`
- * 
- * @param {CollapseStateProps} props - The component props that may include phase-specific lifecycle event handlers.
- * @param {ExpandPhase} expandPhase - The current phase value returned from `useCollapseBehaviorState()`.
- */
-export const useCollapseStatePhaseEvents = (props: CollapseStateProps<any>, expandPhase: ExpandPhase): void => {
-    useInteractionStatePhaseEvents(expandPhase, (expandPhase: ExpandPhase): void => {
-        switch (expandPhase) {
-            case 'expanding'  : props.onExpandingStart?.(expandPhase, undefined);  break;
-            case 'expanded'   : props.onExpandingEnd?.(expandPhase, undefined);    break;
-            case 'collapsing' : props.onCollapsingStart?.(expandPhase, undefined); break;
-            case 'collapsed'  : props.onCollapsingEnd?.(expandPhase, undefined);   break;
-        } // switch
-    });
 };

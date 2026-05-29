@@ -2,7 +2,6 @@ import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 
 import {
     type ActiveStateProps,
     useActiveBehaviorState,
-    useActiveStatePhaseEvents,
 } from '../dist/index.js'
 import { useMergeEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
@@ -30,7 +29,6 @@ export const ActiveStateTest = (props: ActiveStateTestProps) => {
     
     const {
         active,
-        activePhase,
         activeClassname,
         
         dispatchActiveChange,
@@ -41,8 +39,6 @@ export const ActiveStateTest = (props: ActiveStateTestProps) => {
     } = useActiveBehaviorState(props, {
         animationPattern,
     });
-    
-    useActiveStatePhaseEvents(props, activePhase);
     
     const handleMergedAnimationStart = useMergeEventHandlers(
         handleAnimationStart,

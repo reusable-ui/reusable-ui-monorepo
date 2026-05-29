@@ -15,6 +15,7 @@ import {
     // Types:
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
+    type TriggerTransitionEventArgs,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -62,5 +63,17 @@ export const resolveValidityTransitionClassname = ({ prevSettledState = null, tr
         
         default:
             return `is-${transitionPhase}`;
+    } // switch
+};
+
+/** Triggers the appropriate lifecycle events for validity state behavior. */
+export const triggerValidityPhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean | null, ValidityPhase, ValidityStateProps, ValidityStateOptions, ValidityBehaviorStateDefinition>): void => {
+    switch (changedTransitionPhase) {
+        case 'validating'   : props.onValidatingStart?.(changedTransitionPhase, undefined);   break;
+        case 'valid'        : props.onValidatingEnd?.(changedTransitionPhase, undefined);     break;
+        case 'invalidating' : props.onInvalidatingStart?.(changedTransitionPhase, undefined); break;
+        case 'invalid'      : props.onInvalidatingEnd?.(changedTransitionPhase, undefined);   break;
+        case 'unvalidating' : props.onUnvalidatingStart?.(changedTransitionPhase, undefined); break;
+        case 'unvalidated'  : props.onUnvalidatingEnd?.(changedTransitionPhase, undefined);   break;
     } // switch
 };

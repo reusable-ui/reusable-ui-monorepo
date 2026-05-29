@@ -14,6 +14,7 @@ import {
     // Types:
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
+    type TriggerTransitionEventArgs,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -27,6 +28,16 @@ export const resolvePressTransitionPhase = ({ settledState, isTransitioning }: R
 /** Resolves the semantic transition classname for pressed/released state behavior. */
 export const resolvePressTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, PressPhase, PressStateProps, PressStateOptions, PressBehaviorStateDefinition>): PressClassname => {
     return `is-${transitionPhase}`;
+};
+
+/** Triggers the appropriate lifecycle events for pressed/released state behavior. */
+export const triggerPressPhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean, PressPhase, PressStateProps, PressStateOptions, PressBehaviorStateDefinition>): void => {
+    switch (changedTransitionPhase) {
+        case 'pressing'  : props.onPressingStart?.(changedTransitionPhase, undefined);  break;
+        case 'pressed'   : props.onPressingEnd?.(changedTransitionPhase, undefined);    break;
+        case 'releasing' : props.onReleasingStart?.(changedTransitionPhase, undefined); break;
+        case 'released'  : props.onReleasingEnd?.(changedTransitionPhase, undefined);   break;
+    } // switch
 };
 
 

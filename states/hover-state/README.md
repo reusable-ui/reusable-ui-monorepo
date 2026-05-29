@@ -124,17 +124,6 @@ The hook manages transitions between `hovered` and `unhovered` states using a un
     - **Explicit (`true`/`false`) or external (`computedHover`) modes**: The component resumes following the provided value.  
 - **Rationale**: Hover is a continuous state — pointer position may persist across enabled/disabled transitions, so recomputation ensures visual consistency.
 
-### `useHoverStatePhaseEvents(props, hoverPhase)`
-
-Emits lifecycle events in response to hover/unhover phase transitions.
-
-This hook observes the resolved `hoverPhase` from `useHoverBehaviorState()` and triggers the appropriate callbacks defined in `HoverStateProps`, such as:
-
-- `onHoveringStart`
-- `onHoveringEnd`
-- `onUnhoveringStart`
-- `onUnhoveringEnd`
-
 ### `useHoverState(props, options?)`
 
 Resolves the current hovered/unhovered state for a fully controlled component.

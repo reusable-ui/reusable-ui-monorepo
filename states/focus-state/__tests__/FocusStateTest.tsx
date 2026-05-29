@@ -2,7 +2,6 @@ import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 
 import {
     type FocusStateProps,
     useFocusBehaviorState,
-    useFocusStatePhaseEvents,
 } from '../dist/index.js'
 import { useMergeEventHandlers } from '@reusable-ui/callbacks'
 import { useMergeRefs } from '@reusable-ui/references'
@@ -33,7 +32,6 @@ export const FocusStateTest = (props: FocusStateTestProps) => {
     
     const {
         focused,
-        focusPhase,
         focusClassname,
         
         handleAnimationStart,
@@ -48,8 +46,6 @@ export const FocusStateTest = (props: FocusStateTestProps) => {
         animationPattern,
         inputLikeFocus: true, // enable input-like focus styling
     });
-    
-    useFocusStatePhaseEvents(props, focusPhase);
     
     const handleMergedAnimationStart = useMergeEventHandlers(
         handleAnimationStart,

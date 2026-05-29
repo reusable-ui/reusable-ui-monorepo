@@ -265,6 +265,83 @@ export interface ResolveTransitionClassnameArgs<TState extends {} | null, TPhase
 }
 
 /**
+ * Provides the inputs used when triggering semantic transition events for a phase change.
+ * 
+ * These events signal the start (`on*Start`) and end (`on*End`) of a semantic transition phase.
+ * Implementations should inspect `changedTransitionPhase` to determine which specific `on*Start`/`on*End` callback to invoke,
+ * and may also inspect `prevSettledState`/`settledState` for additional context (e.g., direction-aware transitions).
+ * 
+ * Note:
+ * - The initial phase present on mount is not considered a phase change and is not passed here.
+ * 
+ * @template TState - The concrete type of the state value (must not be declarative).
+ * @template TPhase - The type representing semantic transition phases.
+ * @template TBehaviorProps - The type of the behavior-specific props.
+ * @template TBehaviorOptions - The type of the behavior-specific options.
+ * @template TBehaviorDefinition - The type of the behavior-specific definition.
+ */
+export interface TriggerTransitionEventArgs<TState extends {} | null, TPhase extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition> {
+    /**
+     * The previously settled state before the current `settledState`.
+     * Only available if `useResolvePreviousState` is provided in the behavior definition.
+     * 
+     * This value trails one step behind `settledState`.
+     * It updates only after a transition completes, and persists even after settling.
+     * When no prior `settledState` exists, it resolves to `undefined`.
+     * 
+     * May influence which transition event to trigger, especially for direction-aware transitions.
+     * 
+     * Possible values:
+     * - `undefined` : there is no prior `settledState` (e.g., on initial render)
+     * - `TState`    : the component was previously settled in this state
+     */
+    prevSettledState       : TState | undefined
+    
+    /**
+     * The most recent settled state after the transition animation completes.
+     * 
+     * This value may slightly lag behind the actual resolved state due to in-flight animations.
+     * It updates only after an animation completes, ensuring event timing remains in sync with animation lifecycle.
+     * 
+     * May influence which transition event to trigger, especially for direction-aware transitions.
+     */
+    settledState           : TState
+    
+    /**
+     * The transition phase that changed and justifies triggering an event.
+     * 
+     * The initial phase is not considered a phase change and is not passed here.
+     * 
+     * Primary input for triggering the appropriate `on*Start` or `on*End` callback.
+     */
+    changedTransitionPhase : TPhase
+    
+    /**
+     * The behavior-specific props.
+     * Forwarded directly from the `use**BehaviorState(props, ...)` call.
+     * 
+     * Contains the `on*Start` and `on*End` callbacks to be triggered for the corresponding transition phase.
+     */
+    props                  : TBehaviorProps
+    
+    /**
+     * The behavior-specific options.
+     * Forwarded directly from the `use**BehaviorState(..., options, ...)` call.
+     * 
+     * May contain options that influence which transition event to trigger.
+     */
+    options                : TBehaviorOptions | undefined
+    
+    /**
+     * The behavior-specific definition.
+     * Forwarded directly from the `use**BehaviorState(..., definition)` call.
+     * 
+     * May contain definition properties that influence which transition event to trigger.
+     */
+    definition             : TBehaviorDefinition
+}
+
+/**
  * Definition for transition-based state behavior.
  * 
  * Describes how the driver state is resolved, how transition phases are derived, and
@@ -326,13 +403,27 @@ export interface TransitionBehaviorStateDefinition<TState extends {} | null, TPh
     
     /**
      * Resolves the semantic transition phase from the given settled state and transition flag.
+     * 
+     * Primary responsibility: determine whether the state is currently transitional (`**ing`) or settled (`**ed`),
+     * based on lifecycle inputs.
      */
     resolveTransitionPhase      : (args: ResolveTransitionPhaseArgs<TState, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>) => TPhase
     
     /**
      * Resolves the semantic transition classname from the given transition phase.
+     * 
+     * Primary responsibility: map the resolved phase to corresponding classnames
+     * for driving conditional styling tied to the transition lifecycle.
      */
     resolveTransitionClassname  : (args: ResolveTransitionClassnameArgs<TState, TPhase, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>) => TClassname
+    
+    /**
+     * Triggers the appropriate semantic transition events in response to transition phase changes.
+     * 
+     * Primary responsibility: invoke the `on*Start` or `on*End` callbacks defined in props
+     * whenever `changedTransitionPhase` indicates a lifecycle boundary.
+     */
+    triggerTransitionEvent     ?: (args: TriggerTransitionEventArgs<TState, TPhase, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>) => void
 }
 
 /**

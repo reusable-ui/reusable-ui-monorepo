@@ -131,17 +131,6 @@ The hook manages transitions between `focused` and `blurred` states using a unif
     - In explicit/external modes, implementors must manage a persistent blur in their own state (for example, suppressing `true` until a new `focus` event is observed).  
 - **Rationale**: Focus is a discrete state — past focus actions are ignored when toggling disabled, preventing phantom restoration and ensuring accessibility consistency.
 
-### `useFocusStatePhaseEvents(props, focusPhase)`
-
-Emits lifecycle events in response to focus/blur phase transitions.
-
-This hook observes the resolved `focusPhase` from `useFocusBehaviorState()` and triggers the appropriate callbacks defined in `FocusStateProps`, such as:
-
-- `onFocusingStart`
-- `onFocusingEnd`
-- `onBlurringStart`
-- `onBlurringEnd`
-
 ### `useFocusState(props, options?)`
 
 Resolves the current focused/blurred state for a fully controlled component.

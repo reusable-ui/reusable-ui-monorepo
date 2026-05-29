@@ -68,7 +68,7 @@ interface ReadOnlyStateEventTestCase {
 
 
 
-test.describe('useReadOnlyStatePhaseEvents', () => {
+test.describe('useReadOnlyBehaviorState (phase events)', () => {
     for (const { title, readOnly : initialReadOnly, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

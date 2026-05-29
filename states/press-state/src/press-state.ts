@@ -21,6 +21,7 @@ import {
 import {
     resolvePressTransitionPhase,
     resolvePressTransitionClassname,
+    triggerPressPhaseEvents,
 }                           from './internal-utilities.js'
 
 // Hooks:
@@ -41,7 +42,6 @@ import {
 import {
     // Hooks:
     useFeedbackBehaviorState,
-    useFeedbackStatePhaseEvents,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 import {
     useDisabledState,
@@ -151,6 +151,7 @@ const pressBehaviorStateDefinition : PressBehaviorStateDefinition = {
     defaultAnimationBubbling   : false,
     resolveTransitionPhase     : resolvePressTransitionPhase,     // Resolves phases.
     resolveTransitionClassname : resolvePressTransitionClassname, // Resolves classnames.
+    triggerTransitionEvent     : triggerPressPhaseEvents,         // Triggers lifecycle events.
 };
 
 /**
@@ -243,7 +244,11 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
     // Extract props:
     const {
         onPressUpdate : onStateUpdate,
-        // ...restProps // Not needed the rest since all resolvers in the definition are *not* dependent of the props.
+        
+        onPressingStart,
+        onPressingEnd,
+        onReleasingStart,
+        onReleasingEnd,
     } = props;
     
     
@@ -280,7 +285,17 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
         TElement
     >(
         // Props:
-        { effectiveState, onStateUpdate, /* ...restProps */ },
+        {
+            effectiveState,
+            onStateUpdate,
+            
+            ...({
+                onPressingStart,
+                onPressingEnd,
+                onReleasingStart,
+                onReleasingEnd,
+            } as {}),
+        },
         
         // Options:
         options,
@@ -304,31 +319,4 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
         handleKeyDown,
         handleKeyUp,
     } satisfies PressBehaviorState<TElement>;
-};
-
-
-
-/**
- * Emits lifecycle events in response to press/release phase transitions.
- * 
- * This hook observes the resolved `pressPhase` from `usePressBehaviorState()` and triggers
- * the appropriate callbacks defined in `PressStateProps`, such as:
- * 
- * - `onPressingStart`
- * - `onPressingEnd`
- * - `onReleasingStart`
- * - `onReleasingEnd`
- * 
- * @param {PressStateProps} props - The component props that may include phase-specific lifecycle event handlers.
- * @param {PressPhase} pressPhase - The current phase value returned from `usePressBehaviorState()`.
- */
-export const usePressStatePhaseEvents = (props: PressStateProps, pressPhase: PressPhase): void => {
-    useFeedbackStatePhaseEvents(pressPhase, (pressPhase: PressPhase): void => {
-        switch (pressPhase) {
-            case 'pressing'  : props.onPressingStart?.(pressPhase, undefined);  break;
-            case 'pressed'   : props.onPressingEnd?.(pressPhase, undefined);    break;
-            case 'releasing' : props.onReleasingStart?.(pressPhase, undefined); break;
-            case 'released'  : props.onReleasingEnd?.(pressPhase, undefined);   break;
-        } // switch
-    });
 };

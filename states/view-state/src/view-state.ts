@@ -8,7 +8,6 @@ import {
     
     
     // Hooks:
-    useRef,
     useMemo,
 }                           from 'react'
 
@@ -17,7 +16,6 @@ import {
     type ViewStateProps,
     type ViewIndexChangeDispatcherOptions,
     type ViewStateOptions,
-    type TransitioningViewPhase,
     type ViewPhase,
     type ViewClassname,
     type ViewBehaviorState,
@@ -35,6 +33,7 @@ import {
 import {
     resolveViewTransitionPhase,
     resolveViewTransitionClassname,
+    triggerViewPhaseEvents,
     clampViewIndex,
 }                           from './internal-utilities.js'
 
@@ -72,7 +71,6 @@ import {
     // Hooks:
     useInteractionStateChangeDispatcher,
     useInteractionBehaviorState,
-    useInteractionStatePhaseEvents,
     useUncontrollableInteractionState,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
@@ -186,6 +184,7 @@ const viewBehaviorStateDefinition : ViewBehaviorStateDefinition = {
     defaultAnimationBubbling   : false,
     resolveTransitionPhase     : resolveViewTransitionPhase,          // Resolves phases.
     resolveTransitionClassname : resolveViewTransitionClassname,      // Resolves classnames.
+    triggerTransitionEvent     : triggerViewPhaseEvents,              // Triggers lifecycle events.
     
     // Direction definitions:
     useResolvePreviousState    : usePreviousValue,                    // Tracks previous settled state.
@@ -290,7 +289,11 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
         defaultViewIndex  : defaultState,
         viewIndex         : state,
         onViewIndexChange : onStateChange,
-        ...restProps
+        
+        onViewAdvancingStart,
+        onViewAdvancingEnd,
+        onViewRecedingStart,
+        onViewRecedingEnd,
     } = props;
     
     
@@ -346,7 +349,18 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
         TChangeEvent
     >(
         // Props:
-        { defaultState, state, onStateChange, ...restProps },
+        {
+            defaultState,
+            state,
+            onStateChange,
+            
+            ...({
+                onViewAdvancingStart,
+                onViewAdvancingEnd,
+                onViewRecedingStart,
+                onViewRecedingEnd,
+            } as {}),
+        },
         
         // Options:
         { defaultState: fallbackState, ...restOptions },
@@ -432,7 +446,11 @@ export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewSt
         defaultViewIndex  : defaultState,
         viewIndex         : state,
         onViewIndexChange : onStateChange,
-        ...restProps
+        
+        onViewAdvancingStart,
+        onViewAdvancingEnd,
+        onViewRecedingStart,
+        onViewRecedingEnd,
     } = props;
     
     
@@ -451,7 +469,18 @@ export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewSt
         TChangeEvent
     >(
         // Props:
-        { defaultState, state, onStateChange, ...restProps },
+        {
+            defaultState,
+            state,
+            onStateChange,
+            
+            ...({
+                onViewAdvancingStart,
+                onViewAdvancingEnd,
+                onViewRecedingStart,
+                onViewRecedingEnd,
+            } as {}),
+        },
         
         // Options:
         { defaultState: fallbackState, ...restOptions },
@@ -459,65 +488,4 @@ export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewSt
         // Definition:
         viewBehaviorStateDefinition,
     ) satisfies [number, ValueChangeDispatcher<number, TChangeEvent>];
-};
-
-
-
-/**
- * Emits lifecycle events in response to view phase transitions.
- * 
- * This hook observes the resolved `viewPhase` from `useViewBehaviorState()` and triggers
- * the appropriate callbacks defined in `ViewStateProps`, such as:
- * 
- * - `onViewAdvancingStart`
- * - `onViewAdvancingEnd`
- * - `onViewRecedingStart`
- * - `onViewRecedingEnd`
- * 
- * @param {ViewStateProps} props - The component props that may include phase-specific lifecycle event handlers.
- * @param {ViewPhase} viewPhase - The current phase value returned from `useViewBehaviorState()`.
- */
-export const useViewStatePhaseEvents = (props: ViewStateProps<any>, viewPhase: ViewPhase): void => {
-    // Remembers the previous transitioning phase for proper end event emission.
-    const prevPhaseRef = useRef<TransitioningViewPhase | undefined>(undefined);
-    
-    
-    
-    useInteractionStatePhaseEvents(viewPhase, (viewPhase: ViewPhase): void => {
-        switch (viewPhase) {
-            case 'view-advancing':
-                // Remember the current transitioning phase:
-                prevPhaseRef.current = viewPhase;
-                
-                props.onViewAdvancingStart?.(viewPhase, undefined);
-                break;
-            
-            case 'view-receding':
-                // Remember the current transitioning phase:
-                prevPhaseRef.current = viewPhase;
-                
-                props.onViewRecedingStart?.(viewPhase, undefined);
-                break;
-            
-            case 'view-settled': {
-                // Determine the previous transitioning phase to emit the corresponding end event:
-                const prevPhase = prevPhaseRef.current;
-                
-                // Clear the remembered transitioning phase:
-                prevPhaseRef.current = undefined;
-                
-                // Emit the corresponding end event:
-                switch (prevPhase) {
-                    case 'view-advancing':
-                        props.onViewAdvancingEnd?.(viewPhase, undefined);
-                        break;
-                    
-                    case 'view-receding':
-                        props.onViewRecedingEnd?.(viewPhase, undefined);
-                        break;
-                } // switch
-            }
-            break;
-        } // switch
-    });
 };

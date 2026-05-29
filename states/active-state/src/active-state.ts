@@ -23,6 +23,7 @@ import {
 import {
     resolveActiveTransitionPhase,
     resolveActiveTransitionClassname,
+    triggerActivePhaseEvents,
 }                           from './internal-utilities.js'
 
 // Contexts:
@@ -55,7 +56,6 @@ import {
     // Hooks:
     useInteractionStateChangeDispatcher,
     useInteractionBehaviorState,
-    useInteractionStatePhaseEvents,
     useUncontrollableInteractionState,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
@@ -176,6 +176,7 @@ const activeBehaviorStateDefinition : ActiveBehaviorStateDefinition = {
     defaultAnimationBubbling   : false,
     resolveTransitionPhase     : resolveActiveTransitionPhase,     // Resolves phases.
     resolveTransitionClassname : resolveActiveTransitionClassname, // Resolves classnames.
+    triggerTransitionEvent     : triggerActivePhaseEvents,         // Triggers lifecycle events.
 };
 
 /**
@@ -257,7 +258,11 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
         defaultActive  : defaultState,
         active         : state,
         onActiveChange : onStateChange,
-        ...restProps
+        
+        onActivatingStart,
+        onActivatingEnd,
+        onDeactivatingStart,
+        onDeactivatingEnd,
     } = props;
     
     
@@ -287,7 +292,18 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
         TChangeEvent
     >(
         // Props:
-        { defaultState, state, onStateChange, ...restProps },
+        {
+            defaultState,
+            state,
+            onStateChange,
+            
+            ...({
+                onActivatingStart,
+                onActivatingEnd,
+                onDeactivatingStart,
+                onDeactivatingEnd,
+            } as {}),
+        },
         
         // Options:
         { defaultState: fallbackState, ...restOptions },
@@ -344,7 +360,11 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
         defaultActive  : defaultState,
         active         : state,
         onActiveChange : onStateChange,
-        ...restProps
+        
+        onActivatingStart,
+        onActivatingEnd,
+        onDeactivatingStart,
+        onDeactivatingEnd,
     } = props;
     
     
@@ -363,7 +383,18 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
         TChangeEvent
     >(
         // Props:
-        { defaultState, state, onStateChange, ...restProps },
+        {
+            defaultState,
+            state,
+            onStateChange,
+            
+            ...({
+                onActivatingStart,
+                onActivatingEnd,
+                onDeactivatingStart,
+                onDeactivatingEnd,
+            } as {}),
+        },
         
         // Options:
         { defaultState: fallbackState, ...restOptions },
@@ -371,31 +402,4 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
         // Definition:
         activeBehaviorStateDefinition,
     ) satisfies [boolean, ValueChangeDispatcher<boolean, TChangeEvent>];
-};
-
-
-
-/**
- * Emits lifecycle events in response to activate/deactivate phase transitions.
- * 
- * This hook observes the resolved `activePhase` from `useActiveBehaviorState()` and triggers
- * the appropriate callbacks defined in `ActiveStateProps`, such as:
- * 
- * - `onActivatingStart`
- * - `onActivatingEnd`
- * - `onDeactivatingStart`
- * - `onDeactivatingEnd`
- * 
- * @param {ActiveStateProps} props - The component props that may include phase-specific lifecycle event handlers.
- * @param {ActivePhase} activePhase - The current phase value returned from `useActiveBehaviorState()`.
- */
-export const useActiveStatePhaseEvents = (props: ActiveStateProps<any>, activePhase: ActivePhase): void => {
-    useInteractionStatePhaseEvents(activePhase, (activePhase: ActivePhase): void => {
-        switch (activePhase) {
-            case 'activating'   : props.onActivatingStart?.(activePhase, undefined);   break;
-            case 'active'       : props.onActivatingEnd?.(activePhase, undefined);     break;
-            case 'deactivating' : props.onDeactivatingStart?.(activePhase, undefined); break;
-            case 'inactive'     : props.onDeactivatingEnd?.(activePhase, undefined);   break;
-        } // switch
-    });
 };
