@@ -29,7 +29,6 @@ The old API surface is marked with `@deprecated` JSDoc tags and points to the ne
 | `CollapsibleApi`                        | `CollapseBehaviorState`                                                            |
 | `useCollapsible`                        | `useCollapseBehaviorState`                                                         |
 | `CollapsibleEventProps`                 | `CollapseStatePhaseEventProps`                                                     |
-| `useCollapsibleEvent`                   | `useCollapseStatePhaseEvents`                                                      |
 | `ControllableCollapsibleProps`          | `CollapseStatePropsHandles user-initiated requests to change the`                                    |
 | `UncontrollableCollapsibleProps`        | `CollapseStatePropsHandles user-initiated requests to change the & UncontrollableCollapseStateProps` |
 | `useUncontrollableCollapsible`          | `useUncontrollableCollapseState`                                                   |

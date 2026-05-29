@@ -406,7 +406,7 @@ export interface CollapsibleEventProps
     onCollapseEnd   ?: EventHandler<void>
 }
 /**
- * @deprecated - Use `useCollapseStatePhaseEvents` instead.
+ * @deprecated - Use `useCollapseBehaviorState` instead.
  */
 export const useCollapsibleEvent = <TElement extends Element = HTMLElement>(props: CollapsibleEventProps, collapsibleApi: CollapsibleApi<TElement>): void => {
     // states:
