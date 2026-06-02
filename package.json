@@ -68,6 +68,7 @@
     "utilities/references",
     "utilities/directionality",
     "utilities/timers",
+    "utilities/controllable",
     "utilities/events",
     "utilities/hooks",
     "utilities/semantics",

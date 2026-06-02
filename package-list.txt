@@ -22,6 +22,7 @@
 @reusable-ui/references                             deps: @reusable-ui/callbacks (for stable API functions).
 @reusable-ui/directionality                         deps: @reusable-ui/lifecycles (depends on lifecycle updates).
 @reusable-ui/timers                                 deps: none, **likely to use @reusable-ui/lifecycles later** for cleanup.
+@reusable-ui/controllable
 @reusable-ui/events                                 deps: @reusable-ui/callbacks, @reusable-ui/lifecycles, **likely to use @reusable-ui/timers later** for delay management.
 @reusable-ui/hooks                  DEPRECATED
 @reusable-ui/semantics
