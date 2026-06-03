@@ -158,8 +158,8 @@ export interface ControllableValueProps<TValue, TChangeEvent = unknown>
     extends
         // Bases:
         ValueProps<TValue, TChangeEvent>,
-        Partial<Pick<ControlledValueProps<TValue, TChangeEvent>, 'value'>>, // TypeScript helper: Links the `value` to `ControllableValueChangeProps.value`.
-        Pick<UncontrolledValueProps<TValue, TChangeEvent>, 'defaultValue'>  // TypeScript helper: Links the `defaultValue` to `UncontrollableValueChangeProps.defaultValue`
+        Partial<Pick<ControlledValueProps<TValue, TChangeEvent>, 'value'>>, // TypeScript helper: Links the `value` to `ControlledValueProps.value`.
+        Pick<UncontrolledValueProps<TValue, TChangeEvent>, 'defaultValue'>  // TypeScript helper: Links the `defaultValue` to `UncontrolledValueProps.defaultValue`
 {
     /**
      * The externally controlled value (if provided).
