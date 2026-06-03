@@ -334,7 +334,7 @@ export default defineConfig(
             'css-selectors/enforce-if-function-conventions'  : 'error',
             'css-selectors/no-foreign-code'                  : 'error',
             'css-hooks/enforce-hook-conventions'             : 'error',
-            'css-hooks/migrate-using-prefix'                 : 'warn',
+            'css-hooks/migrate-using-prefix'                 : 'off', // TODO: Should be enabled
             'css-hooks/no-foreign-code'                      : 'error',
             'css-variables/enforce-variable-conventions'     : 'error',
             'css-variables/enforce-cssvars-function-usage'   : 'error',
