@@ -1,16 +1,13 @@
 {
   "name": "@reusable-ui/events",
   "version": "7.0.0",
-  "description": "State management hooks for controllable, uncontrollable, and hybrid UI components.",
+  "description": "Provides synthetic event utilities for enhancing event handling in React applications.",
   "keywords": [
     "react",
-    "state-management",
-    "controlled-components",
-    "uncontrolled-components",
-    "hybrid-state",
-    "ui",
-    "accessibility",
-    "hooks"
+    "synthetic",
+    "event",
+    "events",
+    "utility"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
   "homepage": "https://reusableui.com",
@@ -43,7 +40,7 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "@reusable-ui/callbacks": "^7.0.0"
+    "@reusable-ui/controllable": "^7.0.0"
   },
   "peerDependencies": {
     "@types/react": "^19.0.0",

@@ -1,6 +1,5 @@
-export * from './types.js'
-export * from './controllable-value-change.js'
-export * from './uncontrollable-value-change.js'
-export * from './hybrid-value-change.js'
-
 export * from './synthetic-events.js'
+
+export * from './reexport-types.js'
+export * from './deprecated-types.js'
+export * from './deprecated-client-hooks.js'

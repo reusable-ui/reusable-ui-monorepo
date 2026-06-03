@@ -1,24 +1,21 @@
-/**
- * A function type for dispatching value changes alongside an associated event.
- * 
- * This function is often used within components to **notify subscribers** about value changes,
- * enabling event-driven reactivity in UI systems.
- * 
- * - The first parameter (`newValue`) represents the updated value.
- * - The second parameter (`event`) carries metadata about the change event (if applicable).
- * - If the event does not contain value-related data, only the `newValue` is relevant.
- * 
- * @template TValue - The type of the value being updated.
- * @template TChangeEvent - The type of the event triggering the value change.
- * 
- * @param newValue - The newly updated value to be dispatched.
- * @param event - The event associated with the change action (may contain additional metadata).
- * 
- * @returns `void` - No return value; the function is used purely for dispatching change notifications.
- */
-export type ValueChangeDispatcher<in TValue, in TChangeEvent = unknown> = (newValue: TValue, event: TChangeEvent) => void;
+// Reusable-ui utilities:
+import {
+    // Types:
+    type ValueChangeHandler,
+    type ValueChangeTuple,
+    
+    type ValueProps,
+    type ControlledValueProps,
+    type UncontrolledValueProps,
+    type ControllableValueProps,
+}                           from '@reusable-ui/controllable'    // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
+
+
 
 /**
+ * @deprecated Use `ValueChangeHandler` from `@reusable-ui/controllable` instead,
+ * which provides a more consistent and intuitive API for handling value changes with event metadata.
+ * 
  * A function type for handling event-driven value changes.
  * 
  * Unlike standard React event handlers (e.g., `<input onChange={(event) => {...}} />`),
@@ -42,11 +39,14 @@ export type ValueChangeDispatcher<in TValue, in TChangeEvent = unknown> = (newVa
  * 
  * @returns `void` - No return value; the function is used purely for updating state and processing events.
  */
-export type ValueChangeEventHandler<in TValue, in TChangeEvent = unknown> = (newValue: TValue, event: TChangeEvent) => void;
+export type ValueChangeEventHandler<in TValue, in TChangeEvent = unknown> = ValueChangeHandler<TValue, TChangeEvent>;
 
 
 
 /**
+ * @deprecated Use `ValueChangeTuple` from `@reusable-ui/controllable` instead,
+ * which provides a more standardized and flexible API for managing value changes in both controllable and uncontrollable components.
+ * 
  * Defines the API for handling value changes in a controllable or uncontrollable manner.
  * 
  * @template TValue - The type of the value being managed.
@@ -58,7 +58,7 @@ export interface ValueChangeApi<in out TValue, in TChangeEvent = unknown> {
     /**
      * The current value being managed.
      */
-    value               : TValue
+    value               : ValueChangeTuple<TValue, TChangeEvent>[0]
     
     
     
@@ -72,12 +72,15 @@ export interface ValueChangeApi<in out TValue, in TChangeEvent = unknown> {
      * 
      * See {@link ValueChangeDispatcher} for parameter details.
      */
-    dispatchValueChange : ValueChangeDispatcher<TValue, TChangeEvent>
+    dispatchValueChange : ValueChangeTuple<TValue, TChangeEvent>[1]
 }
 
 
 
 /**
+ * @deprecated Use `ValueProps` from `@reusable-ui/controllable` instead,
+ * which provides a more cohesive and comprehensive set of properties for managing value changes in both controllable and uncontrollable components.
+ * 
  * Defines properties for handling value changes in a component.
  * 
  * - Provides an optional callback (`onValueChange`) for responding to value changes.
@@ -86,22 +89,12 @@ export interface ValueChangeApi<in out TValue, in TChangeEvent = unknown> {
  * @template TValue - The type of the value being updated.
  * @template TChangeEvent - The type of the event triggering the value change.
  */
-export interface ValueChangeProps<in TValue, in TChangeEvent = unknown> {
-    // Values:
-    
-    /**
-     * A function to handle event-driven value changes.
-     * 
-     * - Invoked when the value changes.
-     * - Accepts the **new value** and the **event** that triggered the change.
-     * - Can be omitted (`undefined`) if value updates do not require an external handler.
-     * 
-     * See {@link ValueChangeEventHandler} for parameter details.
-     */
-    onValueChange     ?: ValueChangeEventHandler<TValue, TChangeEvent> | undefined
-}
+export type ValueChangeProps<TValue, TChangeEvent = unknown> = ValueProps<TValue, TChangeEvent>;
 
 /**
+ * @deprecated Use `ControlledValueProps` from `@reusable-ui/controllable` instead,
+ * which provides a more robust and flexible set of properties for managing fully controllable value states, ensuring better integration with external state management patterns.
+ * 
  * Defines properties for a **fully controllable** value state.
  * 
  * - The value is **managed externally**, meaning `value` must be provided.
@@ -111,23 +104,12 @@ export interface ValueChangeProps<in TValue, in TChangeEvent = unknown> {
  * @template TValue - The type of the value being managed externally.
  * @template TChangeEvent - The type of the event triggering the value change.
  */
-export interface ControllableValueChangeProps<in out TValue, in TChangeEvent = unknown>
-    extends
-        // Bases:
-        ValueChangeProps<TValue, TChangeEvent>
-{
-    // Values:
-    
-    /**
-     * The externally controlled value.
-     * 
-     * - Must be explicitly provided—this component does **not** manage its own state.
-     * - Changes should be **handled externally**, such as through React state or context.
-     */
-    value              : TValue
-}
+export type ControllableValueChangeProps<TValue, TChangeEvent = unknown> = ControlledValueProps<TValue, TChangeEvent>;
 
 /**
+ * @deprecated Use `UncontrolledValueProps` from `@reusable-ui/controllable` instead,
+ * which provides a more intuitive and consistent set of properties for managing uncontrollable value states, ensuring better support for internal state management and event handling.
+ * 
  * Defines properties for an **uncontrollable** value state.
  * 
  * - The value is **managed internally** using `useState`.
@@ -138,22 +120,12 @@ export interface ControllableValueChangeProps<in out TValue, in TChangeEvent = u
  * @template TValue - The type of the value being managed internally.
  * @template TChangeEvent - The type of the event triggering the value change.
  */
-export interface UncontrollableValueChangeProps<in out TValue, in TChangeEvent = unknown>
-    extends
-        // Bases:
-        ValueChangeProps<TValue, TChangeEvent>
-{
-    // Values:
-    
-    /**
-     * The initial value for uncontrolled state.
-     * - Used to initialize internal state when no external `value` is provided.
-     * - Ensures consistent behavior in uncontrolled scenarios.
-     */
-    defaultValue       : TValue
-}
+export type UncontrollableValueChangeProps<TValue, TChangeEvent = unknown> = UncontrolledValueProps<TValue, TChangeEvent>;
 
 /**
+ * @deprecated Use `ControllableValueProps` from `@reusable-ui/controllable` instead,
+ * which provides a more comprehensive and flexible set of properties for managing hybrid value states, ensuring better support for both controllable and uncontrollable behaviors within the same component.
+ * 
  * Defines properties for a **hybrid value state**, supporting both controllable and uncontrollable behaviors.
  * 
  * - If `value` is provided, the component functions as **controllable**, relying on external state.
@@ -164,26 +136,4 @@ export interface UncontrollableValueChangeProps<in out TValue, in TChangeEvent =
  * @template TValue - The type of the value being managed.
  * @template TChangeEvent - The type of the event triggering the value change.
  */
-export interface HybridValueChangeProps<in out TValue, in TChangeEvent = unknown>
-    extends
-        // Bases:
-        ValueChangeProps<TValue, TChangeEvent>,
-        Partial<Pick<ControllableValueChangeProps<TValue, TChangeEvent>, 'value'>>, // TypeScript helper: Links the `value` to `ControllableValueChangeProps.value`.
-        Pick<UncontrollableValueChangeProps<TValue, TChangeEvent>, 'defaultValue'>  // TypeScript helper: Links the `defaultValue` to `UncontrollableValueChangeProps.defaultValue`
-{
-    /**
-     * The externally controlled value (if provided).
-     * 
-     * - When defined, the component behaves as **controllable**, relying on external state updates.
-     * - When omitted (`undefined`), the component **defaults to an uncontrolled state** using `defaultValue`.
-     */
-    value             ?: TValue | undefined
-    
-    /**
-     * The initial value for uncontrolled state.
-     * 
-     * - Used **only when** `value` is `undefined`, allowing internal state management.
-     * - Provides the **default starting value** when external control is absent.
-     */
-    defaultValue       : TValue
-}
+export type HybridValueChangeProps<TValue, TChangeEvent = unknown> = ControllableValueProps<TValue, TChangeEvent>;
