@@ -76,7 +76,7 @@ import {
  * @param props - The controlled value props.
  * @returns `[currentValue, dispatchValueChange]` — the current external value and a stable dispatcher to request changes.
  */
-export const useControlledValue = <TValue, TChangeEvent = unknown>(props: ControlledValueProps<TValue, TChangeEvent>): ValueChangeTuple<TValue, TChangeEvent> => {
+export const useControlledValue   = <TValue, TChangeEvent = unknown>(props: ControlledValueProps<TValue, TChangeEvent>): ValueChangeTuple<TValue, TChangeEvent> => {
     // Extract props:
     const {
         // Values:

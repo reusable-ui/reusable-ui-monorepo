@@ -33,7 +33,7 @@
  * 
  * @returns void — used purely for updating state or processing events.
  */
-export type ValueChangeHandler<TValue, TChangeEvent = unknown> = (newValue: TValue, event: TChangeEvent) => void;
+export type ValueChangeHandler<TValue, TChangeEvent = unknown>    = (newValue: TValue, event: TChangeEvent) => void;
 
 /**
  * A function type for dispatching value changes along with an associated event metadata.
@@ -70,7 +70,7 @@ export type ValueChangeDispatcher<TValue, TChangeEvent = unknown> = (newValue: T
  * - `[0]` → `TValue` — the current value.
  * - `[1]` → `(newValue: TValue, event: TChangeEvent) => void` — dispatcher for propagating value changes.
  */
-export type ValueChangeTuple<TValue, TChangeEvent = unknown> = [TValue, ValueChangeDispatcher<TValue, TChangeEvent>];
+export type ValueChangeTuple<TValue, TChangeEvent = unknown>      = [TValue, ValueChangeDispatcher<TValue, TChangeEvent>];
 
 
 
@@ -92,7 +92,7 @@ export interface ValueProps<TValue, TChangeEvent = unknown> {
      * 
      * See {@link ValueChangeHandler} for parameter details.
      */
-    onValueChange?: ValueChangeHandler<TValue, TChangeEvent>
+    onValueChange ?: ValueChangeHandler<TValue, TChangeEvent>
 }
 
 /**
@@ -116,7 +116,7 @@ export interface ControlledValueProps<TValue, TChangeEvent = unknown>
      * - Must be explicitly provided.
      * - Updates are handled externally (e.g., via React's `useState`).
      */
-    value: TValue
+    value          : TValue
 }
 
 /**
@@ -140,7 +140,7 @@ export interface UncontrolledValueProps<TValue, TChangeEvent = unknown>
      * - Must be explicitly provided.
      * - Provides the initial value for internal state.
      */
-    defaultValue: TValue
+    defaultValue   : TValue
 }
 
 /**
@@ -167,7 +167,7 @@ export interface ControllableValueProps<TValue, TChangeEvent = unknown>
      * - When provided, the component behaves as controlled (driven by external state).
      * - When omitted, the component behaves as uncontrolled (driven by internal state).
      */
-    value?: TValue
+    value         ?: TValue
     
     /**
      * The initial value for uncontrolled state.
@@ -176,5 +176,5 @@ export interface ControllableValueProps<TValue, TChangeEvent = unknown>
      * - Used only when `value` is not provided.
      * - Provides the initial value for internal state.
      */
-    defaultValue: TValue
+    defaultValue   : TValue
 }
