@@ -20,7 +20,7 @@ With **`@reusable-ui/controllable`**, you get:
 ✔ **Generic value types** — works for `selected: boolean`, `text: string`, `price: number`, etc.  
 ✔ **Value/event separation** — updated value is passed separately from the event, so you can directly use React's `setState`.  
 ✔ **Event metadata optional** — pass along the triggering event if needed.  
-✔ **Stable dispatcher** — referentially stable across renders, even if `onValueChange` changes.  
+✔ **Stable dispatcher function** — referentially stable across renders, even if `onValueChange` changes.  
 ✔ **Unified API** — controlled, uncontrolled, and hybrid all share the same tuple return signature.  
 
 ## 📦 Installation
@@ -120,9 +120,9 @@ const [name, setName] = useState('');
 />
 ```
 
-## 📌 Stable Dispatcher
+## 📌 Stable Dispatcher Function
 
-The dispatcher returned by these hooks is **referentially stable**.  
+The dispatcher function returned by these hooks is **referentially stable**.  
 It will not change identity across renders, even if `onValueChange` changes.  
 This makes it safe to use inside `useEffect`, `useCallback`, or pass down to children without causing unnecessary re-renders.
 
@@ -131,11 +131,11 @@ const [selected, dispatchSelectedChange] = useControllableValue<boolean, React.M
 
 useEffect(() => {
     dispatchSelectedChange(true, undefined);
-}, []); // Dispatcher is stable, no need to include in dependency array.
+}, []); // Dispatcher function is stable, no need to include in dependency array.
 
 const handleSelect : React.MouseEventHandler = useCallback((event) => {
     dispatchSelectedChange(true, event);
-}, []); // Dispatcher is stable, no need to include in dependency array.
+}, []); // Dispatcher function is stable, no need to include in dependency array.
 
 return (
     <NestedComponent

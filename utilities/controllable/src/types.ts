@@ -33,7 +33,7 @@
  * 
  * @returns void — used purely for updating state or processing events.
  */
-export type ValueChangeHandler<TValue, TChangeEvent = unknown>    = (newValue: TValue, event: TChangeEvent) => void;
+export type ValueChangeHandler<TValue, TChangeEvent = unknown>  = (newValue: TValue, event: TChangeEvent) => void;
 
 /**
  * A function type for dispatching value changes along with an associated event metadata.
@@ -49,7 +49,7 @@ export type ValueChangeHandler<TValue, TChangeEvent = unknown>    = (newValue: T
  * 
  * @returns void — used purely for notifying listeners of changes.
  */
-export type ValueChangeDispatcher<TValue, TChangeEvent = unknown> = (newValue: TValue, event: TChangeEvent) => void;
+export type DispatchValueChange<TValue, TChangeEvent = unknown> = (newValue: TValue, event: TChangeEvent) => void;
 
 
 
@@ -68,9 +68,9 @@ export type ValueChangeDispatcher<TValue, TChangeEvent = unknown> = (newValue: T
  * 
  * @returns A tuple:
  * - `[0]` → `TValue` — the current value.
- * - `[1]` → `(newValue: TValue, event: TChangeEvent) => void` — dispatcher for propagating value changes.
+ * - `[1]` → `(newValue: TValue, event: TChangeEvent) => void` — dispatcher function for propagating value changes.
  */
-export type ValueChangeTuple<TValue, TChangeEvent = unknown>      = [TValue, ValueChangeDispatcher<TValue, TChangeEvent>];
+export type ValueChangeTuple<TValue, TChangeEvent = unknown>    = [TValue, DispatchValueChange<TValue, TChangeEvent>];
 
 
 

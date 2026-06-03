@@ -2,6 +2,7 @@
 import {
     // Types:
     type ValueChangeHandler,
+    type DispatchValueChange,
     type ValueChangeTuple,
     
     type ValueProps,
@@ -41,6 +42,29 @@ import {
  */
 export type ValueChangeEventHandler<in TValue, in TChangeEvent = unknown> = ValueChangeHandler<TValue, TChangeEvent>;
 
+/**
+ * @deprecated Use `DispatchValueChange` from `@reusable-ui/controllable` instead,
+ * which provides a more standardized and flexible API for dispatching value changes with event metadata.
+ * 
+ * A function type for dispatching value changes alongside an associated event.
+ * 
+ * This function is often used within components to **notify subscribers** about value changes,
+ * enabling event-driven reactivity in UI systems.
+ * 
+ * - The first parameter (`newValue`) represents the updated value.
+ * - The second parameter (`event`) carries metadata about the change event (if applicable).
+ * - If the event does not contain value-related data, only the `newValue` is relevant.
+ * 
+ * @template TValue - The type of the value being updated.
+ * @template TChangeEvent - The type of the event triggering the value change.
+ * 
+ * @param newValue - The newly updated value to be dispatched.
+ * @param event - The event associated with the change action (may contain additional metadata).
+ * 
+ * @returns `void` - No return value; the function is used purely for dispatching change notifications.
+ */
+export type ValueChangeDispatcher<in TValue, in TChangeEvent = unknown> = DispatchValueChange<TValue, TChangeEvent>;
+
 
 
 /**
@@ -70,7 +94,7 @@ export interface ValueChangeApi<in out TValue, in TChangeEvent = unknown> {
      * This function is responsible for propagating state changes, notifying subscribers,
      * and triggering value-related events where applicable.
      * 
-     * See {@link ValueChangeDispatcher} for parameter details.
+     * See {@link DispatchValueChange} for parameter details.
      */
     dispatchValueChange : ValueChangeTuple<TValue, TChangeEvent>[1]
 }

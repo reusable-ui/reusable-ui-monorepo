@@ -14,7 +14,7 @@ import {
 
 // Types:
 import {
-    type ValueChangeDispatcher,
+    type DispatchValueChange,
     type ValueChangeTuple,
     type ControlledValueProps,
     type UncontrolledValueProps,
@@ -89,7 +89,7 @@ export const useControlledValue   = <TValue, TChangeEvent = unknown>(props: Cont
     // Stable dispatcher:
     // - Referentially stable across renders.
     // - Safe to use inside `useEffect` or `useCallback` without being listed in dependency arrays.
-    const dispatchValueChange : ValueChangeDispatcher<TValue, TChangeEvent> = useStableCallback(handleValueChange);
+    const dispatchValueChange : DispatchValueChange<TValue, TChangeEvent> = useStableCallback(handleValueChange);
     
     
     
@@ -188,7 +188,7 @@ export const useControllableValue = <TValue, TChangeEvent = unknown>(props: Cont
     // Stable dispatcher:
     // - Referentially stable across renders.
     // - Safe to use inside `useEffect` or `useCallback` without being listed in dependency arrays.
-    const dispatchValueChange : ValueChangeDispatcher<TValue, TChangeEvent> = useStableCallback((newValue: TValue, event: TChangeEvent): void => {
+    const dispatchValueChange : DispatchValueChange<TValue, TChangeEvent> = useStableCallback((newValue: TValue, event: TChangeEvent): void => {
         // Updates internal state if uncontrolled:
         if (!isControlled) setInternalValue(newValue);
         
