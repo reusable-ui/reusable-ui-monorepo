@@ -1,8 +1,8 @@
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeEventHandler,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+    type ValueChangeHandler,
+}                           from '@reusable-ui/controllable'        // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
 
 // Reusable-ui states:
 import {
@@ -61,7 +61,7 @@ export interface FeedbackStateProps<TState extends {} | null>
      * ⚠️ Important: This callback must not directly or indirectly update the `effectiveState` prop,
      * otherwise an unwanted circular re-render may occur.
      */
-    onStateUpdate  ?: ValueChangeEventHandler<TState, unknown>
+    onStateUpdate  ?: ValueChangeHandler<TState, unknown>
 }
 
 /**

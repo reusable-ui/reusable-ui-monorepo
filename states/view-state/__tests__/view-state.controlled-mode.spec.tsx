@@ -1,7 +1,7 @@
 import React, { type AnimationEventHandler, MouseEvent as ReactMouseEvent } from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { ViewStateTest } from './ViewStateTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 
 
 
@@ -441,7 +441,7 @@ test.describe('useViewBehaviorState - controlled mode', () => {
             
             let lastNewViewIndex : number | undefined = undefined;
             let lastEvent       : ReactMouseEvent<HTMLButtonElement, MouseEvent> | undefined = undefined;
-            const handleViewIndexChange : ValueChangeEventHandler<number, ReactMouseEvent<HTMLButtonElement, MouseEvent>> = (newViewIndex, event) => {
+            const handleViewIndexChange : ValueChangeHandler<number, ReactMouseEvent<HTMLButtonElement, MouseEvent>> = (newViewIndex, event) => {
                 lastNewViewIndex = newViewIndex;
                 lastEvent = event;
                 

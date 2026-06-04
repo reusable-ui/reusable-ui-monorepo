@@ -53,8 +53,8 @@
   },
   "dependencies": {
     "@cssfn/core": "^4.0.0",
+    "@reusable-ui/controllable": "^7.0.0",
     "@reusable-ui/effective-state": "^7.0.0",
-    "@reusable-ui/events": "^7.0.0",
     "@reusable-ui/interaction-state": "^7.0.0",
     "@reusable-ui/lifecycles": "^7.0.0",
     "@reusable-ui/numbers": "^7.0.0"
@@ -66,6 +66,7 @@
     "react": "^19.0.0"
   },
   "devDependencies": {
-    "@reusable-ui/callbacks": "^7.0.0"
+    "@reusable-ui/callbacks": "^7.0.0",
+    "@reusable-ui/events": "^7.0.0"
   }
 }

@@ -1,7 +1,7 @@
 import React, { MouseEvent as ReactMouseEvent } from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { ViewStateTest } from './ViewStateTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 import { ViewPhase } from '../dist/index.js'
 
 
@@ -257,25 +257,25 @@ test.describe('useViewBehaviorState (phase events)', () => {
             // Handlers:
             let lastNewViewIndex : number | undefined = undefined;
             let lastEvent       : ReactMouseEvent<HTMLButtonElement, MouseEvent> | undefined = undefined;
-            const handleViewIndexChange : ValueChangeEventHandler<number, ReactMouseEvent<HTMLButtonElement, MouseEvent>> = (newViewIndex, event) => {
+            const handleViewIndexChange : ValueChangeHandler<number, ReactMouseEvent<HTMLButtonElement, MouseEvent>> = (newViewIndex, event) => {
                 lastNewViewIndex = newViewIndex;
                 lastEvent = event;
             };
             
             let lastViewPhase : ViewPhase | null = null;
-            const handleViewAdvancingStart : ValueChangeEventHandler<ViewPhase, unknown> = (viewPhase) => {
+            const handleViewAdvancingStart : ValueChangeHandler<ViewPhase, unknown> = (viewPhase) => {
                 expect(viewPhase).toBe('view-advancing');
                 lastViewPhase = viewPhase;
             };
-            const handleViewAdvancingEnd   : ValueChangeEventHandler<ViewPhase, unknown> = (viewPhase) => {
+            const handleViewAdvancingEnd   : ValueChangeHandler<ViewPhase, unknown> = (viewPhase) => {
                 expect(viewPhase).toBe('view-settled');
                 lastViewPhase = viewPhase;
             };
-            const handleViewRecedingStart  : ValueChangeEventHandler<ViewPhase, unknown> = (viewPhase) => {
+            const handleViewRecedingStart  : ValueChangeHandler<ViewPhase, unknown> = (viewPhase) => {
                 expect(viewPhase).toBe('view-receding');
                 lastViewPhase = viewPhase;
             };
-            const handleViewRecedingEnd    : ValueChangeEventHandler<ViewPhase, unknown> = (viewPhase) => {
+            const handleViewRecedingEnd    : ValueChangeHandler<ViewPhase, unknown> = (viewPhase) => {
                 expect(viewPhase).toBe('view-settled');
                 lastViewPhase = viewPhase;
             };

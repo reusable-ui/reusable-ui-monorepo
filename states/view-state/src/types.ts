@@ -24,8 +24,8 @@ import {
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeEventHandler,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+    type ValueChangeHandler,
+}                           from '@reusable-ui/controllable'        // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
 
 // Reusable-ui states:
 import {
@@ -91,28 +91,28 @@ export interface ViewStateProps<TChangeEvent = unknown>
      * 
      * Triggered when the component starts animating toward a higher index.
      */
-    onViewAdvancingStart ?: ValueChangeEventHandler<ViewPhase, unknown>
+    onViewAdvancingStart ?: ValueChangeHandler<ViewPhase, unknown>
     
     /**
      * Called when the advancing (next) view transition completes.
      * 
      * Triggered when the component settles at the target index after moving forward.
      */
-    onViewAdvancingEnd   ?: ValueChangeEventHandler<ViewPhase, unknown>
+    onViewAdvancingEnd   ?: ValueChangeHandler<ViewPhase, unknown>
     
     /**
      * Called when the receding (previous) view transition begins.
      * 
      * Triggered when the component starts animating toward a lower index.
      */
-    onViewRecedingStart  ?: ValueChangeEventHandler<ViewPhase, unknown>
+    onViewRecedingStart  ?: ValueChangeHandler<ViewPhase, unknown>
     
     /**
      * Called when the receding (previous) view transition completes.
      * 
      * Triggered when the component settles at the target index after moving backward.
      */
-    onViewRecedingEnd    ?: ValueChangeEventHandler<ViewPhase, unknown>
+    onViewRecedingEnd    ?: ValueChangeHandler<ViewPhase, unknown>
 }
 
 /**

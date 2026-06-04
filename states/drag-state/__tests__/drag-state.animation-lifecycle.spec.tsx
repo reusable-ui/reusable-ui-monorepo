@@ -1,7 +1,7 @@
 import React, { type AnimationEventHandler } from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { DragStateTest } from './DragStateTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 
 
 
@@ -389,7 +389,7 @@ test.describe('useDragBehaviorState - animation', () => {
             
             let lastNewDrag : boolean | null | undefined = undefined;
             let lastEvent       : unknown | undefined = undefined;
-            const handleDragUpdate : ValueChangeEventHandler<boolean | null, unknown> = (newDrag, event) => {
+            const handleDragUpdate : ValueChangeHandler<boolean | null, unknown> = (newDrag, event) => {
                 lastNewDrag = newDrag;
                 lastEvent = event;
             };

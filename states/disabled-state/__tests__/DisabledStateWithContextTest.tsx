@@ -2,7 +2,7 @@ import React from 'react'
 import {
     type DisabledStateTestProps,
     DisabledStateTest,
-} from "./DisabledStateTest";
+} from './DisabledStateTest.js';
 import {
     DisabledStateProvider,
 } from '../dist/index.js'

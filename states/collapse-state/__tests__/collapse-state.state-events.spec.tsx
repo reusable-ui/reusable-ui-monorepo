@@ -1,7 +1,7 @@
 import React, { MouseEvent as ReactMouseEvent } from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { CollapseStateTest } from './CollapseStateTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 import { ExpandPhase } from '../dist/index.js'
 
 
@@ -410,25 +410,25 @@ test.describe('useCollapseBehaviorState (phase events)', () => {
             // Handlers:
             let lastNewExpanded : boolean | undefined = undefined;
             let lastEvent       : ReactMouseEvent<HTMLButtonElement, MouseEvent> | undefined = undefined;
-            const handleExpandedChange : ValueChangeEventHandler<boolean, ReactMouseEvent<HTMLButtonElement, MouseEvent>> = (newExpanded, event) => {
+            const handleExpandedChange : ValueChangeHandler<boolean, ReactMouseEvent<HTMLButtonElement, MouseEvent>> = (newExpanded, event) => {
                 lastNewExpanded = newExpanded;
                 lastEvent = event;
             };
             
             let lastExpandPhase : ExpandPhase | null = null;
-            const handleExpandingStart : ValueChangeEventHandler<ExpandPhase, unknown> = (expandPhase) => {
+            const handleExpandingStart : ValueChangeHandler<ExpandPhase, unknown> = (expandPhase) => {
                 expect(expandPhase).toBe('expanding');
                 lastExpandPhase = expandPhase;
             };
-            const handleExpandingEnd : ValueChangeEventHandler<ExpandPhase, unknown> = (expandPhase) => {
+            const handleExpandingEnd : ValueChangeHandler<ExpandPhase, unknown> = (expandPhase) => {
                 expect(expandPhase).toBe('expanded');
                 lastExpandPhase = expandPhase;
             };
-            const handleCollapsingStart : ValueChangeEventHandler<ExpandPhase, unknown> = (expandPhase) => {
+            const handleCollapsingStart : ValueChangeHandler<ExpandPhase, unknown> = (expandPhase) => {
                 expect(expandPhase).toBe('collapsing');
                 lastExpandPhase = expandPhase;
             };
-            const handleCollapsingEnd : ValueChangeEventHandler<ExpandPhase, unknown> = (expandPhase) => {
+            const handleCollapsingEnd : ValueChangeHandler<ExpandPhase, unknown> = (expandPhase) => {
                 expect(expandPhase).toBe('collapsed');
                 lastExpandPhase = expandPhase;
             };

@@ -1,7 +1,7 @@
 import React, { type AnimationEventHandler } from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { HoverStateTest } from './HoverStateTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 
 
 
@@ -738,7 +738,7 @@ test.describe('useHoverBehaviorState - controlled mode', () => {
             
             let lastNewHover : boolean | null | undefined = undefined;
             let lastEvent       : unknown | undefined = undefined;
-            const handleHoverUpdate : ValueChangeEventHandler<boolean | null, unknown> = (newHover, event) => {
+            const handleHoverUpdate : ValueChangeHandler<boolean | null, unknown> = (newHover, event) => {
                 lastNewHover = newHover;
                 lastEvent = event;
             };

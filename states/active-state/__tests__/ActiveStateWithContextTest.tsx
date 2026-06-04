@@ -2,7 +2,7 @@ import React from 'react'
 import {
     type ActiveStateTestProps,
     ActiveStateTest,
-} from "./ActiveStateTest";
+} from './ActiveStateTest.js';
 import {
     ActiveStateProvider,
 } from '../dist/index.js'

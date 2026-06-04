@@ -1,7 +1,7 @@
 import React from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { ValidityStateInFormTest } from './ValidityStateInFormTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 import { ValidityPhase } from '../dist/index.js'
 
 
@@ -899,33 +899,33 @@ test.describe('useValidityBehaviorState (phase events)', () => {
             // Handlers:
             let lastNewValidity : boolean | null | undefined = undefined;
             let lastEvent       : unknown | undefined = undefined;
-            const handleValidityUpdate : ValueChangeEventHandler<boolean | null, unknown> = (newValidity, event) => {
+            const handleValidityUpdate : ValueChangeHandler<boolean | null, unknown> = (newValidity, event) => {
                 lastNewValidity = newValidity;
                 lastEvent = event;
             };
             
             let lastValidityPhase : ValidityPhase | null = null;
-            const handleValidatingStart : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
+            const handleValidatingStart : ValueChangeHandler<ValidityPhase, unknown> = (validityPhase) => {
                 expect(validityPhase).toBe('validating');
                 lastValidityPhase = validityPhase;
             };
-            const handleValidatingEnd : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
+            const handleValidatingEnd : ValueChangeHandler<ValidityPhase, unknown> = (validityPhase) => {
                 expect(validityPhase).toBe('valid');
                 lastValidityPhase = validityPhase;
             };
-            const handleInvalidatingStart : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
+            const handleInvalidatingStart : ValueChangeHandler<ValidityPhase, unknown> = (validityPhase) => {
                 expect(validityPhase).toBe('invalidating');
                 lastValidityPhase = validityPhase;
             };
-            const handleInvalidatingEnd : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
+            const handleInvalidatingEnd : ValueChangeHandler<ValidityPhase, unknown> = (validityPhase) => {
                 expect(validityPhase).toBe('invalid');
                 lastValidityPhase = validityPhase;
             };
-            const handleUnvalidatingStart : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
+            const handleUnvalidatingStart : ValueChangeHandler<ValidityPhase, unknown> = (validityPhase) => {
                 expect(validityPhase).toBe('unvalidating');
                 lastValidityPhase = validityPhase;
             };
-            const handleUnvalidatingEnd : ValueChangeEventHandler<ValidityPhase, unknown> = (validityPhase) => {
+            const handleUnvalidatingEnd : ValueChangeHandler<ValidityPhase, unknown> = (validityPhase) => {
                 expect(validityPhase).toBe('unvalidated');
                 lastValidityPhase = validityPhase;
             };

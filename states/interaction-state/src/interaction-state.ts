@@ -7,13 +7,13 @@ import {
 }                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
 import {
     // Types:
-    type ValueChangeDispatcher,
+    type DispatchValueChange,
     
     
     
     // Hooks:
-    useHybridValueChange,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+    useControllableValue,
+}                           from '@reusable-ui/controllable'        // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
 
 // Reusable-ui states:
 import {
@@ -68,7 +68,7 @@ import {
  * @param options - Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for state change requests.
  */
-export const useInteractionStateChangeDispatcher = <TState extends {} | null, TChangeEvent = unknown>(props: InteractionStateProps<{} | null, TState, TChangeEvent>, options?: InteractionStateChangeDispatcherOptions<TState, TChangeEvent>) : ValueChangeDispatcher<TState, TChangeEvent> => {
+export const useInteractionStateChangeDispatcher = <TState extends {} | null, TChangeEvent = unknown>(props: InteractionStateProps<{} | null, TState, TChangeEvent>, options?: InteractionStateChangeDispatcherOptions<TState, TChangeEvent>) : DispatchValueChange<TState, TChangeEvent> => {
     // States and flags:
     
     // Resolve whether the component is disabled:
@@ -85,7 +85,7 @@ export const useInteractionStateChangeDispatcher = <TState extends {} | null, TC
     // A stable dispatcher for state change requests.
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const dispatchStateChange : ValueChangeDispatcher<TState, TChangeEvent> = useStableCallback((newState: TState, event: TChangeEvent): void => {
+    const dispatchStateChange : DispatchValueChange<TState, TChangeEvent> = useStableCallback((newState: TState, event: TChangeEvent): void => {
         // Halt interaction lifecycle when the component is in a restricted state (interaction blocked):
         // - Prevents internal state updates (uncontrolled mode)
         // - Prevents external change requests (controlled mode)
@@ -373,7 +373,7 @@ export const useUncontrollableInteractionState = <
     props      : InteractionStateProps<TDeclarativeState, TState, TChangeEvent>,
     options    : Pick<InteractionStateOptions<TState>, 'defaultState'> | undefined,
     definition : Pick<InteractionBehaviorStateDefinition<TDeclarativeState, TState, string, string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>, 'defaultInitialState' | 'useResolveEffectiveState'>
-): [TState, ValueChangeDispatcher<TState, TChangeEvent>] => {
+): [TState, DispatchValueChange<TState, TChangeEvent>] => {
     // Extract definition:
     const {
         defaultInitialState,
@@ -415,10 +415,7 @@ export const useUncontrollableInteractionState = <
     // Manage the state using hybrid controlled/uncontrolled logic:
     // - In uncontrolled mode: initialize internal state from `defaultValue` (first render only).
     // - In controlled mode: always mirror the external `value`.
-    const {
-        value               : driverState, // The managed state becomes the driver state.
-        dispatchValueChange : dispatchStateChange,
-    } = useHybridValueChange<TState, TChangeEvent>({
+    const [driverState, dispatchStateChange] = useControllableValue<TState, TChangeEvent>({
         defaultValue        : effectiveState, // Used only for initial uncontrolled state.
         value               : (controlledState !== undefined) ? effectiveState : undefined, // Controlled mode: always follow external value.
         onValueChange       : handleStateChange,

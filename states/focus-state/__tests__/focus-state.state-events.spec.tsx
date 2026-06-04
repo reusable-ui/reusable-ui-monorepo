@@ -1,7 +1,7 @@
 import React from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { FocusStateTest } from './FocusStateTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 import { FocusPhase } from '../dist/index.js'
 
 
@@ -366,25 +366,25 @@ test.describe('useFocusBehaviorState (phase events)', () => {
             // Handlers:
             let lastNewFocus : boolean | null | undefined = undefined;
             let lastEvent       : unknown | undefined = undefined;
-            const handleFocusUpdate : ValueChangeEventHandler<boolean | null, unknown> = (newFocus, event) => {
+            const handleFocusUpdate : ValueChangeHandler<boolean | null, unknown> = (newFocus, event) => {
                 lastNewFocus = newFocus;
                 lastEvent = event;
             };
             
             let lastFocusPhase : FocusPhase | null = null;
-            const handleFocusingStart : ValueChangeEventHandler<FocusPhase, unknown> = (focusPhase) => {
+            const handleFocusingStart : ValueChangeHandler<FocusPhase, unknown> = (focusPhase) => {
                 expect(focusPhase).toBe('focusing');
                 lastFocusPhase = focusPhase;
             };
-            const handleFocusingEnd : ValueChangeEventHandler<FocusPhase, unknown> = (focusPhase) => {
+            const handleFocusingEnd : ValueChangeHandler<FocusPhase, unknown> = (focusPhase) => {
                 expect(focusPhase).toBe('focused');
                 lastFocusPhase = focusPhase;
             };
-            const handleBlurringStart : ValueChangeEventHandler<FocusPhase, unknown> = (focusPhase) => {
+            const handleBlurringStart : ValueChangeHandler<FocusPhase, unknown> = (focusPhase) => {
                 expect(focusPhase).toBe('blurring');
                 lastFocusPhase = focusPhase;
             };
-            const handleBlurringEnd : ValueChangeEventHandler<FocusPhase, unknown> = (focusPhase) => {
+            const handleBlurringEnd : ValueChangeHandler<FocusPhase, unknown> = (focusPhase) => {
                 expect(focusPhase).toBe('blurred');
                 lastFocusPhase = focusPhase;
             };

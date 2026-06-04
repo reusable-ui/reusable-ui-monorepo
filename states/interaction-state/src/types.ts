@@ -1,9 +1,9 @@
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeDispatcher,
-    type ValueChangeEventHandler,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+    type ValueChangeHandler,
+    type DispatchValueChange,
+}                           from '@reusable-ui/controllable'        // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
 
 // Reusable-ui states:
 import {
@@ -78,7 +78,7 @@ export interface InteractionStateProps<TDeclarativeState extends {} | null, TSta
      * - When restriction is lifted, the callback will be invoked in response to user interactions
      *   requesting to change the state.
      */
-    onStateChange ?: ValueChangeEventHandler<TState, TChangeEvent>
+    onStateChange ?: ValueChangeHandler<TState, TChangeEvent>
 }
 
 /**
@@ -100,7 +100,7 @@ export interface InteractionStateChangeDispatcherOptions<TState extends {} | nul
      * - When restriction is lifted, the callback will be invoked in response to user interactions
      *   requesting to change the state.
      */
-    onInternalChange ?: ValueChangeEventHandler<TState, TChangeEvent>
+    onInternalChange ?: ValueChangeHandler<TState, TChangeEvent>
 }
 
 /**
@@ -242,5 +242,5 @@ export interface InteractionBehaviorState<TState extends {} | null, TPhase exten
      * - When restricted, change requests are ignored and the component remains in its last state.
      * - When restriction is lifted, `dispatchStateChange()` resumes normal operation.
      */
-    dispatchStateChange : ValueChangeDispatcher<TState, TChangeEvent>
+    dispatchStateChange : DispatchValueChange<TState, TChangeEvent>
 }

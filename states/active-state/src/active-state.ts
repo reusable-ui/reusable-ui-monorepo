@@ -34,8 +34,8 @@ import {
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeDispatcher,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+    type DispatchValueChange,
+}                           from '@reusable-ui/controllable'        // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
 
 // Reusable-ui states:
 import {
@@ -141,7 +141,7 @@ export const useActiveState = (props: ActiveStateProps<any> & { defaultActive?: 
  * @param options - Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for activation change requests.
  */
-export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent> & { defaultActive?: never }, options?: ActiveChangeDispatcherOptions<TChangeEvent>) : ValueChangeDispatcher<boolean, TChangeEvent> => {
+export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent> & { defaultActive?: never }, options?: ActiveChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<boolean, TChangeEvent> => {
     return useInteractionStateChangeDispatcher<boolean, TChangeEvent>(
         // Props:
         { onStateChange: props.onActiveChange },
@@ -346,7 +346,7 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
  * @param options - An optional configuration for customizing activate/deactivate behavior.
  * @returns A tuple of the resolved active/inactive state and a dispatcher for requesting changes.
  */
-export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent>, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
+export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent>, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>): [boolean, DispatchValueChange<boolean, TChangeEvent>] => {
     // Extract options:
     const {
         defaultActive : fallbackState,
@@ -401,5 +401,5 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
         
         // Definition:
         activeBehaviorStateDefinition,
-    ) satisfies [boolean, ValueChangeDispatcher<boolean, TChangeEvent>];
+    ) satisfies [boolean, DispatchValueChange<boolean, TChangeEvent>];
 };

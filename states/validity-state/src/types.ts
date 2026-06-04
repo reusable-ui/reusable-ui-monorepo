@@ -18,8 +18,8 @@ import {
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeEventHandler,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+    type ValueChangeHandler,
+}                           from '@reusable-ui/controllable'        // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
 
 // Reusable-ui states:
 import {
@@ -124,32 +124,32 @@ export interface ValidityStateProps
     /**
      * Called when the validating transition begins.
      */
-    onValidatingStart   ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onValidatingStart   ?: ValueChangeHandler<ValidityPhase, unknown>
     
     /**
      * Called when the validating transition completes.
      */
-    onValidatingEnd     ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onValidatingEnd     ?: ValueChangeHandler<ValidityPhase, unknown>
     
     /**
      * Called when the invalidating transition begins.
      */
-    onInvalidatingStart ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onInvalidatingStart ?: ValueChangeHandler<ValidityPhase, unknown>
     
     /**
      * Called when the invalidating transition completes.
      */
-    onInvalidatingEnd   ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onInvalidatingEnd   ?: ValueChangeHandler<ValidityPhase, unknown>
     
     /**
      * Called when the unvalidating transition begins.
      */
-    onUnvalidatingStart ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onUnvalidatingStart ?: ValueChangeHandler<ValidityPhase, unknown>
     
     /**
      * Called when the unvalidating transition completes.
      */
-    onUnvalidatingEnd   ?: ValueChangeEventHandler<ValidityPhase, unknown>
+    onUnvalidatingEnd   ?: ValueChangeHandler<ValidityPhase, unknown>
 }
 
 /**

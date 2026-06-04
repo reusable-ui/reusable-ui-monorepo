@@ -1,7 +1,7 @@
 import React from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { ReadOnlyStateTest } from './ReadOnlyStateTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 import { ReadOnlyPhase } from '../dist/index.js'
 
 
@@ -412,24 +412,24 @@ test.describe('useReadOnlyBehaviorState (phase events)', () => {
             
             // Handlers:
             let lastEvent : unknown | undefined = undefined;
-            const handleReadOnlyUpdate : ValueChangeEventHandler<boolean, unknown> = (newReadOnly, event) => {
+            const handleReadOnlyUpdate : ValueChangeHandler<boolean, unknown> = (newReadOnly, event) => {
                 lastEvent = event;
             };
             
             let lastReadOnlyPhase : ReadOnlyPhase | null = null;
-            const handleThawingStart : ValueChangeEventHandler<ReadOnlyPhase, unknown> = (readOnlyPhase) => {
+            const handleThawingStart : ValueChangeHandler<ReadOnlyPhase, unknown> = (readOnlyPhase) => {
                 expect(readOnlyPhase).toBe('thawing');
                 lastReadOnlyPhase = readOnlyPhase;
             };
-            const handleThawingEnd : ValueChangeEventHandler<ReadOnlyPhase, unknown> = (readOnlyPhase) => {
+            const handleThawingEnd : ValueChangeHandler<ReadOnlyPhase, unknown> = (readOnlyPhase) => {
                 expect(readOnlyPhase).toBe('editable');
                 lastReadOnlyPhase = readOnlyPhase;
             };
-            const handleFreezingStart : ValueChangeEventHandler<ReadOnlyPhase, unknown> = (readOnlyPhase) => {
+            const handleFreezingStart : ValueChangeHandler<ReadOnlyPhase, unknown> = (readOnlyPhase) => {
                 expect(readOnlyPhase).toBe('freezing');
                 lastReadOnlyPhase = readOnlyPhase;
             };
-            const handleFreezingEnd : ValueChangeEventHandler<ReadOnlyPhase, unknown> = (readOnlyPhase) => {
+            const handleFreezingEnd : ValueChangeHandler<ReadOnlyPhase, unknown> = (readOnlyPhase) => {
                 expect(readOnlyPhase).toBe('readonly');
                 lastReadOnlyPhase = readOnlyPhase;
             };

@@ -1,7 +1,7 @@
 import React, { type AnimationEventHandler } from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { FocusStateTest } from './FocusStateTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 
 
 
@@ -389,7 +389,7 @@ test.describe('useFocusBehaviorState - animation', () => {
             
             let lastNewFocus : boolean | null | undefined = undefined;
             let lastEvent       : unknown | undefined = undefined;
-            const handleFocusUpdate : ValueChangeEventHandler<boolean | null, unknown> = (newFocus, event) => {
+            const handleFocusUpdate : ValueChangeHandler<boolean | null, unknown> = (newFocus, event) => {
                 lastNewFocus = newFocus;
                 lastEvent = event;
             };

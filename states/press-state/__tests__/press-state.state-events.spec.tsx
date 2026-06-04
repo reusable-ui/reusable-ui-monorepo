@@ -1,7 +1,7 @@
 import React from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { PressStateTest } from './PressStateTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 import { PressPhase } from '../dist/index.js'
 
 
@@ -366,25 +366,25 @@ test.describe('usePressBehaviorState (phase events)', () => {
             // Handlers:
             let lastNewPress : boolean | null | undefined = undefined;
             let lastEvent       : unknown | undefined = undefined;
-            const handlePressUpdate : ValueChangeEventHandler<boolean | null, unknown> = (newPress, event) => {
+            const handlePressUpdate : ValueChangeHandler<boolean | null, unknown> = (newPress, event) => {
                 lastNewPress = newPress;
                 lastEvent = event;
             };
             
             let lastPressPhase : PressPhase | null = null;
-            const handlePressingStart : ValueChangeEventHandler<PressPhase, unknown> = (pressPhase) => {
+            const handlePressingStart : ValueChangeHandler<PressPhase, unknown> = (pressPhase) => {
                 expect(pressPhase).toBe('pressing');
                 lastPressPhase = pressPhase;
             };
-            const handlePressingEnd : ValueChangeEventHandler<PressPhase, unknown> = (pressPhase) => {
+            const handlePressingEnd : ValueChangeHandler<PressPhase, unknown> = (pressPhase) => {
                 expect(pressPhase).toBe('pressed');
                 lastPressPhase = pressPhase;
             };
-            const handleReleasingStart : ValueChangeEventHandler<PressPhase, unknown> = (pressPhase) => {
+            const handleReleasingStart : ValueChangeHandler<PressPhase, unknown> = (pressPhase) => {
                 expect(pressPhase).toBe('releasing');
                 lastPressPhase = pressPhase;
             };
-            const handleReleasingEnd : ValueChangeEventHandler<PressPhase, unknown> = (pressPhase) => {
+            const handleReleasingEnd : ValueChangeHandler<PressPhase, unknown> = (pressPhase) => {
                 expect(pressPhase).toBe('released');
                 lastPressPhase = pressPhase;
             };

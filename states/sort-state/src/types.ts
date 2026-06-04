@@ -26,8 +26,8 @@ import {
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeEventHandler,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+    type ValueChangeHandler,
+}                           from '@reusable-ui/controllable'        // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
 
 // Reusable-ui states:
 import {
@@ -145,7 +145,7 @@ export interface SortStateProps<TItemElement extends Element = HTMLElement, TSor
      * In such cases, `onStagedSortDataClear()` ensures the staged data is reset reliably,
      * regardless of how the commit logic is implemented.
      */
-    onStagedSortDataClear ?: ValueChangeEventHandler<undefined, unknown>
+    onStagedSortDataClear ?: ValueChangeHandler<undefined, unknown>
     
     /**
      * Commits the staged sort data into the committed state (the authoritative state that renders the sortable items).

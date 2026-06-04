@@ -1,7 +1,7 @@
 import React, { type AnimationEventHandler, MouseEvent as ReactMouseEvent } from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { CollapseStateTest } from './CollapseStateTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 
 
 
@@ -734,7 +734,7 @@ test.describe('useCollapseBehaviorState - controlled mode', () => {
             
             let lastNewExpanded : boolean | undefined = undefined;
             let lastEvent       : ReactMouseEvent<HTMLButtonElement, MouseEvent> | undefined = undefined;
-            const handleExpandedChange : ValueChangeEventHandler<boolean, ReactMouseEvent<HTMLButtonElement, MouseEvent>> = (newExpanded, event) => {
+            const handleExpandedChange : ValueChangeHandler<boolean, ReactMouseEvent<HTMLButtonElement, MouseEvent>> = (newExpanded, event) => {
                 lastNewExpanded = newExpanded;
                 lastEvent = event;
                 

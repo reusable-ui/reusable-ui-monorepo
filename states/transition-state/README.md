@@ -83,7 +83,7 @@ import {
     type TransitionBehaviorStateDefinition,
     type TransitionBehaviorState,
 } from '@reusable-ui/transition-state'
-import { type ValueChangeEventHandler } from '@reusable-ui/events'
+import { type ValueChangeHandler } from '@reusable-ui/controllable'
 
 /**
  * Example implementation of a locked/unlocked state with animation lifecycle integration.
@@ -105,7 +105,7 @@ export interface LockedStateProps {
     locked         ?: boolean | 'auto'
     
     /** Synchronizes companion components whenever the resolved locked state changes. */
-    onLockedUpdate ?: ValueChangeEventHandler<boolean, unknown>
+    onLockedUpdate ?: ValueChangeHandler<boolean, unknown>
 }
 
 /** Options for customizing locked state behavior and animation lifecycle. */
@@ -294,7 +294,7 @@ import {
     type TransitionBehaviorStateDefinition,
     type TransitionBehaviorState,
 } from '@reusable-ui/transition-state'
-import { type ValueChangeEventHandler } from '@reusable-ui/events'
+import { type ValueChangeHandler } from '@reusable-ui/controllable'
 
 /**
  * Example implementation of an online/offline state with animation lifecycle integration.
@@ -316,7 +316,7 @@ export interface OnlineStateProps {
     online         ?: boolean | 'auto'
     
     /** Synchronizes companion components whenever the resolved online state changes. */
-    onOnlineUpdate ?: ValueChangeEventHandler<boolean, unknown>
+    onOnlineUpdate ?: ValueChangeHandler<boolean, unknown>
 }
 
 /** Options for customizing online state behavior and animation lifecycle. */
@@ -544,7 +544,7 @@ import {
     type TransitionBehaviorState,
 } from '@reusable-ui/transition-state'
 import { useStableCallback } from '@reusable-ui/callbacks'
-import { type ValueChangeDispatcher, type ValueChangeEventHandler } from '@reusable-ui/events'
+import { type ValueChangeHandler, type DispatchValueChange } from '@reusable-ui/controllable'
 import { useDisabledState } from '@reusable-ui/disabled-state'
 import { useReadOnlyState } from '@reusable-ui/read-only-state'
 
@@ -573,13 +573,13 @@ export interface SelectedStateProps<TChangeEvent = unknown> {
     selected         ?: boolean | 'auto'
     
     /** Handles user-initiated requests to change the selected state. */
-    onSelectedChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
+    onSelectedChange ?: ValueChangeHandler<boolean, TChangeEvent>
 }
 
 /** Options for customizing the selected change dispatcher behavior. */
 export interface SelectedChangeDispatcherOptions<TChangeEvent = unknown> {
     /** Optional callback invoked when an internal state update should occur. */
-    onInternalChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
+    onInternalChange ?: ValueChangeHandler<boolean, TChangeEvent>
 }
 
 /** Options for customizing selected state behavior and animation lifecycle. */
@@ -642,7 +642,7 @@ export interface SelectedBehaviorState<TElement extends Element = HTMLElement, T
     selectedClassname      : SelectedClassname
     
     /** Requests a change to the selected state. */
-    dispatchSelectedChange : ValueChangeDispatcher<boolean, TChangeEvent>
+    dispatchSelectedChange : DispatchValueChange<boolean, TChangeEvent>
 }
 
 /**
@@ -781,14 +781,14 @@ const resolveSelectedTransitionClassname = ({ transitionPhase }: ResolveTransiti
 };
 
 /** Creates a stable dispatcher for requesting a change to the selected state. */
-export const useSelectedStateChangeDispatcher = <TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent> & { defaultSelected?: never }, options?: SelectedChangeDispatcherOptions<TChangeEvent>) : ValueChangeDispatcher<boolean, TChangeEvent> => {
+export const useSelectedStateChangeDispatcher = <TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent> & { defaultSelected?: never }, options?: SelectedChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<boolean, TChangeEvent> => {
     // Resolve whether the component is in a restricted state:
     const isDisabled   = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     const isReadonly   = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);
     const isRestricted = isDisabled || isReadonly;
     
     // A stable dispatcher for selection change requests:
-    const dispatchStateChange : ValueChangeDispatcher<boolean, TChangeEvent> = useStableCallback((newState: boolean, event: TChangeEvent): void => {
+    const dispatchStateChange : DispatchValueChange<boolean, TChangeEvent> = useStableCallback((newState: boolean, event: TChangeEvent): void => {
         // Halt interaction lifecycle when the component is in a restricted state (interaction blocked):
         if (isRestricted) return;
         

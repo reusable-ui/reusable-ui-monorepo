@@ -1,7 +1,7 @@
 import React from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { DisabledStateTest } from './DisabledStateTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 import { DisabledPhase } from '../dist/index.js'
 
 
@@ -412,24 +412,24 @@ test.describe('useDisabledBehaviorState (phase events)', () => {
             
             // Handlers:
             let lastEvent : unknown | undefined = undefined;
-            const handleDisabledUpdate : ValueChangeEventHandler<boolean, unknown> = (newDisabled, event) => {
+            const handleDisabledUpdate : ValueChangeHandler<boolean, unknown> = (newDisabled, event) => {
                 lastEvent = event;
             };
             
             let lastDisabledPhase : DisabledPhase | null = null;
-            const handleEnablingStart : ValueChangeEventHandler<DisabledPhase, unknown> = (disabledPhase) => {
+            const handleEnablingStart : ValueChangeHandler<DisabledPhase, unknown> = (disabledPhase) => {
                 expect(disabledPhase).toBe('enabling');
                 lastDisabledPhase = disabledPhase;
             };
-            const handleEnablingEnd : ValueChangeEventHandler<DisabledPhase, unknown> = (disabledPhase) => {
+            const handleEnablingEnd : ValueChangeHandler<DisabledPhase, unknown> = (disabledPhase) => {
                 expect(disabledPhase).toBe('enabled');
                 lastDisabledPhase = disabledPhase;
             };
-            const handleDisablingStart : ValueChangeEventHandler<DisabledPhase, unknown> = (disabledPhase) => {
+            const handleDisablingStart : ValueChangeHandler<DisabledPhase, unknown> = (disabledPhase) => {
                 expect(disabledPhase).toBe('disabling');
                 lastDisabledPhase = disabledPhase;
             };
-            const handleDisablingEnd : ValueChangeEventHandler<DisabledPhase, unknown> = (disabledPhase) => {
+            const handleDisablingEnd : ValueChangeHandler<DisabledPhase, unknown> = (disabledPhase) => {
                 expect(disabledPhase).toBe('disabled');
                 lastDisabledPhase = disabledPhase;
             };

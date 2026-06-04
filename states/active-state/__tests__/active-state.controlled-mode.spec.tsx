@@ -2,7 +2,7 @@ import React, { type AnimationEventHandler, MouseEvent as ReactMouseEvent } from
 import { test, expect } from '@playwright/experimental-ct-react';
 import { ActiveStateTest } from './ActiveStateTest.js';
 import { ActiveStateWithContextTest } from './ActiveStateWithContextTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 
 
 
@@ -1088,7 +1088,7 @@ test.describe('useActiveBehaviorState - controlled mode', () => {
             
             let lastNewActive : boolean | undefined = undefined;
             let lastEvent     : ReactMouseEvent<HTMLButtonElement, MouseEvent> | undefined = undefined;
-            const handleActiveChange : ValueChangeEventHandler<boolean, ReactMouseEvent<HTMLButtonElement, MouseEvent>> = (newActive, event) => {
+            const handleActiveChange : ValueChangeHandler<boolean, ReactMouseEvent<HTMLButtonElement, MouseEvent>> = (newActive, event) => {
                 lastNewActive = newActive;
                 lastEvent = event;
                 

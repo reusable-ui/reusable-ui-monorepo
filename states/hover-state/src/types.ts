@@ -25,8 +25,8 @@ import {
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeEventHandler,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+    type ValueChangeHandler,
+}                           from '@reusable-ui/controllable'        // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
 
 // Reusable-ui states:
 import {
@@ -108,22 +108,22 @@ export interface HoverStateProps
     /**
      * Called when the hovering transition begins.
      */
-    onHoveringStart   ?: ValueChangeEventHandler<HoverPhase, unknown>
+    onHoveringStart   ?: ValueChangeHandler<HoverPhase, unknown>
     
     /**
      * Called when the hovering transition completes.
      */
-    onHoveringEnd     ?: ValueChangeEventHandler<HoverPhase, unknown>
+    onHoveringEnd     ?: ValueChangeHandler<HoverPhase, unknown>
     
     /**
      * Called when the unhovering transition begins.
      */
-    onUnhoveringStart ?: ValueChangeEventHandler<HoverPhase, unknown>
+    onUnhoveringStart ?: ValueChangeHandler<HoverPhase, unknown>
     
     /**
      * Called when the unhovering transition completes.
      */
-    onUnhoveringEnd   ?: ValueChangeEventHandler<HoverPhase, unknown>
+    onUnhoveringEnd   ?: ValueChangeHandler<HoverPhase, unknown>
 }
 
 /**

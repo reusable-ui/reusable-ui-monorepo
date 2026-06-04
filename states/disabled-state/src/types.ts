@@ -18,8 +18,8 @@ import {
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeEventHandler,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+    type ValueChangeHandler,
+}                           from '@reusable-ui/controllable'        // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
 
 // Reusable-ui states:
 import {
@@ -82,22 +82,22 @@ export interface DisabledStateProps
     /**
      * Called when the enabling transition begins.
      */
-    onEnablingStart  ?: ValueChangeEventHandler<DisabledPhase, unknown>
+    onEnablingStart  ?: ValueChangeHandler<DisabledPhase, unknown>
     
     /**
      * Called when the enabling transition completes.
      */
-    onEnablingEnd    ?: ValueChangeEventHandler<DisabledPhase, unknown>
+    onEnablingEnd    ?: ValueChangeHandler<DisabledPhase, unknown>
     
     /**
      * Called when the disabling transition begins.
      */
-    onDisablingStart ?: ValueChangeEventHandler<DisabledPhase, unknown>
+    onDisablingStart ?: ValueChangeHandler<DisabledPhase, unknown>
     
     /**
      * Called when the disabling transition completes.
      */
-    onDisablingEnd   ?: ValueChangeEventHandler<DisabledPhase, unknown>
+    onDisablingEnd   ?: ValueChangeHandler<DisabledPhase, unknown>
 }
 
 /**

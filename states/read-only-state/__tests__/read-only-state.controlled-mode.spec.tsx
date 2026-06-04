@@ -2,7 +2,7 @@ import React, { type AnimationEventHandler } from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { ReadOnlyStateTest } from './ReadOnlyStateTest.js';
 import { ReadOnlyStateWithContextTest } from './ReadOnlyStateWithContextTest.js'
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 
 
 
@@ -782,7 +782,7 @@ test.describe('useReadOnlyBehaviorState - controlled mode', () => {
             
             let lastNewReadOnly : boolean | undefined = undefined;
             let lastEvent       : unknown | undefined = undefined;
-            const handleReadOnlyUpdate : ValueChangeEventHandler<boolean, unknown> = (newReadOnly, event) => {
+            const handleReadOnlyUpdate : ValueChangeHandler<boolean, unknown> = (newReadOnly, event) => {
                 lastNewReadOnly = newReadOnly;
                 lastEvent = event;
             };

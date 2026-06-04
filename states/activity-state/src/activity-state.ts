@@ -36,8 +36,8 @@ import {
 }                           from '@reusable-ui/timers'              // A collection of reusable timing utilities for UI components.
 import {
     // Hooks:
-    useControllableValueChange,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+    useControlledValue,
+}                           from '@reusable-ui/controllable'        // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
 
 // Reusable-ui states:
 import {
@@ -135,10 +135,7 @@ export const useActivityBehaviorState = <
     // States and flags:
     
     // Controlled activity state:
-    const {
-        value               : driverState,
-        dispatchValueChange : requestStopOrChange,
-    } = useControllableValueChange<TState, AnimationEvent>({
+    const [driverState, requestStopOrChange] = useControlledValue<TState, AnimationEvent>({
         value               : effectiveState,
         onValueChange       : onStateComplete,
     });

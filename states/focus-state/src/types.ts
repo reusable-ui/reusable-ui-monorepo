@@ -26,8 +26,8 @@ import {
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeEventHandler,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+    type ValueChangeHandler,
+}                           from '@reusable-ui/controllable'        // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
 
 // Reusable-ui states:
 import {
@@ -113,22 +113,22 @@ export interface FocusStateProps
     /**
      * Called when the focusing transition begins.
      */
-    onFocusingStart ?: ValueChangeEventHandler<FocusPhase, unknown>
+    onFocusingStart ?: ValueChangeHandler<FocusPhase, unknown>
     
     /**
      * Called when the focusing transition completes.
      */
-    onFocusingEnd   ?: ValueChangeEventHandler<FocusPhase, unknown>
+    onFocusingEnd   ?: ValueChangeHandler<FocusPhase, unknown>
     
     /**
      * Called when the blurring transition begins.
      */
-    onBlurringStart ?: ValueChangeEventHandler<FocusPhase, unknown>
+    onBlurringStart ?: ValueChangeHandler<FocusPhase, unknown>
     
     /**
      * Called when the blurring transition completes.
      */
-    onBlurringEnd   ?: ValueChangeEventHandler<FocusPhase, unknown>
+    onBlurringEnd   ?: ValueChangeHandler<FocusPhase, unknown>
 }
 
 /**

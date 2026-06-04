@@ -18,8 +18,8 @@ import {
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeEventHandler,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+    type ValueChangeHandler,
+}                           from '@reusable-ui/controllable'        // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
 
 // Reusable-ui states:
 import {
@@ -95,22 +95,22 @@ export interface ActiveStateProps<TChangeEvent = unknown>
     /**
      * Called when the activating transition begins.
      */
-    onActivatingStart   ?: ValueChangeEventHandler<ActivePhase, unknown>
+    onActivatingStart   ?: ValueChangeHandler<ActivePhase, unknown>
     
     /**
      * Called when the activating transition completes.
      */
-    onActivatingEnd     ?: ValueChangeEventHandler<ActivePhase, unknown>
+    onActivatingEnd     ?: ValueChangeHandler<ActivePhase, unknown>
     
     /**
      * Called when the deactivating transition begins.
      */
-    onDeactivatingStart ?: ValueChangeEventHandler<ActivePhase, unknown>
+    onDeactivatingStart ?: ValueChangeHandler<ActivePhase, unknown>
     
     /**
      * Called when the deactivating transition completes.
      */
-    onDeactivatingEnd   ?: ValueChangeEventHandler<ActivePhase, unknown>
+    onDeactivatingEnd   ?: ValueChangeHandler<ActivePhase, unknown>
 }
 
 /**

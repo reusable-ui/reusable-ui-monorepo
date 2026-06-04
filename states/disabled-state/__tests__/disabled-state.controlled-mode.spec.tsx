@@ -2,7 +2,7 @@ import React, { type AnimationEventHandler } from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { DisabledStateTest } from './DisabledStateTest.js';
 import { DisabledStateWithContextTest } from './DisabledStateWithContextTest.js'
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 
 
 
@@ -782,7 +782,7 @@ test.describe('useDisabledBehaviorState - controlled mode', () => {
             
             let lastNewDisabled : boolean | undefined = undefined;
             let lastEvent       : unknown | undefined = undefined;
-            const handleDisabledUpdate : ValueChangeEventHandler<boolean, unknown> = (newDisabled, event) => {
+            const handleDisabledUpdate : ValueChangeHandler<boolean, unknown> = (newDisabled, event) => {
                 lastNewDisabled = newDisabled;
                 lastEvent = event;
             };

@@ -1,7 +1,7 @@
 import React from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { DragStateTest } from './DragStateTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 import { DragPhase } from '../dist/index.js'
 
 
@@ -366,25 +366,25 @@ test.describe('useDragBehaviorState (phase events)', () => {
             // Handlers:
             let lastNewDrag : boolean | null | undefined = undefined;
             let lastEvent       : unknown | undefined = undefined;
-            const handleDragUpdate : ValueChangeEventHandler<boolean | null, unknown> = (newDrag, event) => {
+            const handleDragUpdate : ValueChangeHandler<boolean | null, unknown> = (newDrag, event) => {
                 lastNewDrag = newDrag;
                 lastEvent = event;
             };
             
             let lastDragPhase : DragPhase | null = null;
-            const handleDraggingStart : ValueChangeEventHandler<DragPhase, unknown> = (dragPhase) => {
+            const handleDraggingStart : ValueChangeHandler<DragPhase, unknown> = (dragPhase) => {
                 expect(dragPhase).toBe('dragging');
                 lastDragPhase = dragPhase;
             };
-            const handleDraggingEnd : ValueChangeEventHandler<DragPhase, unknown> = (dragPhase) => {
+            const handleDraggingEnd : ValueChangeHandler<DragPhase, unknown> = (dragPhase) => {
                 expect(dragPhase).toBe('dragged');
                 lastDragPhase = dragPhase;
             };
-            const handleDroppingStart : ValueChangeEventHandler<DragPhase, unknown> = (dragPhase) => {
+            const handleDroppingStart : ValueChangeHandler<DragPhase, unknown> = (dragPhase) => {
                 expect(dragPhase).toBe('dropping');
                 lastDragPhase = dragPhase;
             };
-            const handleDroppingEnd : ValueChangeEventHandler<DragPhase, unknown> = (dragPhase) => {
+            const handleDroppingEnd : ValueChangeHandler<DragPhase, unknown> = (dragPhase) => {
                 expect(dragPhase).toBe('dropped');
                 lastDragPhase = dragPhase;
             };

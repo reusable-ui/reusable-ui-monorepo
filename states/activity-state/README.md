@@ -70,7 +70,7 @@ import {
     type ActivityBehaviorState,
 } from '@reusable-ui/activity-state'
 import { type AnimationEvent } from 'react'
-import { type ValueChangeEventHandler } from '@reusable-ui/events'
+import { type ValueChangeHandler } from '@reusable-ui/controllable'
 
 /** Props for controlling busy state of a component. */
 export interface BusyStateProps {
@@ -83,7 +83,7 @@ export interface BusyStateProps {
     busy           ?: boolean | 'auto'
     
     /** Signals a request to update the external state driver after completing a busy animation cycle. */
-    onBusyComplete ?: ValueChangeEventHandler<boolean, AnimationEvent>
+    onBusyComplete ?: ValueChangeHandler<boolean, AnimationEvent>
 }
 
 /** Options for customizing busy state behavior and animation lifecycle. */

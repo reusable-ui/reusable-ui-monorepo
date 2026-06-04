@@ -1,7 +1,7 @@
 import React from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { HoverStateTest } from './HoverStateTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 import { HoverPhase } from '../dist/index.js'
 
 
@@ -366,25 +366,25 @@ test.describe('useHoverBehaviorState (phase events)', () => {
             // Handlers:
             let lastNewHover : boolean | null | undefined = undefined;
             let lastEvent       : unknown | undefined = undefined;
-            const handleHoverUpdate : ValueChangeEventHandler<boolean | null, unknown> = (newHover, event) => {
+            const handleHoverUpdate : ValueChangeHandler<boolean | null, unknown> = (newHover, event) => {
                 lastNewHover = newHover;
                 lastEvent = event;
             };
             
             let lastHoverPhase : HoverPhase | null = null;
-            const handleHoveringStart : ValueChangeEventHandler<HoverPhase, unknown> = (hoverPhase) => {
+            const handleHoveringStart : ValueChangeHandler<HoverPhase, unknown> = (hoverPhase) => {
                 expect(hoverPhase).toBe('hovering');
                 lastHoverPhase = hoverPhase;
             };
-            const handleHoveringEnd : ValueChangeEventHandler<HoverPhase, unknown> = (hoverPhase) => {
+            const handleHoveringEnd : ValueChangeHandler<HoverPhase, unknown> = (hoverPhase) => {
                 expect(hoverPhase).toBe('hovered');
                 lastHoverPhase = hoverPhase;
             };
-            const handleUnhoveringStart : ValueChangeEventHandler<HoverPhase, unknown> = (hoverPhase) => {
+            const handleUnhoveringStart : ValueChangeHandler<HoverPhase, unknown> = (hoverPhase) => {
                 expect(hoverPhase).toBe('unhovering');
                 lastHoverPhase = hoverPhase;
             };
-            const handleUnhoveringEnd : ValueChangeEventHandler<HoverPhase, unknown> = (hoverPhase) => {
+            const handleUnhoveringEnd : ValueChangeHandler<HoverPhase, unknown> = (hoverPhase) => {
                 expect(hoverPhase).toBe('unhovered');
                 lastHoverPhase = hoverPhase;
             };

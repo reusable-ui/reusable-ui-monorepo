@@ -7,8 +7,8 @@ import {
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeEventHandler,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+    type ValueChangeHandler,
+}                           from '@reusable-ui/controllable'        // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
 import {
     // Types:
     type AnimationStateOptions,
@@ -50,7 +50,7 @@ export interface ActivityStateProps<TState extends {} | null> {
      * The parent may choose to honor or ignore this request.
      * If ignored, the current animation will repeat.
      */
-    onStateComplete ?: ValueChangeEventHandler<TState, AnimationEvent>
+    onStateComplete ?: ValueChangeHandler<TState, AnimationEvent>
 }
 
 /**

@@ -50,7 +50,7 @@
     "@cssfn/core": "^4.0.0",
     "@reusable-ui/animation-state": "^7.0.0",
     "@reusable-ui/callbacks": "^7.0.0",
-    "@reusable-ui/events": "^7.0.0",
+    "@reusable-ui/controllable": "^7.0.0",
     "@reusable-ui/timers": "^7.0.0"
   },
   "peerDependencies": {

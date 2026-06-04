@@ -18,8 +18,8 @@ import {
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeEventHandler,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+    type ValueChangeHandler,
+}                           from '@reusable-ui/controllable'        // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
 
 // Reusable-ui states:
 import {
@@ -82,22 +82,22 @@ export interface ReadOnlyStateProps
     /**
      * Called when the thawing transition begins.
      */
-    onThawingStart   ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
+    onThawingStart   ?: ValueChangeHandler<ReadOnlyPhase, unknown>
     
     /**
      * Called when the thawing transition completes.
      */
-    onThawingEnd     ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
+    onThawingEnd     ?: ValueChangeHandler<ReadOnlyPhase, unknown>
     
     /**
      * Called when the freezing transition begins.
      */
-    onFreezingStart  ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
+    onFreezingStart  ?: ValueChangeHandler<ReadOnlyPhase, unknown>
     
     /**
      * Called when the freezing transition completes.
      */
-    onFreezingEnd    ?: ValueChangeEventHandler<ReadOnlyPhase, unknown>
+    onFreezingEnd    ?: ValueChangeHandler<ReadOnlyPhase, unknown>
 }
 
 /**

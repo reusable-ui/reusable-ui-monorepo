@@ -25,8 +25,8 @@ import {
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeEventHandler,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+    type ValueChangeHandler,
+}                           from '@reusable-ui/controllable'        // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
 
 // Reusable-ui states:
 import {
@@ -111,22 +111,22 @@ export interface DragStateProps
     /**
      * Called when the dragging transition begins.
      */
-    onDraggingStart ?: ValueChangeEventHandler<DragPhase, unknown>
+    onDraggingStart ?: ValueChangeHandler<DragPhase, unknown>
     
     /**
      * Called when the dragging transition completes.
      */
-    onDraggingEnd   ?: ValueChangeEventHandler<DragPhase, unknown>
+    onDraggingEnd   ?: ValueChangeHandler<DragPhase, unknown>
     
     /**
      * Called when the dropping transition begins.
      */
-    onDroppingStart ?: ValueChangeEventHandler<DragPhase, unknown>
+    onDroppingStart ?: ValueChangeHandler<DragPhase, unknown>
     
     /**
      * Called when the dropping transition completes.
      */
-    onDroppingEnd   ?: ValueChangeEventHandler<DragPhase, unknown>
+    onDroppingEnd   ?: ValueChangeHandler<DragPhase, unknown>
 }
 
 /**

@@ -76,7 +76,7 @@ import {
     type FeedbackBehaviorStateDefinition,
     type FeedbackBehaviorState,
 } from '@reusable-ui/feedback-state'
-import { type ValueChangeEventHandler } from '@reusable-ui/events'
+import { type ValueChangeHandler } from '@reusable-ui/controllable'
 
 /**
  * Example implementation of an online/offline state with animation lifecycle integration.
@@ -98,7 +98,7 @@ export interface OnlineStateProps {
     online         ?: boolean | 'auto'
     
     /** Synchronizes companion components whenever the resolved online state changes. */
-    onOnlineUpdate ?: ValueChangeEventHandler<boolean, unknown>
+    onOnlineUpdate ?: ValueChangeHandler<boolean, unknown>
 }
 
 /** Options for customizing online state behavior and animation lifecycle. */
@@ -295,7 +295,7 @@ import {
     type FeedbackBehaviorStateDefinition,
     type FeedbackBehaviorState,
 } from '@reusable-ui/feedback-state'
-import { type ValueChangeEventHandler } from '@reusable-ui/events'
+import { type ValueChangeHandler } from '@reusable-ui/controllable'
 
 /**
  * Example implementation of a locked/unlocked state with animation lifecycle integration.
@@ -317,7 +317,7 @@ export interface LockedStateProps {
     locked         ?: boolean | 'auto'
     
     /** Synchronizes companion components whenever the resolved locked state changes. */
-    onLockedUpdate ?: ValueChangeEventHandler<boolean, unknown>
+    onLockedUpdate ?: ValueChangeHandler<boolean, unknown>
 }
 
 /** Options for customizing locked state behavior and animation lifecycle. */

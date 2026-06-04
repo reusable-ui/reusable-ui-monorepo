@@ -2,7 +2,7 @@ import React from 'react'
 import {
     type ReadOnlyStateTestProps,
     ReadOnlyStateTest,
-} from "./ReadOnlyStateTest";
+} from './ReadOnlyStateTest.js';
 import {
     ReadOnlyStateProvider,
 } from '../dist/index.js'

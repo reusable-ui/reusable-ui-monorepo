@@ -25,8 +25,8 @@ import {
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeEventHandler,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+    type ValueChangeHandler,
+}                           from '@reusable-ui/controllable'        // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
 
 // Reusable-ui states:
 import {
@@ -112,22 +112,22 @@ export interface PressStateProps
     /**
      * Called when the pressing transition begins.
      */
-    onPressingStart  ?: ValueChangeEventHandler<PressPhase, unknown>
+    onPressingStart  ?: ValueChangeHandler<PressPhase, unknown>
     
     /**
      * Called when the pressing transition completes.
      */
-    onPressingEnd    ?: ValueChangeEventHandler<PressPhase, unknown>
+    onPressingEnd    ?: ValueChangeHandler<PressPhase, unknown>
     
     /**
      * Called when the releasing transition begins.
      */
-    onReleasingStart ?: ValueChangeEventHandler<PressPhase, unknown>
+    onReleasingStart ?: ValueChangeHandler<PressPhase, unknown>
     
     /**
      * Called when the releasing transition completes.
      */
-    onReleasingEnd   ?: ValueChangeEventHandler<PressPhase, unknown>
+    onReleasingEnd   ?: ValueChangeHandler<PressPhase, unknown>
 }
 
 /**

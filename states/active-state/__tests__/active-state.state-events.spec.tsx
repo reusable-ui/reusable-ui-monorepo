@@ -1,7 +1,7 @@
 import React, { MouseEvent as ReactMouseEvent } from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { ActiveStateTest } from './ActiveStateTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 import { ActivePhase } from '../dist/index.js'
 
 
@@ -409,25 +409,25 @@ test.describe('useActiveBehaviorState (phase events)', () => {
             // Handlers:
             let lastNewActive : boolean | undefined = undefined;
             let lastEvent     : ReactMouseEvent<HTMLButtonElement, MouseEvent> | undefined = undefined;
-            const handleActiveChange : ValueChangeEventHandler<boolean, ReactMouseEvent<HTMLButtonElement, MouseEvent>> = (newActive, event) => {
+            const handleActiveChange : ValueChangeHandler<boolean, ReactMouseEvent<HTMLButtonElement, MouseEvent>> = (newActive, event) => {
                 lastNewActive = newActive;
                 lastEvent = event;
             };
             
             let lastActivePhase : ActivePhase | null = null;
-            const handleActivatingStart : ValueChangeEventHandler<ActivePhase, unknown> = (activePhase) => {
+            const handleActivatingStart : ValueChangeHandler<ActivePhase, unknown> = (activePhase) => {
                 expect(activePhase).toBe('activating');
                 lastActivePhase = activePhase;
             };
-            const handleActivatingEnd : ValueChangeEventHandler<ActivePhase, unknown> = (activePhase) => {
+            const handleActivatingEnd : ValueChangeHandler<ActivePhase, unknown> = (activePhase) => {
                 expect(activePhase).toBe('active');
                 lastActivePhase = activePhase;
             };
-            const handleDeactivatingStart : ValueChangeEventHandler<ActivePhase, unknown> = (activePhase) => {
+            const handleDeactivatingStart : ValueChangeHandler<ActivePhase, unknown> = (activePhase) => {
                 expect(activePhase).toBe('deactivating');
                 lastActivePhase = activePhase;
             };
-            const handleDeactivatingEnd : ValueChangeEventHandler<ActivePhase, unknown> = (activePhase) => {
+            const handleDeactivatingEnd : ValueChangeHandler<ActivePhase, unknown> = (activePhase) => {
                 expect(activePhase).toBe('inactive');
                 lastActivePhase = activePhase;
             };

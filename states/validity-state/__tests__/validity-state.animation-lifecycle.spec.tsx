@@ -1,7 +1,7 @@
 import React, { type AnimationEventHandler } from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { ValidityStateInFormTest } from './ValidityStateInFormTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 
 
 
@@ -749,7 +749,7 @@ test.describe('useValidityBehaviorState - animation', () => {
             
             let lastNewValidity : boolean | null | undefined = undefined;
             let lastEvent       : unknown | undefined = undefined;
-            const handleValidityUpdate : ValueChangeEventHandler<boolean | null, unknown> = (newValidity, event) => {
+            const handleValidityUpdate : ValueChangeHandler<boolean | null, unknown> = (newValidity, event) => {
                 lastNewValidity = newValidity;
                 lastEvent = event;
             };

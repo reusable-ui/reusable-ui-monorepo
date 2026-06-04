@@ -1,7 +1,7 @@
 import React, { type AnimationEventHandler } from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { PressStateTest } from './PressStateTest.js';
-import { ValueChangeEventHandler } from '@reusable-ui/events';
+import { ValueChangeHandler } from '@reusable-ui/controllable';
 
 
 
@@ -389,7 +389,7 @@ test.describe('usePressBehaviorState - animation', () => {
             
             let lastNewPress : boolean | null | undefined = undefined;
             let lastEvent       : unknown | undefined = undefined;
-            const handlePressUpdate : ValueChangeEventHandler<boolean | null, unknown> = (newPress, event) => {
+            const handlePressUpdate : ValueChangeHandler<boolean | null, unknown> = (newPress, event) => {
                 lastNewPress = newPress;
                 lastEvent = event;
             };

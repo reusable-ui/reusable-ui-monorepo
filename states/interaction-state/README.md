@@ -72,7 +72,7 @@ import {
     type InteractionBehaviorStateDefinition,
     type InteractionBehaviorState,
 } from '@reusable-ui/interaction-state'
-import { type ValueChangeDispatcher, type ValueChangeEventHandler } from '@reusable-ui/events'
+import { type ValueChangeHandler, type DispatchValueChange } from '@reusable-ui/controllable'
 
 /**
  * Example implementation of an interactive selected/unselected state with animation lifecycle integration.
@@ -99,13 +99,13 @@ export interface SelectedStateProps<TChangeEvent = unknown> {
     selected         ?: boolean | 'auto'
     
     /** Handles user-initiated requests to change the selected state. */
-    onSelectedChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
+    onSelectedChange ?: ValueChangeHandler<boolean, TChangeEvent>
 }
 
 /** Options for customizing the selected change dispatcher behavior. */
 export interface SelectedChangeDispatcherOptions<TChangeEvent = unknown> {
     /** Optional callback invoked when an internal state update should occur. */
-    onInternalChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
+    onInternalChange ?: ValueChangeHandler<boolean, TChangeEvent>
 }
 
 /** Options for customizing selected state behavior and animation lifecycle. */
@@ -169,7 +169,7 @@ export interface SelectedBehaviorState<TElement extends Element = HTMLElement, T
     selectedClassname      : SelectedClassname
     
     /** Requests a change to the selected state. */
-    dispatchSelectedChange : ValueChangeDispatcher<boolean, TChangeEvent>
+    dispatchSelectedChange : DispatchValueChange<boolean, TChangeEvent>
 }
 
 /**
@@ -335,7 +335,7 @@ import {
     type ResolveEffectiveStateArgs,
     type InteractionBehaviorStateDefinition,
 } from '@reusable-ui/interaction-state'
-import { type ValueChangeDispatcher, type ValueChangeEventHandler } from '@reusable-ui/events'
+import { type ValueChangeHandler, type DispatchValueChange } from '@reusable-ui/controllable'
 
 /**
  * Example implementation of an interactive selected/unselected state **without** animation lifecycle integration.
@@ -361,13 +361,13 @@ export interface SelectedStateProps<TChangeEvent = unknown> {
     selected         ?: boolean | 'auto'
     
     /** Handles user-initiated requests to change the selected state. */
-    onSelectedChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
+    onSelectedChange ?: ValueChangeHandler<boolean, TChangeEvent>
 }
 
 /** Options for customizing the selected change dispatcher behavior. */
 export interface SelectedChangeDispatcherOptions<TChangeEvent = unknown> {
     /** Optional callback invoked when an internal state update should occur. */
-    onInternalChange ?: ValueChangeEventHandler<boolean, TChangeEvent>
+    onInternalChange ?: ValueChangeHandler<boolean, TChangeEvent>
 }
 
 /** Options for customizing selected state behavior and animation lifecycle. */
@@ -408,7 +408,7 @@ interface SelectedBehaviorStateDefinition
  * - Declarative keywords (`'auto'`) are normalized by `useSelectedState`.
  * - Provides resolved selected state and a dispatcher for interactive state changes.
  */
-export const useUncontrollableSelectedState = <TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent>, options?: SelectedStateOptions): [boolean, ValueChangeDispatcher<boolean, TChangeEvent>] => {
+export const useUncontrollableSelectedState = <TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent>, options?: SelectedStateOptions): [boolean, DispatchValueChange<boolean, TChangeEvent>] => {
     const {
         defaultSelected : fallbackState,
         ...restOptions
@@ -450,7 +450,7 @@ export const useUncontrollableSelectedState = <TChangeEvent = unknown>(props: Se
     return [
         selected,
         dispatchSelectedChange,
-    ] satisfies [boolean, ValueChangeDispatcher<boolean, TChangeEvent>];
+    ] satisfies [boolean, DispatchValueChange<boolean, TChangeEvent>];
 };
 
 /** Resolves the effective selected state, normalizing declarative keywords into concrete values. */

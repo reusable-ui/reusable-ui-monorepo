@@ -18,8 +18,8 @@ import {
 // Reusable-ui utilities:
 import {
     // Types:
-    type ValueChangeEventHandler,
-}                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
+    type ValueChangeHandler,
+}                           from '@reusable-ui/controllable'        // Provides three state-control strategies for sharing values and updates between components and their parents — controlled, uncontrolled, and controllable (hybrid).
 
 // Reusable-ui states:
 import {
@@ -86,22 +86,22 @@ export interface CollapseStateProps<TChangeEvent = unknown>
     /**
      * Called when the expanding transition begins.
      */
-    onExpandingStart  ?: ValueChangeEventHandler<ExpandPhase, unknown>
+    onExpandingStart  ?: ValueChangeHandler<ExpandPhase, unknown>
     
     /**
      * Called when the expanding transition completes.
      */
-    onExpandingEnd    ?: ValueChangeEventHandler<ExpandPhase, unknown>
+    onExpandingEnd    ?: ValueChangeHandler<ExpandPhase, unknown>
     
     /**
      * Called when the collapsing transition begins.
      */
-    onCollapsingStart ?: ValueChangeEventHandler<ExpandPhase, unknown>
+    onCollapsingStart ?: ValueChangeHandler<ExpandPhase, unknown>
     
     /**
      * Called when the collapsing transition completes.
      */
-    onCollapsingEnd   ?: ValueChangeEventHandler<ExpandPhase, unknown>
+    onCollapsingEnd   ?: ValueChangeHandler<ExpandPhase, unknown>
 }
 
 /**
