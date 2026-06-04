@@ -157,6 +157,7 @@ export default defineConfig(
         jsPlugin.configs.recommended,         // Base JS rules
         tsPlugin.configs.recommended,         // TypeScript rules
         importPlugin.flatConfigs.recommended, // Import rules
+        // importPlugin.flatConfigs.typescript, // TODO: Should be enabled
     ].flat().map((config) => ({
         ignores : [
             ...(('ignores' in config) ? (config.ignores ?? []) : []),
