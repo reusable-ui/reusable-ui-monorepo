@@ -2,7 +2,7 @@ import React, { AnimationEvent as ReactAnimationEvent, type CSSProperties, type 
 import { flushSync } from 'react-dom'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useSortEffectTestStyles } from './SortEffectTest.loader.js'
-import { type SortStateProps, type SortStateClearProps, useSortBehaviorState, usesSortState } from '@reusable-ui/sort-state'
+import { type SortStateProps, useSortBehaviorState, usesSortState } from '@reusable-ui/sort-state'
 import { useMergeEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
 import { Product } from './product-types.js'
@@ -13,7 +13,6 @@ import { initialProducts } from './dummy-products.js'
 export interface SortEffectTestProps
     extends
         SortStateProps<HTMLDivElement, Product[]>,
-        SortStateClearProps,
         Pick<React.DOMAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd'>
 {
     /**
