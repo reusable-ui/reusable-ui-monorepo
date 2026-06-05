@@ -56,7 +56,7 @@ import {
     // Hooks:
     useInteractionStateChangeDispatcher,
     useInteractionBehaviorState,
-    useUncontrollableInteractionState,
+    useInteractionController,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
@@ -332,7 +332,7 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
  * while optionally supporting uncontrolled behavior.
  * 
  * Unlike `useActiveBehaviorState()`, which resolves full lifecycle,
- * `useUncontrollableActiveState()` provides a **simplified implementation** for managing activation state and dispatching changes.
+ * `useActiveController()` provides a **simplified implementation** for managing activation state and dispatching changes.
  * 
  * - Supports both controlled and uncontrolled modes.
  * - Supports contextual override via `cascadeActive`.
@@ -346,7 +346,7 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
  * @param options - An optional configuration for customizing activate/deactivate behavior.
  * @returns A tuple of the resolved active/inactive state and a dispatcher for requesting changes.
  */
-export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent>, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>): [boolean, DispatchValueChange<boolean, TChangeEvent>] => {
+export const useActiveController = <TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent>, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>): [boolean, DispatchValueChange<boolean, TChangeEvent>] => {
     // Extract options:
     const {
         defaultActive : fallbackState,
@@ -372,7 +372,7 @@ export const useUncontrollableActiveState = <TChangeEvent = unknown>(props: Acti
     // States and flags:
     
     // Transition orchestration:
-    return useUncontrollableInteractionState<
+    return useInteractionController<
         boolean,
         boolean,
         

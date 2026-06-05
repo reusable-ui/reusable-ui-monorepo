@@ -50,7 +50,7 @@ import {
     // Hooks:
     useInteractionStateChangeDispatcher,
     useInteractionBehaviorState,
-    useUncontrollableInteractionState,
+    useInteractionController,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
@@ -317,7 +317,7 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
  * while optionally supporting uncontrolled behavior.
  * 
  * Unlike `useCollapseBehaviorState()`, which resolves full lifecycle,
- * `useUncontrollableCollapseState()` provides a **simplified implementation** for managing expansion state and dispatching changes.
+ * `useCollapseController()` provides a **simplified implementation** for managing expansion state and dispatching changes.
  * 
  * - Supports both controlled and uncontrolled modes.
  * - If `expanded` is provided, the internal state is disabled and the component becomes fully controlled.
@@ -330,7 +330,7 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
  * @param options - An optional configuration for customizing expand/collapse behavior.
  * @returns A tuple of the resolved expanded/collapsed state and a dispatcher for requesting changes.
  */
-export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: CollapseStateProps<TChangeEvent>, options?: Pick<CollapseStateOptions, 'defaultExpanded'>): [boolean, DispatchValueChange<boolean, TChangeEvent>] => {
+export const useCollapseController = <TChangeEvent = unknown>(props: CollapseStateProps<TChangeEvent>, options?: Pick<CollapseStateOptions, 'defaultExpanded'>): [boolean, DispatchValueChange<boolean, TChangeEvent>] => {
     // Extract options:
     const {
         defaultExpanded : fallbackState,
@@ -356,7 +356,7 @@ export const useUncontrollableCollapseState = <TChangeEvent = unknown>(props: Co
     // States and flags:
     
     // Transition orchestration:
-    return useUncontrollableInteractionState<
+    return useInteractionController<
         boolean,
         boolean,
         

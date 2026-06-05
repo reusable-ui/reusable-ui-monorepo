@@ -323,7 +323,7 @@ const useResolveInteractionDriverState = <TDeclarativeState extends {} | null, T
  * to a base component, while optionally supporting uncontrolled behavior.
  * 
  * Unlike `useInteractionBehaviorState()`, which includes animation lifecycle management,
- * `useUncontrollableInteractionState()` provides a **simplified implementation** that focuses solely
+ * `useInteractionController()` provides a **simplified implementation** that focuses solely
  * on controlled/uncontrolled state management without animation lifecycle.
  * 
  * **Definition parameters:**
@@ -360,7 +360,7 @@ const useResolveInteractionDriverState = <TDeclarativeState extends {} | null, T
  * - The resolved concrete interaction state.
  * - A dispatcher for requesting state changes.
  */
-export const useUncontrollableInteractionState = <
+export const useInteractionController = <
     TDeclarativeState extends {} | null,
     TState            extends TDeclarativeState,
     

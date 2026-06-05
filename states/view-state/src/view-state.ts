@@ -71,7 +71,7 @@ import {
     // Hooks:
     useInteractionStateChangeDispatcher,
     useInteractionBehaviorState,
-    useUncontrollableInteractionState,
+    useInteractionController,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
@@ -419,7 +419,7 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
  * while optionally supporting uncontrolled behavior.
  * 
  * Unlike `useViewBehaviorState()`, which resolves full lifecycle,
- * `useUncontrollableViewState()` provides a **simplified implementation** for managing view index state and dispatching changes.
+ * `useViewController()` provides a **simplified implementation** for managing view index state and dispatching changes.
  * 
  * - Supports both controlled and uncontrolled modes.
  * - If `viewIndex` is provided, the internal state is disabled and the component becomes fully controlled.
@@ -432,7 +432,7 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
  * @param options - An optional configuration for customizing view-switching behavior.
  * @returns A tuple of the resolved view index and a dispatcher for requesting changes.
  */
-export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent>, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>): [number, DispatchValueChange<number, TChangeEvent>] => {
+export const useViewController = <TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent>, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>): [number, DispatchValueChange<number, TChangeEvent>] => {
     // Extract options and assign defaults:
     const {
         defaultViewIndex : fallbackState,
@@ -458,7 +458,7 @@ export const useUncontrollableViewState = <TChangeEvent = unknown>(props: ViewSt
     // States and flags:
     
     // Transition orchestration:
-    return useUncontrollableInteractionState<
+    return useInteractionController<
         number,
         number,
         

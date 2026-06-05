@@ -122,13 +122,13 @@ Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontro
 - Always triggers `onExpandedChange`, if provided.
 - Ideal for components that **dictate** the `expanded` state externally and need a stable dispatcher without lifecycle orchestration.
 
-### `useUncontrollableCollapseState(props, options?)`
+### `useCollapseController(props, options?)`
 
 Resolves the current expanded/collapsed state and provides a dispatcher for requesting changes.
 
 This hook is intended for components that **manage** the resolved `expanded` state and **forward** it to a base component, while optionally supporting uncontrolled behavior.
 
-Unlike `useCollapseBehaviorState()`, which resolves full lifecycle, `useUncontrollableCollapseState()` provides a **simplified implementation** for managing expansion state and dispatching changes.
+Unlike `useCollapseBehaviorState()`, which resolves full lifecycle, `useCollapseController()` provides a **simplified implementation** for managing expansion state and dispatching changes.
 
 - Supports both controlled and uncontrolled modes.
 - If `expanded` is provided, the internal state is disabled and the component becomes fully controlled.

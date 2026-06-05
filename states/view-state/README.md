@@ -224,13 +224,13 @@ Unlike `useViewBehaviorState()`, which supports both controlled and uncontrolled
 - Always triggers `onViewIndexChange`, if provided.
 - Ideal for components that **dictate** the `viewIndex` value externally and need a stable dispatcher without lifecycle orchestration.
 
-### `useUncontrollableViewState(props, options?)`
+### `useViewController(props, options?)`
 
 Resolves the current view index and provides a dispatcher for requesting changes.
 
 This hook is intended for components that **manage** the resolved `viewIndex` value and **forward** it to a base component, while optionally supporting uncontrolled behavior.
 
-Unlike `useViewBehaviorState()`, which resolves full lifecycle, `useUncontrollableViewState()` provides a **simplified implementation** for managing view index state and dispatching changes.
+Unlike `useViewBehaviorState()`, which resolves full lifecycle, `useViewController()` provides a **simplified implementation** for managing view index state and dispatching changes.
 
 - Supports both controlled and uncontrolled modes.
 - If `viewIndex` is provided, the internal state is disabled and the component becomes fully controlled.

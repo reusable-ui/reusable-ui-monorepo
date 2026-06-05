@@ -297,7 +297,7 @@ The hook manages transitions between concrete states using a unified animation f
 - Once the active animation finishes, the latest intent is resumed and the corresponding transition begins.  
 - This ensures animations are never interrupted mid-flight and outdated transitions are discarded, keeping the lifecycle predictable and consistent across all specialized states.  
 
-### `useUncontrollableInteractionState(props, options, definition)`
+### `useInteractionController(props, options, definition)`
 
 Provides abstract controlled/uncontrolled interaction state *without* animation lifecycle integration.  
 Specialize it into **collapse-state**, **active-state**, or **view-state** by defining the `definition` parameter.
@@ -307,7 +307,7 @@ This hook is designed for components that **manage** a resolved interaction stat
 to a base component, while optionally supporting uncontrolled behavior.
 
 Unlike `useInteractionBehaviorState()`, which includes animation lifecycle management,
-`useUncontrollableInteractionState()` provides a **simplified implementation** that focuses solely
+`useInteractionController()` provides a **simplified implementation** that focuses solely
 on controlled/uncontrolled state management without animation lifecycle.
 
 **Definition parameters:**
@@ -330,7 +330,7 @@ In uncontrolled mode, the hook manages internal state holding normalized concret
 
 ```ts
 import {
-    useUncontrollableInteractionState,
+    useInteractionController,
     type InteractionStateOptions,
     type ResolveEffectiveStateArgs,
     type InteractionBehaviorStateDefinition,
@@ -408,7 +408,7 @@ interface SelectedBehaviorStateDefinition
  * - Declarative keywords (`'auto'`) are normalized by `useSelectedState`.
  * - Provides resolved selected state and a dispatcher for interactive state changes.
  */
-export const useUncontrollableSelectedState = <TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent>, options?: SelectedStateOptions): [boolean, DispatchValueChange<boolean, TChangeEvent>] => {
+export const useSelectedController = <TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent>, options?: SelectedStateOptions): [boolean, DispatchValueChange<boolean, TChangeEvent>] => {
     const {
         defaultSelected : fallbackState,
         ...restOptions
@@ -422,7 +422,7 @@ export const useUncontrollableSelectedState = <TChangeEvent = unknown>(props: Se
     } = props;
     
     // Transition orchestration:
-    const [selected, dispatchSelectedChange] = useUncontrollableInteractionState<
+    const [selected, dispatchSelectedChange] = useInteractionController<
         boolean | 'auto',
         boolean,
         

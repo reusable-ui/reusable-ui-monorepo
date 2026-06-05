@@ -127,13 +127,13 @@ Unlike `useActiveBehaviorState()`, which supports both controlled and uncontroll
 - Always triggers `onActiveChange`, if provided.
 - Ideal for components that **dictate** the `active` state externally and need a stable dispatcher without lifecycle orchestration.
 
-### `useUncontrollableActiveState(props, options?)`
+### `useActiveController(props, options?)`
 
 Resolves the current active/inactive state and provides a dispatcher for requesting changes.
 
 This hook is intended for components that **manage** the resolved `active` state and **forward** it to a base component, while optionally supporting uncontrolled behavior.
 
-Unlike `useActiveBehaviorState()`, which resolves full lifecycle, `useUncontrollableActiveState()` provides a **simplified implementation** for managing activation state and dispatching changes.
+Unlike `useActiveBehaviorState()`, which resolves full lifecycle, `useActiveController()` provides a **simplified implementation** for managing activation state and dispatching changes.
 
 - Supports both controlled and uncontrolled modes.
 - Supports contextual override via `cascadeActive`.
