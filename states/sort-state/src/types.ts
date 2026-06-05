@@ -55,13 +55,13 @@ import {
 
 
 /**
- * Callback for committing staged sort data into the committed state (the authoritative state that renders the sortable items).
+ * Handler for committing staged sort data into the committed state (the authoritative state that renders the sortable items).
  * 
  * @template TSortData - The type of the data driving the sortable elements (commonly an array of item metadata).
  * 
  * @param stagedSortData - The staged sort data to commit into the committed state.
  */
-export type SortCommitCallback<TSortData = Array<unknown>> = (stagedSortData: TSortData) => void
+export type SortCommitHandler<TSortData = Array<unknown>> = (stagedSortData: TSortData) => void
 
 
 
@@ -170,7 +170,7 @@ export interface SortStateProps<TItemElement extends Element = HTMLElement, TSor
      * },
      * ```
      */
-    onSortCommit          ?: SortCommitCallback<TSortData>
+    onSortCommit          ?: SortCommitHandler<TSortData>
 }
 
 /**
