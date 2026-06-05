@@ -43,7 +43,7 @@ The only acceptable contributions to this repository are:
 | `ControllableScrollableProps`          | `ViewStatePropsHandles user-initiated requests to change the`                                |
 | `UncontrollableScrollableProps`        | `ViewStatePropsHandles user-initiated requests to change the & UncontrollableViewStateProps` |
 | `UncontrollableScrollableOptions`      | `ViewStateOptions`                                                     |
-| `useUncontrollableScrollable`          | `useUncontrollableViewState`                                           |
+| `useUncontrollableScrollable`          | `useViewController`                                                    |
 
 ---
 

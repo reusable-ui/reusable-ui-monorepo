@@ -72,7 +72,7 @@ export interface UncontrollableScrollableOptions {
     step ?: number
 }
 /**
- * @deprecated - Use `useUncontrollableViewState` instead.
+ * @deprecated - Use `useViewController` instead.
  */
 export const useUncontrollableScrollable = <TScrollIndexChangeEvent extends ScrollIndexChangeEvent = ScrollIndexChangeEvent>(props: UncontrollableScrollableProps<TScrollIndexChangeEvent>, options?: UncontrollableScrollableOptions): readonly [number, React.Dispatch<React.SetStateAction<number>>] => {
     // options:

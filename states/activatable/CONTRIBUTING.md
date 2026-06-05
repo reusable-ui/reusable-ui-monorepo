@@ -49,7 +49,7 @@ The only acceptable contributions to this repository are:
 | `useActivatable`                        | `useActiveBehaviorState`                                                     |
 | `ControllableActivatableProps`          | `ActiveStatePropsHandles user-initiated requests to change the`                                  |
 | `UncontrollableActivatableProps`        | `ActiveStatePropsHandles user-initiated requests to change the & UncontrollableActiveStateProps` |
-| `useUncontrollableActivatable`          | `useUncontrollableActiveState`                                               |
+| `useUncontrollableActivatable`          | `useActiveController`                                                        |
 | `ifActivated`                           | `ifActive`                                                                   |
 | `ifActivating`                          | `ifActivating`                                                               |
 | `ifPassivating`                         | `ifDeactivating`                                                             |

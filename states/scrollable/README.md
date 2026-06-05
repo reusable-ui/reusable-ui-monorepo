@@ -25,7 +25,7 @@ The old API surface is marked with `@deprecated` JSDoc tags and points to the ne
 | `ControllableScrollableProps`          | `ViewStatePropsHandles user-initiated requests to change the`                                |
 | `UncontrollableScrollableProps`        | `ViewStatePropsHandles user-initiated requests to change the & UncontrollableViewStateProps` |
 | `UncontrollableScrollableOptions`      | `ViewStateOptions`                                                     |
-| `useUncontrollableScrollable`          | `useUncontrollableViewState`                                           |
+| `useUncontrollableScrollable`          | `useViewController`                                                    |
 
 ---
 

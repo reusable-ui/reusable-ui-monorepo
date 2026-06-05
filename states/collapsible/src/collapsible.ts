@@ -498,7 +498,7 @@ export interface UncontrollableCollapsibleProps<TExpandedChangeEvent extends Exp
     defaultExpanded  ?: boolean
 }
 /**
- * @deprecated - Use `useUncontrollableCollapseState` instead.
+ * @deprecated - Use `useCollapseController` instead.
  */
 export const useUncontrollableCollapsible = <TExpandedChangeEvent extends ExpandedChangeEvent = ExpandedChangeEvent>(props: UncontrollableCollapsibleProps<TExpandedChangeEvent> & DisabledStateProps & ReadOnlyStateProps): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
     // Flags:

@@ -461,7 +461,7 @@ export interface UncontrollableActivatableProps<TActiveChangeEvent extends Activ
     defaultActive  ?: boolean
 }
 /**
- * @deprecated - Use `useUncontrollableActiveState` instead.
+ * @deprecated - Use `useActiveController` instead.
  */
 export const useUncontrollableActivatable = <TActiveChangeEvent extends ActiveChangeEvent = ActiveChangeEvent>(props: UncontrollableActivatableProps<TActiveChangeEvent> & DisabledStateProps & ReadOnlyStateProps, changeEventTarget?: (React.RefObject<HTMLInputElement>|null)): readonly [boolean, React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<void>] => {
     // Flags:
