@@ -147,8 +147,8 @@ Additional flags:
 |----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
 | excite-state   | useExciteState      | not applicable                 | not applicable              | useExciteBehaviorState     |
 |----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
-| active-state   | useActiveState      | useUncontrollableActiveState   | useActiveChangeDispatcher   | useActiveBehaviorState     |
-| collapse-state | useCollapseState    | useUncontrollableCollapseState | useCollapseChangeDispatcher | useCollapseBehaviorState   |
+| active-state   | useActiveState      | useActiveController            | useActiveChangeDispatcher   | useActiveBehaviorState     |
+| collapse-state | useCollapseState    | useCollapseController          | useCollapseChangeDispatcher | useCollapseBehaviorState   |
 |----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
 | disable-state  | useDisableState     | not applicable                 | not applicable              | useDisableBehaviorState    |
 | focus-state    | useFocusState       | not applicable                 | not applicable              | useFocusBehaviorState      |
