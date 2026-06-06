@@ -87,51 +87,11 @@ export default defineConfig(
             '**/barrels/**',
             
             // Ignore deprecated package directories:
-            '**/utilities/stripouts/**',
-            '**/utilities/layouts/**',
-            '**/utilities/hooks/**',
-            
-            '**/variants/orientationable/**',
-            '**/variants/resizable/**',
-            '**/variants/themeable/**',
-            '**/variants/gradientable/**',
-            '**/variants/outlineable/**',
-            '**/variants/mildable/**',
-            '**/variants/nudible/**',
-            '**/variants/basic-variants/**',
-            
-            '**/features/background/**',
-            '**/features/foreground/**',
-            '**/features/colorable/**',
-            '**/features/border/**',
-            '**/features/ring/**',
-            '**/features/padding/**',
-            '**/features/animation/**',
-            
-            '**/states/animating-state/**',
-            '**/states/excitable/**',
-            '**/states/collapsible/**',
-            '**/states/scrollable/**',
-            '**/states/disableable/**',
-            '**/states/activatable/**',
-            '**/states/focusable/**',
-            '**/states/interactable/**',
-            '**/states/clickable/**',
-            '**/states/invalidable/**',
-            '**/states/checkable/**',
-            '**/states/validation-icon/**',
-            '**/states/accessibilities/**',
-            '**/states/validations/**',
-            
-            '**/effects/active-as-click/**',
-            
             // '**/capabilities/floatable/**',
             // '**/capabilities/global-stackable/**',
             // '**/capabilities/auto-focusable/**',
             // '**/capabilities/groupable/**',
             // '**/capabilities/pointer-capturable/**',
-            
-            '**/routes/client-sides/**',
         ],
     },
     
