@@ -48,7 +48,7 @@ import {
     
     
     // Hooks:
-    useInteractionStateChangeDispatcher,
+    useDispatchInteractionStateChange,
     useInteractionBehaviorState,
     useInteractionController,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
@@ -116,7 +116,7 @@ export const useCollapseState = (props: CollapseStateProps<any> & { defaultExpan
  * This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `expanded` state and forwards it to a `<BaseComponent expanded={...}>`.
  * 
  * Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontrolled modes,
- * `useCollapseChangeDispatcher()` assumes the component is **fully controlled** and does not manage internal state.
+ * `useDispatchExpandedChange()` assumes the component is **fully controlled** and does not manage internal state.
  * 
  * - Supports only controlled mode.
  * - Always triggers `onExpandedChange`, if provided.
@@ -128,8 +128,8 @@ export const useCollapseState = (props: CollapseStateProps<any> & { defaultExpan
  * @param options - Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for expansion change requests.
  */
-export const useCollapseChangeDispatcher = <TChangeEvent = unknown>(props: CollapseStateProps<TChangeEvent> & { defaultExpanded?: never }, options?: CollapseChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<boolean, TChangeEvent> => {
-    return useInteractionStateChangeDispatcher<boolean, TChangeEvent>(
+export const useDispatchExpandedChange = <TChangeEvent = unknown>(props: CollapseStateProps<TChangeEvent> & { defaultExpanded?: never }, options?: CollapseChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<boolean, TChangeEvent> => {
+    return useDispatchInteractionStateChange<boolean, TChangeEvent>(
         // Props:
         { onStateChange: props.onExpandedChange },
         

@@ -69,7 +69,7 @@ import {
     
     
     // Hooks:
-    useInteractionStateChangeDispatcher,
+    useDispatchInteractionStateChange,
     useInteractionBehaviorState,
     useInteractionController,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
@@ -137,7 +137,7 @@ export const useViewState = (props: ViewStateProps<any> & { defaultViewIndex?: n
  * This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `viewIndex` value and forwards it to a `<BaseComponent viewIndex={...}>`.
  * 
  * Unlike `useViewBehaviorState()`, which supports both controlled and uncontrolled modes,
- * `useViewIndexChangeDispatcher()` assumes the component is **fully controlled** and does not manage internal state.
+ * `useDispatchViewIndexChange()` assumes the component is **fully controlled** and does not manage internal state.
  * 
  * - Supports only controlled mode.
  * - Always triggers `onViewIndexChange`, if provided.
@@ -149,8 +149,8 @@ export const useViewState = (props: ViewStateProps<any> & { defaultViewIndex?: n
  * @param options - Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for view index change requests.
  */
-export const useViewIndexChangeDispatcher = <TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent> & { defaultViewIndex?: never }, options?: ViewIndexChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<number, TChangeEvent> => {
-    return useInteractionStateChangeDispatcher<number, TChangeEvent>(
+export const useDispatchViewIndexChange = <TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent> & { defaultViewIndex?: never }, options?: ViewIndexChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<number, TChangeEvent> => {
+    return useDispatchInteractionStateChange<number, TChangeEvent>(
         // Props:
         { onStateChange: props.onViewIndexChange },
         

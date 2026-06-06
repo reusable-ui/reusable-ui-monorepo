@@ -55,7 +55,7 @@ import {
  * This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `state` and forwards it to a `<BaseComponent state={...}>`.
  * 
  * Unlike `useInteractionBehaviorState()`, which supports both controlled and uncontrolled modes,
- * `useInteractionStateChangeDispatcher()` assumes the component is **fully controlled** and does not manage internal state.
+ * `useDispatchInteractionStateChange()` assumes the component is **fully controlled** and does not manage internal state.
  * 
  * - Supports only controlled mode.
  * - Always triggers `onStateChange`, if provided.
@@ -68,7 +68,7 @@ import {
  * @param options - Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for state change requests.
  */
-export const useInteractionStateChangeDispatcher = <TState extends {} | null, TChangeEvent = unknown>(props: InteractionStateProps<{} | null, TState, TChangeEvent>, options?: InteractionStateChangeDispatcherOptions<TState, TChangeEvent>) : DispatchValueChange<TState, TChangeEvent> => {
+export const useDispatchInteractionStateChange = <TState extends {} | null, TChangeEvent = unknown>(props: InteractionStateProps<{} | null, TState, TChangeEvent>, options?: InteractionStateChangeDispatcherOptions<TState, TChangeEvent>) : DispatchValueChange<TState, TChangeEvent> => {
     // States and flags:
     
     // Resolve whether the component is disabled:
@@ -259,7 +259,7 @@ export const useInteractionBehaviorState = <
     // A stable dispatcher for state change requests.
     // This function remains referentially stable across renders,
     // avoids to be included in the `useEffect()` dependency array, thus preventing unnecessary re-runs.
-    const dispatchStateChange = useInteractionStateChangeDispatcher<TState, TChangeEvent>(props as Omit<typeof props, 'defaultState'>, {
+    const dispatchStateChange = useDispatchInteractionStateChange<TState, TChangeEvent>(props as Omit<typeof props, 'defaultState'>, {
         onInternalChange: (newState) => {
             // Update the internal state only if uncontrolled:
             if (controlledState === undefined) setInternalState(newState);

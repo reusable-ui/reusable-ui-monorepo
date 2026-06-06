@@ -212,13 +212,13 @@ Unlike `useViewBehaviorState()`, which supports both controlled and uncontrolled
 - Supports only controlled mode.
 - Ideal for components that **consume** the resolved `viewIndex` value.
 
-### `useViewIndexChangeDispatcher(props, options)`
+### `useDispatchViewIndexChange(props, options)`
 
 Creates a stable dispatcher for requesting a change to the view index.
 
 This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `viewIndex` value and forwards it to a `<BaseComponent viewIndex={...}>`.
 
-Unlike `useViewBehaviorState()`, which supports both controlled and uncontrolled modes, `useViewIndexChangeDispatcher()` assumes the component is **fully controlled** and does not manage internal state.
+Unlike `useViewBehaviorState()`, which supports both controlled and uncontrolled modes, `useDispatchViewIndexChange()` assumes the component is **fully controlled** and does not manage internal state.
 
 - Supports only controlled mode.
 - Always triggers `onViewIndexChange`, if provided.

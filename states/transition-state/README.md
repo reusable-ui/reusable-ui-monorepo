@@ -720,7 +720,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
     );
     
     // A stable dispatcher for selection change requests:
-    const dispatchSelectedChange = useSelectedStateChangeDispatcher<TChangeEvent>(props as Omit<typeof props, 'defaultSelected'>, {
+    const dispatchSelectedChange = useDispatchSelectedChange<TChangeEvent>(props as Omit<typeof props, 'defaultSelected'>, {
         onInternalChange: (newState) => {
             // Update the internal state only if uncontrolled:
             if (controlledSelected === undefined) setInternalState(newState);
@@ -781,7 +781,7 @@ const resolveSelectedTransitionClassname = ({ transitionPhase }: ResolveTransiti
 };
 
 /** Creates a stable dispatcher for requesting a change to the selected state. */
-export const useSelectedStateChangeDispatcher = <TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent> & { defaultSelected?: never }, options?: SelectedChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<boolean, TChangeEvent> => {
+export const useDispatchSelectedChange = <TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent> & { defaultSelected?: never }, options?: SelectedChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<boolean, TChangeEvent> => {
     // Resolve whether the component is in a restricted state:
     const isDisabled   = useDisabledState(props as Parameters<typeof useDisabledState>[0]);
     const isReadonly   = useReadOnlyState(props as Parameters<typeof useReadOnlyState>[0]);

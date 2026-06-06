@@ -115,13 +115,13 @@ Unlike `useActiveBehaviorState()`, which supports both controlled and uncontroll
 - Supports contextual override via `cascadeActive`.
 - Ideal for components that **consume** the resolved `active` state.
 
-### `useActiveChangeDispatcher(props, options)`
+### `useDispatchActiveChange(props, options)`
 
 Creates a stable dispatcher for requesting a change to the active state.
 
 This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `active` state and forwards it to a `<BaseComponent active={...}>`.
 
-Unlike `useActiveBehaviorState()`, which supports both controlled and uncontrolled modes, `useActiveChangeDispatcher()` assumes the component is **fully controlled** and does not manage internal state.
+Unlike `useActiveBehaviorState()`, which supports both controlled and uncontrolled modes, `useDispatchActiveChange()` assumes the component is **fully controlled** and does not manage internal state.
 
 - Supports only controlled mode.
 - Always triggers `onActiveChange`, if provided.

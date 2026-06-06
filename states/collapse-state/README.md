@@ -110,13 +110,13 @@ Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontro
 - Supports only controlled mode.
 - Ideal for components that **consume** the resolved `expanded` state.
 
-### `useCollapseChangeDispatcher(props, options)`
+### `useDispatchExpandedChange(props, options)`
 
 Creates a stable dispatcher for requesting a change to the expanded state.
 
 This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `expanded` state and forwards it to a `<BaseComponent expanded={...}>`.
 
-Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontrolled modes, `useCollapseChangeDispatcher()` assumes the component is **fully controlled** and does not manage internal state.
+Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontrolled modes, `useDispatchExpandedChange()` assumes the component is **fully controlled** and does not manage internal state.
 
 - Supports only controlled mode.
 - Always triggers `onExpandedChange`, if provided.

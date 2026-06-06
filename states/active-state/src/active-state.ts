@@ -54,7 +54,7 @@ import {
     
     
     // Hooks:
-    useInteractionStateChangeDispatcher,
+    useDispatchInteractionStateChange,
     useInteractionBehaviorState,
     useInteractionController,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
@@ -129,7 +129,7 @@ export const useActiveState = (props: ActiveStateProps<any> & { defaultActive?: 
  * This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `active` state and forwards it to a `<BaseComponent active={...}>`.
  * 
  * Unlike `useActiveBehaviorState()`, which supports both controlled and uncontrolled modes,
- * `useActiveChangeDispatcher()` assumes the component is **fully controlled** and does not manage internal state.
+ * `useDispatchActiveChange()` assumes the component is **fully controlled** and does not manage internal state.
  * 
  * - Supports only controlled mode.
  * - Always triggers `onActiveChange`, if provided.
@@ -141,8 +141,8 @@ export const useActiveState = (props: ActiveStateProps<any> & { defaultActive?: 
  * @param options - Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for activation change requests.
  */
-export const useActiveChangeDispatcher = <TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent> & { defaultActive?: never }, options?: ActiveChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<boolean, TChangeEvent> => {
-    return useInteractionStateChangeDispatcher<boolean, TChangeEvent>(
+export const useDispatchActiveChange = <TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent> & { defaultActive?: never }, options?: ActiveChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<boolean, TChangeEvent> => {
+    return useDispatchInteractionStateChange<boolean, TChangeEvent>(
         // Props:
         { onStateChange: props.onActiveChange },
         
