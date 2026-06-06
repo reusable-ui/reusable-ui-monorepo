@@ -407,8 +407,8 @@ export const blockquoteRule = (options: BlockquoteRuleOptions): CssRule => {
     // Dependencies:
     
     // Features:
-    // const { backgroundVars } = usesBackground(); // TODO: fix this.
-    // const { foregroundVars } = usesForeground(); // TODO: fix this.
+    // const { backgroundVars } = usingBackground(); // TODO: fix this.
+    // const { foregroundVars } = usingForeground(); // TODO: fix this.
     
     
     
