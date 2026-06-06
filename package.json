@@ -46,16 +46,11 @@
   "workspaces": [
     "defaults/css-prefix-default",
     "configs/color-config",
-    "tests/test-colors",
     "configs/border-config",
     "configs/radius-config",
-    "tests/test-borders",
     "configs/spacer-config",
-    "tests/test-spacers",
     "configs/breakpoint-config",
-    "tests/test-breakpoints",
     "configs/typo-config",
-    "tests/test-typos",
     "utilities/numbers",
     "utilities/nodes",
     "utilities/resets",
@@ -102,7 +97,6 @@
     "states/focus-state",
     "states/hover-state",
     "states/press-state",
-    "tests/test-press-state",
     "states/validity-state",
     "states/drag-state",
     "states/sort-state",
@@ -124,7 +118,6 @@
     "routes/link-compat",
     "routes/next-link-compat",
     "routes/router-link-compat",
-    "tests/test-next-link-compat",
     "routes/links",
     "routes/navigations",
     "__configs/*",
@@ -142,7 +135,6 @@
     "__dialog-components/*",
     "__composite-components/*",
     "__utility-components/*",
-    "__barrels/*",
-    "__tests/*"
+    "__barrels/*"
   ]
 }
