@@ -51,7 +51,7 @@ These variables are ready-to-use for styling your component’s animation.
 
 ```ts
 // Supporting states:
-import { usingDisableState } from './states/disable-state'
+import { usingDisabledState } from './states/disabled-state'
 import { usingCollapseState } from './states/collapse-state'
 
 // Compound animation feature:
@@ -61,7 +61,7 @@ import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 import { style } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { disableStateRule  } = usingDisableState();
+    const { disableStateRule  } = usingDisabledState();
     const { collapseStateRule } = usingCollapseState();
     
     const {

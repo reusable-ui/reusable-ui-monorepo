@@ -112,7 +112,7 @@ Default inheritance case example:
 | active-state   | Animates transitions | ActiveStateProps   | active    | Yes       |        | activeClassname   | inactive, active    | deactivating, activating | Yes          | Yes — memoize user's intent | via dispatch     | Yes — user toggles via UI               |
 | collapse-state | Animates transitions | CollapseStateProps | expanded  | No        |        | expandClassname   | collapsed, expanded | collapsing, expanding    | Yes          | Yes — memoize user's intent | via dispatch     | Yes — user toggles via UI               |
 |----------------|----------------------|--------------------|-----------|-----------|--------|-------------------|---------------------|--------------------------|--------------|-----------------------------|------------------|-----------------------------------------|
-| disable-state  | Animates transitions | DisableStateProps  | disabled  | Yes       |        | disableClassname  | disabled, enabled   | disabling, enabling      | Yes          | No — indicator only         | via 'inherit'    | No — indicator only                     |
+| disabled-state | Animates transitions | DisabledStateProps | disabled  | Yes       |        | disableClassname  | disabled, enabled   | disabling, enabling      | Yes          | No — indicator only         | via 'inherit'    | No — indicator only                     |
 | focus-state    | Animates transitions | FocusStateProps    | focused   | No        | Yes    | focusClassname    | blurred, focused    | focusing, blurring       | Yes          | No — indicator only         | via 'auto'       | No — indicator only                     |
 | hover-state    | Animates transitions | HoverStateProps    | hovered   | No        | Yes    | hoverClassname    | leaved, hovered     | leaving, hovering        | Yes          | No — indicator only         | via 'auto'       | No — indicator only                     |
 | press-state    | Animates transitions | PressStateProps    | pressed   | No        | Yes    | pressClassname    | released, pressed   | pressing, releasing      | Yes          | No — indicator only         | via 'auto'       | No — indicator only                     |
@@ -131,7 +131,7 @@ Additional flags:
 | active-state   | useActiveState      | useActiveController            | useDispatchActiveChange     | useActiveBehaviorState     |
 | collapse-state | useCollapseState    | useCollapseController          | useDispatchExpandedChange   | useCollapseBehaviorState   |
 |----------------|---------------------|--------------------------------|-----------------------------|----------------------------|
-| disable-state  | useDisableState     | not applicable                 | not applicable              | useDisableBehaviorState    |
+| disabled-state | useDisabledState    | not applicable                 | not applicable              | useDisabledBehaviorState   |
 | focus-state    | useFocusState       | not applicable                 | not applicable              | useFocusBehaviorState      |
 | hover-state    | useHoverState       | not applicable                 | not applicable              | useHoverBehaviorState      |
 | press-state    | usePressState       | not applicable                 | not applicable              | usePressBehaviorState      |

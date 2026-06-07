@@ -51,7 +51,7 @@ These variables are ready-to-use for styling your component’s transform.
 
 ```ts
 // Supporting states:
-import { usingDisableState } from './states/disable-state'
+import { usingDisabledState } from './states/disabled-state'
 import { usingActiveState } from './states/active-state'
 
 // Compound transform feature:
@@ -61,7 +61,7 @@ import { usingTransformFeature } from '@reusable-ui/transform-feature';
 import { style } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { disableStateRule } = usingDisableState();
+    const { disableStateRule } = usingDisabledState();
     const { activeStateRule  } = usingActiveState();
     
     const {
