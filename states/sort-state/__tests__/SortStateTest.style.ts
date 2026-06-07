@@ -1,19 +1,19 @@
 import { keyframes, style, vars, children } from '@cssfn/core'
-import { usesSortState } from '../dist/index.js'
-import { usesAnimationFeature } from '@reusable-ui/animation-feature'
+import { usingSortState } from '../dist/index.js'
+import { usingAnimationFeature } from '@reusable-ui/animation-feature'
 
 export default function sortStateTestStyle() {
     const {
         sortStateRule,
         sortStateVars: { sortOffsetX, sortOffsetY, sortFactor },
-    } = usesSortState({
+    } = usingSortState({
         animationSorting: 'var(--test-sorting)',
     });
     
     const {
         animationFeatureRule,
         animationFeatureVars : { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     return style({
         ...sortStateRule(),

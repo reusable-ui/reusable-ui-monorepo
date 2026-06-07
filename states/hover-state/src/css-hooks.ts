@@ -22,7 +22,7 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    usesFeedbackState,
+    usingFeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -37,10 +37,10 @@ import {
  * @example
  * ```ts
  * // Animation feature:
- * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+ * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
  * // Hovered/unhovered state:
- * import { usesHoverState } from '@reusable-ui/hover-state';
+ * import { usingHoverState } from '@reusable-ui/hover-state';
  * 
  * // CSS-in-JS:
  * import { style, vars, keyframes, fallback } from '@cssfn/core';
@@ -50,13 +50,13 @@ import {
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
- *     } = usesAnimationFeature();
+ *     } = usingAnimationFeature();
  *     
  *     // Feature: hover/unhover lifecycle
  *     const {
  *         hoverStateRule,
  *         hoverStateVars: { isHovered, isUnhovered, hoverFactor },
- *     } = usesHoverState({
+ *     } = usingHoverState({
  *         animationHovering   : 'var(--box-hovering)',
  *         animationUnhovering : 'var(--box-unhovering)',
  *     });
@@ -104,8 +104,8 @@ import {
  * };
  * ```
  */
-export const usesHoverState = (options?: CssHoverStateOptions): CssHoverState => ({
-    hoverStateRule : () => usesFeedbackState({
+export const usingHoverState = (options?: CssHoverStateOptions): CssHoverState => ({
+    hoverStateRule : () => usingFeedbackState({
         // Feedback animations for visual effects whenever a hover state changes:
         animations      : [
             {

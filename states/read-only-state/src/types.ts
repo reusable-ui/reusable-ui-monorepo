@@ -269,7 +269,7 @@ export interface ReadOnlyStateVars {
      * It becomes invalid (`unset`) when not actively thawing.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationThawing   : unknown
     
@@ -278,7 +278,7 @@ export interface ReadOnlyStateVars {
      * It becomes invalid (`unset`) when not actively freezing.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationFreezing  : unknown
     

@@ -30,7 +30,7 @@ import {
  * 
  * @returns A CSS API for enabling conditional styling based on outlined state.
  */
-export const usesOutlineVariant = (): CssOutlineVariant => {
+export const usingOutlineVariant = (): CssOutlineVariant => {
     return {
         outlineVariantRule : () => style(
             variants({

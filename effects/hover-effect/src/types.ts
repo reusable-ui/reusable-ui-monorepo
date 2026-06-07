@@ -43,7 +43,7 @@ export interface HoverEffectVars {
      * 
      * - Becomes `unset` when the component is fully unhovered.
      * - Typically not consumed directly — instead use:
-     *   `const { filterFeatureVars: { filter } } = usesFilterFeature()`
+     *   `const { filterFeatureVars: { filter } } = usingFilterFeature()`
      */
     hoverFilter         : unknown
     

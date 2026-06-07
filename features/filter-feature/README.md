@@ -35,7 +35,7 @@ Subscribes a callback listener for filter registry changes.
 
 ## 🧩 Exported CSS Hook
 
-### `usesFilterFeature(options?: CssFilterFeatureOptions): CssFilterFeature`
+### `usingFilterFeature(options?: CssFilterFeatureOptions): CssFilterFeature`
 
 Composes custom and registered filters into a unified stack and exposes ready-to-use CSS variables.
 
@@ -51,23 +51,23 @@ These variables are ready-to-use for styling your component’s filter.
 
 ```ts
 // Supporting states:
-import { usesDisableState } from './states/disable-state'
-import { usesActiveState } from './states/active-state'
+import { usingDisableState } from './states/disable-state'
+import { usingActiveState } from './states/active-state'
 
 // Compound filter feature:
-import { usesFilterFeature } from '@reusable-ui/filter-feature';
+import { usingFilterFeature } from '@reusable-ui/filter-feature';
 
 // CSS-in-JS:
 import { style } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { disableStateRule } = usesDisableState();
-    const { activeStateRule  } = usesActiveState();
+    const { disableStateRule } = usingDisableState();
+    const { activeStateRule  } = usingActiveState();
     
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature({
+    } = usingFilterFeature({
         // Custom filters:
         filter: [[
             'contrast(0.5)',

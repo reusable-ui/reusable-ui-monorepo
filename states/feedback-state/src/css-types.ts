@@ -173,7 +173,7 @@ export interface ActiveFeedbackFactorCase
  * @example
  * ```ts
  * // Describe how feedback focus state should behave:
- * const focusStateRule : CssRule = usesFeedbackState({
+ * const focusStateRule : CssRule = usingFeedbackState({
  *     // Feedback animations for visual effects whenever a feedback state changes:
  *     animations      : [
  *         {

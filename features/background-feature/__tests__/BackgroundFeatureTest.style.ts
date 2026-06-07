@@ -1,19 +1,19 @@
 import { style, scope } from '@cssfn/core'
 
-import { usesThemeVariant } from '@reusable-ui/theme-variant'
-import { usesEmphasisVariant } from '@reusable-ui/emphasis-variant'
-import { usesOutlineVariant } from '@reusable-ui/outline-variant'
-import { usesMildVariant } from '@reusable-ui/mild-variant'
-import { usesBareVariant } from '@reusable-ui/bare-variant'
-import { usesBackgroundFeature } from '../dist/index.js'
+import { usingThemeVariant } from '@reusable-ui/theme-variant'
+import { usingEmphasisVariant } from '@reusable-ui/emphasis-variant'
+import { usingOutlineVariant } from '@reusable-ui/outline-variant'
+import { usingMildVariant } from '@reusable-ui/mild-variant'
+import { usingBareVariant } from '@reusable-ui/bare-variant'
+import { usingBackgroundFeature } from '../dist/index.js'
 
 const backgroundNoCustomStyle = () => {
-    const { themeVariantRule    } = usesThemeVariant();
-    const { emphasisVariantRule } = usesEmphasisVariant();
-    const { outlineVariantRule  } = usesOutlineVariant();
-    const { mildVariantRule     } = usesMildVariant();
-    const { bareVariantRule     } = usesBareVariant();
-    const { backgroundFeatureRule, backgroundFeatureVars } = usesBackgroundFeature({
+    const { themeVariantRule    } = usingThemeVariant();
+    const { emphasisVariantRule } = usingEmphasisVariant();
+    const { outlineVariantRule  } = usingOutlineVariant();
+    const { mildVariantRule     } = usingMildVariant();
+    const { bareVariantRule     } = usingBareVariant();
+    const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
         backgroundEmphasize : [['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box']]
     });
     return style({
@@ -28,12 +28,12 @@ const backgroundNoCustomStyle = () => {
 };
 
 const backgroundSimpleCustomStyle = () => {
-    const { themeVariantRule    } = usesThemeVariant();
-    const { emphasisVariantRule } = usesEmphasisVariant();
-    const { outlineVariantRule  } = usesOutlineVariant();
-    const { mildVariantRule     } = usesMildVariant();
-    const { bareVariantRule     } = usesBareVariant();
-    const { backgroundFeatureRule, backgroundFeatureVars } = usesBackgroundFeature({
+    const { themeVariantRule    } = usingThemeVariant();
+    const { emphasisVariantRule } = usingEmphasisVariant();
+    const { outlineVariantRule  } = usingOutlineVariant();
+    const { mildVariantRule     } = usingMildVariant();
+    const { bareVariantRule     } = usingBareVariant();
+    const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
         backgroundEmphasize : [['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box']],
         background          : 'linear-gradient(0deg, rgba(255, 0, 0, 0.1), rgba(255, 0, 0, 0.1)) border-box',
     });
@@ -49,12 +49,12 @@ const backgroundSimpleCustomStyle = () => {
 };
 
 const backgroundSingleCustomStyle = () => {
-    const { themeVariantRule    } = usesThemeVariant();
-    const { emphasisVariantRule } = usesEmphasisVariant();
-    const { outlineVariantRule  } = usesOutlineVariant();
-    const { mildVariantRule     } = usesMildVariant();
-    const { bareVariantRule     } = usesBareVariant();
-    const { backgroundFeatureRule, backgroundFeatureVars } = usesBackgroundFeature({
+    const { themeVariantRule    } = usingThemeVariant();
+    const { emphasisVariantRule } = usingEmphasisVariant();
+    const { outlineVariantRule  } = usingOutlineVariant();
+    const { mildVariantRule     } = usingMildVariant();
+    const { bareVariantRule     } = usingBareVariant();
+    const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
         backgroundEmphasize : [['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box']],
         background          : ['linear-gradient(0deg, rgba(255, 255, 0, 0.1), rgba(255, 255, 0, 0.1)) content-box'],
     });
@@ -70,12 +70,12 @@ const backgroundSingleCustomStyle = () => {
 };
 
 const backgroundSingleImportantCustomStyle = () => {
-    const { themeVariantRule    } = usesThemeVariant();
-    const { emphasisVariantRule } = usesEmphasisVariant();
-    const { outlineVariantRule  } = usesOutlineVariant();
-    const { mildVariantRule     } = usesMildVariant();
-    const { bareVariantRule     } = usesBareVariant();
-    const { backgroundFeatureRule, backgroundFeatureVars } = usesBackgroundFeature({
+    const { themeVariantRule    } = usingThemeVariant();
+    const { emphasisVariantRule } = usingEmphasisVariant();
+    const { outlineVariantRule  } = usingOutlineVariant();
+    const { mildVariantRule     } = usingMildVariant();
+    const { bareVariantRule     } = usingBareVariant();
+    const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
         backgroundEmphasize : [['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box']],
         background          : ['linear-gradient(0deg, rgba(255, 255, 0, 0.1), rgba(255, 255, 0, 0.1)) content-box', '!important'],
     });
@@ -91,12 +91,12 @@ const backgroundSingleImportantCustomStyle = () => {
 };
 
 const backgroundMultipleCustomStyle = () => {
-    const { themeVariantRule    } = usesThemeVariant();
-    const { emphasisVariantRule } = usesEmphasisVariant();
-    const { outlineVariantRule  } = usesOutlineVariant();
-    const { mildVariantRule     } = usesMildVariant();
-    const { bareVariantRule     } = usesBareVariant();
-    const { backgroundFeatureRule, backgroundFeatureVars } = usesBackgroundFeature({
+    const { themeVariantRule    } = usingThemeVariant();
+    const { emphasisVariantRule } = usingEmphasisVariant();
+    const { outlineVariantRule  } = usingOutlineVariant();
+    const { mildVariantRule     } = usingMildVariant();
+    const { bareVariantRule     } = usingBareVariant();
+    const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
         backgroundEmphasize : [['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box']],
         background          : [
             ['linear-gradient(0deg, rgba(255, 255, 0, 0.1), rgba(255, 255, 0, 0.1))', 'content-box'],
@@ -115,12 +115,12 @@ const backgroundMultipleCustomStyle = () => {
 };
 
 const backgroundMultipleImportantCustomStyle = () => {
-    const { themeVariantRule    } = usesThemeVariant();
-    const { emphasisVariantRule } = usesEmphasisVariant();
-    const { outlineVariantRule  } = usesOutlineVariant();
-    const { mildVariantRule     } = usesMildVariant();
-    const { bareVariantRule     } = usesBareVariant();
-    const { backgroundFeatureRule, backgroundFeatureVars } = usesBackgroundFeature({
+    const { themeVariantRule    } = usingThemeVariant();
+    const { emphasisVariantRule } = usingEmphasisVariant();
+    const { outlineVariantRule  } = usingOutlineVariant();
+    const { mildVariantRule     } = usingMildVariant();
+    const { bareVariantRule     } = usingBareVariant();
+    const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
         backgroundEmphasize : [['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box']],
         background          : [
             ['linear-gradient(0deg, rgba(255, 255, 0, 0.1), rgba(255, 255, 0, 0.1))', 'content-box'],

@@ -218,7 +218,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesSortState(options?: CssSortStateOptions): CssSortState`
+### `usingSortState(options?: CssSortStateOptions): CssSortState`
 
 Generates CSS rules that conditionally apply the sorting transition whenever a sorting action occurs,
 and exposes sort-related CSS variables for conditional animation.
@@ -238,10 +238,10 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
 ```ts
 // Features:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 
 // States:
-import { usesSortState } from '@reusable-ui/sort-state';
+import { usingSortState } from '@reusable-ui/sort-state';
 
 // CSS-in-JS:
 import { style, vars, keyframes, children } from '@cssfn/core';
@@ -251,7 +251,7 @@ export const sortableListStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     // States:
     
@@ -261,7 +261,7 @@ export const sortableListStyle = () => {
     const {
         sortStateRule,
         sortStateVars: { sortOffsetX, sortOffsetY, sortFactor },
-    } = usesSortState({
+    } = usingSortState({
         animationSorting : 'var(--list-sorting)',
     });
     
@@ -310,7 +310,7 @@ export const sortableListStyle = () => {
 The `animationSorting` variable is conditionally defined when `.is-sorting` is active.  
 
 The variable is already registered to `@reusable-ui/animation-feature`, so you typically don't need to consume it directly.  
-Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining sorting animation with other state-driven animations.
+Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining sorting animation with other state-driven animations.
 
 ## Why Declarative Sorting Workflow
 

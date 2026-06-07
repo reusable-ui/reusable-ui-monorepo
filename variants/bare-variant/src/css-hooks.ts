@@ -36,7 +36,7 @@ import {
  * @param options - A required configuration specifying supported bare values.
  * @returns A CSS API for enabling conditional styling based on bare mode.
  */
-export function usesBareVariant<TBare extends true | string = true>(options: CssBareVariantOptions<TBare>): CssBareVariant<TBare>;
+export function usingBareVariant<TBare extends true | string = true>(options: CssBareVariantOptions<TBare>): CssBareVariant<TBare>;
 
 /**
  * Generates CSS rules that toggle bare-related CSS variables based on the current bare mode,
@@ -44,9 +44,9 @@ export function usesBareVariant<TBare extends true | string = true>(options: Css
  * 
  * @returns A CSS API for enabling conditional styling based on bare mode.
  */
-export function usesBareVariant(): CssBareVariant;
+export function usingBareVariant(): CssBareVariant;
 
-export function usesBareVariant<TBare extends true | string = true>(options?: CssBareVariantOptions<TBare>): CssBareVariant<TBare> {
+export function usingBareVariant<TBare extends true | string = true>(options?: CssBareVariantOptions<TBare>): CssBareVariant<TBare> {
     // Extract options and assign defaults:
     const {
         supportedBareValues = [true] as TBare[],

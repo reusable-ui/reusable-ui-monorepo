@@ -190,7 +190,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesFocusState(options?: CssFocusStateOptions): CssFocusState`
+### `usingFocusState(options?: CssFocusStateOptions): CssFocusState`
 
 Generates CSS rules that conditionally apply the focus/blur animations based on current focused state, and exposes focus/blur-related CSS variables for conditional animation.
 
@@ -212,10 +212,10 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 ```ts
 // Animation feature:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 
 // Focused/blurred state:
-import { usesFocusState } from '@reusable-ui/focus-state';
+import { usingFocusState } from '@reusable-ui/focus-state';
 
 // CSS-in-JS:
 import { style, vars, keyframes, fallback } from '@cssfn/core';
@@ -225,13 +225,13 @@ export const focusableBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     // Feature: focus/blur lifecycle
     const {
         focusStateRule,
         focusStateVars: { isFocused, isBlurred, focusFactor },
-    } = usesFocusState({
+    } = usingFocusState({
         animationFocusing : 'var(--box-focusing)',
         animationBlurring : 'var(--box-blurring)',
     });
@@ -284,7 +284,7 @@ export const focusableBoxStyle = () => {
 The `animationFocusing` and `animationBlurring` variables are only defined during **focusing** and **blurring** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
-Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining focus/blur animations with other state-driven transitions.
+Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining focus/blur animations with other state-driven transitions.
 
 ---
 

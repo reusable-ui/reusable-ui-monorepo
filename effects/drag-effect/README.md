@@ -8,7 +8,7 @@ The effects are designed to feel natural to users:
 - Components smoothly transition from their original placement into the current cursor position and continuously follow it during dragging.  
 - Additional visual cues such as filter or color effects (e.g. semi‑transparency, brightness adjustments) may apply, reinforcing the sense of motion and maintaining consistent feedback across components.  
 
-By using `usesDragEffect()`, you can apply these effects consistently across your components — with optional customization for filter and color effects.  
+By using `usingDragEffect()`, you can apply these effects consistently across your components — with optional customization for filter and color effects.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with Drag State
@@ -47,7 +47,7 @@ yarn add @reusable-ui/drag-effect
 
 ## 🧩 Exported CSS Hooks
 
-### `usesDragEffect(options?: CssDragEffectOptions): CssDragEffect`
+### `usingDragEffect(options?: CssDragEffectOptions): CssDragEffect`
 
 Applies drag-state effects that follow the cursor movement,
 making components **visually carried and repositioned** while being dragged.
@@ -60,15 +60,15 @@ Smoothly transitions between drag and drop states by animating transform and fil
 
 ```ts
 // Features:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
-import { usesFilterFeature } from '@reusable-ui/filter-feature';
-import { usesTransformFeature } from '@reusable-ui/transform-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingFilterFeature } from '@reusable-ui/filter-feature';
+import { usingTransformFeature } from '@reusable-ui/transform-feature';
 
 // States:
-import { usesDragState } from '@reusable-ui/drag-state';
+import { usingDragState } from '@reusable-ui/drag-state';
 
 // Effects:
-import { usesDragEffect } from '@reusable-ui/drag-effect';
+import { usingDragEffect } from '@reusable-ui/drag-effect';
 
 // CSS-in-JS:
 import { style, vars, keyframes } from '@cssfn/core';
@@ -78,15 +78,15 @@ export const draggableBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature();
+    } = usingFilterFeature();
     const {
         transformFeatureRule,
         transformFeatureVars: { transform },
-    } = usesTransformFeature();
+    } = usingTransformFeature();
     
     // States:
     
@@ -96,7 +96,7 @@ export const draggableBoxStyle = () => {
     const {
         dragStateRule,
         dragStateVars: { dragFactor },
-    } = usesDragState({
+    } = usingDragState({
         animationDragging : 'var(--box-dragging)',
         animationDropping : 'var(--box-dropping)',
     });
@@ -107,7 +107,7 @@ export const draggableBoxStyle = () => {
     // - Allows additional customization of how the "dragged" appearance should look
     const {
         dragEffectRule,
-    } = usesDragEffect({
+    } = usingDragEffect({
         // Opacity:
         // Values between `0` and `1` → partially transparent
         // Values `= 0` → fully transparent

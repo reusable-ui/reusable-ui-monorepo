@@ -68,10 +68,10 @@ Behavior:
 
 ```ts
 // Features:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 
 // States:
-import { usesActiveState } from '@reusable-ui/active-state';
+import { usingActiveState } from '@reusable-ui/active-state';
 
 // Effects:
 import { composeFilterEffect } from '@reusable-ui/filter-effect';
@@ -84,7 +84,7 @@ export const activatableBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     // States:
     
@@ -94,7 +94,7 @@ export const activatableBoxStyle = () => {
     const {
         activeStateRule,
         activeStateVars: { activeFactor },
-    } = usesActiveState({
+    } = usingActiveState({
         animationActivating   : 'var(--box-activating)',
         animationDeactivating : 'var(--box-deactivating)',
     });

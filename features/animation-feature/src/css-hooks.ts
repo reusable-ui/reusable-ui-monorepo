@@ -43,7 +43,7 @@ import {
  * @param options - An optional configuration for customizing animation behavior.
  * @returns A CSS API for composing a unified animation stack from custom and registered state packages.
  */
-export const usesAnimationFeature = (options?: CssAnimationFeatureOptions): CssAnimationFeature => {
+export const usingAnimationFeature = (options?: CssAnimationFeatureOptions): CssAnimationFeature => {
     // Extract options and assign defaults:
     const {
         animation : customAnimations = null,

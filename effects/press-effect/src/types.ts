@@ -41,7 +41,7 @@ export interface PressEffectVars {
      * 
      * - Becomes `unset` when the component is fully released.
      * - Typically not consumed directly — instead use:
-     *   `const { filterFeatureVars: { filter } } = usesFilterFeature()`
+     *   `const { filterFeatureVars: { filter } } = usingFilterFeature()`
      */
     pressFilter : unknown
 }

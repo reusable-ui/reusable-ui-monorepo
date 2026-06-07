@@ -22,7 +22,7 @@ yarn add @reusable-ui/padding-feature
 
 ## 🧩 Exported CSS Hooks
 
-### `usesPaddingFeature(options?: CssPaddingFeatureOptions): CssPaddingFeature`
+### `usingPaddingFeature(options?: CssPaddingFeatureOptions): CssPaddingFeature`
 
 Resolves the appropriate padding values based on active bare mode and framework-level overrides and exposes ready-to-use CSS variables.
 
@@ -55,16 +55,16 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
 ```ts
 // Supporting variants:
-import { usesBareVariant } from '@reusable-ui/bare-variant'
+import { usingBareVariant } from '@reusable-ui/bare-variant'
 
 // Manageable padding feature:
-import { usesPaddingFeature } from '@reusable-ui/padding-feature';
+import { usingPaddingFeature } from '@reusable-ui/padding-feature';
 
 // CSS-in-JS:
 import { style, children } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { bareVariantRule } = usesBareVariant();
+    const { bareVariantRule } = usingBareVariant();
     
     const {
         paddingFeatureRule,
@@ -77,7 +77,7 @@ export const componentStyle = () => {
             paddingInlineBase,
             paddingBlockBase,
         },
-    } = usesPaddingFeature({
+    } = usingPaddingFeature({
         padding: '1rem',
     });
     

@@ -182,7 +182,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesCollapseState(options?: CssCollapseStateOptions): CssCollapseState`
+### `usingCollapseState(options?: CssCollapseStateOptions): CssCollapseState`
 
 Generates CSS rules that conditionally apply the expand/collapse animations based on current expanded state, and exposes expand/collapse-related CSS variables for conditional animation.
 
@@ -204,10 +204,10 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 ```ts
 // Animation feature:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 
 // Expanded/collapsed state:
-import { usesCollapseState } from '@reusable-ui/collapse-state';
+import { usingCollapseState } from '@reusable-ui/collapse-state';
 
 // CSS-in-JS:
 import { style, vars, keyframes, fallback } from '@cssfn/core';
@@ -217,13 +217,13 @@ export const collapsibleBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     // Feature: expand/collapse lifecycle
     const {
         collapseStateRule,
         collapseStateVars: { isExpanded, isCollapsed, expandFactor },
-    } = usesCollapseState({
+    } = usingCollapseState({
         animationExpanding  : 'var(--box-expanding)',
         animationCollapsing : 'var(--box-collapsing)',
     });
@@ -278,7 +278,7 @@ export const collapsibleBoxStyle = () => {
 The `animationExpanding` and `animationCollapsing` variables are only defined during **expanding** and **collapsing** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
-Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining expand/collapse animations with other state-driven transitions.
+Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining expand/collapse animations with other state-driven transitions.
 
 ---
 

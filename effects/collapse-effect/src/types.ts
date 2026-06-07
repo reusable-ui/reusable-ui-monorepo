@@ -26,7 +26,7 @@ import {
 
 
 /**
- * An API for supporting `usesCollapseEffect()` (the CSS styling effects) by supplying and continuously updating
+ * An API for supporting `usingCollapseEffect()` (the CSS styling effects) by supplying and continuously updating
  * the required sizing variables, injected into the component's inline style.
  * This ensures the collapse/expand styling effects work correctly.
  * 
@@ -231,7 +231,7 @@ export interface CollapseEffectVars {
      *   - fully expanded, or
      *   - fully collapsed
      * - Typically not consumed directly — instead use:
-     *   `const { transformFeatureVars: { transform } } = usesTransformFeature()`
+     *   `const { transformFeatureVars: { transform } } = usingTransformFeature()`
      */
     overshootTransform         : unknown
 }

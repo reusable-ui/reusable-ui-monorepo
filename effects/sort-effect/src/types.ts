@@ -27,7 +27,7 @@ export interface SortEffectVars {
      * 
      * - Becomes `unset` when the component is idle (not sorting).
      * - Typically not consumed directly — instead use:
-     *   `const { transformFeatureVars: { transform } } = usesTransformFeature()`
+     *   `const { transformFeatureVars: { transform } } = usingTransformFeature()`
      */
     sortTransform : unknown
 }

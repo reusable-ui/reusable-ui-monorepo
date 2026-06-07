@@ -30,7 +30,7 @@ import {
  * 
  * @returns A CSS API for enabling conditional styling based on mild mode.
  */
-export const usesMildVariant = (): CssMildVariant => {
+export const usingMildVariant = (): CssMildVariant => {
     return {
         mildVariantRule : () => style(
             variants({

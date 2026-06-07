@@ -51,7 +51,7 @@ const BARE_PADDINGS     = {
 
 
 
-test.describe('usesPaddingFeature', () => {
+test.describe('usingPaddingFeature', () => {
     for (const { title, props, expectedPaddings } of [
         {
             title            : 'no variant => should render default paddings',

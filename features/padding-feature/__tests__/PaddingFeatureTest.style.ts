@@ -1,10 +1,10 @@
 import { style } from '@cssfn/core'
 
-import { usesBareVariant } from '@reusable-ui/bare-variant'
-import { usesPaddingFeature } from '../dist/index.js'
+import { usingBareVariant } from '@reusable-ui/bare-variant'
+import { usingPaddingFeature } from '../dist/index.js'
 
 export default function paddingFeatureTestStyle() {
-    const { bareVariantRule } = usesBareVariant();
+    const { bareVariantRule } = usingBareVariant();
     const {
         paddingFeatureRule,
         paddingFeatureVars: {
@@ -13,7 +13,7 @@ export default function paddingFeatureTestStyle() {
             paddingBlockStart,
             paddingBlockEnd,
         }
-    } = usesPaddingFeature();
+    } = usingPaddingFeature();
     return style({
         ...bareVariantRule(),
         ...paddingFeatureRule(),

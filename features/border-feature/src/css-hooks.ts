@@ -31,16 +31,16 @@ import {
 
 // Reusable-ui variants:
 import {
-    usesThemeVariant,
+    usingThemeVariant,
 }                           from '@reusable-ui/theme-variant'       // A utility for managing themes consistently across React components.
 import {
-    usesOutlineVariant,
+    usingOutlineVariant,
 }                           from '@reusable-ui/outline-variant'     // A utility for managing visual outline consistently across React components.
 import {
-    usesMildVariant,
+    usingMildVariant,
 }                           from '@reusable-ui/mild-variant'        // A utility for managing mild styling (reading friendly) consistently across React components.
 import {
-    usesBareVariant,
+    usingBareVariant,
 }                           from '@reusable-ui/bare-variant'        // A utility for managing bare styling (frameless, minimal layout) consistently across React components.
 
 
@@ -52,7 +52,7 @@ import {
  * @param options - An optional configuration for customizing border behavior.
  * @returns A CSS API for enabling theme-aware border styling in components.
  */
-export const usesBorderFeature = (options?: CssBorderFeatureOptions): CssBorderFeature => {
+export const usingBorderFeature = (options?: CssBorderFeatureOptions): CssBorderFeature => {
     // Extract options and assign defaults:
     const {
         borderStyle                      = borderConfigVars.style,
@@ -85,10 +85,10 @@ export const usesBorderFeature = (options?: CssBorderFeatureOptions): CssBorderF
     return {
         borderFeatureRule : () => {
             // Peer variant dependencies (may be poisoned if not implemented):
-            const { themeVariantVars   } = usesThemeVariant();
-            const { outlineVariantVars } = usesOutlineVariant();
-            const { mildVariantVars    } = usesMildVariant();
-            const { bareVariantVars    } = usesBareVariant();
+            const { themeVariantVars   } = usingThemeVariant();
+            const { outlineVariantVars } = usingOutlineVariant();
+            const { mildVariantVars    } = usingMildVariant();
+            const { bareVariantVars    } = usingBareVariant();
             
             
             

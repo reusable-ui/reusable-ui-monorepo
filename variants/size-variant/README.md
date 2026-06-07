@@ -142,7 +142,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesSizeVariant(configVars, options)`
+### `usingSizeVariant(configVars, options)`
 
 Generates CSS rules that activate size-specific properties of component’s configuration based on the currently active size.
 
@@ -152,13 +152,13 @@ Automatically maps suffixed properties (e.g. `fontSizeSm`, `paddingMd`, `borderR
 
 ```ts
 import {
-    usesSizeVariant,
+    usingSizeVariant,
 } from '@reusable-ui/size-variant';
 import { style, usesCssProps } from '@cssfn/core';
 import { componentVars } from './styles/config';
 
 export const componentStyle = () => {
-    const { sizeVariantRule } = usesSizeVariant(componentVars, {
+    const { sizeVariantRule } = usingSizeVariant(componentVars, {
         supportedSizes: ['sm', 'md', 'lg'], // list of supported sizes
     });
     

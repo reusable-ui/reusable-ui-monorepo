@@ -8,7 +8,7 @@ The effects are designed to feel natural to users:
 - Components smoothly animate a focus ring indicator as they gain focus.  
 - The ring uses the current theme color, ensuring harmony with the component's appearance.
 
-By using `usesFocusEffect()`, you can apply these effects consistently across your components — showing the focus ring indicator — with optional customization for ring thickness.  
+By using `usingFocusEffect()`, you can apply these effects consistently across your components — showing the focus ring indicator — with optional customization for ring thickness.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with Focus State
@@ -42,7 +42,7 @@ yarn add @reusable-ui/focus-effect
 
 ## 🧩 Exported CSS Hooks
 
-### `usesFocusEffect(options?: CssFocusEffectOptions): CssFocusEffect`
+### `usingFocusEffect(options?: CssFocusEffectOptions): CssFocusEffect`
 
 Applies focus-state effects that highlight components with a ring indicator,
 making them **visually distinct** and signaling readiness for interaction when focused.
@@ -56,15 +56,15 @@ Uses the current theme color, ensuring harmony with the component's appearance.
 
 ```ts
 // Features:
-import { usesRingFeature } from '@reusable-ui/ring-feature';
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
-import { usesBoxShadowFeature } from '@reusable-ui/box-shadow-feature';
+import { usingRingFeature } from '@reusable-ui/ring-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingBoxShadowFeature } from '@reusable-ui/box-shadow-feature';
 
 // States:
-import { usesFocusState } from '@reusable-ui/focus-state';
+import { usingFocusState } from '@reusable-ui/focus-state';
 
 // Effects:
-import { usesFocusEffect } from '@reusable-ui/focus-effect';
+import { usingFocusEffect } from '@reusable-ui/focus-effect';
 
 // CSS-in-JS:
 import { style, vars, keyframes } from '@cssfn/core';
@@ -73,15 +73,15 @@ export const focusableBoxStyle = () => {
     // Features:
     const {
         ringFeatureRule,
-    } = usesRingFeature();
+    } = usingRingFeature();
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     const {
         boxShadowFeatureRule,
         boxShadowFeatureVars: { boxShadow },
-    } = usesBoxShadowFeature();
+    } = usingBoxShadowFeature();
     
     // States:
     
@@ -91,7 +91,7 @@ export const focusableBoxStyle = () => {
     const {
         focusStateRule,
         focusStateVars: { focusFactor },
-    } = usesFocusState({
+    } = usingFocusState({
         animationFocusing : 'var(--box-focusing)',
         animationBlurring : 'var(--box-blurring)',
     });
@@ -103,7 +103,7 @@ export const focusableBoxStyle = () => {
     // - Allows customization of the thickness of the focus ring
     const {
         focusEffectRule,
-    } = usesFocusEffect({
+    } = usingFocusEffect({
         // The width of the focus ring indicator when fully focused:
         ringWidth : '0.25rem',
     });

@@ -254,7 +254,7 @@ const toKebabCase = (input: string): string => input.replace(/([a-z])([A-Z])/g, 
 
 
 
-test.describe('usesExciteEffect', () => {
+test.describe('usingExciteEffect', () => {
     for (const { title, props, expectedFilters, expectedTransform } of testCases) {
         test(title, async ({ mount }) => {
             const component = await mount(<ExciteEffectTest {...props} />);

@@ -1,7 +1,7 @@
 import { style } from '@cssfn/core'
-import { usesFilterFeature } from '@reusable-ui/filter-feature';
-import { usesTransformFeature } from '@reusable-ui/transform-feature';
-import { usesDragEffect } from '../dist/index.js'
+import { usingFilterFeature } from '@reusable-ui/filter-feature';
+import { usingTransformFeature } from '@reusable-ui/transform-feature';
+import { usingDragEffect } from '../dist/index.js'
 import {
     inactiveTargetOpacity,
     inactiveTargetInvert,
@@ -22,16 +22,16 @@ export default function dragEffectReversedTestStyle() {
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature();
+    } = usingFilterFeature();
     const {
         transformFeatureRule,
         transformFeatureVars: { transform },
-    } = usesTransformFeature();
+    } = usingTransformFeature();
     
     // Effects:
     const {
         dragEffectRule,
-    } = usesDragEffect({
+    } = usingDragEffect({
         enablesReverseIntent : true,
         opacity              : inactiveTargetOpacity,
         invert               : inactiveTargetInvert,

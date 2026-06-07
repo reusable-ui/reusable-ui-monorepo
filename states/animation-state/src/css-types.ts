@@ -72,7 +72,7 @@ export interface AnimationCase {
  * @example
  * ```ts
  * // Describe how order animations should behave:
- * const orderAnimations : CssRule = usesAnimationState({
+ * const orderAnimations : CssRule = usingAnimationState({
  *     animations      : [
  *         {
  *             ifState   : ifPreparing,
@@ -119,7 +119,7 @@ export interface AnimationBaseBehavior {
  * @example
  * ```ts
  * // Describe how order animation factors should behave:
- * const orderAnimations : CssRule = usesAnimationState({
+ * const orderAnimations : CssRule = usingAnimationState({
  *     animations : [
  *         // animation cases...
  *     ],
@@ -190,7 +190,7 @@ export interface AnimationFactorBehavior {
  * @example
  * ```ts
  * // Describe how order animations should behave:
- * const orderAnimations : CssRule = usesAnimationState({
+ * const orderAnimations : CssRule = usingAnimationState({
  *     animations      : [
  *         {
  *             ifState   : ifPreparing,

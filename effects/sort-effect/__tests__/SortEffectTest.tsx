@@ -2,7 +2,7 @@ import React, { AnimationEvent as ReactAnimationEvent, type CSSProperties, type 
 import { flushSync } from 'react-dom'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useSortEffectTestStyles } from './SortEffectTest.loader.js'
-import { type SortStateProps, useSortBehaviorState, usesSortState } from '@reusable-ui/sort-state'
+import { type SortStateProps, useSortBehaviorState, usingSortState } from '@reusable-ui/sort-state'
 import { useMergeEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
 import { Product } from './product-types.js'
@@ -123,7 +123,7 @@ export const SortEffectTest = (props: SortEffectTestProps) => {
         };
     }, []);
     
-    const { sortStateVars  : { sortFactor: sortFactorVar, sortFactorCond: sortFactorCondVar } } = usesSortState();
+    const { sortStateVars  : { sortFactor: sortFactorVar, sortFactorCond: sortFactorCondVar } } = usingSortState();
     
     // Inline style overrides:
     // - Assigns `sortFactor` directly

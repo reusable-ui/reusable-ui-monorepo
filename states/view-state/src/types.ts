@@ -387,7 +387,7 @@ export interface ViewStateVars {
      * It becomes invalid (`unset`) when not actively animating toward a higher index.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationViewAdvancing : unknown
     
@@ -396,7 +396,7 @@ export interface ViewStateVars {
      * It becomes invalid (`unset`) when not actively animating toward a lower index.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationViewReceding  : unknown
     

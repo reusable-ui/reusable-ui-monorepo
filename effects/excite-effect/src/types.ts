@@ -42,7 +42,7 @@ export interface ExciteEffectVars {
      * 
      * - Becomes `unset` when the component is idle (not excited).
      * - Typically not consumed directly — instead use:
-     *   `const { filterFeatureVars: { filter } } = usesFilterFeature()`
+     *   `const { filterFeatureVars: { filter } } = usingFilterFeature()`
      */
     exciteFilter    : unknown
     
@@ -52,7 +52,7 @@ export interface ExciteEffectVars {
      * - Built from a `scale(...)` function.
      * - Becomes `unset` when the component is idle (not excited).
      * - Typically not consumed directly — instead use:
-     *   `const { transformFeatureVars: { transform } } = usesTransformFeature()`
+     *   `const { transformFeatureVars: { transform } } = usingTransformFeature()`
      */
     exciteTransform : unknown
 }

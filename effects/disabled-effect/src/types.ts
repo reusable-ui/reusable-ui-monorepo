@@ -43,7 +43,7 @@ export interface DisabledEffectVars {
      * 
      * - Becomes `unset` when the component is fully enabled.
      * - Typically not consumed directly — instead use:
-     *   `const { filterFeatureVars: { filter } } = usesFilterFeature()`
+     *   `const { filterFeatureVars: { filter } } = usingFilterFeature()`
      */
     disabledFilter : unknown
     

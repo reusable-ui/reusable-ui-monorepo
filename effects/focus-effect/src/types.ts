@@ -29,7 +29,7 @@ export interface FocusEffectVars {
      * 
      * - Becomes `unset` when the component is fully blurred.
      * - Typically not consumed directly — instead use:
-     *   `const { boxShadowFeatureVars: { boxShadow } } = usesBoxShadowFeature()`
+     *   `const { boxShadowFeatureVars: { boxShadow } } = usingBoxShadowFeature()`
      */
     focusBoxShadow : unknown
 }

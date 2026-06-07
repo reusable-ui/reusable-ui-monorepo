@@ -34,7 +34,7 @@ import {
 
 // Reusable-ui states:
 import {
-    usesExciteState,
+    usingExciteState,
 }                           from '@reusable-ui/excite-state'        // Lifecycle-aware excitement state with continuous attention-grabbing animations and semantic styling hooks for UI components.
 
 // Reusable-ui effects:
@@ -56,7 +56,7 @@ import {
  * @param options - An optional configuration for customizing excite effects.
  * @returns A CSS API containing effect rules and CSS variables for grabbing user attention when excited.
  */
-export const usesExciteEffect = (options?: CssExciteEffectOptions): CssExciteEffect => {
+export const usingExciteEffect = (options?: CssExciteEffectOptions): CssExciteEffect => {
     // Extract options and assign defaults:
     const {
         enablesReverseIntent = true, // Defaults to `true` (enables reverse intent, allowing negative values to fade *out* the effect when excited).
@@ -69,7 +69,7 @@ export const usesExciteEffect = (options?: CssExciteEffectOptions): CssExciteEff
     
     
     // States:
-    const { exciteStateVars : { exciteFactor } } = usesExciteState();
+    const { exciteStateVars : { exciteFactor } } = usingExciteState();
     
     // Variables:
     const { exciteFilter, exciteTransform } = exciteEffectVars;

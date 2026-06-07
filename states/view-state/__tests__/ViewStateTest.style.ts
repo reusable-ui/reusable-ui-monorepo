@@ -1,6 +1,6 @@
 import { rule, keyframes, style, vars, scope, switchOf } from '@cssfn/core'
-import { usesViewState } from '../dist/index.js'
-import { usesAnimationFeature } from '@reusable-ui/animation-feature'
+import { usingViewState } from '../dist/index.js'
+import { usingAnimationFeature } from '@reusable-ui/animation-feature'
 
 function containerStyle() {
     return style({
@@ -16,7 +16,7 @@ function viewsStyle() {
     const {
         viewStateRule,
         viewStateVars: { viewIndex, prevViewIndex, viewFactor },
-    } = usesViewState({
+    } = usingViewState({
         animationViewAdvancing : 'var(--test-view-advancing)',
         animationViewReceding  : 'var(--test-view-receding)',
     });
@@ -24,7 +24,7 @@ function viewsStyle() {
     const {
         animationFeatureRule,
         animationFeatureVars : { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     return style({
         display: 'grid',

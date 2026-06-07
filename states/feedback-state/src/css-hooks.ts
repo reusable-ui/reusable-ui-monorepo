@@ -7,7 +7,7 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    usesTransitionState,
+    usingTransitionState,
 }                           from '@reusable-ui/transition-state'    // Lifecycle-aware transition state for React, enabling reusable hooks with consistent animations.
 
 // Types:
@@ -29,7 +29,7 @@ import {
  * @example
  * ```ts
  * // Describe how feedback focus state should behave:
- * const focusStateRule : CssRule = usesFeedbackState({
+ * const focusStateRule : CssRule = usingFeedbackState({
  *     // Feedback animations for visual effects whenever a feedback state changes:
  *     animations      : [
  *         {
@@ -81,4 +81,4 @@ import {
  * });
  * ```
  */
-export const usesFeedbackState = (feedbackBehavior: FeedbackBehavior): CssRule => usesTransitionState(feedbackBehavior);
+export const usingFeedbackState = (feedbackBehavior: FeedbackBehavior): CssRule => usingTransitionState(feedbackBehavior);

@@ -2,7 +2,7 @@ import React, { type CSSProperties, useMemo } from 'react'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useHoverEffectTestStyles } from './HoverEffectTest.loader.js'
 import { useHoverEffectReversedTestStyles } from './HoverEffectReversedTest.loader.js'
-import { usesHoverState } from '@reusable-ui/hover-state'
+import { usingHoverState } from '@reusable-ui/hover-state'
 
 
 
@@ -53,7 +53,7 @@ export const HoverEffectTest = (props: HoverEffectTestProps) => {
     const styles = useHoverEffectTestStyles();
     const reversedStyles = useHoverEffectReversedTestStyles();
     
-    const { hoverStateVars  : { hoverFactor: hoverFactorVar, isHovered: isHoveredVar } } = usesHoverState();
+    const { hoverStateVars  : { hoverFactor: hoverFactorVar, isHovered: isHoveredVar } } = usingHoverState();
     
     // Inline style overrides:
     // - Assigns `activeFactor` directly

@@ -24,29 +24,29 @@ import {
 
 // Reusable-ui variants:
 import {
-    usesOutlineVariant,
+    usingOutlineVariant,
 }                           from '@reusable-ui/outline-variant'     // A utility for managing visual outline consistently across React components.
 import {
-    usesMildVariant,
+    usingMildVariant,
 }                           from '@reusable-ui/mild-variant'        // A utility for managing mild styling (reading friendly) consistently across React components.
 
 // Reusable-ui features:
 import {
-    usesBackgroundFeature,
+    usingBackgroundFeature,
 }                           from '@reusable-ui/background-feature'  // A styling utility for resolving the appropriate background color based on the currently active variants — including theme, emphasize, outline, mild, and bare.
 import {
-    usesForegroundFeature,
+    usingForegroundFeature,
 }                           from '@reusable-ui/foreground-feature'  // A styling utility for resolving the appropriate foreground color based on the currently active variants — including theme, outline, and mild.
 import {
-    usesDecorationFeature,
+    usingDecorationFeature,
 }                           from '@reusable-ui/decoration-feature'  // A styling utility for resolving the appropriate decoration color based on the currently active variants — including theme, outline, and mild.
 import {
-    usesBorderFeature,
+    usingBorderFeature,
 }                           from '@reusable-ui/border-feature'      // A styling utility for resolving the appropriate border color, geometry, and radius based on the currently active variants — including theme, outline, mild, and bare.
 
 // Reusable-ui states:
 import {
-    usesActiveState,
+    usingActiveState,
 }                           from '@reusable-ui/active-state'        // Lifecycle-aware activation state with transition animations and semantic styling hooks for UI components.
 
 // Reusable-ui effects:
@@ -73,7 +73,7 @@ import {
  * @param options - An optional configuration for customizing active effects.
  * @returns A CSS API containing effect rules and CSS variables for highlighting theme colors.
  */
-export const usesActiveEffect = (options?: CssActiveEffectOptions): CssActiveEffect => {
+export const usingActiveEffect = (options?: CssActiveEffectOptions): CssActiveEffect => {
     // Extract options and assign defaults:
     const {
         brightness = 0.5, // Defaults to `0.5` (fairly darken in light mode, fairly lighten in dark mode).
@@ -84,17 +84,17 @@ export const usesActiveEffect = (options?: CssActiveEffectOptions): CssActiveEff
     
     
     // Variants:
-    const { outlineVariantVars : { isOutlined } } = usesOutlineVariant();
-    const { mildVariantVars    : { isMild     } } = usesMildVariant();
+    const { outlineVariantVars : { isOutlined } } = usingOutlineVariant();
+    const { mildVariantVars    : { isMild     } } = usingMildVariant();
     
     // Features:
-    const { backgroundFeatureVars : { backgRegularCond , backgVariantColor , backgColorOverride  } } = usesBackgroundFeature();
-    const { foregroundFeatureVars : { foregRegularCond , foregVariantColor , foregColorOverride  } } = usesForegroundFeature();
-    const { decorationFeatureVars : { decorRegularCond , decorVariantColor , decorColorOverride  } } = usesDecorationFeature();
-    const { borderFeatureVars     : { borderRegularCond, borderVariantColor, borderColorOverride } } = usesBorderFeature();
+    const { backgroundFeatureVars : { backgRegularCond , backgVariantColor , backgColorOverride  } } = usingBackgroundFeature();
+    const { foregroundFeatureVars : { foregRegularCond , foregVariantColor , foregColorOverride  } } = usingForegroundFeature();
+    const { decorationFeatureVars : { decorRegularCond , decorVariantColor , decorColorOverride  } } = usingDecorationFeature();
+    const { borderFeatureVars     : { borderRegularCond, borderVariantColor, borderColorOverride } } = usingBorderFeature();
     
     // States:
-    const { activeStateVars : { activeFactorCond } } = usesActiveState();
+    const { activeStateVars : { activeFactorCond } } = usingActiveState();
     
     // Variables:
     const { bumpFactorCond, effectiveFactorCond, activeFilter } = activeEffectVars;

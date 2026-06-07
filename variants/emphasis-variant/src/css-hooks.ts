@@ -30,7 +30,7 @@ import {
  * 
  * @returns A CSS API for enabling conditional styling based on emphasized state.
  */
-export const usesEmphasisVariant = (): CssEmphasisVariant => {
+export const usingEmphasisVariant = (): CssEmphasisVariant => {
     return {
         emphasisVariantRule : () => style(
             variants({

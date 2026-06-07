@@ -1,7 +1,7 @@
 import React, { type CSSProperties, useMemo, useLayoutEffect } from 'react'
 import { HydrateStyles } from '@cssfn/cssfn-react'
-import { usesActiveState } from '@reusable-ui/active-state'
-import { usesThemeVariant } from '@reusable-ui/theme-variant'
+import { usingActiveState } from '@reusable-ui/active-state'
+import { usingThemeVariant } from '@reusable-ui/theme-variant'
 import { colorParamConfigVars } from '@reusable-ui/color-config'
 import { useOutlineVariant, type OutlineVariantProps } from '@reusable-ui/outline-variant'
 import { useMildVariant, type MildVariantProps} from '@reusable-ui/mild-variant'
@@ -56,8 +56,8 @@ export const ActiveEffectTest = (props: ActiveEffectTestProps) => {
         colorParamConfigVars.mode = ((colorMode === 'light') ? 1 : -1) as any;
     }, [colorMode])
     
-    const { activeStateVars  : { activeFactorCond: activeFactorCondVar } } = usesActiveState();
-    const { themeVariantVars : { backgRegular, backgMild } } = usesThemeVariant();
+    const { activeStateVars  : { activeFactorCond: activeFactorCondVar } } = usingActiveState();
+    const { themeVariantVars : { backgRegular, backgMild } } = usingThemeVariant();
     
     // Inline style overrides:
     // - Assigns `activeFactorCond` directly

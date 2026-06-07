@@ -280,7 +280,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesViewState(options?: CssViewStateOptions): CssViewState`
+### `usingViewState(options?: CssViewStateOptions): CssViewState`
 
 Generates CSS rules that conditionally apply the view-switching animations based on current view index, and exposes view-related CSS variables for conditional animation.
 
@@ -306,10 +306,10 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 ```ts
 // Animation feature:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 
 // View-switching state:
-import { usesViewState } from '@reusable-ui/view-state';
+import { usingViewState } from '@reusable-ui/view-state';
 
 // CSS-in-JS:
 import { style, vars, keyframes, switchOf } from '@cssfn/core';
@@ -319,13 +319,13 @@ export const slideBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     // Feature: view-switching lifecycle
     const {
         viewStateRule,
         viewStateVars: { viewIndex, prevViewIndex, viewFactor },
-    } = usesViewState({
+    } = usingViewState({
         animationViewAdvancing : 'var(--box-view-advancing)',
         animationViewReceding  : 'var(--box-view-receding)',
     });
@@ -403,7 +403,7 @@ export const slideBoxStyle = () => {
 The `animationViewAdvancing` and `animationViewReceding` variables are only defined during their respective transition phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
-Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining view-switching animations with other state-driven transitions.
+Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining view-switching animations with other state-driven transitions.
 
 ---
 

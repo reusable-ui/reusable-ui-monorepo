@@ -8,7 +8,7 @@ The effects are designed to feel natural to users:
 - Components draw attention through rhythmic pulses while in the excited state.  
 - Visual cues remain consistent across components, ensuring a predictable and cohesive user experience.  
 
-By using `usesExciteEffect()`, you can apply these effects consistently across your components — grabbing user attention through rhythmic pulses and color shifts — with optional customization for color effects.  
+By using `usingExciteEffect()`, you can apply these effects consistently across your components — grabbing user attention through rhythmic pulses and color shifts — with optional customization for color effects.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with Excite State
@@ -46,7 +46,7 @@ yarn add @reusable-ui/excite-effect
 
 ## 🧩 Exported CSS Hooks
 
-### `usesExciteEffect(options?: CssExciteEffectOptions): CssExciteEffect`
+### `usingExciteEffect(options?: CssExciteEffectOptions): CssExciteEffect`
 
 Applies excite-state effects that blink by zooming in and flashing color,
 making components **visually highlighted** when excited.
@@ -59,15 +59,15 @@ Runs continuously while the component is in the excited state by animating filte
 
 ```ts
 // Features:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
-import { usesFilterFeature } from '@reusable-ui/filter-feature';
-import { usesTransformFeature } from '@reusable-ui/transform-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingFilterFeature } from '@reusable-ui/filter-feature';
+import { usingTransformFeature } from '@reusable-ui/transform-feature';
 
 // States:
-import { usesExciteState } from '@reusable-ui/excite-state';
+import { usingExciteState } from '@reusable-ui/excite-state';
 
 // Effects:
-import { usesExciteEffect } from '@reusable-ui/excite-effect';
+import { usingExciteEffect } from '@reusable-ui/excite-effect';
 
 // CSS-in-JS:
 import { style, vars, keyframes } from '@cssfn/core';
@@ -77,15 +77,15 @@ export const excitableBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature();
+    } = usingFilterFeature();
     const {
         transformFeatureRule,
         transformFeatureVars: { transform },
-    } = usesTransformFeature();
+    } = usingTransformFeature();
     
     // States:
     
@@ -95,7 +95,7 @@ export const excitableBoxStyle = () => {
     const {
         exciteStateRule,
         exciteStateVars: { exciteFactor },
-    } = usesExciteState({
+    } = usingExciteState({
         animationExciting : 'var(--box-exciting)',
     });
     
@@ -105,7 +105,7 @@ export const excitableBoxStyle = () => {
     // - Allows customization of how the "excited" appearance should look
     const {
         exciteEffectRule,
-    } = usesExciteEffect({
+    } = usingExciteEffect({
         // Invert:
         // Values `0` → no inversion
         // Values `1` → fully inverted

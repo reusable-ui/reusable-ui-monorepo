@@ -1,9 +1,9 @@
 import { style } from '@cssfn/core'
-import { usesOutlineVariant } from '@reusable-ui/outline-variant'
-import { usesMildVariant} from '@reusable-ui/mild-variant'
-import { usesFilterFeature } from '@reusable-ui/filter-feature';
-import { usesBackgroundFeature } from '@reusable-ui/background-feature';
-import { usesActiveEffect } from '../dist/index.js'
+import { usingOutlineVariant } from '@reusable-ui/outline-variant'
+import { usingMildVariant} from '@reusable-ui/mild-variant'
+import { usingFilterFeature } from '@reusable-ui/filter-feature';
+import { usingBackgroundFeature } from '@reusable-ui/background-feature';
+import { usingActiveEffect } from '../dist/index.js'
 import {
     activeTargetOpacity,
     activeTargetInvert,
@@ -23,25 +23,25 @@ export default function activeEffectTestStyle() {
     // Variants:
     const {
         outlineVariantRule,
-    } = usesOutlineVariant();
+    } = usingOutlineVariant();
     const {
         mildVariantRule,
-    } = usesMildVariant();
+    } = usingMildVariant();
     
     // Features:
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature();
+    } = usingFilterFeature();
     const {
         backgroundFeatureRule,
         backgroundFeatureVars : { backgColor },
-    } = usesBackgroundFeature();
+    } = usingBackgroundFeature();
     
     // Effects:
     const {
         activeEffectRule,
-    } = usesActiveEffect({
+    } = usingActiveEffect({
         opacity     : activeTargetOpacity,
         invert      : activeTargetInvert,
         sepia       : activeTargetSepia,

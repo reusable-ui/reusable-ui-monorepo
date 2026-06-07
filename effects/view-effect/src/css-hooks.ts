@@ -30,7 +30,7 @@ import {
 
 // Reusable-ui states:
 import {
-    usesViewState,
+    usingViewState,
 }                           from '@reusable-ui/view-state'          // Lifecycle-aware view-switching with transition animations and semantic styling hooks for UI components.
 
 
@@ -46,7 +46,7 @@ import {
  * This creates a natural **switching illusion** of view changes.
  * 
  * ⚠️ Important Usage Note:
- * - Apply `usesViewEffect()` to the **slidable view elements** (the view group or individual views),
+ * - Apply `usingViewEffect()` to the **slidable view elements** (the view group or individual views),
  *   **not** to the parent viewport container.
  * - The viewport container typically has `overflow: hidden` to mask out-of-viewport content.
  *   Sliding the container itself would move the viewport rather than the views inside it.
@@ -62,17 +62,17 @@ import {
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
- *     } = usesAnimationFeature();
+ *     } = usingAnimationFeature();
  *     const {
  *         transformFeatureRule,
  *         transformFeatureVars: { transform },
- *     } = usesTransformFeature();
+ *     } = usingTransformFeature();
  *     
  *     // States:
  *     const {
  *         viewStateRule,
  *         viewStateVars: { viewFactor },
- *     } = usesViewState({
+ *     } = usingViewState({
  *         animationViewAdvancing : 'var(--box-view-advancing)',
  *         animationViewReceding  : 'var(--box-view-receding)',
  *     });
@@ -80,7 +80,7 @@ import {
  *     // Effects:
  *     const {
  *         viewEffectRule,
- *     } = usesViewEffect({
+ *     } = usingViewEffect({
  *         size          : '200px',
  *         orientation   : 'inline',
  *         flowDirection : 'start',
@@ -126,7 +126,7 @@ import {
  * @param options - An optional configuration for customizing view effects.
  * @returns A CSS API containing effect rules and CSS variables for the sliding transitions.
  */
-export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect => {
+export const usingViewEffect = (options?: CssViewEffectOptions): CssViewEffect => {
     // Extract options and assign defaults:
     const {
         minViewIndex              = 0,         // Defaults to `0` (zero-based index).
@@ -182,7 +182,7 @@ export const usesViewEffect = (options?: CssViewEffectOptions): CssViewEffect =>
     
     
     // States:
-    const { viewStateVars : { viewIndex, prevViewIndex, viewFactor, viewFactorCond } } = usesViewState();
+    const { viewStateVars : { viewIndex, prevViewIndex, viewFactor, viewFactorCond } } = usingViewState();
     
     /**
      * Optimization opportunity:

@@ -1,6 +1,6 @@
 import { style, switchOf } from '@cssfn/core'
-import { usesFilterFeature } from '@reusable-ui/filter-feature';
-import { usesHoverEffect } from '../dist/index.js'
+import { usingFilterFeature } from '@reusable-ui/filter-feature';
+import { usingHoverEffect } from '../dist/index.js'
 import {
     inactiveTargetOpacity,
     inactiveTargetInvert,
@@ -21,13 +21,13 @@ export default function hoverEffectReversedTestStyle() {
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature();
+    } = usingFilterFeature();
     
     // Effects:
     const {
         hoverEffectRule,
         hoverEffectVars : { hoverTextDecoration },
-    } = usesHoverEffect({
+    } = usingHoverEffect({
         enablesReverseIntent : true,
         opacity              : inactiveTargetOpacity,
         invert               : inactiveTargetInvert,

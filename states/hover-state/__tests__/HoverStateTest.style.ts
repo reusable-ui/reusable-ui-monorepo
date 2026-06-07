@@ -1,12 +1,12 @@
 import { keyframes, style, vars } from '@cssfn/core'
-import { usesHoverState } from '../dist/index.js'
-import { usesAnimationFeature } from '@reusable-ui/animation-feature'
+import { usingHoverState } from '../dist/index.js'
+import { usingAnimationFeature } from '@reusable-ui/animation-feature'
 
 export default function hoverStateTestStyle() {
     const {
         hoverStateRule,
         hoverStateVars: { hoverFactor },
-    } = usesHoverState({
+    } = usingHoverState({
         animationHovering   : 'var(--test-hovering)',
         animationUnhovering : 'var(--test-unhovering)',
     });
@@ -14,7 +14,7 @@ export default function hoverStateTestStyle() {
     const {
         animationFeatureRule,
         animationFeatureVars : { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     return style({
         ...hoverStateRule(),

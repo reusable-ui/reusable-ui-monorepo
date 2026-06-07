@@ -8,7 +8,7 @@ The effects are designed to feel natural to users:
 - Components smoothly slide between views, creating a clear sense of movement and continuity.  
 - A selective rendering strategy may be applied: during transitions, multiple views are briefly rendered to maintain the illusion of continuous motion, while once settled only the target view remains mounted — ensuring smooth visuals with improved performance.  
 
-By using `usesViewEffect()`, you can apply these effects consistently across your components — sliding to the target view — with optional customization for spacing, offsets, selective rendering, etc.  
+By using `usingViewEffect()`, you can apply these effects consistently across your components — sliding to the target view — with optional customization for spacing, offsets, selective rendering, etc.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with View State
@@ -41,7 +41,7 @@ yarn add @reusable-ui/view-effect
 
 ## 🧩 Exported CSS Hooks
 
-### `usesViewEffect(options?: CssViewEffectOptions): CssViewEffect`
+### `usingViewEffect(options?: CssViewEffectOptions): CssViewEffect`
 
 Applies view-state effects that slide between views,
 making components **visually transitioned** to the next view or step.
@@ -53,7 +53,7 @@ Gradually revealing the target view inside the container viewport while moving t
 This creates a natural **switching illusion** of view changes.
 
 ⚠️ Important Usage Note:
-- Apply `usesViewEffect()` to the **slidable view elements** (the view group or individual views),
+- Apply `usingViewEffect()` to the **slidable view elements** (the view group or individual views),
   **not** to the parent viewport container.
 - The viewport container typically has `overflow: hidden` to mask out-of-viewport content.
   Sliding the container itself would move the viewport rather than the views inside it.
@@ -66,14 +66,14 @@ This creates a natural **switching illusion** of view changes.
 
 ```ts
 // Features:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
-import { usesTransformFeature } from '@reusable-ui/transform-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingTransformFeature } from '@reusable-ui/transform-feature';
 
 // States:
-import { usesViewState } from '@reusable-ui/view-state';
+import { usingViewState } from '@reusable-ui/view-state';
 
 // Effects:
-import { usesViewEffect } from '@reusable-ui/view-effect';
+import { usingViewEffect } from '@reusable-ui/view-effect';
 
 // CSS-in-JS:
 import { rule, style, vars, keyframes, children } from '@cssfn/core';
@@ -83,11 +83,11 @@ export const slideBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     const {
         transformFeatureRule,
         transformFeatureVars: { transform },
-    } = usesTransformFeature();
+    } = usingTransformFeature();
     
     // States:
     
@@ -97,7 +97,7 @@ export const slideBoxStyle = () => {
     const {
         viewStateRule,
         viewStateVars: { viewFactor },
-    } = usesViewState({
+    } = usingViewState({
         animationViewAdvancing : 'var(--box-view-advancing)',
         animationViewReceding  : 'var(--box-view-receding)',
     });
@@ -108,7 +108,7 @@ export const slideBoxStyle = () => {
     // - Allows customization of spacing, offsets, orientation, selective rendering, etc
     const {
         viewEffectRule,
-    } = usesViewEffect({
+    } = usingViewEffect({
         // The width (or height for vertical layouts) of each view:
         size                      : '200px',
         

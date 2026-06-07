@@ -1,12 +1,12 @@
 import { keyframes, children, style, vars } from '@cssfn/core'
-import { usesCollapseState } from '../dist/index.js'
-import { usesAnimationFeature } from '@reusable-ui/animation-feature'
+import { usingCollapseState } from '../dist/index.js'
+import { usingAnimationFeature } from '@reusable-ui/animation-feature'
 
 export default function collapseStateTestStyle() {
     const {
         collapseStateRule,
         collapseStateVars: { expandFactor },
-    } = usesCollapseState({
+    } = usingCollapseState({
         animationExpanding  : 'var(--test-expanding)',
         animationCollapsing : 'var(--test-collapsing)',
     });
@@ -14,7 +14,7 @@ export default function collapseStateTestStyle() {
     const {
         animationFeatureRule,
         animationFeatureVars : { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     return style({
         ...collapseStateRule(),

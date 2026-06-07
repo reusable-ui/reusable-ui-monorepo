@@ -23,13 +23,13 @@ import {
 
 // Reusable-ui variants:
 import {
-    usesThemeVariant,
+    usingThemeVariant,
 }                           from '@reusable-ui/theme-variant'       // A utility for managing themes consistently across React components.
 import {
-    usesOutlineVariant,
+    usingOutlineVariant,
 }                           from '@reusable-ui/outline-variant'     // A utility for managing visual outline consistently across React components.
 import {
-    usesMildVariant,
+    usingMildVariant,
 }                           from '@reusable-ui/mild-variant'        // A utility for managing mild styling (reading friendly) consistently across React components.
 
 
@@ -41,7 +41,7 @@ import {
  * @param options - An optional configuration for customizing foreground behavior.
  * @returns A CSS API for enabling theme-aware foreground styling in components.
  */
-export const usesForegroundFeature = (options?: CssForegroundFeatureOptions): CssForegroundFeature => {
+export const usingForegroundFeature = (options?: CssForegroundFeatureOptions): CssForegroundFeature => {
     // Extract options and assign defaults:
     const {
         color           = 'currentColor', // Ensures a concrete fallback to avoid invalid value.
@@ -53,9 +53,9 @@ export const usesForegroundFeature = (options?: CssForegroundFeatureOptions): Cs
     return {
         foregroundFeatureRule : () => {
             // Peer variant dependencies (may be poisoned if not implemented):
-            const { themeVariantVars   } = usesThemeVariant();
-            const { outlineVariantVars } = usesOutlineVariant();
-            const { mildVariantVars    } = usesMildVariant();
+            const { themeVariantVars   } = usingThemeVariant();
+            const { outlineVariantVars } = usingOutlineVariant();
+            const { mildVariantVars    } = usingMildVariant();
             
             
             

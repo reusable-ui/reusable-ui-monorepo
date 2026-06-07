@@ -21,7 +21,7 @@ yarn add @reusable-ui/foreground-feature
 
 ## 🧩 Exported CSS Hooks
 
-### `usesForegroundFeature(options?: CssForegroundFeatureOptions): CssForegroundFeature`
+### `usingForegroundFeature(options?: CssForegroundFeatureOptions): CssForegroundFeature`
 
 Resolves the appropriate foreground color based on the currently active variants and exposes ready-to-use CSS variables.
 
@@ -53,27 +53,27 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
 ```ts
 // Supporting variants:
-import { usesThemeVariant } from '@reusable-ui/theme-variant'
-import { usesEmphasisVariant } from '@reusable-ui/emphasis-variant' // optional
-import { usesOutlineVariant } from '@reusable-ui/outline-variant'
-import { usesMildVariant } from '@reusable-ui/mild-variant'
+import { usingThemeVariant } from '@reusable-ui/theme-variant'
+import { usingEmphasisVariant } from '@reusable-ui/emphasis-variant' // optional
+import { usingOutlineVariant } from '@reusable-ui/outline-variant'
+import { usingMildVariant } from '@reusable-ui/mild-variant'
 
 // Theme-aware foreground feature:
-import { usesForegroundFeature } from '@reusable-ui/foreground-feature';
+import { usingForegroundFeature } from '@reusable-ui/foreground-feature';
 
 // CSS-in-JS:
 import { style } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { themeVariantRule    } = usesThemeVariant();
-    const { emphasisVariantRule } = usesEmphasisVariant(); // optional
-    const { outlineVariantRule  } = usesOutlineVariant();
-    const { mildVariantRule     } = usesMildVariant();
+    const { themeVariantRule    } = usingThemeVariant();
+    const { emphasisVariantRule } = usingEmphasisVariant(); // optional
+    const { outlineVariantRule  } = usingOutlineVariant();
+    const { mildVariantRule     } = usingMildVariant();
     
     const {
         foregroundFeatureRule,
         foregroundFeatureVars: { foregColor },
-    } = usesForegroundFeature({
+    } = usingForegroundFeature({
         foregroundColor: 'black',
     });
     

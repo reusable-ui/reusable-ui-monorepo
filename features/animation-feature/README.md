@@ -35,7 +35,7 @@ Subscribes a callback listener for animation registry changes.
 
 ## 🧩 Exported CSS Hook
 
-### `usesAnimationFeature(options?: CssAnimationFeatureOptions): CssAnimationFeature`
+### `usingAnimationFeature(options?: CssAnimationFeatureOptions): CssAnimationFeature`
 
 Composes custom and registered animations into a unified stack and exposes ready-to-use CSS variables.
 
@@ -51,23 +51,23 @@ These variables are ready-to-use for styling your component’s animation.
 
 ```ts
 // Supporting states:
-import { usesDisableState } from './states/disable-state'
-import { usesCollapseState } from './states/collapse-state'
+import { usingDisableState } from './states/disable-state'
+import { usingCollapseState } from './states/collapse-state'
 
 // Compound animation feature:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 
 // CSS-in-JS:
 import { style } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { disableStateRule  } = usesDisableState();
-    const { collapseStateRule } = usesCollapseState();
+    const { disableStateRule  } = usingDisableState();
+    const { collapseStateRule } = usingCollapseState();
     
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature({
+    } = usingAnimationFeature({
         // Custom animations:
         animation: [
             ['500ms', 'ease-in', 'both', 'infinite', 'blinking'],

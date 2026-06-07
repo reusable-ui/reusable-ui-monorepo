@@ -29,7 +29,7 @@ interface TransformFeatureTestCase {
 
 
 
-test.describe('usesTransformFeature', () => {
+test.describe('usingTransformFeature', () => {
     for (const { title, props, expectedTransforms } of [
         {
             title               : 'no transform',

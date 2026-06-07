@@ -352,7 +352,7 @@ export interface SortStateVars {
      * It becomes invalid (`unset`) when no sorting animation is running.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationSorting : unknown
     

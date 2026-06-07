@@ -17,7 +17,7 @@ import {
 
 // Reusable-ui states:
 import {
-    usesPressState,
+    usingPressState,
 }                           from '@reusable-ui/press-state'         // Lifecycle-aware press/release state with transition animations and semantic styling hooks for UI components.
 
 // Reusable-ui effects:
@@ -41,7 +41,7 @@ import {
  * @param options - An optional configuration for customizing press effects.
  * @returns A CSS API containing effect rules and CSS variables for confirming user input on press.
  */
-export const usesPressEffect = (options?: CssPressEffectOptions): CssPressEffect => {
+export const usingPressEffect = (options?: CssPressEffectOptions): CssPressEffect => {
     // Extract options and assign defaults:
     const {
         enablesReverseIntent = true, // Defaults to `true` (enables reverse intent, allowing negative values to fade *out* the effect on press).
@@ -53,7 +53,7 @@ export const usesPressEffect = (options?: CssPressEffectOptions): CssPressEffect
     
     
     // States:
-    const { pressStateVars : { pressFactor } } = usesPressState();
+    const { pressStateVars : { pressFactor } } = usingPressState();
     
     
     

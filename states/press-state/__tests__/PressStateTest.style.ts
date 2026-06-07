@@ -1,12 +1,12 @@
 import { keyframes, style, vars } from '@cssfn/core'
-import { usesPressState } from '../dist/index.js'
-import { usesAnimationFeature } from '@reusable-ui/animation-feature'
+import { usingPressState } from '../dist/index.js'
+import { usingAnimationFeature } from '@reusable-ui/animation-feature'
 
 export default function pressStateTestStyle() {
     const {
         pressStateRule,
         pressStateVars: { pressFactor },
-    } = usesPressState({
+    } = usingPressState({
         animationPressing  : 'var(--test-pressing)',
         animationReleasing : 'var(--test-releasing)',
     });
@@ -14,7 +14,7 @@ export default function pressStateTestStyle() {
     const {
         animationFeatureRule,
         animationFeatureVars : { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     return style({
         ...pressStateRule(),

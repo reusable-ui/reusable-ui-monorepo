@@ -1,7 +1,7 @@
 import { style } from '@cssfn/core'
-import { usesFilterFeature } from '@reusable-ui/filter-feature';
-import { usesTransformFeature } from '@reusable-ui/transform-feature';
-import { usesExciteEffect } from '../dist/index.js'
+import { usingFilterFeature } from '@reusable-ui/filter-feature';
+import { usingTransformFeature } from '@reusable-ui/transform-feature';
+import { usingExciteEffect } from '../dist/index.js'
 import {
     activeTargetOpacity,
     activeTargetInvert,
@@ -23,16 +23,16 @@ export default function exciteEffectTestStyle() {
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature();
+    } = usingFilterFeature();
     const {
         transformFeatureRule,
         transformFeatureVars: { transform },
-    } = usesTransformFeature();
+    } = usingTransformFeature();
     
     // Effects:
     const {
         exciteEffectRule,
-    } = usesExciteEffect({
+    } = usingExciteEffect({
         enablesReverseIntent : false,
         opacity              : activeTargetOpacity,
         invert               : activeTargetInvert,

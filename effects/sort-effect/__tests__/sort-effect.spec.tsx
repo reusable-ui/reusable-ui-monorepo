@@ -115,7 +115,7 @@ const testCases: SortEffectTestCase[] = [
 
 
 
-test.describe('usesSortEffect', () => {
+test.describe('usingSortEffect', () => {
     for (const { title, updates } of testCases) {
         test(title, async ({ mount }) => {
             // States:

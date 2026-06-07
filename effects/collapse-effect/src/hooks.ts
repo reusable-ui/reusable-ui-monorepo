@@ -26,7 +26,7 @@ import {
 
 
 /**
- * Supports for `usesCollapseEffect()` (the CSS styling effects) by supplying and continuously updating
+ * Supports for `usingCollapseEffect()` (the CSS styling effects) by supplying and continuously updating
  * the required sizing variables, injected into the component's inline style.
  * This ensures the collapse/expand styling effects work correctly.
  * 

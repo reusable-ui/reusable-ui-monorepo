@@ -183,7 +183,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesHoverState(options?: CssHoverStateOptions): CssHoverState`
+### `usingHoverState(options?: CssHoverStateOptions): CssHoverState`
 
 Generates CSS rules that conditionally apply the hover/unhover animations based on current hovered state, and exposes hover/unhover-related CSS variables for conditional animation.
 
@@ -205,10 +205,10 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 ```ts
 // Animation feature:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 
 // Hovered/unhovered state:
-import { usesHoverState } from '@reusable-ui/hover-state';
+import { usingHoverState } from '@reusable-ui/hover-state';
 
 // CSS-in-JS:
 import { style, vars, keyframes, fallback } from '@cssfn/core';
@@ -218,13 +218,13 @@ export const hoverableBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     // Feature: hover/unhover lifecycle
     const {
         hoverStateRule,
         hoverStateVars: { isHovered, isUnhovered, hoverFactor },
-    } = usesHoverState({
+    } = usingHoverState({
         animationHovering   : 'var(--box-hovering)',
         animationUnhovering : 'var(--box-unhovering)',
     });
@@ -277,7 +277,7 @@ export const hoverableBoxStyle = () => {
 The `animationHovering` and `animationUnhovering` variables are only defined during **hovering** and **unhovering** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
-Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining hover/unhover animations with other state-driven transitions.
+Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining hover/unhover animations with other state-driven transitions.
 
 ---
 

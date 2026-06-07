@@ -171,7 +171,7 @@ features:                                                                      [
 
 =========================================================================================
 
-// list of <Component>s that made up from <Content|usesContent :
+// list of <Component>s that made up from <Content|usingContent :
 
 
 <Masonry>		baseComponent		styles
@@ -190,7 +190,7 @@ features:                                                                      [
 
 =========================================================================================
 
-// list of <Component>s that made up from <Container|usesContainer :
+// list of <Component>s that made up from <Container|usingContainer :
 
 <Navbar>		basicComponent		styles
 

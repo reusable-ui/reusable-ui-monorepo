@@ -354,7 +354,7 @@ export interface FocusStateVars {
      * It becomes invalid (`unset`) when not actively focusing.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationFocusing : unknown
     
@@ -363,7 +363,7 @@ export interface FocusStateVars {
      * It becomes invalid (`unset`) when not actively blurring.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationBlurring : unknown
     

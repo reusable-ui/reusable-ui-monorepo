@@ -41,7 +41,7 @@ export interface DragEffectVars {
      * 
      * - Becomes `unset` when the component is fully dropped.
      * - Typically not consumed directly — instead use:
-     *   `const { filterFeatureVars: { filter } } = usesFilterFeature()`
+     *   `const { filterFeatureVars: { filter } } = usingFilterFeature()`
      */
     dragFilter : unknown
     
@@ -50,7 +50,7 @@ export interface DragEffectVars {
      * 
      * - Becomes `unset` when the component is fully dropped.
      * - Typically not consumed directly — instead use:
-     *   `const { transformFeatureVars: { transform } } = usesTransformFeature()`
+     *   `const { transformFeatureVars: { transform } } = usingTransformFeature()`
      */
     dragTransform : unknown
 }

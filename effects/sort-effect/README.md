@@ -7,7 +7,7 @@ making components **visually rearranged** during sorting.
 The effects are designed to feel natural to users:  
 - Component items smoothly transition from their original unsorted positions into their new sorted order as they are being sorted.  
 
-By using `usesSortEffect()`, you can apply these effects consistently across your components — with optional customization for sorting effects.  
+By using `usingSortEffect()`, you can apply these effects consistently across your components — with optional customization for sorting effects.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with Sort State
@@ -41,7 +41,7 @@ yarn add @reusable-ui/sort-effect
 
 ## 🧩 Exported CSS Hooks
 
-### `usesSortEffect(options?: CssSortEffectOptions): CssSortEffect`
+### `usingSortEffect(options?: CssSortEffectOptions): CssSortEffect`
 
 Applies sorting effects that animate items from their previous positions into their new sorted order,
 making components **visually rearranged** during sorting.
@@ -52,7 +52,7 @@ Smoothly transitions between unsorted and sorted states
 by gradually moving each item from its original unsorted position toward its new sorted order.
 
 ⚠️ Important Usage Note:
-- Apply `usesSortEffect()` to each **sortable item element** (the individual items),
+- Apply `usingSortEffect()` to each **sortable item element** (the individual items),
   **not** to the parent sortable container.
 - Applying the effect at the item level ensures that the correct per-item sorting movements are applied.
 - Make sure to also apply `...transformFeatureRule()` and the `transform` variable
@@ -63,14 +63,14 @@ by gradually moving each item from its original unsorted position toward its new
 
 ```ts
 // Features:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
-import { usesTransformFeature } from '@reusable-ui/transform-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingTransformFeature } from '@reusable-ui/transform-feature';
 
 // States:
-import { usesSortState } from '@reusable-ui/sort-state';
+import { usingSortState } from '@reusable-ui/sort-state';
 
 // Effects:
-import { usesSortEffect } from '@reusable-ui/sort-effect';
+import { usingSortEffect } from '@reusable-ui/sort-effect';
 
 // CSS-in-JS:
 import { style, vars, keyframes, children } from '@cssfn/core';
@@ -80,11 +80,11 @@ export const sortableListStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     const {
         transformFeatureRule,
         transformFeatureVars: { transform },
-    } = usesTransformFeature();
+    } = usingTransformFeature();
     
     // States:
     
@@ -94,7 +94,7 @@ export const sortableListStyle = () => {
     const {
         sortStateRule,
         sortStateVars: { sortFactor },
-    } = usesSortState({
+    } = usingSortState({
         animationSorting : 'var(--list-sorting)',
     });
     
@@ -104,7 +104,7 @@ export const sortableListStyle = () => {
     // - Allows additional customization for sorting effects
     const {
         sortEffectRule,
-    } = usesSortEffect({
+    } = usingSortEffect({
         // Currently no options are available, reserved for future extension.
     });
     

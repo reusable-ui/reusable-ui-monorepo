@@ -8,7 +8,7 @@ The effects are designed to feel natural to users:
 - **Regular variants** darken in light mode or lighten in dark mode, enhancing visual interest.  
 - **Outlined and mild variants** smoothly shift from their lighter appearance into the bolder regular style.  
 
-By using `usesActiveEffect()`, you can apply these effects consistently across your components — making them appear stronger and more pronounced — with optional customization for brightness, contrast, and saturation.  
+By using `usingActiveEffect()`, you can apply these effects consistently across your components — making them appear stronger and more pronounced — with optional customization for brightness, contrast, and saturation.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with Active State
@@ -43,7 +43,7 @@ yarn add @reusable-ui/active-effect
 
 ## 🧩 Exported CSS Hooks
 
-### `usesActiveEffect(options?: CssActiveEffectOptions): CssActiveEffect`
+### `usingActiveEffect(options?: CssActiveEffectOptions): CssActiveEffect`
 
 Applies active-state effects that emphasize the current theme colors,
 making components **visually stand out** when active.
@@ -61,10 +61,10 @@ Affects background, foreground, decoration, and border colors.
 
 ```ts
 // Features:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
-import { usesFilterFeature } from '@reusable-ui/filter-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingFilterFeature } from '@reusable-ui/filter-feature';
 
-import { usesBackgroundFeature } from '@reusable-ui/background-feature';
+import { usingBackgroundFeature } from '@reusable-ui/background-feature';
 // For simplicity, this example demonstrates only the background feature.
 // Other color-specific features are also available:
 // - foreground-feature (text colors)
@@ -72,10 +72,10 @@ import { usesBackgroundFeature } from '@reusable-ui/background-feature';
 // - border-feature (border colors)
 
 // States:
-import { usesActiveState } from '@reusable-ui/active-state';
+import { usingActiveState } from '@reusable-ui/active-state';
 
 // Effects:
-import { usesActiveEffect } from '@reusable-ui/active-effect';
+import { usingActiveEffect } from '@reusable-ui/active-effect';
 
 // CSS-in-JS:
 import { style, vars, keyframes } from '@cssfn/core';
@@ -85,15 +85,15 @@ export const activatableBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature();
+    } = usingFilterFeature();
     const {
         backgroundFeatureRule,
         backgroundFeatureVars: { backg },
-    } = usesBackgroundFeature();
+    } = usingBackgroundFeature();
     
     // States:
     
@@ -103,7 +103,7 @@ export const activatableBoxStyle = () => {
     const {
         activeStateRule,
         activeStateVars: { activeFactor },
-    } = usesActiveState({
+    } = usingActiveState({
         animationActivating   : 'var(--box-activating)',
         animationDeactivating : 'var(--box-deactivating)',
     });
@@ -114,7 +114,7 @@ export const activatableBoxStyle = () => {
     // - Allows customization of how the "active" appearance should look
     const {
         activeEffectRule,
-    } = usesActiveEffect({
+    } = usingActiveEffect({
         // Brightness:
         // Values `< 1` → darken  in light mode, lighten in dark mode
         // Values `> 1` → lighten in light mode, darken  in dark mode

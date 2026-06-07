@@ -16,7 +16,7 @@ import {
 // Reusable-ui states:
 import {
     // CSS hooks:
-    usesAnimationState,
+    usingAnimationState,
 }                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
 // Types:
@@ -38,7 +38,7 @@ import {
  * @example
  * ```ts
  * // Describe how transitional validity state should behave:
- * const validityStateRule : CssRule = usesTransitionState({
+ * const validityStateRule : CssRule = usingTransitionState({
  *     // Transitional animations for visual effects whenever a transitional state changes:
  *     animations      : [
  *         {
@@ -117,7 +117,7 @@ import {
  * });
  * ```
  */
-export const usesTransitionState = (transitionBehavior: TransitionBehavior): CssRule => {
+export const usingTransitionState = (transitionBehavior: TransitionBehavior): CssRule => {
     // Extract transition behavior and assign defaults:
     const {
         flags           = [],
@@ -145,7 +145,7 @@ export const usesTransitionState = (transitionBehavior: TransitionBehavior): Css
     // Build composite style from transition behavior:
     return style({
         // Apply transition cases:
-        ...usesAnimationState(transitionBehavior),
+        ...usingAnimationState(transitionBehavior),
         
         
         

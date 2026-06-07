@@ -198,7 +198,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesDragState(options?: CssDragStateOptions): CssDragState`
+### `usingDragState(options?: CssDragStateOptions): CssDragState`
 
 Generates CSS rules that conditionally apply the drag/drop animations based on current dragged state, and exposes drag/drop-related CSS variables for use in conditional styling.
 
@@ -221,10 +221,10 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 ```ts
 // Animation feature:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 
 // Dragged/dropped state:
-import { usesDragState } from '@reusable-ui/drag-state';
+import { usingDragState } from '@reusable-ui/drag-state';
 
 // CSS-in-JS:
 import { style, vars, keyframes } from '@cssfn/core';
@@ -234,13 +234,13 @@ export const draggableBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     // Feature: drag/drop lifecycle
     const {
         dragStateRule,
         dragStateVars: { isDragged, isDropped, dragOffsetX, dragOffsetY, dragFactor },
-    } = usesDragState({
+    } = usingDragState({
         animationDragging : 'var(--box-dragging)',
         animationDropping : 'var(--box-dropping)',
     });
@@ -293,7 +293,7 @@ export const draggableBoxStyle = () => {
 The `animationDragging` and `animationDropping` variables are only defined during **dragging** and **dropping** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
-Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining drag/drop animations with other state-driven transitions.
+Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining drag/drop animations with other state-driven transitions.
 
 ---
 

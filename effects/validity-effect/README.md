@@ -8,7 +8,7 @@ The effects are designed to feel natural to users:
 - Components smoothly transition to success/danger theme colors as they become valid/invalid.  
 - When unvalidated, components retain their current theme, ensuring consistency with their original appearance.  
 
-By using `usesValidityEffect()`, you can apply these effects consistently across your components — switching to the success/danger theme colors — with optional customization for valid and invalid theme names.  
+By using `usingValidityEffect()`, you can apply these effects consistently across your components — switching to the success/danger theme colors — with optional customization for valid and invalid theme names.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with Validity State
@@ -41,7 +41,7 @@ yarn add @reusable-ui/validity-effect
 
 ## 🧩 Exported CSS Hooks
 
-### `usesValidityEffect(options?: CssValidityEffectOptions): CssValidityEffect`
+### `usingValidityEffect(options?: CssValidityEffectOptions): CssValidityEffect`
 
 Applies validity-state effects that switch component's theme colors to **success** or **danger**,
 making them **visually verified** when valid/invalid.
@@ -55,9 +55,9 @@ Uses the current theme colors as the baseline, ensuring harmony with the compone
 
 ```ts
 // Features:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 
-import { usesBackgroundFeature } from '@reusable-ui/background-feature';
+import { usingBackgroundFeature } from '@reusable-ui/background-feature';
 // For simplicity, this example demonstrates only the background feature.
 // Other color-specific features are also available:
 // - foreground-feature (text colors)
@@ -65,10 +65,10 @@ import { usesBackgroundFeature } from '@reusable-ui/background-feature';
 // - border-feature (border colors)
 
 // States:
-import { usesValidityState } from '@reusable-ui/validity-state';
+import { usingValidityState } from '@reusable-ui/validity-state';
 
 // Effects:
-import { usesValidityEffect } from '@reusable-ui/validity-effect';
+import { usingValidityEffect } from '@reusable-ui/validity-effect';
 
 // CSS-in-JS:
 import { style, vars, keyframes, switchOf } from '@cssfn/core';
@@ -78,11 +78,11 @@ export const invalidableBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     const {
         backgroundFeatureRule,
         backgroundFeatureVars: { backg },
-    } = usesBackgroundFeature();
+    } = usingBackgroundFeature();
     
     // States:
     
@@ -92,7 +92,7 @@ export const invalidableBoxStyle = () => {
     const {
         validityStateRule,
         validityStateVars: { wasValid, wasInvalid, validityFactor },
-    } = usesValidityState({
+    } = usingValidityState({
         animationValidating   : 'var(--box-validating)',
         animationInvalidating : 'var(--box-invalidating)',
         animationUnvalidating : 'var(--box-unvalidating)',
@@ -104,7 +104,7 @@ export const invalidableBoxStyle = () => {
     // - Allows customization of theme names for valid/invalid states
     const {
         validityEffectRule,
-    } = usesValidityEffect({
+    } = usingValidityEffect({
         // Theme for valid state:
         validTheme   : 'success',
         

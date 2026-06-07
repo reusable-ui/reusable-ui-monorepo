@@ -1,12 +1,12 @@
 import { keyframes, style, vars } from '@cssfn/core'
-import { usesDisabledState } from '../dist/index.js'
-import { usesAnimationFeature } from '@reusable-ui/animation-feature'
+import { usingDisabledState } from '../dist/index.js'
+import { usingAnimationFeature } from '@reusable-ui/animation-feature'
 
 export default function disabledStateTestStyle() {
     const {
         disabledStateRule,
         disabledStateVars: { disableFactor },
-    } = usesDisabledState({
+    } = usingDisabledState({
         animationEnabling  : 'var(--test-enabling)',
         animationDisabling : 'var(--test-disabling)',
     });
@@ -14,7 +14,7 @@ export default function disabledStateTestStyle() {
     const {
         animationFeatureRule,
         animationFeatureVars : { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     return style({
         ...disabledStateRule(),

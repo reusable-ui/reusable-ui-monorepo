@@ -1,12 +1,12 @@
 import { keyframes, style, vars } from '@cssfn/core'
-import { usesReadOnlyState } from '../dist/index.js'
-import { usesAnimationFeature } from '@reusable-ui/animation-feature'
+import { usingReadOnlyState } from '../dist/index.js'
+import { usingAnimationFeature } from '@reusable-ui/animation-feature'
 
 export default function readOnlyStateTestStyle() {
     const {
         readOnlyStateRule,
         readOnlyStateVars: { readOnlyFactor },
-    } = usesReadOnlyState({
+    } = usingReadOnlyState({
         animationThawing  : 'var(--test-thawing)',
         animationFreezing : 'var(--test-freezing)',
     });
@@ -14,7 +14,7 @@ export default function readOnlyStateTestStyle() {
     const {
         animationFeatureRule,
         animationFeatureVars : { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     return style({
         ...readOnlyStateRule(),

@@ -197,7 +197,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesDisabledState(options?: CssDisabledStateOptions): CssDisabledState`
+### `usingDisabledState(options?: CssDisabledStateOptions): CssDisabledState`
 
 Generates CSS rules that conditionally apply the enable/disable animations based on current disabled state, and exposes enable/disable-related CSS variables for conditional animation.
 
@@ -219,10 +219,10 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 ```ts
 // Animation feature:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 
 // Enabled/disabled state:
-import { usesDisabledState } from '@reusable-ui/disabled-state';
+import { usingDisabledState } from '@reusable-ui/disabled-state';
 
 // CSS-in-JS:
 import { style, vars, keyframes, fallback } from '@cssfn/core';
@@ -232,13 +232,13 @@ export const disableableBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     // Feature: enable/disable lifecycle
     const {
         disabledStateRule,
         disabledStateVars: { isEnabled, isDisabled, disableFactor },
-    } = usesDisabledState({
+    } = usingDisabledState({
         animationEnabling  : 'var(--box-enabling)',
         animationDisabling : 'var(--box-disabling)',
     });
@@ -291,7 +291,7 @@ export const disableableBoxStyle = () => {
 The `animationEnabling` and `animationDisabling` variables are only defined during **enabling** and **disabling** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
-Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining enable/disable animations with other state-driven transitions.
+Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining enable/disable animations with other state-driven transitions.
 
 ---
 

@@ -482,7 +482,7 @@ The hook manages transitions between concrete states using a unified animation f
 
 ## 🧩 Exported CSS Hook
 
-### `usesFeedbackState(feedbackBehavior: FeedbackBehavior): CssRule`
+### `usingFeedbackState(feedbackBehavior: FeedbackBehavior): CssRule`
 
 Applies live CSS variables for feedback styling, including:
 - **Animation variables** for *visual effects* whenever a feedback state changes
@@ -507,7 +507,7 @@ Applies live CSS variables for feedback styling, including:
 
 ```ts
 // Describe how feedback focus state should behave:
-const focusStateRule : CssRule = usesFeedbackState({
+const focusStateRule : CssRule = usingFeedbackState({
     // Feedback animations for visual effects whenever a feedback state changes:
     animations      : [
         {
@@ -726,7 +726,7 @@ The system works by splitting responsibilities:
 
 - **React hook (`useFeedbackBehaviorState()`)**  
     Orchestrates runtime state: intent, lifecycle, and toggling classnames.  
-- **CSS hook (`usesFeedbackState()`)**  
+- **CSS hook (`usingFeedbackState()`)**  
     Describes how those states (via classname toggles) map to animations, flags, and factors at the stylesheet level.  
 
 Together, they form a predictable, declarative system:  

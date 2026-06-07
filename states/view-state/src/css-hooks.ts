@@ -20,7 +20,7 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    usesInteractionState,
+    usingInteractionState,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
@@ -35,10 +35,10 @@ import {
  * @example
  * ```ts
  * // Animation feature:
- * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+ * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
  * // View-switching state:
- * import { usesViewState } from '@reusable-ui/view-state';
+ * import { usingViewState } from '@reusable-ui/view-state';
  * 
  * // CSS-in-JS:
  * import { style, vars, keyframes, switchOf } from '@cssfn/core';
@@ -48,13 +48,13 @@ import {
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
- *     } = usesAnimationFeature();
+ *     } = usingAnimationFeature();
  *     
  *     // Feature: view-switching lifecycle
  *     const {
  *         viewStateRule,
  *         viewStateVars: { viewIndex, prevViewIndex, viewFactor },
- *     } = usesViewState({
+ *     } = usingViewState({
  *         animationViewAdvancing : 'var(--box-view-advancing)',
  *         animationViewReceding  : 'var(--box-view-receding)',
  *     });
@@ -127,8 +127,8 @@ import {
  * };
  * ```
  */
-export const usesViewState = (options?: CssViewStateOptions): CssViewState => ({
-    viewStateRule : () => usesInteractionState({
+export const usingViewState = (options?: CssViewStateOptions): CssViewState => ({
+    viewStateRule : () => usingInteractionState({
         // Feedback animations for visual effects whenever a view index changes:
         animations      : [
             {

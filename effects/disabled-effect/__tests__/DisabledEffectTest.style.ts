@@ -1,6 +1,6 @@
 import { style, switchOf } from '@cssfn/core'
-import { usesFilterFeature } from '@reusable-ui/filter-feature';
-import { usesDisabledEffect } from '../dist/index.js'
+import { usingFilterFeature } from '@reusable-ui/filter-feature';
+import { usingDisabledEffect } from '../dist/index.js'
 import {
     activeTargetOpacity,
     activeTargetInvert,
@@ -21,13 +21,13 @@ export default function disabledEffectTestStyle() {
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature();
+    } = usingFilterFeature();
     
     // Effects:
     const {
         disabledEffectRule,
         disabledEffectVars : { disabledCursor },
-    } = usesDisabledEffect({
+    } = usingDisabledEffect({
         enablesReverseIntent : false,
         opacity              : activeTargetOpacity,
         invert               : activeTargetInvert,

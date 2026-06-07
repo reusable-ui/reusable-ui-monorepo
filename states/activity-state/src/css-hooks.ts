@@ -7,7 +7,7 @@ import {
 // Reusable-ui states:
 import {
     // CSS hooks:
-    usesAnimationState,
+    usingAnimationState,
 }                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
 // Types:
@@ -28,7 +28,7 @@ import {
  * @example
  * ```ts
  * // Describe how order animations should behave:
- * const orderAnimations : CssRule = usesActivityState({
+ * const orderAnimations : CssRule = usingActivityState({
  *     animations      : [
  *         {
  *             ifState   : ifPreparing,
@@ -66,4 +66,4 @@ import {
  * });
  * ```
  */
-export const usesActivityState = (activityBehavior: ActivityBehavior): CssRule => usesAnimationState(activityBehavior);
+export const usingActivityState = (activityBehavior: ActivityBehavior): CssRule => usingAnimationState(activityBehavior);

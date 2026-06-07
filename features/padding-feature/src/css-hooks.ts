@@ -28,7 +28,7 @@ import {
 
 // Reusable-ui variants:
 import {
-    usesBareVariant,
+    usingBareVariant,
 }                           from '@reusable-ui/bare-variant'    // A utility for managing bare styling (frameless, minimal layout) consistently across React components.
 
 
@@ -40,7 +40,7 @@ import {
  * @param options - An optional configuration for customizing padding behavior.
  * @returns A CSS API for enabling manageable paddings in components.
  */
-export const usesPaddingFeature = (options?: CssPaddingFeatureOptions): CssPaddingFeature => {
+export const usingPaddingFeature = (options?: CssPaddingFeatureOptions): CssPaddingFeature => {
     // Extract options and assign defaults:
     const {
         padding            = spacerConfigVars.default,
@@ -57,7 +57,7 @@ export const usesPaddingFeature = (options?: CssPaddingFeatureOptions): CssPaddi
     return {
         paddingFeatureRule : () => {
             // Peer variant dependencies (may be poisoned if not implemented):
-            const { bareVariantVars } = usesBareVariant();
+            const { bareVariantVars } = usingBareVariant();
             
             
             

@@ -35,7 +35,7 @@ Subscribes a callback listener for transform registry changes.
 
 ## 🧩 Exported CSS Hook
 
-### `usesTransformFeature(options?: CssTransformFeatureOptions): CssTransformFeature`
+### `usingTransformFeature(options?: CssTransformFeatureOptions): CssTransformFeature`
 
 Composes custom and registered transforms into a unified stack and exposes ready-to-use CSS variables.
 
@@ -51,23 +51,23 @@ These variables are ready-to-use for styling your component’s transform.
 
 ```ts
 // Supporting states:
-import { usesDisableState } from './states/disable-state'
-import { usesActiveState } from './states/active-state'
+import { usingDisableState } from './states/disable-state'
+import { usingActiveState } from './states/active-state'
 
 // Compound transform feature:
-import { usesTransformFeature } from '@reusable-ui/transform-feature';
+import { usingTransformFeature } from '@reusable-ui/transform-feature';
 
 // CSS-in-JS:
 import { style } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { disableStateRule } = usesDisableState();
-    const { activeStateRule  } = usesActiveState();
+    const { disableStateRule } = usingDisableState();
+    const { activeStateRule  } = usingActiveState();
     
     const {
         transformFeatureRule,
         transformFeatureVars: { transform },
-    } = usesTransformFeature({
+    } = usingTransformFeature({
         // Custom transforms:
         transform: [[
             'translateX(10px)',

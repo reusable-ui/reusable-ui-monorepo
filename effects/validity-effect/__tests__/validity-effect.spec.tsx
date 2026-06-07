@@ -178,7 +178,7 @@ const testCases: ValidityEffectTestCase[] = [
 
 
 
-test.describe('usesValidityEffect', () => {
+test.describe('usingValidityEffect', () => {
     for (const { title, props, expectedBackgroundColor } of testCases) {
         test(title, async ({ mount }) => {
             const red = chroma('oklch(0.627966 0.257704 29.2346)');

@@ -314,7 +314,7 @@ export interface HoverStateVars {
      * It becomes invalid (`unset`) when not actively hovering.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationHovering   : unknown
     
@@ -323,7 +323,7 @@ export interface HoverStateVars {
      * It becomes invalid (`unset`) when not actively unhovering.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationUnhovering : unknown
     

@@ -23,7 +23,7 @@ import {
 
 // Reusable-ui states:
 import {
-    usesHoverState,
+    usingHoverState,
 }                           from '@reusable-ui/hover-state'         // Lifecycle-aware hover/unhover state with transition animations and semantic styling hooks for UI components.
 
 // Reusable-ui effects:
@@ -50,7 +50,7 @@ import {
  * @param options - An optional configuration for customizing hover effects.
  * @returns A CSS API containing effect rules and CSS variables for signaling component interactivity.
  */
-export const usesHoverEffect = (options?: CssHoverEffectOptions): CssHoverEffect => {
+export const usingHoverEffect = (options?: CssHoverEffectOptions): CssHoverEffect => {
     // Extract options and assign defaults:
     const {
         enablesReverseIntent = true, // Defaults to `true` (enables reverse intent, allowing negative values to fade *out* the effect on hover).
@@ -64,7 +64,7 @@ export const usesHoverEffect = (options?: CssHoverEffectOptions): CssHoverEffect
     
     
     // States:
-    const { hoverStateVars : { isHovered, hoverFactor } } = usesHoverState();
+    const { hoverStateVars : { isHovered, hoverFactor } } = usingHoverState();
     
     
     

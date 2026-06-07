@@ -173,7 +173,7 @@ export interface ActiveInteractionFactorCase
  * @example
  * ```ts
  * // Describe how interaction collapse state should behave:
- * const collapseStateRule : CssRule = usesInteractionState({
+ * const collapseStateRule : CssRule = usingInteractionState({
  *     // Interaction animations for visual effects whenever an interaction state changes:
  *     animations      : [
  *         {

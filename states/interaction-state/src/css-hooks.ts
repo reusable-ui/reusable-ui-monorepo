@@ -7,7 +7,7 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    usesTransitionState,
+    usingTransitionState,
 }                           from '@reusable-ui/transition-state'    // Lifecycle-aware transition state for React, enabling reusable hooks with consistent animations.
 
 // Types:
@@ -29,7 +29,7 @@ import {
  * @example
  * ```ts
  * // Describe how interaction collapse state should behave:
- * const collapseStateRule : CssRule = usesInteractionState({
+ * const collapseStateRule : CssRule = usingInteractionState({
  *     // Interaction animations for visual effects whenever an interaction state changes:
  *     animations      : [
  *         {
@@ -81,4 +81,4 @@ import {
  * });
  * ```
  */
-export const usesInteractionState = (interactionBehavior: InteractionBehavior): CssRule => usesTransitionState(interactionBehavior);
+export const usingInteractionState = (interactionBehavior: InteractionBehavior): CssRule => usingTransitionState(interactionBehavior);

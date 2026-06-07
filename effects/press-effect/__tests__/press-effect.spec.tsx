@@ -243,7 +243,7 @@ const toKebabCase = (input: string): string => input.replace(/([a-z])([A-Z])/g, 
 
 
 
-test.describe('usesPressEffect', () => {
+test.describe('usingPressEffect', () => {
     for (const { title, props, expectedFilters } of testCases) {
         test(title, async ({ mount }) => {
             const component = await mount(<PressEffectTest {...props} />);

@@ -30,7 +30,7 @@ import {
  * @example
  * ```ts
  * // Describe how order animations should behave:
- * const orderAnimations : CssRule = usesAnimationState({
+ * const orderAnimations : CssRule = usingAnimationState({
  *     animations      : [
  *         {
  *             ifState   : ifPreparing,
@@ -68,7 +68,7 @@ import {
  * });
  * ```
  */
-export const usesAnimationState = (animationBehavior: AnimationBehavior): CssRule => {
+export const usingAnimationState = (animationBehavior: AnimationBehavior): CssRule => {
     // Extract animation behavior and assign defaults:
     const {
         animations = [],

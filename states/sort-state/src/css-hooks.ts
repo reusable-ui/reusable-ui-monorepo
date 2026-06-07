@@ -18,7 +18,7 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    usesFeedbackState,
+    usingFeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -33,10 +33,10 @@ import {
  * @example
  * ```ts
  * // Features:
- * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+ * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
  * // States:
- * import { usesSortState } from '@reusable-ui/sort-state';
+ * import { usingSortState } from '@reusable-ui/sort-state';
  * 
  * // CSS-in-JS:
  * import { style, vars, keyframes, children } from '@cssfn/core';
@@ -46,7 +46,7 @@ import {
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
- *     } = usesAnimationFeature();
+ *     } = usingAnimationFeature();
  *     
  *     // States:
  *     
@@ -56,7 +56,7 @@ import {
  *     const {
  *         sortStateRule,
  *         sortStateVars: { sortOffsetX, sortOffsetY, sortFactor },
- *     } = usesSortState({
+ *     } = usingSortState({
  *         animationSorting : 'var(--list-sorting)',
  *     });
  *     
@@ -100,8 +100,8 @@ import {
  * }
  * ```
  */
-export const usesSortState = (options?: CssSortStateOptions): CssSortState => ({
-    sortStateRule : () => usesFeedbackState({
+export const usingSortState = (options?: CssSortStateOptions): CssSortState => ({
+    sortStateRule : () => usingFeedbackState({
         // Feedback animations for visual effects whenever a sorting action occurs:
         animations : {
             ifState   : ifSorting,

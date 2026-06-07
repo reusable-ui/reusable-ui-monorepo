@@ -190,7 +190,7 @@ const testCases: ViewEffectTestCase[] = [
 
 
 
-test.describe('usesViewEffect', () => {
+test.describe('usingViewEffect', () => {
     for (const { title, props, expectedViewId, expectedViewArea } of testCases) {
         test(title, async ({ mount }) => {
             const component = await mount(<ViewEffectTest {...props} />);

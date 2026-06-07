@@ -8,7 +8,7 @@ The effects are designed to feel natural to users:
 - Components smoothly animate a sliding transition that reveals or hides their contents.  
 - The content size remains stable (only partially cropped), ensuring it is never squashed or distorted during the animation.  
 
-By using `usesCollapseEffect()`, you can apply these effects consistently across your components — with optional customization for orientation, direction, and collapsed display.  
+By using `usingCollapseEffect()`, you can apply these effects consistently across your components — with optional customization for orientation, direction, and collapsed display.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with Collapse State
@@ -41,7 +41,7 @@ yarn add @reusable-ui/collapse-effect
 
 ## 🧩 Exported CSS Hooks
 
-### `usesCollapseEffect(options?: CssCollapseEffectOptions): CssCollapseEffect`
+### `usingCollapseEffect(options?: CssCollapseEffectOptions): CssCollapseEffect`
 
 Applies collapse-state effects that slide down/up the entire component surface,
 making components **visually revealed or hidden** as they expand or collapse.
@@ -60,14 +60,14 @@ enabling the collapse transitions to work correctly.
 
 ```ts
 // Features:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
-import { usesTransformFeature } from '@reusable-ui/transform-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingTransformFeature } from '@reusable-ui/transform-feature';
 
 // States:
-import { usesCollapseState } from '@reusable-ui/collapse-state';
+import { usingCollapseState } from '@reusable-ui/collapse-state';
 
 // Effects:
-import { usesCollapseEffect } from '@reusable-ui/collapse-effect';
+import { usingCollapseEffect } from '@reusable-ui/collapse-effect';
 
 // CSS-in-JS:
 import { style, vars, keyframes, switchOf } from '@cssfn/core';
@@ -77,11 +77,11 @@ export const collapsibleBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     const {
         transformFeatureRule,
         transformFeatureVars: { transform },
-    } = usesTransformFeature();
+    } = usingTransformFeature();
     
     // States:
     
@@ -91,7 +91,7 @@ export const collapsibleBoxStyle = () => {
     const {
         collapseStateRule,
         collapseStateVars: { expandFactor },
-    } = usesCollapseState({
+    } = usingCollapseState({
         animationExpanding  : 'var(--box-expanding)',
         animationCollapsing : 'var(--box-collapsing)',
     });
@@ -112,7 +112,7 @@ export const collapsibleBoxStyle = () => {
             
             collapseDisplay,
         },
-    } = usesCollapseEffect({
+    } = usingCollapseEffect({
         // The logical axis along which the sliding-crop is applied:
         orientation   : 'block',
         
@@ -233,7 +233,7 @@ and external effects are restored.
 
 ### `useCollapsibleSize(): CollapsibleSize<TElement>`
 
-Supports for `usesCollapseEffect()` (the CSS styling effects) by supplying and continuously updating
+Supports for `usingCollapseEffect()` (the CSS styling effects) by supplying and continuously updating
 the required sizing variables, injected into the component's inline style.
 This ensures the collapse/expand styling effects work correctly.
 

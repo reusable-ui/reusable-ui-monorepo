@@ -280,7 +280,7 @@ const testCases: CollapseEffectTestCase[] = [
 
 
 
-test.describe('usesCollapseEffect', () => {
+test.describe('usingCollapseEffect', () => {
     for (const { title, props, expectedInlineSize, expectedBlockSize, expectedRevealSide, expectedDisplay, expectedTransform } of testCases) {
         test(title, async ({ mount }) => {
             const component = await mount(<CollapseEffectTest {...props} />);

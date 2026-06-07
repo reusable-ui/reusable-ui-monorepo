@@ -22,7 +22,7 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    usesInteractionState,
+    usingInteractionState,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
@@ -37,19 +37,19 @@ import {
  * @example
  * ```ts
  * // Animation feature:
- * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+ * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
  * // Active/inactive state:
- * import { usesActiveState } from '@reusable-ui/active-state';
+ * import { usingActiveState } from '@reusable-ui/active-state';
  * 
  * // Background colors:
- * import { usesBackgroundFeature } from '@reusable-ui/background-feature';
+ * import { usingBackgroundFeature } from '@reusable-ui/background-feature';
  * 
  * // Outlined variant:
- * import { usesOutlineVariant } from '@reusable-ui/outline-variant';
+ * import { usingOutlineVariant } from '@reusable-ui/outline-variant';
  * 
  * // Mild variant:
- * import { usesMildVariant } from '@reusable-ui/mild-variant';
+ * import { usingMildVariant } from '@reusable-ui/mild-variant';
  * 
  * // CSS-in-JS:
  * import { style, vars, keyframes, switchOf } from '@cssfn/core';
@@ -59,13 +59,13 @@ import {
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
- *     } = usesAnimationFeature();
+ *     } = usingAnimationFeature();
  *     
  *     // Feature: active/inactive lifecycle
  *     const {
  *         activeStateRule,
  *         activeStateVars: { isActive, isInactive, activeFactor },
- *     } = usesActiveState({
+ *     } = usingActiveState({
  *         animationActivating   : 'var(--box-activating)',
  *         animationDeactivating : 'var(--box-deactivating)',
  *     });
@@ -73,17 +73,17 @@ import {
  *     // Feature: background colors
  *     const {
  *         backgroundFeatureVars : { backgRegularCond, backgColor },
- *     } = usesBackgroundFeature();
+ *     } = usingBackgroundFeature();
  *     
  *     // Feature: outlined variant
  *     const {
  *         outlineVariantVars : { isOutlined, notOutlined },
- *     } = usesOutlineVariant();
+ *     } = usingOutlineVariant();
  *     
  *     // Feature: mild variant
  *     const {
  *         mildVariantVars    : { isMild, notMild },
- *     } = usesMildVariant();
+ *     } = usingMildVariant();
  *     
  *     return style({
  *         display: 'flex',
@@ -168,8 +168,8 @@ import {
  * };
  * ```
  */
-export const usesActiveState = (options?: CssActiveStateOptions): CssActiveState => ({
-    activeStateRule : () => usesInteractionState({
+export const usingActiveState = (options?: CssActiveStateOptions): CssActiveState => ({
+    activeStateRule : () => usingInteractionState({
         // Feedback animations for visual effects whenever an active state changes:
         animations      : [
             {

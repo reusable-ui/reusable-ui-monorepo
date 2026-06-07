@@ -22,7 +22,7 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    usesFeedbackState,
+    usingFeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -37,10 +37,10 @@ import {
  * @example
  * ```ts
  * // Animation feature:
- * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+ * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
  * // Enabled/disabled state:
- * import { usesDisabledState } from '@reusable-ui/disabled-state';
+ * import { usingDisabledState } from '@reusable-ui/disabled-state';
  * 
  * // CSS-in-JS:
  * import { style, vars, keyframes, fallback } from '@cssfn/core';
@@ -50,13 +50,13 @@ import {
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
- *     } = usesAnimationFeature();
+ *     } = usingAnimationFeature();
  *     
  *     // Feature: enable/disable lifecycle
  *     const {
  *         disabledStateRule,
  *         disabledStateVars: { isEnabled, isDisabled, disableFactor },
- *     } = usesDisabledState({
+ *     } = usingDisabledState({
  *         animationEnabling  : 'var(--box-enabling)',
  *         animationDisabling : 'var(--box-disabling)',
  *     });
@@ -104,8 +104,8 @@ import {
  * };
  * ```
  */
-export const usesDisabledState = (options?: CssDisabledStateOptions): CssDisabledState => ({
-    disabledStateRule : () => usesFeedbackState({
+export const usingDisabledState = (options?: CssDisabledStateOptions): CssDisabledState => ({
+    disabledStateRule : () => usingFeedbackState({
         // Feedback animations for visual effects whenever a disabled state changes:
         animations      : [
             {

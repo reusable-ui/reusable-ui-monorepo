@@ -271,7 +271,7 @@ const toKebabCase = (input: string): string => input.replace(/([a-z])([A-Z])/g, 
 
 
 
-test.describe('usesDragEffect', () => {
+test.describe('usingDragEffect', () => {
     for (const { title, props, expectedFilters, exprectedShift } of testCases) {
         test(title, async ({ mount }) => {
             const component = await mount(<DragEffectTest {...props} />);

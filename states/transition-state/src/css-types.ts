@@ -183,7 +183,7 @@ export interface ActiveTransitionFactorCase {
  * @example
  * ```ts
  * // Describe how transitional validity state should behave:
- * const validityStateRule : CssRule = usesTransitionState({
+ * const validityStateRule : CssRule = usingTransitionState({
  *     // Transitional animations for visual effects whenever a transitional state changes:
  *     animations      : [
  *         {

@@ -1,6 +1,6 @@
 import { rule, vars, style, scope, type CssKnownProps } from '@cssfn/core'
 
-import { usesBoxShadowFeature, boxShadowRegistry } from '../dist/index.js'
+import { usingBoxShadowFeature, boxShadowRegistry } from '../dist/index.js'
 
 boxShadowRegistry.registerBoxShadow('var(--boxShadow1)');
 boxShadowRegistry.registerBoxShadow('var(--boxShadow2)');
@@ -10,7 +10,7 @@ const boxShadowNoCustomStyle = () => {
     const {
         boxShadowFeatureRule,
         boxShadowFeatureVars: { boxShadow },
-    } = usesBoxShadowFeature();
+    } = usingBoxShadowFeature();
     
     
     return style({
@@ -45,7 +45,7 @@ const boxShadowSimpleCustomStyle = () => {
     const {
         boxShadowFeatureRule,
         boxShadowFeatureVars: { boxShadow },
-    } = usesBoxShadowFeature({
+    } = usingBoxShadowFeature({
         boxShadow: 'rgb(11, 11, 11) 11px 22px 33px 44px',
     });
     
@@ -82,7 +82,7 @@ const boxShadowSingleCustomStyle = () => {
     const {
         boxShadowFeatureRule,
         boxShadowFeatureVars: { boxShadow },
-    } = usesBoxShadowFeature({
+    } = usingBoxShadowFeature({
         boxShadow: ['rgb(22, 22, 22)', '22px', '33px', '44px', '55px'],
     });
     
@@ -119,7 +119,7 @@ const boxShadowSingleImportantCustomStyle = () => {
     const {
         boxShadowFeatureRule,
         boxShadowFeatureVars: { boxShadow },
-    } = usesBoxShadowFeature({
+    } = usingBoxShadowFeature({
         boxShadow: ['rgb(33, 33, 33)', '33px', '44px', '55px', '66px'],
     });
     
@@ -156,7 +156,7 @@ const boxShadowMultipleCustomStyle = () => {
     const {
         boxShadowFeatureRule,
         boxShadowFeatureVars: { boxShadow },
-    } = usesBoxShadowFeature({
+    } = usingBoxShadowFeature({
         boxShadow: [
             ['rgb(11, 22, 33)', '11px', '22px', '33px', '44px'],
             ['rgb(22, 33, 44)', '22px', '33px', '44px', '55px'],
@@ -197,7 +197,7 @@ const boxShadowMultipleImportantCustomStyle = () => {
     const {
         boxShadowFeatureRule,
         boxShadowFeatureVars: { boxShadow },
-    } = usesBoxShadowFeature({
+    } = usingBoxShadowFeature({
         boxShadow: [
             ['rgb(44, 55, 66)', '44px', '55px', '66px', '77px'],
             ['rgb(55, 66, 77)', '55px', '66px', '77px', '88px'],

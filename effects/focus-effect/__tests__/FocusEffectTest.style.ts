@@ -1,11 +1,11 @@
 import { style } from '@cssfn/core'
-import { usesOutlineVariant } from '@reusable-ui/outline-variant'
-import { usesMildVariant} from '@reusable-ui/mild-variant'
-import { usesBoxShadowFeature } from '@reusable-ui/box-shadow-feature'
-import { usesBackgroundFeature } from '@reusable-ui/background-feature'
-import { usesRingFeature } from '@reusable-ui/ring-feature'
+import { usingOutlineVariant } from '@reusable-ui/outline-variant'
+import { usingMildVariant} from '@reusable-ui/mild-variant'
+import { usingBoxShadowFeature } from '@reusable-ui/box-shadow-feature'
+import { usingBackgroundFeature } from '@reusable-ui/background-feature'
+import { usingRingFeature } from '@reusable-ui/ring-feature'
 import { ringColor } from './base-colors.js'
-import { usesFocusEffect } from '../dist/index.js'
+import { usingFocusEffect } from '../dist/index.js'
 
 // Test style for FocusEffect
 // Demonstrates how `focusFactorCond` drives transition effects
@@ -14,30 +14,30 @@ export default function focusEffectTestStyle() {
     // Variants:
     const {
         outlineVariantRule,
-    } = usesOutlineVariant();
+    } = usingOutlineVariant();
     const {
         mildVariantRule,
-    } = usesMildVariant();
+    } = usingMildVariant();
     
     // Features:
     const {
         boxShadowFeatureRule,
         boxShadowFeatureVars: { boxShadow },
-    } = usesBoxShadowFeature();
+    } = usingBoxShadowFeature();
     const {
         backgroundFeatureRule,
         backgroundFeatureVars : { backgColor },
-    } = usesBackgroundFeature();
+    } = usingBackgroundFeature();
     const {
         ringFeatureRule,
-    } = usesRingFeature({
+    } = usingRingFeature({
         ringColor : ringColor, // Default unthemed ring color.
     });
     
     // Effects:
     const {
         focusEffectRule,
-    } = usesFocusEffect({
+    } = usingFocusEffect({
         ringWidth : '4px',
     });
     

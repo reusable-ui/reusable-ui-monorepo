@@ -141,7 +141,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesEmphasisVariant()`
+### `usingEmphasisVariant()`
 
 Generates CSS rules that toggle emphasis-related CSS variables based on the current emphasized state, and exposes those variables for conditional styling.
 
@@ -149,7 +149,7 @@ Generates CSS rules that toggle emphasis-related CSS variables based on the curr
 
 ```ts
 import {
-    usesEmphasisVariant,
+    usingEmphasisVariant,
 } from '@reusable-ui/emphasis-variant';
 import { style, fallback } from '@cssfn/core';
 
@@ -157,7 +157,7 @@ export const componentStyle = () => {
     const {
         emphasisVariantRule,
         emphasisVariantVars: { isEmphasized, notEmphasized },
-    } = usesEmphasisVariant();
+    } = usingEmphasisVariant();
     
     return style({
         display: 'flex',
@@ -185,7 +185,7 @@ export const componentStyle = () => {
 
 #### 🧠 How It Works
 
-- `usesEmphasisVariant()` generates scoped rules like:
+- `usingEmphasisVariant()` generates scoped rules like:
     ```css
     &.is-emphasized {
         --isEmphasized: ;       /* Valid    when emphasized. */

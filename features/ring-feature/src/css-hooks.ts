@@ -23,7 +23,7 @@ import {
 
 // Reusable-ui variants:
 import {
-    usesThemeVariant,
+    usingThemeVariant,
 }                           from '@reusable-ui/theme-variant'       // A utility for managing themes consistently across React components.
 
 
@@ -35,7 +35,7 @@ import {
  * @param options - An optional configuration for customizing ring behavior.
  * @returns A CSS API for enabling theme-aware ring styling in components.
  */
-export const usesRingFeature = (options?: CssRingFeatureOptions): CssRingFeature => {
+export const usingRingFeature = (options?: CssRingFeatureOptions): CssRingFeature => {
     // Extract options and assign defaults:
     const {
         ringColor : defaultRingColor = 'currentColor', // Ensures a concrete fallback to avoid invalid value.
@@ -46,7 +46,7 @@ export const usesRingFeature = (options?: CssRingFeatureOptions): CssRingFeature
     return {
         ringFeatureRule : () => {
             // Peer variant dependencies (may be poisoned if not implemented):
-            const { themeVariantVars } = usesThemeVariant();
+            const { themeVariantVars } = usingThemeVariant();
             
             
             

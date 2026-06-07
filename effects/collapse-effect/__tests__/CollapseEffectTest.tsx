@@ -1,6 +1,6 @@
 import React, { type CSSProperties, useMemo } from 'react'
 import { HydrateStyles } from '@cssfn/cssfn-react'
-import { usesCollapseState, type ExpandPhase } from '@reusable-ui/collapse-state'
+import { usingCollapseState, type ExpandPhase } from '@reusable-ui/collapse-state'
 import { useCollapseEffectTestStyles } from './CollapseEffectTest.loader.js'
 import { useCollapsibleSize, CssCollapseEffectOptions } from '../dist/index.js'
 
@@ -45,7 +45,7 @@ export const CollapseEffectTest = (props: CollapseEffectTestProps) => {
     
     const styles = useCollapseEffectTestStyles();
     
-    const { collapseStateVars  : { expandFactorCond: expandFactorCondVar } } = usesCollapseState();
+    const { collapseStateVars  : { expandFactorCond: expandFactorCondVar } } = usingCollapseState();
     
     const { ref, collapsibleStyle } = useCollapsibleSize<HTMLDivElement>();
     

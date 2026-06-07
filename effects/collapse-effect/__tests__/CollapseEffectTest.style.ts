@@ -1,6 +1,6 @@
 import { rule, style, vars, switchOf } from '@cssfn/core'
-import { usesTransformFeature } from '@reusable-ui/transform-feature'
-import { usesCollapseEffect } from '../dist/index.js'
+import { usingTransformFeature } from '@reusable-ui/transform-feature'
+import { usingCollapseEffect } from '../dist/index.js'
 
 // Test style for CollapseEffect
 // Demonstrates how `expandFactorCond` drives transition effects
@@ -10,7 +10,7 @@ export default function collapseEffectTestStyle() {
     const {
         transformFeatureRule,
         transformFeatureVars: { transform },
-    } = usesTransformFeature();
+    } = usingTransformFeature();
     
     // Effects:
     const {
@@ -25,7 +25,7 @@ export default function collapseEffectTestStyle() {
             
             collapseDisplay,
         },
-    } = usesCollapseEffect({
+    } = usingCollapseEffect({
         orientation   : 'var(--orientation)',
         flowDirection : 'var(--flowDirection)',
         display       : 'none',

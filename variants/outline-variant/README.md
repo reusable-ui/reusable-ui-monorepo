@@ -141,7 +141,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesOutlineVariant()`
+### `usingOutlineVariant()`
 
 Generates CSS rules that toggle outline-related CSS variables based on the current outlined state, and exposes those variables for conditional styling.
 
@@ -149,7 +149,7 @@ Generates CSS rules that toggle outline-related CSS variables based on the curre
 
 ```ts
 import {
-    usesOutlineVariant,
+    usingOutlineVariant,
 } from '@reusable-ui/outline-variant';
 import { style, fallback } from '@cssfn/core';
 
@@ -157,7 +157,7 @@ export const componentStyle = () => {
     const {
         outlineVariantRule,
         outlineVariantVars: { isOutlined, notOutlined },
-    } = usesOutlineVariant();
+    } = usingOutlineVariant();
     
     return style({
         display: 'flex',
@@ -185,7 +185,7 @@ export const componentStyle = () => {
 
 #### 🧠 How It Works
 
-- `usesOutlineVariant()` generates scoped rules like:
+- `usingOutlineVariant()` generates scoped rules like:
     ```css
     &.is-outlined {
         --isOutlined: ;       /* Valid    when outlined. */

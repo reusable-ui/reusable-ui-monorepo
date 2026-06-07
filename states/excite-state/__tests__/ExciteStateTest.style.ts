@@ -1,19 +1,19 @@
 import { keyframes, style, vars } from '@cssfn/core'
-import { usesExciteState } from '../dist/index.js'
-import { usesAnimationFeature } from '@reusable-ui/animation-feature'
+import { usingExciteState } from '../dist/index.js'
+import { usingAnimationFeature } from '@reusable-ui/animation-feature'
 
 export default function exciteStateTestStyle() {
     const {
         exciteStateRule,
         exciteStateVars: { exciteFactor },
-    } = usesExciteState({
+    } = usingExciteState({
         animationExciting: 'var(--test-exciting)',
     });
     
     const {
         animationFeatureRule,
         animationFeatureVars : { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     return style({
         ...exciteStateRule(),

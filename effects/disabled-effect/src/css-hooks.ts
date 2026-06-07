@@ -23,7 +23,7 @@ import {
 
 // Reusable-ui states:
 import {
-    usesDisabledState,
+    usingDisabledState,
 }                           from '@reusable-ui/disabled-state'      // Lifecycle-aware enabled/disabled state with transition animations and semantic styling hooks for UI components.
 
 // Reusable-ui effects:
@@ -47,7 +47,7 @@ import {
  * @param options - An optional configuration for customizing disabled effects.
  * @returns A CSS API containing effect rules and CSS variables for muting theme colors.
  */
-export const usesDisabledEffect = (options?: CssDisabledEffectOptions): CssDisabledEffect => {
+export const usingDisabledEffect = (options?: CssDisabledEffectOptions): CssDisabledEffect => {
     // Extract options and assign defaults:
     const {
         enablesReverseIntent = false,         // Defaults to `false` (no reverse intent, always fade *in* the effect as the state activates).
@@ -62,7 +62,7 @@ export const usesDisabledEffect = (options?: CssDisabledEffectOptions): CssDisab
     
     
     // States:
-    const { disabledStateVars : { isDisabled, disableFactor } } = usesDisabledState();
+    const { disabledStateVars : { isDisabled, disableFactor } } = usingDisabledState();
     
     
     

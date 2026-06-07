@@ -9,7 +9,7 @@ The effects are designed to feel natural to users:
 - The cursor switches to indicate non-interactivity (default: `not-allowed`).  
 - Disabled components continue to block interaction with elements behind them (no `pointer-events: none`).  
 
-By using `usesDisabledEffect()`, you can apply these effects consistently across your components — fading and desaturating the entire component surface — with optional customization for opacity, saturation, and cursor.  
+By using `usingDisabledEffect()`, you can apply these effects consistently across your components — fading and desaturating the entire component surface — with optional customization for opacity, saturation, and cursor.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with Disabled State
@@ -43,7 +43,7 @@ yarn add @reusable-ui/disabled-effect
 
 ## 🧩 Exported CSS Hooks
 
-### `usesDisabledEffect(options?: CssDisabledEffectOptions): CssDisabledEffect`
+### `usingDisabledEffect(options?: CssDisabledEffectOptions): CssDisabledEffect`
 
 Applies disabled-state effects that de-emphasize the entire component surface,
 making components **visually muted** when disabled.
@@ -58,14 +58,14 @@ through opacity and/or desaturation.
 
 ```ts
 // Features:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
-import { usesFilterFeature } from '@reusable-ui/filter-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingFilterFeature } from '@reusable-ui/filter-feature';
 
 // States:
-import { usesDisabledState } from '@reusable-ui/disabled-state';
+import { usingDisabledState } from '@reusable-ui/disabled-state';
 
 // Effects:
-import { usesDisabledEffect } from '@reusable-ui/disabled-effect';
+import { usingDisabledEffect } from '@reusable-ui/disabled-effect';
 
 // CSS-in-JS:
 import { style, vars, keyframes, switchOf } from '@cssfn/core';
@@ -75,11 +75,11 @@ export const disableableBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature();
+    } = usingFilterFeature();
     
     // States:
     
@@ -89,7 +89,7 @@ export const disableableBoxStyle = () => {
     const {
         disabledStateRule,
         disabledStateVars: { disableFactor },
-    } = usesDisabledState({
+    } = usingDisabledState({
         animationEnabling  : 'var(--box-enabling)',
         animationDisabling : 'var(--box-disabling)',
     });
@@ -102,7 +102,7 @@ export const disableableBoxStyle = () => {
     const {
         disabledEffectRule,
         disabledEffectVars: { disabledCursor },
-    } = usesDisabledEffect({
+    } = usingDisabledEffect({
         // Opacity:
         // Values between `0` and `1` → partially transparent
         // Values `= 0` → fully transparent

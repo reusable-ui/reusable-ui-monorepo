@@ -29,7 +29,7 @@ interface BoxShadowFeatureTestCase {
 
 
 
-test.describe('usesBoxShadowFeature', () => {
+test.describe('usingBoxShadowFeature', () => {
     for (const { title, props, expectedBoxShadows } of [
         {
             title               : 'no box shadow',

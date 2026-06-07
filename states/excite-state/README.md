@@ -128,7 +128,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesExciteState(options?: CssExciteStateOptions): CssExciteState`
+### `usingExciteState(options?: CssExciteStateOptions): CssExciteState`
 
 Generates CSS rules that conditionally apply the excitement animation based on current excited state, and exposes excitement-related CSS variables for conditional excitement animation.
 
@@ -147,10 +147,10 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
 ```ts
 // Animation feature:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 
 // Excite state:
-import { usesExciteState } from '@reusable-ui/excite-state';
+import { usingExciteState } from '@reusable-ui/excite-state';
 
 // CSS-in-JS:
 import { style, vars, keyframes } from '@cssfn/core';
@@ -160,13 +160,13 @@ export const highlightCardStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     // Feature: excite animation
     const {
         exciteStateRule,
         exciteStateVars: { exciteFactor },
-    } = usesExciteState({
+    } = usingExciteState({
         animationExciting: 'var(--box-exciting)',
     });
     
@@ -210,7 +210,7 @@ export const highlightCardStyle = () => {
 The `animationExciting` variable is conditionally defined when `.is-excited` is active.  
 
 The variable is already registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume it directly.  
-Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining excitement animation with other state-driven animations.
+Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining excitement animation with other state-driven animations.
 
 ---
 

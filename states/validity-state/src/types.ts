@@ -338,7 +338,7 @@ export interface ValidityStateVars {
      * It becomes invalid (`unset`) when not actively validating.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationValidating   : unknown
     
@@ -347,7 +347,7 @@ export interface ValidityStateVars {
      * It becomes invalid (`unset`) when not actively invalidating.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationInvalidating : unknown
     
@@ -356,7 +356,7 @@ export interface ValidityStateVars {
      * It becomes invalid (`unset`) when not actively unvalidating.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationUnvalidating : unknown
     

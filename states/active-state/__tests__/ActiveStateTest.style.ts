@@ -1,12 +1,12 @@
 import { keyframes, style, vars } from '@cssfn/core'
-import { usesActiveState } from '../dist/index.js'
-import { usesAnimationFeature } from '@reusable-ui/animation-feature'
+import { usingActiveState } from '../dist/index.js'
+import { usingAnimationFeature } from '@reusable-ui/animation-feature'
 
 export default function activeStateTestStyle() {
     const {
         activeStateRule,
         activeStateVars: { activeFactor },
-    } = usesActiveState({
+    } = usingActiveState({
         animationActivating   : 'var(--test-activating)',
         animationDeactivating : 'var(--test-deactivating)',
     });
@@ -14,7 +14,7 @@ export default function activeStateTestStyle() {
     const {
         animationFeatureRule,
         animationFeatureVars : { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     return style({
         ...activeStateRule(),

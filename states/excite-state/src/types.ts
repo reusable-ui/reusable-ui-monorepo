@@ -172,7 +172,7 @@ export interface ExciteStateVars {
      * It becomes invalid (`unset`) when no longer excited.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationExciting : unknown
     

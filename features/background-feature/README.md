@@ -23,7 +23,7 @@ yarn add @reusable-ui/background-feature
 
 ## 🧩 Exported CSS Hooks
 
-### `usesBackgroundFeature(options?: CssBackgroundFeatureOptions): CssBackgroundFeature`
+### `usingBackgroundFeature(options?: CssBackgroundFeatureOptions): CssBackgroundFeature`
 
 Resolves the appropriate background color based on the currently active variants and exposes ready-to-use CSS variables.
 
@@ -60,29 +60,29 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
 ```ts
 // Supporting variants:
-import { usesThemeVariant } from '@reusable-ui/theme-variant'
-import { usesEmphasisVariant } from '@reusable-ui/emphasis-variant'
-import { usesOutlineVariant } from '@reusable-ui/outline-variant'
-import { usesMildVariant } from '@reusable-ui/mild-variant'
-import { usesBareVariant } from '@reusable-ui/bare-variant'
+import { usingThemeVariant } from '@reusable-ui/theme-variant'
+import { usingEmphasisVariant } from '@reusable-ui/emphasis-variant'
+import { usingOutlineVariant } from '@reusable-ui/outline-variant'
+import { usingMildVariant } from '@reusable-ui/mild-variant'
+import { usingBareVariant } from '@reusable-ui/bare-variant'
 
 // Theme-aware background feature:
-import { usesBackgroundFeature } from '@reusable-ui/background-feature';
+import { usingBackgroundFeature } from '@reusable-ui/background-feature';
 
 // CSS-in-JS:
 import { style } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { themeVariantRule    } = usesThemeVariant();
-    const { emphasisVariantRule } = usesEmphasisVariant();
-    const { outlineVariantRule  } = usesOutlineVariant();
-    const { mildVariantRule     } = usesMildVariant();
-    const { bareVariantRule     } = usesBareVariant();
+    const { themeVariantRule    } = usingThemeVariant();
+    const { emphasisVariantRule } = usingEmphasisVariant();
+    const { outlineVariantRule  } = usingOutlineVariant();
+    const { mildVariantRule     } = usingMildVariant();
+    const { bareVariantRule     } = usingBareVariant();
     
     const {
         backgroundFeatureRule,
         backgroundFeatureVars: { backgColor, backg },
-    } = usesBackgroundFeature({
+    } = usingBackgroundFeature({
         backgroundColor     : 'white',
         backgroundEmphasize : [
             ['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box'],

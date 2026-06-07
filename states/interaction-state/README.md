@@ -486,7 +486,7 @@ const useSelectedState = (props: SelectedStateProps<any> & { defaultSelected?: n
 
 ## 🧩 Exported CSS Hook
 
-### `usesInteractionState(interactionBehavior: InteractionBehavior): CssRule`
+### `usingInteractionState(interactionBehavior: InteractionBehavior): CssRule`
 
 Applies live CSS variables for interaction styling, including:
 - **Animation variables** for *visual effects* whenever an interaction state changes
@@ -511,7 +511,7 @@ Applies live CSS variables for interaction styling, including:
 
 ```ts
 // Describe how interaction collapse state should behave:
-const collapseStateRule : CssRule = usesInteractionState({
+const collapseStateRule : CssRule = usingInteractionState({
     // Interaction animations for visual effects whenever an interaction state changes:
     animations      : [
         {
@@ -730,7 +730,7 @@ The system works by splitting responsibilities:
 
 - **React hook (`useInteractionBehaviorState()`)**  
     Orchestrates runtime state: intent, lifecycle, and toggling classnames.  
-- **CSS hook (`usesInteractionState()`)**  
+- **CSS hook (`usingInteractionState()`)**  
     Describes how those states (via classname toggles) map to animations, flags, and factors at the stylesheet level.  
 
 Together, they form a predictable, declarative system:  

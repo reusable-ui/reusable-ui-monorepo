@@ -34,7 +34,7 @@ interface BackgroundFeatureTestCase {
 
 
 
-test.describe('usesBackgroundFeature', () => {
+test.describe('usingBackgroundFeature', () => {
     for (const { title, props, expectedBackground } of [
         {
             title              : 'no variant => should render default backgrounds',

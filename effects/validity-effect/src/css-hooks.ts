@@ -38,12 +38,12 @@ import {
 
 // Reusable-ui variants:
 import {
-    usesThemeVariant,
+    usingThemeVariant,
 }                           from '@reusable-ui/theme-variant'       // A utility for managing themes consistently across React components.
 
 // Reusable-ui states:
 import {
-    usesValidityState,
+    usingValidityState,
 }                           from '@reusable-ui/validity-state'      // Lifecycle-aware validation state with transition animations and semantic styling hooks for UI components.
 
 
@@ -60,7 +60,7 @@ import {
  * @param options - An optional configuration for customizing validity effects.
  * @returns A CSS API containing effect rules and CSS variables for the success/danger theme colors.
  */
-export const usesValidityEffect = (options?: CssValidityEffectOptions): CssValidityEffect => {
+export const usingValidityEffect = (options?: CssValidityEffectOptions): CssValidityEffect => {
     // Extract options and assign defaults:
     const {
         validTheme   = 'success', // Defaults to `'success'` (positive actions and confirmations).
@@ -70,10 +70,10 @@ export const usesValidityEffect = (options?: CssValidityEffectOptions): CssValid
     
     
     // Variants:
-    const { themeVariantVars } = usesThemeVariant();
+    const { themeVariantVars } = usingThemeVariant();
     
     // States:
-    const { validityStateVars : { validityFactorCond } } = usesValidityState();
+    const { validityStateVars : { validityFactorCond } } = usingValidityState();
     
     // Variables:
     const { validSwitch, invalidSwitch, validityWeight, unvalidatedWeight } = validityEffectVars;

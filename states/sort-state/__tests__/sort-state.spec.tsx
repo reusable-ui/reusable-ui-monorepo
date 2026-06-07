@@ -2,7 +2,7 @@ import React, { type AnimationEventHandler } from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { SortStateTestProps, SortStateTest } from './SortStateTest.js';
 import { initialProducts } from './dummy-products.js'
-import { usesSortState } from '../dist/index.js'
+import { usingSortState } from '../dist/index.js'
 
 
 
@@ -38,7 +38,7 @@ interface SortStateTestCase {
 
 
 
-test.describe('usesSortState', () => {
+test.describe('usingSortState', () => {
     for (const { title, updates } of [
         {
             title   : 'No sorting applied',
@@ -195,7 +195,7 @@ test.describe('usesSortState', () => {
             
             
             // Get the CSS variable name for `sortFactor` to read its value during the test:
-            const { sortStateVars: { sortFactor } } = usesSortState();
+            const { sortStateVars: { sortFactor } } = usingSortState();
             const sortFactorVar = sortFactor.slice(4, -1); // Convert `var(--sortFactor)` → `--sortFactor`
             
             

@@ -27,7 +27,7 @@ import {
 
 // Reusable-ui states:
 import {
-    usesCollapseState,
+    usingCollapseState,
     ifExpanded,
     ifCollapsed,
 }                           from '@reusable-ui/collapse-state'      // Lifecycle-aware expand/collapse state with transition animations and semantic styling hooks for UI components.
@@ -51,7 +51,7 @@ import {
  * @param options - An optional configuration for customizing collapse effects.
  * @returns A CSS API containing effect rules and CSS variables for the slide down/up transitions.
  */
-export const usesCollapseEffect = (options?: CssCollapseEffectOptions): CssCollapseEffect => {
+export const usingCollapseEffect = (options?: CssCollapseEffectOptions): CssCollapseEffect => {
     // Extract options and assign defaults:
     const {
         orientation   = 'block', // Defaults to `'block'` (vertical axis in horizontal-tb).
@@ -140,7 +140,7 @@ export const usesCollapseEffect = (options?: CssCollapseEffectOptions): CssColla
     
     
     // States:
-    const { collapseStateVars : { expandFactorCond } } = usesCollapseState();
+    const { collapseStateVars : { expandFactorCond } } = usingCollapseState();
     
     // Variables:
     const {

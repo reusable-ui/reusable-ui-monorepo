@@ -61,7 +61,7 @@ interface ExciteStateTestCase {
 
 
 
-test.describe('usesExciteState', () => {
+test.describe('usingExciteState', () => {
     for (const { title, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

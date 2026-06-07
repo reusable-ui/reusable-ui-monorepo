@@ -1,6 +1,6 @@
 import { rule, vars, style, scope, type CssKnownProps } from '@cssfn/core'
 
-import { usesTransformFeature, transformRegistry } from '../dist/index.js'
+import { usingTransformFeature, transformRegistry } from '../dist/index.js'
 
 transformRegistry.registerTransform('var(--transform1)');
 transformRegistry.registerTransform('var(--transform2)');
@@ -10,7 +10,7 @@ const transformNoCustomStyle = () => {
     const {
         transformFeatureRule,
         transformFeatureVars: { transform },
-    } = usesTransformFeature();
+    } = usingTransformFeature();
     
     
     return style({
@@ -45,7 +45,7 @@ const transformSimpleCustomStyle = () => {
     const {
         transformFeatureRule,
         transformFeatureVars: { transform },
-    } = usesTransformFeature({
+    } = usingTransformFeature({
         transform: 'scale(2, 0.5)',
     });
     
@@ -82,7 +82,7 @@ const transformSingleCustomStyle = () => {
     const {
         transformFeatureRule,
         transformFeatureVars: { transform },
-    } = usesTransformFeature({
+    } = usingTransformFeature({
         transform: ['perspective(800px)'],
     });
     
@@ -119,7 +119,7 @@ const transformSingleImportantCustomStyle = () => {
     const {
         transformFeatureRule,
         transformFeatureVars: { transform },
-    } = usesTransformFeature({
+    } = usingTransformFeature({
         transform: ['matrix(1.2, 0.2, -1, 0.9, 0, 20)', '!important'],
     });
     
@@ -156,7 +156,7 @@ const transformMultipleCustomStyle = () => {
     const {
         transformFeatureRule,
         transformFeatureVars: { transform },
-    } = usesTransformFeature({
+    } = usingTransformFeature({
         transform: [[
             'rotate(0.11turn)',
             'rotate(0.22turn)',
@@ -197,7 +197,7 @@ const transformMultipleImportantCustomStyle = () => {
     const {
         transformFeatureRule,
         transformFeatureVars: { transform },
-    } = usesTransformFeature({
+    } = usingTransformFeature({
         transform: [[
             'skew(0.11turn)',
             'skew(0.22turn)',

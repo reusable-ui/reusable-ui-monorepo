@@ -67,7 +67,7 @@ export interface ActiveEffectVars {
      * - Regular variants       → Interpolates filter effect adjustments.
      * - Outlined/mild variants → Neutral at factors between 0 and 1, but responds to overshoot/undershoot.
      * - Typically not consumed directly — instead use:
-     *   `const { filterFeatureVars: { filter } } = usesFilterFeature()`
+     *   `const { filterFeatureVars: { filter } } = usingFilterFeature()`
      */
     activeFilter        : unknown
 }

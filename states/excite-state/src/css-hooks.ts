@@ -18,7 +18,7 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    usesActivityState,
+    usingActivityState,
 }                           from '@reusable-ui/activity-state'      // Reusable abstraction for representing state-driven animations in React components — indicating ongoing activity or draw user attention.
 
 
@@ -33,10 +33,10 @@ import {
  * @example
  * ```ts
  * // Animation feature:
- * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+ * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
  * // Excite state:
- * import { usesExciteState } from '@reusable-ui/excite-state';
+ * import { usingExciteState } from '@reusable-ui/excite-state';
  * 
  * // CSS-in-JS:
  * import { style, vars, keyframes } from '@cssfn/core';
@@ -46,13 +46,13 @@ import {
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
- *     } = usesAnimationFeature();
+ *     } = usingAnimationFeature();
  *     
  *     // Feature: excite animation
  *     const {
  *         exciteStateRule,
  *         exciteStateVars: { exciteFactor },
- *     } = usesExciteState({
+ *     } = usingExciteState({
  *         animationExciting: 'var(--box-exciting)',
  *     });
  *     
@@ -91,8 +91,8 @@ import {
  * }
  * ```
  */
-export const usesExciteState = (options?: CssExciteStateOptions): CssExciteState => ({
-    exciteStateRule : () => usesActivityState({
+export const usingExciteState = (options?: CssExciteStateOptions): CssExciteState => ({
+    exciteStateRule : () => usingActivityState({
         // Activity animations for visual effects when excited:
         animations : {
             ifState   : ifExcited,

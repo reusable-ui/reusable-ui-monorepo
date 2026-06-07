@@ -390,7 +390,7 @@ export interface DragStateVars {
      * It becomes invalid (`unset`) when not actively dragging.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationDragging : unknown
     
@@ -399,7 +399,7 @@ export interface DragStateVars {
      * It becomes invalid (`unset`) when not actively dropping.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationDropping : unknown
     

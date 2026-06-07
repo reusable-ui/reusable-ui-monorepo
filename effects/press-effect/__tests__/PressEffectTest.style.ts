@@ -1,6 +1,6 @@
 import { style } from '@cssfn/core'
-import { usesFilterFeature } from '@reusable-ui/filter-feature';
-import { usesPressEffect } from '../dist/index.js'
+import { usingFilterFeature } from '@reusable-ui/filter-feature';
+import { usingPressEffect } from '../dist/index.js'
 import {
     activeTargetOpacity,
     activeTargetInvert,
@@ -21,12 +21,12 @@ export default function pressEffectTestStyle() {
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature();
+    } = usingFilterFeature();
     
     // Effects:
     const {
         pressEffectRule,
-    } = usesPressEffect({
+    } = usingPressEffect({
         enablesReverseIntent : false,
         opacity              : activeTargetOpacity,
         invert               : activeTargetInvert,

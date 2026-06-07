@@ -111,7 +111,7 @@ Deviation: ${deviation} (max allowed: ${MAX_DEVIATION})`
 
 
 
-test.describe('usesRingFeature', () => {
+test.describe('usingRingFeature', () => {
     for (const { title, props, expectedRingColor } of [
         ...THEME_NAMES.flatMap((themeName): RingFeatureTestCase[] => [
             //#region No prop activated

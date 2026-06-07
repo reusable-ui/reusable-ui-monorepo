@@ -22,7 +22,7 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    usesFeedbackState,
+    usingFeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -37,10 +37,10 @@ import {
  * @example
  * ```ts
  * // Animation feature:
- * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+ * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
  * // Pressed/released state:
- * import { usesPressState } from '@reusable-ui/press-state';
+ * import { usingPressState } from '@reusable-ui/press-state';
  * 
  * // CSS-in-JS:
  * import { style, vars, keyframes, fallback } from '@cssfn/core';
@@ -50,13 +50,13 @@ import {
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
- *     } = usesAnimationFeature();
+ *     } = usingAnimationFeature();
  *     
  *     // Feature: press/release lifecycle
  *     const {
  *         pressStateRule,
  *         pressStateVars: { isPressed, isReleased, pressFactor },
- *     } = usesPressState({
+ *     } = usingPressState({
  *         animationPressing  : 'var(--box-pressing)',
  *         animationReleasing : 'var(--box-releasing)',
  *     });
@@ -107,8 +107,8 @@ import {
  * };
  * ```
  */
-export const usesPressState = (options?: CssPressStateOptions): CssPressState => ({
-    pressStateRule : () => usesFeedbackState({
+export const usingPressState = (options?: CssPressStateOptions): CssPressState => ({
+    pressStateRule : () => usingFeedbackState({
         // Feedback animations for visual effects whenever a press state changes:
         animations      : [
             {

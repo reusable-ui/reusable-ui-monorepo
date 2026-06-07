@@ -128,7 +128,7 @@ Deviation: ${deviation} (max allowed: ${MAX_DEVIATION})`
 
 
 
-test.describe('usesBorderFeature', () => {
+test.describe('usingBorderFeature', () => {
     for (const { title, props, expectedBorderColor } of [
         ...THEME_NAMES.flatMap((themeName): BorderFeatureTestCase[] => [
             //#region No prop activated

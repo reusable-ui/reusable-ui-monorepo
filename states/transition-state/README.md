@@ -814,7 +814,7 @@ The hook manages transitions between concrete states using a unified animation f
 
 ## 🧩 Exported CSS Hook
 
-### `usesTransitionState(transitionBehavior: TransitionBehavior): CssRule`
+### `usingTransitionState(transitionBehavior: TransitionBehavior): CssRule`
 
 Applies live CSS variables for transitional styling, including:
 - **Animation variables** for *visual effects* whenever a transitional state changes
@@ -839,7 +839,7 @@ Applies live CSS variables for transitional styling, including:
 
 ```ts
 // Describe how transitional validity state should behave:
-const validityStateRule : CssRule = usesTransitionState({
+const validityStateRule : CssRule = usingTransitionState({
     // Transitional animations for visual effects whenever a transitional state changes:
     animations      : [
         {
@@ -1107,7 +1107,7 @@ The system works by splitting responsibilities:
 
 - **React hook (`useTransitionBehaviorState()`)**  
     Orchestrates runtime state: intent, lifecycle, and toggling classnames.  
-- **CSS hook (`usesTransitionState()`)**  
+- **CSS hook (`usingTransitionState()`)**  
     Describes how those states (via classname toggles) map to animations, flags, and factors at the stylesheet level.  
 
 Together, they form a predictable, declarative system:  

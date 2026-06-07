@@ -22,7 +22,7 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    usesFeedbackState,
+    usingFeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -37,10 +37,10 @@ import {
  * @example
  * ```ts
  * // Animation feature:
- * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+ * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
  * // Focused/blurred state:
- * import { usesFocusState } from '@reusable-ui/focus-state';
+ * import { usingFocusState } from '@reusable-ui/focus-state';
  * 
  * // CSS-in-JS:
  * import { style, vars, keyframes, fallback } from '@cssfn/core';
@@ -50,13 +50,13 @@ import {
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
- *     } = usesAnimationFeature();
+ *     } = usingAnimationFeature();
  *     
  *     // Feature: focus/blur lifecycle
  *     const {
  *         focusStateRule,
  *         focusStateVars: { isFocused, isBlurred, focusFactor },
- *     } = usesFocusState({
+ *     } = usingFocusState({
  *         animationFocusing : 'var(--box-focusing)',
  *         animationBlurring : 'var(--box-blurring)',
  *     });
@@ -104,8 +104,8 @@ import {
  * };
  * ```
  */
-export const usesFocusState = (options?: CssFocusStateOptions): CssFocusState => ({
-    focusStateRule : () => usesFeedbackState({
+export const usingFocusState = (options?: CssFocusStateOptions): CssFocusState => ({
+    focusStateRule : () => usingFeedbackState({
         // Feedback animations for visual effects whenever a focus state changes:
         animations      : [
             {

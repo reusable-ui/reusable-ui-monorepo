@@ -197,7 +197,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesReadOnlyState(options?: CssReadOnlyStateOptions): CssReadOnlyState`
+### `usingReadOnlyState(options?: CssReadOnlyStateOptions): CssReadOnlyState`
 
 Generates CSS rules that conditionally apply the editable/read-only animations based on current read-only state, and exposes editable/read-only-related CSS variables for conditional animation.
 
@@ -219,10 +219,10 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 ```ts
 // Animation feature:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 
 // Editable/read-only state:
-import { usesReadOnlyState } from '@reusable-ui/read-only-state';
+import { usingReadOnlyState } from '@reusable-ui/read-only-state';
 
 // CSS-in-JS:
 import { style, vars, keyframes, fallback } from '@cssfn/core';
@@ -232,13 +232,13 @@ export const readOnlyBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     // Feature: editable/read-only lifecycle
     const {
         readOnlyStateRule,
         readOnlyStateVars: { isEditable, isReadOnly, readOnlyFactor },
-    } = usesReadOnlyState({
+    } = usingReadOnlyState({
         animationThawing  : 'var(--box-thawing)',
         animationFreezing : 'var(--box-freezing)',
     });
@@ -291,7 +291,7 @@ export const readOnlyBoxStyle = () => {
 The `animationThawing` and `animationFreezing` variables are only defined during **thawing** and **freezing** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
-Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining editable/read-only animations with other state-driven transitions.
+Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining editable/read-only animations with other state-driven transitions.
 
 ---
 

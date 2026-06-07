@@ -1,6 +1,6 @@
 import { rule, style, vars, children } from '@cssfn/core'
-import { usesTransformFeature } from '@reusable-ui/transform-feature'
-import { usesViewEffect } from '../dist/index.js'
+import { usingTransformFeature } from '@reusable-ui/transform-feature'
+import { usingViewEffect } from '../dist/index.js'
 
 // Test style for ViewEffect
 // Demonstrates how `viewFactorCond` drives transition effects
@@ -10,12 +10,12 @@ export default function viewEffectTestStyle() {
     const {
         transformFeatureRule,
         transformFeatureVars: { transform },
-    } = usesTransformFeature();
+    } = usingTransformFeature();
     
     // Effects:
     const {
         viewEffectRule : viewEffectRule,
-    } = usesViewEffect({
+    } = usingViewEffect({
         size: 'var(--size)',
         
         orientation   : 'var(--orientation)',
@@ -24,7 +24,7 @@ export default function viewEffectTestStyle() {
     });
     const {
         viewEffectRule : viewEffectSelectiveRenderingRule,
-    } = usesViewEffect({
+    } = usingViewEffect({
         size: 'var(--size)',
         
         orientation   : 'var(--orientation)',

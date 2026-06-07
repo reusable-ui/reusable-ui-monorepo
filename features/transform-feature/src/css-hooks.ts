@@ -42,7 +42,7 @@ import {
  * @param options - An optional configuration for customizing transform behavior.
  * @returns A CSS API for composing a unified transform stack from custom and registered state packages.
  */
-export const usesTransformFeature = (options?: CssTransformFeatureOptions): CssTransformFeature => {
+export const usingTransformFeature = (options?: CssTransformFeatureOptions): CssTransformFeature => {
     // Extract options and assign defaults:
     const {
         transform : customTransforms = null,

@@ -1,9 +1,9 @@
 import { style } from '@cssfn/core'
-import { usesThemeVariant } from '@reusable-ui/theme-variant'
-import { usesOutlineVariant } from '@reusable-ui/outline-variant'
-import { usesMildVariant} from '@reusable-ui/mild-variant'
-import { usesBackgroundFeature } from '@reusable-ui/background-feature'
-import { usesValidityEffect } from '../dist/index.js'
+import { usingThemeVariant } from '@reusable-ui/theme-variant'
+import { usingOutlineVariant } from '@reusable-ui/outline-variant'
+import { usingMildVariant} from '@reusable-ui/mild-variant'
+import { usingBackgroundFeature } from '@reusable-ui/background-feature'
+import { usingValidityEffect } from '../dist/index.js'
 
 // Test style for ValidityEffect
 // Demonstrates how `validityFactorCond` drives transition effects
@@ -12,24 +12,24 @@ export default function validityEffectTestStyle() {
     // Variants:
     const {
         themeVariantRule,
-    } = usesThemeVariant();
+    } = usingThemeVariant();
     const {
         outlineVariantRule,
-    } = usesOutlineVariant();
+    } = usingOutlineVariant();
     const {
         mildVariantRule,
-    } = usesMildVariant();
+    } = usingMildVariant();
     
     // Features:
     const {
         backgroundFeatureRule,
         backgroundFeatureVars : { backgColor },
-    } = usesBackgroundFeature();
+    } = usingBackgroundFeature();
     
     // Effects:
     const {
         validityEffectRule,
-    } = usesValidityEffect({
+    } = usingValidityEffect({
         validTheme   : 'success',
         invalidTheme : 'danger',
     });

@@ -1,12 +1,12 @@
 import { keyframes, style, vars, switchOf } from '@cssfn/core'
-import { usesValidityState } from '../dist/index.js'
-import { usesAnimationFeature } from '@reusable-ui/animation-feature'
+import { usingValidityState } from '../dist/index.js'
+import { usingAnimationFeature } from '@reusable-ui/animation-feature'
 
 export default function validityStateTestStyle() {
     const {
         validityStateRule,
         validityStateVars: { wasValid, wasInvalid, validityFactor },
-    } = usesValidityState({
+    } = usingValidityState({
         animationValidating   : 'var(--test-validating)',
         animationInvalidating : 'var(--test-invalidating)',
         animationUnvalidating : 'var(--test-unvalidating)',
@@ -15,7 +15,7 @@ export default function validityStateTestStyle() {
     const {
         animationFeatureRule,
         animationFeatureVars : { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     return style({
         ...validityStateRule(),

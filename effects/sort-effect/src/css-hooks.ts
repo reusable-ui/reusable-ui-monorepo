@@ -18,7 +18,7 @@ import {
 
 // Reusable-ui states:
 import {
-    usesSortState,
+    usingSortState,
 }                           from '@reusable-ui/sort-state'          // Adds animated sorting transitions that make sorting actions feel visible and intuitive.
 
 
@@ -33,7 +33,7 @@ import {
  * by gradually moving each item from its original unsorted position toward its new sorted order.
  * 
  * ⚠️ Important Usage Note:
- * - Apply `usesSortEffect()` to each **sortable item element** (the individual items),
+ * - Apply `usingSortEffect()` to each **sortable item element** (the individual items),
  *   **not** to the parent sortable container.
  * - Applying the effect at the item level ensures that the correct per-item sorting movements are applied.
  * - Make sure to also apply `...transformFeatureRule()` and the `transform` variable
@@ -43,14 +43,14 @@ import {
  * @example
  * ```ts
  * // Features:
- * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
- * import { usesTransformFeature } from '@reusable-ui/transform-feature';
+ * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
+ * import { usingTransformFeature } from '@reusable-ui/transform-feature';
  * 
  * // States:
- * import { usesSortState } from '@reusable-ui/sort-state';
+ * import { usingSortState } from '@reusable-ui/sort-state';
  * 
  * // Effects:
- * import { usesSortEffect } from '@reusable-ui/sort-effect';
+ * import { usingSortEffect } from '@reusable-ui/sort-effect';
  * 
  * // CSS-in-JS:
  * import { style, vars, keyframes, children } from '@cssfn/core';
@@ -60,11 +60,11 @@ import {
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
- *     } = usesAnimationFeature();
+ *     } = usingAnimationFeature();
  *     const {
  *         transformFeatureRule,
  *         transformFeatureVars: { transform },
- *     } = usesTransformFeature();
+ *     } = usingTransformFeature();
  *     
  *     // States:
  *     
@@ -74,7 +74,7 @@ import {
  *     const {
  *         sortStateRule,
  *         sortStateVars: { sortFactor },
- *     } = usesSortState({
+ *     } = usingSortState({
  *         animationSorting : 'var(--list-sorting)',
  *     });
  *     
@@ -84,7 +84,7 @@ import {
  *     // - Allows additional customization for sorting effects
  *     const {
  *         sortEffectRule,
- *     } = usesSortEffect({
+ *     } = usingSortEffect({
  *         // Currently no options are available, reserved for future extension.
  *     });
  *     
@@ -135,9 +135,9 @@ import {
  * @param _options - An optional configuration for customizing sorting effects (currently unused, reserved for future extension).
  * @returns A CSS API containing effect rules and CSS variables for animating items into their new order whenever a sorting action occurs.
  */
-export const usesSortEffect = (_options?: CssSortEffectOptions): CssSortEffect => {
+export const usingSortEffect = (_options?: CssSortEffectOptions): CssSortEffect => {
     // States:
-    const { sortStateVars : { sortOffsetX, sortOffsetY, sortFactorCond } } = usesSortState();
+    const { sortStateVars : { sortOffsetX, sortOffsetY, sortFactorCond } } = usingSortState();
     
     // Variables:
     const { sortTransform } = sortEffectVars;

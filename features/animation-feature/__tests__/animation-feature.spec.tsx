@@ -29,7 +29,7 @@ interface AnimationFeatureTestCase {
 
 
 
-test.describe('usesAnimationFeature', () => {
+test.describe('usingAnimationFeature', () => {
     for (const { title, props, expectedAnimations } of [
         {
             title              : 'no animation',

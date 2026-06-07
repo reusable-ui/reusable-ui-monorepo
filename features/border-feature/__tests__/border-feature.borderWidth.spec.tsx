@@ -59,7 +59,7 @@ const BARE_BORDERS     = {
 
 
 
-test.describe('usesBorderFeature', () => {
+test.describe('usingBorderFeature', () => {
     for (const { title, props, expectedBorders } of [
         {
             title           : 'no variant => should render default borders',

@@ -128,7 +128,7 @@ Deviation: ${deviation} (max allowed: ${MAX_DEVIATION})`
 
 
 
-test.describe('usesForegroundFeature', () => {
+test.describe('usingForegroundFeature', () => {
     for (const { title, props, expectedForegroundColor } of [
         ...THEME_NAMES.flatMap((themeName): ForegroundFeatureTestCase[] => [
             //#region No prop activated

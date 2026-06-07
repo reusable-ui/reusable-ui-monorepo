@@ -22,12 +22,12 @@ import {
 
 // Reusable-ui features:
 import {
-    usesRingFeature,
+    usingRingFeature,
 }                           from '@reusable-ui/ring-feature'        // A styling utility for resolving the appropriate ring color based on the currently active theme variant.
 
 // Reusable-ui states:
 import {
-    usesFocusState,
+    usingFocusState,
 }                           from '@reusable-ui/focus-state'         // Lifecycle-aware focus/blur state with transition animations and semantic styling hooks for UI components.
 
 
@@ -44,7 +44,7 @@ import {
  * @param options - An optional configuration for customizing focus effects.
  * @returns A CSS API containing effect rules and CSS variables for the focus ring indicator.
  */
-export const usesFocusEffect = (options?: CssFocusEffectOptions): CssFocusEffect => {
+export const usingFocusEffect = (options?: CssFocusEffectOptions): CssFocusEffect => {
     // Extract options and assign defaults:
     const {
         ringWidth = spacerConfigVars.xs, // Defaults to `spacerConfigVars.xs` (small ring width).
@@ -53,10 +53,10 @@ export const usesFocusEffect = (options?: CssFocusEffectOptions): CssFocusEffect
     
     
     // Features:
-    const { ringFeatureVars : { ringColor } } = usesRingFeature();
+    const { ringFeatureVars : { ringColor } } = usingRingFeature();
     
     // States:
-    const { focusStateVars : { focusFactorCond } } = usesFocusState();
+    const { focusStateVars : { focusFactorCond } } = usingFocusState();
     
     
     

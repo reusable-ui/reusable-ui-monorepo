@@ -2,7 +2,7 @@ import React, { type CSSProperties, useMemo } from 'react'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useDragEffectTestStyles } from './DragEffectTest.loader.js'
 import { useDragEffectReversedTestStyles } from './DragEffectReversedTest.loader.js'
-import { usesDragState } from '@reusable-ui/drag-state'
+import { usingDragState } from '@reusable-ui/drag-state'
 import {
     draggedShiftX,
     draggedShiftY,
@@ -57,7 +57,7 @@ export const DragEffectTest = (props: DragEffectTestProps) => {
     const styles = useDragEffectTestStyles();
     const reversedStyles = useDragEffectReversedTestStyles();
     
-    const { dragStateVars  : { dragFactor: dragFactorVar, isDragged: isDraggedVar, dragOffsetX: dragOffsetXVar, dragOffsetY: dragOffsetYVar } } = usesDragState();
+    const { dragStateVars  : { dragFactor: dragFactorVar, isDragged: isDraggedVar, dragOffsetX: dragOffsetXVar, dragOffsetY: dragOffsetYVar } } = usingDragState();
     
     // Inline style overrides:
     // - Assigns `activeFactor` directly

@@ -22,7 +22,7 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    usesFeedbackState,
+    usingFeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, drag, and validity.
 
 
@@ -37,10 +37,10 @@ import {
  * @example
  * ```ts
  * // Animation feature:
- * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+ * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
  * // Dragged/dropped state:
- * import { usesDragState } from '@reusable-ui/drag-state';
+ * import { usingDragState } from '@reusable-ui/drag-state';
  * 
  * // CSS-in-JS:
  * import { style, vars, keyframes } from '@cssfn/core';
@@ -50,13 +50,13 @@ import {
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
- *     } = usesAnimationFeature();
+ *     } = usingAnimationFeature();
  *     
  *     // Feature: drag/drop lifecycle
  *     const {
  *         dragStateRule,
  *         dragStateVars: { isDragged, isDropped, dragOffsetX, dragOffsetY, dragFactor },
- *     } = usesDragState({
+ *     } = usingDragState({
  *         animationDragging : 'var(--box-dragging)',
  *         animationDropping : 'var(--box-dropping)',
  *     });
@@ -104,8 +104,8 @@ import {
  * };
  * ```
  */
-export const usesDragState = (options?: CssDragStateOptions): CssDragState => ({
-    dragStateRule : () => usesFeedbackState({
+export const usingDragState = (options?: CssDragStateOptions): CssDragState => ({
+    dragStateRule : () => usingFeedbackState({
         // Feedback animations for visual effects whenever a drag state changes:
         animations      : [
             {

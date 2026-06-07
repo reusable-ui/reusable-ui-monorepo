@@ -28,19 +28,19 @@ import {
 
 // Reusable-ui variants:
 import {
-    usesThemeVariant,
+    usingThemeVariant,
 }                           from '@reusable-ui/theme-variant'       // A utility for managing themes consistently across React components.
 import {
-    usesEmphasisVariant,
+    usingEmphasisVariant,
 }                           from '@reusable-ui/emphasis-variant'    // A utility for managing visual emphasis consistently across React components.
 import {
-    usesOutlineVariant,
+    usingOutlineVariant,
 }                           from '@reusable-ui/outline-variant'     // A utility for managing visual outline consistently across React components.
 import {
-    usesMildVariant,
+    usingMildVariant,
 }                           from '@reusable-ui/mild-variant'        // A utility for managing mild styling (reading friendly) consistently across React components.
 import {
-    usesBareVariant,
+    usingBareVariant,
 }                           from '@reusable-ui/bare-variant'        // A utility for managing bare styling (frameless, minimal layout) consistently across React components.
 
 
@@ -52,7 +52,7 @@ import {
  * @param options - An optional configuration for customizing background behavior.
  * @returns A CSS API for enabling theme-aware background styling in components.
  */
-export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): CssBackgroundFeature => {
+export const usingBackgroundFeature = (options?: CssBackgroundFeatureOptions): CssBackgroundFeature => {
     // Extract options and assign defaults:
     const {
         backgroundColor     : defaultBackgroundColor    = 'transparent', // Ensures a concrete fallback to avoid invalid value.
@@ -65,11 +65,11 @@ export const usesBackgroundFeature = (options?: CssBackgroundFeatureOptions): Cs
     return {
         backgroundFeatureRule : () => {
             // Peer variant dependencies (may be poisoned if not implemented):
-            const { themeVariantVars    } = usesThemeVariant();
-            const { emphasisVariantVars } = usesEmphasisVariant();
-            const { outlineVariantVars  } = usesOutlineVariant();
-            const { mildVariantVars     } = usesMildVariant();
-            const { bareVariantVars     } = usesBareVariant();
+            const { themeVariantVars    } = usingThemeVariant();
+            const { emphasisVariantVars } = usingEmphasisVariant();
+            const { outlineVariantVars  } = usingOutlineVariant();
+            const { mildVariantVars     } = usingMildVariant();
+            const { bareVariantVars     } = usingBareVariant();
             
             
             

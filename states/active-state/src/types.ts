@@ -310,7 +310,7 @@ export interface ActiveStateVars {
      * It becomes invalid (`unset`) when not actively activating.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationActivating   : unknown
     
@@ -319,7 +319,7 @@ export interface ActiveStateVars {
      * It becomes invalid (`unset`) when not actively deactivating.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationDeactivating : unknown
     

@@ -304,7 +304,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesValidityState(options?: CssValidityStateOptions): CssValidityState`
+### `usingValidityState(options?: CssValidityStateOptions): CssValidityState`
 
 Generates CSS rules that conditionally apply the validation animations based on current validity state, and exposes validity-related CSS variables for conditional animation.
 
@@ -331,10 +331,10 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 ```ts
 // Animation feature:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 
 // Validity state:
-import { usesValidityState } from '@reusable-ui/validity-state';
+import { usingValidityState } from '@reusable-ui/validity-state';
 
 // CSS-in-JS:
 import { style, vars, keyframes, fallback, switchOf } from '@cssfn/core';
@@ -344,13 +344,13 @@ export const validatableBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     // Feature: validity lifecycle
     const {
         validityStateRule,
         validityStateVars: { isValid, isInvalid, isUnvalidated, wasValid, wasInvalid, wasUnvalidated, validityFactor },
-    } = usesValidityState({
+    } = usingValidityState({
         animationValidating   : 'var(--box-validating)',
         animationInvalidating : 'var(--box-invalidating)',
         animationUnvalidating : 'var(--box-unvalidating)',
@@ -569,7 +569,7 @@ export const validatableBoxStyle = () => {
 The `animationValidating`, `animationInvalidating`, and `animationUnvalidating` variables are only defined during **validating**, **invalidating**, and **unvalidating** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
-Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining validity animations with other state-driven transitions.
+Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining validity animations with other state-driven transitions.
 
 ##### 🧩 Why `Unvalidated` / `Unvalidating` Exists
 

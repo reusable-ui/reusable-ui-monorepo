@@ -22,7 +22,7 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    usesFeedbackState,
+    usingFeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -37,10 +37,10 @@ import {
  * @example
  * ```ts
  * // Animation feature:
- * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+ * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
  * // Editable/read-only state:
- * import { usesReadOnlyState } from '@reusable-ui/read-only-state';
+ * import { usingReadOnlyState } from '@reusable-ui/read-only-state';
  * 
  * // CSS-in-JS:
  * import { style, vars, keyframes, fallback } from '@cssfn/core';
@@ -50,13 +50,13 @@ import {
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
- *     } = usesAnimationFeature();
+ *     } = usingAnimationFeature();
  *     
  *     // Feature: editable/read-only lifecycle
  *     const {
  *         readOnlyStateRule,
  *         readOnlyStateVars: { isEditable, isReadOnly, readOnlyFactor },
- *     } = usesReadOnlyState({
+ *     } = usingReadOnlyState({
  *         animationThawing  : 'var(--box-thawing)',
  *         animationFreezing : 'var(--box-freezing)',
  *     });
@@ -104,8 +104,8 @@ import {
  * };
  * ```
  */
-export const usesReadOnlyState = (options?: CssReadOnlyStateOptions): CssReadOnlyState => ({
-    readOnlyStateRule : () => usesFeedbackState({
+export const usingReadOnlyState = (options?: CssReadOnlyStateOptions): CssReadOnlyState => ({
+    readOnlyStateRule : () => usingFeedbackState({
         // Feedback animations for visual effects whenever a read-only state changes:
         animations      : [
             {

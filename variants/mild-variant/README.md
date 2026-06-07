@@ -145,7 +145,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesMildVariant()`
+### `usingMildVariant()`
 
 Generates CSS rules that toggle mild-related CSS variables based on the current mild mode, and exposes those variables for conditional styling.
 
@@ -153,7 +153,7 @@ Generates CSS rules that toggle mild-related CSS variables based on the current 
 
 ```ts
 import {
-    usesMildVariant,
+    usingMildVariant,
 } from '@reusable-ui/mild-variant';
 import { style, fallback } from '@cssfn/core';
 
@@ -161,7 +161,7 @@ export const componentStyle = () => {
     const {
         mildVariantRule,
         mildVariantVars: { isMild, notMild },
-    } = usesMildVariant();
+    } = usingMildVariant();
     
     return style({
         display: 'flex',
@@ -189,7 +189,7 @@ export const componentStyle = () => {
 
 #### 🧠 How It Works
 
-- `usesMildVariant()` generates scoped rules like:
+- `usingMildVariant()` generates scoped rules like:
     ```css
     &.is-mild {
         --isMild: ;       /* Valid    when mild mode is enabled. */

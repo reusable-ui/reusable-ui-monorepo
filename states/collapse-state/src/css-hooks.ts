@@ -22,7 +22,7 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    usesInteractionState,
+    usingInteractionState,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
@@ -37,10 +37,10 @@ import {
  * @example
  * ```ts
  * // Animation feature:
- * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+ * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
  * // Expanded/collapsed state:
- * import { usesCollapseState } from '@reusable-ui/collapse-state';
+ * import { usingCollapseState } from '@reusable-ui/collapse-state';
  * 
  * // CSS-in-JS:
  * import { style, vars, keyframes, fallback } from '@cssfn/core';
@@ -50,13 +50,13 @@ import {
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
- *     } = usesAnimationFeature();
+ *     } = usingAnimationFeature();
  *     
  *     // Feature: expand/collapse lifecycle
  *     const {
  *         collapseStateRule,
  *         collapseStateVars: { isExpanded, isCollapsed, expandFactor },
- *     } = usesCollapseState({
+ *     } = usingCollapseState({
  *         animationExpanding  : 'var(--box-expanding)',
  *         animationCollapsing : 'var(--box-collapsing)',
  *     });
@@ -106,8 +106,8 @@ import {
  * };
  * ```
  */
-export const usesCollapseState = (options?: CssCollapseStateOptions): CssCollapseState => ({
-    collapseStateRule : () => usesInteractionState({
+export const usingCollapseState = (options?: CssCollapseStateOptions): CssCollapseState => ({
+    collapseStateRule : () => usingInteractionState({
         // Feedback animations for visual effects whenever a collapse state changes:
         animations      : [
             {

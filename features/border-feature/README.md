@@ -23,7 +23,7 @@ yarn add @reusable-ui/border-feature
 
 ## 🧩 Exported CSS Hooks
 
-### `usesBorderFeature(options?: CssBorderFeatureOptions): CssBorderFeature`
+### `usingBorderFeature(options?: CssBorderFeatureOptions): CssBorderFeature`
 
 Resolves the appropriate border color and geometry based on the currently active variants and exposes ready-to-use CSS variables.
 
@@ -67,24 +67,24 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
 ```ts
 // Supporting variants:
-import { usesThemeVariant } from '@reusable-ui/theme-variant'
-import { usesEmphasisVariant } from '@reusable-ui/emphasis-variant' // optional
-import { usesOutlineVariant } from '@reusable-ui/outline-variant'
-import { usesMildVariant } from '@reusable-ui/mild-variant'
-import { usesBareVariant } from '@reusable-ui/bare-variant'
+import { usingThemeVariant } from '@reusable-ui/theme-variant'
+import { usingEmphasisVariant } from '@reusable-ui/emphasis-variant' // optional
+import { usingOutlineVariant } from '@reusable-ui/outline-variant'
+import { usingMildVariant } from '@reusable-ui/mild-variant'
+import { usingBareVariant } from '@reusable-ui/bare-variant'
 
 // Theme-aware border feature:
-import { usesBorderFeature } from '@reusable-ui/border-feature';
+import { usingBorderFeature } from '@reusable-ui/border-feature';
 
 // CSS-in-JS:
 import { style, children } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { themeVariantRule    } = usesThemeVariant();
-    const { emphasisVariantRule } = usesEmphasisVariant(); // optional
-    const { outlineVariantRule  } = usesOutlineVariant();
-    const { mildVariantRule     } = usesMildVariant();
-    const { bareVariantRule     } = usesBareVariant();
+    const { themeVariantRule    } = usingThemeVariant();
+    const { emphasisVariantRule } = usingEmphasisVariant(); // optional
+    const { outlineVariantRule  } = usingOutlineVariant();
+    const { mildVariantRule     } = usingMildVariant();
+    const { bareVariantRule     } = usingBareVariant();
     
     const {
         borderFeatureRule,
@@ -106,7 +106,7 @@ export const componentStyle = () => {
             borderInlineBaseWidth,
             borderBlockBaseWidth,
         },
-    } = usesBorderFeature({
+    } = usingBorderFeature({
         borderStyle  : 'solid',
         borderWidth  : '1px',
         borderRadius : '0.25rem',

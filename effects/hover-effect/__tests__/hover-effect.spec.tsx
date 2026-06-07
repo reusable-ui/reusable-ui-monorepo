@@ -254,7 +254,7 @@ const toKebabCase = (input: string): string => input.replace(/([a-z])([A-Z])/g, 
 
 
 
-test.describe('usesHoverEffect', () => {
+test.describe('usingHoverEffect', () => {
     for (const { title, props, expectedFilters, expectedTextDecoration } of testCases) {
         test(title, async ({ mount }) => {
             const component = await mount(<HoverEffectTest {...props} />);

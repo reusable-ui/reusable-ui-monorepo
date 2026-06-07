@@ -219,7 +219,7 @@ const resolveBusyActivityClassname = ({ visualState }: ResolveActivityClassnameA
 #### 🧠 Activity Animation Behavior
 
 The hook manages activity animations between concrete states using a unified lifecycle flow.  
-When `useActivityBehaviorState()` toggles an `activityClassname` (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`), the corresponding case in `usesActivityState()` activates, and the browser's CSS engine runs the assigned animation.
+When `useActivityBehaviorState()` toggles an `activityClassname` (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`), the corresponding case in `usingActivityState()` activates, and the browser's CSS engine runs the assigned animation.
 
 The lifecycle flow ensures:
 
@@ -232,7 +232,7 @@ The lifecycle flow ensures:
 
 ## 🧩 Exported CSS Hook
 
-### `usesActivityState(activityBehavior: ActivityBehavior): CssRule`
+### `usingActivityState(activityBehavior: ActivityBehavior): CssRule`
 
 Applies live CSS variables for activity styling.
 
@@ -250,7 +250,7 @@ Each activity case provides:
 
 ```ts
 // Describe how order animations should behave:
-const orderAnimations : CssRule = usesActivityState({
+const orderAnimations : CssRule = usingActivityState({
     animations      : [
         {
             ifState   : ifPreparing,
@@ -324,7 +324,7 @@ Each **`ActivityAnimationCase`** defines a mapping between:
 - **Variable (`variable`)** → the CSS variable to assign.
 - **Animation (`animation`)** → the animation value or reference applied to the variable.
 
-When `useActivityBehaviorState()` (React side) toggles an `activityClassname` (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`), the corresponding case in `usesActivityState()` (CSS side) activates. The browser's CSS engine then applies the animation by assigning the variable to the provided value.  
+When `useActivityBehaviorState()` (React side) toggles an `activityClassname` (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`), the corresponding case in `usingActivityState()` (CSS side) activates. The browser's CSS engine then applies the animation by assigning the variable to the provided value.  
 
 This separation ensures:
 - **React hook** orchestrates runtime state (`intent`, `running`, lifecycle handlers).  

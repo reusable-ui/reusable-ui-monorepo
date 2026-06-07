@@ -1,6 +1,6 @@
 import { rule, vars, style, scope, type CssKnownProps } from '@cssfn/core'
 
-import { usesFilterFeature, filterRegistry } from '../dist/index.js'
+import { usingFilterFeature, filterRegistry } from '../dist/index.js'
 
 filterRegistry.registerFilter('var(--filter1)');
 filterRegistry.registerFilter('var(--filter2)');
@@ -10,7 +10,7 @@ const filterNoCustomStyle = () => {
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature();
+    } = usingFilterFeature();
     
     
     return style({
@@ -45,7 +45,7 @@ const filterSimpleCustomStyle = () => {
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature({
+    } = usingFilterFeature({
         filter: 'contrast(0.77)',
     });
     
@@ -82,7 +82,7 @@ const filterSingleCustomStyle = () => {
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature({
+    } = usingFilterFeature({
         filter: ['opacity(0.88)'],
     });
     
@@ -119,7 +119,7 @@ const filterSingleImportantCustomStyle = () => {
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature({
+    } = usingFilterFeature({
         filter: ['opacity(0.99)', '!important'],
     });
     
@@ -156,7 +156,7 @@ const filterMultipleCustomStyle = () => {
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature({
+    } = usingFilterFeature({
         filter: [[
             'sepia(0.11)',
             'sepia(0.22)',
@@ -197,7 +197,7 @@ const filterMultipleImportantCustomStyle = () => {
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature({
+    } = usingFilterFeature({
         filter: [[
             'invert(0.11)',
             'invert(0.22)',

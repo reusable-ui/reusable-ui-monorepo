@@ -1,6 +1,6 @@
 import React, { type CSSProperties, useMemo } from 'react'
 import { HydrateStyles } from '@cssfn/cssfn-react'
-import { usesDisabledState } from '@reusable-ui/disabled-state'
+import { usingDisabledState } from '@reusable-ui/disabled-state'
 import { useDisabledEffectTestStyles } from './DisabledEffectTest.loader.js'
 
 
@@ -45,7 +45,7 @@ export const DisabledEffectTest = (props: DisabledEffectTestProps) => {
     
     const styles = useDisabledEffectTestStyles();
     
-    const { disabledStateVars  : { disableFactor: disableFactorVar, isDisabled: isDisabledVar } } = usesDisabledState();
+    const { disabledStateVars  : { disableFactor: disableFactorVar, isDisabled: isDisabledVar } } = usingDisabledState();
     
     // Inline style overrides:
     // - Assigns `activeFactor` directly

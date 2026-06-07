@@ -2,7 +2,7 @@ import React, { type CSSProperties, useMemo } from 'react'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { usePressEffectTestStyles } from './PressEffectTest.loader.js'
 import { usePressEffectReversedTestStyles } from './PressEffectReversedTest.loader.js'
-import { usesPressState } from '@reusable-ui/press-state'
+import { usingPressState } from '@reusable-ui/press-state'
 
 
 
@@ -53,7 +53,7 @@ export const PressEffectTest = (props: PressEffectTestProps) => {
     const styles = usePressEffectTestStyles();
     const reversedStyles = usePressEffectReversedTestStyles();
     
-    const { pressStateVars  : { pressFactor: pressFactorVar, isPressed: isPressedVar } } = usesPressState();
+    const { pressStateVars  : { pressFactor: pressFactorVar, isPressed: isPressedVar } } = usingPressState();
     
     // Inline style overrides:
     // - Assigns `activeFactor` directly

@@ -141,7 +141,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesThemeVariant()`
+### `usingThemeVariant()`
 
 Generates CSS rules that switch color shades based on the currently active theme, and exposes theme-related CSS variables for coloring components.
 
@@ -152,7 +152,7 @@ Supports multiple styling modes like **regular**, **mild**, and **outlined**.
 
 ```ts
 import {
-    usesThemeVariant,
+    usingThemeVariant,
 } from '@reusable-ui/theme-variant';
 import {
     ifOutlined,
@@ -160,7 +160,7 @@ import {
 import { style } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { themeVariantRule, themeVariantVars } = usesThemeVariant();
+    const { themeVariantRule, themeVariantVars } = usingThemeVariant();
     
     return style({
         display: 'flex',
@@ -202,7 +202,7 @@ export const componentStyle = () => {
     });
     ```
 
-### `usesThemeOverride(theme)`
+### `usingThemeOverride(theme)`
 
 Overrides the current theme by injecting theme-specific CSS variables.
 
@@ -213,8 +213,8 @@ The returned `CssRule` should be scoped within a conditional selector (e.g. `:in
 
 ```ts
 import {
-    usesThemeVariant,
-    usesThemeOverride,
+    usingThemeVariant,
+    usingThemeOverride,
 } from '@reusable-ui/theme-variant';
 import {
     ifOutlined,
@@ -222,7 +222,7 @@ import {
 import { style, rule, switchOf } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { themeVariantRule, themeVariantVars } = usesThemeVariant();
+    const { themeVariantRule, themeVariantVars } = usingThemeVariant();
     
     return style({
         display: 'flex',
@@ -252,12 +252,12 @@ export const componentStyle = () => {
         
         // Override theme when component is invalid:
         ...rule(':invalid', {
-            ...usesThemeOverride('danger'),
+            ...usingThemeOverride('danger'),
         }),
         
         // Override theme when component is valid:
         ...rule(':valid', {
-            ...usesThemeOverride('success'),
+            ...usingThemeOverride('success'),
         }),
     });
 };
@@ -265,7 +265,7 @@ export const componentStyle = () => {
 
 #### 🧠 How It Works
 
-- `usesThemeOverride('danger')` injects high-priority theme variables like:
+- `usingThemeOverride('danger')` injects high-priority theme variables like:
     ```css
     --t-backgRegularOverride  : var(--col-dangerBase);
     --t-foregRegularOverride  : var(--col-dangerFlip);

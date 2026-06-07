@@ -124,7 +124,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesBareVariant()`
+### `usingBareVariant()`
 
 Generates CSS rules that toggle bare-related CSS variables based on the current bare mode, and exposes those variables for conditional styling.
 
@@ -132,7 +132,7 @@ Generates CSS rules that toggle bare-related CSS variables based on the current 
 
 ```ts
 import {
-    usesBareVariant,
+    usingBareVariant,
 } from '@reusable-ui/bare-variant';
 import { style, fallback } from '@cssfn/core';
 
@@ -140,7 +140,7 @@ export const componentStyle = () => {
     const {
         bareVariantRule,
         bareVariantVars: { isBare, notBare },
-    } = usesBareVariant();
+    } = usingBareVariant();
     
     return style({
         display: 'flex',
@@ -168,7 +168,7 @@ export const componentStyle = () => {
 
 #### 🧠 How It Works
 
-- `usesBareVariant()` generates scoped rules like:
+- `usingBareVariant()` generates scoped rules like:
     ```css
     &.is-bare {
         --isBare: ;       /* Valid    when bare mode is enabled. */

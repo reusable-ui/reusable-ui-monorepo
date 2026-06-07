@@ -2,7 +2,7 @@ import React, { type CSSProperties, useMemo } from 'react'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useExciteEffectTestStyles } from './ExciteEffectTest.loader.js'
 import { useExciteEffectReversedTestStyles } from './ExciteEffectReversedTest.loader.js'
-import { usesExciteState } from '@reusable-ui/excite-state'
+import { usingExciteState } from '@reusable-ui/excite-state'
 
 
 
@@ -53,7 +53,7 @@ export const ExciteEffectTest = (props: ExciteEffectTestProps) => {
     const styles = useExciteEffectTestStyles();
     const reversedStyles = useExciteEffectReversedTestStyles();
     
-    const { exciteStateVars  : { exciteFactor: exciteFactorVar } } = usesExciteState();
+    const { exciteStateVars  : { exciteFactor: exciteFactorVar } } = usingExciteState();
     
     // Inline style overrides:
     // - Assigns `activeFactor` directly

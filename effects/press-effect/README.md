@@ -8,7 +8,7 @@ The effects are designed to feel natural to users:
 - Components smoothly highlight and emphasize as they move into the pressed state.  
 - Visual cues remain consistent across components, ensuring a predictable and cohesive user experience.  
 
-By using `usesPressEffect()`, you can apply these effects consistently across your components — enhancing emphasis through filters across the entire component surface — with optional customization for color effects.  
+By using `usingPressEffect()`, you can apply these effects consistently across your components — enhancing emphasis through filters across the entire component surface — with optional customization for color effects.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with Press State
@@ -46,7 +46,7 @@ yarn add @reusable-ui/press-effect
 
 ## 🧩 Exported CSS Hooks
 
-### `usesPressEffect(options?: CssPressEffectOptions): CssPressEffect`
+### `usingPressEffect(options?: CssPressEffectOptions): CssPressEffect`
 
 Applies press-state effects that acknowledge user input,
 making components **visually confirming command** when pressed (clicked).
@@ -61,14 +61,14 @@ through responsive visual cues.
 
 ```ts
 // Features:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
-import { usesFilterFeature } from '@reusable-ui/filter-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingFilterFeature } from '@reusable-ui/filter-feature';
 
 // States:
-import { usesPressState } from '@reusable-ui/press-state';
+import { usingPressState } from '@reusable-ui/press-state';
 
 // Effects:
-import { usesPressEffect } from '@reusable-ui/press-effect';
+import { usingPressEffect } from '@reusable-ui/press-effect';
 
 // CSS-in-JS:
 import { style, vars, keyframes } from '@cssfn/core';
@@ -78,11 +78,11 @@ export const pressableBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature();
+    } = usingFilterFeature();
     
     // States:
     
@@ -92,7 +92,7 @@ export const pressableBoxStyle = () => {
     const {
         pressStateRule,
         pressStateVars: { pressFactor },
-    } = usesPressState({
+    } = usingPressState({
         animationPressing   : 'var(--box-pressing)',
         animationReleasing : 'var(--box-releasing)',
     });
@@ -103,7 +103,7 @@ export const pressableBoxStyle = () => {
     // - Allows customization of how the "pressed" appearance should look
     const {
         pressEffectRule,
-    } = usesPressEffect({
+    } = usingPressEffect({
         // Brightness:
         // Values `< 1` → darken  in light mode, lighten in dark mode
         // Values `> 1` → lighten in light mode, darken  in dark mode

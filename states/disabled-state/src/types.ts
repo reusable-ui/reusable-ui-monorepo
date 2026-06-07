@@ -269,7 +269,7 @@ export interface DisabledStateVars {
      * It becomes invalid (`unset`) when not actively enabling.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationEnabling  : unknown
     
@@ -278,7 +278,7 @@ export interface DisabledStateVars {
      * It becomes invalid (`unset`) when not actively disabling.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationDisabling : unknown
     

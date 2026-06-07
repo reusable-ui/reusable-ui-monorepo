@@ -70,7 +70,7 @@ export interface ViewEffectVars {
      *   adapting automatically to orientation, flow direction, writing direction, and writing mode.
      * - Becomes `unset` when the component is fully settled (if `options.enablesSelectiveRendering` is enabled).
      * - Typically not consumed directly — instead use:
-     *   `const { transformFeatureVars: { transform } } = usesTransformFeature()`
+     *   `const { transformFeatureVars: { transform } } = usingTransformFeature()`
      */
     viewTransform          : unknown
 }

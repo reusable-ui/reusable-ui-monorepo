@@ -1,20 +1,20 @@
 import { keyframes, style, vars } from '@cssfn/core'
-import { usesDragState } from '../dist/index.js'
-import { usesPressState } from '@reusable-ui/press-state'
-import { usesAnimationFeature } from '@reusable-ui/animation-feature'
+import { usingDragState } from '../dist/index.js'
+import { usingPressState } from '@reusable-ui/press-state'
+import { usingAnimationFeature } from '@reusable-ui/animation-feature'
 
 export default function dragStateTestStyle() {
     const {
         pressStateRule,
         pressStateVars: { pressFactor },
-    } = usesPressState({
+    } = usingPressState({
         animationPressing  : 'var(--test-pressing)',
         animationReleasing : 'var(--test-releasing)',
     });
     const {
         dragStateRule,
         dragStateVars: { dragOffsetX, dragOffsetY, dragFactor },
-    } = usesDragState({
+    } = usingDragState({
         animationDragging : 'var(--test-dragging)',
         animationDropping : 'var(--test-dropping)',
     });
@@ -22,7 +22,7 @@ export default function dragStateTestStyle() {
     const {
         animationFeatureRule,
         animationFeatureVars : { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     return style({
         ...pressStateRule(),

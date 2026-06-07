@@ -128,7 +128,7 @@ Deviation: ${deviation} (max allowed: ${MAX_DEVIATION})`
 
 
 
-test.describe('usesDecorationFeature', () => {
+test.describe('usingDecorationFeature', () => {
     for (const { title, props, expectedDecorationColor } of [
         ...THEME_NAMES.flatMap((themeName): DecorationFeatureTestCase[] => [
             //#region No prop activated

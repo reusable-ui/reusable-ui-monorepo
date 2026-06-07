@@ -1,6 +1,6 @@
 import React, { type CSSProperties, useMemo } from 'react'
 import { HydrateStyles } from '@cssfn/cssfn-react'
-import { usesViewState } from '@reusable-ui/view-state'
+import { usingViewState } from '@reusable-ui/view-state'
 import { useViewEffectTestStyles } from './ViewEffectTest.loader.js'
 import { viewIndices } from './view-indices.js'
 import { type CssViewEffectOptions } from '../dist/index.js'
@@ -58,7 +58,7 @@ export const ViewEffectTest = (props: ViewEffectTestProps) => {
     
     const styles = useViewEffectTestStyles();
     
-    const { viewStateVars  : {  prevViewIndex: prevViewIndexVar, viewIndex: viewIndexVar, viewFactor: viewFactorVar, viewFactorCond: viewFactorCondVar } } = usesViewState();
+    const { viewStateVars  : {  prevViewIndex: prevViewIndexVar, viewIndex: viewIndexVar, viewFactor: viewFactorVar, viewFactorCond: viewFactorCondVar } } = usingViewState();
     
     // Inline style overrides:
     // - Assigns `viewFactorCond` directly

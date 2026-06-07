@@ -76,7 +76,7 @@ export interface ActivityAnimationCase
  * @example
  * ```ts
  * // Describe how order animations should behave:
- * const orderAnimations : CssRule = usesActivityState({
+ * const orderAnimations : CssRule = usingActivityState({
  *     animations      : [
  *         {
  *             ifState   : ifPreparing,
@@ -127,7 +127,7 @@ export interface ActivityBaseBehavior
  * @example
  * ```ts
  * // Describe how order animation factors should behave:
- * const orderAnimations : CssRule = usesActivityState({
+ * const orderAnimations : CssRule = usingActivityState({
  *     animations : [
  *         // animation cases...
  *     ],
@@ -202,7 +202,7 @@ export interface ActivityFactorBehavior
  * @example
  * ```ts
  * // Describe how order animations should behave:
- * const orderAnimations : CssRule = usesActivityState({
+ * const orderAnimations : CssRule = usingActivityState({
  *     animations      : [
  *         {
  *             ifState   : ifPreparing,

@@ -21,7 +21,7 @@ yarn add @reusable-ui/ring-feature
 
 ## 🧩 Exported CSS Hooks
 
-### `usesRingFeature(options?: CssRingFeatureOptions): CssRingFeature`
+### `usingRingFeature(options?: CssRingFeatureOptions): CssRingFeature`
 
 Resolves the appropriate ring color based on the currently active theme variant and exposes ready-to-use CSS variables.
 
@@ -51,27 +51,27 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
 ```ts
 // Supporting variants:
-import { usesThemeVariant } from '@reusable-ui/theme-variant'
-import { usesEmphasisVariant } from '@reusable-ui/emphasis-variant' // optional
-import { usesOutlineVariant } from '@reusable-ui/outline-variant'     // optional
-import { usesMildVariant } from '@reusable-ui/mild-variant'           // optional
+import { usingThemeVariant } from '@reusable-ui/theme-variant'
+import { usingEmphasisVariant } from '@reusable-ui/emphasis-variant' // optional
+import { usingOutlineVariant } from '@reusable-ui/outline-variant'   // optional
+import { usingMildVariant } from '@reusable-ui/mild-variant'         // optional
 
 // Theme-aware ring feature:
-import { usesRingFeature } from '@reusable-ui/ring-feature';
+import { usingRingFeature } from '@reusable-ui/ring-feature';
 
 // CSS-in-JS:
 import { rule, style } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { themeVariantRule    } = usesThemeVariant();
-    const { emphasisVariantRule } = usesEmphasisVariant(); // optional
-    const { outlineVariantRule  } = usesOutlineVariant();  // optional
-    const { mildVariantRule     } = usesMildVariant();     // optional
+    const { themeVariantRule    } = usingThemeVariant();
+    const { emphasisVariantRule } = usingEmphasisVariant(); // optional
+    const { outlineVariantRule  } = usingOutlineVariant();  // optional
+    const { mildVariantRule     } = usingMildVariant();     // optional
     
     const {
         ringFeatureRule,
         ringFeatureVars: { ringColor },
-    } = usesRingFeature({
+    } = usingRingFeature({
         ringColor: 'black',
     });
     

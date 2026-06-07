@@ -132,7 +132,7 @@ const testCases: FocusEffectTestCase[] = [
 
 
 
-test.describe('usesFocusEffect', () => {
+test.describe('usingFocusEffect', () => {
     for (const { title, props, expectedBoxShadowWidth, expectedBoxShadowColor } of testCases) {
         test(title, async ({ mount }) => {
             const component = await mount(<FocusEffectTest {...props} />);

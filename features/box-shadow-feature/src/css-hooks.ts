@@ -42,7 +42,7 @@ import {
  * @param options - An optional configuration for customizing box shadow behavior.
  * @returns A CSS API for composing a unified box shadow stack from custom and registered state packages.
  */
-export const usesBoxShadowFeature = (options?: CssBoxShadowFeatureOptions): CssBoxShadowFeature => {
+export const usingBoxShadowFeature = (options?: CssBoxShadowFeatureOptions): CssBoxShadowFeature => {
     // Extract options and assign defaults:
     const {
         boxShadow : customBoxShadows = null,

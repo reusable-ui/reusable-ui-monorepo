@@ -1,6 +1,6 @@
 import { rule, vars, style, scope, type CssKnownProps } from '@cssfn/core'
 
-import { usesAnimationFeature, animationRegistry } from '../dist/index.js'
+import { usingAnimationFeature, animationRegistry } from '../dist/index.js'
 
 animationRegistry.registerAnimation('var(--anim1)');
 animationRegistry.registerAnimation('var(--anim2)');
@@ -10,7 +10,7 @@ const animNoCustomStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     
     return style({
@@ -45,7 +45,7 @@ const animSimpleCustomStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature({
+    } = usingAnimationFeature({
         animation: '300ms ease-out both simple',
     });
     
@@ -82,7 +82,7 @@ const animSingleCustomStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature({
+    } = usingAnimationFeature({
         animation: ['300ms', 'ease-out', 'both', 'single'],
     });
     
@@ -119,7 +119,7 @@ const animSingleImportantCustomStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature({
+    } = usingAnimationFeature({
         animation: ['300ms', 'ease-out', 'both', 'singleImp', '!important'],
     });
     
@@ -156,7 +156,7 @@ const animMultipleCustomStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature({
+    } = usingAnimationFeature({
         animation: [
             ['300ms', 'ease-out', 'both', 'multi1'],
             ['500ms', 'ease-in', 'backwards', 'multi2'],
@@ -197,7 +197,7 @@ const animMultipleImportantCustomStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature({
+    } = usingAnimationFeature({
         animation: [
             ['300ms', 'ease-out', 'both', 'multi1Imp'],
             ['500ms', 'ease-in', 'backwards', 'multi2Imp'],

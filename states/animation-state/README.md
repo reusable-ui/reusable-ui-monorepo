@@ -160,7 +160,7 @@ CSS example for animations:
 #### 🧠 Animation Behavior
 
 The hook manages animations between states using a unified lifecycle flow.  
-When the implementator of `useAnimationState()` toggles a classname (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`), the corresponding case in `usesAnimationState()` activates, and the browser's CSS engine runs the assigned animation.
+When the implementator of `useAnimationState()` toggles a classname (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`), the corresponding case in `usingAnimationState()` activates, and the browser's CSS engine runs the assigned animation.
 
 The lifecycle flow ensures:
 
@@ -170,7 +170,7 @@ The lifecycle flow ensures:
 
 ## 🧩 Exported CSS Hook
 
-### `usesAnimationState(animationBehavior: AnimationBehavior): CssRule`
+### `usingAnimationState(animationBehavior: AnimationBehavior): CssRule`
 
 Applies live CSS variables for animation styling, including:
 - **Animation variables** for *visual effects* whenever the corresponding state becomes active
@@ -194,7 +194,7 @@ Applies live CSS variables for animation styling, including:
 
 ```ts
 // Describe how order animations should behave:
-const orderAnimations : CssRule = usesAnimationState({
+const orderAnimations : CssRule = usingAnimationState({
     {
         ifState   : ifPreparing,
         variable  : orderStateVars.animationPreparing,
@@ -265,7 +265,7 @@ Each **`AnimationCase`** defines a mapping between:
 - **Variable (`variable`)** → the CSS variable to assign.
 - **Animation (`animation`)** → the animation value or reference applied to the variable.
 
-When the implementator of `useAnimationState()` (React side) toggles a classname (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`), the corresponding case in `usesAnimationState()` (CSS side) activates. The browser's CSS engine then applies the animation by assigning the variable to the provided value.  
+When the implementator of `useAnimationState()` (React side) toggles a classname (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`), the corresponding case in `usingAnimationState()` (CSS side) activates. The browser's CSS engine then applies the animation by assigning the variable to the provided value.  
 
 This separation ensures:
 - **React hook** orchestrates runtime state (`intent`, `running`, lifecycle handlers).  

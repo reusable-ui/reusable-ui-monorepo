@@ -1,6 +1,6 @@
 import React, { type CSSProperties, useMemo, useLayoutEffect } from 'react'
 import { HydrateStyles } from '@cssfn/cssfn-react'
-import { usesValidityState } from '@reusable-ui/validity-state'
+import { usingValidityState } from '@reusable-ui/validity-state'
 import { colorConfigVars } from '@reusable-ui/color-config'
 import { colorParamConfigVars } from '@reusable-ui/color-config'
 import { useThemeVariant } from '@reusable-ui/theme-variant'
@@ -80,7 +80,7 @@ export const ValidityEffectTest = (props: ValidityEffectTestProps) => {
         colorConfigVars[`danger${ colorRoleMap['mild'   ]['backg']}` as keyof typeof colorConfigVars] = invalidMildBaseColor    as any;
     }, []);
     
-    const { validityStateVars  : { validityFactorCond: validityFactorCondVar } } = usesValidityState();
+    const { validityStateVars  : { validityFactorCond: validityFactorCondVar } } = usingValidityState();
     
     // Inline style overrides:
     // - Assigns `validityFactorCond` directly

@@ -239,7 +239,7 @@ const toKebabCase = (input: string): string => input.replace(/([a-z])([A-Z])/g, 
 
 
 
-test.describe('usesFilterEffect', () => {
+test.describe('composeFilterEffect', () => {
     for (const { title, props, expectedFilters } of testCases) {
         test(title, async ({ mount }) => {
             const component = await mount(<FilterEffectTest {...props} />);

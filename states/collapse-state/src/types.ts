@@ -292,7 +292,7 @@ export interface CollapseStateVars {
      * It becomes invalid (`unset`) when not actively expanding.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationExpanding  : unknown
     
@@ -301,7 +301,7 @@ export interface CollapseStateVars {
      * It becomes invalid (`unset`) when not actively collapsing.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationCollapsing : unknown
     

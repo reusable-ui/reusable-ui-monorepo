@@ -238,7 +238,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesPressState(options?: CssPressStateOptions): CssPressState`
+### `usingPressState(options?: CssPressStateOptions): CssPressState`
 
 Generates CSS rules that conditionally apply the press/release animations based on current pressed state, and exposes press/release-related CSS variables for conditional animation.
 
@@ -260,10 +260,10 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 ```ts
 // Animation feature:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 
 // Pressed/released state:
-import { usesPressState } from '@reusable-ui/press-state';
+import { usingPressState } from '@reusable-ui/press-state';
 
 // CSS-in-JS:
 import { style, vars, keyframes, fallback } from '@cssfn/core';
@@ -273,13 +273,13 @@ export const pressableBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     // Feature: press/release lifecycle
     const {
         pressStateRule,
         pressStateVars: { isPressed, isReleased, pressFactor },
-    } = usesPressState({
+    } = usingPressState({
         animationPressing  : 'var(--box-pressing)',
         animationReleasing : 'var(--box-releasing)',
     });
@@ -335,7 +335,7 @@ export const pressableBoxStyle = () => {
 The `animationPressing` and `animationReleasing` variables are only defined during **pressing** and **releasing** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
-Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining press/release animations with other state-driven transitions.
+Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining press/release animations with other state-driven transitions.
 
 ---
 

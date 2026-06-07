@@ -135,7 +135,7 @@ Deviation: ${deviation} (max allowed: ${MAX_DEVIATION})`
 
 
 
-test.describe('usesBackgroundFeature', () => {
+test.describe('usingBackgroundFeature', () => {
     for (const { title, props, expectedBackgroundColor, expectedBackgroundImage, expectedBackgroundOrigin } of [
         ...THEME_NAMES.flatMap((themeName): BackgroundFeatureTestCase[] => [
             //#region No prop activated

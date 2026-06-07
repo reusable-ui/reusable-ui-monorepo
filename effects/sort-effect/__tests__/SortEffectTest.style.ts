@@ -1,6 +1,6 @@
 import { style, children } from '@cssfn/core'
-import { usesTransformFeature } from '@reusable-ui/transform-feature';
-import { usesSortEffect } from '../dist/index.js'
+import { usingTransformFeature } from '@reusable-ui/transform-feature';
+import { usingSortEffect } from '../dist/index.js'
 
 // Test style for SortEffect
 // Demonstrates how `sortFactorCond` drives transition effects
@@ -10,12 +10,12 @@ export default function sortEffectTestStyle() {
     const {
         transformFeatureRule,
         transformFeatureVars: { transform },
-    } = usesTransformFeature();
+    } = usingTransformFeature();
     
     // Effects:
     const {
         sortEffectRule,
-    } = usesSortEffect({
+    } = usingSortEffect({
         // Currently no options are available, reserved for future extension.
     });
     

@@ -44,7 +44,7 @@ import {
  * @param options - A required configuration specifying supported size values.
  * @returns A CSS API for enabling size-aware component configuration.
  */
-export function usesSizeVariant<TSize extends string = BasicSize, TCssConfigProps extends CssConfigProps = CssConfigProps>(configVars: Refs<TCssConfigProps>, options: CssSizeVariantOptions<TSize>): CssSizeVariant;
+export function usingSizeVariant<TSize extends string = BasicSize, TCssConfigProps extends CssConfigProps = CssConfigProps>(configVars: Refs<TCssConfigProps>, options: CssSizeVariantOptions<TSize>): CssSizeVariant;
 
 /**
  * Generates CSS rules that activate size-specific properties of component’s configuration based on the currently active size.
@@ -55,9 +55,9 @@ export function usesSizeVariant<TSize extends string = BasicSize, TCssConfigProp
  * @param configVars - A CSS configuration that may includes properties suffixed by size identifiers (e.g., `'Sm'`, `'Md'`, `'Lg'`) to define size-specific values.
  * @returns A CSS API for enabling size-aware component configuration.
  */
-export function usesSizeVariant<TCssConfigProps extends CssConfigProps = CssConfigProps>(configVars: Refs<TCssConfigProps>): CssSizeVariant;
+export function usingSizeVariant<TCssConfigProps extends CssConfigProps = CssConfigProps>(configVars: Refs<TCssConfigProps>): CssSizeVariant;
 
-export function usesSizeVariant<TSize extends string = BasicSize, TCssConfigProps extends CssConfigProps = CssConfigProps>(configVars: Refs<TCssConfigProps>, options?: CssSizeVariantOptions<TSize>): CssSizeVariant {
+export function usingSizeVariant<TSize extends string = BasicSize, TCssConfigProps extends CssConfigProps = CssConfigProps>(configVars: Refs<TCssConfigProps>, options?: CssSizeVariantOptions<TSize>): CssSizeVariant {
     // Extract options and assign defaults:
     const {
         supportedSizes = defaultSupportedSizes as TSize[],

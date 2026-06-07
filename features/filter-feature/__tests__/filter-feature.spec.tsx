@@ -29,7 +29,7 @@ interface FilterFeatureTestCase {
 
 
 
-test.describe('usesFilterFeature', () => {
+test.describe('usingFilterFeature', () => {
     for (const { title, props, expectedFilters } of [
         {
             title            : 'no filter',

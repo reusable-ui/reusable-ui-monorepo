@@ -35,7 +35,7 @@ Subscribes a callback listener for box shadow registry changes.
 
 ## 🧩 Exported CSS Hook
 
-### `usesBoxShadowFeature(options?: CssBoxShadowFeatureOptions): CssBoxShadowFeature`
+### `usingBoxShadowFeature(options?: CssBoxShadowFeatureOptions): CssBoxShadowFeature`
 
 Composes custom and registered box shadows into a unified stack and exposes ready-to-use CSS variables.
 
@@ -51,23 +51,23 @@ These variables are ready-to-use for styling your component’s box shadow.
 
 ```ts
 // Supporting states:
-import { usesFocusState } from './states/focus-state'
-import { usesExciteState } from './states/excite-state'
+import { usingFocusState } from './states/focus-state'
+import { usingExciteState } from './states/excite-state'
 
 // Compound box shadow feature:
-import { usesBoxShadowFeature } from '@reusable-ui/box-shadow-feature';
+import { usingBoxShadowFeature } from '@reusable-ui/box-shadow-feature';
 
 // CSS-in-JS:
 import { style } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { focusStateRule  } = usesFocusState();
-    const { exciteStateRule } = usesExciteState();
+    const { focusStateRule  } = usingFocusState();
+    const { exciteStateRule } = usingExciteState();
     
     const {
         boxShadowFeatureRule,
         boxShadowFeatureVars: { boxShadow },
-    } = usesBoxShadowFeature({
+    } = usingBoxShadowFeature({
         // Custom box shadows:
         boxShadow: [
             ['red', '10px', '5px', '5px'],

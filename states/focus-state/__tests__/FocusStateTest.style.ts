@@ -1,12 +1,12 @@
 import { keyframes, style, vars } from '@cssfn/core'
-import { usesFocusState } from '../dist/index.js'
-import { usesAnimationFeature } from '@reusable-ui/animation-feature'
+import { usingFocusState } from '../dist/index.js'
+import { usingAnimationFeature } from '@reusable-ui/animation-feature'
 
 export default function focusStateTestStyle() {
     const {
         focusStateRule,
         focusStateVars: { focusFactor },
-    } = usesFocusState({
+    } = usingFocusState({
         animationFocusing : 'var(--test-focusing)',
         animationBlurring : 'var(--test-blurring)',
     });
@@ -14,7 +14,7 @@ export default function focusStateTestStyle() {
     const {
         animationFeatureRule,
         animationFeatureVars : { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     return style({
         ...focusStateRule(),

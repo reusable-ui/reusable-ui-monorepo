@@ -239,7 +239,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usesActiveState(options?: CssActiveStateOptions): CssActiveState`
+### `usingActiveState(options?: CssActiveStateOptions): CssActiveState`
 
 Generates CSS rules that conditionally apply the activate/deactivate animations based on current active state, and exposes activate/deactivate-related CSS variables for conditional animation.
 
@@ -261,19 +261,19 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 ```ts
 // Animation feature:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 
 // Active/inactive state:
-import { usesActiveState } from '@reusable-ui/active-state';
+import { usingActiveState } from '@reusable-ui/active-state';
 
 // Background colors:
-import { usesBackgroundFeature } from '@reusable-ui/background-feature';
+import { usingBackgroundFeature } from '@reusable-ui/background-feature';
 
 // Outlined variant:
-import { usesOutlineVariant } from '@reusable-ui/outline-variant';
+import { usingOutlineVariant } from '@reusable-ui/outline-variant';
 
 // Mild variant:
-import { usesMildVariant } from '@reusable-ui/mild-variant';
+import { usingMildVariant } from '@reusable-ui/mild-variant';
 
 // CSS-in-JS:
 import { style, vars, keyframes, switchOf } from '@cssfn/core';
@@ -283,13 +283,13 @@ export const activatableBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     
     // Feature: active/inactive lifecycle
     const {
         activeStateRule,
         activeStateVars: { isActive, isInactive, activeFactor },
-    } = usesActiveState({
+    } = usingActiveState({
         animationActivating   : 'var(--box-activating)',
         animationDeactivating : 'var(--box-deactivating)',
     });
@@ -297,17 +297,17 @@ export const activatableBoxStyle = () => {
     // Feature: background colors
     const {
         backgroundFeatureVars : { backgRegularCond, backgColor },
-    } = usesBackgroundFeature();
+    } = usingBackgroundFeature();
     
     // Feature: outlined variant
     const {
         outlineVariantVars : { isOutlined, notOutlined },
-    } = usesOutlineVariant();
+    } = usingOutlineVariant();
     
     // Feature: mild variant
     const {
         mildVariantVars    : { isMild, notMild },
-    } = usesMildVariant();
+    } = usingMildVariant();
     
     return style({
         display: 'flex',
@@ -397,7 +397,7 @@ export const activatableBoxStyle = () => {
 The `animationActivating` and `animationDeactivating` variables are only defined during **activating** and **deactivating** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
-Instead, use `animationFeatureVars.animation` from `usesAnimationFeature()` to apply the unified animation stack—combining activate/deactivate animations with other state-driven transitions.
+Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining activate/deactivate animations with other state-driven transitions.
 
 ---
 

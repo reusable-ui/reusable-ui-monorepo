@@ -9,7 +9,7 @@ The effects are designed to feel natural to users:
 - Text decorations (such as underlines) can be applied to emphasize interactivity.  
 - Visual cues remain consistent across components, ensuring a predictable and cohesive user experience.  
 
-By using `usesHoverEffect()`, you can apply these effects consistently across your components — enhancing emphasis through filters across the entire component surface — with optional customization for color effects and text decoration.  
+By using `usingHoverEffect()`, you can apply these effects consistently across your components — enhancing emphasis through filters across the entire component surface — with optional customization for color effects and text decoration.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with Hover State
@@ -47,7 +47,7 @@ yarn add @reusable-ui/hover-effect
 
 ## 🧩 Exported CSS Hooks
 
-### `usesHoverEffect(options?: CssHoverEffectOptions): CssHoverEffect`
+### `usingHoverEffect(options?: CssHoverEffectOptions): CssHoverEffect`
 
 Applies hover-state effects that signal interactivity,
 making components **visually responsive and clearly distinguishable from static content**.
@@ -65,14 +65,14 @@ through responsive visual cues.
 
 ```ts
 // Features:
-import { usesAnimationFeature } from '@reusable-ui/animation-feature';
-import { usesFilterFeature } from '@reusable-ui/filter-feature';
+import { usingAnimationFeature } from '@reusable-ui/animation-feature';
+import { usingFilterFeature } from '@reusable-ui/filter-feature';
 
 // States:
-import { usesHoverState } from '@reusable-ui/hover-state';
+import { usingHoverState } from '@reusable-ui/hover-state';
 
 // Effects:
-import { usesHoverEffect } from '@reusable-ui/hover-effect';
+import { usingHoverEffect } from '@reusable-ui/hover-effect';
 
 // CSS-in-JS:
 import { style, vars, keyframes, switchOf } from '@cssfn/core';
@@ -82,11 +82,11 @@ export const hoverableBoxStyle = () => {
     const {
         animationFeatureRule,
         animationFeatureVars: { animation },
-    } = usesAnimationFeature();
+    } = usingAnimationFeature();
     const {
         filterFeatureRule,
         filterFeatureVars: { filter },
-    } = usesFilterFeature();
+    } = usingFilterFeature();
     
     // States:
     
@@ -96,7 +96,7 @@ export const hoverableBoxStyle = () => {
     const {
         hoverStateRule,
         hoverStateVars: { hoverFactor },
-    } = usesHoverState({
+    } = usingHoverState({
         animationHovering   : 'var(--box-hovering)',
         animationUnhovering : 'var(--box-unhovering)',
     });
@@ -109,7 +109,7 @@ export const hoverableBoxStyle = () => {
     const {
         hoverEffectRule,
         hoverEffectVars: { hoverTextDecoration },
-    } = usesHoverEffect({
+    } = usingHoverEffect({
         // Brightness:
         // Values `< 1` → darken  in light mode, lighten in dark mode
         // Values `> 1` → lighten in light mode, darken  in dark mode

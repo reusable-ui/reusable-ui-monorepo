@@ -28,7 +28,7 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    usesFeedbackState,
+    usingFeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -43,10 +43,10 @@ import {
  * @example
  * ```ts
  * // Animation feature:
- * import { usesAnimationFeature } from '@reusable-ui/animation-feature';
+ * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
  * // Validity state:
- * import { usesValidityState } from '@reusable-ui/validity-state';
+ * import { usingValidityState } from '@reusable-ui/validity-state';
  * 
  * // CSS-in-JS:
  * import { style, vars, keyframes, fallback } from '@cssfn/core';
@@ -56,13 +56,13 @@ import {
  *     const {
  *         animationFeatureRule,
  *         animationFeatureVars: { animation },
- *     } = usesAnimationFeature();
+ *     } = usingAnimationFeature();
  *     
  *     // Feature: validity lifecycle
  *     const {
  *         validityStateRule,
  *         validityStateVars: { isValid, isInvalid, isUnvalidated, wasValid, wasInvalid, wasUnvalidated, validityFactor },
- *     } = usesValidityState({
+ *     } = usingValidityState({
  *         animationValidating   : 'var(--box-validating)',
  *         animationInvalidating : 'var(--box-invalidating)',
  *         animationUnvalidating : 'var(--box-unvalidating)',
@@ -276,8 +276,8 @@ import {
  * };
  * ```
  */
-export const usesValidityState = (options?: CssValidityStateOptions): CssValidityState => ({
-    validityStateRule : () => usesFeedbackState({
+export const usingValidityState = (options?: CssValidityStateOptions): CssValidityState => ({
+    validityStateRule : () => usingFeedbackState({
         // Feedback animations for visual effects whenever a validity state changes:
         animations      : [
             {

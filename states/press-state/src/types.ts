@@ -438,7 +438,7 @@ export interface PressStateVars {
      * It becomes invalid (`unset`) when not actively pressing.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationPressing  : unknown
     
@@ -447,7 +447,7 @@ export interface PressStateVars {
      * It becomes invalid (`unset`) when not actively releasing.
      * 
      * Typically, this variable is not consumed directly.
-     * Prefer: `const { animationFeatureVars: { animation } } = usesAnimationFeature();`
+     * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
     animationReleasing : unknown
     

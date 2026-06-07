@@ -1,7 +1,7 @@
 import React, { type CSSProperties, useMemo, useLayoutEffect } from 'react'
 import { HydrateStyles } from '@cssfn/cssfn-react'
-import { usesFocusState } from '@reusable-ui/focus-state'
-import { usesThemeVariant } from '@reusable-ui/theme-variant'
+import { usingFocusState } from '@reusable-ui/focus-state'
+import { usingThemeVariant } from '@reusable-ui/theme-variant'
 import { colorParamConfigVars } from '@reusable-ui/color-config'
 import { useOutlineVariant, type OutlineVariantProps } from '@reusable-ui/outline-variant'
 import { useMildVariant, type MildVariantProps} from '@reusable-ui/mild-variant'
@@ -56,8 +56,8 @@ export const FocusEffectTest = (props: FocusEffectTestProps) => {
         colorParamConfigVars.mode = ((mode === 'light') ? 1 : -1) as any;
     }, [mode])
     
-    const { focusStateVars  : { focusFactorCond: focusFactorCondVar } } = usesFocusState();
-    const { themeVariantVars : { backgRegular, backgMild } } = usesThemeVariant();
+    const { focusStateVars  : { focusFactorCond: focusFactorCondVar } } = usingFocusState();
+    const { themeVariantVars : { backgRegular, backgMild } } = usingThemeVariant();
     
     // Inline style overrides:
     // - Assigns `focusFactorCond` directly
