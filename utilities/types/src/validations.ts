@@ -43,5 +43,5 @@ export type NoForeignProps<TRestProps extends TBaseProps, TBaseProps extends {},
  * @returns {true} - Always returns true as the validation is done by TypeScript.
  */
 export const validateNoForeignProps =
-    <TRestProps extends TBaseProps, TBaseProps extends {}, TExtraProps extends {} = {}>(restProps: TRestProps):
+    <TRestProps extends TBaseProps, TBaseProps extends {}, TExtraProps extends {} = {}>(restProps: TRestProps): // eslint-disable-line @typescript-eslint/no-unused-vars
         restProps is {} extends Omit<Required<TRestProps>, keyof TBaseProps | keyof TExtraProps> ? TRestProps : (DisallowedProps<TRestProps, TBaseProps, TExtraProps> & TRestProps) => true // no actual runtime validation, all is done by TypeScript check
