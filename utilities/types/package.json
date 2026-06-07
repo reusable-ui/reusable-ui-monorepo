@@ -1,6 +1,6 @@
 {
   "name": "@reusable-ui/types",
-  "version": "6.12.0",
+  "version": "7.0.0",
   "description": "A collection of TypeScript type utilities, assertions, and validations for ensuring type safety in reusable UI components.",
   "keywords": [
     "typescript",
@@ -13,11 +13,15 @@
     "ui-components"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
-  "homepage": "https://reusableui.org",
-  "license": "ISC",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git"
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "utilities/types"
+  },
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

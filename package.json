@@ -52,6 +52,7 @@
     "configs/spacer-config",
     "configs/breakpoint-config",
     "configs/typo-config",
+    "utilities/types",
     "utilities/numbers",
     "utilities/nodes",
     "utilities/resets",
