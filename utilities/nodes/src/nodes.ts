@@ -50,11 +50,6 @@ export const isForwardRefElement = <TProps extends unknown = unknown, TRef exten
     );
 };
 
-/**
- * @deprecated - Use `isForwardRefElement` instead.
- */
-export const isForwardRef = isForwardRefElement;
-
 
 
 /**
@@ -83,11 +78,6 @@ export const isFragmentElement = (node: ReactNode): node is ReactElement<Fragmen
         ((typeof node.type === 'symbol') && (node.type === fragmentType))
     );
 };
-
-/**
- * @deprecated - Use `isFragmentElement` instead.
- */
-export const isFragment = isFragmentElement;
 
 
 
@@ -142,11 +132,6 @@ export const isComponentElement = <TProps extends unknown = unknown, TConstructo
         (typeof node.type === 'function')
     );
 };
-
-/**
- * @deprecated - Use `isComponentElement` instead.
- */
-export const isReusableUiComponent = isComponentElement;
 
 
 
