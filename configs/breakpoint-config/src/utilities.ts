@@ -60,11 +60,6 @@ export const getNextBreakpoint = (breakpointName: BreakpointName): BreakpointNam
     return sortedBreakpoints[nextIndex][0];
 };
 
-/**
- * @deprecated Use `getNextBreakpoint` instead.
- */
-export const getBreakpointNextName = getNextBreakpoint;
-
 
 
 /**
@@ -89,40 +84,3 @@ export const getBreakpointStartWidth = (breakpointName: BreakpointName): CssBrea
     if (startWidth === '0px') return null;
     return startWidth;
 };
-
-/**
- * @deprecated Use `getBreakpointStartWidth` instead.
- */
-export const getBreakpointMinWidthInclusive = getBreakpointStartWidth;
-
-
-/**
- * @deprecated **No longer required if using CSS Media Queries Level 4 range syntax.**
- *
- * Retrieves the maximum width just before the specified breakpoint.
- *
- * - **Calculates the width just before `breakpointName`.
- * - **Returns `null` if the breakpoint represents zero width (`'0px'`)**.
- * - **Throws an error if the specified `breakpointName` is not found**.
- *
- * @param breakpointName The name of the breakpoint for which to determine the maximum width.
- * @returns The width just before `breakpointName`, or `null` if the value is near zero.
- * @throws {TypeError} If `breakpointName` is not found in the breakpoint list.
- */
-export const getBreakpointExitWidth = (breakpointName: BreakpointName): CssBreakpoint | null => {
-    // Retrieve the starting width of the specified `breakpointName`:
-    const startWidth = getBreakpointStartWidth(breakpointName);
-    if (startWidth === null) return null; // Nothing smaller than 0px.
-    
-    
-    
-    // Calculate the value just before the specified breakpoint:
-    const widthValue = Number.parseFloat(startWidth);
-    if ((widthValue >= 0.02)) return `${widthValue - 0.02}px`;
-    return null; // Nothing smaller than 0.02px (near zero).
-};
-
-/**
- * @deprecated Use `getBreakpointExitWidth` instead.
- */
-export const getBreakpointMaxWidthExclusive = getBreakpointExitWidth;
