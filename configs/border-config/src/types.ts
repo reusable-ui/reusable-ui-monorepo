@@ -12,25 +12,3 @@ export type CssBorderWidth  = CssKnownValueOf<'borderWidth'>
 export type CssBorderColor  = CssKnownValueOf<'borderColor'>
 export type CssBorderStyle  = CssKnownValueOf<'borderStyle'>
 export type CssBorder       = CssComplexValueOf<CssKnownValueOf<'border'>>
-
-
-
-/**
- * @deprecated Use `CssBorderWidth` instead.
- */
-export type BorderWidth  = CssBorderWidth
-
-/**
- * @deprecated Use `CssBorderColor` instead.
- */
-export type BorderColor  = CssBorderColor
-
-/**
- * @deprecated Use `CssBorderStyle` instead.
- */
-export type BorderStyle  = CssBorderStyle
-
-/**
- * @deprecated Use `CssBorder` instead.
- */
-export type Border       = CssBorder
