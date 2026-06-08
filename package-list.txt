@@ -10,6 +10,7 @@
 @reusable-ui/typo-config
 
 // Reusable-ui utilities:
+@reusable-ui/strict-props
 @reusable-ui/types
 @reusable-ui/numbers
 @reusable-ui/nodes
