@@ -264,11 +264,6 @@ export const useMergeEventHandlers = <TEvent, TExtra extends unknown[] = []>(...
     return useMergeCallbacks<[TEvent, ...TExtra]>(...eventHandlers);
 };
 
-/**
- * @deprecated Use `useMergeEventHandlers` instead.
- */
-export const useMergeEvents = useMergeEventHandlers;
-
 
 
 /**
@@ -298,8 +293,3 @@ export const useMergeAsyncEventHandlers = <TEvent, TExtra extends unknown[] = []
     // Returns a stable merged async event handler function:
     return useMergeAsyncCallbacks<[TEvent, ...TExtra]>(...eventHandlers);
 };
-
-/**
- * @deprecated Use `useMergeAsyncEventHandlers` instead.
- */
-export const useMergeAsyncEvents = useMergeAsyncEventHandlers;
