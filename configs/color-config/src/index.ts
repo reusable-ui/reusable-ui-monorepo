@@ -21,6 +21,3 @@ export {
     type DefaultSoftColors,
     type DefaultAllColors,
 }                   from './color-factories.js'
-
-export *            from './css-deprecated-param-config.js'
-export *            from './css-deprecated-config.js'
