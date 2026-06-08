@@ -1,5 +1,5 @@
 import { Bench } from 'tinybench'
-import { mergeClasses, mergeClasses_BAK } from '../dist/styles.js'
+import { mergeClasses } from '../dist/styles.js'
 import classnames from 'classnames';
 
 
@@ -29,7 +29,6 @@ const bench = new Bench({ time: 500 /*ms*/ });
 Object.entries(testCases).forEach(([title, props]) => {
     bench.add(`classnames: ${title}`, () => classnames(...props));
     bench.add(`mergeClasses: ${title}`, () => mergeClasses(...props));
-    bench.add(`mergeClasses_BAK: ${title}`, () => mergeClasses_BAK(...props));
 });
 
 bench.run().then(() => {

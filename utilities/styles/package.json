@@ -40,9 +40,8 @@
     "ncu": "ncu --peer",
     "ncu:upgrade": "ncu --peer --upgrade",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest",
-    "bench-1": "cross-env NODE_ENV=benchmark node __benchmarks__/styles.useMergeClasses.benchmark.js",
-    "bench-2": "cross-env NODE_ENV=benchmark node __benchmarks__/styles.mergeClasses.benchmark.js",
-    "bench-3": "cross-env NODE_ENV=benchmark node __benchmarks__/styles.useMergeStyles.benchmark.js"
+    "bench-1": "cross-env NODE_ENV=benchmark node __benchmarks__/styles.mergeClasses.benchmark.js",
+    "bench-2": "cross-env NODE_ENV=benchmark node __benchmarks__/styles.useMergeStyles.benchmark.js"
   },
   "dependencies": {
     "@cssfn/core": "^4.0.0"
