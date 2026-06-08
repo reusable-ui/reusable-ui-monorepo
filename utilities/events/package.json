@@ -39,9 +39,6 @@
     "ncu:upgrade": "ncu --peer --upgrade",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
-  "dependencies": {
-    "@reusable-ui/controllable": "^7.0.0"
-  },
   "peerDependencies": {
     "@types/react": "^19.0.0",
     "react": "^19.0.0"
