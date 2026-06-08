@@ -6,6 +6,7 @@ import tsPlugin from 'typescript-eslint'
 import reactPlugin from 'eslint-plugin-react'
 import importPlugin from 'eslint-plugin-import'
 import jestPlugin from 'eslint-plugin-jest'
+import { enforceCssTypeConventions, noForeignCode as noForeignCodeInCssTypes } from './.eslint-rules/css-types.js'
 import { enforceSelectorConventions, enforceIfFunctionConventions, noForeignCode as noForeignCodeInCssSelectors } from './.eslint-rules/css-selectors.js'
 import { enforceHookConventions, migrateUsingPrefix, noForeignCode as noForeignCodeInCssHooks } from './.eslint-rules/css-hooks.js'
 import { enforceVariableConventions, enforceCssVarsFunctionUsage, enforceCssConfigFunctionUsage, noForeignCode as noForeignCodeInCssVars } from './.eslint-rules/css-variables.js'
@@ -243,6 +244,12 @@ export default defineConfig(
             ...benchmarkDirectories,
         ],
         plugins: {
+            'css-types': {
+                rules: {
+                    'enforce-css-type-conventions'     : enforceCssTypeConventions    as unknown as Rule.RuleModule,
+                    'no-foreign-code'                  : noForeignCodeInCssTypes      as unknown as Rule.RuleModule,
+                },
+            },
             'css-selectors': {
                 rules: {
                     'enforce-selector-conventions'     : enforceSelectorConventions   as unknown as Rule.RuleModule,
@@ -291,6 +298,8 @@ export default defineConfig(
             }],
             
             // Enforce custom internal rule for CSS variable usage:
+            'css-types/enforce-css-type-conventions'         : 'error',
+            'css-types/no-foreign-code'                      : 'off', // TODO: Should be enabled
             'css-selectors/enforce-selector-conventions'     : 'error',
             'css-selectors/enforce-if-function-conventions'  : 'error',
             'css-selectors/no-foreign-code'                  : 'error',
