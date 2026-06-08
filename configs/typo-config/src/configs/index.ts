@@ -20,9 +20,3 @@ export *            from './css-code-config.js'
 
 export *            from './css-horz-separator-config.js'
 export *            from './css-vert-separator-config.js'
-
-
-
-// Deprecated:
-
-export *            from './deprecated/index.js'

@@ -21,9 +21,3 @@ export * from './css-horz-separator-mount.js'
 export * from './css-vert-separator-mount.js'
 
 export * from './css-emphasis-mount.js'
-
-
-
-// Deprecated:
-
-export *            from './deprecated/index.js'
