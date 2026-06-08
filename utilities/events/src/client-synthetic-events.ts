@@ -1,3 +1,5 @@
+'use client' // The exported functions in this module are designed to be used in client-side environments, as they rely on DOM APIs and React's synthetic event system.
+
 // React:
 import {
     // Types:

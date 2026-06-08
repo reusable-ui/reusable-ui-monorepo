@@ -1,1 +1,1 @@
-export * from './synthetic-events.js'
+export * from './client-synthetic-events.js'
