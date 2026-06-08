@@ -9,10 +9,3 @@ import {
 
 // Types:
 export type CssBorderRadius = CssComplexValueOf<CssKnownValueOf<'borderRadius'>>
-
-
-
-/**
- * @deprecated Use `CssBorderRadius` instead.
- */
-export type BorderRadius = CssBorderRadius
