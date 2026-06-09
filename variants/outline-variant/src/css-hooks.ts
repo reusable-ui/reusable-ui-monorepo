@@ -9,7 +9,7 @@ import {
 // Types:
 import {
     type CssOutlineVariant,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
