@@ -14,7 +14,7 @@ import {
 import {
     type CssRingFeatureOptions,
     type CssRingFeature,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
