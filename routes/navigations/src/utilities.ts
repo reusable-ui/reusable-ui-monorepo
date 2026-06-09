@@ -6,7 +6,6 @@ import {
 import {
     // Types:
     type To,
-    type Pathname,
     
     
     
@@ -157,13 +156,6 @@ export const resolveAbsolutePathFromSource = (currentPathname: string | string[]
     
     // Resolve an absolute path from the extracted pathname and the given current pathname:
     return resolveAbsolutePathFromRelative(currentPathname, absoluteOrRelativePath);
-};
-
-/**
- * @deprecated - use `resolveAbsolutePathFromSource` instead.
- */
-export const resolvePath = (to: To, currentPathname : Pathname = '/'): Pathname => {
-    return resolveAbsolutePathFromSource(currentPathname, to);
 };
 
 
