@@ -16,9 +16,11 @@ import {
 // Types:
 import {
     type BasicSize,
+}                           from './types.js'
+import {
     type CssSizeVariantOptions,
     type CssSizeVariant,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // Defaults:
 import {
