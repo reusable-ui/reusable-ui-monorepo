@@ -20,8 +20,10 @@ import {
 // Types:
 import {
     type BasicTheme,
-    type CssThemeVariant,
 }                           from './types.js'
+import {
+    type CssThemeVariant,
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
