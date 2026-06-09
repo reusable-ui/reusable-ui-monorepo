@@ -14,7 +14,7 @@ import {
 import {
     type CssForegroundFeatureOptions,
     type CssForegroundFeature,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
