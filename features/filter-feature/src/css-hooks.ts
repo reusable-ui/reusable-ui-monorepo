@@ -21,7 +21,7 @@ import {
 import {
     type CssFilterFeatureOptions,
     type CssFilterFeature,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
