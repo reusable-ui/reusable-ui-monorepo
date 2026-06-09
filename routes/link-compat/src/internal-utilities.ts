@@ -16,7 +16,7 @@ import {
 
 // Reusable-ui utilities:
 import {
-    isForwardRef,
+    isForwardRefElement,
     isFragmentElement,
     isContextElement,
 }                           from '@reusable-ui/nodes'           // A comprehensive utility library for efficiently managing React nodes, including fragments, forward refs, and nested structures.
@@ -87,7 +87,7 @@ export const extractFirstAnchor = (rootNode: ReactNode): AnchorExtractionResult 
     
     
     // Unwrap `<ForwardRef>`, if present:
-    if (isForwardRef(candidate)) {
+    if (isForwardRefElement(candidate)) {
         // Render `<FunctionComponent>` wrapped in `<ForwardRef>`:
         candidate = (candidate.type as any).render(candidate.props, candidate.props.ref);
     } // if
