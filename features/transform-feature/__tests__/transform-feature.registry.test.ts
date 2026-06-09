@@ -3,7 +3,7 @@ import {
 } from '@cssfn/core'
 import {
     transformRegistry,
-} from '../dist/index'
+} from '../dist/index.js'
 import { test, expect } from '@playwright/experimental-ct-react';
 
 
