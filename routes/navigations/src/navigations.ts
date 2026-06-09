@@ -6,9 +6,7 @@ import {
     
     
     // Hooks:
-    useState,
     useMemo,
-    useLayoutEffect,
     
     
     
@@ -17,10 +15,6 @@ import {
 }                           from 'react'
 
 // Reusable-ui utilities:
-import {
-    // Flags:
-    isClientSide,
-}                           from '@reusable-ui/runtime-checks'  // Detects whether JavaScript is running on the client-side or server-side, including JSDOM environments.
 import {
     // Utilities:
     isClientLinkElement,
@@ -425,111 +419,4 @@ export const useLinkPathMatch = (props: LinkPathMatchProps): boolean => {
         ...restOptions,
         actualPathname : intendedPathname,
     });
-};
-
-
-
-/**
- * @deprecated - Use `LinkPathMatchProps` instead.
- */
-export interface DetermineCurrentPageProps
-    extends
-        // Bases:
-        Partial<Pick<LinkPathMatchProps, 'children'>>
-{
-    // Navigation expects:
-    
-    /**
-     * @deprecated This option is no longer supported.
-     * Path matching is always case-sensitive.
-     */
-    caseSensitive ?: boolean
-    
-    /**
-     * @deprecated Use `pathMatchStrategy` instead for match precision.
-     * This flag previously indicated exact matching behavior.
-     */
-    end           ?: boolean
-}
-
-/**
- * @deprecated Use `useLinkPathMatch` instead.
- * 
- * This legacy hook determines whether the page is currently active
- * by comparing the current location to a nested `<Link>` element’s target.
- * 
- * ⚠️ It relies on `window.location.pathname`, which is unavailable during server-side rendering.
- * This causes the internal state to be `undefined` on the server and leads to an unintended "blinky" effect
- * on the initial client-side hydration as the state transitions.
- * 
- * For a smoother and SSR-compatible experience, migrate to `useLinkPathMatch`.
- * 
- * @param props - Legacy configuration.
- *   @param props.children - Children that may include a client-side `<Link>` component.
- *   @param props.end - Whether to use exact path matching. Deprecated in favor of `pathMatchStrategy`.
- * 
- * @returns `true` if the `<Link>`’s destination matches the current location; `undefined` while path is loading.
- */
-export const useDetermineCurrentPage = (props: DetermineCurrentPageProps): boolean | undefined => {
-    // Extract props and assign defaults:
-    const {
-        // Navigation expects:
-        end = false,
-        
-        
-        
-        // Children:
-        children,
-    } = props;
-    
-    
-    
-    // Hold the current pathname state:
-    const [currentPathname, setCurrentPathname] = useState<string | null>(null);
-    
-    // Keep current pathname up-to-date:
-    useLayoutEffect(() => {
-        // Skip if not running on the client-side:
-        if (!isClientSide) return;
-        
-        
-        
-        // Define a handler to update the current pathname:
-        const handleUpdateCurrentPathname = (): void => {
-            setCurrentPathname(window.location.pathname);
-        };
-        
-        
-        
-        // Set up event listeners for navigation changes:
-        window.addEventListener('popstate' , handleUpdateCurrentPathname);
-        
-        /*
-         * You might need to monkey-patch for pushState
-         *
-         * Unlike `popstate`, the browser does not automatically emit an event when `pushState()` is called.
-         * - Navigations using `history.pushState()` won't trigger listeners unless you manually emit something.
-         * - To observe `pushState`, you'd need to override `history.pushState` and dispatch a synthetic event.
-         */
-        window.addEventListener('pushstate', handleUpdateCurrentPathname);
-        
-        
-        
-        // Clean up event listeners on unmount:
-        return () => {
-            window.removeEventListener('popstate' , handleUpdateCurrentPathname);
-            window.removeEventListener('pushstate', handleUpdateCurrentPathname);
-        };
-    }, []);
-    
-    
-    
-    // Delegate to link path matcher once path is available:
-    const isMatch = useLinkPathMatch({
-        currentPathname   : currentPathname ?? '/',
-        pathMatchStrategy : (end ? 'exact' : 'partial'),
-        children,
-    });
-    if (currentPathname == null) return undefined;
-    return isMatch;
 };
