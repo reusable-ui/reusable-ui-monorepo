@@ -258,7 +258,7 @@ test.describe('usingTransformFeature', () => {
                 const computed = getComputedStyle(element);
                 return {
                     // transform : computed.transform,
-                    transform : computed.getPropertyValue('--tm-transform').trim(),
+                    transform : computed.getPropertyValue('--tr-transform').trim(),
                 };
             });
             
