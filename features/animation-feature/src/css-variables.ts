@@ -12,7 +12,7 @@ import {
 // Types:
 import {
     type AnimationFeatureVars,
-}                           from './types.js'
+}                           from './css-types.js'
 
 
 

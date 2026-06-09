@@ -22,7 +22,7 @@ import {
 import {
     type CssAnimationFeatureOptions,
     type CssAnimationFeature,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
