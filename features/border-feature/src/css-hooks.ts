@@ -14,7 +14,7 @@ import {
 import {
     type CssBorderFeatureOptions,
     type CssBorderFeature,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {

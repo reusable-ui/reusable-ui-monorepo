@@ -12,7 +12,7 @@ import {
 // Types:
 import {
     type BorderFeatureVars,
-}                           from './types.js'
+}                           from './css-types.js'
 
 
 
