@@ -14,7 +14,7 @@ import {
 import {
     type CssPaddingFeatureOptions,
     type CssPaddingFeature,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
