@@ -9,7 +9,7 @@ import {
 // Types:
 import {
     type CssEmphasisVariant,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
