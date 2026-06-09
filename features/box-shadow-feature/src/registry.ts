@@ -18,7 +18,7 @@ import {
 // Types:
 import {
     type CssBoxShadowRegistry,
-}                           from './types.js'
+}                           from './css-types.js'
 
 
 

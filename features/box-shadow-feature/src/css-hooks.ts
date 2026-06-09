@@ -21,7 +21,7 @@ import {
 import {
     type CssBoxShadowFeatureOptions,
     type CssBoxShadowFeature,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
