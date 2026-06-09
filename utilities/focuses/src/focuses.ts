@@ -132,11 +132,6 @@ export const getSortedFocusableElements = (container: Element): Element[] => {
     return computeFocusableOrder(allEntries);
 };
 
-/**
- * @deprecated - Use `getSortedFocusableElements` instead.
- */
-export const getFocusableElements = getSortedFocusableElements;
-
 
 
 // Absolute focusing:
@@ -170,11 +165,6 @@ export const focusElementAt = (container: Element, index: number): boolean => {
     return true;
 };
 
-/**
- * @deprecated - Use `focusElementAt` instead.
- */
-export const setFocusAt = (container: Element, index: number): void => { focusElementAt(container, index); };
-
 
 /**
  * Attempts to focus the first focusable element within the given container.
@@ -186,11 +176,6 @@ export const focusFirstElement = (container: Element): boolean => {
     return focusElementAt(container, 0);
 };
 
-/**
- * @deprecated - Use `focusFirstElement` instead.
- */
-export const setFocusFirst = (container: Element): void => { focusFirstElement(container); };
-
 
 /**
  * Attempts to focus the last focusable element within the given container.
@@ -201,11 +186,6 @@ export const setFocusFirst = (container: Element): void => { focusFirstElement(c
 export const focusLastElement = (container: Element): boolean => {
     return focusElementAt(container, -1);
 };
-
-/**
- * @deprecated - Use `focusLastElement` instead.
- */
-export const setFocusLast = (container: Element): void => { focusLastElement(container); };
 
 
 
@@ -258,11 +238,6 @@ export const focusPrevElementOrWrapToLast = (container: Element): boolean => {
     return true;
 };
 
-/**
- * @deprecated - Use `focusPrevElementOrWrapToLast` instead.
- */
-export const setFocusPrev = (container: Element): void => { focusPrevElementOrWrapToLast(container); };
-
 
 /**
  * Attempts to focus the next focusable element within the given container.
@@ -310,8 +285,3 @@ export const focusNextElementOrWrapToFirst = (container: Element): boolean => {
     focusFn.call(targetElement);
     return true;
 };
-
-/**
- * @deprecated - Use `focusNextElementOrWrapToFirst` instead.
- */
-export const setFocusNext = (container: Element): void => { focusNextElementOrWrapToFirst(container); };
