@@ -1,7 +1,7 @@
 // Types:
 import {
     type CssColor,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // Utilities:
 import {

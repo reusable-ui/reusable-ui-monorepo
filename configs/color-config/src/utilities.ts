@@ -7,7 +7,7 @@ import {
 // Types:
 import {
     type CssColor,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // Configs:
 import {

@@ -1,4 +1,4 @@
-export *            from './types.js'
+export *            from './css-types.js'
 
 export *            from './css-param-config.js'
 
