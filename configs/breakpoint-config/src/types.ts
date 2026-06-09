@@ -1,5 +1,11 @@
 // Types:
-export type CssBreakpoint = `${number}px`
+import {
+    type CssBreakpoint,
+}                           from './css-types.js'
+
+
+
+// Types:
 
 export interface Breakpoint {
     /**
