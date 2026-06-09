@@ -21,7 +21,7 @@ import {
 import {
     type CssTransformFeatureOptions,
     type CssTransformFeature,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
