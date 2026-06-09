@@ -12,7 +12,7 @@ import {
 import {
     type CssBareVariantOptions,
     type CssBareVariant,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
