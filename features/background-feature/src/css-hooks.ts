@@ -19,7 +19,7 @@ import {
 import {
     type CssBackgroundFeatureOptions,
     type CssBackgroundFeature,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
