@@ -15,7 +15,7 @@ import {
     type CssBorderColor,
     type CssBorderStyle,
     type CssBorder,
-}                           from './types.js'
+}                           from './css-types.js'
 
 
 
