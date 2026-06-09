@@ -25,6 +25,8 @@ export const isTopLevel = (node: TSESTree.Node): boolean => {
         
         case TSESTree.AST_NODE_TYPES.FunctionDeclaration:
         case TSESTree.AST_NODE_TYPES.ClassDeclaration:
+        case TSESTree.AST_NODE_TYPES.TSTypeAliasDeclaration:
+        case TSESTree.AST_NODE_TYPES.TSInterfaceDeclaration:
             return (
                 parent.type === TSESTree.AST_NODE_TYPES.Program ||
                 parent.type === TSESTree.AST_NODE_TYPES.ExportNamedDeclaration ||
