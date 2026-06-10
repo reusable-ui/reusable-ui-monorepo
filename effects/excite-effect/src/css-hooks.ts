@@ -12,12 +12,10 @@ import {
 
 // Utilities:
 import {
-    // Types:
     type CssNumericFormula,
     type CssNumeric,
-    
-    
-    
+}                           from './css-internal-types.js'
+import {
     // Conditions:
     ifPositive,
     ifNegative,
@@ -25,7 +23,7 @@ import {
     
     // Interpolations:
     reverseFactor,
-}                           from './css-internal-formulas.js'
+}                           from './css-internal-utilities.js'
 
 // CSS Variables:
 import {
