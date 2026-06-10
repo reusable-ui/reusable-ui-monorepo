@@ -12,6 +12,25 @@ const createRule = ESLintUtils.RuleCreator(
 
 
 /**
+ * Checks if a given name matches the criteria for being a CSS type candidate:
+ * 
+ * Requirements:
+ * - Starts with `Css` followed by a case boundary (next char is not lowercase), e.g. `CssThemeVariant`.
+ * - Ends with `Vars`, e.g. `ThemeVariantVars`.
+ */
+const isCssNameCandidate = (name: string): boolean => {
+    return (
+        // Starts with `Css` followed by a case boundary:
+        /^Css[A-Z]/.test(name)
+        ||
+        // Ends with `Vars`:
+        /Vars$/.test(name)
+    );
+};
+
+
+
+/**
  * ESLint rule: enforce-css-type-conventions
  * 
  * Purpose:
@@ -52,25 +71,6 @@ export const enforceCssTypeConventions = createRule({
         const filename         = context.filename;
         const basename         = path.basename(filename);
         const isExpectedModule = ['css-types.ts', 'css-internal-types.ts'].includes(basename);
-        
-        
-        
-        /**
-         * Checks if a given name matches the criteria for being a CSS type candidate:
-         * 
-         * Requirements:
-         * - Starts with `Css` followed by a case boundary (next char is not lowercase), e.g. `CssThemeVariant`.
-         * - Ends with `Vars`, e.g. `ThemeVariantVars`.
-         */
-        const isCssNameCandidate = (name: string): boolean => {
-            return (
-                // Starts with `Css` followed by a case boundary:
-                /^Css[A-Z]/.test(name)
-                ||
-                // Ends with `Vars`:
-                /Vars$/.test(name)
-            );
-        };
         
         
         
@@ -179,49 +179,6 @@ export const noForeignCode = createRule({
         
         
         
-        // Helper functions:
-        
-        /**
-         * Checks if a type candidate matches the criteria for being a CSS type:
-         * 
-         * Requirements:
-         * - Name starts with `Css` followed by a case boundary (next char is not lowercase), e.g. `CssThemeVariant`.
-         * - Name ends with `Vars`, e.g. `ThemeVariantVars`.
-         */
-        const isCssTypeCandidate = (typeAnn: TSESTree.Node): boolean => {
-            // Ensure the node is a type, or interface declaration:
-            if (!(
-                typeAnn.type === TSESTree.AST_NODE_TYPES.TSTypeAliasDeclaration
-                ||
-                typeAnn.type === TSESTree.AST_NODE_TYPES.TSInterfaceDeclaration
-            )) return false;
-            
-            
-            
-            // Store the type or interface name for easy access:
-            const name = typeAnn.id.name;
-            
-            
-            
-            // CSS type candidates:
-            // - Name starts with `Css` followed by a case boundary (next char is not lowercase), e.g. `CssThemeVariant`.
-            // - Name ends with `Vars`, e.g. `ThemeVariantVars`.
-            if (
-                // Starts with `Css` followed by a case boundary:
-                !(/^Css[A-Z]/.test(name)
-                &&
-                // Ends with `Vars`:
-                !/Vars$/.test(name))
-            ) return false;
-            
-            
-            
-            // All identification checks passed, this is a valid CSS type candidate:
-            return true;
-        };
-        
-        
-        
         return {
             /**
              * When visiting a Program node, validate the entire file structure
@@ -234,14 +191,35 @@ export const noForeignCode = createRule({
                 
                 
                 // Validate all top-level bindings in the file:
-                for (const statement of node.body) {
+                let statement : TSESTree.ProgramStatement | TSESTree.NamedExportDeclarations;
+                for (statement of node.body) {
                     // Allow imports:
                     if (statement.type === TSESTree.AST_NODE_TYPES.ImportDeclaration) continue;
                     
                     
                     
-                    // Allow CSS types:
-                    if (isCssTypeCandidate(statement)) continue;
+                    // Unwrap export named declarations to check the inner statement:
+                    if (statement.type === TSESTree.AST_NODE_TYPES.ExportNamedDeclaration) {
+                        const nestedStatement = statement.declaration;
+                        if (!nestedStatement) continue;
+                        statement = nestedStatement;
+                    } // if
+                    
+                    
+                    
+                    // CSS type candidates:
+                    // - Identified by kind of type/interface declaration:
+                    //   - Identified by names that start with `Css` followed by a case boundary (next char is not lowercase), e.g. `CssThemeVariant`.
+                    //   - Identified by names that end with `Vars`, e.g. `ThemeVariantVars`.
+                    if (
+                        (
+                            statement.type === TSESTree.AST_NODE_TYPES.TSTypeAliasDeclaration
+                            ||
+                            statement.type === TSESTree.AST_NODE_TYPES.TSInterfaceDeclaration
+                        )
+                        &&
+                        isCssNameCandidate(statement.id.name)
+                    ) continue;
                     
                     
                     
