@@ -21,7 +21,7 @@ import {
 import {
     type CssViewEffectOptions,
     type CssViewEffect,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
