@@ -44,8 +44,8 @@ import {
  * cropping a portion of the component's area.
  * 
  * Important:  
- * This CSS hook requires `useCollapsibleSize()` to be implemented on the React side.
- * That hook measures the element's total size and injects the values as CSS variables,
+ * This CSS hook requires `useCollapsibleDimensions()` to be implemented on the React side.
+ * That hook measures the element's total dimensions and injects the values as CSS variables,
  * enabling the collapse transitions to work correctly.
  * 
  * @param options - An optional configuration for customizing collapse effects.

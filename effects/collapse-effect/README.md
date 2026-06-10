@@ -52,8 +52,8 @@ Ensures smooth transitions between expanded and collapsed states by animating ne
 cropping a portion of the component's area.
 
 Important:  
-This CSS hook requires `useCollapsibleSize()` to be implemented on the React side.
-That hook measures the element's total size and injects the values as CSS variables,
+This CSS hook requires `useCollapsibleDimensions()` to be implemented on the React side.
+That hook measures the element's total dimensions and injects the values as CSS variables,
 enabling the collapse transitions to work correctly.
 
 #### 💡 Usage Example
@@ -231,11 +231,11 @@ and external effects are restored.
 
 ## 🧩 Exported Hooks
 
-### `useCollapsibleSize(): CollapsibleSize<TElement>`
+### `useCollapsibleDimensions(): CollapsibleDimensions<TElement>`
 
-Supports for `usingCollapseEffect()` (the CSS styling effects) by supplying and continuously updating
-the required sizing variables, injected into the component's inline style.
-This ensures the collapse/expand styling effects work correctly.
+Supports for `usingCollapseEffect()` (the CSS styling effect) by supplying and continuously updating
+the required dimension variables, injected into the component's inline style.
+This ensures the expand/collapse transitions work correctly.
 
 Motivation:
 - CSS alone cannot dynamically resolve `offsetInlineSize` / `offsetBlockSize`.
@@ -245,7 +245,7 @@ Motivation:
 #### 💡 Usage Example
 
 ```tsx
-const { ref, collapsibleStyle } = useCollapsibleSize();
+const { ref, collapsibleStyle } = useCollapsibleDimensions();
 
 return (
     <div ref={ref} style={collapsibleStyle}

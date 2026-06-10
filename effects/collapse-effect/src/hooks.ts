@@ -15,7 +15,7 @@ import {
 
 // Types:
 import {
-    type CollapsibleSize,
+    type CollapsibleDimensions,
 }                           from './types.js'
 
 // CSS Variables:
@@ -26,9 +26,9 @@ import {
 
 
 /**
- * Supports for `usingCollapseEffect()` (the CSS styling effects) by supplying and continuously updating
- * the required sizing variables, injected into the component's inline style.
- * This ensures the collapse/expand styling effects work correctly.
+ * Supports for `usingCollapseEffect()` (the CSS styling effect) by supplying and continuously updating
+ * the required dimension variables, injected into the component's inline style.
+ * This ensures the expand/collapse transitions work correctly.
  * 
  * Motivation:
  * - CSS alone cannot dynamically resolve `offsetInlineSize` / `offsetBlockSize`.
@@ -36,11 +36,11 @@ import {
  *   exposing the values as CSS variables.
  * 
  * @template TElement - The type of the collapsible DOM element.
- * @returns {CollapsibleSize<TElement>} - The API containing the element ref and inline style.
+ * @returns The API containing the element ref and inline style.
  * 
  * @example
  * ```tsx
- * const { ref, collapsibleStyle } = useCollapsibleSize();
+ * const { ref, collapsibleStyle } = useCollapsibleDimensions();
  * 
  * return (
  *     <div ref={ref} style={collapsibleStyle}
@@ -51,7 +51,7 @@ import {
  * );
  * ```
  */
-export const useCollapsibleSize = <TElement extends HTMLElement = HTMLElement>(): CollapsibleSize<TElement> => {
+export const useCollapsibleDimensions = <TElement extends HTMLElement = HTMLElement>(): CollapsibleDimensions<TElement> => {
     // Refs:
     
     // A ref to the collapsible DOM element being measured:
@@ -98,7 +98,7 @@ export const useCollapsibleSize = <TElement extends HTMLElement = HTMLElement>()
             } satisfies CSSProperties);
         });
         
-        // Observe the element's total size (including borders):
+        // Observe the element's total dimensions (including borders):
         resizeObserver.observe(element, { box: 'border-box' });
         
         

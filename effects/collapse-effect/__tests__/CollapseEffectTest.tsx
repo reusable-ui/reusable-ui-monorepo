@@ -2,7 +2,7 @@ import React, { type CSSProperties, useMemo } from 'react'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { usingCollapseState, type ExpandPhase } from '@reusable-ui/collapse-state'
 import { useCollapseEffectTestStyles } from './CollapseEffectTest.loader.js'
-import { useCollapsibleSize, CssCollapseEffectOptions } from '../dist/index.js'
+import { useCollapsibleDimensions, CssCollapseEffectOptions } from '../dist/index.js'
 
 
 
@@ -47,7 +47,7 @@ export const CollapseEffectTest = (props: CollapseEffectTestProps) => {
     
     const { collapseStateVars  : { expandFactorCond: expandFactorCondVar } } = usingCollapseState();
     
-    const { ref, collapsibleStyle } = useCollapsibleSize<HTMLDivElement>();
+    const { ref, collapsibleStyle } = useCollapsibleDimensions<HTMLDivElement>();
     
     // Inline style overrides:
     // - Assigns `expandFactorCond` directly
