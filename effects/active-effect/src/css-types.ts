@@ -25,7 +25,7 @@ export {
     type CssRatioParam,
     type CssAngleParam,
     type CssColorParam,
-    type FilterDropShadow,
+    type CssFilterDropShadow,
 }                           from '@reusable-ui/filter-effect'       // Provides default visual effects for components when their active state changes. Adjusts the component's visual presentation to make components visually adapt their appearance in response to state changes.
 
 
@@ -354,7 +354,7 @@ export interface CssActiveEffectOptions
      *   so the effect accumulates and cannot be undone.
      * 
      * Accepts:
-     * - A `FilterDropShadow` object defining the shadow parameters.
+     * - A `CssFilterDropShadow` object defining the shadow parameters.
      * 
      * Defaults to `null` (preserves the component's base drop shadow).
      */

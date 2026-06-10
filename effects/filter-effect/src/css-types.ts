@@ -66,7 +66,7 @@ export type CssColorParam =
 /**
  * Defines the configuration for a drop shadow filter effect.
  */
-export interface FilterDropShadow {
+export interface CssFilterDropShadow {
     /**
      * Controls the horizontal offset of the shadow.
      * 
@@ -434,11 +434,11 @@ export interface CssFilterEffectOptions {
      *   so the effect accumulates and cannot be undone.
      * 
      * Accepts:
-     * - A `FilterDropShadow` object defining the shadow parameters.
+     * - A `CssFilterDropShadow` object defining the shadow parameters.
      * 
      * Defaults to `null` (preserves the component's base drop shadow).
      */
-    dropShadow           ?: FilterDropShadow | null
+    dropShadow           ?: CssFilterDropShadow | null
 }
 
 
