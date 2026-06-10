@@ -9,7 +9,7 @@ import {
 import {
     type CssDragEffectOptions,
     type CssDragEffect,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
