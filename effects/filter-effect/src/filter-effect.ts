@@ -9,15 +9,16 @@ import {
     type CssFilterEffectOptions,
     type CssFilterEffectFormula,
 }                           from './css-types.js'
-
-// Utilities:
 import {
-    // Types:
     type CssNumericFormula,
     type CssNumeric,
     
-    
-    
+    type FilterSchema,
+    type CssFilterCondition,
+}                           from './css-internal-types.js'
+
+// Utilities:
+import {
     // Filter functions:
     opacity,
     invert,
@@ -28,17 +29,10 @@ import {
     hueRotate,
     blur,
     dropShadow,
-}                           from './css-internal-formulas.js'
-import {
-    // Types:
-    type FilterSchema,
-    type CssFilterCondition,
     
-    
-    
-    // Utilities:
+    // Schemas:
     schemaToCssFormula,
-}                           from './css-internal-schemas.js'
+}                           from './css-internal-utilities.js'
 
 // Reusable-ui configs:
 import {

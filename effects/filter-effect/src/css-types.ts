@@ -6,11 +6,10 @@ import {
     type CssKnownBaseProps,
 }                           from '@cssfn/core'                      // Writes css in javascript.
 
-// Utilities:
+// Types:
 import {
-    // Types:
     type CssFilterFormula,
-}                           from './css-internal-formulas.js'
+}                           from './css-internal-types.js'
 
 
 

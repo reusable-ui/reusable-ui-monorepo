@@ -1,250 +1,21 @@
-// Cssfn:
-import {
-    // Cssfn css specific types:
-    type CssCustomRef,
-}                           from '@cssfn/core'                      // Writes css in javascript.
-
-
-
 // Types:
-
-/**
- * CSS math function names that can produce either a bare number
- * or a number with a unit (length, angle).
- */
-export type CssMathFunction =
-    | 'min'
-    | 'max'
-    | 'clamp'
-
-/**
- * CSS math function names that produce a bare numeric value only.
- */
-export type CssMathNumericFunction =
-    | 'sign'
-
-/**
- * CSS function names that produce a color value.
- */
-export type CssColorFunction =
-    | 'color'
-    | 'color-mix'
-    | 'rgb'
-    | 'hsl'
-    | 'hwb'
-    | 'lab'
-    | 'lch'
-    | 'oklab'
-    | 'oklch'
-
-/**
- * CSS function names that produce a ratio-based-input filter value.
- */
-export type CssRatioFilterFunction =
-    | 'opacity'
-    | 'brightness'
-    | 'contrast'
-    | 'saturate'
-
-/**
- * CSS function names that produce a angle-based-input filter value.
- */
-export type CssAngleFilterFunction =
-    | 'hue-rotate'
-
-/**
- * CSS function names that produce a length-based-input filter value.
- */
-export type CssLengthFilterFunction =
-    | 'blur'
-
-/**
- * CSS function names that produce a composite-based-input filter value.
- */
-export type CssCompositeFilterFunction =
-    | 'drop-shadow'
-
-/**
- * CSS function names that produce a filter value.
- */
-export type CssFilterFunction =
-    | CssRatioFilterFunction
-    | CssAngleFilterFunction
-    | CssLengthFilterFunction
-    | CssCompositeFilterFunction
-
-/**
- * Represents a CSS formula that produces a bare numeric value.
- * 
- * Examples:
- * - Parenthesized formula: `'(2 * 3)'`
- * - Function-style formula: `'max(2, 3, 4)'`, `'clamp(0, 99, 1)'`
- * 
- * Notes:
- * - Always expressed as a string, since CSS formulas are textual.
- * - Must contain parentheses to indicate a valid CSS function or expression.
- */
-export type CssNumericFormula         = `${'-' | ''}${CssMathFunction | CssMathNumericFunction | ''}(${string})` & {};
-
-/**
- * Represents a CSS formula that produces a numeric value with an angle unit.
- * 
- * Examples:
- * - Parenthesized formula: `'(45deg * 2)'`
- * - Function-style formula: `'clamp(0deg, 90deg, 180deg)'`
- * 
- * Notes:
- * - Always expressed as a string, since CSS formulas are textual.
- * - Must contain parentheses to indicate a valid CSS function or expression.
- */
-export type CssAngleFormula           = `${'-' | ''}${CssMathFunction | ''}(${string})` & {};
-
-/**
- * Represents a CSS formula that produces a numeric value with a length unit.
- * 
- * Examples:
- * - Parenthesized formula: `'(10px * 2)'`
- * - Function-style formula: `'max(1px, 2px, 3px)'`, `'clamp(0px, 50px, 100px)'`
- * 
- * Notes:
- * - Always expressed as a string, since CSS formulas are textual.
- * - Must contain parentheses to indicate a valid CSS function or expression.
- */
-export type CssLengthFormula          = `${'-' | ''}${CssMathFunction | ''}(${string})` & {};
-
-/**
- * Represents a CSS formula that produces a color value.
- * 
- * Examples:
- * - `'color(display-p3 1 0 0)'`
- * - `'color-mix(in oklch, red 50%, blue 50%)'`
- * 
- * Notes:
- * - Always expressed as a string, since CSS formulas are textual.
- * - Must be a valid CSS color function such as `color()` or `color-mix()`.
- */
-export type CssColorFormula           = `${CssColorFunction}(${string})` & {};
-
-/**
- * Represents a CSS formula that produces a ratio-based-input filter value.
- * 
- * Examples:
- * - `'opacity(0.5)'`
- * - `'brightness(1.5)'`
- * 
- * Notes:
- * - Always expressed as a string, since CSS formulas are textual.
- * - Must be a valid CSS filter function such as `opacity()` or `brightness()`.
- */
-export type CssRatioFilterFormula     = `${CssRatioFilterFunction}(${string})` & {};
-
-/**
- * Represents a CSS formula that produces a angle-based-input filter value.
- * 
- * Examples:
- * - `'hue-rotate(30deg)'`
- * 
- * Notes:
- * - Always expressed as a string, since CSS formulas are textual.
- * - Must be a valid CSS filter function such as `hue-rotate()`.
- */
-export type CssAngleFilterFormula     = `${CssAngleFilterFunction}(${string})` & {};
-
-/**
- * Represents a CSS formula that produces a length-based-input filter value.
- * 
- * Examples:
- * - `'blur(10px)'`
- * 
- * Notes:
- * - Always expressed as a string, since CSS formulas are textual.
- * - Must be a valid CSS filter function such as `blur()`.
- */
-export type CssLengthFilterFormula    = `${CssLengthFilterFunction}(${string})` & {};
-
-/**
- * Represents a CSS formula that produces a composite-based-input filter value.
- * 
- * Examples:
- * - `'drop-shadow(0px 0px 4px black)'`
- * 
- * Notes:
- * - Always expressed as a string, since CSS formulas are textual.
- * - Must be a valid CSS filter function such as `drop-shadow()`.
- */
-export type CssCompositeFilterFormula = `${CssCompositeFilterFunction}(${string})` & {};
-
-/**
- * Represents a CSS formula that produces a filter value.
- * 
- * Examples:
- * - `'brightness(0.5)'`
- * - `'hue-rotate(30deg)'`
- * 
- * Notes:
- * - Always expressed as a string, since CSS formulas are textual.
- * - Must be a valid CSS filter function such as `opacity()` or `brightness()`.
- */
-export type CssFilterFormula =
-    | CssRatioFilterFormula
-    | CssAngleFilterFormula
-    | CssLengthFilterFormula
-    | CssCompositeFilterFormula
-
-/**
- * Represents any CSS-compatible numeric expression.
- * 
- * Can be one of:
- * - A literal number (TypeScript `number`).
- * - A CSS numeric formula (string with parentheses).
- * - A CSS custom property reference (e.g. `'var(--my-value)'`).
- */
-export type CssNumeric =
-    | number            // Literal numeric value.
-    | `${number}%`      // Percentage string.
-    | CssNumericFormula // CSS formula string.
-    | CssCustomRef      // CSS variable reference.
-
-/**
- * Represents any CSS-compatible angle expression.
- * 
- * Can be one of:
- * - A zero number (`0`).
- * - A CSS angle formula (string with parentheses).
- * - A CSS custom property reference (e.g. `'var(--my-value)'`).
- */
-export type CssAngle =
-    | 0                 // Zero unitless angle.
-    | (string & {})     // Numeric value with angle unit.
-    | CssAngleFormula   // CSS formula string.
-    | CssCustomRef      // CSS variable reference.
-
-/**
- * Represents any CSS-compatible length expression.
- * 
- * Can be one of:
- * - A zero number (`0`).
- * - A CSS length formula (string with parentheses).
- * - A CSS custom property reference (e.g. `'var(--my-value)'`).
- */
-export type CssLength =
-    | 0                 // Zero unitless length.
-    | (string & {})     // Numeric value with length unit.
-    | CssLengthFormula  // CSS formula string.
-    | CssCustomRef      // CSS variable reference.
-
-/**
- * Represents any valid CSS color value expression.
- * 
- * Can be one of:
- * - A CSS named color (e.g. `'red'`, `'#ff0000'`)
- * - A CSS color formula (e.g. `'color-mix(in oklch, red 50%, green 50%)'`).
- * - A CSS custom property reference (e.g. `'var(--my-value)'`).
- */
-export type CssColor =
-    | string & ({})     // Named color.
-    | CssColorFormula   // CSS formula string.
-    | CssCustomRef      // CSS variable reference.
+import {
+    type CssNumericFormula,
+    type CssAngleFormula,
+    type CssLengthFormula,
+    type CssColorFormula,
+    type CssRatioFilterFormula,
+    type CssAngleFilterFormula,
+    type CssLengthFilterFormula,
+    type CssCompositeFilterFormula,
+    type CssNumeric,
+    type CssAngle,
+    type CssLength,
+    type CssColor,
+    type FilterSchema,
+    type CssFormulaResult,
+    type CssFilterCondition,
+}                           from './css-internal-types.js'
 
 
 
@@ -856,3 +627,237 @@ export const dropShadow = ({
     blur    ?: CssLength
     color   ?: CssColor
 }): CssCompositeFilterFormula => `drop-shadow(calc(${offsetX}) calc(${offsetY}) calc(${blur}) ${color})` as CssCompositeFilterFormula;
+
+
+
+// Schemas:
+
+/**
+ * Maps neutral baselines to their corresponding interpolation functions.
+ * 
+ * Used to select the correct interpolation strategy based on
+ * the filter's neutral baseline value.
+ * 
+ * Example: `interpolateMap[neutralBaseline](factor, value)`
+ * 
+ * Available mappings:
+ * - `0` → interpolate relative to zero (e.g. hue-rotate, blur, offsetX, offsetY).
+ * - `1` → interpolate relative to one (e.g. opacity, brightness, contrast, saturate).
+ * - `'transparent'` → interpolate from transparent to a target color.
+ */
+const interpolateMap = {
+    0           : interpolateFromNeutralZero,
+    1           : interpolateFromNeutralOne,
+    transparent : interpolateFromTransparentColor,
+};
+
+/**
+ * Maps limiter tokens to their corresponding helper functions.
+ * 
+ * Used to enforce valid input ranges by referencing a limiter token.
+ * 
+ * Example: `inputLimitMap[inputLimit](value)`.
+ * 
+ * Available limiters:
+ * - `'betweenZeroAndOne'` → clamps values between 0 and 1 (e.g. opacity).
+ * - `'nonNegative'` → ensures values are non-negative (e.g. brightness, contrast, saturate).
+ * - `'nonNegativeLength'` → ensures length-based values are non-negative (blur).
+ */
+const inputLimitMap = {
+    betweenZeroAndOne : ensureBetweenZeroAndOne,
+    nonNegative       : ensureNonNegative,
+    nonNegativeLength : ensureNonNegativeLength,
+};
+
+/**
+ * Convert a filter schema into its corresponding CSS formula.
+ * 
+ * - Uses the current condition context (active factor, color mode, and reverse intent support).
+ * - Normalizes target values based on input type (ratio, angle, length, position, color).
+ * - Applies direction-aware interpolation and optional light/dark mode adjustments.
+ * - Returns a valid CSS formula string for use in filter functions.
+ */
+export function schemaToCssFormula(this: CssFilterCondition, schema: FilterSchema): CssFormulaResult {
+    // Extract context:
+    const {
+        activeFactor,
+        colorMode,
+        enablesReverseIntent,
+    } = this;
+    
+    
+    
+    // Extract schema and assign defaults:
+    const {
+        filterFunction,
+        inputType,
+        inputLimit,
+        neutralBaseline,
+        targetValue,
+        directionValue,
+        darkFormula,
+    } = schema;
+    
+    
+    
+    // Compose a direction-aware factor:
+    // - Factors are unitless numeric values.
+    // - They represent fade-in (0 → 1), fade-out (1 → 0),
+    //   or even extended ranges beyond [0, 1].
+    // - If reverse intent is not supported, only use the fade-in factor.
+    const directionAwareFactor = ((): CssNumericFormula => {
+        // If reverse intent is not supported → fade-in only (no direction awareness):
+        if (!enablesReverseIntent) return composeCases(activeFactor);
+        
+        
+        
+        // Base factors:
+        const fadeInFactor  : CssNumeric        = activeFactor;
+        const fadeOutFactor : CssNumericFormula = reverseFactor(activeFactor);
+        
+        
+        
+        // Compose the fade-in/fade-out cases based on input type:
+        switch (inputType) {
+            case 'ratio':
+                // Ratio inputs (opacity, brightness, contrast, saturate):
+                // - Direction value is the same as `targetValue`.
+                // - Direction is unitless (use `ifPositive/ifNegative` instead of `ifPositiveWithUnit/ifNegativeWithUnit`).
+                // - Make sure the `directionValue` is correctly descriminated to `CssNumeric`.
+                return composeCases(
+                    ifPositive(directionValue satisfies CssNumeric, fadeInFactor),
+                    ifNegative(directionValue satisfies CssNumeric, fadeOutFactor),
+                );
+            
+            
+            
+            case 'angle':
+            case 'length':
+            case 'position':
+            case 'color':
+                // Angle inputs (hue-rotate), length inputs (blur), position inputs (offsetX, offsetY), and color inputs:
+                // - Direction value is the same as `targetValue` for angle and length.
+                // - Direction value is delegated to `blurRadius` for position and color.
+                // - Direction has a unit (use `ifPositiveWithUnit/ifNegativeWithUnit` instead of `ifPositive/ifNegative`).
+                // - Make sure the `directionValue` is correctly descriminated to `CssAngle` or `CssLength`.
+                return composeCases(
+                    ifPositiveWithUnit(directionValue satisfies CssAngle | CssLength, fadeInFactor),
+                    ifNegativeWithUnit(directionValue satisfies CssAngle | CssLength, fadeOutFactor),
+                );
+            
+            
+            
+            default:
+                // Unknown input type → default to fade-in only:
+                return composeCases(fadeInFactor);
+        } // switch
+    })();
+    
+    
+    
+    // Interpolate the target value using the direction-aware factor:
+    // - Minimum baseline: 0, 1, or 'transparent' (depends on input type).
+    // - Maximum magnitude is driven by `targetValue`.
+    // - Direction is controlled by `directionAwareFactor`.
+    // - May be adjusted for light/dark mode (numeric/angle/length/position only).
+    const interpolatedTarget = ((): CssNumericFormula | CssAngleFormula | CssLengthFormula | CssColorFormula => {
+        switch (inputType) {
+            case 'ratio':
+            case 'angle':
+            case 'length':
+            case 'position': {
+                // Normalize target magnitude by removing any numeric sign:
+                // - For ratio, angle, and length values, the sign only indicates interpolation direction.
+                // - For position inputs, we want to preserve the sign to allow for directional offsets, so we don't lose the sign in that case.
+                // - Make sure the `targetValue` is correctly descriminated to `CssNumeric`, `CssAngle` or `CssLength`.
+                const lightModeTarget : CssNumericFormula | CssAngleFormula | CssLengthFormula = (
+                    // If reverse intent is supported → extract the magnitude (ignore the sign):
+                    (enablesReverseIntent && (inputType !== 'position'))
+                    ? absoluteValue(targetValue satisfies CssNumeric | CssAngle | CssLength)
+                    
+                    // If reverse intent is not supported -or- handle position inputs → use the target value directly (preserve the sign):
+                    : `(${targetValue satisfies CssNumeric | CssAngle | CssLength})`
+                );
+                
+                // Adjust for light/dark mode if a `darkFormula` is provided:
+                const modeAwareTarget : CssNumericFormula | CssAngleFormula | CssLengthFormula = (
+                    // No dark formula → always the same value for both modes:
+                    !darkFormula
+                    ? lightModeTarget
+                    
+                    // Dark formula is specified → compose a light/dark-mode-aware target:
+                    : composeCases(
+                        // Light mode case → use absolute target value:
+                        ifLightMode(colorMode,
+                            lightModeTarget
+                        ),
+                        
+                        // Dark mode case → create a dark mode target value using the specified formula:
+                        // - Ensure the `darkFormula()` is correctly returning corresponding formulas:
+                        ifDarkMode(colorMode,
+                            darkFormula(lightModeTarget) satisfies CssNumericFormula | CssAngleFormula | CssLengthFormula
+                        ),
+                    )
+                );
+                
+                // Interpolate from neutral baseline (0 or 1):
+                // - Expect the returned formula is `CssNumericFormula` or `CssAngleFormula` or `CssLengthFormula`.
+                return interpolateMap[neutralBaseline satisfies 0 | 1](
+                    directionAwareFactor,
+                    modeAwareTarget
+                ) satisfies CssNumericFormula | CssAngleFormula | CssLengthFormula;
+            }
+            
+            
+            
+            case 'color': {
+                // Color targets are mode-independent:
+                // - `darkFormula` is not supported for `inputType='color'`.
+                const modeIndependentTarget : CssColor = targetValue satisfies CssColor;
+                
+                // Interpolate from neutral baseline (transparent):
+                // - Expect the returned formula is `CssColorFormula`.
+                return interpolateMap[neutralBaseline satisfies 'transparent'](
+                    directionAwareFactor,
+                    modeIndependentTarget
+                ) satisfies CssColorFormula;
+            }
+            
+            
+            
+            default:
+                // Unknown input type → return targetValue unchanged:
+                return `(${targetValue})`;
+        } // switch
+    })();
+    
+    
+    
+    // Clamp the interpolated target within the allowed range:
+    const safeInterpolatedTarget = ((): CssNumericFormula | CssAngleFormula | CssLengthFormula | CssColorFormula => {
+        // If no limit is provided → return as-is:
+        // - Angle, position, and color schemas never specify limits.
+        // - Length schema may not specify limits.
+        if (inputLimit === 'unlimited') return interpolatedTarget as CssAngleFormula | CssColorFormula;
+        
+        
+        
+        // Only ratio and length schemas can specify limits:
+        // - Angle, position, and color schemas never specify limits.
+        if (inputType === 'length') {
+            // Length schema → enforce 'nonNegativeLength' limit (if specified):
+            return inputLimitMap['nonNegativeLength'](interpolatedTarget as CssLengthFormula) satisfies CssLengthFormula;
+        }
+        else {
+            // Ratio schema → enforce the specified limit:
+            return inputLimitMap[inputLimit](interpolatedTarget as CssNumericFormula) satisfies CssNumericFormula;
+        } // if
+    })();
+    
+    
+    
+    // Wrap the safe interpolated target with the filter function (if specified):
+    // - Color schemas never specify a filter function (returned directly).
+    if (!filterFunction) return safeInterpolatedTarget;
+    return filterFunction(safeInterpolatedTarget as CssNumericFormula | CssAngleFormula | CssLengthFormula);
+};
