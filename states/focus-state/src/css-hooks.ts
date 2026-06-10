@@ -2,7 +2,7 @@
 import {
     type CssFocusStateOptions,
     type CssFocusState,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
