@@ -16,7 +16,7 @@ import {
 import {
     type CssValidityEffectOptions,
     type CssValidityEffect,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
