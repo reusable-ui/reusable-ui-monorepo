@@ -2,7 +2,7 @@
 import {
     type CssSortStateOptions,
     type CssSortState,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {

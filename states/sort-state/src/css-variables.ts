@@ -7,7 +7,7 @@ import {
 // Types:
 import {
     type SortStateVars,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // Reusable-ui defaults:
 import {
