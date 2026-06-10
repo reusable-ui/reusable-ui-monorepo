@@ -9,7 +9,7 @@ import {
 import {
     type CssSortEffectOptions,
     type CssSortEffect,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
