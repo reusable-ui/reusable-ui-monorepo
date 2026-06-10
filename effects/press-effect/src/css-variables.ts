@@ -7,7 +7,7 @@ import {
 // Types:
 import {
     type PressEffectVars,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // Reusable-ui defaults:
 import {
