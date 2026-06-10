@@ -8,7 +8,7 @@ import {
 import {
     type CssExciteEffectOptions,
     type CssExciteEffect,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // Utilities:
 import {
