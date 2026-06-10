@@ -2,7 +2,7 @@
 import {
     type CssExciteStateOptions,
     type CssExciteState,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
