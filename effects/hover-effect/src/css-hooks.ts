@@ -14,7 +14,7 @@ import {
 import {
     type CssHoverEffectOptions,
     type CssHoverEffect,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
