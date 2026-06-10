@@ -84,7 +84,7 @@ export interface ViewEffectVars {
  * - `'around'`  → spacing around each view, outer edges get half spacing (like flexbox `space-around`).
  * - `'even'`    → spacing distributed evenly, including first and last edges (like flexbox `space-evenly`).
  */
-export type ViewSpacingMode =
+export type CssViewSpacingMode =
     | 'between'
     | 'around'
     | 'even'
@@ -173,7 +173,7 @@ export interface CssViewEffectOptions
      * 
      * Defaults to `'between'` (no spacing at the edges, only between views).
      */
-    spacingMode               ?: ViewSpacingMode
+    spacingMode               ?: CssViewSpacingMode
     
     /**
      * Selects the logical axis along which the views are stacked.
