@@ -2,7 +2,7 @@
 import {
     type CssValidityStateOptions,
     type CssValidityState,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
