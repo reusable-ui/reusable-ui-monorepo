@@ -2,7 +2,7 @@
 import {
     type CssActiveStateOptions,
     type CssActiveState,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
