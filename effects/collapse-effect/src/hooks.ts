@@ -16,7 +16,7 @@ import {
 // Types:
 import {
     type CollapsibleSize,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {

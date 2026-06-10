@@ -18,7 +18,7 @@ import {
 import {
     type CssCollapseEffectOptions,
     type CssCollapseEffect,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
