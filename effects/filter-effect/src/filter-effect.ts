@@ -13,7 +13,7 @@ import {
     type CssNumericFormula,
     type CssNumeric,
     
-    type FilterSchema,
+    type CssFilterSchema,
     type CssFilterCondition,
 }                           from './css-internal-types.js'
 
@@ -105,7 +105,7 @@ export const composeFilterEffect = (activeFactor: CssCustomRef, options?: CssFil
     
     
     // Opacity, brightness, contrast, saturate, hue rotate, and blur schemas:
-    const simpleFilterSchemas : (FilterSchema | false)[] = [
+    const simpleFilterSchemas : (CssFilterSchema | false)[] = [
         // Opacity:
         (activeOpacity !== null) && {
             filterFunction  : opacity,
@@ -205,7 +205,7 @@ export const composeFilterEffect = (activeFactor: CssCustomRef, options?: CssFil
     ];
     
     // Drop shadow parameter schemas:
-    const dropShadowParameterSchemas : (FilterSchema | false)[] | false = (activeDropShadow !== null) && ((): (FilterSchema | false)[] => {
+    const dropShadowParameterSchemas : (CssFilterSchema | false)[] | false = (activeDropShadow !== null) && ((): (CssFilterSchema | false)[] => {
         // Extract options and assign defaults:
         const {
             offsetX = '0px', // Defaults to `'0px'`.
@@ -264,7 +264,7 @@ export const composeFilterEffect = (activeFactor: CssCustomRef, options?: CssFil
         ...simpleFilterSchemas
         
         // Remove `false` entries:
-        .filter((schema): schema is FilterSchema => (schema !== false))
+        .filter((schema): schema is CssFilterSchema => (schema !== false))
         
         // Convert each schema into a filter function formula:
         .map(schemaToCssFormula, { activeFactor, colorMode, enablesReverseIntent } satisfies CssFilterCondition),

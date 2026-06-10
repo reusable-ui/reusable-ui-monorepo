@@ -256,7 +256,7 @@ export type CssColor =
  * - Position-based filters: offsetX and offsetY
  * - Color-based filters: color-mix
  */
-export interface FilterSchemaBase<
+export interface CssFilterSchemaBase<
     TType        extends 'ratio' | 'angle' | 'length' | 'position' | 'color',
     TLimit       extends 'unlimited' | 'betweenZeroAndOne' | 'nonNegative',
     TBaseline    extends 0 | 1 | 'transparent',
@@ -359,9 +359,9 @@ export interface FilterSchemaBase<
  * - Position-based filters: offsetX and offsetY
  * - Color-based filters: color-mix
  */
-export type FilterSchema =
+export type CssFilterSchema =
     // Ratio filters (opacity, brightness, contrast, saturate):
-    | FilterSchemaBase<
+    | CssFilterSchemaBase<
         'ratio',                             // Input type.
         'betweenZeroAndOne' | 'nonNegative', // Ratio limit options.
         0 | 1,                               // Neutral baseline.
@@ -372,7 +372,7 @@ export type FilterSchema =
     >
     
     // Angle filters (hue-rotate):
-    | FilterSchemaBase<
+    | CssFilterSchemaBase<
         'angle',                             // Input type.
         'unlimited',                         // No angle limit.
         0,                                   // Neutral baseline.
@@ -383,7 +383,7 @@ export type FilterSchema =
     >
     
     // Length filters (blur):
-    | FilterSchemaBase<
+    | CssFilterSchemaBase<
         'length',                            // Input type.
         'unlimited' | 'nonNegative',         // Input limit option.
         0,                                   // Neutral baseline.
@@ -394,7 +394,7 @@ export type FilterSchema =
     >
     
     // Position filters (offsetX and offsetY):
-    | FilterSchemaBase<
+    | CssFilterSchemaBase<
         'position',                          // Input type.
         'unlimited',                         // No position limit.
         0,                                   // Neutral baseline.
@@ -405,7 +405,7 @@ export type FilterSchema =
     >
     
     // Color filters (color-mix):
-    | (FilterSchemaBase<
+    | (CssFilterSchemaBase<
         'color',                             // Input type.
         'unlimited',                         // No color limit.
         'transparent',                       // Neutral baseline.

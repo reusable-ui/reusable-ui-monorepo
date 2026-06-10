@@ -12,7 +12,7 @@ import {
     type CssAngle,
     type CssLength,
     type CssColor,
-    type FilterSchema,
+    type CssFilterSchema,
     type CssFormulaResult,
     type CssFilterCondition,
 }                           from './css-internal-types.js'
@@ -677,7 +677,7 @@ const inputLimitMap = {
  * - Applies direction-aware interpolation and optional light/dark mode adjustments.
  * - Returns a valid CSS formula string for use in filter functions.
  */
-export function schemaToCssFormula(this: CssFilterCondition, schema: FilterSchema): CssFormulaResult {
+export function schemaToCssFormula(this: CssFilterCondition, schema: CssFilterSchema): CssFormulaResult {
     // Extract context:
     const {
         activeFactor,
