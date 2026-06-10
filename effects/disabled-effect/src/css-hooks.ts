@@ -14,7 +14,7 @@ import {
 import {
     type CssDisabledEffectOptions,
     type CssDisabledEffect,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
