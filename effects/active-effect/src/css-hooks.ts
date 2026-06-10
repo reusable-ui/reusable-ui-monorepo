@@ -15,7 +15,7 @@ import {
 import {
     type CssActiveEffectOptions,
     type CssActiveEffect,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
