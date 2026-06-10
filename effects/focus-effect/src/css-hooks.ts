@@ -8,7 +8,7 @@ import {
 import {
     type CssFocusEffectOptions,
     type CssFocusEffect,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
