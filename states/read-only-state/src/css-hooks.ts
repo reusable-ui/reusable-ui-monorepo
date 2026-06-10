@@ -2,7 +2,7 @@
 import {
     type CssReadOnlyStateOptions,
     type CssReadOnlyState,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {

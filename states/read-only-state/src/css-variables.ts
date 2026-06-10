@@ -7,7 +7,7 @@ import {
 // Types:
 import {
     type ReadOnlyStateVars,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // Reusable-ui defaults:
 import {
