@@ -2,7 +2,7 @@
 import {
     type CssPressStateOptions,
     type CssPressState,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
