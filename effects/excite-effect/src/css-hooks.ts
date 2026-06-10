@@ -9,12 +9,12 @@ import {
     type CssExciteEffectOptions,
     type CssExciteEffect,
 }                           from './css-types.js'
-
-// Utilities:
 import {
     type CssNumericFormula,
     type CssNumeric,
 }                           from './css-internal-types.js'
+
+// Utilities:
 import {
     // Conditions:
     ifPositive,
