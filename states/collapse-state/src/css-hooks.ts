@@ -2,7 +2,7 @@
 import {
     type CssCollapseStateOptions,
     type CssCollapseState,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
