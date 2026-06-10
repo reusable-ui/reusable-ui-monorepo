@@ -2,7 +2,7 @@
 import {
     type CssHoverStateOptions,
     type CssHoverState,
-}                           from './types.js'
+}                           from './css-types.js'
 
 // CSS Variables:
 import {
