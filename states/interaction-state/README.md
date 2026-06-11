@@ -640,7 +640,7 @@ Animations provide the *visual effects* whenever an interaction state changes.
         }
         ```
 
-To define multiple animations consistently, the **`InteractionAnimationCase`** interface is used:  
+To define multiple animations consistently, the **`CssInteractionAnimationCase`** interface is used:  
 - `ifState`   → determines when the animation applies  
 - `variable`  → specifies the CSS variable to assign  
 - `animation` → specifies the animation value or reference to apply  

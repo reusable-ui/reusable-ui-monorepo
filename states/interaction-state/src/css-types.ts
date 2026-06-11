@@ -22,14 +22,14 @@ import {
  * 
  * @example
  * ```ts
- * const expandingCase : InteractionAnimationCase = {
+ * const expandingCase : CssInteractionAnimationCase = {
  *     ifState   : ifExpanding,
  *     variable  : collapseStateVars.animationExpanding,
  *     animation : options.animationExpanding,
  * };
  * ```
  */
-export interface InteractionAnimationCase
+export interface CssInteractionAnimationCase
     extends
         // Bases:
         CssTransitionAnimationCase
@@ -225,10 +225,10 @@ export interface InteractionBehavior
      * Automatically runs the corresponding animation whenever the component's interaction state changes.
      * 
      * Accepts either:
-     * - A single `InteractionAnimationCase`
-     * - An array of `InteractionAnimationCase[]`
+     * - A single `CssInteractionAnimationCase`
+     * - An array of `CssInteractionAnimationCase[]`
      */
-    animations      ?: MaybeArray<InteractionAnimationCase>
+    animations      ?: MaybeArray<CssInteractionAnimationCase>
     
     /**
      * Defines flag cases for conditional styling.
