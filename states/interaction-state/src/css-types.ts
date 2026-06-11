@@ -10,7 +10,7 @@ import {
     type CssTransitionAnimationCase,
     type CssTransitionFlagCase,
     type CssActiveTransitionFactorCase,
-    type TransitionBehavior,
+    type CssTransitionBehavior,
 }                           from '@reusable-ui/transition-state'    // Lifecycle-aware transition state for React, enabling reusable hooks with consistent animations.
 
 
@@ -217,7 +217,7 @@ export interface CssActiveInteractionFactorCase
 export interface InteractionBehavior
     extends
         // Bases:
-        TransitionBehavior
+        CssTransitionBehavior
 {
     /**
      * Defines interaction animation cases for *visual effects* whenever an interaction state changes.
@@ -254,7 +254,7 @@ export interface InteractionBehavior
      * Always resolves to `baselineFactor` when the state is fully inactive,
      * ensuring consistency across state changes.
      */
-    factorVar        : TransitionBehavior['factorVar']
+    factorVar        : CssTransitionBehavior['factorVar']
     
     /**
      * Specifies a CSS variable for smooth transitions with inactive fallback.
@@ -270,7 +270,7 @@ export interface InteractionBehavior
      * Always resolves to `unset` when the state is fully inactive,
      * making it easier for default styles to take over gracefully.
      */
-    factorCondVar    : TransitionBehavior['factorCondVar']
+    factorCondVar    : CssTransitionBehavior['factorCondVar']
     
     /**
      * Defines active factor cases for holding final numeric values once a transition settles.

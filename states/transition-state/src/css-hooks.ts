@@ -21,7 +21,7 @@ import {
 
 // Types:
 import {
-    type TransitionBehavior,
+    type CssTransitionBehavior,
 }                           from './css-types.js'
 
 
@@ -117,7 +117,7 @@ import {
  * });
  * ```
  */
-export const usingTransitionState = (transitionBehavior: TransitionBehavior): CssRule => {
+export const usingTransitionState = (transitionBehavior: CssTransitionBehavior): CssRule => {
     // Extract transition behavior and assign defaults:
     const {
         flags           = [],

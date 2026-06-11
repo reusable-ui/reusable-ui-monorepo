@@ -251,7 +251,7 @@ export interface CssActiveTransitionFactorCase {
  * });
  * ```
  */
-export interface TransitionBehavior
+export interface CssTransitionBehavior
     extends
         // Bases:
         CssAnimationBaseBehavior,

@@ -814,14 +814,14 @@ The hook manages transitions between concrete states using a unified animation f
 
 ## 🧩 Exported CSS Hook
 
-### `usingTransitionState(transitionBehavior: TransitionBehavior): CssRule`
+### `usingTransitionState(transitionBehavior: CssTransitionBehavior): CssRule`
 
 Applies live CSS variables for transitional styling, including:
 - **Animation variables** for *visual effects* whenever a transitional state changes
 - **Flag variables** for *discrete switches* in conditional styling
 - **Factor variables** for *gradual drivers* in transitional styling
 
-**`TransitionBehavior` interface:**
+**`CssTransitionBehavior` interface:**
 - **`transitions`**
   Defines transitional animation cases for *visual effects* whenever a transitional state changes.
 - **`flags`**
