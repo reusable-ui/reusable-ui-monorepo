@@ -486,14 +486,14 @@ const useSelectedState = (props: SelectedStateProps<any> & { defaultSelected?: n
 
 ## 🧩 Exported CSS Hook
 
-### `usingInteractionState(interactionBehavior: InteractionBehavior): CssRule`
+### `usingInteractionState(interactionBehavior: CssInteractionBehavior): CssRule`
 
 Applies live CSS variables for interaction styling, including:
 - **Animation variables** for *visual effects* whenever an interaction state changes
 - **Flag variables** for *discrete switches* in conditional styling
 - **Factor variables** for *gradual drivers* in transitional styling
 
-**`InteractionBehavior` interface:**
+**`CssInteractionBehavior` interface:**
 - **`transitions`**
   Defines feedback animation cases for *visual effects* whenever an interaction state changes.
 - **`flags`**

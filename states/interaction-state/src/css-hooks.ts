@@ -12,7 +12,7 @@ import {
 
 // Types:
 import {
-    type InteractionBehavior,
+    type CssInteractionBehavior,
 }                           from './css-types.js'
 
 
@@ -81,4 +81,4 @@ import {
  * });
  * ```
  */
-export const usingInteractionState = (interactionBehavior: InteractionBehavior): CssRule => usingTransitionState(interactionBehavior);
+export const usingInteractionState = (interactionBehavior: CssInteractionBehavior): CssRule => usingTransitionState(interactionBehavior);

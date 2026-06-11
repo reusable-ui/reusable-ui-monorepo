@@ -214,7 +214,7 @@ export interface CssActiveInteractionFactorCase
  * });
  * ```
  */
-export interface InteractionBehavior
+export interface CssInteractionBehavior
     extends
         // Bases:
         CssTransitionBehavior
