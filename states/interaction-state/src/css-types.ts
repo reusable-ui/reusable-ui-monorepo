@@ -79,13 +79,13 @@ export interface CssInteractionAnimationCase
  * 
  * @example
  * ```ts
- * const isExpandingOrExpanded : CssTransitionFlagCase = {
+ * const isExpandingOrExpanded : CssInteractionFlagCase = {
  *     ifState  : ifExpandingOrExpanded,
  *     variable : collapseStateVars.isExpanded,
  * };
  * ```
  */
-export interface InteractionFlagCase
+export interface CssInteractionFlagCase
     extends
         // Bases:
         CssTransitionFlagCase
@@ -237,10 +237,10 @@ export interface InteractionBehavior
      * Either fully applied or not at all — never interpolated.
      * 
      * Accepts either:
-     * - A single `InteractionFlagCase`
-     * - An array of `InteractionFlagCase[]`
+     * - A single `CssInteractionFlagCase`
+     * - An array of `CssInteractionFlagCase[]`
      */
-    flags           ?: MaybeArray<InteractionFlagCase>
+    flags           ?: MaybeArray<CssInteractionFlagCase>
     
     /**
      * Specifies a CSS variable for smooth transitions.
