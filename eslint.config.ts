@@ -299,7 +299,7 @@ export default defineConfig(
             
             // Enforce custom internal rule for CSS variable usage:
             'css-types/enforce-css-type-conventions'         : 'error',
-            // 'css-types/no-foreign-code'                      : 'error',
+            'css-types/no-foreign-code'                      : 'error',
             'css-selectors/enforce-selector-conventions'     : 'error',
             'css-selectors/enforce-if-function-conventions'  : 'error',
             'css-selectors/no-foreign-code'                  : 'error',
