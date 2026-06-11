@@ -79,13 +79,13 @@ export interface CssFeedbackAnimationCase
  * 
  * @example
  * ```ts
- * const isFocusingOrFocused : CssTransitionFlagCase = {
+ * const isFocusingOrFocused : CssFeedbackFlagCase = {
  *     ifState  : ifFocusingOrFocused,
  *     variable : focusStateVars.isFocused,
  * };
  * ```
  */
-export interface FeedbackFlagCase
+export interface CssFeedbackFlagCase
     extends
         // Bases:
         CssTransitionFlagCase
@@ -237,10 +237,10 @@ export interface FeedbackBehavior
      * Either fully applied or not at all — never interpolated.
      * 
      * Accepts either:
-     * - A single `FeedbackFlagCase`
-     * - An array of `FeedbackFlagCase[]`
+     * - A single `CssFeedbackFlagCase`
+     * - An array of `CssFeedbackFlagCase[]`
      */
-    flags           ?: MaybeArray<FeedbackFlagCase>
+    flags           ?: MaybeArray<CssFeedbackFlagCase>
     
     /**
      * Specifies a CSS variable for smooth transitions.
