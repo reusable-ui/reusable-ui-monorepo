@@ -319,7 +319,7 @@ const ifDelivering = (styles: CssStyleCollection) => rule('.is-delivering', styl
 
 #### 🧠 How CSS Activity State Works
 
-Each **`ActivityAnimationCase`** defines a mapping between:
+Each **`CssActivityAnimationCase`** defines a mapping between:
 - **Condition (`ifState`)** → determines when the case is active (e.g. `ifPreparing`).
 - **Variable (`variable`)** → the CSS variable to assign.
 - **Animation (`animation`)** → the animation value or reference applied to the variable.

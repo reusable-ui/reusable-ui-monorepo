@@ -21,14 +21,14 @@ import {
  * 
  * @example
  * ```ts
- * const preparingCase : ActivityAnimationCase = {
+ * const preparingCase : CssActivityAnimationCase = {
  *     ifState   : ifPreparing,
  *     variable  : orderStateVars.animationPreparing,
  *     animation : options.animationPreparing,
  * };
  * ```
  */
-export interface ActivityAnimationCase
+export interface CssActivityAnimationCase
     extends
         // Bases:
         CssAnimationCase
@@ -108,10 +108,10 @@ export interface ActivityBaseBehavior
      * Automatically runs the corresponding animation whenever the component's activity is in progress.
      * 
      * Accepts either:
-     * - A single `ActivityAnimationCase`
-     * - An array of `ActivityAnimationCase[]`
+     * - A single `CssActivityAnimationCase`
+     * - An array of `CssActivityAnimationCase[]`
      */
-    animations ?: MaybeArray<ActivityAnimationCase>
+    animations ?: MaybeArray<CssActivityAnimationCase>
 }
 
 /**
