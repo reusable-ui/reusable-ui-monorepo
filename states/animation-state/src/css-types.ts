@@ -21,7 +21,7 @@ import {
  * 
  * @example
  * ```ts
- * const preparingCase : ActivityAnimationCase = {
+ * const preparingCase : CssAnimationCase = {
  *     ifState   : ifPreparing,
  *     variable  : orderStateVars.animationPreparing,
  *     animation : options.animationPreparing,
