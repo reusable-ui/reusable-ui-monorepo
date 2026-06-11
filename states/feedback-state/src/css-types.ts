@@ -9,7 +9,7 @@ import {
     // Types:
     type CssTransitionAnimationCase,
     type CssTransitionFlagCase,
-    type ActiveTransitionFactorCase,
+    type CssActiveTransitionFactorCase,
     type TransitionBehavior,
 }                           from '@reusable-ui/transition-state'    // Lifecycle-aware transition state for React, enabling reusable hooks with consistent animations.
 
@@ -141,7 +141,7 @@ export interface CssFeedbackFlagCase
 export interface ActiveFeedbackFactorCase
     extends
         // Bases:
-        ActiveTransitionFactorCase
+        CssActiveTransitionFactorCase
 {
     /**
      * Determines when the `factorVar` is set.
@@ -155,7 +155,7 @@ export interface ActiveFeedbackFactorCase
      * - A custom function using `rule()`, e.g. `(styles) => rule('.is-focused', styles)`
      * - Any function with signature: `(styles: CssStyleCollection) => CssRule`
      */
-    ifState : ActiveTransitionFactorCase['ifState']
+    ifState : CssActiveTransitionFactorCase['ifState']
 }
 
 

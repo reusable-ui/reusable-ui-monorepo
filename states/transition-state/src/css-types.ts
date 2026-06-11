@@ -134,13 +134,13 @@ export interface CssTransitionFlagCase {
  * 
  * @example
  * ```ts
- * const validFactor : ActiveTransitionFactorCase = {
+ * const validFactor : CssActiveTransitionFactorCase = {
  *     ifState : ifValid,
  *     factor  : 1,
  * };
  * ```
  */
-export interface ActiveTransitionFactorCase {
+export interface CssActiveTransitionFactorCase {
     /**
      * Determines when the `factorVar` is set.
      * 
@@ -338,8 +338,8 @@ export interface TransitionBehavior
      * If no case matches, the factor variables resolve to `baselineFactor`.
      * 
      * Accepts either:
-     * - A single `ActiveTransitionFactorCase`
-     * - An array of `ActiveTransitionFactorCase[]`
+     * - A single `CssActiveTransitionFactorCase`
+     * - An array of `CssActiveTransitionFactorCase[]`
      */
-    activeFactors   ?: MaybeArray<ActiveTransitionFactorCase>
+    activeFactors   ?: MaybeArray<CssActiveTransitionFactorCase>
 }
