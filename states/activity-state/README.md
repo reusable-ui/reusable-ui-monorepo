@@ -232,7 +232,7 @@ The lifecycle flow ensures:
 
 ## 🧩 Exported CSS Hook
 
-### `usingActivityState(activityBehavior: ActivityBehavior): CssRule`
+### `usingActivityState(activityBehavior: CssActivityBehavior): CssRule`
 
 Applies live CSS variables for activity styling.
 

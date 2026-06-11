@@ -12,7 +12,7 @@ import {
 
 // Types:
 import {
-    type ActivityBehavior,
+    type CssActivityBehavior,
 }                           from './css-types.js'
 
 
@@ -66,4 +66,4 @@ import {
  * });
  * ```
  */
-export const usingActivityState = (activityBehavior: ActivityBehavior): CssRule => usingAnimationState(activityBehavior);
+export const usingActivityState = (activityBehavior: CssActivityBehavior): CssRule => usingAnimationState(activityBehavior);

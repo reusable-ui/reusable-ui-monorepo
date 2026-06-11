@@ -97,7 +97,7 @@ export interface CssActivityAnimationCase
  * });
  * ```
  */
-export interface ActivityBaseBehavior
+export interface CssActivityBaseBehavior
     extends
         // Bases:
         CssAnimationBaseBehavior
@@ -131,16 +131,16 @@ export interface ActivityBaseBehavior
  *     animations : [
  *         // animation cases...
  *     ],
- * } & {
+ * } satisfies CssActivityBaseBehavior & {
  *     // Factor variables for movement drivers of activity animation:
  *     factorVar       : orderStateVars.orderFactor,
  *     factorCondVar   : orderStateVars.orderFactorCond,
  *     ifInactiveState : ifIdle,
  *     baselineFactor  : 0,
- * } satisfies CssAnimationBaseBehavior);
+ * } satisfies CssActivityFactorBehavior);
  * ```
  */
-export interface ActivityFactorBehavior
+export interface CssActivityFactorBehavior
     extends
         // Bases:
         CssAnimationFactorBehavior
@@ -229,6 +229,6 @@ export interface ActivityFactorBehavior
  * });
  * ```
  */
-export type ActivityBehavior =
-    |  ActivityBaseBehavior
-    | (ActivityBaseBehavior & ActivityFactorBehavior)
+export type CssActivityBehavior =
+    |  CssActivityBaseBehavior
+    | (CssActivityBaseBehavior & CssActivityFactorBehavior)
