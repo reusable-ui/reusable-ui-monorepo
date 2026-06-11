@@ -93,7 +93,7 @@ export interface CssAnimationCase {
  * });
  * ```
  */
-export interface AnimationBaseBehavior {
+export interface CssAnimationBaseBehavior {
     /**
      * Defines animation cases for *visual effects* whenever the corresponding state becomes active.
      * 
@@ -123,16 +123,16 @@ export interface AnimationBaseBehavior {
  *     animations : [
  *         // animation cases...
  *     ],
- * } & {
+ * } satisfies CssAnimationBaseBehavior & {
  *     // Factor variables for movement drivers of animation:
  *     factorVar       : orderStateVars.orderFactor,
  *     factorCondVar   : orderStateVars.orderFactorCond,
  *     ifInactiveState : ifIdle,
  *     baselineFactor  : 0,
- * } satisfies AnimationBaseBehavior);
+ * } satisfies CssAnimationFactorBehavior);
  * ```
  */
-export interface AnimationFactorBehavior {
+export interface CssAnimationFactorBehavior {
     /**
      * Specifies a CSS variable for driving animation movement.
      * 
@@ -217,6 +217,6 @@ export interface AnimationFactorBehavior {
  * });
  * ```
  */
-export type AnimationBehavior =
-    |  AnimationBaseBehavior
-    | (AnimationBaseBehavior & AnimationFactorBehavior)
+export type CssAnimationBehavior =
+    |  CssAnimationBaseBehavior
+    | (CssAnimationBaseBehavior & CssAnimationFactorBehavior)

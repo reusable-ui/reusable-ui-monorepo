@@ -8,8 +8,8 @@ import {
 import {
     // Types:
     type CssAnimationCase,
-    type AnimationBaseBehavior,
-    type AnimationFactorBehavior,
+    type CssAnimationBaseBehavior,
+    type CssAnimationFactorBehavior,
 }                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
 
@@ -100,7 +100,7 @@ export interface CssActivityAnimationCase
 export interface ActivityBaseBehavior
     extends
         // Bases:
-        AnimationBaseBehavior
+        CssAnimationBaseBehavior
 {
     /**
      * Defines activity animation cases for *visual effects* whenever the corresponding activity is in progress.
@@ -137,13 +137,13 @@ export interface ActivityBaseBehavior
  *     factorCondVar   : orderStateVars.orderFactorCond,
  *     ifInactiveState : ifIdle,
  *     baselineFactor  : 0,
- * } satisfies AnimationBaseBehavior);
+ * } satisfies CssAnimationBaseBehavior);
  * ```
  */
 export interface ActivityFactorBehavior
     extends
         // Bases:
-        AnimationFactorBehavior
+        CssAnimationFactorBehavior
 {
     /**
      * Specifies a CSS variable for driving activity animation movement.
@@ -157,7 +157,7 @@ export interface ActivityFactorBehavior
      * Always resolves to `baselineFactor` when the state is fully inactive,
      * ensuring consistency across state changes.
      */
-    factorVar        : AnimationFactorBehavior['factorVar']
+    factorVar        : CssAnimationFactorBehavior['factorVar']
     
     /**
      * Specifies a CSS variable for driving activity animation movement with inactive fallback.
@@ -173,14 +173,14 @@ export interface ActivityFactorBehavior
      * Always resolves to `unset` when the state is fully inactive,
      * making it easier for default styles to take over gracefully.
      */
-    factorCondVar    : AnimationFactorBehavior['factorCondVar']
+    factorCondVar    : CssAnimationFactorBehavior['factorCondVar']
     
     /**
      * Defines the condition for the inactive baseline state.
      * 
      * Provides a way for `factorCondVar` to reset (`unset`) when the inactive baseline state is reached.
      */
-    ifInactiveState  : AnimationFactorBehavior['ifInactiveState']
+    ifInactiveState  : CssAnimationFactorBehavior['ifInactiveState']
     
     /**
      * Defines the default baseline factor value used when no activity animation is actively running.
@@ -190,7 +190,7 @@ export interface ActivityFactorBehavior
      * 
      * Defaults to `0`.
      */
-    baselineFactor  ?: AnimationFactorBehavior['baselineFactor']
+    baselineFactor  ?: CssAnimationFactorBehavior['baselineFactor']
 }
 
 /**

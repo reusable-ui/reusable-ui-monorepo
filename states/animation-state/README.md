@@ -170,13 +170,13 @@ The lifecycle flow ensures:
 
 ## 🧩 Exported CSS Hook
 
-### `usingAnimationState(animationBehavior: AnimationBehavior): CssRule`
+### `usingAnimationState(animationBehavior: CssAnimationBehavior): CssRule`
 
 Applies live CSS variables for animation styling, including:
 - **Animation variables** for *visual effects* whenever the corresponding state becomes active
 - **Factor variables** for *movement drivers* of the animation's motion.
 
-**`AnimationBehavior` interface:**
+**`CssAnimationBehavior` interface:**
 - **`animations`**
   Defines transitional animation cases for *visual effects* whenever the corresponding state becomes active
 - Optional **factor variables**:

@@ -15,8 +15,8 @@ import {
 import {
     // Types:
     type CssAnimationCase,
-    type AnimationBaseBehavior,
-    type AnimationFactorBehavior,
+    type CssAnimationBaseBehavior,
+    type CssAnimationFactorBehavior,
 }                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
 
 
@@ -254,8 +254,8 @@ export interface CssActiveTransitionFactorCase {
 export interface TransitionBehavior
     extends
         // Bases:
-        AnimationBaseBehavior,
-        AnimationFactorBehavior
+        CssAnimationBaseBehavior,
+        CssAnimationFactorBehavior
 {
     /**
      * Defines transitional animation cases for *visual effects* whenever a transitional state changes.
@@ -292,7 +292,7 @@ export interface TransitionBehavior
      * Always resolves to `baselineFactor` when the state is fully inactive,
      * ensuring consistency across state changes.
      */
-    factorVar        : AnimationFactorBehavior['factorVar']
+    factorVar        : CssAnimationFactorBehavior['factorVar']
     
     /**
      * Specifies a CSS variable for smooth transitions with inactive fallback.
@@ -308,14 +308,14 @@ export interface TransitionBehavior
      * Always resolves to `unset` when the state is fully inactive,
      * making it easier for default styles to take over gracefully.
      */
-    factorCondVar    : AnimationFactorBehavior['factorCondVar']
+    factorCondVar    : CssAnimationFactorBehavior['factorCondVar']
     
     /**
      * Defines the condition for the inactive baseline state.
      * 
      * Provides a way for `factorCondVar` to reset (`unset`) when the inactive baseline state is reached.
      */
-    ifInactiveState  : AnimationFactorBehavior['ifInactiveState']
+    ifInactiveState  : CssAnimationFactorBehavior['ifInactiveState']
     
     /**
      * Defines the default baseline factor value used when:
@@ -327,7 +327,7 @@ export interface TransitionBehavior
      * 
      * Defaults to `0`.
      */
-    baselineFactor  ?: AnimationFactorBehavior['baselineFactor']
+    baselineFactor  ?: CssAnimationFactorBehavior['baselineFactor']
     
     /**
      * Defines active factor cases for holding final numeric values once a transition settles.

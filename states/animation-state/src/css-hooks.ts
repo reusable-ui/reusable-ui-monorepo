@@ -14,7 +14,7 @@ import {
 
 // Types:
 import {
-    type AnimationBehavior,
+    type CssAnimationBehavior,
 }                           from './css-types.js'
 
 
@@ -68,7 +68,7 @@ import {
  * });
  * ```
  */
-export const usingAnimationState = (animationBehavior: AnimationBehavior): CssRule => {
+export const usingAnimationState = (animationBehavior: CssAnimationBehavior): CssRule => {
     // Extract animation behavior and assign defaults:
     const {
         animations = [],
