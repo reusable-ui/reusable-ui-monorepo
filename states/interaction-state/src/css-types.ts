@@ -122,10 +122,10 @@ export interface CssInteractionFlagCase
 
 
 /**
- * Defines a single factor case for holding final numeric value once a transition settles.
+ * Defines a single active factor case for holding final numeric value once a transition settles.
  * 
  * Assigns a discrete value for keeping `factorVar` and `factorCondVar`
- * *stick* at their final value after the transition finishes.
+ * *stick* at their final active value after the transition finishes.
  * 
  * Note:
  * - During an animation, factor values are smoothly driven by the animation's keyframes.
