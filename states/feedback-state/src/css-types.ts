@@ -8,7 +8,7 @@ import {
 import {
     // Types:
     type CssTransitionAnimationCase,
-    type TransitionFlagCase,
+    type CssTransitionFlagCase,
     type ActiveTransitionFactorCase,
     type TransitionBehavior,
 }                           from '@reusable-ui/transition-state'    // Lifecycle-aware transition state for React, enabling reusable hooks with consistent animations.
@@ -79,7 +79,7 @@ export interface CssFeedbackAnimationCase
  * 
  * @example
  * ```ts
- * const isFocusingOrFocused : TransitionFlagCase = {
+ * const isFocusingOrFocused : CssTransitionFlagCase = {
  *     ifState  : ifFocusingOrFocused,
  *     variable : focusStateVars.isFocused,
  * };
@@ -88,7 +88,7 @@ export interface CssFeedbackAnimationCase
 export interface FeedbackFlagCase
     extends
         // Bases:
-        TransitionFlagCase
+        CssTransitionFlagCase
 {
     /**
      * Determines when the flag variable is set.
@@ -103,7 +103,7 @@ export interface FeedbackFlagCase
      * - A custom function using `rule()`, e.g. `(styles) => rule(':is(.is-focusing, .is-focused)', styles)`
      * - Any function with signature: `(styles: CssStyleCollection) => CssRule`
      */
-    ifState  : TransitionFlagCase['ifState']
+    ifState  : CssTransitionFlagCase['ifState']
     
     /**
      * Specifies the boolean-like CSS variable to set when the state condition is met.
@@ -116,7 +116,7 @@ export interface FeedbackFlagCase
      * - A hard-coded CSS variable reference, e.g. `var(--my-var)`
      * - A strongly typed reference, e.g. `focusStateVars.isFocused` (recommended)
      */
-    variable : TransitionFlagCase['variable']
+    variable : CssTransitionFlagCase['variable']
 }
 
 

@@ -8,7 +8,7 @@ import {
 import {
     // Types:
     type CssTransitionAnimationCase,
-    type TransitionFlagCase,
+    type CssTransitionFlagCase,
     type ActiveTransitionFactorCase,
     type TransitionBehavior,
 }                           from '@reusable-ui/transition-state'    // Lifecycle-aware transition state for React, enabling reusable hooks with consistent animations.
@@ -79,7 +79,7 @@ export interface CssInteractionAnimationCase
  * 
  * @example
  * ```ts
- * const isExpandingOrExpanded : TransitionFlagCase = {
+ * const isExpandingOrExpanded : CssTransitionFlagCase = {
  *     ifState  : ifExpandingOrExpanded,
  *     variable : collapseStateVars.isExpanded,
  * };
@@ -88,7 +88,7 @@ export interface CssInteractionAnimationCase
 export interface InteractionFlagCase
     extends
         // Bases:
-        TransitionFlagCase
+        CssTransitionFlagCase
 {
     /**
      * Determines when the flag variable is set.
@@ -103,7 +103,7 @@ export interface InteractionFlagCase
      * - A custom function using `rule()`, e.g. `(styles) => rule(':is(.is-expanding, .is-expanded)', styles)`
      * - Any function with signature: `(styles: CssStyleCollection) => CssRule`
      */
-    ifState  : TransitionFlagCase['ifState']
+    ifState  : CssTransitionFlagCase['ifState']
     
     /**
      * Specifies the boolean-like CSS variable to set when the state condition is met.
@@ -116,7 +116,7 @@ export interface InteractionFlagCase
      * - A hard-coded CSS variable reference, e.g. `var(--my-var)`
      * - A strongly typed reference, e.g. `collapseStateVars.isExpanded` (recommended)
      */
-    variable : TransitionFlagCase['variable']
+    variable : CssTransitionFlagCase['variable']
 }
 
 

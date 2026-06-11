@@ -85,13 +85,13 @@ export interface CssTransitionAnimationCase
  * 
  * @example
  * ```ts
- * const isValidatingOrValid : TransitionFlagCase = {
+ * const isValidatingOrValid : CssTransitionFlagCase = {
  *     ifState  : ifValidatingOrValid,
  *     variable : validityStateVars.isValid,
  * };
  * ```
  */
-export interface TransitionFlagCase {
+export interface CssTransitionFlagCase {
     /**
      * Determines when the flag variable is set.
      * 
@@ -275,10 +275,10 @@ export interface TransitionBehavior
      * Either fully applied or not at all — never interpolated.
      * 
      * Accepts either:
-     * - A single `TransitionFlagCase`
-     * - An array of `TransitionFlagCase[]`
+     * - A single `CssTransitionFlagCase`
+     * - An array of `CssTransitionFlagCase[]`
      */
-    flags           ?: MaybeArray<TransitionFlagCase>
+    flags           ?: MaybeArray<CssTransitionFlagCase>
     
     /**
      * Specifies a CSS variable for smooth transitions.
