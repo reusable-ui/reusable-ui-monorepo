@@ -214,7 +214,7 @@ export interface CssActiveFeedbackFactorCase
  * });
  * ```
  */
-export interface FeedbackBehavior
+export interface CssFeedbackBehavior
     extends
         // Bases:
         CssTransitionBehavior

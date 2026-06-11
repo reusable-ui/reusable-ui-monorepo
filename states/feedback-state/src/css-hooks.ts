@@ -12,7 +12,7 @@ import {
 
 // Types:
 import {
-    type FeedbackBehavior,
+    type CssFeedbackBehavior,
 }                           from './css-types.js'
 
 
@@ -81,4 +81,4 @@ import {
  * });
  * ```
  */
-export const usingFeedbackState = (feedbackBehavior: FeedbackBehavior): CssRule => usingTransitionState(feedbackBehavior);
+export const usingFeedbackState = (feedbackBehavior: CssFeedbackBehavior): CssRule => usingTransitionState(feedbackBehavior);

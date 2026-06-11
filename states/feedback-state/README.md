@@ -482,14 +482,14 @@ The hook manages transitions between concrete states using a unified animation f
 
 ## 🧩 Exported CSS Hook
 
-### `usingFeedbackState(feedbackBehavior: FeedbackBehavior): CssRule`
+### `usingFeedbackState(feedbackBehavior: CssFeedbackBehavior): CssRule`
 
 Applies live CSS variables for feedback styling, including:
 - **Animation variables** for *visual effects* whenever a feedback state changes
 - **Flag variables** for *discrete switches* in conditional styling
 - **Factor variables** for *gradual drivers* in transitional styling
 
-**`FeedbackBehavior` interface:**
+**`CssFeedbackBehavior` interface:**
 - **`transitions`**
   Defines feedback animation cases for *visual effects* whenever a feedback state changes.
 - **`flags`**
