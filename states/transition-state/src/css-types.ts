@@ -28,14 +28,14 @@ import {
  * 
  * @example
  * ```ts
- * const validatingCase : TransitionAnimationCase = {
+ * const validatingCase : CssTransitionAnimationCase = {
  *     ifState   : ifValidating,
  *     variable  : validityStateVars.animationValidating,
  *     animation : options.animationValidating,
  * };
  * ```
  */
-export interface TransitionAnimationCase
+export interface CssTransitionAnimationCase
     extends
         // Bases:
         CssAnimationCase
@@ -263,10 +263,10 @@ export interface TransitionBehavior
      * Automatically runs the corresponding animation whenever the component's transitional state changes.
      * 
      * Accepts either:
-     * - A single `TransitionAnimationCase`
-     * - An array of `TransitionAnimationCase[]`
+     * - A single `CssTransitionAnimationCase`
+     * - An array of `CssTransitionAnimationCase[]`
      */
-    animations      ?: MaybeArray<TransitionAnimationCase>
+    animations      ?: MaybeArray<CssTransitionAnimationCase>
     
     /**
      * Defines flag cases for conditional styling.

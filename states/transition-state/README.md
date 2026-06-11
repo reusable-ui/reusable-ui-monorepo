@@ -1017,7 +1017,7 @@ Animations provide the *visual effects* whenever a transitional state changes.
         }
         ```
 
-To define multiple animations consistently, the **`TransitionAnimationCase`** interface is used:  
+To define multiple animations consistently, the **`CssTransitionAnimationCase`** interface is used:  
 - `ifState`   → determines when the animation applies  
 - `variable`  → specifies the CSS variable to assign  
 - `animation` → specifies the animation value or reference to apply  

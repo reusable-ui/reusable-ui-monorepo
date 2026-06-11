@@ -7,7 +7,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
-    type TransitionAnimationCase,
+    type CssTransitionAnimationCase,
     type TransitionFlagCase,
     type ActiveTransitionFactorCase,
     type TransitionBehavior,
@@ -32,7 +32,7 @@ import {
 export interface FeedbackAnimationCase
     extends
         // Bases:
-        TransitionAnimationCase
+        CssTransitionAnimationCase
 {
     /**
      * Determines when the animation applies.
@@ -42,7 +42,7 @@ export interface FeedbackAnimationCase
      * - A custom function using `rule()`, e.g. `(styles) => rule('.is-focusing', styles)`
      * - Any function with signature: `(styles: CssStyleCollection) => CssRule`
      */
-    ifState    : TransitionAnimationCase['ifState']
+    ifState    : CssTransitionAnimationCase['ifState']
     
     /**
      * Specifies the CSS variable to assign when the state condition is met.
@@ -51,7 +51,7 @@ export interface FeedbackAnimationCase
      * - A hard-coded CSS variable reference, e.g. `var(--my-var)`
      * - A strongly typed reference, e.g. `focusStateVars.animationFocusing` (recommended)
      */
-    variable   : TransitionAnimationCase['variable']
+    variable   : CssTransitionAnimationCase['variable']
     
     /**
      * Specifies the animation value or reference to apply to the variable.
@@ -64,7 +64,7 @@ export interface FeedbackAnimationCase
      * 
      * Defaults to `'none'`.
      */
-    animation ?: TransitionAnimationCase['animation']
+    animation ?: CssTransitionAnimationCase['animation']
 }
 
 
