@@ -132,13 +132,13 @@ export interface CssInteractionFlagCase
  * 
  * @example
  * ```ts
- * const expandFactor : ActiveInteractionFactorCase = {
+ * const expandFactor : CssActiveInteractionFactorCase = {
  *     ifState : ifExpanded,
  *     factor  : 1,
  * };
  * ```
  */
-export interface ActiveInteractionFactorCase
+export interface CssActiveInteractionFactorCase
     extends
         // Bases:
         CssActiveTransitionFactorCase
@@ -281,8 +281,8 @@ export interface InteractionBehavior
      * If no case matches, the factor variables resolve to `baselineFactor`.
      * 
      * Accepts either:
-     * - A single `ActiveInteractionFactorCase`
-     * - An array of `ActiveInteractionFactorCase[]`
+     * - A single `CssActiveInteractionFactorCase`
+     * - An array of `CssActiveInteractionFactorCase[]`
      */
-    activeFactors   ?: MaybeArray<ActiveInteractionFactorCase>
+    activeFactors   ?: MaybeArray<CssActiveInteractionFactorCase>
 }
