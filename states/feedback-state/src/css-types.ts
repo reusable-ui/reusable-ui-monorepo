@@ -132,13 +132,13 @@ export interface CssFeedbackFlagCase
  * 
  * @example
  * ```ts
- * const focusFactor : ActiveFeedbackFactorCase = {
+ * const focusFactor : CssActiveFeedbackFactorCase = {
  *     ifState : ifFocused,
  *     factor  : 1,
  * };
  * ```
  */
-export interface ActiveFeedbackFactorCase
+export interface CssActiveFeedbackFactorCase
     extends
         // Bases:
         CssActiveTransitionFactorCase
@@ -281,8 +281,8 @@ export interface FeedbackBehavior
      * If no case matches, the factor variables resolve to `baselineFactor`.
      * 
      * Accepts either:
-     * - A single `ActiveFeedbackFactorCase`
-     * - An array of `ActiveFeedbackFactorCase[]`
+     * - A single `CssActiveFeedbackFactorCase`
+     * - An array of `CssActiveFeedbackFactorCase[]`
      */
-    activeFactors   ?: MaybeArray<ActiveFeedbackFactorCase>
+    activeFactors   ?: MaybeArray<CssActiveFeedbackFactorCase>
 }
