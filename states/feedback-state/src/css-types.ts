@@ -22,14 +22,14 @@ import {
  * 
  * @example
  * ```ts
- * const focusingCase : FeedbackAnimationCase = {
+ * const focusingCase : CssFeedbackAnimationCase = {
  *     ifState   : ifFocusing,
  *     variable  : focusStateVars.animationFocusing,
  *     animation : options.animationFocusing,
  * };
  * ```
  */
-export interface FeedbackAnimationCase
+export interface CssFeedbackAnimationCase
     extends
         // Bases:
         CssTransitionAnimationCase
@@ -225,10 +225,10 @@ export interface FeedbackBehavior
      * Automatically runs the corresponding animation whenever the component's feedback state changes.
      * 
      * Accepts either:
-     * - A single `FeedbackAnimationCase`
-     * - An array of `FeedbackAnimationCase[]`
+     * - A single `CssFeedbackAnimationCase`
+     * - An array of `CssFeedbackAnimationCase[]`
      */
-    animations      ?: MaybeArray<FeedbackAnimationCase>
+    animations      ?: MaybeArray<CssFeedbackAnimationCase>
     
     /**
      * Defines flag cases for conditional styling.
