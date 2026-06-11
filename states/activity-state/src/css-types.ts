@@ -7,7 +7,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
-    type AnimationCase,
+    type CssAnimationCase,
     type AnimationBaseBehavior,
     type AnimationFactorBehavior,
 }                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
@@ -31,7 +31,7 @@ import {
 export interface ActivityAnimationCase
     extends
         // Bases:
-        AnimationCase
+        CssAnimationCase
 {
     /**
      * Determines when the animation applies.
@@ -41,7 +41,7 @@ export interface ActivityAnimationCase
      * - A custom function using `rule()`, e.g. `(styles) => rule('.is-preparing', styles)`
      * - Any function with signature: `(styles: CssStyleCollection) => CssRule`
      */
-    ifState    : AnimationCase['ifState']
+    ifState    : CssAnimationCase['ifState']
     
     /**
      * Specifies the CSS variable to assign when the state condition is met.
@@ -50,7 +50,7 @@ export interface ActivityAnimationCase
      * - A hard-coded CSS variable reference, e.g. `var(--my-var)`
      * - A strongly typed reference, e.g. `orderStateVars.animationPreparing` (recommended)
      */
-    variable   : AnimationCase['variable']
+    variable   : CssAnimationCase['variable']
     
     /**
      * Specifies the animation value or reference to apply to the variable.
@@ -63,7 +63,7 @@ export interface ActivityAnimationCase
      * 
      * Defaults to `'none'`.
      */
-    animation ?: AnimationCase['animation']
+    animation ?: CssAnimationCase['animation']
 }
 
 

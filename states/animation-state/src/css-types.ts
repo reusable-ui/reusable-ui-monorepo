@@ -28,7 +28,7 @@ import {
  * };
  * ```
  */
-export interface AnimationCase {
+export interface CssAnimationCase {
     /**
      * Determines when the animation applies.
      * 
@@ -100,10 +100,10 @@ export interface AnimationBaseBehavior {
      * Automatically runs the corresponding animation whenever the component's state becomes active.
      * 
      * Accepts either:
-     * - A single `AnimationCase`
-     * - An array of `AnimationCase[]`
+     * - A single `CssAnimationCase`
+     * - An array of `CssAnimationCase[]`
      */
-    animations ?: MaybeArray<AnimationCase>
+    animations ?: MaybeArray<CssAnimationCase>
 }
 
 /**

@@ -14,7 +14,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
-    type AnimationCase,
+    type CssAnimationCase,
     type AnimationBaseBehavior,
     type AnimationFactorBehavior,
 }                           from '@reusable-ui/animation-state'     // Declarative animation lifecycle management for React components. Tracks user intent, synchronizes animation transitions, and handles graceful animation sequencing.
@@ -38,7 +38,7 @@ import {
 export interface TransitionAnimationCase
     extends
         // Bases:
-        AnimationCase
+        CssAnimationCase
 {
     /**
      * Determines when the animation applies.
@@ -48,7 +48,7 @@ export interface TransitionAnimationCase
      * - A custom function using `rule()`, e.g. `(styles) => rule('.is-validating', styles)`
      * - Any function with signature: `(styles: CssStyleCollection) => CssRule`
      */
-    ifState    : AnimationCase['ifState']
+    ifState    : CssAnimationCase['ifState']
     
     /**
      * Specifies the CSS variable to assign when the state condition is met.
@@ -57,7 +57,7 @@ export interface TransitionAnimationCase
      * - A hard-coded CSS variable reference, e.g. `var(--my-var)`
      * - A strongly typed reference, e.g. `validityStateVars.animationValidating` (recommended)
      */
-    variable   : AnimationCase['variable']
+    variable   : CssAnimationCase['variable']
     
     /**
      * Specifies the animation value or reference to apply to the variable.
@@ -70,7 +70,7 @@ export interface TransitionAnimationCase
      * 
      * Defaults to `'none'`.
      */
-    animation ?: AnimationCase['animation']
+    animation ?: CssAnimationCase['animation']
 }
 
 
