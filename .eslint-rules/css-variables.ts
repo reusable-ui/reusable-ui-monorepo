@@ -355,7 +355,7 @@ export const enforceVariableConventions = createRule({
  * - Ensure `cssVars` function usages are centralized in the correct files.
  * 
  * Requirements:
- * - Must be used only in `css-variables.ts` or `css-internal-variables.ts`.
+ * - Must be used only in `css-internal-variables.ts`.
  * - The `prefix` option must be assigned from a constant imported from `@reusable-ui/css-prefix-default`.
  * 
  * Function candidates:
@@ -365,19 +365,20 @@ export const enforceVariableConventions = createRule({
  * 
  * Why:
  * - Centralizes `cssVars` function usages for discoverability.
+ * - The CSS variables are should be indirectly exposed by CSS hooks, so they should always be declared in `css-internal-variables.ts` only.
  */
 export const enforceCssVarsFunctionUsage = createRule({
     name : 'enforce-cssvars-function-usage',
     meta: {
         type: 'problem',
         docs: {
-            description : 'Require `cssVars` function usages only in `css-variables.ts` or `css-internal-variables.ts`.',
+            description : 'Require `cssVars` function usages only in `css-internal-variables.ts`.',
         },
         schema: [], // no options accepted
         messages: {
             missingPrefix : 'The `prefix` option must be provided.',
             wrongPrefix   : 'The `prefix` option must be assigned from `{{expectedConstantName}}` constant imported from `@reusable-ui/css-prefix-default`.',
-            wrongFile     : '`cssVars` function usages must be in `css-variables.ts` or `css-internal-variables.ts`.',
+            wrongFile     : '`cssVars` function usages must be in `css-internal-variables.ts` (will be indirectly exposed by CSS hooks).',
         },
     },
     create(context) {
@@ -394,7 +395,7 @@ export const enforceCssVarsFunctionUsage = createRule({
         
         
         // Determine if the CSS variable is declared within the expected module:
-        const expectedModules  = getExpectedCSSVariableModules(domainMetadata);
+        const expectedModules  = ['css-internal-variables.ts'];
         const isExpectedModule = expectedModules.includes(basename);
         
         
