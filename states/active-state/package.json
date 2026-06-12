@@ -49,7 +49,8 @@
     "clean": "rimraf dist playwright/.cache playwright-report test-results .next",
     "tsc": "tsc",
     "tsc:watch": "tsc --watch",
-    "build": "npm run clean && tsc",
+    "lint": "eslint .",
+    "build": "npm run clean && npm run lint && npm run tsc",
     "ncu": "ncu --peer",
     "ncu:upgrade": "ncu --peer --upgrade",
     "test": "npx playwright test"
