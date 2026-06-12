@@ -49,6 +49,7 @@
     "access": "public"
   },
   "scripts": {
+    "clean": "rimraf dist playwright/.cache playwright-report test-results .next",
     "tsc": "tsc",
     "tsc:watch": "tsc --watch",
     "ncu": "ncu --peer",
