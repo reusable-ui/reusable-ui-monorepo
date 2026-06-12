@@ -28,7 +28,7 @@ import {
 // Contexts:
 import {
     OrientationVariantContext,
-}                           from './contexts.js'
+}                           from './internal-contexts.js'
 
 
 
