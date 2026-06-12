@@ -28,7 +28,7 @@ import {
 // Contexts:
 import {
     ThemeVariantContext,
-}                           from './contexts.js'
+}                           from './internal-contexts.js'
 
 
 
