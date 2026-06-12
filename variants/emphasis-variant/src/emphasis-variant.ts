@@ -27,7 +27,7 @@ import {
 // Contexts:
 import {
     EmphasisVariantContext,
-}                           from './contexts.js'
+}                           from './internal-contexts.js'
 
 
 
