@@ -28,7 +28,7 @@ import {
 // Contexts:
 import {
     FlowDirectionVariantContext,
-}                           from './contexts.js'
+}                           from './internal-contexts.js'
 
 
 
