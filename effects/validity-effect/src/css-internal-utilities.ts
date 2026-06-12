@@ -6,6 +6,8 @@ import {
 
 
 
+// Interpolations:
+
 /**
  * Blends two colors in the OKLCH color space using weighted proportions.
  * 

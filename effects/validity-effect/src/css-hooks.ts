@@ -29,7 +29,7 @@ import {
 }                           from './color-utilities.js'
 import {
     colorMix,
-}                           from './css-internal-formulas.js'
+}                           from './css-internal-utilities.js'
 
 // Reusable-ui configs:
 import {
