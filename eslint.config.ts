@@ -13,6 +13,7 @@ import { enforceVariableConventions, enforceCssVarsFunctionUsage, enforceCssConf
 import { enforceCssPrefixDefaults } from './.eslint-rules/css-prefix-default.js'
 import { enforceCssMountConventions } from './.eslint-rules/css-mount.js'
 import { enforceScopeFunctionUsage, noForeignCode as noForeignCodeInCssStyle } from './.eslint-rules/css-style.js'
+import { enforceIndexReexports } from './.eslint-rules/index-reexports.js'
 
 
 
@@ -288,6 +289,11 @@ export default defineConfig(
                     'no-foreign-code'                  : noForeignCodeInCssStyle       as unknown as Rule.RuleModule,
                 },
             },
+            'index-reexports': {
+                rules: {
+                    'enforce-index-reexports'          : enforceIndexReexports         as unknown as Rule.RuleModule,
+                },
+            },
         },
         rules: {
             'import/no-extraneous-dependencies': ['error', {
@@ -317,6 +323,7 @@ export default defineConfig(
             'css-mount/enforce-css-mount-conventions'        : 'error',
             'css-style/enforce-scope-function-usage'         : 'error',
             'css-style/no-foreign-code'                      : 'error',
+            'index-reexports/enforce-index-reexports'        : 'error',
         },
     },
     
