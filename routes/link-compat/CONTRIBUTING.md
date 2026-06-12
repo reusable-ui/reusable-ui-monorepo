@@ -31,7 +31,7 @@ Even if you're not coding, you can help by:
 git clone https://github.com/reusable-ui/reusable-ui-monorepo.git
 cd routes/link-compat
 npm install
-npm run dev
+npm run build
 ```
 
 ## 💬 Need Help?  
