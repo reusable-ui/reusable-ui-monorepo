@@ -16,7 +16,7 @@ import {
 // Contexts:
 import {
     SizeVariantContext,
-}                           from './contexts.js'
+}                           from './internal-contexts.js'
 
 
 
