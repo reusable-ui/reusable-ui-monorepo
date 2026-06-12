@@ -15,7 +15,7 @@ import {
 // Contexts:
 import {
     OutlineVariantContext,
-}                           from './contexts.js'
+}                           from './internal-contexts.js'
 
 
 
