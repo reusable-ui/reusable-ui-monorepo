@@ -34,12 +34,12 @@ import {
 // Types:
 import {
     type ElementFilter,
-}                           from './style-types.js'
+}                           from './style-internal-types.js'
 
 // Utilities:
 import {
     parseRelated,
-}                           from './style-utilities.js'
+}                           from './style-internal-utilities.js'
 
 // CSS Selectors:
 import {

@@ -1,7 +1,7 @@
 // Utilities:
 import {
     createTypographyMount,
-}                           from '../internal-utilities.js'
+}                           from '../style-internal-mounts.js'
 
 
 

@@ -7,10 +7,10 @@ import {
 // Utilities:
 import {
     vertSeparatorRule,
-}                           from '../style-rules.js'
+}                           from '../style-internal-rules.js'
 import {
     getVertSeparatorFilter,
-}                           from '../style-filters.js'
+}                           from '../style-internal-filters.js'
 
 // Configs:
 import {

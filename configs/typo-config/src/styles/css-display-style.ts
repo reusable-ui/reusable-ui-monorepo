@@ -8,7 +8,7 @@ import {
 import {
     headingRule,
     headingLevelRule,
-}                           from '../style-rules.js'
+}                           from '../style-internal-rules.js'
 import {
     // Utilities:
     getDefaultLevels,
@@ -18,7 +18,7 @@ import {
     // Display headings:
     getTagDisplaySelectors,
     getClassDisplaySelectors,
-}                           from '../style-selectors.js'
+}                           from '../style-internal-selectors.js'
 import {
     getDisplayFilter,
     
@@ -26,7 +26,7 @@ import {
     
     getNonHeadingTextBlockFilter,
     getHeadingCompanionFilter,
-}                           from '../style-filters.js'
+}                           from '../style-internal-filters.js'
 
 // Configs:
 import {

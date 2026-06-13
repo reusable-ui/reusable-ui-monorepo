@@ -7,14 +7,14 @@ import {
 // Utilities:
 import {
     markRule,
-}                           from '../style-rules.js'
+}                           from '../style-internal-rules.js'
 import {
     getCodeFilter,
     
     
     
     getTextInlineFilter,
-}                           from '../style-filters.js'
+}                           from '../style-internal-filters.js'
 
 // Configs:
 import {

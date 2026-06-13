@@ -7,14 +7,14 @@ import {
 // Utilities:
 import {
     paragraphRule,
-}                           from '../style-rules.js'
+}                           from '../style-internal-rules.js'
 import {
     getLeadFilter,
     
     
     
     getTextBlockFilter,
-}                           from '../style-filters.js'
+}                           from '../style-internal-filters.js'
 
 // Configs:
 import {

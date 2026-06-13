@@ -11,7 +11,7 @@ import {
 // Types:
 import {
     type ElementFilter,
-}                           from './style-types.js'
+}                           from './style-internal-types.js'
 
 
 

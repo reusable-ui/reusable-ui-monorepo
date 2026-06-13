@@ -50,12 +50,12 @@ import {
     // Regular codes:
     getTagCodeSelectors,
     getClassCodeSelectors,
-}                           from './style-selectors.js'
+}                           from './style-internal-selectors.js'
 
 // Types:
 import {
     type ElementFilter,
-}                           from './style-types.js'
+}                           from './style-internal-types.js'
 
 
 
