@@ -31,25 +31,29 @@ export const getDomainIdentifier = (relativeFilename: string): string | null => 
 };
 
 /**
- * Extracts a PascalCase sub‑domain identifier from a relative filename.
+ * Extracts a PascalCase sub-domain identifier from a relative filename.
  * 
  * Behavior:
- * - Matches files named `css-<sub>-<group>.ts` inside a package.
+ * - Matches files named `css-<internal?>-<sub>-<group>.ts` inside a package.
  * - Converts the `<sub>` part (including hyphenated words) into PascalCase.
- * - Returns `null` if the file is just `css-<group>.ts` or not a sub‑<group>.
+ * - The `<internal?>` part is optional and ignored in the output.
+ * - Returns `null` if the file does not match the expected pattern or if the sub-domain is absent.
  * 
  * Examples:
- * - 'configs/border-config/src/css-param-config.ts'    → 'Param'
- * - 'configs/border-config/src/css-level-config.ts'    → 'Level'
- * - 'configs/typo-config/src/css-plain-list-config.ts' → 'PlainList'
- * - 'configs/border-config/src/css-secondary-mount.ts' → 'Secondary'
- * - 'configs/border-config/src/css-config.ts'          → null
- * - 'variants/theme-variant/src/foo.ts'                → null
- * - 'effects/disabled-effect/src/bar.ts'               → null
+ * - 'configs/border-config/src/css-param-config.ts'          → 'Param'
+ * - 'configs/border-config/src/css-level-config.ts'          → 'Level'
+ * - 'configs/typo-config/src/css-plain-list-config.ts'       → 'PlainList'
+ * - 'configs/border-config/src/css-secondary-mount.ts'       → 'Secondary'
+ * - 'configs/border-config/src/css-config.ts'                → null
+ * - 'variants/theme-variant/src/foo.ts'                      → null
+ * - 'effects/disabled-effect/src/bar.ts'                     → null
+ * - 'configs/border-config/src/css-internal-param-config.ts' → 'Param'
+ * - 'configs/border-config/src/css-internal-config.ts'       → null
+ * - 'configs/border-config/src/css-internal.ts'              → null
  */
 export const getSubDomainIdentifier = (relativeFilename: string): string | null => {
-    // Capture the sub‑domain part from filenames like `css-xxx-<group>.ts`
-    const subSegment = relativeFilename.match(/css-([a-z]+(-[a-z]+)*)-[^/\\]+\.ts$/)?.[1];
+    // Capture the sub-domain part from filenames like `css-xxx-<group>.ts`
+    const subSegment = relativeFilename.match(/css(?:-internal)?-((?!internal)[a-z]+(-[a-z]+)*)-[^/\\]+\.ts$/)?.[1];
     
     
     
