@@ -7,7 +7,7 @@ import {
 // CSS Variables:
 import {
     collapseStateVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // CSS Selectors:
 import {
