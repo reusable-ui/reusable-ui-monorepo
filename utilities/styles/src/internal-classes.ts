@@ -9,26 +9,30 @@ import {
     type Collector,
 }                           from './internal-types.js'
 
-// Utilities:
-import {
-    hasOwn,
-}                           from './internal-utilities.js'
+
+
+/**
+ * Determines if an object has a property as its own (not inherited) property.
+ */
+const hasOwn = {}.hasOwnProperty;
 
 
 
 /**
  * Collects and merges class names into a single space-separated string.
  */
-export class ClassCollector implements Collector<string, string> {
+export class ClassCollector implements Collector<string> {
     /**
-     * Holds the collected class names.
+     * The accumulated class names.
      */
     collected : string = '';
     
+    
+    
     /**
-     * Appends a class name or mapped object to the collection.
-     * Ensures proper spacing between multiple class names.
-     * @param value - The class name or mapping object to append.
+     * Appends a class name or conditional mapping object.
+     * 
+     * @param value - The class name or mapping object.
      */
     append(value: string | Record<string, unknown>): void {
         if (typeof value === 'string') {
@@ -66,7 +70,8 @@ export class ClassCollector implements Collector<string, string> {
     }
     
     /**
-     * Adds a class name to the collected string with proper spacing.
+     * Adds a class name with proper spacing.
+     * 
      * @param className - The class name to append.
      */
     #appendWithSpace(value: string) {
@@ -82,19 +87,23 @@ export class ClassCollector implements Collector<string, string> {
     }
 }
 
+
+
 /**
  * Collects and merges style properties into a single `CSSProperties` object.
  */
-export class StyleCollector implements Collector<CSSProperties, CSSProperties> {
+export class StyleCollector implements Collector<CSSProperties> {
     /**
-     * Holds the collected style properties.
+     * The accumulated style object.
      */
     collected : CSSProperties = {};
     
+    
+    
     /**
-     * Appends a new style object to the collection.
-     * Uses `Object.assign()` to merge properties.
-     * @param value - The style object to append.
+     * Appends a style object by merging properties.
+     * 
+     * @param value - The style object to merge.
      */
     append(value: CSSProperties): void {
         Object.assign(this.collected, value);

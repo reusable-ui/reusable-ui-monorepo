@@ -12,16 +12,13 @@ import {
 
 
 
-export const hasOwn = {}.hasOwnProperty;
-
-
-
 /**
- * Recursively reduces deeply nested arrays into collected values.
- * @param collector - The collector instance managing accumulation.
+ * Recursively flattens deeply nested arrays into collected values.
+ * 
+ * @param collector - The collector instance.
  * @param values - Deeply nested array structure containing values.
  */
-export function deepReduce<TCollected, TValue>(collector: Collector<TCollected, TValue>, values: MaybeDeepArray<OptionalOrBoolean<TValue>>[]): void {
+export function flattenDeep<TValue>(collector: Collector<TValue>, values: MaybeDeepArray<OptionalOrBoolean<TValue>>[]): void {
     // Iterate through each value in the array:
     for (const value of values) {
         // Skip invalid values (`undefined`, `null`, `false`, and `true`):
@@ -36,7 +33,7 @@ export function deepReduce<TCollected, TValue>(collector: Collector<TCollected, 
         
         if (Array.isArray(value)) {
             // Recursively process nested values:
-            deepReduce(collector, value);
+            flattenDeep(collector, value);
             continue; // Continue to the next iteration.
         } // if
         

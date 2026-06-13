@@ -19,7 +19,7 @@ import {
 // Utilities:
 import {
     // Utilities:
-    deepReduce,
+    flattenDeep,
 }                           from './internal-utilities.js'
 
 // Classes:
@@ -94,7 +94,7 @@ const useMemo : typeof useMemoConditional = (process.env.NODE_ENV !== 'benchmark
 export const mergeClasses = (...classes: MaybeDeepArray<OptionalOrBoolean<string | Record<string, unknown>>>[]): string => {
     // Collect class names from deeply nested inputs:
     const classCollector = new ClassCollector();
-    deepReduce(classCollector, classes);
+    flattenDeep(classCollector, classes);
     return classCollector.collected;
 };
 
@@ -134,7 +134,7 @@ export const mergeClasses = (...classes: MaybeDeepArray<OptionalOrBoolean<string
 export const useMergeStyles = (...styles: MaybeDeepArray<OptionalOrBoolean<CSSProperties>>[]): CSSProperties => {
     // Collect style properties from deeply nested inputs:
     const styleCollector = new StyleCollector();
-    deepReduce(styleCollector, styles);
+    flattenDeep(styleCollector, styles);
     const mergedStyles = styleCollector.collected;
     
     
