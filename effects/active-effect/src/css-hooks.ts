@@ -20,7 +20,7 @@ import {
 // CSS Variables:
 import {
     activeEffectVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // Reusable-ui variants:
 import {
