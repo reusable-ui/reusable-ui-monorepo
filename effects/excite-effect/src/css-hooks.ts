@@ -28,7 +28,7 @@ import {
 // CSS Variables:
 import {
     exciteEffectVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // Reusable-ui states:
 import {
