@@ -7,7 +7,7 @@ import {
 // CSS Variables:
 import {
     disabledStateVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // CSS Selectors:
 import {
