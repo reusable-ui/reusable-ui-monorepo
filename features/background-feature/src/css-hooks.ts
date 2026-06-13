@@ -24,7 +24,7 @@ import {
 // CSS Variables:
 import {
     backgroundFeatureVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // Reusable-ui variants:
 import {
