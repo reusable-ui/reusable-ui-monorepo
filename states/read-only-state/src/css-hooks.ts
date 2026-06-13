@@ -7,7 +7,7 @@ import {
 // CSS Variables:
 import {
     readOnlyStateVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // CSS Selectors:
 import {
