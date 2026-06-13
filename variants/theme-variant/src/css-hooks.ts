@@ -28,7 +28,7 @@ import {
 // CSS Variables:
 import {
     themeVariantVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // CSS Selectors:
 import {
