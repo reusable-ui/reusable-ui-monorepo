@@ -7,7 +7,7 @@ import {
 // CSS Variables:
 import {
     validityStateVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // CSS Selectors:
 import {
