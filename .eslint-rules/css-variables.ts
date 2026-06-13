@@ -4,6 +4,7 @@ import { ESLintUtils } from '@typescript-eslint/utils'
 import { collectBindingInitializers, collectTopLevelBindings } from './binding-initializers.js'
 import { isTopLevel, isExported } from './scope-utilities.js'
 import { getDomainMetadata, getExpectedCSSVariableModules } from './domain-utilities.js'
+import { resolveGroupPackageRelativePath } from './utilities.js'
 
 
 
@@ -69,7 +70,7 @@ export const enforceVariableConventions = createRule({
     create(context) {
         const filename         = context.filename;
         const basename         = path.basename(filename);
-        const relativeFilename = path.relative(process.cwd(), filename);
+        const relativeFilename = resolveGroupPackageRelativePath(filename);
         if (basename.split('-').includes('deprecated')) return {};
         
         
@@ -384,7 +385,7 @@ export const enforceCssVarsFunctionUsage = createRule({
     create(context) {
         const filename         = context.filename;
         const basename         = path.basename(filename);
-        const relativeFilename = path.relative(process.cwd(), filename);
+        const relativeFilename = resolveGroupPackageRelativePath(filename);
         if (basename.split('-').includes('deprecated')) return {};
         
         
@@ -539,7 +540,7 @@ export const enforceCssConfigFunctionUsage = createRule({
     create(context) {
         const filename         = context.filename;
         // const basename         = path.basename(filename);
-        const relativeFilename = path.relative(process.cwd(), filename);
+        const relativeFilename = resolveGroupPackageRelativePath(filename);
         
         
         
@@ -682,7 +683,7 @@ export const noForeignCode = createRule({
     create(context) {
         const filename         = context.filename;
         const basename         = path.basename(filename);
-        const relativeFilename = path.relative(process.cwd(), filename);
+        const relativeFilename = resolveGroupPackageRelativePath(filename);
         if (basename.split('-').includes('deprecated')) return {};
         
         

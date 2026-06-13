@@ -3,6 +3,7 @@ import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
 import { collectTopLevelBindings } from './binding-initializers.js'
 import { getDomainMetadata, getExpectedCSSStyleModules } from './domain-utilities.js'
+import { resolveGroupPackageRelativePath } from './utilities.js'
 
 
 
@@ -48,7 +49,7 @@ export const enforceScopeFunctionUsage = createRule({
     create(context) {
         const filename         = context.filename;
         const basename         = path.basename(filename);
-        const relativeFilename = path.relative(process.cwd(), filename);
+        const relativeFilename = resolveGroupPackageRelativePath(filename);
         if (basename.split('-').includes('deprecated')) return {};
         
         
@@ -180,7 +181,7 @@ export const noForeignCode = createRule({
     create(context) {
         const filename         = context.filename;
         const basename         = path.basename(filename);
-        const relativeFilename = path.relative(process.cwd(), filename);
+        const relativeFilename = resolveGroupPackageRelativePath(filename);
         if (basename.split('-').includes('deprecated')) return {};
         
         

@@ -4,6 +4,63 @@ import path from 'path'
 
 
 /**
+ * Resolves an absolute file path into a "group-and-package-aware" relative path.
+ * 
+ * Behavior:
+ * - Normally returns the path relative to the current working directory.
+ * - If the relative path starts with `src/`, it prepends the group and package
+ *   directory names (the last two segments of `process.cwd()`), while keeping
+ *   the `src/` segment intact.
+ * 
+ * Why:
+ * - Utilities like `getDomainIdentifier` rely on the relative path containing
+ *   both the group and package directory segments to correctly determine the domain.
+ * - When ESLint runs inside a package, `path.relative(process.cwd(), file)` may
+ *   drop those segments. This helper ensures they are always present.
+ * 
+ * Examples:
+ * - CWD = `/repo/components/button`
+ *   absolutePath = `/repo/components/button/src/types.ts`
+ *   → returns `components/button/src/types.ts`
+ * 
+ * - CWD = `/repo`
+ *   absolutePath = `/repo/components/button/src/types.ts`
+ *   → returns `components/button/src/types.ts`
+ */
+export const resolveGroupPackageRelativePath = (absolutePath: string): string => {
+    const basePath = process.cwd();
+    const relativePath = path.relative(basePath, absolutePath);
+    
+    
+    
+    // Normalize separators for cross-platform safety:
+    const normalized = relativePath.replace(/\\/g, '/');
+    
+    
+    
+    // If the relative path is missing the group/package segments (i.e., starts with 'src/'), prepend them back:
+    if (normalized.startsWith('src/')) {
+        // Capture the last two segments of the base path: group + package:
+        const parts = basePath.split(path.sep);
+        const groupAndPackage = parts.slice(-2).join('/');
+        
+        
+        
+        // Prepend the group/package back to the normalized path:
+        return path.join(groupAndPackage, normalized);
+    } // if
+    // 
+    
+    
+    
+    // Otherwise, return the normalized relative path as is:
+    return normalized;
+};
+
+
+
+
+/**
  * Recursively searches upward from a given path to locate the nearest `package.json`.
  * 
  * Usage:

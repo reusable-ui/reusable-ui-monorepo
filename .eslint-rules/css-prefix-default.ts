@@ -5,6 +5,7 @@ import { typescriptReservedWords } from './typescript-reserved-words.js'
 import { englishTwoLetterWords } from './english-two-letter-words.js'
 import { englishThreeLetterWords } from './english-three-letter-words.js'
 import { domainOrder } from './domain-order.js'
+import { resolveGroupPackageRelativePath } from './utilities.js'
 
 
 
@@ -79,7 +80,7 @@ export const enforceCssPrefixDefaults = createRule<[CssPrefixDefaultsOptions], '
         // Only apply this rule to the specific `defaults.ts` module of the `css-prefix-default` package:
         const filename          = context.filename;
         const basename          = path.basename(filename);
-        const relativeFilename  = path.relative(process.cwd(), filename);
+        const relativeFilename  = resolveGroupPackageRelativePath(filename);
         const isCandidateModule = (
             /([a-zA-Z_-])*defaults\.ts/.test(basename)
             &&

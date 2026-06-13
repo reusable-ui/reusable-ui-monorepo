@@ -4,6 +4,7 @@ import { ESLintUtils } from '@typescript-eslint/utils'
 import { collectBindingInitializers } from './binding-initializers.js'
 import { isTopLevel, isExported } from './scope-utilities.js'
 import { getDomainMetadata, getExpectedCSSMountModules } from './domain-utilities.js'
+import { resolveGroupPackageRelativePath } from './utilities.js'
 
 
 
@@ -61,7 +62,7 @@ export const enforceCssMountConventions = createRule({
     create(context) {
         const filename         = context.filename;
         const basename         = path.basename(filename);
-        const relativeFilename = path.relative(process.cwd(), filename);
+        const relativeFilename = resolveGroupPackageRelativePath(filename);
         if (basename.split('-').includes('deprecated')) return {};
         
         
