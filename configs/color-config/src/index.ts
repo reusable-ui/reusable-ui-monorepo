@@ -20,4 +20,4 @@ export {
     type DefaultEdgeColors,
     type DefaultSoftColors,
     type DefaultAllColors,
-}                   from './color-factories.js'
+}                   from './internal-color-factories.js'

@@ -12,7 +12,7 @@ import {
 // Utilities:
 import {
     getDefaultAllColors,
-}                           from './color-factories.js'
+}                           from './internal-color-factories.js'
 
 
 
