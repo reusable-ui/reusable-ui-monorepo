@@ -19,10 +19,15 @@ import {
 // Utilities:
 import {
     // Utilities:
+    deepReduce,
+}                           from './internal-utilities.js'
+
+// Classes:
+import {
+    // Utilities:
     ClassCollector,
     StyleCollector,
-    deepReduce,
-}                           from './collector-utilities.js'
+}                           from './internal-classes.js'
 
 
 
