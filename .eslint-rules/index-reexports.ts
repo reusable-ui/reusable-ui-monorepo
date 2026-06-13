@@ -61,7 +61,10 @@ export const enforceIndexReexports = createRule({
             .map((filename) => path.parse(filename))
             
             // Filter to get only .ts files that are not index.ts and do not contain "internal":
-            .filter(({ name }) => {
+            .filter(({ ext, name }) => {
+                // Only consider .ts files:
+                if (!['.ts', '.tsx'].includes(ext)) return false;
+                
                 // Skip index itself:
                 if (name === 'index') return false;
                 
