@@ -13,7 +13,7 @@ import {
 // CSS Variables:
 import {
     focusEffectVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // Reusable-ui configs:
 import {
