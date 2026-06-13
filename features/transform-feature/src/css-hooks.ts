@@ -26,7 +26,7 @@ import {
 // CSS Variables:
 import {
     transformFeatureVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // Registries:
 import {
