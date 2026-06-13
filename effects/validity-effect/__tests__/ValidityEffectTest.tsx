@@ -16,7 +16,7 @@ import {
     invalidRegularBaseColor,
     invalidMildBaseColor,
 } from './base-colors.js'
-import { colorRoleMap } from '../dist/color-utilities.js'
+import { colorRoleMap } from '../dist/internal-utilities.js'
 import { useValidityEffectTestStyles } from './ValidityEffectTest.loader.js'
 
 

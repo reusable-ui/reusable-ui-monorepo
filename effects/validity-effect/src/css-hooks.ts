@@ -26,7 +26,7 @@ import {
 // Utilities:
 import {
     colorRoleMap,
-}                           from './color-utilities.js'
+}                           from './internal-utilities.js'
 import {
     colorMix,
 }                           from './css-internal-utilities.js'
