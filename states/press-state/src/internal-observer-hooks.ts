@@ -38,18 +38,20 @@ import {
 import {
     matchesKey,
 }                           from './internal-utilities.js'
+
+// Hooks:
 import {
     usePointerPressTracker,
-}                           from './pointer-press-tracker.js'
+}                           from './internal-pointer-press-tracker-hook.js'
 import {
     useKeyPressTracker,
-}                           from './key-press-tracker.js'
+}                           from './internal-key-press-tracker-hook.js'
 import {
     useGlobalPointerRelease,
-}                           from './global-pointer-release.js'
+}                           from './internal-global-pointer-release-hook.js'
 import {
     useGlobalKeyRelease,
-}                           from './global-key-release.js'
+}                           from './internal-global-key-release-hook.js'
 
 // Reusable-ui utilities:
 import {
