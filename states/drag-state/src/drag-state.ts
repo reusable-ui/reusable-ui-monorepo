@@ -39,7 +39,7 @@ import {
 // CSS Variables:
 import {
     dragStateVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // Hooks:
 import {
