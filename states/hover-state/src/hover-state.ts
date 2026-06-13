@@ -27,7 +27,7 @@ import {
 // Hooks:
 import {
     useHoverObserverState,
-}                           from './hover-observer.js'
+}                           from './internal-observer-hooks.js'
 
 // Reusable-ui states:
 import {
