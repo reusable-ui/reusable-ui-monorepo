@@ -21,7 +21,7 @@ import {
 // CSS Variables:
 import {
     validityEffectVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // Utilities:
 import {
