@@ -17,7 +17,7 @@ import {
     computeIsExpectedRole,
     computeIsExpectedTag,
     computeImplicitRole,
-}                           from './utilities.js'
+}                           from './internal-utilities.js'
 
 
 

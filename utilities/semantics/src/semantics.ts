@@ -14,7 +14,7 @@ import {
 // Classes:
 import {
     LazySemanticEvaluator,
-}                           from './LazySemanticEvaluator.js'
+}                           from './internal-classes.js'
 
 
 
