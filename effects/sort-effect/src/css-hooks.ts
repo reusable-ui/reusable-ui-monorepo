@@ -14,7 +14,7 @@ import {
 // CSS Variables:
 import {
     sortEffectVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // Reusable-ui states:
 import {
