@@ -14,7 +14,7 @@ import {
 // CSS Variables:
 import {
     outlineVariantVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // CSS Selectors:
 import {
