@@ -23,7 +23,7 @@ import {
 // CSS Variables:
 import {
     collapseEffectVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // Reusable-ui states:
 import {
