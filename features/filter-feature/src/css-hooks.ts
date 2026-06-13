@@ -26,7 +26,7 @@ import {
 // CSS Variables:
 import {
     filterFeatureVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // Registries:
 import {
