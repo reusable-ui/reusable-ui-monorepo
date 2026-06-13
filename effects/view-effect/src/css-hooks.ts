@@ -26,7 +26,7 @@ import {
 // CSS Variables:
 import {
     viewEffectVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // Reusable-ui states:
 import {
