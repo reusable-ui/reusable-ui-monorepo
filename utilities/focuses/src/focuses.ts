@@ -9,7 +9,7 @@ import {
     isInertedElement,
     findNearestFocusableAncestor,
     computeFocusableOrder,
-}                           from './utilities.js'
+}                           from './internal-utilities.js'
 
 
 
