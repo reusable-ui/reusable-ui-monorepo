@@ -19,7 +19,7 @@ import {
 // CSS Variables:
 import {
     disabledEffectVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // Reusable-ui states:
 import {
