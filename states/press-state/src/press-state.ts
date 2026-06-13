@@ -27,7 +27,7 @@ import {
 // Hooks:
 import {
     usePressObserverState,
-}                           from './press-observer.js'
+}                           from './internal-observer-hooks.js'
 
 // Reusable-ui states:
 import {
