@@ -17,7 +17,7 @@ import {
 // CSS Variables:
 import {
     bareVariantVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // CSS Selectors:
 import {
