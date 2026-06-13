@@ -27,7 +27,7 @@ import {
 // CSS Variables:
 import {
     animationFeatureVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // Registries:
 import {
