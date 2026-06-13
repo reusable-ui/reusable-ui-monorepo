@@ -19,7 +19,7 @@ import {
 // CSS Variables:
 import {
     ringFeatureVars,
-}                           from './css-variables.js'
+}                           from './css-internal-variables.js'
 
 // Reusable-ui variants:
 import {
