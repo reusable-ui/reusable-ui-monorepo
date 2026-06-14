@@ -7,7 +7,7 @@ import {
     type PressStateProps,
     usePressBehaviorState,
 } from '@reusable-ui/press-state'
-import { useMergeEventHandlers } from '@reusable-ui/callbacks'
+import { useMergedEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useDragStateTestStyles } from './DragStateTest.loader.js'
@@ -78,22 +78,22 @@ export const DragStateTest = (props: DragStateTestProps) => {
         animationPattern,
     });
     
-    const handleMergedAnimationStart = useMergeEventHandlers(
+    const handleMergedAnimationStart = useMergedEventHandlers(
         handlePressAnimationStart,
         handleAnimationStart,
         onAnimationStart,
     );
-    const handleMergedAnimationEnd = useMergeEventHandlers(
+    const handleMergedAnimationEnd = useMergedEventHandlers(
         handlePressAnimationEnd,
         handleAnimationEnd,
         onAnimationEnd,
     );
-    const handleMergedAnimationCancel = useMergeEventHandlers(
+    const handleMergedAnimationCancel = useMergedEventHandlers(
         handlePressAnimationCancel,
         handleAnimationCancel,
         onAnimationEnd,
     );
-    const handleMergedPointerDown = useMergeEventHandlers(
+    const handleMergedPointerDown = useMergedEventHandlers(
         handlePressPointerDown,
         handlePointerDown,
         onPointerDown,

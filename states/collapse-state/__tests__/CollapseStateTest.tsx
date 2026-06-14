@@ -3,7 +3,7 @@ import {
     type CollapseStateProps,
     useCollapseBehaviorState,
 } from '../dist/index.js'
-import { useMergeEventHandlers } from '@reusable-ui/callbacks'
+import { useMergedEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useCollapseStateTestStyles } from './CollapseStateTest.loader.js'
@@ -40,15 +40,15 @@ export const CollapseStateTest = (props: CollapseStateTestProps) => {
         animationPattern,
     });
     
-    const handleMergedAnimationStart = useMergeEventHandlers(
+    const handleMergedAnimationStart = useMergedEventHandlers(
         handleAnimationStart,
         onAnimationStart,
     );
-    const handleMergedAnimationEnd = useMergeEventHandlers(
+    const handleMergedAnimationEnd = useMergedEventHandlers(
         handleAnimationEnd,
         onAnimationEnd,
     );
-    const handleMergedAnimationCancel = useMergeEventHandlers(
+    const handleMergedAnimationCancel = useMergedEventHandlers(
         handleAnimationCancel,
         onAnimationEnd,
     );

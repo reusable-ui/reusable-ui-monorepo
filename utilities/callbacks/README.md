@@ -79,16 +79,16 @@ const handleInputChange = useStableEventHandler((event: Event) => console.log('C
 
 ---
 
-### `useMergeEventHandlers<TEvent, TExtra>(...eventHandlers: Optional<EventHandler<TEvent, TExtra, void>>[]): EventHandler<TEvent, TExtra, void>`
+### `useMergedEventHandlers<TEvent, TExtra>(...eventHandlers: Optional<EventHandler<TEvent, TExtra, void>>[]): EventHandler<TEvent, TExtra, void>`
 Combines multiple **event handlers** into a single stable function, preventing unnecessary re-renders.
 
 ```tsx
-import { useMergeEventHandlers } from '@reusable-ui/callbacks';
+import { useMergedEventHandlers } from '@reusable-ui/callbacks';
 
 const handleClickA = useStableEventHandler((event: MouseEvent) => console.log('A clicked', event));
 const handleClickB = useStableEventHandler((event: MouseEvent) => console.log('B clicked', event));
 
-const mergedClickHandler = useMergeEventHandlers(handleClickA, handleClickB);
+const mergedClickHandler = useMergedEventHandlers(handleClickA, handleClickB);
 
 <button onClick={mergedClickHandler}>Click Me</button>
 ```

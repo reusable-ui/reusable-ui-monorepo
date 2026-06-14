@@ -19,7 +19,7 @@ import {
     isForwardRefElement,
 }                           from '@reusable-ui/nodes'           // A comprehensive utility library for efficiently managing React nodes, including fragments, forward refs, and nested structures.
 import {
-    useMergeEventHandlers,
+    useMergedEventHandlers,
 }                           from '@reusable-ui/callbacks'       // A utility package providing stable and merged callback functions for optimized event handling and performance.
 import {
     useMergedRefs,
@@ -206,7 +206,7 @@ export const useAnchorlessLink = (linkElement: ReactElement<CompatLinkProps, str
     
     
     // Merge event handlers to preserve both the original event handler and the additional event handler for client-side navigation are invoked:
-    const mergedHandleClick      = useMergeEventHandlers(
+    const mergedHandleClick      = useMergedEventHandlers(
         // The original event handler of interactive element:
         interactiveElement.props.onClick,
         
@@ -215,7 +215,7 @@ export const useAnchorlessLink = (linkElement: ReactElement<CompatLinkProps, str
         // The additional event handler for client-side navigation:
         anchorOnClick,
     );
-    const mergedHandleMouseEnter = useMergeEventHandlers(
+    const mergedHandleMouseEnter = useMergedEventHandlers(
         // The original event handler of interactive element:
         interactiveElement.props.onMouseEnter,
         
@@ -224,7 +224,7 @@ export const useAnchorlessLink = (linkElement: ReactElement<CompatLinkProps, str
         // The additional event handler for client-side navigation:
         anchorOnMouseEnter,
     );
-    const mergedHandleTouchStart = useMergeEventHandlers(
+    const mergedHandleTouchStart = useMergedEventHandlers(
         // The original event handler of interactive element:
         interactiveElement.props.onTouchStart,
         

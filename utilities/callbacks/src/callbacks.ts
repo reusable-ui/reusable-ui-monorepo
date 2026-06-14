@@ -254,12 +254,12 @@ export const useStableEventHandler = <TEvent, TExtra extends unknown[] = [], TRe
  * // Merging multiple event handlers:
  * const handleClickA = useStableEventHandler((event: MouseEvent) => console.log('A clicked', event));
  * const handleClickB = useStableEventHandler((event: MouseEvent) => console.log('B clicked', event));
- * const mergedClickHandler = useMergeEventHandlers(handleClickA, handleClickB);
+ * const mergedClickHandler = useMergedEventHandlers(handleClickA, handleClickB);
  * 
  * <button onClick={mergedClickHandler}>Click Me</button>
  * ```
  */
-export const useMergeEventHandlers = <TEvent, TExtra extends unknown[] = []>(...eventHandlers: Optional<EventHandler<TEvent, TExtra, void>>[]): EventHandler<TEvent, TExtra, void> => {
+export const useMergedEventHandlers = <TEvent, TExtra extends unknown[] = []>(...eventHandlers: Optional<EventHandler<TEvent, TExtra, void>>[]): EventHandler<TEvent, TExtra, void> => {
     // Returns a stable merged event handler function:
     return useMergeCallbacks<[TEvent, ...TExtra]>(...eventHandlers);
 };

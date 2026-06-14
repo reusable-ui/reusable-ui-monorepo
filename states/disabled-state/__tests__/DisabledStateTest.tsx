@@ -3,7 +3,7 @@ import {
     type DisabledStateProps,
     useDisabledBehaviorState,
 } from '../dist/index.js'
-import { useMergeEventHandlers } from '@reusable-ui/callbacks'
+import { useMergedEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useDisabledStateTestStyles } from './DisabledStateTest.loader.js'
@@ -38,15 +38,15 @@ export const DisabledStateTest = (props: DisabledStateTestProps) => {
         animationPattern,
     });
     
-    const handleMergedAnimationStart = useMergeEventHandlers(
+    const handleMergedAnimationStart = useMergedEventHandlers(
         handleAnimationStart,
         onAnimationStart,
     );
-    const handleMergedAnimationEnd = useMergeEventHandlers(
+    const handleMergedAnimationEnd = useMergedEventHandlers(
         handleAnimationEnd,
         onAnimationEnd,
     );
-    const handleMergedAnimationCancel = useMergeEventHandlers(
+    const handleMergedAnimationCancel = useMergedEventHandlers(
         handleAnimationCancel,
         onAnimationEnd,
     );

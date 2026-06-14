@@ -3,7 +3,7 @@ import {
     type HoverStateProps,
     useHoverBehaviorState,
 } from '../dist/index.js'
-import { useMergeEventHandlers } from '@reusable-ui/callbacks'
+import { useMergedEventHandlers } from '@reusable-ui/callbacks'
 import { useMergedRefs } from '@reusable-ui/references'
 import { createSyntheticEvent } from '@reusable-ui/events'
 import { HydrateStyles } from '@cssfn/cssfn-react'
@@ -45,15 +45,15 @@ export const HoverStateTest = (props: HoverStateTestProps) => {
         animationPattern,
     });
     
-    const handleMergedAnimationStart = useMergeEventHandlers(
+    const handleMergedAnimationStart = useMergedEventHandlers(
         handleAnimationStart,
         onAnimationStart,
     );
-    const handleMergedAnimationEnd = useMergeEventHandlers(
+    const handleMergedAnimationEnd = useMergedEventHandlers(
         handleAnimationEnd,
         onAnimationEnd,
     );
-    const handleMergedAnimationCancel = useMergeEventHandlers(
+    const handleMergedAnimationCancel = useMergedEventHandlers(
         handleAnimationCancel,
         onAnimationEnd,
     );

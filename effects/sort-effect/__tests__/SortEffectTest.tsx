@@ -3,7 +3,7 @@ import { flushSync } from 'react-dom'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useSortEffectTestStyles } from './SortEffectTest.loader.js'
 import { type SortStateProps, useSortBehaviorState, usingSortState } from '@reusable-ui/sort-state'
-import { useMergeEventHandlers } from '@reusable-ui/callbacks'
+import { useMergedEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
 import { Product } from './product-types.js'
 import { initialProducts } from './dummy-products.js'
@@ -89,15 +89,15 @@ export const SortEffectTest = (props: SortEffectTestProps) => {
         animationPattern: 'test-sorting',
     });
     
-    const handleMergedAnimationStart = useMergeEventHandlers(
+    const handleMergedAnimationStart = useMergedEventHandlers(
         handleAnimationStart,
         onAnimationStart,
     );
-    const handleMergedAnimationEnd = useMergeEventHandlers(
+    const handleMergedAnimationEnd = useMergedEventHandlers(
         handleAnimationEnd,
         onAnimationEnd,
     );
-    const handleMergedAnimationCancel = useMergeEventHandlers(
+    const handleMergedAnimationCancel = useMergedEventHandlers(
         handleAnimationCancel,
         onAnimationEnd,
     );

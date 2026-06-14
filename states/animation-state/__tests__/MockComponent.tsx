@@ -2,7 +2,7 @@ import React, { useRef, useEffect, type RefCallback, type AnimationEventHandler 
 import {
     useAnimationState,
 } from '../dist/index.js'
-import { useStableEventHandler, useMergeEventHandlers } from '@reusable-ui/callbacks'
+import { useStableEventHandler, useMergedEventHandlers } from '@reusable-ui/callbacks'
 import './TestComponent.css'
 
 
@@ -160,7 +160,7 @@ export const MockComponent = (props: MockComponentProps) => {
     const handleLogAnimationStart : AnimationEventHandler<HTMLDivElement> = useStableEventHandler((event) => {
         console.log('animation start: ', event.animationName);
     });
-    const handleAnimationStart = useMergeEventHandlers(
+    const handleAnimationStart = useMergedEventHandlers(
         expandHandlers.handleAnimationStart,
         validityHandlers.handleAnimationStart,
         handleLogAnimationStart,
@@ -168,7 +168,7 @@ export const MockComponent = (props: MockComponentProps) => {
     const handleLogAnimationEnd : AnimationEventHandler<HTMLDivElement> = useStableEventHandler((event) => {
         console.log('animation end: ', event.animationName);
     });
-    const handleAnimationEnd   = useMergeEventHandlers(
+    const handleAnimationEnd   = useMergedEventHandlers(
         expandHandlers.handleAnimationEnd,
         validityHandlers.handleAnimationEnd,
         handleLogAnimationEnd,

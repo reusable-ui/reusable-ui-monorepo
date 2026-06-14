@@ -39,7 +39,7 @@ Tracks animation-aware intent and transition state.
 ```tsx
 import React, { useEffect } from 'react';
 import { useAnimationState } from '@reusable-ui/animation-state';
-import { useMergeEventHandlers } from '@reusable-ui/callbacks';
+import { useMergedEventHandlers } from '@reusable-ui/callbacks';
 import styles from './styles.module.css';
 
 export const AnimatedComponent = () => {
@@ -74,11 +74,11 @@ export const AnimatedComponent = () => {
     );
     
     // Combine event handlers for animation lifecycle:
-    const handleAnimationStart = useMergeEventHandlers(
+    const handleAnimationStart = useMergedEventHandlers(
         expandHandlers.handleAnimationStart,
         focusHandlers.handleAnimationStart,
     );
-    const handleAnimationEnd = useMergeEventHandlers(
+    const handleAnimationEnd = useMergedEventHandlers(
         expandHandlers.handleAnimationEnd,
         focusHandlers.handleAnimationEnd,
     );

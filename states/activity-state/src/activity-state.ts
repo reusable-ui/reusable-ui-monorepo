@@ -28,7 +28,7 @@ import {
 import {
     // Hooks:
     useStableEventHandler,
-    useMergeEventHandlers,
+    useMergedEventHandlers,
 }                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
 import {
     // Hooks:
@@ -192,7 +192,7 @@ export const useActivityBehaviorState = <
     /**
      * Merge animation end handlers with capture logic.
      */
-    const mergedHandleAnimationEnd    = useMergeEventHandlers(
+    const mergedHandleAnimationEnd    = useMergedEventHandlers(
         // The original event handler of animation lifecycle state:
         animationHandlers.handleAnimationEnd,
         
@@ -203,7 +203,7 @@ export const useActivityBehaviorState = <
     /**
      * Merge animation cancel handlers with capture logic.
      */
-    const mergedHandleAnimationCancel = useMergeEventHandlers(
+    const mergedHandleAnimationCancel = useMergedEventHandlers(
         // The original event handler of animation lifecycle state:
         animationHandlers.handleAnimationCancel,
         

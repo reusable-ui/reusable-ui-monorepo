@@ -1,7 +1,7 @@
 import React, { AnimationEvent as ReactAnimationEvent, Key, useRef, useEffect, useState } from 'react'
 import { flushSync } from 'react-dom'
 import { type SortStateProps, useSortBehaviorState } from '../dist/index.js'
-import { useMergeEventHandlers } from '@reusable-ui/callbacks'
+import { useMergedEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useSortStateTestStyles } from './SortStateTest.loader.js'
@@ -60,15 +60,15 @@ export const SortStateTest = (props: SortStateTestProps) => {
         animationPattern: 'test-sorting',
     });
     
-    const handleMergedAnimationStart = useMergeEventHandlers(
+    const handleMergedAnimationStart = useMergedEventHandlers(
         handleAnimationStart,
         onAnimationStart,
     );
-    const handleMergedAnimationEnd = useMergeEventHandlers(
+    const handleMergedAnimationEnd = useMergedEventHandlers(
         handleAnimationEnd,
         onAnimationEnd,
     );
-    const handleMergedAnimationCancel = useMergeEventHandlers(
+    const handleMergedAnimationCancel = useMergedEventHandlers(
         handleAnimationCancel,
         onAnimationEnd,
     );
