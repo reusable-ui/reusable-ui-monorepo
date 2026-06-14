@@ -226,7 +226,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
         {
             // State definitions:
             defaultInitialState        : false,
-            useResolvedEffectiveState  : useResolveEffectiveSelectedState,   // Resolves effective state.
+            useResolvedEffectiveState  : useResolvedEffectiveSelectedState,  // Resolves effective state.
             
             // Behavior definitions:
             defaultAnimationPattern    : ['selecting', 'deselecting'],
@@ -248,7 +248,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
 };
 
 /** Resolves the effective selected state, normalizing declarative keywords into concrete values. */
-const useResolveEffectiveSelectedState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean | 'auto', SelectedStateProps<unknown>, SelectedStateOptions, SelectedBehaviorStateDefinition>): boolean => {
+const useResolvedEffectiveSelectedState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean | 'auto', SelectedStateProps<unknown>, SelectedStateOptions, SelectedBehaviorStateDefinition>): boolean => {
     const effectiveSelected = useSelectedState({
         ...props,
         defaultSelected : undefined,        // Prevents uncontrolled value.
@@ -442,7 +442,7 @@ export const useSelectedController = <TChangeEvent = unknown>(props: SelectedSta
         {
             // State definitions:
             defaultInitialState        : false,
-            useResolvedEffectiveState  : useResolveEffectiveSelectedState,   // Resolves effective state.
+            useResolvedEffectiveState  : useResolvedEffectiveSelectedState,  // Resolves effective state.
         } as Pick<SelectedBehaviorStateDefinition, 'defaultInitialState' | 'useResolvedEffectiveState'>,
     );
     
@@ -454,7 +454,7 @@ export const useSelectedController = <TChangeEvent = unknown>(props: SelectedSta
 };
 
 /** Resolves the effective selected state, normalizing declarative keywords into concrete values. */
-const useResolveEffectiveSelectedState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean | 'auto', SelectedStateProps<unknown>, SelectedStateOptions, SelectedBehaviorStateDefinition>): boolean => {
+const useResolvedEffectiveSelectedState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean | 'auto', SelectedStateProps<unknown>, SelectedStateOptions, SelectedBehaviorStateDefinition>): boolean => {
     const effectiveSelected = useSelectedState({
         ...props,
         defaultSelected : undefined,        // Prevents uncontrolled value.
