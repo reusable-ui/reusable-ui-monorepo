@@ -15,7 +15,7 @@ import { enforceCssMountConventions } from './.eslint-rules/css-mount.js'
 import { enforceScopeFunctionUsage, noForeignCode as noForeignCodeInCssStyle } from './.eslint-rules/css-style.js'
 import { enforceIndexReexports } from './.eslint-rules/index-reexports.js'
 import { noForeignCodeInTypes } from './.eslint-rules/types.js'
-import { enforceContextCreation } from './.eslint-rules/contexts.js'
+import { enforceContextCreation } from './.eslint-rules/react-contexts.js'
 
 
 
