@@ -159,11 +159,11 @@ const collapseBehaviorStateDefinition : CollapseBehaviorStateDefinition = {
     useResolvedEffectiveState  : useResolvedEffectiveCollapseState, // Resolves effective state.
     
     // Behavior definitions:
-    defaultAnimationPattern    : ['expanding', 'collapsing'],      // Matches animation names for transitions.
+    defaultAnimationPattern    : ['expanding', 'collapsing'],       // Matches animation names for transitions.
     defaultAnimationBubbling   : false,
-    resolveTransitionPhase     : resolveExpandTransitionPhase,     // Resolves phases.
-    resolveTransitionClassname : resolveExpandTransitionClassname, // Resolves classnames.
-    triggerTransitionEvent     : triggerExpandPhaseEvents,         // Triggers lifecycle events.
+    resolveTransitionPhase     : resolveExpandTransitionPhase,      // Resolves phases.
+    resolveTransitionClassname : resolveExpandTransitionClassname,  // Resolves classnames.
+    triggerTransitionEvent     : triggerExpandPhaseEvents,          // Triggers lifecycle events.
 };
 
 /**
