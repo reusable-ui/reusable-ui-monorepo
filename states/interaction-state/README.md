@@ -226,7 +226,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
         {
             // State definitions:
             defaultInitialState        : false,
-            useResolveEffectiveState   : useResolveEffectiveSelectedState,   // Resolves effective state.
+            useResolvedEffectiveState  : useResolveEffectiveSelectedState,   // Resolves effective state.
             
             // Behavior definitions:
             defaultAnimationPattern    : ['selecting', 'deselecting'],
@@ -442,8 +442,8 @@ export const useSelectedController = <TChangeEvent = unknown>(props: SelectedSta
         {
             // State definitions:
             defaultInitialState        : false,
-            useResolveEffectiveState   : useResolveEffectiveSelectedState,   // Resolves effective state.
-        } as Pick<SelectedBehaviorStateDefinition, 'defaultInitialState' | 'useResolveEffectiveState'>,
+            useResolvedEffectiveState  : useResolveEffectiveSelectedState,   // Resolves effective state.
+        } as Pick<SelectedBehaviorStateDefinition, 'defaultInitialState' | 'useResolvedEffectiveState'>,
     );
     
     // Return domain-specific API:

@@ -180,7 +180,7 @@ export const useInteractionBehaviorState = <
     const {
         defaultInitialState,
         
-        useResolveEffectiveState,
+        useResolvedEffectiveState,
     } = definition;
     
     
@@ -206,7 +206,7 @@ export const useInteractionBehaviorState = <
     // Resolve the declarative state into a concrete effective state:
     // - Normalizes keywords into concrete values.
     // - Applies influence rules (disabled/read-only, cascade, clamp, etc.).
-    const effectiveState = useResolveEffectiveState({
+    const effectiveState = useResolvedEffectiveState({
         declarativeState,
         props      : props      as TBehaviorProps,
         options    : options    as TBehaviorOptions,
@@ -372,13 +372,13 @@ export const useInteractionController = <
 >(
     props      : InteractionStateProps<TDeclarativeState, TState, TChangeEvent>,
     options    : Pick<InteractionStateOptions<TState>, 'defaultState'> | undefined,
-    definition : Pick<InteractionBehaviorStateDefinition<TDeclarativeState, TState, string, string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>, 'defaultInitialState' | 'useResolveEffectiveState'>
+    definition : Pick<InteractionBehaviorStateDefinition<TDeclarativeState, TState, string, string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>, 'defaultInitialState' | 'useResolvedEffectiveState'>
 ): [TState, DispatchValueChange<TState, TChangeEvent>] => {
     // Extract definition:
     const {
         defaultInitialState,
         
-        useResolveEffectiveState,
+        useResolvedEffectiveState,
     } = definition;
     
     
@@ -405,7 +405,7 @@ export const useInteractionController = <
     // Resolve the declarative state into a concrete effective state:
     // - Normalizes keywords into concrete values.
     // - Applies influence rules (disabled/read-only, cascade, clamp, etc.).
-    const effectiveState = useResolveEffectiveState({
+    const effectiveState = useResolvedEffectiveState({
         declarativeState,
         props      : props      as TBehaviorProps,
         options    : options    as TBehaviorOptions,

@@ -177,7 +177,7 @@ const useResolveEffectiveViewState = ({ declarativeState, props, options }: Reso
 const viewBehaviorStateDefinition : ViewBehaviorStateDefinition = {
     // State definitions:
     defaultInitialState        : defaultInitialViewIndex,
-    useResolveEffectiveState   : useResolveEffectiveViewState,        // Resolves effective state.
+    useResolvedEffectiveState  : useResolveEffectiveViewState,        // Resolves effective state.
     
     // Behavior definitions:
     defaultAnimationPattern    : ['view-advancing', 'view-receding'], // Matches animation names for transitions.

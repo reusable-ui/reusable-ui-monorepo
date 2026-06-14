@@ -31,7 +31,7 @@ export {
  * Accepts an optional `state` prop, defaulting to `undefined` (uncontrolled mode) when not provided.
  * 
  * Declarative values (e.g. `'auto'`, `'inherit'`) will be automatically normalized
- * into effective concrete values by the `useResolveEffectiveState` in the behavior definition.
+ * into effective concrete values by the `useResolvedEffectiveState` in the behavior definition.
  * 
  * This prop is intended to be dynamic and may change over the lifetime of the component.
  * 
@@ -198,7 +198,7 @@ export interface InteractionBehaviorStateDefinition<TDeclarativeState extends {}
     /**
      * A system default initial state when neither `defaultState` prop nor `defaultState` option is provided.
      */
-    defaultInitialState      : TState
+    defaultInitialState       : TState
     
     /**
      * Resolves a **declarative state** (`true`, `false`, `'auto'`, `'inherit'`, etc.)
@@ -213,7 +213,7 @@ export interface InteractionBehaviorStateDefinition<TDeclarativeState extends {}
      * This definition property is a hook because implementors may call other hooks (`useContext`, `useDisabledState`, etc.)
      * to resolve the result.
      */
-    useResolveEffectiveState : (arg: ResolveEffectiveStateArgs<TDeclarativeState, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>) => TState
+    useResolvedEffectiveState : (arg: ResolveEffectiveStateArgs<TDeclarativeState, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>) => TState
 }
 
 /**

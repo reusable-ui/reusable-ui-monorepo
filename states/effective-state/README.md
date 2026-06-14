@@ -20,7 +20,7 @@ The effective state values produced by these resolvers can be fed directly into 
 
 - [`@reusable-ui/transition-state`](https://www.npmjs.com/package/@reusable-ui/transition-state) — `TransitionStateProps.effectiveState : TState`
 - [`@reusable-ui/feedback-state`](https://www.npmjs.com/package/@reusable-ui/feedback-state) — `FeedbackStateProps.effectiveState : TState`
-- [`@reusable-ui/interaction-state`](https://www.npmjs.com/package/@reusable-ui/interaction-state) — `InteractionBehaviorStateDefinition.useResolveEffectiveState() => TState`
+- [`@reusable-ui/interaction-state`](https://www.npmjs.com/package/@reusable-ui/interaction-state) — `InteractionBehaviorStateDefinition.useResolvedEffectiveState() => TState`
 
 This makes **@reusable-ui/effective-state** the foundational layer for consistent state resolution across transitions, feedback, and interaction behaviors.
 

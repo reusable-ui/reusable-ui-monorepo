@@ -156,7 +156,7 @@ const useResolveEffectiveCollapseState = ({ declarativeState, props, options }: 
 const collapseBehaviorStateDefinition : CollapseBehaviorStateDefinition = {
     // State definitions:
     defaultInitialState        : defaultInitialExpanded,
-    useResolveEffectiveState   : useResolveEffectiveCollapseState, // Resolves effective state.
+    useResolvedEffectiveState  : useResolveEffectiveCollapseState, // Resolves effective state.
     
     // Behavior definitions:
     defaultAnimationPattern    : ['expanding', 'collapsing'],      // Matches animation names for transitions.

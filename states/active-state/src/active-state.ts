@@ -169,7 +169,7 @@ const useResolveEffectiveActiveState = ({ declarativeState, props, options }: Re
 const activeBehaviorStateDefinition : ActiveBehaviorStateDefinition = {
     // State definitions:
     defaultInitialState        : defaultInitialActive,
-    useResolveEffectiveState   : useResolveEffectiveActiveState,   // Resolves effective state.
+    useResolvedEffectiveState  : useResolveEffectiveActiveState,   // Resolves effective state.
     
     // Behavior definitions:
     defaultAnimationPattern    : ['activating', 'deactivating'],   // Matches animation names for transitions.
