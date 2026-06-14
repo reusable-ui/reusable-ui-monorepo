@@ -247,7 +247,7 @@ export const useInteractionBehaviorState = <
             InteractionStateOptions<TState>,
             InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
         >,
-        useResolveDriverState : useResolveInteractionDriverState, // Prefers controlled mode, falls back to uncontrolled mode.
+        useResolveDriverState : useResolvedInteractionDriverState, // Prefers controlled mode, falls back to uncontrolled mode.
     } satisfies TransitionBehaviorStateDefinition<TState, TPhase, TClassname,
         typeof combinedProps,
         InteractionStateOptions<TState>,
@@ -287,7 +287,7 @@ export const useInteractionBehaviorState = <
  * 
  * @returns The resolved driver state (controlled or uncontrolled), guaranteed to be concrete.
  */
-const useResolveInteractionDriverState = <TDeclarativeState extends {} | null, TState extends TDeclarativeState, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition, TChangeEvent = unknown>(args: ResolveDriverStateArgs<TState, InteractionStateProps<TDeclarativeState, TState, TChangeEvent> & Pick<TransitionStateProps<TState>, 'effectiveState'>, InteractionStateOptions<TState>, InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>>): TState => {
+const useResolvedInteractionDriverState = <TDeclarativeState extends {} | null, TState extends TDeclarativeState, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition, TChangeEvent = unknown>(args: ResolveDriverStateArgs<TState, InteractionStateProps<TDeclarativeState, TState, TChangeEvent> & Pick<TransitionStateProps<TState>, 'effectiveState'>, InteractionStateOptions<TState>, InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>>): TState => {
     // Extract args:
     const {
         internalState,
