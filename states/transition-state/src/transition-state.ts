@@ -47,7 +47,7 @@ import {
  * A no-op hook for retrieving a previous settled state.
  * 
  * Always returns `undefined`, serving as the internal fallback
- * when `useResolvePreviousState` is not supplied in the behavior definition.
+ * when `useResolvedPreviousState` is not supplied in the behavior definition.
  * 
  * @template TState - The concrete type of the state value (must not be declarative).
  * 
@@ -118,7 +118,7 @@ export const useTransitionBehaviorState = <
         defaultAnimationBubbling = false, // No bubbling by default.
         
         useResolvedDriverState,
-        useResolvePreviousState  = useUndefinedPreviousState,
+        useResolvedPreviousState = useUndefinedPreviousState,
         
         resolveTransitionPhase,
         resolveTransitionClassname,
@@ -171,7 +171,7 @@ export const useTransitionBehaviorState = <
     // It updates only after a transition completes, and persists even after settling.
     // When no prior settled state exists, it resolves to `undefined`.
     // Useful for directional inference, layout comparisons, and transition-aware animations.
-    const prevSettledState    = useResolvePreviousState(settledState);
+    const prevSettledState    = useResolvedPreviousState(settledState);
     
     // Determine whether a transition toward the effective state is currently in progress:
     const isTransitioning     = (

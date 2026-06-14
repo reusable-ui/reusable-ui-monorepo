@@ -140,7 +140,7 @@ export interface ResolveDriverStateArgs<TState extends {} | null, TBehaviorProps
 export interface ResolveTransitionPhaseArgs<TState extends {} | null, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition> {
     /**
      * The previously settled state before the current `settledState`.
-     * Only available if `useResolvePreviousState` is provided in the behavior definition.
+     * Only available if `useResolvedPreviousState` is provided in the behavior definition.
      * 
      * This value trails one step behind `settledState`.
      * It updates only after a transition completes, and persists even after settling.
@@ -216,7 +216,7 @@ export interface ResolveTransitionPhaseArgs<TState extends {} | null, TBehaviorP
 export interface ResolveTransitionClassnameArgs<TState extends {} | null, TPhase extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition> {
     /**
      * The previously settled state before the current `settledState`.
-     * Only available if `useResolvePreviousState` is provided in the behavior definition.
+     * Only available if `useResolvedPreviousState` is provided in the behavior definition.
      * 
      * This value trails one step behind `settledState`.
      * It updates only after a transition completes, and persists even after settling.
@@ -283,7 +283,7 @@ export interface ResolveTransitionClassnameArgs<TState extends {} | null, TPhase
 export interface TriggerTransitionEventArgs<TState extends {} | null, TPhase extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition> {
     /**
      * The previously settled state before the current `settledState`.
-     * Only available if `useResolvePreviousState` is provided in the behavior definition.
+     * Only available if `useResolvedPreviousState` is provided in the behavior definition.
      * 
      * This value trails one step behind `settledState`.
      * It updates only after a transition completes, and persists even after settling.
@@ -399,7 +399,7 @@ export interface TransitionBehaviorStateDefinition<TState extends {} | null, TPh
      * 
      * Defaults to a no-op returning `undefined`.
      */
-    useResolvePreviousState    ?: (settledState: TState) => TState | undefined
+    useResolvedPreviousState   ?: (settledState: TState) => TState | undefined
     
     /**
      * Resolves the semantic transition phase from the given settled state and transition flag.
@@ -442,7 +442,7 @@ export interface TransitionBehaviorState<TState extends {} | null, TPhase extend
 {
     /**
      * The previously settled state before the current `state`.
-     * Only available if `useResolvePreviousState` is provided in the behavior definition.
+     * Only available if `useResolvedPreviousState` is provided in the behavior definition.
      * 
      * This value trails one step behind `state`.
      * It updates only after a transition completes, and persists even after settling.

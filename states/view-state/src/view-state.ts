@@ -187,7 +187,7 @@ const viewBehaviorStateDefinition : ViewBehaviorStateDefinition = {
     triggerTransitionEvent     : triggerViewPhaseEvents,              // Triggers lifecycle events.
     
     // Direction definitions:
-    useResolvePreviousState    : usePreviousValue,                    // Tracks previous settled state.
+    useResolvedPreviousState   : usePreviousValue,                    // Tracks previous settled state.
 };
 
 /**
