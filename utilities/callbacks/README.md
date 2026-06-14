@@ -50,16 +50,16 @@ const mergedClickHandler = useMergeCallbacks(handleClickA, handleClickB);
 
 ---
 
-### `useMergeAsyncCallbacks<TArgs>(...callbacks: Optional<Callback<TArgs, Promise<void>>>[]): Callback<TArgs, Promise<void>>`
+### `useMergedAsyncCallbacks<TArgs>(...callbacks: Optional<Callback<TArgs, Promise<void>>>[]): Callback<TArgs, Promise<void>>`
 Combines multiple **async callbacks** into a single function and executes them **in parallel**.
 
 ```tsx
-import { useMergeAsyncCallbacks } from '@reusable-ui/callbacks';
+import { useMergedAsyncCallbacks } from '@reusable-ui/callbacks';
 
 const fetchDataA = useStableCallback(async () => console.log('Fetching A...'));
 const fetchDataB = useStableCallback(async () => console.log('Fetching B...'));
 
-const mergedAsyncHandler = useMergeAsyncCallbacks(fetchDataA, fetchDataB);
+const mergedAsyncHandler = useMergedAsyncCallbacks(fetchDataA, fetchDataB);
 
 await mergedAsyncHandler();
 ```

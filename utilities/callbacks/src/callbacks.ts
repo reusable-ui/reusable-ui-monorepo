@@ -189,12 +189,12 @@ export const useMergeCallbacks = <TArgs extends unknown[] = []>(...callbacks: Op
  * // Merging multiple async callbacks into a stable reference:
  * const fetchDataA = useStableCallback(async () => console.log('Fetching A...'));
  * const fetchDataB = useStableCallback(async () => console.log('Fetching B...'));
- * const mergedAsyncHandler = useMergeAsyncCallbacks(fetchDataA, fetchDataB);
+ * const mergedAsyncHandler = useMergedAsyncCallbacks(fetchDataA, fetchDataB);
  * 
  * await mergedAsyncHandler();
  * ```
  */
-export const useMergeAsyncCallbacks = <TArgs extends unknown[] = []>(...callbacks: Optional<Callback<TArgs, Promise<void>>>[]): Callback<TArgs, Promise<void>> => {
+export const useMergedAsyncCallbacks = <TArgs extends unknown[] = []>(...callbacks: Optional<Callback<TArgs, Promise<void>>>[]): Callback<TArgs, Promise<void>> => {
     // Returns a stable merged async callback function:
     return useStableCallback<TArgs, Promise<void>>(async (...args) => {
         // Executes all async callbacks in parallel, resolving missing callbacks safely:
@@ -291,5 +291,5 @@ export const useMergedEventHandlers = <TEvent, TExtra extends unknown[] = []>(..
  */
 export const useMergedAsyncEventHandlers = <TEvent, TExtra extends unknown[] = []>(...eventHandlers: Optional<EventHandler<TEvent, TExtra, Promise<void>>>[]): EventHandler<TEvent, TExtra, Promise<void>> => {
     // Returns a stable merged async event handler function:
-    return useMergeAsyncCallbacks<[TEvent, ...TExtra]>(...eventHandlers);
+    return useMergedAsyncCallbacks<[TEvent, ...TExtra]>(...eventHandlers);
 };
