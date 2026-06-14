@@ -211,7 +211,7 @@ export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(p
             // Behavior definitions:
             defaultAnimationPattern    : ['locking', 'unlocking'],
             defaultAnimationBubbling   : false,
-            useResolvedDriverState     : useResolveLockedDriverState,      // Controlled mode only.
+            useResolvedDriverState     : useResolvedLockedDriverState,     // Controlled mode only.
             resolveTransitionPhase     : resolveLockedTransitionPhase,     // Resolves phases.
             resolveTransitionClassname : resolveLockedTransitionClassname, // Resolves classnames.
         } satisfies LockedBehaviorStateDefinition,
@@ -252,7 +252,7 @@ const useLockedState = (props: LockedStateProps, options?: LockedStateOptions): 
 };
 
 /** Resolves the driver state for locked behavior. */
-const useResolveLockedDriverState = ({ props, options }: ResolveDriverStateArgs<boolean, LockedStateProps, LockedStateOptions, LockedBehaviorStateDefinition>): boolean => {
+const useResolvedLockedDriverState = ({ props, options }: ResolveDriverStateArgs<boolean, LockedStateProps, LockedStateOptions, LockedBehaviorStateDefinition>): boolean => {
     return useLockedState(props, options);
 };
 
@@ -422,7 +422,7 @@ export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(p
             // Behavior definitions:
             defaultAnimationPattern    : ['connecting', 'disconnecting'],
             defaultAnimationBubbling   : false,
-            useResolvedDriverState     : useResolveOnlineDriverState,      // Controlled mode only.
+            useResolvedDriverState     : useResolvedOnlineDriverState,     // Controlled mode only.
             resolveTransitionPhase     : resolveOnlineTransitionPhase,     // Resolves phases.
             resolveTransitionClassname : resolveOnlineTransitionClassname, // Resolves classnames.
         } satisfies OnlineBehaviorStateDefinition,
@@ -505,7 +505,7 @@ const useOnlineObserver = (): boolean => {
 };
 
 /** Resolves the driver state for online behavior. */
-const useResolveOnlineDriverState = ({ props, options }: ResolveDriverStateArgs<boolean, OnlineStateProps, OnlineStateOptions, OnlineBehaviorStateDefinition>): boolean => {
+const useResolvedOnlineDriverState = ({ props, options }: ResolveDriverStateArgs<boolean, OnlineStateProps, OnlineStateOptions, OnlineBehaviorStateDefinition>): boolean => {
     return useLiveOnlineState(props, options);
 };
 
@@ -713,7 +713,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
             // Behavior definitions:
             defaultAnimationPattern    : ['selecting', 'deselecting'],
             defaultAnimationBubbling   : false,
-            useResolvedDriverState     : useResolveSelectedDriverState,      // Prefers controlled mode, falls back to uncontrolled mode.
+            useResolvedDriverState     : useResolvedSelectedDriverState,     // Prefers controlled mode, falls back to uncontrolled mode.
             resolveTransitionPhase     : resolveSelectedTransitionPhase,     // Resolves phases.
             resolveTransitionClassname : resolveSelectedTransitionClassname, // Resolves classnames.
         } as SelectedBehaviorStateDefinition,
@@ -757,7 +757,7 @@ const useSelectedState = (props: SelectedStateProps<any> & { defaultSelected?: n
 };
 
 /** Resolves the driver state for selected behavior. */
-const useResolveSelectedDriverState = <TChangeEvent = unknown>({ internalState, props }: ResolveDriverStateArgs<boolean, SelectedStateProps<TChangeEvent> & Pick<TransitionStateProps<boolean>, 'effectiveState'>, SelectedStateOptions, SelectedBehaviorStateDefinition>): boolean => {
+const useResolvedSelectedDriverState = <TChangeEvent = unknown>({ internalState, props }: ResolveDriverStateArgs<boolean, SelectedStateProps<TChangeEvent> & Pick<TransitionStateProps<boolean>, 'effectiveState'>, SelectedStateOptions, SelectedBehaviorStateDefinition>): boolean => {
     const {
         selected: controlledState,
         effectiveState,
