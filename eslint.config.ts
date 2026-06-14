@@ -301,7 +301,7 @@ export default defineConfig(
                     'no-foreign-code-in-types'         : noForeignCodeInTypes          as unknown as Rule.RuleModule,
                 },
             },
-            'contexts': {
+            'react-contexts': {
                 rules: {
                     'enforce-context-creation'         : enforceContextCreation        as unknown as Rule.RuleModule,
                 },
@@ -337,7 +337,7 @@ export default defineConfig(
             'css-style/no-foreign-code'                      : 'error',
             'index-reexports/enforce-index-reexports'        : 'error',
             'types/no-foreign-code-in-types'                 : 'error',
-            'contexts/enforce-context-creation'              : 'error',
+            'react-contexts/enforce-context-creation'        : 'error',
         },
     },
     

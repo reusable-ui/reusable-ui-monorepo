@@ -6,7 +6,7 @@ import { isExported } from './scope-utilities.js'
 
 
 const createRule = ESLintUtils.RuleCreator(
-    name => `contexts/${name}`,
+    name => `react-contexts/${name}`,
 );
 
 
