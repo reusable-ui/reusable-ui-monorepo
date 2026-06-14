@@ -1,6 +1,6 @@
 import { useRef, type RefCallback } from 'react';
 import {
-    useMergeRefs,
+    useMergedRefs,
 } from '../dist/references.js'
 
 import { renderHook } from '@testing-library/react';
@@ -8,10 +8,10 @@ import { jest } from '@jest/globals'
 
 
 
-describe('useMergeRefs', () => {
+describe('useMergedRefs', () => {
     test('merging zero refs should result in a no-op function', () => {
         type RefType = string | null;
-        const { result: { current: mergedRef } } = renderHook(() => useMergeRefs());
+        const { result: { current: mergedRef } } = renderHook(() => useMergedRefs());
         
         // @ts-ignore
         const testType = (
@@ -27,7 +27,7 @@ describe('useMergeRefs', () => {
     test('merging a single ref should forward value correctly', () => {
         type RefType = string | null;
         const { result: { current: refObject1 } } = renderHook(() => useRef<RefType>(null));
-        const { result: { current: mergedRef  } } = renderHook(() => useMergeRefs<RefType>(refObject1));
+        const { result: { current: mergedRef  } } = renderHook(() => useMergedRefs<RefType>(refObject1));
         
         // @ts-ignore
         const testType = (
@@ -55,7 +55,7 @@ describe('useMergeRefs', () => {
         const { result: { current: refObject3 } } = renderHook(() => useRef<RefType>(null));
         const refCallback4 = jest.fn<RefCallback<RefType>>();
         
-        const { result: { current: mergedRef } } = renderHook(() => useMergeRefs(refObject1, refObject2, refCallback1, refObject3, refCallback4));
+        const { result: { current: mergedRef } } = renderHook(() => useMergedRefs(refObject1, refObject2, refCallback1, refObject3, refCallback4));
         
         // @ts-ignore
         const testType = (
@@ -88,7 +88,7 @@ describe('useMergeRefs', () => {
         const { result: { current: refObject1 } } = renderHook(() => useRef<RefType>(null));
         const refCallback1 = jest.fn<RefCallback<RefType>>();
         
-        const { result: { current: mergedRef } } = renderHook(() => useMergeRefs(undefined, null, refObject1, refCallback1));
+        const { result: { current: mergedRef } } = renderHook(() => useMergedRefs(undefined, null, refObject1, refCallback1));
         
         // @ts-ignore
         const testType = (
@@ -113,7 +113,7 @@ describe('useMergeRefs', () => {
     test('dynamic updates: changing merged refs after initial render', () => {
         type RefType = string | null;
         const { result: { current: refObject1 } } = renderHook(() => useRef<RefType>(null));
-        const { result: { current: mergedRef }, rerender } = renderHook(() => useMergeRefs<RefType>(refObject1));
+        const { result: { current: mergedRef }, rerender } = renderHook(() => useMergedRefs<RefType>(refObject1));
         
         // @ts-ignore
         const testType = (
@@ -156,7 +156,7 @@ describe('useMergeRefs', () => {
         const { result: { current: refObject1 } } = renderHook(() => useRef<RefType>('initialValue'));
         const refCallback1 = jest.fn<RefCallback<RefType>>();
         
-        const { result: { current: mergedRef } } = renderHook(() => useMergeRefs(refObject1, refCallback1));
+        const { result: { current: mergedRef } } = renderHook(() => useMergedRefs(refObject1, refCallback1));
         
         // @ts-ignore
         const testType = (
@@ -174,7 +174,7 @@ describe('useMergeRefs', () => {
         const { result: { current: refObject1 } } = renderHook(() => useRef<RefType>('initialValue'));
         const refCallback1 = jest.fn<RefCallback<RefType>>();
         
-        const { result: { current: mergedRef } } = renderHook(() => useMergeRefs(refObject1, refCallback1));
+        const { result: { current: mergedRef } } = renderHook(() => useMergedRefs(refObject1, refCallback1));
         
         // @ts-ignore
         const testType = (

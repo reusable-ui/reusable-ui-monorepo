@@ -4,7 +4,7 @@ import {
     useFocusBehaviorState,
 } from '../dist/index.js'
 import { useMergeEventHandlers } from '@reusable-ui/callbacks'
-import { useMergeRefs } from '@reusable-ui/references'
+import { useMergedRefs } from '@reusable-ui/references'
 import { createSyntheticEvent } from '@reusable-ui/events'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useFocusStateTestStyles } from './FocusStateTest.loader.js'
@@ -81,7 +81,7 @@ export const FocusStateTest = (props: FocusStateTestProps) => {
         };
     }, []);
     
-    const mergedRef = useMergeRefs(
+    const mergedRef = useMergedRefs(
         elementRef,
         ref,
     );

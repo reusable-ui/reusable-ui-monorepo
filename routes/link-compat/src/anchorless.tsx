@@ -22,7 +22,7 @@ import {
     useMergeEventHandlers,
 }                           from '@reusable-ui/callbacks'       // A utility package providing stable and merged callback functions for optimized event handling and performance.
 import {
-    useMergeRefs,
+    useMergedRefs,
 }                           from '@reusable-ui/references'      // A utility package for managing and merging React refs efficiently.
 
 // Types:
@@ -193,7 +193,7 @@ export const useAnchorlessLink = (linkElement: ReactElement<CompatLinkProps, str
     
     
     // Merge ref listeners to preserve both the original ref listener and the additional ref listener for client-side navigation are updated:
-    const mergedRefs = useMergeRefs(
+    const mergedRefs = useMergedRefs(
         // The original ref listener of interactive element:
         interactiveElement.props.ref,
         

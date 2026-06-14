@@ -4,7 +4,7 @@ import {
     useHoverBehaviorState,
 } from '../dist/index.js'
 import { useMergeEventHandlers } from '@reusable-ui/callbacks'
-import { useMergeRefs } from '@reusable-ui/references'
+import { useMergedRefs } from '@reusable-ui/references'
 import { createSyntheticEvent } from '@reusable-ui/events'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useHoverStateTestStyles } from './HoverStateTest.loader.js'
@@ -79,7 +79,7 @@ export const HoverStateTest = (props: HoverStateTestProps) => {
         };
     }, []);
     
-    const mergedRef = useMergeRefs(
+    const mergedRef = useMergedRefs(
         elementRef,
         ref,
     );

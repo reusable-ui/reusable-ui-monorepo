@@ -37,7 +37,7 @@ import {
  * ```tsx
  * const contentRef = useRef<HTMLDivElement | null>(null);
  * const thirdPartyRef = useThirdPartyLibrary();
- * <div ref={useMergeRefs(
+ * <div ref={useMergedRefs(
  *     // External ref:
  *     props.ref,
  *     
@@ -51,7 +51,7 @@ import {
  * </div>
  * ```
  */
-export const useMergeRefs = <TValue>(...refs: Optional<Ref<TValue>>[]): RefCallback<TValue> => {
+export const useMergedRefs = <TValue>(...refs: Optional<Ref<TValue>>[]): RefCallback<TValue> => {
     // Returns a stable merged ref function:
     return useStableCallback<[value: TValue], void>((value) => {
         // Iterates through refs and sets each one if defined:

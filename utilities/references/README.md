@@ -20,19 +20,19 @@ yarn add @reusable-ui/references
 
 ## 🔗 Exported Hooks & Functions
 
-### `useMergeRefs<TValue>(...refs: Optional<Ref<TValue>>[]): RefCallback<TValue>`
+### `useMergedRefs<TValue>(...refs: Optional<Ref<TValue>>[]): RefCallback<TValue>`
 Merges multiple React refs into a **single stable ref callback**.  
 Handles both **object refs** and **callback refs** without causing unnecessary re-renders.
 
 ```tsx
 import { useRef } from 'react';
-import { useMergeRefs } from '@reusable-ui/references';
+import { useMergedRefs } from '@reusable-ui/references';
 
 const contentRef = useRef<HTMLDivElement | null>(null);
 const thirdPartyRef = useThirdPartyLibrary();
 
 return (
-    <div ref={useMergeRefs(
+    <div ref={useMergedRefs(
         // External ref:
         props.ref,
         
