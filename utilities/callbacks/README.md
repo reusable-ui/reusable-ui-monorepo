@@ -33,17 +33,17 @@ const handleClick = useStableCallback(() => console.log('Clicked!'));
 
 ---
 
-### `useMergeCallbacks<TArgs>(...callbacks: Optional<Callback<TArgs, void>>[]): Callback<TArgs, void>`
+### `useMergedCallbacks<TArgs>(...callbacks: Optional<Callback<TArgs, void>>[]): Callback<TArgs, void>`
 Merges multiple callbacks into a **single stable function**.  
 Useful for combining multiple event handlers or sequentially executing callbacks.
 
 ```tsx
-import { useMergeCallbacks } from '@reusable-ui/callbacks';
+import { useMergedCallbacks } from '@reusable-ui/callbacks';
 
 const handleClickA = useStableCallback(() => console.log('A clicked'));
 const handleClickB = useStableCallback(() => console.log('B clicked'));
 
-const mergedClickHandler = useMergeCallbacks(handleClickA, handleClickB);
+const mergedClickHandler = useMergedCallbacks(handleClickA, handleClickB);
 
 <button onClick={mergedClickHandler}>Click Me</button>;
 ```

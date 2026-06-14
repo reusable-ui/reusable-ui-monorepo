@@ -155,12 +155,12 @@ export function useStableCallback<TArgs extends unknown[] = [], TReturn extends 
  * // Merging multiple event handlers into a stable reference:
  * const handleClickA = useStableCallback((event: MouseEvent) => console.log('A clicked', event));
  * const handleClickB = useStableCallback((event: MouseEvent) => console.log('B clicked', event));
- * const mergedClickHandler = useMergeCallbacks(handleClickA, handleClickB);
+ * const mergedClickHandler = useMergedCallbacks(handleClickA, handleClickB);
  * 
  * <button onClick={mergedClickHandler}>Click Me</button>
  * ```
  */
-export const useMergeCallbacks = <TArgs extends unknown[] = []>(...callbacks: Optional<Callback<TArgs, void>>[]): Callback<TArgs, void> => {
+export const useMergedCallbacks = <TArgs extends unknown[] = []>(...callbacks: Optional<Callback<TArgs, void>>[]): Callback<TArgs, void> => {
     // Returns a stable merged callback function:
     return useStableCallback<TArgs, void>((...args) => {
         // Iterates through and invokes each callback if defined:
@@ -261,7 +261,7 @@ export const useStableEventHandler = <TEvent, TExtra extends unknown[] = [], TRe
  */
 export const useMergedEventHandlers = <TEvent, TExtra extends unknown[] = []>(...eventHandlers: Optional<EventHandler<TEvent, TExtra, void>>[]): EventHandler<TEvent, TExtra, void> => {
     // Returns a stable merged event handler function:
-    return useMergeCallbacks<[TEvent, ...TExtra]>(...eventHandlers);
+    return useMergedCallbacks<[TEvent, ...TExtra]>(...eventHandlers);
 };
 
 
