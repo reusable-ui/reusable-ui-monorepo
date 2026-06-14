@@ -162,7 +162,7 @@ export const useDispatchViewIndexChange = <TChangeEvent = unknown>(props: ViewSt
 
 
 /** Resolves the effective view index, normalizing declarative keywords into concrete values. */
-const useResolveEffectiveViewState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<number, ViewStateProps<unknown>, ViewStateOptions, ViewBehaviorStateDefinition>): number => {
+const useResolvedEffectiveViewState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<number, ViewStateProps<unknown>, ViewStateOptions, ViewBehaviorStateDefinition>): number => {
     const effectiveViewIndex = useViewState({
         ...props,
         defaultViewIndex  : undefined,        // Prevents uncontrolled value.
@@ -177,7 +177,7 @@ const useResolveEffectiveViewState = ({ declarativeState, props, options }: Reso
 const viewBehaviorStateDefinition : ViewBehaviorStateDefinition = {
     // State definitions:
     defaultInitialState        : defaultInitialViewIndex,
-    useResolvedEffectiveState  : useResolveEffectiveViewState,        // Resolves effective state.
+    useResolvedEffectiveState  : useResolvedEffectiveViewState,       // Resolves effective state.
     
     // Behavior definitions:
     defaultAnimationPattern    : ['view-advancing', 'view-receding'], // Matches animation names for transitions.
