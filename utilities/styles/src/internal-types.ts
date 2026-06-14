@@ -1,20 +1,9 @@
 /**
- * Generic collector interface for accumulating values of type `TValue`.
+ * Mutable reference for accumulating class names.
  */
-export interface Collector<TValue> {
+export interface ClassNamesBuffer {
     /**
-     * The collected value, representing the accumulated result of the collector.
-     * 
-     * @returns The collected value.
+     * The accumulated space-separated class string.
      */
-    get collected() : TValue
-    
-    
-    
-    /**
-     * Appends a value to the collector.
-     * 
-     * @param value - The value to add.
-     */
-    append(value: TValue): void
+    value : string
 }

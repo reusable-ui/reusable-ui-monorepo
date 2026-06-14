@@ -16,18 +16,17 @@ import {
     type MaybeDeepArray,
 }                           from '@cssfn/core'                  // Writes css in javascript.
 
+// Types:
+import {
+    type ClassNamesBuffer,
+}                           from './internal-types.js'
+
 // Utilities:
 import {
-    // Utilities:
     flattenDeep,
+    accumulateClassName,
+    accumulateStyle,
 }                           from './internal-utilities.js'
-
-// Classes:
-import {
-    // Utilities:
-    ClassCollector,
-    StyleCollector,
-}                           from './internal-classes.js'
 
 
 
@@ -45,18 +44,17 @@ const useMemo : typeof useMemoConditional = (process.env.NODE_ENV !== 'benchmark
 // Hooks:
 
 /**
- * Merges multiple class names into a single optimized string.
+ * Merges multiple class names into a single normalized string.
  * 
  * - Supports **static, dynamic, mapped, and deeply nested conditional class names**.
  * - Recursively flattens **nested arrays** and objects containing class mappings.
  * - Filters out `undefined`, `null`, booleans (`true`, `false`), and empty strings.
  * 
- * @param {MaybeDeepArray<OptionalOrBoolean<string | Record<string, unknown>>>[]} classes
- *    - List of class names or mapping objects.
+ * @param classes - Class name strings, conditional objects, or nested arrays.
  *    - Strings are added as-is.
- *    - Objects allow conditional inclusion based on key-value pairs (`{ className: condition }`).
+ *    - Objects include keys conditionally (`{ className: condition }`).
  *    - Nested arrays and objects are fully supported.
- * @returns {string} A space-separated string of valid class names.
+ * @returns A space-separated string of valid class names.
  * 
  * @example
  * ```tsx
@@ -92,24 +90,32 @@ const useMemo : typeof useMemoConditional = (process.env.NODE_ENV !== 'benchmark
  * ```
  */
 export const mergeClasses = (...classes: MaybeDeepArray<OptionalOrBoolean<string | Record<string, unknown>>>[]): string => {
-    // Collect class names from deeply nested inputs:
-    const classCollector = new ClassCollector();
-    flattenDeep(classCollector, classes);
-    return classCollector.collected;
+    // Holds the accumulated class string:
+    const buffer : ClassNamesBuffer = { value: '' };
+    
+    
+    
+    // Traverse and flatten all nested inputs, appending valid class names into the buffer:
+    flattenDeep(buffer, classes, accumulateClassName);
+    
+    
+    
+    // Return the final space-separated class string:
+    return buffer.value;
 };
 
 
 
 /**
- * Merges multiple style objects into a **single optimized style object**.
+ * Merges multiple style objects into a single normalized `CSSProperties` object.
  * 
  * - Supports **static, dynamic, and deeply nested conditional styles**.
- * - Recursively flattens **nested arrays** of styles into a unified object.
+ * - Recursively flattens **nested arrays** of styles into one object.
  * - Filters out `undefined`, `null`, booleans (`true`, `false`), and non-object values.
- * - Preserves reference stability, generating a **new object only when styles change**.
+ * - Preserves reference stability by memoizing the merged result.
  * 
- * @param { MaybeDeepArray<OptionalOrBoolean<CSSProperties>>[]} styles - List of style objects, including deeply nested structures and conditional values.
- * @returns {CSSProperties} A memoized merged style object.
+ * @param styles - List of style objects, including deeply nested structures and conditional values.
+ * @returns A memoized merged style object.
  * 
  * @example
  * ```tsx
@@ -132,16 +138,20 @@ export const mergeClasses = (...classes: MaybeDeepArray<OptionalOrBoolean<string
  * ```
  */
 export const useMergeStyles = (...styles: MaybeDeepArray<OptionalOrBoolean<CSSProperties>>[]): CSSProperties => {
-    // Collect style properties from deeply nested inputs:
-    const styleCollector = new StyleCollector();
-    flattenDeep(styleCollector, styles);
-    const mergedStyles = styleCollector.collected;
+    // Holds the accumulated style object:
+    const buffer : CSSProperties = {};
     
     
     
-    // Preserve memoized reference for performance optimization:
+    // Traverse and flatten all nested inputs, merging style properties into the buffer:
+    flattenDeep(buffer, styles, accumulateStyle);
+    
+    
+    
+    // Memoize the merged style object for stable reference and performance optimization:
     return useMemo<CSSProperties>(() => {
-        return mergedStyles;
-    }, [JSON.stringify(mergedStyles)]);
-    // Performance Note: `JSON.stringify` works well for small inline styles, ensuring stable references while avoiding complex comparisons.
+        return buffer;
+    }, [JSON.stringify(buffer)]);
+    // Note: `JSON.stringify` is effective for small inline styles,
+    // ensuring stable references without requiring deep comparison logic.
 };
