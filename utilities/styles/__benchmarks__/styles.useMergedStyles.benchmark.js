@@ -1,5 +1,5 @@
 import { Bench } from 'tinybench'
-import { useMergeStyles } from '../dist/styles.js'
+import { useMergedStyles } from '../dist/styles.js'
 
 
 
@@ -27,7 +27,7 @@ const testCases = {
 const bench = new Bench({ time: 500 /*ms*/ });
 
 Object.entries(testCases).forEach(([title, props]) => {
-    bench.add(`useMergeStyles: ${title}`, () => useMergeStyles(...props));
+    bench.add(`useMergedStyles: ${title}`, () => useMergedStyles(...props));
 });
 
 bench.run().then(() => {

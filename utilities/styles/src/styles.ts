@@ -119,7 +119,7 @@ export const mergeClasses = (...classes: MaybeDeepArray<OptionalOrBoolean<string
  * 
  * @example
  * ```tsx
- * <div style={useMergeStyles(
+ * <div style={useMergedStyles(
  *     // Preserve existing inline style:
  *     props.style,
  *     
@@ -137,7 +137,7 @@ export const mergeClasses = (...classes: MaybeDeepArray<OptionalOrBoolean<string
  * </div>
  * ```
  */
-export const useMergeStyles = (...styles: MaybeDeepArray<OptionalOrBoolean<CSSProperties>>[]): CSSProperties => {
+export const useMergedStyles = (...styles: MaybeDeepArray<OptionalOrBoolean<CSSProperties>>[]): CSSProperties => {
     // Holds the accumulated style object:
     const buffer : CSSProperties = {};
     

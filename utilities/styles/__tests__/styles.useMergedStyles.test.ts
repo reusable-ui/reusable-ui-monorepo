@@ -1,14 +1,14 @@
 import {
-    useMergeStyles,
+    useMergedStyles,
 } from '../dist/styles.js'
 
 import { renderHook } from '@testing-library/react';
 
 
 
-describe('useMergeStyles', () => {
+describe('useMergedStyles', () => {
     test('merges multiple style objects', () => {
-        const { result } = renderHook(() => useMergeStyles(
+        const { result } = renderHook(() => useMergedStyles(
             { color: 'red' },
             { padding: '10px' }
         ));
@@ -17,7 +17,7 @@ describe('useMergeStyles', () => {
     });
     
     test('filters out null, undefined, false, and true values', () => {
-        const { result } = renderHook(() => useMergeStyles(
+        const { result } = renderHook(() => useMergedStyles(
             { color: 'red' },
             null,
             undefined,
@@ -30,7 +30,7 @@ describe('useMergeStyles', () => {
     });
     
     test('handles deeply nested style objects', () => {
-        const { result } = renderHook(() => useMergeStyles([
+        const { result } = renderHook(() => useMergedStyles([
             { color: 'blue' },
             [{ padding: '20px' }, [{ border: '1px solid black' }]]
         ]));
@@ -43,7 +43,7 @@ describe('useMergeStyles', () => {
     });
     
     test('overrides duplicate style properties', () => {
-        const { result } = renderHook(() => useMergeStyles(
+        const { result } = renderHook(() => useMergedStyles(
             { color: 'red' },
             { color: 'blue' }
         ));
@@ -52,7 +52,7 @@ describe('useMergeStyles', () => {
     });
     
     test('preserves stable reference when styles remain unchanged', () => {
-        const { result, rerender } = renderHook((styles) => useMergeStyles(styles), {
+        const { result, rerender } = renderHook((styles) => useMergedStyles(styles), {
             initialProps: [{ color: 'red' }]
         });
         
@@ -64,7 +64,7 @@ describe('useMergeStyles', () => {
     
     test('handles conditional styles dynamically', () => {
         const condition = true;
-        const { result } = renderHook(() => useMergeStyles(
+        const { result } = renderHook(() => useMergedStyles(
             { color: 'black' },
             condition && { fontSize: '16px' }
         ));
@@ -75,7 +75,7 @@ describe('useMergeStyles', () => {
     test('handles mixed values in complex scenarios', () => {
         const condition1 = true;
         const condition2 = false;
-        const { result } = renderHook(() => useMergeStyles(
+        const { result } = renderHook(() => useMergedStyles(
             { display: 'flex' },
             condition1 ? [{ fontSize: '14px' }, { fontWeight: 'bold' }] : { textAlign: 'center' },
             condition2 ? {
@@ -101,7 +101,7 @@ describe('useMergeStyles', () => {
         const condition1 = true;
         const condition2 = false;
         
-        const { result } = renderHook(() => useMergeStyles([
+        const { result } = renderHook(() => useMergedStyles([
             { display: 'flex' },
             condition1 ? [
                 { color: 'blue' },
@@ -126,7 +126,7 @@ describe('useMergeStyles', () => {
     test('handles deeply nested dynamic overrides', () => {
         const darkMode = true;
         
-        const { result } = renderHook(() => useMergeStyles([
+        const { result } = renderHook(() => useMergedStyles([
             { display: 'grid' },
             [{ gap: '10px' }, [{ rowGap: '5px' }]],
             darkMode ? [{ backgroundColor: 'black' }, { color: 'white' }] : [{ backgroundColor: 'white' }],
@@ -145,7 +145,7 @@ describe('useMergeStyles', () => {
         const mobile = false;
         const highContrast = true;
         
-        const { result } = renderHook(() => useMergeStyles(
+        const { result } = renderHook(() => useMergedStyles(
             { fontFamily: 'Arial' },
             mobile ? { fontSize: '14px' } : { fontSize: '18px' },
             [{ lineHeight: '1.5' }, highContrast && [{ letterSpacing: '1px' }]],

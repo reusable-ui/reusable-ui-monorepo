@@ -45,13 +45,13 @@ const className = mergeClasses(
 
 ---
 
-### `useMergeStyles(...styles: MaybeDeepArray<OptionalOrBoolean<CSSProperties>>[]): CSSProperties`
+### `useMergedStyles(...styles: MaybeDeepArray<OptionalOrBoolean<CSSProperties>>[]): CSSProperties`
 Merges multiple style objects efficiently, handling **deeply nested arrays and conditional styling**.
 
 ```tsx
-import { useMergeStyles } from '@reusable-ui/styles';
+import { useMergedStyles } from '@reusable-ui/styles';
 
-const styles = useMergeStyles(
+const styles = useMergedStyles(
     // Static style:
     { color: 'red', fontSize: '16px' },
     
