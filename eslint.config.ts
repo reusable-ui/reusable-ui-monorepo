@@ -15,6 +15,7 @@ import { enforceCssMountConventions } from './.eslint-rules/css-mount.js'
 import { enforceScopeFunctionUsage, noForeignCode as noForeignCodeInCssStyle } from './.eslint-rules/css-style.js'
 import { enforceIndexReexports } from './.eslint-rules/index-reexports.js'
 import { noForeignCodeInTypes } from './.eslint-rules/types.js'
+import { enforceContextCreation } from './.eslint-rules/contexts.js'
 
 
 
@@ -300,6 +301,11 @@ export default defineConfig(
                     'no-foreign-code-in-types'         : noForeignCodeInTypes          as unknown as Rule.RuleModule,
                 },
             },
+            'contexts': {
+                rules: {
+                    'enforce-context-creation'         : enforceContextCreation        as unknown as Rule.RuleModule,
+                },
+            },
         },
         rules: {
             'import/no-extraneous-dependencies': ['error', {
@@ -331,6 +337,7 @@ export default defineConfig(
             'css-style/no-foreign-code'                      : 'error',
             'index-reexports/enforce-index-reexports'        : 'error',
             'types/no-foreign-code-in-types'                 : 'error',
+            'contexts/enforce-context-creation'              : 'error',
         },
     },
     
