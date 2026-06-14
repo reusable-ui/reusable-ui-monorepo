@@ -141,7 +141,7 @@ export const useDispatchExpandedChange = <TChangeEvent = unknown>(props: Collaps
 
 
 /** Resolves the effective expansion state, normalizing declarative keywords into concrete values. */
-const useResolveEffectiveCollapseState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, CollapseStateProps<unknown>, CollapseStateOptions, CollapseBehaviorStateDefinition>): boolean => {
+const useResolvedEffectiveCollapseState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, CollapseStateProps<unknown>, CollapseStateOptions, CollapseBehaviorStateDefinition>): boolean => {
     const effectiveExpanded = useCollapseState({
         ...props,
         defaultExpanded : undefined,        // Prevents uncontrolled value.
@@ -156,7 +156,7 @@ const useResolveEffectiveCollapseState = ({ declarativeState, props, options }: 
 const collapseBehaviorStateDefinition : CollapseBehaviorStateDefinition = {
     // State definitions:
     defaultInitialState        : defaultInitialExpanded,
-    useResolvedEffectiveState  : useResolveEffectiveCollapseState, // Resolves effective state.
+    useResolvedEffectiveState  : useResolvedEffectiveCollapseState, // Resolves effective state.
     
     // Behavior definitions:
     defaultAnimationPattern    : ['expanding', 'collapsing'],      // Matches animation names for transitions.
