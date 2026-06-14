@@ -125,7 +125,7 @@ export const useFeedbackBehaviorState = <
             FeedbackStateOptions<TState>,
             FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
         >,
-        useResolveDriverState : useResolveFeedbackDriverState, // Controlled mode only.
+        useResolveDriverState : useResolvedFeedbackDriverState, // Controlled mode only.
     } satisfies TransitionBehaviorStateDefinition<TState, TPhase, TClassname,
         FeedbackStateProps<TState>,
         FeedbackStateOptions<TState>,
@@ -169,7 +169,7 @@ export const useFeedbackBehaviorState = <
  * 
  * @returns The resolved driver state taken directly from props.
  */
-const useResolveFeedbackDriverState = <TState extends {} | null, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>(args: ResolveDriverStateArgs<TState, FeedbackStateProps<TState>, FeedbackStateOptions<TState>, FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>>): TState => {
+const useResolvedFeedbackDriverState = <TState extends {} | null, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>(args: ResolveDriverStateArgs<TState, FeedbackStateProps<TState>, FeedbackStateOptions<TState>, FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>>): TState => {
     // Return the resolved state from props:
     return args.props.effectiveState;
 };
