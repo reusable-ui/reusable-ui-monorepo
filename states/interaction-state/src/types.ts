@@ -193,7 +193,7 @@ export interface InteractionBehaviorStateDefinition<TDeclarativeState extends {}
             TBehaviorProps,
             TBehaviorOptions,
             TBehaviorDefinition
-        >, 'useResolveDriverState'> // Exclude the driver state resolver (will be defined specifically for interaction states).
+        >, 'useResolvedDriverState'> // Exclude the driver state resolver (will be defined specifically for interaction states).
 {
     /**
      * A system default initial state when neither `defaultState` prop nor `defaultState` option is provided.

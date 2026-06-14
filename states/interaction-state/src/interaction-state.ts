@@ -247,7 +247,7 @@ export const useInteractionBehaviorState = <
             InteractionStateOptions<TState>,
             InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
         >,
-        useResolveDriverState : useResolvedInteractionDriverState, // Prefers controlled mode, falls back to uncontrolled mode.
+        useResolvedDriverState : useResolvedInteractionDriverState, // Prefers controlled mode, falls back to uncontrolled mode.
     } satisfies TransitionBehaviorStateDefinition<TState, TPhase, TClassname,
         typeof combinedProps,
         InteractionStateOptions<TState>,

@@ -12,7 +12,7 @@ import {
  * 
  * Provides a declarative way to seed the internal transition system.
  * Subsequent changes can be handled imperatively via the setter callback returned by `useTransitionBehaviorState()`, or
- * declaratively via `definition.useResolveDriverState` passed into `useTransitionBehaviorState(props, options, definition)`.
+ * declaratively via `definition.useResolvedDriverState` passed into `useTransitionBehaviorState(props, options, definition)`.
  * 
  * This prop is intended to be dynamic and may change over the lifetime of the component.
  * 
@@ -28,7 +28,7 @@ export interface TransitionStateProps<TState extends {} | null> {
      *   Subsequent changes to this prop are ignored by the transition system.
      * - Later changes must be applied either:
      *   - Imperatively via the setter callback returned by `useTransitionBehaviorState()`, or
-     *   - Declaratively via `definition.useResolveDriverState` passed into
+     *   - Declaratively via `definition.useResolvedDriverState` passed into
      *     `useTransitionBehaviorState(props, options, definition)`.
      * 
      * Common sources:
@@ -392,7 +392,7 @@ export interface TransitionBehaviorStateDefinition<TState extends {} | null, TPh
      * - In interaction-state: prefers `props.state` if provided (controlled mode),
      *   otherwise falls back to `internalState` (uncontrolled mode).
      */
-    useResolveDriverState       : (args: ResolveDriverStateArgs<TState, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>) => TState
+    useResolvedDriverState      : (args: ResolveDriverStateArgs<TState, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>) => TState
     
     /**
      * (Optional) Tracks the previously settled state for direction-aware styling.

@@ -125,7 +125,7 @@ export const useFeedbackBehaviorState = <
             FeedbackStateOptions<TState>,
             FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
         >,
-        useResolveDriverState : useResolvedFeedbackDriverState, // Controlled mode only.
+        useResolvedDriverState : useResolvedFeedbackDriverState, // Controlled mode only.
     } satisfies TransitionBehaviorStateDefinition<TState, TPhase, TClassname,
         FeedbackStateProps<TState>,
         FeedbackStateOptions<TState>,

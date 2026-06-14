@@ -103,7 +103,7 @@ export interface FeedbackBehaviorStateDefinition<TState extends {} | null, TPhas
             TBehaviorProps,
             TBehaviorOptions,
             TBehaviorDefinition
-        >, 'useResolveDriverState'> // Exclude the driver state resolver (will be defined specifically for feedback states).
+        >, 'useResolvedDriverState'> // Exclude the driver state resolver (will be defined specifically for feedback states).
 {
     /* no additional definition yet - reserved for future extensions */
 }

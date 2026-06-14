@@ -117,7 +117,7 @@ export const useTransitionBehaviorState = <
         defaultAnimationPattern,
         defaultAnimationBubbling = false, // No bubbling by default.
         
-        useResolveDriverState,
+        useResolvedDriverState,
         useResolvePreviousState  = useUndefinedPreviousState,
         
         resolveTransitionPhase,
@@ -152,7 +152,7 @@ export const useTransitionBehaviorState = <
     });
     
     // Controlled vs uncontrolled resolution:
-    const driverState         = useResolveDriverState({
+    const driverState         = useResolvedDriverState({
         internalState,
         props      : props      as TBehaviorProps,
         options    : options    as TBehaviorOptions,

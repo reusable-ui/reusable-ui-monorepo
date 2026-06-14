@@ -211,7 +211,7 @@ export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(p
             // Behavior definitions:
             defaultAnimationPattern    : ['locking', 'unlocking'],
             defaultAnimationBubbling   : false,
-            useResolveDriverState      : useResolveLockedDriverState,      // Controlled mode only.
+            useResolvedDriverState     : useResolveLockedDriverState,      // Controlled mode only.
             resolveTransitionPhase     : resolveLockedTransitionPhase,     // Resolves phases.
             resolveTransitionClassname : resolveLockedTransitionClassname, // Resolves classnames.
         } satisfies LockedBehaviorStateDefinition,
@@ -422,7 +422,7 @@ export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(p
             // Behavior definitions:
             defaultAnimationPattern    : ['connecting', 'disconnecting'],
             defaultAnimationBubbling   : false,
-            useResolveDriverState      : useResolveOnlineDriverState,      // Controlled mode only.
+            useResolvedDriverState     : useResolveOnlineDriverState,      // Controlled mode only.
             resolveTransitionPhase     : resolveOnlineTransitionPhase,     // Resolves phases.
             resolveTransitionClassname : resolveOnlineTransitionClassname, // Resolves classnames.
         } satisfies OnlineBehaviorStateDefinition,
@@ -713,7 +713,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
             // Behavior definitions:
             defaultAnimationPattern    : ['selecting', 'deselecting'],
             defaultAnimationBubbling   : false,
-            useResolveDriverState      : useResolveSelectedDriverState,      // Prefers controlled mode, falls back to uncontrolled mode.
+            useResolvedDriverState     : useResolveSelectedDriverState,      // Prefers controlled mode, falls back to uncontrolled mode.
             resolveTransitionPhase     : resolveSelectedTransitionPhase,     // Resolves phases.
             resolveTransitionClassname : resolveSelectedTransitionClassname, // Resolves classnames.
         } as SelectedBehaviorStateDefinition,
