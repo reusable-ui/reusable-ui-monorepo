@@ -154,7 +154,7 @@ export const useDispatchActiveChange = <TChangeEvent = unknown>(props: ActiveSta
 
 
 /** Resolves the effective activation state, normalizing declarative keywords into concrete values. */
-const useResolveEffectiveActiveState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, ActiveStateProps<unknown>, ActiveStateOptions, ActiveBehaviorStateDefinition>): boolean => {
+const useResolvedEffectiveActiveState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, ActiveStateProps<unknown>, ActiveStateOptions, ActiveBehaviorStateDefinition>): boolean => {
     const effectiveActive = useActiveState({
         ...props,
         defaultActive : undefined,        // Prevents uncontrolled value.
@@ -169,7 +169,7 @@ const useResolveEffectiveActiveState = ({ declarativeState, props, options }: Re
 const activeBehaviorStateDefinition : ActiveBehaviorStateDefinition = {
     // State definitions:
     defaultInitialState        : defaultInitialActive,
-    useResolvedEffectiveState  : useResolveEffectiveActiveState,   // Resolves effective state.
+    useResolvedEffectiveState  : useResolvedEffectiveActiveState,  // Resolves effective state.
     
     // Behavior definitions:
     defaultAnimationPattern    : ['activating', 'deactivating'],   // Matches animation names for transitions.
