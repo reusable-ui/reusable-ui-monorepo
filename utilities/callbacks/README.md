@@ -95,16 +95,16 @@ const mergedClickHandler = useMergeEventHandlers(handleClickA, handleClickB);
 
 ---
 
-### `useMergeAsyncEventHandlers<TEvent, TExtra>(...eventHandlers: Optional<EventHandler<TEvent, TExtra, Promise<void>>>[]): EventHandler<TEvent, TExtra, Promise<void>>`
+### `useMergedAsyncEventHandlers<TEvent, TExtra>(...eventHandlers: Optional<EventHandler<TEvent, TExtra, Promise<void>>>[]): EventHandler<TEvent, TExtra, Promise<void>>`
 Merges multiple **async event handlers** into a single function and runs them **in parallel**.
 
 ```tsx
-import { useMergeAsyncEventHandlers } from '@reusable-ui/callbacks';
+import { useMergedAsyncEventHandlers } from '@reusable-ui/callbacks';
 
 const handleAsyncA = useStableEventHandler(async (event: Event) => console.log('A completed', event));
 const handleAsyncB = useStableEventHandler(async (event: Event) => console.log('B completed', event));
 
-const mergedAsyncHandler = useMergeAsyncEventHandlers(handleAsyncA, handleAsyncB);
+const mergedAsyncHandler = useMergedAsyncEventHandlers(handleAsyncA, handleAsyncB);
 
 await mergedAsyncHandler(event);
 ```

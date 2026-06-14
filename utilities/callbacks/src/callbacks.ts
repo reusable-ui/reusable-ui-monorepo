@@ -284,12 +284,12 @@ export const useMergeEventHandlers = <TEvent, TExtra extends unknown[] = []>(...
  * // Merging multiple async event handlers into a stable reference:
  * const handleAsyncA = useStableEventHandler(async (event: Event) => console.log('A completed', event));
  * const handleAsyncB = useStableEventHandler(async (event: Event) => console.log('B completed', event));
- * const mergedAsyncHandler = useMergeAsyncEventHandlers(handleAsyncA, handleAsyncB);
+ * const mergedAsyncHandler = useMergedAsyncEventHandlers(handleAsyncA, handleAsyncB);
  * 
  * await mergedAsyncHandler(event);
  * ```
  */
-export const useMergeAsyncEventHandlers = <TEvent, TExtra extends unknown[] = []>(...eventHandlers: Optional<EventHandler<TEvent, TExtra, Promise<void>>>[]): EventHandler<TEvent, TExtra, Promise<void>> => {
+export const useMergedAsyncEventHandlers = <TEvent, TExtra extends unknown[] = []>(...eventHandlers: Optional<EventHandler<TEvent, TExtra, Promise<void>>>[]): EventHandler<TEvent, TExtra, Promise<void>> => {
     // Returns a stable merged async event handler function:
     return useMergeAsyncCallbacks<[TEvent, ...TExtra]>(...eventHandlers);
 };
