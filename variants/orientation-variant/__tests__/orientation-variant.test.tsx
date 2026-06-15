@@ -15,7 +15,7 @@ import {
 } from '../dist/internal-defaults.js'
 import {
     useOrientationVariant,
-} from '../dist/orientation-variant.js'
+} from '../dist/client-hooks.js'
 import {
     OrientationVariantProvider,
 } from '../dist/providers.js'
