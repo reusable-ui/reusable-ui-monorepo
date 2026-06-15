@@ -1,5 +1,5 @@
 import { Bench } from 'tinybench'
-import { mergeClasses } from '../dist/styles.js'
+import { mergeClasses } from '../dist/client-hooks.js'
 import classnames from 'classnames';
 
 

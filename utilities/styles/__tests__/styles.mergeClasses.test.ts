@@ -1,6 +1,6 @@
 import {
     mergeClasses,
-} from '../dist/styles.js'
+} from '../dist/client-hooks.js'
 
 
 
