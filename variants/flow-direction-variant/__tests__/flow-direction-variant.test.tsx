@@ -15,7 +15,7 @@ import {
 } from '../dist/internal-defaults.js'
 import {
     useFlowDirectionVariant,
-} from '../dist/flow-direction-variant.js'
+} from '../dist/client-hooks.js'
 import {
     FlowDirectionVariantProvider,
 } from '../dist/providers.js'
