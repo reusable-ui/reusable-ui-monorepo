@@ -15,7 +15,7 @@ import {
 } from '../dist/internal-defaults.js'
 import {
     useThemeVariant,
-} from '../dist/theme-variant.js'
+} from '../dist/client-hooks.js'
 import {
     ThemeVariantProvider,
 } from '../dist/providers.js'
