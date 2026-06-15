@@ -14,7 +14,7 @@ import {
 } from '../dist/internal-defaults.js'
 import {
     useEmphasisVariant,
-} from '../dist/emphasis-variant.js'
+} from '../dist/client-hooks.js'
 import {
     EmphasisVariantProvider,
 } from '../dist/providers.js'
