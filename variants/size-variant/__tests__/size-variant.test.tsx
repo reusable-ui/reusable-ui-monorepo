@@ -16,7 +16,7 @@ import {
 } from '../dist/internal-defaults.js'
 import {
     useSizeVariant,
-} from '../dist/size-variant.js'
+} from '../dist/client-hooks.js'
 import {
     SizeVariantProvider,
 } from '../dist/providers.js'
