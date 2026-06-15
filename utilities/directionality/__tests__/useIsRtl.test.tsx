@@ -2,7 +2,7 @@
 import React from 'react';
 import {
     useIsRtl,
-} from '../dist/directionality.js'
+} from '../dist/client-hooks.js'
 import { render, screen, renderHook } from '@testing-library/react'
 
 
