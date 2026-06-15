@@ -1,0 +1,6 @@
+declare module "is-in-browser" {
+    export declare const isJsDom: boolean;
+    export declare const isNode: boolean;
+    export declare const isBrowser: boolean;
+    export default isBrowser;
+}
