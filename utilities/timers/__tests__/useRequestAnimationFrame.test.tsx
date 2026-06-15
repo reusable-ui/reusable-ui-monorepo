@@ -1,7 +1,7 @@
 
 import {
     useRequestAnimationFrame,
-} from '../dist/timers.js'
+} from '../dist/client-hooks.js'
 import { act, renderHook } from '@testing-library/react'
 
 
