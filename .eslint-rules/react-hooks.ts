@@ -34,9 +34,7 @@ const isHookNameCandidate = (name: string): boolean => {
  * - Hook names must start with `use` followed by PascalCase (e.g. `useDragObserver`, `useThemeVariant`).
  * - Must be a function declaration, function expression, or arrow function.
  * - Must be declared in one of:
- *   - `hook.ts`
  *   - `hooks.ts`
- *   - `*-hook.ts`
  *   - `*-hooks.ts`
  * - Must be exported.
  * 
@@ -52,11 +50,11 @@ export const enforceHookFileLocation = createRule({
     meta : {
         type     : 'problem',
         docs     : {
-            description : 'Require React hook declarations (`use<PascalCase>`) only in hook.ts, hooks.ts, *-hook.ts, or *-hooks.ts.',
+            description : 'Require React hook declarations (`use<PascalCase>`) only in hooks.ts or *-hooks.ts.',
         },
         schema   : [], // no options accepted
         messages : {
-            wrongFile   : 'React hooks must be declared in hook.ts, hooks.ts, *-hook.ts, or *-hooks.ts.',
+            wrongFile   : 'React hooks must be declared in hooks.ts or *-hooks.ts.',
             // wrongExport : 'React hooks must be exported.',
             // wrongType   : 'React hooks must be functions (function declaration, function expression, or arrow function).',
         },
@@ -66,9 +64,8 @@ export const enforceHookFileLocation = createRule({
         const basename         = path.basename(filename);
         
         // Match:
-        // - hook.ts, *-hook-*.ts, and *-hook.ts
-        // - hooks.ts, *-hooks-*.ts, and *-hooks.ts
-        const isExpectedModule = /(^|-)hooks?$/.test(path.parse(basename).name);
+        // - hooks.ts or *-hooks.ts
+        const isExpectedModule = /(^|-)hooks$/.test(path.parse(basename).name);
         
         
         
