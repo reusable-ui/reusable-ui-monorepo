@@ -14,7 +14,7 @@ import {
 } from '../dist/internal-defaults.js'
 import {
     useMildVariant,
-} from '../dist/mild-variant.js'
+} from '../dist/client-hooks.js'
 import {
     MildVariantProvider,
 } from '../dist/providers.js'
