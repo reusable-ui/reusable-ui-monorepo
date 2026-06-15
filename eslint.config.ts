@@ -16,6 +16,7 @@ import { enforceScopeFunctionUsage, noForeignCode as noForeignCodeInCssStyle } f
 import { enforceIndexReexports } from './.eslint-rules/index-reexports.js'
 import { noForeignCodeInTypes } from './.eslint-rules/types.js'
 import { enforceContextCreation } from './.eslint-rules/react-contexts.js'
+import { enforceHookFileLocation } from './.eslint-rules/react-hooks.js'
 
 
 
@@ -306,6 +307,11 @@ export default defineConfig(
                     'enforce-context-creation'         : enforceContextCreation        as unknown as Rule.RuleModule,
                 },
             },
+            'react-hooks': {
+                rules: {
+                    'enforce-hook-file-location'       : enforceHookFileLocation       as unknown as Rule.RuleModule,
+                },
+            },
         },
         rules: {
             'import/no-extraneous-dependencies': ['error', {
@@ -338,6 +344,7 @@ export default defineConfig(
             'index-reexports/enforce-index-reexports'        : 'error',
             'types/no-foreign-code-in-types'                 : 'error',
             'react-contexts/enforce-context-creation'        : 'error',
+            'react-hooks/enforce-hook-file-location'         : 'error',
         },
     },
     
