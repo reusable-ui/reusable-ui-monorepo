@@ -14,7 +14,7 @@ import {
 } from '../dist/internal-defaults.js'
 import {
     useBareVariant,
-} from '../dist/client-hooks.js'
+} from '../dist/hooks.js'
 
 import { renderHook, render } from '@testing-library/react'
 import '@testing-library/jest-dom'
