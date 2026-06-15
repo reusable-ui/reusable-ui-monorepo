@@ -1,4 +1,4 @@
 export * from './types.js'
 export * from './css-types.js'
-export * from './transition-state.js'
+export * from './client-hooks.js'
 export * from './css-hooks.js'
