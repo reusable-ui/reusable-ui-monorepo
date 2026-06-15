@@ -14,7 +14,7 @@ import {
 } from '../dist/internal-defaults.js'
 import {
     useOutlineVariant,
-} from '../dist/outline-variant.js'
+} from '../dist/client-hooks.js'
 import {
     OutlineVariantProvider,
 } from '../dist/providers.js'
