@@ -10,7 +10,7 @@ import {
 } from '../dist/types.js'
 import {
     useStylingVariants,
-} from '../dist/styling-variants.js'
+} from '../dist/hooks.js'
 
 import { renderHook, render } from '@testing-library/react'
 import '@testing-library/jest-dom'
