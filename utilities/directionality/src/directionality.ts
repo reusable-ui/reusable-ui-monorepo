@@ -7,13 +7,8 @@ import {
     
     // Hooks:
     useState,
+    useLayoutEffect,
 }                           from 'react'
-
-// Reusable-ui utilities:
-import {
-    // Hooks:
-    useIsomorphicLayoutEffect,
-}                           from '@reusable-ui/lifecycles'      // A React utility package for managing component lifecycles, ensuring stable effects, and optimizing state updates.
 
 
 
@@ -43,7 +38,7 @@ export const useIsRtl = <TElement extends Element = HTMLElement>(defaultRtl: boo
     // Effects:
     
     // Updates RTL status when the element reference changes:
-    useIsomorphicLayoutEffect(() => {
+    useLayoutEffect(() => {
         // Ensure the target element reference is valid:
         if (!targetElementRef) return;
         
