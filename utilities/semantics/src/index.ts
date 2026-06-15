@@ -1,2 +1,2 @@
 export * from './types.js'
-export * from './semantics.js'
+export * from './client-hooks.js'
