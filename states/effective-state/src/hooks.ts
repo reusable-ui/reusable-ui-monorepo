@@ -1,5 +1,3 @@
-'use client' // The exported hooks are client side only.
-
 // React:
 import {
     // Hooks:
