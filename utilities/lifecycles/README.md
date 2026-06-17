@@ -36,6 +36,35 @@ useEffect(() => {
 
 ---
 
+### `useIsomorphicRef<T>(initialValue: T): RefObject<T>`
+A universal `useRef` polyfill that adapts seamlessly to both client and server environments.
+
+- On the **client** side, it works exactly the same as React `useRef` hook.
+- On the **server** side, it returns a mock `RefObject` object that resembles a React Ref.
+  Since server components render only once per request and never re-render,
+  this reference remains stable.
+
+This ensures cross-environment utilities can safely interact with mutable ref targets 
+without throwing bundler exceptions or server-side runtime errors.
+
+```tsx
+export const TheServerComponent = () => {
+    // Works on server component:
+    const resourceRef = useIsomorphicRef<HTMLDivElement>(null);
+    .....
+};
+```
+
+```tsx
+'use client'
+
+export const TheClientComponent = () => {
+    // Works on client component:
+    const resourceRef = useIsomorphicRef<HTMLDivElement>(null);
+    .....
+};
+```
+
 ### `useTriggerRender(): [DispatchWithoutAction, symbol]`
 Forces a **controlled re-render** of a React component.
 
