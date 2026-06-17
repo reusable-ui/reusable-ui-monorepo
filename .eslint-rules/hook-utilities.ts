@@ -16,6 +16,7 @@ const serverSafeHooks = new Set<string>([
     'useDebugValue', // Confirmed by experimental that can be safely used in server components.
     
     // Custom hooks:
+    'useIsomorphicRef',
     // add more server-safe hooks here in the future
 ]);
 
