@@ -7,7 +7,6 @@
     "lifecycle",
     "hooks",
     "useRef",
-    "useIsomorphicRef",
     "useEffect",
     "useLayoutEffect",
     "useReducer",
