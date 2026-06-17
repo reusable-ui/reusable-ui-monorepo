@@ -4,9 +4,12 @@ import { simpleTraverse } from './simple-traverse.js'
 
 
 // Server-safe allow-list:
+// These hooks are safe to use in React Server Components because they
+// do not rely on client‑side state or side effects.
 const serverSafeHooks = new Set<string>([
     'use',
     'useId',
+    'useMemo', // Confirmed by experimental that can be safely used in server components as pass-through.
     
     // add more server-safe hooks here in the future
 ]);
@@ -17,7 +20,7 @@ const serverSafeHooks = new Set<string>([
  * Determines if a given React hook name is client-side only.
  * 
  * Behavior:
- * - Returns `false` for known server-safe hooks (currently "use" and "useId").
+ * - Returns `false` for known server-safe hooks (currently "use", "useId", "useMemo").
  * - Returns `true` for all other built-in and custom hooks.
  * 
  * Why:
@@ -28,8 +31,9 @@ const serverSafeHooks = new Set<string>([
  * Examples:
  * - isClientOnlyHook("useState")   → true
  * - isClientOnlyHook("useEffect")  → true
- * - isClientOnlyHook("useId")      → false
  * - isClientOnlyHook("use")        → false
+ * - isClientOnlyHook("useId")      → false
+ * - isClientOnlyHook("useMemo")    → false
  * - isClientOnlyHook("useMyHook")  → true
  */
 export const isClientOnlyHook = (hookName: string): boolean => {
