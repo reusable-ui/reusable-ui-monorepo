@@ -15,6 +15,7 @@
 @reusable-ui/nodes
 @reusable-ui/resets
 @reusable-ui/runtime-checks
+@reusable-ui/isomorphics
 @reusable-ui/lifecycles                             deps: none, lifecycle-related hooks.
 @reusable-ui/callbacks                              deps: none, foundational for stable API functions.
 @reusable-ui/styles                                 deps: none, manages styling utilities.

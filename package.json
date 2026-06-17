@@ -57,6 +57,7 @@
     "utilities/nodes",
     "utilities/resets",
     "utilities/runtime-checks",
+    "utilities/isomorphics",
     "utilities/lifecycles",
     "utilities/callbacks",
     "utilities/styles",
