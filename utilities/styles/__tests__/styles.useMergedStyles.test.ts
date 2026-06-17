@@ -1,6 +1,6 @@
 import {
     useMergedStyles,
-} from '../dist/client-hooks.js'
+} from '../dist/general-hooks.js'
 
 import { renderHook } from '@testing-library/react';
 

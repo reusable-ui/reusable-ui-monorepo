@@ -6,7 +6,7 @@ import {
     
     
     // Hooks:
-    useMemo as useMemoConditional,
+    useMemo as useOriginalReactMemo,
 }                           from 'react'
 
 // Cssfn:
@@ -37,7 +37,7 @@ import {
  * - **Benchmark Mode (`NODE_ENV === 'benchmark`)** → Disables memoization by executing the factory function directly.
  * - **Prevents dependency tracking** to measure raw execution time.
  */
-const useMemo : typeof useMemoConditional = (process.env.NODE_ENV !== 'benchmark') ? useMemoConditional : <T>(factory: () => T) => factory();
+const useMemo : typeof useOriginalReactMemo = (process.env.NODE_ENV !== 'benchmark') ? useOriginalReactMemo : <T>(factory: () => T) => factory();
 
 
 

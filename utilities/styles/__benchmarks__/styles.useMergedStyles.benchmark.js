@@ -1,5 +1,5 @@
 import { Bench } from 'tinybench'
-import { useMergedStyles } from '../dist/client-hooks.js'
+import { useMergedStyles } from '../dist/general-hooks.js'
 
 
 
