@@ -7,7 +7,6 @@ import {
     
     // Hooks:
     useCallback,
-    useRef,
 }                           from 'react'
 
 // Cssfn:
@@ -15,6 +14,12 @@ import {
     // Cssfn general types:
     type Optional,
 }                           from '@cssfn/core'                  // Writes css in javascript.
+
+// Reusable-ui utilities:
+import {
+    // Hooks:
+    useIsomorphicRef,
+}                           from '@reusable-ui/isomorphics'     // Provides isomorphic (universal) hooks designed to work seamlessly across both client and server environments.
 
 // Types:
 import {
@@ -109,7 +114,7 @@ export function useStableCallback<TArgs extends unknown[] = [], TReturn extends 
 export function useStableCallback<TArgs extends unknown[] = [], TReturn extends void | undefined = void>(callback: Callback<TArgs, TReturn> | null | undefined): Callback<TArgs, TReturn>;
 export function useStableCallback<TArgs extends unknown[] = [], TReturn extends unknown = void>(callback: Callback<TArgs, TReturn> | null | undefined): Callback<TArgs, TReturn> {
     // Stores the latest callback reference:
-    const callbackRef = useRef<Callback<TArgs, TReturn> | null | undefined>(callback);
+    const callbackRef = useIsomorphicRef<Callback<TArgs, TReturn> | null | undefined>(callback);
     
     
     

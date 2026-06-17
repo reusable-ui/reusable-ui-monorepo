@@ -19,6 +19,14 @@ const serverSafeHooks = new Set<string>([
     
     // Custom hooks:
     'useIsomorphicRef',
+    
+    'useStableCallback',
+    'useMergedCallbacks',
+    'useMergedAsyncCallbacks',
+    
+    'useStableEventHandler',
+    'useMergedEventHandlers',
+    'useMergedAsyncEventHandlers',
     // add more server-safe hooks here in the future
 ]);
 
