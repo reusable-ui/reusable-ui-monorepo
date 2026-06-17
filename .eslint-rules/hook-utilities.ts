@@ -7,6 +7,7 @@ import { simpleTraverse } from './simple-traverse.js'
 // These hooks are safe to use in React Server Components because they
 // do not rely on client‑side state or side effects.
 const serverSafeHooks = new Set<string>([
+    // Built-in hooks:
     'use',
     'useId',
     'useMemo',       // Confirmed by experimental that can be safely used in server components as pass-through.
@@ -14,6 +15,7 @@ const serverSafeHooks = new Set<string>([
     'useContext',    // Confirmed by experimental that can be safely used in server components.
     'useDebugValue', // Confirmed by experimental that can be safely used in server components.
     
+    // Custom hooks:
     // add more server-safe hooks here in the future
 ]);
 
