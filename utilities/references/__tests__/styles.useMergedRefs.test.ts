@@ -1,7 +1,7 @@
 import { useRef, type RefCallback } from 'react';
 import {
     useMergedRefs,
-} from '../dist/client-hooks.js'
+} from '../dist/general-hooks.js'
 
 import { renderHook } from '@testing-library/react';
 import { jest } from '@jest/globals'
