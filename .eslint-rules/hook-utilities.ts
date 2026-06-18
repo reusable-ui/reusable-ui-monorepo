@@ -29,6 +29,11 @@ const serverSafeHooks = new Set<string>([
     'useMergedAsyncEventHandlers',
     
     'useResolvedSemanticAttributes',
+    
+    'useControllableState',
+    'useRangedState',
+    'useCascadeState',
+    'useObservableState',
     // add more server-safe hooks here in the future
 ]);
 
