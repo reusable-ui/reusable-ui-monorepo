@@ -28,6 +28,10 @@ const serverSafeHooks = new Set<string>([
     'useMergedEventHandlers',
     'useMergedAsyncEventHandlers',
     
+    'useMergedStyles',
+    
+    'useMergedRefs',
+    
     'useResolvedSemanticAttributes',
     
     'useControllableState',
