@@ -41,7 +41,7 @@ const serverSafeHooks = new Set<string>([
     
     'useControllableState',
     'useRangedState',
-    'useCascadeState',
+    // 'useCascadeState', // This is a client-side hook due to `use(stateContext)`.
     'useObservableState',
     
     'useAnchorlessLink',
