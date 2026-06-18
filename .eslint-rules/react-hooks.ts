@@ -3,7 +3,7 @@ import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
 import { collectBindingInitializers } from './binding-initializers.js'
 import { isTopLevel, /* isExported */ } from './scope-utilities.js'
-import { hasClientOnlyHook } from './hook-utilities.js'
+import { isClientOnlyHook, hasClientOnlyHook } from './hook-utilities.js'
 
 
 
@@ -392,6 +392,7 @@ export const enforceClientHookModules = createRule({
  * - The filename must not include "client" (separated by a dash).
  * - The module must declare only general hooks (those for which `isClientOnlyHook` returns `false`).
  *   Any client-side hooks must be moved to a client module.
+ * - Must be registered in server-safe hook list.
  * 
  * Why:
  * - Ensures that general hooks are grouped in explicitly named general modules.
@@ -410,6 +411,8 @@ export const enforceGeneralHookModules = createRule({
             hasClientPrefix      : 'Hook module without "use client" directive must not include "client-" in its filename.',
             
             wrongFile            : 'Client-side hook `{{hookName}}` is not allowed in a hook module without "use client" directive. Move it to a client module.',
+            
+            notRegistered        : 'General hook `{{hookName}}` is not registered in `serverSafeHooks`. Add it to the list.'
         },
     },
     create(context) {
@@ -488,6 +491,11 @@ export const enforceGeneralHookModules = createRule({
                 //   this is a client hook incorrectly placed in a general module.
                 if (hasClientOnlyHook(node.body)) {
                     context.report({ node, messageId: 'wrongFile', data: { hookName: name } });
+                }
+                
+                // Enforce registered on server-safe hook list:
+                else if (isClientOnlyHook(name)) {
+                    context.report({ node, messageId: 'notRegistered', data: { hookName: name } });
                 } // if
             },
             
@@ -542,6 +550,11 @@ export const enforceGeneralHookModules = createRule({
                         hasClientOnlyHook(value.body)
                     ) {
                         context.report({ node: id, messageId: 'wrongFile', data: { hookName: bindingName } });
+                    }
+                    
+                    // Enforce registered on server-safe hook list:
+                    else if (isClientOnlyHook(bindingName)) {
+                        context.report({ node, messageId: 'notRegistered', data: { hookName: bindingName } });
                     } // if
                 } // for
             },
