@@ -1,5 +1,5 @@
 export *           from './types.js'
 export *           from './css-types.js'
-export *           from './hooks.js'
+export *           from './general-hooks.js'
 export *           from './css-selectors.js'
 export *           from './css-hooks.js'
