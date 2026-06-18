@@ -43,6 +43,10 @@ const serverSafeHooks = new Set<string>([
     'useObservableState',
     
     'useAnchorlessLink',
+    
+    'useNavigationPathMatch',
+    'useCurrentPathMatch',
+    'useLinkPathMatch',
     // add more server-safe hooks here in the future
 ]);
 
