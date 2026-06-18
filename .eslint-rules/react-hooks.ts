@@ -217,6 +217,8 @@ export const enforceClientHookModules = createRule({
             hasGeneralPrefix    : 'Hook module with "use client" directive must not include "general-" in its filename.',
             
             wrongFile           : 'General hook `{{hookName}}` is not allowed in a hook module with "use client" directive. Move it to a general module.',
+            
+            wrongRegistered     : 'Client-side hook `{{hookName}}` is wrongly registered in `serverSafeHooks`. Remove it to the list.'
         },
     },
     create(context) {
@@ -295,6 +297,11 @@ export const enforceClientHookModules = createRule({
                 //   this is a general hook incorrectly placed in a client module.
                 if (!hasClientOnlyHook(node.body)) {
                     context.report({ node, messageId: 'wrongFile', data: { hookName: name } });
+                }
+                
+                // Enforce NOT registered on server-safe hook list:
+                else if (!isClientOnlyHook(name)) {
+                    context.report({ node, messageId: 'wrongRegistered', data: { hookName: name } });
                 } // if
             },
             
@@ -349,6 +356,11 @@ export const enforceClientHookModules = createRule({
                         hasClientOnlyHook(value.body)
                     )) {
                         context.report({ node: id, messageId: 'wrongFile', data: { hookName: bindingName } });
+                    }
+                    
+                    // Enforce NOT registered on server-safe hook list:
+                    else if (!isClientOnlyHook(bindingName)) {
+                        context.report({ node, messageId: 'wrongRegistered', data: { hookName: bindingName } });
                     } // if
                 } // for
             },
