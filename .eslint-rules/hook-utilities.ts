@@ -119,6 +119,14 @@ export const hasClientOnlyHook = (functionBody: TSESTree.BlockStatement | TSESTr
             const name = node.callee.name;
             if (!/^use($|[A-Z])/.test(name)) return;
             
+            // Special case for `use(SomeContext)`:
+            // - The `use()` is general hook but the `SomeContext` is client-only context.
+            //   For this case the `use(SomeContext)` is treated as client-side hook.
+            if ((name === 'use') && (node.arguments[0]?.type === TSESTree.AST_NODE_TYPES.Identifier) && node.arguments[0]?.name.endsWith('Context')) {
+                found = true;
+                return;
+            } // if
+            
             // Only interested of known client hooks:
             if (!isClientOnlyHook(name)) return;
             
