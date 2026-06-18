@@ -41,6 +41,8 @@ const serverSafeHooks = new Set<string>([
     'useRangedState',
     'useCascadeState',
     'useObservableState',
+    
+    'useAnchorlessLink',
     // add more server-safe hooks here in the future
 ]);
 
