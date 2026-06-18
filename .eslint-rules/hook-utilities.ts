@@ -92,7 +92,7 @@ export const isClientOnlyHook = (hookName: string): boolean => {
  * Detection logic:
  * - Traverses the function body AST.
  * - Looks for `CallExpression` nodes whose callee is an identifier
- *   matching the `use*` hook naming convention (`/^use[A-Z]/`).
+ *   matching the `use*` hook naming convention (`/^use($|[A-Z])/`).
  * - Uses `isClientOnlyHook` to classify the hook.
  * - Returns `true` as soon as a client-side hook is found.
  * 
@@ -117,7 +117,7 @@ export const hasClientOnlyHook = (functionBody: TSESTree.BlockStatement | TSESTr
             if (node.type !== TSESTree.AST_NODE_TYPES.CallExpression) return;
             if (node.callee.type !== TSESTree.AST_NODE_TYPES.Identifier) return;
             const name = node.callee.name;
-            if (!/^use[A-Z]/.test(name)) return;
+            if (!/^use($|[A-Z])/.test(name)) return;
             
             // Only interested of known client hooks:
             if (!isClientOnlyHook(name)) return;
