@@ -32,6 +32,8 @@ const serverSafeHooks = new Set<string>([
     
     'useMergedRefs',
     
+    'useControlledValue',
+    
     'useResolvedSemanticAttributes',
     
     'useBareVariant',
