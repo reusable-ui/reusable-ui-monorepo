@@ -34,6 +34,9 @@ const serverSafeHooks = new Set<string>([
     
     'useResolvedSemanticAttributes',
     
+    'useBareVariant',
+    'useStylingVariants',
+    
     'useControllableState',
     'useRangedState',
     'useCascadeState',
