@@ -347,7 +347,7 @@ export default defineConfig(
             'types/no-foreign-code-in-types'                 : 'error',
             'react-contexts/enforce-context-creation'        : 'error',
             'react-hooks/enforce-hook-file-location'         : 'error',
-            // 'react-hooks/enforce-client-hook-modules'        : 'error',
+            'react-hooks/enforce-client-hook-modules'        : 'error',
             'react-hooks/enforce-general-hook-modules'       : 'error',
         },
     },
