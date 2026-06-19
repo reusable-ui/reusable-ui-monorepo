@@ -15,13 +15,13 @@ import {
 
 // Hooks:
 import {
-    useControllableState,
+    useResolvedControlledState,
 }                           from './general-hooks.js'
 
 
 
 /**
- * Resolves an effective state value from controlled or uncontrolled props,
+ * Resolves an effective state value from controlled props,
  * with optional cascading from context when cascade behavior is enabled.
  * 
  * If cascading is enabled and the resolved state equals `inactiveState`, the hook attempts to inherit from `stateContext`.
@@ -44,7 +44,7 @@ import {
  * @example
  * Controlled mode with cascading, by supplying `state` prop and inheriting from context:
  * ```ts
- * const disabled = useCascadeState(
+ * const disabled = useResolvedCascadeState(
  *     // Props:
  *     { state: false, cascadeEnabled: true },
  *     
@@ -66,7 +66,7 @@ import {
  * 
  * Uncontrolled mode with cascading, by falling back to `defaultState` option and inheriting from context:
  * ```ts
- * const disabled = useCascadeState(
+ * const disabled = useResolvedCascadeState(
  *     // Props:
  *     { cascadeEnabled: true },
  *     
@@ -86,7 +86,7 @@ import {
  * ); // → true (assuming context provides `true`)
  * ```
  */
-export const useCascadeState = <TState extends {} | null>(props: CascadeStateProps<TState>, options: CascadeStateOptions<TState>, definition: CascadeStateDefinition<TState>): TState => {
+export const useResolvedCascadeState = <TState extends {} | null>(props: CascadeStateProps<TState>, options: CascadeStateOptions<TState>, definition: CascadeStateDefinition<TState>): TState => {
     // Extract resolver-level definition (mandatory contracts):
     const {
         defaultCascadeEnabled : definitionDefaultCascadeEnabled,
@@ -116,7 +116,7 @@ export const useCascadeState = <TState extends {} | null>(props: CascadeStatePro
     
     
     // Resolve the controlled/uncontrolled state:
-    const resolvedState = useControllableState(props, options, definition);
+    const resolvedState = useResolvedControlledState(props, options, definition);
     
     
     

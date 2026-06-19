@@ -1,8 +1,8 @@
 // Types:
 import {
-    type ControllableStateProps,
-    type ControllableStateOptions,
-    type ControllableStateDefinition,
+    type ControlledStateProps,
+    type ControlledStateOptions,
+    type ControlledStateDefinition,
     type RangedStateProps,
     type RangedStateOptions,
     type RangedStateDefinition,
@@ -14,7 +14,7 @@ import {
 
 
 /**
- * Resolves an effective state value from controlled or uncontrolled props.
+ * Resolves an effective state value from controlled props.
  * 
  * **Resolution order:**
  *   1. `state` prop (controlled mode)  
@@ -32,7 +32,7 @@ import {
  * @example
  * Controlled mode, by supplying `state` prop:
  * ```ts
- * const expanded = useControllableState(
+ * const expanded = useResolvedControlledState(
  *     // Props:
  *     { state: true },
  *     
@@ -46,7 +46,7 @@ import {
  * 
  * Uncontrolled mode, by specifying `defaultState` prop:
  * ```ts
- * const expanded = useControllableState(
+ * const expanded = useResolvedControlledState(
  *     // Props:
  *     { defaultState: true },
  *     
@@ -60,7 +60,7 @@ import {
  * 
  * Uncontrolled mode, by falling back to `defaultState` option:
  * ```ts
- * const expanded = useControllableState(
+ * const expanded = useResolvedControlledState(
  *     // Props:
  *     {},
  *     
@@ -72,7 +72,7 @@ import {
  * ); // → false
  * ```
  */
-export const useControllableState = <TState extends {} | null>(props: ControllableStateProps<TState>, options: ControllableStateOptions<TState>, definition: ControllableStateDefinition<TState>): TState => {
+export const useResolvedControlledState = <TState extends {} | null>(props: ControlledStateProps<TState>, options: ControlledStateOptions<TState>, definition: ControlledStateDefinition<TState>): TState => {
     // Extract resolver-level definition (mandatory contracts):
     const {
         defaultState : definitionDefaultState,
@@ -113,7 +113,7 @@ export const useControllableState = <TState extends {} | null>(props: Controllab
 
 
 /**
- * Resolves an effective state value from controlled or uncontrolled props,
+ * Resolves an effective state value from controlled props,
  * with optional clamping to a valid range.
  * 
  * If a `clampState` function is declared in options or definition, the resolved value is normalized into a valid range.
@@ -135,7 +135,7 @@ export const useControllableState = <TState extends {} | null>(props: Controllab
  * @example
  * Controlled mode with clamping, by supplying `state` prop and declaring `clampState` function:
  * ```ts
- * const viewIndex = useRangedState(
+ * const viewIndex = useResolvedRangedState(
  *     // Props:
  *     { state: 5 },
  *     
@@ -152,7 +152,7 @@ export const useControllableState = <TState extends {} | null>(props: Controllab
  * 
  * Uncontrolled mode with clamping, by falling back to `defaultState` option and declaring `clampState` function:
  * ```ts
- * const viewIndex = useRangedState(
+ * const viewIndex = useResolvedRangedState(
  *     // Props:
  *     {},
  *     
@@ -167,7 +167,7 @@ export const useControllableState = <TState extends {} | null>(props: Controllab
  * ); // → 0 (component-level default, clamped)
  * ```
  */
-export const useRangedState = <TState extends {} | null>(props: RangedStateProps<TState>, options: RangedStateOptions<TState>, definition: RangedStateDefinition<TState>): TState => {
+export const useResolvedRangedState = <TState extends {} | null>(props: RangedStateProps<TState>, options: RangedStateOptions<TState>, definition: RangedStateDefinition<TState>): TState => {
     // Extract resolver-level definition:
     const {
         clampState : definitionClampState,
@@ -183,7 +183,7 @@ export const useRangedState = <TState extends {} | null>(props: RangedStateProps
     
     
     // Resolve the controlled/uncontrolled state:
-    const resolvedState = useControllableState(props, options, definition);
+    const resolvedState = useResolvedControlledState(props, options, definition);
     
     
     
@@ -195,7 +195,7 @@ export const useRangedState = <TState extends {} | null>(props: RangedStateProps
 
 
 /**
- * Resolves an effective state value from controlled or uncontrolled props,
+ * Resolves an effective state value from controlled props,
  * with optional delegation to an external observer when a declarative token is encountered.
  * 
  * If `isRestricted` is true, the state is forced to `inactiveState`.  
@@ -221,7 +221,7 @@ export const useRangedState = <TState extends {} | null>(props: RangedStateProps
  * Controlled mode with observation, by supplying `state` prop:
  * 
  * ```ts
- * const { focused } = useObservableState(
+ * const { focused } = useResolvedObservableState(
  *     // Props:
  *     { state: 'auto', isRestricted: false, observedState: true },
  *     
@@ -241,7 +241,7 @@ export const useRangedState = <TState extends {} | null>(props: RangedStateProps
  * Uncontrolled mode with observation, by falling back to `defaultState` option:
  * 
  * ```ts
- * const { focused } = useObservableState(
+ * const { focused } = useResolvedObservableState(
  *     // Props:
  *     { isRestricted: true, observedState: true },
  *     
@@ -258,7 +258,7 @@ export const useRangedState = <TState extends {} | null>(props: RangedStateProps
  * // → false (restricted forces inactive baseline)
  * ```
  */
-export const useObservableState = <TState extends {} | null, TToken extends string>(props: ObservableStateProps<TState, TToken>, options: ObservableStateOptions<TState, TToken>, definition: ObservableStateDefinition<TState, TToken>): TState => {
+export const useResolvedObservableState = <TState extends {} | null, TToken extends string>(props: ObservableStateProps<TState, TToken>, options: ObservableStateOptions<TState, TToken>, definition: ObservableStateDefinition<TState, TToken>): TState => {
     // Extract resolver-level definition (mandatory contracts):
     const {
         inactiveState,
@@ -276,7 +276,7 @@ export const useObservableState = <TState extends {} | null, TToken extends stri
     
     
     // Resolve the controlled/uncontrolled state:
-    const resolvedState = useControllableState(props, options, definition);
+    const resolvedState = useResolvedControlledState(props, options, definition);
     
     
     

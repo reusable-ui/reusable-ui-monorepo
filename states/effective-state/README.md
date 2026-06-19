@@ -42,9 +42,9 @@ yarn add @reusable-ui/effective-state
 
 ## 🧩 Exported Hooks
 
-### `useControllableState(props, options, definition)`
+### `useResolvedControlledState(props, options, definition)`
 
-Resolves an effective state value from controlled or uncontrolled props.
+Resolves an effective state value from controlled props.
 
 **Resolution order:**
   1. `state` prop (controlled mode)  
@@ -57,7 +57,7 @@ Resolves an effective state value from controlled or uncontrolled props.
 Controlled mode, by supplying `state` prop:
 
 ```ts
-const expanded = useControllableState(
+const expanded = useResolvedControlledState(
     // Props:
     { state: true },
     
@@ -72,7 +72,7 @@ const expanded = useControllableState(
 Uncontrolled mode, by specifying `defaultState` prop:
 
 ```ts
-const expanded = useControllableState(
+const expanded = useResolvedControlledState(
     // Props:
     { defaultState: true },
     
@@ -87,7 +87,7 @@ const expanded = useControllableState(
 Uncontrolled mode, by falling back to `defaultState` option:
 
 ```ts
-const expanded = useControllableState(
+const expanded = useResolvedControlledState(
     // Props:
     {},
     
@@ -99,9 +99,9 @@ const expanded = useControllableState(
 ); // → false
 ```
 
-### `useRangedState(props, options, definition)`
+### `useResolvedRangedState(props, options, definition)`
 
-Resolves an effective state value from controlled or uncontrolled props, with optional clamping to a valid range.
+Resolves an effective state value from controlled props, with optional clamping to a valid range.
 
 If a `clampState` function is declared in options or definition, the resolved value is normalized into a valid range.
 
@@ -117,7 +117,7 @@ If a `clampState` function is declared in options or definition, the resolved va
 Controlled mode with clamping, by supplying `state` prop and declaring `clampState` function:
 
 ```ts
-const viewIndex = useRangedState(
+const viewIndex = useResolvedRangedState(
     // Props:
     { state: 5 },
     
@@ -135,7 +135,7 @@ const viewIndex = useRangedState(
 Uncontrolled mode with clamping, by falling back to `defaultState` option and declaring `clampState` function:
 
 ```ts
-const viewIndex = useRangedState(
+const viewIndex = useResolvedRangedState(
     // Props:
     {},
     
@@ -150,9 +150,9 @@ const viewIndex = useRangedState(
 ); // → 0 (component-level default, clamped)
 ```
 
-### `useCascadeState(props, options, definition)`
+### `useResolvedCascadeState(props, options, definition)`
 
-Resolves an effective state value from controlled or uncontrolled props, with optional cascading from context when cascade behavior is enabled.
+Resolves an effective state value from controlled props, with optional cascading from context when cascade behavior is enabled.
 
 If cascading is enabled and the resolved state equals `inactiveState`, the hook attempts to inherit from `stateContext`.
 
@@ -169,7 +169,7 @@ If cascading is enabled and the resolved state equals `inactiveState`, the hook 
 Controlled mode with cascading, by supplying `state` prop and inheriting from context:
 
 ```ts
-const disabled = useCascadeState(
+const disabled = useResolvedCascadeState(
     // Props:
     { state: false, cascadeEnabled: true },
     
@@ -192,7 +192,7 @@ const disabled = useCascadeState(
 Uncontrolled mode with cascading, by falling back to `defaultState` option and inheriting from context:
 
 ```ts
-const disabled = useCascadeState(
+const disabled = useResolvedCascadeState(
     // Props:
     { cascadeEnabled: true },
     
@@ -212,9 +212,9 @@ const disabled = useCascadeState(
 ); // → true (assuming context provides `true`)
 ```
 
-### `useObservableState(props, options, definition)`
+### `useResolvedObservableState(props, options, definition)`
 
-Resolves an effective state value from controlled or uncontrolled props, with optional delegation to an external observer when a declarative token is encountered.
+Resolves an effective state value from controlled props, with optional delegation to an external observer when a declarative token is encountered.
 
 If `isRestricted` is true, the state is forced to `inactiveState`.  
 If the resolved state equals `observableStateToken`, the hook delegates to `observedState`.
@@ -232,7 +232,7 @@ If the resolved state equals `observableStateToken`, the hook delegates to `obse
 Controlled mode with observation, by supplying `state` prop:
 
 ```ts
-const { focused } = useObservableState(
+const { focused } = useResolvedObservableState(
     // Props:
     { state: 'auto', isRestricted: false, observedState: true },
     
@@ -252,7 +252,7 @@ const { focused } = useObservableState(
 Uncontrolled mode with observation, by falling back to `defaultState` option:
 
 ```ts
-const { focused } = useObservableState(
+const { focused } = useResolvedObservableState(
     // Props:
     { isRestricted: true, observedState: true },
     

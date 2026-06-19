@@ -37,7 +37,7 @@ import {
     
     
     // Hooks:
-    useObservableState,
+    useResolvedObservableState,
 }                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
 import {
     // Hooks:
@@ -117,7 +117,7 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
     const observedState = isExternallyComputed ? externalComputedFocus : observedFocus;
     
     // Resolve effective focused state:
-    const focused = useObservableState<boolean, 'auto'>(
+    const focused = useResolvedObservableState<boolean, 'auto'>(
         // Props:
         { state, isRestricted, observedState },
         

@@ -45,7 +45,7 @@ import {
     
     
     // Hooks:
-    useCascadeState,
+    useResolvedCascadeState,
 }                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
 import {
     // Types:
@@ -109,7 +109,7 @@ export const useActiveState = (props: ActiveStateProps<any> & { defaultActive?: 
     
     
     // Resolve effective activation state:
-    return useCascadeState<boolean>(
+    return useResolvedCascadeState<boolean>(
         // Props:
         { state, cascadeEnabled },
         

@@ -60,7 +60,7 @@ import {
     
     
     // Hooks:
-    useRangedState,
+    useResolvedRangedState,
 }                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
 import {
     // Types:
@@ -112,7 +112,7 @@ export const useViewState = (props: ViewStateProps<any> & { defaultViewIndex?: n
     
     
     // Resolve effective view index:
-    const viewIndex = useRangedState<number>(
+    const viewIndex = useResolvedRangedState<number>(
         // Props:
         { state },
         

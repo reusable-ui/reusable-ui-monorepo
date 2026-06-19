@@ -34,12 +34,12 @@ import {
 // Reusable-ui states:
 import {
     // Types:
-    type ControllableStateDefinition,
+    type ControlledStateDefinition,
     
     
     
     // Hooks:
-    useControllableState,
+    useResolvedControlledState,
 }                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
 import {
     // Types:
@@ -55,8 +55,8 @@ import {
 
 
 
-/** The controllable state definition for expand/collapse state management. */
-const controllableStateDefinition : ControllableStateDefinition<boolean> = {
+/** The controlled state definition for expand/collapse state management. */
+const controlledStateDefinition : ControlledStateDefinition<boolean> = {
     defaultState : defaultInitialExpanded,
 };
 
@@ -91,7 +91,7 @@ export const useCollapseState = (props: CollapseStateProps<any> & { defaultExpan
     
     
     // Resolve effective expanded state:
-    const expanded = useControllableState<boolean>(
+    const expanded = useResolvedControlledState<boolean>(
         // Props:
         { state },
         
@@ -99,7 +99,7 @@ export const useCollapseState = (props: CollapseStateProps<any> & { defaultExpan
         { defaultState },
         
         // Definition:
-        controllableStateDefinition,
+        controlledStateDefinition,
     );
     
     

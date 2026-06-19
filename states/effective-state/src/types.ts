@@ -14,7 +14,7 @@ import {
  * 
  * @template TState - The type of the state value.
  */
-export interface ControllableStateProps<TState extends {} | null> {
+export interface ControlledStateProps<TState extends {} | null> {
     /**
      * Controls the current state.
      * 
@@ -37,7 +37,7 @@ export interface ControllableStateProps<TState extends {} | null> {
  * 
  * @template TState - The type of the state value.
  */
-export interface ControllableStateOptions<TState extends {} | null> {
+export interface ControlledStateOptions<TState extends {} | null> {
     /**
      * Declares an optional component-level default state.
      * Acts as a fallback when neither `state` nor `defaultState` prop is provided.
@@ -53,7 +53,7 @@ export interface ControllableStateOptions<TState extends {} | null> {
  * 
  * @template TState - The type of the state value.
  */
-export interface ControllableStateDefinition<TState extends {} | null> {
+export interface ControlledStateDefinition<TState extends {} | null> {
     /**
      * Declares the mandatory resolver-level default state.
      * Acts as the final fallback when no other defaults are provided.
@@ -76,7 +76,7 @@ export interface ControllableStateDefinition<TState extends {} | null> {
 export interface RangedStateProps<TState extends {} | null>
     extends
         // Bases:
-        ControllableStateProps<TState>
+        ControlledStateProps<TState>
 {
     /* No additional props yet - reserved for future extensions. */
 }
@@ -94,7 +94,7 @@ export interface RangedStateProps<TState extends {} | null>
 export interface RangedStateOptions<TState extends {} | null>
     extends
         // Bases:
-        ControllableStateOptions<TState>
+        ControlledStateOptions<TState>
 {
     /**
      * Declares an optional component-level clamping function to normalize or constrain
@@ -118,7 +118,7 @@ export interface RangedStateOptions<TState extends {} | null>
 export interface RangedStateDefinition<TState extends {} | null>
     extends
         // Bases:
-        ControllableStateDefinition<TState>
+        ControlledStateDefinition<TState>
 {
     /**
      * Declares an optional resolver-level clamping function to normalize or constrain
@@ -144,7 +144,7 @@ export interface RangedStateDefinition<TState extends {} | null>
 export interface CascadeStateProps<TState extends {} | null>
     extends
         // Bases:
-        ControllableStateProps<TState>
+        ControlledStateProps<TState>
 {
     /**
      * Specifies whether cascading behavior is enabled:
@@ -168,7 +168,7 @@ export interface CascadeStateProps<TState extends {} | null>
 export interface CascadeStateOptions<TState extends {} | null>
     extends
         // Bases:
-        ControllableStateOptions<TState>
+        ControlledStateOptions<TState>
 {
     /**
      * Declares an optional component-level default cascading behavior.
@@ -193,7 +193,7 @@ export interface CascadeStateOptions<TState extends {} | null>
 export interface CascadeStateDefinition<TState extends {} | null>
     extends
         // Bases:
-        ControllableStateDefinition<TState>
+        ControlledStateDefinition<TState>
 {
     /**
      * Declares the mandatory resolver-level default cascading behavior.
@@ -239,7 +239,7 @@ export interface CascadeStateDefinition<TState extends {} | null>
 export interface ObservableStateProps<TState extends {} | null, TToken extends string>
     extends
         // Bases:
-        ControllableStateProps<TState | TToken>
+        ControlledStateProps<TState | TToken>
 {
     /**
      * Supplies a flag indicating whether the component is in a restricted condition
@@ -269,7 +269,7 @@ export interface ObservableStateProps<TState extends {} | null, TToken extends s
 export interface ObservableStateOptions<TState extends {} | null, TToken extends string>
     extends
         // Bases:
-        ControllableStateOptions<TState | TToken>
+        ControlledStateOptions<TState | TToken>
 {
     /* No additional options yet - reserved for future extensions. */
 }
@@ -289,7 +289,7 @@ export interface ObservableStateOptions<TState extends {} | null, TToken extends
 export interface ObservableStateDefinition<TState extends {} | null, TToken extends string>
     extends
         // Bases:
-        ControllableStateDefinition<TState | TToken>
+        ControlledStateDefinition<TState | TToken>
 {
     /**
      * Declares the baseline inactive state (e.g. `false`).

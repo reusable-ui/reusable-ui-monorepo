@@ -51,7 +51,7 @@ import {
     
     
     // Hooks:
-    useObservableState,
+    useResolvedObservableState,
 }                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
 import {
     // Hooks:
@@ -165,7 +165,7 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
     // Resolve effective validity state:
     // - Collapses to `null` (unvalidated) if restricted.
     // - Otherwise resolved via observable state definition.
-    const validity = useObservableState<boolean | null, 'auto'>(
+    const validity = useResolvedObservableState<boolean | null, 'auto'>(
         // Props:
         { state, isRestricted, observedState },
         
@@ -179,7 +179,7 @@ export const useValidityState = (props: ValidityStateProps, options?: Pick<Valid
     
     
     // Resolve validity with nearest-wins logic:
-    // - Restricted fields always collapse to null (handled by `useObservableState()`).
+    // - Restricted fields always collapse to null (handled by `useResolvedObservableState()`).
     // - If local validity is explicit (true, false, or null), it wins outright.
     // - If local validity is 'auto', inherit ancestor validity if explicit.
     // - If both local and ancestor are 'auto', fall back to the field's observer.

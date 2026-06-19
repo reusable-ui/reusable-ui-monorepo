@@ -38,7 +38,7 @@ import {
     
     
     // Hooks:
-    useCascadeState,
+    useResolvedCascadeState,
 }                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
 import {
     // Hooks:
@@ -94,7 +94,7 @@ export const useReadOnlyState = (props: ReadOnlyStateProps, options?: Pick<ReadO
     
     
     // Resolve effective read-only state:
-    return useCascadeState<boolean>(
+    return useResolvedCascadeState<boolean>(
         // Props:
         { state, cascadeEnabled },
         

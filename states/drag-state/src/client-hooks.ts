@@ -54,7 +54,7 @@ import {
     
     
     // Hooks:
-    useObservableState,
+    useResolvedObservableState,
 }                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
 import {
     // Hooks:
@@ -114,7 +114,7 @@ export const useDragState = (props: DragStateProps, options?: Pick<DragStateOpti
     // Resolve effective dragged state:
     // - Collapses to `false` (dropped) if restricted.
     // - Otherwise resolved via observable state definition.
-    return useObservableState<boolean, 'auto'>(
+    return useResolvedObservableState<boolean, 'auto'>(
         // Props:
         { state, isRestricted, observedState },
         

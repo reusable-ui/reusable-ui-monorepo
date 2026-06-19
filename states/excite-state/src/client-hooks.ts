@@ -24,12 +24,12 @@ import {
 // Reusable-ui states:
 import {
     // Types:
-    type ControllableStateDefinition,
+    type ControlledStateDefinition,
     
     
     
     // Hooks:
-    useControllableState,
+    useResolvedControlledState,
 }                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
 import {
     // Hooks:
@@ -38,8 +38,8 @@ import {
 
 
 
-/** The controllable state definition for excite state management. */
-const controllableStateDefinition : ControllableStateDefinition<boolean> = {
+/** The controlled state definition for excite state management. */
+const controlledStateDefinition : ControlledStateDefinition<boolean> = {
     defaultState : defaultDeclarativeExcited,
 };
 
@@ -71,7 +71,7 @@ export const useExciteState = (props: ExciteStateProps, options?: Pick<ExciteSta
     
     
     // Resolve effective excited state:
-    const excited = useControllableState<boolean>(
+    const excited = useResolvedControlledState<boolean>(
         // Props:
         { state },
         
@@ -79,7 +79,7 @@ export const useExciteState = (props: ExciteStateProps, options?: Pick<ExciteSta
         { defaultState },
         
         // Definition:
-        controllableStateDefinition,
+        controlledStateDefinition,
     );
     
     

@@ -39,10 +39,10 @@ const serverSafeHooks = new Set<string>([
     'useBareVariant',
     'useStylingVariants',
     
-    'useControllableState',
-    'useRangedState',
-    // 'useCascadeState', // This is a client-side hook due to `use(stateContext)`.
-    'useObservableState',
+    'useResolvedControlledState',
+    'useResolvedRangedState',
+    // 'useResolvedCascadeState', // This is a client-side hook due to `use(stateContext)`.
+    'useResolvedObservableState',
     
     'useAnchorlessLink',
     

@@ -37,7 +37,7 @@ import {
     
     
     // Hooks:
-    useObservableState,
+    useResolvedObservableState,
 }                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
 import {
     // Hooks:
@@ -118,7 +118,7 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
     const observedState = isExternallyComputed ? externalComputedPress : observedPress;
     
     // Resolve effective pressed state:
-    const pressed = useObservableState<boolean, 'auto'>(
+    const pressed = useResolvedObservableState<boolean, 'auto'>(
         // Props:
         { state, isRestricted, observedState },
         

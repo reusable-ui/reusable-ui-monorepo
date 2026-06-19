@@ -37,7 +37,7 @@ import {
     
     
     // Hooks:
-    useObservableState,
+    useResolvedObservableState,
 }                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
 import {
     // Hooks:
@@ -116,7 +116,7 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
     const observedState = isExternallyComputed ? externalComputedHover : observedHover;
     
     // Resolve effective hovered state:
-    const hovered = useObservableState<boolean, 'auto'>(
+    const hovered = useResolvedObservableState<boolean, 'auto'>(
         // Props:
         { state, isRestricted, observedState },
         
