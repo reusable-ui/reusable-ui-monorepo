@@ -22,17 +22,17 @@ import {
 
 /**
  * Resolves an effective state value from controlled props,
- * with optional cascading from context when cascade behavior is enabled.
+ * cascaded from context when cascade behavior is enabled.
  * 
- * If cascading is enabled and the resolved state equals `inactiveState`, the hook attempts to inherit from `stateContext`.
+ * If cascading is enabled and the resolved state equals `inactiveState`,
+ * the hook attempts to inherit from `stateContext`.
  * 
  * **Resolution order:**
- *   1. `state` prop (controlled mode)  
- *   2. `defaultState` prop (uncontrolled mode)  
- *   3. `defaultState` option (uncontrolled mode)  
- *   4. `defaultState` definition (uncontrolled mode)  
- *   5. Inherit from `stateContext` (if cascading enabled and resolved state equals `inactiveState`)  
- *   6. Use `inactiveState` (fallback)  
+ *   1. `state` prop  
+ *   2. `defaultState` option  
+ *   3. `defaultState` definition  
+ *   4. Inherit from `stateContext` (if cascading enabled and resolved state equals `inactiveState`)  
+ *   5. Use `inactiveState` (fallback)  
  * 
  * @template TState - The type of the state value.
  * 
@@ -64,7 +64,7 @@ import {
  * ); // → true (assuming context provides `true`)
  * ```
  * 
- * Uncontrolled mode with cascading, by falling back to `defaultState` option and inheriting from context:
+ * Default mode with cascading, by falling back to `defaultState` option and inheriting from context:
  * ```ts
  * const disabled = useResolvedCascadeState(
  *     // Props:
@@ -115,7 +115,7 @@ export const useResolvedCascadeState = <TState extends {} | null>(props: Cascade
     
     
     
-    // Resolve the controlled/uncontrolled state:
+    // Resolve the controlled state from props:
     const resolvedState = useResolvedControlledState(props, options, definition);
     
     

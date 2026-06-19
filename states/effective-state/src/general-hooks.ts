@@ -17,10 +17,9 @@ import {
  * Resolves an effective state value from controlled props.
  * 
  * **Resolution order:**
- *   1. `state` prop (controlled mode)  
- *   2. `defaultState` prop (uncontrolled mode)  
- *   3. `defaultState` option (uncontrolled mode)  
- *   4. `defaultState` definition (uncontrolled mode)  
+ *   1. `state` prop  
+ *   2. `defaultState` option  
+ *   3. `defaultState` definition  
  * 
  * @template TState - The type of the state value.
  * 
@@ -44,21 +43,7 @@ import {
  * ); // → true
  * ```
  * 
- * Uncontrolled mode, by specifying `defaultState` prop:
- * ```ts
- * const expanded = useResolvedControlledState(
- *     // Props:
- *     { defaultState: true },
- *     
- *     // Options:
- *     { defaultState: false },
- *     
- *     // Definition:
- *     { defaultState: false }
- * ); // → true
- * ```
- * 
- * Uncontrolled mode, by falling back to `defaultState` option:
+ * Default mode, by falling back to `defaultState` option:
  * ```ts
  * const expanded = useResolvedControlledState(
  *     // Props:
@@ -90,18 +75,11 @@ export const useResolvedControlledState = <TState extends {} | null>(props: Cont
     // Extract props, falling back to component-level default:
     const {
         /**
-         * Uncontrolled initializer:
-         * - Uses `props.defaultState` if provided.
-         * - Otherwise falls back to `componentDefaultState`.
-         */
-        defaultState : propDefaultState = componentDefaultState,
-        
-        /**
          * Resolved state (effective intent):
          * - Controlled via `props.state` if provided.
-         * - Otherwise falls back to `propDefaultState`.
+         * - Otherwise falls back to `componentDefaultState`.
          */
-        state        : resolvedState    = propDefaultState,
+        state : resolvedState = componentDefaultState,
     } = props;
     
     
@@ -114,16 +92,16 @@ export const useResolvedControlledState = <TState extends {} | null>(props: Cont
 
 /**
  * Resolves an effective state value from controlled props,
- * with optional clamping to a valid range.
+ * clamped for a valid range.
  * 
- * If a `clampState` function is declared in options or definition, the resolved value is normalized into a valid range.
+ * If a `clampState` function is declared in options or definition,
+ * the resolved value is normalized into a valid range.
  * 
  * **Resolution order:**
- *   1. `state` prop (controlled mode)  
- *   2. `defaultState` prop (uncontrolled mode)  
- *   3. `defaultState` option (uncontrolled mode)  
- *   4. `defaultState` definition (uncontrolled mode)  
- *   5. `clampState` function (normalization)  
+ *   1. `state` prop  
+ *   2. `defaultState` option  
+ *   3. `defaultState` definition  
+ *   4. `clampState` function (normalization)  
  * 
  * @template TState - The type of the state value (e.g. number for view index).
  * 
@@ -150,7 +128,7 @@ export const useResolvedControlledState = <TState extends {} | null>(props: Cont
  * ); // → 5
  * ```
  * 
- * Uncontrolled mode with clamping, by falling back to `defaultState` option and declaring `clampState` function:
+ * Default mode with clamping, by falling back to `defaultState` option and declaring `clampState` function:
  * ```ts
  * const viewIndex = useResolvedRangedState(
  *     // Props:
@@ -182,7 +160,7 @@ export const useResolvedRangedState = <TState extends {} | null>(props: RangedSt
     
     
     
-    // Resolve the controlled/uncontrolled state:
+    // Resolve the controlled state from props:
     const resolvedState = useResolvedControlledState(props, options, definition);
     
     
@@ -196,18 +174,17 @@ export const useResolvedRangedState = <TState extends {} | null>(props: RangedSt
 
 /**
  * Resolves an effective state value from controlled props,
- * with optional delegation to an external observer when a declarative token is encountered.
+ * delegated to an external observer when a declarative token is encountered.
  * 
  * If `isRestricted` is true, the state is forced to `inactiveState`.  
  * If the resolved state equals `observableStateToken`, the hook delegates to `observedState`.
  * 
  * **Resolution order:**
- *   1. Use `inactiveState` (if `isRestricted` is true)
- *   2. `state` prop (controlled mode)  
- *   3. `defaultState` prop (uncontrolled mode)  
- *   4. `defaultState` option (uncontrolled mode)  
- *   5. `defaultState` definition (uncontrolled mode)  
- *   6. Delegate to `observedState` (if resolved state equals `observableStateToken`)
+ *   1. Use `inactiveState` (if `isRestricted` is true)  
+ *   2. `state` prop  
+ *   3. `defaultState` option  
+ *   4. `defaultState` definition  
+ *   5. Delegate to `observedState` (if resolved state equals `observableStateToken`)  
  * 
  * @template TState - The type of the state value.
  * @template TToken - A special string token used to trigger observation (e.g. `'auto'`).
@@ -238,7 +215,7 @@ export const useResolvedRangedState = <TState extends {} | null>(props: RangedSt
  * // → true (delegated to observedState)
  * ```
  * 
- * Uncontrolled mode with observation, by falling back to `defaultState` option:
+ * Default mode with observation, by falling back to `defaultState` option:
  * 
  * ```ts
  * const { focused } = useResolvedObservableState(
@@ -275,7 +252,7 @@ export const useResolvedObservableState = <TState extends {} | null, TToken exte
     
     
     
-    // Resolve the controlled/uncontrolled state:
+    // Resolve the controlled state from props:
     const resolvedState = useResolvedControlledState(props, options, definition);
     
     

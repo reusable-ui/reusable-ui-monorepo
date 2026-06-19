@@ -1,15 +1,15 @@
 # @reusable-ui/effective-state 📦  
 
 **effective-state** provides a collection of reusable **effective state resolvers** for various kinds of props.  
-It abstracts recurring state resolution patterns found across many `*-state` packages — from controlled vs uncontrolled inputs to advanced behaviors such as range clamping, context cascading, and external observation.
+It abstracts recurring state resolution patterns found across many `*-state` packages — from controlled inputs to advanced behaviors such as range clamping, context cascading, and external observation.
 
 By centralizing these patterns, you avoid duplicating logic across components and ensure consistency, predictability, and maintainability throughout your UI ecosystem.
 
 With **effective-state**, you can build:  
-- **Controllable states** — extract values from props with controlled/uncontrolled fallback.  
-- **Ranged states** — controllable states with clamping to valid ranges.  
-- **Cascade states** — controllable states that can inherit from context when cascade behavior is enabled.  
-- **Observable states** — controllable states that can delegate to external observers with restriction handling.  
+- **Controlled states** — extract values from controlled props.  
+- **Ranged states** — controlled states with clamping to valid ranges.  
+- **Cascade states** — controlled states that can inherit from context when cascade behavior is enabled.  
+- **Observable states** — controlled states that can delegate to external observers with restriction handling.  
 
 Currently, four main state resolvers are provided.  
 Future state resolvers can be added as new patterns emerge, keeping the package extensible and adaptable.
@@ -25,7 +25,7 @@ The effective state values produced by these resolvers can be fed directly into 
 This makes **@reusable-ui/effective-state** the foundational layer for consistent state resolution across transitions, feedback, and interaction behaviors.
 
 ## ✨ Features
-✔ Controlled, uncontrolled, and hybrid state management modes  
+✔ Controlled state management mode  
 ✔ Consistent resolution order (props → options → definition → feature-specific rules)  
 ✔ Specialized extensions for ranged, cascade, and observable behaviors  
 ✔ Declarative tokens for observation and context inheritance  
@@ -47,10 +47,9 @@ yarn add @reusable-ui/effective-state
 Resolves an effective state value from controlled props.
 
 **Resolution order:**
-  1. `state` prop (controlled mode)  
-  2. `defaultState` prop (uncontrolled mode)  
-  3. `defaultState` option (uncontrolled mode)  
-  4. `defaultState` definition (uncontrolled mode)  
+  1. `state` prop  
+  2. `defaultState` option  
+  3. `defaultState` definition  
 
 #### 💡 Usage Examples
 
@@ -69,22 +68,7 @@ const expanded = useResolvedControlledState(
 ); // → true
 ```
 
-Uncontrolled mode, by specifying `defaultState` prop:
-
-```ts
-const expanded = useResolvedControlledState(
-    // Props:
-    { defaultState: true },
-    
-    // Options:
-    { defaultState: false },
-    
-    // Definition:
-    { defaultState: false }
-); // → true
-```
-
-Uncontrolled mode, by falling back to `defaultState` option:
+Default mode, by falling back to `defaultState` option:
 
 ```ts
 const expanded = useResolvedControlledState(
@@ -101,16 +85,17 @@ const expanded = useResolvedControlledState(
 
 ### `useResolvedRangedState(props, options, definition)`
 
-Resolves an effective state value from controlled props, with optional clamping to a valid range.
+Resolves an effective state value from controlled props,
+clamped for a valid range.
 
-If a `clampState` function is declared in options or definition, the resolved value is normalized into a valid range.
+If a `clampState` function is declared in options or definition,
+the resolved value is normalized into a valid range.
 
 **Resolution order:**
-  1. `state` prop (controlled mode)  
-  2. `defaultState` prop (uncontrolled mode)  
-  3. `defaultState` option (uncontrolled mode)  
-  4. `defaultState` definition (uncontrolled mode)  
-  5. `clampState` function (normalization)  
+  1. `state` prop  
+  2. `defaultState` option  
+  3. `defaultState` definition  
+  4. `clampState` function (normalization)  
 
 #### 💡 Usage Examples
 
@@ -132,7 +117,7 @@ const viewIndex = useResolvedRangedState(
 ); // → 5
 ```
 
-Uncontrolled mode with clamping, by falling back to `defaultState` option and declaring `clampState` function:
+Default mode with clamping, by falling back to `defaultState` option and declaring `clampState` function:
 
 ```ts
 const viewIndex = useResolvedRangedState(
@@ -152,17 +137,18 @@ const viewIndex = useResolvedRangedState(
 
 ### `useResolvedCascadeState(props, options, definition)`
 
-Resolves an effective state value from controlled props, with optional cascading from context when cascade behavior is enabled.
+Resolves an effective state value from controlled props,
+cascaded from context when cascade behavior is enabled.
 
-If cascading is enabled and the resolved state equals `inactiveState`, the hook attempts to inherit from `stateContext`.
+If cascading is enabled and the resolved state equals `inactiveState`,
+the hook attempts to inherit from `stateContext`.
 
 **Resolution order:**
-  1. `state` prop (controlled mode)  
-  2. `defaultState` prop (uncontrolled mode)  
-  3. `defaultState` option (uncontrolled mode)  
-  4. `defaultState` definition (uncontrolled mode)  
-  5. Inherit from `stateContext` (if cascading enabled and resolved state equals `inactiveState`)  
-  6. Use `inactiveState` (fallback)  
+  1. `state` prop  
+  2. `defaultState` option  
+  3. `defaultState` definition  
+  4. Inherit from `stateContext` (if cascading enabled and resolved state equals `inactiveState`)  
+  5. Use `inactiveState` (fallback)  
 
 #### 💡 Usage Examples
 
@@ -189,7 +175,7 @@ const disabled = useResolvedCascadeState(
 ); // → true (assuming context provides `true`)
 ```
 
-Uncontrolled mode with cascading, by falling back to `defaultState` option and inheriting from context:
+Default mode with cascading, by falling back to `defaultState` option and inheriting from context:
 
 ```ts
 const disabled = useResolvedCascadeState(
@@ -214,18 +200,18 @@ const disabled = useResolvedCascadeState(
 
 ### `useResolvedObservableState(props, options, definition)`
 
-Resolves an effective state value from controlled props, with optional delegation to an external observer when a declarative token is encountered.
+Resolves an effective state value from controlled props,
+delegated to an external observer when a declarative token is encountered.
 
 If `isRestricted` is true, the state is forced to `inactiveState`.  
 If the resolved state equals `observableStateToken`, the hook delegates to `observedState`.
 
 **Resolution order:**
-  1. Use `inactiveState` (if `isRestricted` is true)
-  2. `state` prop (controlled mode)  
-  3. `defaultState` prop (uncontrolled mode)  
-  4. `defaultState` option (uncontrolled mode)  
-  5. `defaultState` definition (uncontrolled mode)  
-  6. Delegate to `observedState` (if resolved state equals `observableStateToken`)
+  1. Use `inactiveState` (if `isRestricted` is true)  
+  2. `state` prop  
+  3. `defaultState` option  
+  4. `defaultState` definition  
+  5. Delegate to `observedState` (if resolved state equals `observableStateToken`)  
 
 #### 💡 Usage Examples
 
@@ -249,7 +235,7 @@ const { focused } = useResolvedObservableState(
 // → true (delegated to observedState)
 ```
 
-Uncontrolled mode with observation, by falling back to `defaultState` option:
+Default mode with observation, by falling back to `defaultState` option:
 
 ```ts
 const { focused } = useResolvedObservableState(

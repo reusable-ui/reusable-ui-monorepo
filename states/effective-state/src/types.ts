@@ -7,10 +7,7 @@ import {
 
 
 /**
- * Props for resolving an effective state value from controlled or uncontrolled inputs.
- * 
- * - **Controlled mode**: supply `state` directly. The component reflects the external value.
- * - **Uncontrolled mode**: omit `state` and optionally specify `defaultState` as the initial value.
+ * Props for resolving an effective state value from controlled props.
  * 
  * @template TState - The type of the state value.
  */
@@ -18,21 +15,15 @@ export interface ControlledStateProps<TState extends {} | null> {
     /**
      * Controls the current state.
      * 
-     * Defaults to `defaultState` (uncontrolled mode).
+     * Defaults to `options.defaultState`.
      */
-    state        ?: TState
-    
-    /**
-     * Specifies the initial state for uncontrolled mode.
-     * Used only when `state` is not supplied.
-     */
-    defaultState ?: TState
+    state ?: TState
 }
 
 /**
- * Component-level options for resolving an effective state value from controlled or uncontrolled inputs.
+ * Component-level options for resolving an effective state value from controlled props.
  * 
- * - Declares an optional default state used when neither `state` nor `defaultState` prop
+ * - Declares an optional default state used when no `state` prop
  *   is provided by the consumer.
  * 
  * @template TState - The type of the state value.
@@ -40,16 +31,15 @@ export interface ControlledStateProps<TState extends {} | null> {
 export interface ControlledStateOptions<TState extends {} | null> {
     /**
      * Declares an optional component-level default state.
-     * Acts as a fallback when neither `state` nor `defaultState` prop is provided.
+     * Acts as a fallback when no `state` prop is provided.
      */
     defaultState ?: TState
 }
 
 /**
- * Resolver-level definition for resolving an effective state value from controlled or uncontrolled inputs.
+ * Resolver-level definition for resolving an effective state value from controlled props.
  * 
- * - Declares the mandatory default state used when no `state` prop,
- *   no `defaultState` prop, and no `defaultState` option is provided.
+ * - Declares the mandatory default state used when neither `state` prop nor `defaultState` option is provided.
  * 
  * @template TState - The type of the state value.
  */
@@ -64,12 +54,8 @@ export interface ControlledStateDefinition<TState extends {} | null> {
 
 
 /**
- * Props for resolving an effective state value from controlled or uncontrolled inputs,
- * with optional clamping to a valid range.
- * 
- * - **Controlled mode**: supply `state` directly. The component reflects the external value.
- * - **Uncontrolled mode**: omit `state` and optionally specify `defaultState` as the initial value.
- * - Additionally, the resolved state value can be clamped into a valid range.
+ * Props for resolving an effective state value from controlled props,
+ * clamped for a valid range.
  * 
  * @template TState - The type of the state value (e.g. number for view index).
  */
@@ -82,10 +68,10 @@ export interface RangedStateProps<TState extends {} | null>
 }
 
 /**
- * Component-level options for resolving an effective state value from controlled or uncontrolled inputs,
+ * Component-level options for resolving an effective state value from controlled props,
  * with optional clamping to a valid range.
  * 
- * - Declares an optional default state used when neither `state` nor `defaultState` prop
+ * - Declares an optional default state used when no `state` prop
  *   is provided by the consumer.
  * - Declares an optional clamping function to enforce valid ranges.
  * 
@@ -106,11 +92,10 @@ export interface RangedStateOptions<TState extends {} | null>
 }
 
 /**
- * Resolver-level definition for resolving an effective state value from controlled or uncontrolled inputs,
+ * Resolver-level definition for resolving an effective state value from controlled props,
  * with optional clamping to a valid range.
  * 
- * - Declares the mandatory default state used when no `state` prop,
- *   no `defaultState` prop, and no `defaultState` option is provided.
+ * - Declares the mandatory default state used when neither `state` prop nor `defaultState` option is provided.
  * - Declares an optional clamping function to enforce valid ranges.
  * 
  * @template TState - The type of the state value (e.g. number for view index).
@@ -132,12 +117,8 @@ export interface RangedStateDefinition<TState extends {} | null>
 
 
 /**
- * Props for resolving an effective state value from controlled or uncontrolled inputs,
- * with optional cascading from context when cascade behavior is enabled.
- * 
- * - **Controlled mode**: supply `state` directly. The component reflects the external value.
- * - **Uncontrolled mode**: omit `state` and optionally specify `defaultState` as the initial value.
- * - Additionally, supports cascading behavior to inherit state from context.
+ * Props for resolving an effective state value from controlled props,
+ * cascaded from context when cascade behavior is enabled.
  * 
  * @template TState - The type of the state value.
  */
@@ -155,10 +136,10 @@ export interface CascadeStateProps<TState extends {} | null>
 }
 
 /**
- * Component-level options for resolving an effective state value from controlled or uncontrolled inputs,
+ * Component-level options for resolving an effective state value from controlled props,
  * with optional cascading from context when cascade behavior is enabled.
  * 
- * - Declares an optional default state used when neither `state` nor `defaultState` prop
+ * - Declares an optional default state used when no `state` prop
  *   is provided by the consumer.
  * - Declares an optional default cascading behavior used when no `cascadeEnabled` prop
  *   is provided by the consumer.
@@ -178,11 +159,10 @@ export interface CascadeStateOptions<TState extends {} | null>
 }
 
 /**
- * Resolver-level definition for resolving an effective state value from controlled or uncontrolled inputs,
+ * Resolver-level definition for resolving an effective state value from controlled props,
  * with optional cascading from context when cascade behavior is enabled.
  * 
- * - Declares the mandatory default state used when no `state` prop,
- *   no `defaultState` prop, and no `defaultState` option is provided.
+ * - Declares the mandatory default state used when neither `state` prop nor `defaultState` option is provided.
  * - Declares the mandatory default cascading behavior used when no `cascadeEnabled` prop
  *   is provided by the consumer.
  * - Declares the baseline inactive state used to detect when cascading should apply.
@@ -226,12 +206,8 @@ export interface CascadeStateDefinition<TState extends {} | null>
 
 
 /**
- * Props for resolving an effective state value from controlled or uncontrolled inputs,
- * with optional delegation to an external observer when a declarative token is encountered.
- * 
- * - **Controlled mode**: supply `state` directly. The component reflects the external value.
- * - **Uncontrolled mode**: omit `state` and optionally specify `defaultState` as the initial value.
- * - Additionally, supports dynamic state observation via an external observer.
+ * Props for resolving an effective state value from controlled props,
+ * delegated to an external observer when a declarative token is encountered.
  * 
  * @template TState - The type of the state value.
  * @template TToken - A special string token used to trigger observation (e.g. `'auto'`).
@@ -257,10 +233,10 @@ export interface ObservableStateProps<TState extends {} | null, TToken extends s
 }
 
 /**
- * Component-level options for resolving an effective state value from controlled or uncontrolled inputs,
+ * Component-level options for resolving an effective state value from controlled props,
  * with optional delegation to an external observer when a declarative token is encountered.
  * 
- * - Declares an optional default state used when neither `state` nor `defaultState` prop
+ * - Declares an optional default state used when no `state` prop
  *   is provided by the consumer.
  * 
  * @template TState - The type of the state value.
@@ -275,11 +251,10 @@ export interface ObservableStateOptions<TState extends {} | null, TToken extends
 }
 
 /**
- * Resolver-level definition for resolving an effective state value from controlled or uncontrolled inputs,
+ * Resolver-level definition for resolving an effective state value from controlled props,
  * with optional delegation to an external observer when a declarative token is encountered.
  * 
- * - Declares the mandatory default state used when no `state` prop,
- *   no `defaultState` prop, and no `defaultState` option is provided.
+ * - Declares the mandatory default state used when neither `state` prop nor `defaultState` option is provided.
  * - Declares the baseline inactive state used when `isRestricted` is true.
  * - Declares the declarative token that activates dynamic state observation.
  * 
