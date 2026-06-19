@@ -27,7 +27,7 @@ import {
 // Hooks:
 import {
     useFocusObserverState,
-}                           from './internal-observer-client-hook.js'
+}                           from './internal-focus-observer-client-hook.js'
 
 // Reusable-ui states:
 import {
