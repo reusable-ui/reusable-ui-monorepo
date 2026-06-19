@@ -46,6 +46,8 @@ const serverSafeHooks = new Set<string>([
     
     'useUndefinedPreviousState',
     
+    'useResolvedFeedbackDriverState',
+    
     'useAnchorlessLink',
     
     'useNavigationPathMatch',

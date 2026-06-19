@@ -15,7 +15,6 @@ import {
 // Reusable-ui states:
 import {
     // Types:
-    type ResolveDriverStateArgs,
     type TransitionBehaviorStateDefinition,
     
     
@@ -33,6 +32,11 @@ import {
     
     type FeedbackBehaviorState,
 }                           from './types.js'
+
+// Hooks:
+import {
+    useResolvedFeedbackDriverState,
+}                           from './internal-general-hooks.js'
 
 
 
@@ -155,21 +159,4 @@ export const useFeedbackBehaviorState = <
     
     // Return resolved feedback state API:
     return transitionBehaviorState satisfies FeedbackBehaviorState<TState, TPhase, TClassname, TElement>;
-};
-
-/**
- * Resolves the **driver state** for feedback-based components.
- * 
- * In feedback-state (focus, hover, press, validity, disabled, read-only):
- * - The driver is always the externally provided `props.effectiveState`.
- * - Controlled-only mode: there is no fallback to internal state.
- * 
- * Declarative keywords (`'auto'`, `'inherit'`, etc.) must be normalized externally
- * before being passed into `effectiveState`.
- * 
- * @returns The resolved driver state taken directly from props.
- */
-const useResolvedFeedbackDriverState = <TState extends {} | null, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>(args: ResolveDriverStateArgs<TState, FeedbackStateProps<TState>, FeedbackStateOptions<TState>, FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>>): TState => {
-    // Return the resolved state from props:
-    return args.props.effectiveState;
 };
