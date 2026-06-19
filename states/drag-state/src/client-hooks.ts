@@ -44,7 +44,7 @@ import {
 // Hooks:
 import {
     useDragObserverState,
-}                           from './internal-observer-hooks.js'
+}                           from './internal-drag-observer-client-hook.js'
 
 // Reusable-ui states:
 import {
