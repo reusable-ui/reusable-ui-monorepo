@@ -104,8 +104,8 @@ export interface FocusObserverState<TElement extends Element = HTMLElement>
 export const useFocusObserverState = <TElement extends Element = HTMLElement>(props: FocusObserverProps): FocusObserverState<TElement> => {
     // Use the generic observer state hook with focus-specific definition:
     const {
-        elementRef,
         observedState,
+        ref,
         safeUpdateState,
     } = useObserverState<boolean, TElement>(props, undefined, focusObserverDefinition);
     
@@ -145,7 +145,7 @@ export const useFocusObserverState = <TElement extends Element = HTMLElement>(pr
     // Return the observed focus indicator state and handlers for integration:
     return {
         observedFocus : observedState,
-        ref           : elementRef,
+        ref,
         handleFocus,
         handleBlur,
         handleKeyDown,

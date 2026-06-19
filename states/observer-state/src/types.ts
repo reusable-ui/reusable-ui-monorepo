@@ -129,10 +129,10 @@ export interface ObserverState<TState extends {} | null, TElement extends Elemen
     observedState   : TState
     
     /**
-     * Points to the target DOM element for supporting automatic state detection
+     * Ref to the target DOM element for supporting automatic state detection
      * via `getCurrentState()`.
      */
-    elementRef      : RefObject<TElement | null>
+    ref             : RefObject<TElement | null>
     
     /**
      * Safely updates the state in response to event handlers.

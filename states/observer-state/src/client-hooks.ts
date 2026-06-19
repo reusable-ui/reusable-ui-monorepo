@@ -198,8 +198,8 @@ export const useObserverState = <TState extends {} | null, TElement extends Elem
     
     // Return resolved state and updater utilities:
     return {
-        elementRef,
-        observedState: effectiveState,
+        observedState   : effectiveState,
+        ref             : elementRef,
         safeUpdateState
     } satisfies ObserverState<TState, TElement>;
 };

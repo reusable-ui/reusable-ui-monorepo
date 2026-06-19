@@ -87,12 +87,12 @@ export interface FocusObserverProps extends ObserverProps {
 // Observes whether the component should display a focus indicator.
 export const useFocusObserverState = <TElement extends Element = HTMLElement>(props: FocusObserverProps) => {
     // `useObserverState` provides the core observer logic:
-    // - elementRef: ref to attach to the target element
     // - observedState: the current focus state (true/false)
+    // - ref: ref to attach to the target element
     // - safeUpdateState: helper to safely update state based on events
     const {
-        elementRef,
         observedState,
+        ref,
         safeUpdateState,
     } = useObserverState<boolean, TElement>(props, undefined, focusObserverDefinition);
     
@@ -117,7 +117,7 @@ export const useFocusObserverState = <TElement extends Element = HTMLElement>(pr
     // Return the observed focus indicator state and handlers for integration:
     return {
         observedFocus: observedState, // whether to show focus indicator
-        elementRef,                   // attach to the element you want to observe
+        ref,                          // attach to the element you want to observe
         handleFocus,                  // bind to onFocus
         handleBlur,                   // bind to onBlur
         handleKeyDown,                // bind to onKeyDown

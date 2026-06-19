@@ -98,8 +98,8 @@ export interface HoverObserverState<TElement extends Element = HTMLElement>
 export const useHoverObserverState = <TElement extends Element = HTMLElement>(props: HoverObserverProps): HoverObserverState<TElement> => {
     // Use the generic observer state hook with hover-specific definition:
     const {
-        elementRef,
         observedState,
+        ref,
         safeUpdateState,
     } = useObserverState<boolean, TElement>(props, undefined, hoverObserverDefinition);
     
@@ -122,7 +122,7 @@ export const useHoverObserverState = <TElement extends Element = HTMLElement>(pr
     // Return the observed hover indicator state and handlers for integration:
     return {
         observedHover : observedState,
-        ref           : elementRef,
+        ref,
         handleMouseEnter,
         handleMouseLeave,
     } satisfies HoverObserverState<TElement>;
