@@ -42,16 +42,16 @@ import {
 // Hooks:
 import {
     usePointerPressTracker,
-}                           from './internal-pointer-press-tracker-hook.js'
+}                           from './internal-pointer-press-tracker-client-hook.js'
 import {
     useKeyPressTracker,
-}                           from './internal-key-press-tracker-hook.js'
+}                           from './internal-key-press-tracker-client-hook.js'
 import {
     useGlobalPointerRelease,
-}                           from './internal-global-pointer-release-hook.js'
+}                           from './internal-global-pointer-release-client-hook.js'
 import {
     useGlobalKeyRelease,
-}                           from './internal-global-key-release-hook.js'
+}                           from './internal-global-key-release-client-hook.js'
 
 // Reusable-ui utilities:
 import {
