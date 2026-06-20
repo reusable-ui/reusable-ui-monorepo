@@ -33,80 +33,16 @@ import {
 
 // Reusable-ui states:
 import {
-    // Types:
-    type ControlledStateDefinition,
-    
-    
-    
-    // Hooks:
-    useResolvedControlledState,
-}                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
-import {
-    // Types:
-    type ResolveEffectiveStateArgs,
-    
-    
-    
     // Hooks:
     useDispatchInteractionStateChange,
     useInteractionBehaviorState,
     useInteractionController,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
-
-
-/** The controlled state definition for expand/collapse state management. */
-const controlledStateDefinition : ControlledStateDefinition<boolean> = {
-    defaultState : defaultInitialExpanded,
-};
-
-/**
- * Resolves the current expanded/collapsed state for a fully controlled component.
- * 
- * This hook is intended for components that **consume** the resolved `expanded` state and **forward** it to a base component.
- * 
- * Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontrolled modes,
- * `useCollapseState()` assumes the component is **fully controlled** and does not manage internal state.
- * 
- * - Supports only controlled mode.
- * - Ideal for components that **consume** the resolved `expanded` state.
- * 
- * @param props - The component props that may include a controlled `expanded` value but must exclude `defaultExpanded`.
- * @param options - An optional configuration for customizing expand/collapse behavior.
- * @returns The resolved expanded/collapsed state.
- */
-export const useCollapseState = (props: CollapseStateProps<any> & { defaultExpanded?: never }, options?: Pick<CollapseStateOptions, 'defaultExpanded'>) : boolean => {
-    // Extract options:
-    const {
-        defaultExpanded : defaultState,
-    } = options ?? {};
-    
-    
-    
-    // Extract props:
-    const {
-        expanded : state,
-    } = props;
-    
-    
-    
-    // Resolve effective expanded state:
-    const expanded = useResolvedControlledState<boolean>(
-        // Props:
-        { state },
-        
-        // Options:
-        { defaultState },
-        
-        // Definition:
-        controlledStateDefinition,
-    );
-    
-    
-    
-    // Return the resolved expanded state:
-    return expanded;
-};
+// Hooks:
+import {
+    useResolvedEffectiveCollapseState,
+}                           from './internal-general-hooks.js'
 
 
 
@@ -139,18 +75,6 @@ export const useDispatchExpandedChange = <TChangeEvent = unknown>(props: Collaps
 };
 
 
-
-/** Resolves the effective expansion state, normalizing declarative keywords into concrete values. */
-const useResolvedEffectiveCollapseState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, CollapseStateProps<unknown>, CollapseStateOptions, CollapseBehaviorStateDefinition>): boolean => {
-    const effectiveExpanded = useCollapseState({
-        ...props,
-        defaultExpanded : undefined,        // Prevents uncontrolled value.
-        expanded        : declarativeState, // Pass the declarative state as controlled value.
-    }, options);
-    
-    // Return the resolved effective expansion state:
-    return effectiveExpanded;
-};
 
 /** The behavior state definition for expand/collapse state management. */
 const collapseBehaviorStateDefinition : CollapseBehaviorStateDefinition = {
