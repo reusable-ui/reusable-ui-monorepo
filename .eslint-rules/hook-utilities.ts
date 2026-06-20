@@ -60,6 +60,8 @@ const serverSafeHooks = new Set<string>([
     
     'useAnchorlessLink',
     
+    'useOptionalLinkWrapper',
+    
     'useNavigationPathMatch',
     'useCurrentPathMatch',
     'useLinkPathMatch',

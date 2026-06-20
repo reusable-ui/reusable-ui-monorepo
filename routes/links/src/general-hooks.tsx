@@ -1,5 +1,3 @@
-'use client' // The exported `useOptionalLinkWrapper()` hook is client side only.
-
 // React:
 import React, {
     // Types:
