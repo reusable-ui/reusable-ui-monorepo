@@ -50,6 +50,8 @@ const serverSafeHooks = new Set<string>([
     
     'useResolvedInteractionDriverState',
     
+    'useExciteState',
+    
     'useAnchorlessLink',
     
     'useNavigationPathMatch',
