@@ -180,13 +180,13 @@ const renderWithLinkIfPresent = <TProps extends PropsWithChildren<DisabledStateP
  * 
  * @example
  * ```tsx
- * import { useOptionalLinkWrapper } from '@reusable-ui/links';
+ * import { useWithLinkAware } from '@reusable-ui/links';
  * 
  * interface SmartButtonProps extends BaseButtonProps {}
  * 
  * const SmartButton = (props: SmartButtonProps) => {
  *     // Enhances the <BaseButton> with client-side link detection (e.g., <Link> from Next.js or React Router):
- *     return useOptionalLinkWrapper(
+ *     return useWithLinkAware(
  *         <BaseButton {...props} />
  *     );
  * };
@@ -202,9 +202,9 @@ const renderWithLinkIfPresent = <TProps extends PropsWithChildren<DisabledStateP
  * </Link>
  * ```
  */
-export const useOptionalLinkWrapper = <TProps extends PropsWithChildren<DisabledStateProps & SemanticProps>>(originalElement: ReactElement<TProps, string | JSXElementConstructor<unknown>>): ReactElement<Partial<TProps>, JSXElementConstructor<unknown>> => {
+export const useWithLinkAware = <TProps extends PropsWithChildren<DisabledStateProps & SemanticProps>>(originalElement: ReactElement<TProps, string | JSXElementConstructor<unknown>>): ReactElement<Partial<TProps>, JSXElementConstructor<unknown>> => {
     // Define a stable functional wrapper component that accepts overrides:
-    const LinkAwareComponent = useStableCallback(<TOverrideProps extends Partial<PropsWithChildren<DisabledStateProps & SemanticProps>>>(propOverrides: TOverrideProps) => {
+    const WithLinkAware = useStableCallback(<TOverrideProps extends Partial<PropsWithChildren<DisabledStateProps & SemanticProps>>>(propOverrides: TOverrideProps) => {
         return renderWithLinkIfPresent<TOverrideProps>(originalElement as unknown as ReactElement<TOverrideProps, string | JSXElementConstructor<unknown>>, propOverrides);
     });
     
@@ -213,12 +213,12 @@ export const useOptionalLinkWrapper = <TProps extends PropsWithChildren<Disabled
     // Sets a readable name for debugging in React DevTools:
     if (process.env.NODE_ENV === 'development') {
         // @ts-expect-error: allowed for dev-friendly diagnostics
-        LinkAwareComponent.displayName = 'LinkAwareComponent';
+        WithLinkAware.displayName = 'WithLinkAware';
     } // if
     
     
     
     // Return an element of the functional wrapper. This creates a structurally stable component type
     // that consumers can safely wrap, clone, and interact with as if it were the `originalElement`:
-    return <LinkAwareComponent<Partial<TProps>> />;
+    return <WithLinkAware<Partial<TProps>> />;
 };

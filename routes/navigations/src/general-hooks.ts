@@ -342,7 +342,7 @@ export interface LinkPathMatchProps
  * ```tsx
  * import React, { ComponentProps } from 'react';
  * import { useLinkPathMatch, LinkPathMatchProps, extractRouteSegmentUnits } from '@reusable-ui/navigations';
- * import { useOptionalLinkWrapper } from '@reusable-ui/links';
+ * import { useWithLinkAware } from '@reusable-ui/links';
  * import { usePathname } from 'next/navigation'; // Next.js
  * // import { useMatches } from 'react-router'; // React Router
  * 
@@ -359,7 +359,7 @@ export interface LinkPathMatchProps
  *         pathMatchStrategy,
  *     });
  *     
- *     return useOptionalLinkWrapper(
+ *     return useWithLinkAware(
  *         <button type='button' {...props} className={`${props.className} ${isActive ? 'active' : ''}`} />
  *     );
  * };

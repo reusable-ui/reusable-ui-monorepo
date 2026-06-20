@@ -17,7 +17,7 @@ import {
     useResolvedSemanticAttributes,
 } from '@reusable-ui/semantics'
 import {
-    useOptionalLinkWrapper,
+    useWithLinkAware,
 } from '../dist/index.js'
 
 
@@ -44,7 +44,7 @@ export const MockSmartButton = (props: MockSmartButtonProps) => {
         tag,
     });
     
-    return useOptionalLinkWrapper(
+    return useWithLinkAware(
         <Button {...props} tag={resolvedTag} role={resolvedRole} />
     );
 };

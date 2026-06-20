@@ -73,7 +73,7 @@ interface SmartButtonTestCase {
 
 
 
-test.describe('useOptionalLinkWrapper - semantic composition + link behavior', () => {
+test.describe('useWithLinkAware - semantic composition + link behavior', () => {
     for (const {
         // Test Inputs:
         title,

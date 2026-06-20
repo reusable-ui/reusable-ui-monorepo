@@ -1,7 +1,7 @@
 # @reusable-ui/links 🔗  
 
 A lightweight, router-agnostic utility for smartly wrapping React elements with `<Link>` behavior — only when needed.  
-This package provides the powerful `useOptionalLinkWrapper()` hook that enables semantic-aware components (like buttons, menu items, cards, etc.) to opt into client-side routing based on runtime child inspection — with **no dependency on any router library**.
+This package provides the powerful `useWithLinkAware()` hook that enables semantic-aware components (like buttons, menu items, cards, etc.) to opt into client-side routing based on runtime child inspection — with **no dependency on any router library**.
 
 ## ✨ Features
 ✔ Automatically detects embedded `<Link>` components (from Next.js or React Router)  
@@ -20,14 +20,14 @@ yarn add @reusable-ui/links
 
 ## 🔁 Exported Hooks
 
-### `useOptionalLinkWrapper(originalElement: ReactElement): ReactElement`
+### `useWithLinkAware(originalElement: ReactElement): ReactElement`
 
 Wraps a semantic element (e.g. `<BaseButton>`) with a router-specific `<Link>` **if one is detected** in its children, preserving visual and interactive behavior while avoiding invalid DOM.
 
 #### 🔧 Usage Example
 
 ```tsx
-import { useOptionalLinkWrapper } from '@reusable-ui/links';
+import { useWithLinkAware } from '@reusable-ui/links';
 import { Link } from '@reusable-ui/next-link-compat'; // Next.js <Link> compatible
 // import { Link } from '@reusable-ui/router-link-compat'; // React Router <Link> compatible
 import { BaseButton, BaseButtonProps } from './BaseButton';
@@ -36,7 +36,7 @@ interface SmartButtonProps extends BaseButtonProps {}
 
 const SmartButton = (props: SmartButtonProps) => {
     // Enhances the <BaseButton> with client-side link detection (e.g., <Link> from Next.js or React Router):
-    return useOptionalLinkWrapper(
+    return useWithLinkAware(
         <BaseButton {...props} />
     );
 };
@@ -56,7 +56,7 @@ This keeps the visual layout unchanged and preserves accessibility while deferri
 
 #### 🧠 How It Works
 
-Internally, `useOptionalLinkWrapper()`:
+Internally, `useWithLinkAware()`:
 - Scans children of the provided base element for a supported `<Link>`
 - Merges the `<Link>`’s children with the base element’s children
 - Re-wraps the updated element inside the detected `<Link>` with proper semantics.
