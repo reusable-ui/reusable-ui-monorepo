@@ -55,6 +55,9 @@ const serverSafeHooks = new Set<string>([
     'useCollapseState',
     'useResolvedEffectiveCollapseState',
     
+    'useViewState',
+    'useResolvedEffectiveViewState',
+    
     'useAnchorlessLink',
     
     'useNavigationPathMatch',

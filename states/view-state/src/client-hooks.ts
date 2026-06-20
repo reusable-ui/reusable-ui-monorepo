@@ -34,7 +34,6 @@ import {
     resolveViewTransitionPhase,
     resolveViewTransitionClassname,
     triggerViewPhaseEvents,
-    clampViewIndex,
 }                           from './internal-utilities.js'
 
 // CSS Variables:
@@ -54,80 +53,16 @@ import {
 
 // Reusable-ui states:
 import {
-    // Types:
-    type RangedStateDefinition,
-    
-    
-    
-    // Hooks:
-    useResolvedRangedState,
-}                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
-import {
-    // Types:
-    type ResolveEffectiveStateArgs,
-    
-    
-    
     // Hooks:
     useDispatchInteractionStateChange,
     useInteractionBehaviorState,
     useInteractionController,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
-
-
-/** The controllable state definition for view-switching state management. */
-const rangedStateDefinition : RangedStateDefinition<number> = {
-    defaultState : defaultInitialViewIndex,
-};
-
-/**
- * Resolves the current view index for a fully controlled component.
- * 
- * This hook is intended for components that **consume** the resolved `viewIndex` value and **forward** it to a base component.
- * 
- * Unlike `useViewBehaviorState()`, which supports both controlled and uncontrolled modes,
- * `useViewState()` assumes the component is **fully controlled** and does not manage internal state.
- * 
- * - Supports only controlled mode.
- * - Ideal for components that **consume** the resolved `viewIndex` value.
- * 
- * @param props - The component props that may include a controlled `viewIndex` value but must exclude `defaultViewIndex`.
- * @param options - An optional configuration for customizing view-switching behavior.
- * @returns The resolved view index.
- */
-export const useViewState = (props: ViewStateProps<any> & { defaultViewIndex?: never }, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>) : number => {
-    // Extract options:
-    const {
-        defaultViewIndex : defaultState,
-    } = options ?? {};
-    
-    
-    
-    // Extract props:
-    const {
-        viewIndex : state,
-    } = props;
-    
-    
-    
-    // Resolve effective view index:
-    const viewIndex = useResolvedRangedState<number>(
-        // Props:
-        { state },
-        
-        // Options:
-        { defaultState, clampState : (rawViewIndex) => clampViewIndex(rawViewIndex, options) },
-        
-        // Definition:
-        rangedStateDefinition,
-    );
-    
-    
-    
-    // Return the resolved view index:
-    return viewIndex;
-};
+// Hooks:
+import {
+    useResolvedEffectiveViewState,
+}                           from './internal-general-hooks.js'
 
 
 
@@ -160,18 +95,6 @@ export const useDispatchViewIndexChange = <TChangeEvent = unknown>(props: ViewSt
 };
 
 
-
-/** Resolves the effective view index, normalizing declarative keywords into concrete values. */
-const useResolvedEffectiveViewState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<number, ViewStateProps<unknown>, ViewStateOptions, ViewBehaviorStateDefinition>): number => {
-    const effectiveViewIndex = useViewState({
-        ...props,
-        defaultViewIndex  : undefined,        // Prevents uncontrolled value.
-        viewIndex         : declarativeState, // Pass the declarative state as controlled value.
-    }, options);
-    
-    // Return the resolved effective view index:
-    return effectiveViewIndex;
-};
 
 /** The behavior state definition for view-switching state management. */
 const viewBehaviorStateDefinition : ViewBehaviorStateDefinition = {
