@@ -61,7 +61,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * This hook is intended for components that **consume** the resolved `readOnly` state and **forward** it to a base component.
  * 
  * Unlike `useReadOnlyBehaviorState()`, which handles animation and lifecycle,
- * `useReadOnlyState()` performs a lightweight resolution of the effective read-only value.
+ * `useResolvedReadOnlyState()` performs a lightweight resolution of the effective read-only value.
  * 
  * - No internal state or uncontrolled fallback.
  * - Ideal for components that **consume** the resolved `readOnly` state.
@@ -76,7 +76,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * @param options - An optional configuration for customizing editable/read-only behavior.
  * @returns The resolved editable/read-only state.
  */
-export const useReadOnlyState = (props: ReadOnlyStateProps, options?: Pick<ReadOnlyStateOptions, 'defaultReadOnly' | 'defaultCascadeReadOnly'>) : boolean => {
+export const useResolvedReadOnlyState = (props: ReadOnlyStateProps, options?: Pick<ReadOnlyStateOptions, 'defaultReadOnly' | 'defaultCascadeReadOnly'>) : boolean => {
     // Extract options:
     const {
         defaultReadOnly        : defaultState,
@@ -191,7 +191,7 @@ export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>
     // States and flags:
     
     // Resolve effective read-only state:
-    const effectiveState = useReadOnlyState(props, options);
+    const effectiveState = useResolvedReadOnlyState(props, options);
     
     // Transition orchestration:
     const {
