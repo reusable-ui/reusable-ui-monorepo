@@ -201,13 +201,13 @@ The hook manages transitions when `viewIndex` changes using a unified animation 
 - **On unrestricted (re-enabled or exit readonly)**: `dispatchViewIndexChange()` works normally.  
 - **Rationale**: Restricted components freeze interaction — they don’t reset view index, but prevent user interactions until unrestricted.
 
-### `useViewState(props, options?)`
+### `useResolvedViewState(props, options?)`
 
 Resolves the current view index for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `viewIndex` value and **forward** it to a base component.
 
-Unlike `useViewBehaviorState()`, which supports both controlled and uncontrolled modes, `useViewState()` assumes the component is **fully controlled** and does not manage internal state.
+Unlike `useViewBehaviorState()`, which supports both controlled and uncontrolled modes, `useResolvedViewState()` assumes the component is **fully controlled** and does not manage internal state.
 
 - Supports only controlled mode.
 - Ideal for components that **consume** the resolved `viewIndex` value.
