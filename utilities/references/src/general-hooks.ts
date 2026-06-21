@@ -91,6 +91,13 @@ export const useMergedRefs = <TValue>(...refs: Optional<Ref<TValue>>[]): RefCall
             else {
                 // Assign value to mutable object ref:
                 ref.current = value;
+                
+                
+                
+                // Wipes out mutable object ref values on unmount:
+                scheduledCleanups.push(() => {
+                    ref.current = null;
+                });
             } // if
         } // for
         
