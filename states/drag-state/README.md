@@ -139,13 +139,13 @@ The hook manages transitions between `dragged` and `dropped` states using a unif
     - In explicit/external modes, implementors must manage a persistent drop in their own state (for example, suppressing `true` until a new `pointerdown` event is observed).  
 - **Rationale**: Drag is a discrete state — past drag actions are ignored when toggling disabled, preventing phantom restoration and ensuring accessibility consistency.
 
-### `useDragState(props, options?)`
+### `useResolvedDragState(props, options?)`
 
 Resolves the current dragged/dropped state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `dragged` state and **forward** it to a base component.
 
-Unlike `useDragBehaviorState()`, which handles animation and lifecycle, `useDragState()` performs a lightweight resolution of the effective drag value.
+Unlike `useDragBehaviorState()`, which handles animation and lifecycle, `useResolvedDragState()` performs a lightweight resolution of the effective drag value.
 
 - No internal state or uncontrolled fallback.
 - `'auto'` is treated as a declarative diagnostic mode.
