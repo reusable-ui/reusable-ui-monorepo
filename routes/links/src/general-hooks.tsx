@@ -81,6 +81,17 @@ const renderWithLinkIfPresent = <TProps extends PropsWithChildren<DisabledStateP
     
     
     
+    // Runs some hooks unconditionally for later use:
+    
+    // Resolve disabled state:
+    const isDisabled = useDisabledState(originalElement.props);
+    
+    // Resolve semantic tag:
+    const { tag : resolvedTag } = useResolvedSemanticAttributes(originalElement.props);
+    const isAnchorElement = (resolvedTag === 'a');
+    
+    
+    
     // Attempt to extract and unwrap the first client-side `<Link>` element inside the children tree:
     const extraction = useMemo<LinkExtractionResult | null>(() =>
         extractFirstClientLink(originalChildren)
@@ -101,14 +112,6 @@ const renderWithLinkIfPresent = <TProps extends PropsWithChildren<DisabledStateP
             propOverrides,
         ),
     ) as ReactElement<TProps, JSXElementConstructor<unknown>>;
-    
-    
-    
-    // Resolve semantic behavior and accessibility state of the original element:
-    const { tag : resolvedTag } = useResolvedSemanticAttributes(originalElement.props);
-    const isAnchorElement = (resolvedTag === 'a');
-    
-    const isDisabled = useDisabledState(originalElement.props);
     
     
     
