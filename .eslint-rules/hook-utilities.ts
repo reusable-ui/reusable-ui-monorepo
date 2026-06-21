@@ -50,7 +50,7 @@ const serverSafeHooks = new Set<string>([
     
     'useResolvedInteractionDriverState',
     
-    'useExciteState',
+    'useResolvedExciteState',
     
     'useCollapseState',
     'useResolvedEffectiveCollapseState',

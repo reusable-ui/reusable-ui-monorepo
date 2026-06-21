@@ -39,7 +39,7 @@ const controlledStateDefinition : ControlledStateDefinition<boolean> = {
  * @param options - An optional configuration for customizing excitement behavior.
  * @returns The resolved excited state.
  */
-export const useExciteState = (props: ExciteStateProps, options?: Pick<ExciteStateOptions, 'defaultExcited'>): boolean => {
+export const useResolvedExciteState = (props: ExciteStateProps, options?: Pick<ExciteStateOptions, 'defaultExcited'>): boolean => {
     // Extract options:
     const {
         defaultExcited : defaultState,
