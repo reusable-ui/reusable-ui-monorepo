@@ -210,7 +210,7 @@ export interface InteractionBehaviorStateDefinition<TDeclarativeState extends {}
      * Example: even if the concrete value is `true`, if the component is disabled,
      * the effective state becomes `false`.
      * 
-     * This definition property is a hook because implementors may call other hooks (`useContext`, `useDisabledState`, etc.)
+     * This definition property is a hook because implementors may call other hooks (`useContext`, `useResolvedDisabledState`, etc.)
      * to resolve the result.
      */
     useResolvedEffectiveState : (arg: ResolveEffectiveStateArgs<TDeclarativeState, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>) => TState

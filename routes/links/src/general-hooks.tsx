@@ -39,7 +39,7 @@ import {
     
     
     // Hooks:
-    useDisabledState,
+    useResolvedDisabledState,
 }                           from '@reusable-ui/disabled-state'  // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
 
 // Utilities:
@@ -84,7 +84,7 @@ const renderWithLinkIfPresent = <TProps extends PropsWithChildren<DisabledStateP
     // Runs some hooks unconditionally for later use:
     
     // Resolve disabled state:
-    const isDisabled = useDisabledState(originalElement.props);
+    const isDisabled = useResolvedDisabledState(originalElement.props);
     
     // Resolve semantic tag:
     const { tag : resolvedTag } = useResolvedSemanticAttributes(originalElement.props);

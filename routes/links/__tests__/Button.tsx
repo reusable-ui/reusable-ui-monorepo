@@ -18,7 +18,7 @@ import {
 } from '@reusable-ui/semantics'
 import {
     type DisabledStateProps,
-    useDisabledState,
+    useResolvedDisabledState,
 } from '@reusable-ui/disabled-state'
 
 
@@ -64,7 +64,7 @@ export const Button = (props: ButtonProps) => {
         tag,
     });
     
-    const isDisabled = useDisabledState(props);
+    const isDisabled = useResolvedDisabledState(props);
     
     
     

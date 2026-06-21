@@ -45,7 +45,7 @@ export interface DisabledStateProviderProps
  *     DisabledStateProps,
  *     DisabledStateProvider,
  *     useDisabledBehaviorState,
- *     useDisabledState,
+ *     useResolvedDisabledState,
  * } from '@reusable-ui/disabled-state';
  * 
  * export interface ParentComponentProps extends DisabledStateProps {
@@ -70,8 +70,8 @@ export interface DisabledStateProviderProps
  *         animationBubbling      : false,                     // Ignores bubbling animation events from children.
  *     });
  *     
- *     // Or use `useDisabledState()` if not concerned with animation phases:
- *     // const disabled = useDisabledState(props, {
+ *     // Or use `useResolvedDisabledState()` if not concerned with animation phases:
+ *     // const disabled = useResolvedDisabledState(props, {
  *     //     defaultDisabled        : false, // Defaults to enabled.
  *     //     defaultCascadeDisabled : true,  // Defaults to allow contextual disabling.
  *     // });
