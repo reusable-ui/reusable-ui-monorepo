@@ -64,6 +64,14 @@ export const migrateUseResolvedPrefix = createRule({
         
         
         
+        // Excludes:
+        if ([
+            'useAnimationState',
+            'useObserverState',
+        ].includes(legacyTargetName)) return {};
+        
+        
+        
         return {
             /**
              * Inspect standard function declarations:
