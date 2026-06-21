@@ -12,7 +12,7 @@ With **drag-state**, you get:
 
 ## ⚠️ Dependency on Press-State
 Drag-state does not compute drag intent on its own.  
-It requires a **press-state (or equivalent)** source to supply `computedDrag` — typically derived from `actualPressed` in `usePressBehaviorState()` or `usePressState()`.  
+It requires a **press-state (or equivalent)** source to supply `computedDrag` — typically derived from `actualPressed` in `usePressBehaviorState()` or `useResolvedPressState()`.  
 Without it, the component will remain in dropped state.
 
 ## ✨ Features
@@ -70,7 +70,7 @@ export const DraggableOption: FC<CustomButtonProps> = (props) => {
     
     // Supply `computedDrag` from press-state or external override:
     const { actualPressed } = usePressBehaviorState(...);
-    // const actualPressed = usePressState(...); // Alternatively use `usePressState(...)`
+    // const actualPressed = useResolvedPressState(...); // Alternatively use `useResolvedPressState(...)`
     const internalComputedDrag = actualPressed;
     const isExternallyComputed = (externalComputedDrag !== undefined);
     const computedDrag         = isExternallyComputed ? externalComputedDrag : internalComputedDrag;

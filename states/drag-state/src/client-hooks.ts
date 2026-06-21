@@ -178,7 +178,7 @@ const dragBehaviorStateDefinition : DragBehaviorStateDefinition = {
  *     
  *     // Supply `computedDrag` from press-state or external override:
  *     const { actualPressed } = usePressBehaviorState(...);
- *     // const actualPressed = usePressState(...); // Alternatively use `usePressState(...)`
+ *     // const actualPressed = useResolvedPressState(...); // Alternatively use `useResolvedPressState(...)`
  *     const internalComputedDrag = actualPressed;
  *     const isExternallyComputed = (externalComputedDrag !== undefined);
  *     const computedDrag         = isExternallyComputed ? externalComputedDrag : internalComputedDrag;

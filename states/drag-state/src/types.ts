@@ -75,14 +75,14 @@ export interface DragStateProps
      * 
      * Developers must supply `computedDrag` for correctness; otherwise, the component stays dropped.
      * Commonly supplied from the resolved `actualPressed` state returned by `usePressBehaviorState()` or alternatively
-     * the returned value from `usePressState()`.
+     * the returned value from `useResolvedPressState()`.
      * 
      * Disabled behavior:
      * - When disabled, the component is always treated as dropped (`false`), regardless of `computedDrag`.
      * - When re-enabled, the component resumes following the passed `computedDrag` value.
      * - To enforce a "remain dropped until user re-drags" contract in this mode,
      *   implementors must manage a persistent dropped state in their own logic (e.g. suppressing `true` until a new `pointerdown` event is observed).
-     *   The returned state from `usePressBehaviorState()` or `usePressState()` already implements this persistence.
+     *   The returned state from `usePressBehaviorState()` or `useResolvedPressState()` already implements this persistence.
      * 
      * This property is intended for **component developers** who need to customize drag resolution.
      * For **application developers**, prefer using the `dragged` prop directly.
