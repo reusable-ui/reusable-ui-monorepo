@@ -186,4 +186,31 @@ describe('useMergedRefs', () => {
         expect(refObject1.current).toBe(undefined);
         expect(refCallback1).toHaveBeenCalledWith(undefined);
     });
+
+    test('React 19+ cleanup behavior: resetting merged ref to null', () => {
+        type RefType = string | null;
+        const { result: { current: refObject1 } } = renderHook(() => useRef<RefType>('initialValue'));
+        const cleanupCallback = jest.fn();
+        const refCallback1 = jest.fn<RefCallback<RefType>>(() => {
+            return () => {
+                cleanupCallback();
+            };
+        });
+        
+        const { result: { current: mergedRef } } = renderHook(() => useMergedRefs(refObject1, refCallback1));
+        
+        // @ts-ignore
+        const testType = (
+            // Verify that mergedRef is a RefCallback:
+            mergedRef satisfies RefCallback<RefType>
+        );
+        
+        expect(cleanupCallback).toHaveBeenCalledTimes(0);
+        const maybeCleanup = mergedRef('mountedValue');
+        expect(maybeCleanup).toBeTruthy();
+        maybeCleanup?.();
+        expect(refObject1.current).toBe(null);
+        expect(refCallback1).toHaveBeenCalledWith('mountedValue'); // null should not passed to the ref callback due to returning a cleanup callback
+        expect(cleanupCallback).toHaveBeenCalledTimes(1);          // instead the cleanup should have been invoked
+    });
 });
