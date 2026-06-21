@@ -21,8 +21,15 @@ yarn add @reusable-ui/references
 ## 🔗 Exported Hooks & Functions
 
 ### `useMergedRefs<TValue>(...refs: Optional<Ref<TValue>>[]): RefCallback<TValue>`
-Merges multiple React refs into a **single stable ref callback**.  
-Handles both **object refs** and **callback refs** without causing unnecessary re-renders.
+
+Merges multiple React refs into a single stable ref function.
+
+- Ensures all provided refs receive the assigned value.
+- Supports both **callback refs** (`(value) => void`) and **ref objects** (`{ current: value }`).
+- Supports **React 19+ cleanup functions** returned by callback refs.
+- **Backward Compatibility**: If the callback ref does not return a cleanup function,
+  it falls back to calling `ref(null)` upon unmounting.
+- Prevents unnecessary re-creations by maintaining a stable reference.
 
 ```tsx
 import { useRef } from 'react';
