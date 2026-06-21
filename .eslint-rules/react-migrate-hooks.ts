@@ -55,6 +55,7 @@ export const migrateUseResolvedPrefix = createRule({
         // Get domain metadata from a relative module locations:
         const domainMetadata = getDomainMetadata(relativeFilename);
         if (!domainMetadata) return {};
+        if (domainMetadata.group === 'Variant') return {};
         
         
         
