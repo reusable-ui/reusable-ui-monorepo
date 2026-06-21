@@ -15,14 +15,14 @@ import {
 
 // Hooks:
 import {
-    useCollapseState,
+    useResolvedCollapseState,
 }                           from './general-hooks.js'
 
 
 
 /** Resolves the effective expansion state, normalizing declarative keywords into concrete values. */
 export const useResolvedEffectiveCollapseState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, CollapseStateProps<unknown>, CollapseStateOptions, CollapseBehaviorStateDefinition>): boolean => {
-    const effectiveExpanded = useCollapseState({
+    const effectiveExpanded = useResolvedCollapseState({
         ...props,
         defaultExpanded : undefined,        // Prevents uncontrolled value.
         expanded        : declarativeState, // Pass the declarative state as controlled value.

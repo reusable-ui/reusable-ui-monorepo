@@ -52,7 +52,7 @@ const serverSafeHooks = new Set<string>([
     
     'useResolvedExciteState',
     
-    'useCollapseState',
+    'useResolvedCollapseState',
     'useResolvedEffectiveCollapseState',
     
     'useViewState',
