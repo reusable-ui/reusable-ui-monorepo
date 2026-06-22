@@ -28,7 +28,7 @@ yarn add @reusable-ui/feedback-state
 
 ## 🧩 Exported Hooks
 
-### `useFeedbackBehaviorState(props, options, definition)`
+### `useFeedbackState(props, options, definition)`
 
 Provides abstract controlled feedback state with animation lifecycle integration.  
 Specialize it into **focus-state**, **hover-state**, **press-state**, or **validity-state** by defining the `definition` parameter and supplying normalized concrete state to `effectiveState`.  
@@ -69,7 +69,7 @@ import {
 } from 'react'
 
 import {
-    useFeedbackBehaviorState,
+    useFeedbackState,
     type FeedbackStateOptions,
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
@@ -186,7 +186,7 @@ export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(p
         transitionPhase     : onlinePhase,
         transitionClassname : onlineClassname,
         ...animationHandlers
-    } = useFeedbackBehaviorState<
+    } = useFeedbackState<
         boolean,
         OnlinePhase,
         OnlineClassname,
@@ -288,7 +288,7 @@ You normalize these keywords into concrete values in your implementation.
 
 ```ts
 import {
-    useFeedbackBehaviorState,
+    useFeedbackState,
     type FeedbackStateOptions,
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
@@ -405,7 +405,7 @@ export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(p
         transitionPhase     : lockedPhase,
         transitionClassname : lockedClassname,
         ...animationHandlers
-    } = useFeedbackBehaviorState<
+    } = useFeedbackState<
         boolean,
         LockedPhase,
         LockedClassname,
@@ -724,7 +724,7 @@ There's also a **conditional factor** (`factorCondVar`):
 
 The system works by splitting responsibilities:
 
-- **React hook (`useFeedbackBehaviorState()`)**  
+- **React hook (`useFeedbackState()`)**  
     Orchestrates runtime state: intent, lifecycle, and toggling classnames.  
 - **CSS hook (`usingFeedbackState()`)**  
     Describes how those states (via classname toggles) map to animations, flags, and factors at the stylesheet level.  

@@ -80,7 +80,7 @@ import {
  * 
  * @returns The resolved feedback behavior state API.
  */
-export const useFeedbackBehaviorState = <
+export const useFeedbackState = <
     TState     extends {} | null,
     TPhase     extends string,
     TClassname extends string,

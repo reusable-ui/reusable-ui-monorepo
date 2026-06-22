@@ -41,7 +41,7 @@ import {
 }                           from '@reusable-ui/effective-state'     // Reusable resolvers for deriving effective state from props, with optional behaviors like range clamping, context cascading, and external observation.
 import {
     // Hooks:
-    useFeedbackBehaviorState,
+    useFeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 import {
     useResolvedDisabledState,
@@ -273,7 +273,7 @@ export const usePressBehaviorState = <TElement extends Element = HTMLElement>(pr
         transitionPhase     : pressPhase,
         transitionClassname : pressClassname,
         ...animationHandlers
-    } = useFeedbackBehaviorState<
+    } = useFeedbackState<
         boolean,
         PressPhase,
         PressClassname,

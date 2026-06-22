@@ -54,7 +54,7 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    useFeedbackBehaviorState,
+    useFeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -252,7 +252,7 @@ export const useSortBehaviorState = <TElement extends Element = HTMLElement, TIt
         transitionPhase     : sortPhase,
         transitionClassname : sortClassname,
         ...animationHandlers
-    } = useFeedbackBehaviorState<
+    } = useFeedbackState<
         symbol,
         SortPhase,
         SortClassname,

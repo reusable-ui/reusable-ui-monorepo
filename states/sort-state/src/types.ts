@@ -232,11 +232,11 @@ export interface SortOffset {
  * - `Symbol()` : a unique pulse value that queues a new sorting animation.
  * 
  * Using `symbol` ensures that consecutive `stagedSortData` changes
- * always produce a distinct trigger value, so `useFeedbackBehaviorState`
+ * always produce a distinct trigger value, so `useFeedbackState`
  * detects each change reliably. A plain boolean could not re-trigger if set
  * to `true` twice in a row, but a new `Symbol()` guarantees uniqueness.
  * 
- * Internally, `useSortBehaviorState` still leverages `useFeedbackBehaviorState`
+ * Internally, `useSortBehaviorState` still leverages `useFeedbackState`
  * with an **ephemeral** `sorted` value for implementation symmetry with
  * `useDisabledBehaviorState`. However, only the animation-aware `sorting` flag
  * and its associated classname are exposed.
