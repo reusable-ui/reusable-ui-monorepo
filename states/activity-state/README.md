@@ -32,7 +32,7 @@ yarn add @reusable-ui/activity-state
 
 ## 🧩 Exported Hooks
 
-### `useActivityBehaviorState(props, options, definition)`
+### `useActivityState(props, options, definition)`
 
 Represents **state-driven animations** with full lifecycle awareness in React components.  
 It synchronizes an externally controlled state (`effectiveState`) with the animation system, ensuring animations start, stop, or switch gracefully without interruption.  
@@ -63,7 +63,7 @@ You normalize these keywords into concrete values in your implementation.
 
 ```ts
 import {
-    useActivityBehaviorState,
+    useActivityState,
     type ActivityStateOptions,
     type ResolveActivityClassnameArgs,
     type ActivityBehaviorStateDefinition,
@@ -155,7 +155,7 @@ export const useBusyBehaviorState = <TElement extends Element = HTMLElement>(pro
         actualState       : actualBusy,
         activityClassname : busyClassname,
         ...animationHandlers
-    } = useActivityBehaviorState<
+    } = useActivityState<
         boolean,
         BusyClassname,
         
@@ -219,7 +219,7 @@ const resolveBusyActivityClassname = ({ visualState }: ResolveActivityClassnameA
 #### 🧠 Activity Animation Behavior
 
 The hook manages activity animations between concrete states using a unified lifecycle flow.  
-When `useActivityBehaviorState()` toggles an `activityClassname` (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`), the corresponding case in `usingActivityState()` activates, and the browser's CSS engine runs the assigned animation.
+When `useActivityState()` toggles an `activityClassname` (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`), the corresponding case in `usingActivityState()` activates, and the browser's CSS engine runs the assigned animation.
 
 The lifecycle flow ensures:
 
@@ -324,7 +324,7 @@ Each **`CssActivityAnimationCase`** defines a mapping between:
 - **Variable (`variable`)** → the CSS variable to assign.
 - **Animation (`animation`)** → the animation value or reference applied to the variable.
 
-When `useActivityBehaviorState()` (React side) toggles an `activityClassname` (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`), the corresponding case in `usingActivityState()` (CSS side) activates. The browser's CSS engine then applies the animation by assigning the variable to the provided value.  
+When `useActivityState()` (React side) toggles an `activityClassname` (e.g. `.is-preparing`, `.is-shipping`, `.is-delivering`), the corresponding case in `usingActivityState()` (CSS side) activates. The browser's CSS engine then applies the animation by assigning the variable to the provided value.  
 
 This separation ensures:
 - **React hook** orchestrates runtime state (`intent`, `running`, lifecycle handlers).  

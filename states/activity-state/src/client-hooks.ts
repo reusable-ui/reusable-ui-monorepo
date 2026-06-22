@@ -91,7 +91,7 @@ import {
  * 
  * @returns The resolved activity behavior state API.
  */
-export const useActivityBehaviorState = <
+export const useActivityState = <
     TState     extends {} | null,
     TClassname extends string,
     

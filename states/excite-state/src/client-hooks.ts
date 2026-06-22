@@ -19,7 +19,7 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    useActivityBehaviorState,
+    useActivityState,
 }                           from '@reusable-ui/activity-state'      // Reusable abstraction for representing state-driven animations in React components — indicating ongoing activity or draw user attention.
 
 // Hooks:
@@ -114,7 +114,7 @@ export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(p
         actualState       : actualExcited,
         activityClassname : exciteClassname,
         ...animationHandlers
-    } = useActivityBehaviorState<
+    } = useActivityState<
         boolean,
         ExciteClassname,
         
