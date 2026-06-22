@@ -75,7 +75,7 @@ interface DragStateControlledTestCase {
 
 
 
-test.describe('useDragBehaviorState - diagnostic mode', () => {
+test.describe('useDragState - diagnostic mode', () => {
     for (const { title, dragged : initialDragged, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

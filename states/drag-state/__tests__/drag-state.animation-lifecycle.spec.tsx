@@ -93,7 +93,7 @@ const BACKGROUND_COLOR_DROPPED = 'color(srgb 0.5 0.5 1)';
 
 
 
-test.describe('useDragBehaviorState - animation', () => {
+test.describe('useDragState - animation', () => {
     for (const { title, dragged : initialDragged, computedDrag: initialComputedDrag, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

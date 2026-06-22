@@ -35,7 +35,7 @@ yarn add @reusable-ui/drag-state
 
 ## 🧩 Exported Hooks
 
-### `useDragBehaviorState(props, options?)`
+### `useDragState(props, options?)`
 
 Resolves the drag state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
@@ -47,7 +47,7 @@ Resolves the drag state, current transition phase, associated CSS class name, an
 ```tsx
 import React, { FC, useEffect } from 'react';
 import {
-    useDragBehaviorState,
+    useDragState,
     DragStateProps,
 } from '@reusable-ui/drag-state';
 import {
@@ -95,7 +95,7 @@ export const DraggableOption: FC<CustomButtonProps> = (props) => {
         handleAnimationCancel,
         handlePointerDown,
         handlePointerMove,
-    } = useDragBehaviorState({
+    } = useDragState({
         computedDrag,
         ...restProps,
     }, {
@@ -145,7 +145,7 @@ Resolves the current dragged/dropped state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `dragged` state and **forward** it to a base component.
 
-Unlike `useDragBehaviorState()`, which handles animation and lifecycle, `useResolvedDragState()` performs a lightweight resolution of the effective drag value.
+Unlike `useDragState()`, which handles animation and lifecycle, `useResolvedDragState()` performs a lightweight resolution of the effective drag value.
 
 - No internal state or uncontrolled fallback.
 - `'auto'` is treated as a declarative diagnostic mode.

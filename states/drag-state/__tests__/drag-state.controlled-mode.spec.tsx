@@ -89,7 +89,7 @@ interface DragStateControlledTestCase {
 
 
 
-test.describe('useDragBehaviorState - controlled mode', () => {
+test.describe('useDragState - controlled mode', () => {
     for (const { title, dragged : initialDragged, computedDrag: initialComputedDrag, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

@@ -78,7 +78,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * 
  * This hook is intended for components that **consume** the resolved `dragged` state and **forward** it to a base component.
  * 
- * Unlike `useDragBehaviorState()`, which handles animation and lifecycle,
+ * Unlike `useDragState()`, which handles animation and lifecycle,
  * `useResolvedDragState()` performs a lightweight resolution of the effective drag value.
  * 
  * - No internal state or uncontrolled fallback.
@@ -155,7 +155,7 @@ const dragBehaviorStateDefinition : DragBehaviorStateDefinition = {
  * ```tsx
  * import React, { FC, useEffect } from 'react';
  * import {
- *     useDragBehaviorState,
+ *     useDragState,
  *     DragStateProps,
  * } from '@reusable-ui/drag-state';
  * import {
@@ -203,7 +203,7 @@ const dragBehaviorStateDefinition : DragBehaviorStateDefinition = {
  *         handleAnimationCancel,
  *         handlePointerDown,
  *         handlePointerMove,
- *     } = useDragBehaviorState({
+ *     } = useDragState({
  *         computedDrag,
  *         ...restProps,
  *     }, {
@@ -230,7 +230,7 @@ const dragBehaviorStateDefinition : DragBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useDragBehaviorState = <TElement extends Element = HTMLElement>(props: DragStateProps, options?: DragStateOptions): DragBehaviorState<TElement> => {
+export const useDragState = <TElement extends Element = HTMLElement>(props: DragStateProps, options?: DragStateOptions): DragBehaviorState<TElement> => {
     // Extract props:
     const {
         onDragUpdate : onStateUpdate,

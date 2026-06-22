@@ -1,7 +1,7 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type DragStateProps,
-    useDragBehaviorState,
+    useDragState,
 } from '../dist/index.js'
 import {
     type PressStateProps,
@@ -71,7 +71,7 @@ export const DragStateTest = (props: DragStateTestProps) => {
         
         handlePointerDown,
         handlePointerMove,
-    } = useDragBehaviorState({
+    } = useDragState({
         ...props,
         computedDrag,
     }, {
