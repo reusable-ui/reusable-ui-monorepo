@@ -6,7 +6,7 @@ import {
     type FocusStateOptions,
     type FocusPhase,
     type FocusClassname,
-    type FocusBehaviorState,
+    type FocusState,
 }                           from './types.js'
 import {
     type FocusBehaviorStateDefinition,
@@ -74,7 +74,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * @param options - An optional configuration for customizing focus/blur behavior.
  * @returns The resolved focused/blurred state and event handlers for focus/blur events.
  */
-export const useResolvedFocusState = <TElement extends Element = HTMLElement>(props: FocusStateProps, options?: Pick<FocusStateOptions, 'defaultFocused'>) : Pick<FocusBehaviorState<TElement>, 'focused' | 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'> => {
+export const useResolvedFocusState = <TElement extends Element = HTMLElement>(props: FocusStateProps, options?: Pick<FocusStateOptions, 'defaultFocused'>) : Pick<FocusState<TElement>, 'focused' | 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'> => {
     // Extract options:
     const {
         defaultFocused : defaultState,
@@ -137,7 +137,7 @@ export const useResolvedFocusState = <TElement extends Element = HTMLElement>(pr
         handleFocus,
         handleBlur,
         handleKeyDown,
-    } satisfies Pick<FocusBehaviorState<TElement>, 'focused' | 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'>;
+    } satisfies Pick<FocusState<TElement>, 'focused' | 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'>;
 };
 
 
@@ -239,7 +239,7 @@ const focusBehaviorStateDefinition : FocusBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useFocusState = <TElement extends Element = HTMLElement>(props: FocusStateProps, options?: FocusStateOptions): FocusBehaviorState<TElement> => {
+export const useFocusState = <TElement extends Element = HTMLElement>(props: FocusStateProps, options?: FocusStateOptions): FocusState<TElement> => {
     // Extract props:
     const {
         onFocusUpdate : onStateUpdate,
@@ -315,5 +315,5 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
         handleFocus,
         handleBlur,
         handleKeyDown,
-    } satisfies FocusBehaviorState<TElement>;
+    } satisfies FocusState<TElement>;
 };

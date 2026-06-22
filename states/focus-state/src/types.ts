@@ -217,7 +217,7 @@ export type FocusClassname = `is-${FocusPhase}` | `is-${FocusPhase} input-like-f
  * 
  * @template TElement - The type of the target DOM element.
  */
-export interface FocusBehaviorState<TElement extends Element = HTMLElement>
+export interface FocusState<TElement extends Element = HTMLElement>
     extends
         // Bases:
         Omit<FeedbackState<boolean, FocusPhase, FocusClassname, TElement>,

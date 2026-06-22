@@ -11,7 +11,7 @@ import {
 
 // Types:
 import {
-    type FocusBehaviorState,
+    type FocusState,
 }                           from './types.js'
 
 // CSS Selectors:
@@ -73,7 +73,7 @@ export interface FocusObserverProps
 export interface FocusObserverState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Pick<FocusBehaviorState<TElement>, 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'>
+        Pick<FocusState<TElement>, 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'>
 {
     /**
      * Observed focus presence.
