@@ -17,7 +17,7 @@ import {
 // Types:
 import {
     type PressStateOptions,
-    type PressBehaviorState,
+    type PressState,
 }                           from './types.js'
 
 // Defaults:
@@ -108,7 +108,7 @@ export interface PressObserverProps
 export interface PressObserverState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Pick<PressBehaviorState<TElement>, 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'>
+        Pick<PressState<TElement>, 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'>
 {
     /**
      * Observed press presence.

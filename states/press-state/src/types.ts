@@ -306,7 +306,7 @@ export type PressClassname = `is-${PressPhase}`
  * 
  * @template TElement - The type of the target DOM element.
  */
-export interface PressBehaviorState<TElement extends Element = HTMLElement>
+export interface PressState<TElement extends Element = HTMLElement>
     extends
         // Bases:
         Omit<FeedbackState<boolean, PressPhase, PressClassname, TElement>,

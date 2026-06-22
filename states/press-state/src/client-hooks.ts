@@ -6,7 +6,7 @@ import {
     type PressStateOptions,
     type PressPhase,
     type PressClassname,
-    type PressBehaviorState,
+    type PressState,
 }                           from './types.js'
 import {
     type PressBehaviorStateDefinition,
@@ -74,7 +74,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * @param options - An optional configuration for customizing press/release behavior.
  * @returns The resolved pressed/released state and event handlers for pointer and keyboard events.
  */
-export const useResolvedPressState = <TElement extends Element = HTMLElement>(props: PressStateProps, options?: Pick<PressStateOptions, 'defaultPressed' | 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'>) : Pick<PressBehaviorState<TElement>, 'pressed' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'> => {
+export const useResolvedPressState = <TElement extends Element = HTMLElement>(props: PressStateProps, options?: Pick<PressStateOptions, 'defaultPressed' | 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'>) : Pick<PressState<TElement>, 'pressed' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'> => {
     // Extract options:
     const {
         defaultPressed : defaultState,
@@ -139,7 +139,7 @@ export const useResolvedPressState = <TElement extends Element = HTMLElement>(pr
         handlePointerCancel,
         handleKeyDown,
         handleKeyUp,
-    } satisfies Pick<PressBehaviorState<TElement>, 'pressed' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'>;
+    } satisfies Pick<PressState<TElement>, 'pressed' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'>;
 };
 
 
@@ -240,7 +240,7 @@ const pressBehaviorStateDefinition : PressBehaviorStateDefinition = {
  * };
  * ```
  */
-export const usePressState = <TElement extends Element = HTMLElement>(props: PressStateProps, options?: PressStateOptions): PressBehaviorState<TElement> => {
+export const usePressState = <TElement extends Element = HTMLElement>(props: PressStateProps, options?: PressStateOptions): PressState<TElement> => {
     // Extract props:
     const {
         onPressUpdate : onStateUpdate,
@@ -318,5 +318,5 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
         handlePointerCancel,
         handleKeyDown,
         handleKeyUp,
-    } satisfies PressBehaviorState<TElement>;
+    } satisfies PressState<TElement>;
 };
