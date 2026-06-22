@@ -199,7 +199,7 @@ export type HoverClassname = `is-${HoverPhase}`
  * 
  * @template TElement - The type of the target DOM element.
  */
-export interface HoverBehaviorState<TElement extends Element = HTMLElement>
+export interface HoverState<TElement extends Element = HTMLElement>
     extends
         // Bases:
         Omit<FeedbackState<boolean, HoverPhase, HoverClassname, TElement>,

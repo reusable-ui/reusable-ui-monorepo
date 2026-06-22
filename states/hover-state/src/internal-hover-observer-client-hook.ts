@@ -8,7 +8,7 @@ import {
 
 // Types:
 import {
-    type HoverBehaviorState,
+    type HoverState,
 }                           from './types.js'
 
 // CSS Selectors:
@@ -67,7 +67,7 @@ export interface HoverObserverProps
 export interface HoverObserverState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Pick<HoverBehaviorState<TElement>, 'ref' | 'handleMouseEnter' | 'handleMouseLeave'>
+        Pick<HoverState<TElement>, 'ref' | 'handleMouseEnter' | 'handleMouseLeave'>
 {
     /**
      * Observed hover presence.

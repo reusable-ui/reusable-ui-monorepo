@@ -6,7 +6,7 @@ import {
     type HoverStateOptions,
     type HoverPhase,
     type HoverClassname,
-    type HoverBehaviorState,
+    type HoverState,
 }                           from './types.js'
 import {
     type HoverBehaviorStateDefinition,
@@ -74,7 +74,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * @param options - An optional configuration for customizing hover/unhover behavior.
  * @returns The resolved hovered/unhovered state and event handlers for mouseenter/mouseleave events.
  */
-export const useResolvedHoverState = <TElement extends Element = HTMLElement>(props: HoverStateProps, options?: Pick<HoverStateOptions, 'defaultHovered'>) : Pick<HoverBehaviorState<TElement>, 'hovered' | 'ref' | 'handleMouseEnter' | 'handleMouseLeave'> => {
+export const useResolvedHoverState = <TElement extends Element = HTMLElement>(props: HoverStateProps, options?: Pick<HoverStateOptions, 'defaultHovered'>) : Pick<HoverState<TElement>, 'hovered' | 'ref' | 'handleMouseEnter' | 'handleMouseLeave'> => {
     // Extract options:
     const {
         defaultHovered : defaultState,
@@ -135,7 +135,7 @@ export const useResolvedHoverState = <TElement extends Element = HTMLElement>(pr
         ref,
         handleMouseEnter,
         handleMouseLeave,
-    } satisfies Pick<HoverBehaviorState<TElement>, 'hovered' | 'ref' | 'handleMouseEnter' | 'handleMouseLeave'>;
+    } satisfies Pick<HoverState<TElement>, 'hovered' | 'ref' | 'handleMouseEnter' | 'handleMouseLeave'>;
 };
 
 
@@ -234,7 +234,7 @@ const hoverBehaviorStateDefinition : HoverBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useHoverState = <TElement extends Element = HTMLElement>(props: HoverStateProps, options?: HoverStateOptions): HoverBehaviorState<TElement> => {
+export const useHoverState = <TElement extends Element = HTMLElement>(props: HoverStateProps, options?: HoverStateOptions): HoverState<TElement> => {
     // Extract props:
     const {
         onHoverUpdate : onStateUpdate,
@@ -308,5 +308,5 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
         ref,
         handleMouseEnter,
         handleMouseLeave,
-    } satisfies HoverBehaviorState<TElement>;
+    } satisfies HoverState<TElement>;
 };
