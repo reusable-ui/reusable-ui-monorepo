@@ -26,7 +26,7 @@ import {
     type SortStateOptions,
     type SortClassname,
     type SortOffset,
-    type SortBehaviorState,
+    type SortState,
 }                           from './types.js'
 import {
     type SortPhase,
@@ -93,7 +93,7 @@ const sortBehaviorStateDefinition : SortBehaviorStateDefinition = {
  * 
  * @param {SortStateProps<TItemElement, TSortData>} props - The component props for passing staged sort data and commit/clear callbacks.
  * @param {SortStateOptions} options - An optional configuration for customizing sort transition behavior and animation lifecycle.
- * @returns {SortBehaviorState<TElement>} - The current sorting activity status, per-item movements, associated CSS class name, inline CSS variables, and animation event handlers.
+ * @returns {SortState<TElement>} - The current sorting activity status, per-item movements, associated CSS class name, inline CSS variables, and animation event handlers.
  * 
  * @example
  * ```tsx
@@ -220,7 +220,7 @@ const sortBehaviorStateDefinition : SortBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useSortState = <TElement extends Element = HTMLElement, TItemElement extends Element = HTMLElement, TSortData = Array<unknown>>(props: SortStateProps<TItemElement, TSortData>, options?: SortStateOptions): SortBehaviorState<TElement> => {
+export const useSortState = <TElement extends Element = HTMLElement, TItemElement extends Element = HTMLElement, TSortData = Array<unknown>>(props: SortStateProps<TItemElement, TSortData>, options?: SortStateOptions): SortState<TElement> => {
     // Extract props:
     const {
         sortItemRefs,
@@ -396,5 +396,5 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
         sortClassname,
         sortStyles,
         ...animationHandlers,
-    } satisfies SortBehaviorState<TElement>;
+    } satisfies SortState<TElement>;
 };

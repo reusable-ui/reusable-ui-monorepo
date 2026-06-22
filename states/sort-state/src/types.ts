@@ -252,7 +252,7 @@ export interface SortOffset {
  * 
  * @template TElement - The type of the target DOM element.
  */
-export interface SortBehaviorState<TElement extends Element = HTMLElement>
+export interface SortState<TElement extends Element = HTMLElement>
     extends
         // Bases:
         Omit<FeedbackState<boolean, string, SortClassname, TElement>,
