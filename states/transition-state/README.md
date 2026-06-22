@@ -32,7 +32,7 @@ yarn add @reusable-ui/transition-state
 
 ## 🧩 Exported Hooks
 
-### `useTransitionBehaviorState(props, options, definition)`
+### `useTransitionState(props, options, definition)`
 
 Provides abstract transition state management with animation lifecycle integration.  
 Specialize it into **constraint-based**, **feedback-based**, or **interaction-based** states by defining the `definition` parameter.
@@ -58,7 +58,7 @@ Specialize it into **constraint-based**, **feedback-based**, or **interaction-ba
 
 #### 💡 Usage Examples
 
-Here are some usage examples demonstrating how to create custom states using `useTransitionBehaviorState`.
+Here are some usage examples demonstrating how to create custom states using `useTransitionState`.
 
 ##### Constraint-Based States
 
@@ -75,7 +75,7 @@ import {
 } from 'react'
 
 import {
-    useTransitionBehaviorState,
+    useTransitionState,
     type TransitionStateOptions,
     type ResolveDriverStateArgs,
     type ResolveTransitionPhaseArgs,
@@ -189,7 +189,7 @@ export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(p
         transitionPhase     : lockedPhase,
         transitionClassname : lockedClassname,
         ...animationHandlers
-    }] = useTransitionBehaviorState<
+    }] = useTransitionState<
         boolean,
         LockedPhase,
         LockedClassname,
@@ -286,7 +286,7 @@ import {
 } from 'react'
 
 import {
-    useTransitionBehaviorState,
+    useTransitionState,
     type TransitionStateOptions,
     type ResolveDriverStateArgs,
     type ResolveTransitionPhaseArgs,
@@ -400,7 +400,7 @@ export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(p
         transitionPhase     : onlinePhase,
         transitionClassname : onlineClassname,
         ...animationHandlers
-    }] = useTransitionBehaviorState<
+    }] = useTransitionState<
         boolean,
         OnlinePhase,
         OnlineClassname,
@@ -534,7 +534,7 @@ In uncontrolled mode, the hook manages internal state holding normalized concret
 
 ```ts
 import {
-    useTransitionBehaviorState,
+    useTransitionState,
     type TransitionStateProps,
     type TransitionStateOptions,
     type ResolveDriverStateArgs,
@@ -691,7 +691,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
         transitionPhase     : selectedPhase,
         transitionClassname : selectedClassname,
         ...animationHandlers
-    }, setInternalState] = useTransitionBehaviorState<
+    }, setInternalState] = useTransitionState<
         boolean,
         SelectedPhase,
         SelectedClassname,
@@ -1105,7 +1105,7 @@ There's also a **conditional factor** (`factorCondVar`):
 
 The system works by splitting responsibilities:
 
-- **React hook (`useTransitionBehaviorState()`)**  
+- **React hook (`useTransitionState()`)**  
     Orchestrates runtime state: intent, lifecycle, and toggling classnames.  
 - **CSS hook (`usingTransitionState()`)**  
     Describes how those states (via classname toggles) map to animations, flags, and factors at the stylesheet level.  

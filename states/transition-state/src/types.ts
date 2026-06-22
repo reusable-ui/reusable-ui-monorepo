@@ -11,8 +11,8 @@ import {
  * Props for controlling a transition-based state of the component.
  * 
  * Provides a declarative way to seed the internal transition system.
- * Subsequent changes can be handled imperatively via the setter callback returned by `useTransitionBehaviorState()`, or
- * declaratively via `definition.useResolvedDriverState` passed into `useTransitionBehaviorState(props, options, definition)`.
+ * Subsequent changes can be handled imperatively via the setter callback returned by `useTransitionState()`, or
+ * declaratively via `definition.useResolvedDriverState` passed into `useTransitionState(props, options, definition)`.
  * 
  * This prop is intended to be dynamic and may change over the lifetime of the component.
  * 
@@ -27,9 +27,9 @@ export interface TransitionStateProps<TState extends {} | null> {
      * - Evaluated only **once at mount** to seed the internal transition system.
      *   Subsequent changes to this prop are ignored by the transition system.
      * - Later changes must be applied either:
-     *   - Imperatively via the setter callback returned by `useTransitionBehaviorState()`, or
+     *   - Imperatively via the setter callback returned by `useTransitionState()`, or
      *   - Declaratively via `definition.useResolvedDriverState` passed into
-     *     `useTransitionBehaviorState(props, options, definition)`.
+     *     `useTransitionState(props, options, definition)`.
      * 
      * Common sources:
      * - `props.defaultState` for constraint-state

@@ -20,7 +20,7 @@ import {
     
     
     // Hooks:
-    useTransitionBehaviorState,
+    useTransitionState,
 }                           from '@reusable-ui/transition-state'    // Lifecycle-aware transition state for React, enabling reusable hooks with consistent animations.
 
 // Types:
@@ -105,7 +105,7 @@ export const useFeedbackBehaviorState = <
     // States and flags:
     
     // Transition orchestration:
-    const [transitionBehaviorState] = useTransitionBehaviorState<
+    const [transitionBehaviorState] = useTransitionState<
         TState,
         TPhase,
         TClassname,

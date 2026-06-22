@@ -85,7 +85,7 @@ import {
  * - The resolved transition behavior state API.
  * - A setter for updating the internal state.
  */
-export const useTransitionBehaviorState = <
+export const useTransitionState = <
     TState     extends {} | null,
     TPhase     extends string,
     TClassname extends string,
