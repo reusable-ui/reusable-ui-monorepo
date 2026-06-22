@@ -12,7 +12,7 @@ import {
     type ValidityStateOptions,
     type ValidityPhase,
     type ValidityClassname,
-    type ValidityBehaviorState,
+    type ValidityState,
 }                           from './types.js'
 import {
     type ValidityBehaviorStateDefinition,
@@ -302,7 +302,7 @@ const validityBehaviorStateDefinition : ValidityBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useValidityState = <TElement extends Element = HTMLElement>(props: ValidityStateProps, options?: ValidityStateOptions): ValidityBehaviorState<TElement> => {
+export const useValidityState = <TElement extends Element = HTMLElement>(props: ValidityStateProps, options?: ValidityStateOptions): ValidityState<TElement> => {
     // Extract props:
     const {
         onValidityUpdate : onStateUpdate,
@@ -372,5 +372,5 @@ export const useValidityState = <TElement extends Element = HTMLElement>(props: 
         validityPhase,
         validityClassname,
         ...animationHandlers,
-    } satisfies ValidityBehaviorState<TElement>;
+    } satisfies ValidityState<TElement>;
 };

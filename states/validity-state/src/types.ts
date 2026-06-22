@@ -244,7 +244,7 @@ export type ValidityClassname = `is-${ResolvedValidityPhase}` | `is-${Transition
  * 
  * @template TElement - The type of the target DOM element.
  */
-export interface ValidityBehaviorState<TElement extends Element = HTMLElement>
+export interface ValidityState<TElement extends Element = HTMLElement>
     extends
         // Bases:
         Omit<FeedbackState<boolean | null, ValidityPhase, ValidityClassname, TElement>,

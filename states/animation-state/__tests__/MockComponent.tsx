@@ -10,7 +10,7 @@ import './TestComponent.css'
 type UndoAnimation =
     |  0  // undoing valid
     | -0  // undoing invalid
-export type ValidityState =
+export type ValidityValue =
     |  1  // valid
     | -1  // invalid
     | UndoAnimation
@@ -49,7 +49,7 @@ interface MockComponentProps {
      * - `+0`: transitioning from valid to neutral.
      * - `+1`: valid.
      */
-    validityValueRef  : RefCallback<[ValidityState, ValidityState | undefined] | null>
+    validityValueRef  : RefCallback<[ValidityValue, ValidityValue | undefined] | null>
 }
 export const MockComponent = (props: MockComponentProps) => {
     // Extract props and assign defaults:
@@ -96,7 +96,7 @@ export const MockComponent = (props: MockComponentProps) => {
     
     
     //#region Validity Animation API
-    const validityState = useAnimationState<ValidityState, HTMLDivElement>({
+    const validityState = useAnimationState<ValidityValue, HTMLDivElement>({
         initialIntent     : (() => {
             switch (valid) {
                 case true  : return +1;

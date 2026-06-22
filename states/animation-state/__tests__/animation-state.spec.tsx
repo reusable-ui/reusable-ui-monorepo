@@ -1,5 +1,5 @@
 import React from 'react'
-import { type ValidityState, MockComponent } from './MockComponent.js'
+import { type ValidityValue, MockComponent } from './MockComponent.js'
 import { test, expect } from '@playwright/experimental-ct-react';
 
 
@@ -80,13 +80,13 @@ interface AnimationStateTestCase {
         /**
          * Expected validity state after the delay.
          */
-        expectedValidity         : ValidityState
+        expectedValidity         : ValidityValue
         
         /**
          * Expected running validity animation after the delay.
          * - `undefined`: no animation is in progress
          */
-        expectedRunningValidity  : ValidityState | undefined
+        expectedRunningValidity  : ValidityValue | undefined
     }[]
 }
 
@@ -587,7 +587,7 @@ test.describe('useAnimationState', () => {
         test(title, async ({ mount }) => {
             // Setup API refs for testing animation state:
             let expandValue   : [boolean, boolean | undefined] | null             = null;
-            let validityValue : [ValidityState, ValidityState | undefined] | null = null;
+            let validityValue : [ValidityValue, ValidityValue | undefined] | null = null;
             
             // Hold previous props:
             let currentExpanded = initialExpanded;
