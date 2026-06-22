@@ -95,7 +95,7 @@ export type ExciteClassname = 'is-excited' | 'not-excited'
  * 
  * @template TElement - The type of the target DOM element.
  */
-export interface ExciteBehaviorState<TElement extends Element = HTMLElement>
+export interface ExciteState<TElement extends Element = HTMLElement>
     extends
         // Bases:
         Omit<ActivityState<boolean, ExciteClassname, TElement>,

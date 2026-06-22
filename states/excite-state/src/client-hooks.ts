@@ -5,7 +5,7 @@ import {
     type ExciteStateProps,
     type ExciteStateOptions,
     type ExciteClassname,
-    type ExciteBehaviorState,
+    type ExciteState,
 }                           from './types.js'
 import {
     type ExciteBehaviorStateDefinition,
@@ -51,7 +51,7 @@ const exciteBehaviorStateDefinition : ExciteBehaviorStateDefinition = {
  * 
  * @param {ExciteStateProps} props - The component props that may include a controlled `excited` value and an `onExcitedComplete` callback.
  * @param {ExciteStateOptions} options - An optional configuration for customizing excitement behavior and animation lifecycle.
- * @returns {ExciteBehaviorState<TElement>} - The resolved excited state, associated CSS class name, and animation event handlers.
+ * @returns {ExciteState<TElement>} - The resolved excited state, associated CSS class name, and animation event handlers.
  * 
  * @example
  * ```tsx
@@ -94,7 +94,7 @@ const exciteBehaviorStateDefinition : ExciteBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useExciteState = <TElement extends Element = HTMLElement>(props: ExciteStateProps, options?: ExciteStateOptions): ExciteBehaviorState<TElement> => {
+export const useExciteState = <TElement extends Element = HTMLElement>(props: ExciteStateProps, options?: ExciteStateOptions): ExciteState<TElement> => {
     // Extract props:
     const {
         onExcitedComplete : onStateComplete,
@@ -142,5 +142,5 @@ export const useExciteState = <TElement extends Element = HTMLElement>(props: Ex
         actualExcited,
         exciteClassname,
         ...animationHandlers,
-    } satisfies ExciteBehaviorState<TElement>;
+    } satisfies ExciteState<TElement>;
 };
