@@ -17,7 +17,7 @@ import { enforceIndexReexports } from './.eslint-rules/index-reexports.js'
 import { noForeignCodeInTypes } from './.eslint-rules/types.js'
 import { enforceContextCreation } from './.eslint-rules/react-contexts.js'
 import { enforceHookFileLocation, enforceClientHookModules, enforceGeneralHookModules } from './.eslint-rules/react-hooks.js'
-import { migrateUseResolvedPrefix } from './.eslint-rules/react-migrate-hooks.js'
+import { migrateUseDomainGroupSuffix } from './.eslint-rules/react-migrate-hooks.js'
 
 
 
@@ -317,7 +317,7 @@ export default defineConfig(
             },
             'react-migrate-hooks': {
                 rules: {
-                    'migrate-use-resolved-prefix'      : migrateUseResolvedPrefix      as unknown as Rule.RuleModule,
+                    'migrate-use-domain-group-suffix'  : migrateUseDomainGroupSuffix   as unknown as Rule.RuleModule,
                 },
             },
         },
@@ -355,7 +355,7 @@ export default defineConfig(
             'react-hooks/enforce-hook-file-location'         : 'error',
             'react-hooks/enforce-client-hook-modules'        : 'error',
             'react-hooks/enforce-general-hook-modules'       : 'error',
-            'react-migrate-hooks/migrate-use-resolved-prefix' : 'error',
+            'react-migrate-hooks/migrate-use-domain-group-suffix' : 'error',
         },
     },
     

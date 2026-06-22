@@ -15,29 +15,29 @@ const createRule = ESLintUtils.RuleCreator(
 
 
 /**
- * ESLint rule: migrate-use-resolved-prefix
+ * ESLint rule: migrate-use-domain-group-suffix
  * 
  * Purpose:
- * - Enforce migration of legacy hooks from `use<Domain><Group>` to `useResolved<Domain><Group>`.
- * - Ensure consistent state-resolving nomenclature throughout the monorepo.
+ * - Enforce migration of legacy hooks from `use<Domain>Behavior<Group>` to `use<Domain><Group>`.
+ * - Ensure consistent behavioral-state nomenclature throughout the monorepo.
  * 
  * Detection Criteria:
- * - Identified by names that match `use<Domain><Group>`.
+ * - Identified by names that match `use<Domain>Behavior<Group>`.
  * 
  * Why:
  * - Standardize React hook naming for clarity and consistency.
  */
-export const migrateUseResolvedPrefix = createRule({
-    name : 'migrate-use-resolved-prefix',
+export const migrateUseDomainGroupSuffix = createRule({
+    name : 'migrate-use-domain-group-suffix',
     meta : {
         type     : 'suggestion',
         fixable  : 'code',
         docs     : {
-            description : 'Enforce React hooks to follow the declarative `useResolved<Domain><Group>` naming convention.',
+            description : 'Enforce React hooks to follow the declarative `use<Domain><Group>` naming convention.',
         },
         schema   : [], // no options accepted
         messages : {
-            wrongName : 'React hook "{{currentName}}" should be renamed to "{{expectedName}}" to match the resolved naming strategy.',
+            wrongName : 'React hook "{{currentName}}" should be renamed to "{{expectedName}}" to match the behavioral naming strategy.',
         },
     },
     create(context) {
@@ -55,20 +55,20 @@ export const migrateUseResolvedPrefix = createRule({
         // Get domain metadata from a relative module locations:
         const domainMetadata = getDomainMetadata(relativeFilename);
         if (!domainMetadata) return {};
-        if (domainMetadata.group === 'Variant') return {};
+        // if (domainMetadata.group === 'Variant') return {};
         
         
         
-        const legacyTargetName = `use${domainMetadata.domain}${domainMetadata.group}`;
-        const expectedName     = `useResolved${domainMetadata.domain}${domainMetadata.group}`;
+        const legacyTargetName = `use${domainMetadata.domain}Behavior${domainMetadata.group}`;
+        const expectedName     = `use${domainMetadata.domain}${domainMetadata.group}`;
         
         
         
-        // Excludes:
-        if ([
-            'useAnimationState',
-            'useObserverState',
-        ].includes(legacyTargetName)) return {};
+        // // Excludes:
+        // if ([
+        //     'useAnimationState',
+        //     'useObserverState',
+        // ].includes(legacyTargetName)) return {};
         
         
         
@@ -95,7 +95,7 @@ export const migrateUseResolvedPrefix = createRule({
                 
                 
                 // React hook candidates:
-                // - Identified by names that match `use<Domain><Group>`.
+                // - Identified by names that match `use<Domain>Behavior<Group>`.
                 if (currentName !== legacyTargetName) return; // exit function
                 
                 
@@ -146,7 +146,7 @@ export const migrateUseResolvedPrefix = createRule({
                     
                     
                     // React hook candidates:
-                    // - Identified by names that match `use<Domain><Group>`.
+                    // - Identified by names that match `use<Domain>Behavior<Group>`.
                     if (currentName !== legacyTargetName) continue; // exit for
                     
                     
