@@ -84,7 +84,7 @@ interface FocusStateEventTestCase {
 
 
 
-test.describe('useFocusBehaviorState (phase events)', () => {
+test.describe('useFocusState (phase events)', () => {
     for (const { title, focused : initialFocused, computedFocus: initialComputedFocus, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

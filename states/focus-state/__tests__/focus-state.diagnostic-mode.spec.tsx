@@ -75,7 +75,7 @@ interface FocusStateControlledTestCase {
 
 
 
-test.describe('useFocusBehaviorState - diagnostic mode', () => {
+test.describe('useFocusState - diagnostic mode', () => {
     for (const { title, focused : initialFocused, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

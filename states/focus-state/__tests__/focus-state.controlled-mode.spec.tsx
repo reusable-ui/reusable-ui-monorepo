@@ -89,7 +89,7 @@ interface FocusStateControlledTestCase {
 
 
 
-test.describe('useFocusBehaviorState - controlled mode', () => {
+test.describe('useFocusState - controlled mode', () => {
     for (const { title, focused : initialFocused, computedFocus: initialComputedFocus, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

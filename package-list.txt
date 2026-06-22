@@ -133,7 +133,7 @@ Additional flags:
 | collapse-state | useResolvedCollapseState | useCollapseController          | useDispatchExpandedChange   | useCollapseBehaviorState   |
 |----------------|--------------------------|--------------------------------|-----------------------------|----------------------------|
 | disabled-state | useResolvedDisabledState | not applicable                 | not applicable              | useDisabledState           |
-| focus-state    | useResolvedFocusState    | not applicable                 | not applicable              | useFocusBehaviorState      |
+| focus-state    | useResolvedFocusState    | not applicable                 | not applicable              | useFocusState              |
 | hover-state    | useResolvedHoverState    | not applicable                 | not applicable              | useHoverBehaviorState      |
 | press-state    | useResolvedPressState    | not applicable                 | not applicable              | usePressBehaviorState      |
 | validity-state | useResolvedValidityState | not applicable                 | not applicable              | useValidityBehaviorState   |

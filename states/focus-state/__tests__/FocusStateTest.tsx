@@ -1,7 +1,7 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type FocusStateProps,
-    useFocusBehaviorState,
+    useFocusState,
 } from '../dist/index.js'
 import { useMergedEventHandlers } from '@reusable-ui/callbacks'
 import { useMergedRefs } from '@reusable-ui/references'
@@ -42,7 +42,7 @@ export const FocusStateTest = (props: FocusStateTestProps) => {
         handleFocus,
         handleBlur,
         handleKeyDown,
-    } = useFocusBehaviorState(props, {
+    } = useFocusState(props, {
         animationPattern,
         inputLikeFocus: true, // enable input-like focus styling
     });

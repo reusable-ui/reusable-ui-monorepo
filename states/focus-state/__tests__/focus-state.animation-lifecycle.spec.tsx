@@ -93,7 +93,7 @@ const OUTLINE_BLURRED = 'color(srgb 0 0 0) solid 0px';
 
 
 
-test.describe('useFocusBehaviorState - animation', () => {
+test.describe('useFocusState - animation', () => {
     for (const { title, focused : initialFocused, computedFocus: initialComputedFocus, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

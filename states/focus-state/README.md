@@ -31,7 +31,7 @@ yarn add @reusable-ui/focus-state
 
 ## 🧩 Exported Hooks
 
-### `useFocusBehaviorState(props, options?)`
+### `useFocusState(props, options?)`
 
 Resolves the focus state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
@@ -44,7 +44,7 @@ Resolves the focus state, current transition phase, associated CSS class name, a
 ```tsx
 import React, { FC, useState, useEffect } from 'react';
 import {
-    useFocusBehaviorState,
+    useFocusState,
     FocusStateProps,
 } from '@reusable-ui/focus-state';
 import styles from './CustomButton.module.css';
@@ -89,7 +89,7 @@ export const CustomButton: FC<CustomButtonProps> = (props) => {
         handleFocus,
         handleBlur,
         handleKeyDown,
-    } = useFocusBehaviorState({
+    } = useFocusState({
         computedFocus,
         ...restProps,
     }, {
@@ -137,7 +137,7 @@ Resolves the current focused/blurred state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `focused` state and **forward** it to a base component.
 
-Unlike `useFocusBehaviorState()`, which handles animation and lifecycle, `useResolvedFocusState()` performs a lightweight resolution of the effective focus value.
+Unlike `useFocusState()`, which handles animation and lifecycle, `useResolvedFocusState()` performs a lightweight resolution of the effective focus value.
 
 - No internal state or uncontrolled fallback.
 - `'auto'` is treated as a declarative diagnostic mode.

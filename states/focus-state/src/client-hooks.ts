@@ -61,7 +61,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * 
  * This hook is intended for components that **consume** the resolved `focused` state and **forward** it to a base component.
  * 
- * Unlike `useFocusBehaviorState()`, which handles animation and lifecycle,
+ * Unlike `useFocusState()`, which handles animation and lifecycle,
  * `useResolvedFocusState()` performs a lightweight resolution of the effective focus value.
  * 
  * - No internal state or uncontrolled fallback.
@@ -170,7 +170,7 @@ const focusBehaviorStateDefinition : FocusBehaviorStateDefinition = {
  * ```tsx
  * import React, { FC, useState, useEffect } from 'react';
  * import {
- *     useFocusBehaviorState,
+ *     useFocusState,
  *     FocusStateProps,
  * } from '@reusable-ui/focus-state';
  * import styles from './CustomButton.module.css';
@@ -215,7 +215,7 @@ const focusBehaviorStateDefinition : FocusBehaviorStateDefinition = {
  *         handleFocus,
  *         handleBlur,
  *         handleKeyDown,
- *     } = useFocusBehaviorState({
+ *     } = useFocusState({
  *         computedFocus,
  *         ...restProps,
  *     }, {
@@ -239,7 +239,7 @@ const focusBehaviorStateDefinition : FocusBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useFocusBehaviorState = <TElement extends Element = HTMLElement>(props: FocusStateProps, options?: FocusStateOptions): FocusBehaviorState<TElement> => {
+export const useFocusState = <TElement extends Element = HTMLElement>(props: FocusStateProps, options?: FocusStateOptions): FocusBehaviorState<TElement> => {
     // Extract props:
     const {
         onFocusUpdate : onStateUpdate,
