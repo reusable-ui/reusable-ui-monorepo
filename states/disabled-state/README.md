@@ -29,7 +29,7 @@ yarn add @reusable-ui/disabled-state
 
 ## 🧩 Exported Hooks
 
-### `useDisabledBehaviorState(props, options?)`
+### `useDisabledState(props, options?)`
 
 Resolves the enabled/disabled state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
@@ -41,7 +41,7 @@ Resolves the enabled/disabled state, current transition phase, associated CSS cl
 ```tsx
 import React, { FC } from 'react';
 import {
-    useDisabledBehaviorState,
+    useDisabledState,
     DisabledStateProps,
 } from '@reusable-ui/disabled-state';
 import styles from './CustomEditor.module.css';
@@ -61,7 +61,7 @@ export const CustomEditor: FC<CustomEditorProps> = (props) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useDisabledBehaviorState(props, {
+    } = useDisabledState(props, {
         defaultDisabled        : false,                     // Defaults to enabled.
         defaultCascadeDisabled : true,                      // Defaults to allow contextual disabling.
         animationPattern       : ['enabling', 'disabling'], // Matches animation names ending with 'enabling' or 'disabling'.
@@ -87,7 +87,7 @@ Resolves the current enabled/disabled state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `disabled` state and **forward** it to a base component.
 
-Unlike `useDisabledBehaviorState()`, which handles animation and lifecycle, `useResolvedDisabledState()` performs a lightweight resolution of the effective disabled value.
+Unlike `useDisabledState()`, which handles animation and lifecycle, `useResolvedDisabledState()` performs a lightweight resolution of the effective disabled value.
 
 - No internal state or uncontrolled fallback.
 - Ideal for components that **consume** the resolved `disabled` state.
@@ -109,7 +109,7 @@ import React, { ReactNode, FC } from 'react';
 import {
     DisabledStateProps,
     DisabledStateProvider,
-    useDisabledBehaviorState,
+    useDisabledState,
     useResolvedDisabledState,
 } from '@reusable-ui/disabled-state';
 
@@ -128,7 +128,7 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useDisabledBehaviorState(props, {
+    } = useDisabledState(props, {
         defaultDisabled        : false,                     // Defaults to enabled.
         defaultCascadeDisabled : true,                      // Defaults to allow contextual disabling.
         animationPattern       : ['enabling', 'disabling'], // Matches animation names ending with 'enabling' or 'disabling'.

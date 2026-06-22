@@ -71,7 +71,7 @@ interface DisabledStateAnimationTestCase {
 
 
 
-test.describe('useDisabledBehaviorState - animation', () => {
+test.describe('useDisabledState - animation', () => {
     for (const { title, disabled : initialDisabled, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

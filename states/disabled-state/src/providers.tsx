@@ -44,7 +44,7 @@ export interface DisabledStateProviderProps
  * import {
  *     DisabledStateProps,
  *     DisabledStateProvider,
- *     useDisabledBehaviorState,
+ *     useDisabledState,
  *     useResolvedDisabledState,
  * } from '@reusable-ui/disabled-state';
  * 
@@ -63,7 +63,7 @@ export interface DisabledStateProviderProps
  *         handleAnimationStart,
  *         handleAnimationEnd,
  *         handleAnimationCancel,
- *     } = useDisabledBehaviorState(props, {
+ *     } = useDisabledState(props, {
  *         defaultDisabled        : false,                     // Defaults to enabled.
  *         defaultCascadeDisabled : true,                      // Defaults to allow contextual disabling.
  *         animationPattern       : ['enabling', 'disabling'], // Matches animation names ending with 'enabling' or 'disabling'.

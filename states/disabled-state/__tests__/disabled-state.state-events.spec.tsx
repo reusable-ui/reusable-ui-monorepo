@@ -68,7 +68,7 @@ interface DisabledStateEventTestCase {
 
 
 
-test.describe('useDisabledBehaviorState (phase events)', () => {
+test.describe('useDisabledState (phase events)', () => {
     for (const { title, disabled : initialDisabled, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

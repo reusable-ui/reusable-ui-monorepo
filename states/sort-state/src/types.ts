@@ -238,7 +238,7 @@ export interface SortOffset {
  * 
  * Internally, `useSortBehaviorState` still leverages `useFeedbackState`
  * with an **ephemeral** `sorted` value for implementation symmetry with
- * `useDisabledBehaviorState`. However, only the animation-aware `sorting` flag
+ * `useDisabledState`. However, only the animation-aware `sorting` flag
  * and its associated classname are exposed.
  * There's no `actualSorting` that driven directly by user's intent for triggering animations,
  * so it is intentionally omitted from the public API to avoid confusion.

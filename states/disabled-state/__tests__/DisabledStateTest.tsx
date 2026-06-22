@@ -1,7 +1,7 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type DisabledStateProps,
-    useDisabledBehaviorState,
+    useDisabledState,
 } from '../dist/index.js'
 import { useMergedEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
@@ -34,7 +34,7 @@ export const DisabledStateTest = (props: DisabledStateTestProps) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useDisabledBehaviorState(props, {
+    } = useDisabledState(props, {
         animationPattern,
     });
     

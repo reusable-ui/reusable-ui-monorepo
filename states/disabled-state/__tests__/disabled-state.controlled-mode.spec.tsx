@@ -86,7 +86,7 @@ interface DisabledStateControlledTestCase {
 
 
 
-test.describe('useDisabledBehaviorState - controlled mode', () => {
+test.describe('useDisabledState - controlled mode', () => {
     for (const { title, parentDisabled: initialParentDisabled, disabled : initialDisabled, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

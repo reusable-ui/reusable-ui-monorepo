@@ -60,7 +60,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * 
  * This hook is intended for components that **consume** the resolved `disabled` state and **forward** it to a base component.
  * 
- * Unlike `useDisabledBehaviorState()`, which handles animation and lifecycle,
+ * Unlike `useDisabledState()`, which handles animation and lifecycle,
  * `useResolvedDisabledState()` performs a lightweight resolution of the effective disabled value.
  * 
  * - No internal state or uncontrolled fallback.
@@ -135,7 +135,7 @@ const disabledBehaviorStateDefinition : DisabledBehaviorStateDefinition = {
  * ```tsx
  * import React, { FC } from 'react';
  * import {
- *     useDisabledBehaviorState,
+ *     useDisabledState,
  *     DisabledStateProps,
  * } from '@reusable-ui/disabled-state';
  * import styles from './CustomEditor.module.css';
@@ -155,7 +155,7 @@ const disabledBehaviorStateDefinition : DisabledBehaviorStateDefinition = {
  *         handleAnimationStart,
  *         handleAnimationEnd,
  *         handleAnimationCancel,
- *     } = useDisabledBehaviorState(props, {
+ *     } = useDisabledState(props, {
  *         defaultDisabled        : false,                     // Defaults to enabled.
  *         defaultCascadeDisabled : true,                      // Defaults to allow contextual disabling.
  *         animationPattern       : ['enabling', 'disabling'], // Matches animation names ending with 'enabling' or 'disabling'.
@@ -175,7 +175,7 @@ const disabledBehaviorStateDefinition : DisabledBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useDisabledBehaviorState = <TElement extends Element = HTMLElement>(props: DisabledStateProps, options?: DisabledStateOptions): DisabledBehaviorState<TElement> => {
+export const useDisabledState = <TElement extends Element = HTMLElement>(props: DisabledStateProps, options?: DisabledStateOptions): DisabledBehaviorState<TElement> => {
     // Extract props:
     const {
         onDisabledUpdate : onStateUpdate,
