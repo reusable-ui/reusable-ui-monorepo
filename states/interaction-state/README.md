@@ -29,7 +29,7 @@ yarn add @reusable-ui/interaction-state
 
 ## 🧩 Exported Hooks
 
-### `useInteractionBehaviorState(props, options, definition)`
+### `useInteractionState(props, options, definition)`
 
 Provides abstract controlled/uncontrolled interaction state with animation lifecycle integration.  
 Specialize it into **collapse-state**, **active-state**, or **view-state** by defining the `definition` parameter.
@@ -64,7 +64,7 @@ In uncontrolled mode, the hook manages internal state holding normalized concret
 
 ```ts
 import {
-    useInteractionBehaviorState,
+    useInteractionState,
     type InteractionStateOptions,
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
@@ -203,7 +203,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
         transitionClassname : selectedClassname,
         dispatchStateChange : dispatchSelectedChange,
         ...animationHandlers
-    } = useInteractionBehaviorState<
+    } = useInteractionState<
         boolean | 'auto',
         boolean,
         SelectedPhase,
@@ -306,7 +306,7 @@ This hook is designed for components that **manage** a resolved interaction stat
 (for example, the `expanded` state in collapsible components) and **forward** it
 to a base component, while optionally supporting uncontrolled behavior.
 
-Unlike `useInteractionBehaviorState()`, which includes animation lifecycle management,
+Unlike `useInteractionState()`, which includes animation lifecycle management,
 `useInteractionController()` provides a **simplified implementation** that focuses solely
 on controlled/uncontrolled state management without animation lifecycle.
 
@@ -728,7 +728,7 @@ There's also a **conditional factor** (`factorCondVar`):
 
 The system works by splitting responsibilities:
 
-- **React hook (`useInteractionBehaviorState()`)**  
+- **React hook (`useInteractionState()`)**  
     Orchestrates runtime state: intent, lifecycle, and toggling classnames.  
 - **CSS hook (`usingInteractionState()`)**  
     Describes how those states (via classname toggles) map to animations, flags, and factors at the stylesheet level.  

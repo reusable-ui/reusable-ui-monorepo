@@ -58,7 +58,7 @@ import {
  * 
  * This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `state` and forwards it to a `<BaseComponent state={...}>`.
  * 
- * Unlike `useInteractionBehaviorState()`, which supports both controlled and uncontrolled modes,
+ * Unlike `useInteractionState()`, which supports both controlled and uncontrolled modes,
  * `useDispatchInteractionStateChange()` assumes the component is **fully controlled** and does not manage internal state.
  * 
  * - Supports only controlled mode.
@@ -162,7 +162,7 @@ export const useDispatchInteractionStateChange = <TState extends {} | null, TCha
  * 
  * @returns The resolved interaction behavior state API, including a dispatcher for requesting state changes.
  */
-export const useInteractionBehaviorState = <
+export const useInteractionState = <
     TDeclarativeState extends {} | null,
     TState            extends TDeclarativeState,
     TPhase            extends string,
@@ -289,7 +289,7 @@ export const useInteractionBehaviorState = <
  * (for example, the `expanded` state in collapsible components) and **forward** it
  * to a base component, while optionally supporting uncontrolled behavior.
  * 
- * Unlike `useInteractionBehaviorState()`, which includes animation lifecycle management,
+ * Unlike `useInteractionState()`, which includes animation lifecycle management,
  * `useInteractionController()` provides a **simplified implementation** that focuses solely
  * on controlled/uncontrolled state management without animation lifecycle.
  * 

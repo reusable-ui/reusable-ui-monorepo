@@ -55,7 +55,7 @@ import {
 import {
     // Hooks:
     useDispatchInteractionStateChange,
-    useInteractionBehaviorState,
+    useInteractionState,
     useInteractionController,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
@@ -258,7 +258,7 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
         transitionClassname : viewClassname,
         dispatchStateChange : dispatchViewIndexChange,
         ...animationHandlers
-    } = useInteractionBehaviorState<
+    } = useInteractionState<
         number,
         number,
         ViewPhase,
