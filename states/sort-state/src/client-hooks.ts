@@ -100,7 +100,7 @@ const sortBehaviorStateDefinition : SortBehaviorStateDefinition = {
  * import React, { FC, Key, useRef, useState } from 'react';
  * import { flushSync } from 'react-dom';
  * import {
- *     useSortBehaviorState,
+ *     useSortState,
  *     SortStateProps,
  * } from '@reusable-ui/sort-state';
  * import styles from './SortableList.module.css';
@@ -162,7 +162,7 @@ const sortBehaviorStateDefinition : SortBehaviorStateDefinition = {
  *         handleAnimationStart,
  *         handleAnimationEnd,
  *         handleAnimationCancel,
- *     } = useSortBehaviorState({
+ *     } = useSortState({
  *         sortItemRefs,
  *         stagedSortData,
  *         onSortCommit,
@@ -220,7 +220,7 @@ const sortBehaviorStateDefinition : SortBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useSortBehaviorState = <TElement extends Element = HTMLElement, TItemElement extends Element = HTMLElement, TSortData = Array<unknown>>(props: SortStateProps<TItemElement, TSortData>, options?: SortStateOptions): SortBehaviorState<TElement> => {
+export const useSortState = <TElement extends Element = HTMLElement, TItemElement extends Element = HTMLElement, TSortData = Array<unknown>>(props: SortStateProps<TItemElement, TSortData>, options?: SortStateOptions): SortBehaviorState<TElement> => {
     // Extract props:
     const {
         sortItemRefs,

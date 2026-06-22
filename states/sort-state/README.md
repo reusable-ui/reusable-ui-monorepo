@@ -30,7 +30,7 @@ yarn add @reusable-ui/sort-state
 
 ## 🧩 Exported Hooks
 
-### `useSortBehaviorState(props, options?)`
+### `useSortState(props, options?)`
 
 Adds animated sorting transitions that make sorting actions feel visible and intuitive
 by animating items from their original unsorted positions into their new sorted order.
@@ -46,7 +46,7 @@ and each item animates into place — clearly conveying the transition.
 import React, { FC, Key, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import {
-    useSortBehaviorState,
+    useSortState,
     SortStateProps,
 } from '@reusable-ui/sort-state';
 import styles from './SortableList.module.css';
@@ -108,7 +108,7 @@ export const SortableList: FC<SortableListProps> = (props) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useSortBehaviorState({
+    } = useSortState({
         sortItemRefs,
         stagedSortData,
         onSortCommit,
@@ -326,7 +326,7 @@ const {
     sortClassname, // CSS class for animation triggers
     sortStyles,    // Inline CSS variables
     ...animationHandlers,
-} = useSortBehaviorState(...);
+} = useSortState(...);
 
 const handleSort = () => {
     // Imperative: manually trigger the transition:
@@ -374,7 +374,7 @@ const {
     sortClassname, // CSS class for animation triggers
     sortStyles,    // Inline CSS variables
     ...animationHandlers,
-} = useSortBehaviorState({
+} = useSortState({
     sortItemRefs,
     stagedSortData,
     onSortCommit,
@@ -395,7 +395,7 @@ Because `sortItemRefs`, `stagedSortData`, `onSortCommit`, and `onStagedSortDataC
 - Use the built-in defaults for internal sorting, or  
 - Override them to fit a specific use case.  
 
-This makes sorting behavior **overridable and reusable** without duplicating `useSortBehaviorState` hook — ensuring smoother onboarding, better ergonomics, and consistent animated feedback across components.
+This makes sorting behavior **overridable and reusable** without duplicating `useSortState` hook — ensuring smoother onboarding, better ergonomics, and consistent animated feedback across components.
 
 ---
 

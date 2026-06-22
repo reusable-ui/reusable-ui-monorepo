@@ -1,6 +1,6 @@
 import React, { AnimationEvent as ReactAnimationEvent, Key, useRef, useEffect, useState } from 'react'
 import { flushSync } from 'react-dom'
-import { type SortStateProps, useSortBehaviorState } from '../dist/index.js'
+import { type SortStateProps, useSortState } from '../dist/index.js'
 import { useMergedEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
 import { HydrateStyles } from '@cssfn/cssfn-react'
@@ -51,7 +51,7 @@ export const SortStateTest = (props: SortStateTestProps) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useSortBehaviorState({
+    } = useSortState({
         sortItemRefs,
         stagedSortData,
         onSortCommit,

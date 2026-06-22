@@ -236,7 +236,7 @@ export interface SortOffset {
  * detects each change reliably. A plain boolean could not re-trigger if set
  * to `true` twice in a row, but a new `Symbol()` guarantees uniqueness.
  * 
- * Internally, `useSortBehaviorState` still leverages `useFeedbackState`
+ * Internally, `useSortState` still leverages `useFeedbackState`
  * with an **ephemeral** `sorted` value for implementation symmetry with
  * `useDisabledState`. However, only the animation-aware `sorting` flag
  * and its associated classname are exposed.
