@@ -16,7 +16,7 @@ import {
     type InteractionStateProps,
     type InteractionStateChangeDispatcherOptions,
     type InteractionStateOptions,
-    type InteractionBehaviorState,
+    type InteractionState,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
@@ -231,7 +231,7 @@ export type ViewClassname = ViewPhase
 export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends
         // Bases:
-        Omit<InteractionBehaviorState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>,
+        Omit<InteractionState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'
@@ -251,7 +251,7 @@ export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChan
      * Possible values:
      * - `0`, `1`, `2`, … : the component has visually settled on the view at the given index
      */
-    viewIndex               : InteractionBehaviorState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['state']
+    viewIndex               : InteractionState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['state']
     
     /**
      * The previously settled view index before the most recent transition.
@@ -267,7 +267,7 @@ export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChan
      * - `undefined` : there is no prior view (e.g., on initial render)
      * - `0`, `1`, `2`, … : the component was previously settled on the view at the given index
      */
-    prevViewIndex           : InteractionBehaviorState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['prevSettledState']
+    prevViewIndex           : InteractionState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['prevSettledState']
     
     /**
      * The lower bound of the currently visible view range.
@@ -310,14 +310,14 @@ export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChan
      * Possible values:
      * - `0`, `1`, `2`, … : the component is intended to be settled on the view at the given index
      */
-    actualViewIndex         : InteractionBehaviorState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['actualState']
+    actualViewIndex         : InteractionState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['actualState']
     
     /**
      * The current transition phase of the view-switching lifecycle.
      * 
      * Reflects both transitional states (`view-advancing`, `view-receding`) and resolved state (`view-settled`).
      */
-    viewPhase               : InteractionBehaviorState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['transitionPhase']
+    viewPhase               : InteractionState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current view-switching phase.
@@ -327,7 +327,7 @@ export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChan
      * - `'view-advancing'`
      * - `'view-receding'`
      */
-    viewClassname           : InteractionBehaviorState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['transitionClassname']
+    viewClassname           : InteractionState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['transitionClassname']
     
     /**
      * A set of inline CSS variables that reflect the current view lifecycle state.
@@ -354,5 +354,5 @@ export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChan
      * - When restricted, view-switch requests are ignored and the component remains at its last view index.
      * - When restriction is lifted, `dispatchViewIndexChange()` resumes normal operation.
      */
-    dispatchViewIndexChange : InteractionBehaviorState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['dispatchStateChange']
+    dispatchViewIndexChange : InteractionState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['dispatchStateChange']
 }

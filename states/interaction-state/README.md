@@ -70,7 +70,7 @@ import {
     type ResolveTransitionClassnameArgs,
     type ResolveEffectiveStateArgs,
     type InteractionBehaviorStateDefinition,
-    type InteractionBehaviorState,
+    type InteractionState,
 } from '@reusable-ui/interaction-state'
 import { type ValueChangeHandler, type DispatchValueChange } from '@reusable-ui/controllable'
 
@@ -142,12 +142,12 @@ interface SelectedBehaviorStateDefinition
  * Public API returned by `useSelectedBehaviorState`.
  * 
  * @remarks
- * - Mirrors `InteractionBehaviorState` but renames properties into domain-specific terms.
+ * - Mirrors `InteractionState` but renames properties into domain-specific terms.
  * - Excludes generic properties (`state`, `actualState`, etc.) in favor of `selected`, `actualSelected`, etc.
  */
 export interface SelectedBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends
-        Omit<InteractionBehaviorState<boolean, SelectedPhase, SelectedClassname, TElement, TChangeEvent>,
+        Omit<InteractionState<boolean, SelectedPhase, SelectedClassname, TElement, TChangeEvent>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'

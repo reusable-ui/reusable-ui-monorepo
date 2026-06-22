@@ -10,7 +10,7 @@ import {
     type InteractionStateProps,
     type InteractionStateChangeDispatcherOptions,
     type InteractionStateOptions,
-    type InteractionBehaviorState,
+    type InteractionState,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
@@ -193,7 +193,7 @@ export type ExpandClassname = `is-${ExpandPhase}`
 export interface CollapseBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends
         // Bases:
-        Omit<InteractionBehaviorState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>,
+        Omit<InteractionState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'
@@ -214,7 +214,7 @@ export interface CollapseBehaviorState<TElement extends Element = HTMLElement, T
      * - `true`  : the component has visually settled in expanded state
      * - `false` : the component has visually settled in collapsed state
      */
-    expanded               : InteractionBehaviorState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>['state']
+    expanded               : InteractionState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>['state']
     
     /**
      * The actual resolved expanded/collapsed state, regardless of animation state.
@@ -228,14 +228,14 @@ export interface CollapseBehaviorState<TElement extends Element = HTMLElement, T
      * - `true`  : the component is intended to be expanded
      * - `false` : the component is intended to be collapsed
      */
-    actualExpanded         : InteractionBehaviorState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>['actualState']
+    actualExpanded         : InteractionState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>['actualState']
     
     /**
      * The current transition phase of the expand/collapse lifecycle.
      * 
      * Reflects both transitional states (`expanding`, `collapsing`) and resolved states (`expanded`, `collapsed`).
      */
-    expandPhase            : InteractionBehaviorState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>['transitionPhase']
+    expandPhase            : InteractionState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current expand/collapse phase.
@@ -246,7 +246,7 @@ export interface CollapseBehaviorState<TElement extends Element = HTMLElement, T
      * - `'is-expanding'`
      * - `'is-expanded'`
      */
-    expandClassname        : InteractionBehaviorState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>['transitionClassname']
+    expandClassname        : InteractionState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>['transitionClassname']
     
     /**
      * Requests a change to the expanded state.
@@ -259,5 +259,5 @@ export interface CollapseBehaviorState<TElement extends Element = HTMLElement, T
      * - When restricted, expansion requests are ignored and the component remains in its last expanded/collapsed state.
      * - When restriction is lifted, `dispatchExpandedChange()` resumes normal operation.
      */
-    dispatchExpandedChange : InteractionBehaviorState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>['dispatchStateChange']
+    dispatchExpandedChange : InteractionState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>['dispatchStateChange']
 }

@@ -10,7 +10,7 @@ import {
     type InteractionStateProps,
     type InteractionStateChangeDispatcherOptions,
     type InteractionStateOptions,
-    type InteractionBehaviorState,
+    type InteractionState,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
@@ -211,7 +211,7 @@ export type ActiveClassname = `is-${ActivePhase}`
 export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends
         // Bases:
-        Omit<InteractionBehaviorState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>,
+        Omit<InteractionState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'
@@ -232,7 +232,7 @@ export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TCh
      * - `true`  : the component has visually settled in active state
      * - `false` : the component has visually settled in inactive state
      */
-    active               : InteractionBehaviorState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>['state']
+    active               : InteractionState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>['state']
     
     /**
      * The actual resolved active/inactive state, regardless of animation state.
@@ -246,14 +246,14 @@ export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TCh
      * - `true`  : the component is intended to be active
      * - `false` : the component is intended to be inactive
      */
-    actualActive         : InteractionBehaviorState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>['actualState']
+    actualActive         : InteractionState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>['actualState']
     
     /**
      * The current transition phase of the activate/deactivate lifecycle.
      * 
      * Reflects both transitional states (`activating`, `deactivating`) and resolved states (`active`, `inactive`).
      */
-    activePhase          : InteractionBehaviorState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>['transitionPhase']
+    activePhase          : InteractionState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current activate/deactivate phase.
@@ -264,7 +264,7 @@ export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TCh
      * - `'is-activating'`
      * - `'is-active'`
      */
-    activeClassname      : InteractionBehaviorState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>['transitionClassname']
+    activeClassname      : InteractionState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>['transitionClassname']
     
     /**
      * Requests a change to the active state.
@@ -277,5 +277,5 @@ export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TCh
      * - When restricted, activation requests are ignored and the component remains in its last active/inactive state.
      * - When restriction is lifted, `dispatchActiveChange()` resumes normal operation.
      */
-    dispatchActiveChange : InteractionBehaviorState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>['dispatchStateChange']
+    dispatchActiveChange : InteractionState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>['dispatchStateChange']
 }

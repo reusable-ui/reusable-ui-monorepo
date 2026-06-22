@@ -43,7 +43,7 @@ import {
     
     type InteractionBehaviorStateDefinition,
     
-    type InteractionBehaviorState,
+    type InteractionState,
 }                           from './types.js'
 
 // Hooks:
@@ -179,7 +179,7 @@ export const useInteractionState = <
     props      : InteractionStateProps<TDeclarativeState, TState, TChangeEvent>,
     options    : InteractionStateOptions<TState> | undefined,
     definition : InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
-): InteractionBehaviorState<TState, TPhase, TClassname, TElement, TChangeEvent> => {
+): InteractionState<TState, TPhase, TClassname, TElement, TChangeEvent> => {
     // Extract definition:
     const {
         defaultInitialState,
@@ -276,7 +276,7 @@ export const useInteractionState = <
     return {
         ...transitionBehaviorState,
         dispatchStateChange,
-    } satisfies InteractionBehaviorState<TState, TPhase, TClassname, TElement, TChangeEvent>;
+    } satisfies InteractionState<TState, TPhase, TClassname, TElement, TChangeEvent>;
 };
 
 

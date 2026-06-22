@@ -227,7 +227,7 @@ export interface InteractionBehaviorStateDefinition<TDeclarativeState extends {}
  * @template TElement - The type of the target DOM element.
  * @template TChangeEvent - The type of the event triggering the change request (e.g. mouse click, keyboard event).
  */
-export interface InteractionBehaviorState<TState extends {} | null, TPhase extends string, TClassname extends string, TElement extends Element = HTMLElement, TChangeEvent = unknown>
+export interface InteractionState<TState extends {} | null, TPhase extends string, TClassname extends string, TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends
         TransitionState<TState, TPhase, TClassname, TElement>
 {
