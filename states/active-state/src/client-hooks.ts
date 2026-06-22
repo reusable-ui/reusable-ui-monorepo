@@ -7,7 +7,7 @@ import {
     type ActiveStateOptions,
     type ActivePhase,
     type ActiveClassname,
-    type ActiveBehaviorState,
+    type ActiveState,
 }                           from './types.js'
 import {
     type ActiveBehaviorStateDefinition,
@@ -244,7 +244,7 @@ const activeBehaviorStateDefinition : ActiveBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useActiveState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent>, options?: ActiveStateOptions): ActiveBehaviorState<TElement, TChangeEvent> => {
+export const useActiveState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent>, options?: ActiveStateOptions): ActiveState<TElement, TChangeEvent> => {
     // Extract options:
     const {
         defaultActive : fallbackState,
@@ -322,7 +322,7 @@ export const useActiveState = <TElement extends Element = HTMLElement, TChangeEv
         activeClassname,
         dispatchActiveChange,
         ...animationHandlers,
-    } satisfies ActiveBehaviorState<TElement, TChangeEvent>;
+    } satisfies ActiveState<TElement, TChangeEvent>;
 };
 
 /**

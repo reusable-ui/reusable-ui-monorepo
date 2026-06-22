@@ -9,7 +9,7 @@ import React, {
 
 // Types:
 import {
-    type ActiveBehaviorState,
+    type ActiveState,
 }                           from './types.js'
 
 // Contexts:
@@ -30,7 +30,7 @@ import {
 export interface ActiveStateProviderProps
     extends
         // Bases:
-        PropsWithChildren<Pick<ActiveBehaviorState<Element>, 'active'>>
+        PropsWithChildren<Pick<ActiveState<Element>, 'active'>>
 {
 }
 

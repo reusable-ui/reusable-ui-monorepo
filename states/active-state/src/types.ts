@@ -208,7 +208,7 @@ export type ActiveClassname = `is-${ActivePhase}`
  * @template TElement - The type of the target DOM element.
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  */
-export interface ActiveBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
+export interface ActiveState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends
         // Bases:
         Omit<InteractionState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>,
