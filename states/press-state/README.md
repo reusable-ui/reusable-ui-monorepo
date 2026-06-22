@@ -48,7 +48,7 @@ yarn add @reusable-ui/press-state
 
 ## 🧩 Exported Hooks
 
-### `usePressBehaviorState(props, options?)`
+### `usePressState(props, options?)`
 
 Resolves the press state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
@@ -60,7 +60,7 @@ Resolves the press state, current transition phase, associated CSS class name, a
 ```tsx
 import React, { FC, useState, useEffect } from 'react';
 import {
-    usePressBehaviorState,
+    usePressState,
     PressStateProps,
 } from '@reusable-ui/press-state';
 import styles from './CustomButton.module.css';
@@ -106,7 +106,7 @@ export const CustomButton: FC<CustomButtonProps> = (props) => {
         handlePointerCancel,
         handleKeyDown,
         handleKeyUp,
-    } = usePressBehaviorState({
+    } = usePressState({
         computedPress,
         ...restProps,
     }, {
@@ -185,7 +185,7 @@ Resolves the current pressed/released state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `pressed` state and **forward** it to a base component.
 
-Unlike `usePressBehaviorState()`, which handles animation and lifecycle, `useResolvedPressState()` performs a lightweight resolution of the effective press value.
+Unlike `usePressState()`, which handles animation and lifecycle, `useResolvedPressState()` performs a lightweight resolution of the effective press value.
 
 - No internal state or uncontrolled fallback.
 - `'auto'` is treated as a declarative diagnostic mode.

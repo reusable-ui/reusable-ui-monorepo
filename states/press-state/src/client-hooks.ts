@@ -61,7 +61,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * 
  * This hook is intended for components that **consume** the resolved `pressed` state and **forward** it to a base component.
  * 
- * Unlike `usePressBehaviorState()`, which handles animation and lifecycle,
+ * Unlike `usePressState()`, which handles animation and lifecycle,
  * `useResolvedPressState()` performs a lightweight resolution of the effective press value.
  * 
  * - No internal state or uncontrolled fallback.
@@ -171,7 +171,7 @@ const pressBehaviorStateDefinition : PressBehaviorStateDefinition = {
  * ```tsx
  * import React, { FC, useState, useEffect } from 'react';
  * import {
- *     usePressBehaviorState,
+ *     usePressState,
  *     PressStateProps,
  * } from '@reusable-ui/press-state';
  * import styles from './CustomButton.module.css';
@@ -217,7 +217,7 @@ const pressBehaviorStateDefinition : PressBehaviorStateDefinition = {
  *         handlePointerCancel,
  *         handleKeyDown,
  *         handleKeyUp,
- *     } = usePressBehaviorState({
+ *     } = usePressState({
  *         computedPress,
  *         ...restProps,
  *     }, {
@@ -240,7 +240,7 @@ const pressBehaviorStateDefinition : PressBehaviorStateDefinition = {
  * };
  * ```
  */
-export const usePressBehaviorState = <TElement extends Element = HTMLElement>(props: PressStateProps, options?: PressStateOptions): PressBehaviorState<TElement> => {
+export const usePressState = <TElement extends Element = HTMLElement>(props: PressStateProps, options?: PressStateOptions): PressBehaviorState<TElement> => {
     // Extract props:
     const {
         onPressUpdate : onStateUpdate,

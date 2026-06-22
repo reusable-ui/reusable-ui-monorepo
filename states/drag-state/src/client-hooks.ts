@@ -159,7 +159,7 @@ const dragBehaviorStateDefinition : DragBehaviorStateDefinition = {
  *     DragStateProps,
  * } from '@reusable-ui/drag-state';
  * import {
- *     usePressBehaviorState,
+ *     usePressState,
  * } from '@reusable-ui/press-state';
  * import styles from './DraggableOption.module.css';
  * 
@@ -177,7 +177,7 @@ const dragBehaviorStateDefinition : DragBehaviorStateDefinition = {
  *     } = props;
  *     
  *     // Supply `computedDrag` from press-state or external override:
- *     const { actualPressed } = usePressBehaviorState(...);
+ *     const { actualPressed } = usePressState(...);
  *     // const actualPressed = useResolvedPressState(...); // Alternatively use `useResolvedPressState(...)`
  *     const internalComputedDrag = actualPressed;
  *     const isExternallyComputed = (externalComputedDrag !== undefined);

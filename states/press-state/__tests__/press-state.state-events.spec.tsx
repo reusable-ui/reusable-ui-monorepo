@@ -84,7 +84,7 @@ interface PressStateEventTestCase {
 
 
 
-test.describe('usePressBehaviorState (phase events)', () => {
+test.describe('usePressState (phase events)', () => {
     for (const { title, pressed : initialPressed, computedPress: initialComputedPress, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

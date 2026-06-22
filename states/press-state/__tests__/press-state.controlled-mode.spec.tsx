@@ -89,7 +89,7 @@ interface PressStateControlledTestCase {
 
 
 
-test.describe('usePressBehaviorState - controlled mode', () => {
+test.describe('usePressState - controlled mode', () => {
     for (const { title, pressed : initialPressed, computedPress: initialComputedPress, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

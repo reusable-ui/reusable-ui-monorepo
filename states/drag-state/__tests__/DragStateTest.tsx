@@ -5,7 +5,7 @@ import {
 } from '../dist/index.js'
 import {
     type PressStateProps,
-    usePressBehaviorState,
+    usePressState,
 } from '@reusable-ui/press-state'
 import { useMergedEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
@@ -54,7 +54,7 @@ export const DragStateTest = (props: DragStateTestProps) => {
         handlePointerCancel   : handlePressPointerCancel,
         handleKeyDown         : handlePressKeyDown,
         handleKeyUp           : handlePressKeyUp,
-    } = usePressBehaviorState(props, {
+    } = usePressState(props, {
         animationPattern : pressAnimationPattern,
     });
     

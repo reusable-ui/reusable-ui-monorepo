@@ -93,7 +93,7 @@ const BACKGROUND_COLOR_RELEASED = 'color(srgb 0 0 1)';
 
 
 
-test.describe('usePressBehaviorState - animation', () => {
+test.describe('usePressState - animation', () => {
     for (const { title, pressed : initialPressed, computedPress: initialComputedPress, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

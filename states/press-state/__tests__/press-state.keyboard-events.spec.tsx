@@ -74,7 +74,7 @@ interface PressStateKeyboardEventTestCase {
 
 
 
-test.describe('usePressBehaviorState - diagnostic mode', () => {
+test.describe('usePressState - diagnostic mode', () => {
     for (const { title, pressed : initialPressed, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.
