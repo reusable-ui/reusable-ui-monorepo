@@ -31,7 +31,7 @@ yarn add @reusable-ui/validity-state
 
 ## 🧩 Exported Hooks
 
-### `useValidityBehaviorState(props, options?)`
+### `useValidityState(props, options?)`
 
 Resolves the validity state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
@@ -51,7 +51,7 @@ Resolves the validity state, current transition phase, associated CSS class name
 ```tsx
 import React, { FC, useState, useEffect } from 'react';
 import {
-    useValidityBehaviorState,
+    useValidityState,
     ValidityStateProps,
 } from '@reusable-ui/validity-state';
 import styles from './CustomInput.module.css';
@@ -90,7 +90,7 @@ export const CustomInput: FC<CustomInputProps> = (props) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useValidityBehaviorState({
+    } = useValidityState({
         computedValidity,
         ...restProps,
     }, {
@@ -135,7 +135,7 @@ The hook manages transitions between `valid`, `invalid`, and `unvalidated` state
 Use `<ValidityStateProvider>` to propagate validation policy (e.g., covering enablement, validity, and cascading intent) to descendant components.
 This provides a clear, declarative way to manage validation across groups of inputs.
 
-In the examples below, `<Input />` represents any component that implements `useValidityBehaviorState()` or `useResolvedValidityState()`.
+In the examples below, `<Input />` represents any component that implements `useValidityState()` or `useResolvedValidityState()`.
 
 **Enable or disable validation for all inputs in a section:**
 
@@ -225,7 +225,7 @@ Resolves the current validity state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `validity` state and **forward** it to a base component.
 
-Unlike `useValidityBehaviorState()`, which handles animation and lifecycle, `useResolvedValidityState()` performs a lightweight resolution of the effective validity value.
+Unlike `useValidityState()`, which handles animation and lifecycle, `useResolvedValidityState()` performs a lightweight resolution of the effective validity value.
 
 - No internal state or uncontrolled fallback.
 - Ideal for components that **consume** the resolved `validity` state.

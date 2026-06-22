@@ -89,7 +89,7 @@ interface ValidityStateEventTestCase {
 
 
 
-test.describe('useValidityBehaviorState (phase events)', () => {
+test.describe('useValidityState (phase events)', () => {
     for (const { title, validity : initialValidity, computedValidity: initialComputedValidity, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

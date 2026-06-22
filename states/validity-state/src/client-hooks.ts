@@ -78,7 +78,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean | null, 'aut
  * 
  * This hook is intended for components that **consume** the resolved `validity` state and **forward** it to a base component.
  * 
- * Unlike `useValidityBehaviorState()`, which handles animation and lifecycle,
+ * Unlike `useValidityState()`, which handles animation and lifecycle,
  * `useResolvedValidityState()` performs a lightweight resolution of the effective validity value.
  * 
  * - No internal state or uncontrolled fallback.
@@ -238,7 +238,7 @@ const validityBehaviorStateDefinition : ValidityBehaviorStateDefinition = {
  * ```tsx
  * import React, { FC, useState, useEffect } from 'react';
  * import {
- *     useValidityBehaviorState,
+ *     useValidityState,
  *     ValidityStateProps,
  * } from '@reusable-ui/validity-state';
  * import styles from './CustomInput.module.css';
@@ -277,7 +277,7 @@ const validityBehaviorStateDefinition : ValidityBehaviorStateDefinition = {
  *         handleAnimationStart,
  *         handleAnimationEnd,
  *         handleAnimationCancel,
- *     } = useValidityBehaviorState({
+ *     } = useValidityState({
  *         computedValidity,
  *         ...restProps,
  *     }, {
@@ -302,7 +302,7 @@ const validityBehaviorStateDefinition : ValidityBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useValidityBehaviorState = <TElement extends Element = HTMLElement>(props: ValidityStateProps, options?: ValidityStateOptions): ValidityBehaviorState<TElement> => {
+export const useValidityState = <TElement extends Element = HTMLElement>(props: ValidityStateProps, options?: ValidityStateOptions): ValidityBehaviorState<TElement> => {
     // Extract props:
     const {
         onValidityUpdate : onStateUpdate,

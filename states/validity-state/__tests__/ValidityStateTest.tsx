@@ -1,7 +1,7 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type ValidityStateProps,
-    useValidityBehaviorState,
+    useValidityState,
 } from '../dist/index.js'
 import { useMergedEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
@@ -35,7 +35,7 @@ export const ValidityStateTest = (props: ValidityStateTestProps) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useValidityBehaviorState(props, {
+    } = useValidityState(props, {
         animationPattern,
     });
     

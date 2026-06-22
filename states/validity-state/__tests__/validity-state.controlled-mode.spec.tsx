@@ -94,7 +94,7 @@ interface ValidityStateControlledTestCase {
 
 
 
-test.describe('useValidityBehaviorState - controlled mode', () => {
+test.describe('useValidityState - controlled mode', () => {
     for (const { title, validity : initialValidity, computedValidity: initialComputedValidity, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

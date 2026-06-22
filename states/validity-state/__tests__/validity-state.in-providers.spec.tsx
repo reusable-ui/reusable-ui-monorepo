@@ -259,7 +259,7 @@ const expectedValidityMap = {
     null  : 'unvalidated',
 };
 
-test.describe('useValidityBehaviorState - in providers', () => {
+test.describe('useValidityState - in providers', () => {
     for (const { title, jsx, expectedValidity } of tests) {
         test(title, async ({ mount }) => {
             // Render:

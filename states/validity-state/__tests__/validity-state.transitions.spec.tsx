@@ -159,7 +159,7 @@ export const expectColor = (
 
 
 
-test.describe('useValidityBehaviorState - animation', () => {
+test.describe('useValidityState - animation', () => {
     for (const { title, validity : initialValidity, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.
