@@ -71,7 +71,7 @@ import {
  * 
  * This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `viewIndex` value and forwards it to a `<BaseComponent viewIndex={...}>`.
  * 
- * Unlike `useViewBehaviorState()`, which supports both controlled and uncontrolled modes,
+ * Unlike `useViewState()`, which supports both controlled and uncontrolled modes,
  * `useDispatchViewIndexChange()` assumes the component is **fully controlled** and does not manage internal state.
  * 
  * - Supports only controlled mode.
@@ -130,7 +130,7 @@ const viewBehaviorStateDefinition : ViewBehaviorStateDefinition = {
  * ```tsx
  * import React, { FC } from 'react';
  * import {
- *     useViewBehaviorState,
+ *     useViewState,
  *     ViewStateProps,
  * } from '@reusable-ui/view-state';
  * import styles from './SlideBox.module.css';
@@ -156,7 +156,7 @@ const viewBehaviorStateDefinition : ViewBehaviorStateDefinition = {
  *         handleAnimationStart,
  *         handleAnimationEnd,
  *         handleAnimationCancel,
- *     } = useViewBehaviorState(props, {
+ *     } = useViewState(props, {
  *         defaultViewIndex  : 0,                                   // Fallback for uncontrolled mode.
  *         minViewIndex      : 0,                                   // Limits minimum view index to 0.
  *         maxViewIndex      : 4,                                   // Limits maximum view index to 4.
@@ -198,7 +198,7 @@ const viewBehaviorStateDefinition : ViewBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useViewBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent>, options?: ViewStateOptions): ViewBehaviorState<TElement, TChangeEvent> => {
+export const useViewState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent>, options?: ViewStateOptions): ViewBehaviorState<TElement, TChangeEvent> => {
     // Extract options and assign defaults:
     const {
         defaultViewIndex : fallbackState,
@@ -341,7 +341,7 @@ export const useViewBehaviorState = <TElement extends Element = HTMLElement, TCh
  * This hook is intended for components that **manage** the resolved `viewIndex` value and **forward** it to a base component,
  * while optionally supporting uncontrolled behavior.
  * 
- * Unlike `useViewBehaviorState()`, which resolves full lifecycle,
+ * Unlike `useViewState()`, which resolves full lifecycle,
  * `useViewController()` provides a **simplified implementation** for managing view index state and dispatching changes.
  * 
  * - Supports both controlled and uncontrolled modes.

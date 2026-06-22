@@ -1,7 +1,7 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type ViewStateProps,
-    useViewBehaviorState,
+    useViewState,
 } from '../dist/index.js'
 import { useMergedEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
@@ -41,7 +41,7 @@ export const ViewStateTest = (props: ViewStateTestProps) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useViewBehaviorState(props, {
+    } = useViewState(props, {
         defaultViewIndex  : 0,
         minViewIndex      : 0,
         maxViewIndex      : 3,

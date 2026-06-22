@@ -56,7 +56,7 @@ The **view-state** library provides helper variables (`minVisibleViewIndex`, `ma
 
 ### ✅ Example (Selective Rendering)
 ```tsx
-const { minVisibleViewIndex, maxVisibleViewIndex } = useViewBehaviorState(props, ...);
+const { minVisibleViewIndex, maxVisibleViewIndex } = useViewState(props, ...);
 
 const minRenderViewIndex = Math.floor(minVisibleViewIndex);
 const maxRenderViewIndex = Math.ceil(maxVisibleViewIndex);
@@ -109,7 +109,7 @@ yarn add @reusable-ui/view-state
 
 ## 🧩 Exported Hooks
 
-### `useViewBehaviorState(props, options?)`
+### `useViewState(props, options?)`
 
 Resolves the current view index, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
@@ -120,7 +120,7 @@ Resolves the current view index, current transition phase, associated CSS class 
 ```tsx
 import React, { FC } from 'react';
 import {
-    useViewBehaviorState,
+    useViewState,
     ViewStateProps,
 } from '@reusable-ui/view-state';
 import styles from './SlideBox.module.css';
@@ -146,7 +146,7 @@ export const SlideBox: FC<SlideBoxProps> = (props) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useViewBehaviorState(props, {
+    } = useViewState(props, {
         defaultViewIndex  : 0,                                   // Fallback for uncontrolled mode.
         minViewIndex      : 0,                                   // Limits minimum view index to 0.
         maxViewIndex      : 4,                                   // Limits maximum view index to 4.
@@ -207,7 +207,7 @@ Resolves the current view index for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `viewIndex` value and **forward** it to a base component.
 
-Unlike `useViewBehaviorState()`, which supports both controlled and uncontrolled modes, `useResolvedViewState()` assumes the component is **fully controlled** and does not manage internal state.
+Unlike `useViewState()`, which supports both controlled and uncontrolled modes, `useResolvedViewState()` assumes the component is **fully controlled** and does not manage internal state.
 
 - Supports only controlled mode.
 - Ideal for components that **consume** the resolved `viewIndex` value.
@@ -218,7 +218,7 @@ Creates a stable dispatcher for requesting a change to the view index.
 
 This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `viewIndex` value and forwards it to a `<BaseComponent viewIndex={...}>`.
 
-Unlike `useViewBehaviorState()`, which supports both controlled and uncontrolled modes, `useDispatchViewIndexChange()` assumes the component is **fully controlled** and does not manage internal state.
+Unlike `useViewState()`, which supports both controlled and uncontrolled modes, `useDispatchViewIndexChange()` assumes the component is **fully controlled** and does not manage internal state.
 
 - Supports only controlled mode.
 - Always triggers `onViewIndexChange`, if provided.
@@ -230,7 +230,7 @@ Resolves the current view index and provides a dispatcher for requesting changes
 
 This hook is intended for components that **manage** the resolved `viewIndex` value and **forward** it to a base component, while optionally supporting uncontrolled behavior.
 
-Unlike `useViewBehaviorState()`, which resolves full lifecycle, `useViewController()` provides a **simplified implementation** for managing view index state and dispatching changes.
+Unlike `useViewState()`, which resolves full lifecycle, `useViewController()` provides a **simplified implementation** for managing view index state and dispatching changes.
 
 - Supports both controlled and uncontrolled modes.
 - If `viewIndex` is provided, the internal state is disabled and the component becomes fully controlled.

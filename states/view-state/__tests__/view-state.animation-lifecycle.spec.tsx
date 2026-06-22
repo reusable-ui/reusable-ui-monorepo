@@ -83,7 +83,7 @@ const possibleChanges : IndexChange[] = possibleIndices.flatMap(fromIndex => (
 
 
 
-test.describe('useViewBehaviorState - animation', () => {
+test.describe('useViewState - animation', () => {
     for (const { title, viewIndex : initialViewIndex, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.
