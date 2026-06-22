@@ -44,7 +44,7 @@ export interface ActiveStateProviderProps
  * import {
  *     ActiveStateProps,
  *     ActiveStateProvider,
- *     useActiveBehaviorState,
+ *     useActiveState,
  *     useResolvedActiveState,
  * } from '@reusable-ui/active-state';
  * 
@@ -63,7 +63,7 @@ export interface ActiveStateProviderProps
  *         handleAnimationStart,
  *         handleAnimationEnd,
  *         handleAnimationCancel,
- *     } = useActiveBehaviorState(props, {
+ *     } = useActiveState(props, {
  *         defaultActive        : false,                          // Fallback for uncontrolled mode.
  *         defaultCascadeActive : false,                          // Defaults to prevent contextual activation.
  *         animationPattern     : ['activating', 'deactivating'], // Matches animation names ending with 'activating' or 'deactivating'.

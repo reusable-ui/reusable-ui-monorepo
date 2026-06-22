@@ -74,7 +74,7 @@ interface ActiveStateUncontrolledTestCase {
 
 
 
-test.describe('useActiveBehaviorState - uncontrolled mode', () => {
+test.describe('useActiveState - uncontrolled mode', () => {
     for (const { title, active : initialActive, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

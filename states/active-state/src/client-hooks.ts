@@ -74,7 +74,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * 
  * This hook is intended for components that **consume** the resolved `active` state and **forward** it to a base component.
  * 
- * Unlike `useActiveBehaviorState()`, which supports both controlled and uncontrolled modes,
+ * Unlike `useActiveState()`, which supports both controlled and uncontrolled modes,
  * `useResolvedActiveState()` assumes the component is **fully controlled** and does not manage internal state.
  * 
  * - Supports only controlled mode.
@@ -128,7 +128,7 @@ export const useResolvedActiveState = (props: ActiveStateProps<any> & { defaultA
  * 
  * This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `active` state and forwards it to a `<BaseComponent active={...}>`.
  * 
- * Unlike `useActiveBehaviorState()`, which supports both controlled and uncontrolled modes,
+ * Unlike `useActiveState()`, which supports both controlled and uncontrolled modes,
  * `useDispatchActiveChange()` assumes the component is **fully controlled** and does not manage internal state.
  * 
  * - Supports only controlled mode.
@@ -197,7 +197,7 @@ const activeBehaviorStateDefinition : ActiveBehaviorStateDefinition = {
  * ```tsx
  * import React, { FC } from 'react';
  * import {
- *     useActiveBehaviorState,
+ *     useActiveState,
  *     ActiveStateProps,
  * } from '@reusable-ui/active-state';
  * import styles from './ActivatableBox.module.css';
@@ -219,7 +219,7 @@ const activeBehaviorStateDefinition : ActiveBehaviorStateDefinition = {
  *         handleAnimationStart,
  *         handleAnimationEnd,
  *         handleAnimationCancel,
- *     } = useActiveBehaviorState(props, {
+ *     } = useActiveState(props, {
  *         defaultActive        : false,                          // Fallback for uncontrolled mode.
  *         defaultCascadeActive : false,                          // Defaults to prevent contextual activation.
  *         animationPattern     : ['activating', 'deactivating'], // Matches animation names ending with 'activating' or 'deactivating'.
@@ -244,7 +244,7 @@ const activeBehaviorStateDefinition : ActiveBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useActiveBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent>, options?: ActiveStateOptions): ActiveBehaviorState<TElement, TChangeEvent> => {
+export const useActiveState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent>, options?: ActiveStateOptions): ActiveBehaviorState<TElement, TChangeEvent> => {
     // Extract options:
     const {
         defaultActive : fallbackState,
@@ -331,7 +331,7 @@ export const useActiveBehaviorState = <TElement extends Element = HTMLElement, T
  * This hook is intended for components that **manage** the resolved `active` state and **forward** it to a base component,
  * while optionally supporting uncontrolled behavior.
  * 
- * Unlike `useActiveBehaviorState()`, which resolves full lifecycle,
+ * Unlike `useActiveState()`, which resolves full lifecycle,
  * `useActiveController()` provides a **simplified implementation** for managing activation state and dispatching changes.
  * 
  * - Supports both controlled and uncontrolled modes.

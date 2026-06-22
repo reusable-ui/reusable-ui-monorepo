@@ -70,7 +70,7 @@ interface ActiveStateAnimationTestCase {
 
 
 
-test.describe('useActiveBehaviorState - animation', () => {
+test.describe('useActiveState - animation', () => {
     for (const { title, active : initialActive, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

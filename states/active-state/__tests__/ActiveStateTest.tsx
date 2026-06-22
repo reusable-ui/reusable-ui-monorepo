@@ -1,7 +1,7 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type ActiveStateProps,
-    useActiveBehaviorState,
+    useActiveState,
 } from '../dist/index.js'
 import { useMergedEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
@@ -36,7 +36,7 @@ export const ActiveStateTest = (props: ActiveStateTestProps) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useActiveBehaviorState(props, {
+    } = useActiveState(props, {
         animationPattern,
     });
     

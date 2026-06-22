@@ -31,7 +31,7 @@ yarn add @reusable-ui/active-state
 
 ## 🧩 Exported Hooks
 
-### `useActiveBehaviorState(props, options?)`
+### `useActiveState(props, options?)`
 
 Resolves the active/inactive state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
@@ -43,7 +43,7 @@ Resolves the active/inactive state, current transition phase, associated CSS cla
 ```tsx
 import React, { FC } from 'react';
 import {
-    useActiveBehaviorState,
+    useActiveState,
     ActiveStateProps,
 } from '@reusable-ui/active-state';
 import styles from './ActivatableBox.module.css';
@@ -65,7 +65,7 @@ export const ActivatableBox: FC<ActivatableBoxProps> = (props) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useActiveBehaviorState(props, {
+    } = useActiveState(props, {
         defaultActive        : false,                          // Fallback for uncontrolled mode.
         defaultCascadeActive : false,                          // Defaults to prevent contextual activation.
         animationPattern     : ['activating', 'deactivating'], // Matches animation names ending with 'activating' or 'deactivating'.
@@ -109,7 +109,7 @@ Resolves the current active/inactive state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `active` state and **forward** it to a base component.
 
-Unlike `useActiveBehaviorState()`, which supports both controlled and uncontrolled modes, `useResolvedActiveState()` assumes the component is **fully controlled** and does not manage internal state.
+Unlike `useActiveState()`, which supports both controlled and uncontrolled modes, `useResolvedActiveState()` assumes the component is **fully controlled** and does not manage internal state.
 
 - Supports only controlled mode.
 - Supports contextual override via `cascadeActive`.
@@ -121,7 +121,7 @@ Creates a stable dispatcher for requesting a change to the active state.
 
 This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `active` state and forwards it to a `<BaseComponent active={...}>`.
 
-Unlike `useActiveBehaviorState()`, which supports both controlled and uncontrolled modes, `useDispatchActiveChange()` assumes the component is **fully controlled** and does not manage internal state.
+Unlike `useActiveState()`, which supports both controlled and uncontrolled modes, `useDispatchActiveChange()` assumes the component is **fully controlled** and does not manage internal state.
 
 - Supports only controlled mode.
 - Always triggers `onActiveChange`, if provided.
@@ -133,7 +133,7 @@ Resolves the current active/inactive state and provides a dispatcher for request
 
 This hook is intended for components that **manage** the resolved `active` state and **forward** it to a base component, while optionally supporting uncontrolled behavior.
 
-Unlike `useActiveBehaviorState()`, which resolves full lifecycle, `useActiveController()` provides a **simplified implementation** for managing activation state and dispatching changes.
+Unlike `useActiveState()`, which resolves full lifecycle, `useActiveController()` provides a **simplified implementation** for managing activation state and dispatching changes.
 
 - Supports both controlled and uncontrolled modes.
 - Supports contextual override via `cascadeActive`.
@@ -150,7 +150,7 @@ import React, { ReactNode, FC } from 'react';
 import {
     ActiveStateProps,
     ActiveStateProvider,
-    useActiveBehaviorState,
+    useActiveState,
     useResolvedActiveState,
 } from '@reusable-ui/active-state';
 
@@ -169,7 +169,7 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useActiveBehaviorState(props, {
+    } = useActiveState(props, {
         defaultActive        : false,                          // Fallback for uncontrolled mode.
         defaultCascadeActive : false,                          // Defaults to prevent contextual activation.
         animationPattern     : ['activating', 'deactivating'], // Matches animation names ending with 'activating' or 'deactivating'.

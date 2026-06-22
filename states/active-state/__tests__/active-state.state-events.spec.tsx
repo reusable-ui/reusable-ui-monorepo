@@ -69,7 +69,7 @@ interface ActiveStateEventTestCase {
 
 
 
-test.describe('useActiveBehaviorState (phase events)', () => {
+test.describe('useActiveState (phase events)', () => {
     for (const { title, active : initialActive, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.
