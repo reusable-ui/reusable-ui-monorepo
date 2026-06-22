@@ -18,7 +18,7 @@ import {
     type ViewStateOptions,
     type ViewPhase,
     type ViewClassname,
-    type ViewBehaviorState,
+    type ViewState,
 }                           from './types.js'
 import {
     type ViewBehaviorStateDefinition,
@@ -198,7 +198,7 @@ const viewBehaviorStateDefinition : ViewBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useViewState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent>, options?: ViewStateOptions): ViewBehaviorState<TElement, TChangeEvent> => {
+export const useViewState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent>, options?: ViewStateOptions): ViewState<TElement, TChangeEvent> => {
     // Extract options and assign defaults:
     const {
         defaultViewIndex : fallbackState,
@@ -332,7 +332,7 @@ export const useViewState = <TElement extends Element = HTMLElement, TChangeEven
         viewStyle,
         dispatchViewIndexChange,
         ...animationHandlers,
-    } satisfies ViewBehaviorState<TElement, TChangeEvent>;
+    } satisfies ViewState<TElement, TChangeEvent>;
 };
 
 /**

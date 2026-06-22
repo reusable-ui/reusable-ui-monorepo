@@ -228,7 +228,7 @@ export type ViewClassname = ViewPhase
  * @template TElement - The type of the target DOM element.
  * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
  */
-export interface ViewBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
+export interface ViewState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends
         // Bases:
         Omit<InteractionState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>,
