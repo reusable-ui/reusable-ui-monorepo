@@ -7,7 +7,7 @@ import {
     type CollapseStateOptions,
     type ExpandPhase,
     type ExpandClassname,
-    type CollapseBehaviorState,
+    type CollapseState,
 }                           from './types.js'
 import {
     type CollapseBehaviorStateDefinition,
@@ -153,7 +153,7 @@ const collapseBehaviorStateDefinition : CollapseBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useCollapseState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: CollapseStateProps<TChangeEvent>, options?: CollapseStateOptions): CollapseBehaviorState<TElement, TChangeEvent> => {
+export const useCollapseState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: CollapseStateProps<TChangeEvent>, options?: CollapseStateOptions): CollapseState<TElement, TChangeEvent> => {
     // Extract options:
     const {
         defaultExpanded : fallbackState,
@@ -231,7 +231,7 @@ export const useCollapseState = <TElement extends Element = HTMLElement, TChange
         expandClassname,
         dispatchExpandedChange,
         ...animationHandlers,
-    } satisfies CollapseBehaviorState<TElement, TChangeEvent>;
+    } satisfies CollapseState<TElement, TChangeEvent>;
 };
 
 /**

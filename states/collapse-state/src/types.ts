@@ -190,7 +190,7 @@ export type ExpandClassname = `is-${ExpandPhase}`
  * @template TElement - The type of the target DOM element.
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
  */
-export interface CollapseBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
+export interface CollapseState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends
         // Bases:
         Omit<InteractionState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>,
