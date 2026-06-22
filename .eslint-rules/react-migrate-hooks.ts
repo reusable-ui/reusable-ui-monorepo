@@ -263,3 +263,98 @@ export const migrateTypeDomainGroup = createRule({
         };
     },
 });
+
+
+
+/**
+ * ESLint rule: migrate-type-domain-group-definition
+ * 
+ * Purpose:
+ * - Enforce migration of legacy types from `<Domain>Behavior<Group>Definition` to `<Domain><Group>Definition`.
+ * - Ensure consistent behavioral-state nomenclature throughout the monorepo.
+ * 
+ * Detection Criteria:
+ * - Identified by names that match `<Domain>Behavior<Group>Definition`.
+ * 
+ * Why:
+ * - Standardize hook's type naming for clarity and consistency.
+ */
+export const migrateTypeDomainGroupDefinition = createRule({
+    name : 'migrate-type-domain-group-definition',
+    meta : {
+        type     : 'suggestion',
+        fixable  : 'code',
+        docs     : {
+            description : 'Enforce hook\'s types to follow the declarative `<Domain><Group>Definition` naming convention.',
+        },
+        schema   : [], // no options accepted
+        messages : {
+            wrongName : 'Hook\'s type "{{currentName}}" should be renamed to "{{expectedName}}" to match the behavioral naming strategy.',
+        },
+    },
+    create(context) {
+        const filename         = context.filename;
+        const basename         = path.basename(filename);
+        const relativeFilename = resolveGroupPackageRelativePath(filename);
+        
+        
+        
+        // Skip files that are explicitly designated as deprecated:
+        if (basename.split('-').includes('deprecated')) return {};
+        
+        
+        
+        // Get domain metadata from a relative module locations:
+        const domainMetadata = getDomainMetadata(relativeFilename);
+        if (!domainMetadata) return {};
+        // if (domainMetadata.group === 'Variant') return {};
+        
+        
+        
+        const legacyTargetName = `${domainMetadata.domain}Behavior${domainMetadata.group}Definition`;
+        const expectedName     = `${domainMetadata.domain}${domainMetadata.group}Definition`;
+        
+        
+        
+        // // Excludes:
+        // if ([
+        //     'useAnimationState',
+        //     'useObserverState',
+        // ].includes(legacyTargetName)) return {};
+        
+        
+        
+        return {
+            /**
+             * Inspect interface declarations:
+             * e.g., interface ThemeVariant {}
+             */
+            TSInterfaceDeclaration(node) {
+                // Store the function name for easy access:
+                const currentName = node.id.name;
+                
+                
+                
+                // Hook's type candidates:
+                // - Identified by names that match `<Domain>Behavior<Group>Definition`.
+                if (currentName !== legacyTargetName) return; // exit function
+                
+                
+                
+                // Enforce naming migration:
+                const id = node.id;
+                context.report({
+                    node      : id,
+                    messageId : 'wrongName',
+                    data      : {
+                        currentName,
+                        expectedName,
+                    },
+                    fix(fixer) {
+                        return fixer.replaceText(id, expectedName);
+                    },
+                });
+            },
+        };
+    },
+});
