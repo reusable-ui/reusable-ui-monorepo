@@ -30,7 +30,7 @@ yarn add @reusable-ui/hover-state
 
 ## 🧩 Exported Hooks
 
-### `useHoverBehaviorState(props, options?)`
+### `useHoverState(props, options?)`
 
 Resolves the hover state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
@@ -42,7 +42,7 @@ Resolves the hover state, current transition phase, associated CSS class name, a
 ```tsx
 import React, { FC, useState, useEffect } from 'react';
 import {
-    useHoverBehaviorState,
+    useHoverState,
     HoverStateProps,
 } from '@reusable-ui/hover-state';
 import styles from './CustomCard.module.css';
@@ -86,7 +86,7 @@ export const CustomCard: FC<CustomCardProps> = (props) => {
         ref,
         handleMouseEnter,
         handleMouseLeave,
-    } = useHoverBehaviorState({
+    } = useHoverState({
         computedHover,
         ...restProps,
     }, {
@@ -130,7 +130,7 @@ Resolves the current hovered/unhovered state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `hovered` state and **forward** it to a base component.
 
-Unlike `useHoverBehaviorState()`, which handles animation and lifecycle, `useResolvedHoverState()` performs a lightweight resolution of the effective hover value.
+Unlike `useHoverState()`, which handles animation and lifecycle, `useResolvedHoverState()` performs a lightweight resolution of the effective hover value.
 
 - No internal state or uncontrolled fallback.
 - `'auto'` is treated as a declarative diagnostic mode.

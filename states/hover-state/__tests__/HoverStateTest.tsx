@@ -1,7 +1,7 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type HoverStateProps,
-    useHoverBehaviorState,
+    useHoverState,
 } from '../dist/index.js'
 import { useMergedEventHandlers } from '@reusable-ui/callbacks'
 import { useMergedRefs } from '@reusable-ui/references'
@@ -41,7 +41,7 @@ export const HoverStateTest = (props: HoverStateTestProps) => {
         ref,
         handleMouseEnter,
         handleMouseLeave,
-    } = useHoverBehaviorState(props, {
+    } = useHoverState(props, {
         animationPattern,
     });
     

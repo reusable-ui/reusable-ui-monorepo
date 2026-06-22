@@ -89,7 +89,7 @@ interface HoverStateControlledTestCase {
 
 
 
-test.describe('useHoverBehaviorState - controlled mode', () => {
+test.describe('useHoverState - controlled mode', () => {
     for (const { title, hovered : initialHovered, computedHover: initialComputedHover, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

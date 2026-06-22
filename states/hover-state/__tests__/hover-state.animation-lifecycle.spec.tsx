@@ -93,7 +93,7 @@ const OUTLINE_UNHOVERED = 'color(srgb 0 0 0) solid 0px';
 
 
 
-test.describe('useHoverBehaviorState - animation', () => {
+test.describe('useHoverState - animation', () => {
     for (const { title, hovered : initialHovered, computedHover: initialComputedHover, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

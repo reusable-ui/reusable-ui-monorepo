@@ -61,7 +61,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * 
  * This hook is intended for components that **consume** the resolved `hovered` state and **forward** it to a base component.
  * 
- * Unlike `useHoverBehaviorState()`, which handles animation and lifecycle,
+ * Unlike `useHoverState()`, which handles animation and lifecycle,
  * `useResolvedHoverState()` performs a lightweight resolution of the effective hover value.
  * 
  * - No internal state or uncontrolled fallback.
@@ -167,7 +167,7 @@ const hoverBehaviorStateDefinition : HoverBehaviorStateDefinition = {
  * ```tsx
  * import React, { FC, useState, useEffect } from 'react';
  * import {
- *     useHoverBehaviorState,
+ *     useHoverState,
  *     HoverStateProps,
  * } from '@reusable-ui/hover-state';
  * import styles from './CustomCard.module.css';
@@ -211,7 +211,7 @@ const hoverBehaviorStateDefinition : HoverBehaviorStateDefinition = {
  *         ref,
  *         handleMouseEnter,
  *         handleMouseLeave,
- *     } = useHoverBehaviorState({
+ *     } = useHoverState({
  *         computedHover,
  *         ...restProps,
  *     }, {
@@ -234,7 +234,7 @@ const hoverBehaviorStateDefinition : HoverBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useHoverBehaviorState = <TElement extends Element = HTMLElement>(props: HoverStateProps, options?: HoverStateOptions): HoverBehaviorState<TElement> => {
+export const useHoverState = <TElement extends Element = HTMLElement>(props: HoverStateProps, options?: HoverStateOptions): HoverBehaviorState<TElement> => {
     // Extract props:
     const {
         onHoverUpdate : onStateUpdate,

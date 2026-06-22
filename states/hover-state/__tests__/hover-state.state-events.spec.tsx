@@ -84,7 +84,7 @@ interface HoverStateEventTestCase {
 
 
 
-test.describe('useHoverBehaviorState (phase events)', () => {
+test.describe('useHoverState (phase events)', () => {
     for (const { title, hovered : initialHovered, computedHover: initialComputedHover, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

@@ -75,7 +75,7 @@ interface HoverStateControlledTestCase {
 
 
 
-test.describe('useHoverBehaviorState - diagnostic mode', () => {
+test.describe('useHoverState - diagnostic mode', () => {
     for (const { title, hovered : initialHovered, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.
