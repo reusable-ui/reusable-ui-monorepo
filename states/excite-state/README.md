@@ -27,7 +27,7 @@ yarn add @reusable-ui/excite-state
 
 ## 🧩 Exported Hooks
 
-### `useExciteBehaviorState(props, options?)`
+### `useExciteState(props, options?)`
 
 Resolves the excited state along with its associated CSS class name, based on component props, optional default configuration, and animation lifecycle.
 
@@ -36,7 +36,7 @@ Resolves the excited state along with its associated CSS class name, based on co
 ```tsx
 import React, { FC } from 'react';
 import {
-    useExciteBehaviorState,
+    useExciteState,
     ExciteStateProps,
 } from '@reusable-ui/excite-state';
 import styles from './ExcitableBox.module.css';
@@ -53,7 +53,7 @@ export const ExcitableBox: FC<ExcitableBoxProps> = (props) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useExciteBehaviorState(props, {
+    } = useExciteState(props, {
         defaultExcited    : false,          // Defaults the `excited` prop to `false` if not provided.
         animationPattern  : 'box-exciting', // Matches animation names ending with 'box-exciting'.
         animationBubbling : false,          // Ignores bubbling animation events from children.

@@ -127,7 +127,7 @@ Additional flags:
 |----------------|--------------------------|--------------------------------|-----------------------------|----------------------------|
 | State Package  | Resolve Final State      | Uncontrollable                 | Dispatcher                  | Resolve Final State + Meta |
 |----------------|--------------------------|--------------------------------|-----------------------------|----------------------------|
-| excite-state   | useResolvedExciteState   | not applicable                 | not applicable              | useExciteBehaviorState     |
+| excite-state   | useResolvedExciteState   | not applicable                 | not applicable              | useExciteState             |
 |----------------|--------------------------|--------------------------------|-----------------------------|----------------------------|
 | active-state   | useResolvedActiveState   | useActiveController            | useDispatchActiveChange     | useActiveBehaviorState     |
 | collapse-state | useResolvedCollapseState | useCollapseController          | useDispatchExpandedChange   | useCollapseBehaviorState   |

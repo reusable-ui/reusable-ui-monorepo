@@ -57,7 +57,7 @@ const exciteBehaviorStateDefinition : ExciteBehaviorStateDefinition = {
  * ```tsx
  * import React, { FC } from 'react';
  * import {
- *     useExciteBehaviorState,
+ *     useExciteState,
  *     ExciteStateProps,
  * } from '@reusable-ui/excite-state';
  * import styles from './ExcitableBox.module.css';
@@ -74,7 +74,7 @@ const exciteBehaviorStateDefinition : ExciteBehaviorStateDefinition = {
  *         handleAnimationStart,
  *         handleAnimationEnd,
  *         handleAnimationCancel,
- *     } = useExciteBehaviorState(props, {
+ *     } = useExciteState(props, {
  *         defaultExcited    : false,          // Defaults the `excited` prop to `false` if not provided.
  *         animationPattern  : 'box-exciting', // Matches animation names ending with 'box-exciting'.
  *         animationBubbling : false,          // Ignores bubbling animation events from children.
@@ -94,7 +94,7 @@ const exciteBehaviorStateDefinition : ExciteBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useExciteBehaviorState = <TElement extends Element = HTMLElement>(props: ExciteStateProps, options?: ExciteStateOptions): ExciteBehaviorState<TElement> => {
+export const useExciteState = <TElement extends Element = HTMLElement>(props: ExciteStateProps, options?: ExciteStateOptions): ExciteBehaviorState<TElement> => {
     // Extract props:
     const {
         onExcitedComplete : onStateComplete,
