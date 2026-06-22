@@ -29,7 +29,7 @@ yarn add @reusable-ui/collapse-state
 
 ## 🧩 Exported Hooks
 
-### `useCollapseBehaviorState(props, options?)`
+### `useCollapseState(props, options?)`
 
 Resolves the expanded/collapsed state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
@@ -40,7 +40,7 @@ Resolves the expanded/collapsed state, current transition phase, associated CSS 
 ```tsx
 import React, { FC } from 'react';
 import {
-    useCollapseBehaviorState,
+    useCollapseState,
     CollapseStateProps,
 } from '@reusable-ui/collapse-state';
 import styles from './CollapsibleBox.module.css';
@@ -62,7 +62,7 @@ export const CollapsibleBox: FC<CollapsibleBoxProps> = (props) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useCollapseBehaviorState(props, {
+    } = useCollapseState(props, {
         defaultExpanded   : false,                       // Fallback for uncontrolled mode.
         animationPattern  : ['expanding', 'collapsing'], // Matches animation names ending with 'expanding' or 'collapsing'.
         animationBubbling : false,                       // Ignores bubbling animation events from children.
@@ -105,7 +105,7 @@ Resolves the current expanded/collapsed state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `expanded` state and **forward** it to a base component.
 
-Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontrolled modes, `useResolvedCollapseState()` assumes the component is **fully controlled** and does not manage internal state.
+Unlike `useCollapseState()`, which supports both controlled and uncontrolled modes, `useResolvedCollapseState()` assumes the component is **fully controlled** and does not manage internal state.
 
 - Supports only controlled mode.
 - Ideal for components that **consume** the resolved `expanded` state.
@@ -116,7 +116,7 @@ Creates a stable dispatcher for requesting a change to the expanded state.
 
 This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `expanded` state and forwards it to a `<BaseComponent expanded={...}>`.
 
-Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontrolled modes, `useDispatchExpandedChange()` assumes the component is **fully controlled** and does not manage internal state.
+Unlike `useCollapseState()`, which supports both controlled and uncontrolled modes, `useDispatchExpandedChange()` assumes the component is **fully controlled** and does not manage internal state.
 
 - Supports only controlled mode.
 - Always triggers `onExpandedChange`, if provided.
@@ -128,7 +128,7 @@ Resolves the current expanded/collapsed state and provides a dispatcher for requ
 
 This hook is intended for components that **manage** the resolved `expanded` state and **forward** it to a base component, while optionally supporting uncontrolled behavior.
 
-Unlike `useCollapseBehaviorState()`, which resolves full lifecycle, `useCollapseController()` provides a **simplified implementation** for managing expansion state and dispatching changes.
+Unlike `useCollapseState()`, which resolves full lifecycle, `useCollapseController()` provides a **simplified implementation** for managing expansion state and dispatching changes.
 
 - Supports both controlled and uncontrolled modes.
 - If `expanded` is provided, the internal state is disabled and the component becomes fully controlled.

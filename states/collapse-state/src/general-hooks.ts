@@ -32,7 +32,7 @@ const controlledStateDefinition : ControlledStateDefinition<boolean> = {
  * 
  * This hook is intended for components that **consume** the resolved `expanded` state and **forward** it to a base component.
  * 
- * Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontrolled modes,
+ * Unlike `useCollapseState()`, which supports both controlled and uncontrolled modes,
  * `useResolvedCollapseState()` assumes the component is **fully controlled** and does not manage internal state.
  * 
  * - Supports only controlled mode.

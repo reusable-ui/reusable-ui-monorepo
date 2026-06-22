@@ -81,7 +81,7 @@ interface CollapseStateControlledTestCase {
 
 
 
-test.describe('useCollapseBehaviorState - controlled mode', () => {
+test.describe('useCollapseState - controlled mode', () => {
     for (const { title, expanded : initialExpanded, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

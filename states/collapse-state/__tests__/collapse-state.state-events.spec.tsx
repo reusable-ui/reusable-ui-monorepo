@@ -70,7 +70,7 @@ interface CollapseStateEventTestCase {
 
 
 
-test.describe('useCollapseBehaviorState (phase events)', () => {
+test.describe('useCollapseState (phase events)', () => {
     for (const { title, expanded : initialExpanded, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

@@ -51,7 +51,7 @@ import {
  * 
  * This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `expanded` state and forwards it to a `<BaseComponent expanded={...}>`.
  * 
- * Unlike `useCollapseBehaviorState()`, which supports both controlled and uncontrolled modes,
+ * Unlike `useCollapseState()`, which supports both controlled and uncontrolled modes,
  * `useDispatchExpandedChange()` assumes the component is **fully controlled** and does not manage internal state.
  * 
  * - Supports only controlled mode.
@@ -107,7 +107,7 @@ const collapseBehaviorStateDefinition : CollapseBehaviorStateDefinition = {
  * ```tsx
  * import React, { FC } from 'react';
  * import {
- *     useCollapseBehaviorState,
+ *     useCollapseState,
  *     CollapseStateProps,
  * } from '@reusable-ui/collapse-state';
  * import styles from './CollapsibleBox.module.css';
@@ -129,7 +129,7 @@ const collapseBehaviorStateDefinition : CollapseBehaviorStateDefinition = {
  *         handleAnimationStart,
  *         handleAnimationEnd,
  *         handleAnimationCancel,
- *     } = useCollapseBehaviorState(props, {
+ *     } = useCollapseState(props, {
  *         defaultExpanded   : false,                       // Fallback for uncontrolled mode.
  *         animationPattern  : ['expanding', 'collapsing'], // Matches animation names ending with 'expanding' or 'collapsing'.
  *         animationBubbling : false,                       // Ignores bubbling animation events from children.
@@ -153,7 +153,7 @@ const collapseBehaviorStateDefinition : CollapseBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useCollapseBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: CollapseStateProps<TChangeEvent>, options?: CollapseStateOptions): CollapseBehaviorState<TElement, TChangeEvent> => {
+export const useCollapseState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: CollapseStateProps<TChangeEvent>, options?: CollapseStateOptions): CollapseBehaviorState<TElement, TChangeEvent> => {
     // Extract options:
     const {
         defaultExpanded : fallbackState,
@@ -240,7 +240,7 @@ export const useCollapseBehaviorState = <TElement extends Element = HTMLElement,
  * This hook is intended for components that **manage** the resolved `expanded` state and **forward** it to a base component,
  * while optionally supporting uncontrolled behavior.
  * 
- * Unlike `useCollapseBehaviorState()`, which resolves full lifecycle,
+ * Unlike `useCollapseState()`, which resolves full lifecycle,
  * `useCollapseController()` provides a **simplified implementation** for managing expansion state and dispatching changes.
  * 
  * - Supports both controlled and uncontrolled modes.
