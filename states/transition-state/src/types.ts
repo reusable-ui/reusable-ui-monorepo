@@ -436,7 +436,7 @@ export interface TransitionBehaviorStateDefinition<TState extends {} | null, TPh
  * @template TClassname - The type representing semantic transition classnames.
  * @template TElement - The type of the target DOM element.
  */
-export interface TransitionBehaviorState<TState extends {} | null, TPhase extends string, TClassname extends string, TElement extends Element = HTMLElement>
+export interface TransitionState<TState extends {} | null, TPhase extends string, TClassname extends string, TElement extends Element = HTMLElement>
     extends
         AnimationStateHandlers<TElement>
 {

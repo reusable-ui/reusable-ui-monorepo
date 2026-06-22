@@ -81,7 +81,7 @@ import {
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
     type TransitionBehaviorStateDefinition,
-    type TransitionBehaviorState,
+    type TransitionState,
 } from '@reusable-ui/transition-state'
 import { type ValueChangeHandler } from '@reusable-ui/controllable'
 
@@ -142,12 +142,12 @@ interface LockedBehaviorStateDefinition
  * Public API returned by `useLockedBehaviorState`.
  * 
  * @remarks
- * - Mirrors `TransitionBehaviorState` but renames properties into domain-specific terms.
+ * - Mirrors `TransitionState` but renames properties into domain-specific terms.
  * - Excludes generic properties (`state`, `actualState`, etc.) in favor of `locked`, `actualLocked`, etc.
  */
 export interface LockedBehaviorState<TElement extends Element = HTMLElement>
     extends
-        Omit<TransitionBehaviorState<boolean, LockedPhase, LockedClassname, TElement>,
+        Omit<TransitionState<boolean, LockedPhase, LockedClassname, TElement>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'
@@ -292,7 +292,7 @@ import {
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
     type TransitionBehaviorStateDefinition,
-    type TransitionBehaviorState,
+    type TransitionState,
 } from '@reusable-ui/transition-state'
 import { type ValueChangeHandler } from '@reusable-ui/controllable'
 
@@ -353,12 +353,12 @@ interface OnlineBehaviorStateDefinition
  * Public API returned by `useOnlineBehaviorState`.
  * 
  * @remarks
- * - Mirrors `TransitionBehaviorState` but renames properties into domain-specific terms.
+ * - Mirrors `TransitionState` but renames properties into domain-specific terms.
  * - Excludes generic properties (`state`, `actualState`, etc.) in favor of `online`, `actualOnline`, etc.
  */
 export interface OnlineBehaviorState<TElement extends Element = HTMLElement>
     extends
-        Omit<TransitionBehaviorState<boolean, OnlinePhase, OnlineClassname, TElement>,
+        Omit<TransitionState<boolean, OnlinePhase, OnlineClassname, TElement>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'
@@ -541,7 +541,7 @@ import {
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
     type TransitionBehaviorStateDefinition,
-    type TransitionBehaviorState,
+    type TransitionState,
 } from '@reusable-ui/transition-state'
 import { useStableCallback } from '@reusable-ui/callbacks'
 import { type ValueChangeHandler, type DispatchValueChange } from '@reusable-ui/controllable'
@@ -616,12 +616,12 @@ interface SelectedBehaviorStateDefinition
  * Public API returned by `useSelectedBehaviorState`.
  * 
  * @remarks
- * - Mirrors `TransitionBehaviorState` but renames properties into domain-specific terms.
+ * - Mirrors `TransitionState` but renames properties into domain-specific terms.
  * - Excludes generic properties (`state`, `actualState`, etc.) in favor of `selected`, `actualSelected`, etc.
  */
 export interface SelectedBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends
-        Omit<TransitionBehaviorState<boolean, SelectedPhase, SelectedClassname, TElement>,
+        Omit<TransitionState<boolean, SelectedPhase, SelectedClassname, TElement>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'

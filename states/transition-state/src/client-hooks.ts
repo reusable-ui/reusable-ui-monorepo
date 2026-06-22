@@ -33,7 +33,7 @@ import {
     type TriggerTransitionEventArgs,
     type TransitionBehaviorStateDefinition,
     
-    type TransitionBehaviorState,
+    type TransitionState,
 }                           from './types.js'
 
 // Hooks:
@@ -99,7 +99,7 @@ export const useTransitionState = <
     props      : TransitionStateProps<TState>,
     options    : TransitionStateOptions<TState> | undefined,
     definition : TransitionBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>,
-): readonly [TransitionBehaviorState<TState, TPhase, TClassname, TElement>, Dispatch<SetAnimationIntentAction<TState>>] => {
+): readonly [TransitionState<TState, TPhase, TClassname, TElement>, Dispatch<SetAnimationIntentAction<TState>>] => {
     // Extract definition and assign defaults:
     const {
         defaultAnimationPattern,
@@ -223,7 +223,7 @@ export const useTransitionState = <
     
     
     // Return resolved transitional state API along with setter state:
-    const transitionBehaviorState : TransitionBehaviorState<TState, TPhase, TClassname, TElement> = {
+    const transitionBehaviorState : TransitionState<TState, TPhase, TClassname, TElement> = {
         prevSettledState,
         state       : settledState, // Use `settledState` instead of `driverState`, because during animation, the settled state reflects the visually committed state.
         actualState : driverState,  // Expose the actual effective state for advanced use cases.
@@ -237,5 +237,5 @@ export const useTransitionState = <
         
         // Setter for updating state intent:
         setInternalState,
-    ] satisfies readonly [TransitionBehaviorState<TState, TPhase, TClassname, TElement>, Dispatch<SetAnimationIntentAction<TState>>];
+    ] satisfies readonly [TransitionState<TState, TPhase, TClassname, TElement>, Dispatch<SetAnimationIntentAction<TState>>];
 };
