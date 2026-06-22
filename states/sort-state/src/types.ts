@@ -17,7 +17,7 @@ import {
     // Types:
     type FeedbackStateProps,
     type FeedbackStateOptions,
-    type FeedbackBehaviorState,
+    type FeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -255,7 +255,7 @@ export interface SortOffset {
 export interface SortBehaviorState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Omit<FeedbackBehaviorState<boolean, string, SortClassname, TElement>,
+        Omit<FeedbackState<boolean, string, SortClassname, TElement>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'
@@ -274,7 +274,7 @@ export interface SortBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the sorting transition is currently active
      * - `false` : the sorting transition is idle
      */
-    sorting       : FeedbackBehaviorState<boolean, string, SortClassname, TElement>['state']
+    sorting       : FeedbackState<boolean, string, SortClassname, TElement>['state']
     
     /**
      * Translates each sortable element back to its **unsorted position**.
@@ -298,7 +298,7 @@ export interface SortBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-sorting'`
      * - `'not-sorting'`
      */
-    sortClassname : FeedbackBehaviorState<boolean, string, SortClassname, TElement>['transitionClassname']
+    sortClassname : FeedbackState<boolean, string, SortClassname, TElement>['transitionClassname']
     
     /**
      * Provides inline CSS variables for styling each sortable element,

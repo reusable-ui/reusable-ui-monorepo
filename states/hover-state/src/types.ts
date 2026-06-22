@@ -16,7 +16,7 @@ import {
     // Types:
     type FeedbackStateProps,
     type FeedbackStateOptions,
-    type FeedbackBehaviorState,
+    type FeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -202,7 +202,7 @@ export type HoverClassname = `is-${HoverPhase}`
 export interface HoverBehaviorState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Omit<FeedbackBehaviorState<boolean, HoverPhase, HoverClassname, TElement>,
+        Omit<FeedbackState<boolean, HoverPhase, HoverClassname, TElement>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'
@@ -222,7 +222,7 @@ export interface HoverBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component has visually settled in hovered state
      * - `false` : the component has visually settled in unhovered state
      */
-    hovered           : FeedbackBehaviorState<boolean, HoverPhase, HoverClassname, TElement>['state']
+    hovered           : FeedbackState<boolean, HoverPhase, HoverClassname, TElement>['state']
     
     /**
      * The actual resolved hovered/unhovered state, regardless of animation state.
@@ -236,14 +236,14 @@ export interface HoverBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component is intended to be hovered
      * - `false` : the component is intended to be unhovered
      */
-    actualHovered     : FeedbackBehaviorState<boolean, HoverPhase, HoverClassname, TElement>['actualState']
+    actualHovered     : FeedbackState<boolean, HoverPhase, HoverClassname, TElement>['actualState']
     
     /**
      * The current transition phase of the hover/unhover lifecycle.
      * 
      * Reflects both transitional states (`hovering`, `unhovering`) and resolved states (`hovered`, `unhovered`).
      */
-    hoverPhase        : FeedbackBehaviorState<boolean, HoverPhase, HoverClassname, TElement>['transitionPhase']
+    hoverPhase        : FeedbackState<boolean, HoverPhase, HoverClassname, TElement>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current hover/unhover phase.
@@ -254,7 +254,7 @@ export interface HoverBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-hovering'`
      * - `'is-hovered'`
      */
-    hoverClassname    : FeedbackBehaviorState<boolean, HoverPhase, HoverClassname, TElement>['transitionClassname']
+    hoverClassname    : FeedbackState<boolean, HoverPhase, HoverClassname, TElement>['transitionClassname']
     
     /**
      * Ref to the hoverable DOM element.

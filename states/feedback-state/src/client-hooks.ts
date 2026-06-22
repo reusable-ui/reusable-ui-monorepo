@@ -30,7 +30,7 @@ import {
     
     type FeedbackBehaviorStateDefinition,
     
-    type FeedbackBehaviorState,
+    type FeedbackState,
 }                           from './types.js'
 
 // Hooks:
@@ -94,7 +94,7 @@ export const useFeedbackState = <
     props      : FeedbackStateProps<TState>,
     options    : FeedbackStateOptions<TState> | undefined,
     definition : FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
-): FeedbackBehaviorState<TState, TPhase, TClassname, TElement> => {
+): FeedbackState<TState, TPhase, TClassname, TElement> => {
     // Extract props:
     const {
         effectiveState,
@@ -158,5 +158,5 @@ export const useFeedbackState = <
     
     
     // Return resolved feedback state API:
-    return transitionBehaviorState satisfies FeedbackBehaviorState<TState, TPhase, TClassname, TElement>;
+    return transitionBehaviorState satisfies FeedbackState<TState, TPhase, TClassname, TElement>;
 };

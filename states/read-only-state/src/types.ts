@@ -9,7 +9,7 @@ import {
     // Types:
     type FeedbackStateProps,
     type FeedbackStateOptions,
-    type FeedbackBehaviorState,
+    type FeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -184,7 +184,7 @@ export type ReadOnlyClassname = `is-${ReadOnlyPhase}`
 export interface ReadOnlyBehaviorState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Omit<FeedbackBehaviorState<boolean, ReadOnlyPhase, ReadOnlyClassname, TElement>,
+        Omit<FeedbackState<boolean, ReadOnlyPhase, ReadOnlyClassname, TElement>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'
@@ -204,7 +204,7 @@ export interface ReadOnlyBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component has visually settled in read-only state
      * - `false` : the component has visually settled in editable state
      */
-    readOnly          : FeedbackBehaviorState<boolean, ReadOnlyPhase, ReadOnlyClassname, TElement>['state']
+    readOnly          : FeedbackState<boolean, ReadOnlyPhase, ReadOnlyClassname, TElement>['state']
     
     /**
      * The actual resolved editable/read-only state, regardless of animation state.
@@ -218,14 +218,14 @@ export interface ReadOnlyBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component is intended to be read-only
      * - `false` : the component is intended to be editable
      */
-    actualReadOnly    : FeedbackBehaviorState<boolean, ReadOnlyPhase, ReadOnlyClassname, TElement>['actualState']
+    actualReadOnly    : FeedbackState<boolean, ReadOnlyPhase, ReadOnlyClassname, TElement>['actualState']
     
     /**
      * The current transition phase of the editable/read-only lifecycle.
      * 
      * Reflects both transitional states (`thawing`, `freezing`) and resolved states (`editable`, `readonly`).
      */
-    readOnlyPhase     : FeedbackBehaviorState<boolean, ReadOnlyPhase, ReadOnlyClassname, TElement>['transitionPhase']
+    readOnlyPhase     : FeedbackState<boolean, ReadOnlyPhase, ReadOnlyClassname, TElement>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current editable/read-only phase.
@@ -236,5 +236,5 @@ export interface ReadOnlyBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-thawing'`
      * - `'is-editable'`
      */
-    readOnlyClassname : FeedbackBehaviorState<boolean, ReadOnlyPhase, ReadOnlyClassname, TElement>['transitionClassname']
+    readOnlyClassname : FeedbackState<boolean, ReadOnlyPhase, ReadOnlyClassname, TElement>['transitionClassname']
 }

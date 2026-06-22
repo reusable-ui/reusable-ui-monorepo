@@ -9,7 +9,7 @@ import {
     // Types:
     type FeedbackStateProps,
     type FeedbackStateOptions,
-    type FeedbackBehaviorState,
+    type FeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -247,7 +247,7 @@ export type ValidityClassname = `is-${ResolvedValidityPhase}` | `is-${Transition
 export interface ValidityBehaviorState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Omit<FeedbackBehaviorState<boolean | null, ValidityPhase, ValidityClassname, TElement>,
+        Omit<FeedbackState<boolean | null, ValidityPhase, ValidityClassname, TElement>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'
@@ -268,7 +268,7 @@ export interface ValidityBehaviorState<TElement extends Element = HTMLElement>
      * - `false` : the component has visually settled in invalid state
      * - `null`  : the component has visually settled in unvalidated state
      */
-    validity          : FeedbackBehaviorState<boolean | null, ValidityPhase, ValidityClassname, TElement>['state']
+    validity          : FeedbackState<boolean | null, ValidityPhase, ValidityClassname, TElement>['state']
     
     /**
      * The actual resolved validity state, regardless of animation state.
@@ -283,14 +283,14 @@ export interface ValidityBehaviorState<TElement extends Element = HTMLElement>
      * - `false` : the component is intended to be invalid
      * - `null`  : the component is intended to be unvalidated
      */
-    actualValidity    : FeedbackBehaviorState<boolean | null, ValidityPhase, ValidityClassname, TElement>['actualState']
+    actualValidity    : FeedbackState<boolean | null, ValidityPhase, ValidityClassname, TElement>['actualState']
     
     /**
      * The current transition phase of the validity lifecycle.
      * 
      * Reflects both transitional states (`validating`, `invalidating`, `unvalidating`) and resolved states (`valid`, `invalid`, `unvalidated`).
      */
-    validityPhase     : FeedbackBehaviorState<boolean | null, ValidityPhase, ValidityClassname, TElement>['transitionPhase']
+    validityPhase     : FeedbackState<boolean | null, ValidityPhase, ValidityClassname, TElement>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current validity phase.
@@ -305,5 +305,5 @@ export interface ValidityBehaviorState<TElement extends Element = HTMLElement>
      * 
      * If in a transitioning phase, includes a `was-*` suffix to indicate the previous resolved state.
      */
-    validityClassname : FeedbackBehaviorState<boolean | null, ValidityPhase, ValidityClassname, TElement>['transitionClassname']
+    validityClassname : FeedbackState<boolean | null, ValidityPhase, ValidityClassname, TElement>['transitionClassname']
 }

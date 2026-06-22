@@ -74,7 +74,7 @@ import {
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
     type FeedbackBehaviorStateDefinition,
-    type FeedbackBehaviorState,
+    type FeedbackState,
 } from '@reusable-ui/feedback-state'
 import { type ValueChangeHandler } from '@reusable-ui/controllable'
 
@@ -135,12 +135,12 @@ interface OnlineBehaviorStateDefinition
  * Public API returned by `useOnlineBehaviorState`.
  * 
  * @remarks
- * - Mirrors `FeedbackBehaviorState` but renames properties into domain-specific terms.
+ * - Mirrors `FeedbackState` but renames properties into domain-specific terms.
  * - Excludes generic properties (`state`, `actualState`, etc.) in favor of `online`, `actualOnline`, etc.
  */
 export interface OnlineBehaviorState<TElement extends Element = HTMLElement>
     extends
-        Omit<FeedbackBehaviorState<boolean, OnlinePhase, OnlineClassname, TElement>,
+        Omit<FeedbackState<boolean, OnlinePhase, OnlineClassname, TElement>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'
@@ -293,7 +293,7 @@ import {
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
     type FeedbackBehaviorStateDefinition,
-    type FeedbackBehaviorState,
+    type FeedbackState,
 } from '@reusable-ui/feedback-state'
 import { type ValueChangeHandler } from '@reusable-ui/controllable'
 
@@ -354,12 +354,12 @@ interface LockedBehaviorStateDefinition
  * Public API returned by `useLockedBehaviorState`.
  * 
  * @remarks
- * - Mirrors `FeedbackBehaviorState` but renames properties into domain-specific terms.
+ * - Mirrors `FeedbackState` but renames properties into domain-specific terms.
  * - Excludes generic properties (`state`, `actualState`, etc.) in favor of `locked`, `actualLocked`, etc.
  */
 export interface LockedBehaviorState<TElement extends Element = HTMLElement>
     extends
-        Omit<FeedbackBehaviorState<boolean, LockedPhase, LockedClassname, TElement>,
+        Omit<FeedbackState<boolean, LockedPhase, LockedClassname, TElement>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'

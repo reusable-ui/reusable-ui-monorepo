@@ -17,7 +17,7 @@ import {
     // Types:
     type FeedbackStateProps,
     type FeedbackStateOptions,
-    type FeedbackBehaviorState,
+    type FeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -220,7 +220,7 @@ export type FocusClassname = `is-${FocusPhase}` | `is-${FocusPhase} input-like-f
 export interface FocusBehaviorState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Omit<FeedbackBehaviorState<boolean, FocusPhase, FocusClassname, TElement>,
+        Omit<FeedbackState<boolean, FocusPhase, FocusClassname, TElement>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'
@@ -240,7 +240,7 @@ export interface FocusBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component has visually settled in focused state
      * - `false` : the component has visually settled in blurred state
      */
-    focused        : FeedbackBehaviorState<boolean, FocusPhase, FocusClassname, TElement>['state']
+    focused        : FeedbackState<boolean, FocusPhase, FocusClassname, TElement>['state']
     
     /**
      * The actual resolved focused/blurred state, regardless of animation state.
@@ -254,14 +254,14 @@ export interface FocusBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component is intended to be focused
      * - `false` : the component is intended to be blurred
      */
-    actualFocused  : FeedbackBehaviorState<boolean, FocusPhase, FocusClassname, TElement>['actualState']
+    actualFocused  : FeedbackState<boolean, FocusPhase, FocusClassname, TElement>['actualState']
     
     /**
      * The current transition phase of the focus/blur lifecycle.
      * 
      * Reflects both transitional states (`focusing`, `blurring`) and resolved states (`focused`, `blurred`).
      */
-    focusPhase     : FeedbackBehaviorState<boolean, FocusPhase, FocusClassname, TElement>['transitionPhase']
+    focusPhase     : FeedbackState<boolean, FocusPhase, FocusClassname, TElement>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current focus/blur phase.
@@ -275,7 +275,7 @@ export interface FocusBehaviorState<TElement extends Element = HTMLElement>
      * If input-like focus behavior is enabled, the class name will include `'input-like-focus'`
      * to signal that the component should visually behave like a native input.
      */
-    focusClassname : FeedbackBehaviorState<boolean, FocusPhase, FocusClassname, TElement>['transitionClassname']
+    focusClassname : FeedbackState<boolean, FocusPhase, FocusClassname, TElement>['transitionClassname']
     
     /**
      * Ref to the focusable DOM element.

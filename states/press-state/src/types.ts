@@ -16,7 +16,7 @@ import {
     // Types:
     type FeedbackStateProps,
     type FeedbackStateOptions,
-    type FeedbackBehaviorState,
+    type FeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -309,7 +309,7 @@ export type PressClassname = `is-${PressPhase}`
 export interface PressBehaviorState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Omit<FeedbackBehaviorState<boolean, PressPhase, PressClassname, TElement>,
+        Omit<FeedbackState<boolean, PressPhase, PressClassname, TElement>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'
@@ -329,7 +329,7 @@ export interface PressBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component has visually settled in pressed state
      * - `false` : the component has visually settled in released state
      */
-    pressed             : FeedbackBehaviorState<boolean, PressPhase, PressClassname, TElement>['state']
+    pressed             : FeedbackState<boolean, PressPhase, PressClassname, TElement>['state']
     
     /**
      * The actual resolved pressed/released state, regardless of animation state.
@@ -343,14 +343,14 @@ export interface PressBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component is intended to be pressed
      * - `false` : the component is intended to be released
      */
-    actualPressed       : FeedbackBehaviorState<boolean, PressPhase, PressClassname, TElement>['actualState']
+    actualPressed       : FeedbackState<boolean, PressPhase, PressClassname, TElement>['actualState']
     
     /**
      * The current transition phase of the press/release lifecycle.
      * 
      * Reflects both transitional states (`pressing`, `releasing`) and resolved states (`pressed`, `released`).
      */
-    pressPhase          : FeedbackBehaviorState<boolean, PressPhase, PressClassname, TElement>['transitionPhase']
+    pressPhase          : FeedbackState<boolean, PressPhase, PressClassname, TElement>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current press/release phase.
@@ -361,7 +361,7 @@ export interface PressBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-pressing'`
      * - `'is-pressed'`
      */
-    pressClassname      : FeedbackBehaviorState<boolean, PressPhase, PressClassname, TElement>['transitionClassname']
+    pressClassname      : FeedbackState<boolean, PressPhase, PressClassname, TElement>['transitionClassname']
     
     /**
      * Event handler for pointerdown events.

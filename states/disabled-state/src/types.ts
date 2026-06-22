@@ -9,7 +9,7 @@ import {
     // Types:
     type FeedbackStateProps,
     type FeedbackStateOptions,
-    type FeedbackBehaviorState,
+    type FeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -184,7 +184,7 @@ export type DisabledClassname = `is-${DisabledPhase}`
 export interface DisabledBehaviorState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Omit<FeedbackBehaviorState<boolean, DisabledPhase, DisabledClassname, TElement>,
+        Omit<FeedbackState<boolean, DisabledPhase, DisabledClassname, TElement>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'
@@ -204,7 +204,7 @@ export interface DisabledBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component has visually settled in disabled state
      * - `false` : the component has visually settled in enabled state
      */
-    disabled          : FeedbackBehaviorState<boolean, DisabledPhase, DisabledClassname, TElement>['state']
+    disabled          : FeedbackState<boolean, DisabledPhase, DisabledClassname, TElement>['state']
     
     /**
      * The actual resolved enabled/disabled state, regardless of animation state.
@@ -218,14 +218,14 @@ export interface DisabledBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component is intended to be disabled
      * - `false` : the component is intended to be enabled
      */
-    actualDisabled    : FeedbackBehaviorState<boolean, DisabledPhase, DisabledClassname, TElement>['actualState']
+    actualDisabled    : FeedbackState<boolean, DisabledPhase, DisabledClassname, TElement>['actualState']
     
     /**
      * The current transition phase of the enable/disable lifecycle.
      * 
      * Reflects both transitional states (`enabling`, `disabling`) and resolved states (`enabled`, `disabled`).
      */
-    disabledPhase     : FeedbackBehaviorState<boolean, DisabledPhase, DisabledClassname, TElement>['transitionPhase']
+    disabledPhase     : FeedbackState<boolean, DisabledPhase, DisabledClassname, TElement>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current enable/disable phase.
@@ -236,5 +236,5 @@ export interface DisabledBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-enabling'`
      * - `'is-enabled'`
      */
-    disabledClassname : FeedbackBehaviorState<boolean, DisabledPhase, DisabledClassname, TElement>['transitionClassname']
+    disabledClassname : FeedbackState<boolean, DisabledPhase, DisabledClassname, TElement>['transitionClassname']
 }

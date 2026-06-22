@@ -118,7 +118,7 @@ export interface FeedbackBehaviorStateDefinition<TState extends {} | null, TPhas
  * @template TClassname - The type representing semantic transition classnames.
  * @template TElement - The type of the target DOM element.
  */
-export interface FeedbackBehaviorState<TState extends {} | null, TPhase extends string, TClassname extends string, TElement extends Element = HTMLElement>
+export interface FeedbackState<TState extends {} | null, TPhase extends string, TClassname extends string, TElement extends Element = HTMLElement>
     extends
         TransitionState<TState, TPhase, TClassname, TElement>
 {

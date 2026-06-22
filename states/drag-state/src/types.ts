@@ -16,7 +16,7 @@ import {
     // Types:
     type FeedbackStateProps,
     type FeedbackStateOptions,
-    type FeedbackBehaviorState,
+    type FeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, drag, and validity.
 
 
@@ -244,7 +244,7 @@ export interface DragOffset {
 export interface DragBehaviorState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Omit<FeedbackBehaviorState<boolean, DragPhase, DragClassname, TElement>,
+        Omit<FeedbackState<boolean, DragPhase, DragClassname, TElement>,
             | 'prevSettledState'
             | 'state'
             | 'actualState'
@@ -264,7 +264,7 @@ export interface DragBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component has visually settled in dragged state (placed to the pointer position and continuously follows it)
      * - `false` : the component has visually settled in dropped state (placed at the target or original position)
      */
-    dragged           : FeedbackBehaviorState<boolean, DragPhase, DragClassname, TElement>['state']
+    dragged           : FeedbackState<boolean, DragPhase, DragClassname, TElement>['state']
     
     /**
      * Translates the draggable element to the current pointer position during dragging.
@@ -294,14 +294,14 @@ export interface DragBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component is intended to be dragged (placed to the pointer position and continuously follows it)
      * - `false` : the component is intended to be dropped (placed at the target or original position)
      */
-    actualDragged     : FeedbackBehaviorState<boolean, DragPhase, DragClassname, TElement>['actualState']
+    actualDragged     : FeedbackState<boolean, DragPhase, DragClassname, TElement>['actualState']
     
     /**
      * The current transition phase of the drag/drop lifecycle.
      * 
      * Reflects both transitional states (`dragging`, `dropping`) and resolved states (`dragged`, `dropped`).
      */
-    dragPhase         : FeedbackBehaviorState<boolean, DragPhase, DragClassname, TElement>['transitionPhase']
+    dragPhase         : FeedbackState<boolean, DragPhase, DragClassname, TElement>['transitionPhase']
     
     /**
      * A CSS class name reflecting the current drag/drop phase.
@@ -312,7 +312,7 @@ export interface DragBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-dragging'`
      * - `'is-dragged'`
      */
-    dragClassname     : FeedbackBehaviorState<boolean, DragPhase, DragClassname, TElement>['transitionClassname']
+    dragClassname     : FeedbackState<boolean, DragPhase, DragClassname, TElement>['transitionClassname']
     
     /**
      * Provides inline CSS variables for the draggable element
