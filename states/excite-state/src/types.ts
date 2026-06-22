@@ -3,7 +3,7 @@ import {
     // Types:
     type ActivityStateProps,
     type ActivityStateOptions,
-    type ActivityBehaviorState,
+    type ActivityState,
 }                           from '@reusable-ui/activity-state'      // Reusable abstraction for representing state-driven animations in React components — indicating ongoing activity or draw user attention.
 
 
@@ -98,7 +98,7 @@ export type ExciteClassname = 'is-excited' | 'not-excited'
 export interface ExciteBehaviorState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Omit<ActivityBehaviorState<boolean, ExciteClassname, TElement>,
+        Omit<ActivityState<boolean, ExciteClassname, TElement>,
             | 'state'
             | 'actualState'
             | 'activityClassname'
@@ -116,7 +116,7 @@ export interface ExciteBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the excitement animation is currently active
      * - `false` : the excitement animation is idle
      */
-    excited         : ActivityBehaviorState<boolean, ExciteClassname, TElement>['state']
+    excited         : ActivityState<boolean, ExciteClassname, TElement>['state']
     
     /**
      * The actual resolved excitement state, regardless of animation state.
@@ -130,7 +130,7 @@ export interface ExciteBehaviorState<TElement extends Element = HTMLElement>
      * - `true`  : the component is intended to be excited
      * - `false` : the component is intended to be idle
      */
-    actualExcited   : ActivityBehaviorState<boolean, ExciteClassname, TElement>['actualState']
+    actualExcited   : ActivityState<boolean, ExciteClassname, TElement>['actualState']
     
     /**
      * A CSS class name reflecting the resolved excitement state.
@@ -139,5 +139,5 @@ export interface ExciteBehaviorState<TElement extends Element = HTMLElement>
      * - `'is-excited'`
      * - `'not-excited'`
      */
-    exciteClassname : ActivityBehaviorState<boolean, ExciteClassname, TElement>['activityClassname']
+    exciteClassname : ActivityState<boolean, ExciteClassname, TElement>['activityClassname']
 }

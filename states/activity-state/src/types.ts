@@ -210,7 +210,7 @@ export interface ActivityBehaviorStateDefinition<TState extends {} | null, TClas
  * @template TClassname - The type representing semantic activity classnames.
  * @template TElement - The type of the target DOM element.
  */
-export interface ActivityBehaviorState<TState extends {} | null, TClassname extends string, TElement extends Element = HTMLElement>
+export interface ActivityState<TState extends {} | null, TClassname extends string, TElement extends Element = HTMLElement>
     extends
         // Bases:
         AnimationStateHandlers<TElement>

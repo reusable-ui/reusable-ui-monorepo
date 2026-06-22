@@ -67,7 +67,7 @@ import {
     type ActivityStateOptions,
     type ResolveActivityClassnameArgs,
     type ActivityBehaviorStateDefinition,
-    type ActivityBehaviorState,
+    type ActivityState,
 } from '@reusable-ui/activity-state'
 import { type AnimationEvent } from 'react'
 import { type ValueChangeHandler } from '@reusable-ui/controllable'
@@ -111,12 +111,12 @@ interface BusyBehaviorStateDefinition
  * Public API returned by `useBusyBehaviorState`.
  * 
  * @remarks
- * - Mirrors `ActivityBehaviorState` but renames properties into domain-specific terms.
+ * - Mirrors `ActivityState` but renames properties into domain-specific terms.
  * - Excludes generic properties (`state`, `actualState`, etc.) in favor of `busy`, `actualBusy`, etc.
  */
 export interface BusyBehaviorState<TElement extends Element = HTMLElement>
     extends
-        Omit<ActivityBehaviorState<boolean, BusyClassname, TElement>,
+        Omit<ActivityState<boolean, BusyClassname, TElement>,
             | 'state'
             | 'actualState'
             | 'activityClassname'

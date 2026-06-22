@@ -21,7 +21,7 @@ import {
     type ResolveActivityClassnameArgs,
     type ActivityBehaviorStateDefinition,
     
-    type ActivityBehaviorState,
+    type ActivityState,
 }                           from './types.js'
 
 // Reusable-ui utilities:
@@ -104,7 +104,7 @@ export const useActivityState = <
     props      : ActivityStateProps<TState>,
     options    : ActivityStateOptions<TState> | undefined,
     definition : ActivityBehaviorStateDefinition<TState, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
-): ActivityBehaviorState<TState, TClassname, TElement> => {
+): ActivityState<TState, TClassname, TElement> => {
     // Extract definition and assign defaults:
     const {
         defaultAnimationPattern,
@@ -329,5 +329,5 @@ export const useActivityState = <
         ...animationHandlers,
         handleAnimationEnd    : mergedHandleAnimationEnd,
         handleAnimationCancel : mergedHandleAnimationCancel,
-    } satisfies ActivityBehaviorState<TState, TClassname, TElement>;
+    } satisfies ActivityState<TState, TClassname, TElement>;
 };
