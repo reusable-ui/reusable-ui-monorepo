@@ -9,7 +9,7 @@ import React, {
 
 // Types:
 import {
-    type ReadOnlyBehaviorState,
+    type ReadOnlyState,
 }                           from './types.js'
 
 // Contexts:
@@ -30,7 +30,7 @@ import {
 export interface ReadOnlyStateProviderProps
     extends
         // Bases:
-        PropsWithChildren<Pick<ReadOnlyBehaviorState<Element>, 'readOnly'>>
+        PropsWithChildren<Pick<ReadOnlyState<Element>, 'readOnly'>>
 {
 }
 

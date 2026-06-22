@@ -6,7 +6,7 @@ import {
     type ReadOnlyStateOptions,
     type ReadOnlyPhase,
     type ReadOnlyClassname,
-    type ReadOnlyBehaviorState,
+    type ReadOnlyState,
 }                           from './types.js'
 import {
     type ReadOnlyBehaviorStateDefinition,
@@ -175,7 +175,7 @@ const readOnlyBehaviorStateDefinition : ReadOnlyBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useReadOnlyState = <TElement extends Element = HTMLElement>(props: ReadOnlyStateProps, options?: ReadOnlyStateOptions): ReadOnlyBehaviorState<TElement> => {
+export const useReadOnlyState = <TElement extends Element = HTMLElement>(props: ReadOnlyStateProps, options?: ReadOnlyStateOptions): ReadOnlyState<TElement> => {
     // Extract props:
     const {
         onReadOnlyUpdate : onStateUpdate,
@@ -241,5 +241,5 @@ export const useReadOnlyState = <TElement extends Element = HTMLElement>(props: 
         readOnlyPhase,
         readOnlyClassname,
         ...animationHandlers,
-    } satisfies ReadOnlyBehaviorState<TElement>;
+    } satisfies ReadOnlyState<TElement>;
 };

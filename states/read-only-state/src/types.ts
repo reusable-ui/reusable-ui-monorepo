@@ -181,7 +181,7 @@ export type ReadOnlyClassname = `is-${ReadOnlyPhase}`
  * 
  * @template TElement - The type of the target DOM element.
  */
-export interface ReadOnlyBehaviorState<TElement extends Element = HTMLElement>
+export interface ReadOnlyState<TElement extends Element = HTMLElement>
     extends
         // Bases:
         Omit<FeedbackState<boolean, ReadOnlyPhase, ReadOnlyClassname, TElement>,
