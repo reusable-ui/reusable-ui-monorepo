@@ -131,7 +131,7 @@ export interface ResolveActivityClassnameArgs<TState extends {} | null, TBehavio
     
     /**
      * The behavior-specific props.
-     * Forwarded directly from the `use**BehaviorState(props, ...)` call.
+     * Forwarded directly from the `use**State(props, ...)` call.
      * 
      * May contain props that influence how the activity classname is resolved.
      */
@@ -139,7 +139,7 @@ export interface ResolveActivityClassnameArgs<TState extends {} | null, TBehavio
     
     /**
      * The behavior-specific options.
-     * Forwarded directly from the `use**BehaviorState(..., options, ...)` call.
+     * Forwarded directly from the `use**State(..., options, ...)` call.
      * 
      * May contain options that influence how the activity classname is resolved.
      */
@@ -147,7 +147,7 @@ export interface ResolveActivityClassnameArgs<TState extends {} | null, TBehavio
     
     /**
      * The behavior-specific definition.
-     * Forwarded directly from the `use**BehaviorState(..., definition)` call.
+     * Forwarded directly from the `use**State(..., definition)` call.
      * 
      * May contain definition properties that influence how the activity classname is resolved.
      */
