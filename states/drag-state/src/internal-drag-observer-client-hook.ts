@@ -16,7 +16,7 @@ import {
 // Types:
 import {
     type DragOffset,
-    type DragBehaviorState,
+    type DragState,
 }                           from './types.js'
 
 // Reusable-ui utilities:
@@ -59,7 +59,7 @@ export interface DragObserverProps {
 export interface DragObserverState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Pick<DragBehaviorState<TElement>, 'dragOffset' | 'handlePointerDown' | 'handlePointerMove'>
+        Pick<DragState<TElement>, 'dragOffset' | 'handlePointerDown' | 'handlePointerMove'>
 {
     /* no additional props yet - reserved for future extensions */
 }

@@ -17,7 +17,7 @@ import {
     type DragStateOptions,
     type DragPhase,
     type DragClassname,
-    type DragBehaviorState,
+    type DragState,
 }                           from './types.js'
 import {
     type DragBehaviorStateDefinition,
@@ -230,7 +230,7 @@ const dragBehaviorStateDefinition : DragBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useDragState = <TElement extends Element = HTMLElement>(props: DragStateProps, options?: DragStateOptions): DragBehaviorState<TElement> => {
+export const useDragState = <TElement extends Element = HTMLElement>(props: DragStateProps, options?: DragStateOptions): DragState<TElement> => {
     // Extract props:
     const {
         onDragUpdate : onStateUpdate,
@@ -333,5 +333,5 @@ export const useDragState = <TElement extends Element = HTMLElement>(props: Drag
         ...animationHandlers,
         handlePointerDown,
         handlePointerMove,
-    } satisfies DragBehaviorState<TElement>;
+    } satisfies DragState<TElement>;
 };

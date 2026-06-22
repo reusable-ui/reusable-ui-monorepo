@@ -241,7 +241,7 @@ export interface DragOffset {
  * 
  * @template TElement - The type of the target DOM element.
  */
-export interface DragBehaviorState<TElement extends Element = HTMLElement>
+export interface DragState<TElement extends Element = HTMLElement>
     extends
         // Bases:
         Omit<FeedbackState<boolean, DragPhase, DragClassname, TElement>,
