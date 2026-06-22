@@ -104,7 +104,7 @@ export interface ResolveDriverStateArgs<TState extends {} | null, TBehaviorProps
     
     /**
      * The behavior-specific props (may contain controlled state).
-     * Forwarded directly from the `use**BehaviorState(props, ...)` call.
+     * Forwarded directly from the `use**State(props, ...)` call.
      * 
      * Primary input when the component operates in controlled mode.
      */
@@ -112,7 +112,7 @@ export interface ResolveDriverStateArgs<TState extends {} | null, TBehaviorProps
     
     /**
      * The behavior-specific options.
-     * Forwarded directly from the `use**BehaviorState(..., options, ...)` call.
+     * Forwarded directly from the `use**State(..., options, ...)` call.
      * 
      * May contain options that influence how the driver state is resolved.
      */
@@ -120,7 +120,7 @@ export interface ResolveDriverStateArgs<TState extends {} | null, TBehaviorProps
     
     /**
      * The behavior-specific definition.
-     * Forwarded directly from the `use**BehaviorState(..., definition)` call.
+     * Forwarded directly from the `use**State(..., definition)` call.
      * 
      * May contain definition properties that influence how the driver state is resolved.
      */
@@ -173,7 +173,7 @@ export interface ResolveTransitionPhaseArgs<TState extends {} | null, TBehaviorP
     
     /**
      * The behavior-specific props.
-     * Forwarded directly from the `use**BehaviorState(props, ...)` call.
+     * Forwarded directly from the `use**State(props, ...)` call.
      * 
      * May contain props that influence how the transition phase is resolved.
      */
@@ -181,7 +181,7 @@ export interface ResolveTransitionPhaseArgs<TState extends {} | null, TBehaviorP
     
     /**
      * The behavior-specific options.
-     * Forwarded directly from the `use**BehaviorState(..., options, ...)` call.
+     * Forwarded directly from the `use**State(..., options, ...)` call.
      * 
      * May contain options that influence how the transition phase is resolved.
      */
@@ -189,7 +189,7 @@ export interface ResolveTransitionPhaseArgs<TState extends {} | null, TBehaviorP
     
     /**
      * The behavior-specific definition.
-     * Forwarded directly from the `use**BehaviorState(..., definition)` call.
+     * Forwarded directly from the `use**State(..., definition)` call.
      * 
      * May contain definition properties that influence how the transition phase is resolved.
      */
@@ -241,7 +241,7 @@ export interface ResolveTransitionClassnameArgs<TState extends {} | null, TPhase
     
     /**
      * The behavior-specific props.
-     * Forwarded directly from the `use**BehaviorState(props, ...)` call.
+     * Forwarded directly from the `use**State(props, ...)` call.
      * 
      * May contain props that influence how the transition classname is resolved.
      */
@@ -249,7 +249,7 @@ export interface ResolveTransitionClassnameArgs<TState extends {} | null, TPhase
     
     /**
      * The behavior-specific options.
-     * Forwarded directly from the `use**BehaviorState(..., options, ...)` call.
+     * Forwarded directly from the `use**State(..., options, ...)` call.
      * 
      * May contain options that influence how the transition classname is resolved.
      */
@@ -257,7 +257,7 @@ export interface ResolveTransitionClassnameArgs<TState extends {} | null, TPhase
     
     /**
      * The behavior-specific definition.
-     * Forwarded directly from the `use**BehaviorState(..., definition)` call.
+     * Forwarded directly from the `use**State(..., definition)` call.
      * 
      * May contain definition properties that influence how the transition classname is resolved.
      */
@@ -318,7 +318,7 @@ export interface TriggerTransitionEventArgs<TState extends {} | null, TPhase ext
     
     /**
      * The behavior-specific props.
-     * Forwarded directly from the `use**BehaviorState(props, ...)` call.
+     * Forwarded directly from the `use**State(props, ...)` call.
      * 
      * Contains the `on*Start` and `on*End` callbacks to be triggered for the corresponding transition phase.
      */
@@ -326,7 +326,7 @@ export interface TriggerTransitionEventArgs<TState extends {} | null, TPhase ext
     
     /**
      * The behavior-specific options.
-     * Forwarded directly from the `use**BehaviorState(..., options, ...)` call.
+     * Forwarded directly from the `use**State(..., options, ...)` call.
      * 
      * May contain options that influence which transition event to trigger.
      */
@@ -334,7 +334,7 @@ export interface TriggerTransitionEventArgs<TState extends {} | null, TPhase ext
     
     /**
      * The behavior-specific definition.
-     * Forwarded directly from the `use**BehaviorState(..., definition)` call.
+     * Forwarded directly from the `use**State(..., definition)` call.
      * 
      * May contain definition properties that influence which transition event to trigger.
      */
