@@ -60,7 +60,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * 
  * This hook is intended for components that **consume** the resolved `readOnly` state and **forward** it to a base component.
  * 
- * Unlike `useReadOnlyBehaviorState()`, which handles animation and lifecycle,
+ * Unlike `useReadOnlyState()`, which handles animation and lifecycle,
  * `useResolvedReadOnlyState()` performs a lightweight resolution of the effective read-only value.
  * 
  * - No internal state or uncontrolled fallback.
@@ -135,7 +135,7 @@ const readOnlyBehaviorStateDefinition : ReadOnlyBehaviorStateDefinition = {
  * ```tsx
  * import React, { FC } from 'react';
  * import {
- *     useReadOnlyBehaviorState,
+ *     useReadOnlyState,
  *     ReadOnlyStateProps,
  * } from '@reusable-ui/read-only-state';
  * import styles from './CustomEditor.module.css';
@@ -155,7 +155,7 @@ const readOnlyBehaviorStateDefinition : ReadOnlyBehaviorStateDefinition = {
  *         handleAnimationStart,
  *         handleAnimationEnd,
  *         handleAnimationCancel,
- *     } = useReadOnlyBehaviorState(props, {
+ *     } = useReadOnlyState(props, {
  *         defaultReadOnly        : false,                   // Defaults to editable.
  *         defaultCascadeReadOnly : true,                    // Defaults to allow contextual read-only.
  *         animationPattern       : ['thawing', 'freezing'], // Matches animation names ending with 'thawing' or 'freezing'.
@@ -175,7 +175,7 @@ const readOnlyBehaviorStateDefinition : ReadOnlyBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useReadOnlyBehaviorState = <TElement extends Element = HTMLElement>(props: ReadOnlyStateProps, options?: ReadOnlyStateOptions): ReadOnlyBehaviorState<TElement> => {
+export const useReadOnlyState = <TElement extends Element = HTMLElement>(props: ReadOnlyStateProps, options?: ReadOnlyStateOptions): ReadOnlyBehaviorState<TElement> => {
     // Extract props:
     const {
         onReadOnlyUpdate : onStateUpdate,

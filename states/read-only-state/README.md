@@ -29,7 +29,7 @@ yarn add @reusable-ui/read-only-state
 
 ## 🧩 Exported Hooks
 
-### `useReadOnlyBehaviorState(props, options?)`
+### `useReadOnlyState(props, options?)`
 
 Resolves the editable/read-only state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
@@ -41,7 +41,7 @@ Resolves the editable/read-only state, current transition phase, associated CSS 
 ```tsx
 import React, { FC } from 'react';
 import {
-    useReadOnlyBehaviorState,
+    useReadOnlyState,
     ReadOnlyStateProps,
 } from '@reusable-ui/read-only-state';
 import styles from './CustomEditor.module.css';
@@ -61,7 +61,7 @@ export const CustomEditor: FC<CustomEditorProps> = (props) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useReadOnlyBehaviorState(props, {
+    } = useReadOnlyState(props, {
         defaultReadOnly        : false,                   // Defaults to editable.
         defaultCascadeReadOnly : true,                    // Defaults to allow contextual read-only.
         animationPattern       : ['thawing', 'freezing'], // Matches animation names ending with 'thawing' or 'freezing'.
@@ -87,7 +87,7 @@ Resolves the current editable/read-only state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `readOnly` state and **forward** it to a base component.
 
-Unlike `useReadOnlyBehaviorState()`, which handles animation and lifecycle, `useResolvedReadOnlyState()` performs a lightweight resolution of the effective read-only value.
+Unlike `useReadOnlyState()`, which handles animation and lifecycle, `useResolvedReadOnlyState()` performs a lightweight resolution of the effective read-only value.
 
 - No internal state or uncontrolled fallback.
 - Ideal for components that **consume** the resolved `readOnly` state.
@@ -109,7 +109,7 @@ import React, { ReactNode, FC } from 'react';
 import {
     ReadOnlyStateProps,
     ReadOnlyStateProvider,
-    useReadOnlyBehaviorState,
+    useReadOnlyState,
     useResolvedReadOnlyState,
 } from '@reusable-ui/read-only-state';
 
@@ -128,7 +128,7 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useReadOnlyBehaviorState(props, {
+    } = useReadOnlyState(props, {
         defaultReadOnly        : false,                   // Defaults to editable.
         defaultCascadeReadOnly : true,                    // Defaults to allow contextual read-only.
         animationPattern       : ['thawing', 'freezing'], // Matches animation names ending with 'thawing' or 'freezing'.

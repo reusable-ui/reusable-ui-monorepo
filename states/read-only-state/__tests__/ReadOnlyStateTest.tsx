@@ -1,7 +1,7 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
 import {
     type ReadOnlyStateProps,
-    useReadOnlyBehaviorState,
+    useReadOnlyState,
 } from '../dist/index.js'
 import { useMergedEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
@@ -34,7 +34,7 @@ export const ReadOnlyStateTest = (props: ReadOnlyStateTestProps) => {
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useReadOnlyBehaviorState(props, {
+    } = useReadOnlyState(props, {
         animationPattern,
     });
     

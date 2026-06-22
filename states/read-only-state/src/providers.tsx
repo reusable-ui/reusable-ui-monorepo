@@ -44,7 +44,7 @@ export interface ReadOnlyStateProviderProps
  * import {
  *     ReadOnlyStateProps,
  *     ReadOnlyStateProvider,
- *     useReadOnlyBehaviorState,
+ *     useReadOnlyState,
  *     useResolvedReadOnlyState,
  * } from '@reusable-ui/read-only-state';
  * 
@@ -63,7 +63,7 @@ export interface ReadOnlyStateProviderProps
  *         handleAnimationStart,
  *         handleAnimationEnd,
  *         handleAnimationCancel,
- *     } = useReadOnlyBehaviorState(props, {
+ *     } = useReadOnlyState(props, {
  *         defaultReadOnly        : false,                   // Defaults to editable.
  *         defaultCascadeReadOnly : true,                    // Defaults to allow contextual read-only.
  *         animationPattern       : ['thawing', 'freezing'], // Matches animation names ending with 'thawing' or 'freezing'.

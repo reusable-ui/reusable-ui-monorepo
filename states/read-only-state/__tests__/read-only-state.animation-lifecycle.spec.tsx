@@ -71,7 +71,7 @@ interface ReadOnlyStateAnimationTestCase {
 
 
 
-test.describe('useReadOnlyBehaviorState - animation', () => {
+test.describe('useReadOnlyState - animation', () => {
     for (const { title, readOnly : initialReadOnly, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.

@@ -86,7 +86,7 @@ interface ReadOnlyStateControlledTestCase {
 
 
 
-test.describe('useReadOnlyBehaviorState - controlled mode', () => {
+test.describe('useReadOnlyState - controlled mode', () => {
     for (const { title, parentReadOnly: initialParentReadOnly, readOnly : initialReadOnly, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.
