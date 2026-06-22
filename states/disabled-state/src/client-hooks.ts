@@ -6,7 +6,7 @@ import {
     type DisabledStateOptions,
     type DisabledPhase,
     type DisabledClassname,
-    type DisabledBehaviorState,
+    type DisabledState,
 }                           from './types.js'
 import {
     type DisabledBehaviorStateDefinition,
@@ -175,7 +175,7 @@ const disabledBehaviorStateDefinition : DisabledBehaviorStateDefinition = {
  * };
  * ```
  */
-export const useDisabledState = <TElement extends Element = HTMLElement>(props: DisabledStateProps, options?: DisabledStateOptions): DisabledBehaviorState<TElement> => {
+export const useDisabledState = <TElement extends Element = HTMLElement>(props: DisabledStateProps, options?: DisabledStateOptions): DisabledState<TElement> => {
     // Extract props:
     const {
         onDisabledUpdate : onStateUpdate,
@@ -241,5 +241,5 @@ export const useDisabledState = <TElement extends Element = HTMLElement>(props: 
         disabledPhase,
         disabledClassname,
         ...animationHandlers,
-    } satisfies DisabledBehaviorState<TElement>;
+    } satisfies DisabledState<TElement>;
 };

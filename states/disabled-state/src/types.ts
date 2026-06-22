@@ -181,7 +181,7 @@ export type DisabledClassname = `is-${DisabledPhase}`
  * 
  * @template TElement - The type of the target DOM element.
  */
-export interface DisabledBehaviorState<TElement extends Element = HTMLElement>
+export interface DisabledState<TElement extends Element = HTMLElement>
     extends
         // Bases:
         Omit<FeedbackState<boolean, DisabledPhase, DisabledClassname, TElement>,

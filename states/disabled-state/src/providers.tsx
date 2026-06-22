@@ -9,7 +9,7 @@ import React, {
 
 // Types:
 import {
-    type DisabledBehaviorState,
+    type DisabledState,
 }                           from './types.js'
 
 // Contexts:
@@ -30,7 +30,7 @@ import {
 export interface DisabledStateProviderProps
     extends
         // Bases:
-        PropsWithChildren<Pick<DisabledBehaviorState<Element>, 'disabled'>>
+        PropsWithChildren<Pick<DisabledState<Element>, 'disabled'>>
 {
 }
 
