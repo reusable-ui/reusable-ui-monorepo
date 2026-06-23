@@ -97,7 +97,7 @@ export interface FeedbackStateOptions<TState extends {} | null>
  * @template TBehaviorOptions - The type of the behavior-specific options.
  * @template TBehaviorDefinition - The type of the behavior-specific definition.
  */
-export interface FeedbackBehaviorStateDefinition<TState extends {} | null, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
+export interface FeedbackStateDefinition<TState extends {} | null, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
     extends
         Omit<TransitionStateDefinition<TState, TPhase, TClassname,
             TBehaviorProps,

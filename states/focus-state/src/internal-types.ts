@@ -9,7 +9,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
-    type FeedbackBehaviorStateDefinition,
+    type FeedbackStateDefinition,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -17,7 +17,7 @@ import {
 /** Internal definition for focused/blurred state behavior. */
 export interface FocusStateDefinition
     extends
-        FeedbackBehaviorStateDefinition<boolean, FocusPhase, FocusClassname,
+        FeedbackStateDefinition<boolean, FocusPhase, FocusClassname,
             FocusStateProps,
             FocusStateOptions,
             FocusStateDefinition

@@ -9,7 +9,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
-    type FeedbackBehaviorStateDefinition,
+    type FeedbackStateDefinition,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, drag, and validity.
 
 
@@ -17,7 +17,7 @@ import {
 /** Internal definition for dragged/dropped state behavior. */
 export interface DragStateDefinition
     extends
-        FeedbackBehaviorStateDefinition<boolean, DragPhase, DragClassname,
+        FeedbackStateDefinition<boolean, DragPhase, DragClassname,
             DragStateProps,
             DragStateOptions,
             DragStateDefinition

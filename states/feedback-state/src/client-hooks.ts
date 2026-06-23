@@ -28,7 +28,7 @@ import {
     type FeedbackStateProps,
     type FeedbackStateOptions,
     
-    type FeedbackBehaviorStateDefinition,
+    type FeedbackStateDefinition,
     
     type FeedbackState,
 }                           from './types.js'
@@ -93,7 +93,7 @@ export const useFeedbackState = <
 >(
     props      : FeedbackStateProps<TState>,
     options    : FeedbackStateOptions<TState> | undefined,
-    definition : FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
+    definition : FeedbackStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
 ): FeedbackState<TState, TPhase, TClassname, TElement> => {
     // Extract props:
     const {
@@ -112,7 +112,7 @@ export const useFeedbackState = <
         
         FeedbackStateProps<TState>,
         FeedbackStateOptions<TState>,
-        FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>,
+        FeedbackStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>,
         
         TElement
     >(
@@ -120,20 +120,20 @@ export const useFeedbackState = <
     options,
     {
         // Force `TBehavior**` => `Feedback**`:
-        ...definition satisfies FeedbackBehaviorStateDefinition<TState, TPhase, TClassname,
+        ...definition satisfies FeedbackStateDefinition<TState, TPhase, TClassname,
             TBehaviorProps,
             TBehaviorOptions,
             TBehaviorDefinition
-        > as unknown as FeedbackBehaviorStateDefinition<TState, TPhase, TClassname,
+        > as unknown as FeedbackStateDefinition<TState, TPhase, TClassname,
             FeedbackStateProps<TState>,
             FeedbackStateOptions<TState>,
-            FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
+            FeedbackStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
         >,
         useResolvedDriverState : useResolvedFeedbackDriverState, // Controlled mode only.
     } satisfies TransitionStateDefinition<TState, TPhase, TClassname,
         FeedbackStateProps<TState>,
         FeedbackStateOptions<TState>,
-        FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
+        FeedbackStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
     >);
     
     

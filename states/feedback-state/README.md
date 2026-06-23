@@ -73,7 +73,7 @@ import {
     type FeedbackStateOptions,
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
-    type FeedbackBehaviorStateDefinition,
+    type FeedbackStateDefinition,
     type FeedbackState,
 } from '@reusable-ui/feedback-state'
 import { type ValueChangeHandler } from '@reusable-ui/controllable'
@@ -122,7 +122,7 @@ export type OnlineClassname = `is-${OnlinePhase}`
 /** Private definition for online state behavior. */
 interface OnlineBehaviorStateDefinition
     extends
-        FeedbackBehaviorStateDefinition<boolean, OnlinePhase, OnlineClassname,
+        FeedbackStateDefinition<boolean, OnlinePhase, OnlineClassname,
             OnlineStateProps,
             OnlineStateOptions,
             OnlineBehaviorStateDefinition
@@ -292,7 +292,7 @@ import {
     type FeedbackStateOptions,
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
-    type FeedbackBehaviorStateDefinition,
+    type FeedbackStateDefinition,
     type FeedbackState,
 } from '@reusable-ui/feedback-state'
 import { type ValueChangeHandler } from '@reusable-ui/controllable'
@@ -341,7 +341,7 @@ export type LockedClassname = `is-${LockedPhase}`
 /** Private definition for online state behavior. */
 interface LockedBehaviorStateDefinition
     extends
-        FeedbackBehaviorStateDefinition<boolean, LockedPhase, LockedClassname,
+        FeedbackStateDefinition<boolean, LockedPhase, LockedClassname,
             LockedStateProps,
             LockedStateOptions,
             LockedBehaviorStateDefinition

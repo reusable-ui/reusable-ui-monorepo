@@ -9,7 +9,7 @@ import {
     type FeedbackStateProps,
     type FeedbackStateOptions,
     
-    type FeedbackBehaviorStateDefinition,
+    type FeedbackStateDefinition,
 }                           from './types.js'
 
 
@@ -26,7 +26,7 @@ import {
  * 
  * @returns The resolved driver state taken directly from props.
  */
-export const useResolvedFeedbackDriverState = <TState extends {} | null, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>(args: ResolveDriverStateArgs<TState, FeedbackStateProps<TState>, FeedbackStateOptions<TState>, FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>>): TState => {
+export const useResolvedFeedbackDriverState = <TState extends {} | null, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>(args: ResolveDriverStateArgs<TState, FeedbackStateProps<TState>, FeedbackStateOptions<TState>, FeedbackStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>>): TState => {
     // Return the resolved state from props:
     return args.props.effectiveState;
 };

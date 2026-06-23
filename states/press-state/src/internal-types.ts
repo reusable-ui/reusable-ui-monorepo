@@ -9,7 +9,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
-    type FeedbackBehaviorStateDefinition,
+    type FeedbackStateDefinition,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 
 
@@ -17,7 +17,7 @@ import {
 /** Internal definition for pressed/released state behavior. */
 export interface PressStateDefinition
     extends
-        FeedbackBehaviorStateDefinition<boolean, PressPhase, PressClassname,
+        FeedbackStateDefinition<boolean, PressPhase, PressClassname,
             PressStateProps,
             PressStateOptions,
             PressStateDefinition
