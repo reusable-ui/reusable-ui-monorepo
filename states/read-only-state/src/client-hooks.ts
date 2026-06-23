@@ -9,7 +9,7 @@ import {
     type ReadOnlyState,
 }                           from './types.js'
 import {
-    type ReadOnlyBehaviorStateDefinition,
+    type ReadOnlyStateDefinition,
 }                           from './internal-types.js'
 
 // Defaults:
@@ -109,7 +109,7 @@ export const useResolvedReadOnlyState = (props: ReadOnlyStateProps, options?: Pi
 
 
 /** The behavior state definition for editable/read-only state management. */
-const readOnlyBehaviorStateDefinition : ReadOnlyBehaviorStateDefinition = {
+const readOnlyBehaviorStateDefinition : ReadOnlyStateDefinition = {
     // Behavior definitions:
     defaultAnimationPattern    : ['thawing', 'freezing'],            // Matches animation names for transitions.
     defaultAnimationBubbling   : false,
@@ -208,7 +208,7 @@ export const useReadOnlyState = <TElement extends Element = HTMLElement>(props: 
         
         ReadOnlyStateProps,
         ReadOnlyStateOptions,
-        ReadOnlyBehaviorStateDefinition,
+        ReadOnlyStateDefinition,
         
         TElement
     >(

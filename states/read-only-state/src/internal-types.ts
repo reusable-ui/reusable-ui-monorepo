@@ -15,12 +15,12 @@ import {
 
 
 /** Internal definition for editable/read-only state behavior. */
-export interface ReadOnlyBehaviorStateDefinition
+export interface ReadOnlyStateDefinition
     extends
         FeedbackBehaviorStateDefinition<boolean, ReadOnlyPhase, ReadOnlyClassname,
             ReadOnlyStateProps,
             ReadOnlyStateOptions,
-            ReadOnlyBehaviorStateDefinition
+            ReadOnlyStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */
