@@ -223,7 +223,7 @@ export const useTransitionState = <
     
     
     // Return resolved transitional state API along with setter state:
-    const transitionBehaviorState : TransitionState<TState, TPhase, TClassname, TElement> = {
+    const transitionState : TransitionState<TState, TPhase, TClassname, TElement> = {
         prevSettledState,
         state       : settledState, // Use `settledState` instead of `driverState`, because during animation, the settled state reflects the visually committed state.
         actualState : driverState,  // Expose the actual effective state for advanced use cases.
@@ -233,7 +233,7 @@ export const useTransitionState = <
     };
     return [
         // Resolved transition behavior state:
-        transitionBehaviorState,
+        transitionState,
         
         // Setter for updating state intent:
         setInternalState,
