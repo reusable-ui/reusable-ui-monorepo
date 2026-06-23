@@ -127,25 +127,25 @@ export type SelectedPhase = ResolvedSelectedPhase | TransitioningSelectedPhase
 export type SelectedClassname = `is-${SelectedPhase}`
 
 /** Private definition for selected state behavior. */
-interface SelectedBehaviorStateDefinition
+interface SelectedStateDefinition
     extends
         InteractionStateDefinition<boolean | 'auto', boolean, SelectedPhase, SelectedClassname,
             SelectedStateProps<any>,
             SelectedStateOptions,
-            SelectedBehaviorStateDefinition
+            SelectedStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */
 }
 
 /**
- * Public API returned by `useSelectedBehaviorState`.
+ * Public API returned by `useSelectedState`.
  * 
  * @remarks
  * - Mirrors `InteractionState` but renames properties into domain-specific terms.
  * - Excludes generic properties (`state`, `actualState`, etc.) in favor of `selected`, `actualSelected`, etc.
  */
-export interface SelectedBehaviorState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
+export interface SelectedState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends
         Omit<InteractionState<boolean, SelectedPhase, SelectedClassname, TElement, TChangeEvent>,
             | 'prevSettledState'
@@ -177,11 +177,11 @@ export interface SelectedBehaviorState<TElement extends Element = HTMLElement, T
  * 
  * @remarks
  * - Supports both controlled and uncontrolled modes.
- * - Declarative keywords (`'auto'`) are normalized by `useSelectedState`.
+ * - Declarative keywords (`'auto'`) are normalized by `useResolvedSelected`.
  * - Provides resolved selected state and a dispatcher for interactive state changes.
  * - Provides semantic phases and classnames for styling.
  */
-export const useSelectedBehaviorState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent>, options?: SelectedStateOptions): SelectedBehaviorState<TElement, TChangeEvent> => {
+export const useSelectedState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent>, options?: SelectedStateOptions): SelectedState<TElement, TChangeEvent> => {
     const {
         defaultSelected : fallbackState,
         ...restOptions
@@ -211,7 +211,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
         
         SelectedStateProps<TChangeEvent>,
         SelectedStateOptions,
-        SelectedBehaviorStateDefinition,
+        SelectedStateDefinition,
         
         TElement,
         TChangeEvent
@@ -233,7 +233,7 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
             defaultAnimationBubbling   : false,
             resolveTransitionPhase     : resolveSelectedTransitionPhase,     // Resolves phases.
             resolveTransitionClassname : resolveSelectedTransitionClassname, // Resolves classnames.
-        } as SelectedBehaviorStateDefinition,
+        } as SelectedStateDefinition,
     );
     
     // Return domain-specific API:
@@ -244,12 +244,12 @@ export const useSelectedBehaviorState = <TElement extends Element = HTMLElement,
         selectedClassname,
         dispatchSelectedChange,
         ...animationHandlers,
-    } satisfies SelectedBehaviorState<TElement, TChangeEvent>;
+    } satisfies SelectedState<TElement, TChangeEvent>;
 };
 
 /** Resolves the effective selected state, normalizing declarative keywords into concrete values. */
-const useResolvedEffectiveSelectedState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean | 'auto', SelectedStateProps<unknown>, SelectedStateOptions, SelectedBehaviorStateDefinition>): boolean => {
-    const effectiveSelected = useSelectedState({
+const useResolvedEffectiveSelectedState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean | 'auto', SelectedStateProps<unknown>, SelectedStateOptions, SelectedStateDefinition>): boolean => {
+    const effectiveSelected = useResolvedSelected({
         ...props,
         defaultSelected : undefined,        // Prevents uncontrolled value.
         selected        : declarativeState, // Pass the declarative state as controlled value.
@@ -260,7 +260,7 @@ const useResolvedEffectiveSelectedState = ({ declarativeState, props, options }:
 };
 
 /** Normalizes declarative keywords into a concrete and effective selected state. */
-const useSelectedState = (props: SelectedStateProps<any> & { defaultSelected?: never }, options?: SelectedStateOptions): boolean => {
+const useResolvedSelected = (props: SelectedStateProps<any> & { defaultSelected?: never }, options?: SelectedStateOptions): boolean => {
     const {
         defaultSelected = false,
     } = options ?? {};
@@ -278,13 +278,13 @@ const useSelectedState = (props: SelectedStateProps<any> & { defaultSelected?: n
 };
 
 /** Resolves the semantic transition phase for selected behavior. */
-const resolveSelectedTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, SelectedStateProps<unknown>, SelectedStateOptions, SelectedBehaviorStateDefinition>): SelectedPhase => {
+const resolveSelectedTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, SelectedStateProps<unknown>, SelectedStateOptions, SelectedStateDefinition>): SelectedPhase => {
     if (isTransitioning) return settledState ? 'selecting' : 'deselecting';
     return settledState ? 'selected' : 'unselected';
 };
 
 /** Resolves the semantic transition classname for selected behavior. */
-const resolveSelectedTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, SelectedPhase, SelectedStateProps<unknown>, SelectedStateOptions, SelectedBehaviorStateDefinition>): SelectedClassname => {
+const resolveSelectedTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, SelectedPhase, SelectedStateProps<unknown>, SelectedStateOptions, SelectedStateDefinition>): SelectedClassname => {
     return `is-${transitionPhase}`;
 };
 ```
@@ -389,12 +389,12 @@ export type SelectedPhase = ResolvedSelectedPhase | TransitioningSelectedPhase
 export type SelectedClassname = `is-${SelectedPhase}`
 
 /** Private definition for selected state behavior. */
-interface SelectedBehaviorStateDefinition
+interface SelectedStateDefinition
     extends
         InteractionStateDefinition<boolean | 'auto', boolean, SelectedPhase, SelectedClassname,
             SelectedStateProps<any>,
             SelectedStateOptions,
-            SelectedBehaviorStateDefinition
+            SelectedStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */
@@ -405,7 +405,7 @@ interface SelectedBehaviorStateDefinition
  * 
  * @remarks
  * - Supports both controlled and uncontrolled modes.
- * - Declarative keywords (`'auto'`) are normalized by `useSelectedState`.
+ * - Declarative keywords (`'auto'`) are normalized by `useResolvedSelected`.
  * - Provides resolved selected state and a dispatcher for interactive state changes.
  */
 export const useSelectedController = <TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent>, options?: SelectedStateOptions): [boolean, DispatchValueChange<boolean, TChangeEvent>] => {
@@ -428,7 +428,7 @@ export const useSelectedController = <TChangeEvent = unknown>(props: SelectedSta
         
         SelectedStateProps<TChangeEvent>,
         SelectedStateOptions,
-        SelectedBehaviorStateDefinition,
+        SelectedStateDefinition,
         
         TChangeEvent
     >(
@@ -443,7 +443,7 @@ export const useSelectedController = <TChangeEvent = unknown>(props: SelectedSta
             // State definitions:
             defaultInitialState        : false,
             useResolvedEffectiveState  : useResolvedEffectiveSelectedState,  // Resolves effective state.
-        } as Pick<SelectedBehaviorStateDefinition, 'defaultInitialState' | 'useResolvedEffectiveState'>,
+        } as Pick<SelectedStateDefinition, 'defaultInitialState' | 'useResolvedEffectiveState'>,
     );
     
     // Return domain-specific API:
@@ -454,8 +454,8 @@ export const useSelectedController = <TChangeEvent = unknown>(props: SelectedSta
 };
 
 /** Resolves the effective selected state, normalizing declarative keywords into concrete values. */
-const useResolvedEffectiveSelectedState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean | 'auto', SelectedStateProps<unknown>, SelectedStateOptions, SelectedBehaviorStateDefinition>): boolean => {
-    const effectiveSelected = useSelectedState({
+const useResolvedEffectiveSelectedState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean | 'auto', SelectedStateProps<unknown>, SelectedStateOptions, SelectedStateDefinition>): boolean => {
+    const effectiveSelected = useResolvedSelected({
         ...props,
         defaultSelected : undefined,        // Prevents uncontrolled value.
         selected        : declarativeState, // Pass the declarative state as controlled value.
@@ -466,7 +466,7 @@ const useResolvedEffectiveSelectedState = ({ declarativeState, props, options }:
 };
 
 /** Normalizes declarative keywords into a concrete and effective selected state. */
-const useSelectedState = (props: SelectedStateProps<any> & { defaultSelected?: never }, options?: SelectedStateOptions): boolean => {
+const useResolvedSelected = (props: SelectedStateProps<any> & { defaultSelected?: never }, options?: SelectedStateOptions): boolean => {
     const {
         defaultSelected = false,
     } = options ?? {};
