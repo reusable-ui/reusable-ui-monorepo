@@ -227,7 +227,7 @@ export const useInteractionState = <
     };
     
     // Transition orchestration:
-    const [transitionBehaviorState, setInternalState] = useTransitionState<
+    const [transitionState, setInternalState] = useTransitionState<
         TState,
         TPhase,
         TClassname,
@@ -274,7 +274,7 @@ export const useInteractionState = <
     
     // Return resolved interaction state API:
     return {
-        ...transitionBehaviorState,
+        ...transitionState,
         dispatchStateChange,
     } satisfies InteractionState<TState, TPhase, TClassname, TElement, TChangeEvent>;
 };
