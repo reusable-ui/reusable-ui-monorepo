@@ -105,7 +105,7 @@ export const useFeedbackState = <
     // States and flags:
     
     // Transition orchestration:
-    const [transitionBehaviorState] = useTransitionState<
+    const [transitionState] = useTransitionState<
         TState,
         TPhase,
         TClassname,
@@ -158,5 +158,5 @@ export const useFeedbackState = <
     
     
     // Return resolved feedback state API:
-    return transitionBehaviorState satisfies FeedbackState<TState, TPhase, TClassname, TElement>;
+    return transitionState satisfies FeedbackState<TState, TPhase, TClassname, TElement>;
 };
