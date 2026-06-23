@@ -15,7 +15,7 @@ import {
     type ValidityState,
 }                           from './types.js'
 import {
-    type ValidityBehaviorStateDefinition,
+    type ValidityStateDefinition,
 }                           from './internal-types.js'
 
 // Defaults:
@@ -197,7 +197,7 @@ export const useResolvedValidityState = (props: ValidityStateProps, options?: Pi
 
 
 /** The behavior state definition for validity state management. */
-const validityBehaviorStateDefinition : ValidityBehaviorStateDefinition = {
+const validityBehaviorStateDefinition : ValidityStateDefinition = {
     // Behavior definitions:
     defaultAnimationPattern    : ['validating', 'invalidating', 'unvalidating'], // Matches animation names for transitions.
     defaultAnimationBubbling   : false,
@@ -337,7 +337,7 @@ export const useValidityState = <TElement extends Element = HTMLElement>(props: 
         
         ValidityStateProps,
         ValidityStateOptions,
-        ValidityBehaviorStateDefinition,
+        ValidityStateDefinition,
         
         TElement
     >(

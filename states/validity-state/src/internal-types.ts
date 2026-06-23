@@ -15,12 +15,12 @@ import {
 
 
 /** Internal definition for validity state behavior. */
-export interface ValidityBehaviorStateDefinition
+export interface ValidityStateDefinition
     extends
         FeedbackBehaviorStateDefinition<boolean | null, ValidityPhase, ValidityClassname,
             ValidityStateProps,
             ValidityStateOptions,
-            ValidityBehaviorStateDefinition
+            ValidityStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */

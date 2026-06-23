@@ -7,7 +7,7 @@ import {
     type ValidityClassname,
 }                           from './types.js'
 import {
-    type ValidityBehaviorStateDefinition,
+    type ValidityStateDefinition,
 }                           from './internal-types.js'
 
 // Reusable-ui states:
@@ -21,7 +21,7 @@ import {
 
 
 /** Resolves the semantic transition phase for validity state behavior. */
-export const resolveValidityTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean | null, ValidityStateProps, ValidityStateOptions, ValidityBehaviorStateDefinition>): ValidityPhase => {
+export const resolveValidityTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean | null, ValidityStateProps, ValidityStateOptions, ValidityStateDefinition>): ValidityPhase => {
     if (isTransitioning) {
         switch (settledState) {
             case true  : return 'validating';
@@ -44,7 +44,7 @@ export const resolveValidityTransitionPhase = ({ settledState, isTransitioning }
  * 
  * If in a transitioning phase, includes a `was-*` suffix to indicate the previous resolved state.
  */
-export const resolveValidityTransitionClassname = ({ prevSettledState = null, transitionPhase, ...restArgs }: ResolveTransitionClassnameArgs<boolean | null, ValidityPhase, ValidityStateProps, ValidityStateOptions, ValidityBehaviorStateDefinition>): ValidityClassname => {
+export const resolveValidityTransitionClassname = ({ prevSettledState = null, transitionPhase, ...restArgs }: ResolveTransitionClassnameArgs<boolean | null, ValidityPhase, ValidityStateProps, ValidityStateOptions, ValidityStateDefinition>): ValidityClassname => {
     switch (transitionPhase) {
         case 'validating':
         case 'invalidating':
@@ -67,7 +67,7 @@ export const resolveValidityTransitionClassname = ({ prevSettledState = null, tr
 };
 
 /** Triggers the appropriate lifecycle events for validity state behavior. */
-export const triggerValidityPhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean | null, ValidityPhase, ValidityStateProps, ValidityStateOptions, ValidityBehaviorStateDefinition>): void => {
+export const triggerValidityPhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean | null, ValidityPhase, ValidityStateProps, ValidityStateOptions, ValidityStateDefinition>): void => {
     switch (changedTransitionPhase) {
         case 'validating'   : props.onValidatingStart?.(changedTransitionPhase, undefined);   break;
         case 'valid'        : props.onValidatingEnd?.(changedTransitionPhase, undefined);     break;
