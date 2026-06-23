@@ -15,12 +15,12 @@ import {
 
 
 /** Internal definition for active/inactive state behavior. */
-export interface ActiveBehaviorStateDefinition
+export interface ActiveStateDefinition
     extends
         InteractionStateDefinition<boolean, boolean, ActivePhase, ActiveClassname,
             ActiveStateProps<any>,
             ActiveStateOptions,
-            ActiveBehaviorStateDefinition
+            ActiveStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */

@@ -6,7 +6,7 @@ import {
     type ActiveClassname,
 }                           from './types.js'
 import {
-    type ActiveBehaviorStateDefinition,
+    type ActiveStateDefinition,
 }                           from './internal-types.js'
 
 // Reusable-ui states:
@@ -20,18 +20,18 @@ import {
 
 
 /** Resolves the semantic transition phase for active/inactive state behavior. */
-export const resolveActiveTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, ActiveStateProps<unknown>, ActiveStateOptions, ActiveBehaviorStateDefinition>): ActivePhase => {
+export const resolveActiveTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, ActiveStateProps<unknown>, ActiveStateOptions, ActiveStateDefinition>): ActivePhase => {
     if (isTransitioning) return settledState ? 'activating' : 'deactivating';
     return settledState ? 'active' : 'inactive';
 };
 
 /** Resolves the semantic transition classname for active/inactive state behavior. */
-export const resolveActiveTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, ActivePhase, ActiveStateProps<unknown>, ActiveStateOptions, ActiveBehaviorStateDefinition>): ActiveClassname => {
+export const resolveActiveTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, ActivePhase, ActiveStateProps<unknown>, ActiveStateOptions, ActiveStateDefinition>): ActiveClassname => {
     return `is-${transitionPhase}`;
 };
 
 /** Triggers the appropriate lifecycle events for active/inactive state behavior. */
-export const triggerActivePhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean, ActivePhase, ActiveStateProps<unknown>, ActiveStateOptions, ActiveBehaviorStateDefinition>): void => {
+export const triggerActivePhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean, ActivePhase, ActiveStateProps<unknown>, ActiveStateOptions, ActiveStateDefinition>): void => {
     switch (changedTransitionPhase) {
         case 'activating'   : props.onActivatingStart?.(changedTransitionPhase, undefined);   break;
         case 'active'       : props.onActivatingEnd?.(changedTransitionPhase, undefined);     break;

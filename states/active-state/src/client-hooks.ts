@@ -10,7 +10,7 @@ import {
     type ActiveState,
 }                           from './types.js'
 import {
-    type ActiveBehaviorStateDefinition,
+    type ActiveStateDefinition,
 }                           from './internal-types.js'
 
 // Defaults:
@@ -154,7 +154,7 @@ export const useDispatchActiveChange = <TChangeEvent = unknown>(props: ActiveSta
 
 
 /** Resolves the effective activation state, normalizing declarative keywords into concrete values. */
-const useResolvedEffectiveActiveState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, ActiveStateProps<unknown>, ActiveStateOptions, ActiveBehaviorStateDefinition>): boolean => {
+const useResolvedEffectiveActiveState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, ActiveStateProps<unknown>, ActiveStateOptions, ActiveStateDefinition>): boolean => {
     const effectiveActive = useResolvedActiveState({
         ...props,
         defaultActive : undefined,        // Prevents uncontrolled value.
@@ -166,7 +166,7 @@ const useResolvedEffectiveActiveState = ({ declarativeState, props, options }: R
 };
 
 /** The behavior state definition for active/inactive state management. */
-const activeBehaviorStateDefinition : ActiveBehaviorStateDefinition = {
+const activeBehaviorStateDefinition : ActiveStateDefinition = {
     // State definitions:
     defaultInitialState        : defaultInitialActive,
     useResolvedEffectiveState  : useResolvedEffectiveActiveState,  // Resolves effective state.
@@ -286,7 +286,7 @@ export const useActiveState = <TElement extends Element = HTMLElement, TChangeEv
         
         ActiveStateProps<TChangeEvent>,
         ActiveStateOptions,
-        ActiveBehaviorStateDefinition,
+        ActiveStateDefinition,
         
         TElement,
         TChangeEvent
@@ -378,7 +378,7 @@ export const useActiveController = <TChangeEvent = unknown>(props: ActiveStatePr
         
         ActiveStateProps<TChangeEvent>,
         ActiveStateOptions,
-        ActiveBehaviorStateDefinition,
+        ActiveStateDefinition,
         
         TChangeEvent
     >(
