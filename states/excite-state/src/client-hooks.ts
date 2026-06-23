@@ -8,7 +8,7 @@ import {
     type ExciteState,
 }                           from './types.js'
 import {
-    type ExciteBehaviorStateDefinition,
+    type ExciteStateDefinition,
 }                           from './internal-types.js'
 
 // Utilities:
@@ -30,7 +30,7 @@ import {
 
 
 /** The behavior state definition for excited state management. */
-const exciteBehaviorStateDefinition : ExciteBehaviorStateDefinition = {
+const exciteBehaviorStateDefinition : ExciteStateDefinition = {
     // State definitions:
     inactiveState            : false, // `false`: the value of un-excited state
     
@@ -120,7 +120,7 @@ export const useExciteState = <TElement extends Element = HTMLElement>(props: Ex
         
         ExciteStateProps,
         ExciteStateOptions,
-        ExciteBehaviorStateDefinition,
+        ExciteStateDefinition,
         
         TElement
     >(

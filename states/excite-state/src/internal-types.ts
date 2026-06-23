@@ -14,12 +14,12 @@ import {
 
 
 /** Internal definition for excited state behavior. */
-export interface ExciteBehaviorStateDefinition
+export interface ExciteStateDefinition
     extends
         ActivityStateDefinition<boolean, ExciteClassname,
             ExciteStateProps,
             ExciteStateOptions,
-            ExciteBehaviorStateDefinition
+            ExciteStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */
