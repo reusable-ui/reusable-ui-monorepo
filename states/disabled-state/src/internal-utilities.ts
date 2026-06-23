@@ -6,7 +6,7 @@ import {
     type DisabledClassname,
 }                           from './types.js'
 import {
-    type DisabledBehaviorStateDefinition,
+    type DisabledStateDefinition,
 }                           from './internal-types.js'
 
 // Reusable-ui states:
@@ -20,18 +20,18 @@ import {
 
 
 /** Resolves the semantic transition phase for enabled/disabled state behavior. */
-export const resolveDisabledTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, DisabledStateProps, DisabledStateOptions, DisabledBehaviorStateDefinition>): DisabledPhase => {
+export const resolveDisabledTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, DisabledStateProps, DisabledStateOptions, DisabledStateDefinition>): DisabledPhase => {
     if (isTransitioning) return settledState ? 'disabling' : 'enabling';
     return settledState ? 'disabled' : 'enabled';
 };
 
 /** Resolves the semantic transition classname for enabled/disabled state behavior. */
-export const resolveDisabledTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, DisabledPhase, DisabledStateProps, DisabledStateOptions, DisabledBehaviorStateDefinition>): DisabledClassname => {
+export const resolveDisabledTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, DisabledPhase, DisabledStateProps, DisabledStateOptions, DisabledStateDefinition>): DisabledClassname => {
     return `is-${transitionPhase}`;
 };
 
 /** Triggers the appropriate lifecycle events for enabled/disabled state behavior. */
-export const triggerDisabledPhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean, DisabledPhase, DisabledStateProps, DisabledStateOptions, DisabledBehaviorStateDefinition>): void => {
+export const triggerDisabledPhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean, DisabledPhase, DisabledStateProps, DisabledStateOptions, DisabledStateDefinition>): void => {
     switch (changedTransitionPhase) {
         case 'enabling'  : props.onEnablingStart?.(changedTransitionPhase, undefined);  break;
         case 'enabled'   : props.onEnablingEnd?.(changedTransitionPhase, undefined);    break;

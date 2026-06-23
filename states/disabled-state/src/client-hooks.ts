@@ -9,7 +9,7 @@ import {
     type DisabledState,
 }                           from './types.js'
 import {
-    type DisabledBehaviorStateDefinition,
+    type DisabledStateDefinition,
 }                           from './internal-types.js'
 
 // Defaults:
@@ -109,7 +109,7 @@ export const useResolvedDisabledState = (props: DisabledStateProps, options?: Pi
 
 
 /** The behavior state definition for enabled/disabled state management. */
-const disabledBehaviorStateDefinition : DisabledBehaviorStateDefinition = {
+const disabledBehaviorStateDefinition : DisabledStateDefinition = {
     // Behavior definitions:
     defaultAnimationPattern    : ['enabling', 'disabling'],          // Matches animation names for transitions.
     defaultAnimationBubbling   : false,
@@ -208,7 +208,7 @@ export const useDisabledState = <TElement extends Element = HTMLElement>(props: 
         
         DisabledStateProps,
         DisabledStateOptions,
-        DisabledBehaviorStateDefinition,
+        DisabledStateDefinition,
         
         TElement
     >(

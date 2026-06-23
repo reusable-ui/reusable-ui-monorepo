@@ -15,12 +15,12 @@ import {
 
 
 /** Internal definition for enabled/disabled state behavior. */
-export interface DisabledBehaviorStateDefinition
+export interface DisabledStateDefinition
     extends
         FeedbackBehaviorStateDefinition<boolean, DisabledPhase, DisabledClassname,
             DisabledStateProps,
             DisabledStateOptions,
-            DisabledBehaviorStateDefinition
+            DisabledStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */
