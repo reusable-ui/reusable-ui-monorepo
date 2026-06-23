@@ -141,7 +141,7 @@ export const useResolvedHoverState = <TElement extends Element = HTMLElement>(pr
 
 
 /** The behavior state definition for hover/unhover state management. */
-const hoverBehaviorStateDefinition : HoverStateDefinition = {
+const hoverStateDefinition : HoverStateDefinition = {
     // Behavior definitions:
     defaultAnimationPattern    : ['hovering', 'unhovering'],      // Matches animation names for transitions.
     defaultAnimationBubbling   : false,
@@ -293,7 +293,7 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
         options,
         
         // Definition:
-        hoverBehaviorStateDefinition,
+        hoverStateDefinition,
     );
     
     

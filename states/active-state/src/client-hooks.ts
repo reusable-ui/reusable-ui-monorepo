@@ -166,7 +166,7 @@ const useResolvedEffectiveActiveState = ({ declarativeState, props, options }: R
 };
 
 /** The behavior state definition for active/inactive state management. */
-const activeBehaviorStateDefinition : ActiveStateDefinition = {
+const activeStateDefinition : ActiveStateDefinition = {
     // State definitions:
     defaultInitialState        : defaultInitialActive,
     useResolvedEffectiveState  : useResolvedEffectiveActiveState,  // Resolves effective state.
@@ -309,7 +309,7 @@ export const useActiveState = <TElement extends Element = HTMLElement, TChangeEv
         { defaultState: fallbackState, ...restOptions },
         
         // Definition:
-        activeBehaviorStateDefinition,
+        activeStateDefinition,
     );
     
     
@@ -400,6 +400,6 @@ export const useActiveController = <TChangeEvent = unknown>(props: ActiveStatePr
         { defaultState: fallbackState, ...restOptions },
         
         // Definition:
-        activeBehaviorStateDefinition,
+        activeStateDefinition,
     ) satisfies [boolean, DispatchValueChange<boolean, TChangeEvent>];
 };

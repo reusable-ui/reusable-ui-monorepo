@@ -129,7 +129,7 @@ export const useResolvedDragState = (props: DragStateProps, options?: Pick<DragS
 
 
 /** The behavior state definition for drag/drop state management. */
-const dragBehaviorStateDefinition : DragStateDefinition = {
+const dragStateDefinition : DragStateDefinition = {
     // Behavior definitions:
     defaultAnimationPattern    : ['dragging', 'dropping'],       // Matches animation names for transitions.
     defaultAnimationBubbling   : false,
@@ -284,7 +284,7 @@ export const useDragState = <TElement extends Element = HTMLElement>(props: Drag
         options,
         
         // Definition:
-        dragBehaviorStateDefinition,
+        dragStateDefinition,
     );
     
     

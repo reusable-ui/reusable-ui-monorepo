@@ -97,7 +97,7 @@ export const useDispatchViewIndexChange = <TChangeEvent = unknown>(props: ViewSt
 
 
 /** The behavior state definition for view-switching state management. */
-const viewBehaviorStateDefinition : ViewStateDefinition = {
+const viewStateDefinition : ViewStateDefinition = {
     // State definitions:
     defaultInitialState        : defaultInitialViewIndex,
     useResolvedEffectiveState  : useResolvedEffectiveViewState,       // Resolves effective state.
@@ -289,7 +289,7 @@ export const useViewState = <TElement extends Element = HTMLElement, TChangeEven
         { defaultState: fallbackState, ...restOptions },
         
         // Definition:
-        viewBehaviorStateDefinition,
+        viewStateDefinition,
     );
     
     
@@ -409,6 +409,6 @@ export const useViewController = <TChangeEvent = unknown>(props: ViewStateProps<
         { defaultState: fallbackState, ...restOptions },
         
         // Definition:
-        viewBehaviorStateDefinition,
+        viewStateDefinition,
     ) satisfies [number, DispatchValueChange<number, TChangeEvent>];
 };

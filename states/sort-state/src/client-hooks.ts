@@ -60,7 +60,7 @@ import {
 
 
 /** The behavior state definition for sorting state management. */
-const sortBehaviorStateDefinition : SortStateDefinition = {
+const sortStateDefinition : SortStateDefinition = {
     // Behavior definitions:
     defaultAnimationPattern    : 'sorting',                    // Matches animation names for sorting activity.
     defaultAnimationBubbling   : false,
@@ -277,7 +277,7 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
         options,
         
         // Definition:
-        sortBehaviorStateDefinition,
+        sortStateDefinition,
     );
     
     

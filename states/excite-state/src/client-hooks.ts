@@ -30,7 +30,7 @@ import {
 
 
 /** The behavior state definition for excited state management. */
-const exciteBehaviorStateDefinition : ExciteStateDefinition = {
+const exciteStateDefinition : ExciteStateDefinition = {
     // State definitions:
     inactiveState            : false, // `false`: the value of un-excited state
     
@@ -131,7 +131,7 @@ export const useExciteState = <TElement extends Element = HTMLElement>(props: Ex
         options,
         
         // Definition:
-        exciteBehaviorStateDefinition,
+        exciteStateDefinition,
     );
     
     

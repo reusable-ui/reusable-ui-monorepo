@@ -143,7 +143,7 @@ export const useResolvedFocusState = <TElement extends Element = HTMLElement>(pr
 
 
 /** The behavior state definition for focus/blur state management. */
-const focusBehaviorStateDefinition : FocusStateDefinition = {
+const focusStateDefinition : FocusStateDefinition = {
     // Behavior definitions:
     defaultAnimationPattern    : ['focusing', 'blurring'],        // Matches animation names for transitions.
     defaultAnimationBubbling   : false,
@@ -299,7 +299,7 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
         options,
         
         // Definition:
-        focusBehaviorStateDefinition,
+        focusStateDefinition,
     );
     
     

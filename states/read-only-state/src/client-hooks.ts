@@ -109,7 +109,7 @@ export const useResolvedReadOnlyState = (props: ReadOnlyStateProps, options?: Pi
 
 
 /** The behavior state definition for editable/read-only state management. */
-const readOnlyBehaviorStateDefinition : ReadOnlyStateDefinition = {
+const readOnlyStateDefinition : ReadOnlyStateDefinition = {
     // Behavior definitions:
     defaultAnimationPattern    : ['thawing', 'freezing'],            // Matches animation names for transitions.
     defaultAnimationBubbling   : false,
@@ -229,7 +229,7 @@ export const useReadOnlyState = <TElement extends Element = HTMLElement>(props: 
         options,
         
         // Definition:
-        readOnlyBehaviorStateDefinition,
+        readOnlyStateDefinition,
     );
     
     

@@ -109,7 +109,7 @@ export const useResolvedDisabledState = (props: DisabledStateProps, options?: Pi
 
 
 /** The behavior state definition for enabled/disabled state management. */
-const disabledBehaviorStateDefinition : DisabledStateDefinition = {
+const disabledStateDefinition : DisabledStateDefinition = {
     // Behavior definitions:
     defaultAnimationPattern    : ['enabling', 'disabling'],          // Matches animation names for transitions.
     defaultAnimationBubbling   : false,
@@ -229,7 +229,7 @@ export const useDisabledState = <TElement extends Element = HTMLElement>(props: 
         options,
         
         // Definition:
-        disabledBehaviorStateDefinition,
+        disabledStateDefinition,
     );
     
     

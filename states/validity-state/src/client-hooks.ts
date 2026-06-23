@@ -197,7 +197,7 @@ export const useResolvedValidityState = (props: ValidityStateProps, options?: Pi
 
 
 /** The behavior state definition for validity state management. */
-const validityBehaviorStateDefinition : ValidityStateDefinition = {
+const validityStateDefinition : ValidityStateDefinition = {
     // Behavior definitions:
     defaultAnimationPattern    : ['validating', 'invalidating', 'unvalidating'], // Matches animation names for transitions.
     defaultAnimationBubbling   : false,
@@ -360,7 +360,7 @@ export const useValidityState = <TElement extends Element = HTMLElement>(props: 
         options,
         
         // Definition:
-        validityBehaviorStateDefinition,
+        validityStateDefinition,
     );
     
     

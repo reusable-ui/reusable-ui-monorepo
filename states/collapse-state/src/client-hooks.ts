@@ -77,7 +77,7 @@ export const useDispatchExpandedChange = <TChangeEvent = unknown>(props: Collaps
 
 
 /** The behavior state definition for expand/collapse state management. */
-const collapseBehaviorStateDefinition : CollapseStateDefinition = {
+const collapseStateDefinition : CollapseStateDefinition = {
     // State definitions:
     defaultInitialState        : defaultInitialExpanded,
     useResolvedEffectiveState  : useResolvedEffectiveCollapseState, // Resolves effective state.
@@ -218,7 +218,7 @@ export const useCollapseState = <TElement extends Element = HTMLElement, TChange
         { defaultState: fallbackState, ...restOptions },
         
         // Definition:
-        collapseBehaviorStateDefinition,
+        collapseStateDefinition,
     );
     
     
@@ -308,6 +308,6 @@ export const useCollapseController = <TChangeEvent = unknown>(props: CollapseSta
         { defaultState: fallbackState, ...restOptions },
         
         // Definition:
-        collapseBehaviorStateDefinition,
+        collapseStateDefinition,
     ) satisfies [boolean, DispatchValueChange<boolean, TChangeEvent>];
 };
