@@ -15,12 +15,12 @@ import {
 
 
 /** Internal definition for dragged/dropped state behavior. */
-export interface DragBehaviorStateDefinition
+export interface DragStateDefinition
     extends
         FeedbackBehaviorStateDefinition<boolean, DragPhase, DragClassname,
             DragStateProps,
             DragStateOptions,
-            DragBehaviorStateDefinition
+            DragStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */

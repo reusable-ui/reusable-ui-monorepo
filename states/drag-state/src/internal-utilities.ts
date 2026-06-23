@@ -6,7 +6,7 @@ import {
     type DragClassname,
 }                           from './types.js'
 import {
-    type DragBehaviorStateDefinition,
+    type DragStateDefinition,
 }                           from './internal-types.js'
 
 // Reusable-ui states:
@@ -20,18 +20,18 @@ import {
 
 
 /** Resolves the semantic transition phase for dragged/dropped state behavior. */
-export const resolveDragTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, DragStateProps, DragStateOptions, DragBehaviorStateDefinition>): DragPhase => {
+export const resolveDragTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, DragStateProps, DragStateOptions, DragStateDefinition>): DragPhase => {
     if (isTransitioning) return settledState ? 'dragging' : 'dropping';
     return settledState ? 'dragged' : 'dropped';
 };
 
 /** Resolves the semantic transition classname for dragged/dropped state behavior. */
-export const resolveDragTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, DragPhase, DragStateProps, DragStateOptions, DragBehaviorStateDefinition>): DragClassname => {
+export const resolveDragTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, DragPhase, DragStateProps, DragStateOptions, DragStateDefinition>): DragClassname => {
     return `is-${transitionPhase}`;
 };
 
 /** Triggers the appropriate lifecycle events for dragged/dropped state behavior. */
-export const triggerDragPhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean, DragPhase, DragStateProps, DragStateOptions, DragBehaviorStateDefinition>): void => {
+export const triggerDragPhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean, DragPhase, DragStateProps, DragStateOptions, DragStateDefinition>): void => {
     switch (changedTransitionPhase) {
         case 'dragging' : props.onDraggingStart?.(changedTransitionPhase, undefined); break;
         case 'dragged'  : props.onDraggingEnd?.(changedTransitionPhase, undefined);   break;
