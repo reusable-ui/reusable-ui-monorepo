@@ -10,7 +10,7 @@ import {
     type InteractionStateProps,
     type InteractionStateOptions,
     
-    type InteractionBehaviorStateDefinition,
+    type InteractionStateDefinition,
 }                           from './types.js'
 
 
@@ -27,7 +27,7 @@ import {
  * 
  * @returns The resolved driver state (controlled or uncontrolled), guaranteed to be concrete.
  */
-export const useResolvedInteractionDriverState = <TDeclarativeState extends {} | null, TState extends TDeclarativeState, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition, TChangeEvent = unknown>(args: ResolveDriverStateArgs<TState, InteractionStateProps<TDeclarativeState, TState, TChangeEvent> & Pick<TransitionStateProps<TState>, 'effectiveState'>, InteractionStateOptions<TState>, InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>>): TState => {
+export const useResolvedInteractionDriverState = <TDeclarativeState extends {} | null, TState extends TDeclarativeState, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition, TChangeEvent = unknown>(args: ResolveDriverStateArgs<TState, InteractionStateProps<TDeclarativeState, TState, TChangeEvent> & Pick<TransitionStateProps<TState>, 'effectiveState'>, InteractionStateOptions<TState>, InteractionStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>>): TState => {
     // Extract args:
     const {
         internalState,

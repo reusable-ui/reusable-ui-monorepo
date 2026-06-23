@@ -9,7 +9,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
-    type InteractionBehaviorStateDefinition,
+    type InteractionStateDefinition,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
@@ -17,7 +17,7 @@ import {
 /** Internal definition for view-switching behavior. */
 export interface ViewBehaviorStateDefinition
     extends
-        InteractionBehaviorStateDefinition<number, number, ViewPhase, ViewClassname,
+        InteractionStateDefinition<number, number, ViewPhase, ViewClassname,
             ViewStateProps<any>,
             ViewStateOptions,
             ViewBehaviorStateDefinition

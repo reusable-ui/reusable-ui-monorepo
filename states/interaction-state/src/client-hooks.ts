@@ -41,7 +41,7 @@ import {
     type InteractionStateChangeDispatcherOptions,
     type InteractionStateOptions,
     
-    type InteractionBehaviorStateDefinition,
+    type InteractionStateDefinition,
     
     type InteractionState,
 }                           from './types.js'
@@ -178,7 +178,7 @@ export const useInteractionState = <
 >(
     props      : InteractionStateProps<TDeclarativeState, TState, TChangeEvent>,
     options    : InteractionStateOptions<TState> | undefined,
-    definition : InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
+    definition : InteractionStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
 ): InteractionState<TState, TPhase, TClassname, TElement, TChangeEvent> => {
     // Extract definition:
     const {
@@ -234,7 +234,7 @@ export const useInteractionState = <
         
         typeof combinedProps,
         InteractionStateOptions<TState>,
-        InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>,
+        InteractionStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>,
         
         TElement
     >(
@@ -242,20 +242,20 @@ export const useInteractionState = <
     options,
     {
         // Force `TBehavior**` => `Interaction**`:
-        ...definition satisfies InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname,
+        ...definition satisfies InteractionStateDefinition<TDeclarativeState, TState, TPhase, TClassname,
             TBehaviorProps,
             TBehaviorOptions,
             TBehaviorDefinition
-        > as unknown as InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname,
+        > as unknown as InteractionStateDefinition<TDeclarativeState, TState, TPhase, TClassname,
             InteractionStateProps<TDeclarativeState, TState, TChangeEvent>,
             InteractionStateOptions<TState>,
-            InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
+            InteractionStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
         >,
         useResolvedDriverState : useResolvedInteractionDriverState, // Prefers controlled mode, falls back to uncontrolled mode.
     } satisfies TransitionStateDefinition<TState, TPhase, TClassname,
         typeof combinedProps,
         InteractionStateOptions<TState>,
-        InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
+        InteractionStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
     >);
     
     
@@ -339,7 +339,7 @@ export const useInteractionController = <
 >(
     props      : InteractionStateProps<TDeclarativeState, TState, TChangeEvent>,
     options    : Pick<InteractionStateOptions<TState>, 'defaultState'> | undefined,
-    definition : Pick<InteractionBehaviorStateDefinition<TDeclarativeState, TState, string, string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>, 'defaultInitialState' | 'useResolvedEffectiveState'>
+    definition : Pick<InteractionStateDefinition<TDeclarativeState, TState, string, string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>, 'defaultInitialState' | 'useResolvedEffectiveState'>
 ): [TState, DispatchValueChange<TState, TChangeEvent>] => {
     // Extract definition:
     const {

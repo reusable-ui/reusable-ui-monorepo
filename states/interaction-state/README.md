@@ -69,7 +69,7 @@ import {
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
     type ResolveEffectiveStateArgs,
-    type InteractionBehaviorStateDefinition,
+    type InteractionStateDefinition,
     type InteractionState,
 } from '@reusable-ui/interaction-state'
 import { type ValueChangeHandler, type DispatchValueChange } from '@reusable-ui/controllable'
@@ -129,7 +129,7 @@ export type SelectedClassname = `is-${SelectedPhase}`
 /** Private definition for selected state behavior. */
 interface SelectedBehaviorStateDefinition
     extends
-        InteractionBehaviorStateDefinition<boolean | 'auto', boolean, SelectedPhase, SelectedClassname,
+        InteractionStateDefinition<boolean | 'auto', boolean, SelectedPhase, SelectedClassname,
             SelectedStateProps<any>,
             SelectedStateOptions,
             SelectedBehaviorStateDefinition
@@ -333,7 +333,7 @@ import {
     useInteractionController,
     type InteractionStateOptions,
     type ResolveEffectiveStateArgs,
-    type InteractionBehaviorStateDefinition,
+    type InteractionStateDefinition,
 } from '@reusable-ui/interaction-state'
 import { type ValueChangeHandler, type DispatchValueChange } from '@reusable-ui/controllable'
 
@@ -391,7 +391,7 @@ export type SelectedClassname = `is-${SelectedPhase}`
 /** Private definition for selected state behavior. */
 interface SelectedBehaviorStateDefinition
     extends
-        InteractionBehaviorStateDefinition<boolean | 'auto', boolean, SelectedPhase, SelectedClassname,
+        InteractionStateDefinition<boolean | 'auto', boolean, SelectedPhase, SelectedClassname,
             SelectedStateProps<any>,
             SelectedStateOptions,
             SelectedBehaviorStateDefinition

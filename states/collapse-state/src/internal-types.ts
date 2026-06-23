@@ -9,7 +9,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
-    type InteractionBehaviorStateDefinition,
+    type InteractionStateDefinition,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
 
 
@@ -17,7 +17,7 @@ import {
 /** Internal definition for expanded/collapsed state behavior. */
 export interface CollapseBehaviorStateDefinition
     extends
-        InteractionBehaviorStateDefinition<boolean, boolean, ExpandPhase, ExpandClassname,
+        InteractionStateDefinition<boolean, boolean, ExpandPhase, ExpandClassname,
             CollapseStateProps<any>,
             CollapseStateOptions,
             CollapseBehaviorStateDefinition

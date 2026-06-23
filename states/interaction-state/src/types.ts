@@ -187,7 +187,7 @@ export interface ResolveEffectiveStateArgs<TDeclarativeState extends {} | null, 
  * @template TBehaviorOptions - The type of the behavior-specific options.
  * @template TBehaviorDefinition - The type of the behavior-specific definition.
  */
-export interface InteractionBehaviorStateDefinition<TDeclarativeState extends {} | null, TState extends TDeclarativeState, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
+export interface InteractionStateDefinition<TDeclarativeState extends {} | null, TState extends TDeclarativeState, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
     extends
         Omit<TransitionStateDefinition<TState, TPhase, TClassname,
             TBehaviorProps,
