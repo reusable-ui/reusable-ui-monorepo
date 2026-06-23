@@ -6,7 +6,7 @@ import {
     type FocusClassname,
 }                           from './types.js'
 import {
-    type FocusBehaviorStateDefinition,
+    type FocusStateDefinition,
 }                           from './internal-types.js'
 
 // Defaults:
@@ -25,7 +25,7 @@ import {
 
 
 /** Resolves the semantic transition phase for focused/blurred state behavior. */
-export const resolveFocusTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, FocusStateProps, FocusStateOptions, FocusBehaviorStateDefinition>): FocusPhase => {
+export const resolveFocusTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, FocusStateProps, FocusStateOptions, FocusStateDefinition>): FocusPhase => {
     if (isTransitioning) return settledState ? 'focusing' : 'blurring';
     return settledState ? 'focused' : 'blurred';
 };
@@ -35,7 +35,7 @@ export const resolveFocusTransitionPhase = ({ settledState, isTransitioning }: R
  * 
  * If `inputLikeFocus` is enabled, appends `'input-like-focus'` to signal input-style focus ring behavior.
  */
-export const resolveFocusTransitionClassname = ({ transitionPhase, options }: ResolveTransitionClassnameArgs<boolean, FocusPhase, FocusStateProps, FocusStateOptions, FocusBehaviorStateDefinition>): FocusClassname => {
+export const resolveFocusTransitionClassname = ({ transitionPhase, options }: ResolveTransitionClassnameArgs<boolean, FocusPhase, FocusStateProps, FocusStateOptions, FocusStateDefinition>): FocusClassname => {
     // Extract options and assign defaults:
     const {
         inputLikeFocus = defaultInputLikeFocus,
@@ -48,7 +48,7 @@ export const resolveFocusTransitionClassname = ({ transitionPhase, options }: Re
 };
 
 /** Triggers the appropriate lifecycle events for focused/blurred state behavior. */
-export const triggerFocusPhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean, FocusPhase, FocusStateProps, FocusStateOptions, FocusBehaviorStateDefinition>): void => {
+export const triggerFocusPhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean, FocusPhase, FocusStateProps, FocusStateOptions, FocusStateDefinition>): void => {
     switch (changedTransitionPhase) {
         case 'focusing' : props.onFocusingStart?.(changedTransitionPhase, undefined); break;
         case 'focused'  : props.onFocusingEnd?.(changedTransitionPhase, undefined);   break;

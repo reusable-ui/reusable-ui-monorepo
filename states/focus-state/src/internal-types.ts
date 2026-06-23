@@ -15,12 +15,12 @@ import {
 
 
 /** Internal definition for focused/blurred state behavior. */
-export interface FocusBehaviorStateDefinition
+export interface FocusStateDefinition
     extends
         FeedbackBehaviorStateDefinition<boolean, FocusPhase, FocusClassname,
             FocusStateProps,
             FocusStateOptions,
-            FocusBehaviorStateDefinition
+            FocusStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */

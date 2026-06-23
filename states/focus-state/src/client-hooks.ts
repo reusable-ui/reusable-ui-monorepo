@@ -9,7 +9,7 @@ import {
     type FocusState,
 }                           from './types.js'
 import {
-    type FocusBehaviorStateDefinition,
+    type FocusStateDefinition,
 }                           from './internal-types.js'
 
 // Defaults:
@@ -143,7 +143,7 @@ export const useResolvedFocusState = <TElement extends Element = HTMLElement>(pr
 
 
 /** The behavior state definition for focus/blur state management. */
-const focusBehaviorStateDefinition : FocusBehaviorStateDefinition = {
+const focusBehaviorStateDefinition : FocusStateDefinition = {
     // Behavior definitions:
     defaultAnimationPattern    : ['focusing', 'blurring'],        // Matches animation names for transitions.
     defaultAnimationBubbling   : false,
@@ -278,7 +278,7 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
         
         FocusStateProps,
         FocusStateOptions,
-        FocusBehaviorStateDefinition,
+        FocusStateDefinition,
         
         TElement
     >(
