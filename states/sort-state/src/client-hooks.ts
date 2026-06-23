@@ -30,7 +30,7 @@ import {
 }                           from './types.js'
 import {
     type SortPhase,
-    type SortBehaviorStateDefinition,
+    type SortStateDefinition,
 }                           from './internal-types.js'
 
 // Utilities:
@@ -60,7 +60,7 @@ import {
 
 
 /** The behavior state definition for sorting state management. */
-const sortBehaviorStateDefinition : SortBehaviorStateDefinition = {
+const sortBehaviorStateDefinition : SortStateDefinition = {
     // Behavior definitions:
     defaultAnimationPattern    : 'sorting',                    // Matches animation names for sorting activity.
     defaultAnimationBubbling   : false,
@@ -259,7 +259,7 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
         
         SortStateProps<Element, unknown>,
         SortStateOptions,
-        SortBehaviorStateDefinition,
+        SortStateDefinition,
         
         TElement
     >(

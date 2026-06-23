@@ -13,7 +13,7 @@ import {
 }                           from './types.js'
 import {
     type SortPhase,
-    type SortBehaviorStateDefinition,
+    type SortStateDefinition,
 }                           from './internal-types.js'
 
 // Reusable-ui states:
@@ -26,12 +26,12 @@ import {
 
 
 /** Resolves the semantic transition phase for sorting state behavior. */
-export const resolveSortTransitionPhase = ({ isTransitioning }: ResolveTransitionPhaseArgs<symbol, SortStateProps<Element, unknown>, SortStateOptions, SortBehaviorStateDefinition>): SortPhase => {
+export const resolveSortTransitionPhase = ({ isTransitioning }: ResolveTransitionPhaseArgs<symbol, SortStateProps<Element, unknown>, SortStateOptions, SortStateDefinition>): SortPhase => {
     return isTransitioning ? 'sorting' : 'sorted';
 };
 
 /** Resolves the semantic activity classname for sorting state behavior. */
-export const resolveSortActivityClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<symbol, SortPhase, SortStateProps<Element, unknown>, SortStateOptions, SortBehaviorStateDefinition>): SortClassname => {
+export const resolveSortActivityClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<symbol, SortPhase, SortStateProps<Element, unknown>, SortStateOptions, SortStateDefinition>): SortClassname => {
     return (transitionPhase === 'sorting') ? 'is-sorting' : 'not-sorting';
 };
 

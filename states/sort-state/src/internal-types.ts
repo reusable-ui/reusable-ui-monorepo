@@ -45,12 +45,12 @@ export type SortPhase =
 
 
 /** Internal definition for sorting state behavior. */
-export interface SortBehaviorStateDefinition
+export interface SortStateDefinition
     extends
         FeedbackBehaviorStateDefinition<symbol, SortPhase, SortClassname,
             SortStateProps<Element, unknown>,
             SortStateOptions,
-            SortBehaviorStateDefinition
+            SortStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */
