@@ -9,7 +9,7 @@ import {
     type PressState,
 }                           from './types.js'
 import {
-    type PressBehaviorStateDefinition,
+    type PressStateDefinition,
 }                           from './internal-types.js'
 
 // Defaults:
@@ -145,7 +145,7 @@ export const useResolvedPressState = <TElement extends Element = HTMLElement>(pr
 
 
 /** The behavior state definition for press/release state management. */
-const pressBehaviorStateDefinition : PressBehaviorStateDefinition = {
+const pressBehaviorStateDefinition : PressStateDefinition = {
     // Behavior definitions:
     defaultAnimationPattern    : ['pressing', 'releasing'],       // Matches animation names for transitions.
     defaultAnimationBubbling   : false,
@@ -280,7 +280,7 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
         
         PressStateProps,
         PressStateOptions,
-        PressBehaviorStateDefinition,
+        PressStateDefinition,
         
         TElement
     >(

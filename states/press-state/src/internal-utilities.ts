@@ -6,7 +6,7 @@ import {
     type PressClassname,
 }                           from './types.js'
 import {
-    type PressBehaviorStateDefinition,
+    type PressStateDefinition,
 }                           from './internal-types.js'
 
 // Reusable-ui states:
@@ -20,18 +20,18 @@ import {
 
 
 /** Resolves the semantic transition phase for pressed/released state behavior. */
-export const resolvePressTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, PressStateProps, PressStateOptions, PressBehaviorStateDefinition>): PressPhase => {
+export const resolvePressTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, PressStateProps, PressStateOptions, PressStateDefinition>): PressPhase => {
     if (isTransitioning) return settledState ? 'pressing' : 'releasing';
     return settledState ? 'pressed' : 'released';
 };
 
 /** Resolves the semantic transition classname for pressed/released state behavior. */
-export const resolvePressTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, PressPhase, PressStateProps, PressStateOptions, PressBehaviorStateDefinition>): PressClassname => {
+export const resolvePressTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, PressPhase, PressStateProps, PressStateOptions, PressStateDefinition>): PressClassname => {
     return `is-${transitionPhase}`;
 };
 
 /** Triggers the appropriate lifecycle events for pressed/released state behavior. */
-export const triggerPressPhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean, PressPhase, PressStateProps, PressStateOptions, PressBehaviorStateDefinition>): void => {
+export const triggerPressPhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean, PressPhase, PressStateProps, PressStateOptions, PressStateDefinition>): void => {
     switch (changedTransitionPhase) {
         case 'pressing'  : props.onPressingStart?.(changedTransitionPhase, undefined);  break;
         case 'pressed'   : props.onPressingEnd?.(changedTransitionPhase, undefined);    break;
