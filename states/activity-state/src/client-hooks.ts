@@ -19,7 +19,7 @@ import {
     type ActivityStateOptions,
     
     type ResolveActivityClassnameArgs,
-    type ActivityBehaviorStateDefinition,
+    type ActivityStateDefinition,
     
     type ActivityState,
 }                           from './types.js'
@@ -103,7 +103,7 @@ export const useActivityState = <
 >(
     props      : ActivityStateProps<TState>,
     options    : ActivityStateOptions<TState> | undefined,
-    definition : ActivityBehaviorStateDefinition<TState, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
+    definition : ActivityStateDefinition<TState, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
 ): ActivityState<TState, TClassname, TElement> => {
     // Extract definition and assign defaults:
     const {

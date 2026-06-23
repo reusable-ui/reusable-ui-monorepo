@@ -66,7 +66,7 @@ import {
     useActivityState,
     type ActivityStateOptions,
     type ResolveActivityClassnameArgs,
-    type ActivityBehaviorStateDefinition,
+    type ActivityStateDefinition,
     type ActivityState,
 } from '@reusable-ui/activity-state'
 import { type AnimationEvent } from 'react'
@@ -98,7 +98,7 @@ export type BusyClassname = 'is-busy' | 'not-busy'
 /** Private definition for busy state behavior. */
 interface BusyBehaviorStateDefinition
     extends
-        ActivityBehaviorStateDefinition<boolean, BusyClassname,
+        ActivityStateDefinition<boolean, BusyClassname,
             BusyStateProps,
             BusyStateOptions,
             BusyBehaviorStateDefinition

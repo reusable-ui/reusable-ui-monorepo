@@ -8,7 +8,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
-    type ActivityBehaviorStateDefinition,
+    type ActivityStateDefinition,
 }                           from '@reusable-ui/activity-state'      // Reusable abstraction for representing state-driven animations in React components — indicating ongoing activity or draw user attention.
 
 
@@ -16,7 +16,7 @@ import {
 /** Internal definition for excited state behavior. */
 export interface ExciteBehaviorStateDefinition
     extends
-        ActivityBehaviorStateDefinition<boolean, ExciteClassname,
+        ActivityStateDefinition<boolean, ExciteClassname,
             ExciteStateProps,
             ExciteStateOptions,
             ExciteBehaviorStateDefinition
