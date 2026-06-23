@@ -10,7 +10,7 @@ import {
     type CollapseState,
 }                           from './types.js'
 import {
-    type CollapseBehaviorStateDefinition,
+    type CollapseStateDefinition,
 }                           from './internal-types.js'
 
 // Defaults:
@@ -77,7 +77,7 @@ export const useDispatchExpandedChange = <TChangeEvent = unknown>(props: Collaps
 
 
 /** The behavior state definition for expand/collapse state management. */
-const collapseBehaviorStateDefinition : CollapseBehaviorStateDefinition = {
+const collapseBehaviorStateDefinition : CollapseStateDefinition = {
     // State definitions:
     defaultInitialState        : defaultInitialExpanded,
     useResolvedEffectiveState  : useResolvedEffectiveCollapseState, // Resolves effective state.
@@ -195,7 +195,7 @@ export const useCollapseState = <TElement extends Element = HTMLElement, TChange
         
         CollapseStateProps<TChangeEvent>,
         CollapseStateOptions,
-        CollapseBehaviorStateDefinition,
+        CollapseStateDefinition,
         
         TElement,
         TChangeEvent
@@ -286,7 +286,7 @@ export const useCollapseController = <TChangeEvent = unknown>(props: CollapseSta
         
         CollapseStateProps<TChangeEvent>,
         CollapseStateOptions,
-        CollapseBehaviorStateDefinition,
+        CollapseStateDefinition,
         
         TChangeEvent
     >(

@@ -15,12 +15,12 @@ import {
 
 
 /** Internal definition for expanded/collapsed state behavior. */
-export interface CollapseBehaviorStateDefinition
+export interface CollapseStateDefinition
     extends
         InteractionStateDefinition<boolean, boolean, ExpandPhase, ExpandClassname,
             CollapseStateProps<any>,
             CollapseStateOptions,
-            CollapseBehaviorStateDefinition
+            CollapseStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */

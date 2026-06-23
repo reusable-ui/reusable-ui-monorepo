@@ -4,7 +4,7 @@ import {
     type CollapseStateOptions,
 }                           from './types.js'
 import {
-    type CollapseBehaviorStateDefinition,
+    type CollapseStateDefinition,
 }                           from './internal-types.js'
 
 // Reusable-ui states:
@@ -21,7 +21,7 @@ import {
 
 
 /** Resolves the effective expansion state, normalizing declarative keywords into concrete values. */
-export const useResolvedEffectiveCollapseState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, CollapseStateProps<unknown>, CollapseStateOptions, CollapseBehaviorStateDefinition>): boolean => {
+export const useResolvedEffectiveCollapseState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, CollapseStateProps<unknown>, CollapseStateOptions, CollapseStateDefinition>): boolean => {
     const effectiveExpanded = useResolvedCollapseState({
         ...props,
         defaultExpanded : undefined,        // Prevents uncontrolled value.
