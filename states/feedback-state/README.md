@@ -120,25 +120,25 @@ export type OnlinePhase = ResolvedOnlinePhase | TransitioningOnlinePhase
 export type OnlineClassname = `is-${OnlinePhase}`
 
 /** Private definition for online state behavior. */
-interface OnlineBehaviorStateDefinition
+interface OnlineStateDefinition
     extends
         FeedbackStateDefinition<boolean, OnlinePhase, OnlineClassname,
             OnlineStateProps,
             OnlineStateOptions,
-            OnlineBehaviorStateDefinition
+            OnlineStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */
 }
 
 /**
- * Public API returned by `useOnlineBehaviorState`.
+ * Public API returned by `useOnlineState`.
  * 
  * @remarks
  * - Mirrors `FeedbackState` but renames properties into domain-specific terms.
  * - Excludes generic properties (`state`, `actualState`, etc.) in favor of `online`, `actualOnline`, etc.
  */
-export interface OnlineBehaviorState<TElement extends Element = HTMLElement>
+export interface OnlineState<TElement extends Element = HTMLElement>
     extends
         Omit<FeedbackState<boolean, OnlinePhase, OnlineClassname, TElement>,
             | 'prevSettledState'
@@ -166,17 +166,17 @@ export interface OnlineBehaviorState<TElement extends Element = HTMLElement>
  * 
  * @remarks
  * - Controlled-only: state is always driven by props.
- * - Declarative keywords (`'auto'`) are observed live by `useLiveOnlineState`.
+ * - Declarative keywords (`'auto'`) are observed live by `useResolvedOnline`.
  * - Provides resolved online state.
  * - Provides semantic phases and classnames for styling.
  */
-export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(props: OnlineStateProps, options?: OnlineStateOptions): OnlineBehaviorState<TElement> => {
+export const useOnlineState = <TElement extends Element = HTMLElement>(props: OnlineStateProps, options?: OnlineStateOptions): OnlineState<TElement> => {
     const {
         onOnlineUpdate : onStateUpdate,
     } = props;
     
     // Get live online state (normalized declarative keywords into a concrete boolean):
-    const effectiveState = useLiveOnlineState(props, options);
+    const effectiveState = useResolvedOnline(props, options);
     
     // Transition orchestration:
     const {
@@ -193,7 +193,7 @@ export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(p
         
         OnlineStateProps,
         OnlineStateOptions,
-        OnlineBehaviorStateDefinition,
+        OnlineStateDefinition,
         
         TElement
     >(
@@ -210,7 +210,7 @@ export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(p
             defaultAnimationBubbling   : false,
             resolveTransitionPhase     : resolveOnlineTransitionPhase,     // Resolves phases.
             resolveTransitionClassname : resolveOnlineTransitionClassname, // Resolves classnames.
-        } satisfies OnlineBehaviorStateDefinition,
+        } satisfies OnlineStateDefinition,
     );
     
     // Return domain-specific API:
@@ -220,14 +220,14 @@ export const useOnlineBehaviorState = <TElement extends Element = HTMLElement>(p
         onlinePhase,
         onlineClassname,
         ...animationHandlers,
-    } satisfies OnlineBehaviorState<TElement>;
+    } satisfies OnlineState<TElement>;
 };
 
 /**
  * Normalizes declarative keywords into a concrete and effective online state,
  * using a live observer for dynamic updates.
  */
-const useLiveOnlineState = (props: OnlineStateProps, options?: OnlineStateOptions): boolean => {
+const useResolvedOnline = (props: OnlineStateProps, options?: OnlineStateOptions): boolean => {
     const {
         defaultOnline = 'auto',
     } = options ?? {};
@@ -266,13 +266,13 @@ const useOnlineObserver = (): boolean => {
 };
 
 /** Resolves the semantic transition phase for online behavior. */
-const resolveOnlineTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, OnlineStateProps, OnlineStateOptions, OnlineBehaviorStateDefinition>): OnlinePhase => {
+const resolveOnlineTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, OnlineStateProps, OnlineStateOptions, OnlineStateDefinition>): OnlinePhase => {
     if (isTransitioning) return settledState ? 'connecting' : 'disconnecting';
     return settledState ? 'online' : 'offline';
 };
 
 /** Resolves the semantic transition classname for online behavior. */
-const resolveOnlineTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, OnlinePhase, OnlineStateProps, OnlineStateOptions, OnlineBehaviorStateDefinition>): OnlineClassname => {
+const resolveOnlineTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, OnlinePhase, OnlineStateProps, OnlineStateOptions, OnlineStateDefinition>): OnlineClassname => {
     return `is-${transitionPhase}`;
 };
 ```
@@ -339,25 +339,25 @@ export type LockedPhase = ResolvedLockedPhase | TransitioningLockedPhase
 export type LockedClassname = `is-${LockedPhase}`
 
 /** Private definition for online state behavior. */
-interface LockedBehaviorStateDefinition
+interface LockedStateDefinition
     extends
         FeedbackStateDefinition<boolean, LockedPhase, LockedClassname,
             LockedStateProps,
             LockedStateOptions,
-            LockedBehaviorStateDefinition
+            LockedStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */
 }
 
 /**
- * Public API returned by `useLockedBehaviorState`.
+ * Public API returned by `useLockedState`.
  * 
  * @remarks
  * - Mirrors `FeedbackState` but renames properties into domain-specific terms.
  * - Excludes generic properties (`state`, `actualState`, etc.) in favor of `locked`, `actualLocked`, etc.
  */
-export interface LockedBehaviorState<TElement extends Element = HTMLElement>
+export interface LockedState<TElement extends Element = HTMLElement>
     extends
         Omit<FeedbackState<boolean, LockedPhase, LockedClassname, TElement>,
             | 'prevSettledState'
@@ -385,17 +385,17 @@ export interface LockedBehaviorState<TElement extends Element = HTMLElement>
  * 
  * @remarks
  * - Controlled-only: state is always driven by props.
- * - Declarative keywords (`'auto'`) are normalized by `useLockedState`.
+ * - Declarative keywords (`'auto'`) are normalized by `useResolvedLocked`.
  * - Provides resolved locked state.
  * - Provides semantic phases and classnames for styling.
  */
-export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(props: LockedStateProps, options?: LockedStateOptions): LockedBehaviorState<TElement> => {
+export const useLockedState = <TElement extends Element = HTMLElement>(props: LockedStateProps, options?: LockedStateOptions): LockedState<TElement> => {
     const {
         onLockedUpdate : onStateUpdate,
     } = props;
     
     // Normalize declarative keywords into a concrete boolean:
-    const effectiveState = useLockedState(props, options);
+    const effectiveState = useResolvedLocked(props, options);
     
     // Transition orchestration:
     const {
@@ -412,7 +412,7 @@ export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(p
         
         LockedStateProps,
         LockedStateOptions,
-        LockedBehaviorStateDefinition,
+        LockedStateDefinition,
         
         TElement
     >(
@@ -429,7 +429,7 @@ export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(p
             defaultAnimationBubbling   : false,
             resolveTransitionPhase     : resolveLockedTransitionPhase,     // Resolves phases.
             resolveTransitionClassname : resolveLockedTransitionClassname, // Resolves classnames.
-        } satisfies LockedBehaviorStateDefinition,
+        } satisfies LockedStateDefinition,
     );
     
     // Return domain-specific API:
@@ -439,11 +439,11 @@ export const useLockedBehaviorState = <TElement extends Element = HTMLElement>(p
         lockedPhase,
         lockedClassname,
         ...animationHandlers,
-    } satisfies LockedBehaviorState<TElement>;
+    } satisfies LockedState<TElement>;
 };
 
 /** Normalizes declarative keywords into a concrete and effective locked state. */
-const useLockedState = (props: LockedStateProps, options?: LockedStateOptions): boolean => {
+const useResolvedLocked = (props: LockedStateProps, options?: LockedStateOptions): boolean => {
     const {
         defaultLocked = 'auto',
     } = options ?? {};
@@ -461,13 +461,13 @@ const useLockedState = (props: LockedStateProps, options?: LockedStateOptions): 
 };
 
 /** Resolves the semantic transition phase for locked behavior. */
-const resolveLockedTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, LockedStateProps, LockedStateOptions, LockedBehaviorStateDefinition>): LockedPhase => {
+const resolveLockedTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, LockedStateProps, LockedStateOptions, LockedStateDefinition>): LockedPhase => {
     if (isTransitioning) return settledState ? 'locking' : 'unlocking';
     return settledState ? 'locked' : 'unlocked';
 };
 
 /** Resolves the semantic transition classname for locked behavior. */
-const resolveLockedTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, LockedPhase, LockedStateProps, LockedStateOptions, LockedBehaviorStateDefinition>): LockedClassname => {
+const resolveLockedTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, LockedPhase, LockedStateProps, LockedStateOptions, LockedStateDefinition>): LockedClassname => {
     return `is-${transitionPhase}`;
 };
 ```
