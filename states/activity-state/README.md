@@ -96,25 +96,25 @@ export interface BusyStateOptions extends ActivityStateOptions<boolean> {
 export type BusyClassname = 'is-busy' | 'not-busy'
 
 /** Private definition for busy state behavior. */
-interface BusyBehaviorStateDefinition
+interface BusyStateDefinition
     extends
         ActivityStateDefinition<boolean, BusyClassname,
             BusyStateProps,
             BusyStateOptions,
-            BusyBehaviorStateDefinition
+            BusyStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */
 }
 
 /**
- * Public API returned by `useBusyBehaviorState`.
+ * Public API returned by `useBusyState`.
  * 
  * @remarks
  * - Mirrors `ActivityState` but renames properties into domain-specific terms.
  * - Excludes generic properties (`state`, `actualState`, etc.) in favor of `busy`, `actualBusy`, etc.
  */
-export interface BusyBehaviorState<TElement extends Element = HTMLElement>
+export interface BusyState<TElement extends Element = HTMLElement>
     extends
         Omit<ActivityState<boolean, BusyClassname, TElement>,
             | 'state'
@@ -137,17 +137,17 @@ export interface BusyBehaviorState<TElement extends Element = HTMLElement>
  * 
  * @remarks
  * - Controlled-only: state is always driven by props.
- * - Declarative keywords (`'auto'`) are normalized by `useBusyState`.
+ * - Declarative keywords (`'auto'`) are normalized by `useResolvedBusy`.
  * - Provides resolved busy state.
  * - Provides semantic classnames for styling.
  */
-export const useBusyBehaviorState = <TElement extends Element = HTMLElement>(props: BusyStateProps, options?: BusyStateOptions): BusyBehaviorState<TElement> => {
+export const useBusyState = <TElement extends Element = HTMLElement>(props: BusyStateProps, options?: BusyStateOptions): BusyState<TElement> => {
     const {
         onBusyComplete : onStateComplete,
     } = props;
     
     // Normalize declarative keywords into a concrete boolean:
-    const effectiveState = useBusyState(props, options);
+    const effectiveState = useResolvedBusy(props, options);
     
     // Activity orchestration:
     const {
@@ -161,7 +161,7 @@ export const useBusyBehaviorState = <TElement extends Element = HTMLElement>(pro
         
         BusyStateProps,
         BusyStateOptions,
-        BusyBehaviorStateDefinition,
+        BusyStateDefinition,
         
         TElement
     >(
@@ -180,7 +180,7 @@ export const useBusyBehaviorState = <TElement extends Element = HTMLElement>(pro
             defaultAnimationPattern  : 'busy',
             defaultAnimationBubbling : false,
             resolveActivityClassname : resolveBusyActivityClassname, // Resolves classnames.
-        } satisfies BusyBehaviorStateDefinition,
+        } satisfies BusyStateDefinition,
     );
     
     // Return domain-specific API:
@@ -189,11 +189,11 @@ export const useBusyBehaviorState = <TElement extends Element = HTMLElement>(pro
         actualBusy,
         busyClassname,
         ...animationHandlers,
-    } satisfies BusyBehaviorState<TElement>;
+    } satisfies BusyState<TElement>;
 };
 
 /** Normalizes declarative keywords into a concrete and effective busy state. */
-const useBusyState = (props: BusyStateProps, options?: BusyStateOptions): boolean => {
+const useResolvedBusy = (props: BusyStateProps, options?: BusyStateOptions): boolean => {
     const {
         defaultBusy = 'auto',
     } = options ?? {};
@@ -211,7 +211,7 @@ const useBusyState = (props: BusyStateProps, options?: BusyStateOptions): boolea
 };
 
 /** Resolves the semantic activity classname for busy behavior. */
-const resolveBusyActivityClassname = ({ visualState }: ResolveActivityClassnameArgs<boolean, BusyStateProps, BusyStateOptions, BusyBehaviorStateDefinition>): BusyClassname => {
+const resolveBusyActivityClassname = ({ visualState }: ResolveActivityClassnameArgs<boolean, BusyStateProps, BusyStateOptions, BusyStateDefinition>): BusyClassname => {
     return visualState ? 'is-busy' : 'not-busy';
 };
 ```
