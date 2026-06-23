@@ -10,7 +10,7 @@ import {
     // Types:
     type TransitionStateProps,
     type TransitionStateOptions,
-    type TransitionBehaviorStateDefinition,
+    type TransitionStateDefinition,
     type TransitionState,
 }                           from '@reusable-ui/transition-state'    // Lifecycle-aware transition state for React, enabling reusable hooks with consistent animations.
 export {
@@ -189,7 +189,7 @@ export interface ResolveEffectiveStateArgs<TDeclarativeState extends {} | null, 
  */
 export interface InteractionBehaviorStateDefinition<TDeclarativeState extends {} | null, TState extends TDeclarativeState, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
     extends
-        Omit<TransitionBehaviorStateDefinition<TState, TPhase, TClassname,
+        Omit<TransitionStateDefinition<TState, TPhase, TClassname,
             TBehaviorProps,
             TBehaviorOptions,
             TBehaviorDefinition

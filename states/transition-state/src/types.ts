@@ -358,7 +358,7 @@ export interface TriggerTransitionEventArgs<TState extends {} | null, TPhase ext
  * @template TBehaviorOptions - The type of the behavior-specific options.
  * @template TBehaviorDefinition - The type of the behavior-specific definition.
  */
-export interface TransitionBehaviorStateDefinition<TState extends {} | null, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition> {
+export interface TransitionStateDefinition<TState extends {} | null, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition> {
     /**
      * A system default animation pattern when `animationPattern` option is not provided.
      * 

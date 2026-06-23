@@ -80,7 +80,7 @@ import {
     type ResolveDriverStateArgs,
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
-    type TransitionBehaviorStateDefinition,
+    type TransitionStateDefinition,
     type TransitionState,
 } from '@reusable-ui/transition-state'
 import { type ValueChangeHandler } from '@reusable-ui/controllable'
@@ -129,7 +129,7 @@ export type LockedClassname = `is-${LockedPhase}`
 /** Private definition for online state behavior. */
 interface LockedBehaviorStateDefinition
     extends
-        TransitionBehaviorStateDefinition<boolean, LockedPhase, LockedClassname,
+        TransitionStateDefinition<boolean, LockedPhase, LockedClassname,
             LockedStateProps,
             LockedStateOptions,
             LockedBehaviorStateDefinition
@@ -291,7 +291,7 @@ import {
     type ResolveDriverStateArgs,
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
-    type TransitionBehaviorStateDefinition,
+    type TransitionStateDefinition,
     type TransitionState,
 } from '@reusable-ui/transition-state'
 import { type ValueChangeHandler } from '@reusable-ui/controllable'
@@ -340,7 +340,7 @@ export type OnlineClassname = `is-${OnlinePhase}`
 /** Private definition for online state behavior. */
 interface OnlineBehaviorStateDefinition
     extends
-        TransitionBehaviorStateDefinition<boolean, OnlinePhase, OnlineClassname,
+        TransitionStateDefinition<boolean, OnlinePhase, OnlineClassname,
             OnlineStateProps,
             OnlineStateOptions,
             OnlineBehaviorStateDefinition
@@ -540,7 +540,7 @@ import {
     type ResolveDriverStateArgs,
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
-    type TransitionBehaviorStateDefinition,
+    type TransitionStateDefinition,
     type TransitionState,
 } from '@reusable-ui/transition-state'
 import { useStableCallback } from '@reusable-ui/callbacks'
@@ -603,7 +603,7 @@ export type SelectedClassname = `is-${SelectedPhase}`
 /** Private definition for selected state behavior. */
 interface SelectedBehaviorStateDefinition
     extends
-        TransitionBehaviorStateDefinition<boolean, SelectedPhase, SelectedClassname,
+        TransitionStateDefinition<boolean, SelectedPhase, SelectedClassname,
             SelectedStateProps<any>,
             SelectedStateOptions,
             SelectedBehaviorStateDefinition

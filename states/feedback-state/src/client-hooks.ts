@@ -15,7 +15,7 @@ import {
 // Reusable-ui states:
 import {
     // Types:
-    type TransitionBehaviorStateDefinition,
+    type TransitionStateDefinition,
     
     
     
@@ -130,7 +130,7 @@ export const useFeedbackState = <
             FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
         >,
         useResolvedDriverState : useResolvedFeedbackDriverState, // Controlled mode only.
-    } satisfies TransitionBehaviorStateDefinition<TState, TPhase, TClassname,
+    } satisfies TransitionStateDefinition<TState, TPhase, TClassname,
         FeedbackStateProps<TState>,
         FeedbackStateOptions<TState>,
         FeedbackBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>

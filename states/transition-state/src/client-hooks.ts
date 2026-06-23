@@ -31,7 +31,7 @@ import {
     type ResolveTransitionPhaseArgs,
     type ResolveTransitionClassnameArgs,
     type TriggerTransitionEventArgs,
-    type TransitionBehaviorStateDefinition,
+    type TransitionStateDefinition,
     
     type TransitionState,
 }                           from './types.js'
@@ -98,7 +98,7 @@ export const useTransitionState = <
 >(
     props      : TransitionStateProps<TState>,
     options    : TransitionStateOptions<TState> | undefined,
-    definition : TransitionBehaviorStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>,
+    definition : TransitionStateDefinition<TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>,
 ): readonly [TransitionState<TState, TPhase, TClassname, TElement>, Dispatch<SetAnimationIntentAction<TState>>] => {
     // Extract definition and assign defaults:
     const {

@@ -19,7 +19,7 @@ import {
 import {
     // Types:
     type TransitionStateProps,
-    type TransitionBehaviorStateDefinition,
+    type TransitionStateDefinition,
     
     
     
@@ -252,7 +252,7 @@ export const useInteractionState = <
             InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
         >,
         useResolvedDriverState : useResolvedInteractionDriverState, // Prefers controlled mode, falls back to uncontrolled mode.
-    } satisfies TransitionBehaviorStateDefinition<TState, TPhase, TClassname,
+    } satisfies TransitionStateDefinition<TState, TPhase, TClassname,
         typeof combinedProps,
         InteractionStateOptions<TState>,
         InteractionBehaviorStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
