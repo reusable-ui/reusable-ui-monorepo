@@ -9,7 +9,7 @@ import {
     type HoverState,
 }                           from './types.js'
 import {
-    type HoverBehaviorStateDefinition,
+    type HoverStateDefinition,
 }                           from './internal-types.js'
 
 // Defaults:
@@ -141,7 +141,7 @@ export const useResolvedHoverState = <TElement extends Element = HTMLElement>(pr
 
 
 /** The behavior state definition for hover/unhover state management. */
-const hoverBehaviorStateDefinition : HoverBehaviorStateDefinition = {
+const hoverBehaviorStateDefinition : HoverStateDefinition = {
     // Behavior definitions:
     defaultAnimationPattern    : ['hovering', 'unhovering'],      // Matches animation names for transitions.
     defaultAnimationBubbling   : false,
@@ -272,7 +272,7 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
         
         HoverStateProps,
         HoverStateOptions,
-        HoverBehaviorStateDefinition,
+        HoverStateDefinition,
         
         TElement
     >(

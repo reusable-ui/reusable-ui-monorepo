@@ -15,12 +15,12 @@ import {
 
 
 /** Internal definition for hovered/unhovered state behavior. */
-export interface HoverBehaviorStateDefinition
+export interface HoverStateDefinition
     extends
         FeedbackBehaviorStateDefinition<boolean, HoverPhase, HoverClassname,
             HoverStateProps,
             HoverStateOptions,
-            HoverBehaviorStateDefinition
+            HoverStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */
