@@ -4,7 +4,7 @@ import {
     type ViewStateOptions,
 }                           from './types.js'
 import {
-    type ViewBehaviorStateDefinition,
+    type ViewStateDefinition,
 }                           from './internal-types.js'
 
 // Reusable-ui states:
@@ -21,7 +21,7 @@ import {
 
 
 /** Resolves the effective view index, normalizing declarative keywords into concrete values. */
-export const useResolvedEffectiveViewState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<number, ViewStateProps<unknown>, ViewStateOptions, ViewBehaviorStateDefinition>): number => {
+export const useResolvedEffectiveViewState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<number, ViewStateProps<unknown>, ViewStateOptions, ViewStateDefinition>): number => {
     const effectiveViewIndex = useResolvedViewState({
         ...props,
         defaultViewIndex  : undefined,        // Prevents uncontrolled value.

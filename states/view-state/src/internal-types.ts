@@ -15,12 +15,12 @@ import {
 
 
 /** Internal definition for view-switching behavior. */
-export interface ViewBehaviorStateDefinition
+export interface ViewStateDefinition
     extends
         InteractionStateDefinition<number, number, ViewPhase, ViewClassname,
             ViewStateProps<any>,
             ViewStateOptions,
-            ViewBehaviorStateDefinition
+            ViewStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */

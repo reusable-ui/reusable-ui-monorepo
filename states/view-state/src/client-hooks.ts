@@ -21,7 +21,7 @@ import {
     type ViewState,
 }                           from './types.js'
 import {
-    type ViewBehaviorStateDefinition,
+    type ViewStateDefinition,
 }                           from './internal-types.js'
 
 // Defaults:
@@ -97,7 +97,7 @@ export const useDispatchViewIndexChange = <TChangeEvent = unknown>(props: ViewSt
 
 
 /** The behavior state definition for view-switching state management. */
-const viewBehaviorStateDefinition : ViewBehaviorStateDefinition = {
+const viewBehaviorStateDefinition : ViewStateDefinition = {
     // State definitions:
     defaultInitialState        : defaultInitialViewIndex,
     useResolvedEffectiveState  : useResolvedEffectiveViewState,       // Resolves effective state.
@@ -266,7 +266,7 @@ export const useViewState = <TElement extends Element = HTMLElement, TChangeEven
         
         ViewStateProps<TChangeEvent>,
         ViewStateOptions,
-        ViewBehaviorStateDefinition,
+        ViewStateDefinition,
         
         TElement,
         TChangeEvent
@@ -387,7 +387,7 @@ export const useViewController = <TChangeEvent = unknown>(props: ViewStateProps<
         
         ViewStateProps<TChangeEvent>,
         ViewStateOptions,
-        ViewBehaviorStateDefinition,
+        ViewStateDefinition,
         
         TChangeEvent
     >(
