@@ -62,7 +62,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * This hook is intended for components that **consume** the resolved `focused` state and **forward** it to a base component.
  * 
  * Unlike `useFocusState()`, which handles animation and lifecycle,
- * `useResolvedFocusState()` performs a lightweight resolution of the effective focus value.
+ * `useResolvedFocused()` performs a lightweight resolution of the effective focus value.
  * 
  * - No internal state or uncontrolled fallback.
  * - `'auto'` is treated as a declarative diagnostic mode.
@@ -74,7 +74,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * @param options - An optional configuration for customizing focus/blur behavior.
  * @returns The resolved focused/blurred state and event handlers for focus/blur events.
  */
-export const useResolvedFocusState = <TElement extends Element = HTMLElement>(props: FocusStateProps, options?: Pick<FocusStateOptions, 'defaultFocused'>) : Pick<FocusState<TElement>, 'focused' | 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'> => {
+export const useResolvedFocused = <TElement extends Element = HTMLElement>(props: FocusStateProps, options?: Pick<FocusStateOptions, 'defaultFocused'>) : Pick<FocusState<TElement>, 'focused' | 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'> => {
     // Extract options:
     const {
         defaultFocused : defaultState,
@@ -261,7 +261,7 @@ export const useFocusState = <TElement extends Element = HTMLElement>(props: Foc
         handleFocus,
         handleBlur,
         handleKeyDown,
-    } = useResolvedFocusState<TElement>(props, options);
+    } = useResolvedFocused<TElement>(props, options);
     
     // Transition orchestration:
     const {

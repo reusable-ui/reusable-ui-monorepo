@@ -131,13 +131,13 @@ The hook manages transitions between `focused` and `blurred` states using a unif
     - In explicit/external modes, implementors must manage a persistent blur in their own state (for example, suppressing `true` until a new `focus` event is observed).  
 - **Rationale**: Focus is a discrete state — past focus actions are ignored when toggling disabled, preventing phantom restoration and ensuring accessibility consistency.
 
-### `useResolvedFocusState(props, options?)`
+### `useResolvedFocused(props, options?)`
 
 Resolves the current focused/blurred state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `focused` state and **forward** it to a base component.
 
-Unlike `useFocusState()`, which handles animation and lifecycle, `useResolvedFocusState()` performs a lightweight resolution of the effective focus value.
+Unlike `useFocusState()`, which handles animation and lifecycle, `useResolvedFocused()` performs a lightweight resolution of the effective focus value.
 
 - No internal state or uncontrolled fallback.
 - `'auto'` is treated as a declarative diagnostic mode.
