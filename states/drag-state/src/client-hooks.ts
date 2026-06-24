@@ -79,7 +79,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * This hook is intended for components that **consume** the resolved `dragged` state and **forward** it to a base component.
  * 
  * Unlike `useDragState()`, which handles animation and lifecycle,
- * `useResolvedDragState()` performs a lightweight resolution of the effective drag value.
+ * `useResolvedDragged()` performs a lightweight resolution of the effective drag value.
  * 
  * - No internal state or uncontrolled fallback.
  * - `'auto'` is treated as a declarative diagnostic mode.
@@ -89,7 +89,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * @param options - An optional configuration for customizing drag/drop behavior.
  * @returns The resolved dragged/dropped state.
  */
-export const useResolvedDragState = (props: DragStateProps, options?: Pick<DragStateOptions, 'defaultDragged' | 'fallbackDragged'>) : boolean => {
+export const useResolvedDragged = (props: DragStateProps, options?: Pick<DragStateOptions, 'defaultDragged' | 'fallbackDragged'>) : boolean => {
     // Extract options:
     const {
         defaultDragged  : defaultState,
@@ -246,7 +246,7 @@ export const useDragState = <TElement extends Element = HTMLElement>(props: Drag
     // States and flags:
     
     // Resolve effective drag state:
-    const effectiveState = useResolvedDragState(props, options);
+    const effectiveState = useResolvedDragged(props, options);
     
     // Transition orchestration:
     const {
