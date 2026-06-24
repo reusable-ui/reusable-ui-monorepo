@@ -124,13 +124,13 @@ The hook manages transitions between `hovered` and `unhovered` states using a un
     - **Explicit (`true`/`false`) or external (`computedHover`) modes**: The component resumes following the provided value.  
 - **Rationale**: Hover is a continuous state — pointer position may persist across enabled/disabled transitions, so recomputation ensures visual consistency.
 
-### `useResolvedHoverState(props, options?)`
+### `useResolvedHovered(props, options?)`
 
 Resolves the current hovered/unhovered state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `hovered` state and **forward** it to a base component.
 
-Unlike `useHoverState()`, which handles animation and lifecycle, `useResolvedHoverState()` performs a lightweight resolution of the effective hover value.
+Unlike `useHoverState()`, which handles animation and lifecycle, `useResolvedHovered()` performs a lightweight resolution of the effective hover value.
 
 - No internal state or uncontrolled fallback.
 - `'auto'` is treated as a declarative diagnostic mode.

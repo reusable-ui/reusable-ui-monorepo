@@ -134,7 +134,7 @@ Additional flags:
 |----------------|--------------------------|--------------------------------|-----------------------------|----------------------------|
 | disabled-state | useResolvedDisabled      | not applicable                 | not applicable              | useDisabledState           |
 | focus-state    | useResolvedFocused       | not applicable                 | not applicable              | useFocusState              |
-| hover-state    | useResolvedHoverState    | not applicable                 | not applicable              | useHoverState              |
+| hover-state    | useResolvedHovered       | not applicable                 | not applicable              | useHoverState              |
 | press-state    | useResolvedPressState    | not applicable                 | not applicable              | usePressState              |
 | validity-state | useResolvedValidityState | not applicable                 | not applicable              | useValidityState           |
 |----------------|--------------------------|--------------------------------|-----------------------------|----------------------------|

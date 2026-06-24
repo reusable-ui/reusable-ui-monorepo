@@ -62,7 +62,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * This hook is intended for components that **consume** the resolved `hovered` state and **forward** it to a base component.
  * 
  * Unlike `useHoverState()`, which handles animation and lifecycle,
- * `useResolvedHoverState()` performs a lightweight resolution of the effective hover value.
+ * `useResolvedHovered()` performs a lightweight resolution of the effective hover value.
  * 
  * - No internal state or uncontrolled fallback.
  * - `'auto'` is treated as a declarative diagnostic mode.
@@ -74,7 +74,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * @param options - An optional configuration for customizing hover/unhover behavior.
  * @returns The resolved hovered/unhovered state and event handlers for mouseenter/mouseleave events.
  */
-export const useResolvedHoverState = <TElement extends Element = HTMLElement>(props: HoverStateProps, options?: Pick<HoverStateOptions, 'defaultHovered'>) : Pick<HoverState<TElement>, 'hovered' | 'ref' | 'handleMouseEnter' | 'handleMouseLeave'> => {
+export const useResolvedHovered = <TElement extends Element = HTMLElement>(props: HoverStateProps, options?: Pick<HoverStateOptions, 'defaultHovered'>) : Pick<HoverState<TElement>, 'hovered' | 'ref' | 'handleMouseEnter' | 'handleMouseLeave'> => {
     // Extract options:
     const {
         defaultHovered : defaultState,
@@ -255,7 +255,7 @@ export const useHoverState = <TElement extends Element = HTMLElement>(props: Hov
         ref,
         handleMouseEnter,
         handleMouseLeave,
-    } = useResolvedHoverState<TElement>(props, options);
+    } = useResolvedHovered<TElement>(props, options);
     
     // Transition orchestration:
     const {
