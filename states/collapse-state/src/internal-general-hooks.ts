@@ -21,7 +21,7 @@ import {
 
 
 /** Resolves the effective expansion state, normalizing declarative keywords into concrete values. */
-export const useResolvedEffectiveCollapseState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, CollapseStateProps<unknown>, CollapseStateOptions, CollapseStateDefinition>): boolean => {
+export const useResolvedEffectiveExpandState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, CollapseStateProps<unknown>, CollapseStateOptions, CollapseStateDefinition>): boolean => {
     return useResolvedExpanded({
         ...props,
         defaultExpanded : undefined,        // Prevents uncontrolled value.

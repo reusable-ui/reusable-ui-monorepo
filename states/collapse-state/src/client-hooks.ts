@@ -41,7 +41,7 @@ import {
 
 // Hooks:
 import {
-    useResolvedEffectiveCollapseState,
+    useResolvedEffectiveExpandState,
 }                           from './internal-general-hooks.js'
 
 
@@ -80,14 +80,14 @@ export const useDispatchExpandedChange = <TChangeEvent = unknown>(props: Collaps
 const collapseStateDefinition : CollapseStateDefinition = {
     // State definitions:
     defaultInitialState        : defaultInitialExpanded,
-    useResolvedEffectiveState  : useResolvedEffectiveCollapseState, // Resolves effective state.
+    useResolvedEffectiveState  : useResolvedEffectiveExpandState,  // Resolves effective state.
     
     // Behavior definitions:
-    defaultAnimationPattern    : ['expanding', 'collapsing'],       // Matches animation names for transitions.
+    defaultAnimationPattern    : ['expanding', 'collapsing'],      // Matches animation names for transitions.
     defaultAnimationBubbling   : false,
-    resolveTransitionPhase     : resolveExpandTransitionPhase,      // Resolves phases.
-    resolveTransitionClassname : resolveExpandTransitionClassname,  // Resolves classnames.
-    triggerTransitionEvent     : triggerExpandPhaseEvents,          // Triggers lifecycle events.
+    resolveTransitionPhase     : resolveExpandTransitionPhase,     // Resolves phases.
+    resolveTransitionClassname : resolveExpandTransitionClassname, // Resolves classnames.
+    triggerTransitionEvent     : triggerExpandPhaseEvents,         // Triggers lifecycle events.
 };
 
 /**
