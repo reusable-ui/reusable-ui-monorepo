@@ -155,14 +155,11 @@ export const useDispatchActiveChange = <TChangeEvent = unknown>(props: ActiveSta
 
 /** Resolves the effective activation state, normalizing declarative keywords into concrete values. */
 const useResolvedEffectiveActiveState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, ActiveStateProps<unknown>, ActiveStateOptions, ActiveStateDefinition>): boolean => {
-    const effectiveActive = useResolvedActive({
+    return useResolvedActive({
         ...props,
         defaultActive : undefined,        // Prevents uncontrolled value.
         active        : declarativeState, // Pass the declarative state as controlled value.
     }, options);
-    
-    // Return the resolved effective activation state:
-    return effectiveActive;
 };
 
 /** The behavior state definition for active/inactive state management. */
