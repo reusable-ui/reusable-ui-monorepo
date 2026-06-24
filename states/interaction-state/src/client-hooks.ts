@@ -28,7 +28,7 @@ import {
 }                           from '@reusable-ui/transition-state'    // Lifecycle-aware transition state for React, enabling reusable hooks with consistent animations.
 import {
     // Hooks:
-    useResolvedDisabledState,
+    useResolvedDisabled,
 }                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
 import {
     // Hooks:
@@ -76,7 +76,7 @@ export const useDispatchInteractionStateChange = <TState extends {} | null, TCha
     // States and flags:
     
     // Resolve whether the component is disabled:
-    const isDisabled   = useResolvedDisabledState(props as Parameters<typeof useResolvedDisabledState>[0]);
+    const isDisabled   = useResolvedDisabled(props as Parameters<typeof useResolvedDisabled>[0]);
     
     // Resolve whether the component is readonly:
     const isReadonly   = useResolvedReadOnlyState(props as Parameters<typeof useResolvedReadOnlyState>[0]);

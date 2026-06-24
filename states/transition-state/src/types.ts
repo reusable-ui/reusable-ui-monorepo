@@ -383,7 +383,7 @@ export interface TransitionStateDefinition<TState extends {} | null, TPhase exte
      * 
      * Must return a concrete value (no declarative keywords). Declarative values must be normalized before returning.
      * 
-     * This parameter is a hook because implementors may call other hooks (`useContext`, `useResolvedDisabledState`, etc.)
+     * This parameter is a hook because implementors may call other hooks (`useContext`, `useResolvedDisabled`, etc.)
      * to resolve the result.  
      * Observation logic hook (e.g. live online status) can be applied here.
      * 

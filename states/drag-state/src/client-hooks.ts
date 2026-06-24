@@ -61,7 +61,7 @@ import {
     useFeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, drag, and validity.
 import {
-    useResolvedDisabledState,
+    useResolvedDisabled,
 }                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
 
 
@@ -109,7 +109,7 @@ export const useResolvedDragState = (props: DragStateProps, options?: Pick<DragS
     // States and flags:
     
     // Resolve whether the component is in a restricted state (interaction blocked):
-    const isRestricted         = useResolvedDisabledState(props as Parameters<typeof useResolvedDisabledState>[0]);
+    const isRestricted         = useResolvedDisabled(props as Parameters<typeof useResolvedDisabled>[0]);
     
     // Resolve effective dragged state:
     // - Collapses to `false` (dropped) if restricted.

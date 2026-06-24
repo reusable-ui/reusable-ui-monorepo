@@ -81,13 +81,13 @@ export const CustomEditor: FC<CustomEditorProps> = (props) => {
 };
 ```
 
-### `useResolvedDisabledState(props, options?)`
+### `useResolvedDisabled(props, options?)`
 
 Resolves the current enabled/disabled state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `disabled` state and **forward** it to a base component.
 
-Unlike `useDisabledState()`, which handles animation and lifecycle, `useResolvedDisabledState()` performs a lightweight resolution of the effective disabled value.
+Unlike `useDisabledState()`, which handles animation and lifecycle, `useResolvedDisabled()` performs a lightweight resolution of the effective disabled value.
 
 - No internal state or uncontrolled fallback.
 - Ideal for components that **consume** the resolved `disabled` state.
@@ -110,7 +110,7 @@ import {
     DisabledStateProps,
     DisabledStateProvider,
     useDisabledState,
-    useResolvedDisabledState,
+    useResolvedDisabled,
 } from '@reusable-ui/disabled-state';
 
 export interface ParentComponentProps extends DisabledStateProps {
@@ -135,8 +135,8 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
         animationBubbling      : false,                     // Ignores bubbling animation events from children.
     });
     
-    // Or use `useResolvedDisabledState()` if not concerned with animation phases:
-    // const disabled = useResolvedDisabledState(props, {
+    // Or use `useResolvedDisabled()` if not concerned with animation phases:
+    // const disabled = useResolvedDisabled(props, {
     //     defaultDisabled        : false, // Defaults to enabled.
     //     defaultCascadeDisabled : true,  // Defaults to allow contextual disabling.
     // });

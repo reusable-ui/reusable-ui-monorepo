@@ -58,7 +58,7 @@ import {
     useFeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 import {
-    useResolvedDisabledState,
+    useResolvedDisabled,
 }                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
 import {
     useResolvedReadOnlyState,
@@ -146,7 +146,7 @@ export const useResolvedValidityState = (props: ValidityStateProps, options?: Pi
     // States and flags:
     
     // Resolve whether the component is disabled:
-    const isDisabled   = useResolvedDisabledState(props as Parameters<typeof useResolvedDisabledState>[0]);
+    const isDisabled   = useResolvedDisabled(props as Parameters<typeof useResolvedDisabled>[0]);
     
     // Resolve whether the component is readonly:
     const isReadonly   = useResolvedReadOnlyState(props as Parameters<typeof useResolvedReadOnlyState>[0]);

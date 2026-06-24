@@ -61,7 +61,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * This hook is intended for components that **consume** the resolved `disabled` state and **forward** it to a base component.
  * 
  * Unlike `useDisabledState()`, which handles animation and lifecycle,
- * `useResolvedDisabledState()` performs a lightweight resolution of the effective disabled value.
+ * `useResolvedDisabled()` performs a lightweight resolution of the effective disabled value.
  * 
  * - No internal state or uncontrolled fallback.
  * - Ideal for components that **consume** the resolved `disabled` state.
@@ -76,7 +76,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * @param options - An optional configuration for customizing enable/disable behavior.
  * @returns The resolved enabled/disabled state.
  */
-export const useResolvedDisabledState = (props: DisabledStateProps, options?: Pick<DisabledStateOptions, 'defaultDisabled' | 'defaultCascadeDisabled'>) : boolean => {
+export const useResolvedDisabled = (props: DisabledStateProps, options?: Pick<DisabledStateOptions, 'defaultDisabled' | 'defaultCascadeDisabled'>) : boolean => {
     // Extract options:
     const {
         defaultDisabled        : defaultState,
@@ -191,7 +191,7 @@ export const useDisabledState = <TElement extends Element = HTMLElement>(props: 
     // States and flags:
     
     // Resolve effective disabled state:
-    const effectiveState = useResolvedDisabledState(props, options);
+    const effectiveState = useResolvedDisabled(props, options);
     
     // Transition orchestration:
     const {

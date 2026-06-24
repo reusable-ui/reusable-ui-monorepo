@@ -44,7 +44,7 @@ import {
     useFeedbackState,
 }                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
 import {
-    useResolvedDisabledState,
+    useResolvedDisabled,
 }                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
 
 
@@ -93,7 +93,7 @@ export const useResolvedPressState = <TElement extends Element = HTMLElement>(pr
     // States and flags:
     
     // Resolve whether the component is in a restricted state (interaction blocked):
-    const isRestricted         = useResolvedDisabledState(props as Parameters<typeof useResolvedDisabledState>[0]);
+    const isRestricted         = useResolvedDisabled(props as Parameters<typeof useResolvedDisabled>[0]);
     
     // Determine control mode:
     const isExplicitValue      = (state !== 'auto');

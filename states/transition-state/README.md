@@ -545,7 +545,7 @@ import {
 } from '@reusable-ui/transition-state'
 import { useStableCallback } from '@reusable-ui/callbacks'
 import { type ValueChangeHandler, type DispatchValueChange } from '@reusable-ui/controllable'
-import { useResolvedDisabledState } from '@reusable-ui/disabled-state'
+import { useResolvedDisabled } from '@reusable-ui/disabled-state'
 import { useResolvedReadOnlyState } from '@reusable-ui/read-only-state'
 
 /**
@@ -783,7 +783,7 @@ const resolveSelectedTransitionClassname = ({ transitionPhase }: ResolveTransiti
 /** Creates a stable dispatcher for requesting a change to the selected state. */
 export const useDispatchSelectedChange = <TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent> & { defaultSelected?: never }, options?: SelectedChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<boolean, TChangeEvent> => {
     // Resolve whether the component is in a restricted state:
-    const isDisabled   = useResolvedDisabledState(props as Parameters<typeof useResolvedDisabledState>[0]);
+    const isDisabled   = useResolvedDisabled(props as Parameters<typeof useResolvedDisabled>[0]);
     const isReadonly   = useResolvedReadOnlyState(props as Parameters<typeof useResolvedReadOnlyState>[0]);
     const isRestricted = isDisabled || isReadonly;
     
