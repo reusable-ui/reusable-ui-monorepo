@@ -116,6 +116,8 @@ export const useResolvedFocused = <TElement extends Element = HTMLElement>(props
     // Merge external and internal observation:
     const observedState = isExternallyComputed ? externalComputedFocus : observedFocus;
     
+    
+    
     // Resolve effective focused state:
     const focused = useResolvedObservableState<boolean, 'auto'>(
         // Props:
