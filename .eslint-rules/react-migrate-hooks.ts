@@ -178,6 +178,8 @@ export const migrateUseDomainGroupSuffix = createRule({
  */
 const irregularMap: Record<string, string> = {
     View     : 'ViewIndex', // Clarify numeric return type.
+    
+    Collapse : 'Expanded',  // Use positive form instead of negative one.
 };
 
 /**
@@ -193,8 +195,6 @@ const regularMap: Record<string, string> = {
     Press    : 'Pressed',
     
     Drag     : 'Dragged',
-    
-    Collapse : 'Collapsed',
 };
 
 /**
