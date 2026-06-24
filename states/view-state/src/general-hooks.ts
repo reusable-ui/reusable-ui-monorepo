@@ -38,7 +38,7 @@ const rangedStateDefinition : RangedStateDefinition<number> = {
  * This hook is intended for components that **consume** the resolved `viewIndex` value and **forward** it to a base component.
  * 
  * Unlike `useViewState()`, which supports both controlled and uncontrolled modes,
- * `useResolvedViewState()` assumes the component is **fully controlled** and does not manage internal state.
+ * `useResolvedViewIndex()` assumes the component is **fully controlled** and does not manage internal state.
  * 
  * - Supports only controlled mode.
  * - Ideal for components that **consume** the resolved `viewIndex` value.
@@ -47,7 +47,7 @@ const rangedStateDefinition : RangedStateDefinition<number> = {
  * @param options - An optional configuration for customizing view-switching behavior.
  * @returns The resolved view index.
  */
-export const useResolvedViewState = (props: ViewStateProps<any> & { defaultViewIndex?: never }, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>) : number => {
+export const useResolvedViewIndex = (props: ViewStateProps<any> & { defaultViewIndex?: never }, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>) : number => {
     // Extract options:
     const {
         defaultViewIndex : defaultState,

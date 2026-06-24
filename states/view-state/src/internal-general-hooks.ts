@@ -15,14 +15,14 @@ import {
 
 // Hooks:
 import {
-    useResolvedViewState,
+    useResolvedViewIndex,
 }                           from './general-hooks.js'
 
 
 
 /** Resolves the effective view index, normalizing declarative keywords into concrete values. */
 export const useResolvedEffectiveViewState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<number, ViewStateProps<unknown>, ViewStateOptions, ViewStateDefinition>): number => {
-    const effectiveViewIndex = useResolvedViewState({
+    const effectiveViewIndex = useResolvedViewIndex({
         ...props,
         defaultViewIndex  : undefined,        // Prevents uncontrolled value.
         viewIndex         : declarativeState, // Pass the declarative state as controlled value.
