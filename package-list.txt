@@ -129,7 +129,7 @@ Additional flags:
 |----------------|--------------------------|--------------------------------|-----------------------------|----------------------------|
 | excite-state   | useResolvedExcited       | not applicable                 | not applicable              | useExciteState             |
 |----------------|--------------------------|--------------------------------|-----------------------------|----------------------------|
-| active-state   | useResolvedActiveState   | useActiveController            | useDispatchActiveChange     | useActiveState             |
+| active-state   | useResolvedActive        | useActiveController            | useDispatchActiveChange     | useActiveState             |
 | collapse-state | useResolvedCollapseState | useCollapseController          | useDispatchExpandedChange   | useCollapseState           |
 |----------------|--------------------------|--------------------------------|-----------------------------|----------------------------|
 | disabled-state | useResolvedDisabled      | not applicable                 | not applicable              | useDisabledState           |

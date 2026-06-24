@@ -75,7 +75,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * This hook is intended for components that **consume** the resolved `active` state and **forward** it to a base component.
  * 
  * Unlike `useActiveState()`, which supports both controlled and uncontrolled modes,
- * `useResolvedActiveState()` assumes the component is **fully controlled** and does not manage internal state.
+ * `useResolvedActive()` assumes the component is **fully controlled** and does not manage internal state.
  * 
  * - Supports only controlled mode.
  * - Supports contextual override via `cascadeActive`.
@@ -91,7 +91,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * @param options - An optional configuration for customizing activate/deactivate behavior.
  * @returns The resolved active/inactive state.
  */
-export const useResolvedActiveState = (props: ActiveStateProps<any> & { defaultActive?: never }, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>) : boolean => {
+export const useResolvedActive = (props: ActiveStateProps<any> & { defaultActive?: never }, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>) : boolean => {
     // Extract options:
     const {
         defaultActive        : defaultState,
@@ -155,7 +155,7 @@ export const useDispatchActiveChange = <TChangeEvent = unknown>(props: ActiveSta
 
 /** Resolves the effective activation state, normalizing declarative keywords into concrete values. */
 const useResolvedEffectiveActiveState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<boolean, ActiveStateProps<unknown>, ActiveStateOptions, ActiveStateDefinition>): boolean => {
-    const effectiveActive = useResolvedActiveState({
+    const effectiveActive = useResolvedActive({
         ...props,
         defaultActive : undefined,        // Prevents uncontrolled value.
         active        : declarativeState, // Pass the declarative state as controlled value.

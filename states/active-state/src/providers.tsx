@@ -45,7 +45,7 @@ export interface ActiveStateProviderProps
  *     ActiveStateProps,
  *     ActiveStateProvider,
  *     useActiveState,
- *     useResolvedActiveState,
+ *     useResolvedActive,
  * } from '@reusable-ui/active-state';
  * 
  * export interface ParentComponentProps extends ActiveStateProps<React.MouseEvent<HTMLButtonElement>> {
@@ -70,8 +70,8 @@ export interface ActiveStateProviderProps
  *         animationBubbling    : false,                          // Ignores bubbling animation events from children.
  *     });
  *     
- *     // Or use `useResolvedActiveState()` if not concerned with animation phases:
- *     // const active = useResolvedActiveState(props, {
+ *     // Or use `useResolvedActive()` if not concerned with animation phases:
+ *     // const active = useResolvedActive(props, {
  *     //     defaultActive        : false, // Defaults to inactive.
  *     //     defaultCascadeActive : false, // Defaults to prevent contextual activation.
  *     //     defaultCascadeActive : false, // Defaults to prevent contextual activation.

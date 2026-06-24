@@ -103,13 +103,13 @@ The hook manages transitions between `active` and `inactive` states using a unif
 - **On unrestricted (re‑enabled or exit readonly)**: `dispatchActiveChange()` works normally.  
 - **Rationale**: Restricted components freeze interaction — they don’t reset activation, but prevent user interactions until unrestricted.
 
-### `useResolvedActiveState(props, options?)`
+### `useResolvedActive(props, options?)`
 
 Resolves the current active/inactive state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `active` state and **forward** it to a base component.
 
-Unlike `useActiveState()`, which supports both controlled and uncontrolled modes, `useResolvedActiveState()` assumes the component is **fully controlled** and does not manage internal state.
+Unlike `useActiveState()`, which supports both controlled and uncontrolled modes, `useResolvedActive()` assumes the component is **fully controlled** and does not manage internal state.
 
 - Supports only controlled mode.
 - Supports contextual override via `cascadeActive`.
@@ -151,7 +151,7 @@ import {
     ActiveStateProps,
     ActiveStateProvider,
     useActiveState,
-    useResolvedActiveState,
+    useResolvedActive,
 } from '@reusable-ui/active-state';
 
 export interface ParentComponentProps extends ActiveStateProps<React.MouseEvent<HTMLButtonElement>> {
@@ -176,8 +176,8 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
         animationBubbling    : false,                          // Ignores bubbling animation events from children.
     });
     
-    // Or use `useResolvedActiveState()` if not concerned with animation phases:
-    // const active = useResolvedActiveState(props, {
+    // Or use `useResolvedActive()` if not concerned with animation phases:
+    // const active = useResolvedActive(props, {
     //     defaultActive        : false, // Defaults to inactive.
     //     defaultCascadeActive : false, // Defaults to prevent contextual activation.
     //     defaultCascadeActive : false, // Defaults to prevent contextual activation.
