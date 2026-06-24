@@ -179,13 +179,13 @@ This behavior ensures:
 You can override the default keys using the `pressKeys` and `clickKeys` options for custom accessibility or interaction needs.
 
 
-### `useResolvedPressState(props, options?)`
+### `useResolvedPressed(props, options?)`
 
 Resolves the current pressed/released state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `pressed` state and **forward** it to a base component.
 
-Unlike `usePressState()`, which handles animation and lifecycle, `useResolvedPressState()` performs a lightweight resolution of the effective press value.
+Unlike `usePressState()`, which handles animation and lifecycle, `useResolvedPressed()` performs a lightweight resolution of the effective press value.
 
 - No internal state or uncontrolled fallback.
 - `'auto'` is treated as a declarative diagnostic mode.

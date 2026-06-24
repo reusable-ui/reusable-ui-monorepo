@@ -62,7 +62,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * This hook is intended for components that **consume** the resolved `pressed` state and **forward** it to a base component.
  * 
  * Unlike `usePressState()`, which handles animation and lifecycle,
- * `useResolvedPressState()` performs a lightweight resolution of the effective press value.
+ * `useResolvedPressed()` performs a lightweight resolution of the effective press value.
  * 
  * - No internal state or uncontrolled fallback.
  * - `'auto'` is treated as a declarative diagnostic mode.
@@ -74,7 +74,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * @param options - An optional configuration for customizing press/release behavior.
  * @returns The resolved pressed/released state and event handlers for pointer and keyboard events.
  */
-export const useResolvedPressState = <TElement extends Element = HTMLElement>(props: PressStateProps, options?: Pick<PressStateOptions, 'defaultPressed' | 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'>) : Pick<PressState<TElement>, 'pressed' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'> => {
+export const useResolvedPressed = <TElement extends Element = HTMLElement>(props: PressStateProps, options?: Pick<PressStateOptions, 'defaultPressed' | 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'>) : Pick<PressState<TElement>, 'pressed' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'> => {
     // Extract options:
     const {
         defaultPressed : defaultState,
@@ -263,7 +263,7 @@ export const usePressState = <TElement extends Element = HTMLElement>(props: Pre
         handlePointerCancel,
         handleKeyDown,
         handleKeyUp,
-    } = useResolvedPressState<TElement>(props, options);
+    } = useResolvedPressed<TElement>(props, options);
     
     // Transition orchestration:
     const {
