@@ -111,6 +111,8 @@ export const useResolvedDragged = (props: DragStateProps, options?: Pick<DragSta
     // Resolve whether the component is in a restricted state (interaction blocked):
     const isRestricted         = useResolvedDisabled(props as Parameters<typeof useResolvedDisabled>[0]);
     
+    
+    
     // Resolve effective dragged state:
     // - Collapses to `false` (dropped) if restricted.
     // - Otherwise resolved via observable state definition.
