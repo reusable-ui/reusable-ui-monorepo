@@ -45,7 +45,7 @@ export interface ReadOnlyStateProviderProps
  *     ReadOnlyStateProps,
  *     ReadOnlyStateProvider,
  *     useReadOnlyState,
- *     useResolvedReadOnlyState,
+ *     useResolvedReadOnly,
  * } from '@reusable-ui/read-only-state';
  * 
  * export interface ParentComponentProps extends ReadOnlyStateProps {
@@ -70,8 +70,8 @@ export interface ReadOnlyStateProviderProps
  *         animationBubbling      : false,                   // Ignores bubbling animation events from children.
  *     });
  *     
- *     // Or use `useResolvedReadOnlyState()` if not concerned with animation phases:
- *     // const readOnly = useResolvedReadOnlyState(props, {
+ *     // Or use `useResolvedReadOnly()` if not concerned with animation phases:
+ *     // const readOnly = useResolvedReadOnly(props, {
  *     //     defaultReadOnly        : false, // Defaults to editable.
  *     //     defaultCascadeReadOnly : true,  // Defaults to allow contextual read-only.
  *     // });

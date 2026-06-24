@@ -32,7 +32,7 @@ import {
 }                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
 import {
     // Hooks:
-    useResolvedReadOnlyState,
+    useResolvedReadOnly,
 }                           from '@reusable-ui/read-only-state'     // Adds editable/read-only functionality to UI components, with transition animations and semantic styling hooks.
 
 // Types:
@@ -79,7 +79,7 @@ export const useDispatchInteractionStateChange = <TState extends {} | null, TCha
     const isDisabled   = useResolvedDisabled(props as Parameters<typeof useResolvedDisabled>[0]);
     
     // Resolve whether the component is readonly:
-    const isReadonly   = useResolvedReadOnlyState(props as Parameters<typeof useResolvedReadOnlyState>[0]);
+    const isReadonly   = useResolvedReadOnly(props as Parameters<typeof useResolvedReadOnly>[0]);
     
     // Resolve whether the component is in a restricted state:
     const isRestricted = isDisabled || isReadonly;

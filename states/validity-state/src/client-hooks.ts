@@ -61,7 +61,7 @@ import {
     useResolvedDisabled,
 }                           from '@reusable-ui/disabled-state'      // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
 import {
-    useResolvedReadOnlyState,
+    useResolvedReadOnly,
 }                           from '@reusable-ui/read-only-state'     // Adds editable/read-only functionality to UI components, with transition animations and semantic styling hooks.
 
 
@@ -149,7 +149,7 @@ export const useResolvedValidityState = (props: ValidityStateProps, options?: Pi
     const isDisabled   = useResolvedDisabled(props as Parameters<typeof useResolvedDisabled>[0]);
     
     // Resolve whether the component is readonly:
-    const isReadonly   = useResolvedReadOnlyState(props as Parameters<typeof useResolvedReadOnlyState>[0]);
+    const isReadonly   = useResolvedReadOnly(props as Parameters<typeof useResolvedReadOnly>[0]);
     
     // Resolve enablement cumulatively (AND logic):
     // - Both ancestor and local must allow validation.

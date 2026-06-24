@@ -81,13 +81,13 @@ export const CustomEditor: FC<CustomEditorProps> = (props) => {
 };
 ```
 
-### `useResolvedReadOnlyState(props, options?)`
+### `useResolvedReadOnly(props, options?)`
 
 Resolves the current editable/read-only state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `readOnly` state and **forward** it to a base component.
 
-Unlike `useReadOnlyState()`, which handles animation and lifecycle, `useResolvedReadOnlyState()` performs a lightweight resolution of the effective read-only value.
+Unlike `useReadOnlyState()`, which handles animation and lifecycle, `useResolvedReadOnly()` performs a lightweight resolution of the effective read-only value.
 
 - No internal state or uncontrolled fallback.
 - Ideal for components that **consume** the resolved `readOnly` state.
@@ -110,7 +110,7 @@ import {
     ReadOnlyStateProps,
     ReadOnlyStateProvider,
     useReadOnlyState,
-    useResolvedReadOnlyState,
+    useResolvedReadOnly,
 } from '@reusable-ui/read-only-state';
 
 export interface ParentComponentProps extends ReadOnlyStateProps {
@@ -135,8 +135,8 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
         animationBubbling      : false,                   // Ignores bubbling animation events from children.
     });
     
-    // Or use `useResolvedReadOnlyState()` if not concerned with animation phases:
-    // const readOnly = useResolvedReadOnlyState(props, {
+    // Or use `useResolvedReadOnly()` if not concerned with animation phases:
+    // const readOnly = useResolvedReadOnly(props, {
     //     defaultReadOnly        : false, // Defaults to editable.
     //     defaultCascadeReadOnly : true,  // Defaults to allow contextual read-only.
     // });

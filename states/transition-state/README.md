@@ -546,7 +546,7 @@ import {
 import { useStableCallback } from '@reusable-ui/callbacks'
 import { type ValueChangeHandler, type DispatchValueChange } from '@reusable-ui/controllable'
 import { useResolvedDisabled } from '@reusable-ui/disabled-state'
-import { useResolvedReadOnlyState } from '@reusable-ui/read-only-state'
+import { useResolvedReadOnly } from '@reusable-ui/read-only-state'
 
 /**
  * Example implementation of an interactive selected/unselected state with animation lifecycle integration.
@@ -784,7 +784,7 @@ const resolveSelectedTransitionClassname = ({ transitionPhase }: ResolveTransiti
 export const useDispatchSelectedChange = <TChangeEvent = unknown>(props: SelectedStateProps<TChangeEvent> & { defaultSelected?: never }, options?: SelectedChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<boolean, TChangeEvent> => {
     // Resolve whether the component is in a restricted state:
     const isDisabled   = useResolvedDisabled(props as Parameters<typeof useResolvedDisabled>[0]);
-    const isReadonly   = useResolvedReadOnlyState(props as Parameters<typeof useResolvedReadOnlyState>[0]);
+    const isReadonly   = useResolvedReadOnly(props as Parameters<typeof useResolvedReadOnly>[0]);
     const isRestricted = isDisabled || isReadonly;
     
     // A stable dispatcher for selection change requests:
