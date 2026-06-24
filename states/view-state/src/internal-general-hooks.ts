@@ -22,12 +22,9 @@ import {
 
 /** Resolves the effective view index, normalizing declarative keywords into concrete values. */
 export const useResolvedEffectiveViewState = ({ declarativeState, props, options }: ResolveEffectiveStateArgs<number, ViewStateProps<unknown>, ViewStateOptions, ViewStateDefinition>): number => {
-    const effectiveViewIndex = useResolvedViewIndex({
+    return useResolvedViewIndex({
         ...props,
         defaultViewIndex  : undefined,        // Prevents uncontrolled value.
         viewIndex         : declarativeState, // Pass the declarative state as controlled value.
     }, options);
-    
-    // Return the resolved effective view index:
-    return effectiveViewIndex;
 };
