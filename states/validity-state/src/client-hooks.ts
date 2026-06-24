@@ -79,7 +79,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean | null, 'aut
  * This hook is intended for components that **consume** the resolved `validity` state and **forward** it to a base component.
  * 
  * Unlike `useValidityState()`, which handles animation and lifecycle,
- * `useResolvedValidityState()` performs a lightweight resolution of the effective validity value.
+ * `useResolvedValidity()` performs a lightweight resolution of the effective validity value.
  * 
  * - No internal state or uncontrolled fallback.
  * - Ideal for components that **consume** the resolved `validity` state.
@@ -100,7 +100,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean | null, 'aut
  * @param options - An optional configuration for customizing validity behavior.
  * @returns The resolved validity state.
  */
-export const useResolvedValidityState = (props: ValidityStateProps, options?: Pick<ValidityStateOptions, 'defaultValidity' | 'fallbackValidity'>) : boolean | null => {
+export const useResolvedValidity = (props: ValidityStateProps, options?: Pick<ValidityStateOptions, 'defaultValidity' | 'fallbackValidity'>) : boolean | null => {
     // Extract options and assign defaults:
     const {
         defaultValidity  : defaultState,
@@ -320,7 +320,7 @@ export const useValidityState = <TElement extends Element = HTMLElement>(props: 
     // States and flags:
     
     // Resolve effective validity state:
-    const effectiveState = useResolvedValidityState(props, options);
+    const effectiveState = useResolvedValidity(props, options);
     
     // Transition orchestration:
     const {

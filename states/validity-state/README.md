@@ -135,7 +135,7 @@ The hook manages transitions between `valid`, `invalid`, and `unvalidated` state
 Use `<ValidityStateProvider>` to propagate validation policy (e.g., covering enablement, validity, and cascading intent) to descendant components.
 This provides a clear, declarative way to manage validation across groups of inputs.
 
-In the examples below, `<Input />` represents any component that implements `useValidityState()` or `useResolvedValidityState()`.
+In the examples below, `<Input />` represents any component that implements `useValidityState()` or `useResolvedValidity()`.
 
 **Enable or disable validation for all inputs in a section:**
 
@@ -219,13 +219,13 @@ To avoid confusion, here are the rules that govern how `<ValidityStateProvider>`
 </ValidityStateProvider>
 ```
 
-### `useResolvedValidityState(props, options?)`
+### `useResolvedValidity(props, options?)`
 
 Resolves the current validity state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `validity` state and **forward** it to a base component.
 
-Unlike `useValidityState()`, which handles animation and lifecycle, `useResolvedValidityState()` performs a lightweight resolution of the effective validity value.
+Unlike `useValidityState()`, which handles animation and lifecycle, `useResolvedValidity()` performs a lightweight resolution of the effective validity value.
 
 - No internal state or uncontrolled fallback.
 - Ideal for components that **consume** the resolved `validity` state.
