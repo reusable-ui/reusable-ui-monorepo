@@ -115,6 +115,8 @@ export const useResolvedHovered = <TElement extends Element = HTMLElement>(props
     // Merge external and internal observation:
     const observedState = isExternallyComputed ? externalComputedHover : observedHover;
     
+    
+    
     // Resolve effective hovered state:
     const hovered = useResolvedObservableState<boolean, 'auto'>(
         // Props:
