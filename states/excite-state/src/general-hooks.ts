@@ -55,7 +55,7 @@ export const useResolvedExcited = (props: ExciteStateProps, options?: Pick<Excit
     
     
     // Resolve effective excited state:
-    const excited = useResolvedControlledState<boolean>(
+    return useResolvedControlledState<boolean>(
         // Props:
         { state },
         
@@ -65,9 +65,4 @@ export const useResolvedExcited = (props: ExciteStateProps, options?: Pick<Excit
         // Definition:
         controlledStateDefinition,
     );
-    
-    
-    
-    // Return the resolved excited state:
-    return excited;
 };
