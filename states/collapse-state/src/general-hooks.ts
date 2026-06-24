@@ -58,7 +58,7 @@ export const useResolvedExpanded = (props: CollapseStateProps<any> & { defaultEx
     
     
     // Resolve effective expanded state:
-    const expanded = useResolvedControlledState<boolean>(
+    return useResolvedControlledState<boolean>(
         // Props:
         { state },
         
@@ -68,9 +68,4 @@ export const useResolvedExpanded = (props: CollapseStateProps<any> & { defaultEx
         // Definition:
         controlledStateDefinition,
     );
-    
-    
-    
-    // Return the resolved expanded state:
-    return expanded;
 };
