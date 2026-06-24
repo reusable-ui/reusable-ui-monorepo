@@ -63,7 +63,7 @@ export const useResolvedViewIndex = (props: ViewStateProps<any> & { defaultViewI
     
     
     // Resolve effective view index:
-    const viewIndex = useResolvedRangedState<number>(
+    return useResolvedRangedState<number>(
         // Props:
         { state },
         
@@ -73,9 +73,4 @@ export const useResolvedViewIndex = (props: ViewStateProps<any> & { defaultViewI
         // Definition:
         rangedStateDefinition,
     );
-    
-    
-    
-    // Return the resolved view index:
-    return viewIndex;
 };
