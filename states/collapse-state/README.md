@@ -99,13 +99,13 @@ The hook manages transitions between `expanded` and `collapsed` states using a u
 - **On unrestricted (re‑enabled or exit readonly)**: `dispatchExpandedChange()` works normally.  
 - **Rationale**: Restricted components freeze interaction — they don’t reset expansion, but prevent user interactions until unrestricted.
 
-### `useResolvedCollapseState(props, options?)`
+### `useResolvedExpanded(props, options?)`
 
 Resolves the current expanded/collapsed state for a fully controlled component.
 
 This hook is intended for components that **consume** the resolved `expanded` state and **forward** it to a base component.
 
-Unlike `useCollapseState()`, which supports both controlled and uncontrolled modes, `useResolvedCollapseState()` assumes the component is **fully controlled** and does not manage internal state.
+Unlike `useCollapseState()`, which supports both controlled and uncontrolled modes, `useResolvedExpanded()` assumes the component is **fully controlled** and does not manage internal state.
 
 - Supports only controlled mode.
 - Ideal for components that **consume** the resolved `expanded` state.

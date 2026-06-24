@@ -33,7 +33,7 @@ const controlledStateDefinition : ControlledStateDefinition<boolean> = {
  * This hook is intended for components that **consume** the resolved `expanded` state and **forward** it to a base component.
  * 
  * Unlike `useCollapseState()`, which supports both controlled and uncontrolled modes,
- * `useResolvedCollapseState()` assumes the component is **fully controlled** and does not manage internal state.
+ * `useResolvedExpanded()` assumes the component is **fully controlled** and does not manage internal state.
  * 
  * - Supports only controlled mode.
  * - Ideal for components that **consume** the resolved `expanded` state.
@@ -42,7 +42,7 @@ const controlledStateDefinition : ControlledStateDefinition<boolean> = {
  * @param options - An optional configuration for customizing expand/collapse behavior.
  * @returns The resolved expanded/collapsed state.
  */
-export const useResolvedCollapseState = (props: CollapseStateProps<any> & { defaultExpanded?: never }, options?: Pick<CollapseStateOptions, 'defaultExpanded'>) : boolean => {
+export const useResolvedExpanded = (props: CollapseStateProps<any> & { defaultExpanded?: never }, options?: Pick<CollapseStateOptions, 'defaultExpanded'>) : boolean => {
     // Extract options:
     const {
         defaultExpanded : defaultState,
