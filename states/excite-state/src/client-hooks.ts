@@ -24,7 +24,7 @@ import {
 
 // Hooks:
 import {
-    useResolvedExciteState,
+    useResolvedExcited,
 }                           from './general-hooks.js'
 
 
@@ -106,7 +106,7 @@ export const useExciteState = <TElement extends Element = HTMLElement>(props: Ex
     // States and flags:
     
     // Resolve effective excited state:
-    const effectiveState = useResolvedExciteState(props, options);
+    const effectiveState = useResolvedExcited(props, options);
     
     // Activity orchestration:
     const {

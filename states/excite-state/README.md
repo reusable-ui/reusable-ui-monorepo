@@ -73,7 +73,7 @@ export const ExcitableBox: FC<ExcitableBoxProps> = (props) => {
 };
 ```
 
-### `useResolvedExciteState(props, options?)`
+### `useResolvedExcited(props, options?)`
 
 Resolves the current excited state for a fully controlled component.
 
