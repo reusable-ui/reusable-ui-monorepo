@@ -5,6 +5,7 @@ Provides hooks and CSS helpers for orientation resolution and conditional stylin
 
 ## ✨ Features
 ✔ Orientation-aware layout primitives (`inline`, `block`)  
+✔ Hook-based resolution with customizable fallback behavior  
 ✔ ARIA-compliant orientation attributes  
 ✔ CSS selectors and conditional rule helpers for orientation-aware styling  
 ✔ Seamless integration across layout, appearance, and alignment systems
@@ -73,6 +74,7 @@ export const OrientationBox: FC<OrientationBoxProps> = (props) => {
 ```
 
 #### 🧠 Orientation Resolution Strategy
+
 
 The hook determines the final orientation using the following priority:
 1. **Explicit Prop Override**  
@@ -152,6 +154,77 @@ export const componentStyle = () => style({
     }),
 });
 ```
+
+---
+
+## 🧩 Exported CSS Hooks
+
+### `usingOrientationVariant()`
+
+Generates CSS rules that toggle orientation-related CSS variables based on the current orientation mode, and exposes those variables for conditional styling.
+
+#### 💡 Usage Example
+
+```ts
+import {
+    usingOrientationVariant,
+} from '@reusable-ui/orientation-variant';
+import { style, fallback } from '@cssfn/core';
+
+export const componentStyle = () => {
+    const {
+        orientationVariantRule,
+        orientationVariantVars: { isOrientationInline, isOrientationBlock },
+    } = usingOrientationVariant();
+    
+    return style({
+        display: 'flex',
+        // Define component styling here.
+        
+        // Apply orientation-related variable rules:
+        ...orientationVariantRule(),
+        
+        // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
+        
+        // Apply conditional styling based on orientation mode:
+        ...fallback({
+            // Horizontal (inline) orientation styling:
+            flexDirection : `${isOrientationInline} row`,
+            textAlign     : `${isOrientationInline} start`,
+        }),
+        ...fallback({
+            // Vertical (block) orientation:
+            flexDirection : `${isOrientationBlock} column`,
+            textAlign     : `${isOrientationBlock} center`,
+        }),
+    });
+};
+```
+
+#### 🧠 How It Works
+
+- `usingOrientationVariant()` generates scoped rules like:
+    ```css
+    &.o-inline {
+        --isOrientationInline: ;      /* Valid    when oriented horizontally (inline). */
+        --isOrientationBlock: unset;  /* Poisoned when oriented horizontally (inline). */
+    }
+    
+    &.o-block {
+        --isOrientationInline: unset; /* Poisoned when oriented vertically (block). */
+        --isOrientationBlock: ;       /* Valid    when oriented vertically (block). */
+    }
+    ```
+- These variables act as conditional switches:
+    - If `unset`, they **poison** dependent properties, causing the browser to ignore them.
+    - If declared with an empty value, they **reactivate** dependent properties without altering their values.
+- You can use them directly in your styles:
+    ```ts
+    style({
+        flexDirection : `${orientationVariantVars.isOrientationBlock} column`, // Will be rendered to: `flex-direction: var(--isOrientationBlock) column;` (becomes valid only when oriented vertically)
+        textAlign     : `${orientationVariantVars.isOrientationBlock} center`, // Will be rendered to: `text-align: var(--isOrientationBlock) center;`     (becomes valid only when oriented vertically)
+    });
+    ```
 
 ---
 
