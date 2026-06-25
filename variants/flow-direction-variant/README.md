@@ -5,6 +5,7 @@ Provides hooks and CSS helpers for flow direction resolution, placement flow, an
 
 ## ✨ Features
 ✔ Direction-aware edge placement support (`start`, `end`)  
+✔ Hook-based resolution with customizable fallback behavior  
 ✔ CSS selectors and conditional rule helpers for direction-aware styling  
 ✔ Works with LTR/RTL and vertical writing modes  
 ✔ Seamless integration across layout, appearance, and alignment systems
@@ -143,6 +144,77 @@ export const componentStyle = () => style({
     }),
 });
 ```
+
+---
+
+## 🧩 Exported CSS Hooks
+
+### `usingFlowDirectionVariant()`
+
+Generates CSS rules that toggle flow-direction-related CSS variables based on the current flow direction mode, and exposes those variables for conditional styling.
+
+#### 💡 Usage Example
+
+```ts
+import {
+    usingFlowDirectionVariant,
+} from '@reusable-ui/flow-direction-variant';
+import { style, fallback } from '@cssfn/core';
+
+export const componentStyle = () => {
+    const {
+        flowDirectionVariantRule,
+        flowDirectionVariantVars: { isFlowDirectionStart, isFlowDirectionEnd },
+    } = usingFlowDirectionVariant();
+    
+    return style({
+        display: 'flex',
+        // Define component styling here.
+        
+        // Apply flow-direction-related variable rules:
+        ...flowDirectionVariantRule(),
+        
+        // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
+        
+        // Apply conditional styling based on flow direction mode:
+        ...fallback({
+            // Start-edge flow direction styling:
+            textAlign      : `${isFlowDirectionStart} start`,
+            justifyContent : `${isFlowDirectionStart} start`,
+        }),
+        ...fallback({
+            // End-edge flow direction styling:
+            textAlign      : `${isFlowDirectionEnd} end`,
+            justifyContent : `${isFlowDirectionEnd} end`,
+        }),
+    });
+};
+```
+
+#### 🧠 How It Works
+
+- `usingFlowDirectionVariant()` generates scoped rules like:
+    ```css
+    &.f-start {
+        --isFlowDirectionStart: ;      /* Valid    when aligned toward the logical start edge. */
+        --isFlowDirectionEnd: unset;   /* Poisoned when aligned toward the logical start edge. */
+    }
+    
+    &.f-end {
+        --isFlowDirectionStart: unset; /* Poisoned when aligned toward the logical end edge. */
+        --isFlowDirectionEnd: ;        /* Valid    when aligned toward the logical end edge. */
+    }
+    ```
+- These variables act as conditional switches:
+    - If `unset`, they **poison** dependent properties, causing the browser to ignore them.
+    - If declared with an empty value, they **reactivate** dependent properties without altering their values.
+- You can use them directly in your styles:
+    ```ts
+    style({
+        textAlign      : `${flowDirectionVariantVars.isFlowDirectionStart} start`, // Will be rendered to: `text-align: var(--isFlowDirectionStart) start;`      (becomes valid only when aligned toward the logical start edge)
+        justifyContent : `${flowDirectionVariantVars.isFlowDirectionStart} start`, // Will be rendered to: `justify-content: var(--isFlowDirectionStart) start;` (becomes valid only when aligned toward the logical start edge)
+    });
+    ```
 
 ---
 
