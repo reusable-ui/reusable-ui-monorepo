@@ -75,7 +75,6 @@ export const OrientationBox: FC<OrientationBoxProps> = (props) => {
 
 #### 🧠 Orientation Resolution Strategy
 
-
 The hook determines the final orientation using the following priority:
 1. **Explicit Prop Override**  
    - If `props.orientation` is `'inline'` or `'block'`, it takes precedence.
@@ -193,7 +192,7 @@ export const componentStyle = () => {
             textAlign     : `${isOrientationInline} start`,
         }),
         ...fallback({
-            // Vertical (block) orientation:
+            // Vertical (block) orientation styling:
             flexDirection : `${isOrientationBlock} column`,
             textAlign     : `${isOrientationBlock} center`,
         }),
