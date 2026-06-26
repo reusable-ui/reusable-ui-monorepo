@@ -36,14 +36,18 @@ export const usingMildVariant = (): CssMildVariant => {
             variants({
                 ...ifMild(
                     vars({
-                        [mildVariantVars.isMild ] : '',      // Valid    when mild mode is enabled.
-                        [mildVariantVars.notMild] : 'unset', // Poisoned when mild mode is enabled.
+                        [mildVariantVars.isMild    ] : '',      // Valid    when mild mode is enabled.
+                        [mildVariantVars.notMild   ] : 'unset', // Poisoned when mild mode is enabled.
+                        
+                        [mildVariantVars.mildFactor] : 1,       // 1 → mild mode is enabled.
                     })
                 ),
                 ...ifNotMild(
                     vars({
-                        [mildVariantVars.isMild ] : 'unset', // Poisoned when mild mode is disabled.
-                        [mildVariantVars.notMild] : '',      // Valid    when mild mode is disabled.
+                        [mildVariantVars.isMild    ] : 'unset', // Poisoned when mild mode is disabled.
+                        [mildVariantVars.notMild   ] : '',      // Valid    when mild mode is disabled.
+                        
+                        [mildVariantVars.mildFactor] : 0,       // 0 → mild mode is disabled.
                     })
                 ),
             }),

@@ -19,8 +19,8 @@ import {
 /**
  * A list of mild-related CSS variables used to enable conditional styling.
  * 
- * These variables act as boolean switches that control whether mild-specific styles
- * should be applied.
+ * These variables act as boolean switches or numeric factors that determine whether
+ * mild-specific styles should be applied.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
@@ -42,7 +42,7 @@ export interface MildVariantVars {
      * });
      * ```
      */
-    isMild  : unknown
+    isMild     : unknown
     
     /**
      * Applies when the component is not in mild mode.
@@ -61,7 +61,22 @@ export interface MildVariantVars {
      * });
      * ```
      */
-    notMild : unknown
+    notMild    : unknown
+    
+    /**
+     * A normalized factor representing the **mild mode**.
+     * Useful for driving algebraic formulas in `calc(...)` to enable complex styling.
+     * 
+     * ### Expected values:
+     * - **0** : not mild
+     * - **1** : mild
+     * - Never interpolates between 0-1 or outside this range.
+     * 
+     * ### Usage:
+     * - Applicable to numeric-based properties such as `transform`, `scale`, `opacity`, etc.
+     * - Useful in custom `calc()` formulas or other CSS functions.
+     */
+    mildFactor : unknown
 }
 
 

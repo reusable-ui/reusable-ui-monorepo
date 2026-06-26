@@ -160,7 +160,7 @@ import { style, fallback } from '@cssfn/core';
 export const componentStyle = () => {
     const {
         mildVariantRule,
-        mildVariantVars: { isMild, notMild },
+        mildVariantVars: { isMild, notMild, mildFactor },
     } = usingMildVariant();
     
     return style({
@@ -183,6 +183,7 @@ export const componentStyle = () => {
             fontWeight     : `${notMild} normal`,
             textDecoration : `${notMild} none`,
         }),
+        opacity: `calc(1 - ${mildFactor})`,
     });
 };
 ```
@@ -194,14 +195,18 @@ export const componentStyle = () => {
     &.is-mild {
         --isMild: ;       /* Valid    when mild mode is enabled. */
         --notMild: unset; /* Poisoned when mild mode is enabled. */
+        
+        --mildFactor: 1;  /* 1 → mild mode is enabled. */
     }
     
     &.not-mild {
         --isMild: unset;  /* Poisoned when mild mode is disabled. */
         --notMild: ;      /* Valid    when mild mode is disabled. */
+        
+        --mildFactor: 0;  /* 0 → mild mode is disabled. */
     }
     ```
-- These variables act as conditional switches:
+- These first two variables act as conditional switches:
     - If `unset`, they **poison** dependent properties, causing the browser to ignore them.
     - If declared with an empty value, they **reactivate** dependent properties without altering their values.
 - You can use them directly in your styles:
