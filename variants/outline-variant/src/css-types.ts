@@ -19,8 +19,8 @@ import {
 /**
  * A list of outline-related CSS variables used to enable conditional styling.
  * 
- * These variables act as boolean switches that control whether outline-specific styles
- * should be applied.
+ * These variables act as boolean switches or numeric factors that determine whether
+ * outline-specific styles should be applied.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
@@ -42,7 +42,7 @@ export interface OutlineVariantVars {
      * });
      * ```
      */
-    isOutlined  : unknown
+    isOutlined    : unknown
     
     /**
      * Applies when the component is not outlined.
@@ -61,7 +61,22 @@ export interface OutlineVariantVars {
      * });
      * ```
      */
-    notOutlined : unknown
+    notOutlined   : unknown
+    
+    /**
+     * A normalized factor representing the **outline mode**.
+     * Useful for driving algebraic formulas in `calc(...)` to enable complex styling.
+     * 
+     * ### Expected values:
+     * - **0** : not outlined
+     * - **1** : outlined
+     * - Never interpolates between 0-1 or outside this range.
+     * 
+     * ### Usage:
+     * - Applicable to numeric-based properties such as `transform`, `scale`, `opacity`, etc.
+     * - Useful in custom `calc()` formulas or other CSS functions.
+     */
+    outlineFactor : unknown
 }
 
 

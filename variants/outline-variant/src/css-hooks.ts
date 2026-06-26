@@ -36,14 +36,18 @@ export const usingOutlineVariant = (): CssOutlineVariant => {
             variants({
                 ...ifOutlined(
                     vars({
-                        [outlineVariantVars.isOutlined ] : '',      // Valid    when outlined.
-                        [outlineVariantVars.notOutlined] : 'unset', // Poisoned when outlined.
+                        [outlineVariantVars.isOutlined   ] : '',      // Valid    when outlined.
+                        [outlineVariantVars.notOutlined  ] : 'unset', // Poisoned when outlined.
+                        
+                        [outlineVariantVars.outlineFactor] : 1,       // 1 → outlined.
                     })
                 ),
                 ...ifNotOutlined(
                     vars({
-                        [outlineVariantVars.isOutlined ] : 'unset', // Poisoned when not outlined.
-                        [outlineVariantVars.notOutlined] : '',      // Valid    when not outlined.
+                        [outlineVariantVars.isOutlined   ] : 'unset', // Poisoned when not outlined.
+                        [outlineVariantVars.notOutlined  ] : '',      // Valid    when not outlined.
+                        
+                        [outlineVariantVars.outlineFactor] : 0,       // 0 → not outlined.
                     })
                 ),
             }),

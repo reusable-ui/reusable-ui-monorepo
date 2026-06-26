@@ -156,7 +156,7 @@ import { style, fallback } from '@cssfn/core';
 export const componentStyle = () => {
     const {
         outlineVariantRule,
-        outlineVariantVars: { isOutlined, notOutlined },
+        outlineVariantVars: { isOutlined, notOutlined, outlineFactor },
     } = usingOutlineVariant();
     
     return style({
@@ -168,7 +168,7 @@ export const componentStyle = () => {
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling based on outlined mode:
+        // Apply conditional styling based on outline mode:
         ...fallback({
             // Outlined styling:
             fontWeight     : `${isOutlined} bold`,
@@ -179,6 +179,7 @@ export const componentStyle = () => {
             fontWeight     : `${notOutlined} normal`,
             textDecoration : `${notOutlined} none`,
         }),
+        opacity: `calc(1 - ${outlineFactor})`,
     });
 };
 ```
@@ -190,14 +191,18 @@ export const componentStyle = () => {
     &.is-outlined {
         --isOutlined: ;       /* Valid    when outlined. */
         --notOutlined: unset; /* Poisoned when outlined. */
+        
+        --outlineFactor: 1;   /* 1 → outlined. */
     }
     
     &.not-outlined {
         --isOutlined: unset;  /* Poisoned when not outlined. */
         --notOutlined: ;      /* Valid    when not outlined. */
+        
+        --outlineFactor: 0;   /* 0 → not outlined. */
     }
     ```
-- These variables act as conditional switches:
+- These first two variables act as conditional switches:
     - If `unset`, they **poison** dependent properties, causing the browser to ignore them.
     - If declared with an empty value, they **reactivate** dependent properties without altering their values.
 - You can use them directly in your styles:
