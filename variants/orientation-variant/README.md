@@ -173,7 +173,7 @@ import { style, fallback } from '@cssfn/core';
 export const componentStyle = () => {
     const {
         orientationVariantRule,
-        orientationVariantVars: { isOrientationInline, isOrientationBlock },
+        orientationVariantVars: { isOrientationInline, isOrientationBlock, orientationFactor },
     } = usingOrientationVariant();
     
     return style({
@@ -196,6 +196,7 @@ export const componentStyle = () => {
             flexDirection : `${isOrientationBlock} column`,
             textAlign     : `${isOrientationBlock} center`,
         }),
+        opacity: `calc(1 - ${orientationFactor})`,
     });
 };
 ```
@@ -207,14 +208,18 @@ export const componentStyle = () => {
     &.o-inline {
         --isOrientationInline: ;      /* Valid    when oriented horizontally (inline). */
         --isOrientationBlock: unset;  /* Poisoned when oriented horizontally (inline). */
+        
+        --orientationFactor: 0;       /* 0 → oriented horizontally (inline). */
     }
     
     &.o-block {
         --isOrientationInline: unset; /* Poisoned when oriented vertically (block). */
         --isOrientationBlock: ;       /* Valid    when oriented vertically (block). */
+        
+        --orientationFactor: 1;       /* 1 → oriented vertically (block). */
     }
     ```
-- These variables act as conditional switches:
+- These first two variables act as conditional switches:
     - If `unset`, they **poison** dependent properties, causing the browser to ignore them.
     - If declared with an empty value, they **reactivate** dependent properties without altering their values.
 - You can use them directly in your styles:

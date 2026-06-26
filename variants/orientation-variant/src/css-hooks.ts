@@ -38,12 +38,16 @@ export const usingOrientationVariant = (): CssOrientationVariant => {
                     vars({
                         [orientationVariantVars.isOrientationInline] : '',      // Valid    when oriented horizontally (inline).
                         [orientationVariantVars.isOrientationBlock ] : 'unset', // Poisoned when oriented horizontally (inline).
+                        
+                        [orientationVariantVars.orientationFactor  ] : 0,       // 0 → oriented horizontally (inline).
                     })
                 ),
                 ...ifOrientationBlock(
                     vars({
                         [orientationVariantVars.isOrientationInline] : 'unset', // Poisoned when oriented vertically (block).
                         [orientationVariantVars.isOrientationBlock ] : '',      // Valid    when oriented vertically (block).
+                        
+                        [orientationVariantVars.orientationFactor  ] : 1,       // 1 → oriented vertically (block).
                     })
                 ),
             }),
