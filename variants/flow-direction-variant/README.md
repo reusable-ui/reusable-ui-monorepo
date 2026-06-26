@@ -164,7 +164,7 @@ import { style, fallback } from '@cssfn/core';
 export const componentStyle = () => {
     const {
         flowDirectionVariantRule,
-        flowDirectionVariantVars: { isFlowDirectionStart, isFlowDirectionEnd },
+        flowDirectionVariantVars: { isFlowDirectionStart, isFlowDirectionEnd, flowDirectionFactor },
     } = usingFlowDirectionVariant();
     
     return style({
@@ -187,6 +187,7 @@ export const componentStyle = () => {
             textAlign      : `${isFlowDirectionEnd} end`,
             justifyContent : `${isFlowDirectionEnd} end`,
         }),
+        opacity: `calc(1 - ${flowDirectionFactor})`,
     });
 };
 ```
@@ -198,14 +199,18 @@ export const componentStyle = () => {
     &.f-start {
         --isFlowDirectionStart: ;      /* Valid    when aligned toward the logical start edge. */
         --isFlowDirectionEnd: unset;   /* Poisoned when aligned toward the logical start edge. */
+        
+        --flowDirectionFactor: 0;      /* 0 → aligned toward the logical start edge. */
     }
     
     &.f-end {
         --isFlowDirectionStart: unset; /* Poisoned when aligned toward the logical end edge. */
         --isFlowDirectionEnd: ;        /* Valid    when aligned toward the logical end edge. */
+        
+        --flowDirectionFactor: 1;      /* 1 → aligned toward the logical end edge. */
     }
     ```
-- These variables act as conditional switches:
+- These first two variables act as conditional switches:
     - If `unset`, they **poison** dependent properties, causing the browser to ignore them.
     - If declared with an empty value, they **reactivate** dependent properties without altering their values.
 - You can use them directly in your styles:

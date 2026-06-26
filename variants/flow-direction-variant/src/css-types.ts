@@ -19,8 +19,8 @@ import {
 /**
  * A list of flow-direction-related CSS variables used to enable conditional styling.
  * 
- * These variables act as boolean switches that control whether flow-direction-specific styles
- * should be applied.
+ * These variables act as boolean switches or numeric factors that determine whether
+ * flow-direction-specific styles should be applied.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
@@ -62,6 +62,21 @@ export interface FlowDirectionVariantVars {
      * ```
      */
     isFlowDirectionEnd   : unknown
+    
+    /**
+     * A normalized factor representing the **flow direction mode**.
+     * Useful for driving algebraic formulas in `calc(...)` to enable complex styling.
+     * 
+     * ### Expected values:
+     * - **0** : aligned toward the logical start edge
+     * - **1** : aligned toward the logical end edge
+     * - Never interpolates between 0-1 or outside this range.
+     * 
+     * ### Usage:
+     * - Applicable to numeric-based properties such as `transform`, `scale`, `opacity`, etc.
+     * - Useful in custom `calc()` formulas or other CSS functions.
+     */
+    flowDirectionFactor  : unknown
 }
 
 

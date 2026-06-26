@@ -38,12 +38,16 @@ export const usingFlowDirectionVariant = (): CssFlowDirectionVariant => {
                     vars({
                         [flowDirectionVariantVars.isFlowDirectionStart] : '',      // Valid    when aligned toward the logical start edge.
                         [flowDirectionVariantVars.isFlowDirectionEnd  ] : 'unset', // Poisoned when aligned toward the logical start edge.
+                        
+                        [flowDirectionVariantVars.flowDirectionFactor ] : 0,       // 0 → aligned toward the logical start edge.
                     })
                 ),
                 ...ifFlowDirectionEnd(
                     vars({
                         [flowDirectionVariantVars.isFlowDirectionStart] : 'unset', // Poisoned when aligned toward the logical end edge.
                         [flowDirectionVariantVars.isFlowDirectionEnd  ] : '',      // Valid    when aligned toward the logical end edge.
+                        
+                        [flowDirectionVariantVars.flowDirectionFactor ] : 1,       // 1 → aligned toward the logical end edge.
                     })
                 ),
             }),
