@@ -19,8 +19,8 @@ import {
 /**
  * A list of emphasis-related CSS variables used to enable conditional styling.
  * 
- * These variables act as boolean switches that control whether emphasis-specific styles
- * should be applied.
+ * These variables act as boolean switches or numeric factors that determine whether
+ * emphasis-specific styles should be applied.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
@@ -42,7 +42,7 @@ export interface EmphasisVariantVars {
      * });
      * ```
      */
-    isEmphasized  : unknown
+    isEmphasized   : unknown
     
     /**
      * Applies when the component is not emphasized.
@@ -61,7 +61,22 @@ export interface EmphasisVariantVars {
      * });
      * ```
      */
-    notEmphasized : unknown
+    notEmphasized  : unknown
+    
+    /**
+     * A normalized factor representing the **emphasis mode**.
+     * Useful for driving algebraic formulas in `calc(...)` to enable complex styling.
+     * 
+     * ### Expected values:
+     * - **0** : not emphasized
+     * - **1** : emphasized
+     * - Never interpolates between 0-1 or outside this range.
+     * 
+     * ### Usage:
+     * - Applicable to numeric-based properties such as `transform`, `scale`, `opacity`, etc.
+     * - Useful in custom `calc()` formulas or other CSS functions.
+     */
+    emphasisFactor : unknown
 }
 
 

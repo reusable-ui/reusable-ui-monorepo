@@ -156,7 +156,7 @@ import { style, fallback } from '@cssfn/core';
 export const componentStyle = () => {
     const {
         emphasisVariantRule,
-        emphasisVariantVars: { isEmphasized, notEmphasized },
+        emphasisVariantVars: { isEmphasized, notEmphasized, emphasisFactor },
     } = usingEmphasisVariant();
     
     return style({
@@ -168,7 +168,7 @@ export const componentStyle = () => {
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling based on emphasized mode:
+        // Apply conditional styling based on emphasis mode:
         ...fallback({
             // Emphasized styling:
             fontWeight : `${isEmphasized} bold`,
@@ -179,6 +179,7 @@ export const componentStyle = () => {
             fontWeight : `${notEmphasized} normal`,
             color      : `${notEmphasized} gray`,
         }),
+        opacity: `calc(1 - ${emphasisFactor})`,
     });
 };
 ```
@@ -190,14 +191,18 @@ export const componentStyle = () => {
     &.is-emphasized {
         --isEmphasized: ;       /* Valid    when emphasized. */
         --notEmphasized: unset; /* Poisoned when emphasized. */
+        
+        --emphasisFactor: 1;    /* 1 → emphasized. */
     }
     
     &.not-emphasized {
         --isEmphasized: unset;  /* Poisoned when not emphasized. */
         --notEmphasized: ;      /* Valid    when not emphasized. */
+        
+        --emphasisFactor: 0;    /* 0 → not emphasized. */
     }
     ```
-- These variables act as conditional switches:
+- These first two variables act as conditional switches:
     - If `unset`, they **poison** dependent properties, causing the browser to ignore them.
     - If declared with an empty value, they **reactivate** dependent properties without altering their values.
 - You can use them directly in your styles:

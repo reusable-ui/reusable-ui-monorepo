@@ -36,14 +36,18 @@ export const usingEmphasisVariant = (): CssEmphasisVariant => {
             variants({
                 ...ifEmphasized(
                     vars({
-                        [emphasisVariantVars.isEmphasized ] : '',      // Valid    when emphasized.
-                        [emphasisVariantVars.notEmphasized] : 'unset', // Poisoned when emphasized.
+                        [emphasisVariantVars.isEmphasized  ] : '',      // Valid    when emphasized.
+                        [emphasisVariantVars.notEmphasized ] : 'unset', // Poisoned when emphasized.
+                        
+                        [emphasisVariantVars.emphasisFactor] : 1,       // 1 → emphasized.
                     })
                 ),
                 ...ifNotEmphasized(
                     vars({
-                        [emphasisVariantVars.isEmphasized ] : 'unset', // Poisoned when not emphasized.
-                        [emphasisVariantVars.notEmphasized] : '',      // Valid    when not emphasized.
+                        [emphasisVariantVars.isEmphasized  ] : 'unset', // Poisoned when not emphasized.
+                        [emphasisVariantVars.notEmphasized ] : '',      // Valid    when not emphasized.
+                        
+                        [emphasisVariantVars.emphasisFactor] : 0,       // 0 → not emphasized.
                     })
                 ),
             }),
