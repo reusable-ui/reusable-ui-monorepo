@@ -43,7 +43,7 @@ import {
  * @param {boolean} fallbackOutlined - The fallback outlined when context is missing.
  * @returns {boolean} - The resolved outlined value.
  */
-const useEffectiveOutlineValue = (declarativeOutlined: Required<OutlineVariantProps>['outlined'], fallbackOutlined: boolean): boolean => {
+const useResolvedOutlined = (declarativeOutlined: Required<OutlineVariantProps>['outlined'], fallbackOutlined: boolean): boolean => {
     switch (declarativeOutlined) {
         // If the outlined is 'inherit', use the context value:
         case 'inherit' : {
@@ -141,8 +141,8 @@ export const useOutlineVariant = (props: OutlineVariantProps, options?: OutlineV
     
     
     
-    // Resolve the effective outlined value:
-    const effectiveIsOutlined = useEffectiveOutlineValue(declarativeOutlined, fallbackOutlined);
+    // Resolve effective outlined value:
+    const effectiveIsOutlined = useResolvedOutlined(declarativeOutlined, fallbackOutlined);
     
     
     

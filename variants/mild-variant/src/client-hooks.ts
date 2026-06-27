@@ -43,7 +43,7 @@ import {
  * @param {boolean} fallbackMild - The fallback mild when context is missing.
  * @returns {boolean} - The resolved mild value.
  */
-const useEffectiveMildValue = (declarativeMild: Required<MildVariantProps>['mild'], fallbackMild: boolean): boolean => {
+const useResolvedMild = (declarativeMild: Required<MildVariantProps>['mild'], fallbackMild: boolean): boolean => {
     switch (declarativeMild) {
         // If the mild is 'inherit', use the context value:
         case 'inherit' : {
@@ -141,8 +141,8 @@ export const useMildVariant = (props: MildVariantProps, options?: MildVariantOpt
     
     
     
-    // Resolve the effective mild value:
-    const effectiveIsMild = useEffectiveMildValue(declarativeMild, fallbackMild);
+    // Resolve effective mild value:
+    const effectiveIsMild = useResolvedMild(declarativeMild, fallbackMild);
     
     
     

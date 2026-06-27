@@ -45,7 +45,7 @@ import {
  * @param {TTheme} fallbackTheme - The fallback theme when context is missing.
  * @returns {TTheme} - The resolved theme value.
  */
-const useEffectiveThemeValue = <TTheme extends string = BasicTheme>(declarativeTheme: Required<ThemeVariantProps<TTheme>>['theme'], fallbackTheme: TTheme): TTheme => {
+const useResolvedTheme = <TTheme extends string = BasicTheme>(declarativeTheme: Required<ThemeVariantProps<TTheme>>['theme'], fallbackTheme: TTheme): TTheme => {
     switch (declarativeTheme) {
         // If the theme is 'inherit', use the context value:
         case 'inherit' : {
@@ -127,8 +127,8 @@ export const useThemeVariant = <TTheme extends string = BasicTheme>(props: Theme
     
     
     
-    // Resolve the effective theme value:
-    const effectiveTheme = useEffectiveThemeValue<TTheme>(declarativeTheme, fallbackTheme);
+    // Resolve effective theme value:
+    const effectiveTheme = useResolvedTheme<TTheme>(declarativeTheme, fallbackTheme);
     
     
     

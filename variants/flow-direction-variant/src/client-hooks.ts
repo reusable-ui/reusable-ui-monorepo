@@ -44,7 +44,7 @@ import {
  * @param {FlowDirection} fallbackFlowDirection - The fallback flow direction when context is missing.
  * @returns {FlowDirection} - The resolved flow direction value.
  */
-const useEffectiveFlowDirectionValue = (declarativeFlowDirection: Required<FlowDirectionVariantProps>['flowDirection'], fallbackFlowDirection: FlowDirection): FlowDirection => {
+const useResolvedFlowDirection = (declarativeFlowDirection: Required<FlowDirectionVariantProps>['flowDirection'], fallbackFlowDirection: FlowDirection): FlowDirection => {
     switch (declarativeFlowDirection) {
         // If the flow direction is 'inherit', use the context value:
         case 'inherit' : {
@@ -147,8 +147,8 @@ export const useFlowDirectionVariant = (props: FlowDirectionVariantProps, option
     
     
     
-    // Resolve the effective flow direction value:
-    const effectiveFlowDirection = useEffectiveFlowDirectionValue(declarativeFlowDirection, fallbackFlowDirection);
+    // Resolve effective flow direction value:
+    const effectiveFlowDirection = useResolvedFlowDirection(declarativeFlowDirection, fallbackFlowDirection);
     
     
     

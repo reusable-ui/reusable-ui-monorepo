@@ -47,7 +47,7 @@ import {
  * @param {TSize} fallbackSize - The fallback size when context is missing or unsupported.
  * @returns {TSize} - The resolved size value.
  */
-const useEffectiveSizeValue = <TSize extends string = BasicSize>(declarativeSize: Required<SizeVariantProps<TSize>>['size'], supportedSizes: TSize[], fallbackSize: TSize): TSize => {
+const useResolvedSize = <TSize extends string = BasicSize>(declarativeSize: Required<SizeVariantProps<TSize>>['size'], supportedSizes: TSize[], fallbackSize: TSize): TSize => {
     switch (declarativeSize) {
         // If the size is 'inherit', use the context value:
         case 'inherit' : {
@@ -171,8 +171,8 @@ export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVari
     
     
     
-    // Resolve the effective size value:
-    const effectiveSize = useEffectiveSizeValue<TSize>(declarativeSize, supportedSizes, fallbackSize);
+    // Resolve effective size value:
+    const effectiveSize = useResolvedSize<TSize>(declarativeSize, supportedSizes, fallbackSize);
     
     
     

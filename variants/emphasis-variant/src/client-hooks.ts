@@ -43,7 +43,7 @@ import {
  * @param {boolean} fallbackEmphasized - The fallback emphasized when context is missing.
  * @returns {boolean} - The resolved emphasized value.
  */
-const useEffectiveEmphasisValue = (declarativeEmphasized: Required<EmphasisVariantProps>['emphasized'], fallbackEmphasized: boolean): boolean => {
+const useResolvedEmphasized = (declarativeEmphasized: Required<EmphasisVariantProps>['emphasized'], fallbackEmphasized: boolean): boolean => {
     switch (declarativeEmphasized) {
         // If the emphasized is 'inherit', use the context value:
         case 'inherit' : {
@@ -141,8 +141,8 @@ export const useEmphasisVariant = (props: EmphasisVariantProps, options?: Emphas
     
     
     
-    // Resolve the effective emphasized value:
-    const effectiveIsEmphasized = useEffectiveEmphasisValue(declarativeEmphasized, fallbackEmphasized);
+    // Resolve effective emphasized value:
+    const effectiveIsEmphasized = useResolvedEmphasized(declarativeEmphasized, fallbackEmphasized);
     
     
     

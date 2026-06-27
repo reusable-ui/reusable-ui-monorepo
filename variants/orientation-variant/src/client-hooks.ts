@@ -44,7 +44,7 @@ import {
  * @param {Orientation} fallbackOrientation - The fallback orientation when context is missing.
  * @returns {Orientation} - The resolved orientation value.
  */
-const useEffectiveOrientationValue = (declarativeOrientation: Required<OrientationVariantProps>['orientation'], fallbackOrientation: Orientation): Orientation => {
+const useResolvedOrientation = (declarativeOrientation: Required<OrientationVariantProps>['orientation'], fallbackOrientation: Orientation): Orientation => {
     switch (declarativeOrientation) {
         // If the orientation is 'inherit', use the context value:
         case 'inherit' : {
@@ -156,8 +156,8 @@ export const useOrientationVariant = (props: OrientationVariantProps, options?: 
     
     
     
-    // Resolve the effective orientation value:
-    const effectiveOrientation = useEffectiveOrientationValue(declarativeOrientation, fallbackOrientation);
+    // Resolve effective orientation value:
+    const effectiveOrientation = useResolvedOrientation(declarativeOrientation, fallbackOrientation);
     
     
     
