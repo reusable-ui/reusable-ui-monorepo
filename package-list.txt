@@ -28,6 +28,8 @@
 @reusable-ui/focuses
 
 // Reusable-ui variants:
+@reusable-ui/effective-variant          non_peer        UTILITY
+
 @reusable-ui/orientation-variant
 @reusable-ui/flow-direction-variant
 @reusable-ui/size-variant

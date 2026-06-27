@@ -68,6 +68,7 @@
     "utilities/events",
     "utilities/semantics",
     "utilities/focuses",
+    "variants/effective-variant",
     "variants/orientation-variant",
     "variants/flow-direction-variant",
     "variants/size-variant",

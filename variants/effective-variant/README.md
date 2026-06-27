@@ -1,0 +1,227 @@
+# @reusable-ui/effective-variant 📦  
+
+**effective-variant** provides a collection of reusable **effective variant resolvers** for various kinds of props.  
+It abstracts recurring variant resolution patterns found across many `*-variant` packages — from controlled inputs to advanced behaviors such as context inheriting and inverting.
+
+By centralizing these patterns, you avoid duplicating logic across components and ensure consistency, predictability, and maintainability throughout your UI ecosystem.
+
+With **effective-variant**, you can build:  
+- **Controlled variants** — extract values from controlled props.  
+- **Inheritance variants** — controlled variants that can inherit from context when 'inherit' token is encountered.  
+- **Inversion variants** — controlled variants that can invert from context when 'invert' token is encountered.  
+
+Currently, three main variant resolvers are provided.  
+Future variant resolvers can be added as new patterns emerge, keeping the package extensible and adaptable.
+
+## 🔗 Ecosystem Integration
+
+The effective variant values produced by these resolvers can be fed directly into other `@reusable-ui` packages:
+
+- [`@reusable-ui/orientation-variant`](https://www.npmjs.com/package/@reusable-ui/orientation-variant)
+- [`@reusable-ui/emphasis-variant`](https://www.npmjs.com/package/@reusable-ui/emphasis-variant)
+- [`@reusable-ui/theme-variant`](https://www.npmjs.com/package/@reusable-ui/theme-variant)
+
+This makes **@reusable-ui/effective-variant** the foundational layer for consistent variant resolution across transitions, feedback, and interaction behaviors.
+
+## ✨ Features
+✔ Controlled variant management mode  
+✔ Consistent resolution order (props → options → definition → feature-specific rules)  
+✔ Declarative tokens for context inheritance and inversion  
+✔ Unified type contracts (`Props`, `Options`, `Definition`) for each resolver  
+
+## 📦 Installation
+Install **@reusable-ui/effective-variant** via npm or yarn:
+
+```sh
+npm install @reusable-ui/effective-variant
+# or
+yarn add @reusable-ui/effective-variant
+```
+
+## 🧩 Exported Hooks
+
+### `useResolvedControlledVariant(props, options, definition)`
+
+Resolves an effective variant value from controlled props.
+
+**Resolution order:**
+  1. `variant` prop  
+  2. `defaultVariant` option  
+  3. `defaultVariant` definition  
+
+#### 💡 Usage Examples
+
+Controlled mode, by supplying `variant` prop:
+
+```ts
+const size = useResolvedControlledVariant(
+    // Props:
+    { variant: 'lg' },
+    
+    // Options:
+    { defaultVariant: 'md' },
+    
+    // Definition:
+    { defaultVariant: 'md' }
+); // → 'lg'
+```
+
+Default mode, by falling back to `defaultVariant` option:
+
+```ts
+const size = useResolvedControlledVariant(
+    // Props:
+    {},
+    
+    // Options:
+    { defaultVariant: 'md' },
+    
+    // Definition:
+    { defaultVariant: 'md' }
+); // → 'md'
+```
+
+### `useResolvedInheritableVariant(props, options, definition)`
+
+Resolves an effective variant value from controlled props,
+inherited from context when a declarative token is encountered.
+
+If the resolved variant equals `inheritableVariantToken`,
+the hook attempts to inherit from `variantContext`.
+
+**Resolution order:**
+  1. `variant` prop  
+  2. `defaultVariant` option  
+  3. `defaultVariant` definition  
+  4. Inherit from `variantContext` (if resolved variant equals `inheritableVariantToken`)  
+  5. Use `fallbackVariant` (fallback)  
+
+#### 💡 Usage Examples
+
+Controlled mode with inheritance, by supplying `variant` prop and inheriting from context:
+
+```ts
+const theme = useResolvedInheritableVariant(
+    // Props:
+    { variant: 'inherit' },
+    
+    // Options:
+    { defaultVariant: 'danger' },
+    
+    // Definition:
+    {
+        defaultVariant: 'primary',
+        inheritableVariantToken: 'inherit',
+        variantContext: ThemeVariantContext,
+        fallbackVariant: 'secondary',
+    }
+); // → 'success' (assuming context provides `'success'`)
+```
+
+Default mode with inheritance, by falling back to `defaultVariant` option and inheriting from context:
+
+```ts
+const theme = useResolvedInheritableVariant(
+    // Props:
+    {},
+    
+    // Options:
+    { defaultVariant: 'inherit' },
+    
+    // Definition:
+    {
+        defaultVariant: 'primary',
+        inheritableVariantToken: 'inherit',
+        variantContext: ThemeVariantContext,
+        fallbackVariant: 'secondary',
+    }
+); // → 'success' (assuming context provides `'success'`)
+```
+
+### `useResolvedInvertableVariant(props, options, definition)`
+
+Resolves an effective variant value from controlled props,
+inherited or inverted from context when a declarative token is encountered.
+
+If the resolved variant equals `invertableVariantToken`,
+the hook attempts to invert from `variantContext`.
+
+**Resolution order:**
+  1. `variant` prop  
+  2. `defaultVariant` option  
+  3. `defaultVariant` definition  
+  4. Inherit from `variantContext` (if resolved variant equals `inheritableVariantToken`)  
+  5. Invert from `variantContext` (if resolved variant equals `invertableVariantToken`)  
+  6. Use `fallbackVariant` (fallback)  
+
+#### 💡 Usage Examples
+
+Controlled mode with inversion, by supplying `variant` prop and inverting from context:
+
+```ts
+const orientation = useResolvedInvertableVariant(
+    // Props:
+    { variant: 'invert' },
+    
+    // Options:
+    { defaultVariant: 'inline' },
+    
+    // Definition:
+    {
+        defaultVariant: 'inline',
+        inheritableVariantToken: 'inherit',
+        invertableVariantToken: 'invert',
+        variantContext: ThemeVariantContext,
+        invertVariant: (inheritedVariant) => (inheritedVariant === 'inline') ? 'block' : 'inline',
+        fallbackVariant: 'inline',
+    }
+); // → 'inline' (assuming context provides `'block'`)
+```
+
+Default mode with inversion, by falling back to `defaultVariant` option and inverting from context:
+
+```ts
+const orientation = useResolvedInvertableVariant(
+    // Props:
+    {},
+    
+    // Options:
+    { defaultVariant: 'invert' },
+    
+    // Definition:
+    {
+        defaultVariant: 'inline',
+        inheritableVariantToken: 'inherit',
+        invertableVariantToken: 'invert',
+        variantContext: ThemeVariantContext,
+        invertVariant: (inheritedVariant) => (inheritedVariant === 'inline') ? 'block' : 'inline',
+        fallbackVariant: 'inline',
+    }
+); // → 'inline' (assuming context provides `'block'`)
+```
+
+## 📚 Related Packages
+
+- [`@reusable-ui/orientation-variant`](https://www.npmjs.com/package/@reusable-ui/orientation-variant) – horizontal and vertical variants.  
+- [`@reusable-ui/flow-direction-variant`](https://www.npmjs.com/package/@reusable-ui/flow-direction-variant) – start and end aligned variants.  
+- [`@reusable-ui/size-variant`](https://www.npmjs.com/package/@reusable-ui/size-variant) – small, medium, and large variants.  
+- [`@reusable-ui/theme-variant`](https://www.npmjs.com/package/@reusable-ui/theme-variant) – primary, secondary, success, etc. variants.  
+- [`@reusable-ui/emphasis-variant`](https://www.npmjs.com/package/@reusable-ui/emphasis-variant) – emphasized variant.  
+- [`@reusable-ui/outline-variant`](https://www.npmjs.com/package/@reusable-ui/outline-variant) – border-only variant.  
+- [`@reusable-ui/mild-variant`](https://www.npmjs.com/package/@reusable-ui/mild-variant) – content-friendly colored variant.  
+- [`@reusable-ui/bare-variant`](https://www.npmjs.com/package/@reusable-ui/bare-variant) – stripped layout variant.  
+
+## 📖 Part of the Reusable-UI Framework  
+**@reusable-ui/effective-variant** is a core utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
+For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
+
+## 🤝 Contributing  
+Want to improve **@reusable-ui/effective-variant**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
+
+## 🛡️ License  
+Licensed under the **MIT License** – see the [LICENSE](./LICENSE) file for details.  
+
+---
+
+🚀 **@reusable-ui/effective-variant brings predictable, reusable variant resolution to your UI.**  
+Give it a ⭐ on GitHub if you find it useful!  

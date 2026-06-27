@@ -1,0 +1,199 @@
+// React:
+import {
+    // Types:
+    type Context,
+}                           from 'react'
+
+
+
+/**
+ * Props for resolving an effective variant value from controlled props.
+ * 
+ * @template TVariant - The type of the variant value.
+ */
+export interface ControlledVariantProps<TVariant extends {} | null> {
+    /**
+     * Controls the current variant value.
+     * 
+     * Defaults to `options.defaultVariant`.
+     */
+    variant ?: TVariant
+}
+
+/**
+ * Component-level options for resolving an effective variant value from controlled props.
+ * 
+ * - Declares an optional default variant value used when no `variant` prop
+ *   is provided by the consumer.
+ * 
+ * @template TVariant - The type of the variant value.
+ */
+export interface ControlledVariantOptions<TVariant extends {} | null> {
+    /**
+     * Declares an optional component-level default variant value.
+     * Acts as a fallback when no `variant` prop is provided.
+     */
+    defaultVariant ?: TVariant
+}
+
+/**
+ * Resolver-level definition for resolving an effective variant value from controlled props.
+ * 
+ * - Declares the mandatory default variant value used when neither `variant` prop nor `defaultVariant` option is provided.
+ * 
+ * @template TVariant - The type of the variant value.
+ */
+export interface ControlledVariantDefinition<TVariant extends {} | null> {
+    /**
+     * Declares the mandatory resolver-level default variant value.
+     * Acts as the final fallback when no other defaults are provided.
+     */
+    defaultVariant  : TVariant
+}
+
+
+
+/**
+ * Props for resolving an effective variant value from controlled props,
+ * inherited from context when a declarative token is encountered.
+ * 
+ * @template TVariant - The type of the variant value.
+ * @template TInheritToken - A special string token used to trigger inheritance (e.g. `'inherit'`).
+ */
+export interface InheritableVariantProps<TVariant extends {} | null, TInheritToken extends string>
+    extends
+        // Bases:
+        ControlledVariantProps<TVariant | TInheritToken>
+{
+    /* No additional props yet - reserved for future extensions. */
+}
+
+/**
+ * Component-level options for resolving an effective variant value from controlled props,
+ * with optional inheritance from context when a declarative token is encountered.
+ * 
+ * - Declares an optional default variant value used when no `variant` prop
+ *   is provided by the consumer.
+ * 
+ * @template TVariant - The type of the variant value.
+ * @template TInheritToken - A special string token used to trigger inheritance (e.g. `'inherit'`).
+ */
+export interface InheritableVariantOptions<TVariant extends {} | null, TInheritToken extends string>
+    extends
+        // Bases:
+        ControlledVariantOptions<TVariant | TInheritToken>
+{
+    /* No additional options yet - reserved for future extensions. */
+}
+
+/**
+ * Resolver-level definition for resolving an effective variant value from controlled props,
+ * with optional inheritance from context when a declarative token is encountered.
+ * 
+ * - Declares the mandatory default variant value used when neither `variant` prop nor `defaultVariant` option is provided.
+ * - Declares the declarative token that activates dynamic variant inheritance.
+ * - Declares the context to resolve variant value from when a declarative token is encountered.
+ * - Declares the default fallback variant used when no related context is found.
+ * 
+ * @template TVariant - The type of the variant value.
+ * @template TInheritToken - A special string token used to trigger inheritance (e.g. `'inherit'`).
+ */
+export interface InheritableVariantDefinition<TVariant extends {} | null, TInheritToken extends string>
+    extends
+        // Bases:
+        ControlledVariantDefinition<TVariant | TInheritToken>
+{
+    /**
+     * Declares the token for activating dynamic variant inheritance (e.g. `'inherit'`).
+     * - If the resolved variant equals this token, the hook will attempt to use this context value.
+     */
+    inheritableVariantToken : TInheritToken
+    
+    /**
+     * Declares the context to resolve variant value from when inheritance is enabled.
+     * 
+     * Resolution behavior:
+     * - If the resolved variant equals `definition.inheritableVariantToken`,
+     *   the hook will attempt to use this context value.
+     * - If no `Provider` is found, `use(variantContext)` will return `undefined`,
+     *   and the hook will fall back to `fallbackVariant`.
+     * 
+     * Note: contexts are expected to be created with `undefined` as their `defaultValue`,
+     * so that `use(variantContext)` returns `undefined` when no `Provider` is present.
+     */
+    variantContext          : Context<TVariant | undefined>
+    
+    /**
+     * Declares the default fallback variant (e.g. `'md'`, for size-variant).
+     * - If no related context is found, this fallback is applied.
+     * - Common values: `'md'` for `TVariant = TSize`, or `'primary'` for `TVariant = TTheme`.
+     */
+    fallbackVariant         : TVariant
+}
+
+
+
+/**
+ * Props for resolving an effective variant value from controlled props,
+ * inherited or inverted from context when a declarative token is encountered.
+ * 
+ * @template TVariant - The type of the variant value.
+ * @template TInheritToken - A special string token used to trigger inheritance (e.g. `'inherit'`).
+ * @template TInvertToken - A special string token used to trigger inversion (e.g. `'invert'`).
+ */
+export interface InvertableVariantProps<TVariant extends {} | null, TInheritToken extends string, TInvertToken extends string>
+    extends
+        // Bases:
+        InheritableVariantProps<TVariant | TInvertToken, TInheritToken>
+{
+    /* No additional props yet - reserved for future extensions. */
+}
+
+/**
+ * Component-level options for resolving an effective variant value from controlled props,
+ * with optional inheritance and inversion from context when a declarative token is encountered.
+ * 
+ * - Declares an optional default variant value used when no `variant` prop
+ *   is provided by the consumer.
+ * 
+ * @template TVariant - The type of the variant value.
+ * @template TInheritToken - A special string token used to trigger inheritance (e.g. `'inherit'`).
+ * @template TInvertToken - A special string token used to trigger inversion (e.g. `'invert'`).
+ */
+export interface InvertableVariantOptions<TVariant extends {} | null, TInheritToken extends string, TInvertToken extends string>
+    extends
+        // Bases:
+        InheritableVariantOptions<TVariant | TInvertToken, TInheritToken>
+{
+    /* No additional options yet - reserved for future extensions. */
+}
+
+/**
+ * Resolver-level definition for resolving an effective variant value from controlled props,
+ * with optional inheritance and inversion from context when a declarative token is encountered.
+ * 
+ * - Declares the mandatory default variant value used when neither `variant` prop nor `defaultVariant` option is provided.
+ * - Declares the declarative token that activates dynamic variant inversion.
+ * - Declares the context to resolve variant value from when a declarative token is encountered.
+ * - Declares the default fallback variant used when no related context is found.
+ * 
+ * @template TVariant - The type of the variant value.
+ * @template TInheritToken - A special string token used to trigger inheritance (e.g. `'inherit'`).
+ * @template TInvertToken - A special string token used to trigger inversion (e.g. `'invert'`).
+ */
+export interface InvertableVariantDefinition<TVariant extends {} | null, TInheritToken extends string, TInvertToken extends string>
+    extends
+        // Bases:
+        InheritableVariantDefinition<TVariant, TInheritToken>
+{
+    /**
+     * Declares the token for activating dynamic variant inversion (e.g. `'invert'`).
+     * - If the resolved variant equals this token, the hook will attempt to use this context value.
+     */
+    invertableVariantToken : TInvertToken
+    
+    /**
+     * Declares an invert function to flip the inherited variant into the inverted one.
+     */
+    invertVariant          : (inheritedVariant: TVariant) => TVariant
+}
