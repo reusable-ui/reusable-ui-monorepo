@@ -189,7 +189,9 @@ export interface InvertableVariantOptions<TVariant extends {} | null, TInheritTo
 export interface InvertableVariantDefinition<TVariant extends {} | null, TInheritToken extends string, TInvertToken extends string>
     extends
         // Bases:
-        InheritableVariantDefinition<TVariant, TInheritToken>
+        Omit<InheritableVariantDefinition<TVariant | TInvertToken, TInheritToken>,
+            | 'variantContext' // Cannot narrowing down to `TVariant | undefined` → excluded
+        >
 {
     /**
      * Declares the token for activating dynamic variant inversion (e.g. `'invert'`).
@@ -198,7 +200,27 @@ export interface InvertableVariantDefinition<TVariant extends {} | null, TInheri
     invertableVariantToken : TInvertToken
     
     /**
+     * Declares the context from which the inherited variant is read.
+     * 
+     * Resolution behavior:
+     * - If the resolved variant equals `definition.inheritableVariantToken`,
+     *   the hook will attempt to use this context value.
+     * - If no `Provider` is found, `use(variantContext)` returns `undefined`,
+     *   and the hook falls back to `fallbackVariant`.
+     * 
+     * Note: contexts are expected to be created with `undefined` as their default value,
+     * so that `use(variantContext)` returns `undefined` when no `Provider` is present.
+     */
+    variantContext         : Context<TVariant | undefined> // Narrowing down from `TVariant | TInvertToken | undefined` to `TVariant | undefined`
+    
+    /**
      * Declares the inversion function used to transform the inherited context value into the final variant.
      */
     invertVariant          : (inheritedVariant: TVariant) => TVariant
+    
+    /**
+     * Declares the fallback variant used when no related context value is available.
+     * - Common values: `'md'` for size variants, `'primary'` for theme variants.
+     */
+    fallbackVariant        : TVariant // Narrowing down from `TVariant | TInvertToken` to `TVariant`
 }
