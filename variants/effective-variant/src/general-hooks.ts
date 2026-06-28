@@ -11,19 +11,19 @@ import {
  * Resolves an effective variant value from controlled props.
  * 
  * **Resolution order:**
- *   1. `variant` prop  
- *   2. `defaultVariant` option  
- *   3. `defaultVariant` definition  
+ *   1. `props.variant`  
+ *   2. `options.defaultVariant`  
+ *   3. `definition.defaultVariant`  
  * 
- * @template TVariant - The type of the variant value.
+ * @template TVariant - The type of the resolved variant value.
  * 
- * @param props - The volatile props provided by the component consumer.
- * @param options - The per-component options containing optional defaults.
- * @param definition - The resolver-level definition containing the mandatory defaults.
+ * @param props - The props supplied by the component consumer.
+ * @param options - The component-level defaults.
+ * @param definition - The resolver-level defaults.
  * @returns The resolved variant value.
  * 
  * @example
- * Controlled mode, by supplying `variant` prop:
+ * Controlled mode, by supplying a `variant` prop:
  * ```ts
  * const size = useResolvedControlledVariant(
  *     // Props:
@@ -37,7 +37,7 @@ import {
  * ); // → 'lg'
  * ```
  * 
- * Default mode, by falling back to `defaultVariant` option:
+ * Default mode, by falling back to the component-level default:
  * ```ts
  * const size = useResolvedControlledVariant(
  *     // Props:
@@ -69,7 +69,7 @@ export const useResolvedControlledVariant = <TVariant extends {} | null>(props: 
     // Extract props, falling back to component-level default:
     const {
         /**
-         * Resolved variant (effective intent):
+         * The resolved variant value (effective intent):
          * - Controlled via `props.variant` if provided.
          * - Otherwise falls back to `componentDefaultVariant`.
          */
@@ -78,6 +78,6 @@ export const useResolvedControlledVariant = <TVariant extends {} | null>(props: 
     
     
     
-    // Return the final resolved variant (intent):
+    // Return the final resolved variant value (the intent):
     return resolvedVariant;
 };

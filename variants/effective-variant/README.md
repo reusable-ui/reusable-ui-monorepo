@@ -45,9 +45,9 @@ yarn add @reusable-ui/effective-variant
 Resolves an effective variant value from controlled props.
 
 **Resolution order:**
-  1. `variant` prop  
-  2. `defaultVariant` option  
-  3. `defaultVariant` definition  
+  1. `props.variant`  
+  2. `options.defaultVariant`  
+  3. `definition.defaultVariant`  
 
 #### 💡 Usage Examples
 
@@ -83,18 +83,16 @@ const size = useResolvedControlledVariant(
 
 ### `useResolvedInheritableVariant(props, options, definition)`
 
-Resolves an effective variant value from controlled props,
-inherited from context when a declarative token is encountered.
-
-If the resolved variant equals `inheritableVariantToken`,
-the hook attempts to inherit from `variantContext`.
+Resolves an effective variant value from controlled props while optionally
+inheriting from context when the resolved value equals the explicit
+inheritance token.
 
 **Resolution order:**
-  1. `variant` prop  
-  2. `defaultVariant` option  
-  3. `defaultVariant` definition  
-  4. Inherit from `variantContext` (if resolved variant equals `inheritableVariantToken`)  
-  5. Use `fallbackVariant` (fallback)  
+  1. `props.variant`  
+  2. `options.defaultVariant`  
+  3. `definition.defaultVariant`  
+  4. `variantContext` (when the resolved value equals `inheritableVariantToken`)  
+  5. `fallbackVariant`  
 
 #### 💡 Usage Examples
 
@@ -140,19 +138,17 @@ const theme = useResolvedInheritableVariant(
 
 ### `useResolvedInvertableVariant(props, options, definition)`
 
-Resolves an effective variant value from controlled props,
-inherited or inverted from context when a declarative token is encountered.
-
-If the resolved variant equals `invertableVariantToken`,
-the hook attempts to invert from `variantContext`.
+Resolves an effective variant value from controlled props while optionally
+inheriting or inverting from context when the resolved value equals the explicit
+inheritance/inversion token.
 
 **Resolution order:**
-  1. `variant` prop  
-  2. `defaultVariant` option  
-  3. `defaultVariant` definition  
-  4. Inherit from `variantContext` (if resolved variant equals `inheritableVariantToken`)  
-  5. Invert from `variantContext` (if resolved variant equals `invertableVariantToken`)  
-  6. Use `fallbackVariant` (fallback)  
+  1. `props.variant`  
+  2. `options.defaultVariant`  
+  3. `definition.defaultVariant`  
+  4. `variantContext` (when the resolved value equals `inheritableVariantToken`)  
+  5. Inverted `variantContext` (when the resolved value equals `invertableVariantToken`)  
+  6. `fallbackVariant`  
 
 #### 💡 Usage Examples
 

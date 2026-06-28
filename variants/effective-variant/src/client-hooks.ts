@@ -25,29 +25,27 @@ import {
 
 
 /**
- * Resolves an effective variant value from controlled props,
- * inherited from context when a declarative token is encountered.
- * 
- * If the resolved variant equals `inheritableVariantToken`,
- * the hook attempts to inherit from `variantContext`.
+ * Resolves an effective variant value from controlled props while optionally
+ * inheriting from context when the resolved value equals the explicit
+ * inheritance token.
  * 
  * **Resolution order:**
- *   1. `variant` prop  
- *   2. `defaultVariant` option  
- *   3. `defaultVariant` definition  
- *   4. Inherit from `variantContext` (if resolved variant equals `inheritableVariantToken`)  
- *   5. Use `fallbackVariant` (fallback)  
+ *   1. `props.variant`  
+ *   2. `options.defaultVariant`  
+ *   3. `definition.defaultVariant`  
+ *   4. `variantContext` (when the resolved value equals `inheritableVariantToken`)  
+ *   5. `fallbackVariant`  
  * 
- * @template TVariant - The type of the variant value.
+ * @template TVariant - The type of the resolved variant value.
  * @template TInheritToken - A special string token used to trigger inheritance (e.g. `'inherit'`).
  * 
- * @param props - The volatile props provided by the component consumer.
- * @param options - The per-component options containing optional defaults.
- * @param definition - The resolver-level definition containing the mandatory defaults and inheritance contracts.
- * @returns The resolved (and possibly inherited) variant value.
+ * @param props - The props supplied by the component consumer.
+ * @param options - The component-level defaults.
+ * @param definition - The resolver-level defaults and inheritance contract.
+ * @returns The resolved variant value, possibly inherited from context.
  * 
  * @example
- * Controlled mode with inheritance, by supplying `variant` prop and inheriting from context:
+ * Controlled mode with inheritance, by supplying a `variant` prop and inheriting from context:
  * ```ts
  * const theme = useResolvedInheritableVariant(
  *     // Props:
@@ -66,7 +64,7 @@ import {
  * ); // → 'success' (assuming context provides `'success'`)
  * ```
  * 
- * Default mode with inheritance, by falling back to `defaultVariant` option and inheriting from context:
+ * Default mode with inheritance, by falling back to the component-level default and inheriting from context:
  * ```ts
  * const theme = useResolvedInheritableVariant(
  *     // Props:
@@ -106,8 +104,8 @@ export const useResolvedInheritableVariant = <TVariant extends {} | null, TInher
     if (!Object.is(resolvedVariant, inheritableVariantToken)) return resolvedVariant as TVariant; // At this point, `resolvedVariant` cannot be `TInheritToken`, so it's safe to cast.
     
     // Attempt to inherit from context:
-    const inheritedVariant = use(variantContext);
-    if (inheritedVariant !== undefined) return inheritedVariant;
+    const contextVariant = use(variantContext);
+    if (contextVariant !== undefined) return contextVariant;
     
     // Fallback: return default fallback variant:
     return fallbackVariant;
@@ -116,31 +114,29 @@ export const useResolvedInheritableVariant = <TVariant extends {} | null, TInher
 
 
 /**
- * Resolves an effective variant value from controlled props,
- * inherited or inverted from context when a declarative token is encountered.
- * 
- * If the resolved variant equals `invertableVariantToken`,
- * the hook attempts to invert from `variantContext`.
+ * Resolves an effective variant value from controlled props while optionally
+ * inheriting or inverting from context when the resolved value equals the explicit
+ * inheritance/inversion token.
  * 
  * **Resolution order:**
- *   1. `variant` prop  
- *   2. `defaultVariant` option  
- *   3. `defaultVariant` definition  
- *   4. Inherit from `variantContext` (if resolved variant equals `inheritableVariantToken`)  
- *   5. Invert from `variantContext` (if resolved variant equals `invertableVariantToken`)  
- *   6. Use `fallbackVariant` (fallback)  
+ *   1. `props.variant`  
+ *   2. `options.defaultVariant`  
+ *   3. `definition.defaultVariant`  
+ *   4. `variantContext` (when the resolved value equals `inheritableVariantToken`)  
+ *   5. Inverted `variantContext` (when the resolved value equals `invertableVariantToken`)  
+ *   6. `fallbackVariant`  
  * 
- * @template TVariant - The type of the variant value.
+ * @template TVariant - The type of the resolved variant value.
  * @template TInheritToken - A special string token used to trigger inheritance (e.g. `'inherit'`).
  * @template TInvertToken - A special string token used to trigger inversion (e.g. `'invert'`).
  * 
- * @param props - The volatile props provided by the component consumer.
- * @param options - The per-component options containing optional defaults.
- * @param definition - The resolver-level definition containing the mandatory defaults, inheritance and inversion contracts.
- * @returns The resolved (and possibly inherited or inverted) variant value.
+ * @param props - The props supplied by the component consumer.
+ * @param options - The component-level defaults.
+ * @param definition - The resolver-level defaults and inheritance/inversion contracts.
+ * @returns The resolved variant value, possibly inherited or inverted from context.
  * 
  * @example
- * Controlled mode with inversion, by supplying `variant` prop and inverting from context:
+ * Controlled mode with inversion, by supplying a `variant` prop and inverting from context:
  * ```ts
  * const orientation = useResolvedInvertableVariant(
  *     // Props:
@@ -161,7 +157,7 @@ export const useResolvedInheritableVariant = <TVariant extends {} | null, TInher
  * ); // → 'inline' (assuming context provides `'block'`)
  * ```
  * 
- * Default mode with inversion, by falling back to `defaultVariant` option and inverting from context:
+ * Default mode with inversion, by falling back to the component-level default and inverting from context:
  * ```ts
  * const orientation = useResolvedInvertableVariant(
  *     // Props:
@@ -204,8 +200,8 @@ export const useResolvedInvertableVariant = <TVariant extends {} | null, TInheri
     if (!Object.is(resolvedVariant, invertableVariantToken)) return resolvedVariant as TVariant; // At this point, `resolvedVariant` cannot be `TInvertToken`, so it's safe to cast.
     
     // Attempt to invert from context:
-    const inheritedVariant = use(variantContext);
-    if (inheritedVariant !== undefined) return invertVariant(inheritedVariant);
+    const contextVariant = use(variantContext);
+    if (contextVariant !== undefined) return invertVariant(contextVariant);
     
     // Fallback: return default fallback variant:
     return fallbackVariant;
