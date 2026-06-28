@@ -53,7 +53,7 @@ Resolves an effective state value from controlled props.
 
 #### 💡 Usage Examples
 
-Controlled mode, by supplying `state` prop:
+Controlled mode, by supplying a `state` prop:
 
 ```ts
 const expanded = useResolvedControlledState(
@@ -68,7 +68,7 @@ const expanded = useResolvedControlledState(
 ); // → true
 ```
 
-Default mode, by falling back to `defaultState` option:
+Default mode, by falling back to the component-level default:
 
 ```ts
 const expanded = useResolvedControlledState(
@@ -96,7 +96,7 @@ clamping for a valid range when the clamping function is available.
 
 #### 💡 Usage Examples
 
-Controlled mode with clamping, by supplying `state` prop and declaring `clampState` function:
+Controlled mode with clamping, by supplying a `state` prop and declaring `clampState` function:
 
 ```ts
 const viewIndex = useResolvedRangedState(
@@ -114,7 +114,7 @@ const viewIndex = useResolvedRangedState(
 ); // → 5
 ```
 
-Default mode with clamping, by falling back to `defaultState` option and declaring `clampState` function:
+Default mode with clamping, by falling back to the component-level default and declaring `clampState` function:
 
 ```ts
 const viewIndex = useResolvedRangedState(
@@ -146,7 +146,7 @@ cascading from context when cascade behavior is enabled.
 
 #### 💡 Usage Examples
 
-Controlled mode with cascading, by supplying `state` prop and inheriting from context:
+Controlled mode with cascading, by supplying a `state` prop and cascading from context:
 
 ```ts
 const disabled = useResolvedCascadeState(
@@ -169,7 +169,7 @@ const disabled = useResolvedCascadeState(
 ); // → true (assuming context provides `true`)
 ```
 
-Default mode with cascading, by falling back to `defaultState` option and inheriting from context:
+Default mode with cascading, by falling back to the component-level default and cascading from context:
 
 ```ts
 const disabled = useResolvedCascadeState(
@@ -209,7 +209,7 @@ When `isRestricted` is true, the state is forced to `inactiveState`.
 
 #### 💡 Usage Examples
 
-Controlled mode with observation, by supplying `state` prop:
+Controlled mode with observation, by supplying a `state` prop:
 
 ```ts
 const { focused } = useResolvedObservableState(
@@ -229,7 +229,7 @@ const { focused } = useResolvedObservableState(
 // → true (delegated to observedState)
 ```
 
-Default mode with observation, by falling back to `defaultState` option:
+Default mode with observation, by falling back to the component-level default:
 
 ```ts
 const { focused } = useResolvedObservableState(
