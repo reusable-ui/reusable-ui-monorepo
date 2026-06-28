@@ -51,7 +51,7 @@ Resolves an effective variant value from controlled props.
 
 #### 💡 Usage Examples
 
-Controlled mode, by supplying `variant` prop:
+Controlled mode, by supplying a `variant` prop:
 
 ```ts
 const size = useResolvedControlledVariant(
@@ -66,7 +66,7 @@ const size = useResolvedControlledVariant(
 ); // → 'lg'
 ```
 
-Default mode, by falling back to `defaultVariant` option:
+Default mode, by falling back to the component-level default:
 
 ```ts
 const size = useResolvedControlledVariant(
@@ -96,7 +96,7 @@ inheritance token.
 
 #### 💡 Usage Examples
 
-Controlled mode with inheritance, by supplying `variant` prop and inheriting from context:
+Controlled mode with inheritance, by supplying a `variant` prop and inheriting from context:
 
 ```ts
 const theme = useResolvedInheritableVariant(
@@ -116,7 +116,7 @@ const theme = useResolvedInheritableVariant(
 ); // → 'success' (assuming context provides `'success'`)
 ```
 
-Default mode with inheritance, by falling back to `defaultVariant` option and inheriting from context:
+Default mode with inheritance, by falling back to the component-level default and inheriting from context:
 
 ```ts
 const theme = useResolvedInheritableVariant(
@@ -152,7 +152,7 @@ inheritance/inversion token.
 
 #### 💡 Usage Examples
 
-Controlled mode with inversion, by supplying `variant` prop and inverting from context:
+Controlled mode with inversion, by supplying a `variant` prop and inverting from context:
 
 ```ts
 const orientation = useResolvedInvertableVariant(
@@ -174,7 +174,7 @@ const orientation = useResolvedInvertableVariant(
 ); // → 'inline' (assuming context provides `'block'`)
 ```
 
-Default mode with inversion, by falling back to `defaultVariant` option and inverting from context:
+Default mode with inversion, by falling back to the component-level default and inverting from context:
 
 ```ts
 const orientation = useResolvedInvertableVariant(
