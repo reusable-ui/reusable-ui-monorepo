@@ -85,7 +85,11 @@ export interface InheritableVariantOptions<TVariant extends {} | null, TInheritT
         // Bases:
         ControlledVariantOptions<TVariant | TInheritToken>
 {
-    /* No additional options yet - reserved for future extensions. */
+    /**
+     * Declares an optional component-level fallback variant used when no related context value is available.
+     * - Common values: `'md'` for size variants, `'primary'` for theme variants.
+     */
+    fallbackVariant         ?: TVariant
 }
 
 /**
@@ -110,7 +114,7 @@ export interface InheritableVariantDefinition<TVariant extends {} | null, TInher
      * Declares the token for activating dynamic variant inheritance (e.g. `'inherit'`).
      * - If the resolved variant equals this token, the hook will attempt to use the provided context value.
      */
-    inheritableVariantToken : TInheritToken
+    inheritableVariantToken  : TInheritToken
     
     /**
      * Declares the context from which the inherited variant is read.
@@ -124,13 +128,13 @@ export interface InheritableVariantDefinition<TVariant extends {} | null, TInher
      * Note: contexts are expected to be created with `undefined` as their default value,
      * so that `use(variantContext)` returns `undefined` when no `Provider` is present.
      */
-    variantContext          : Context<TVariant | undefined>
+    variantContext           : Context<TVariant | undefined>
     
     /**
-     * Declares the fallback variant used when no related context value is available.
+     * Declares the mandatory resolver-level fallback variant used when no related context value is available.
      * - Common values: `'md'` for size variants, `'primary'` for theme variants.
      */
-    fallbackVariant         : TVariant
+    fallbackVariant          : TVariant
 }
 
 
@@ -169,7 +173,11 @@ export interface InvertableVariantOptions<TVariant extends {} | null, TInheritTo
         // Bases:
         InheritableVariantOptions<TVariant | TInvertToken, TInheritToken>
 {
-    /* No additional options yet - reserved for future extensions. */
+    /**
+     * Declares an optional component-level fallback variant used when no related context value is available.
+     * - Common values: `'md'` for size variants, `'primary'` for theme variants.
+     */
+    fallbackVariant         ?: TVariant // Narrowing down from `TVariant | TInvertToken` to `TVariant`
 }
 
 /**
@@ -197,7 +205,7 @@ export interface InvertableVariantDefinition<TVariant extends {} | null, TInheri
      * Declares the token for activating dynamic variant inversion (e.g. `'invert'`).
      * - If the resolved variant equals this token, the hook will attempt to use the provided context value.
      */
-    invertableVariantToken : TInvertToken
+    invertableVariantToken   : TInvertToken
     
     /**
      * Declares the context from which the inherited variant is read.
@@ -211,16 +219,16 @@ export interface InvertableVariantDefinition<TVariant extends {} | null, TInheri
      * Note: contexts are expected to be created with `undefined` as their default value,
      * so that `use(variantContext)` returns `undefined` when no `Provider` is present.
      */
-    variantContext         : Context<TVariant | undefined> // Narrowing down from `TVariant | TInvertToken | undefined` to `TVariant | undefined`
+    variantContext           : Context<TVariant | undefined> // Narrowing down from `TVariant | TInvertToken | undefined` to `TVariant | undefined`
     
     /**
      * Declares the inversion function used to transform the inherited context value into the final variant.
      */
-    invertVariant          : (inheritedVariant: TVariant) => TVariant
+    invertVariant            : (inheritedVariant: TVariant) => TVariant
     
     /**
-     * Declares the fallback variant used when no related context value is available.
+     * Declares the mandatory resolver-level fallback variant used when no related context value is available.
      * - Common values: `'md'` for size variants, `'primary'` for theme variants.
      */
-    fallbackVariant        : TVariant // Narrowing down from `TVariant | TInvertToken` to `TVariant`
+    fallbackVariant          : TVariant // Narrowing down from `TVariant | TInvertToken` to `TVariant`
 }

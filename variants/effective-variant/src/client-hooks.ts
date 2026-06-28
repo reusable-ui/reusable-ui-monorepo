@@ -88,8 +88,15 @@ export const useResolvedInheritableVariant = <TVariant extends {} | null, TInher
     const {
         inheritableVariantToken,
         variantContext,
-        fallbackVariant,
+        fallbackVariant : definitionFallbackVariant,
     } = definition;
+    
+    
+    
+    // Extract component-level options, falling back to definition default:
+    const {
+        fallbackVariant : componentFallbackVariant = definitionFallbackVariant,
+    } = options;
     
     
     
@@ -108,7 +115,7 @@ export const useResolvedInheritableVariant = <TVariant extends {} | null, TInher
     if (contextVariant !== undefined) return contextVariant;
     
     // Fallback: return default fallback variant:
-    return fallbackVariant;
+    return componentFallbackVariant;
 };
 
 
@@ -184,8 +191,15 @@ export const useResolvedInvertableVariant = <TVariant extends {} | null, TInheri
         invertableVariantToken,
         variantContext,
         invertVariant,
-        fallbackVariant,
+        fallbackVariant : definitionFallbackVariant,
     } = definition;
+    
+    
+    
+    // Extract component-level options, falling back to definition default:
+    const {
+        fallbackVariant : componentFallbackVariant = definitionFallbackVariant,
+    } = options;
     
     
     
@@ -204,5 +218,5 @@ export const useResolvedInvertableVariant = <TVariant extends {} | null, TInheri
     if (contextVariant !== undefined) return invertVariant(contextVariant);
     
     // Fallback: return default fallback variant:
-    return fallbackVariant;
+    return componentFallbackVariant;
 };
