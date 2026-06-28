@@ -47,9 +47,9 @@ yarn add @reusable-ui/effective-state
 Resolves an effective state value from controlled props.
 
 **Resolution order:**
-  1. `state` prop  
-  2. `defaultState` option  
-  3. `defaultState` definition  
+  1. `props.state`  
+  2. `options.defaultState`  
+  3. `definition.defaultState`  
 
 #### 💡 Usage Examples
 
@@ -85,16 +85,13 @@ const expanded = useResolvedControlledState(
 
 ### `useResolvedRangedState(props, options, definition)`
 
-Resolves an effective state value from controlled props,
-clamped for a valid range.
-
-If a `clampState` function is declared in options or definition,
-the resolved value is normalized into a valid range.
+Resolves an effective state value from controlled props while optionally
+clamping for a valid range when the clamping function is available.
 
 **Resolution order:**
-  1. `state` prop  
-  2. `defaultState` option  
-  3. `defaultState` definition  
+  1. `props.state`  
+  2. `options.defaultState`  
+  3. `definition.defaultState`  
   4. `clampState` function (normalization)  
 
 #### 💡 Usage Examples
@@ -137,18 +134,15 @@ const viewIndex = useResolvedRangedState(
 
 ### `useResolvedCascadeState(props, options, definition)`
 
-Resolves an effective state value from controlled props,
-cascaded from context when cascade behavior is enabled.
-
-If cascading is enabled and the resolved state equals `inactiveState`,
-the hook attempts to inherit from `stateContext`.
+Resolves an effective state value from controlled props while optionally
+cascading from context when cascade behavior is enabled.
 
 **Resolution order:**
-  1. `state` prop  
-  2. `defaultState` option  
-  3. `defaultState` definition  
-  4. Inherit from `stateContext` (if cascading enabled and resolved state equals `inactiveState`)  
-  5. Use `inactiveState` (fallback)  
+  1. `props.state`  
+  2. `options.defaultState`  
+  3. `definition.defaultState`  
+  4. `stateContext` (when the cascading is enabled)  
+  5. `inactiveState` (fallback)  
 
 #### 💡 Usage Examples
 
@@ -200,18 +194,18 @@ const disabled = useResolvedCascadeState(
 
 ### `useResolvedObservableState(props, options, definition)`
 
-Resolves an effective state value from controlled props,
-delegated to an external observer when a declarative token is encountered.
+Resolves an effective state value from controlled props while optionally
+delegating to an external observer when the resolved value equals the explicit
+observable token.
 
-If `isRestricted` is true, the state is forced to `inactiveState`.  
-If the resolved state equals `observableStateToken`, the hook delegates to `observedState`.
+When `isRestricted` is true, the state is forced to `inactiveState`.  
 
 **Resolution order:**
-  1. Use `inactiveState` (if `isRestricted` is true)  
-  2. `state` prop  
-  3. `defaultState` option  
-  4. `defaultState` definition  
-  5. Delegate to `observedState` (if resolved state equals `observableStateToken`)  
+  1. `inactiveState` (when `isRestricted` is true)  
+  2. `props.state`  
+  3. `options.defaultState`  
+  4. `definition.defaultState`  
+  5. `observedState` (when the resolved value equals `observableStateToken`)  
 
 #### 💡 Usage Examples
 

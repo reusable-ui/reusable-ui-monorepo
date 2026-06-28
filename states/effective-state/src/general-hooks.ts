@@ -17,19 +17,19 @@ import {
  * Resolves an effective state value from controlled props.
  * 
  * **Resolution order:**
- *   1. `state` prop  
- *   2. `defaultState` option  
- *   3. `defaultState` definition  
+ *   1. `props.state`  
+ *   2. `options.defaultState`  
+ *   3. `definition.defaultState`  
  * 
- * @template TState - The type of the state value.
+ * @template TState - The type of the resolved state value.
  * 
- * @param props - The volatile props provided by the component consumer.
- * @param options - The per-component options containing optional defaults.
- * @param definition - The resolver-level definition containing the mandatory defaults.
+ * @param props - The props supplied by the component consumer.
+ * @param options - The component-level defaults.
+ * @param definition - The resolver-level defaults.
  * @returns The resolved state value.
  * 
  * @example
- * Controlled mode, by supplying `state` prop:
+ * Controlled mode, by supplying a `state` prop:
  * ```ts
  * const expanded = useResolvedControlledState(
  *     // Props:
@@ -43,7 +43,7 @@ import {
  * ); // → true
  * ```
  * 
- * Default mode, by falling back to `defaultState` option:
+ * Default mode, by falling back to the component-level default:
  * ```ts
  * const expanded = useResolvedControlledState(
  *     // Props:
@@ -75,7 +75,7 @@ export const useResolvedControlledState = <TState extends {} | null>(props: Cont
     // Extract props, falling back to component-level default:
     const {
         /**
-         * Resolved state (effective intent):
+         * The resolved state value (effective intent):
          * - Controlled via `props.state` if provided.
          * - Otherwise falls back to `componentDefaultState`.
          */
@@ -84,34 +84,31 @@ export const useResolvedControlledState = <TState extends {} | null>(props: Cont
     
     
     
-    // Return the final resolved state (intent):
+    // Return the final resolved state value (the intent):
     return resolvedState;
 };
 
 
 
 /**
- * Resolves an effective state value from controlled props,
- * clamped for a valid range.
- * 
- * If a `clampState` function is declared in options or definition,
- * the resolved value is normalized into a valid range.
+ * Resolves an effective state value from controlled props while optionally
+ * clamping for a valid range when the clamping function is available.
  * 
  * **Resolution order:**
- *   1. `state` prop  
- *   2. `defaultState` option  
- *   3. `defaultState` definition  
+ *   1. `props.state`  
+ *   2. `options.defaultState`  
+ *   3. `definition.defaultState`  
  *   4. `clampState` function (normalization)  
  * 
- * @template TState - The type of the state value (e.g. number for view index).
+ * @template TState - The type of the resolved state value (e.g. number for view index).
  * 
- * @param props - The volatile props provided by the component consumer.
- * @param options - The per-component options containing optional defaults and clamping.
- * @param definition - The resolver-level definition containing the mandatory defaults and optional clamping.
- * @returns The resolved (and possibly clamped) state value.
+ * @param props - The props supplied by the component consumer.
+ * @param options - The component-level defaults and optional clamping.
+ * @param definition - The resolver-level defaults and optional clamping.
+ * @returns The resolved state value, possibly clamped to a valid range.
  * 
  * @example
- * Controlled mode with clamping, by supplying `state` prop and declaring `clampState` function:
+ * Controlled mode with clamping, by supplying a `state` prop and declaring `clampState` function:
  * ```ts
  * const viewIndex = useResolvedRangedState(
  *     // Props:
@@ -128,7 +125,7 @@ export const useResolvedControlledState = <TState extends {} | null>(props: Cont
  * ); // → 5
  * ```
  * 
- * Default mode with clamping, by falling back to `defaultState` option and declaring `clampState` function:
+ * Default mode with clamping, by falling back to the component-level default and declaring `clampState` function:
  * ```ts
  * const viewIndex = useResolvedRangedState(
  *     // Props:
@@ -173,29 +170,29 @@ export const useResolvedRangedState = <TState extends {} | null>(props: RangedSt
 
 
 /**
- * Resolves an effective state value from controlled props,
- * delegated to an external observer when a declarative token is encountered.
+ * Resolves an effective state value from controlled props while optionally
+ * delegating to an external observer when the resolved value equals the explicit
+ * observable token.
  * 
- * If `isRestricted` is true, the state is forced to `inactiveState`.  
- * If the resolved state equals `observableStateToken`, the hook delegates to `observedState`.
+ * When `isRestricted` is true, the state is forced to `inactiveState`.  
  * 
  * **Resolution order:**
- *   1. Use `inactiveState` (if `isRestricted` is true)  
- *   2. `state` prop  
- *   3. `defaultState` option  
- *   4. `defaultState` definition  
- *   5. Delegate to `observedState` (if resolved state equals `observableStateToken`)  
+ *   1. `inactiveState` (when `isRestricted` is true)  
+ *   2. `props.state`  
+ *   3. `options.defaultState`  
+ *   4. `definition.defaultState`  
+ *   5. `observedState` (when the resolved value equals `observableStateToken`)  
  * 
- * @template TState - The type of the state value.
+ * @template TState - The type of the resolved state value.
  * @template TToken - A special string token used to trigger observation (e.g. `'auto'`).
  * 
- * @param props - The volatile props provided by the component consumer.
- * @param options - The per-component options containing optional defaults.
- * @param definition - The resolver-level definition containing the mandatory defaults and observation contracts.
- * @returns The resolved state value, possibly delegated to an observer if the declarative token is used.
+ * @param props - The props supplied by the component consumer.
+ * @param options - The component-level defaults.
+ * @param definition - The resolver-level defaults and observation contracts.
+ * @returns The resolved state value, possibly delegated to the observer.
  * 
  * @example
- * Controlled mode with observation, by supplying `state` prop:
+ * Controlled mode with observation, by supplying a `state` prop:
  * 
  * ```ts
  * const { focused } = useResolvedObservableState(
@@ -215,7 +212,7 @@ export const useResolvedRangedState = <TState extends {} | null>(props: RangedSt
  * // → true (delegated to observedState)
  * ```
  * 
- * Default mode with observation, by falling back to `defaultState` option:
+ * Default mode with observation, by falling back to the component-level default:
  * 
  * ```ts
  * const { focused } = useResolvedObservableState(
@@ -262,7 +259,7 @@ export const useResolvedObservableState = <TState extends {} | null, TToken exte
     // If restricted, return inactive baseline:
     if (isRestricted) return inactiveState;
     
-    // If resolved state does not equal the observation token, return directly:
+    // If the resolved value does not equal the observation token, return directly:
     if (!Object.is(resolvedState, observableStateToken)) return resolvedState as TState; // At this point, `resolvedState` cannot be `TToken`, so it's safe to cast.
     
     // Otherwise, delegate to the observed state:

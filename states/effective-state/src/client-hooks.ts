@@ -21,28 +21,25 @@ import {
 
 
 /**
- * Resolves an effective state value from controlled props,
- * cascaded from context when cascade behavior is enabled.
- * 
- * If cascading is enabled and the resolved state equals `inactiveState`,
- * the hook attempts to inherit from `stateContext`.
+ * Resolves an effective state value from controlled props while optionally
+ * cascading from context when cascade behavior is enabled.
  * 
  * **Resolution order:**
- *   1. `state` prop  
- *   2. `defaultState` option  
- *   3. `defaultState` definition  
- *   4. Inherit from `stateContext` (if cascading enabled and resolved state equals `inactiveState`)  
- *   5. Use `inactiveState` (fallback)  
+ *   1. `props.state`  
+ *   2. `options.defaultState`  
+ *   3. `definition.defaultState`  
+ *   4. `stateContext` (when the cascading is enabled)  
+ *   5. `inactiveState` (fallback)  
  * 
- * @template TState - The type of the state value.
+ * @template TState - The type of the resolved state value.
  * 
- * @param props - The volatile props provided by the component consumer.
- * @param options - The per-component options containing optional defaults and cascading behavior.
- * @param definition - The resolver-level definition containing the mandatory defaults and cascading contracts.
- * @returns The resolved (and possibly cascaded) state value.
+ * @param props - The props supplied by the component consumer.
+ * @param options - The component-level defaults and cascading behavior.
+ * @param definition - The resolver-level defaults and cascading contracts.
+ * @returns The resolved state value, possibly cascaded from context.
  * 
  * @example
- * Controlled mode with cascading, by supplying `state` prop and inheriting from context:
+ * Controlled mode with cascading, by supplying a `state` prop and cascading from context:
  * ```ts
  * const disabled = useResolvedCascadeState(
  *     // Props:
@@ -64,7 +61,7 @@ import {
  * ); // → true (assuming context provides `true`)
  * ```
  * 
- * Default mode with cascading, by falling back to `defaultState` option and inheriting from context:
+ * Default mode with cascading, by falling back to the component-level default and cascading from context:
  * ```ts
  * const disabled = useResolvedCascadeState(
  *     // Props:
@@ -122,15 +119,15 @@ export const useResolvedCascadeState = <TState extends {} | null>(props: Cascade
     
     // Cascading state resolution:
     
-    // If resolved state is not equal to inactive baseline, return immediately:
+    // If the resolved value is active, return immediately:
     if (!Object.is(resolvedState, inactiveState)) return resolvedState;
     
     // If cascading behavior is disabled, return inactive baseline:
     if (!cascadeEnabled) return inactiveState;
     
     // Attempt to inherit from context:
-    const inheritedState = use(stateContext);
-    if (inheritedState !== undefined) return inheritedState;
+    const contextState = use(stateContext);
+    if (contextState !== undefined) return contextState;
     
     // Fallback: return inactive baseline:
     return inactiveState;
