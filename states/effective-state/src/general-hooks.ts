@@ -184,7 +184,7 @@ export const useResolvedRangedState = <TState extends {} | null>(props: RangedSt
  *   5. `observedState` (when the resolved value equals `observableStateToken`)  
  * 
  * @template TState - The type of the resolved state value.
- * @template TToken - A special string token used to trigger observation (e.g. `'auto'`).
+ * @template TObservableToken - A special string token used to trigger observation (e.g. `'auto'`).
  * 
  * @param props - The props supplied by the component consumer.
  * @param options - The component-level defaults.
@@ -232,7 +232,7 @@ export const useResolvedRangedState = <TState extends {} | null>(props: RangedSt
  * // → false (restricted forces inactive baseline)
  * ```
  */
-export const useResolvedObservableState = <TState extends {} | null, TToken extends string>(props: ObservableStateProps<TState, TToken>, options: ObservableStateOptions<TState, TToken>, definition: ObservableStateDefinition<TState, TToken>): TState => {
+export const useResolvedObservableState = <TState extends {} | null, TObservableToken extends string>(props: ObservableStateProps<TState, TObservableToken>, options: ObservableStateOptions<TState, TObservableToken>, definition: ObservableStateDefinition<TState, TObservableToken>): TState => {
     // Extract resolver-level definition (mandatory contracts):
     const {
         inactiveState,
@@ -260,7 +260,7 @@ export const useResolvedObservableState = <TState extends {} | null, TToken exte
     if (isRestricted) return inactiveState;
     
     // If the resolved value does not equal the observation token, return directly:
-    if (!Object.is(resolvedState, observableStateToken)) return resolvedState as TState; // At this point, `resolvedState` cannot be `TToken`, so it's safe to cast.
+    if (!Object.is(resolvedState, observableStateToken)) return resolvedState as TState; // At this point, `resolvedState` cannot be `TObservableToken`, so it's safe to cast.
     
     // Otherwise, delegate to the observed state:
     return observedState;
