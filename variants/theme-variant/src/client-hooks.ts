@@ -1,10 +1,15 @@
 'use client' // The exported `useThemeVariant()` hook is client side only.
 
-// React:
+// Reusable-ui variants:
 import {
+    // Types:
+    type InheritableVariantDefinition,
+    
+    
+    
     // Hooks:
-    use,
-}                           from 'react'
+    useResolvedInheritableVariant,
+}                           from '@reusable-ui/effective-variant'   // Reusable resolvers for deriving effective variant from props, with optional behaviors like context inheriting and inverting.
 
 // Types:
 import {
@@ -32,43 +37,62 @@ import {
 
 
 
+/** The inheritable variant definition for theme variant management. */
+const inheritableVariantDefinition : InheritableVariantDefinition<string, 'inherit'> = {
+    // Defaults:
+    defaultVariant          : defaultDeclarativeTheme,
+    
+    // Inheritances:
+    inheritableVariantToken : 'inherit',
+    variantContext          : ThemeVariantContext,
+    
+    // Fallbacks:
+    fallbackVariant         : defaultFallbackTheme,
+};
+
 /**
  * Resolves the effective theme value based on props and context.
  * 
  * Resolution priority:
- * - `'inherit'` : uses the theme value from context, if available, otherwise falls back to `fallbackTheme`.
+ * - `'inherit'` : uses the theme value from context.
  * - Otherwise   : uses the explicitly provided theme value as-is.
  * 
  * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
- * @param {Required<ThemeVariantProps<TTheme>>['theme']} declarativeTheme - The declared theme value from props.
- * @param {TTheme} fallbackTheme - The fallback theme when context is missing.
- * @returns {TTheme} - The resolved theme value.
+ * @param props - The component props that may include a `theme` value.
+ * @param options - An optional configuration specifying a default theme when no `theme` prop is explicitly provided.
+ * @returns The resolved theme value.
  */
-const useResolvedTheme = <TTheme extends string = BasicTheme>(declarativeTheme: Required<ThemeVariantProps<TTheme>>['theme'], fallbackTheme: TTheme): TTheme => {
-    switch (declarativeTheme) {
-        // If the theme is 'inherit', use the context value:
-        case 'inherit' : {
-            // Get the inherited theme from context:
-            const inheritedTheme = use(ThemeVariantContext) as TTheme | undefined;
-            
-            
-            
-            // If context value exists, return it:
-            if (inheritedTheme !== undefined) return inheritedTheme;
-            
-            
-            
-            // Otherwise, fallback to the specified fallback theme:
-            return fallbackTheme;
-        }
+export const useResolvedTheme = <TTheme extends string = BasicTheme>(props: ThemeVariantProps<TTheme>, options?: ThemeVariantOptions<TTheme>): TTheme => {
+    // Extract options:
+    const {
+        defaultTheme  : defaultVariant,
+        fallbackTheme : fallbackVariant,
+    } = options ?? {};
+    
+    
+    
+    // Extract props:
+    const {
+        theme : variant,
+    } = props;
+    
+    
+    
+    // Resolve effective theme variant:
+    return useResolvedInheritableVariant<TTheme, 'inherit'>(
+        // Props:
+        { variant },
         
+        // Options:
+        { defaultVariant, fallbackVariant },
         
-        
-        // The theme is explicitly defined, return it as-is:
-        default        : return declarativeTheme;
-    } // switch
+        // Definition:
+        inheritableVariantDefinition as unknown as InheritableVariantDefinition<TTheme, 'inherit'>,
+    );
 };
+
+
 
 /**
  * Resolves the theme value along with its associated CSS class name,
@@ -112,23 +136,8 @@ const useResolvedTheme = <TTheme extends string = BasicTheme>(declarativeTheme: 
  * ```
  */
 export const useThemeVariant = <TTheme extends string = BasicTheme>(props: ThemeVariantProps<TTheme>, options?: ThemeVariantOptions<TTheme>): ThemeVariant<TTheme> => {
-    // Extract options and assign defaults:
-    const {
-        defaultTheme  = defaultDeclarativeTheme as TTheme | 'inherit',
-        fallbackTheme = defaultFallbackTheme    as TTheme,
-    } = options ?? {};
-    
-    
-    
-    // Extract props and assign defaults:
-    const {
-        theme : declarativeTheme = defaultTheme,
-    } = props;
-    
-    
-    
     // Resolve effective theme value:
-    const effectiveTheme = useResolvedTheme<TTheme>(declarativeTheme, fallbackTheme);
+    const effectiveTheme = useResolvedTheme<TTheme>(props, options);
     
     
     
