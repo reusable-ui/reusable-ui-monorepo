@@ -1,10 +1,15 @@
 'use client' // The exported `useFlowDirectionVariant()` hook is client side only.
 
-// React:
+// Reusable-ui variants:
 import {
+    // Types:
+    type InvertableVariantDefinition,
+    
+    
+    
     // Hooks:
-    use,
-}                           from 'react'
+    useResolvedInvertableVariant,
+}                           from '@reusable-ui/effective-variant'   // Reusable resolvers for deriving effective variant from props, with optional behaviors like context inheriting and inverting.
 
 // Types:
 import {
@@ -32,60 +37,63 @@ import {
 
 
 
+/** The inheritable and invertable variant definition for flow direction variant management. */
+const invertableVariantDefinition : InvertableVariantDefinition<FlowDirection, 'inherit', 'invert'> = {
+    // Defaults:
+    defaultVariant          : defaultDeclarativeFlowDirection,
+    
+    // Inheritances:
+    inheritableVariantToken : 'inherit',
+    invertableVariantToken  : 'invert',
+    variantContext          : FlowDirectionVariantContext,
+    invertVariant           : (inheritedVariant) => inheritedVariant === 'start' ? 'end' : 'start',
+    
+    // Fallbacks:
+    fallbackVariant         : defaultFallbackFlowDirection,
+};
+
 /**
  * Resolves the effective flow direction value based on props and context.
  * 
  * Resolution priority:
- * - `'inherit'` : uses the flow direction value from context, if available, otherwise falls back to `fallbackFlowDirection`.
- * - `'invert'`  : flips the flow direction value from context (`'start'` ⇄ `'end'`), if available, otherwise falls back to `fallbackFlowDirection`.
+ * - `'inherit'` : uses the flow direction value from context.
+ * - `'invert'`  : flips the flow direction value from context (`'start'` ⇄ `'end'`).
  * - Otherwise   : uses the explicitly provided flow direction value as-is.
  * 
- * @param {Required<FlowDirectionVariantProps>['flowDirection']} declarativeFlowDirection - The declared flow direction value from props.
- * @param {FlowDirection} fallbackFlowDirection - The fallback flow direction when context is missing.
- * @returns {FlowDirection} - The resolved flow direction value.
+ * @param props - The component props that may include a `flowDirection` value.
+ * @param options - An optional configuration specifying a default flow direction when no `flowDirection` prop is explicitly provided.
+ * @returns The resolved flow direction value.
  */
-const useResolvedFlowDirection = (declarativeFlowDirection: Required<FlowDirectionVariantProps>['flowDirection'], fallbackFlowDirection: FlowDirection): FlowDirection => {
-    switch (declarativeFlowDirection) {
-        // If the flow direction is 'inherit', use the context value:
-        case 'inherit' : {
-            // Get the inherited flow direction from context:
-            const inheritedFlowDirection = use(FlowDirectionVariantContext);
-            
-            
-            
-            // If context value exists, return it:
-            if (inheritedFlowDirection !== undefined) return inheritedFlowDirection;
-            
-            
-            
-            // Otherwise, fallback to the specified fallback flow direction:
-            return fallbackFlowDirection;
-        }
+export const useResolvedFlowDirection = (props: FlowDirectionVariantProps, options?: FlowDirectionVariantOptions): FlowDirection => {
+    // Extract options:
+    const {
+        defaultFlowDirection  : defaultVariant,
+        fallbackFlowDirection : fallbackVariant,
+    } = options ?? {};
+    
+    
+    
+    // Extract props:
+    const {
+        flowDirection : variant,
+    } = props;
+    
+    
+    
+    // Resolve effective flow direction variant:
+    return useResolvedInvertableVariant<FlowDirection, 'inherit', 'invert'>(
+        // Props:
+        { variant },
         
+        // Options:
+        { defaultVariant, fallbackVariant },
         
-        
-        // If the flow direction is 'invert', flip the context value:
-        case 'invert'  : {
-            // Get the inherited flow direction from context:
-            const inheritedFlowDirection = use(FlowDirectionVariantContext);
-            
-            
-            
-            // If context value exists, flip it:
-            if (inheritedFlowDirection !== undefined) return inheritedFlowDirection === 'start' ? 'end' : 'start';
-            
-            
-            
-            // Otherwise, fallback to the specified fallback flow direction:
-            return fallbackFlowDirection;
-        }
-        
-        
-        
-        // The flow direction is explicitly defined, return it as-is:
-        default        : return declarativeFlowDirection;
-    } // switch
+        // Definition:
+        invertableVariantDefinition,
+    );
 };
+
+
 
 /**
  * Resolves the flow direction value along with its associated CSS class name,
@@ -132,23 +140,8 @@ const useResolvedFlowDirection = (declarativeFlowDirection: Required<FlowDirecti
  * ```
  */
 export const useFlowDirectionVariant = (props: FlowDirectionVariantProps, options?: FlowDirectionVariantOptions): FlowDirectionVariant => {
-    // Extract options and assign defaults:
-    const {
-        defaultFlowDirection  = defaultDeclarativeFlowDirection,
-        fallbackFlowDirection = defaultFallbackFlowDirection,
-    } = options ?? {};
-    
-    
-    
-    // Extract props and assign defaults:
-    const {
-        flowDirection : declarativeFlowDirection = defaultFlowDirection,
-    } = props;
-    
-    
-    
     // Resolve effective flow direction value:
-    const effectiveFlowDirection = useResolvedFlowDirection(declarativeFlowDirection, fallbackFlowDirection);
+    const effectiveFlowDirection = useResolvedFlowDirection(props, options);
     
     
     
