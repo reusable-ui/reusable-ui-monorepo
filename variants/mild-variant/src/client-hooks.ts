@@ -55,8 +55,8 @@ const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inheri
  * Resolves the effective mild value based on props and context.
  * 
  * Resolution priority:
- * - `'inherit'` : uses the mild value from context, if available.
- * - `'invert'`  : flips the mild value from context (`true` ⇄ `false`), if available.
+ * - `'inherit'` : uses the mild value from context.
+ * - `'invert'`  : flips the mild value from context (`true` ⇄ `false`).
  * - Otherwise   : uses the explicitly provided mild value as-is.
  * 
  * @param props - The component props that may include a `mild` value.
