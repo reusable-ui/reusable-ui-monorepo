@@ -1,10 +1,15 @@
 'use client' // The exported `useMildVariant()` hook is client side only.
 
-// React:
+// Reusable-ui variants:
 import {
+    // Types:
+    type InvertableVariantDefinition,
+    
+    
+    
     // Hooks:
-    use,
-}                           from 'react'
+    useResolvedInvertableVariant,
+}                           from '@reusable-ui/effective-variant'   // Reusable resolvers for deriving effective variant from props, with optional behaviors like context inheriting and inverting.
 
 // Types:
 import {
@@ -31,60 +36,63 @@ import {
 
 
 
+/** The inheritable and invertable variant definition for mild variant management. */
+const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inherit', 'invert'> = {
+    // Defaults:
+    defaultVariant          : defaultDeclarativeMild,
+    
+    // Inheritances:
+    inheritableVariantToken : 'inherit',
+    invertableVariantToken  : 'invert',
+    variantContext          : MildVariantContext,
+    invertVariant           : (inheritedVariant) => !inheritedVariant,
+    
+    // Fallbacks:
+    fallbackVariant         : defaultFallbackMild,
+};
+
 /**
  * Resolves the effective mild value based on props and context.
  * 
  * Resolution priority:
- * - `'inherit'` : uses the mild value from context, if available, otherwise falls back to `fallbackMild`.
- * - `'invert'`  : flips the mild value from context (`true` ⇄ `false`), if available, otherwise falls back to `fallbackMild`.
+ * - `'inherit'` : uses the mild value from context, if available.
+ * - `'invert'`  : flips the mild value from context (`true` ⇄ `false`), if available.
  * - Otherwise   : uses the explicitly provided mild value as-is.
  * 
- * @param {Required<MildVariantProps>['mild']} declarativeMild - The declared mild value from props.
- * @param {boolean} fallbackMild - The fallback mild when context is missing.
- * @returns {boolean} - The resolved mild value.
+ * @param props - The component props that may include a `mild` value.
+ * @param options - An optional configuration specifying a default mild value when no `mild` prop is explicitly provided.
+ * @returns The resolved mild value.
  */
-const useResolvedMild = (declarativeMild: Required<MildVariantProps>['mild'], fallbackMild: boolean): boolean => {
-    switch (declarativeMild) {
-        // If the mild is 'inherit', use the context value:
-        case 'inherit' : {
-            // Get the inherited mild from context:
-            const inheritedMild = use(MildVariantContext);
-            
-            
-            
-            // If context value exists, return it:
-            if (inheritedMild !== undefined) return inheritedMild;
-            
-            
-            
-            // Otherwise, fallback to the specified fallback mild:
-            return fallbackMild;
-        }
+export const useResolvedMild = (props: MildVariantProps, options?: MildVariantOptions): boolean => {
+    // Extract options:
+    const {
+        defaultMild  : defaultVariant,
+        fallbackMild : fallbackVariant,
+    } = options ?? {};
+    
+    
+    
+    // Extract props:
+    const {
+        mild : variant,
+    } = props;
+    
+    
+    
+    // Resolve effective mild variant:
+    return useResolvedInvertableVariant<boolean, 'inherit', 'invert'>(
+        // Props:
+        { variant },
         
+        // Options:
+        { defaultVariant, fallbackVariant },
         
-        
-        // If the mild is 'invert', flip the context value:
-        case 'invert'  : {
-            // Get the inherited mild from context:
-            const inheritedMild = use(MildVariantContext);
-            
-            
-            
-            // If context value exists, flip it:
-            if (inheritedMild !== undefined) return !inheritedMild;
-            
-            
-            
-            // Otherwise, fallback to the specified fallback mild:
-            return fallbackMild;
-        }
-        
-        
-        
-        // The mild is explicitly defined, return it as-is:
-        default        : return declarativeMild;
-    } // switch
+        // Definition:
+        invertableVariantDefinition,
+    );
 };
+
+
 
 /**
  * Resolves the mild state along with its associated CSS class name,
@@ -126,23 +134,8 @@ const useResolvedMild = (declarativeMild: Required<MildVariantProps>['mild'], fa
  * ```
  */
 export const useMildVariant = (props: MildVariantProps, options?: MildVariantOptions): MildVariant => {
-    // Extract options and assign defaults:
-    const {
-        defaultMild  = defaultDeclarativeMild,
-        fallbackMild = defaultFallbackMild,
-    } = options ?? {};
-    
-    
-    
-    // Extract props and assign defaults:
-    const {
-        mild : declarativeMild = defaultMild,
-    } = props;
-    
-    
-    
     // Resolve effective mild value:
-    const effectiveIsMild = useResolvedMild(declarativeMild, fallbackMild);
+    const effectiveIsMild = useResolvedMild(props, options);
     
     
     
