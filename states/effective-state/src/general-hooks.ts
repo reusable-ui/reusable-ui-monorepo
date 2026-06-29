@@ -158,7 +158,7 @@ export const useResolvedRangedState = <TState extends {} | null>(props: RangedSt
     
     
     // Resolve the controlled state from props:
-    const resolvedState = useResolvedControlledState(props, options, definition);
+    const resolvedState = useResolvedControlledState<TState>(props, options, definition);
     
     
     
@@ -250,7 +250,7 @@ export const useResolvedObservableState = <TState extends {} | null, TObservable
     
     
     // Resolve the controlled state from props:
-    const resolvedState = useResolvedControlledState(props, options, definition);
+    const resolvedState = useResolvedControlledState<TState | TObservableToken>(props, options, definition);
     
     
     

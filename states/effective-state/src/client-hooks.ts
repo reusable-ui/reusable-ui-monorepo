@@ -113,7 +113,7 @@ export const useResolvedCascadeState = <TState extends {} | null>(props: Cascade
     
     
     // Resolve the controlled state from props:
-    const resolvedState = useResolvedControlledState(props, options, definition);
+    const resolvedState = useResolvedControlledState<TState>(props, options, definition);
     
     
     
