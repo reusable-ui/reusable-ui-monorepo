@@ -55,8 +55,8 @@ const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inheri
  * Resolves the effective emphasized value based on props and context.
  * 
  * Resolution priority:
- * - `'inherit'` : uses the emphasized value from context, if available.
- * - `'invert'`  : flips the emphasized value from context (`true` ⇄ `false`), if available.
+ * - `'inherit'` : uses the emphasized value from context.
+ * - `'invert'`  : flips the emphasized value from context (`true` ⇄ `false`).
  * - Otherwise   : uses the explicitly provided emphasized value as-is.
  * 
  * @param props - The component props that may include an `emphasized` value.
