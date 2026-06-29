@@ -1,10 +1,15 @@
 'use client' // The exported `useSizeVariant()` hook is client side only.
 
-// React:
+// Reusable-ui variants:
 import {
+    // Types:
+    type InheritableVariantDefinition,
+    
+    
+    
     // Hooks:
-    use,
-}                           from 'react'
+    useResolvedInheritableVariant,
+}                           from '@reusable-ui/effective-variant'   // Reusable resolvers for deriving effective variant from props, with optional behaviors like context inheriting and inverting.
 
 // Types:
 import {
@@ -33,44 +38,87 @@ import {
 
 
 
+/** The inheritable variant definition for size variant management. */
+const inheritableVariantDefinition : InheritableVariantDefinition<string, 'inherit'> = {
+    // Defaults:
+    defaultVariant          : defaultDeclarativeSize,
+    
+    // Inheritances:
+    inheritableVariantToken : 'inherit',
+    variantContext          : SizeVariantContext,
+    
+    // Fallbacks:
+    fallbackVariant         : defaultFallbackSize,
+};
+
+/**
+ * Resolves the effective size value based on props, options, and context.
+ * 
+ * Resolution priority:
+ * - `'inherit'` : uses the size value from context.
+ * - Otherwise   : uses the explicitly provided size value as-is.
+ * 
+ * @template TSize - commonly `'sm'`, `'md'`, `'lg'`
+ * 
+ * @param props - The component props that may include a `size` value.
+ * @param options - A required configuration specifying a default size when no `size` prop is explicitly provided.
+ * @returns The resolved size value.
+ */
+export function useResolvedSize<TSize extends string = BasicSize>(props: SizeVariantProps<TSize>, options: SizeVariantOptions<TSize>): TSize;
+
 /**
  * Resolves the effective size value based on props and context.
  * 
  * Resolution priority:
- * - `'inherit'` : uses the size value from context, if available and supported, otherwise falls back to `fallbackSize`.
+ * - `'inherit'` : uses the size value from context.
  * - Otherwise   : uses the explicitly provided size value as-is.
  * 
- * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
- * 
- * @param {Required<SizeVariantProps<TSize>>['size']} declarativeSize - The declared size value from props.
- * @param {TSize[]} supportedSizes - The list of supported sizes for validation.
- * @param {TSize} fallbackSize - The fallback size when context is missing or unsupported.
- * @returns {TSize} - The resolved size value.
+ * @param props - The component props that may include a `size` value.
+ * @returns The resolved size value.
  */
-const useResolvedSize = <TSize extends string = BasicSize>(declarativeSize: Required<SizeVariantProps<TSize>>['size'], supportedSizes: TSize[], fallbackSize: TSize): TSize => {
-    switch (declarativeSize) {
-        // If the size is 'inherit', use the context value:
-        case 'inherit' : {
-            // Get the inherited size from context:
-            const inheritedSize = use(SizeVariantContext) as TSize | undefined;
-            
-            
-            
-            // If context value exists and is supported, return it:
-            if ((inheritedSize !== undefined) && supportedSizes.includes(inheritedSize)) return inheritedSize;
-            
-            
-            
-            // Otherwise, fallback to the specified fallback size:
-            return fallbackSize;
-        }
+export function useResolvedSize(props: SizeVariantProps<BasicSize>): BasicSize;
+
+export function useResolvedSize<TSize extends string = BasicSize>(props: SizeVariantProps<TSize>, options?: SizeVariantOptions<TSize>): TSize {
+    // Extract options:
+    const {
+        defaultSize    : defaultVariant,
+        fallbackSize   : fallbackVariant = defaultFallbackSize    as TSize,
+        supportedSizes                   = defaultSupportedSizes  as TSize[],
+    } = options ?? {};
+    
+    
+    
+    // Extract props:
+    const {
+        size : variant,
+    } = props;
+    
+    
+    
+    // Resolve effective size variant:
+    const effectiveSize = useResolvedInheritableVariant<TSize, 'inherit'>(
+        // Props:
+        { variant },
         
+        // Options:
+        { defaultVariant, fallbackVariant },
         
-        
-        // The size is explicitly defined, return it as-is:
-        default        : return declarativeSize;
-    } // switch
+        // Definition:
+        inheritableVariantDefinition as unknown as InheritableVariantDefinition<TSize, 'inherit'>,
+    );
+    
+    
+    
+    // Validate for the supported sizes:
+    if (!supportedSizes.includes(effectiveSize)) return fallbackVariant;
+    
+    
+    
+    // Return the validated size:
+    return effectiveSize;
 };
+
+
 
 /**
  * Resolves the size value along with its associated CSS class name,
@@ -155,24 +203,8 @@ export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVari
 export function useSizeVariant(props: SizeVariantProps<BasicSize>): SizeVariant<BasicSize>;
 
 export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVariantProps<TSize>, options?: SizeVariantOptions<TSize>): SizeVariant<TSize> {
-    // Extract options and assign defaults:
-    const {
-        defaultSize    = defaultDeclarativeSize as TSize | 'inherit',
-        fallbackSize   = defaultFallbackSize    as TSize,
-        supportedSizes = defaultSupportedSizes  as TSize[],
-    } = options ?? {};
-    
-    
-    
-    // Extract props and assign defaults:
-    const {
-        size : declarativeSize = defaultSize,
-    } = props;
-    
-    
-    
     // Resolve effective size value:
-    const effectiveSize = useResolvedSize<TSize>(declarativeSize, supportedSizes, fallbackSize);
+    const effectiveSize = useResolvedSize<TSize>(props, options!);
     
     
     

@@ -150,9 +150,12 @@ describe('useSizeVariant()', () => {
             props              : {
                 size           : size,
             },
-            expectedResult     : {
+            expectedResult     : (defaultSupportedSizes as string[]).includes(size) ? {
                 size           : size,
                 sizeClassname  : `s-${size}`,
+            } : {
+                size           : 'md',
+                sizeClassname  : 's-md',
             },
         }) satisfies SizeVariantTestCase),
         
