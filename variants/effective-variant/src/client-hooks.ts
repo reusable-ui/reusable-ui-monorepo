@@ -101,7 +101,7 @@ export const useResolvedInheritableVariant = <TVariant extends {} | null, TInher
     
     
     // Resolve the controlled variant value from props:
-    const resolvedVariant = useResolvedControlledVariant(props, options, definition);
+    const resolvedVariant = useResolvedControlledVariant<TVariant | TInheritToken>(props, options, definition);
     
     
     
