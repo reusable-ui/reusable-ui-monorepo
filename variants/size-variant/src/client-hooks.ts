@@ -82,8 +82,8 @@ export function useResolvedSize<TSize extends string = BasicSize>(props: SizeVar
     // Extract options:
     const {
         defaultSize    : defaultVariant,
-        fallbackSize   : fallbackVariant = defaultFallbackSize    as TSize,
-        supportedSizes                   = defaultSupportedSizes  as TSize[],
+        fallbackSize   : fallbackVariant = defaultFallbackSize   as TSize,
+        supportedSizes                   = defaultSupportedSizes as TSize[],
     } = options ?? {};
     
     
