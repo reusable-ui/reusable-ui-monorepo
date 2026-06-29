@@ -1,10 +1,15 @@
 'use client' // The exported `useEmphasisVariant()` hook is client side only.
 
-// React:
+// Reusable-ui variants:
 import {
+    // Types:
+    type InvertableVariantDefinition,
+    
+    
+    
     // Hooks:
-    use,
-}                           from 'react'
+    useResolvedInvertableVariant,
+}                           from '@reusable-ui/effective-variant'   // Reusable resolvers for deriving effective variant from props, with optional behaviors like context inheriting and inverting.
 
 // Types:
 import {
@@ -31,60 +36,63 @@ import {
 
 
 
+/** The inheritable and invertable variant definition for emphasis variant management. */
+const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inherit', 'invert'> = {
+    // Defaults:
+    defaultVariant          : defaultDeclarativeEmphasized,
+    
+    // Inheritances:
+    inheritableVariantToken : 'inherit',
+    invertableVariantToken  : 'invert',
+    variantContext          : EmphasisVariantContext,
+    invertVariant           : (inheritedVariant) => !inheritedVariant,
+    
+    // Fallbacks:
+    fallbackVariant         : defaultFallbackEmphasized,
+};
+
 /**
  * Resolves the effective emphasized value based on props and context.
  * 
  * Resolution priority:
- * - `'inherit'` : uses the emphasized value from context, if available, otherwise falls back to `fallbackEmphasized`.
- * - `'invert'`  : flips the emphasized value from context (`true` ⇄ `false`), if available, otherwise falls back to `fallbackEmphasized`.
+ * - `'inherit'` : uses the emphasized value from context, if available.
+ * - `'invert'`  : flips the emphasized value from context (`true` ⇄ `false`), if available.
  * - Otherwise   : uses the explicitly provided emphasized value as-is.
  * 
- * @param {Required<EmphasisVariantProps>['emphasized']} declarativeEmphasized - The declared emphasized value from props.
- * @param {boolean} fallbackEmphasized - The fallback emphasized when context is missing.
- * @returns {boolean} - The resolved emphasized value.
+ * @param props - The component props that may include an `emphasized` value.
+ * @param options - An optional configuration specifying a default emphasized value when no `emphasized` prop is explicitly provided.
+ * @returns The resolved emphasized value.
  */
-const useResolvedEmphasized = (declarativeEmphasized: Required<EmphasisVariantProps>['emphasized'], fallbackEmphasized: boolean): boolean => {
-    switch (declarativeEmphasized) {
-        // If the emphasized is 'inherit', use the context value:
-        case 'inherit' : {
-            // Get the inherited emphasized from context:
-            const inheritedEmphasized = use(EmphasisVariantContext);
-            
-            
-            
-            // If context value exists, return it:
-            if (inheritedEmphasized !== undefined) return inheritedEmphasized;
-            
-            
-            
-            // Otherwise, fallback to the specified fallback emphasized:
-            return fallbackEmphasized;
-        }
+export const useResolvedEmphasized = (props: EmphasisVariantProps, options?: EmphasisVariantOptions): boolean => {
+    // Extract options:
+    const {
+        defaultEmphasized  : defaultVariant,
+        fallbackEmphasized : fallbackVariant,
+    } = options ?? {};
+    
+    
+    
+    // Extract props:
+    const {
+        emphasized : variant,
+    } = props;
+    
+    
+    
+    // Resolve effective emphasis variant:
+    return useResolvedInvertableVariant<boolean, 'inherit', 'invert'>(
+        // Props:
+        { variant },
         
+        // Options:
+        { defaultVariant, fallbackVariant },
         
-        
-        // If the emphasized is 'invert', flip the context value:
-        case 'invert'  : {
-            // Get the inherited emphasized from context:
-            const inheritedEmphasized = use(EmphasisVariantContext);
-            
-            
-            
-            // If context value exists, flip it:
-            if (inheritedEmphasized !== undefined) return !inheritedEmphasized;
-            
-            
-            
-            // Otherwise, fallback to the specified fallback emphasized:
-            return fallbackEmphasized;
-        }
-        
-        
-        
-        // The emphasized is explicitly defined, return it as-is:
-        default        : return declarativeEmphasized;
-    } // switch
+        // Definition:
+        invertableVariantDefinition,
+    );
 };
+
+
 
 /**
  * Resolves the emphasized state along with its associated CSS class name,
@@ -126,23 +134,8 @@ const useResolvedEmphasized = (declarativeEmphasized: Required<EmphasisVariantPr
  * ```
  */
 export const useEmphasisVariant = (props: EmphasisVariantProps, options?: EmphasisVariantOptions): EmphasisVariant => {
-    // Extract options and assign defaults:
-    const {
-        defaultEmphasized  = defaultDeclarativeEmphasized,
-        fallbackEmphasized = defaultFallbackEmphasized,
-    } = options ?? {};
-    
-    
-    
-    // Extract props and assign defaults:
-    const {
-        emphasized : declarativeEmphasized = defaultEmphasized,
-    } = props;
-    
-    
-    
     // Resolve effective emphasized value:
-    const effectiveIsEmphasized = useResolvedEmphasized(declarativeEmphasized, fallbackEmphasized);
+    const effectiveIsEmphasized = useResolvedEmphasized(props, options);
     
     
     
