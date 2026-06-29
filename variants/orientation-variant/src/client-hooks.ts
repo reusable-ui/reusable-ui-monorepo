@@ -1,10 +1,15 @@
 'use client' // The exported `useOrientationVariant()` hook is client side only.
 
-// React:
+// Reusable-ui variants:
 import {
+    // Types:
+    type InvertableVariantDefinition,
+    
+    
+    
     // Hooks:
-    use,
-}                           from 'react'
+    useResolvedInvertableVariant,
+}                           from '@reusable-ui/effective-variant'   // Reusable resolvers for deriving effective variant from props, with optional behaviors like context inheriting and inverting.
 
 // Types:
 import {
@@ -32,60 +37,63 @@ import {
 
 
 
+/** The inheritable and invertable variant definition for orientation variant management. */
+const invertableVariantDefinition : InvertableVariantDefinition<Orientation, 'inherit', 'invert'> = {
+    // Defaults:
+    defaultVariant          : defaultDeclarativeOrientation,
+    
+    // Inheritances:
+    inheritableVariantToken : 'inherit',
+    invertableVariantToken  : 'invert',
+    variantContext          : OrientationVariantContext,
+    invertVariant           : (inheritedVariant) => inheritedVariant === 'inline' ? 'block' : 'inline',
+    
+    // Fallbacks:
+    fallbackVariant         : defaultFallbackOrientation,
+};
+
 /**
  * Resolves the effective orientation value based on props and context.
  * 
  * Resolution priority:
- * - `'inherit'` : uses the orientation value from context, if available, otherwise falls back to `fallbackOrientation`.
- * - `'invert'`  : flips the orientation value from context (`'inline'` ⇄ `'block'`), if available, otherwise falls back to `fallbackOrientation`.
+ * - `'inherit'` : uses the orientation value from context.
+ * - `'invert'`  : flips the orientation value from context (`'inline'` ⇄ `'block'`).
  * - Otherwise   : uses the explicitly provided orientation value as-is.
  * 
- * @param {Required<OrientationVariantProps>['orientation']} declarativeOrientation - The declared orientation value from props.
- * @param {Orientation} fallbackOrientation - The fallback orientation when context is missing.
- * @returns {Orientation} - The resolved orientation value.
+ * @param props - The component props that may include an `orientation` value.
+ * @param options - An optional configuration specifying a default orientation when no `orientation` prop is explicitly provided.
+ * @returns The resolved orientation value.
  */
-const useResolvedOrientation = (declarativeOrientation: Required<OrientationVariantProps>['orientation'], fallbackOrientation: Orientation): Orientation => {
-    switch (declarativeOrientation) {
-        // If the orientation is 'inherit', use the context value:
-        case 'inherit' : {
-            // Get the inherited orientation from context:
-            const inheritedOrientation = use(OrientationVariantContext);
-            
-            
-            
-            // If context value exists, return it:
-            if (inheritedOrientation !== undefined) return inheritedOrientation;
-            
-            
-            
-            // Otherwise, fallback to the specified fallback orientation:
-            return fallbackOrientation;
-        }
+export const useResolvedOrientation = (props: OrientationVariantProps, options?: OrientationVariantOptions): Orientation => {
+    // Extract options:
+    const {
+        defaultOrientation  : defaultVariant,
+        fallbackOrientation : fallbackVariant,
+    } = options ?? {};
+    
+    
+    
+    // Extract props:
+    const {
+        orientation : variant,
+    } = props;
+    
+    
+    
+    // Resolve effective orientation variant:
+    return useResolvedInvertableVariant<Orientation, 'inherit', 'invert'>(
+        // Props:
+        { variant },
         
+        // Options:
+        { defaultVariant, fallbackVariant },
         
-        
-        // If the orientation is 'invert', flip the context value:
-        case 'invert'  : {
-            // Get the inherited orientation from context:
-            const inheritedOrientation = use(OrientationVariantContext);
-            
-            
-            
-            // If context value exists, flip it:
-            if (inheritedOrientation !== undefined) return inheritedOrientation === 'inline' ? 'block' : 'inline';
-            
-            
-            
-            // Otherwise, fallback to the specified fallback orientation:
-            return fallbackOrientation;
-        }
-        
-        
-        
-        // The orientation is explicitly defined, return it as-is:
-        default        : return declarativeOrientation;
-    } // switch
+        // Definition:
+        invertableVariantDefinition,
+    );
 };
+
+
 
 /**
  * Resolves the orientation value along with its associated CSS class name and accessibility metadata,
@@ -141,23 +149,8 @@ const useResolvedOrientation = (declarativeOrientation: Required<OrientationVari
  * ```
  */
 export const useOrientationVariant = (props: OrientationVariantProps, options?: OrientationVariantOptions): OrientationVariant => {
-    // Extract options and assign defaults:
-    const {
-        defaultOrientation  = defaultDeclarativeOrientation,
-        fallbackOrientation = defaultFallbackOrientation,
-    } = options ?? {};
-    
-    
-    
-    // Extract props and assign defaults:
-    const {
-        orientation : declarativeOrientation = defaultOrientation,
-    } = props;
-    
-    
-    
     // Resolve effective orientation value:
-    const effectiveOrientation = useResolvedOrientation(declarativeOrientation, fallbackOrientation);
+    const effectiveOrientation = useResolvedOrientation(props, options);
     
     
     
