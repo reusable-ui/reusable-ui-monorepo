@@ -1,3 +1,14 @@
+// Reusable-ui variants:
+import {
+    // Types:
+    type ControlledVariantDefinition,
+    
+    
+    
+    // Hooks:
+    useResolvedControlledVariant,
+}                           from '@reusable-ui/effective-variant'   // Reusable resolvers for deriving effective variant from props, with optional behaviors like context inheriting and inverting.
+
 // Types:
 import {
     type BareVariantProps,
@@ -14,6 +25,51 @@ import {
 import {
     getBareClassname,
 }                           from './internal-utilities.js'
+
+
+
+/** The controlled variant definition for bare variant management. */
+const controlledVariantDefinition : ControlledVariantDefinition<boolean | string> = {
+    // Defaults:
+    defaultVariant : defaultDeclarativeBare,
+};
+
+/**
+ * Resolves the effective bare value based on controlled props.
+ * 
+ * @template TBare - The extended type of the `bare` prop, allowing `true` or custom string-based modes.
+ * 
+ * @param props - The component props that may include a `bare` value.
+ * @param options - An optional configuration specifying a default bare value when no `bare` prop is explicitly provided.
+ * @returns The resolved bare value.
+ */
+export const useResolvedBare = <TBare extends true | string = true>(props: BareVariantProps<TBare>, options?: BareVariantOptions<TBare>): false | TBare => {
+    // Extract options:
+    const {
+        defaultBare : defaultVariant,
+    } = options ?? {};
+    
+    
+    
+    // Extract props:
+    const {
+        bare : variant,
+    } = props;
+    
+    
+    
+    // Resolve effective bare variant:
+    return useResolvedControlledVariant<false | TBare>(
+        // Props:
+        { variant },
+        
+        // Options:
+        { defaultVariant },
+        
+        // Definition:
+        controlledVariantDefinition as ControlledVariantDefinition<false | TBare>,
+    );
+};
 
 
 
@@ -63,17 +119,8 @@ import {
  * ```
  */
 export const useBareVariant = <TBare extends true | string = true>(props: BareVariantProps<TBare>, options?: BareVariantOptions<TBare>): BareVariant<TBare> => {
-    // Extract options and assign defaults:
-    const {
-        defaultBare = defaultDeclarativeBare,
-    } = options ?? {};
-    
-    
-    
-    // Extract props and assign defaults:
-    const {
-        bare : effectiveBare =  defaultBare,
-    } = props;
+    // Resolve effective bare value:
+    const effectiveBare = useResolvedBare<TBare>(props, options);
     
     
     
