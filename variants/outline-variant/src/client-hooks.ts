@@ -1,10 +1,15 @@
 'use client' // The exported `useOutlineVariant()` hook is client side only.
 
-// React:
+// Reusable-ui variants:
 import {
+    // Types:
+    type InvertableVariantDefinition,
+    
+    
+    
     // Hooks:
-    use,
-}                           from 'react'
+    useResolvedInvertableVariant,
+}                           from '@reusable-ui/effective-variant'   // Reusable resolvers for deriving effective variant from props, with optional behaviors like context inheriting and inverting.
 
 // Types:
 import {
@@ -31,60 +36,63 @@ import {
 
 
 
+/** The inheritable and invertable variant definition for outline variant management. */
+const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inherit', 'invert'> = {
+    // Defaults:
+    defaultVariant          : defaultDeclarativeOutlined,
+    
+    // Inheritances:
+    inheritableVariantToken : 'inherit',
+    invertableVariantToken  : 'invert',
+    variantContext          : OutlineVariantContext,
+    invertVariant           : (inheritedVariant) => !inheritedVariant,
+    
+    // Fallbacks:
+    fallbackVariant         : defaultFallbackOutlined,
+};
+
 /**
  * Resolves the effective outlined value based on props and context.
  * 
  * Resolution priority:
- * - `'inherit'` : uses the outlined value from context, if available, otherwise falls back to `fallbackOutlined`.
- * - `'invert'`  : flips the outlined value from context (`true` ⇄ `false`), if available, otherwise falls back to `fallbackOutlined`.
+ * - `'inherit'` : uses the outlined value from context, if available.
+ * - `'invert'`  : flips the outlined value from context (`true` ⇄ `false`), if available.
  * - Otherwise   : uses the explicitly provided outlined value as-is.
  * 
- * @param {Required<OutlineVariantProps>['outlined']} declarativeOutlined - The declared outlined value from props.
- * @param {boolean} fallbackOutlined - The fallback outlined when context is missing.
- * @returns {boolean} - The resolved outlined value.
+ * @param props - The component props that may include an `outlined` value.
+ * @param options - An optional configuration specifying a default outlined value when no `outlined` prop is explicitly provided.
+ * @returns The resolved outlined value.
  */
-const useResolvedOutlined = (declarativeOutlined: Required<OutlineVariantProps>['outlined'], fallbackOutlined: boolean): boolean => {
-    switch (declarativeOutlined) {
-        // If the outlined is 'inherit', use the context value:
-        case 'inherit' : {
-            // Get the inherited outlined from context:
-            const inheritedOutlined = use(OutlineVariantContext);
-            
-            
-            
-            // If context value exists, return it:
-            if (inheritedOutlined !== undefined) return inheritedOutlined;
-            
-            
-            
-            // Otherwise, fallback to the specified fallback outlined:
-            return fallbackOutlined;
-        }
+export const useResolvedOutlined = (props: OutlineVariantProps, options?: OutlineVariantOptions): boolean => {
+    // Extract options:
+    const {
+        defaultOutlined  : defaultVariant,
+        fallbackOutlined : fallbackVariant,
+    } = options ?? {};
+    
+    
+    
+    // Extract props:
+    const {
+        outlined : variant,
+    } = props;
+    
+    
+    
+    // Resolve effective outline variant:
+    return useResolvedInvertableVariant<boolean, 'inherit', 'invert'>(
+        // Props:
+        { variant },
         
+        // Options:
+        { defaultVariant, fallbackVariant },
         
-        
-        // If the outlined is 'invert', flip the context value:
-        case 'invert'  : {
-            // Get the inherited outlined from context:
-            const inheritedOutlined = use(OutlineVariantContext);
-            
-            
-            
-            // If context value exists, flip it:
-            if (inheritedOutlined !== undefined) return !inheritedOutlined;
-            
-            
-            
-            // Otherwise, fallback to the specified fallback outlined:
-            return fallbackOutlined;
-        }
-        
-        
-        
-        // The outlined is explicitly defined, return it as-is:
-        default        : return declarativeOutlined;
-    } // switch
+        // Definition:
+        invertableVariantDefinition,
+    );
 };
+
+
 
 /**
  * Resolves the outlined state along with its associated CSS class name,
@@ -126,23 +134,8 @@ const useResolvedOutlined = (declarativeOutlined: Required<OutlineVariantProps>[
  * ```
  */
 export const useOutlineVariant = (props: OutlineVariantProps, options?: OutlineVariantOptions): OutlineVariant => {
-    // Extract options and assign defaults:
-    const {
-        defaultOutlined  = defaultDeclarativeOutlined,
-        fallbackOutlined = defaultFallbackOutlined,
-    } = options ?? {};
-    
-    
-    
-    // Extract props and assign defaults:
-    const {
-        outlined : declarativeOutlined = defaultOutlined,
-    } = props;
-    
-    
-    
     // Resolve effective outlined value:
-    const effectiveIsOutlined = useResolvedOutlined(declarativeOutlined, fallbackOutlined);
+    const effectiveIsOutlined = useResolvedOutlined(props, options);
     
     
     
