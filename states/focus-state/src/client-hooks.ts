@@ -74,7 +74,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * @param options - An optional configuration for customizing focus/blur behavior.
  * @returns The resolved focused/blurred state and event handlers for focus/blur events.
  */
-export const useResolvedFocused = <TElement extends Element = HTMLElement>(props: FocusStateProps, options?: Pick<FocusStateOptions, 'defaultFocused'>) : Pick<FocusState<TElement>, 'focused' | 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'> => {
+export const useResolvedFocused = <TElement extends Element = HTMLElement>(props: Pick<FocusStateProps, 'focused' | 'computedFocus'>, options?: Pick<FocusStateOptions, 'defaultFocused'>) : Pick<FocusState<TElement>, 'focused' | 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'> => {
     // Extract options:
     const {
         defaultFocused : defaultState,
