@@ -87,11 +87,11 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * - If `active` is `false` and `cascadeActive` is `true`, the component checks context for inherited active state.
  * - If context is unavailable and `cascadeActive` is `true`, the component defaults to inactive (`false`).
  * 
- * @param props - The component props that may include a controlled `active` value but must exclude `defaultActive`, and contextual `cascadeActive` value.
+ * @param props - The component props that may include a controlled `active` value and contextual `cascadeActive` value, but must exclude `defaultActive`.
  * @param options - An optional configuration for customizing activate/deactivate behavior.
  * @returns The resolved active/inactive state.
  */
-export const useResolvedActive = (props: ActiveStateProps<any> & { defaultActive?: never }, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>) : boolean => {
+export const useResolvedActive = (props: Pick<ActiveStateProps<any>, 'active' | 'cascadeActive'> & { defaultActive?: never }, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>) : boolean => {
     // Extract options:
     const {
         defaultActive        : defaultState,
