@@ -100,7 +100,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean | null, 'aut
  * @param options - An optional configuration for customizing validity behavior.
  * @returns The resolved validity state.
  */
-export const useResolvedValidity = (props: ValidityStateProps, options?: Pick<ValidityStateOptions, 'defaultValidity' | 'fallbackValidity'>) : boolean | null => {
+export const useResolvedValidity = (props: Pick<ValidityStateProps, 'enableValidation' | 'validity' | 'cascadeValidation' | 'computedValidity'>, options?: Pick<ValidityStateOptions, 'defaultValidity' | 'fallbackValidity'>) : boolean | null => {
     // Extract options and assign defaults:
     const {
         defaultValidity  : defaultState,
