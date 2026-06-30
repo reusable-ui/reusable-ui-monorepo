@@ -89,7 +89,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * @param options - An optional configuration for customizing drag/drop behavior.
  * @returns The resolved dragged/dropped state.
  */
-export const useResolvedDragged = (props: DragStateProps, options?: Pick<DragStateOptions, 'defaultDragged' | 'fallbackDragged'>) : boolean => {
+export const useResolvedDragged = (props: Pick<DragStateProps, 'dragged' | 'computedDrag'>, options?: Pick<DragStateOptions, 'defaultDragged' | 'fallbackDragged'>) : boolean => {
     // Extract options:
     const {
         defaultDragged  : defaultState,
