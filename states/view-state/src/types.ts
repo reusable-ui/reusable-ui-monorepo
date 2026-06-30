@@ -34,7 +34,7 @@ import {
 export interface ViewStateProps<TChangeEvent = unknown>
     extends
         // Bases:
-        Omit<InteractionStateProps<number, number, TChangeEvent>, 'state' | 'onStateChange'>
+        Omit<InteractionStateProps<number, number, TChangeEvent>, 'defaultState' | 'state' | 'onStateChange'>
 {
     /**
      * Specifies the initial view index for uncontrolled mode:

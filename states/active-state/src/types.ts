@@ -28,7 +28,7 @@ import {
 export interface ActiveStateProps<TChangeEvent = unknown>
     extends
         // Bases:
-        Omit<InteractionStateProps<boolean, boolean, TChangeEvent>, 'state' | 'onStateChange'>
+        Omit<InteractionStateProps<boolean, boolean, TChangeEvent>, 'defaultState' | 'state' | 'onStateChange'>
 {
     /**
      * Specifies the initial active state for uncontrolled mode:
