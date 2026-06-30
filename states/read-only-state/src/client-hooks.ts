@@ -76,7 +76,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * @param options - An optional configuration for customizing editable/read-only behavior.
  * @returns The resolved editable/read-only state.
  */
-export const useResolvedReadOnly = (props: ReadOnlyStateProps, options?: Pick<ReadOnlyStateOptions, 'defaultReadOnly' | 'defaultCascadeReadOnly'>) : boolean => {
+export const useResolvedReadOnly = (props: Pick<ReadOnlyStateProps, 'readOnly' | 'cascadeReadOnly'>, options?: Pick<ReadOnlyStateOptions, 'defaultReadOnly' | 'defaultCascadeReadOnly'>) : boolean => {
     // Extract options:
     const {
         defaultReadOnly        : defaultState,
@@ -128,7 +128,7 @@ const readOnlyStateDefinition : ReadOnlyStateDefinition = {
  * @template TElement - The type of the target DOM element.
  * 
  * @param props - The component props that may include a controlled `readOnly` value, contextual `cascadeReadOnly` value, and `onReadOnlyUpdate` callback.
- * @param options - An optional configuration for customizing read-only behavior and animation lifecycle.
+ * @param options - An optional configuration for customizing editable/read-only behavior and animation lifecycle.
  * @returns The resolved editable/read-only state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @example
