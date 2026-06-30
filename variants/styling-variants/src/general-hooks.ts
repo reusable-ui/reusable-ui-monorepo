@@ -1,7 +1,7 @@
 // Types:
 import {
     type StylingVariantsProps,
-    type CollectedStylingVariants,
+    type CollectedStylingProps,
 }                           from './types.js'
 
 // Utilities:
@@ -14,6 +14,8 @@ import {
 /**
  * Extracts all known styling-related variant props of the component and returns a filtered object suitable for forwarding.
  * 
+ * Useful for forwarding styling-related variants to **nested** or **sibling** components without manual prop selection.
+ * 
  * Includes:
  * - `size`
  * - `theme`
@@ -23,9 +25,7 @@ import {
  * 
  * Values may be absolute or relative (e.g. `'inherit'`, `'invert'`),
  * and are captured as-is without computing the final visual outcome.
- * Undefined props are excluded from the result.
- * 
- * Useful for forwarding styling-related variants to nested or sibling components without manual prop selection.
+ * `undefined` props are excluded from the result.
  * 
  * @param props - The component props that may include styling-related variants.
  * @returns A subset of styling-related variant props with defined values.
@@ -34,7 +34,7 @@ import {
  * ```tsx
  * import React, { FC } from 'react';
  * import {
- *     useStylingVariants,
+ *     useStylingProps,
  *     StylingVariantsProps,
  * } from '@reusable-ui/styling-variants';
  * import { InputBase } from '@/components/InputBase';
@@ -47,18 +47,18 @@ import {
  * // A component that forwards styling variants to a sibling UI.
  * export const InputWithAutocomplete : FC<InputWithAutocompleteProps> = (props) => {
  *     // Extract all known styling-related variant props:
- *     const stylingVariants = useStylingVariants(props);
+ *     const stylingProps = useStylingProps(props);
  *     
  *     return (
  *         <>
  *             <InputBase {...props} />
- *             <DropdownList {...stylingVariants} />
+ *             <DropdownList {...stylingProps} />
  *         </>
  *     );
  * };
  * ```
  */
-export const useStylingVariants = (props: StylingVariantsProps): CollectedStylingVariants => {
+export const useStylingProps = (props: StylingVariantsProps): CollectedStylingProps => {
     // Extract props:
     const {
         size,
@@ -79,9 +79,9 @@ export const useStylingVariants = (props: StylingVariantsProps): CollectedStylin
             emphasized,
             outlined,
             mild,
-        } satisfies CollectedStylingVariants)
+        } satisfies CollectedStylingProps)
         
         // Filter out the entries with `undefined` values:
         .filter(isDefinedStylingVariant)
-    ) satisfies CollectedStylingVariants;
+    ) satisfies CollectedStylingProps;
 };

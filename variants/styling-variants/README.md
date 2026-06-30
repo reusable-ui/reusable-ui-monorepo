@@ -5,7 +5,7 @@ Designed to streamline styling prop forwarding in composite UIs — ensuring onl
 
 ## ✨ Features
 ✔ Extracts styling-related props like `size`, `theme`, `mild`, `outlined`, etc.
-✔ Filters out undefined or foreign values for clean prop forwarding
+✔ Filters out `undefined` or foreign values for clean prop forwarding
 ✔ Ideal for composite components that delegate styling to nested UIs
 ✔ Integrates seamlessly with appearance, spacing, and styling systems
 
@@ -20,16 +20,29 @@ yarn add @reusable-ui/styling-variants
 
 ## 🧩 Exported Hooks
 
-### `useStylingVariants(props)`
+### `useStylingProps(props)`
 
 Extracts all known styling-related variant props of the component and returns a filtered object suitable for forwarding.
+
+Useful for forwarding styling-related variants to **nested** or **sibling** components without manual prop selection.
+
+Includes:
+- `size`
+- `theme`
+- `emphasized`
+- `outlined`
+- `mild`
+
+Values may be absolute or relative (e.g. `'inherit'`, `'invert'`),
+and are captured as-is without computing the final visual outcome.
+`undefined` props are excluded from the result.
 
 #### 💡 Usage Example
 
 ```tsx
 import React, { FC } from 'react';
 import {
-    useStylingVariants,
+    useStylingProps,
     StylingVariantsProps,
 } from '@reusable-ui/styling-variants';
 import { InputBase } from '@/components/InputBase';
@@ -44,7 +57,7 @@ export interface InputWithAutocompleteProps extends StylingVariantsProps {
  */
 export const InputWithAutocomplete : FC<InputWithAutocompleteProps> = (props) => {
     // Extract all known styling-related variant props:
-    const stylingVariants = useStylingVariants(props);
+    const stylingProps = useStylingProps(props);
     
     return (
         <>
@@ -52,7 +65,7 @@ export const InputWithAutocomplete : FC<InputWithAutocompleteProps> = (props) =>
             <InputBase {...props} />
             
             {/* Forward styling variant props to sibling component: */}
-            <DropdownList {...stylingVariants} />
+            <DropdownList {...stylingProps} />
         </>
     );
 };

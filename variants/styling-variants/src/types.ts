@@ -44,6 +44,8 @@ export interface StylingVariantsProps
 /**
  * Represents the collected known styling-related variant props of the component.
  * 
+ * Useful for forwarding styling-related variants to **nested** or **sibling** components without manual prop selection.
+ * 
  * Includes:
  * - `size`
  * - `theme`
@@ -53,11 +55,9 @@ export interface StylingVariantsProps
  * 
  * Values may be absolute or relative (e.g. `'inherit'`, `'invert'`),
  * and are captured as-is without computing the final visual outcome.
- * Undefined props are excluded from the result.
- * 
- * Useful for forwarding styling-related variants to nested or sibling components without manual prop selection.
+ * `undefined` props are excluded from the result.
  */
-export interface CollectedStylingVariants
+export interface CollectedStylingProps
     extends
         StylingVariantsProps
 {

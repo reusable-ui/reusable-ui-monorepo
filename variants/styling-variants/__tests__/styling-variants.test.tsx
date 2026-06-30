@@ -6,10 +6,10 @@ import {
 
 import {
     type StylingVariantsProps,
-    type CollectedStylingVariants,
+    type CollectedStylingProps,
 } from '../dist/types.js'
 import {
-    useStylingVariants,
+    useStylingProps,
 } from '../dist/general-hooks.js'
 
 import { renderHook, render } from '@testing-library/react'
@@ -31,7 +31,7 @@ interface StylingVariantsTestCase {
     title           : string
     
     /**
-     * Props to pass to the `useStylingVariants` hook, including foreign props
+     * Props to pass to the `useStylingProps` hook, including foreign props
      * Set to `undefined` for no props.
      */
     props          ?: StylingVariantsProps & Record<string, unknown>
@@ -41,9 +41,9 @@ interface StylingVariantsTestCase {
     // Expected Outcomes:
     
     /**
-     * The expected result of the `useStylingVariants` hook, excluding foreign props.
+     * The expected result of the `useStylingProps` hook, excluding foreign props.
      */
-    expectedResult  : CollectedStylingVariants
+    expectedResult  : CollectedStylingProps
 }
 
 
@@ -55,17 +55,17 @@ interface MockComponentProps
         StylingVariantsProps
 {
     /**
-     * A ref to peek the result of the `useStylingVariants` hook.
+     * A ref to peek the result of the `useStylingProps` hook.
      */
-    resultRef : RefObject<CollectedStylingVariants | undefined>
+    resultRef : RefObject<CollectedStylingProps | undefined>
 }
 
 /**
- * A mock component for testing the `useStylingVariants` hook.
+ * A mock component for testing the `useStylingProps` hook.
  */
 const MockComponent = (props: MockComponentProps) => {
-    // Test the `useStylingVariants` hook:
-    const result = useStylingVariants(props);
+    // Test the `useStylingProps` hook:
+    const result = useStylingProps(props);
     
     // Peek the result:
     props.resultRef.current = result;
@@ -77,7 +77,7 @@ const MockComponent = (props: MockComponentProps) => {
 
 
 
-describe('useStylingVariants()', () => {
+describe('useStylingProps()', () => {
     const createRef = <TRef extends unknown>() => renderHook(() => useRef<TRef | undefined>(undefined)).result.current;
     
     test.each<StylingVariantsTestCase>([
@@ -189,7 +189,7 @@ describe('useStylingVariants()', () => {
             expectedResult,
         }) => {
             // Create a ref to peek the result:
-            const resultRef = createRef<CollectedStylingVariants>();
+            const resultRef = createRef<CollectedStylingProps>();
             
             
             

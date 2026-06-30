@@ -40,7 +40,7 @@ const serverSafeHooks = new Set<string>([
     
     'useResolvedBare',
     'useBareVariant',
-    'useStylingVariants',
+    'useStylingProps',
     
     'useResolvedControlledState',
     'useResolvedRangedState',
