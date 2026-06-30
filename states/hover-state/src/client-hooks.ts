@@ -74,7 +74,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * @param options - An optional configuration for customizing hover/unhover behavior.
  * @returns The resolved hovered/unhovered state and event handlers for mouseenter/mouseleave events.
  */
-export const useResolvedHovered = <TElement extends Element = HTMLElement>(props: HoverStateProps, options?: Pick<HoverStateOptions, 'defaultHovered'>) : Pick<HoverState<TElement>, 'hovered' | 'ref' | 'handleMouseEnter' | 'handleMouseLeave'> => {
+export const useResolvedHovered = <TElement extends Element = HTMLElement>(props: Pick<HoverStateProps, 'hovered' | 'computedHover'>, options?: Pick<HoverStateOptions, 'defaultHovered'>) : Pick<HoverState<TElement>, 'hovered' | 'ref' | 'handleMouseEnter' | 'handleMouseLeave'> => {
     // Extract options:
     const {
         defaultHovered : defaultState,
