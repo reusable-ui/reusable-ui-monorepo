@@ -358,6 +358,8 @@ export const useActiveController = <TChangeEvent = unknown>(props: ActiveStatePr
         active         : state,
         onActiveChange : onStateChange,
         
+        cascadeActive,
+        
         onActivatingStart,
         onActivatingEnd,
         onDeactivatingStart,
@@ -386,6 +388,8 @@ export const useActiveController = <TChangeEvent = unknown>(props: ActiveStatePr
             onStateChange,
             
             ...({
+                cascadeActive,
+                
                 onActivatingStart,
                 onActivatingEnd,
                 onDeactivatingStart,
