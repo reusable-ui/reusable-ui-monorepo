@@ -727,7 +727,7 @@ test.describe('useActiveState - controlled mode', () => {
         
         {
             title          : 'Should be contextual active',
-            parentInactive : false,
+            parentActive   : false,
             inactive       : false,
             updates        : [
                 {
@@ -739,7 +739,7 @@ test.describe('useActiveState - controlled mode', () => {
         },
         {
             title          : 'Should be contextual inactive',
-            parentInactive : true,
+            parentActive   : true,
             inactive       : false,
             updates        : [
                 {
@@ -751,7 +751,7 @@ test.describe('useActiveState - controlled mode', () => {
         },
         {
             title          : 'Should be explicitly inactive regradless context is active',
-            parentInactive : false,
+            parentActive   : false,
             inactive       : true,
             updates        : [
                 {
@@ -763,7 +763,7 @@ test.describe('useActiveState - controlled mode', () => {
         },
         {
             title          : 'Should be explicitly inactive regradless context is inactive',
-            parentInactive : true,
+            parentActive   : true,
             inactive       : true,
             updates        : [
                 {
@@ -775,7 +775,7 @@ test.describe('useActiveState - controlled mode', () => {
         },
         {
             title          : 'Should be contextual changed from active to inactive',
-            parentInactive : false,
+            parentActive   : false,
             updates        : [
                 {
                     title                   : 'Should be active and no animation',
@@ -784,7 +784,7 @@ test.describe('useActiveState - controlled mode', () => {
                 },
                 {
                     title                   : 'Change to inactive',
-                    parentInactive          : true,
+                    parentActive            : true,
                     
                     expectedInactive        : 'inactive',
                 },
@@ -813,7 +813,7 @@ test.describe('useActiveState - controlled mode', () => {
         },
         {
             title          : 'Should be contextual changed from inactive to active',
-            parentInactive : true,
+            parentActive   : true,
             updates        : [
                 {
                     title                   : 'Should be inactive and no animation',
@@ -822,7 +822,7 @@ test.describe('useActiveState - controlled mode', () => {
                 },
                 {
                     title                   : 'Change to active',
-                    parentInactive          : false,
+                    parentActive            : false,
                     
                     expectedInactive        : 'active',
                 },
@@ -851,7 +851,7 @@ test.describe('useActiveState - controlled mode', () => {
         },
         {
             title          : 'Should be contextual changed from inactive to active then inactive',
-            parentInactive : true,
+            parentActive   : true,
             updates        : [
                 {
                     title                   : 'Should be inactive and no animation',
@@ -860,7 +860,7 @@ test.describe('useActiveState - controlled mode', () => {
                 },
                 {
                     title                   : 'Change to active',
-                    parentInactive          : false,
+                    parentActive            : false,
                     
                     expectedInactive        : 'active',
                 },
@@ -887,7 +887,7 @@ test.describe('useActiveState - controlled mode', () => {
                 },
                 {
                     title                   : 'Change to inactive',
-                    parentInactive          : true,
+                    parentActive            : true,
                     
                     expectedInactive        : 'inactive',
                 },
@@ -916,7 +916,7 @@ test.describe('useActiveState - controlled mode', () => {
         },
         {
             title          : 'Should be contextual changed from active to inactive then active',
-            parentInactive : false,
+            parentActive   : false,
             updates        : [
                 {
                     title                   : 'Should be active and no animation',
@@ -925,7 +925,7 @@ test.describe('useActiveState - controlled mode', () => {
                 },
                 {
                     title                   : 'Change to inactive',
-                    parentInactive          : true,
+                    parentActive            : true,
                     
                     expectedInactive        : 'inactive',
                 },
@@ -952,7 +952,7 @@ test.describe('useActiveState - controlled mode', () => {
                 },
                 {
                     title                   : 'Change to active',
-                    parentInactive          : false,
+                    parentActive            : false,
                     
                     expectedInactive        : 'active',
                 },
@@ -981,7 +981,7 @@ test.describe('useActiveState - controlled mode', () => {
         },
         {
             title          : 'Contextual activate, deactivate, and re-activate quickly',
-            parentInactive : true,
+            parentActive   : true,
             updates        : [
                 {
                     title                   : 'Should be inactive and no animation',
@@ -990,7 +990,7 @@ test.describe('useActiveState - controlled mode', () => {
                 },
                 {
                     title                   : 'Activate',
-                    parentInactive          : false,
+                    parentActive            : false,
                     
                     delay                   : 200,
                     expectedInactive        : 'active',
@@ -998,7 +998,7 @@ test.describe('useActiveState - controlled mode', () => {
                 },
                 {
                     title                   : 'Deactivate before activationment finishes',
-                    parentInactive          : true,
+                    parentActive            : true,
                     
                     delay                   : 200,
                     expectedInactive        : 'active', // Still active because the activating animation is not finished yet.
@@ -1006,7 +1006,7 @@ test.describe('useActiveState - controlled mode', () => {
                 },
                 {
                     title                   : 'Re-activate again before deactivate finishes',
-                    parentInactive          : false,
+                    parentActive            : false,
                     
                     delay                   : 200,
                     expectedInactive        : 'active',
@@ -1023,7 +1023,7 @@ test.describe('useActiveState - controlled mode', () => {
         },
         {
             title          : 'Contextual deactivate, activate, and re-deactivate quickly',
-            parentInactive : false,
+            parentActive   : false,
             updates        : [
                 {
                     title                   : 'Should be active and no animation',
@@ -1032,7 +1032,7 @@ test.describe('useActiveState - controlled mode', () => {
                 },
                 {
                     title                   : 'Deactivate',
-                    parentInactive          : true,
+                    parentActive            : true,
                     
                     delay                   : 200,
                     expectedInactive        : 'inactive',
@@ -1040,7 +1040,7 @@ test.describe('useActiveState - controlled mode', () => {
                 },
                 {
                     title                   : 'Activate before activationment finishes',
-                    parentInactive          : false,
+                    parentActive            : false,
                     
                     delay                   : 200,
                     expectedInactive        : 'inactive', // Still inactive because the deactivating animation is not finished yet.
@@ -1048,7 +1048,7 @@ test.describe('useActiveState - controlled mode', () => {
                 },
                 {
                     title                   : 'Re-deactivate again before activate finishes',
-                    parentInactive          : true,
+                    parentActive            : true,
                     
                     delay                   : 200,
                     expectedInactive        : 'inactive',
