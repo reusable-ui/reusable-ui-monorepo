@@ -256,6 +256,8 @@ export const useActiveState = <TElement extends Element = HTMLElement, TChangeEv
         active         : state,
         onActiveChange : onStateChange,
         
+        cascadeActive,
+        
         onActivatingStart,
         onActivatingEnd,
         onDeactivatingStart,
@@ -295,6 +297,8 @@ export const useActiveState = <TElement extends Element = HTMLElement, TChangeEv
             onStateChange,
             
             ...({
+                cascadeActive,
+                
                 onActivatingStart,
                 onActivatingEnd,
                 onDeactivatingStart,
