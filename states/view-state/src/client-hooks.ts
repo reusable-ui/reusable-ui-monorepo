@@ -338,8 +338,12 @@ export const useViewState = <TElement extends Element = HTMLElement, TChangeEven
 /**
  * Resolves the current view index and provides a dispatcher for requesting changes.
  * 
- * This hook is intended for components that **manage** the resolved `viewIndex` value and **forward** it to a base component,
+ * This hook is intended for components that **manage** the resolved `viewIndex` value and **forward** it to the base component,
  * while optionally supporting uncontrolled behavior.
+ * 
+ * The resolved view index **must** be forwarded to the base component via the `viewIndex` prop,
+ * so the base component becomes **fully controlled** and does not manage its own internal state,
+ * since this hook **already** manages the state and dispatches changes.
  * 
  * Unlike `useViewState()`, which resolves full lifecycle,
  * `useViewController()` provides a **simplified implementation** for managing view index state and dispatching changes.

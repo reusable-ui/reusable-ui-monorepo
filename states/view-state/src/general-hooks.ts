@@ -35,7 +35,12 @@ const rangedStateDefinition : RangedStateDefinition<number> = {
 /**
  * Resolves the current view index for a fully controlled component.
  * 
- * This hook is intended for components that **consume** the resolved `viewIndex` value and **forward** it to a base component.
+ * This hook is intended for components that **consume** the resolved `viewIndex` value and **forward** it to the base component.
+ * 
+ * The resolved view index **must** be forwarded to the base component via the `viewIndex` prop,
+ * so the base component becomes **fully controlled** and does not manage its own internal state.
+ * 
+ * The passed `props` must **not** include `defaultViewIndex`, since this hook is designed for fully controlled components.
  * 
  * Unlike `useViewState()`, which supports both controlled and uncontrolled modes,
  * `useResolvedViewIndex()` assumes the component is **fully controlled** and does not manage internal state.

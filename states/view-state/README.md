@@ -205,7 +205,12 @@ The hook manages transitions when `viewIndex` changes using a unified animation 
 
 Resolves the current view index for a fully controlled component.
 
-This hook is intended for components that **consume** the resolved `viewIndex` value and **forward** it to a base component.
+This hook is intended for components that **consume** the resolved `viewIndex` value and **forward** it to the base component.
+
+The resolved view index **must** be forwarded to the base component via the `viewIndex` prop,
+so the base component becomes **fully controlled** and does not manage its own internal state.
+
+The passed `props` must **not** include `defaultViewIndex`, since this hook is designed for fully controlled components.
 
 Unlike `useViewState()`, which supports both controlled and uncontrolled modes, `useResolvedViewIndex()` assumes the component is **fully controlled** and does not manage internal state.
 
@@ -228,7 +233,12 @@ Unlike `useViewState()`, which supports both controlled and uncontrolled modes, 
 
 Resolves the current view index and provides a dispatcher for requesting changes.
 
-This hook is intended for components that **manage** the resolved `viewIndex` value and **forward** it to a base component, while optionally supporting uncontrolled behavior.
+This hook is intended for components that **manage** the resolved `viewIndex` value and **forward** it to the base component,
+while optionally supporting uncontrolled behavior.
+
+The resolved view index **must** be forwarded to the base component via the `viewIndex` prop,
+so the base component becomes **fully controlled** and does not manage its own internal state,
+since this hook **already** manages the state and dispatches changes.
 
 Unlike `useViewState()`, which resolves full lifecycle, `useViewController()` provides a **simplified implementation** for managing view index state and dispatching changes.
 
