@@ -64,7 +64,7 @@ import {
  * @param options - Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for expansion change requests.
  */
-export const useDispatchExpandedChange = <TChangeEvent = unknown>(props: CollapseStateProps<TChangeEvent> & { defaultExpanded?: never }, options?: CollapseChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<boolean, TChangeEvent> => {
+export const useDispatchExpandedChange = <TChangeEvent = unknown>(props: Pick<CollapseStateProps<TChangeEvent>, 'onExpandedChange'> & { defaultExpanded?: never }, options?: CollapseChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<boolean, TChangeEvent> => {
     return useDispatchInteractionStateChange<boolean, TChangeEvent>(
         // Props:
         { onStateChange: props.onExpandedChange },
