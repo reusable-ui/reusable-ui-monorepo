@@ -55,6 +55,8 @@ const invertableVariantDefinition : InvertableVariantDefinition<Orientation, 'in
 /**
  * Resolves the current orientation variant.
  * 
+ * Useful for derived components that need to determine the current orientation of the base component.
+ * 
  * Resolution priority:
  * - `'inherit'` : uses the orientation value from context.
  * - `'invert'`  : flips the orientation value from context (`'inline'` ⇄ `'block'`).

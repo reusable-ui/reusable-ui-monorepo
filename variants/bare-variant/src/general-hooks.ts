@@ -37,6 +37,8 @@ const controlledVariantDefinition : ControlledVariantDefinition<boolean | string
 /**
  * Resolves the current bare variant.
  * 
+ * Useful for derived components that need to determine the current bare variant of the base component.
+ * 
  * @template TBare - The extended type of the `bare` prop, allowing `true` or custom string-based modes.
  * 
  * @param props - The component props that may include a `bare` value.

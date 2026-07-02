@@ -54,6 +54,8 @@ const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inheri
 /**
  * Resolves the current emphasized variant.
  * 
+ * Useful for derived components that need to determine the current emphasized variant of the base component.
+ * 
  * Resolution priority:
  * - `'inherit'` : uses the emphasized value from context.
  * - `'invert'`  : flips the emphasized value from context (`true` ⇄ `false`).

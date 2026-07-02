@@ -54,6 +54,8 @@ const inheritableVariantDefinition : InheritableVariantDefinition<string, 'inher
 /**
  * Resolves the current size variant.
  * 
+ * Useful for derived components that need to determine the current size of the base component.
+ * 
  * Resolution priority:
  * - `'inherit'` : uses the size value from context.
  * - Otherwise   : uses the explicitly provided size value as-is.
@@ -68,6 +70,8 @@ export function useResolvedSize<TSize extends string = BasicSize>(props: SizeVar
 
 /**
  * Resolves the current size variant.
+ * 
+ * Useful for derived components that need to determine the current size of the base component.
  * 
  * Resolution priority:
  * - `'inherit'` : uses the size value from context.

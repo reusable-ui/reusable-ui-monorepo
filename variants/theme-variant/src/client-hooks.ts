@@ -53,6 +53,8 @@ const inheritableVariantDefinition : InheritableVariantDefinition<string, 'inher
 /**
  * Resolves the current theme variant.
  * 
+ * Useful for derived components that need to determine the current theme of the base component.
+ * 
  * Resolution priority:
  * - `'inherit'` : uses the theme value from context.
  * - Otherwise   : uses the explicitly provided theme value as-is.

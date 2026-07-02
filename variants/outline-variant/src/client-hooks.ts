@@ -54,6 +54,8 @@ const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inheri
 /**
  * Resolves the current outlined variant.
  * 
+ * Useful for derived components that need to determine the current outlined variant of the base component.
+ * 
  * Resolution priority:
  * - `'inherit'` : uses the outlined value from context.
  * - `'invert'`  : flips the outlined value from context (`true` ⇄ `false`).

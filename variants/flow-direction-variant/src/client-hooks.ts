@@ -55,6 +55,8 @@ const invertableVariantDefinition : InvertableVariantDefinition<FlowDirection, '
 /**
  * Resolves the current flow direction variant.
  * 
+ * Useful for derived components that need to determine the current flow direction of the base component.
+ * 
  * Resolution priority:
  * - `'inherit'` : uses the flow direction value from context.
  * - `'invert'`  : flips the flow direction value from context (`'start'` ⇄ `'end'`).

@@ -54,6 +54,8 @@ const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inheri
 /**
  * Resolves the current mild variant.
  * 
+ * Useful for derived components that need to determine the current mild variant of the base component.
+ * 
  * Resolution priority:
  * - `'inherit'` : uses the mild value from context.
  * - `'invert'`  : flips the mild value from context (`true` ⇄ `false`).
