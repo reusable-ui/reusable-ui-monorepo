@@ -85,7 +85,7 @@ export const CustomEditor: FC<CustomEditorProps> = (props) => {
 
 Resolves the current enabled/disabled state for a fully controlled component.
 
-This hook is intended for components that **consume** the resolved `disabled` state and **forward** it to a base component.
+Useful for derived components to determine whether the base component is enabled or disabled.
 
 Unlike `useDisabledState()`, which handles animation and lifecycle, `useResolvedDisabled()` performs a lightweight resolution of the effective disabled value.
 
