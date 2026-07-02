@@ -76,7 +76,11 @@ const observableStateDefinition : ObservableStateDefinition<boolean | null, 'aut
 /**
  * Resolves the current validity state for a fully controlled component.
  * 
- * This hook is intended for components that **consume** the resolved `validity` state and **forward** it to a base component.
+ * Useful for derived components to determine whether the base component is valid, invalid, or unvalidated (neither valid nor invalid).
+ * 
+ * The resolved validity state **should** be forwarded to the base component via the `validity` prop,
+ * allowing the base component to rely on the derived component for valid, invalid, and unvalidated handling
+ * without observing the validity state itself.
  * 
  * Unlike `useValidityState()`, which handles animation and lifecycle,
  * `useResolvedValidity()` performs a lightweight resolution of the effective validity value.
