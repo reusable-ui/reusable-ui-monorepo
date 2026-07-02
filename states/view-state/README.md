@@ -205,7 +205,7 @@ The hook manages transitions when `viewIndex` changes using a unified animation 
 
 Resolves the current view index for a fully controlled component.
 
-This hook is intended for components that **consume** the resolved `viewIndex` value and **forward** it to the base component.
+Useful for derived components that need to determine whether the base component is in a specific view index.
 
 The resolved view index **must** be forwarded to the base component via the `viewIndex` prop,
 so the base component becomes **fully controlled** and does not manage its own internal state.
