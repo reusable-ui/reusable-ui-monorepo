@@ -72,7 +72,12 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
 /**
  * Resolves the current active/inactive state for a fully controlled component.
  * 
- * This hook is intended for components that **consume** the resolved `active` state and **forward** it to a base component.
+ * This hook is intended for components that **consume** the resolved `active` state and **forward** it to the base component.
+ * 
+ * The resolved active state **must** be forwarded to the base component via the `active` prop,
+ * so the base component becomes **fully controlled** and does not manage its own internal state.
+ * 
+ * The passed `props` must **not** include `defaultActive`, since this hook is designed for fully controlled components.
  * 
  * Unlike `useActiveState()`, which supports both controlled and uncontrolled modes,
  * `useResolvedActive()` assumes the component is **fully controlled** and does not manage internal state.
@@ -329,8 +334,12 @@ export const useActiveState = <TElement extends Element = HTMLElement, TChangeEv
 /**
  * Resolves the current active/inactive state and provides a dispatcher for requesting changes.
  * 
- * This hook is intended for components that **manage** the resolved `active` state and **forward** it to a base component,
+ * This hook is intended for components that **manage** the resolved `active` state and **forward** it to the base component,
  * while optionally supporting uncontrolled behavior.
+ * 
+ * The resolved active state **must** be forwarded to the base component via the `active` prop,
+ * so the base component becomes **fully controlled** and does not manage its own internal state,
+ * since this hook **already** manages the state and dispatches changes.
  * 
  * Unlike `useActiveState()`, which resolves full lifecycle,
  * `useActiveController()` provides a **simplified implementation** for managing activation state and dispatching changes.
