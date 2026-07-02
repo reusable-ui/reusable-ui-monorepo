@@ -21,6 +21,16 @@ yarn add @reusable-ui/theme-variant
 
 ## 🧩 Exported Hooks
 
+### `useResolvedTheme(props, options)`
+
+Resolves the current theme variant.
+
+Useful for derived components that need to determine the current theme of the base component.
+
+Resolution priority:
+- `'inherit'` : uses the theme value from context.
+- Otherwise   : uses the explicitly provided theme value as-is.
+
 ### `useThemeVariant(props, options)`
 
 Resolves the theme value along with its associated CSS class name, based on component props, optional default configuration, and parent context.

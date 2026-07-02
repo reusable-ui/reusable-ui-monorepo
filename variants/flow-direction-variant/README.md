@@ -21,6 +21,17 @@ yarn add @reusable-ui/flow-direction-variant
 
 ## 🧩 Exported Hooks
 
+### `useResolvedFlowDirection(props, options)`
+
+Resolves the current flow direction variant.
+
+Useful for derived components that need to determine the current flow direction of the base component.
+
+Resolution priority:
+- `'inherit'` : uses the flow direction value from context.
+- `'invert'`  : flips the flow direction value from context (`'start'` ⇄ `'end'`).
+- Otherwise   : uses the explicitly provided flow direction value as-is.
+
 ### `useFlowDirectionVariant(props, options)`
 
 Resolves the flow direction value along with its associated CSS class name, based on component props, optional default configuration, and parent context.

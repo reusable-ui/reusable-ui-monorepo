@@ -20,6 +20,12 @@ yarn add @reusable-ui/bare-variant
 
 ## 🧩 Exported Hooks
 
+### `useResolvedBare(props, options)`
+
+Resolves the current bare variant.
+
+Useful for derived components that need to determine the current bare variant of the base component.
+
 ### `useBareVariant(props, options)`
 
 Resolves the bare state along with its associated CSS class name, based on component props and optional default configuration.

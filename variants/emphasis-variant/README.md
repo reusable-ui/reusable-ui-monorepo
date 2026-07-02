@@ -20,6 +20,17 @@ yarn add @reusable-ui/emphasis-variant
 
 ## 🧩 Exported Hooks
 
+### `useResolvedEmphasized(props, options)`
+
+Resolves the current emphasized variant.
+
+Useful for derived components that need to determine the current emphasized variant of the base component.
+
+Resolution priority:
+- `'inherit'` : uses the emphasized value from context.
+- `'invert'`  : flips the emphasized value from context (`true` ⇄ `false`).
+- Otherwise   : uses the explicitly provided emphasized value as-is.
+
 ### `useEmphasisVariant(props, options)`
 
 Resolves the emphasized state along with its associated CSS class name, based on component props, optional default configuration, and parent context.

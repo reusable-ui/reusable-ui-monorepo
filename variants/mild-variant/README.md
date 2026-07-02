@@ -20,6 +20,17 @@ yarn add @reusable-ui/mild-variant
 
 ## 🧩 Exported Hooks
 
+### `useResolvedMild(props, options)`
+
+Resolves the current mild variant.
+
+Useful for derived components that need to determine the current mild variant of the base component.
+
+Resolution priority:
+- `'inherit'` : uses the mild value from context.
+- `'invert'`  : flips the mild value from context (`true` ⇄ `false`).
+- Otherwise   : uses the explicitly provided mild value as-is.
+
 ### `useMildVariant(props, options)`
 
 Resolves the mild state along with its associated CSS class name, based on component props, optional default configuration, and parent context.
