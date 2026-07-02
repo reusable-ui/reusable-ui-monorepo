@@ -143,7 +143,7 @@ The hook manages transitions between `dragged` and `dropped` states using a unif
 
 Resolves the current dragged/dropped state for a fully controlled component.
 
-Useful for derived components to determine whether the base component is dragged or dropped.
+Useful for derived components that need to determine whether the base component is dragged or dropped.
 
 The resolved drag state **should** be forwarded to the base component via the `dragged` prop,
 allowing the base component to rely on the derived component for drag and drop handling

@@ -77,7 +77,7 @@ export const ExcitableBox: FC<ExcitableBoxProps> = (props) => {
 
 Resolves the current excited state for a fully controlled component.
 
-Useful for derived components to determine whether the base component is excited or not.
+Useful for derived components that need to determine whether the base component is excited or not.
 
 - Does not contain internal state.
 - Ideal for components that **consume** the resolved `excited` state.

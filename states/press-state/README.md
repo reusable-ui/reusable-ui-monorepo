@@ -183,7 +183,7 @@ You can override the default keys using the `pressKeys` and `clickKeys` options 
 
 Resolves the current pressed/released state for a fully controlled component.
 
-Useful for derived components to determine whether the base component is pressed or released.
+Useful for derived components that need to determine whether the base component is pressed or released.
 
 The resolved press state **should** be forwarded to the base component via the `pressed` prop,
 allowing the base component to rely on the derived component for press and release handling

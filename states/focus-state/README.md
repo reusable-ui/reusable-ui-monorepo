@@ -135,7 +135,7 @@ The hook manages transitions between `focused` and `blurred` states using a unif
 
 Resolves the current focused/blurred state for a fully controlled component.
 
-Useful for derived components to determine whether the base component is focused or blurred.
+Useful for derived components that need to determine whether the base component is focused or blurred.
 
 The resolved focus state **should** be forwarded to the base component via the `focused` prop,
 allowing the base component to rely on the derived component for focus and blur handling

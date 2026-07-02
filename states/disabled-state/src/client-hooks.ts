@@ -58,7 +58,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
 /**
  * Resolves the current enabled/disabled state for a fully controlled component.
  * 
- * Useful for derived components to determine whether the base component is enabled or disabled.
+ * Useful for derived components that need to determine whether the base component is enabled or disabled.
  * 
  * Unlike `useDisabledState()`, which handles animation and lifecycle,
  * `useResolvedDisabled()` performs a lightweight resolution of the effective disabled value.

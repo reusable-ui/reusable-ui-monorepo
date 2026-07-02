@@ -223,7 +223,7 @@ To avoid confusion, here are the rules that govern how `<ValidityStateProvider>`
 
 Resolves the current validity state for a fully controlled component.
 
-Useful for derived components to determine whether the base component is valid, invalid, or unvalidated (neither valid nor invalid).
+Useful for derived components that need to determine whether the base component is valid, invalid, or unvalidated (neither valid nor invalid).
 
 The resolved validity state **should** be forwarded to the base component via the `validity` prop,
 allowing the base component to rely on the derived component for valid, invalid, and unvalidated handling
