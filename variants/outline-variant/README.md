@@ -20,17 +20,6 @@ yarn add @reusable-ui/outline-variant
 
 ## 🧩 Exported Hooks
 
-### `useResolvedOutlined(props, options)`
-
-Resolves the current outlined variant.
-
-Useful for derived components that need to determine the current outlined variant of the base component.
-
-Resolution priority:
-- `'inherit'` : uses the outlined value from context.
-- `'invert'`  : flips the outlined value from context (`true` ⇄ `false`).
-- Otherwise   : uses the explicitly provided outlined value as-is.
-
 ### `useOutlineVariant(props, options)`
 
 Resolves the outlined state along with its associated CSS class name, based on component props, optional default configuration, and parent context.
@@ -112,6 +101,17 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
 ```
 
 ---
+
+### `useResolvedOutlined(props, options)`
+
+Resolves the current outlined variant.
+
+Useful for derived components that need to determine the current outlined variant of the base component.
+
+Resolution priority:
+- `'inherit'` : uses the outlined value from context.
+- `'invert'`  : flips the outlined value from context (`true` ⇄ `false`).
+- Otherwise   : uses the explicitly provided outlined value as-is.
 
 ## 🎨 CSS Selectors & Conditional Rule Helpers
 

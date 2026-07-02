@@ -22,16 +22,6 @@ yarn add @reusable-ui/size-variant
 
 ## 🧩 Exported Hooks
 
-### `useResolvedSize(props, options)`
-
-Resolves the current size variant.
-
-Useful for derived components that need to determine the current size of the base component.
-
-Resolution priority:
-- `'inherit'` : uses the size value from context.
-- Otherwise   : uses the explicitly provided size value as-is.
-
 ### `useSizeVariant(props, options)`
 
 Resolves the size value along with its associated CSS class name, based on component props, default configuration, and parent context.
@@ -119,6 +109,16 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
 ```
 
 ---
+
+### `useResolvedSize(props, options)`
+
+Resolves the current size variant.
+
+Useful for derived components that need to determine the current size of the base component.
+
+Resolution priority:
+- `'inherit'` : uses the size value from context.
+- Otherwise   : uses the explicitly provided size value as-is.
 
 ## 🎨 CSS Selectors & Conditional Rule Helpers
 
