@@ -35,7 +35,7 @@ const controlledVariantDefinition : ControlledVariantDefinition<boolean | string
 };
 
 /**
- * Resolves the effective bare value based on controlled props.
+ * Resolves the current bare variant.
  * 
  * @template TBare - The extended type of the `bare` prop, allowing `true` or custom string-based modes.
  * 

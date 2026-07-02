@@ -52,7 +52,7 @@ const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inheri
 };
 
 /**
- * Resolves the effective mild value based on props and context.
+ * Resolves the current mild variant.
  * 
  * Resolution priority:
  * - `'inherit'` : uses the mild value from context.

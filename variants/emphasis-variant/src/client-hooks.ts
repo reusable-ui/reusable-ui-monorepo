@@ -52,7 +52,7 @@ const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inheri
 };
 
 /**
- * Resolves the effective emphasized value based on props and context.
+ * Resolves the current emphasized variant.
  * 
  * Resolution priority:
  * - `'inherit'` : uses the emphasized value from context.

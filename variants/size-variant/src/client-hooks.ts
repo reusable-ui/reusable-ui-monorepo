@@ -52,7 +52,7 @@ const inheritableVariantDefinition : InheritableVariantDefinition<string, 'inher
 };
 
 /**
- * Resolves the effective size value based on props, options, and context.
+ * Resolves the current size variant.
  * 
  * Resolution priority:
  * - `'inherit'` : uses the size value from context.
@@ -67,7 +67,7 @@ const inheritableVariantDefinition : InheritableVariantDefinition<string, 'inher
 export function useResolvedSize<TSize extends string = BasicSize>(props: SizeVariantProps<TSize>, options: SizeVariantOptions<TSize>): TSize;
 
 /**
- * Resolves the effective size value based on props and context.
+ * Resolves the current size variant.
  * 
  * Resolution priority:
  * - `'inherit'` : uses the size value from context.

@@ -53,7 +53,7 @@ const invertableVariantDefinition : InvertableVariantDefinition<FlowDirection, '
 };
 
 /**
- * Resolves the effective flow direction value based on props and context.
+ * Resolves the current flow direction variant.
  * 
  * Resolution priority:
  * - `'inherit'` : uses the flow direction value from context.

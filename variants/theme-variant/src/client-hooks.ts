@@ -51,7 +51,7 @@ const inheritableVariantDefinition : InheritableVariantDefinition<string, 'inher
 };
 
 /**
- * Resolves the effective theme value based on props and context.
+ * Resolves the current theme variant.
  * 
  * Resolution priority:
  * - `'inherit'` : uses the theme value from context.

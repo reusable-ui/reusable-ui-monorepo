@@ -53,7 +53,7 @@ const invertableVariantDefinition : InvertableVariantDefinition<Orientation, 'in
 };
 
 /**
- * Resolves the effective orientation value based on props and context.
+ * Resolves the current orientation variant.
  * 
  * Resolution priority:
  * - `'inherit'` : uses the orientation value from context.
