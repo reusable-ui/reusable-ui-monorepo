@@ -84,7 +84,7 @@ import {
  * @param options - Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for view index change requests.
  */
-export const useDispatchViewIndexChange = <TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent> & { defaultViewIndex?: never }, options?: ViewIndexChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<number, TChangeEvent> => {
+export const useDispatchViewIndexChange = <TChangeEvent = unknown>(props: Pick<ViewStateProps<TChangeEvent>, 'onViewIndexChange'> & { defaultViewIndex?: never }, options?: ViewIndexChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<number, TChangeEvent> => {
     return useDispatchInteractionStateChange<number, TChangeEvent>(
         // Props:
         { onStateChange: props.onViewIndexChange },
