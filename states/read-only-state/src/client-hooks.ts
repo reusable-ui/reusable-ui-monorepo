@@ -58,7 +58,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
 /**
  * Resolves the current editable/read-only state for a fully controlled component.
  * 
- * This hook is intended for components that **consume** the resolved `readOnly` state and **forward** it to a base component.
+ * Useful for derived components to determine whether the base component is editable or read-only.
  * 
  * Unlike `useReadOnlyState()`, which handles animation and lifecycle,
  * `useResolvedReadOnly()` performs a lightweight resolution of the effective read-only value.
