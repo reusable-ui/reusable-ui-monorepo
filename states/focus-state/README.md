@@ -139,7 +139,7 @@ Useful for derived components to determine whether the base component is focused
 
 The resolved focus state **should** be forwarded to the base component via the `focused` prop,
 allowing the base component to rely on the derived component for focus and blur handling
-without observing the state itself.
+without observing the focus state itself.
 
 Unlike `useFocusState()`, which handles animation and lifecycle, `useResolvedFocused()` performs a lightweight resolution of the effective focus value.
 
