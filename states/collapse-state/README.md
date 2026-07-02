@@ -103,7 +103,7 @@ The hook manages transitions between `expanded` and `collapsed` states using a u
 
 Resolves the current expanded/collapsed state for a fully controlled component.
 
-This hook is intended for components that **consume** the resolved `expanded` state and **forward** it to the base component.
+Useful for derived components that need to determine whether the base component is expanded or collapsed.
 
 The resolved expanded state **must** be forwarded to the base component via the `expanded` prop,
 so the base component becomes **fully controlled** and does not manage its own internal state.
