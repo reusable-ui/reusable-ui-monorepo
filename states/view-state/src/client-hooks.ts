@@ -71,6 +71,11 @@ import {
  * 
  * This hook is designed for **fully controlled components**—typically the outer `<DerivedComponent>` that manages the `viewIndex` value and forwards it to a `<BaseComponent viewIndex={...}>`.
  * 
+ * The passed `props` must **not** include `defaultViewIndex`, since this dispatcher is intended for the parent component
+ * that manages the view index.
+ * Consequently, both this component and its base component remain **fully controlled**
+ * and do not manage their own internal state.
+ * 
  * Unlike `useViewState()`, which supports both controlled and uncontrolled modes,
  * `useDispatchViewIndexChange()` assumes the component is **fully controlled** and does not manage internal state.
  * 
