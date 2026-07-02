@@ -235,10 +235,10 @@ export const useCollapseState = <TElement extends Element = HTMLElement, TChange
 };
 
 /**
- * Resolves the current expanded/collapsed state and provides a dispatcher for requesting changes.
+ * Controls the current expanded/collapsed state and provides a dispatcher for requesting changes.
  * 
- * This hook is intended for components that **manage** the resolved `expanded` state and **forward** it to the base component,
- * while optionally supporting uncontrolled behavior.
+ * Useful for derived components that need to control the expanded state of the base component,
+ * while also managing the expansion lifecycle and handling change requests.
  * 
  * The resolved expanded state **must** be forwarded to the base component via the `expanded` prop,
  * so the base component becomes **fully controlled** and does not manage its own internal state,
