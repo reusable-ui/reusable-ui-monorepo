@@ -107,7 +107,7 @@ The hook manages transitions between `active` and `inactive` states using a unif
 
 Resolves the current active/inactive state for a fully controlled component.
 
-This hook is intended for components that **consume** the resolved `active` state and **forward** it to the base component.
+Useful for derived components that need to determine whether the base component is active or inactive.
 
 The resolved active state **must** be forwarded to the base component via the `active` prop,
 so the base component becomes **fully controlled** and does not manage its own internal state.
