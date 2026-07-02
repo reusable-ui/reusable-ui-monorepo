@@ -128,7 +128,11 @@ The hook manages transitions between `hovered` and `unhovered` states using a un
 
 Resolves the current hovered/unhovered state for a fully controlled component.
 
-This hook is intended for components that **consume** the resolved `hovered` state and **forward** it to a base component.
+Useful for derived components to determine whether the base component is hovered or unhovered.
+
+The resolved hover state **should** be forwarded to the base component via the `hovered` prop,
+allowing the base component to rely on the derived component for hover and unhover handling
+without observing the hover state itself.
 
 Unlike `useHoverState()`, which handles animation and lifecycle, `useResolvedHovered()` performs a lightweight resolution of the effective hover value.
 
