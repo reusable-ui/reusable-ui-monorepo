@@ -134,10 +134,10 @@ Unlike `useActiveState()`, which supports both controlled and uncontrolled modes
 
 ### `useActiveController(props, options?)`
 
-Resolves the current active/inactive state and provides a dispatcher for requesting changes.
+Controls the current active/inactive state and provides a dispatcher for requesting changes.
 
-This hook is intended for components that **manage** the resolved `active` state and **forward** it to the base component,
-while optionally supporting uncontrolled behavior.
+Useful for derived components that need to control the active state of the base component,
+while also managing the activation lifecycle and handling change requests.
 
 The resolved active state **must** be forwarded to the base component via the `active` prop,
 so the base component becomes **fully controlled** and does not manage its own internal state,
