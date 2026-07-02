@@ -74,7 +74,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean | null, 'aut
 };
 
 /**
- * Resolves the current validity state for a fully controlled component.
+ * Resolves the current validity state.
  * 
  * Useful for derived components that need to determine whether the base component is valid, invalid, or unvalidated (neither valid nor invalid).
  * 

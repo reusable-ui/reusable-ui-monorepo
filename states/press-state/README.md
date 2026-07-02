@@ -181,7 +181,7 @@ You can override the default keys using the `pressKeys` and `clickKeys` options 
 
 ### `useResolvedPressed(props, options?)`
 
-Resolves the current pressed/released state for a fully controlled component.
+Resolves the current pressed/released state.
 
 Useful for derived components that need to determine whether the base component is pressed or released.
 

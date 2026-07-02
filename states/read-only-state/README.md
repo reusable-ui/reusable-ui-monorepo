@@ -83,7 +83,7 @@ export const CustomEditor: FC<CustomEditorProps> = (props) => {
 
 ### `useResolvedReadOnly(props, options?)`
 
-Resolves the current editable/read-only state for a fully controlled component.
+Resolves the current editable/read-only state.
 
 Useful for derived components that need to determine whether the base component is editable or read-only.
 

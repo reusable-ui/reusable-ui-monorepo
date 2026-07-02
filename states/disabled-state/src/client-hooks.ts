@@ -56,7 +56,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
 };
 
 /**
- * Resolves the current enabled/disabled state for a fully controlled component.
+ * Resolves the current enabled/disabled state.
  * 
  * Useful for derived components that need to determine whether the base component is enabled or disabled.
  * 

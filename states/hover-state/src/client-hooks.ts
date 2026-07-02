@@ -57,7 +57,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
 };
 
 /**
- * Resolves the current hovered/unhovered state for a fully controlled component.
+ * Resolves the current hovered/unhovered state.
  * 
  * Useful for derived components that need to determine whether the base component is hovered or unhovered.
  * 

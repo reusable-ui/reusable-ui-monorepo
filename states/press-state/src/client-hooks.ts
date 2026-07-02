@@ -57,7 +57,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
 };
 
 /**
- * Resolves the current pressed/released state for a fully controlled component.
+ * Resolves the current pressed/released state.
  * 
  * Useful for derived components that need to determine whether the base component is pressed or released.
  * 

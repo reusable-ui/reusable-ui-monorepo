@@ -56,7 +56,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
 };
 
 /**
- * Resolves the current editable/read-only state for a fully controlled component.
+ * Resolves the current editable/read-only state.
  * 
  * Useful for derived components that need to determine whether the base component is editable or read-only.
  * 
