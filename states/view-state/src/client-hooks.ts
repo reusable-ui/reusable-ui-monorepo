@@ -336,10 +336,10 @@ export const useViewState = <TElement extends Element = HTMLElement, TChangeEven
 };
 
 /**
- * Resolves the current view index and provides a dispatcher for requesting changes.
+ * Controls the current view index and provides a dispatcher for requesting changes.
  * 
- * This hook is intended for components that **manage** the resolved `viewIndex` value and **forward** it to the base component,
- * while optionally supporting uncontrolled behavior.
+ * Useful for derived components that need to control the view index of the base component,
+ * while also managing the view-switching lifecycle and handling change requests.
  * 
  * The resolved view index **must** be forwarded to the base component via the `viewIndex` prop,
  * so the base component becomes **fully controlled** and does not manage its own internal state,
