@@ -208,7 +208,7 @@ Resolves the current view index for a fully controlled component.
 Useful for derived components that need to determine whether the base component is in a specific view index.
 
 The resolved view index **must** be forwarded to the base component via the `viewIndex` prop,
-so the base component becomes **fully controlled** and does not manage its own internal state.
+thereby the base component becomes **fully controlled** and does not manage its own internal state.
 
 The passed `props` must **not** include `defaultViewIndex`, since this hook is designed for fully controlled components.
 
@@ -237,7 +237,7 @@ Useful for derived components that need to control the view index of the base co
 while also managing the view-switching lifecycle and handling change requests.
 
 The resolved view index **must** be forwarded to the base component via the `viewIndex` prop,
-so the base component becomes **fully controlled** and does not manage its own internal state,
+thereby the base component becomes **fully controlled** and does not manage its own internal state,
 since this hook **already** manages the state and dispatches changes.
 
 Unlike `useViewState()`, which resolves full lifecycle, `useViewController()` provides a **simplified implementation** for managing view index state and dispatching changes.

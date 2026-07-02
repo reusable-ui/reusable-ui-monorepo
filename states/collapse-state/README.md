@@ -106,7 +106,7 @@ Resolves the current expanded/collapsed state for a fully controlled component.
 Useful for derived components that need to determine whether the base component is expanded or collapsed.
 
 The resolved expanded state **must** be forwarded to the base component via the `expanded` prop,
-so the base component becomes **fully controlled** and does not manage its own internal state.
+thereby the base component becomes **fully controlled** and does not manage its own internal state.
 
 The passed `props` must **not** include `defaultExpanded`, since this hook is designed for fully controlled components.
 
@@ -135,7 +135,7 @@ Useful for derived components that need to control the expanded state of the bas
 while also managing the expansion lifecycle and handling change requests.
 
 The resolved expanded state **must** be forwarded to the base component via the `expanded` prop,
-so the base component becomes **fully controlled** and does not manage its own internal state,
+thereby the base component becomes **fully controlled** and does not manage its own internal state,
 since this hook **already** manages the state and dispatches changes.
 
 Unlike `useCollapseState()`, which resolves full lifecycle, `useCollapseController()` provides a **simplified implementation** for managing expansion state and dispatching changes.

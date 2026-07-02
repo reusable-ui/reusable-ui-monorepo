@@ -241,7 +241,7 @@ export const useCollapseState = <TElement extends Element = HTMLElement, TChange
  * while also managing the expansion lifecycle and handling change requests.
  * 
  * The resolved expanded state **must** be forwarded to the base component via the `expanded` prop,
- * so the base component becomes **fully controlled** and does not manage its own internal state,
+ * thereby the base component becomes **fully controlled** and does not manage its own internal state,
  * since this hook **already** manages the state and dispatches changes.
  * 
  * Unlike `useCollapseState()`, which resolves full lifecycle,

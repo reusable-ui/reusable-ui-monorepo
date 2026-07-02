@@ -33,7 +33,7 @@ const controlledStateDefinition : ControlledStateDefinition<boolean> = {
  * Useful for derived components that need to determine whether the base component is expanded or collapsed.
  * 
  * The resolved expanded state **must** be forwarded to the base component via the `expanded` prop,
- * so the base component becomes **fully controlled** and does not manage its own internal state.
+ * thereby the base component becomes **fully controlled** and does not manage its own internal state.
  * 
  * The passed `props` must **not** include `defaultExpanded`, since this hook is designed for fully controlled components.
  * 

@@ -75,7 +75,7 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * Useful for derived components that need to determine whether the base component is active or inactive.
  * 
  * The resolved active state **must** be forwarded to the base component via the `active` prop,
- * so the base component becomes **fully controlled** and does not manage its own internal state.
+ * thereby the base component becomes **fully controlled** and does not manage its own internal state.
  * 
  * The passed `props` must **not** include `defaultActive`, since this hook is designed for fully controlled components.
  * 
@@ -338,7 +338,7 @@ export const useActiveState = <TElement extends Element = HTMLElement, TChangeEv
  * while also managing the activation lifecycle and handling change requests.
  * 
  * The resolved active state **must** be forwarded to the base component via the `active` prop,
- * so the base component becomes **fully controlled** and does not manage its own internal state,
+ * thereby the base component becomes **fully controlled** and does not manage its own internal state,
  * since this hook **already** manages the state and dispatches changes.
  * 
  * Unlike `useActiveState()`, which resolves full lifecycle,

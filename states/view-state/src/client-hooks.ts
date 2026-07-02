@@ -342,7 +342,7 @@ export const useViewState = <TElement extends Element = HTMLElement, TChangeEven
  * while also managing the view-switching lifecycle and handling change requests.
  * 
  * The resolved view index **must** be forwarded to the base component via the `viewIndex` prop,
- * so the base component becomes **fully controlled** and does not manage its own internal state,
+ * thereby the base component becomes **fully controlled** and does not manage its own internal state,
  * since this hook **already** manages the state and dispatches changes.
  * 
  * Unlike `useViewState()`, which resolves full lifecycle,
