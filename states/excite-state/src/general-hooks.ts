@@ -30,7 +30,7 @@ const controlledStateDefinition : ControlledStateDefinition<boolean> = {
 /**
  * Resolves the current excited state for a fully controlled component.
  * 
- * This hook is intended for components that **consume** the resolved `excited` state and **forward** it to a base component.
+ * Useful for derived components to determine whether the base component is excited or not.
  * 
  * - Does not contain internal state.
  * - Ideal for components that **consume** the resolved `excited` state.
