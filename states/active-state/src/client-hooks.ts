@@ -141,7 +141,7 @@ export const useResolvedActive = (props: Pick<ActiveStateProps<any>, 'active' | 
  * @param options - Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for activation change requests.
  */
-export const useDispatchActiveChange = <TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent> & { defaultActive?: never }, options?: ActiveChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<boolean, TChangeEvent> => {
+export const useDispatchActiveChange = <TChangeEvent = unknown>(props: Pick<ActiveStateProps<TChangeEvent>, 'onActiveChange'> & { defaultActive?: never }, options?: ActiveChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<boolean, TChangeEvent> => {
     return useDispatchInteractionStateChange<boolean, TChangeEvent>(
         // Props:
         { onStateChange: props.onActiveChange },
