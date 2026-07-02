@@ -59,7 +59,11 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
 /**
  * Resolves the current pressed/released state for a fully controlled component.
  * 
- * This hook is intended for components that **consume** the resolved `pressed` state and **forward** it to a base component.
+ * Useful for derived components to determine whether the base component is pressed or released.
+ * 
+ * The resolved press state **should** be forwarded to the base component via the `pressed` prop,
+ * allowing the base component to rely on the derived component for press and release handling
+ * without observing the press state itself.
  * 
  * Unlike `usePressState()`, which handles animation and lifecycle,
  * `useResolvedPressed()` performs a lightweight resolution of the effective press value.
