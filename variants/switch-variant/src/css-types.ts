@@ -14,7 +14,7 @@ import {
 
 
 /**
- * Defines a single flag case for conditional styling.
+ * Describes a single flag case when a variant flag should be active.
  * 
  * Conditionally sets or unsets a boolean-like CSS variable based on the specified variant condition.
  * 
@@ -31,7 +31,7 @@ import {
  */
 export interface CssSwitchVariantFlagCase {
     /**
-     * Determines when the flag variable is set.
+     * Determines when the flag variable should be active.
      * 
      * Guidelines:
      * - Match configured variants for `is**` variables (e.g. `isOutlined`, `isMild`).
@@ -59,14 +59,15 @@ export interface CssSwitchVariantFlagCase {
 }
 
 /**
- * Defines a single flag case for conditional styling.
+ * Describes a single flag case when a variant flag should be active,
+ * with an additional factor value for algebraic styling.
  * 
  * Conditionally sets or unsets a boolean-like CSS variable based on the specified variant condition.
  * 
  * When set, the variable holds an empty string (won't carry any meaningful value) and acts as an **active switch**.  
  * When unset, the variable invalidates dependent properties, causing the browser to ignore them.
  * 
- * Also defines a numeric factor value to assign to `factorVar` when the variant condition is met.
+ * Use this when `factorVar` is present and the variant needs a numeric driver for algebraic styling.
  * 
  * @example
  * ```ts
@@ -98,7 +99,7 @@ export interface CssSwitchVariantFactorCase
 
 
 /**
- * Describes how switching-based variant styling should behave:
+ * Describes how switching-based variants should behave:
  * - **Flags** for *discrete switches* in conditional styling
  * 
  * @example
@@ -134,9 +135,9 @@ export interface CssSwitchVariantBaseBehavior {
 }
 
 /**
- * Describes how switching-based variant styling should behave:
- * - **Flags** for *discrete switches* in conditional styling and the corresponding factor value for algebraic driver.
- * - **Factor** for *algebraic driver* in `calc(...)` to enable complex styling.
+ * Describes how switching-based variants should behave:
+ * - **Flags** for *discrete switches* in conditional styling and the corresponding factor value
+ * - **Factor** for *algebraic driver* used in `calc(...)` to enable complex styling
  * 
  * @example
  * ```ts
@@ -187,12 +188,12 @@ export interface CssSwitchVariantFactorBehavior {
 }
 
 /**
- * Describes how switching-based variant styling should behave:
- * - **Flags** for *discrete switches* in conditional styling and the corresponding factor value for algebraic driver.
- * - **Factor** for *algebraic driver* in `calc(...)` to enable complex styling (optional).
+ * Describes how switching-based variants should behave:
+ * - **Flags** for *discrete switches* in conditional styling and the corresponding factor value
+ * - **Factor** for *algebraic driver* used in `calc(...)` to enable complex styling (optional)
  * 
  * Note:
- * If the `factorVar` is provided, the `factor` property in each `CssSwitchVariantFactorCase` should also be provided.
+ * - If `factorVar` is provided, each flag entry should provide a `factor` value to assign when active.
  * 
  * @example
  * ```ts

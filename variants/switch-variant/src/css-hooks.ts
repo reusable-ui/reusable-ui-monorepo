@@ -24,19 +24,22 @@ import {
 
 
 /**
- * Applies live CSS variables for switching-based variant styling, including:
- * - **Flag variables** for *discrete switches* in conditional styling and the corresponding factor value for algebraic driver.
- * - **Factor variables** for *algebraic driver* in `calc(...)` to enable complex styling (optional).
+ * Applies CSS variables for mutually exclusive switching-based variants.
  * 
- * Note:
- * If the `factorVar` is provided, the `factor` property in each `CssSwitchVariantFactorCase` should also be provided.
+ * Role:
+ * - Toggle boolean-like flag variables (sets empty string when active, `unset` when inactive).
+ * - Optionally drive a numeric `factorVar` for algebraic drivers used in `calc(...)`.
  * 
- * @param variantBehavior - The switching-based variant styling behaviors to apply.
- * @returns A `CssRule` that enables switching-based variant styling to work correctly and dynamically.
+ * Notes:
+ * - If `factorVar` is provided, each flag entry should provide a `factor` value to assign when active.
+ * - Flag variables are pre-reset to `unset` (to avoid accidental inheritance) and then conditionally set.
+ * 
+ * @param variantBehavior - A configuration describing the variant flags and optional factor variable.
+ * @returns A `CssRule` that sets the flag variables and optional factor variable according to variant states.
  * 
  * @example
  * ```ts
- * // Describe how switching outlined variant should behave (without factor variable):
+ * // Outline variant without factor driver:
  * const outlineVariantRule : CssRule = usingSwitchVariant({
  *     // Flags for discrete switches in conditional styling:
  *     flags     : [
@@ -54,22 +57,22 @@ import {
  * 
  * @example
  * ```ts
- * // Describe how switching outlined variant should behave (with factor variable):
+ * // Outline variant with factor driver:
  * const outlineVariantRule : CssRule = usingSwitchVariant({
  *     // Flags for discrete switches in conditional styling:
  *     flags     : [
  *         {
  *             ifVariant : ifOutlined,
  *             variable  : outlineVariantVars.isOutlined,
- *             factor    : 1, // 1 → outlined
+ *             factor    : 1, // Set to 1 when outlined.
  *         },
  *         {
  *             ifVariant : ifNotOutlined,
  *             variable  : outlineVariantVars.notOutlined,
- *             factor    : 0, // 0 → not outlined
+ *             factor    : 0, // Set to 0 when not outlined.
  *         },
  *     ],
- *     factorVar : outlineVariantVars.outlineFactor, // The exposed factor variable.
+ *     factorVar : outlineVariantVars.outlineFactor, // The factor variable to set when a flag is active.
  * });
  * ```
  */
