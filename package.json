@@ -69,6 +69,7 @@
     "utilities/semantics",
     "utilities/focuses",
     "variants/effective-variant",
+    "variants/switch-variant",
     "variants/orientation-variant",
     "variants/flow-direction-variant",
     "variants/size-variant",

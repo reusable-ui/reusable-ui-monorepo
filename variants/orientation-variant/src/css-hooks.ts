@@ -22,6 +22,12 @@ import {
     ifOrientationBlock,
 }                           from './css-selectors.js'
 
+// Reusable helper:
+import {
+    usingVariantSwitch,
+    type SwitchVariantOption,
+}                           from '@reusable-ui/switch-variant'
+
 
 
 /**
@@ -32,26 +38,21 @@ import {
  */
 export const usingOrientationVariant = (): CssOrientationVariant => {
     return {
-        orientationVariantRule : () => style(
-            variants({
-                ...ifOrientationInline(
-                    vars({
-                        [orientationVariantVars.isOrientationInline] : '',      // Valid    when oriented horizontally (inline).
-                        [orientationVariantVars.isOrientationBlock ] : 'unset', // Poisoned when oriented horizontally (inline).
-                        
-                        [orientationVariantVars.orientationFactor  ] : 0,       // 0 → oriented horizontally (inline).
-                    })
-                ),
-                ...ifOrientationBlock(
-                    vars({
-                        [orientationVariantVars.isOrientationInline] : 'unset', // Poisoned when oriented vertically (block).
-                        [orientationVariantVars.isOrientationBlock ] : '',      // Valid    when oriented vertically (block).
-                        
-                        [orientationVariantVars.orientationFactor  ] : 1,       // 1 → oriented vertically (block).
-                    })
-                ),
-            }),
-        ),
+        orientationVariantRule : () => usingVariantSwitch({
+            factorVar: orientationVariantVars.orientationFactor,
+            options: [
+                {
+                    ifVariant: ifOrientationInline,
+                    activeVariable: orientationVariantVars.isOrientationInline,
+                    activeFactor: 0,
+                },
+                {
+                    ifVariant: ifOrientationBlock,
+                    activeVariable: orientationVariantVars.isOrientationBlock,
+                    activeFactor: 1,
+                },
+            ] satisfies SwitchVariantOption[],
+        }),
         
         orientationVariantVars,
     } satisfies CssOrientationVariant;
