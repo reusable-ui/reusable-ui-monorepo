@@ -61,7 +61,7 @@ export interface CssSwitchVariantFlagCase {
 
 /**
  * Describes a single flag case for a switch-based variant,
- * with a numeric factor for algebraic styling.
+ * with a numeric factor used for algebraic styling.
  * 
  * Conditionally sets or unsets a boolean-like CSS variable based on the specified variant condition.
  * 
@@ -69,7 +69,7 @@ export interface CssSwitchVariantFlagCase {
  * - **Active** → variable set to an empty string (`''`), acts as an **active switch**.
  * - **Inactive** → variable set to `unset`, poisoning dependent properties so the browser ignores them.
  * 
- * Use this when a `factorVar` is present and the variant needs a numeric driver for algebraic styling
+ * Use this when a `factorVar` is present and the variant needs a numeric driver used for algebraic styling
  * in `calc(...)` or other CSS functions.
  * 
  * @example
@@ -144,8 +144,8 @@ export interface CssSwitchVariantBaseBehavior {
  * - Toggles **flag variables** (boolean-like CSS switches):
  *   - **Active** → variable set to an empty string (`''`), acts as an **active switch**.
  *   - **Inactive** → variable set to `unset`, poisoning dependent properties so the browser ignores them.
- * - Drives a numeric **factor variable** for algebraic styling
- *   in `calc(...)` or other CSS functions.
+ * - Drives a numeric **factor variable**, reflecting the currently active variant,
+ *   which can be used for algebraic styling in `calc(...)` or other CSS functions.
  * 
  * @example
  * ```ts
@@ -175,7 +175,7 @@ export interface CssSwitchVariantFactorBehavior {
      * Provides boolean-like CSS variables for *discrete switches* in conditional styling.
      * Either fully applied or not at all — never interpolated.
      * 
-     * Also provides a numeric **factor value** for algebraic styling
+     * Also provides a numeric **factor value** used for algebraic styling
      * in `calc(...)` or other CSS functions.
      * 
      * Accepts either:
@@ -187,8 +187,8 @@ export interface CssSwitchVariantFactorBehavior {
     /**
      * Specifies a CSS variable representing the scalar factor for the variant.
      * 
-     * Provides a numeric **factor variable** for algebraic styling
-     * in `calc(...)` or other CSS functions.
+     * Provides a numeric **factor variable**, reflecting the currently active variant,
+     * which can be used for algebraic styling in `calc(...)` or other CSS functions.
      * 
      * Typical usage:
      * - `0` → inactive variant
@@ -205,8 +205,8 @@ export interface CssSwitchVariantFactorBehavior {
  * - Toggles **flag variables** (boolean-like CSS switches):
  *   - **Active** → variable set to an empty string (`''`), acts as an **active switch**.
  *   - **Inactive** → variable set to `unset`, poisoning dependent properties so the browser ignores them.
- * - Optionally drives a numeric **factor variable** for algebraic styling
- *   in `calc(...)` or other CSS functions.
+ * - Optionally drives a numeric **factor variable**, reflecting the currently active variant,
+ *   which can be used for algebraic styling in `calc(...)` or other CSS functions.
  * 
  * Note:
  * - If `factorVar` is provided, each flag entry must define a `factor` value (e.g., 0 or 1).

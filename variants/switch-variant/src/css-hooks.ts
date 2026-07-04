@@ -30,12 +30,12 @@ import {
  * - Toggles **flag variables** (boolean-like CSS switches):
  *   - **Active** → variable set to an empty string (`''`), acts as an **active switch**.
  *   - **Inactive** → variable set to `unset`, poisoning dependent properties so the browser ignores them.
- * - Optionally drives a numeric **factor variable** for algebraic styling
- *   in `calc(...)` or other CSS functions.
+ * - Optionally drives a numeric **factor variable**, reflecting the currently active variant,
+ *   which can be used for algebraic styling in `calc(...)` or other CSS functions.
  * 
  * Notes:
  * - If `factorVar` is provided, each flag entry must define a `factor` value (e.g., 0 or 1).
- * - All flag variables are pre-reset to `unset` to avoid accidental inheritance.
+ * - All flag variables are pre-reset to `unset` to avoid accidental inheritance from parent elements.
  * 
  * @param variantBehavior - A configuration describing the variant flags and optional factor variable.
  * @returns A `CssRule` that applies the flag variables and optional factor variable according to variant states.
@@ -104,7 +104,7 @@ export const usingSwitchVariant = (variantBehavior: CssSwitchVariantBehavior): C
     return style({
         // Apply flag variables (boolean-like CSS switches):
         
-        // Pre-reset all flags to `unset` to avoid accidental inheritance:
+        // Pre-reset all flags to `unset` to avoid accidental inheritance from parent elements:
         ...fallback( // `fallback()` ensures these resets are emitted before any other declarations.
             vars(
                 Object.fromEntries(
@@ -117,7 +117,7 @@ export const usingSwitchVariant = (variantBehavior: CssSwitchVariantBehavior): C
             )
         ),
         
-        // Conditionally activate flags and factor variable when their variant condition matches:
+        // Conditionally activate flags and assign factor variable when their variant condition matches:
         ...variants(
             normalizedFlagsAndFactors.map(({ ifVariant, variable, factor }) =>
                 // Only set the variable if the variant condition is met:
