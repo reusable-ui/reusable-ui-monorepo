@@ -14,12 +14,13 @@ import {
 
 
 /**
- * Describes a single flag case when a variant flag should be active.
+ * Describes a single flag case for a switch-based variant.
  * 
  * Conditionally sets or unsets a boolean-like CSS variable based on the specified variant condition.
  * 
- * When set, the variable holds an empty string (won't carry any meaningful value) and acts as an **active switch**.  
- * When unset, the variable invalidates dependent properties, causing the browser to ignore them.
+ * Behavior:
+ * - **Active** → variable set to an empty string (`''`), acts as an **active switch**.
+ * - **Inactive** → variable set to `unset`, poisoning dependent properties so the browser ignores them.
  * 
  * @example
  * ```ts
@@ -34,8 +35,8 @@ export interface CssSwitchVariantFlagCase {
      * Determines when the flag variable should be active.
      * 
      * Guidelines:
-     * - Match configured variants for `is**` variables (e.g. `isOutlined`, `isMild`).
-     * - Unmatch configured variants for `not**` variables (e.g. `notOutlined`, `notMild`).
+     * - Use `if**` helpers for positive flags (e.g. `ifOutlined`, `ifMild`).
+     * - Use `ifNot**` helpers for negative flags (e.g. `ifNotOutlined`, `ifNotMild`).
      * 
      * Common sources:
      * - Built-in conditional functions, e.g. `ifOutlined`, `ifNotOutlined`
@@ -48,8 +49,8 @@ export interface CssSwitchVariantFlagCase {
      * Specifies the boolean-like CSS variable to set when the variant condition is met.
      * 
      * Behavior:
-     * - **Set** → assigns an empty string (won't carry any meaningful value) and acts as an **active switch**.
-     * - **Unset** → invalidates dependent properties, causing the browser to ignore them.
+     * - **Active** → variable set to an empty string (`''`), acts as an **active switch**.
+     * - **Inactive** → variable set to `unset`, poisoning dependent properties so the browser ignores them.
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-var)`
@@ -59,15 +60,17 @@ export interface CssSwitchVariantFlagCase {
 }
 
 /**
- * Describes a single flag case when a variant flag should be active,
- * with an additional factor value for algebraic styling.
+ * Describes a single flag case for a switch-based variant,
+ * with a numeric factor for algebraic styling.
  * 
  * Conditionally sets or unsets a boolean-like CSS variable based on the specified variant condition.
  * 
- * When set, the variable holds an empty string (won't carry any meaningful value) and acts as an **active switch**.  
- * When unset, the variable invalidates dependent properties, causing the browser to ignore them.
+ * Behavior:
+ * - **Active** → variable set to an empty string (`''`), acts as an **active switch**.
+ * - **Inactive** → variable set to `unset`, poisoning dependent properties so the browser ignores them.
  * 
- * Use this when `factorVar` is present and the variant needs a numeric driver for algebraic styling.
+ * Use this when a `factorVar` is present and the variant needs a numeric driver for algebraic styling
+ * in `calc(...)` or other CSS functions.
  * 
  * @example
  * ```ts
@@ -86,7 +89,7 @@ export interface CssSwitchVariantFactorCase
     /**
      * Defines the discrete value to assign to `factorVar`.
      * 
-     * Guidelines:
+     * Typical usage:
      * - `0` → inactive variant
      * - `1` → active variant
      * - `-1` → negative active variant (directional, rarely used)
@@ -99,8 +102,10 @@ export interface CssSwitchVariantFactorCase
 
 
 /**
- * Describes how switching-based variants should behave:
- * - **Flags** for *discrete switches* in conditional styling
+ * Describes how switch-based variants should behave:
+ * - Toggles **flag variables** (boolean-like CSS switches):
+ *   - **Active** → variable set to an empty string (`''`), acts as an **active switch**.
+ *   - **Inactive** → variable set to `unset`, poisoning dependent properties so the browser ignores them.
  * 
  * @example
  * ```ts
@@ -135,9 +140,12 @@ export interface CssSwitchVariantBaseBehavior {
 }
 
 /**
- * Describes how switching-based variants should behave:
- * - **Flags** for *discrete switches* in conditional styling and the corresponding factor value
- * - **Factor** for *algebraic driver* used in `calc(...)` to enable complex styling
+ * Describes how switch-based variants should behave:
+ * - Toggles **flag variables** (boolean-like CSS switches):
+ *   - **Active** → variable set to an empty string (`''`), acts as an **active switch**.
+ *   - **Inactive** → variable set to `unset`, poisoning dependent properties so the browser ignores them.
+ * - Drives a numeric **factor variable** for algebraic styling
+ *   in `calc(...)` or other CSS functions.
  * 
  * @example
  * ```ts
@@ -162,13 +170,13 @@ export interface CssSwitchVariantBaseBehavior {
  */
 export interface CssSwitchVariantFactorBehavior {
     /**
-     * Defines flag cases for conditional styling and factor values for algebraic styling.
+     * Defines flag cases for conditional styling.
      * 
      * Provides boolean-like CSS variables for *discrete switches* in conditional styling.
      * Either fully applied or not at all — never interpolated.
      * 
-     * Also provides a numeric variable for *algebraic driver* in `calc(...)` to enable complex styling.
-     * Usually, non-zero values represent active variants, while zero represents inactive variants.
+     * Also provides a numeric **factor value** for algebraic styling
+     * in `calc(...)` or other CSS functions.
      * 
      * Accepts either:
      * - A single `CssSwitchVariantFactorCase`
@@ -177,23 +185,31 @@ export interface CssSwitchVariantFactorBehavior {
     flags     : MaybeArray<CssSwitchVariantFactorCase>
     
     /**
-     * Specifies a CSS variable for representing scalar values of the variant.
+     * Specifies a CSS variable representing the scalar factor for the variant.
      * 
-     * Provides a numeric variable for *algebraic driver* in `calc(...)` to enable complex styling.
+     * Provides a numeric **factor variable** for algebraic styling
+     * in `calc(...)` or other CSS functions.
      * 
-     * Typical implementation: non-zero values represent active variants, while zero represents inactive variants.
-     * Example range: `-2`, `-1`, `0`, `1`, `2` for `xs`, `sm`, `md`, `lg`, `xl`.
+     * Typical usage:
+     * - `0` → inactive variant
+     * - `1` → active variant
+     * - `-1` → negative active variant (directional, rarely used)
+     * - Positive/negative integers → multi-valued variants (e.g. `-2`, `-1`, `0`, `1`, `2` for `xs`, `sm`, `md`, `lg`, `xl`)
+     * - Any numeric value → custom use cases (rarely used)
      */
     factorVar : CssCustomSimpleRef
 }
 
 /**
- * Describes how switching-based variants should behave:
- * - **Flags** for *discrete switches* in conditional styling and the corresponding factor value
- * - **Factor** for *algebraic driver* used in `calc(...)` to enable complex styling (optional)
+ * Describes how switch-based variants should behave:
+ * - Toggles **flag variables** (boolean-like CSS switches):
+ *   - **Active** → variable set to an empty string (`''`), acts as an **active switch**.
+ *   - **Inactive** → variable set to `unset`, poisoning dependent properties so the browser ignores them.
+ * - Optionally drives a numeric **factor variable** for algebraic styling
+ *   in `calc(...)` or other CSS functions.
  * 
  * Note:
- * - If `factorVar` is provided, each flag entry should provide a `factor` value to assign when active.
+ * - If `factorVar` is provided, each flag entry must define a `factor` value (e.g., 0 or 1).
  * 
  * @example
  * ```ts

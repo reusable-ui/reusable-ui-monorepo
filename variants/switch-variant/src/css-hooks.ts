@@ -24,18 +24,21 @@ import {
 
 
 /**
- * Applies CSS variables for mutually exclusive switching-based variants.
+ * Applies CSS variables for mutually exclusive, switch-based variants.
  * 
- * Role:
- * - Toggle boolean-like flag variables (sets empty string when active, `unset` when inactive).
- * - Optionally drive a numeric `factorVar` for algebraic drivers used in `calc(...)`.
+ * Behavior:
+ * - Toggles **flag variables** (boolean-like CSS switches):
+ *   - **Active** → variable set to an empty string (`''`), acts as an **active switch**.
+ *   - **Inactive** → variable set to `unset`, poisoning dependent properties so the browser ignores them.
+ * - Optionally drives a numeric **factor variable** for algebraic styling
+ *   in `calc(...)` or other CSS functions.
  * 
  * Notes:
- * - If `factorVar` is provided, each flag entry should provide a `factor` value to assign when active.
- * - Flag variables are pre-reset to `unset` (to avoid accidental inheritance) and then conditionally set.
+ * - If `factorVar` is provided, each flag entry must define a `factor` value (e.g., 0 or 1).
+ * - All flag variables are pre-reset to `unset` to avoid accidental inheritance.
  * 
  * @param variantBehavior - A configuration describing the variant flags and optional factor variable.
- * @returns A `CssRule` that sets the flag variables and optional factor variable according to variant states.
+ * @returns A `CssRule` that applies the flag variables and optional factor variable according to variant states.
  * 
  * @example
  * ```ts
@@ -85,7 +88,7 @@ export const usingSwitchVariant = (variantBehavior: CssSwitchVariantBehavior): C
     
     
     // Normalize input: always work with an array internally:
-    // - Also make the `factor` property optional for conditionally supporting variants with a factor variable.
+    // - Factor is optional unless a factorVar is defined.
     const normalizedFlagsAndFactors : Array<CssSwitchVariantFlagCase & Partial<CssSwitchVariantFactorCase>> = (
         Array.isArray(flags)
         ? flags
@@ -114,8 +117,7 @@ export const usingSwitchVariant = (variantBehavior: CssSwitchVariantBehavior): C
             )
         ),
         
-        // Conditionally set flags when their variant condition matches:
-        // - Also conditionally set the factor variable if provided.
+        // Conditionally activate flags and factor variable when their variant condition matches:
         ...variants(
             normalizedFlagsAndFactors.map(({ ifVariant, variable, factor }) =>
                 // Only set the variable if the variant condition is met:
