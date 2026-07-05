@@ -1,10 +1,8 @@
-// Cssfn:
+// Reusable-ui variants:
 import {
-    // Writes css in javascript:
-    variants,
-    style,
-    vars,
-}                           from '@cssfn/core'          // Writes css in javascript.
+    // Hooks:
+    usingSwitchVariant,
+}                           from '@reusable-ui/switch-variant'      // Reusable abstraction for building switch-based variants. Drives boolean-like flag variables and numeric factor variable.
 
 // Types:
 import {
@@ -32,26 +30,24 @@ import {
  */
 export const usingMildVariant = (): CssMildVariant => {
     return {
-        mildVariantRule : () => style(
-            variants({
-                ...ifMild(
-                    vars({
-                        [mildVariantVars.isMild    ] : '',      // Valid    when mild mode is enabled.
-                        [mildVariantVars.notMild   ] : 'unset', // Poisoned when mild mode is enabled.
-                        
-                        [mildVariantVars.mildFactor] : 1,       // 1 → mild mode is enabled.
-                    })
-                ),
-                ...ifNotMild(
-                    vars({
-                        [mildVariantVars.isMild    ] : 'unset', // Poisoned when mild mode is disabled.
-                        [mildVariantVars.notMild   ] : '',      // Valid    when mild mode is disabled.
-                        
-                        [mildVariantVars.mildFactor] : 0,       // 0 → mild mode is disabled.
-                    })
-                ),
-            }),
-        ),
+        mildVariantRule : () => usingSwitchVariant({
+            // Flags for discrete switches in conditional styling:
+            flags     : [
+                {
+                    ifVariant : ifNotMild,
+                    variable  : mildVariantVars.notMild,
+                    factor    : 0, // Set to 0 when not in mild mode.
+                },
+                {
+                    ifVariant : ifMild,
+                    variable  : mildVariantVars.isMild,
+                    factor    : 1, // Set to 1 when in mild mode.
+                },
+            ],
+            
+            // The factor variable to set when a flag is active:
+            factorVar : mildVariantVars.mildFactor,
+        }),
         
         mildVariantVars,
     } satisfies CssMildVariant;
