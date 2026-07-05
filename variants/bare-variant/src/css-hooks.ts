@@ -1,12 +1,19 @@
 // Cssfn:
 import {
-    // Writes css in javascript:
-    rules,
-    variants,
-    style,
-    vars,
+    // Utilities:
     startsCapitalized,
 }                           from '@cssfn/core'          // Writes css in javascript.
+
+// Reusable-ui variants:
+import {
+    // Types:
+    type CssSwitchVariantFlagCase,
+    
+    
+    
+    // Hooks:
+    usingSwitchVariant,
+}                           from '@reusable-ui/switch-variant'      // Reusable abstraction for building switch-based variants. Drives boolean-like flag variables and numeric factor variable.
 
 // Types:
 import {
@@ -55,50 +62,40 @@ export function usingBareVariant<TBare extends true | string = true>(options?: C
     
     
     return {
-        bareVariantRule : () => style({
-            // Reset to poisoned to all bare variables:
-            ...vars({
-                [bareVariantVars.notBare] : 'unset',
-            }),
-            
-            // Iterate over all supported bare tokens:
-            ...rules(
-                supportedBareValues
-                .map((supportedBareValue) =>
-                    vars({
-                        [
-                            (supportedBareValue === true)
-                                ? bareVariantVars.isBare
-                                : bareVariantVars[`is${startsCapitalized(supportedBareValue)}`]
-                        ] : 'unset',
-                    })
-                )
+        bareVariantRule : () => usingSwitchVariant({
+            flags : (
+                // Iterate over all supported bare tokens, including `false` for non-bare mode:
+                [false, ...supportedBareValues]
+                .map((token) => ({
+                    ifVariant : (
+                        (token === false)
+                        
+                        // Not in bare mode:
+                        ? ifNotBare
+                        
+                        // In bare mode (default or custom):
+                        : (styles) => ifBareOf(token, styles)
+                    ),
+                    variable  : (
+                        (token === false)
+                        
+                        // Not in bare mode:
+                        ? bareVariantVars.notBare
+                        
+                        // In bare mode (default or custom):
+                        : (
+                            (token === true)
+                            
+                            // Default bare mode:
+                            ? bareVariantVars.isBare
+                            
+                            // Custom bare mode:
+                            // - `is${Mode}` → e.g. `isFlat`, `isFlush`, `isJoined`, etc.
+                            : bareVariantVars[`is${startsCapitalized(token)}`]
+                        )
+                    ),
+                }) satisfies CssSwitchVariantFlagCase)
             ),
-            
-            
-            
-            // Set to valid to matching bare variables:
-            ...variants([
-                ifNotBare(
-                    vars({
-                        [bareVariantVars.notBare] : '',
-                    })
-                ),
-                
-                // Iterate over all supported bare tokens:
-                ...supportedBareValues
-                .map((supportedBareValue) =>
-                    ifBareOf(supportedBareValue,
-                        vars({
-                            [
-                                (supportedBareValue === true)
-                                    ? bareVariantVars.isBare
-                                    : bareVariantVars[`is${startsCapitalized(supportedBareValue)}`]
-                            ] : '',
-                        })
-                    )
-                ),
-            ]),
         }),
         
         bareVariantVars,
