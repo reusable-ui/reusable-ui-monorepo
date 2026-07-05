@@ -1,10 +1,8 @@
-// Cssfn:
+// Reusable-ui variants:
 import {
-    // Writes css in javascript:
-    variants,
-    style,
-    vars,
-}                           from '@cssfn/core'          // Writes css in javascript.
+    // Hooks:
+    usingSwitchVariant,
+}                           from '@reusable-ui/switch-variant'      // Reusable abstraction for building switch-based variants. Drives boolean-like flag variables and numeric factor variable.
 
 // Types:
 import {
@@ -32,26 +30,24 @@ import {
  */
 export const usingOutlineVariant = (): CssOutlineVariant => {
     return {
-        outlineVariantRule : () => style(
-            variants({
-                ...ifOutlined(
-                    vars({
-                        [outlineVariantVars.isOutlined   ] : '',      // Valid    when outlined.
-                        [outlineVariantVars.notOutlined  ] : 'unset', // Poisoned when outlined.
-                        
-                        [outlineVariantVars.outlineFactor] : 1,       // 1 → outlined.
-                    })
-                ),
-                ...ifNotOutlined(
-                    vars({
-                        [outlineVariantVars.isOutlined   ] : 'unset', // Poisoned when not outlined.
-                        [outlineVariantVars.notOutlined  ] : '',      // Valid    when not outlined.
-                        
-                        [outlineVariantVars.outlineFactor] : 0,       // 0 → not outlined.
-                    })
-                ),
-            }),
-        ),
+        outlineVariantRule : () => usingSwitchVariant({
+            // Flags for discrete switches in conditional styling:
+            flags     : [
+                {
+                    ifVariant : ifNotOutlined,
+                    variable  : outlineVariantVars.notOutlined,
+                    factor    : 0, // Set to 0 when not outlined.
+                },
+                {
+                    ifVariant : ifOutlined,
+                    variable  : outlineVariantVars.isOutlined,
+                    factor    : 1, // Set to 1 when outlined.
+                },
+            ],
+            
+            // The factor variable to set when a flag is active:
+            factorVar : outlineVariantVars.outlineFactor,
+        }),
         
         outlineVariantVars,
     } satisfies CssOutlineVariant;
