@@ -1,10 +1,8 @@
-// Cssfn:
+// Reusable-ui variants:
 import {
-    // Writes css in javascript:
-    variants,
-    style,
-    vars,
-}                           from '@cssfn/core'          // Writes css in javascript.
+    // Hooks:
+    usingSwitchVariant,
+}                           from '@reusable-ui/switch-variant'      // Reusable abstraction for building switch-based variants. Drives boolean-like flag variables and numeric factor variable.
 
 // Types:
 import {
@@ -32,26 +30,21 @@ import {
  */
 export const usingOrientationVariant = (): CssOrientationVariant => {
     return {
-        orientationVariantRule : () => style(
-            variants({
-                ...ifOrientationInline(
-                    vars({
-                        [orientationVariantVars.isOrientationInline] : '',      // Valid    when oriented horizontally (inline).
-                        [orientationVariantVars.isOrientationBlock ] : 'unset', // Poisoned when oriented horizontally (inline).
-                        
-                        [orientationVariantVars.orientationFactor  ] : 0,       // 0 → oriented horizontally (inline).
-                    })
-                ),
-                ...ifOrientationBlock(
-                    vars({
-                        [orientationVariantVars.isOrientationInline] : 'unset', // Poisoned when oriented vertically (block).
-                        [orientationVariantVars.isOrientationBlock ] : '',      // Valid    when oriented vertically (block).
-                        
-                        [orientationVariantVars.orientationFactor  ] : 1,       // 1 → oriented vertically (block).
-                    })
-                ),
-            }),
-        ),
+        orientationVariantRule : () => usingSwitchVariant({
+            flags     : [
+                {
+                    ifVariant : ifOrientationInline,
+                    variable  : orientationVariantVars.isOrientationInline,
+                    factor    : 0, // 0 → oriented horizontally (inline).
+                },
+                {
+                    ifVariant : ifOrientationBlock,
+                    variable  : orientationVariantVars.isOrientationBlock,
+                    factor    : 1, // 1 → oriented vertically (block).
+                },
+            ],
+            factorVar : orientationVariantVars.orientationFactor,
+        }),
         
         orientationVariantVars,
     } satisfies CssOrientationVariant;
