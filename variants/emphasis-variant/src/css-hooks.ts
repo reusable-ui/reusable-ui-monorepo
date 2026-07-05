@@ -1,10 +1,8 @@
-// Cssfn:
+// Reusable-ui variants:
 import {
-    // Writes css in javascript:
-    variants,
-    style,
-    vars,
-}                           from '@cssfn/core'          // Writes css in javascript.
+    // Hooks:
+    usingSwitchVariant,
+}                           from '@reusable-ui/switch-variant'      // Reusable abstraction for building switch-based variants. Drives boolean-like flag variables and numeric factor variable.
 
 // Types:
 import {
@@ -32,26 +30,24 @@ import {
  */
 export const usingEmphasisVariant = (): CssEmphasisVariant => {
     return {
-        emphasisVariantRule : () => style(
-            variants({
-                ...ifEmphasized(
-                    vars({
-                        [emphasisVariantVars.isEmphasized  ] : '',      // Valid    when emphasized.
-                        [emphasisVariantVars.notEmphasized ] : 'unset', // Poisoned when emphasized.
-                        
-                        [emphasisVariantVars.emphasisFactor] : 1,       // 1 → emphasized.
-                    })
-                ),
-                ...ifNotEmphasized(
-                    vars({
-                        [emphasisVariantVars.isEmphasized  ] : 'unset', // Poisoned when not emphasized.
-                        [emphasisVariantVars.notEmphasized ] : '',      // Valid    when not emphasized.
-                        
-                        [emphasisVariantVars.emphasisFactor] : 0,       // 0 → not emphasized.
-                    })
-                ),
-            }),
-        ),
+        emphasisVariantRule : () => usingSwitchVariant({
+            // Flags for discrete switches in conditional styling:
+            flags     : [
+                {
+                    ifVariant : ifNotEmphasized,
+                    variable  : emphasisVariantVars.notEmphasized,
+                    factor    : 0, // Set to 0 when not emphasized.
+                },
+                {
+                    ifVariant : ifEmphasized,
+                    variable  : emphasisVariantVars.isEmphasized,
+                    factor    : 1, // Set to 1 when emphasized.
+                },
+            ],
+            
+            // The factor variable to set when a flag is active:
+            factorVar : emphasisVariantVars.emphasisFactor,
+        }),
         
         emphasisVariantVars,
     } satisfies CssEmphasisVariant;
