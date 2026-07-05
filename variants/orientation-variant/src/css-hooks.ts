@@ -31,6 +31,7 @@ import {
 export const usingOrientationVariant = (): CssOrientationVariant => {
     return {
         orientationVariantRule : () => usingSwitchVariant({
+            // Flags for discrete switches in conditional styling:
             flags     : [
                 {
                     ifVariant : ifOrientationInline,
@@ -43,6 +44,8 @@ export const usingOrientationVariant = (): CssOrientationVariant => {
                     factor    : 1, // 1 → oriented vertically (block).
                 },
             ],
+            
+            // The factor variable to set when a flag is active:
             factorVar : orientationVariantVars.orientationFactor,
         }),
         
