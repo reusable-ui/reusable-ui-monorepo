@@ -36,12 +36,12 @@ export const usingOrientationVariant = (): CssOrientationVariant => {
                 {
                     ifVariant : ifOrientationInline,
                     variable  : orientationVariantVars.isOrientationInline,
-                    factor    : 0, // 0 → oriented horizontally (inline).
+                    factor    : 0, // Set to 0 when oriented horizontally (inline).
                 },
                 {
                     ifVariant : ifOrientationBlock,
                     variable  : orientationVariantVars.isOrientationBlock,
-                    factor    : 1, // 1 → oriented vertically (block).
+                    factor    : 1, // Set to 1 when oriented vertically (block).
                 },
             ],
             
