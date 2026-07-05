@@ -1,10 +1,8 @@
-// Cssfn:
+// Reusable-ui variants:
 import {
-    // Writes css in javascript:
-    variants,
-    style,
-    vars,
-}                           from '@cssfn/core'          // Writes css in javascript.
+    // Hooks:
+    usingSwitchVariant,
+}                           from '@reusable-ui/switch-variant'      // Reusable abstraction for building switch-based variants. Drives boolean-like flag variables and numeric factor variable.
 
 // Types:
 import {
@@ -32,26 +30,24 @@ import {
  */
 export const usingFlowDirectionVariant = (): CssFlowDirectionVariant => {
     return {
-        flowDirectionVariantRule : () => style(
-            variants({
-                ...ifFlowDirectionStart(
-                    vars({
-                        [flowDirectionVariantVars.isFlowDirectionStart] : '',      // Valid    when aligned toward the logical start edge.
-                        [flowDirectionVariantVars.isFlowDirectionEnd  ] : 'unset', // Poisoned when aligned toward the logical start edge.
-                        
-                        [flowDirectionVariantVars.flowDirectionFactor ] : 0,       // 0 → aligned toward the logical start edge.
-                    })
-                ),
-                ...ifFlowDirectionEnd(
-                    vars({
-                        [flowDirectionVariantVars.isFlowDirectionStart] : 'unset', // Poisoned when aligned toward the logical end edge.
-                        [flowDirectionVariantVars.isFlowDirectionEnd  ] : '',      // Valid    when aligned toward the logical end edge.
-                        
-                        [flowDirectionVariantVars.flowDirectionFactor ] : 1,       // 1 → aligned toward the logical end edge.
-                    })
-                ),
-            }),
-        ),
+        flowDirectionVariantRule : () => usingSwitchVariant({
+            // Flags for discrete switches in conditional styling:
+            flags     : [
+                {
+                    ifVariant : ifFlowDirectionStart,
+                    variable  : flowDirectionVariantVars.isFlowDirectionStart,
+                    factor    : 0, // Set to 0 when aligned toward the logical start edge.
+                },
+                {
+                    ifVariant : ifFlowDirectionEnd,
+                    variable  : flowDirectionVariantVars.isFlowDirectionEnd,
+                    factor    : 1, // Set to 1 when aligned toward the logical end edge.
+                },
+            ],
+            
+            // The factor variable to set when a flag is active:
+            factorVar : flowDirectionVariantVars.flowDirectionFactor,
+        }),
         
         flowDirectionVariantVars,
     } satisfies CssFlowDirectionVariant;
