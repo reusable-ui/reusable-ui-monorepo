@@ -33,14 +33,14 @@
 @reusable-ui/switch-variant             non_peer        BASE
 @reusable-ui/config-variant             non_peer        BASE
 
-@reusable-ui/orientation-variant
-@reusable-ui/flow-direction-variant
-@reusable-ui/size-variant
+@reusable-ui/orientation-variant        SWITCH_BASED
+@reusable-ui/flow-direction-variant     SWITCH_BASED
+@reusable-ui/size-variant               CONFIG_BASED
 @reusable-ui/theme-variant
-@reusable-ui/emphasis-variant
-@reusable-ui/outline-variant
-@reusable-ui/mild-variant
-@reusable-ui/bare-variant
+@reusable-ui/emphasis-variant           SWITCH_BASED
+@reusable-ui/outline-variant            SWITCH_BASED
+@reusable-ui/mild-variant               SWITCH_BASED
+@reusable-ui/bare-variant               SWITCH_BASED
 @reusable-ui/styling-variants
 
 // Reusable-ui variants: (planned):
