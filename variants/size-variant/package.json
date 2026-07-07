@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "@cssfn/core": "^4.0.0",
+    "@reusable-ui/config-variant": "^7.0.0",
     "@reusable-ui/effective-variant": "^7.0.0"
   },
   "peerDependencies": {

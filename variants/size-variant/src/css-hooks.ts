@@ -1,17 +1,15 @@
 // Cssfn:
 import {
-    // Writes css in javascript:
-    variants,
-    style,
-    
-    
-    
-    // Reads/writes css variables configuration:
+    // Types:
     type CssConfigProps,
     type Refs,
-    usesSuffixedProps,
-    overwriteProps,
 }                           from '@cssfn/core'          // Writes css in javascript.
+
+// Reusable-ui variants:
+import {
+    // Hooks:
+    usingConfigVariant,
+}                           from '@reusable-ui/config-variant'      // Reusable abstraction for building config-driven variants. Overrides base CSS configuration variables with their variant-specific counterparts.
 
 // Types:
 import {
@@ -68,20 +66,15 @@ export function usingSizeVariant<TSize extends string = BasicSize, TCssConfigPro
     
     
     return {
-        sizeVariantRule : () => style(
-            variants(
-                supportedSizes
-                
-                // Iterate over all supported size tokens:
-                .map((size) =>
-                    // Create a scoped rule for the current size (e.g. `.s-sm`):
-                    ifSize(size,
-                        // Within the scope, override general CSS variables with size-specific ones:
-                        // e.g., `--comp-fontSize: var(--comp-fontSizeSm)`
-                        overwriteProps(configVars, usesSuffixedProps(configVars, size)),
-                    )
-                )
-            ),
-        ),
+        sizeVariantRule : () => usingConfigVariant({
+            // Supported variant tokens:
+            supportedTokens : supportedSizes,
+            
+            // The CSS configuration object containing base and variant-specific suffixed variables:
+            configVars      : configVars,
+            
+            // Maps each token to its scoped selector and applies overrides:
+            ifVariantOf     : ifSize,
+        }),
     } satisfies CssSizeVariant;
 };
