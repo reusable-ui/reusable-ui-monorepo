@@ -40,7 +40,7 @@
 @reusable-ui/emphasis-variant           SWITCH_BASED
 @reusable-ui/outline-variant            SWITCH_BASED
 @reusable-ui/mild-variant               SWITCH_BASED
-@reusable-ui/bare-variant               SWITCH_BASED
+@reusable-ui/stripped-variant           SWITCH_BASED
 @reusable-ui/styling-variants
 
 // Reusable-ui variants: (planned):
@@ -50,7 +50,7 @@
 | Layout Variants: -----------|-----------------|----------------------------------|-----------|----------|----------------|------------------|---------------------------------------------------------------|
 | OrientationVariantProps     | orientation     | inline, block                    |    Yes    |   Yes    |     block      |      block       | Controls horizontal/vertical orientation                      |
 | FlowDirectionVariantProps   | flowDirection   | start, end                       |    Yes    |   Yes    |      end       |       end        | Controls the direction on main axis                           |
-| BareVariantProps            | bare            | boolean                          |    No     |   N/A    |     false      |       N/A        | Strips padding, background, border — minimal appearance       |
+| StrippedVariantProps        | stripped        | boolean                          |    No     |   N/A    |     false      |       N/A        | Strips padding, background, border — minimal appearance       |
 |-----------------------------|-----------------|----------------------------------|-----------|----------|----------------|------------------|---------------------------------------------------------------|
 | Styling Variants: ----------|-----------------|----------------------------------|-----------|----------|----------------|------------------|---------------------------------------------------------------|
 | SizeVariantProps            | size            | sm, md, lg, custom               |    Yes    |          |    inherit     |        md        | Sets component sizing, including custom token or value        |
@@ -75,7 +75,7 @@
 | emphasis-variant       | `EmphasisVariantProps`      | `emphasis`      | `emphasisClassname`      | ✅ Noun form: declarative styling intent            | Should be `<Component emphasis />` (emphasis is a pure noun) |
 | outline-variant        | `OutlineVariantProps`       | `outline`       | `outlineClassname`       | ✅ Base form: matches common UI idioms              | Should be `<Component outline />` (outline is a noun in the context (styling intent)) |
 | mild-variant           | `MildVariantProps`          | `mild`          | `mildClassname`          | ✅ Base form: emotionally descriptive styling       | VERIFIED |
-| bare-variant           | `BareVariantProps`          | `bare`          | `bareClassname`          | ✅ Base form: minimalist styling intent             | VERIFIED |
+| stripped-variant       | `StrippedVariantProps`      | `stripped`      | `strippedClassname`      | ✅ Base form: minimalist styling intent             | VERIFIED |
 |------------------------|-----------------------------|-----------------|--------------------------|-----------------------------------------------------|----------|
 
 

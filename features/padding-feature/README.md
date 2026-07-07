@@ -1,12 +1,12 @@
 # @reusable-ui/padding-feature 📦  
 
-A styling utility for resolving the appropriate padding values based on active bare mode and framework-level overrides.  
+A styling utility for resolving the appropriate padding values based on active stripped mode and framework-level overrides.  
 It exposes CSS variables for styling your component’s padding.
 Ideal for buttons, cards, dialogs, and any layout-aware components.
 
 ## ✨ Features
-✔ Dynamically adjusts padding based on active bare mode and framework-level overrides  
-✔ Supports `bare` variant for geometry-only rendering  
+✔ Dynamically adjusts padding based on active stripped mode and framework-level overrides  
+✔ Supports stripped variant for geometry-only rendering  
 ✔ Exposes logical directional paddings for full layout control  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, theming, and spacing systems  
@@ -24,7 +24,7 @@ yarn add @reusable-ui/padding-feature
 
 ### `usingPaddingFeature(options?: CssPaddingFeatureOptions): CssPaddingFeature`
 
-Resolves the appropriate padding values based on active bare mode and framework-level overrides and exposes ready-to-use CSS variables.
+Resolves the appropriate padding values based on active stripped mode and framework-level overrides and exposes ready-to-use CSS variables.
 
 #### Primary Variables
 
@@ -47,15 +47,15 @@ Example: `calc(${paddingInlineBase} * 0.5)`
 These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding mode is inactive.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable          | Active When...   | Purpose                  |
-|-------------------|------------------|--------------------------|
-| `paddingBareCond` | Bare mode active | minimal layout rendering |
+| Variable              | Active When...       | Purpose                  |
+|-----------------------|----------------------|--------------------------|
+| `paddingStrippedCond` | Stripped mode active | minimal layout rendering |
 
 #### 💡 Usage Example
 
 ```ts
 // Supporting variants:
-import { usingBareVariant } from '@reusable-ui/bare-variant'
+import { usingStrippedVariant } from '@reusable-ui/stripped-variant'
 
 // Manageable padding feature:
 import { usingPaddingFeature } from '@reusable-ui/padding-feature';
@@ -64,7 +64,7 @@ import { usingPaddingFeature } from '@reusable-ui/padding-feature';
 import { style, children } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { bareVariantRule } = usingBareVariant();
+    const { strippedVariantRule } = usingStrippedVariant();
     
     const {
         paddingFeatureRule,
@@ -86,7 +86,7 @@ export const componentStyle = () => {
         // Define component styling here.
         
         // Apply supporting variant rules:
-        ...bareVariantRule(),
+        ...strippedVariantRule(),
         
         // Apply manageable padding feature:
         ...paddingFeatureRule(),

@@ -1,10 +1,10 @@
 import { style } from '@cssfn/core'
 
-import { usingBareVariant } from '@reusable-ui/bare-variant'
+import { usingStrippedVariant } from '@reusable-ui/stripped-variant'
 import { usingPaddingFeature } from '../dist/index.js'
 
 export default function paddingFeatureTestStyle() {
-    const { bareVariantRule } = usingBareVariant();
+    const { strippedVariantRule } = usingStrippedVariant();
     const {
         paddingFeatureRule,
         paddingFeatureVars: {
@@ -15,7 +15,7 @@ export default function paddingFeatureTestStyle() {
         }
     } = usingPaddingFeature();
     return style({
-        ...bareVariantRule(),
+        ...strippedVariantRule(),
         ...paddingFeatureRule(),
         paddingInlineStart,
         paddingInlineEnd,

@@ -10,7 +10,7 @@ const variantDirs = [
     'emphasis-variant',
     'outline-variant',
     'mild-variant',
-    'bare-variant',
+    'stripped-variant',
 ];
 
 console.log('🧪 Running tests for variant packages...\n');

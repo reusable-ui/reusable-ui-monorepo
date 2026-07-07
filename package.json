@@ -78,7 +78,7 @@
     "variants/emphasis-variant",
     "variants/outline-variant",
     "variants/mild-variant",
-    "variants/bare-variant",
+    "variants/stripped-variant",
     "variants/styling-variants",
     "features/background-feature",
     "features/foreground-feature",

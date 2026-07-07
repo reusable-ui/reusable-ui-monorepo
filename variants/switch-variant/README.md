@@ -186,7 +186,7 @@ This layered approach makes switch-based variants both **expressive** and **main
 - [`@reusable-ui/emphasis-variant`](https://www.npmjs.com/package/@reusable-ui/emphasis-variant) - A utility for managing visual emphasis consistently across React components.  
 - [`@reusable-ui/outline-variant`](https://www.npmjs.com/package/@reusable-ui/outline-variant) - A utility for managing visual outline consistently across React components.  
 - [`@reusable-ui/mild-variant`](https://www.npmjs.com/package/@reusable-ui/mild-variant) - A utility for managing mild styling (reading friendly) consistently across React components.  
-- [`@reusable-ui/bare-variant`](https://www.npmjs.com/package/@reusable-ui/bare-variant) - A utility for managing bare styling (frameless, minimal layout) consistently across React components.  
+- [`@reusable-ui/stripped-variant`](https://www.npmjs.com/package/@reusable-ui/stripped-variant) - A utility for managing stripped styling (frameless, minimal layout) consistently across React components.  
 
 ## 🤝 Contributing  
 Want to improve **@reusable-ui/switch-variant**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  

@@ -205,7 +205,7 @@ const orientation = useResolvedInvertableVariant(
 - [`@reusable-ui/emphasis-variant`](https://www.npmjs.com/package/@reusable-ui/emphasis-variant) – emphasized variant.  
 - [`@reusable-ui/outline-variant`](https://www.npmjs.com/package/@reusable-ui/outline-variant) – border-only variant.  
 - [`@reusable-ui/mild-variant`](https://www.npmjs.com/package/@reusable-ui/mild-variant) – content-friendly colored variant.  
-- [`@reusable-ui/bare-variant`](https://www.npmjs.com/package/@reusable-ui/bare-variant) – stripped layout variant.  
+- [`@reusable-ui/stripped-variant`](https://www.npmjs.com/package/@reusable-ui/stripped-variant) – stripped layout variant.  
 
 ## 📖 Part of the Reusable-UI Framework  
 **@reusable-ui/effective-variant** is a core utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  

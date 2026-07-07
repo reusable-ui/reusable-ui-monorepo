@@ -3,7 +3,7 @@ import { type ThemeVariantProps, useThemeVariant } from '@reusable-ui/theme-vari
 import { type EmphasisVariantProps, useEmphasisVariant } from '@reusable-ui/emphasis-variant'
 import { type OutlineVariantProps, useOutlineVariant } from '@reusable-ui/outline-variant'
 import { type MildVariantProps, useMildVariant } from '@reusable-ui/mild-variant'
-import { type BareVariantProps, useBareVariant } from '@reusable-ui/bare-variant'
+import { type StrippedVariantProps, useStrippedVariant } from '@reusable-ui/stripped-variant'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useBackgroundFeatureTestStyles } from './BackgroundFeatureTest.loader.js'
 
@@ -13,7 +13,7 @@ export interface BackgroundFeatureTestProps
         EmphasisVariantProps,
         OutlineVariantProps,
         MildVariantProps,
-        BareVariantProps
+        StrippedVariantProps
 {
     backgCustom ?: keyof ReturnType<typeof useBackgroundFeatureTestStyles>
 }
@@ -28,14 +28,14 @@ export const BackgroundFeatureTest = (props: BackgroundFeatureTestProps) => {
     const { emphasisClassname } = useEmphasisVariant(props);
     const { outlineClassname  } = useOutlineVariant(props);
     const { mildClassname     } = useMildVariant(props);
-    const { bareClassname     } = useBareVariant(props);
+    const { strippedClassname } = useStrippedVariant(props);
     
     return (
         <div>
             <HydrateStyles />
             <div
                 data-testid="background-feature-test"
-                className={`${styles[backgCustom]} ${themeClassname} ${emphasisClassname} ${outlineClassname} ${mildClassname} ${bareClassname}`}
+                className={`${styles[backgCustom]} ${themeClassname} ${emphasisClassname} ${outlineClassname} ${mildClassname} ${strippedClassname}`}
             >
                 Background Feature Test
             </div>

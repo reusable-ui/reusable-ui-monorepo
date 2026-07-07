@@ -47,7 +47,7 @@ const REGULAR_BORDERS  = {
     borderInlineBaseWidth  : '1px',
     borderBlockBaseWidth   : '1px',
 };
-const BARE_BORDERS     = {
+const STRIPPED_BORDERS = {
     borderInlineStartWidth : '0px',
     borderInlineEndWidth   : '0px',
     borderBlockStartWidth  : '0px',
@@ -69,11 +69,11 @@ test.describe('usingBorderFeature', () => {
             expectedBorders : REGULAR_BORDERS,
         },
         {
-            title           : 'bare variant => should render no borders',
+            title           : 'stripped variant => should render no borders',
             props           : {
-                bare        : true,
+                stripped    : true,
             },
-            expectedBorders : BARE_BORDERS,
+            expectedBorders : STRIPPED_BORDERS,
         },
     ] satisfies BorderFeatureTestCase[]) {
         test(title, async ({ mount }) => {

@@ -25,12 +25,12 @@ import {
 export interface PaddingFeatureVars {
     //#region Conditional variables (may be poisoned) 
     /**
-     * References a zero-length value (`0px`) when bare mode is active.
-     * Poisoned when bare mode is inactive.
+     * References a zero-length value (`0px`) when stripped mode is active.
+     * Poisoned when stripped mode is inactive.
      * 
      * Used to conditionally suppress directional paddings.
      */
-    paddingBareCond    : unknown
+    paddingStrippedCond : unknown
     //#endregion Conditional variables (may be poisoned) 
     
     
@@ -40,39 +40,39 @@ export interface PaddingFeatureVars {
      * References the resolved padding on the left (or right in RTL).
      * Always valid via fallback to config default.
      */
-    paddingInlineStart : unknown
+    paddingInlineStart  : unknown
     
     /**
      * References the resolved padding on the right (or left in RTL).
      * Always valid via fallback to config default.
      */
-    paddingInlineEnd   : unknown
+    paddingInlineEnd    : unknown
     
     /**
      * References the resolved padding on the top.
      * Always valid via fallback to config default.
      */
-    paddingBlockStart  : unknown
+    paddingBlockStart   : unknown
     
     /**
      * References the resolved padding on the bottom.
      * Always valid via fallback to config default.
      */
-    paddingBlockEnd    : unknown
+    paddingBlockEnd     : unknown
     
     /**
      * References the resolved general-purpose horizontal padding used for layout separators or structural dividers.
      * Always valid via fallback to config default.
-     * Not affected by bare mode.
+     * Not affected by stripped mode.
      */
-    paddingInlineBase  : unknown
+    paddingInlineBase   : unknown
     
     /**
      * References the resolved general-purpose vertical padding used for layout separators or structural dividers.
      * Always valid via fallback to config default.
-     * Not affected by bare mode.
+     * Not affected by stripped mode.
      */
-    paddingBlockBase   : unknown
+    paddingBlockBase    : unknown
     //#endregion Final resolved variables (always valid) 
 }
 
@@ -160,11 +160,11 @@ export interface CssPaddingFeatureOptions
  */
 export interface CssPaddingFeature {
     /**
-     * Generates CSS rules that resolve the appropriate paddings based on active bare mode
+     * Generates CSS rules that resolve the appropriate paddings based on active stripped mode
      * and framework-level overrides.
      * 
      * These rules leverage poisoned fallback logic to dynamically suppress
-     * directional paddings when bare mode is active.
+     * directional paddings when stripped mode is active.
      */
     paddingFeatureRule : Lazy<CssRule>
     
@@ -172,7 +172,7 @@ export interface CssPaddingFeature {
      * Exposes padding-related CSS variables for styling component’s padding.
      * 
      * Includes:
-     * - `paddingBareCond`: Suppresses padding geometry when bare mode is active.
+     * - `paddingStrippedCond`: Suppresses padding geometry when stripped mode is active.
      * - `paddingInlineStart`, `paddingBlockEnd`, etc.: Resolved directional paddings.
      * 
      * These variables can be consumed directly or composed into advanced use cases

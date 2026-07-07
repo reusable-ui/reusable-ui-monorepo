@@ -28,7 +28,7 @@ export const domainOrder = new Set<string>([
 'emphasisVariant',
 'outlineVariant',
 'mildVariant',
-'bareVariant',
+'strippedVariant',
 
 // Features:
 'backgroundFeature',

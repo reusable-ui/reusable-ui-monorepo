@@ -298,7 +298,7 @@ export const enforceVariableConventions = createRule({
                     
                     
                     // Case 2: Constant initializer (string literal, etc.):
-                    // - Example: `export const bareVars: CssVars = ...`
+                    // - Example: `export const strippedVars: CssVars = ...`
                     else {
                         if (id.typeAnnotation) {
                             // Enforce explicit type annotation on the variable identifier:

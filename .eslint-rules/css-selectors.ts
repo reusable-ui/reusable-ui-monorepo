@@ -33,10 +33,10 @@ const createRule = ESLintUtils.RuleCreator(
  * - Identified by names that end with "Selector".
  * 
  * Examples:
- * - Constant: `export const isBareSelector: CssSelectorCollection = ".is-bare"`
- * - Function declaration: `export function isBareOfSelector<T>(param: T): CssSelectorCollection { ... }`
- * - Function expression: `export const isBareOfSelector = function<T>(param: T): CssSelectorCollection { ... }`
- * - Arrow function: `export const isBareOfSelector = <T>(param: T): CssSelectorCollection => ...`
+ * - Constant: `export const isStrippedSelector: CssSelectorCollection = ".is-stripped"`
+ * - Function declaration: `export function isStrippedOfSelector<T>(param: T): CssSelectorCollection { ... }`
+ * - Function expression: `export const isStrippedOfSelector = function<T>(param: T): CssSelectorCollection { ... }`
+ * - Arrow function: `export const isStrippedOfSelector = <T>(param: T): CssSelectorCollection => ...`
  * 
  * Why:
  * - Prevents scattering inconsistent CSS selector definitions across the codebase.
@@ -254,8 +254,8 @@ export const enforceSelectorConventions = createRule({
                     
                     
                     // Case 1: Function initializer (either arrow or function expression):
-                    // - Example function expression : `export const isBareOfSelector = function<T>(param: T): CssSelectorCollection { ... }`
-                    // - Example arrow function      : `export const isBareOfSelector = <T>(param: T): CssSelectorCollection => ...`
+                    // - Example function expression : `export const isStrippedOfSelector = function<T>(param: T): CssSelectorCollection { ... }`
+                    // - Example arrow function      : `export const isStrippedOfSelector = <T>(param: T): CssSelectorCollection => ...`
                     if (value && ((value.type === TSESTree.AST_NODE_TYPES.FunctionExpression) || (value.type === TSESTree.AST_NODE_TYPES.ArrowFunctionExpression))) {
                         // Enforce return type annotation on the function itself:
                         if (!isValidReturnType(value.returnType?.typeAnnotation)) {
@@ -273,7 +273,7 @@ export const enforceSelectorConventions = createRule({
                     
                     
                     // Case 2: Constant initializer (string literal, etc.):
-                    // - Example: `export const isBareSelector: CssSelectorCollection = '.is-bare'`
+                    // - Example: `export const isStrippedSelector: CssSelectorCollection = '.is-stripped'`
                     else {
                         // Enforce type annotation on the variable identifier:
                         if (!isValidReturnType(id.typeAnnotation?.typeAnnotation)) {

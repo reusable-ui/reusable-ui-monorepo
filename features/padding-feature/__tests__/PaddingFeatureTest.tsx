@@ -1,24 +1,24 @@
 import React from 'react'
-import { type BareVariantProps, useBareVariant } from '@reusable-ui/bare-variant'
+import { type StrippedVariantProps, useStrippedVariant } from '@reusable-ui/stripped-variant'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { usePaddingFeatureTestStyles } from './PaddingFeatureTest.loader.js'
 
 export interface PaddingFeatureTestProps
     extends
-        BareVariantProps
+        StrippedVariantProps
 {
 }
 export const PaddingFeatureTest = (props: PaddingFeatureTestProps) => {
     const styles = usePaddingFeatureTestStyles();
     
-    const { bareClassname       } = useBareVariant(props);
+    const { strippedClassname } = useStrippedVariant(props);
     
     return (
         <div>
             <HydrateStyles />
             <div
                 data-testid="padding-feature-test"
-                className={`${styles.main} ${bareClassname}`}
+                className={`${styles.main} ${strippedClassname}`}
             >
                 Padding Feature Test
             </div>

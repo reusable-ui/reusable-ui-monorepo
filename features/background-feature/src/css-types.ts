@@ -55,12 +55,12 @@ export interface BackgroundFeatureVars {
     backgOutlinedCond   : unknown
     
     /**
-     * References an empty background (`none`) when bare variant is active.
-     * Poisoned when bare variant is inactive.
+     * References an empty background (`none`) when stripped variant is active.
+     * Poisoned when stripped variant is inactive.
      * 
      * Used to conditionally suppress background styling.
      */
-    backgBareCond       : unknown
+    backgStrippedCond   : unknown
     //#endregion 🎨 Conditional variables (may be poisoned) 
     
     
@@ -117,8 +117,8 @@ export interface BackgroundFeatureVars {
     
     /**
      * References the final resolved background for the current variant.
-     * Resolves to `backgLayers` when bare variant is inactive,
-     * or to an empty background (`none`) when bare variant is active.
+     * Resolves to `backgLayers` when stripped variant is inactive,
+     * or to an empty background (`none`) when stripped variant is active.
      * 
      * Always valid via internal fallback logic.
      */
@@ -183,12 +183,12 @@ export interface CssBackgroundFeature {
      * 
      * Includes:
      * - `backg**Cond`s       : Variant-specific background colors (conditionally valid or poisoned).
-     * - `backgBareCond`      : Suppresses background styling when bare variant is active.
+     * - `backgStrippedCond`  : Suppresses background styling when stripped variant is active.
      * - `backgVariantColor`  : Variant-aware background color from the active variant.
      * - `backgColorOverride` : User-defined override for the background color.
      * - `backgColor`         : Final background color consumed by components.
      * - `backgLayers`   : Composite background layers (gradient, custom, and color) for the current variant.
-     * - `backg`         : Final background value, resolved from layers or suppressed via bare variant.
+     * - `backg`         : Final background value, resolved from layers or suppressed via stripped variant.
      * 
      * These variables can be consumed directly or composed into advanced use cases
      * using CSS color functions, variable fallbacks, or custom logic.

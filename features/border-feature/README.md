@@ -1,12 +1,12 @@
 # @reusable-ui/border-feature 📦  
 
-A styling utility for resolving the appropriate border color, geometry, and radius based on the currently active variants — including theme, outline, mild, and bare.  
+A styling utility for resolving the appropriate border color, geometry, and radius based on the currently active variants — including theme, outline, mild, and stripped.  
 It exposes CSS variables for styling your component’s border, with support for CSS color function adjustments.
 Ideal for buttons, cards, dialogs, and any theme-aware components.
 
 ## ✨ Features
 ✔ Dynamically switches border color based on active variants (theme, outline, mild)  
-✔ Supports `bare` variant for geometry-only rendering  
+✔ Supports stripped variant for geometry-only rendering  
 ✔ Exposes logical border widths and radii for full layout control  
 ✔ Exposes border color variable (`borderColor`) for direct usage or further adjustment via CSS color functions  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
@@ -55,13 +55,13 @@ Example: `oklch(from ${borderColor} l c h / calc(alpha * 0.25))`
 These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding variant is inactive.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable              | Active When...         | Purpose                                                         |
-|-----------------------|------------------------|-----------------------------------------------------------------|
-| `borderRegularCond`   | Theme variant active   | Themed border color for the regular variant                     |
-| `borderMildCond`      | Mild variant active    | Reading-friendly border color for mild variant                  |
-| `borderOutlinedCond`  | Outline variant active | High-contrast border color for outlined variant                 |
-| `borderBareCond`      | Bare variant active    | minimal layout rendering                                        |
-| `borderColorOverride` | When user override set | User-defined override border color, highest priority if present |
+| Variable              | Active When...          | Purpose                                                         |
+|-----------------------|-------------------------|-----------------------------------------------------------------|
+| `borderRegularCond`   | Theme variant active    | Themed border color for the regular variant                     |
+| `borderMildCond`      | Mild variant active     | Reading-friendly border color for mild variant                  |
+| `borderOutlinedCond`  | Outline variant active  | High-contrast border color for outlined variant                 |
+| `borderStrippedCond`  | Stripped variant active | minimal layout rendering                                        |
+| `borderColorOverride` | When user override set  | User-defined override border color, highest priority if present |
 
 #### 💡 Usage Example
 
@@ -71,7 +71,7 @@ import { usingThemeVariant } from '@reusable-ui/theme-variant'
 import { usingEmphasisVariant } from '@reusable-ui/emphasis-variant' // optional
 import { usingOutlineVariant } from '@reusable-ui/outline-variant'
 import { usingMildVariant } from '@reusable-ui/mild-variant'
-import { usingBareVariant } from '@reusable-ui/bare-variant'
+import { usingStrippedVariant } from '@reusable-ui/stripped-variant'
 
 // Theme-aware border feature:
 import { usingBorderFeature } from '@reusable-ui/border-feature';
@@ -84,7 +84,7 @@ export const componentStyle = () => {
     const { emphasisVariantRule } = usingEmphasisVariant(); // optional
     const { outlineVariantRule  } = usingOutlineVariant();
     const { mildVariantRule     } = usingMildVariant();
-    const { bareVariantRule     } = usingBareVariant();
+    const { strippedVariantRule } = usingStrippedVariant();
     
     const {
         borderFeatureRule,
@@ -122,7 +122,7 @@ export const componentStyle = () => {
         ...emphasisVariantRule(), // optional
         ...outlineVariantRule(),
         ...mildVariantRule(),
-        ...bareVariantRule(),
+        ...strippedVariantRule(),
         
         // Apply theme-aware border feature:
         ...borderFeatureRule(),

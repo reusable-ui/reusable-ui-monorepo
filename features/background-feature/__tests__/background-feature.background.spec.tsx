@@ -49,10 +49,10 @@ test.describe('usingBackgroundFeature', () => {
             },
         },
         {
-            title              : 'bare variant => should render no backgrounds',
+            title              : 'stripped variant => should render no backgrounds',
             props              : {
                 backgCustom    : 'backgroundNoCustomStyle',
-                bare           : true,
+                stripped       : true,
             },
             expectedBackground : {
                 backgColor  : /^oklch\(.*/,
@@ -75,10 +75,10 @@ test.describe('usingBackgroundFeature', () => {
             },
         },
         {
-            title              : 'bare variant with simple custom background layer => should render no backgrounds',
+            title              : 'stripped variant with simple custom background layer => should render no backgrounds',
             props              : {
                 backgCustom    : 'backgroundSimpleCustomStyle',
-                bare           : true,
+                stripped       : true,
             },
             expectedBackground : {
                 backgColor  : /^oklch\(.*/,
@@ -101,10 +101,10 @@ test.describe('usingBackgroundFeature', () => {
             },
         },
         {
-            title              : 'bare variant with single custom background layer => should render no backgrounds',
+            title              : 'stripped variant with single custom background layer => should render no backgrounds',
             props              : {
                 backgCustom    : 'backgroundSingleCustomStyle',
-                bare           : true,
+                stripped       : true,
             },
             expectedBackground : {
                 backgColor  : /^oklch\(.*/,
@@ -127,10 +127,10 @@ test.describe('usingBackgroundFeature', () => {
             },
         },
         {
-            title              : 'bare variant with single !important custom background layer => should render no backgrounds',
+            title              : 'stripped variant with single !important custom background layer => should render no backgrounds',
             props              : {
                 backgCustom    : 'backgroundSingleImportantCustomStyle',
-                bare           : true,
+                stripped       : true,
             },
             expectedBackground : {
                 backgColor  : /^oklch\(.*/,
@@ -153,10 +153,10 @@ test.describe('usingBackgroundFeature', () => {
             },
         },
         {
-            title              : 'bare variant with multiple custom background layer => should render no backgrounds',
+            title              : 'stripped variant with multiple custom background layer => should render no backgrounds',
             props              : {
                 backgCustom    : 'backgroundMultipleCustomStyle',
-                bare           : true,
+                stripped       : true,
             },
             expectedBackground : {
                 backgColor  : /^oklch\(.*/,
@@ -179,10 +179,10 @@ test.describe('usingBackgroundFeature', () => {
             },
         },
         {
-            title              : 'bare variant with multiple !important custom background layer => should render no backgrounds',
+            title              : 'stripped variant with multiple !important custom background layer => should render no backgrounds',
             props              : {
                 backgCustom    : 'backgroundMultipleImportantCustomStyle',
-                bare           : true,
+                stripped       : true,
             },
             expectedBackground : {
                 backgColor  : /^oklch\(.*/,

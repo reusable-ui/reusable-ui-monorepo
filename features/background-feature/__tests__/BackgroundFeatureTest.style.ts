@@ -4,7 +4,7 @@ import { usingThemeVariant } from '@reusable-ui/theme-variant'
 import { usingEmphasisVariant } from '@reusable-ui/emphasis-variant'
 import { usingOutlineVariant } from '@reusable-ui/outline-variant'
 import { usingMildVariant } from '@reusable-ui/mild-variant'
-import { usingBareVariant } from '@reusable-ui/bare-variant'
+import { usingStrippedVariant } from '@reusable-ui/stripped-variant'
 import { usingBackgroundFeature } from '../dist/index.js'
 
 const backgroundNoCustomStyle = () => {
@@ -12,7 +12,7 @@ const backgroundNoCustomStyle = () => {
     const { emphasisVariantRule } = usingEmphasisVariant();
     const { outlineVariantRule  } = usingOutlineVariant();
     const { mildVariantRule     } = usingMildVariant();
-    const { bareVariantRule     } = usingBareVariant();
+    const { strippedVariantRule } = usingStrippedVariant();
     const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
         backgroundEmphasize : [['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box']]
     });
@@ -21,7 +21,7 @@ const backgroundNoCustomStyle = () => {
         ...emphasisVariantRule(),
         ...outlineVariantRule(),
         ...mildVariantRule(),
-        ...bareVariantRule(),
+        ...strippedVariantRule(),
         ...backgroundFeatureRule(),
         background: backgroundFeatureVars.backg,
     });
@@ -32,7 +32,7 @@ const backgroundSimpleCustomStyle = () => {
     const { emphasisVariantRule } = usingEmphasisVariant();
     const { outlineVariantRule  } = usingOutlineVariant();
     const { mildVariantRule     } = usingMildVariant();
-    const { bareVariantRule     } = usingBareVariant();
+    const { strippedVariantRule } = usingStrippedVariant();
     const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
         backgroundEmphasize : [['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box']],
         background          : 'linear-gradient(0deg, rgba(255, 0, 0, 0.1), rgba(255, 0, 0, 0.1)) border-box',
@@ -42,7 +42,7 @@ const backgroundSimpleCustomStyle = () => {
         ...emphasisVariantRule(),
         ...outlineVariantRule(),
         ...mildVariantRule(),
-        ...bareVariantRule(),
+        ...strippedVariantRule(),
         ...backgroundFeatureRule(),
         background: backgroundFeatureVars.backg,
     });
@@ -53,7 +53,7 @@ const backgroundSingleCustomStyle = () => {
     const { emphasisVariantRule } = usingEmphasisVariant();
     const { outlineVariantRule  } = usingOutlineVariant();
     const { mildVariantRule     } = usingMildVariant();
-    const { bareVariantRule     } = usingBareVariant();
+    const { strippedVariantRule } = usingStrippedVariant();
     const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
         backgroundEmphasize : [['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box']],
         background          : ['linear-gradient(0deg, rgba(255, 255, 0, 0.1), rgba(255, 255, 0, 0.1)) content-box'],
@@ -63,7 +63,7 @@ const backgroundSingleCustomStyle = () => {
         ...emphasisVariantRule(),
         ...outlineVariantRule(),
         ...mildVariantRule(),
-        ...bareVariantRule(),
+        ...strippedVariantRule(),
         ...backgroundFeatureRule(),
         background: backgroundFeatureVars.backg,
     });
@@ -74,7 +74,7 @@ const backgroundSingleImportantCustomStyle = () => {
     const { emphasisVariantRule } = usingEmphasisVariant();
     const { outlineVariantRule  } = usingOutlineVariant();
     const { mildVariantRule     } = usingMildVariant();
-    const { bareVariantRule     } = usingBareVariant();
+    const { strippedVariantRule } = usingStrippedVariant();
     const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
         backgroundEmphasize : [['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box']],
         background          : ['linear-gradient(0deg, rgba(255, 255, 0, 0.1), rgba(255, 255, 0, 0.1)) content-box', '!important'],
@@ -84,7 +84,7 @@ const backgroundSingleImportantCustomStyle = () => {
         ...emphasisVariantRule(),
         ...outlineVariantRule(),
         ...mildVariantRule(),
-        ...bareVariantRule(),
+        ...strippedVariantRule(),
         ...backgroundFeatureRule(),
         background: backgroundFeatureVars.backg,
     });
@@ -95,7 +95,7 @@ const backgroundMultipleCustomStyle = () => {
     const { emphasisVariantRule } = usingEmphasisVariant();
     const { outlineVariantRule  } = usingOutlineVariant();
     const { mildVariantRule     } = usingMildVariant();
-    const { bareVariantRule     } = usingBareVariant();
+    const { strippedVariantRule } = usingStrippedVariant();
     const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
         backgroundEmphasize : [['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box']],
         background          : [
@@ -108,7 +108,7 @@ const backgroundMultipleCustomStyle = () => {
         ...emphasisVariantRule(),
         ...outlineVariantRule(),
         ...mildVariantRule(),
-        ...bareVariantRule(),
+        ...strippedVariantRule(),
         ...backgroundFeatureRule(),
         background: backgroundFeatureVars.backg,
     });
@@ -119,7 +119,7 @@ const backgroundMultipleImportantCustomStyle = () => {
     const { emphasisVariantRule } = usingEmphasisVariant();
     const { outlineVariantRule  } = usingOutlineVariant();
     const { mildVariantRule     } = usingMildVariant();
-    const { bareVariantRule     } = usingBareVariant();
+    const { strippedVariantRule } = usingStrippedVariant();
     const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
         backgroundEmphasize : [['linear-gradient(180deg, rgba(255,255,255, 0.2), rgba(0,0,0, 0.2))', 'border-box']],
         background          : [
@@ -133,7 +133,7 @@ const backgroundMultipleImportantCustomStyle = () => {
         ...emphasisVariantRule(),
         ...outlineVariantRule(),
         ...mildVariantRule(),
-        ...bareVariantRule(),
+        ...strippedVariantRule(),
         ...backgroundFeatureRule(),
         background: backgroundFeatureVars.backg,
     });

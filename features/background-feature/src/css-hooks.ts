@@ -40,8 +40,8 @@ import {
     usingMildVariant,
 }                           from '@reusable-ui/mild-variant'        // A utility for managing mild styling (reading friendly) consistently across React components.
 import {
-    usingBareVariant,
-}                           from '@reusable-ui/bare-variant'        // A utility for managing bare styling (frameless, minimal layout) consistently across React components.
+    usingStrippedVariant,
+}                           from '@reusable-ui/stripped-variant'    // A utility for managing stripped styling (frameless, minimal layout) consistently across React components.
 
 
 
@@ -69,7 +69,7 @@ export const usingBackgroundFeature = (options?: CssBackgroundFeatureOptions): C
             const { emphasisVariantVars } = usingEmphasisVariant();
             const { outlineVariantVars  } = usingOutlineVariant();
             const { mildVariantVars     } = usingMildVariant();
-            const { bareVariantVars     } = usingBareVariant();
+            const { strippedVariantVars     } = usingStrippedVariant();
             
             
             
@@ -154,16 +154,16 @@ export const usingBackgroundFeature = (options?: CssBackgroundFeatureOptions): C
                     
                     
                     
-                    // 🧱 Bare Layout:
+                    // 🧱 Stripped Layout:
                     
                     /**
-                     * Applies an empty background when bare variant is active.
-                     * Poisoned when bare variant is inactive.
+                     * Applies an empty background when stripped variant is active.
+                     * Poisoned when stripped variant is inactive.
                      * 
                      * Used to suppress background styling.
                      */
-                    [backgroundFeatureVars.backgBareCond]: [[
-                        bareVariantVars.isBare,
+                    [backgroundFeatureVars.backgStrippedCond]: [[
+                        strippedVariantVars.isStripped,
                         'none',
                     ]],
                 }),
@@ -221,11 +221,11 @@ export const usingBackgroundFeature = (options?: CssBackgroundFeatureOptions): C
                     
                     /**
                      * Final background resolution:
-                     * - If bare variant is active, suppress all layers
+                     * - If stripped variant is active, suppress all layers
                      * - Otherwise, apply layered background
                      */
                     [backgroundFeatureVars.backg]: switchOf(
-                        backgroundFeatureVars.backgBareCond,
+                        backgroundFeatureVars.backgStrippedCond,
                         backgroundFeatureVars.backgLayers,
                     ),
                 }),

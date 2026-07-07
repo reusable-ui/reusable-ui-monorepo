@@ -1,4 +1,4 @@
-# Contributing to @reusable-ui/bare-variant ✍️  
+# Contributing to @reusable-ui/stripped-variant ✍️  
 
 Thank you for your interest in contributing! 🚀  
 This project thrives on community collaboration, and we welcome contributions of all kinds.  
@@ -29,7 +29,7 @@ Even if you're not coding, you can help by:
 ## 📦 Setting Up Locally  
 ```sh
 git clone https://github.com/reusable-ui/reusable-ui-monorepo.git
-cd variants/bare-variant
+cd variants/stripped-variant
 npm install
 npm run build
 ```
@@ -37,4 +37,4 @@ npm run build
 ## 💬 Need Help?  
 Join our [GitHub Discussions](https://github.com/reusable-ui/reusable-ui-monorepo/discussions) or ask in an issue! 🎉  
 
-Thanks for helping make **@reusable-ui/bare-variant** better! 🚀  
+Thanks for helping make **@reusable-ui/stripped-variant** better! 🚀  

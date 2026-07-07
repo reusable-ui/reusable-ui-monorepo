@@ -104,7 +104,7 @@ This avoids **hard-coded prefix strings**, reducing the risk of accidental colli
 | defaultEmphasisVariantPrefix      | em    |
 | defaultOutlineVariantPrefix       | ou    |
 | defaultMildVariantPrefix          | mi    |
-| defaultBareVariantPrefix          | ba    |
+| defaultStrippedVariantPrefix      | st    |
 | defaultBackgroundFeaturePrefix    | bg    |
 | defaultForegroundFeaturePrefix    | fg    |
 | defaultDecorationFeaturePrefix    | dn    |

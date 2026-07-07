@@ -39,7 +39,7 @@ const REGULAR_PADDINGS  = {
     paddingInlineBase  : '1rem',
     paddingBlockBase   : '1rem',
 };
-const BARE_PADDINGS     = {
+const STRIPPED_PADDINGS     = {
     paddingInlineStart : '0px',
     paddingInlineEnd   : '0px',
     paddingBlockStart  : '0px',
@@ -61,11 +61,11 @@ test.describe('usingPaddingFeature', () => {
             expectedPaddings : REGULAR_PADDINGS,
         },
         {
-            title            : 'bare variant => should render no paddings',
+            title            : 'stripped variant => should render no paddings',
             props            : {
-                bare         : true,
+                stripped     : true,
             },
-            expectedPaddings : BARE_PADDINGS,
+            expectedPaddings : STRIPPED_PADDINGS,
         },
     ] satisfies PaddingFeatureTestCase[]) {
         test(title, async ({ mount }) => {

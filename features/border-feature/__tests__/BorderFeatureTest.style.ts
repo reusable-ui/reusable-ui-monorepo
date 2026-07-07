@@ -4,7 +4,7 @@ import { usingThemeVariant } from '@reusable-ui/theme-variant'
 import { usingEmphasisVariant } from '@reusable-ui/emphasis-variant'
 import { usingOutlineVariant } from '@reusable-ui/outline-variant'
 import { usingMildVariant } from '@reusable-ui/mild-variant'
-import { usingBareVariant } from '@reusable-ui/bare-variant'
+import { usingStrippedVariant } from '@reusable-ui/stripped-variant'
 import { usingBorderFeature } from '../dist/index.js'
 
 export default function borderFeatureTestStyle() {
@@ -12,14 +12,14 @@ export default function borderFeatureTestStyle() {
     const { emphasisVariantRule } = usingEmphasisVariant();
     const { outlineVariantRule  } = usingOutlineVariant();
     const { mildVariantRule     } = usingMildVariant();
-    const { bareVariantRule     } = usingBareVariant();
+    const { strippedVariantRule } = usingStrippedVariant();
     const { borderFeatureRule, borderFeatureVars } = usingBorderFeature();
     return style({
         ...themeVariantRule(),
         ...emphasisVariantRule(),
         ...outlineVariantRule(),
         ...mildVariantRule(),
-        ...bareVariantRule(),
+        ...strippedVariantRule(),
         ...borderFeatureRule(),
         borderColor: borderFeatureVars.borderColor,
         borderStyle: 'solid',

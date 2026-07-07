@@ -1,9 +1,9 @@
 {
-  "name": "@reusable-ui/bare-variant",
+  "name": "@reusable-ui/stripped-variant",
   "version": "7.0.0",
-  "description": "A utility for managing bare styling (frameless, minimal layout) consistently across React components.",
+  "description": "A utility for managing stripped styling (frameless, minimal layout) consistently across React components.",
   "keywords": [
-    "bare",
+    "stripped",
     "frameless",
     "minimal",
     "layout",
@@ -28,7 +28,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "variants/bare-variant"
+    "directory": "variants/stripped-variant"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"

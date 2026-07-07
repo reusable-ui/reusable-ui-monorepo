@@ -8,7 +8,7 @@ import {
     
     // Strongly typed of css variables:
     switchOf,
-}                           from '@cssfn/core'                  // Writes css in javascript.
+}                           from '@cssfn/core'                      // Writes css in javascript.
 
 // Types:
 import {
@@ -24,17 +24,17 @@ import {
 // Reusable-ui configs:
 import {
     spacerConfigVars,
-}                           from '@reusable-ui/spacer-config'   // A flexible spacer management system for web components, utilizing CSS custom properties to enable dynamic spacing, theming, and customization.
+}                           from '@reusable-ui/spacer-config'       // A flexible spacer management system for web components, utilizing CSS custom properties to enable dynamic spacing, theming, and customization.
 
 // Reusable-ui variants:
 import {
-    usingBareVariant,
-}                           from '@reusable-ui/bare-variant'    // A utility for managing bare styling (frameless, minimal layout) consistently across React components.
+    usingStrippedVariant,
+}                           from '@reusable-ui/stripped-variant'    // A utility for managing stripped styling (frameless, minimal layout) consistently across React components.
 
 
 
 /**
- * Resolves the appropriate padding values based on active bare mode and framework-level overrides
+ * Resolves the appropriate padding values based on active stripped mode and framework-level overrides
  * and exposes ready-to-use CSS variables.
  * 
  * @param options - An optional configuration for customizing padding behavior.
@@ -57,23 +57,23 @@ export const usingPaddingFeature = (options?: CssPaddingFeatureOptions): CssPadd
     return {
         paddingFeatureRule : () => {
             // Peer variant dependencies (may be poisoned if not implemented):
-            const { bareVariantVars } = usingBareVariant();
+            const { strippedVariantVars } = usingStrippedVariant();
             
             
             
             return style({
                 // Conditional padding variables (may be poisoned):
                 ...vars({
-                    // 🧱 Bare Layout:
+                    // 🧱 Stripped Layout:
                     
                     /**
-                     * Applies zero-length padding geometry when bare mode is active.
-                     * Poisoned when bare mode is inactive.
+                     * Applies zero-length padding geometry when stripped mode is active.
+                     * Poisoned when stripped mode is inactive.
                      * 
                      * Used to suppress directional paddings.
                      */
-                    [paddingFeatureVars.paddingBareCond]: [[
-                        bareVariantVars.isBare,
+                    [paddingFeatureVars.paddingStrippedCond]: [[
+                        strippedVariantVars.isStripped,
                         '0px', // Use `0px` to avoid `calc()` errors in downstream usage.
                     ]],
                 }),
@@ -82,22 +82,22 @@ export const usingPaddingFeature = (options?: CssPaddingFeatureOptions): CssPadd
                 
                 // Final resolved padding variables (always valid):
                 ...vars({
-                    [paddingFeatureVars.paddingInlineStart] : switchOf(paddingFeatureVars.paddingBareCond, paddingInlineStart),
-                    [paddingFeatureVars.paddingInlineEnd  ] : switchOf(paddingFeatureVars.paddingBareCond, paddingInlineEnd),
-                    [paddingFeatureVars.paddingBlockStart ] : switchOf(paddingFeatureVars.paddingBareCond, paddingBlockStart),
-                    [paddingFeatureVars.paddingBlockEnd   ] : switchOf(paddingFeatureVars.paddingBareCond, paddingBlockEnd),
+                    [paddingFeatureVars.paddingInlineStart] : switchOf(paddingFeatureVars.paddingStrippedCond, paddingInlineStart),
+                    [paddingFeatureVars.paddingInlineEnd  ] : switchOf(paddingFeatureVars.paddingStrippedCond, paddingInlineEnd),
+                    [paddingFeatureVars.paddingBlockStart ] : switchOf(paddingFeatureVars.paddingStrippedCond, paddingBlockStart),
+                    [paddingFeatureVars.paddingBlockEnd   ] : switchOf(paddingFeatureVars.paddingStrippedCond, paddingBlockEnd),
                     
                     
                     
                     /**
                      * General-purpose horizontal padding used for layout separators or structural dividers.
-                     * Not affected by bare mode.
+                     * Not affected by stripped mode.
                      */
                     [paddingFeatureVars.paddingInlineBase] : paddingInline,
                     
                     /**
                      * General-purpose vertical padding used for layout separators or structural dividers.
-                     * Not affected by bare mode.
+                     * Not affected by stripped mode.
                      */
                     [paddingFeatureVars.paddingBlockBase ] : paddingBlock,
                 }),

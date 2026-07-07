@@ -43,12 +43,12 @@ export interface BorderFeatureVars {
     borderOutlinedCond     : unknown
     
     /**
-     * References a zero-length value (`0px`) when bare variant is active.
-     * Poisoned when bare variant is inactive.
+     * References a zero-length value (`0px`) when stripped variant is active.
+     * Poisoned when stripped variant is inactive.
      * 
      * Used to conditionally suppress directional border widths and radii.
      */
-    borderBareCond         : unknown
+    borderStrippedCond     : unknown
     //#endregion 🎨 Conditional variables (may be poisoned) 
     
     
@@ -149,14 +149,14 @@ export interface BorderFeatureVars {
     /**
      * References the resolved general-purpose horizontal border width used for layout separators or structural dividers.
      * Always valid via fallback to config default.
-     * Not affected by bare variant.
+     * Not affected by stripped variant.
      */
     borderInlineBaseWidth  : unknown
     
     /**
      * References the resolved general-purpose vertical border width used for layout separators or structural dividers.
      * Always valid via fallback to config default.
-     * Not affected by bare variant.
+     * Not affected by stripped variant.
      */
     borderBlockBaseWidth   : unknown
     //#endregion ✅ Final resolved variables (always valid) 
@@ -318,7 +318,7 @@ export interface CssBorderFeature {
      * 
      * Includes:
      * - `border**Cond`s       : Variant-specific border colors (conditionally valid or poisoned).
-     * - `borderBareCond`      : Suppresses border geometry when bare variant is active.
+     * - `borderStrippedCond`  : Suppresses border geometry when stripped variant is active.
      * - `borderVariantColor`  : Variant-aware border color from the active variant.
      * - `borderColorOverride` : User-defined override for the border color.
      * - `borderColor`         : Final border color consumed by components.

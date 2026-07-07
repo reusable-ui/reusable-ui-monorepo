@@ -38,8 +38,8 @@ const serverSafeHooks = new Set<string>([
     
     'useResolvedControlledVariant',
     
-    'useResolvedBare',
-    'useBareVariant',
+    'useResolvedStripped',
+    'useStrippedVariant',
     'useStylingProps',
     
     'useResolvedControlledState',

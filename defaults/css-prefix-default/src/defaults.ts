@@ -64,7 +64,7 @@ export const defaultThemeVariantPrefix         = 'th'    // theme
 export const defaultEmphasisVariantPrefix      = 'em'    // emphasis
 export const defaultOutlineVariantPrefix       = 'ou'    // outline
 export const defaultMildVariantPrefix          = 'mi'    // mild
-export const defaultBareVariantPrefix          = 'ba'    // bare
+export const defaultStrippedVariantPrefix      = 'st'    // stripped
 
 
 

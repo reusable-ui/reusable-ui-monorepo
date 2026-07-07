@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/padding-feature",
   "version": "7.0.0",
-  "description": "A styling utility for resolving the appropriate padding values based on active bare mode and framework-level overrides.",
+  "description": "A styling utility for resolving the appropriate padding values based on active stripped mode and framework-level overrides.",
   "keywords": [
     "padding",
     "spacing",
@@ -56,8 +56,8 @@
     "@cssfn/core": "^4.0.0"
   },
   "peerDependencies": {
-    "@reusable-ui/bare-variant": "^7.0.0",
     "@reusable-ui/css-prefix-default": "^7.0.0",
-    "@reusable-ui/spacer-config": "^7.0.0"
+    "@reusable-ui/spacer-config": "^7.0.0",
+    "@reusable-ui/stripped-variant": "^7.0.0"
   }
 }
