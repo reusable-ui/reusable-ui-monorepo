@@ -70,19 +70,19 @@ export function usingStrippedVariant<TStripped extends true | string = true>(opt
                     ifVariant : (
                         (token === false)
                         
-                        // Not in stripped mode:
+                        // Not stripped:
                         ? ifNotStripped
                         
-                        // In stripped mode (default or custom):
+                        // Stripped (default or custom):
                         : (styles) => ifStrippedOf(token, styles)
                     ),
                     variable  : (
                         (token === false)
                         
-                        // Not in stripped mode:
+                        // Not stripped:
                         ? strippedVariantVars.notStripped
                         
-                        // In stripped mode (default or custom):
+                        // Stripped (default or custom):
                         : (
                             (token === true)
                             

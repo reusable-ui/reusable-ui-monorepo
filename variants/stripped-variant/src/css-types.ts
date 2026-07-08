@@ -29,7 +29,7 @@ import {
 export type StrippedVariantVars<TStripped extends true | string = true> =
     & {
         /**
-         * Applies when the component is not in stripped mode.
+         * Applies when the component is not stripped.
          * 
          * Acts as a conditional switch: when declared with an empty value,
          * any CSS property referencing this variable becomes valid and is applied.
@@ -39,7 +39,7 @@ export type StrippedVariantVars<TStripped extends true | string = true> =
          * @example
          * ```ts
          * export const componentStyle = () => style({
-         *     // These properties are only applied when the component is not in stripped mode:
+         *     // These properties are only applied when the component is not stripped:
          *     fontWeight     : `${strippedVariantVars.notStripped} normal`,
          *     textDecoration : `${strippedVariantVars.notStripped} none`,
          * });
@@ -49,7 +49,7 @@ export type StrippedVariantVars<TStripped extends true | string = true> =
     }
     & {
         /**
-         * Applies when the component is in stripped mode.
+         * Applies when the component is stripped.
          * 
          * Acts as a conditional switch: when declared with an empty value,
          * any CSS property referencing this variable becomes valid and is applied.
@@ -59,7 +59,7 @@ export type StrippedVariantVars<TStripped extends true | string = true> =
          * @example
          * ```ts
          * export const componentStyle = () => style({
-         *     // These properties are only applied when the component is in stripped mode:
+         *     // These properties are only applied when the component is stripped:
          *     fontWeight     : `${strippedVariantVars.isStripped} lighter`,
          *     textDecoration : `${strippedVariantVars.isStripped} underline`,
          * });
@@ -69,7 +69,7 @@ export type StrippedVariantVars<TStripped extends true | string = true> =
     }
     & {
         /**
-         * Applies when the component is in a custom stripped mode.
+         * Applies when the component is custom stripped.
          * 
          * Dynamically generated keys based on the string value of the `stripped` prop.
          * Each key follows the format `is${Mode}`, enabling semantic styling for
@@ -83,7 +83,7 @@ export type StrippedVariantVars<TStripped extends true | string = true> =
          * @example
          * ```ts
          * export const componentStyle = () => style({
-         *     // These properties are only applied when the component is in a custom stripped mode:
+         *     // These properties are only applied when the component is custom stripped:
          *     fontSize : `${strippedVariantVars.isMinimal} smaller`,
          *     padding  : `${strippedVariantVars.isCompact} 0.25rem`,
          * });
@@ -123,9 +123,9 @@ export interface CssStrippedVariant<TStripped extends true | string = true> {
      * Exposes stripped-related CSS variables for conditional styling.
      * 
      * Includes:
-     * - `notStripped` : active when stripped mode is disabled.
-     * - `isStripped`  : active when stripped mode is enabled.
-     * - `is${string}` : active when stripped mode is in a custom stripped mode.
+     * - `notStripped` : active when not stripped.
+     * - `isStripped`  : active when stripped.
+     * - `is${string}` : active when custom stripped.
      * 
      * These variables act as conditional switches:
      * - If `unset`, they **poison** dependent properties, causing the browser to ignore them.

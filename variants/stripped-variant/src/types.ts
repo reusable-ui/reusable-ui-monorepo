@@ -48,7 +48,7 @@ export interface StrippedVariantOptions<TStripped extends true | string = true> 
  */
 export interface StrippedVariant<TStripped extends true | string = true> {
     /**
-     * Indicates whether the component should appear in a stripped (frameless) layout.
+     * Indicates whether the component should appear stripped (frameless layout).
      * 
      * Possible values:
      * - `true`  : strips out the visual framing (no borders, no paddings) for seamless embedding

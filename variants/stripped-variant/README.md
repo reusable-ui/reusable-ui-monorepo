@@ -192,8 +192,8 @@ export const componentStyle = () => {
 - You can use them directly in your styles:
     ```ts
     style({
-        fontWeight     : `${strippedVariantVars.isStripped} lighter`,   // Will be rendered to: `font-weight: var(--isStripped) lighter;`       (becomes valid only when in stripped mode)
-        textDecoration : `${strippedVariantVars.isStripped} underline`, // Will be rendered to: `text-decoration: var(--isStripped) underline;` (becomes valid only when in stripped mode)
+        fontWeight     : `${strippedVariantVars.isStripped} lighter`,   // Will be rendered to: `font-weight: var(--isStripped) lighter;`       (becomes valid only when stripped)
+        textDecoration : `${strippedVariantVars.isStripped} underline`, // Will be rendered to: `text-decoration: var(--isStripped) underline;` (becomes valid only when stripped)
     });
     ```
 

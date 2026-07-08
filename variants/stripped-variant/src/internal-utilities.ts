@@ -19,7 +19,7 @@ const strippedClassnameMap : Record<string, `is-${string}`> = {
  * 
  * @template TStripped - The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
  * 
- * @param stripped - A boolean or string flag indicating whether the component should appear in a stripped (frameless) layout.
+ * @param stripped - A boolean or string flag indicating whether the component should appear stripped (frameless layout).
  * @returns A CSS class name reflecting the stripped state.
  */
 export const getStrippedClassname = <TStripped extends true | string = true>(stripped: false | TStripped): 'is-stripped' | 'not-stripped' | (TStripped extends string ? `is-${TStripped}` : never) => {
