@@ -132,7 +132,7 @@ export const componentStyle = () => style({
 
 ### `usingStrippedVariant()`
 
-Generates CSS rules that toggle stripped-related CSS variables based on the current stripped mode, and exposes those variables for conditional styling.
+Generates CSS rules that toggle stripped-related CSS variables based on current stripped mode, and exposes those variables for conditional styling.
 
 #### 💡 Usage Example
 
@@ -157,7 +157,7 @@ export const componentStyle = () => {
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling based on the stripped mode:
+        // Apply conditional styling based on current stripped mode:
         ...fallback({
             // Stripped styling:
             fontWeight     : `${isStripped} lighter`,
