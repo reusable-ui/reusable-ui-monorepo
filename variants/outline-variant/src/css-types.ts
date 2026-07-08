@@ -64,7 +64,7 @@ export interface OutlineVariantVars {
     notOutlined   : unknown
     
     /**
-     * A normalized factor representing the **outline mode**.
+     * A normalized factor representing the **outlined state**.
      * Useful for driving algebraic formulas in `calc(...)` to enable complex styling.
      * 
      * ### Expected values:
