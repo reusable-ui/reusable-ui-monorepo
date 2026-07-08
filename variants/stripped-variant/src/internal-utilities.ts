@@ -15,7 +15,7 @@ const strippedClassnameMap : Record<string, `is-${string}`> = {
  * 
  * - Returns `'is-stripped'` if `stripped` is `true`.
  * - Returns `'not-stripped'` if `stripped` is `false`.
- * - Returns `'is-{mode}'` if `stripped` is a string variant.
+ * - Returns `'is-{Mode}'` if `stripped` is a string variant.
  * 
  * @template TStripped - The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
  * 
