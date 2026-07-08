@@ -171,7 +171,7 @@ export const componentStyle = () => style({
 
 ### `usingOrientationVariant()`
 
-Generates CSS rules that toggle orientation-related CSS variables based on the current orientation mode, and exposes those variables for conditional styling.
+Generates CSS rules that toggle orientation-related CSS variables based on current orientation mode, and exposes those variables for conditional styling.
 
 #### 💡 Usage Example
 
@@ -196,7 +196,7 @@ export const componentStyle = () => {
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling based on the orientation mode:
+        // Apply conditional styling based on current orientation mode:
         ...fallback({
             // Horizontal (inline) orientation styling:
             flexDirection : `${isOrientationInline} row`,

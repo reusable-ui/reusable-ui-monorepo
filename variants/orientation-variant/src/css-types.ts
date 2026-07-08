@@ -82,11 +82,11 @@ export interface OrientationVariantVars {
 
 
 /**
- * Provides a CSS API for enabling conditional styling based on the orientation mode.
+ * Provides a CSS API for enabling conditional styling based on current orientation mode.
  */
 export interface CssOrientationVariant {
     /**
-     * Generates CSS rules that toggle orientation-related CSS variables based on the current orientation mode.
+     * Generates CSS rules that toggle orientation-related CSS variables based on current orientation mode.
      * 
      * These rules are scoped using `ifOrientationInline()` and `ifOrientationBlock()` to toggle orientation-related CSS variables.
      */

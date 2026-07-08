@@ -23,10 +23,10 @@ import {
 
 
 /**
- * Generates CSS rules that toggle orientation-related CSS variables based on the current orientation mode,
+ * Generates CSS rules that toggle orientation-related CSS variables based on current orientation mode,
  * and exposes those variables for conditional styling.
  * 
- * @returns A CSS API for enabling conditional styling based on the orientation mode.
+ * @returns A CSS API for enabling conditional styling based on current orientation mode.
  */
 export const usingOrientationVariant = (): CssOrientationVariant => {
     return {
