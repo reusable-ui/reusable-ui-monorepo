@@ -179,7 +179,7 @@ export const componentStyle = () => {
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling based on outlined state:
+        // Apply conditional styling based on the outlined state:
         ...fallback({
             // Outlined styling:
             fontWeight     : `${isOutlined} bold`,
