@@ -179,7 +179,7 @@ export const componentStyle = () => {
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling based on emphasis mode:
+        // Apply conditional styling based on the emphasis mode:
         ...fallback({
             // Emphasized styling:
             fontWeight : `${isEmphasized} bold`,

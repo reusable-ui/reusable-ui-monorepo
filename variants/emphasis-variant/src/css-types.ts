@@ -82,7 +82,7 @@ export interface EmphasisVariantVars {
 
 
 /**
- * Provides a CSS API for enabling conditional styling based on emphasized state.
+ * Provides a CSS API for enabling conditional styling based on the emphasized state.
  */
 export interface CssEmphasisVariant {
     /**
