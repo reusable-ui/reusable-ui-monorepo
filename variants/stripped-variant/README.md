@@ -1,7 +1,7 @@
 # @reusable-ui/stripped-variant 📦  
 
 A utility for managing stripped styling (frameless, minimal layout) consistently across React components.  
-Provides hooks and CSS helpers for stripped-enabled resolution and conditional styling — ideal for lists, cards, tables, and any layout elements.
+Provides hooks and CSS helpers for stripped resolution and conditional styling — ideal for lists, cards, tables, and any layout elements.
 
 ## ✨ Features
 ✔ Boolean-based stripped variant (default), extendable to string tokens for advanced layout modes
@@ -177,13 +177,13 @@ export const componentStyle = () => {
 - `usingStrippedVariant()` generates scoped rules like:
     ```css
     &.is-stripped {
-        --isStripped: ;       /* Valid    when stripped mode is enabled. */
-        --notStripped: unset; /* Poisoned when stripped mode is enabled. */
+        --isStripped: ;       /* Valid    when stripped. */
+        --notStripped: unset; /* Poisoned when stripped. */
     }
     
     &.not-stripped {
-        --isStripped: unset;  /* Poisoned when stripped mode is disabled. */
-        --notStripped: ;      /* Valid    when stripped mode is disabled. */
+        --isStripped: unset;  /* Poisoned when not stripped. */
+        --notStripped: ;      /* Valid    when not stripped. */
     }
     ```
 - These variables act as conditional switches:
