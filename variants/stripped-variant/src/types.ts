@@ -42,7 +42,7 @@ export interface StrippedVariantOptions<TStripped extends true | string = true> 
 }
 
 /**
- * Represents the final resolved stripped state of the component, along with its associated CSS class name.
+ * Represents the final resolved stripped mode of the component, along with its associated CSS class name.
  * 
  * @template TStripped - The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
  */
@@ -57,7 +57,7 @@ export interface StrippedVariant<TStripped extends true | string = true> {
     stripped          : false | TStripped
     
     /**
-     * A CSS class name reflecting the resolved stripped state.
+     * A CSS class name reflecting the resolved stripped mode.
      * 
      * Possible values:
      * - `'is-stripped'`   — when `stripped` is `true`

@@ -22,7 +22,7 @@ yarn add @reusable-ui/stripped-variant
 
 ### `useStrippedVariant(props, options)`
 
-Resolves the stripped state along with its associated CSS class name, based on component props and optional default configuration.
+Resolves the stripped mode along with its associated CSS class name, based on component props and optional default configuration.
 
 #### 💡 Usage Example
 
@@ -64,7 +64,7 @@ export const StrippedBox: FC<StrippedBoxProps> = (props) => {
 
 #### 🧠 Stripped Resolution Strategy
 
-The hook determines the final stripped state using the following priority:
+The hook determines the final stripped mode using the following priority:
 1. **Explicit Prop Override**  
    - If `props.stripped` is `true` or `false` or `string`, it takes precedence.
 2. **Fallback Logic**  
