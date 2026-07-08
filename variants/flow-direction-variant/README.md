@@ -187,7 +187,7 @@ export const componentStyle = () => {
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling based on flow direction mode:
+        // Apply conditional styling based on the flow direction mode:
         ...fallback({
             // Start-edge flow direction styling:
             textAlign      : `${isFlowDirectionStart} start`,

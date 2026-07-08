@@ -26,7 +26,7 @@ import {
  * Generates CSS rules that toggle flow-direction-related CSS variables based on the current flow direction mode,
  * and exposes those variables for conditional styling.
  * 
- * @returns A CSS API for enabling conditional styling based on flow direction mode.
+ * @returns A CSS API for enabling conditional styling based on the flow direction mode.
  */
 export const usingFlowDirectionVariant = (): CssFlowDirectionVariant => {
     return {
