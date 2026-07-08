@@ -157,7 +157,7 @@ export const componentStyle = () => {
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling based on stripped mode:
+        // Apply conditional styling based on the stripped mode:
         ...fallback({
             // Stripped styling:
             fontWeight     : `${isStripped} lighter`,

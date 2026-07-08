@@ -41,7 +41,7 @@ import {
  * @template TStripped - The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
  * 
  * @param options - A required configuration specifying supported stripped values.
- * @returns A CSS API for enabling conditional styling based on stripped mode.
+ * @returns A CSS API for enabling conditional styling based on the stripped mode.
  */
 export function usingStrippedVariant<TStripped extends true | string = true>(options: CssStrippedVariantOptions<TStripped>): CssStrippedVariant<TStripped>;
 
@@ -49,7 +49,7 @@ export function usingStrippedVariant<TStripped extends true | string = true>(opt
  * Generates CSS rules that toggle stripped-related CSS variables based on the current stripped mode,
  * and exposes those variables for conditional styling.
  * 
- * @returns A CSS API for enabling conditional styling based on stripped mode.
+ * @returns A CSS API for enabling conditional styling based on the stripped mode.
  */
 export function usingStrippedVariant(): CssStrippedVariant;
 

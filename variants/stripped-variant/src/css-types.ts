@@ -107,7 +107,7 @@ export interface CssStrippedVariantOptions<TStripped extends true | string = tru
 }
 
 /**
- * Provides a CSS API for enabling conditional styling based on stripped mode.
+ * Provides a CSS API for enabling conditional styling based on the stripped mode.
  * 
  * @template TStripped - The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
  */
