@@ -22,13 +22,13 @@ import {
 
 
 /**
- * A strongly typed global mapping of enable/disable-related CSS variables for conditional animation.
+ * A strongly typed global mapping of enabled/disabled-related CSS variables for conditional animation.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
 export const [disabledStateVars] = cssVars<DisabledStateVars>({ prefix: defaultDisabledStatePrefix, minify: false });
 
-// Register the enable/disable-related animations globally for composing a unified animation stack across state packages:
+// Register the enabled/disabled-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(disabledStateVars.animationEnabling);
 animationRegistry.registerAnimation(disabledStateVars.animationDisabling);

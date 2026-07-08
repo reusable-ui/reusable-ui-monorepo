@@ -28,11 +28,11 @@ import {
 
 
 /**
- * Generates CSS rules that conditionally apply the enable/disable animations based on current disabled state,
- * and exposes enable/disable-related CSS variables for conditional animation.
+ * Generates CSS rules that conditionally apply the enabled/disabled animations based on current disabled state,
+ * and exposes enabled/disabled-related CSS variables for conditional animation.
  * 
- * @param options - An optional configuration for customizing enable/disable animations.
- * @returns A CSS API for conditionally apply the enable/disable animations based on current disabled state.
+ * @param options - An optional configuration for customizing enabled/disabled animations.
+ * @returns A CSS API for conditionally apply the enabled/disabled animations based on current disabled state.
  *
  * @example
  * ```ts
@@ -52,7 +52,7 @@ import {
  *         animationFeatureVars: { animation },
  *     } = usingAnimationFeature();
  *     
- *     // Feature: enable/disable lifecycle
+ *     // Feature: enabled/disabled lifecycle
  *     const {
  *         disabledStateRule,
  *         disabledStateVars: { isEnabled, isDisabled, disableFactor },

@@ -84,7 +84,7 @@ export interface DisabledStateProps
 }
 
 /**
- * Optional configuration options for customizing enable/disable behavior and animation lifecycle.
+ * Optional configuration options for customizing enabled/disabled behavior and animation lifecycle.
  */
 export interface DisabledStateOptions
     extends
@@ -110,7 +110,7 @@ export interface DisabledStateOptions
     defaultCascadeDisabled ?: boolean
     
     /**
-     * Defines the pattern used to identify enable/disable-related animation names.
+     * Defines the pattern used to identify enabled/disabled-related animation names.
      * 
      * This pattern determines which animation names are recognized as part of the enabling/disabling transition lifecycle.
      * 
@@ -137,7 +137,7 @@ export interface DisabledStateOptions
 }
 
 /**
- * Represents the resolved (settled) phase of the enable/disable lifecycle.
+ * Represents the resolved (settled) phase of the enabled/disabled lifecycle.
  * 
  * These states indicate that the component has completed its transition:
  * - 'enabled'   ☂️ fully enabled
@@ -148,7 +148,7 @@ export type ResolvedDisabledPhase =
     | 'disabled'
 
 /**
- * Represents the transitional phase of the enable/disable lifecycle.
+ * Represents the transitional phase of the enabled/disabled lifecycle.
  * 
  * These states indicate that the component is currently animating toward a resolved state:
  * - 'enabling'  🔄 transitioning toward enabled
@@ -159,7 +159,7 @@ export type TransitioningDisabledPhase =
     | 'disabling'
 
 /**
- * Represents the current transition phase of the enable/disable lifecycle.
+ * Represents the current transition phase of the enabled/disabled lifecycle.
  * 
  * Used to distinguish between transitional and resolved states:
  * - Resolved: 'enabled', 'disabled'
@@ -170,7 +170,7 @@ export type DisabledPhase =
     | TransitioningDisabledPhase
 
 /**
- * A CSS class name reflecting the current enable/disable phase.
+ * A CSS class name reflecting the current enabled/disabled phase.
  * 
  * Used for styling based on the lifecycle phase.
  */
@@ -221,14 +221,14 @@ export interface DisabledState<TElement extends Element = HTMLElement>
     actualDisabled    : FeedbackState<boolean, DisabledPhase, DisabledClassname, TElement>['actualState']
     
     /**
-     * The current transition phase of the enable/disable lifecycle.
+     * The current transition phase of the enabled/disabled lifecycle.
      * 
      * Reflects both transitional states (`enabling`, `disabling`) and resolved states (`enabled`, `disabled`).
      */
     disabledPhase     : FeedbackState<boolean, DisabledPhase, DisabledClassname, TElement>['transitionPhase']
     
     /**
-     * A CSS class name reflecting the current enable/disable phase.
+     * A CSS class name reflecting the current enabled/disabled phase.
      * 
      * Possible values:
      * - `'is-disabled'`

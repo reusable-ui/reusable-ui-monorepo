@@ -18,7 +18,7 @@ import {
 
 
 /**
- * A list of enable/disable-related CSS variables used for disabling-aware styling.
+ * A list of enabled/disabled-related CSS variables used for disabling-aware styling.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
@@ -151,7 +151,7 @@ export interface DisabledStateVars {
 
 
 /**
- * Configuration options for customizing enable/disable animations.
+ * Configuration options for customizing enabled/disabled animations.
  */
 export interface CssDisabledStateOptions {
     /**
@@ -178,18 +178,18 @@ export interface CssDisabledStateOptions {
 
 
 /**
- * Provides a CSS API for conditionally apply the enable/disable animations based on current disabled state.
+ * Provides a CSS API for conditionally apply the enabled/disabled animations based on current disabled state.
  */
 export interface CssDisabledState {
     /**
-     * Generates CSS rules that conditionally apply the enable/disable animations based on current disabled state.
+     * Generates CSS rules that conditionally apply the enabled/disabled animations based on current disabled state.
      * 
      * Typically used to toggle animation variables during enabling or disabling transitions.
      */
     disabledStateRule : Lazy<CssRule>
     
     /**
-     * Exposes enable/disable-related CSS variables for conditional animation.
+     * Exposes enabled/disabled-related CSS variables for conditional animation.
      * 
      * Includes:
      * - `animationEnabling`  : Active during the enabling transition.
