@@ -154,7 +154,7 @@ export const componentStyle = () => style({
 
 ### `usingOutlineVariant()`
 
-Generates CSS rules that toggle outline-related CSS variables based on the current outlined state, and exposes those variables for conditional styling.
+Generates CSS rules that toggle outline-related CSS variables based on current outlined state, and exposes those variables for conditional styling.
 
 #### 💡 Usage Example
 
@@ -179,7 +179,7 @@ export const componentStyle = () => {
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling based on the outlined state:
+        // Apply conditional styling based on current outlined state:
         ...fallback({
             // Outlined styling:
             fontWeight     : `${isOutlined} bold`,

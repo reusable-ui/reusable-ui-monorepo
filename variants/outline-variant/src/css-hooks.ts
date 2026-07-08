@@ -23,10 +23,10 @@ import {
 
 
 /**
- * Generates CSS rules that toggle outline-related CSS variables based on the current outlined state,
+ * Generates CSS rules that toggle outline-related CSS variables based on current outlined state,
  * and exposes those variables for conditional styling.
  * 
- * @returns A CSS API for enabling conditional styling based on the outlined state.
+ * @returns A CSS API for enabling conditional styling based on current outlined state.
  */
 export const usingOutlineVariant = (): CssOutlineVariant => {
     return {
