@@ -82,11 +82,11 @@ export interface MildVariantVars {
 
 
 /**
- * Provides a CSS API for enabling conditional styling based on the mild mode.
+ * Provides a CSS API for enabling conditional styling based on current mild mode.
  */
 export interface CssMildVariant {
     /**
-     * Generates CSS rules that toggle mild-related CSS variables based on the current mild mode.
+     * Generates CSS rules that toggle mild-related CSS variables based on current mild mode.
      * 
      * These rules are scoped using `ifMild()` and `ifNotMild()` to toggle mild-related CSS variables.
      */

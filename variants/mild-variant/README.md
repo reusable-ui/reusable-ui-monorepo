@@ -158,7 +158,7 @@ export const componentStyle = () => style({
 
 ### `usingMildVariant()`
 
-Generates CSS rules that toggle mild-related CSS variables based on the current mild mode, and exposes those variables for conditional styling.
+Generates CSS rules that toggle mild-related CSS variables based on current mild mode, and exposes those variables for conditional styling.
 
 #### 💡 Usage Example
 
@@ -183,7 +183,7 @@ export const componentStyle = () => {
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling based on the mild mode:
+        // Apply conditional styling based on current mild mode:
         ...fallback({
             // Mild styling:
             fontWeight     : `${isMild} lighter`,
