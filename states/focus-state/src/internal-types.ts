@@ -14,7 +14,7 @@ import {
 
 
 
-/** Internal definition for focused/blurred state behavior. */
+/** Internal definition for focus/blur state behavior. */
 export interface FocusStateDefinition
     extends
         FeedbackStateDefinition<boolean, FocusPhase, FocusClassname,

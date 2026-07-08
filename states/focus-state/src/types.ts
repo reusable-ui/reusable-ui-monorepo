@@ -23,7 +23,7 @@ import {
 
 
 /**
- * Props for controlling the focused/blurred state of the component.
+ * Props for controlling the focus/blur state of the component.
  * 
  * Provides a declarative way to control whether the component is focused or blurred,
  * along with an optional callback to synchronize when that state changes.
@@ -213,7 +213,7 @@ export type FocusPhase =
 export type FocusClassname = `is-${FocusPhase}` | `is-${FocusPhase} input-like-focus`
 
 /**
- * An API for accessing the resolved focused/blurred state, current transition phase, associated CSS class name, and animation event handlers.
+ * An API for accessing the resolved focus/blur state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
  */
@@ -229,12 +229,12 @@ export interface FocusState<TElement extends Element = HTMLElement>
         >
 {
     /**
-     * The current settled focused/blurred state used for animation-aware rendering and behavioral coordination.
+     * The current settled focus/blur state used for animation-aware rendering and behavioral coordination.
      * 
      * This value may slightly lag behind the actual resolved state due to in-flight animations.
      * It updates only after an animation completes, ensuring the styling remains in sync with animation lifecycle.
      * 
-     * Useful for rendering the focused/blurred state in sync with animation lifecycle.
+     * Useful for rendering the focus/blur state in sync with animation lifecycle.
      * 
      * Possible values:
      * - `true`  : the component has visually settled in focused state
@@ -243,7 +243,7 @@ export interface FocusState<TElement extends Element = HTMLElement>
     focused        : FeedbackState<boolean, FocusPhase, FocusClassname, TElement>['state']
     
     /**
-     * The actual resolved focused/blurred state, regardless of animation state.
+     * The actual resolved focus/blur state, regardless of animation state.
      * 
      * This reflects the current target state based on the final diagnostic status.
      * Unlike `focused`, it updates immediately and does not wait for transitions to complete.

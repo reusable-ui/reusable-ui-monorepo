@@ -39,7 +39,7 @@ import {
  * // Animation feature:
  * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
- * // Focused/blurred state:
+ * // Focus/blur state:
  * import { usingFocusState } from '@reusable-ui/focus-state';
  * 
  * // CSS-in-JS:
@@ -68,7 +68,7 @@ import {
  *         // Apply animation feature rules:
  *         ...animationFeatureRule(),
  *         
- *         // Apply focused/blurred state rules:
+ *         // Apply focus/blur state rules:
  *         ...focusStateRule(),
  *         
  *         // Focusing animation: interpolate focusFactor from 0 → 1

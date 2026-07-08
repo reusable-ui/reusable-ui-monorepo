@@ -57,7 +57,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
 };
 
 /**
- * Resolves the current focused/blurred state.
+ * Resolves the current focus/blur state.
  * 
  * Useful for derived components that need to determine whether the base component is focused or blurred.
  * 
@@ -76,7 +76,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * 
  * @param props - The component props that may include a controlled `focused` value and derived `computedFocus` value.
  * @param options - An optional configuration for customizing focus/blur behavior.
- * @returns The resolved focused/blurred state and event handlers for focus/blur events.
+ * @returns The resolved focus/blur state and event handlers for focus/blur events.
  */
 export const useResolvedFocused = <TElement extends Element = HTMLElement>(props: Pick<FocusStateProps, 'focused' | 'computedFocus'>, options?: Pick<FocusStateOptions, 'defaultFocused'>) : Pick<FocusState<TElement>, 'focused' | 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'> => {
     // Extract options:
@@ -170,7 +170,7 @@ const focusStateDefinition : FocusStateDefinition = {
  * 
  * @param props - The component props that may include a controlled `focused` value, derived `computedFocus` value, and `onFocusUpdate` callback.
  * @param options - An optional configuration for customizing focus/blur behavior and animation lifecycle.
- * @returns The resolved focused/blurred state, current transition phase, associated CSS class name, and animation event handlers.
+ * @returns The resolved focus/blur state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @example
  * ```tsx
