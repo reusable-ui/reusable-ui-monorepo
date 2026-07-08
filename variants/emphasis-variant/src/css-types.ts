@@ -82,11 +82,11 @@ export interface EmphasisVariantVars {
 
 
 /**
- * Provides a CSS API for enabling conditional styling based on the emphasized state.
+ * Provides a CSS API for enabling conditional styling based on current emphasized state.
  */
 export interface CssEmphasisVariant {
     /**
-     * Generates CSS rules that toggle emphasis-related CSS variables based on the current emphasized state.
+     * Generates CSS rules that toggle emphasis-related CSS variables based on current emphasized state.
      * 
      * These rules are scoped using `ifEmphasized()` and `ifNotEmphasized()` to toggle emphasis-related CSS variables.
      */

@@ -23,10 +23,10 @@ import {
 
 
 /**
- * Generates CSS rules that toggle emphasis-related CSS variables based on the current emphasized state,
+ * Generates CSS rules that toggle emphasis-related CSS variables based on current emphasized state,
  * and exposes those variables for conditional styling.
  * 
- * @returns A CSS API for enabling conditional styling based on the emphasized state.
+ * @returns A CSS API for enabling conditional styling based on current emphasized state.
  */
 export const usingEmphasisVariant = (): CssEmphasisVariant => {
     return {

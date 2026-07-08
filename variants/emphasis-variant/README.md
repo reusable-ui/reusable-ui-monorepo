@@ -154,7 +154,7 @@ export const componentStyle = () => style({
 
 ### `usingEmphasisVariant()`
 
-Generates CSS rules that toggle emphasis-related CSS variables based on the current emphasized state, and exposes those variables for conditional styling.
+Generates CSS rules that toggle emphasis-related CSS variables based on current emphasized state, and exposes those variables for conditional styling.
 
 #### 💡 Usage Example
 
@@ -179,7 +179,7 @@ export const componentStyle = () => {
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling based on the emphasis mode:
+        // Apply conditional styling based on current emphasis mode:
         ...fallback({
             // Emphasized styling:
             fontWeight : `${isEmphasized} bold`,
