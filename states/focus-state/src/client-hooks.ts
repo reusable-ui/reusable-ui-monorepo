@@ -122,7 +122,7 @@ export const useResolvedFocused = <TElement extends Element = HTMLElement>(props
     
     
     
-    // Resolve effective focused state:
+    // Resolve effective focus state:
     const focused = useResolvedObservableState<boolean, 'auto'>(
         // Props:
         { state, isRestricted, observedState },
