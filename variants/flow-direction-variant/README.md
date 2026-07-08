@@ -162,7 +162,7 @@ export const componentStyle = () => style({
 
 ### `usingFlowDirectionVariant()`
 
-Generates CSS rules that toggle flow-direction-related CSS variables based on the current flow direction mode, and exposes those variables for conditional styling.
+Generates CSS rules that toggle flow-direction-related CSS variables based on current flow direction mode, and exposes those variables for conditional styling.
 
 #### 💡 Usage Example
 
@@ -187,7 +187,7 @@ export const componentStyle = () => {
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling based on the flow direction mode:
+        // Apply conditional styling based on current flow direction mode:
         ...fallback({
             // Start-edge flow direction styling:
             textAlign      : `${isFlowDirectionStart} start`,

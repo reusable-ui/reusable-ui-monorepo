@@ -82,11 +82,11 @@ export interface FlowDirectionVariantVars {
 
 
 /**
- * Provides a CSS API for enabling conditional styling based on the flow direction mode.
+ * Provides a CSS API for enabling conditional styling based on current flow direction mode.
  */
 export interface CssFlowDirectionVariant {
     /**
-     * Generates CSS rules that toggle flow-direction-related CSS variables based on the current flow direction mode.
+     * Generates CSS rules that toggle flow-direction-related CSS variables based on current flow direction mode.
      * 
      * These rules are scoped using `ifFlowDirectionStart()` and `ifFlowDirectionEnd()` to toggle flow-direction-related CSS variables.
      */
