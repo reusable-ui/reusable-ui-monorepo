@@ -82,7 +82,7 @@ export interface MildVariantVars {
 
 
 /**
- * Provides a CSS API for enabling conditional styling based on mild mode.
+ * Provides a CSS API for enabling conditional styling based on the mild mode.
  */
 export interface CssMildVariant {
     /**

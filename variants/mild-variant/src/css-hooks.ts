@@ -26,7 +26,7 @@ import {
  * Generates CSS rules that toggle mild-related CSS variables based on the current mild mode,
  * and exposes those variables for conditional styling.
  * 
- * @returns A CSS API for enabling conditional styling based on mild mode.
+ * @returns A CSS API for enabling conditional styling based on the mild mode.
  */
 export const usingMildVariant = (): CssMildVariant => {
     return {

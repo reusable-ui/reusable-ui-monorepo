@@ -183,7 +183,7 @@ export const componentStyle = () => {
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling based on mild mode:
+        // Apply conditional styling based on the mild mode:
         ...fallback({
             // Mild styling:
             fontWeight     : `${isMild} lighter`,
