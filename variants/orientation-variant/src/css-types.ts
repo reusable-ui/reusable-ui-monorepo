@@ -82,7 +82,7 @@ export interface OrientationVariantVars {
 
 
 /**
- * Provides a CSS API for enabling conditional styling based on orientation mode.
+ * Provides a CSS API for enabling conditional styling based on the orientation mode.
  */
 export interface CssOrientationVariant {
     /**

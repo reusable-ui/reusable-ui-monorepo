@@ -196,7 +196,7 @@ export const componentStyle = () => {
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling based on orientation mode:
+        // Apply conditional styling based on the orientation mode:
         ...fallback({
             // Horizontal (inline) orientation styling:
             flexDirection : `${isOrientationInline} row`,
