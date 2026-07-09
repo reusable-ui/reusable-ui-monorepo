@@ -44,7 +44,7 @@ export type SortPhase =
 
 
 
-/** Internal definition for sorting state behavior. */
+/** Internal definition for sorting activity status behavior. */
 export interface SortStateDefinition
     extends
         FeedbackStateDefinition<symbol, SortPhase, SortClassname,

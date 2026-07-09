@@ -59,7 +59,7 @@ import {
 
 
 
-/** The behavior state definition for sorting state management. */
+/** The behavior state definition for sorting activity status management. */
 const sortStateDefinition : SortStateDefinition = {
     // Behavior definitions:
     defaultAnimationPattern    : 'sorting',                    // Matches animation names for sorting activity.
@@ -389,7 +389,7 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
     
     
     
-    // Return the sorting state API:
+    // Return the sorting activity status API:
     return {
         sorting : (sortPhase === 'sorting'),
         sortOffsets,

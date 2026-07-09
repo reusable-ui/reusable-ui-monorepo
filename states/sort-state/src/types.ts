@@ -194,7 +194,7 @@ export interface SortStateOptions
 /**
  * A CSS class name for triggering the sorting animation.
  * 
- * Used for styling based on the current sorting state.
+ * Used for styling based on the current sorting activity status.
  */
 export type SortClassname = 'is-sorting' | 'not-sorting'
 

@@ -25,12 +25,12 @@ import {
 
 
 
-/** Resolves the semantic transition phase for sorting state behavior. */
+/** Resolves the semantic transition phase for sorting activity status behavior. */
 export const resolveSortTransitionPhase = ({ isTransitioning }: ResolveTransitionPhaseArgs<symbol, SortStateProps<Element, unknown>, SortStateOptions, SortStateDefinition>): SortPhase => {
     return isTransitioning ? 'sorting' : 'sorted';
 };
 
-/** Resolves the semantic activity classname for sorting state behavior. */
+/** Resolves the semantic activity classname for sorting activity status behavior. */
 export const resolveSortActivityClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<symbol, SortPhase, SortStateProps<Element, unknown>, SortStateOptions, SortStateDefinition>): SortClassname => {
     return (transitionPhase === 'sorting') ? 'is-sorting' : 'not-sorting';
 };

@@ -67,7 +67,7 @@ import {
  *         // Attach feature rules (animation):
  *         ...animationFeatureRule(),
  *         
- *         // Attach sorting state rules (tracks items movement during sorting):
+ *         // Attach sorting activity status rules (tracks items movement during sorting):
  *         ...sortStateRule(),
  *         
  *         // Sorting animation: interpolate sortFactor from 1 → 0:
