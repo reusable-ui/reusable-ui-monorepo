@@ -22,7 +22,7 @@ import {
 
 
 /**
- * Props for controlling the hovered/unhovered state of the component.
+ * Props for controlling the hover/unhover state of the component.
  * 
  * Provides a declarative way to control whether the component is hovered or unhovered,
  * along with an optional callback to synchronize when that state changes.
@@ -195,7 +195,7 @@ export type HoverPhase =
 export type HoverClassname = `is-${HoverPhase}`
 
 /**
- * An API for accessing the resolved hovered/unhovered state, current transition phase, associated CSS class name, and animation event handlers.
+ * An API for accessing the resolved hover/unhover state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
  */
@@ -211,12 +211,12 @@ export interface HoverState<TElement extends Element = HTMLElement>
         >
 {
     /**
-     * The current settled hovered/unhovered state used for animation-aware rendering and behavioral coordination.
+     * The current settled hover/unhover state used for animation-aware rendering and behavioral coordination.
      * 
      * This value may slightly lag behind the actual resolved state due to in-flight animations.
      * It updates only after an animation completes, ensuring the styling remains in sync with animation lifecycle.
      * 
-     * Useful for rendering the hovered/unhovered state in sync with animation lifecycle.
+     * Useful for rendering the hover/unhover state in sync with animation lifecycle.
      * 
      * Possible values:
      * - `true`  : the component has visually settled in hovered state
@@ -225,7 +225,7 @@ export interface HoverState<TElement extends Element = HTMLElement>
     hovered           : FeedbackState<boolean, HoverPhase, HoverClassname, TElement>['state']
     
     /**
-     * The actual resolved hovered/unhovered state, regardless of animation state.
+     * The actual resolved hover/unhover state, regardless of animation state.
      * 
      * This reflects the current target state based on the final diagnostic status.
      * Unlike `hovered`, it updates immediately and does not wait for transitions to complete.

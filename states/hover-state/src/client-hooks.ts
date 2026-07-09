@@ -57,7 +57,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
 };
 
 /**
- * Resolves the current hovered/unhovered state.
+ * Resolves the current hover/unhover state.
  * 
  * Useful for derived components that need to determine whether the base component is hovered or unhovered.
  * 
@@ -76,7 +76,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * 
  * @param props - The component props that may include a controlled `hovered` value and derived `computedHover` value.
  * @param options - An optional configuration for customizing hover/unhover behavior.
- * @returns The resolved hovered/unhovered state and event handlers for mouseenter/mouseleave events.
+ * @returns The resolved hover/unhover state and event handlers for mouseenter/mouseleave events.
  */
 export const useResolvedHovered = <TElement extends Element = HTMLElement>(props: Pick<HoverStateProps, 'hovered' | 'computedHover'>, options?: Pick<HoverStateOptions, 'defaultHovered'>) : Pick<HoverState<TElement>, 'hovered' | 'ref' | 'handleMouseEnter' | 'handleMouseLeave'> => {
     // Extract options:
@@ -167,7 +167,7 @@ const hoverStateDefinition : HoverStateDefinition = {
  * 
  * @param props - The component props that may include a controlled `hovered` value, derived `computedHover` value, and `onHoverUpdate` callback.
  * @param options - An optional configuration for customizing hover/unhover behavior and animation lifecycle.
- * @returns The resolved hovered/unhovered state, current transition phase, associated CSS class name, and animation event handlers.
+ * @returns The resolved hover/unhover state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @example
  * ```tsx

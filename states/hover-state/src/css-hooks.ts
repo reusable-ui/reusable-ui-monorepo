@@ -39,7 +39,7 @@ import {
  * // Animation feature:
  * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
- * // Hovered/unhovered state:
+ * // Hover/unhover state:
  * import { usingHoverState } from '@reusable-ui/hover-state';
  * 
  * // CSS-in-JS:
@@ -68,7 +68,7 @@ import {
  *         // Apply animation feature rules:
  *         ...animationFeatureRule(),
  *         
- *         // Apply hovered/unhovered state rules:
+ *         // Apply hover/unhover state rules:
  *         ...hoverStateRule(),
  *         
  *         // Hovering animation: interpolate hoverFactor from 0 → 1

@@ -14,7 +14,7 @@ import {
 
 
 
-/** Internal definition for hovered/unhovered state behavior. */
+/** Internal definition for hover/unhover state behavior. */
 export interface HoverStateDefinition
     extends
         FeedbackStateDefinition<boolean, HoverPhase, HoverClassname,
