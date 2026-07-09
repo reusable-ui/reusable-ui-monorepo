@@ -15,3 +15,7 @@
 
 // config ending with Expand|Collapse excepts animExpand|animCollapse:
 ^(    )+\w+(?<!anim|Anim)(Expand|Collapse)\w*\s*:
+
+
+// Find likely incorrect -ed state phrases, while excluding already-correct conditional phrases.
+(?<!(in|current|initial|last|resolved|reached|reaches|determining|enters|exits|enable|manages|manage|optimize|defaulting to|default declarative|change to|to control|to change)( (the|its|an|a))?( fully)?( (baseline|persistent))? )\b(excited|focused|blurred|unhovered|hovered|pressed|released|dragged|dropped|unsorted|sorted|expanded|collapsed)\b state
