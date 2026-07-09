@@ -14,7 +14,7 @@ import {
 
 
 
-/** Internal definition for dragged/dropped state behavior. */
+/** Internal definition for drag/drop state behavior. */
 export interface DragStateDefinition
     extends
         FeedbackStateDefinition<boolean, DragPhase, DragClassname,

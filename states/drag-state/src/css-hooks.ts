@@ -39,7 +39,7 @@ import {
  * // Animation feature:
  * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
- * // Dragged/dropped state:
+ * // Drag/drop state:
  * import { usingDragState } from '@reusable-ui/drag-state';
  * 
  * // CSS-in-JS:
@@ -68,7 +68,7 @@ import {
  *         // Apply animation feature rules:
  *         ...animationFeatureRule(),
  *         
- *         // Apply dragged/dropped state rules:
+ *         // Apply drag/drop state rules:
  *         ...dragStateRule(),
  *         
  *         // Dragging animation: interpolate dragFactor from 0 → 1

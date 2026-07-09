@@ -74,7 +74,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
 };
 
 /**
- * Resolves the current dragged/dropped state.
+ * Resolves the current drag/drop state.
  * 
  * Useful for derived components that need to determine whether the base component is dragged or dropped.
  * 
@@ -91,7 +91,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * 
  * @param props - The component props that may include a controlled `dragged` value and derived `computedDrag` value.
  * @param options - An optional configuration for customizing drag/drop behavior.
- * @returns The resolved dragged/dropped state.
+ * @returns The resolved drag/drop state.
  */
 export const useResolvedDragged = (props: Pick<DragStateProps, 'dragged' | 'computedDrag'>, options?: Pick<DragStateOptions, 'defaultDragged' | 'fallbackDragged'>) : boolean => {
     // Extract options:
@@ -155,7 +155,7 @@ const dragStateDefinition : DragStateDefinition = {
  * 
  * @param props - The component props that may include a controlled `dragged` value, derived `computedDrag` value, and `onDragUpdate` callback.
  * @param options - An optional configuration for customizing drag/drop behavior and animation lifecycle.
- * @returns The resolved dragged/dropped state, current transition phase, associated CSS class name, and animation event handlers.
+ * @returns The resolved drag/drop state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @example
  * ```tsx

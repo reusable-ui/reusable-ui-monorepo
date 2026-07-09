@@ -19,18 +19,18 @@ import {
 
 
 
-/** Resolves the semantic transition phase for dragged/dropped state behavior. */
+/** Resolves the semantic transition phase for drag/drop state behavior. */
 export const resolveDragTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, DragStateProps, DragStateOptions, DragStateDefinition>): DragPhase => {
     if (isTransitioning) return settledState ? 'dragging' : 'dropping';
     return settledState ? 'dragged' : 'dropped';
 };
 
-/** Resolves the semantic transition classname for dragged/dropped state behavior. */
+/** Resolves the semantic transition classname for drag/drop state behavior. */
 export const resolveDragTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, DragPhase, DragStateProps, DragStateOptions, DragStateDefinition>): DragClassname => {
     return `is-${transitionPhase}`;
 };
 
-/** Triggers the appropriate lifecycle events for dragged/dropped state behavior. */
+/** Triggers the appropriate lifecycle events for drag/drop state behavior. */
 export const triggerDragPhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean, DragPhase, DragStateProps, DragStateOptions, DragStateDefinition>): void => {
     switch (changedTransitionPhase) {
         case 'dragging' : props.onDraggingStart?.(changedTransitionPhase, undefined); break;
