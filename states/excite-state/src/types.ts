@@ -9,7 +9,7 @@ import {
 
 
 /**
- * Props for controlling the excited state of the component.
+ * Props for controlling the excite state of the component.
  * 
  * Provides a declarative way to control whether the component is excited or idle,
  * along with an optional callback to signal a request to update the external state driver.
@@ -20,7 +20,7 @@ export interface ExciteStateProps
         Omit<ActivityStateProps<boolean>, 'effectiveState' | 'onStateComplete'>
 {
     /**
-     * Controls the current excited state:
+     * Controls the current excite state:
      * - `true`  : the component is excited
      * - `false` : the component is idle
      * 
@@ -48,7 +48,7 @@ export interface ExciteStateOptions
         ActivityStateOptions<boolean>
 {
     /**
-     * Specifies the default excited state when no `excited` prop is explicitly provided:
+     * Specifies the default excite state when no `excited` prop is explicitly provided:
      * - `true`  : the component is excited
      * - `false` : the component is idle
      * 
@@ -84,14 +84,14 @@ export interface ExciteStateOptions
 }
 
 /**
- * A CSS class name reflecting the current excited state.
+ * A CSS class name reflecting the current excite state.
  * 
- * Used for styling based on the current excited state.
+ * Used for styling based on the current excite state.
  */
 export type ExciteClassname = 'is-excited' | 'not-excited'
 
 /**
- * An API for accessing the resolved excited state, associated CSS class name, and animation event handlers.
+ * An API for accessing the resolved excite state, associated CSS class name, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
  */

@@ -29,10 +29,10 @@ import {
 
 
 
-/** The behavior state definition for excited state management. */
+/** The behavior state definition for excite state management. */
 const exciteStateDefinition : ExciteStateDefinition = {
     // State definitions:
-    inactiveState            : false, // `false`: the value of un-excited state
+    inactiveState            : false, // `false`: the value of un-excite state
     
     // Behavior definitions:
     defaultAnimationPattern  : 'exciting',                     // Matches animation names for activities.
@@ -41,7 +41,7 @@ const exciteStateDefinition : ExciteStateDefinition = {
 };
 
 /**
- * Resolves the excited state, associated CSS class name, and animation event handlers
+ * Resolves the excite state, associated CSS class name, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  *
  * Supports controlled excitement with automatic re-triggering if the parent
@@ -51,7 +51,7 @@ const exciteStateDefinition : ExciteStateDefinition = {
  * 
  * @param {ExciteStateProps} props - The component props that may include a controlled `excited` value and an `onExcitedComplete` callback.
  * @param {ExciteStateOptions} options - An optional configuration for customizing excitement behavior and animation lifecycle.
- * @returns {ExciteState<TElement>} - The resolved excited state, associated CSS class name, and animation event handlers.
+ * @returns {ExciteState<TElement>} - The resolved excite state, associated CSS class name, and animation event handlers.
  * 
  * @example
  * ```tsx
@@ -105,7 +105,7 @@ export const useExciteState = <TElement extends Element = HTMLElement>(props: Ex
     
     // States and flags:
     
-    // Resolve effective excited state:
+    // Resolve effective excite state:
     const effectiveState = useResolvedExcited(props, options);
     
     // Activity orchestration:

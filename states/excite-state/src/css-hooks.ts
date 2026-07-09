@@ -24,11 +24,11 @@ import {
 
 
 /**
- * Generates CSS rules that conditionally apply the excitement animation based on current excited state,
+ * Generates CSS rules that conditionally apply the excitement animation based on current excite state,
  * and exposes excitement-related CSS variables for conditional animation.
  * 
  * @param options - An optional configuration for customizing excitement animation.
- * @returns A CSS API for conditionally apply the excitement animation based on current excited state.
+ * @returns A CSS API for conditionally apply the excitement animation based on current excite state.
  *
  * @example
  * ```ts
