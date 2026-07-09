@@ -16,7 +16,7 @@ import {
 
 
 /**
- * Props for controlling the expanded/collapsed state of the component.
+ * Props for controlling the expand/collapse state of the component.
  * 
  * Provides a declarative way to control whether the component is expanded or collapsed,
  * along with an optional callback to handle user-initiated change requests.
@@ -185,7 +185,7 @@ export type ExpandPhase =
 export type ExpandClassname = `is-${ExpandPhase}`
 
 /**
- * An API for accessing the resolved expanded/collapsed state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
+ * An API for accessing the resolved expand/collapse state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
  * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
@@ -203,12 +203,12 @@ export interface CollapseState<TElement extends Element = HTMLElement, TChangeEv
         >
 {
     /**
-     * The current settled expanded/collapsed state used for animation-aware rendering and behavioral coordination.
+     * The current settled expand/collapse state used for animation-aware rendering and behavioral coordination.
      * 
      * This value may slightly lag behind the actual resolved state due to in-flight animations.
      * It updates only after an animation completes, ensuring the styling remains in sync with animation lifecycle.
      * 
-     * Useful for rendering the expanded/collapsed state in sync with animation lifecycle.
+     * Useful for rendering the expand/collapse state in sync with animation lifecycle.
      * 
      * Possible values:
      * - `true`  : the component has visually settled in expanded state
@@ -217,7 +217,7 @@ export interface CollapseState<TElement extends Element = HTMLElement, TChangeEv
     expanded               : InteractionState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>['state']
     
     /**
-     * The actual resolved expanded/collapsed state, regardless of animation state.
+     * The actual resolved expand/collapse state, regardless of animation state.
      * 
      * This reflects the current target state based on controlled or uncontrolled mode.
      * Unlike `expanded`, it updates immediately and does not wait for transitions to complete.

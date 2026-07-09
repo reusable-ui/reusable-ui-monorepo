@@ -39,7 +39,7 @@ import {
  * // Animation feature:
  * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
- * // Expanded/collapsed state:
+ * // Expand/collapse state:
  * import { usingCollapseState } from '@reusable-ui/collapse-state';
  * 
  * // CSS-in-JS:
@@ -68,7 +68,7 @@ import {
  *         // Apply animation feature rules:
  *         ...animationFeatureRule(),
  *         
- *         // Apply expanded/collapsed state rules:
+ *         // Apply expand/collapse state rules:
  *         ...collapseStateRule(),
  *         
  *         // Expanding animation: interpolate expandFactor from 0 → 1

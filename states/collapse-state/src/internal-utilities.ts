@@ -19,18 +19,18 @@ import {
 
 
 
-/** Resolves the semantic transition phase for expanded/collapsed state behavior. */
+/** Resolves the semantic transition phase for expand/collapse state behavior. */
 export const resolveExpandTransitionPhase = ({ settledState, isTransitioning }: ResolveTransitionPhaseArgs<boolean, CollapseStateProps<unknown>, CollapseStateOptions, CollapseStateDefinition>): ExpandPhase => {
     if (isTransitioning) return settledState ? 'expanding' : 'collapsing';
     return settledState ? 'expanded' : 'collapsed';
 };
 
-/** Resolves the semantic transition classname for expanded/collapsed state behavior. */
+/** Resolves the semantic transition classname for expand/collapse state behavior. */
 export const resolveExpandTransitionClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<boolean, ExpandPhase, CollapseStateProps<unknown>, CollapseStateOptions, CollapseStateDefinition>): ExpandClassname => {
     return `is-${transitionPhase}`;
 };
 
-/** Triggers the appropriate lifecycle events for expanded/collapsed state behavior. */
+/** Triggers the appropriate lifecycle events for expand/collapse state behavior. */
 export const triggerExpandPhaseEvents = ({ props, changedTransitionPhase }: TriggerTransitionEventArgs<boolean, ExpandPhase, CollapseStateProps<unknown>, CollapseStateOptions, CollapseStateDefinition>): void => {
     switch (changedTransitionPhase) {
         case 'expanding'  : props.onExpandingStart?.(changedTransitionPhase, undefined);  break;

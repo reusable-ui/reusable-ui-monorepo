@@ -96,7 +96,7 @@ const collapseStateDefinition : CollapseStateDefinition = {
 };
 
 /**
- * Resolves the expanded/collapsed state, current transition phase, associated CSS class name, and animation event handlers
+ * Resolves the expand/collapse state, current transition phase, associated CSS class name, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  * 
  * - Supports controlled, uncontrolled, and hybrid expansion behavior with optional change dispatching.
@@ -106,7 +106,7 @@ const collapseStateDefinition : CollapseStateDefinition = {
  * 
  * @param props - The component props that may include a controlled `expanded` value, optional `defaultExpanded` value, and `onExpandedChange` callback.
  * @param options - An optional configuration for customizing expand/collapse behavior and animation lifecycle.
- * @returns The resolved expanded/collapsed state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
+ * @returns The resolved expand/collapse state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
  * @example
  * ```tsx
@@ -240,7 +240,7 @@ export const useCollapseState = <TElement extends Element = HTMLElement, TChange
 };
 
 /**
- * Controls the current expanded/collapsed state and provides a dispatcher for requesting changes.
+ * Controls the current expand/collapse state and provides a dispatcher for requesting changes.
  * 
  * Useful for derived components that need to control the expanded state of the base component,
  * while also managing the expansion lifecycle and handling change requests.
@@ -261,7 +261,7 @@ export const useCollapseState = <TElement extends Element = HTMLElement, TChange
  * 
  * @param props - The component props that may include a controlled `expanded` value, optional `defaultExpanded` value, and `onExpandedChange` callback.
  * @param options - An optional configuration for customizing expand/collapse behavior.
- * @returns A tuple of the resolved expanded/collapsed state and a dispatcher for requesting changes.
+ * @returns A tuple of the resolved expand/collapse state and a dispatcher for requesting changes.
  */
 export const useCollapseController = <TChangeEvent = unknown>(props: CollapseStateProps<TChangeEvent>, options?: Pick<CollapseStateOptions, 'defaultExpanded'>): [boolean, DispatchValueChange<boolean, TChangeEvent>] => {
     // Extract options:

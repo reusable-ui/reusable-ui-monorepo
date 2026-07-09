@@ -28,7 +28,7 @@ const controlledStateDefinition : ControlledStateDefinition<boolean> = {
 };
 
 /**
- * Resolves the current expanded/collapsed state for a fully controlled component.
+ * Resolves the current expand/collapse state for a fully controlled component.
  * 
  * Useful for derived components that need to determine whether the base component is expanded or collapsed.
  * 
@@ -45,7 +45,7 @@ const controlledStateDefinition : ControlledStateDefinition<boolean> = {
  * 
  * @param props - The component props that may include a controlled `expanded` value, but must exclude `defaultExpanded`.
  * @param options - An optional configuration for customizing expand/collapse behavior.
- * @returns The resolved expanded/collapsed state.
+ * @returns The resolved expand/collapse state.
  */
 export const useResolvedExpanded = (props: Pick<CollapseStateProps<any>, 'expanded'> & { defaultExpanded?: never }, options?: Pick<CollapseStateOptions, 'defaultExpanded'>) : boolean => {
     // Extract options:
