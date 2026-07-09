@@ -14,7 +14,7 @@ import {
 
 
 
-/** Internal definition for pressed/released state behavior. */
+/** Internal definition for press/release state behavior. */
 export interface PressStateDefinition
     extends
         FeedbackStateDefinition<boolean, PressPhase, PressClassname,

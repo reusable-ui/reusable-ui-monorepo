@@ -57,7 +57,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
 };
 
 /**
- * Resolves the current pressed/released state.
+ * Resolves the current press/release state.
  * 
  * Useful for derived components that need to determine whether the base component is pressed or released.
  * 
@@ -76,7 +76,7 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * 
  * @param props - The component props that may include a controlled `pressed` value and derived `computedPress` value.
  * @param options - An optional configuration for customizing press/release behavior.
- * @returns The resolved pressed/released state and event handlers for pointer and keyboard events.
+ * @returns The resolved press/release state and event handlers for pointer and keyboard events.
  */
 export const useResolvedPressed = <TElement extends Element = HTMLElement>(props: Pick<PressStateProps, 'pressed' | 'computedPress'>, options?: Pick<PressStateOptions, 'defaultPressed' | 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'>) : Pick<PressState<TElement>, 'pressed' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'> => {
     // Extract options:
@@ -171,7 +171,7 @@ const pressStateDefinition : PressStateDefinition = {
  * 
  * @param props - The component props that may include a controlled `pressed` value, derived `computedPress` value, and `onPressUpdate` callback.
  * @param options - An optional configuration for customizing press/release behavior and animation lifecycle.
- * @returns The resolved pressed/released state, current transition phase, associated CSS class name, and animation event handlers.
+ * @returns The resolved press/release state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @example
  * ```tsx

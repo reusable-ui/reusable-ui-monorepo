@@ -39,7 +39,7 @@ import {
  * // Animation feature:
  * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
- * // Pressed/released state:
+ * // Press/release state:
  * import { usingPressState } from '@reusable-ui/press-state';
  * 
  * // CSS-in-JS:
@@ -68,7 +68,7 @@ import {
  *         // Apply animation feature rules:
  *         ...animationFeatureRule(),
  *         
- *         // Apply pressed/released state rules:
+ *         // Apply press/release state rules:
  *         ...pressStateRule(),
  *         
  *         // Pressing animation: interpolate pressFactor from 0 → 1

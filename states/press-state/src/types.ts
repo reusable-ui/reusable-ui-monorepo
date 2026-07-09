@@ -22,7 +22,7 @@ import {
 
 
 /**
- * Props for controlling the pressed/released state of the component.
+ * Props for controlling the press/release state of the component.
  * 
  * Provides a declarative way to control whether the component is pressed or released,
  * along with an optional callback to synchronize when that state changes.
@@ -302,7 +302,7 @@ export type PressPhase =
 export type PressClassname = `is-${PressPhase}`
 
 /**
- * An API for accessing the resolved pressed/released state, current transition phase, associated CSS class name, and animation event handlers.
+ * An API for accessing the resolved press/release state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
  */
@@ -318,12 +318,12 @@ export interface PressState<TElement extends Element = HTMLElement>
         >
 {
     /**
-     * The current settled pressed/released state used for animation-aware rendering and behavioral coordination.
+     * The current settled press/release state used for animation-aware rendering and behavioral coordination.
      * 
      * This value may slightly lag behind the actual resolved state due to in-flight animations.
      * It updates only after an animation completes, ensuring the styling remains in sync with animation lifecycle.
      * 
-     * Useful for rendering the pressed/released state in sync with animation lifecycle.
+     * Useful for rendering the press/release state in sync with animation lifecycle.
      * 
      * Possible values:
      * - `true`  : the component has visually settled in pressed state
@@ -332,7 +332,7 @@ export interface PressState<TElement extends Element = HTMLElement>
     pressed             : FeedbackState<boolean, PressPhase, PressClassname, TElement>['state']
     
     /**
-     * The actual resolved pressed/released state, regardless of animation state.
+     * The actual resolved press/release state, regardless of animation state.
      * 
      * This reflects the current target state based on the final diagnostic status.
      * Unlike `pressed`, it updates immediately and does not wait for transitions to complete.
