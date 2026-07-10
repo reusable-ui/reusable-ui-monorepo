@@ -121,7 +121,7 @@ export const useResolvedHovered = <TElement extends Element = HTMLElement>(props
     
     
     
-    // Resolve effective hovered state:
+    // Resolve effective hover state:
     const hovered = useResolvedObservableState<boolean, 'auto'>(
         // Props:
         { state, isRestricted, observedState },
