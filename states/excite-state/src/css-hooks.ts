@@ -24,18 +24,18 @@ import {
 
 
 /**
- * Generates CSS rules that conditionally apply the excitement animation based on current excite state,
+ * Generates CSS rules that conditionally apply the excitement animation based on current excited state,
  * and exposes excitement-related CSS variables for conditional animation.
  * 
  * @param options - An optional configuration for customizing excitement animation.
- * @returns A CSS API for conditionally apply the excitement animation based on current excite state.
+ * @returns A CSS API for conditionally apply the excitement animation based on current excited state.
  *
  * @example
  * ```ts
  * // Animation feature:
  * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
- * // Excite state:
+ * // Excited state:
  * import { usingExciteState } from '@reusable-ui/excite-state';
  * 
  * // CSS-in-JS:
@@ -63,7 +63,7 @@ import {
  *         // Apply animation feature rules:
  *         ...animationFeatureRule(),
  *         
- *         // Apply excite state rules:
+ *         // Apply excited state rules:
  *         ...exciteStateRule(),
  *         
  *         // Exciting animation: oscillate exciteFactor between 0 ↔ 1 several times

@@ -13,7 +13,7 @@ import {
 
 
 
-/** Internal definition for excite state behavior. */
+/** Internal definition for excited state behavior. */
 export interface ExciteStateDefinition
     extends
         ActivityStateDefinition<boolean, ExciteClassname,

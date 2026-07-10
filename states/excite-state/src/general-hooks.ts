@@ -22,13 +22,13 @@ import {
 
 
 
-/** The controlled state definition for excite state management. */
+/** The controlled state definition for excited state management. */
 const controlledStateDefinition : ControlledStateDefinition<boolean> = {
     defaultState : defaultDeclarativeExcited,
 };
 
 /**
- * Resolves the current excite state.
+ * Resolves the current excited state.
  * 
  * Useful for derived components that need to determine whether the base component is excited or not.
  * 
@@ -37,7 +37,7 @@ const controlledStateDefinition : ControlledStateDefinition<boolean> = {
  * 
  * @param props - The component props that may include a controlled `excited` value.
  * @param options - An optional configuration for customizing excitement behavior.
- * @returns The resolved excite state.
+ * @returns The resolved excited state.
  */
 export const useResolvedExcited = (props: Pick<ExciteStateProps, 'excited'>, options?: Pick<ExciteStateOptions, 'defaultExcited'>): boolean => {
     // Extract options:
@@ -54,7 +54,7 @@ export const useResolvedExcited = (props: Pick<ExciteStateProps, 'excited'>, opt
     
     
     
-    // Resolve effective excite state:
+    // Resolve effective excited state:
     return useResolvedControlledState<boolean>(
         // Props:
         { state },

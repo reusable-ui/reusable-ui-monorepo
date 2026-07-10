@@ -16,7 +16,7 @@ import {
 
 
 
-/** Resolves the semantic activity classname for excite state behavior. */
+/** Resolves the semantic activity classname for excited state behavior. */
 export const resolveExciteActivityClassname = ({ visualState }: ResolveActivityClassnameArgs<boolean, ExciteStateProps, ExciteStateOptions, ExciteStateDefinition>): ExciteClassname => {
     return visualState ? 'is-excited' : 'not-excited';
 };
