@@ -117,7 +117,7 @@ Resolution priority:
 
 ```ts
 import {
-    // Outline Selectors:
+    // Outlined Selectors:
     isOutlinedSelector,    // Targets `.is-outlined` classes
     isNotOutlinedSelector, // Targets `.not-outlined` classes
     
