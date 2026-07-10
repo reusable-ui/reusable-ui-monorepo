@@ -62,7 +62,7 @@ export const useResolvedExpanded = (props: Pick<CollapseStateProps<any>, 'expand
     
     
     
-    // Resolve effective expanded state:
+    // Resolve effective expand state:
     return useResolvedControlledState<boolean>(
         // Props:
         { state },
