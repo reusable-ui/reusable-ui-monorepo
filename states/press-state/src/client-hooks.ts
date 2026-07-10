@@ -123,7 +123,7 @@ export const useResolvedPressed = <TElement extends Element = HTMLElement>(props
     
     
     
-    // Resolve effective pressed state:
+    // Resolve effective press state:
     const pressed = useResolvedObservableState<boolean, 'auto'>(
         // Props:
         { state, isRestricted, observedState },
