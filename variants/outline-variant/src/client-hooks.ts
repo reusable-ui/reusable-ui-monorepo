@@ -36,7 +36,7 @@ import {
 
 
 
-/** The inheritable and invertable variant definition for outline variant management. */
+/** The inheritable and invertable variant definition for outlined variant management. */
 const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inherit', 'invert'> = {
     // Defaults:
     defaultVariant          : defaultDeclarativeOutlined,
@@ -81,7 +81,7 @@ export const useResolvedOutlined = (props: OutlineVariantProps, options?: Outlin
     
     
     
-    // Resolve effective outline variant:
+    // Resolve effective outlined variant:
     return useResolvedInvertableVariant<boolean, 'inherit', 'invert'>(
         // Props:
         { variant },

@@ -4,7 +4,7 @@ A utility for managing visual outline consistently across React components.
 Provides hooks and CSS helpers for outline resolution and conditional styling — ideal for buttons, cards, badges, alerts, or any component that benefits from bordered emphasis.
 
 ## ✨ Features
-✔ Boolean-based outline variant with inheritance and inversion  
+✔ Boolean-based outlined variant with inheritance and inversion  
 ✔ Hook-based resolution with customizable fallback behavior  
 ✔ CSS selectors and conditional rule helpers for outline-aware styling  
 ✔ Seamless integration across appearance, layout, and interaction systems
