@@ -17,5 +17,7 @@
 ^(    )+\w+(?<!anim|Anim)(Expand|Collapse)\w*\s*:
 
 
-// Find likely incorrect -ed state phrases, while excluding already-correct conditional phrases.
-(?<!(in|current|initial|last|resolved|reached|reaches|determining|enters|exits|enable|manages|manage|optimize|defaulting to|default declarative|change to|to control|to change)( (the|its|an|a))?( fully)?( (baseline|persistent))? )\b(excited|focused|blurred|unhovered|hovered|pressed|released|dragged|dropped|unsorted|sorted|expanded|collapsed)\b state
+// Detect verb-based states incorrectly using past participle/adjective,
+// while excluding common conditional/transition phrases that are already correct.
+// Note: Not applicable for inherently adjectival domains (disabled, excited, stripped).
+(?<!(in|current|initial|last|resolved|reached|reaches|determining|enters|exits|enable|manages|manage|optimize|defaulting to|default declarative|change to|to control|to change)( (the|its|an|a))?( fully)?( (baseline|persistent))? )\b(focused|blurred|unhovered|hovered|pressed|released|dragged|dropped|unsorted|sorted|expanded|collapsed)\b state
