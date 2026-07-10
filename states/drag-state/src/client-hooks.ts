@@ -117,7 +117,7 @@ export const useResolvedDragged = (props: Pick<DragStateProps, 'dragged' | 'comp
     
     
     
-    // Resolve effective dragged state:
+    // Resolve effective drag state:
     // - Collapses to `false` (dropped) if restricted.
     // - Otherwise resolved via observable state definition.
     return useResolvedObservableState<boolean, 'auto'>(
