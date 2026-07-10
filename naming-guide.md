@@ -1,38 +1,54 @@
-To clear up the confusion when a word can be both a verb and a noun, use this golden rule: Variants are visual design choices, while States are runtime behavioral conditions.
+# 📐 Design System Naming Guidelines: Packages, JSDocs, and Control Props
 
-* For Design Variants: Look at the visual result. If it describes an appearance, use the adjective form (-ed). If it describes an abstract concept (like scale), use the noun form.
-* For Behavioral States: Look at the system mechanism. If the word can act as a noun in tech (like focus, hover, drag, sort), keep it as a noun to represent the system. Only use -ed if there is no natural tech noun form available (like disabled or excited).
+To resolve naming confusion, apply this fundamental distinction: Variants represent static visual design choices, while States represent dynamic runtime behaviors.
 
+## 🎨 1. For Design Variants
 
+Variants describe layout, theme, or styling configurations. Use this naming priority:
 
-## Design Variants
+   1. Pure Nouns: Use if it describes an inherent structural attribute (e.g., size, orientation, direction).
+   2. Adjectives (-ed): Use if it describes a visual style applied to the component (e.g., outlined, stripped).
 
-| Current Package Name | Recommended Package Name | JSDoc State Identifier Phrasing | Reason for Name |
-|---|---|---|---|
-| /orientation-variant | /orientation-variant | Resolves the orientation variant... | Orientation is a pure noun. |
-| /flow-direction-variant | /flow-direction-variant | Resolves the flow direction variant... | Direction is a pure noun. |
-| /size-variant | /size-variant | Resolves the size variant... | Size is a pure noun. |
-| /theme-variant | /theme-variant | Resolves the theme variant... | Theme is a pure noun. |
-| /emphasis-variant | /emphasis-variant | Resolves the emphasis variant... | Emphasis is a pure noun. |
-| /outline-variant | <span style="color:red">/outlined-variant</span> | Resolves the outlined variant... | Outlined is a past-participle adjective describing the final visual appearance of the component. |
-| /mild-variant | /mild-variant | Resolves the mild variant... | Mild is a pure adjective. |
-| /stripped-variant | /stripped-variant | Resolves the stripped variant... | Stripped comes from the phrasal verb "to strip down." |
+## ⚡ 2. For Behavioral States
 
+States describe runtime event interactions and systems. Use this naming priority:
+
+   1. Pure Nouns: Keep as a noun if it functions natively as a tech category (e.g., focus, hover, drag, sort).
+   2. Compound Nouns: Use paired base verbs for two-way toggle machines (e.g., expand/collapse).
+   3. Adjectives (-ed): Fall back to this form only if there is no natural technical noun form available (e.g., disabled, excited).
 
 
-## Behavioral States
 
-| Current Package Name | Recommended Package Name | JSDoc State Identifier Phrasing | Reason for Name |
-|---|---|---|---|
-| /excite-state | <span style="color:red">/excited-state</span> | Resolves the excited state... | Excited state is an unchangeable scientific idiom. |
-| /disabled-state | /disabled-state | Resolves the disabled state... | Disabled is used because there is no clean, technical noun form for "disable". |
-| /read-only-state | /read-only-state | Resolves the read-only state... | Read-only is a compound adjective functioning as a fixed industry standard phrase. |
-| /focus-state | /focus-state | Resolves the focus state... | Focus functions cleanly as a noun identifying the input system. |
-| /hover-state | /hover-state | Resolves the hover state... | Hover functions cleanly as a noun identifying the mouse interaction system. |
-| /press-state | /press-state or /pressed-state | Resolves the pressed state... | Both work, but pressed state matches the specific UI condition (isPressed) and has deep industry precedent (e.g., Apple Developer standards). |
-| /validity-state | /validity-state | Resolves the validity state... | Validity is a pure noun. |
-| /drag-state | /drag-state | Resolves the drag state... | Drag functions cleanly as a noun identifying the drag-and-drop system. |
-| /sort-state | /sort-state | Resolves the sort state... | Sort functions cleanly as a noun identifying the ordering system. |
-| /active-state | /active-state | Resolves the active state... | Active is a pure adjective describing a live condition. |
-| /collapse-state | /collapse-state | Resolves the expand/collapse state... | Expand/collapse creates a balanced compound noun phrase representing the dual-direction system. |
-| /view-state | /view-state | Resolves the view state... | View functions cleanly as a noun identifying the rendering/visibility system. |
+## 🎨 Design Variants
+Packages managing design variants encapsulate static styling logic, themes, and layouts. The package naming and JSDoc phrasing align deliberately with the props used for component layouts.
+
+| Current Package Name | Status / Rename | Recommended Package Name | Control Prop | JSDoc Phrasing | Architectural Logic |
+|---|---|---|---|---|---|
+| /orientation-variant | 🟢 | /orientation-variant | orientation | Resolves the orientation variant... | Pure noun representing an inherent structural attribute. |
+| /flow-direction-variant | 🟢 | /flow-direction-variant | flowDirection | Resolves the flow direction variant... | Pure noun representing an alignment attribute. |
+| /size-variant | 🟢 | /size-variant | size | Resolves the size variant... | Pure noun representing a scale attribute. |
+| /theme-variant | 🟢 | /theme-variant | theme | Resolves the theme variant... | Pure noun representing a visual configuration system. |
+| /emphasis-variant | 🟢 | /emphasis-variant | emphasized | Resolves the emphasized variant... | Intentional Exception: Package keeps the shorter core noun to prevent folder typos, while the prop uses the explicit adjective. |
+| /outline-variant | 🔴 | /outlined-variant | outlined | Resolves the outlined variant... | Updated to match global design system conventions (e.g., Outlined Buttons). |
+| /mild-variant | 🟢 | /mild-variant | mild | Resolves the mild variant... | Pure adjective describing a softened visual style. |
+| /stripped-variant | 🟢 | /stripped-variant | stripped | Resolves the stripped variant... | Past-participle adjective perfectly describing a stripped-down (borderless) container. |
+
+
+
+## ⚡ Behavioral States
+Packages managing behavioral states encapsulate event listeners, runtime transitions, and interaction flows. The package name represents the System Domain (Noun Phrase), while the control props represent the Instance Status (Adjective).
+
+| Current Package Name | Status / Rename | Recommended Package Name | Control Prop | JSDoc Phrasing | Architectural Logic |
+|---|---|---|---|---|---|
+| /excite-state | 🔴 | /excited-state | excited | Resolves the excited state... | Updated from active verb to past-participle adjective to respect the established technical idiom. |
+| /disabled-state | 🟢 | /disabled-state | disabled | Resolves the disabled state... | Fixed platform standard. Matches native HTML element properties. |
+| /read-only-state | 🟢 | /read-only-state | readOnly | Resolves the read-only state... | Fixed platform standard. Matches native form field behaviors. |
+| /focus-state | 🟢 | /focus-state | focused | Resolves the focus state... | Pure noun representing the element targeting system. |
+| /hover-state | 🟢 | /hover-state | hovered | Resolves the hover state... | Pure noun representing the mouse/pointer tracking system. |
+| /press-state | 🟢 | /press-state | pressed | Resolves the pressed state... | Intentional Exception: Folder uses the interactive noun domain (press), while the prop tracks instance status. |
+| /validity-state | 🟢 | /validity-state | validity | Resolves the validity state... | Pure noun representing the validation and form-verification subsystem. |
+| /drag-state | 🟢 | /drag-state | dragged | Resolves the drag state... | Pure noun representing the interactive drag-and-drop system. |
+| /sort-state | 🟢 | /sort-state | sorted | Resolves the sort state... | Pure noun representing the data ordering system. |
+| /active-state | 🟢 | /active-state | active | Resolves the active state... | Pure adjective functioning cleanly as an interactive category identifier. |
+| /collapse-state | 🟢 | /collapse-state | expanded | Resolves the expand/collapse state... | Updated to a balanced compound verbal-noun phrase representing the bi-directional machine. |
+| /view-state | 🟢 | /view-state | viewIndex | Resolves the view state... | Pure noun representing the viewport container layout system. |
