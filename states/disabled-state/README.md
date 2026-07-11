@@ -3,7 +3,7 @@
 **disabled-state** is a reusable abstraction for managing enabled/disabled states in UI components.  
 It provides a lifecycle-aware way to animate transitions between *enabled* and *disabled* states, exposing semantic variables that make styling and contributor reasoning clear.  
 
-Instead of manually toggling classes or setting up disable context, disabled-state automatically manages enabled/disabled classes and cascaded context, ensuring transitions are smooth, predictable, and easy to maintain. This makes it ideal for controllable components — such as buttons, inputs, and toggles — where interactivity must be constrained, while still giving implementors the flexibility to propagate or override disabled state across contexts.  
+Instead of manually toggling classes or setting up disabled context, disabled-state automatically manages enabled/disabled classes and cascaded context, ensuring transitions are smooth, predictable, and easy to maintain. This makes it ideal for controllable components — such as buttons, inputs, and toggles — where interactivity must be constrained, while still giving implementors the flexibility to propagate or override disabled state across contexts.  
 
 With **disabled-state**, you get:  
 - Controlled enabled/disabled constraints  
@@ -12,7 +12,7 @@ With **disabled-state**, you get:
 - Cascaded context support for parent-driven disabled state  
 
 ## ✨ Features
-✔ Lifecycle-aware enable/disable animations based on current disabled state  
+✔ Lifecycle-aware enabled/disabled animations based on current disabled state  
 ✔ Gracefully completes running animations before resolving new state  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, animation, and feedback systems  
@@ -199,7 +199,7 @@ export const componentStyle = () => style({
 
 ### `usingDisabledState(options?: CssDisabledStateOptions): CssDisabledState`
 
-Generates CSS rules that conditionally apply the enable/disable animations based on current disabled state, and exposes enable/disable-related CSS variables for conditional animation.
+Generates CSS rules that conditionally apply the enabled/disabled animations based on current disabled state, and exposes enabled/disabled-related CSS variables for conditional animation.
 
 #### Supporting Variables (Advanced Use)
 
@@ -234,7 +234,7 @@ export const disableableBoxStyle = () => {
         animationFeatureVars: { animation },
     } = usingAnimationFeature();
     
-    // Feature: enable/disable lifecycle
+    // Feature: enabled/disabled lifecycle
     const {
         disabledStateRule,
         disabledStateVars: { isEnabled, isDisabled, disableFactor },
@@ -291,7 +291,7 @@ export const disableableBoxStyle = () => {
 The `animationEnabling` and `animationDisabling` variables are only defined during **enabling** and **disabling** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
-Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining enable/disable animations with other state-driven transitions.
+Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining enabled/disabled animations with other state-driven transitions.
 
 ---
 
