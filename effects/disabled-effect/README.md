@@ -83,7 +83,7 @@ export const disableableBoxStyle = () => {
     
     // States:
     
-    // Enable/disable lifecycle:
+    // Enabled/disabled lifecycle:
     // - Exposes `disableFactor` (0 → 1) to represent transition progress
     // - Associates enabling/disabling animations to drive `disableFactor` smoothly
     const {
@@ -94,7 +94,7 @@ export const disableableBoxStyle = () => {
         animationDisabling : 'var(--box-disabling)',
     });
     
-    // Enable/disable visual effect:
+    // Enabled/disabled visual effect:
     // - Consumes `disableFactor` from disabled state
     // - Gradually adjusts opacity and saturation based on transition progress
     // - Cursor switches discretely when disabled
