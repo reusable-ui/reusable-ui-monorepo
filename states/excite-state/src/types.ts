@@ -57,7 +57,7 @@ export interface ExciteStateOptions
     defaultExcited    ?: boolean
     
     /**
-     * Defines the pattern used to identify excite-related animation names.
+     * Defines the pattern used to identify excitement-related animation names.
      * 
      * This pattern determines which animation names are recognized as part of the exciting state lifecycle.
      * 

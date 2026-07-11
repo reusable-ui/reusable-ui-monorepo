@@ -18,7 +18,7 @@ import {
 
 
 /**
- * A list of excite-related CSS variables used for excitement-aware styling.
+ * A list of excitement-related CSS variables used for excitement-aware styling.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */

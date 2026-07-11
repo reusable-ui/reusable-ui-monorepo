@@ -162,7 +162,7 @@ export const highlightCardStyle = () => {
         animationFeatureVars: { animation },
     } = usingAnimationFeature();
     
-    // Feature: excite animation
+    // Feature: excitement animation
     const {
         exciteStateRule,
         exciteStateVars: { exciteFactor },
@@ -177,7 +177,7 @@ export const highlightCardStyle = () => {
         // Apply animation feature rules:
         ...animationFeatureRule(),
         
-        // Apply excite state rules:
+        // Apply excitement state rules:
         ...exciteStateRule(),
         
         // Exciting animation: oscillate exciteFactor between 0 ↔ 1 several times

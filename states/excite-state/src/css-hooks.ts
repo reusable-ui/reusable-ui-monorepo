@@ -48,7 +48,7 @@ import {
  *         animationFeatureVars: { animation },
  *     } = usingAnimationFeature();
  *     
- *     // Feature: excite animation
+ *     // Feature: excitement animation
  *     const {
  *         exciteStateRule,
  *         exciteStateVars: { exciteFactor },
