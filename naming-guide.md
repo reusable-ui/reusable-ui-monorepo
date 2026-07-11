@@ -28,7 +28,7 @@ Packages managing design variants encapsulate static styling logic, themes, and 
 | /flow-direction-variant | 🟢 | /flow-direction-variant | flowDirection | Resolves the flow direction variant... | Pure noun representing an alignment attribute. |
 | /size-variant | 🟢 | /size-variant | size | Resolves the size variant... | Pure noun representing a scale attribute. |
 | /theme-variant | 🟢 | /theme-variant | theme | Resolves the theme variant... | Pure noun representing a visual configuration system. |
-| /emphasis-variant | 🟢 | /emphasis-variant | emphasiz<span style="color: red;">ed</span> | Resolves the emphasiz<span style="color: red;">ed</span> variant... | Intentional Exception: Package keeps the shorter core noun to prevent folder typos, while the prop uses the explicit adjective. |
+| /emphasis-variant | 🔴 | /emphasiz<span style="color: red;">ed</span>-variant | emphasiz<span style="color: red;">ed</span> | Resolves the emphasiz<span style="color: red;">ed</span> variant... | Adjective form is clearer for styling toggles. Current noun form is acceptable for folder brevity. |
 | /outline-variant | 🔴 | /outlin<span style="color: red;">ed</span>-variant | outlin<span style="color: red;">ed</span> | Resolves the outlin<span style="color: red;">ed</span> variant... | Updated to match global design system conventions (e.g., Outlined Buttons). |
 | /mild-variant | 🟢 | /mild-variant | mild | Resolves the mild variant... | Pure adjective describing a softened visual style. |
 | /stripped-variant | 🟢 | /stripp<span style="color: red;">ed</span>-variant | stripp<span style="color: red;">ed</span> | Resolves the stripp<span style="color: red;">ed</span> variant... | Past-participle adjective perfectly describing a stripped-down (borderless) container. |
