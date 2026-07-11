@@ -45,7 +45,7 @@ Packages managing behavioral states encapsulate event listeners, runtime transit
 | /read-only-state | 🟢 | /read-only-state | readOnly | Resolves the read-only state... | Fixed platform standard. Matches native form field behaviors. |
 | /focus-state | 🟢 | /focus-state | focused | Resolves the focus state... | Pure noun representing the element targeting system. |
 | /hover-state | 🟢 | /hover-state | hovered | Resolves the hover state... | Pure noun representing the mouse/pointer tracking system. |
-| /press-state | 🟢 | /press-state | pressed | Resolves the pressed state... | Intentional Exception: Folder uses the interactive noun domain (press), while the prop tracks instance status. |
+| /press-state | 🟢 | /press-state | pressed | Resolves the press state... | Intentional Exception: Folder uses the interactive noun domain (press), while the prop tracks instance status. |
 | /validity-state | 🟢 | /validity-state | validity | Resolves the validity state... | Pure noun representing the validation and form-verification subsystem. |
 | /drag-state | 🟢 | /drag-state | dragged | Resolves the drag state... | Pure noun representing the interactive drag-and-drop system. |
 | /sort-state | 🟢 | /sort-state | sorted | Resolves the sort state... | Pure noun representing the data ordering system. |
