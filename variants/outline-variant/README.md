@@ -181,12 +181,12 @@ export const componentStyle = () => {
         
         // Apply conditional styling based on current outlined state:
         ...fallback({
-            // Outline styling:
+            // Outlined styling:
             fontWeight     : `${isOutlined} bold`,
             textDecoration : `${isOutlined} underline`,
         }),
         ...fallback({
-            // Non-outline styling:
+            // Non-outlined styling:
             fontWeight     : `${notOutlined} normal`,
             textDecoration : `${notOutlined} none`,
         }),
