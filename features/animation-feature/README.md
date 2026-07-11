@@ -61,7 +61,7 @@ import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 import { style } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { disableStateRule  } = usingDisabledState();
+    const { disabledStateRule } = usingDisabledState();
     const { collapseStateRule } = usingCollapseState();
     
     const {
@@ -80,7 +80,7 @@ export const componentStyle = () => {
         // Define component styling here.
         
         // Apply supporting state rules:
-        ...disableStateRule(),
+        ...disabledStateRule(),
         ...collapseStateRule(),
         
         // Apply compound animation feature:

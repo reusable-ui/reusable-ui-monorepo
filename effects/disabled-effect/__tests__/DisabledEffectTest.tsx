@@ -45,7 +45,7 @@ export const DisabledEffectTest = (props: DisabledEffectTestProps) => {
     
     const styles = useDisabledEffectTestStyles();
     
-    const { disabledStateVars  : { disableFactor: disableFactorVar, isDisabled: isDisabledVar } } = usingDisabledState();
+    const { disabledStateVars  : { disabledFactor: disabledFactorVar, isDisabled: isDisabledVar } } = usingDisabledState();
     
     // Inline style overrides:
     // - Assigns `activeFactor` directly
@@ -53,7 +53,7 @@ export const DisabledEffectTest = (props: DisabledEffectTestProps) => {
     const inlineStyle : CSSProperties = useMemo(() => ({
         // @ts-ignore
         [
-            disableFactorVar
+            disabledFactorVar
             .slice(4, -1) // fix: var(--customProp) => --customProp
         ]: String(activeFactor),
         // @ts-ignore
@@ -65,7 +65,7 @@ export const DisabledEffectTest = (props: DisabledEffectTestProps) => {
             ? ' ' // avoids an empty string for truthly, use a space instead
             : 'unset'
         ),
-    } as CSSProperties), [disableFactorVar, activeFactor, isDisabledVar, isDisabled]);
+    } as CSSProperties), [disabledFactorVar, activeFactor, isDisabledVar, isDisabled]);
     
     return (
         <div>

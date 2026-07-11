@@ -61,8 +61,8 @@ import { usingFilterFeature } from '@reusable-ui/filter-feature';
 import { style } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { disableStateRule } = usingDisabledState();
-    const { activeStateRule  } = usingActiveState();
+    const { disabledStateRule } = usingDisabledState();
+    const { activeStateRule   } = usingActiveState();
     
     const {
         filterFeatureRule,
@@ -80,7 +80,7 @@ export const componentStyle = () => {
         // Define component styling here.
         
         // Apply supporting state rules:
-        ...disableStateRule(),
+        ...disabledStateRule(),
         ...activeStateRule(),
         
         // Apply compound filter feature:

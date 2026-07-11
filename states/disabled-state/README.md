@@ -212,8 +212,8 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 | `animationDisabling` | `.is-disabling`                   | Runs the disabling animation sequence                                         |
 | `isEnabled`          | `.is-enabled` or `.is-enabling`   | Conditional variable for the enabled state                                    |
 | `isDisabled`         | `.is-disabled` or `.is-disabling` | Conditional variable for the disabled state                                   |
-| `disableFactor`      | Always available (animatable)     | Normalized factor: 0 = enabled, 1 = disabled, interpolates during transitions |
-| `disableFactorCond`  | Not fully enabled                 | Conditional mirror of `disableFactor`, drops to `unset` when fully enabled    |
+| `disabledFactor`     | Always available (animatable)     | Normalized factor: 0 = enabled, 1 = disabled, interpolates during transitions |
+| `disabledFactorCond` | Not fully enabled                 | Conditional mirror of `disabledFactor`, drops to `unset` when fully enabled   |
 
 #### 💡 Usage Example
 
@@ -237,7 +237,7 @@ export const disableableBoxStyle = () => {
     // Feature: enabled/disabled lifecycle
     const {
         disabledStateRule,
-        disabledStateVars: { isEnabled, isDisabled, disableFactor },
+        disabledStateVars: { isEnabled, isDisabled, disabledFactor },
     } = usingDisabledState({
         animationEnabling  : 'var(--box-enabling)',
         animationDisabling : 'var(--box-disabling)',
@@ -253,32 +253,32 @@ export const disableableBoxStyle = () => {
         // Apply enabled/disabled state rules:
         ...disabledStateRule(),
         
-        // Enabling animation: interpolate disableFactor from 1 → 0
+        // Enabling animation: interpolate disabledFactor from 1 → 0
         ...vars({
             '--box-enabling': [
                 ['0.3s', 'ease-out', 'both', 'transition-enabling'],
             ],
         }),
         ...keyframes('transition-enabling', {
-            from : { [disableFactor]: 1 },
-            to   : { [disableFactor]: 0 },
+            from : { [disabledFactor]: 1 },
+            to   : { [disabledFactor]: 0 },
         }),
         
-        // Disabling animation: interpolate disableFactor from 0 → 1
+        // Disabling animation: interpolate disabledFactor from 0 → 1
         ...vars({
             '--box-disabling': [
                 ['0.3s', 'ease-out', 'both', 'transition-disabling'],
             ],
         }),
         ...keyframes('transition-disabling', {
-            from : { [disableFactor]: 0 },
-            to   : { [disableFactor]: 1 },
+            from : { [disabledFactor]: 0 },
+            to   : { [disabledFactor]: 1 },
         }),
         
         // Example usage:
-        // - Opacity interpolates with `disableFactor`.
+        // - Opacity interpolates with `disabledFactor`.
         // - 0 → fully visible, 1 → dimmed.
-        opacity: `calc(1 - (${disableFactor} * 0.5))`,
+        opacity: `calc(1 - (${disabledFactor} * 0.5))`,
         
         // Apply composed animations:
         animation,

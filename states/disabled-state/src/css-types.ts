@@ -91,7 +91,7 @@ export interface DisabledStateVars {
      * ### Usage:
      * - Applicable to numeric-based properties such as `opacity`, `color`, `transform`, `box-shadow`, etc.
      * - Implementators are responsible for assigning transitional values in their animations.
-     *   For example, a disabling animation might interpolate `disableFactor` from 0 → 1.
+     *   For example, a disabling animation might interpolate `disabledFactor` from 0 → 1.
      * - Values outside the 0–1 range are allowed, and implementators must handle them appropriately.  
      *   Example of an animation with a spring/bump effect:  
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
@@ -102,29 +102,29 @@ export interface DisabledStateVars {
      * - **Value rationale:**  
      *   - The factor represents the active lifecycle state (disabled), not the baseline (enabled).  
      *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `disableFactor = 0`: enabled (baseline lifecycle state)  
-     *     - `disableFactor = 1`: disabled (active lifecycle state)  
+     *     - `disabledFactor = 0`: enabled (baseline lifecycle state)  
+     *     - `disabledFactor = 1`: disabled (active lifecycle state)  
      * - **Naming rationale:**  
-     *   - `disableFactor` instead of `disabledFactor`: factors consistently use the *base form* of the active state (`disabled`, `readOnly`, `expand`, etc.).  
+     *   - `disabledFactor` instead of `disabledFactor`: factors consistently use the *base form* of the active state (`disabled`, `readOnly`, `expand`, etc.).  
      */
-    disableFactor      : unknown
+    disabledFactor     : unknown
     
     /**
-     * A conditional mirror of `disableFactor` representing the **disabled lifecycle state**.
-     * Mirrors `disableFactor` during transitions and when fully disabled, but is explicitly
+     * A conditional mirror of `disabledFactor` representing the **disabled lifecycle state**.
+     * Mirrors `disabledFactor` during transitions and when fully disabled, but is explicitly
      * set to `unset` once the component reaches its baseline enabled state.
      * 
      * ### Expected values:
      * - **unset** : settled enabled (baseline inactive, declaration dropped)
-     * - **1**     : settled disabled (mirrors `disableFactor`)
-     * - **0 → 1** : disabling transition (mirrors `disableFactor`)
-     * - **1 → 0** : enabling transition (mirrors `disableFactor`)
+     * - **1**     : settled disabled (mirrors `disabledFactor`)
+     * - **0 → 1** : disabling transition (mirrors `disabledFactor`)
+     * - **1 → 0** : enabling transition (mirrors `disabledFactor`)
      * 
      * ### Usage:
      * - Use when dependent properties should be **poisoned** (ignored) in the baseline enabled state.
      *   Example: gating `filter`, `color-mix`, or other overrides that should disappear when enabled.
-     * - During animations and in the fully disabled state, `disableFactorCond` mirrors the numeric
-     *   value of `disableFactor`, ensuring smooth transitions and consistency.
+     * - During animations and in the fully disabled state, `disabledFactorCond` mirrors the numeric
+     *   value of `disabledFactor`, ensuring smooth transitions and consistency.
      * - Applicable to numeric-based properties such as `opacity`, `color`, `transform`, `box-shadow`, etc.
      * - Values outside the 0–1 range are allowed, and implementators must handle them appropriately.  
      *   Example of an animation with a spring/bump effect:  
@@ -137,15 +137,15 @@ export interface DisabledStateVars {
      *   - Mirrors the active lifecycle state (disabled) during transitions and when settled disabled.  
      *   - Drops to `unset` only when fully enabled, so dependent declarations fall back cleanly.  
      *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `disableFactorCond = unset`: settled enabled (baseline inactive, declaration dropped)
-     *     - `disableFactorCond = 0`: enabled during transition (numeric interpolation)
-     *     - `disableFactorCond = 1`: disabled (settled active lifecycle state)  
+     *     - `disabledFactorCond = unset`: settled enabled (baseline inactive, declaration dropped)
+     *     - `disabledFactorCond = 0`: enabled during transition (numeric interpolation)
+     *     - `disabledFactorCond = 1`: disabled (settled active lifecycle state)  
      * - **Naming rationale:**  
-     *   - `disableFactorCond` instead of `disabledFactorCond`: factors consistently use the *base form* of the active state (`disabled`, `readOnly`, `expand`, etc.).  
+     *   - `disabledFactorCond` instead of `disabledFactorCond`: factors consistently use the *base form* of the active state (`disabled`, `readOnly`, `expand`, etc.).  
      *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
      *     and when disabled, but conditionally drops to `unset` at baseline enabled.
      */
-    disableFactorCond  : unknown
+    disabledFactorCond : unknown
 }
 
 

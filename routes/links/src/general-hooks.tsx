@@ -40,7 +40,7 @@ import {
     
     // Hooks:
     useResolvedDisabled,
-}                           from '@reusable-ui/disabled-state'  // Adds enable/disable functionality to UI components, with transition animations and semantic styling hooks.
+}                           from '@reusable-ui/disabled-state'  // Adds enabled/disabled functionality to UI components, with transition animations and semantic styling hooks.
 
 // Utilities:
 import {

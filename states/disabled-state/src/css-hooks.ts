@@ -55,7 +55,7 @@ import {
  *     // Feature: enabled/disabled lifecycle
  *     const {
  *         disabledStateRule,
- *         disabledStateVars: { isEnabled, isDisabled, disableFactor },
+ *         disabledStateVars: { isEnabled, isDisabled, disabledFactor },
  *     } = usingDisabledState({
  *         animationEnabling  : 'var(--box-enabling)',
  *         animationDisabling : 'var(--box-disabling)',
@@ -71,32 +71,32 @@ import {
  *         // Apply enabled/disabled state rules:
  *         ...disabledStateRule(),
  *         
- *         // Enabling animation: interpolate disableFactor from 1 → 0
+ *         // Enabling animation: interpolate disabledFactor from 1 → 0
  *         ...vars({
  *             '--box-enabling': [
  *                 ['0.3s', 'ease-out', 'both', 'transition-enabling'],
  *             ],
  *         }),
  *         ...keyframes('transition-enabling', {
- *             from : { [disableFactor]: 1 },
- *             to   : { [disableFactor]: 0 },
+ *             from : { [disabledFactor]: 1 },
+ *             to   : { [disabledFactor]: 0 },
  *         }),
  *         
- *         // Disabling animation: interpolate disableFactor from 0 → 1
+ *         // Disabling animation: interpolate disabledFactor from 0 → 1
  *         ...vars({
  *             '--box-disabling': [
  *                 ['0.3s', 'ease-out', 'both', 'transition-disabling'],
  *             ],
  *         }),
  *         ...keyframes('transition-disabling', {
- *             from : { [disableFactor]: 0 },
- *             to   : { [disableFactor]: 1 },
+ *             from : { [disabledFactor]: 0 },
+ *             to   : { [disabledFactor]: 1 },
  *         }),
  *         
  *         // Example usage:
- *         // - Opacity interpolates with `disableFactor`.
+ *         // - Opacity interpolates with `disabledFactor`.
  *         // - 0 → fully visible, 1 → dimmed.
- *         opacity: `calc(1 - (${disableFactor} * 0.5))`,
+ *         opacity: `calc(1 - (${disabledFactor} * 0.5))`,
  *         
  *         // Apply composed animations:
  *         animation,
@@ -134,8 +134,8 @@ export const usingDisabledState = (options?: CssDisabledStateOptions): CssDisabl
         ],
         
         // Factor variables for gradual drivers in transitional styling:
-        factorVar       : disabledStateVars.disableFactor,
-        factorCondVar   : disabledStateVars.disableFactorCond,
+        factorVar       : disabledStateVars.disabledFactor,
+        factorCondVar   : disabledStateVars.disabledFactorCond,
         ifInactiveState : ifEnabled,
         activeFactors   : [
             {

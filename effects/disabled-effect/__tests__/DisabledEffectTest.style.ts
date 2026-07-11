@@ -14,7 +14,7 @@ import {
 } from './effect-intents.js'
 
 // Test style for DisabledEffect
-// Demonstrates how `disableFactorCond` drives transition effects
+// Demonstrates how `disabledFactorCond` drives transition effects
 // with simplified static colors for easier testing.
 export default function disabledEffectTestStyle() {
     // Features:

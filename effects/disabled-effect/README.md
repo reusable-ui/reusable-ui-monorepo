@@ -15,7 +15,7 @@ Authors who need more control can override or extend the defaults, but for most 
 ## 🔗 Integration with Disabled State
 
 `disabled-effect` cannot operate in isolation.  
-It relies on the [`@reusable-ui/disabled-state`](https://www.npmjs.com/package/@reusable-ui/disabled-state) package to drive the `disableFactorCond` CSS variable, which reflects the progression of the disabled state (from enabled → fully disabled).  
+It relies on the [`@reusable-ui/disabled-state`](https://www.npmjs.com/package/@reusable-ui/disabled-state) package to drive the `disabledFactorCond` CSS variable, which reflects the progression of the disabled state (from enabled → fully disabled).  
 
 - `disabled-state` tracks whether a component is disabled.  
 - `disabled-effect` consumes that state and applies visual adjustments (opacity, saturation, cursor).  
@@ -84,18 +84,18 @@ export const disableableBoxStyle = () => {
     // States:
     
     // Enabled/disabled lifecycle:
-    // - Exposes `disableFactor` (0 → 1) to represent transition progress
-    // - Associates enabling/disabling animations to drive `disableFactor` smoothly
+    // - Exposes `disabledFactor` (0 → 1) to represent transition progress
+    // - Associates enabling/disabling animations to drive `disabledFactor` smoothly
     const {
         disabledStateRule,
-        disabledStateVars: { disableFactor },
+        disabledStateVars: { disabledFactor },
     } = usingDisabledState({
         animationEnabling  : 'var(--box-enabling)',
         animationDisabling : 'var(--box-disabling)',
     });
     
     // Enabled/disabled visual effect:
-    // - Consumes `disableFactor` from disabled state
+    // - Consumes `disabledFactor` from disabled state
     // - Gradually adjusts opacity and saturation based on transition progress
     // - Cursor switches discretely when disabled
     // - Allows customization of how the "disabled" appearance should look
@@ -134,28 +134,28 @@ export const disableableBoxStyle = () => {
         
         // Define animations for enabling/disabling:
         
-        // 🔽 Enabling: smoothly interpolate disableFactor from 1 → 0
+        // 🔽 Enabling: smoothly interpolate disabledFactor from 1 → 0
         ...vars({
             '--box-enabling': [
                 ['0.3s', 'ease-out', 'both', 'effect-enabling'],
             ],
         }),
         ...keyframes('effect-enabling', {
-            from : { [disableFactor]: 1 },
-            // '10%': { [disableFactor]: -0.2 }, // Optional undershoot for a "bounce back" effect
-            to   : { [disableFactor]: 0 },
+            from : { [disabledFactor]: 1 },
+            // '10%': { [disabledFactor]: -0.2 }, // Optional undershoot for a "bounce back" effect
+            to   : { [disabledFactor]: 0 },
         }),
         
-        // 🔼 Disabling: smoothly interpolate disableFactor from 0 → 1
+        // 🔼 Disabling: smoothly interpolate disabledFactor from 0 → 1
         ...vars({
             '--box-disabling': [
                 ['0.3s', 'ease-out', 'both', 'effect-disabling'],
             ],
         }),
         ...keyframes('effect-disabling', {
-            from : { [disableFactor]: 0 },
-            // '90%': { [disableFactor]: 1.2 }, // Optional overshoot for a "bump" effect
-            to   : { [disableFactor]: 1 },
+            from : { [disabledFactor]: 0 },
+            // '90%': { [disabledFactor]: 1.2 }, // Optional overshoot for a "bump" effect
+            to   : { [disabledFactor]: 1 },
         }),
         
         // Example usage of composed variables:
@@ -174,7 +174,7 @@ export const disableableBoxStyle = () => {
 
 #### 🧠 How CSS Disabled Effect Works
 
-The [`@reusable-ui/disabled-state`](https://www.npmjs.com/package/@reusable-ui/disabled-state) package drives the `disableFactorCond` CSS variable, which reflects the progression of the disabled state (from enabled → fully disabled).  
+The [`@reusable-ui/disabled-state`](https://www.npmjs.com/package/@reusable-ui/disabled-state) package drives the `disabledFactorCond` CSS variable, which reflects the progression of the disabled state (from enabled → fully disabled).  
 
 `disabled-effect` consumes this factor and applies coordinated formulas that de-emphasize the entire component surface,
 making components **visually muted** when disabled.

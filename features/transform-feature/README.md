@@ -61,8 +61,8 @@ import { usingTransformFeature } from '@reusable-ui/transform-feature';
 import { style } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { disableStateRule } = usingDisabledState();
-    const { activeStateRule  } = usingActiveState();
+    const { disabledStateRule } = usingDisabledState();
+    const { activeStateRule   } = usingActiveState();
     
     const {
         transformFeatureRule,
@@ -80,7 +80,7 @@ export const componentStyle = () => {
         // Define component styling here.
         
         // Apply supporting state rules:
-        ...disableStateRule(),
+        ...disabledStateRule(),
         ...activeStateRule(),
         
         // Apply compound transform feature:

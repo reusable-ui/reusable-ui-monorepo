@@ -62,14 +62,14 @@ export const usingDisabledEffect = (options?: CssDisabledEffectOptions): CssDisa
     
     
     // States:
-    const { disabledStateVars : { isDisabled, disableFactor } } = usingDisabledState();
+    const { disabledStateVars : { isDisabled, disabledFactor } } = usingDisabledState();
     
     
     
     return {
         disabledEffectRule : () => style({
             // Disabled filter:
-            [disabledEffectVars.disabledFilter]: composeFilterEffect(disableFactor, { ...restOptions, enablesReverseIntent, opacity, saturate }),
+            [disabledEffectVars.disabledFilter]: composeFilterEffect(disabledFactor, { ...restOptions, enablesReverseIntent, opacity, saturate }),
             
             /**
              * Disabled cursor:
