@@ -1,6 +1,6 @@
-# @reusable-ui/excite-effect 📦  
+# @reusable-ui/excited-effect 📦  
 
-**excite-effect** provides **default visual effects** for how components visually respond while in the excited state.  
+**excited-effect** provides **default visual effects** for how components visually respond while in the excited state.  
 It offers styling authors a **common foundation** for excitement effects that blink by zooming in and flashing color,
 making components **visually highlighted** when excited.
 
@@ -8,21 +8,21 @@ The effects are designed to feel natural to users:
 - Components draw attention through rhythmic pulses while in the excited state.  
 - Visual cues remain consistent across components, ensuring a predictable and cohesive user experience.  
 
-By using `usingExciteEffect()`, you can apply these effects consistently across your components — grabbing user attention through rhythmic pulses and color shifts — with optional customization for color effects.  
+By using `usingExcitedEffect()`, you can apply these effects consistently across your components — grabbing user attention through rhythmic pulses and color shifts — with optional customization for color effects.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
 
 ## 🔗 Integration with Excited State
 
-`excite-effect` cannot operate in isolation.  
+`excited-effect` cannot operate in isolation.  
 It relies on the [`@reusable-ui/excited-state`](https://www.npmjs.com/package/@reusable-ui/excited-state) package to drive the `excitedFactorCond` CSS variable, which reflects the dynamic rhythm of the excitement state (a continuously oscillating activity driver).  
 
 - `excited-state` tracks the excitement activity.  
-- `excite-effect` consumes that state and applies visual adjustments (opacity, brightness, contrast, saturation, etc.).  
-- Together, they form a unified system: `excited-state` supplies the factor, and `excite-effect` renders the visual effect.  
+- `excited-effect` consumes that state and applies visual adjustments (opacity, brightness, contrast, saturation, etc.).  
+- Together, they form a unified system: `excited-state` supplies the factor, and `excited-effect` renders the visual effect.  
 
 This separation keeps responsibilities clear:
 - **State logic** lives in `excited-state`.  
-- **Visual effect** lives in `excite-effect`.  
+- **Visual effect** lives in `excited-effect`.  
 
 ## ✨ Features
 ✔ Smooth rhythmic movement while excited  
@@ -36,17 +36,17 @@ This separation keeps responsibilities clear:
    - Negative configurations → effect gradually **withdraws** while the component is excited (fully un-applied once idle)  
 
 ## 📦 Installation
-Install **@reusable-ui/excite-effect** via npm or yarn:
+Install **@reusable-ui/excited-effect** via npm or yarn:
 
 ```sh
-npm install @reusable-ui/excite-effect
+npm install @reusable-ui/excited-effect
 # or
-yarn add @reusable-ui/excite-effect
+yarn add @reusable-ui/excited-effect
 ```
 
 ## 🧩 Exported CSS Hooks
 
-### `usingExciteEffect(options?: CssExciteEffectOptions): CssExciteEffect`
+### `usingExcitedEffect(options?: CssExcitedEffectOptions): CssExcitedEffect`
 
 Applies excited-state effects that blink by zooming in and flashing color,
 making components **visually highlighted** when excited.
@@ -67,7 +67,7 @@ import { usingTransformFeature } from '@reusable-ui/transform-feature';
 import { usingExcitedState } from '@reusable-ui/excited-state';
 
 // Effects:
-import { usingExciteEffect } from '@reusable-ui/excite-effect';
+import { usingExcitedEffect } from '@reusable-ui/excited-effect';
 
 // CSS-in-JS:
 import { style, vars, keyframes } from '@cssfn/core';
@@ -104,8 +104,8 @@ export const excitableBoxStyle = () => {
     // - Gradually adjusts filter effects and scale following the factor's rhythmic movement
     // - Allows customization of how the "excited" appearance should look
     const {
-        exciteEffectRule,
-    } = usingExciteEffect({
+        excitedEffectRule,
+    } = usingExcitedEffect({
         // Invert:
         // Values `0` → no inversion
         // Values `1` → fully inverted
@@ -131,7 +131,7 @@ export const excitableBoxStyle = () => {
         ...excitedStateRule(),
         
         // Attach excitement effect rules (visual feedback while excited):
-        ...exciteEffectRule(),
+        ...excitedEffectRule(),
         
         // Define animations for excitement:
         
@@ -165,7 +165,7 @@ export const excitableBoxStyle = () => {
 
 The [`@reusable-ui/excited-state`](https://www.npmjs.com/package/@reusable-ui/excited-state) package drives the `excitedFactorCond` CSS variable, which reflects the dynamic rhythm of the excitement state (a continuously oscillating activity driver).  
 
-`excite-effect` consumes this factor and applies a filter formula designed to grab user attention,
+`excited-effect` consumes this factor and applies a filter formula designed to grab user attention,
 making components **visually highlighted** while excited.
 
 ##### **Filter Formula**
@@ -178,7 +178,7 @@ making components **visually highlighted** while excited.
 ##### ✨ Key Idea
 
 - **Excited-state** provides the *rhythm factor*.  
-- **Excite-effect** applies the *filter formulas* based on that factor.  
+- **Excited-effect** applies the *filter formulas* based on that factor.  
 - Together, they ensure components pulse, zoom, and flash in a way that draws attention while excited.  
 
 ## 📚 Related Packages
@@ -186,16 +186,16 @@ making components **visually highlighted** while excited.
 - [`@reusable-ui/excited-state`](https://www.npmjs.com/package/@reusable-ui/excited-state) – Provides excitement state tracking for components.
 
 ## 📖 Part of the Reusable-UI Framework  
-**@reusable-ui/excite-effect** is a core utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
+**@reusable-ui/excited-effect** is a core utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
 
 ## 🤝 Contributing  
-Want to improve **@reusable-ui/excite-effect**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
+Want to improve **@reusable-ui/excited-effect**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
 
 ## 🛡️ License  
 Licensed under the **MIT License** – see the [LICENSE](./LICENSE) file for details.  
 
 ---
 
-🚀 **@reusable-ui/excite-effect delivers predictable, reusable visual feedback for excitement states in your UI.**  
+🚀 **@reusable-ui/excited-effect delivers predictable, reusable visual feedback for excitement states in your UI.**  
 Give it a ⭐ on GitHub if you find it useful!  

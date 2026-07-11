@@ -1,12 +1,12 @@
 {
-  "name": "@reusable-ui/excite-effect",
+  "name": "@reusable-ui/excited-effect",
   "version": "7.0.0",
   "description": "Provides default visual effects for components when in the excited state. Blinks by zooming in and flashing color to make components visually highlighted when excited.",
   "keywords": [
     "excitement",
     "excited",
     "excite",
-    "excite-effect",
+    "excited-effect",
     "excited-state",
     "activity",
     "animation",
@@ -27,7 +27,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "effects/excite-effect"
+    "directory": "effects/excited-effect"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"

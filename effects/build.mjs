@@ -4,7 +4,7 @@ import { existsSync } from 'fs';
 
 const effectDirs = [
     'filter-effect',
-    'excite-effect',
+    'excited-effect',
     'disabled-effect',
     'focus-effect',
     'hover-effect',

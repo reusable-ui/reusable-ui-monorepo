@@ -6,8 +6,8 @@ import {
 
 // Types:
 import {
-    type CssExciteEffectOptions,
-    type CssExciteEffect,
+    type CssExcitedEffectOptions,
+    type CssExcitedEffect,
 }                           from './css-types.js'
 import {
     type CssNumericFormula,
@@ -27,7 +27,7 @@ import {
 
 // CSS Variables:
 import {
-    exciteEffectVars,
+    excitedEffectVars,
 }                           from './css-internal-variables.js'
 
 // Reusable-ui states:
@@ -54,7 +54,7 @@ import {
  * @param options - An optional configuration for customizing excitement effects.
  * @returns A CSS API containing effect rules and CSS variables for grabbing user attention when excited.
  */
-export const usingExciteEffect = (options?: CssExciteEffectOptions): CssExciteEffect => {
+export const usingExcitedEffect = (options?: CssExcitedEffectOptions): CssExcitedEffect => {
     // Extract options and assign defaults:
     const {
         enablesReverseIntent = true, // Defaults to `true` (enables reverse intent, allowing negative values to fade *out* the effect when excited).
@@ -70,17 +70,17 @@ export const usingExciteEffect = (options?: CssExciteEffectOptions): CssExciteEf
     const { excitedStateVars : { excitedFactor } } = usingExcitedState();
     
     // Variables:
-    const { exciteFilter, exciteTransform } = exciteEffectVars;
+    const { excitedFilter, excitedTransform } = excitedEffectVars;
     
     
     
     return {
-        exciteEffectRule : () => style({
+        excitedEffectRule : () => style({
             // Excitement filter:
-            [exciteFilter   ] : composeFilterEffect(excitedFactor, { ...restOptions, enablesReverseIntent, invert }),
+            [excitedFilter   ] : composeFilterEffect(excitedFactor, { ...restOptions, enablesReverseIntent, invert }),
             
             // Excitement transform:
-            [exciteTransform] : (
+            [excitedTransform] : (
                 (scale !== null)
                 ? ((): `scale(${string})` => {
                     // Compose a direction-aware factor:
@@ -125,6 +125,6 @@ export const usingExciteEffect = (options?: CssExciteEffectOptions): CssExciteEf
             ),
         }),
         
-        exciteEffectVars,
-    } satisfies CssExciteEffect;
+        excitedEffectVars,
+    } satisfies CssExcitedEffect;
 };

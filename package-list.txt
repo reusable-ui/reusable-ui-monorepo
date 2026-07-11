@@ -228,7 +228,7 @@ For hypen character, use standard hyphen (-) instead of non-breaking hyphen (‑
 
 // Reusable-ui effects:
 @reusable-ui/filter-effect          non_peer
-@reusable-ui/excite-effect          non_peer
+@reusable-ui/excited-effect         non_peer
 @reusable-ui/disabled-effect        non_peer
 @reusable-ui/focus-effect           non_peer
 @reusable-ui/hover-effect           non_peer

@@ -1,12 +1,12 @@
 import React, { type CSSProperties, useMemo } from 'react'
 import { HydrateStyles } from '@cssfn/cssfn-react'
-import { useExciteEffectTestStyles } from './ExciteEffectTest.loader.js'
-import { useExciteEffectReversedTestStyles } from './ExciteEffectReversedTest.loader.js'
+import { useExcitedEffectTestStyles } from './ExcitedEffectTest.loader.js'
+import { useExcitedEffectReversedTestStyles } from './ExcitedEffectReversedTest.loader.js'
 import { usingExcitedState } from '@reusable-ui/excited-state'
 
 
 
-export interface ExciteEffectTestProps {
+export interface ExcitedEffectTestProps {
     /**
      * Simulates the `activeFactor` CSS variable.
      * 
@@ -35,7 +35,7 @@ export interface ExciteEffectTestProps {
 }
 
 /**
- * Test component for ExciteEffect.
+ * Test component for ExcitedEffect.
  * 
  * - Mocks `activeFactor` via inline style for controlled testing.
  * - Uses static colors for simplicity:
@@ -43,15 +43,15 @@ export interface ExciteEffectTestProps {
  *   - Outlined background → transparent `oklch(0 0 0 / 0)`
  *   - Mild background     → light blue  `oklch(0.7 0.2 265 / 1)`
  */
-export const ExciteEffectTest = (props: ExciteEffectTestProps) => {
+export const ExcitedEffectTest = (props: ExcitedEffectTestProps) => {
     const {
         activeFactor  = 'unset',
         isExcited     = false,
         reverseIntent = true,
     } = props;
     
-    const styles = useExciteEffectTestStyles();
-    const reversedStyles = useExciteEffectReversedTestStyles();
+    const styles = useExcitedEffectTestStyles();
+    const reversedStyles = useExcitedEffectReversedTestStyles();
     
     const { excitedStateVars  : { excitedFactor: excitedFactorVar } } = usingExcitedState();
     
@@ -70,11 +70,11 @@ export const ExciteEffectTest = (props: ExciteEffectTestProps) => {
         <div>
             <HydrateStyles />
             <div
-                data-testid="excite-effect-test"
+                data-testid="excited-effect-test"
                 className={`${reverseIntent ? reversedStyles.main : styles.main} ${isExcited ? 'is-excited' : 'not-excited' }`}
                 style={inlineStyle}
             >
-                Excite Effect Test
+                Excited Effect Test
             </div>
         </div>
     );

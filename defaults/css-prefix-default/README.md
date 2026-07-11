@@ -135,7 +135,7 @@ This avoids **hard-coded prefix strings**, reducing the risk of accidental colli
 | defaultValidityEffectPrefix       | vale  |
 | defaultDragEffectPrefix           | drage |
 | defaultSortEffectPrefix           | sorte |
-| defaultExciteEffectPrefix         | exce  |
+| defaultExcitedEffectPrefix        | exce  |
 | defaultCollapseEffectPrefix       | cole  |
 | defaultActiveEffectPrefix         | acte  |
 | defaultViewEffectPrefix           | viewe |

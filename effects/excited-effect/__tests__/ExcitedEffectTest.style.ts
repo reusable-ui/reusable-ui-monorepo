@@ -1,7 +1,7 @@
 import { style } from '@cssfn/core'
 import { usingFilterFeature } from '@reusable-ui/filter-feature';
 import { usingTransformFeature } from '@reusable-ui/transform-feature';
-import { usingExciteEffect } from '../dist/index.js'
+import { usingExcitedEffect } from '../dist/index.js'
 import {
     activeTargetOpacity,
     activeTargetInvert,
@@ -15,10 +15,10 @@ import {
     activeTargetScale,
 } from './effect-intents.js'
 
-// Test style for ExciteEffect
+// Test style for ExcitedEffect
 // Demonstrates how `excitedFactorCond` drives transition effects
 // with simplified static colors for easier testing.
-export default function exciteEffectTestStyle() {
+export default function excitedEffectTestStyle() {
     // Features:
     const {
         filterFeatureRule,
@@ -31,8 +31,8 @@ export default function exciteEffectTestStyle() {
     
     // Effects:
     const {
-        exciteEffectRule,
-    } = usingExciteEffect({
+        excitedEffectRule,
+    } = usingExcitedEffect({
         enablesReverseIntent : false,
         opacity              : activeTargetOpacity,
         invert               : activeTargetInvert,
@@ -61,7 +61,7 @@ export default function exciteEffectTestStyle() {
         ...transformFeatureRule(),
         
         // Effects:
-        ...exciteEffectRule(),
+        ...excitedEffectRule(),
         
         // Apply composed variables:
         filter,

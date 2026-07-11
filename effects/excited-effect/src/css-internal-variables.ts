@@ -6,12 +6,12 @@ import {
 
 // Types:
 import {
-    type ExciteEffectVars,
+    type ExcitedEffectVars,
 }                           from './css-types.js'
 
 // Reusable-ui defaults:
 import {
-    defaultExciteEffectPrefix,
+    defaultExcitedEffectPrefix,
 }                           from '@reusable-ui/css-prefix-default'  // A centralized default CSS variable prefixes across the Reusable-UI core system, ensuring unique, predictable, and consistent prefixes.
 
 // Reusable-ui features:
@@ -30,10 +30,10 @@ import {
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [exciteEffectVars] = cssVars<ExciteEffectVars>({ prefix: defaultExciteEffectPrefix, minify: false });
+export const [excitedEffectVars] = cssVars<ExcitedEffectVars>({ prefix: defaultExcitedEffectPrefix, minify: false });
 
 // Register the excitement-related filter globally for composing a unified filter stack across effect packages:
-filterRegistry.registerFilter(exciteEffectVars.exciteFilter);
+filterRegistry.registerFilter(excitedEffectVars.excitedFilter);
 
 // Register the excitement-related transform globally for composing a unified transform stack across effect packages:
-transformRegistry.registerTransform(exciteEffectVars.exciteTransform);
+transformRegistry.registerTransform(excitedEffectVars.excitedTransform);

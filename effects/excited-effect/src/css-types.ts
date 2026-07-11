@@ -32,11 +32,11 @@ export {
 
 
 /**
- * A list of CSS variables used for excite-effect styling.
+ * A list of CSS variables used for excited-effect styling.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
-export interface ExciteEffectVars {
+export interface ExcitedEffectVars {
     /**
      * References the filter applied when the component is in the excited state.
      * 
@@ -44,7 +44,7 @@ export interface ExciteEffectVars {
      * - Typically not consumed directly — instead use:
      *   `const { filterFeatureVars: { filter } } = usingFilterFeature()`
      */
-    exciteFilter    : unknown
+    excitedFilter    : unknown
     
     /**
      * References the transform applied when the component is in the excited state.
@@ -54,7 +54,7 @@ export interface ExciteEffectVars {
      * - Typically not consumed directly — instead use:
      *   `const { transformFeatureVars: { transform } } = usingTransformFeature()`
      */
-    exciteTransform : unknown
+    excitedTransform : unknown
 }
 
 
@@ -62,7 +62,7 @@ export interface ExciteEffectVars {
 /**
  * Configuration options for customizing excitement effects.
  */
-export interface CssExciteEffectOptions
+export interface CssExcitedEffectOptions
     extends
         // Bases:
         CssFilterEffectOptions
@@ -380,7 +380,7 @@ export interface CssExciteEffectOptions
  * Provides a CSS API for applying excited-state effects that blink by zooming in and flashing color,
  * making components **visually highlighted** when excited.
  */
-export interface CssExciteEffect {
+export interface CssExcitedEffect {
     /**
      * Attaches CSS rules for excited-state effects that blink by zooming in and flashing color,
      * making components **visually highlighted** when excited.
@@ -393,14 +393,14 @@ export interface CssExciteEffect {
      * 
      * Runs continuously while the component is in the excited state by animating filter effects.
      */
-    exciteEffectRule : Lazy<CssRule>
+    excitedEffectRule : Lazy<CssRule>
     
     /**
-     * Exposes excite-effect CSS variables for activity-driven effects.
+     * Exposes excited-effect CSS variables for activity-driven effects.
      * 
      * Includes:
-     * - `exciteFilter`    : Opacity, brightness, contrast, saturation, hue-rotate, drop-shadow, blur, and blur radius interpolation during excited activity.
-     * - `exciteTransform` : Scale interpolation during excited activity.
+     * - `excitedFilter`    : Opacity, brightness, contrast, saturation, hue-rotate, drop-shadow, blur, and blur radius interpolation during excited activity.
+     * - `excitedTransform` : Scale interpolation during excited activity.
      * 
      * ⚠️ **Caution**: These variables are invalid when the component is idle (not excited).
      * If used incorrectly, they can invalidate CSS declarations.
@@ -408,5 +408,5 @@ export interface CssExciteEffect {
      * 
      * These variables are strongly typed and automatically resolve to consistent CSS variable names.
      */
-    exciteEffectVars : CssVars<ExciteEffectVars>
+    excitedEffectVars : CssVars<ExcitedEffectVars>
 }

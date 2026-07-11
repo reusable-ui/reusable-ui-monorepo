@@ -1,6 +1,6 @@
 import React from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
-import { type ExciteEffectTestProps, ExciteEffectTest } from './ExciteEffectTest.js';
+import { type ExcitedEffectTestProps, ExcitedEffectTest } from './ExcitedEffectTest.js';
 import chroma from 'chroma-js'
 import {
     type ExpectedDropShadow,
@@ -20,7 +20,7 @@ import {
 
 
 
-interface ExciteEffectTestCase {
+interface ExcitedEffectTestCase {
     // Test Inputs:
     
     /**
@@ -29,9 +29,9 @@ interface ExciteEffectTestCase {
     title             : string
     
     /**
-     * Props to pass to the `<ExciteEffectTest>` component.
+     * Props to pass to the `<ExcitedEffectTest>` component.
      */
-    props             : ExciteEffectTestProps
+    props             : ExcitedEffectTestProps
     
     // Expected Outcomes:
     expectedFilters   : {
@@ -99,7 +99,7 @@ interface ExciteEffectTestCase {
 
 
 
-const testCases: ExciteEffectTestCase[] = [
+const testCases: ExcitedEffectTestCase[] = [
     // Idle → no effects
     ...[false, true].map((reverseIntent) => ({
         title             : `factor=unset → expect no effects${reverseIntent ? ' (reverse intent)' : ''}`,
@@ -120,7 +120,7 @@ const testCases: ExciteEffectTestCase[] = [
             dropShadow    : null,
         },
         expectedTransform : 'none',
-    } satisfies ExciteEffectTestCase)),
+    } satisfies ExcitedEffectTestCase)),
     
     // factor=0 → baseline neutral (or configured if reverse intent)
     ...[false, true].map((reverseIntent) => ({
@@ -151,7 +151,7 @@ const testCases: ExciteEffectTestCase[] = [
             ),
         },
         expectedTransform : !reverseIntent ? [1, 0, 0, 1, 0, 0] : [activeTargetScale, 0, 0, activeTargetScale, 0, 0],
-    } satisfies ExciteEffectTestCase)),
+    } satisfies ExcitedEffectTestCase)),
     
     // factor=1 → fully configured (or baseline neutral if reverse intent)
     ...[false, true].map((reverseIntent) => ({
@@ -182,7 +182,7 @@ const testCases: ExciteEffectTestCase[] = [
             ),
         },
         expectedTransform : !reverseIntent ? [activeTargetScale, 0, 0, activeTargetScale, 0, 0] : [1, 0, 0, 1, 0, 0],
-    } satisfies ExciteEffectTestCase)),
+    } satisfies ExcitedEffectTestCase)),
     
     // factor=fractional → partial interpolation
     ...([0.25, 0.5, 0.75] as const).flatMap((factor) =>
@@ -210,7 +210,7 @@ const testCases: ExciteEffectTestCase[] = [
                 },
             },
             expectedTransform : !reverseIntent ? [Math.max(0, 1 - (1 - activeTargetScale) * factor), 0, 0, Math.max(0, 1 - (1 - activeTargetScale) * factor), 0, 0] : [1 + (activeTargetScale - 1) * (1 - factor), 0, 0, 1 + (activeTargetScale - 1) * (1 - factor), 0, 0],
-        } satisfies ExciteEffectTestCase)),
+        } satisfies ExcitedEffectTestCase)),
     ),
     
     // factor beyond range → extrapolated but clamped/limited
@@ -239,7 +239,7 @@ const testCases: ExciteEffectTestCase[] = [
                 },
             },
             expectedTransform : !reverseIntent ? [Math.max(0, 1 - (1 - activeTargetScale) * factor), 0, 0, Math.max(0, 1 - (1 - activeTargetScale) * factor), 0, 0] : [Math.max(0, 1 - (1 - activeTargetScale) * (1 - factor)), 0, 0, Math.max(0, 1 - (1 - activeTargetScale) * (1 - factor)), 0, 0],
-        } satisfies ExciteEffectTestCase)),
+        } satisfies ExcitedEffectTestCase)),
     ),
 ];
 
@@ -254,14 +254,14 @@ const toKebabCase = (input: string): string => input.replace(/([a-z])([A-Z])/g, 
 
 
 
-test.describe('usingExciteEffect', () => {
+test.describe('usingExcitedEffect', () => {
     for (const { title, props, expectedFilters, expectedTransform } of testCases) {
         test(title, async ({ mount }) => {
-            const component = await mount(<ExciteEffectTest {...props} />);
-            const box = component.getByTestId('excite-effect-test');
+            const component = await mount(<ExcitedEffectTest {...props} />);
+            const box = component.getByTestId('excited-effect-test');
             
             // Verify the component renders correctly:
-            await expect(box).toContainText('Excite Effect Test');
+            await expect(box).toContainText('Excited Effect Test');
             
             // Allow time for stylesheets to fully apply:
             await new Promise((resolve) => setTimeout(resolve, 500));

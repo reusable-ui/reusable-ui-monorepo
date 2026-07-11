@@ -110,7 +110,7 @@
     "states/collapse-state",
     "states/view-state",
     "effects/filter-effect",
-    "effects/excite-effect",
+    "effects/excited-effect",
     "effects/disabled-effect",
     "effects/focus-effect",
     "effects/hover-effect",
