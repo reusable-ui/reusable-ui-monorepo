@@ -1,15 +1,15 @@
 /**
- * Props for specifying the emphasis appearance of the component.
+ * Props for specifying the emphasized appearance of the component.
  * 
  * Accepts an optional `emphasized`, defaulting to a default when not provided.
  */
 export interface EmphasisVariantProps {
     /**
-     * Specifies the desired emphasis appearance of the component:
+     * Specifies the desired emphasized appearance of the component:
      * - `true`     : emphasizes the component
      * - `false`    : does not emphasize the component
-     * - `'inherit'`: inherits emphasis appearance from a parent context
-     * - `'invert'` : flips the inherited emphasis appearance (`true` ⇄ `false`)
+     * - `'inherit'`: inherits emphasized appearance from a parent context
+     * - `'invert'` : flips the inherited emphasized appearance (`true` ⇄ `false`)
      * 
      * Defaults to `'inherit'` (inherits from parent context).
      */
@@ -17,24 +17,24 @@ export interface EmphasisVariantProps {
 }
 
 /**
- * Optional configuration options for specifying the default emphasis appearance.
+ * Optional configuration options for specifying the default emphasized appearance.
  * 
  * Applied when the component does not explicitly provide the `emphasized` prop.
  */
 export interface EmphasisVariantOptions {
     /**
-     * Specifies the default emphasis appearance when no `emphasized` prop is explicitly provided:
+     * Specifies the default emphasized appearance when no `emphasized` prop is explicitly provided:
      * - `true`     : emphasizes the component
      * - `false`    : does not emphasize the component
-     * - `'inherit'`: inherits emphasis appearance from a parent context
-     * - `'invert'` : flips the inherited emphasis appearance (`true` ⇄ `false`)
+     * - `'inherit'`: inherits emphasized appearance from a parent context
+     * - `'invert'` : flips the inherited emphasized appearance (`true` ⇄ `false`)
      * 
      * Defaults to `'inherit'` (inherits from parent context).
      */
     defaultEmphasized   ?: boolean | 'inherit' | 'invert'
     
     /**
-     * Specifies the fallback emphasis appearance when no effective emphasized value can be resolved:
+     * Specifies the fallback emphasized appearance when no effective emphasized value can be resolved:
      * - `true`  : emphasizes the component
      * - `false` : does not emphasize the component
      * 
@@ -46,7 +46,7 @@ export interface EmphasisVariantOptions {
 }
 
 /**
- * Represents the final resolved emphasis state of the component, along with its associated CSS class name.
+ * Represents the final resolved emphasized state of the component, along with its associated CSS class name.
  */
 export interface EmphasisVariant {
     /**

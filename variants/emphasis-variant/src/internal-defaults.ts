@@ -6,19 +6,19 @@ import {
 
 
 /**
- * A default declarative emphasis appearance to apply when neither `emphasized` prop nor `defaultEmphasized` option is explicitly provided.
+ * A default declarative emphasized appearance to apply when neither `emphasized` prop nor `defaultEmphasized` option is explicitly provided.
  * 
- * This fallback represents an inherited emphasis appearance by default,
+ * This fallback represents an inherited emphasized appearance by default,
  * allowing components to adapt to their surrounding context unless explicitly set.
  * 
- * - `'inherit'`: inherits emphasis appearance from a parent context.
+ * - `'inherit'`: inherits emphasized appearance from a parent context.
  */
 export const defaultDeclarativeEmphasized : Required<EmphasisVariantProps>['emphasized'] = 'inherit';
 
 
 
 /**
- * A default fallback emphasis appearance to apply when no `fallbackEmphasized` option is explicitly provided and no effective emphasized value can be resolved.
+ * A default fallback emphasized appearance to apply when no `fallbackEmphasized` option is explicitly provided and no effective emphasized value can be resolved.
  * 
  * This fallback applies when `emphasized` prop is set to `'inherit'` or `'invert'` but no context is available.
  * 

@@ -36,7 +36,7 @@ import {
 
 
 
-/** The inheritable and invertable variant definition for emphasis variant management. */
+/** The inheritable and invertable variant definition for emphasized variant management. */
 const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inherit', 'invert'> = {
     // Defaults:
     defaultVariant          : defaultDeclarativeEmphasized,
@@ -81,7 +81,7 @@ export const useResolvedEmphasized = (props: EmphasisVariantProps, options?: Emp
     
     
     
-    // Resolve effective emphasis variant:
+    // Resolve effective emphasized variant:
     return useResolvedInvertableVariant<boolean, 'inherit', 'invert'>(
         // Props:
         { variant },

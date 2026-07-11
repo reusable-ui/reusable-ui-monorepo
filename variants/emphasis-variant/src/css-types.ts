@@ -64,7 +64,7 @@ export interface EmphasisVariantVars {
     notEmphasized  : unknown
     
     /**
-     * A normalized factor representing the **emphasis mode**.
+     * A normalized factor representing the **emphasized state**.
      * Useful for driving algebraic formulas in `calc(...)` to enable complex styling.
      * 
      * ### Expected values:

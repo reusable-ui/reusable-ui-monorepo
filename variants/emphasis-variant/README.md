@@ -4,7 +4,7 @@ A utility for managing visual emphasis consistently across React components.
 Provides hooks and CSS helpers for emphasis resolution and conditional styling — ideal for buttons, cards, badges, alerts, or any component that requires visual prioritization.
 
 ## ✨ Features
-✔ Boolean-based emphasis variant with inheritance and inversion  
+✔ Boolean-based emphasized variant with inheritance and inversion  
 ✔ Hook-based resolution with customizable fallback behavior  
 ✔ CSS selectors and conditional rule helpers for emphasis-aware styling  
 ✔ Seamless integration across appearance, layout, and interaction systems
@@ -117,7 +117,7 @@ Resolution priority:
 
 ```ts
 import {
-    // Emphasis Selectors:
+    // Emphasized Selectors:
     isEmphasizedSelector,    // Targets `.is-emphasized` classes
     isNotEmphasizedSelector, // Targets `.not-emphasized` classes
     
@@ -179,7 +179,7 @@ export const componentStyle = () => {
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
-        // Apply conditional styling based on current emphasis mode:
+        // Apply conditional styling based on current emphasized state:
         ...fallback({
             // Emphasized styling:
             fontWeight : `${isEmphasized} bold`,
