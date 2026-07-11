@@ -4,7 +4,7 @@
 
 `90%: 1.2` => `90%: 1.1` x--- no ---x
 
-"(`disable`, `readOnly`, `expand`, `focus`, `hover`, `press`, etc.)" => "(`disable`, `readOnly`, `expand`, etc.)"
+"(`disabled`, `readOnly`, `expand`, `focus`, `hover`, `press`, etc.)" => "(`disabled`, `readOnly`, `expand`, etc.)"
 
 "0 → fully visible, 1 → dimmed" => "0 → fully visible (editable), 1 → dimmed (read-only)"
 

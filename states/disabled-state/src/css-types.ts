@@ -105,7 +105,7 @@ export interface DisabledStateVars {
      *     - `disableFactor = 0`: enabled (baseline lifecycle state)  
      *     - `disableFactor = 1`: disabled (active lifecycle state)  
      * - **Naming rationale:**  
-     *   - `disableFactor` instead of `disabledFactor`: factors consistently use the *base form* of the active state (`disable`, `readOnly`, `expand`, etc.).  
+     *   - `disableFactor` instead of `disabledFactor`: factors consistently use the *base form* of the active state (`disabled`, `readOnly`, `expand`, etc.).  
      */
     disableFactor      : unknown
     
@@ -141,7 +141,7 @@ export interface DisabledStateVars {
      *     - `disableFactorCond = 0`: enabled during transition (numeric interpolation)
      *     - `disableFactorCond = 1`: disabled (settled active lifecycle state)  
      * - **Naming rationale:**  
-     *   - `disableFactorCond` instead of `disabledFactorCond`: factors consistently use the *base form* of the active state (`disable`, `readOnly`, `expand`, etc.).  
+     *   - `disableFactorCond` instead of `disabledFactorCond`: factors consistently use the *base form* of the active state (`disabled`, `readOnly`, `expand`, etc.).  
      *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
      *     and when disabled, but conditionally drops to `unset` at baseline enabled.
      */

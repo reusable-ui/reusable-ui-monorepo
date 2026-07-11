@@ -105,7 +105,7 @@ export interface CollapseStateVars {
      *     - `expandFactor = 0`: collapsed (baseline lifecycle state)  
      *     - `expandFactor = 1`: expanded (active lifecycle state)  
      * - **Naming rationale:**  
-     *   - `expandFactor` instead of `collapseFactor`: factors consistently use the *base form* of the active state (`disable`, `readOnly`, `expand`, etc.).  
+     *   - `expandFactor` instead of `collapseFactor`: factors consistently use the *base form* of the active state (`disabled`, `readOnly`, `expand`, etc.).  
      */
     expandFactor        : unknown
     
@@ -141,7 +141,7 @@ export interface CollapseStateVars {
      *     - `expandFactorCond = 0`: collapsed during transition (numeric interpolation)
      *     - `expandFactorCond = 1`: expanded (settled active lifecycle state)  
      * - **Naming rationale:**  
-     *   - `expandFactorCond` instead of `collapseFactorCond`: factors consistently use the *base form* of the active state (`disable`, `readOnly`, `focus`, `hover`, `press`, `active`, `expand`, etc.).  
+     *   - `expandFactorCond` instead of `collapseFactorCond`: factors consistently use the *base form* of the active state (`disabled`, `readOnly`, `focus`, `hover`, `press`, `active`, `expand`, etc.).  
      *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
      *     and when expanded, but conditionally drops to `unset` at baseline collapsed.
      */

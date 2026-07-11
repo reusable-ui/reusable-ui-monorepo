@@ -105,7 +105,7 @@ export interface ReadOnlyStateVars {
      *     - `readOnlyFactor = 0`: editable (baseline lifecycle state)  
      *     - `readOnlyFactor = 1`: read-only (active lifecycle state)  
      * - **Naming rationale:**  
-     *   - `readOnlyFactor` instead of `editableFactor`: factors consistently use the *base form* of the active state (`disable`, `readOnly`, `expand`, etc.).  
+     *   - `readOnlyFactor` instead of `editableFactor`: factors consistently use the *base form* of the active state (`disabled`, `readOnly`, `expand`, etc.).  
      */
     readOnlyFactor     : unknown
     
@@ -141,7 +141,7 @@ export interface ReadOnlyStateVars {
      *     - `readOnlyFactorCond = 0`: editable during transition (numeric interpolation)
      *     - `readOnlyFactorCond = 1`: read-only (settled active lifecycle state)  
      * - **Naming rationale:**  
-     *   - `readOnlyFactorCond` instead of `editableFactorCond`: factors consistently use the *base form* of the active state (`disable`, `readOnly`, `expand`, etc.).  
+     *   - `readOnlyFactorCond` instead of `editableFactorCond`: factors consistently use the *base form* of the active state (`disabled`, `readOnly`, `expand`, etc.).  
      *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
      *     and when read-only, but conditionally drops to `unset` at baseline editable.
      */
