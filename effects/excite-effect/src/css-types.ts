@@ -60,7 +60,7 @@ export interface ExciteEffectVars {
 
 
 /**
- * Configuration options for customizing excite effects.
+ * Configuration options for customizing excitement effects.
  */
 export interface CssExciteEffectOptions
     extends

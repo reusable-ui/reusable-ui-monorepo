@@ -51,7 +51,7 @@ import {
  * 
  * Runs continuously while the component is in the excited state by animating filter effects.
  * 
- * @param options - An optional configuration for customizing excite effects.
+ * @param options - An optional configuration for customizing excitement effects.
  * @returns A CSS API containing effect rules and CSS variables for grabbing user attention when excited.
  */
 export const usingExciteEffect = (options?: CssExciteEffectOptions): CssExciteEffect => {
@@ -76,10 +76,10 @@ export const usingExciteEffect = (options?: CssExciteEffectOptions): CssExciteEf
     
     return {
         exciteEffectRule : () => style({
-            // Excite filter:
+            // Excitement filter:
             [exciteFilter   ] : composeFilterEffect(exciteFactor, { ...restOptions, enablesReverseIntent, invert }),
             
-            // Excite transform:
+            // Excitement transform:
             [exciteTransform] : (
                 (scale !== null)
                 ? ((): `scale(${string})` => {

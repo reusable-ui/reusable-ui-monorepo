@@ -25,15 +25,15 @@ import {
 
 
 /**
- * A strongly typed global mapping of excite-effect CSS variables.
+ * A strongly typed global mapping of excitement-related CSS variables.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
 export const [exciteEffectVars] = cssVars<ExciteEffectVars>({ prefix: defaultExciteEffectPrefix, minify: false });
 
-// Register the excite filter globally for composing a unified filter stack across effect packages:
+// Register the excitement-related filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(exciteEffectVars.exciteFilter);
 
-// Register the excite transform globally for composing a unified transform stack across effect packages:
+// Register the excitement-related transform globally for composing a unified transform stack across effect packages:
 transformRegistry.registerTransform(exciteEffectVars.exciteTransform);

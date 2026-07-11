@@ -3,6 +3,8 @@
   "version": "7.0.0",
   "description": "Provides default visual effects for components when in the excited state. Blinks by zooming in and flashing color to make components visually highlighted when excited.",
   "keywords": [
+    "excitement",
+    "excited",
     "excite",
     "excite-effect",
     "excite-state",
