@@ -123,7 +123,7 @@ This avoids **hard-coded prefix strings**, reducing the risk of accidental colli
 | defaultValidityStatePrefix        | val   |
 | defaultDragStatePrefix            | drag  |
 | defaultSortStatePrefix            | sort  |
-| defaultExciteStatePrefix          | exc   |
+| defaultExcitedStatePrefix         | exc   |
 | defaultCollapseStatePrefix        | col   |
 | defaultActiveStatePrefix          | act   |
 | defaultViewStatePrefix            | view  |

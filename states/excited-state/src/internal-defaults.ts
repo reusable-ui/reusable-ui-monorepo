@@ -1,6 +1,6 @@
 // Types:
 import {
-    type ExciteStateProps,
+    type ExcitedStateProps,
 }                           from './types.js'
 
 
@@ -13,4 +13,4 @@ import {
  * 
  * - `false`: the component is idle by default.
  */
-export const defaultDeclarativeExcited : Required<ExciteStateProps>['excited']  = false;
+export const defaultDeclarativeExcited : Required<ExcitedStateProps>['excited'] = false;

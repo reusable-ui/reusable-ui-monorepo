@@ -97,7 +97,7 @@
     "states/transition-state",
     "states/feedback-state",
     "states/interaction-state",
-    "states/excite-state",
+    "states/excited-state",
     "states/disabled-state",
     "states/read-only-state",
     "states/focus-state",

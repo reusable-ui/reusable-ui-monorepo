@@ -1,13 +1,13 @@
 import React, { type AnimationEventHandler } from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
-import { ExciteStateParentTest } from './ExciteStateParentTest.js';
+import { ExcitedStateParentTest } from './ExcitedStateParentTest.js';
 
 
 
 /**
- * Represents a single test scenario for validating excite state activities.
+ * Represents a single test scenario for validating excited state activities.
  */
-interface ExciteStateTestCase {
+interface ExcitedStateTestCase {
     // Test Inputs:
     
     /**
@@ -16,7 +16,7 @@ interface ExciteStateTestCase {
     title   : string
     
     /**
-     * A sequence of updates applied to the excite state, including expected outcomes.
+     * A sequence of updates applied to the excited state, including expected outcomes.
      */
     updates : {
         // Test Inputs:
@@ -50,9 +50,9 @@ interface ExciteStateTestCase {
         // Expected Outcomes:
         
         /**
-         * The expected presence of running excite animation after the delay.
-         * - `true`      : there is a running excite animation
-         * - `false`     : there is no running excite animation
+         * The expected presence of running excited animation after the delay.
+         * - `true`      : there is a running excited animation
+         * - `false`     : there is no running excited animation
          * - `undefined` : nothing to expect
          */
         expectedExcited         ?: boolean
@@ -61,7 +61,7 @@ interface ExciteStateTestCase {
 
 
 
-test.describe('usingExciteState', () => {
+test.describe('usingExcitedState', () => {
     for (const { title, updates } of [
         /*
             The timing precision is quite bad, up to ± 200 ms of inaccuracy.
@@ -69,7 +69,7 @@ test.describe('usingExciteState', () => {
             please do it between +200 ms after the expected start time and -200 ms before the expected end time.
         */
         {
-            title   : 'No running excite animation in all time',
+            title   : 'No running excited animation in all time',
             updates : [
                 {
                     title                   : 'Initially no running animation',
@@ -96,7 +96,7 @@ test.describe('usingExciteState', () => {
             ],
         },
         {
-            title   : 'Runs excite animation once',
+            title   : 'Runs excited animation once',
             updates : [
                 {
                     title                   : 'Initially has running animation',
@@ -121,7 +121,7 @@ test.describe('usingExciteState', () => {
             ],
         },
         {
-            title   : 'Runs excite animation in loop until manually stopped',
+            title   : 'Runs excited animation in loop until manually stopped',
             updates : [
                 {
                     title                   : 'Initially has running animation',
@@ -171,7 +171,7 @@ test.describe('usingExciteState', () => {
                 },
             ],
         },
-    ] as ExciteStateTestCase[]) {
+    ] as ExcitedStateTestCase[]) {
         test(title, async ({ mount }) => {
             // States:
             let currentExcited : boolean | undefined = undefined;
@@ -198,7 +198,7 @@ test.describe('usingExciteState', () => {
             
             // First render:
             const component = await mount(
-                <ExciteStateParentTest
+                <ExcitedStateParentTest
                     excited={currentExcited}
                     responseExcitedComplete={currentResponseExcitedComplete}
                     
@@ -210,8 +210,8 @@ test.describe('usingExciteState', () => {
             
             
             // Ensure the component is rendered correctly:
-            const box = component.getByTestId('excite-state-test');
-            await expect(box).toContainText('Excite State Test');
+            const box = component.getByTestId('excited-state-test');
+            await expect(box).toContainText('Excited State Test');
             
             
             
@@ -229,7 +229,7 @@ test.describe('usingExciteState', () => {
                 
                 // Re-render:
                 await component.update(
-                    <ExciteStateParentTest
+                    <ExcitedStateParentTest
                         excited={currentExcited}
                         responseExcitedComplete={currentResponseExcitedComplete}
                         
@@ -241,8 +241,8 @@ test.describe('usingExciteState', () => {
                 
                 
                 // Ensure the component is rendered correctly:
-                const box = component.getByTestId('excite-state-test');
-                await expect(box).toContainText('Excite State Test');
+                const box = component.getByTestId('excited-state-test');
+                await expect(box).toContainText('Excited State Test');
                 
                 
                 

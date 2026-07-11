@@ -7,7 +7,7 @@
     "excited",
     "excite",
     "excite-effect",
-    "excite-state",
+    "excited-state",
     "activity",
     "animation",
     "filter",
@@ -60,7 +60,7 @@
   },
   "peerDependencies": {
     "@reusable-ui/css-prefix-default": "^7.0.0",
-    "@reusable-ui/excite-state": "^7.0.0",
+    "@reusable-ui/excited-state": "^7.0.0",
     "@reusable-ui/filter-feature": "^7.0.0",
     "@reusable-ui/transform-feature": "^7.0.0"
   },

@@ -16,7 +16,7 @@ import {
 } from './effect-intents.js'
 
 // Test style for ExciteEffect
-// Demonstrates how `exciteFactorCond` drives transition effects
+// Demonstrates how `excitedFactorCond` drives transition effects
 // with simplified static colors for easier testing.
 export default function exciteEffectReversedTestStyle() {
     // Features:

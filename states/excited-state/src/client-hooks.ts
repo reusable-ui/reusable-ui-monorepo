@@ -2,18 +2,18 @@
 
 // Types:
 import {
-    type ExciteStateProps,
-    type ExciteStateOptions,
-    type ExciteClassname,
-    type ExciteState,
+    type ExcitedStateProps,
+    type ExcitedStateOptions,
+    type ExcitedClassname,
+    type ExcitedState,
 }                           from './types.js'
 import {
-    type ExciteStateDefinition,
+    type ExcitedStateDefinition,
 }                           from './internal-types.js'
 
 // Utilities:
 import {
-    resolveExciteActivityClassname,
+    resolveExcitedActivityClassname,
 }                           from './internal-utilities.js'
 
 // Reusable-ui states:
@@ -30,14 +30,14 @@ import {
 
 
 /** The behavior state definition for excited state management. */
-const exciteStateDefinition : ExciteStateDefinition = {
+const excitedStateDefinition : ExcitedStateDefinition = {
     // State definitions:
     inactiveState            : false, // `false`: the value of un-excited state
     
     // Behavior definitions:
-    defaultAnimationPattern  : 'exciting',                     // Matches animation names for activities.
+    defaultAnimationPattern  : 'exciting',                      // Matches animation names for activities.
     defaultAnimationBubbling : false,
-    resolveActivityClassname : resolveExciteActivityClassname, // Resolves classnames.
+    resolveActivityClassname : resolveExcitedActivityClassname, // Resolves classnames.
 };
 
 /**
@@ -49,32 +49,32 @@ const exciteStateDefinition : ExciteStateDefinition = {
  * 
  * @template TElement - The type of the target DOM element.
  * 
- * @param {ExciteStateProps} props - The component props that may include a controlled `excited` value and an `onExcitedComplete` callback.
- * @param {ExciteStateOptions} options - An optional configuration for customizing excitement behavior and animation lifecycle.
- * @returns {ExciteState<TElement>} - The resolved excited state, associated CSS class name, and animation event handlers.
+ * @param {ExcitedStateProps} props - The component props that may include a controlled `excited` value and an `onExcitedComplete` callback.
+ * @param {ExcitedStateOptions} options - An optional configuration for customizing excitement behavior and animation lifecycle.
+ * @returns {ExcitedState<TElement>} - The resolved excited state, associated CSS class name, and animation event handlers.
  * 
  * @example
  * ```tsx
  * import React, { FC } from 'react';
  * import {
- *     useExciteState,
- *     ExciteStateProps,
- * } from '@reusable-ui/excite-state';
+ *     useExcitedState,
+ *     ExcitedStateProps,
+ * } from '@reusable-ui/excited-state';
  * import styles from './ExcitableBox.module.css';
  * 
- * export interface ExcitableBoxProps extends ExciteStateProps {}
+ * export interface ExcitableBoxProps extends ExcitedStateProps {}
  * 
  * // A box that can be excited.
  * export const ExcitableBox: FC<ExcitableBoxProps> = (props) => {
  *     const {
  *         excited,
  *         actualExcited,
- *         exciteClassname,
+ *         excitedClassname,
  *         
  *         handleAnimationStart,
  *         handleAnimationEnd,
  *         handleAnimationCancel,
- *     } = useExciteState(props, {
+ *     } = useExcitedState(props, {
  *         defaultExcited    : false,          // Defaults the `excited` prop to `false` if not provided.
  *         animationPattern  : 'box-exciting', // Matches animation names ending with 'box-exciting'.
  *         animationBubbling : false,          // Ignores bubbling animation events from children.
@@ -82,7 +82,7 @@ const exciteStateDefinition : ExciteStateDefinition = {
  *     
  *     return (
  *         <div
- *             className={`${styles.box} ${exciteClassname}`}
+ *             className={`${styles.box} ${excitedClassname}`}
  *             
  *             onAnimationStart={handleAnimationStart}
  *             onAnimationEnd={handleAnimationEnd}
@@ -94,7 +94,7 @@ const exciteStateDefinition : ExciteStateDefinition = {
  * };
  * ```
  */
-export const useExciteState = <TElement extends Element = HTMLElement>(props: ExciteStateProps, options?: ExciteStateOptions): ExciteState<TElement> => {
+export const useExcitedState = <TElement extends Element = HTMLElement>(props: ExcitedStateProps, options?: ExcitedStateOptions): ExcitedState<TElement> => {
     // Extract props:
     const {
         onExcitedComplete : onStateComplete,
@@ -112,15 +112,15 @@ export const useExciteState = <TElement extends Element = HTMLElement>(props: Ex
     const {
         state             : excited,
         actualState       : actualExcited,
-        activityClassname : exciteClassname,
+        activityClassname : excitedClassname,
         ...animationHandlers
     } = useActivityState<
         boolean,
-        ExciteClassname,
+        ExcitedClassname,
         
-        ExciteStateProps,
-        ExciteStateOptions,
-        ExciteStateDefinition,
+        ExcitedStateProps,
+        ExcitedStateOptions,
+        ExcitedStateDefinition,
         
         TElement
     >(
@@ -131,7 +131,7 @@ export const useExciteState = <TElement extends Element = HTMLElement>(props: Ex
         options,
         
         // Definition:
-        exciteStateDefinition,
+        excitedStateDefinition,
     );
     
     
@@ -140,7 +140,7 @@ export const useExciteState = <TElement extends Element = HTMLElement>(props: Ex
     return {
         excited,
         actualExcited,
-        exciteClassname,
+        excitedClassname,
         ...animationHandlers,
-    } satisfies ExciteState<TElement>;
+    } satisfies ExcitedState<TElement>;
 };

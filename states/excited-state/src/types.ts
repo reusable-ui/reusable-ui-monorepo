@@ -14,7 +14,7 @@ import {
  * Provides a declarative way to control whether the component is excited or idle,
  * along with an optional callback to signal a request to update the external state driver.
  */
-export interface ExciteStateProps
+export interface ExcitedStateProps
     extends
         // Bases:
         Omit<ActivityStateProps<boolean>, 'effectiveState' | 'onStateComplete'>
@@ -42,7 +42,7 @@ export interface ExciteStateProps
 /**
  * Optional configuration options for customizing excitement behavior and animation lifecycle.
  */
-export interface ExciteStateOptions
+export interface ExcitedStateOptions
     extends
         // Bases:
         ActivityStateOptions<boolean>
@@ -88,17 +88,17 @@ export interface ExciteStateOptions
  * 
  * Used for styling based on the current excited state.
  */
-export type ExciteClassname = 'is-excited' | 'not-excited'
+export type ExcitedClassname = 'is-excited' | 'not-excited'
 
 /**
  * An API for accessing the resolved excited state, associated CSS class name, and animation event handlers.
  * 
  * @template TElement - The type of the target DOM element.
  */
-export interface ExciteState<TElement extends Element = HTMLElement>
+export interface ExcitedState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Omit<ActivityState<boolean, ExciteClassname, TElement>,
+        Omit<ActivityState<boolean, ExcitedClassname, TElement>,
             | 'state'
             | 'actualState'
             | 'activityClassname'
@@ -116,7 +116,7 @@ export interface ExciteState<TElement extends Element = HTMLElement>
      * - `true`  : the excitement animation is currently active
      * - `false` : the excitement animation is idle
      */
-    excited         : ActivityState<boolean, ExciteClassname, TElement>['state']
+    excited          : ActivityState<boolean, ExcitedClassname, TElement>['state']
     
     /**
      * The actual resolved excitement state, regardless of animation state.
@@ -130,7 +130,7 @@ export interface ExciteState<TElement extends Element = HTMLElement>
      * - `true`  : the component is intended to be excited
      * - `false` : the component is intended to be idle
      */
-    actualExcited   : ActivityState<boolean, ExciteClassname, TElement>['actualState']
+    actualExcited    : ActivityState<boolean, ExcitedClassname, TElement>['actualState']
     
     /**
      * A CSS class name reflecting the resolved excitement state.
@@ -139,5 +139,5 @@ export interface ExciteState<TElement extends Element = HTMLElement>
      * - `'is-excited'`
      * - `'not-excited'`
      */
-    exciteClassname : ActivityState<boolean, ExciteClassname, TElement>['activityClassname']
+    excitedClassname : ActivityState<boolean, ExcitedClassname, TElement>['activityClassname']
 }

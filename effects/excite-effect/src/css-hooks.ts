@@ -32,8 +32,8 @@ import {
 
 // Reusable-ui states:
 import {
-    usingExciteState,
-}                           from '@reusable-ui/excite-state'        // Lifecycle-aware excitement state with continuous attention-grabbing animations and semantic styling hooks for UI components.
+    usingExcitedState,
+}                           from '@reusable-ui/excited-state'       // Lifecycle-aware excitement state with continuous attention-grabbing animations and semantic styling hooks for UI components.
 
 // Reusable-ui effects:
 import {
@@ -44,7 +44,7 @@ import {
 
 
 /**
- * Applies excite-state effects that blink by zooming in and flashing color,
+ * Applies excited-state effects that blink by zooming in and flashing color,
  * making components **visually highlighted** when excited.
  * 
  * Exposes strongly typed CSS variables for activity-driven effects.
@@ -67,7 +67,7 @@ export const usingExciteEffect = (options?: CssExciteEffectOptions): CssExciteEf
     
     
     // States:
-    const { exciteStateVars : { exciteFactor } } = usingExciteState();
+    const { excitedStateVars : { excitedFactor } } = usingExcitedState();
     
     // Variables:
     const { exciteFilter, exciteTransform } = exciteEffectVars;
@@ -77,7 +77,7 @@ export const usingExciteEffect = (options?: CssExciteEffectOptions): CssExciteEf
     return {
         exciteEffectRule : () => style({
             // Excitement filter:
-            [exciteFilter   ] : composeFilterEffect(exciteFactor, { ...restOptions, enablesReverseIntent, invert }),
+            [exciteFilter   ] : composeFilterEffect(excitedFactor, { ...restOptions, enablesReverseIntent, invert }),
             
             // Excitement transform:
             [exciteTransform] : (
@@ -90,13 +90,13 @@ export const usingExciteEffect = (options?: CssExciteEffectOptions): CssExciteEf
                     // - If reverse intent is not supported, only use the fade-in factor.
                     const directionAwareScaleFactor = ((): CssNumericFormula => {
                         // If reverse intent is not supported → fade-in only (no direction awareness):
-                        if (!enablesReverseIntent) return composeCases(exciteFactor);
+                        if (!enablesReverseIntent) return composeCases(excitedFactor);
                         
                         
                         
                         // Base factors:
-                        const fadeInFactor  : CssNumeric        = exciteFactor;
-                        const fadeOutFactor : CssNumericFormula = reverseFactor(exciteFactor);
+                        const fadeInFactor  : CssNumeric        = excitedFactor;
+                        const fadeOutFactor : CssNumericFormula = reverseFactor(excitedFactor);
                         
                         
                         

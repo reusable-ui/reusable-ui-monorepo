@@ -1,11 +1,11 @@
-# @reusable-ui/excite-state 📦  
+# @reusable-ui/excited-state 📦  
 
-**excite-state** is a reusable abstraction for managing excitement feedback in UI components.  
+**excited-state** is a reusable abstraction for managing excitement feedback in UI components.  
 It provides a lifecycle-aware way to manage the *excited* state, exposing semantic variables that make styling and contributor reasoning clear.  
 
-When active, excite-state continuously replays its attention-grabbing animation until the component is no longer excited, ensuring feedback is smooth, predictable, and easy to maintain. This makes it ideal for components that need to grab user attention — such as badges, notifications, and alerts — whether triggered by user action or system events.  
+When active, excited-state continuously replays its attention-grabbing animation until the component is no longer excited, ensuring feedback is smooth, predictable, and easy to maintain. This makes it ideal for components that need to grab user attention — such as badges, notifications, and alerts — whether triggered by user action or system events.  
 
-With **excite-state**, you get:  
+With **excited-state**, you get:  
 - Controlled excitement feedback  
 - Continuous animation replay tied to the excitement lifecycle  
 
@@ -17,17 +17,17 @@ With **excite-state**, you get:
 ✔ Seamless integration across appearance, animation, and feedback systems  
 
 ## 📦 Installation
-Install **@reusable-ui/excite-state** via npm or yarn:
+Install **@reusable-ui/excited-state** via npm or yarn:
 
 ```sh
-npm install @reusable-ui/excite-state
+npm install @reusable-ui/excited-state
 # or
-yarn add @reusable-ui/excite-state
+yarn add @reusable-ui/excited-state
 ```
 
 ## 🧩 Exported Hooks
 
-### `useExciteState(props, options?)`
+### `useExcitedState(props, options?)`
 
 Resolves the excited state along with its associated CSS class name, based on component props, optional default configuration, and animation lifecycle.
 
@@ -36,24 +36,24 @@ Resolves the excited state along with its associated CSS class name, based on co
 ```tsx
 import React, { FC } from 'react';
 import {
-    useExciteState,
-    ExciteStateProps,
-} from '@reusable-ui/excite-state';
+    useExcitedState,
+    ExcitedStateProps,
+} from '@reusable-ui/excited-state';
 import styles from './ExcitableBox.module.css';
 
-export interface ExcitableBoxProps extends ExciteStateProps {}
+export interface ExcitableBoxProps extends ExcitedStateProps {}
 
 // A box that can be excited.
 export const ExcitableBox: FC<ExcitableBoxProps> = (props) => {
     const {
         excited,
         actualExcited,
-        exciteClassname,
+        excitedClassname,
         
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useExciteState(props, {
+    } = useExcitedState(props, {
         defaultExcited    : false,          // Defaults the `excited` prop to `false` if not provided.
         animationPattern  : 'box-exciting', // Matches animation names ending with 'box-exciting'.
         animationBubbling : false,          // Ignores bubbling animation events from children.
@@ -61,7 +61,7 @@ export const ExcitableBox: FC<ExcitableBoxProps> = (props) => {
     
     return (
         <div
-            className={`${styles.box} ${exciteClassname}`}
+            className={`${styles.box} ${excitedClassname}`}
             
             onAnimationStart={handleAnimationStart}
             onAnimationEnd={handleAnimationEnd}
@@ -100,7 +100,7 @@ import {
     // Conditional styling helpers:
     ifExcited,            // Applies styles to excited elements
     ifNotExcited,         // Applies styles to non-excited elements
-} from '@reusable-ui/excite-state';
+} from '@reusable-ui/excited-state';
 import { style, rule } from '@cssfn/core';
 
 export const componentStyle = () => style({
@@ -128,7 +128,7 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usingExciteState(options?: CssExciteStateOptions): CssExciteState`
+### `usingExcitedState(options?: CssExcitedStateOptions): CssExcitedState`
 
 Generates CSS rules that conditionally apply the excitement animation based on current excited state, and exposes excitement-related CSS variables for conditional excitement animation.
 
@@ -140,8 +140,8 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 | Variable            | Active When...                | Purpose                                                                                                    |
 |---------------------|-------------------------------|------------------------------------------------------------------------------------------------------------|
 | `animationExciting` | `.is-excited` active          | Triggers excitement animation                                                                              |
-| `exciteFactor`      | Always available (animatable) | Normalized factor: 0 = idle, oscillates between 0 ↔ 1 = exciting activity, interpolates during activities  |
-| `exciteFactorCond`  | Is still exciting             | Conditional mirror of `exciteFactor`, drops to `unset` when no longer exciting                             |
+| `excitedFactor`     | Always available (animatable) | Normalized factor: 0 = idle, oscillates between 0 ↔ 1 = exciting activity, interpolates during activities  |
+| `excitedFactorCond` | Is still exciting             | Conditional mirror of `excitedFactor`, drops to `unset` when no longer exciting                            |
 
 #### 💡 Usage Example
 
@@ -149,8 +149,8 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 // Animation feature:
 import { usingAnimationFeature } from '@reusable-ui/animation-feature';
 
-// Excite state:
-import { usingExciteState } from '@reusable-ui/excite-state';
+// Excited state:
+import { usingExcitedState } from '@reusable-ui/excited-state';
 
 // CSS-in-JS:
 import { style, vars, keyframes } from '@cssfn/core';
@@ -164,9 +164,9 @@ export const highlightCardStyle = () => {
     
     // Feature: excitement animation
     const {
-        exciteStateRule,
-        exciteStateVars: { exciteFactor },
-    } = usingExciteState({
+        excitedStateRule,
+        excitedStateVars: { excitedFactor },
+    } = usingExcitedState({
         animationExciting: 'var(--box-exciting)',
     });
     
@@ -178,26 +178,26 @@ export const highlightCardStyle = () => {
         ...animationFeatureRule(),
         
         // Apply excitement state rules:
-        ...exciteStateRule(),
+        ...excitedStateRule(),
         
-        // Exciting animation: oscillate exciteFactor between 0 ↔ 1 several times
+        // Exciting animation: oscillate excitedFactor between 0 ↔ 1 several times
         ...vars({
             '--box-exciting': [
                 ['0.3s', 'ease-in-out', 'both', 'alternate', 4, 'exciting'],
             ],
         }),
         ...keyframes('exciting', {
-            from : { [exciteFactor]: 0 },
-            to   : { [exciteFactor]: 1 },
+            from : { [excitedFactor]: 0 },
+            to   : { [excitedFactor]: 1 },
         }),
         
         // Example usage:
         
         // Oscillates scale between 1 ↔ 1.05 several times:
-        transform: `scale(calc(1 + 0.05 * ${exciteFactor}))`,
+        transform: `scale(calc(1 + 0.05 * ${excitedFactor}))`,
         
         // Oscillates background color between transparent ↔ gold several times:
-        backgroundColor: `color-mix(in oklch, transparent calc((1 - ${exciteFactor}) * 100%), gold calc(${exciteFactor} * 100%))`,
+        backgroundColor: `color-mix(in oklch, transparent calc((1 - ${excitedFactor}) * 100%), gold calc(${excitedFactor} * 100%))`,
         
         // Apply composed animations:
         animation,
@@ -215,16 +215,16 @@ Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to 
 ---
 
 ## 📖 Part of the Reusable-UI Framework  
-**@reusable-ui/excite-state** is a variant utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
+**@reusable-ui/excited-state** is a variant utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
 
 ## 🤝 Contributing  
-Want to improve **@reusable-ui/excite-state**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
+Want to improve **@reusable-ui/excited-state**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
 
 ## 🛡️ License  
 Licensed under the **MIT License** – see the [LICENSE](./LICENSE) file for details.  
 
 ---
 
-🚀 **@reusable-ui/excite-state brings expressive, adaptive excitement styling to your components.**  
+🚀 **@reusable-ui/excited-state brings expressive, adaptive excitement styling to your components.**  
 Give it a ⭐ on GitHub if you find it useful!  

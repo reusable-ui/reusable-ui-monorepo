@@ -1,31 +1,31 @@
 import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect } from 'react'
-import { type ExciteStateProps, useExciteState } from '../dist/index.js'
+import { type ExcitedStateProps, useExcitedState } from '../dist/index.js'
 import { useMergedEventHandlers } from '@reusable-ui/callbacks'
 import { createSyntheticEvent } from '@reusable-ui/events'
 import { HydrateStyles } from '@cssfn/cssfn-react'
-import { useExciteStateTestStyles } from './ExciteStateTest.loader.js'
+import { useExcitedStateTestStyles } from './ExcitedStateTest.loader.js'
 
-export interface ExciteStateTestProps
+export interface ExcitedStateTestProps
     extends
-        ExciteStateProps,
+        ExcitedStateProps,
         Pick<React.DOMAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd'>
 {
 }
-export const ExciteStateTest = (props: ExciteStateTestProps) => {
+export const ExcitedStateTest = (props: ExcitedStateTestProps) => {
     const {
         onAnimationStart,
         onAnimationEnd,
     } = props;
     
-    const styles = useExciteStateTestStyles();
+    const styles = useExcitedStateTestStyles();
     
     const {
-        exciteClassname,
+        excitedClassname,
         
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useExciteState(props, {
+    } = useExcitedState(props, {
         animationPattern: 'test-exciting',
     });
     
@@ -68,12 +68,12 @@ export const ExciteStateTest = (props: ExciteStateTestProps) => {
             <HydrateStyles />
             <div
                 ref={elementRef}
-                data-testid="excite-state-test"
-                className={`${styles.main} ${exciteClassname}`}
+                data-testid="excited-state-test"
+                className={`${styles.main} ${excitedClassname}`}
                 onAnimationStart={handleMergedAnimationStart}
                 onAnimationEnd={handleMergedAnimationEnd}
             >
-                Excite State Test
+                Excited State Test
             </div>
         </div>
     );

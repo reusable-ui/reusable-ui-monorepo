@@ -188,8 +188,6 @@ const irregularMap: Record<string, string> = {
  * past participle form for clarity as a status.
  */
 const regularMap: Record<string, string> = {
-    Excite   : 'Excited',
-    
     Focus    : 'Focused',
     Hover    : 'Hovered',
     Press    : 'Pressed',

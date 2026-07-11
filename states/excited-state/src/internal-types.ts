@@ -1,8 +1,8 @@
 // Types:
 import {
-    type ExciteStateProps,
-    type ExciteStateOptions,
-    type ExciteClassname,
+    type ExcitedStateProps,
+    type ExcitedStateOptions,
+    type ExcitedClassname,
 }                           from './types.js'
 
 // Reusable-ui states:
@@ -14,12 +14,12 @@ import {
 
 
 /** Internal definition for excited state behavior. */
-export interface ExciteStateDefinition
+export interface ExcitedStateDefinition
     extends
-        ActivityStateDefinition<boolean, ExciteClassname,
-            ExciteStateProps,
-            ExciteStateOptions,
-            ExciteStateDefinition
+        ActivityStateDefinition<boolean, ExcitedClassname,
+            ExcitedStateProps,
+            ExcitedStateOptions,
+            ExcitedStateDefinition
         >
 {
     /* no additional definition yet - reserved for future extensions */

@@ -51,7 +51,7 @@ export const domainOrder = new Set<string>([
 'validityState',
 'dragState',
 'sortState',
-'exciteState',
+'excitedState',
 'collapseState',
 'activeState',
 'viewState',

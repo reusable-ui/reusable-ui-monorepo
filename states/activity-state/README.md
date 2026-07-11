@@ -7,7 +7,7 @@ It provides a generic hook that can be specialized into *many kinds of controlle
 
 With **activity-state**, you can build:  
 - **Activity indicator animations** — such as `busy-state`, `processing-state`, or `on-the-way-state`.  
-- **Attention-grabbing animations** — such as `excite-state`, `highlight-state`, or `attract-state`.  
+- **Attention-grabbing animations** — such as `excited-state`, `highlight-state`, or `attract-state`.  
 - Any state that models a *visual animation lifecycle* tied directly to component state.  
 
 Instead of re-implementing similar logic for each animated state, `activity-state` acts as a common foundation.  
@@ -37,7 +37,7 @@ yarn add @reusable-ui/activity-state
 Represents **state-driven animations** with full lifecycle awareness in React components.  
 It synchronizes an externally controlled state (`effectiveState`) with the animation system, ensuring animations start, stop, or switch gracefully without interruption.  
 
-By supplying a `definition` that declares the inactive baseline, animation patterns, and classname resolver, you can specialize this hook into domain-specific behaviors such as `busy-state`, `processing-state`, or `excite-state`.  
+By supplying a `definition` that declares the inactive baseline, animation patterns, and classname resolver, you can specialize this hook into domain-specific behaviors such as `busy-state`, `processing-state`, or `excited-state`.  
 
 To implement live updates, dynamically supply the domain-specific observer result into `effectiveState`.  
 

@@ -377,12 +377,12 @@ export interface CssExciteEffectOptions
 
 
 /**
- * Provides a CSS API for applying excite-state effects that blink by zooming in and flashing color,
+ * Provides a CSS API for applying excited-state effects that blink by zooming in and flashing color,
  * making components **visually highlighted** when excited.
  */
 export interface CssExciteEffect {
     /**
-     * Attaches CSS rules for excite-state effects that blink by zooming in and flashing color,
+     * Attaches CSS rules for excited-state effects that blink by zooming in and flashing color,
      * making components **visually highlighted** when excited.
      * 
      * Exposes strongly typed CSS variables for activity-driven effects.

@@ -113,7 +113,7 @@ Default inheritance case example:
 |----------------|----------------------|--------------------|-----------|-----------|--------|-------------------|---------------------|--------------------------|--------------|-----------------------------|------------------|-----------------------------------------|
 | State Role     | Behavior             | Main Interface     | Main Prop | 'inherit' | 'auto' | Classname Prop    | Resolved States     | Transitioning States     | Controllable | Uncontrollable              | Updates          | onChange                                |
 |----------------|----------------------|--------------------|-----------|-----------|--------|-------------------|---------------------|--------------------------|--------------|-----------------------------|------------------|-----------------------------------------|
-| excite-state   | Continuous animation | ExciteStateProps   | excited   | No        |        | exciteClassname   | excited             | none                     | Yes          | No — notification only      | via animationend | Yes — user has been notified to respond |
+| excited-state  | Continuous animation | ExcitedStateProps  | excited   | No        |        | excitedClassname  | excited             | none                     | Yes          | No — notification only      | via animationend | Yes — user has been notified to respond |
 |----------------|----------------------|--------------------|-----------|-----------|--------|-------------------|---------------------|--------------------------|--------------|-----------------------------|------------------|-----------------------------------------|
 | active-state   | Animates transitions | ActiveStateProps   | active    | Yes       |        | activeClassname   | inactive, active    | deactivating, activating | Yes          | Yes — memoize user's intent | via dispatch     | Yes — user toggles via UI               |
 | collapse-state | Animates transitions | CollapseStateProps | expanded  | No        |        | expandClassname   | collapsed, expanded | collapsing, expanding    | Yes          | Yes — memoize user's intent | via dispatch     | Yes — user toggles via UI               |
@@ -132,7 +132,7 @@ Additional flags:
 |----------------|--------------------------|--------------------------------|-----------------------------|----------------------------|
 | State Package  | Resolve Final State      | Uncontrollable                 | Dispatcher                  | Resolve Final State + Meta |
 |----------------|--------------------------|--------------------------------|-----------------------------|----------------------------|
-| excite-state   | useResolvedExcited       | not applicable                 | not applicable              | useExciteState             |
+| excited-state  | useResolvedExcited       | not applicable                 | not applicable              | useExcitedState            |
 |----------------|--------------------------|--------------------------------|-----------------------------|----------------------------|
 | active-state   | useResolvedActive        | useActiveController            | useDispatchActiveChange     | useActiveState             |
 | collapse-state | useResolvedExpanded      | useCollapseController          | useDispatchExpandedChange   | useCollapseState           |
@@ -148,7 +148,7 @@ Additional flags:
 |----------------------------|--------------|-------------------------------------------------|----------------------|-----------------------------|---------------|-------------------|------------------------|------------------------------|----------------------------------------|--------------------------------------------------------------------|----------|
 | Package Name               | Purpose      | Change Behavior                                 | Base Package Name    | Main Interface              | Main Prop     | Cascade Prop      | Classname Prop         | Resolved States              | Transitioning States                   | Reason for Base Form or `-ed`                                      | Verify   |
 |----------------------------|--------------|-------------------------------------------------|----------------------|-----------------------------|---------------|-------------------|------------------------|------------------------------|----------------------------------------|--------------------------------------------------------------------|----------|
-| excite-state               | notification | State driven by prop, continuous animation      | notification-state   | `ExciteStateProps`          | `excited`     | —                 | `exciteClassname`      | —                            | —                                      | ❌ Base form: reflects emotional trigger, not static condition     | VERIFIED |
+| excited-state              | notification | State driven by prop, continuous animation      | notification-state   | `ExcitedStateProps`         | `excited`     | —                 | `excitedClassname`     | —                            | —                                      | ❌ Base form: reflects emotional trigger, not static condition     | VERIFIED |
 |----------------------------|--------------|-------------------------------------------------|----------------------|-----------------------------|---------------|-------------------|------------------------|------------------------------|----------------------------------------|--------------------------------------------------------------------|----------|
 | disabled-state             | constraint   | State driven by prop                            | constraint-state     | `DisabledStateProps`        | `disabled`    | `cascadeDisabled` | `disabledClassname`    | `disabled`, `enabled`        | `disabling`, `enabling`                | ✅ `-ed` form: reflects diagnostic condition, matches HTML/ARIA    |          |
 | read-only-state            | constraint   | State driven by prop                            | constraint-state     | `ReadOnlyStateProps`        | `readOnly`    | `cascadeReadOnly` | `readOnlyClassname`    | `readonly`, `writable`       | `thawing`, `freezing`                  | ✅ `-only` form: reflects diagnostic condition, matches HTML/ARIA  | VERIFIED |
@@ -172,7 +172,7 @@ For hypen character, use standard hyphen (-) instead of non-breaking hyphen (‑
 |------------------|----------------------------------------------------|---------------------------------------------------------------------|
 | Package Name     | Recommended Behavior when Disabled                 | Reason                                                              |
 |------------------|----------------------------------------------------|---------------------------------------------------------------------|
-| excite-state     | Unaffected                                         | Purely notification/animation                                       |
+| excited-state    | Unaffected                                         | Purely notification/animation                                       |
 |------------------|----------------------------------------------------|---------------------------------------------------------------------|
 | focus-state      | Reset lost; remain lost until user refocuses       | Disabled elements shouldn’t retain focus; accessibility consistency |
 | hover-state      | Reset lost; re-evaluate on re-enable via `match()` | Matches native browser hover behavior under cursor                  |
@@ -188,7 +188,7 @@ For hypen character, use standard hyphen (-) instead of non-breaking hyphen (‑
 |------------------|----------------------------------------------------|---------------------------------------------------------------------|
 | Package Name     | Recommended Behavior when Readonly                 | Reason                                                              |
 |------------------|----------------------------------------------------|---------------------------------------------------------------------|
-| excite-state     | Unaffected                                         | Purely notification/animation                                       |
+| excited-state    | Unaffected                                         | Purely notification/animation                                       |
 |------------------|----------------------------------------------------|---------------------------------------------------------------------|
 | focus-state      | Unaffected; focus feedback applies                 | Readonly inputs are still part of tab order and accessible          |
 | hover-state      | Unaffected; hover feedback applies                 | Pointer feedback remains useful for discoverability                 |
@@ -213,7 +213,7 @@ For hypen character, use standard hyphen (-) instead of non-breaking hyphen (‑
 @reusable-ui/feedback-state         non_peer        BASE
 @reusable-ui/interaction-state      non_peer        BASE
 
-@reusable-ui/excite-state                           ACTIVITY_BASED
+@reusable-ui/excited-state                          ACTIVITY_BASED
 @reusable-ui/disabled-state                         FEEDBACK_BASED
 @reusable-ui/read-only-state                        FEEDBACK_BASED
 @reusable-ui/focus-state                            FEEDBACK_BASED

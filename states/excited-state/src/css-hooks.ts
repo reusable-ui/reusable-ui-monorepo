@@ -1,12 +1,12 @@
 // Types:
 import {
-    type CssExciteStateOptions,
-    type CssExciteState,
+    type CssExcitedStateOptions,
+    type CssExcitedState,
 }                           from './css-types.js'
 
 // CSS Variables:
 import {
-    exciteStateVars,
+    excitedStateVars,
 }                           from './css-internal-variables.js'
 
 // CSS Selectors:
@@ -36,7 +36,7 @@ import {
  * import { usingAnimationFeature } from '@reusable-ui/animation-feature';
  * 
  * // Excited state:
- * import { usingExciteState } from '@reusable-ui/excite-state';
+ * import { usingExcitedState } from '@reusable-ui/excited-state';
  * 
  * // CSS-in-JS:
  * import { style, vars, keyframes } from '@cssfn/core';
@@ -50,9 +50,9 @@ import {
  *     
  *     // Feature: excitement animation
  *     const {
- *         exciteStateRule,
- *         exciteStateVars: { exciteFactor },
- *     } = usingExciteState({
+ *         excitedStateRule,
+ *         excitedStateVars: { excitedFactor },
+ *     } = usingExcitedState({
  *         animationExciting: 'var(--box-exciting)',
  *     });
  *     
@@ -64,26 +64,26 @@ import {
  *         ...animationFeatureRule(),
  *         
  *         // Apply excited state rules:
- *         ...exciteStateRule(),
+ *         ...excitedStateRule(),
  *         
- *         // Exciting animation: oscillate exciteFactor between 0 ↔ 1 several times
+ *         // Exciting animation: oscillate excitedFactor between 0 ↔ 1 several times
  *         ...vars({
  *             '--box-exciting': [
  *                 ['0.3s', 'ease-in-out', 'both', 'alternate', 4, 'exciting'],
  *             ],
  *         }),
  *         ...keyframes('exciting', {
- *             from : { [exciteFactor]: 0 },
- *             to   : { [exciteFactor]: 1 },
+ *             from : { [excitedFactor]: 0 },
+ *             to   : { [excitedFactor]: 1 },
  *         }),
  *         
  *         // Example usage:
  *         
  *         // Oscillates scale between 1 ↔ 1.05 several times:
- *         transform: `scale(calc(1 + 0.05 * ${exciteFactor}))`,
+ *         transform: `scale(calc(1 + 0.05 * ${excitedFactor}))`,
  *         
  *         // Oscillates background color between transparent ↔ gold several times:
- *         backgroundColor: `color-mix(in oklch, transparent calc((1 - ${exciteFactor}) * 100%), gold calc(${exciteFactor} * 100%))`,
+ *         backgroundColor: `color-mix(in oklch, transparent calc((1 - ${excitedFactor}) * 100%), gold calc(${excitedFactor} * 100%))`,
  *         
  *         // Apply composed animations:
  *         animation,
@@ -91,21 +91,21 @@ import {
  * }
  * ```
  */
-export const usingExciteState = (options?: CssExciteStateOptions): CssExciteState => ({
-    exciteStateRule : () => usingActivityState({
+export const usingExcitedState = (options?: CssExcitedStateOptions): CssExcitedState => ({
+    excitedStateRule : () => usingActivityState({
         // Activity animations for visual effects when excited:
         animations : {
             ifState   : ifExcited,
-            variable  : exciteStateVars.animationExciting,
+            variable  : excitedStateVars.animationExciting,
             animation : options?.animationExciting,
         },
         
         // Factor variables for movement drivers of activity animation:
-        factorVar       : exciteStateVars.exciteFactor,
-        factorCondVar   : exciteStateVars.exciteFactorCond,
+        factorVar       : excitedStateVars.excitedFactor,
+        factorCondVar   : excitedStateVars.excitedFactorCond,
         ifInactiveState : ifNotExcited,
         baselineFactor  : 0,
     }),
     
-    exciteStateVars,
-}) satisfies CssExciteState;
+    excitedStateVars,
+}) satisfies CssExcitedState;

@@ -6,12 +6,12 @@ import {
 
 // Types:
 import {
-    type ExciteStateVars,
+    type ExcitedStateVars,
 }                           from './css-types.js'
 
 // Reusable-ui defaults:
 import {
-    defaultExciteStatePrefix,
+    defaultExcitedStatePrefix,
 }                           from '@reusable-ui/css-prefix-default'  // A centralized default CSS variable prefixes across the Reusable-UI core system, ensuring unique, predictable, and consistent prefixes.
 
 // Reusable-ui features:
@@ -27,7 +27,7 @@ import {
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [exciteStateVars] = cssVars<ExciteStateVars>({ prefix: defaultExciteStatePrefix, minify: false });
+export const [excitedStateVars] = cssVars<ExcitedStateVars>({ prefix: defaultExcitedStatePrefix, minify: false });
 
 // Register the excitement-related animation globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(exciteStateVars.animationExciting);
+animationRegistry.registerAnimation(excitedStateVars.animationExciting);

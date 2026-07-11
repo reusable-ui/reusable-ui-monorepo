@@ -52,7 +52,7 @@ These variables are ready-to-use for styling your component’s box shadow.
 ```ts
 // Supporting states:
 import { usingFocusState } from './states/focus-state'
-import { usingExciteState } from './states/excite-state'
+import { usingExcitedState } from './states/excited-state'
 
 // Compound box shadow feature:
 import { usingBoxShadowFeature } from '@reusable-ui/box-shadow-feature';
@@ -62,7 +62,7 @@ import { style } from '@cssfn/core';
 
 export const componentStyle = () => {
     const { focusStateRule  } = usingFocusState();
-    const { exciteStateRule } = usingExciteState();
+    const { excitedStateRule } = usingExcitedState();
     
     const {
         boxShadowFeatureRule,
@@ -81,7 +81,7 @@ export const componentStyle = () => {
         
         // Apply supporting state rules:
         ...focusStateRule(),
-        ...exciteStateRule(),
+        ...excitedStateRule(),
         
         // Apply compound box shadow feature:
         ...boxShadowFeatureRule(),

@@ -10,7 +10,7 @@ const stateDirs = [
     'transition-state',
     'feedback-state',
     'interaction-state',
-    'excite-state',
+    'excited-state',
     'disabled-state',
     'read-only-state',
     'focus-state',

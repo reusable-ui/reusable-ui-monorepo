@@ -1,11 +1,11 @@
 // Types:
 import {
-    type ExciteStateProps,
-    type ExciteStateOptions,
-    type ExciteClassname,
+    type ExcitedStateProps,
+    type ExcitedStateOptions,
+    type ExcitedClassname,
 }                           from './types.js'
 import {
-    type ExciteStateDefinition,
+    type ExcitedStateDefinition,
 }                           from './internal-types.js'
 
 // Reusable-ui states:
@@ -17,6 +17,6 @@ import {
 
 
 /** Resolves the semantic activity classname for excited state behavior. */
-export const resolveExciteActivityClassname = ({ visualState }: ResolveActivityClassnameArgs<boolean, ExciteStateProps, ExciteStateOptions, ExciteStateDefinition>): ExciteClassname => {
+export const resolveExcitedActivityClassname = ({ visualState }: ResolveActivityClassnameArgs<boolean, ExcitedStateProps, ExcitedStateOptions, ExcitedStateDefinition>): ExcitedClassname => {
     return visualState ? 'is-excited' : 'not-excited';
 };

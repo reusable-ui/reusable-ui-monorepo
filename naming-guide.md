@@ -40,7 +40,7 @@ Packages managing behavioral states encapsulate event listeners, runtime transit
 
 | Current Package Name | Status / Rename | Recommended Package Name | Control Prop | JSDoc Phrasing | Architectural Logic |
 |---|---|---|---|---|---|
-| /excite-state | 🔴 | /excit<span style="color: red;">ed</span>-state | excit<span style="color: red;">ed</span> | Resolves the excit<span style="color: red;">ed</span> state... | Updated from active verb to past-participle adjective to respect the established technical idiom. |
+| /excited-state | 🟢 | /excit<span style="color: red;">ed</span>-state | excit<span style="color: red;">ed</span> | Resolves the excit<span style="color: red;">ed</span> state... | Updated from active verb to past-participle adjective to respect the established technical idiom. |
 | /disabled-state | 🟢 | /disabl<span style="color: red;">ed</span>-state | disabl<span style="color: red;">ed</span> | Resolves the disabl<span style="color: red;">ed</span> state... | Fixed platform standard. Matches native HTML element properties. |
 | /read-only-state | 🟢 | /read-only-state | readOnly | Resolves the read-only state... | Fixed platform standard. Matches native form field behaviors. |
 | /focus-state | 🟢 | /focus-state | focus<span style="color: red;">ed</span> | Resolves the focus state... | Pure noun representing the element targeting system. |

@@ -1,15 +1,15 @@
 import React, { type AnimationEvent, useState, useLayoutEffect } from 'react'
-import { type ExciteStateTestProps, ExciteStateTest } from './ExciteStateTest.js'
+import { type ExcitedStateTestProps, ExcitedStateTest } from './ExcitedStateTest.js'
 import { useStableEventHandler } from '@reusable-ui/callbacks'
 import { ValueChangeHandler } from '@reusable-ui/controllable';
 
-export interface ExciteStateParentTestProps
+export interface ExcitedStateParentTestProps
     extends
-        Omit<ExciteStateTestProps, 'onExcitedComplete'>
+        Omit<ExcitedStateTestProps, 'onExcitedComplete'>
 {
     responseExcitedComplete ?: boolean
 }
-export const ExciteStateParentTest = (props: ExciteStateParentTestProps) => {
+export const ExcitedStateParentTest = (props: ExcitedStateParentTestProps) => {
     const {
         excited : controlledExcited = false,
         responseExcitedComplete = true,
@@ -26,7 +26,7 @@ export const ExciteStateParentTest = (props: ExciteStateParentTestProps) => {
     });
     
     return (
-        <ExciteStateTest
+        <ExcitedStateTest
             {...props}
             excited={excited}
             onExcitedComplete={handleExcitedComplete}

@@ -1,12 +1,12 @@
 import { keyframes, style, vars } from '@cssfn/core'
-import { usingExciteState } from '../dist/index.js'
+import { usingExcitedState } from '../dist/index.js'
 import { usingAnimationFeature } from '@reusable-ui/animation-feature'
 
-export default function exciteStateTestStyle() {
+export default function excitedStateTestStyle() {
     const {
-        exciteStateRule,
-        exciteStateVars: { exciteFactor },
-    } = usingExciteState({
+        excitedStateRule,
+        excitedStateVars: { excitedFactor },
+    } = usingExcitedState({
         animationExciting: 'var(--test-exciting)',
     });
     
@@ -16,7 +16,7 @@ export default function exciteStateTestStyle() {
     } = usingAnimationFeature();
     
     return style({
-        ...exciteStateRule(),
+        ...excitedStateRule(),
         ...animationFeatureRule(),
         
         ...vars({
@@ -26,12 +26,12 @@ export default function exciteStateTestStyle() {
             ],
         }),
         ...keyframes('boo-test-exciting', {
-            from : { [exciteFactor]: 0 },
-            to   : { [exciteFactor]: 1 },
+            from : { [excitedFactor]: 0 },
+            to   : { [excitedFactor]: 1 },
         }),
         
         // Oscillates invert effect several times:
-        filter: `invert(calc(0.8 * ${exciteFactor}))`,
+        filter: `invert(calc(0.8 * ${excitedFactor}))`,
         
         // Apply composite animations:
         animation,

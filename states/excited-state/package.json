@@ -1,5 +1,5 @@
 {
-  "name": "@reusable-ui/excite-state",
+  "name": "@reusable-ui/excited-state",
   "version": "7.0.0",
   "description": "Lifecycle-aware excitement state with continuous attention-grabbing animations and semantic styling hooks for UI components.",
   "keywords": [
@@ -28,7 +28,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "states/excite-state"
+    "directory": "states/excited-state"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"

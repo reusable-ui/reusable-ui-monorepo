@@ -58,7 +58,7 @@ import {
  * ensuring animations start, stop, or switch gracefully without interruption.  
  * 
  * By supplying a `definition` that declares the inactive baseline, animation patterns, and classname resolver,
- * you can specialize this hook into domain-specific behaviors such as `busy-state`, `processing-state`, or `excite-state`.  
+ * you can specialize this hook into domain-specific behaviors such as `busy-state`, `processing-state`, or `excited-state`.  
  * 
  * To implement live updates, dynamically supply the domain-specific observer result into `effectiveState`.  
  * 
