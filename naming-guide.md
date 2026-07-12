@@ -28,10 +28,10 @@ Packages managing design variants encapsulate static styling logic, themes, and 
 | /flow-direction-variant | 🟢 | /flow-direction-variant | flowDirection | Resolves the flow direction variant... | Pure noun representing an alignment attribute. |
 | /size-variant | 🟢 | /size-variant | size | Resolves the size variant... | Pure noun representing a scale attribute. |
 | /theme-variant | 🟢 | /theme-variant | theme | Resolves the theme variant... | Pure noun representing a visual configuration system. |
-| /emphasis-variant | 🔴 | /emphasiz<span style="color: red;">ed</span>-variant | emphasiz<span style="color: red;">ed</span> | Resolves the emphasiz<span style="color: red;">ed</span> variant... | Adjective form is clearer for styling toggles. Current noun form is acceptable for folder brevity. |
-| /outline-variant | 🔴 | /outlin<span style="color: red;">ed</span>-variant | outlin<span style="color: red;">ed</span> | Resolves the outlin<span style="color: red;">ed</span> variant... | Updated to match global design system conventions (e.g., Outlined Buttons). |
+| /emphasis-variant | 🔴 | /emphasiz<span style="color: red;">ed</span>-variant | emphasiz<span style="color: red;">ed</span> | Resolves the emphasiz<span style="color: red;">ed</span> variant... | Past-participle adjective is chosen because the variant is a visual style modifier. |
+| /outline-variant | 🔴 | /outlin<span style="color: red;">ed</span>-variant | outlin<span style="color: red;">ed</span> | Resolves the outlin<span style="color: red;">ed</span> variant... | Past-participle adjective is chosen because this variant describes a visual treatment rather than a system domain. |
 | /mild-variant | 🟢 | /mild-variant | mild | Resolves the mild variant... | Pure adjective describing a softened visual style. |
-| /stripped-variant | 🟢 | /stripp<span style="color: red;">ed</span>-variant | stripp<span style="color: red;">ed</span> | Resolves the stripp<span style="color: red;">ed</span> variant... | Past-participle adjective perfectly describing a stripped-down (borderless) container. |
+| /stripped-variant | 🟢 | /stripp<span style="color: red;">ed</span>-variant | stripp<span style="color: red;">ed</span> | Resolves the stripp<span style="color: red;">ed</span> variant... | Past-participle adjective is chosen because it describes a concrete visual effect more clearly than a noun. |
 
 
 
@@ -40,8 +40,8 @@ Packages managing behavioral states encapsulate event listeners, runtime transit
 
 | Current Package Name | Status / Rename | Recommended Package Name | Control Prop | JSDoc Phrasing | Architectural Logic |
 |---|---|---|---|---|---|
-| /excited-state | 🟢 | /excit<span style="color: red;">ed</span>-state | excit<span style="color: red;">ed</span> | Resolves the excit<span style="color: red;">ed</span> state... | Updated from active verb to past-participle adjective to respect the established technical idiom. |
-| /disabled-state | 🟢 | /disabl<span style="color: red;">ed</span>-state | disabl<span style="color: red;">ed</span> | Resolves the disabl<span style="color: red;">ed</span> state... | Fixed platform standard. Matches native HTML element properties. |
+| /excited-state | 🟢 | /excit<span style="color: red;">ed</span>-state | excit<span style="color: red;">ed</span> | Resolves the excit<span style="color: red;">ed</span> state... | Past-participle adjective is chosen because the state describes an instance's current condition rather than an underlying mechanism. |
+| /disabled-state | 🟢 | /disabl<span style="color: red;">ed</span>-state | disabl<span style="color: red;">ed</span> | Resolves the disabl<span style="color: red;">ed</span> state... | Past-participle adjective is chosen because disabled is the canonical platform-level status word for this condition. |
 | /read-only-state | 🟢 | /read-only-state | readOnly | Resolves the read-only state... | Fixed platform standard. Matches native form field behaviors. |
 | /focus-state | 🟢 | /focus-state | focus<span style="color: red;">ed</span> | Resolves the focus state... | Pure noun representing the element targeting system. |
 | /hover-state | 🟢 | /hover-state | hover<span style="color: red;">ed</span> | Resolves the hover state... | Pure noun representing the mouse/pointer tracking system. |
