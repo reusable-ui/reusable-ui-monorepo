@@ -1,7 +1,7 @@
 import React from 'react'
 import { type ThemeVariantProps, useThemeVariant } from '@reusable-ui/theme-variant'
 import { type EmphasisVariantProps, useEmphasisVariant } from '@reusable-ui/emphasis-variant'
-import { type OutlineVariantProps, useOutlineVariant } from '@reusable-ui/outline-variant'
+import { type OutlinedVariantProps, useOutlinedVariant } from '@reusable-ui/outlined-variant'
 import { type MildVariantProps, useMildVariant } from '@reusable-ui/mild-variant'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { useRingFeatureTestStyles } from './RingFeatureTest.loader.js'
@@ -10,7 +10,7 @@ export interface RingFeatureTestProps
     extends
         ThemeVariantProps,
         EmphasisVariantProps,
-        OutlineVariantProps,
+        OutlinedVariantProps,
         MildVariantProps
 {
 }
@@ -19,7 +19,7 @@ export const RingFeatureTest = (props: RingFeatureTestProps) => {
     
     const { themeClassname    } = useThemeVariant(props);
     const { emphasisClassname } = useEmphasisVariant(props);
-    const { outlineClassname  } = useOutlineVariant(props);
+    const { outlinedClassname } = useOutlinedVariant(props);
     const { mildClassname     } = useMildVariant(props);
     
     return (
@@ -27,7 +27,7 @@ export const RingFeatureTest = (props: RingFeatureTestProps) => {
             <HydrateStyles />
             <div
                 data-testid="ring-feature-test"
-                className={`${styles.main} ${themeClassname} ${emphasisClassname} ${outlineClassname} ${mildClassname}`}
+                className={`${styles.main} ${themeClassname} ${emphasisClassname} ${outlinedClassname} ${mildClassname}`}
             >
                 Ring Feature Test
             </div>

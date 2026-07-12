@@ -42,17 +42,17 @@ import {
  * 
  * @example
  * ```ts
- * // Outline variant without factor driver:
- * const outlineVariantRule : CssRule = usingSwitchVariant({
+ * // Outlined variant without factor driver:
+ * const outlinedVariantRule : CssRule = usingSwitchVariant({
  *     // Flags for discrete switches in conditional styling:
  *     flags     : [
  *         {
  *             ifVariant : ifOutlined,
- *             variable  : outlineVariantVars.isOutlined,
+ *             variable  : outlinedVariantVars.isOutlined,
  *         },
  *         {
  *             ifVariant : ifNotOutlined,
- *             variable  : outlineVariantVars.notOutlined,
+ *             variable  : outlinedVariantVars.notOutlined,
  *         },
  *     ],
  * });
@@ -60,22 +60,22 @@ import {
  * 
  * @example
  * ```ts
- * // Outline variant with factor driver:
- * const outlineVariantRule : CssRule = usingSwitchVariant({
+ * // Outlined variant with factor driver:
+ * const outlinedVariantRule : CssRule = usingSwitchVariant({
  *     // Flags for discrete switches in conditional styling:
  *     flags     : [
  *         {
  *             ifVariant : ifOutlined,
- *             variable  : outlineVariantVars.isOutlined,
+ *             variable  : outlinedVariantVars.isOutlined,
  *             factor    : 1, // Set to 1 when outlined.
  *         },
  *         {
  *             ifVariant : ifNotOutlined,
- *             variable  : outlineVariantVars.notOutlined,
+ *             variable  : outlinedVariantVars.notOutlined,
  *             factor    : 0, // Set to 0 when not outlined.
  *         },
  *     ],
- *     factorVar : outlineVariantVars.outlineFactor, // The factor variable to set when a flag is active.
+ *     factorVar : outlinedVariantVars.outlinedFactor, // The factor variable to set when a flag is active.
  * });
  * ```
  */

@@ -17,14 +17,14 @@ import {
 
 
 /**
- * A list of outline-related CSS variables used to enable conditional styling.
+ * A list of outlined-related CSS variables used to enable conditional styling.
  * 
  * These variables act as boolean switches or numeric factors that determine whether
- * outline-specific styles should be applied.
+ * outlined-specific styles should be applied.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
-export interface OutlineVariantVars {
+export interface OutlinedVariantVars {
     /**
      * Applies when the component is outlined.
      * 
@@ -37,12 +37,12 @@ export interface OutlineVariantVars {
      * ```ts
      * export const componentStyle = () => style({
      *     // These properties are only applied when the component is outlined:
-     *     fontWeight     : `${outlineVariantVars.isOutlined} bold`,
-     *     textDecoration : `${outlineVariantVars.isOutlined} underline`,
+     *     fontWeight     : `${outlinedVariantVars.isOutlined} bold`,
+     *     textDecoration : `${outlinedVariantVars.isOutlined} underline`,
      * });
      * ```
      */
-    isOutlined    : unknown
+    isOutlined     : unknown
     
     /**
      * Applies when the component is not outlined.
@@ -56,12 +56,12 @@ export interface OutlineVariantVars {
      * ```ts
      * export const componentStyle = () => style({
      *     // These properties are only applied when the component is not outlined:
-     *     fontWeight     : `${outlineVariantVars.notOutlined} normal`,
-     *     textDecoration : `${outlineVariantVars.notOutlined} none`,
+     *     fontWeight     : `${outlinedVariantVars.notOutlined} normal`,
+     *     textDecoration : `${outlinedVariantVars.notOutlined} none`,
      * });
      * ```
      */
-    notOutlined   : unknown
+    notOutlined    : unknown
     
     /**
      * A normalized factor representing the **outlined state**.
@@ -76,7 +76,7 @@ export interface OutlineVariantVars {
      * - Applicable to numeric-based properties such as `transform`, `scale`, `opacity`, etc.
      * - Useful in custom `calc()` formulas or other CSS functions.
      */
-    outlineFactor : unknown
+    outlinedFactor : unknown
 }
 
 
@@ -84,16 +84,16 @@ export interface OutlineVariantVars {
 /**
  * Provides a CSS API for enabling conditional styling based on current outlined state.
  */
-export interface CssOutlineVariant {
+export interface CssOutlinedVariant {
     /**
-     * Generates CSS rules that toggle outline-related CSS variables based on current outlined state.
+     * Generates CSS rules that toggle outlined-related CSS variables based on current outlined state.
      * 
-     * These rules are scoped using `ifOutlined()` and `ifNotOutlined()` to toggle outline-related CSS variables.
+     * These rules are scoped using `ifOutlined()` and `ifNotOutlined()` to toggle outlined-related CSS variables.
      */
-    outlineVariantRule : Lazy<CssRule>
+    outlinedVariantRule : Lazy<CssRule>
     
     /**
-     * Exposes outline-related CSS variables for conditional styling.
+     * Exposes outlined-related CSS variables for conditional styling.
      * 
      * Includes:
      * - `isOutlined`  : active when outlined
@@ -105,5 +105,5 @@ export interface CssOutlineVariant {
      * 
      * These variables are strongly typed and automatically resolve to consistent CSS variable names.
      */
-    outlineVariantVars : CssVars<OutlineVariantVars>
+    outlinedVariantVars : CssVars<OutlinedVariantVars>
 }

@@ -3,7 +3,7 @@ import { HydrateStyles } from '@cssfn/cssfn-react'
 import { usingFocusState } from '@reusable-ui/focus-state'
 import { usingThemeVariant } from '@reusable-ui/theme-variant'
 import { colorParamConfigVars } from '@reusable-ui/color-config'
-import { useOutlineVariant, type OutlineVariantProps } from '@reusable-ui/outline-variant'
+import { useOutlinedVariant, type OutlinedVariantProps } from '@reusable-ui/outlined-variant'
 import { useMildVariant, type MildVariantProps} from '@reusable-ui/mild-variant'
 import { regularBaseColor, mildBaseColor } from './base-colors.js'
 import { useFocusEffectTestStyles } from './FocusEffectTest.loader.js'
@@ -13,7 +13,7 @@ import { useFocusEffectTestStyles } from './FocusEffectTest.loader.js'
 export interface FocusEffectTestProps
     extends
         // Variants:
-        Required<OutlineVariantProps>,
+        Required<OutlinedVariantProps>,
         Required<MildVariantProps>
 {
     /**
@@ -82,15 +82,15 @@ export const FocusEffectTest = (props: FocusEffectTestProps) => {
         ]: mildBaseColor,
     } as CSSProperties), [focusFactorCondVar, focusFactorCond]);
     
-    const { outlineClassname } = useOutlineVariant(props);
-    const { mildClassname } = useMildVariant(props);
+    const { outlinedClassname } = useOutlinedVariant(props);
+    const { mildClassname     } = useMildVariant(props);
     
     return (
         <div>
             <HydrateStyles />
             <div
                 data-testid="focus-effect-test"
-                className={`${styles.main} ${outlineClassname} ${mildClassname}`}
+                className={`${styles.main} ${outlinedClassname} ${mildClassname}`}
                 style={inlineStyle}
             >
                 Focus Effect Test

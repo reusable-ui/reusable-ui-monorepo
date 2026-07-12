@@ -2,20 +2,20 @@ import { style } from '@cssfn/core'
 
 import { usingThemeVariant } from '@reusable-ui/theme-variant'
 import { usingEmphasisVariant } from '@reusable-ui/emphasis-variant'
-import { usingOutlineVariant } from '@reusable-ui/outline-variant'
+import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'
 import { usingMildVariant } from '@reusable-ui/mild-variant'
 import { usingDecorationFeature } from '../dist/index.js'
 
 export default function decorationFeatureTestStyle() {
     const { themeVariantRule    } = usingThemeVariant();
     const { emphasisVariantRule } = usingEmphasisVariant();
-    const { outlineVariantRule  } = usingOutlineVariant();
+    const { outlinedVariantRule } = usingOutlinedVariant();
     const { mildVariantRule     } = usingMildVariant();
     const { decorationFeatureRule, decorationFeatureVars } = usingDecorationFeature();
     return style({
         ...themeVariantRule(),
         ...emphasisVariantRule(),
-        ...outlineVariantRule(),
+        ...outlinedVariantRule(),
         ...mildVariantRule(),
         ...decorationFeatureRule(),
         color: decorationFeatureVars.decorColor,

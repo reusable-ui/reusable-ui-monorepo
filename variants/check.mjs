@@ -8,7 +8,7 @@ const variantDirs = [
     'size-variant',
     'theme-variant',
     'emphasis-variant',
-    'outline-variant',
+    'outlined-variant',
     'mild-variant',
     'stripped-variant',
 ];

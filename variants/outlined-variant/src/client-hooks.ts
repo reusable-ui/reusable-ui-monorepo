@@ -1,4 +1,4 @@
-'use client' // The exported `useOutlineVariant()` hook is client side only.
+'use client' // The exported `useOutlinedVariant()` hook is client side only.
 
 // Reusable-ui variants:
 import {
@@ -13,9 +13,9 @@ import {
 
 // Types:
 import {
-    type OutlineVariantProps,
-    type OutlineVariantOptions,
-    type OutlineVariant,
+    type OutlinedVariantProps,
+    type OutlinedVariantOptions,
+    type OutlinedVariant,
 }                           from './types.js'
 
 // Defaults:
@@ -26,12 +26,12 @@ import {
 
 // Utilities:
 import {
-    getOutlineClassname,
+    getOutlinedClassname,
 }                           from './internal-utilities.js'
 
 // Contexts:
 import {
-    OutlineVariantContext,
+    OutlinedVariantContext,
 }                           from './internal-contexts.js'
 
 
@@ -44,7 +44,7 @@ const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inheri
     // Inheritances:
     inheritableVariantToken : 'inherit',
     invertableVariantToken  : 'invert',
-    variantContext          : OutlineVariantContext,
+    variantContext          : OutlinedVariantContext,
     invertVariant           : (inheritedVariant) => !inheritedVariant,
     
     // Fallbacks:
@@ -65,7 +65,7 @@ const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inheri
  * @param options - An optional configuration specifying a default outlined value when no `outlined` prop is explicitly provided.
  * @returns The resolved outlined value.
  */
-export const useResolvedOutlined = (props: OutlineVariantProps, options?: OutlineVariantOptions): boolean => {
+export const useResolvedOutlined = (props: OutlinedVariantProps, options?: OutlinedVariantOptions): boolean => {
     // Extract options:
     const {
         defaultOutlined  : defaultVariant,
@@ -100,33 +100,33 @@ export const useResolvedOutlined = (props: OutlineVariantProps, options?: Outlin
  * Resolves the outlined state along with its associated CSS class name,
  * based on component props, optional default configuration, and parent context.
  * 
- * @param {OutlineVariantProps} props - The component props that may include an `outlined` value.
- * @param {OutlineVariantOptions} options - An optional configuration specifying a default outlined value when no `outlined` prop is explicitly provided.
- * @returns {OutlineVariant} - The resolved outlined state along with its associated CSS class name.
+ * @param {OutlinedVariantProps} props - The component props that may include an `outlined` value.
+ * @param {OutlinedVariantOptions} options - An optional configuration specifying a default outlined value when no `outlined` prop is explicitly provided.
+ * @returns {OutlinedVariant} - The resolved outlined state along with its associated CSS class name.
  * 
  * @example
  * ```tsx
  * import React, { FC } from 'react';
  * import {
- *     useOutlineVariant,
- *     OutlineVariantProps,
- * } from '@reusable-ui/outline-variant';
+ *     useOutlinedVariant,
+ *     OutlinedVariantProps,
+ * } from '@reusable-ui/outlined-variant';
  * import styles from './OutlinedBox.module.css';
  * 
- * export interface OutlinedBoxProps extends OutlineVariantProps {}
+ * export interface OutlinedBoxProps extends OutlinedVariantProps {}
  * 
  * // A box that conditionally outlines its appearance.
  * export const OutlinedBox: FC<OutlinedBoxProps> = (props) => {
  *     const {
  *         outlined,
- *         outlineClassname,
- *     } = useOutlineVariant(props, {
+ *         outlinedClassname,
+ *     } = useOutlinedVariant(props, {
  *         defaultOutlined: false, // fallback if not provided
  *     });
  *     
  *     return (
  *         <div
- *             className={`${styles.box} ${outlineClassname}`}
+ *             className={`${styles.box} ${outlinedClassname}`}
  *         >
  *             {outlined && <span className={styles.badge}>🔔</span>}
  *             <p>Additional details go here.</p>
@@ -135,7 +135,7 @@ export const useResolvedOutlined = (props: OutlineVariantProps, options?: Outlin
  * };
  * ```
  */
-export const useOutlineVariant = (props: OutlineVariantProps, options?: OutlineVariantOptions): OutlineVariant => {
+export const useOutlinedVariant = (props: OutlinedVariantProps, options?: OutlinedVariantOptions): OutlinedVariant => {
     // Resolve effective outlined value:
     const effectiveIsOutlined = useResolvedOutlined(props, options);
     
@@ -143,7 +143,7 @@ export const useOutlineVariant = (props: OutlineVariantProps, options?: OutlineV
     
     // Return resolved outlined attributes:
     return {
-        outlined         : effectiveIsOutlined,
-        outlineClassname : getOutlineClassname(effectiveIsOutlined),
-    } satisfies OutlineVariant;
+        outlined          : effectiveIsOutlined,
+        outlinedClassname : getOutlinedClassname(effectiveIsOutlined),
+    } satisfies OutlinedVariant;
 };

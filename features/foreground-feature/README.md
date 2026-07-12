@@ -1,11 +1,11 @@
 # @reusable-ui/foreground-feature 📦  
 
-A styling utility for resolving the appropriate foreground color based on the currently active variants — including theme, outline, and mild.  
+A styling utility for resolving the appropriate foreground color based on the currently active variants — including theme, outlined, and mild.  
 It exposes CSS variables for coloring your component’s foreground, with support for CSS color function adjustments.
 Ideal for buttons, cards, dialogs, and any theme-aware components.
 
 ## ✨ Features
-✔ Dynamically switches foreground color based on active variants (theme, outline, mild)  
+✔ Dynamically switches foreground color based on active variants (theme, outlined, mild)  
 ✔ Exposes foreground color variable (`foregColor`) for direct usage or further adjustment via CSS color functions  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, theming, and color systems  
@@ -42,12 +42,12 @@ Example: `oklch(from ${foregColor} l c h / calc(alpha * 0.25))`
 These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding variant is inactive.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable             | Active When...         | Purpose                                                             |
-|----------------------|------------------------|---------------------------------------------------------------------|
-| `foregRegularCond`   | Theme variant active   | Themed foreground color for the regular variant                     |
-| `foregMildCond`      | Mild variant active    | Reading-friendly foreground color for mild variant                  |
-| `foregOutlinedCond`  | Outline variant active | High-contrast foreground color for outlined variant                 |
-| `foregColorOverride` | When user override set | User-defined override foreground color, highest priority if present |
+| Variable             | Active When...          | Purpose                                                             |
+|----------------------|-------------------------|---------------------------------------------------------------------|
+| `foregRegularCond`   | Theme variant active    | Themed foreground color for the regular variant                     |
+| `foregMildCond`      | Mild variant active     | Reading-friendly foreground color for mild variant                  |
+| `foregOutlinedCond`  | Outlined variant active | High-contrast foreground color for outlined variant                 |
+| `foregColorOverride` | When user override set  | User-defined override foreground color, highest priority if present |
 
 #### 💡 Usage Example
 
@@ -55,7 +55,7 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 // Supporting variants:
 import { usingThemeVariant } from '@reusable-ui/theme-variant'
 import { usingEmphasisVariant } from '@reusable-ui/emphasis-variant' // optional
-import { usingOutlineVariant } from '@reusable-ui/outline-variant'
+import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'
 import { usingMildVariant } from '@reusable-ui/mild-variant'
 
 // Theme-aware foreground feature:
@@ -67,7 +67,7 @@ import { style } from '@cssfn/core';
 export const componentStyle = () => {
     const { themeVariantRule    } = usingThemeVariant();
     const { emphasisVariantRule } = usingEmphasisVariant(); // optional
-    const { outlineVariantRule  } = usingOutlineVariant();
+    const { outlinedVariantRule } = usingOutlinedVariant();
     const { mildVariantRule     } = usingMildVariant();
     
     const {
@@ -84,7 +84,7 @@ export const componentStyle = () => {
         // Apply supporting variant rules:
         ...themeVariantRule(),
         ...emphasisVariantRule(), // optional
-        ...outlineVariantRule(),
+        ...outlinedVariantRule(),
         ...mildVariantRule(),
         
         // Apply theme-aware foreground feature:

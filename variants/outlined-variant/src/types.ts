@@ -3,7 +3,7 @@
  * 
  * Accepts an optional `outlined`, defaulting to a default when not provided.
  */
-export interface OutlineVariantProps {
+export interface OutlinedVariantProps {
     /**
      * Specifies the desired outlined state of the component:
      * - `true`     : outlined
@@ -21,7 +21,7 @@ export interface OutlineVariantProps {
  * 
  * Applied when the component does not explicitly provide the `outlined` prop.
  */
-export interface OutlineVariantOptions {
+export interface OutlinedVariantOptions {
     /**
      * Specifies the default outlined state when no `outlined` prop is explicitly provided:
      * - `true`     : outlined
@@ -48,7 +48,7 @@ export interface OutlineVariantOptions {
 /**
  * Represents the final resolved outlined state of the component, along with its associated CSS class name.
  */
-export interface OutlineVariant {
+export interface OutlinedVariant {
     /**
      * Indicates whether the component should appear outlined.
      * 
@@ -65,5 +65,5 @@ export interface OutlineVariant {
      * - `'is-outlined'`
      * - `'not-outlined'`
      */
-    outlineClassname   : 'is-outlined' | 'not-outlined'
+    outlinedClassname  : 'is-outlined' | 'not-outlined'
 }

@@ -1,4 +1,4 @@
-'use client' // The exported `<OutlineVariantProvider>` component is client side only.
+'use client' // The exported `<OutlinedVariantProvider>` component is client side only.
 
 // React:
 import React, {
@@ -9,12 +9,12 @@ import React, {
 
 // Types:
 import {
-    type OutlineVariant,
+    type OutlinedVariant,
 }                           from './types.js'
 
 // Contexts:
 import {
-    OutlineVariantContext,
+    OutlinedVariantContext,
 }                           from './internal-contexts.js'
 
 
@@ -22,15 +22,15 @@ import {
 // React components:
 
 /**
- * Props for `<OutlineVariantProvider>`.
+ * Props for `<OutlinedVariantProvider>`.
  * 
  * Requires an `outlined` value to establish the context,
  * and renders `children` that consume the propagated value.
  */
-export interface OutlineVariantProviderProps
+export interface OutlinedVariantProviderProps
     extends
         // Bases:
-        PropsWithChildren<Pick<OutlineVariant, 'outlined'>>
+        PropsWithChildren<Pick<OutlinedVariant, 'outlined'>>
 {
 }
 
@@ -42,32 +42,32 @@ export interface OutlineVariantProviderProps
  * ```tsx
  * import React, { ReactNode, FC } from 'react';
  * import {
- *     OutlineVariantProps,
- *     OutlineVariantProvider,
- *     useOutlineVariant,
- * } from '@reusable-ui/outline-variant';
+ *     OutlinedVariantProps,
+ *     OutlinedVariantProvider,
+ *     useOutlinedVariant,
+ * } from '@reusable-ui/outlined-variant';
  * 
- * export interface ParentComponentProps extends OutlineVariantProps {
+ * export interface ParentComponentProps extends OutlinedVariantProps {
  *     children ?: ReactNode
  * }
  * 
  * // A component that shares its outlined state with descendant components.
  * export const ParentComponent: FC<ParentComponentProps> = (props) => {
  *     // Resolve outlined state from props:
- *     const { outlined } = useOutlineVariant(props, {
+ *     const { outlined } = useOutlinedVariant(props, {
  *         defaultOutlined: false, // fallback if not provided
  *     });
  *     
  *     // Propagate outlined state to descendants:
  *     return (
- *         <OutlineVariantProvider outlined={outlined}>
+ *         <OutlinedVariantProvider outlined={outlined}>
  *             {props.children}
- *         </OutlineVariantProvider>
+ *         </OutlinedVariantProvider>
  *     );
  * };
  * ```
  */
-const OutlineVariantProvider = (props: OutlineVariantProviderProps): ReactElement | null => {
+const OutlinedVariantProvider = (props: OutlinedVariantProviderProps): ReactElement | null => {
     // Extract props:
     const {
         outlined,
@@ -78,13 +78,13 @@ const OutlineVariantProvider = (props: OutlineVariantProviderProps): ReactElemen
     
     // React elements:
     return (
-        <OutlineVariantContext value={outlined}>
+        <OutlinedVariantContext value={outlined}>
             {children}
-        </OutlineVariantContext>
+        </OutlinedVariantContext>
     );
 };
 
 export {
-    OutlineVariantProvider,            // Named export for readability.
-    OutlineVariantProvider as default, // Default export to support React.lazy.
+    OutlinedVariantProvider,            // Named export for readability.
+    OutlinedVariantProvider as default, // Default export to support React.lazy.
 }

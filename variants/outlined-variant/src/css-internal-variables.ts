@@ -6,20 +6,20 @@ import {
 
 // Reusable-ui defaults:
 import {
-    defaultOutlineVariantPrefix,
+    defaultOutlinedVariantPrefix,
 }                           from '@reusable-ui/css-prefix-default'  // A centralized default CSS variable prefixes across the Reusable-UI core system, ensuring unique, predictable, and consistent prefixes.
 
 // Types:
 import {
-    type OutlineVariantVars,
+    type OutlinedVariantVars,
 }                           from './css-types.js'
 
 
 
 /**
- * A strongly typed global mapping of outline-related CSS variables for conditional styling.
+ * A strongly typed global mapping of outlined-related CSS variables for conditional styling.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [outlineVariantVars] = cssVars<OutlineVariantVars>({ prefix: defaultOutlineVariantPrefix, minify: false });
+export const [outlinedVariantVars] = cssVars<OutlinedVariantVars>({ prefix: defaultOutlinedVariantPrefix, minify: false });

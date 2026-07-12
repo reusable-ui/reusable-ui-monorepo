@@ -1,6 +1,6 @@
 import { style } from '@cssfn/core'
 import { usingThemeVariant } from '@reusable-ui/theme-variant'
-import { usingOutlineVariant } from '@reusable-ui/outline-variant'
+import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'
 import { usingMildVariant} from '@reusable-ui/mild-variant'
 import { usingBackgroundFeature } from '@reusable-ui/background-feature'
 import { usingValidityEffect } from '../dist/index.js'
@@ -14,8 +14,8 @@ export default function validityEffectTestStyle() {
         themeVariantRule,
     } = usingThemeVariant();
     const {
-        outlineVariantRule,
-    } = usingOutlineVariant();
+        outlinedVariantRule,
+    } = usingOutlinedVariant();
     const {
         mildVariantRule,
     } = usingMildVariant();
@@ -37,7 +37,7 @@ export default function validityEffectTestStyle() {
     return style({
         // Variants:
         ...themeVariantRule(),
-        ...outlineVariantRule(),
+        ...outlinedVariantRule(),
         ...mildVariantRule(),
         
         // Features:

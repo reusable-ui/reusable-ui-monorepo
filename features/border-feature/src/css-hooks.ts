@@ -34,8 +34,8 @@ import {
     usingThemeVariant,
 }                           from '@reusable-ui/theme-variant'       // A utility for managing themes consistently across React components.
 import {
-    usingOutlineVariant,
-}                           from '@reusable-ui/outline-variant'     // A utility for managing visual outline consistently across React components.
+    usingOutlinedVariant,
+}                           from '@reusable-ui/outlined-variant'    // A utility for managing visual outline consistently across React components.
 import {
     usingMildVariant,
 }                           from '@reusable-ui/mild-variant'        // A utility for managing mild styling (reading friendly) consistently across React components.
@@ -85,10 +85,10 @@ export const usingBorderFeature = (options?: CssBorderFeatureOptions): CssBorder
     return {
         borderFeatureRule : () => {
             // Peer variant dependencies (may be poisoned if not implemented):
-            const { themeVariantVars   } = usingThemeVariant();
-            const { outlineVariantVars } = usingOutlineVariant();
-            const { mildVariantVars    } = usingMildVariant();
-            const { strippedVariantVars    } = usingStrippedVariant();
+            const { themeVariantVars    } = usingThemeVariant();
+            const { outlinedVariantVars } = usingOutlinedVariant();
+            const { mildVariantVars     } = usingMildVariant();
+            const { strippedVariantVars } = usingStrippedVariant();
             
             
             
@@ -131,7 +131,7 @@ export const usingBorderFeature = (options?: CssBorderFeatureOptions): CssBorder
                      * Poisoned when outlined variant is inactive.
                      */
                     [borderFeatureVars.borderOutlinedCond]: [[
-                        outlineVariantVars.isOutlined,               // If outlined variant is active.
+                        outlinedVariantVars.isOutlined,              // If outlined variant is active.
                         switchOf(
                             themeVariantVars.borderOutlinedOverride, // ⚠️ Theme override (if active).
                             themeVariantVars.borderOutlined,         // A themed border color for outlined variant.

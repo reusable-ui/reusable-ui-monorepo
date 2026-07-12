@@ -166,7 +166,7 @@ import {
 } from '@reusable-ui/theme-variant';
 import {
     ifOutlined,
-} from '@reusable-ui/outline-variant';
+} from '@reusable-ui/outlined-variant';
 import { style } from '@cssfn/core';
 
 export const componentStyle = () => {
@@ -228,7 +228,7 @@ import {
 } from '@reusable-ui/theme-variant';
 import {
     ifOutlined,
-} from '@reusable-ui/outline-variant';
+} from '@reusable-ui/outlined-variant';
 import { style, rule, switchOf } from '@cssfn/core';
 
 export const componentStyle = () => {

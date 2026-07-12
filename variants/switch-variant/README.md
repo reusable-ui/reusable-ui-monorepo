@@ -1,6 +1,6 @@
 # @reusable-ui/switch-variant 📦  
 
-**switch-variant** is a reusable abstraction for building **switch-based variants** such as `outline-variant`, `mild-variant`, `orientation-variant`, and `emphasis-variant`.  
+**switch-variant** is a reusable abstraction for building **switch-based variants** such as `outlined-variant`, `mild-variant`, `orientation-variant`, and `emphasis-variant`.  
 It provides a shared `usingSwitchVariant` helper that drives **boolean-like flag variables** and an optional **numeric factor variable** for algebraic styling.
 
 With **switch-variant**, you can:
@@ -41,39 +41,39 @@ Notes:
 #### 💡 Usage Examples
 
 ```ts
-// Outline variant without factor driver:
-const outlineVariantRule : CssRule = usingSwitchVariant({
+// Outlined variant without factor driver:
+const outlinedVariantRule : CssRule = usingSwitchVariant({
     // Flags for discrete switches in conditional styling:
     flags     : [
         {
             ifVariant : ifOutlined,
-            variable  : outlineVariantVars.isOutlined,
+            variable  : outlinedVariantVars.isOutlined,
         },
         {
             ifVariant : ifNotOutlined,
-            variable  : outlineVariantVars.notOutlined,
+            variable  : outlinedVariantVars.notOutlined,
         },
     ],
 });
 ```
 
 ```ts
-// Outline variant with factor driver:
-const outlineVariantRule : CssRule = usingSwitchVariant({
+// Outlined variant with factor driver:
+const outlinedVariantRule : CssRule = usingSwitchVariant({
     // Flags for discrete switches in conditional styling:
     flags     : [
         {
             ifVariant : ifOutlined,
-            variable  : outlineVariantVars.isOutlined,
+            variable  : outlinedVariantVars.isOutlined,
             factor    : 1, // Set to 1 when outlined.
         },
         {
             ifVariant : ifNotOutlined,
-            variable  : outlineVariantVars.notOutlined,
+            variable  : outlinedVariantVars.notOutlined,
             factor    : 0, // Set to 0 when not outlined.
         },
     ],
-    factorVar : outlineVariantVars.outlineFactor, // The factor variable to set when a flag is active.
+    factorVar : outlinedVariantVars.outlinedFactor, // The factor variable to set when a flag is active.
 });
 ```
 
@@ -90,11 +90,11 @@ const outlineVariantRule : CssRule = usingSwitchVariant({
     /* Conditionally activate flags and assign factor variable when their variant condition matches: */
     &.not-outlined {
         --notOutlined: '';
-        --outlineFactor: 0;
+        --outlinedFactor: 0;
     }
     &.is-outlined {
         --isOutlined: '';
-        --outlineFactor: 1;
+        --outlinedFactor: 1;
     }
 }
 ```
@@ -151,10 +151,10 @@ Factor acts as a *numeric driver* for algebraic styling.
         ```css
         .the-component-scope {
             &.is-outlined {
-                --outlineFactor: 1;
+                --outlinedFactor: 1;
             }
             &.not-outlined {
-                --outlineFactor: 0;
+                --outlinedFactor: 0;
             }
         }
         ```
@@ -162,10 +162,10 @@ Factor acts as a *numeric driver* for algebraic styling.
         ```css
         .the-component-scope {
             /* 0 → blue, 1 → red: */
-            color: color-mix(in oklch, blue calc((1 - var(--outlineFactor)) * 100%), red calc(var(--outlineFactor) * 100%));
+            color: color-mix(in oklch, blue calc((1 - var(--outlinedFactor)) * 100%), red calc(var(--outlinedFactor) * 100%));
             
             /* 0 → 50% opacity, 1 → 100% opacity: */
-            opacity: clamp(0.5, var(--outlineFactor), 1);
+            opacity: clamp(0.5, var(--outlinedFactor), 1);
         }
         ```
 
@@ -184,7 +184,7 @@ This layered approach makes switch-based variants both **expressive** and **main
 - [`@reusable-ui/orientation-variant`](https://www.npmjs.com/package/@reusable-ui/orientation-variant) - A utility for managing orientations consistently across React components.  
 - [`@reusable-ui/flow-direction-variant`](https://www.npmjs.com/package/@reusable-ui/flow-direction-variant) - A utility for managing flow directions consistently across React components.  
 - [`@reusable-ui/emphasis-variant`](https://www.npmjs.com/package/@reusable-ui/emphasis-variant) - A utility for managing visual emphasis consistently across React components.  
-- [`@reusable-ui/outline-variant`](https://www.npmjs.com/package/@reusable-ui/outline-variant) - A utility for managing visual outline consistently across React components.  
+- [`@reusable-ui/outlined-variant`](https://www.npmjs.com/package/@reusable-ui/outlined-variant) - A utility for managing visual outline consistently across React components.  
 - [`@reusable-ui/mild-variant`](https://www.npmjs.com/package/@reusable-ui/mild-variant) - A utility for managing mild styling (reading friendly) consistently across React components.  
 - [`@reusable-ui/stripped-variant`](https://www.npmjs.com/package/@reusable-ui/stripped-variant) - A utility for managing stripped styling (frameless, minimal layout) consistently across React components.  
 

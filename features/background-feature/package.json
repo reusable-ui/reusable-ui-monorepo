@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/background-feature",
   "version": "7.0.0",
-  "description": "A styling utility for resolving the appropriate background color based on the currently active variants — including theme, emphasize, outline, mild, and stripped.",
+  "description": "A styling utility for resolving the appropriate background color based on the currently active variants — including theme, emphasize, outlined, mild, and stripped.",
   "keywords": [
     "background",
     "theme",
@@ -58,7 +58,7 @@
     "@reusable-ui/css-prefix-default": "^7.0.0",
     "@reusable-ui/emphasis-variant": "^7.0.0",
     "@reusable-ui/mild-variant": "^7.0.0",
-    "@reusable-ui/outline-variant": "^7.0.0",
+    "@reusable-ui/outlined-variant": "^7.0.0",
     "@reusable-ui/stripped-variant": "^7.0.0",
     "@reusable-ui/theme-variant": "^7.0.0"
   }

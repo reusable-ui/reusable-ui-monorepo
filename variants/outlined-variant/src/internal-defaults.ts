@@ -1,6 +1,6 @@
 // Types:
 import {
-    type OutlineVariantProps,
+    type OutlinedVariantProps,
 }                           from './types.js'
 
 
@@ -13,7 +13,7 @@ import {
  * 
  * - `'inherit'`: inherits outlined state from a parent context.
  */
-export const defaultDeclarativeOutlined : Required<OutlineVariantProps>['outlined'] = 'inherit';
+export const defaultDeclarativeOutlined : Required<OutlinedVariantProps>['outlined'] = 'inherit';
 
 
 

@@ -34,8 +34,8 @@ import {
     usingEmphasisVariant,
 }                           from '@reusable-ui/emphasis-variant'    // A utility for managing visual emphasis consistently across React components.
 import {
-    usingOutlineVariant,
-}                           from '@reusable-ui/outline-variant'     // A utility for managing visual outline consistently across React components.
+    usingOutlinedVariant,
+}                           from '@reusable-ui/outlined-variant'    // A utility for managing visual outline consistently across React components.
 import {
     usingMildVariant,
 }                           from '@reusable-ui/mild-variant'        // A utility for managing mild styling (reading friendly) consistently across React components.
@@ -67,9 +67,9 @@ export const usingBackgroundFeature = (options?: CssBackgroundFeatureOptions): C
             // Peer variant dependencies (may be poisoned if not implemented):
             const { themeVariantVars    } = usingThemeVariant();
             const { emphasisVariantVars } = usingEmphasisVariant();
-            const { outlineVariantVars  } = usingOutlineVariant();
+            const { outlinedVariantVars } = usingOutlinedVariant();
             const { mildVariantVars     } = usingMildVariant();
-            const { strippedVariantVars     } = usingStrippedVariant();
+            const { strippedVariantVars } = usingStrippedVariant();
             
             
             
@@ -148,8 +148,8 @@ export const usingBackgroundFeature = (options?: CssBackgroundFeatureOptions): C
                      * Poisoned when outlined variant is inactive.
                      */
                     [backgroundFeatureVars.backgOutlinedCond]: [[
-                        outlineVariantVars.isOutlined, // If outlined variant is active.
-                        'transparent',                 // A transparent background color for outlined variant.
+                        outlinedVariantVars.isOutlined, // If outlined variant is active.
+                        'transparent',                  // A transparent background color for outlined variant.
                     ]],
                     
                     

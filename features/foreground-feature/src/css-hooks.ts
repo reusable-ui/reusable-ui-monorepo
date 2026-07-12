@@ -26,8 +26,8 @@ import {
     usingThemeVariant,
 }                           from '@reusable-ui/theme-variant'       // A utility for managing themes consistently across React components.
 import {
-    usingOutlineVariant,
-}                           from '@reusable-ui/outline-variant'     // A utility for managing visual outline consistently across React components.
+    usingOutlinedVariant,
+}                           from '@reusable-ui/outlined-variant'    // A utility for managing visual outline consistently across React components.
 import {
     usingMildVariant,
 }                           from '@reusable-ui/mild-variant'        // A utility for managing mild styling (reading friendly) consistently across React components.
@@ -53,9 +53,9 @@ export const usingForegroundFeature = (options?: CssForegroundFeatureOptions): C
     return {
         foregroundFeatureRule : () => {
             // Peer variant dependencies (may be poisoned if not implemented):
-            const { themeVariantVars   } = usingThemeVariant();
-            const { outlineVariantVars } = usingOutlineVariant();
-            const { mildVariantVars    } = usingMildVariant();
+            const { themeVariantVars    } = usingThemeVariant();
+            const { outlinedVariantVars } = usingOutlinedVariant();
+            const { mildVariantVars     } = usingMildVariant();
             
             
             
@@ -98,7 +98,7 @@ export const usingForegroundFeature = (options?: CssForegroundFeatureOptions): C
                      * Poisoned when outlined variant is inactive.
                      */
                     [foregroundFeatureVars.foregOutlinedCond]: [[
-                        outlineVariantVars.isOutlined,              // If outlined variant is active.
+                        outlinedVariantVars.isOutlined,             // If outlined variant is active.
                         switchOf(
                             themeVariantVars.foregOutlinedOverride, // ⚠️ Theme override (if active).
                             themeVariantVars.foregOutlined,         // A themed foreground color for outlined variant.

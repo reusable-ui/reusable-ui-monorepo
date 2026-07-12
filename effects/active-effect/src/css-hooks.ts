@@ -24,8 +24,8 @@ import {
 
 // Reusable-ui variants:
 import {
-    usingOutlineVariant,
-}                           from '@reusable-ui/outline-variant'     // A utility for managing visual outline consistently across React components.
+    usingOutlinedVariant,
+}                           from '@reusable-ui/outlined-variant'    // A utility for managing visual outline consistently across React components.
 import {
     usingMildVariant,
 }                           from '@reusable-ui/mild-variant'        // A utility for managing mild styling (reading friendly) consistently across React components.
@@ -33,16 +33,16 @@ import {
 // Reusable-ui features:
 import {
     usingBackgroundFeature,
-}                           from '@reusable-ui/background-feature'  // A styling utility for resolving the appropriate background color based on the currently active variants — including theme, emphasize, outline, mild, and stripped.
+}                           from '@reusable-ui/background-feature'  // A styling utility for resolving the appropriate background color based on the currently active variants — including theme, emphasize, outlined, mild, and stripped.
 import {
     usingForegroundFeature,
-}                           from '@reusable-ui/foreground-feature'  // A styling utility for resolving the appropriate foreground color based on the currently active variants — including theme, outline, and mild.
+}                           from '@reusable-ui/foreground-feature'  // A styling utility for resolving the appropriate foreground color based on the currently active variants — including theme, outlined, and mild.
 import {
     usingDecorationFeature,
-}                           from '@reusable-ui/decoration-feature'  // A styling utility for resolving the appropriate decoration color based on the currently active variants — including theme, outline, and mild.
+}                           from '@reusable-ui/decoration-feature'  // A styling utility for resolving the appropriate decoration color based on the currently active variants — including theme, outlined, and mild.
 import {
     usingBorderFeature,
-}                           from '@reusable-ui/border-feature'      // A styling utility for resolving the appropriate border color, geometry, and radius based on the currently active variants — including theme, outline, mild, and stripped.
+}                           from '@reusable-ui/border-feature'      // A styling utility for resolving the appropriate border color, geometry, and radius based on the currently active variants — including theme, outlined, mild, and stripped.
 
 // Reusable-ui states:
 import {
@@ -84,8 +84,8 @@ export const usingActiveEffect = (options?: CssActiveEffectOptions): CssActiveEf
     
     
     // Variants:
-    const { outlineVariantVars : { isOutlined } } = usingOutlineVariant();
-    const { mildVariantVars    : { isMild     } } = usingMildVariant();
+    const { outlinedVariantVars : { isOutlined } } = usingOutlinedVariant();
+    const { mildVariantVars     : { isMild     } } = usingMildVariant();
     
     // Features:
     const { backgroundFeatureVars : { backgRegularCond , backgVariantColor , backgColorOverride  } } = usingBackgroundFeature();

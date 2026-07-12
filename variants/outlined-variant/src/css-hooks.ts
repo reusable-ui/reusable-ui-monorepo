@@ -6,12 +6,12 @@ import {
 
 // Types:
 import {
-    type CssOutlineVariant,
+    type CssOutlinedVariant,
 }                           from './css-types.js'
 
 // CSS Variables:
 import {
-    outlineVariantVars,
+    outlinedVariantVars,
 }                           from './css-internal-variables.js'
 
 // CSS Selectors:
@@ -23,32 +23,32 @@ import {
 
 
 /**
- * Generates CSS rules that toggle outline-related CSS variables based on current outlined state,
+ * Generates CSS rules that toggle outlined-related CSS variables based on current outlined state,
  * and exposes those variables for conditional styling.
  * 
  * @returns A CSS API for enabling conditional styling based on current outlined state.
  */
-export const usingOutlineVariant = (): CssOutlineVariant => {
+export const usingOutlinedVariant = (): CssOutlinedVariant => {
     return {
-        outlineVariantRule : () => usingSwitchVariant({
+        outlinedVariantRule : () => usingSwitchVariant({
             // Flags for discrete switches in conditional styling:
             flags     : [
                 {
                     ifVariant : ifNotOutlined,
-                    variable  : outlineVariantVars.notOutlined,
+                    variable  : outlinedVariantVars.notOutlined,
                     factor    : 0, // Set to 0 when not outlined.
                 },
                 {
                     ifVariant : ifOutlined,
-                    variable  : outlineVariantVars.isOutlined,
+                    variable  : outlinedVariantVars.isOutlined,
                     factor    : 1, // Set to 1 when outlined.
                 },
             ],
             
             // The factor variable to set when a flag is active:
-            factorVar : outlineVariantVars.outlineFactor,
+            factorVar : outlinedVariantVars.outlinedFactor,
         }),
         
-        outlineVariantVars,
-    } satisfies CssOutlineVariant;
+        outlinedVariantVars,
+    } satisfies CssOutlinedVariant;
 };

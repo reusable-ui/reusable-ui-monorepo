@@ -78,18 +78,18 @@ interface HoverStateAnimationTestCase {
         expectedRunningHover ?: boolean | 0
         
         /**
-         * The expected outline style of the hoverable element.
-         * - `string`    : expected outline style`
+         * The expected outlined style of the hoverable element.
+         * - `string`    : expected outlined style`
          * - `undefined` : nothing to expect
          */
-        expectedOutline      ?: string
+        expectedOutlined     ?: string
     }[]
 }
 
 
 
-const OUTLINE_HOVERED   = 'color(srgb 0 0 1) solid 2px'
-const OUTLINE_UNHOVERED = 'color(srgb 0 0 0) solid 0px';
+const OUTLINED_HOVERED   = 'color(srgb 0 0 1) solid 2px'
+const OUTLINED_UNHOVERED = 'color(srgb 0 0 0) solid 0px';
 
 
 
@@ -108,28 +108,28 @@ test.describe('useHoverState - animation', () => {
                 {
                     title                : 'Initially no running animation',
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_HOVERED,
+                    expectedOutlined     : OUTLINED_HOVERED,
                 },
                 {
                     title                : 'Still no running animation',
                     
                     delay                : 200,
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_HOVERED,
+                    expectedOutlined     : OUTLINED_HOVERED,
                 },
                 {
                     title                : 'Still no running animation',
                     
                     delay                : 1000,
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_HOVERED,
+                    expectedOutlined     : OUTLINED_HOVERED,
                 },
                 {
                     title                : 'Still no running animation',
                     
                     delay                : 1000,
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_HOVERED,
+                    expectedOutlined     : OUTLINED_HOVERED,
                 },
             ],
         },
@@ -141,28 +141,28 @@ test.describe('useHoverState - animation', () => {
                 {
                     title                : 'Initially no running animation',
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_UNHOVERED,
+                    expectedOutlined     : OUTLINED_UNHOVERED,
                 },
                 {
                     title                : 'Still no running animation',
                     
                     delay                : 200,
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_UNHOVERED,
+                    expectedOutlined     : OUTLINED_UNHOVERED,
                 },
                 {
                     title                : 'Still no running animation',
                     
                     delay                : 1000,
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_UNHOVERED,
+                    expectedOutlined     : OUTLINED_UNHOVERED,
                 },
                 {
                     title                : 'Still no running animation',
                     
                     delay                : 1000,
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_UNHOVERED,
+                    expectedOutlined     : OUTLINED_UNHOVERED,
                 },
             ],
         },
@@ -173,7 +173,7 @@ test.describe('useHoverState - animation', () => {
                 {
                     title                : 'Initially unhovered',
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_UNHOVERED,
+                    expectedOutlined     : OUTLINED_UNHOVERED,
                 },
                 {
                     title                : 'Set hovered to true (immediate)',
@@ -193,7 +193,7 @@ test.describe('useHoverState - animation', () => {
                     
                     delay                : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_HOVERED,
+                    expectedOutlined     : OUTLINED_HOVERED,
                 },
             ],
         },
@@ -204,7 +204,7 @@ test.describe('useHoverState - animation', () => {
                 {
                     title                : 'Initially hovered',
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_HOVERED,
+                    expectedOutlined     : OUTLINED_HOVERED,
                 },
                 {
                     title                : 'Set hovered to false (immediate)',
@@ -224,7 +224,7 @@ test.describe('useHoverState - animation', () => {
                     
                     delay                : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_UNHOVERED,
+                    expectedOutlined     : OUTLINED_UNHOVERED,
                 },
             ],
         },
@@ -235,7 +235,7 @@ test.describe('useHoverState - animation', () => {
                 {
                     title                : 'Initially unhovered',
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_UNHOVERED,
+                    expectedOutlined     : OUTLINED_UNHOVERED,
                 },
                 {
                     title                : 'Hover',
@@ -263,7 +263,7 @@ test.describe('useHoverState - animation', () => {
                     
                     delay                : 600, // Includes additional margin to guarantee completion.
                     expectedRunningHover : 0, // No running animation.
-                    expectedOutline      : OUTLINE_HOVERED,
+                    expectedOutlined     : OUTLINED_HOVERED,
                 },
             ],
         },
@@ -274,7 +274,7 @@ test.describe('useHoverState - animation', () => {
                 {
                     title                : 'Initially hovered',
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_HOVERED,
+                    expectedOutlined     : OUTLINED_HOVERED,
                 },
                 {
                     title                : 'Unhover',
@@ -302,7 +302,7 @@ test.describe('useHoverState - animation', () => {
                     
                     delay                : 600, // Includes additional margin to guarantee completion.
                     expectedRunningHover : 0, // No running animation.
-                    expectedOutline      : OUTLINE_UNHOVERED,
+                    expectedOutlined     : OUTLINED_UNHOVERED,
                 },
             ],
         },
@@ -313,7 +313,7 @@ test.describe('useHoverState - animation', () => {
                 {
                     title                : 'Initially unhovered',
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_UNHOVERED,
+                    expectedOutlined     : OUTLINED_UNHOVERED,
                 },
                 {
                     title                : 'Hover (first time)',
@@ -331,7 +331,7 @@ test.describe('useHoverState - animation', () => {
                     title                : 'Wait for final animation to finish',
                     delay                : 800, // Includes additional margin to guarantee completion.
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_HOVERED,
+                    expectedOutlined     : OUTLINED_HOVERED,
                 },
             ],
         },
@@ -342,7 +342,7 @@ test.describe('useHoverState - animation', () => {
                 {
                     title                : 'Initially hovered',
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_HOVERED,
+                    expectedOutlined     : OUTLINED_HOVERED,
                 },
                 {
                     title                : 'Unhover (first time)',
@@ -360,7 +360,7 @@ test.describe('useHoverState - animation', () => {
                     title                : 'Wait for final animation to finish',
                     delay                : 800, // Includes additional margin to guarantee completion.
                     expectedRunningHover : 0,
-                    expectedOutline      : OUTLINE_UNHOVERED,
+                    expectedOutlined     : OUTLINED_UNHOVERED,
                 },
             ],
         },
@@ -418,7 +418,7 @@ test.describe('useHoverState - animation', () => {
             
             
             // Apply update scenarios:
-            for (const { title, hovered, computedHover, delay, expectedRunningHover, expectedOutline} of updates) {
+            for (const { title, hovered, computedHover, delay, expectedRunningHover, expectedOutlined} of updates) {
                 console.log(`[Subtest] ${title}`);
                 
                 
@@ -499,9 +499,9 @@ test.describe('useHoverState - animation', () => {
                     } // switch
                 } // if
                 
-                if (expectedOutline !== undefined) {
-                    const actualOutline = await box.evaluate((el) => window.getComputedStyle(el).outline);
-                    expect(actualOutline).toBe((expectedOutline));
+                if (expectedOutlined !== undefined) {
+                    const actualOutlined = await box.evaluate((el) => window.getComputedStyle(el).outline);
+                    expect(actualOutlined).toBe((expectedOutlined));
                 } // if
             } // for
         });

@@ -38,7 +38,7 @@
 @reusable-ui/size-variant               CONFIG_BASED
 @reusable-ui/theme-variant
 @reusable-ui/emphasis-variant           SWITCH_BASED
-@reusable-ui/outline-variant            SWITCH_BASED
+@reusable-ui/outlined-variant           SWITCH_BASED
 @reusable-ui/mild-variant               SWITCH_BASED
 @reusable-ui/stripped-variant           SWITCH_BASED
 @reusable-ui/styling-variants
@@ -56,7 +56,7 @@
 | SizeVariantProps            | size            | sm, md, lg, custom               |    Yes    |          |    inherit     |        md        | Sets component sizing, including custom token or value        |
 | ThemeVariantProps           | theme           | primary, secondary, ..., custom  |    Yes    |          |    inherit     |     primary      | Applies themed visual identity from palette or context        |
 | EmphasizeVariantProps       | emphasized      | boolean                          |    Yes    |   Yes    |    inherit     |      false       | Enables gradient background styling                           |
-| OutlineVariantProps         | outlined        | boolean                          |    Yes    |   Yes    |    inherit     |      false       | Enables outlined style (border-only, no fill)                 |
+| OutlinedVariantProps        | outlined        | boolean                          |    Yes    |   Yes    |    inherit     |      false       | Enables outlined style (border-only, no fill)                 |
 | MildVariantProps            | mild            | boolean                          |    Yes    |   Yes    |    inherit     |      false       | Enables soft-tone background styling                          |
 |-----------------------------|-----------------|----------------------------------|-----------|----------|----------------|------------------|---------------------------------------------------------------|
 | Utilities: -----------------|-----------------|----------------------------------|-----------|----------|----------------|------------------|---------------------------------------------------------------|
@@ -73,7 +73,7 @@
 | size-variant           | `SizeVariantProps`          | `size`          | `sizeClassname`          | ✅ Base form: declarative sizing (`sm`, `lg`, etc.) | VERIFIED |
 | theme-variant          | `ThemeVariantProps`         | `theme`         | `themeClassname`         | ✅ Base form: matches design system conventions     | VERIFIED |
 | emphasis-variant       | `EmphasisVariantProps`      | `emphasis`      | `emphasisClassname`      | ✅ Noun form: declarative styling intent            | Should be `<Component emphasis />` (emphasis is a pure noun) |
-| outline-variant        | `OutlineVariantProps`       | `outline`       | `outlineClassname`       | ✅ Base form: matches common UI idioms              | Should be `<Component outline />` (outline is a noun in the context (styling intent)) |
+| outlined-variant       | `OutlinedVariantProps`      | `outlined`      | `outlinedClassname`      | ✅ Base form: matches common UI idioms              | Should be `<Component outlined />` (outlined is a past-participle adjective) |
 | mild-variant           | `MildVariantProps`          | `mild`          | `mildClassname`          | ✅ Base form: emotionally descriptive styling       | VERIFIED |
 | stripped-variant       | `StrippedVariantProps`      | `stripped`      | `strippedClassname`      | ✅ Base form: minimalist styling intent             | VERIFIED |
 |------------------------|-----------------------------|-----------------|--------------------------|-----------------------------------------------------|----------|

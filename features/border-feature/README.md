@@ -1,11 +1,11 @@
 # @reusable-ui/border-feature 📦  
 
-A styling utility for resolving the appropriate border color, geometry, and radius based on the currently active variants — including theme, outline, mild, and stripped.  
+A styling utility for resolving the appropriate border color, geometry, and radius based on the currently active variants — including theme, outlined, mild, and stripped.  
 It exposes CSS variables for styling your component’s border, with support for CSS color function adjustments.
 Ideal for buttons, cards, dialogs, and any theme-aware components.
 
 ## ✨ Features
-✔ Dynamically switches border color based on active variants (theme, outline, mild)  
+✔ Dynamically switches border color based on active variants (theme, outlined, mild)  
 ✔ Supports stripped variant for geometry-only rendering  
 ✔ Exposes logical border widths and radii for full layout control  
 ✔ Exposes border color variable (`borderColor`) for direct usage or further adjustment via CSS color functions  
@@ -59,7 +59,7 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 |-----------------------|-------------------------|-----------------------------------------------------------------|
 | `borderRegularCond`   | Theme variant active    | Themed border color for the regular variant                     |
 | `borderMildCond`      | Mild variant active     | Reading-friendly border color for mild variant                  |
-| `borderOutlinedCond`  | Outline variant active  | High-contrast border color for outlined variant                 |
+| `borderOutlinedCond`  | Outlined variant active | High-contrast border color for outlined variant                 |
 | `borderStrippedCond`  | Stripped variant active | minimal layout rendering                                        |
 | `borderColorOverride` | When user override set  | User-defined override border color, highest priority if present |
 
@@ -69,7 +69,7 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 // Supporting variants:
 import { usingThemeVariant } from '@reusable-ui/theme-variant'
 import { usingEmphasisVariant } from '@reusable-ui/emphasis-variant' // optional
-import { usingOutlineVariant } from '@reusable-ui/outline-variant'
+import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'
 import { usingMildVariant } from '@reusable-ui/mild-variant'
 import { usingStrippedVariant } from '@reusable-ui/stripped-variant'
 
@@ -82,7 +82,7 @@ import { style, children } from '@cssfn/core';
 export const componentStyle = () => {
     const { themeVariantRule    } = usingThemeVariant();
     const { emphasisVariantRule } = usingEmphasisVariant(); // optional
-    const { outlineVariantRule  } = usingOutlineVariant();
+    const { outlinedVariantRule } = usingOutlinedVariant();
     const { mildVariantRule     } = usingMildVariant();
     const { strippedVariantRule } = usingStrippedVariant();
     
@@ -120,7 +120,7 @@ export const componentStyle = () => {
         // Apply supporting variant rules:
         ...themeVariantRule(),
         ...emphasisVariantRule(), // optional
-        ...outlineVariantRule(),
+        ...outlinedVariantRule(),
         ...mildVariantRule(),
         ...strippedVariantRule(),
         

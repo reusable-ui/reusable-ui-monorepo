@@ -1,4 +1,4 @@
-# @reusable-ui/outline-variant 📦  
+# @reusable-ui/outlined-variant 📦  
 
 A utility for managing visual outline consistently across React components.  
 Provides hooks and CSS helpers for outline resolution and conditional styling — ideal for buttons, cards, badges, alerts, or any component that benefits from bordered emphasis.
@@ -6,21 +6,21 @@ Provides hooks and CSS helpers for outline resolution and conditional styling �
 ## ✨ Features
 ✔ Boolean-based outlined variant with inheritance and inversion  
 ✔ Hook-based resolution with customizable fallback behavior  
-✔ CSS selectors and conditional rule helpers for outline-aware styling  
+✔ CSS selectors and conditional rule helpers for outlined-aware styling  
 ✔ Seamless integration across appearance, layout, and interaction systems
 
 ## 📦 Installation
-Install **@reusable-ui/outline-variant** via npm or yarn:
+Install **@reusable-ui/outlined-variant** via npm or yarn:
 
 ```sh
-npm install @reusable-ui/outline-variant
+npm install @reusable-ui/outlined-variant
 # or
-yarn add @reusable-ui/outline-variant
+yarn add @reusable-ui/outlined-variant
 ```
 
 ## 🧩 Exported Hooks
 
-### `useOutlineVariant(props, options)`
+### `useOutlinedVariant(props, options)`
 
 Resolves the outlined state along with its associated CSS class name, based on component props, optional default configuration, and parent context.
 
@@ -29,25 +29,25 @@ Resolves the outlined state along with its associated CSS class name, based on c
 ```tsx
 import React, { FC } from 'react';
 import {
-    useOutlineVariant,
-    OutlineVariantProps,
-} from '@reusable-ui/outline-variant';
+    useOutlinedVariant,
+    OutlinedVariantProps,
+} from '@reusable-ui/outlined-variant';
 import styles from './OutlinedBox.module.css';
 
-export interface OutlinedBoxProps extends OutlineVariantProps {}
+export interface OutlinedBoxProps extends OutlinedVariantProps {}
 
 // A box that conditionally outlines its appearance.
 export const OutlinedBox: FC<OutlinedBoxProps> = (props) => {
     const {
         outlined,
-        outlineClassname,
-    } = useOutlineVariant(props, {
+        outlinedClassname,
+    } = useOutlinedVariant(props, {
         defaultOutlined: false, // fallback if not provided
     });
     
     return (
         <div
-            className={`${styles.box} ${outlineClassname}`}
+            className={`${styles.box} ${outlinedClassname}`}
         >
             {outlined && <span className={styles.badge}>🔔</span>}
             <p>Additional details go here.</p>
@@ -62,7 +62,7 @@ The hook determines the final outlined state using the following priority:
 1. **Explicit Prop Override**  
    - If `props.outlined` is `true` or `false`, it takes precedence.
 2. **Relative Resolution**  
-   - If set to `'inherit'`, uses the value from context, if available (`OutlineVariantProvider`).
+   - If set to `'inherit'`, uses the value from context, if available (`OutlinedVariantProvider`).
    - If set to `'invert'`, flips the inherited value (`true` ⇄ `false`).
 3. **Fallback Logic**  
    - Uses `options.defaultOutlined` if provided.
@@ -70,32 +70,32 @@ The hook determines the final outlined state using the following priority:
 
 #### 🧬 Context Propagation
 
-Use `<OutlineVariantProvider>` to share outlined state with descendant components:
+Use `<OutlinedVariantProvider>` to share outlined state with descendant components:
 
 ```tsx
 import React, { ReactNode, FC } from 'react';
 import {
-    OutlineVariantProps,
-    OutlineVariantProvider,
-    useOutlineVariant,
-} from '@reusable-ui/outline-variant';
+    OutlinedVariantProps,
+    OutlinedVariantProvider,
+    useOutlinedVariant,
+} from '@reusable-ui/outlined-variant';
 
-export interface ParentComponentProps extends OutlineVariantProps {
+export interface ParentComponentProps extends OutlinedVariantProps {
     children ?: ReactNode
 }
 
 // A component that shares its outlined state with descendant components.
 export const ParentComponent: FC<ParentComponentProps> = (props) => {
     // Resolve outlined state from props:
-    const { outlined } = useOutlineVariant(props, {
+    const { outlined } = useOutlinedVariant(props, {
         defaultOutlined: false, // fallback if not provided
     });
     
     // Propagate outlined state to descendants:
     return (
-        <OutlineVariantProvider outlined={outlined}>
+        <OutlinedVariantProvider outlined={outlined}>
             {props.children}
-        </OutlineVariantProvider>
+        </OutlinedVariantProvider>
     );
 };
 ```
@@ -124,7 +124,7 @@ import {
     // Conditional styling helpers:
     ifOutlined,            // Applies styles to outlined elements
     ifNotOutlined,         // Applies styles to non-outlined elements
-} from '@reusable-ui/outline-variant';
+} from '@reusable-ui/outlined-variant';
 import { style, rule } from '@cssfn/core';
 
 export const componentStyle = () => style({
@@ -152,30 +152,30 @@ export const componentStyle = () => style({
 
 ## 🧩 Exported CSS Hooks
 
-### `usingOutlineVariant()`
+### `usingOutlinedVariant()`
 
-Generates CSS rules that toggle outline-related CSS variables based on current outlined state, and exposes those variables for conditional styling.
+Generates CSS rules that toggle outlined-related CSS variables based on current outlined state, and exposes those variables for conditional styling.
 
 #### 💡 Usage Example
 
 ```ts
 import {
-    usingOutlineVariant,
-} from '@reusable-ui/outline-variant';
+    usingOutlinedVariant,
+} from '@reusable-ui/outlined-variant';
 import { style, fallback } from '@cssfn/core';
 
 export const componentStyle = () => {
     const {
-        outlineVariantRule,
-        outlineVariantVars: { isOutlined, notOutlined, outlineFactor },
-    } = usingOutlineVariant();
+        outlinedVariantRule,
+        outlinedVariantVars: { isOutlined, notOutlined, outlinedFactor },
+    } = usingOutlinedVariant();
     
     return style({
         display: 'flex',
         // Define component styling here.
         
-        // Apply outline-related variable rules:
-        ...outlineVariantRule(),
+        // Apply outlined-related variable rules:
+        ...outlinedVariantRule(),
         
         // Tips: Use `fallback()` to apply duplicate CSS properties without overriding — ensures all declarations are preserved:
         
@@ -190,27 +190,27 @@ export const componentStyle = () => {
             fontWeight     : `${notOutlined} normal`,
             textDecoration : `${notOutlined} none`,
         }),
-        opacity: `calc(1 - ${outlineFactor})`,
+        opacity: `calc(1 - ${outlinedFactor})`,
     });
 };
 ```
 
 #### 🧠 How It Works
 
-- `usingOutlineVariant()` generates scoped rules like:
+- `usingOutlinedVariant()` generates scoped rules like:
     ```css
     &.is-outlined {
         --isOutlined: ;       /* Valid    when outlined. */
         --notOutlined: unset; /* Poisoned when outlined. */
         
-        --outlineFactor: 1;   /* 1 → outlined. */
+        --outlinedFactor: 1;  /* 1 → outlined. */
     }
     
     &.not-outlined {
         --isOutlined: unset;  /* Poisoned when not outlined. */
         --notOutlined: ;      /* Valid    when not outlined. */
         
-        --outlineFactor: 0;   /* 0 → not outlined. */
+        --outlinedFactor: 0;  /* 0 → not outlined. */
     }
     ```
 - These first two variables act as conditional switches:
@@ -219,24 +219,24 @@ export const componentStyle = () => {
 - You can use them directly in your styles:
     ```ts
     style({
-        fontWeight     : `${outlineVariantVars.isOutlined} bold`,      // Will be rendered to: `font-weight: var(--isOutlined) bold;`          (becomes valid only when outlined)
-        textDecoration : `${outlineVariantVars.isOutlined} underline`, // Will be rendered to: `text-decoration: var(--isOutlined) underline;` (becomes valid only when outlined)
+        fontWeight     : `${outlinedVariantVars.isOutlined} bold`,      // Will be rendered to: `font-weight: var(--isOutlined) bold;`          (becomes valid only when outlined)
+        textDecoration : `${outlinedVariantVars.isOutlined} underline`, // Will be rendered to: `text-decoration: var(--isOutlined) underline;` (becomes valid only when outlined)
     });
     ```
 
 ---
 
 ## 📖 Part of the Reusable-UI Framework  
-**@reusable-ui/outline-variant** is a variant utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
+**@reusable-ui/outlined-variant** is a variant utility within the [Reusable-UI](https://github.com/reusable-ui/reusable-ui-monorepo) project.  
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
 
 ## 🤝 Contributing  
-Want to improve **@reusable-ui/outline-variant**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
+Want to improve **@reusable-ui/outlined-variant**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
 
 ## 🛡️ License  
 Licensed under the **MIT License** – see the [LICENSE](./LICENSE) file for details.  
 
 ---
 
-🚀 **@reusable-ui/outline-variant applies outline styling with clarity and consistency across React components.**  
+🚀 **@reusable-ui/outlined-variant applies outlined styling with clarity and consistency across React components.**  
 Give it a ⭐ on GitHub if you find it useful!  

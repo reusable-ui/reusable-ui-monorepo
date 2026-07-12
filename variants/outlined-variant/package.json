@@ -1,5 +1,5 @@
 {
-  "name": "@reusable-ui/outline-variant",
+  "name": "@reusable-ui/outlined-variant",
   "version": "7.0.0",
   "description": "A utility for managing visual outline consistently across React components.",
   "keywords": [
@@ -27,7 +27,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "variants/outline-variant"
+    "directory": "variants/outlined-variant"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"

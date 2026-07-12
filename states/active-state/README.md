@@ -285,7 +285,7 @@ import { usingActiveState } from '@reusable-ui/active-state';
 import { usingBackgroundFeature } from '@reusable-ui/background-feature';
 
 // Outlined variant:
-import { usingOutlineVariant } from '@reusable-ui/outline-variant';
+import { usingOutlinedVariant } from '@reusable-ui/outlined-variant';
 
 // Mild variant:
 import { usingMildVariant } from '@reusable-ui/mild-variant';
@@ -316,8 +316,8 @@ export const activatableBoxStyle = () => {
     
     // Feature: outlined variant
     const {
-        outlineVariantVars : { isOutlined, notOutlined },
-    } = usingOutlineVariant();
+        outlinedVariantVars : { isOutlined, notOutlined },
+    } = usingOutlinedVariant();
     
     // Feature: mild variant
     const {

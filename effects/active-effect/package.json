@@ -61,7 +61,7 @@
     "@reusable-ui/filter-feature": "^7.0.0",
     "@reusable-ui/foreground-feature": "^7.0.0",
     "@reusable-ui/mild-variant": "^7.0.0",
-    "@reusable-ui/outline-variant": "^7.0.0"
+    "@reusable-ui/outlined-variant": "^7.0.0"
   },
   "devDependencies": {
     "@reusable-ui/color-config": "^7.0.0",

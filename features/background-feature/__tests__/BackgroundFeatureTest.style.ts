@@ -2,7 +2,7 @@ import { style, scope } from '@cssfn/core'
 
 import { usingThemeVariant } from '@reusable-ui/theme-variant'
 import { usingEmphasisVariant } from '@reusable-ui/emphasis-variant'
-import { usingOutlineVariant } from '@reusable-ui/outline-variant'
+import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'
 import { usingMildVariant } from '@reusable-ui/mild-variant'
 import { usingStrippedVariant } from '@reusable-ui/stripped-variant'
 import { usingBackgroundFeature } from '../dist/index.js'
@@ -10,7 +10,7 @@ import { usingBackgroundFeature } from '../dist/index.js'
 const backgroundNoCustomStyle = () => {
     const { themeVariantRule    } = usingThemeVariant();
     const { emphasisVariantRule } = usingEmphasisVariant();
-    const { outlineVariantRule  } = usingOutlineVariant();
+    const { outlinedVariantRule } = usingOutlinedVariant();
     const { mildVariantRule     } = usingMildVariant();
     const { strippedVariantRule } = usingStrippedVariant();
     const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
@@ -19,7 +19,7 @@ const backgroundNoCustomStyle = () => {
     return style({
         ...themeVariantRule(),
         ...emphasisVariantRule(),
-        ...outlineVariantRule(),
+        ...outlinedVariantRule(),
         ...mildVariantRule(),
         ...strippedVariantRule(),
         ...backgroundFeatureRule(),
@@ -30,7 +30,7 @@ const backgroundNoCustomStyle = () => {
 const backgroundSimpleCustomStyle = () => {
     const { themeVariantRule    } = usingThemeVariant();
     const { emphasisVariantRule } = usingEmphasisVariant();
-    const { outlineVariantRule  } = usingOutlineVariant();
+    const { outlinedVariantRule } = usingOutlinedVariant();
     const { mildVariantRule     } = usingMildVariant();
     const { strippedVariantRule } = usingStrippedVariant();
     const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
@@ -40,7 +40,7 @@ const backgroundSimpleCustomStyle = () => {
     return style({
         ...themeVariantRule(),
         ...emphasisVariantRule(),
-        ...outlineVariantRule(),
+        ...outlinedVariantRule(),
         ...mildVariantRule(),
         ...strippedVariantRule(),
         ...backgroundFeatureRule(),
@@ -51,7 +51,7 @@ const backgroundSimpleCustomStyle = () => {
 const backgroundSingleCustomStyle = () => {
     const { themeVariantRule    } = usingThemeVariant();
     const { emphasisVariantRule } = usingEmphasisVariant();
-    const { outlineVariantRule  } = usingOutlineVariant();
+    const { outlinedVariantRule } = usingOutlinedVariant();
     const { mildVariantRule     } = usingMildVariant();
     const { strippedVariantRule } = usingStrippedVariant();
     const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
@@ -61,7 +61,7 @@ const backgroundSingleCustomStyle = () => {
     return style({
         ...themeVariantRule(),
         ...emphasisVariantRule(),
-        ...outlineVariantRule(),
+        ...outlinedVariantRule(),
         ...mildVariantRule(),
         ...strippedVariantRule(),
         ...backgroundFeatureRule(),
@@ -72,7 +72,7 @@ const backgroundSingleCustomStyle = () => {
 const backgroundSingleImportantCustomStyle = () => {
     const { themeVariantRule    } = usingThemeVariant();
     const { emphasisVariantRule } = usingEmphasisVariant();
-    const { outlineVariantRule  } = usingOutlineVariant();
+    const { outlinedVariantRule } = usingOutlinedVariant();
     const { mildVariantRule     } = usingMildVariant();
     const { strippedVariantRule } = usingStrippedVariant();
     const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
@@ -82,7 +82,7 @@ const backgroundSingleImportantCustomStyle = () => {
     return style({
         ...themeVariantRule(),
         ...emphasisVariantRule(),
-        ...outlineVariantRule(),
+        ...outlinedVariantRule(),
         ...mildVariantRule(),
         ...strippedVariantRule(),
         ...backgroundFeatureRule(),
@@ -93,7 +93,7 @@ const backgroundSingleImportantCustomStyle = () => {
 const backgroundMultipleCustomStyle = () => {
     const { themeVariantRule    } = usingThemeVariant();
     const { emphasisVariantRule } = usingEmphasisVariant();
-    const { outlineVariantRule  } = usingOutlineVariant();
+    const { outlinedVariantRule } = usingOutlinedVariant();
     const { mildVariantRule     } = usingMildVariant();
     const { strippedVariantRule } = usingStrippedVariant();
     const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
@@ -106,7 +106,7 @@ const backgroundMultipleCustomStyle = () => {
     return style({
         ...themeVariantRule(),
         ...emphasisVariantRule(),
-        ...outlineVariantRule(),
+        ...outlinedVariantRule(),
         ...mildVariantRule(),
         ...strippedVariantRule(),
         ...backgroundFeatureRule(),
@@ -117,7 +117,7 @@ const backgroundMultipleCustomStyle = () => {
 const backgroundMultipleImportantCustomStyle = () => {
     const { themeVariantRule    } = usingThemeVariant();
     const { emphasisVariantRule } = usingEmphasisVariant();
-    const { outlineVariantRule  } = usingOutlineVariant();
+    const { outlinedVariantRule } = usingOutlinedVariant();
     const { mildVariantRule     } = usingMildVariant();
     const { strippedVariantRule } = usingStrippedVariant();
     const { backgroundFeatureRule, backgroundFeatureVars } = usingBackgroundFeature({
@@ -131,7 +131,7 @@ const backgroundMultipleImportantCustomStyle = () => {
     return style({
         ...themeVariantRule(),
         ...emphasisVariantRule(),
-        ...outlineVariantRule(),
+        ...outlinedVariantRule(),
         ...mildVariantRule(),
         ...strippedVariantRule(),
         ...backgroundFeatureRule(),

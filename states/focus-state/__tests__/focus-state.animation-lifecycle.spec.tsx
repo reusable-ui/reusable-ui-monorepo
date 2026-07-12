@@ -78,18 +78,18 @@ interface FocusStateAnimationTestCase {
         expectedRunningFocus ?: boolean | 0
         
         /**
-         * The expected outline style of the focusable element.
-         * - `string`    : expected outline style`
+         * The expected outlined style of the focusable element.
+         * - `string`    : expected outlined style`
          * - `undefined` : nothing to expect
          */
-        expectedOutline      ?: string
+        expectedOutlined     ?: string
     }[]
 }
 
 
 
-const OUTLINE_FOCUSED = 'color(srgb 0 0 1) solid 2px'
-const OUTLINE_BLURRED = 'color(srgb 0 0 0) solid 0px';
+const OUTLINED_FOCUSED = 'color(srgb 0 0 1) solid 2px'
+const OUTLINED_BLURRED = 'color(srgb 0 0 0) solid 0px';
 
 
 
@@ -108,28 +108,28 @@ test.describe('useFocusState - animation', () => {
                 {
                     title                : 'Initially no running animation',
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_FOCUSED,
+                    expectedOutlined     : OUTLINED_FOCUSED,
                 },
                 {
                     title                : 'Still no running animation',
                     
                     delay                : 200,
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_FOCUSED,
+                    expectedOutlined     : OUTLINED_FOCUSED,
                 },
                 {
                     title                : 'Still no running animation',
                     
                     delay                : 1000,
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_FOCUSED,
+                    expectedOutlined     : OUTLINED_FOCUSED,
                 },
                 {
                     title                : 'Still no running animation',
                     
                     delay                : 1000,
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_FOCUSED,
+                    expectedOutlined     : OUTLINED_FOCUSED,
                 },
             ],
         },
@@ -141,28 +141,28 @@ test.describe('useFocusState - animation', () => {
                 {
                     title                : 'Initially no running animation',
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_BLURRED,
+                    expectedOutlined     : OUTLINED_BLURRED,
                 },
                 {
                     title                : 'Still no running animation',
                     
                     delay                : 200,
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_BLURRED,
+                    expectedOutlined     : OUTLINED_BLURRED,
                 },
                 {
                     title                : 'Still no running animation',
                     
                     delay                : 1000,
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_BLURRED,
+                    expectedOutlined     : OUTLINED_BLURRED,
                 },
                 {
                     title                : 'Still no running animation',
                     
                     delay                : 1000,
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_BLURRED,
+                    expectedOutlined     : OUTLINED_BLURRED,
                 },
             ],
         },
@@ -173,7 +173,7 @@ test.describe('useFocusState - animation', () => {
                 {
                     title                : 'Initially blurred',
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_BLURRED,
+                    expectedOutlined     : OUTLINED_BLURRED,
                 },
                 {
                     title                : 'Set focused to true (immediate)',
@@ -193,7 +193,7 @@ test.describe('useFocusState - animation', () => {
                     
                     delay                : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_FOCUSED,
+                    expectedOutlined     : OUTLINED_FOCUSED,
                 },
             ],
         },
@@ -204,7 +204,7 @@ test.describe('useFocusState - animation', () => {
                 {
                     title                : 'Initially focused',
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_FOCUSED,
+                    expectedOutlined     : OUTLINED_FOCUSED,
                 },
                 {
                     title                : 'Set focused to false (immediate)',
@@ -224,7 +224,7 @@ test.describe('useFocusState - animation', () => {
                     
                     delay                : 500,  // 200 + 500 + 500 = 1200 ms, the animation should have stopped 200 ms ago.
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_BLURRED,
+                    expectedOutlined     : OUTLINED_BLURRED,
                 },
             ],
         },
@@ -235,7 +235,7 @@ test.describe('useFocusState - animation', () => {
                 {
                     title                : 'Initially blurred',
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_BLURRED,
+                    expectedOutlined     : OUTLINED_BLURRED,
                 },
                 {
                     title                : 'Focus',
@@ -263,7 +263,7 @@ test.describe('useFocusState - animation', () => {
                     
                     delay                : 600, // Includes additional margin to guarantee completion.
                     expectedRunningFocus : 0, // No running animation.
-                    expectedOutline      : OUTLINE_FOCUSED,
+                    expectedOutlined     : OUTLINED_FOCUSED,
                 },
             ],
         },
@@ -274,7 +274,7 @@ test.describe('useFocusState - animation', () => {
                 {
                     title                : 'Initially focused',
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_FOCUSED,
+                    expectedOutlined     : OUTLINED_FOCUSED,
                 },
                 {
                     title                : 'Blur',
@@ -302,7 +302,7 @@ test.describe('useFocusState - animation', () => {
                     
                     delay                : 600, // Includes additional margin to guarantee completion.
                     expectedRunningFocus : 0, // No running animation.
-                    expectedOutline      : OUTLINE_BLURRED,
+                    expectedOutlined     : OUTLINED_BLURRED,
                 },
             ],
         },
@@ -313,7 +313,7 @@ test.describe('useFocusState - animation', () => {
                 {
                     title                : 'Initially blurred',
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_BLURRED,
+                    expectedOutlined     : OUTLINED_BLURRED,
                 },
                 {
                     title                : 'Focus (first time)',
@@ -331,7 +331,7 @@ test.describe('useFocusState - animation', () => {
                     title                : 'Wait for final animation to finish',
                     delay                : 800, // Includes additional margin to guarantee completion.
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_FOCUSED,
+                    expectedOutlined     : OUTLINED_FOCUSED,
                 },
             ],
         },
@@ -342,7 +342,7 @@ test.describe('useFocusState - animation', () => {
                 {
                     title                : 'Initially focused',
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_FOCUSED,
+                    expectedOutlined     : OUTLINED_FOCUSED,
                 },
                 {
                     title                : 'Blur (first time)',
@@ -360,7 +360,7 @@ test.describe('useFocusState - animation', () => {
                     title                : 'Wait for final animation to finish',
                     delay                : 800, // Includes additional margin to guarantee completion.
                     expectedRunningFocus : 0,
-                    expectedOutline      : OUTLINE_BLURRED,
+                    expectedOutlined     : OUTLINED_BLURRED,
                 },
             ],
         },
@@ -418,7 +418,7 @@ test.describe('useFocusState - animation', () => {
             
             
             // Apply update scenarios:
-            for (const { title, focused, computedFocus, delay, expectedRunningFocus, expectedOutline} of updates) {
+            for (const { title, focused, computedFocus, delay, expectedRunningFocus, expectedOutlined} of updates) {
                 console.log(`[Subtest] ${title}`);
                 
                 
@@ -499,9 +499,9 @@ test.describe('useFocusState - animation', () => {
                     } // switch
                 } // if
                 
-                if (expectedOutline !== undefined) {
-                    const actualOutline = await box.evaluate((el) => window.getComputedStyle(el).outline);
-                    expect(actualOutline).toBe((expectedOutline));
+                if (expectedOutlined !== undefined) {
+                    const actualOutlined = await box.evaluate((el) => window.getComputedStyle(el).outline);
+                    expect(actualOutlined).toBe((expectedOutlined));
                 } // if
             } // for
         });

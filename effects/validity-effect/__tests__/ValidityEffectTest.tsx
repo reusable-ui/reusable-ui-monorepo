@@ -4,7 +4,7 @@ import { usingValidityState } from '@reusable-ui/validity-state'
 import { colorConfigVars } from '@reusable-ui/color-config'
 import { colorParamConfigVars } from '@reusable-ui/color-config'
 import { useThemeVariant } from '@reusable-ui/theme-variant'
-import { useOutlineVariant, type OutlineVariantProps } from '@reusable-ui/outline-variant'
+import { useOutlinedVariant, type OutlinedVariantProps } from '@reusable-ui/outlined-variant'
 import { useMildVariant, type MildVariantProps} from '@reusable-ui/mild-variant'
 import {
     regularBaseColor,
@@ -24,7 +24,7 @@ import { useValidityEffectTestStyles } from './ValidityEffectTest.loader.js'
 export interface ValidityEffectTestProps
     extends
         // Variants:
-        Required<OutlineVariantProps>,
+        Required<OutlinedVariantProps>,
         Required<MildVariantProps>
 {
     /**
@@ -93,16 +93,16 @@ export const ValidityEffectTest = (props: ValidityEffectTestProps) => {
         ]: String(validityFactorCond),
     } as CSSProperties), [validityFactorCondVar, validityFactorCond]);
     
-    const { themeClassname } = useThemeVariant({ theme: 'primary' });
-    const { outlineClassname } = useOutlineVariant(props);
-    const { mildClassname } = useMildVariant(props);
+    const { themeClassname    } = useThemeVariant({ theme: 'primary' });
+    const { outlinedClassname } = useOutlinedVariant(props);
+    const { mildClassname     } = useMildVariant(props);
     
     return (
         <div>
             <HydrateStyles />
             <div
                 data-testid="validity-effect-test"
-                className={`${styles.main} ${themeClassname} ${outlineClassname} ${mildClassname}`}
+                className={`${styles.main} ${themeClassname} ${outlinedClassname} ${mildClassname}`}
                 style={inlineStyle}
             >
                 Validity Effect Test

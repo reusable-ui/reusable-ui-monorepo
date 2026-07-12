@@ -26,7 +26,7 @@ import {
  * ```ts
  * const outlinedCase : CssSwitchVariantFlagCase = {
  *     ifVariant : ifOutlined,
- *     variable  : outlineVariantVars.isOutlined,
+ *     variable  : outlinedVariantVars.isOutlined,
  * };
  * ```
  */
@@ -54,7 +54,7 @@ export interface CssSwitchVariantFlagCase {
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-var)`
-     * - A strongly typed reference, e.g. `outlineVariantVars.isOutlined` (recommended)
+     * - A strongly typed reference, e.g. `outlinedVariantVars.isOutlined` (recommended)
      */
     variable  : CssCustomSimpleRef
 }
@@ -76,7 +76,7 @@ export interface CssSwitchVariantFlagCase {
  * ```ts
  * const outlinedCase : CssSwitchVariantFlagCase = {
  *     ifVariant : ifOutlined,
- *     variable  : outlineVariantVars.isOutlined,
+ *     variable  : outlinedVariantVars.isOutlined,
  *     factor    : 1, // 1 → outlined, 0 → not outlined
  * };
  * ```
@@ -110,16 +110,16 @@ export interface CssSwitchVariantFactorCase
  * @example
  * ```ts
  * // Describe how switching outlined variant should behave:
- * const outlineVariantRule : CssRule = usingSwitchVariant({
+ * const outlinedVariantRule : CssRule = usingSwitchVariant({
  *     // Flags for discrete switches in conditional styling:
  *     flags     : [
  *         {
  *             ifVariant : ifOutlined,
- *             variable  : outlineVariantVars.isOutlined,
+ *             variable  : outlinedVariantVars.isOutlined,
  *         },
  *         {
  *             ifVariant : ifNotOutlined,
- *             variable  : outlineVariantVars.notOutlined,
+ *             variable  : outlinedVariantVars.notOutlined,
  *         },
  *     ],
  * });
@@ -150,21 +150,21 @@ export interface CssSwitchVariantBaseBehavior {
  * @example
  * ```ts
  * // Describe how switching outlined variant should behave (with factor variable):
- * const outlineVariantRule : CssRule = usingSwitchVariant({
+ * const outlinedVariantRule : CssRule = usingSwitchVariant({
  *     // Flags for discrete switches in conditional styling:
  *     flags     : [
  *         {
  *             ifVariant : ifOutlined,
- *             variable  : outlineVariantVars.isOutlined,
+ *             variable  : outlinedVariantVars.isOutlined,
  *             factor    : 1, // 1 → outlined
  *         },
  *         {
  *             ifVariant : ifNotOutlined,
- *             variable  : outlineVariantVars.notOutlined,
+ *             variable  : outlinedVariantVars.notOutlined,
  *             factor    : 0, // 0 → not outlined
  *         },
  *     ],
- *     factorVar : outlineVariantVars.outlineFactor, // The exposed factor variable.
+ *     factorVar : outlinedVariantVars.outlinedFactor, // The exposed factor variable.
  * });
  * ```
  */
@@ -214,16 +214,16 @@ export interface CssSwitchVariantFactorBehavior {
  * @example
  * ```ts
  * // Describe how switching outlined variant should behave (without factor variable):
- * const outlineVariantRule : CssRule = usingSwitchVariant({
+ * const outlinedVariantRule : CssRule = usingSwitchVariant({
  *     // Flags for discrete switches in conditional styling:
  *     flags     : [
  *         {
  *             ifVariant : ifOutlined,
- *             variable  : outlineVariantVars.isOutlined,
+ *             variable  : outlinedVariantVars.isOutlined,
  *         },
  *         {
  *             ifVariant : ifNotOutlined,
- *             variable  : outlineVariantVars.notOutlined,
+ *             variable  : outlinedVariantVars.notOutlined,
  *         },
  *     ],
  * });
@@ -232,21 +232,21 @@ export interface CssSwitchVariantFactorBehavior {
  * @example
  * ```ts
  * // Describe how switching outlined variant should behave (with factor variable):
- * const outlineVariantRule : CssRule = usingSwitchVariant({
+ * const outlinedVariantRule : CssRule = usingSwitchVariant({
  *     // Flags for discrete switches in conditional styling:
  *     flags     : [
  *         {
  *             ifVariant : ifOutlined,
- *             variable  : outlineVariantVars.isOutlined,
+ *             variable  : outlinedVariantVars.isOutlined,
  *             factor    : 1, // 1 → outlined
  *         },
  *         {
  *             ifVariant : ifNotOutlined,
- *             variable  : outlineVariantVars.notOutlined,
+ *             variable  : outlinedVariantVars.notOutlined,
  *             factor    : 0, // 0 → not outlined
  *         },
  *     ],
- *     factorVar : outlineVariantVars.outlineFactor, // The exposed factor variable.
+ *     factorVar : outlinedVariantVars.outlinedFactor, // The exposed factor variable.
  * });
  * ```
  */

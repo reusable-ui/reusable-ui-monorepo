@@ -212,7 +212,7 @@ export const enforceVariableConventions = createRule({
                 // CSS variable candidates:
                 // - Identified by names that end with "Vars", "Expressions", or "Options".
                 // - No need for a case boundary check before the suffix:
-                //   matches camelCase and PascalCase names like `outlineVars`, `flowDirectionVars`,
+                //   matches camelCase and PascalCase names like `outlinedVariantVars`, `flowDirectionVariantVars`,
                 //   and even acronym-based names like `someCSSVars`.
                 if (!/(Vars|Expressions|Options)$/.test(name)) return; // exit function
                 
@@ -276,7 +276,7 @@ export const enforceVariableConventions = createRule({
                     // CSS variable candidates:
                     // - Identified by names that end with "Vars", "Expressions", or "Options".
                     // - No need for a case boundary check before the suffix:
-                    //   matches camelCase and PascalCase names like `outlineVars`, `flowDirectionVars`,
+                    //   matches camelCase and PascalCase names like `outlinedVariantVars`, `flowDirectionVariantVars`,
                     //   and even acronym-based names like `someCSSVars`.
                     if (!/(Vars|Expressions|Options)$/.test(bindingName)) continue; // exit for
                     
@@ -725,7 +725,7 @@ export const noForeignCode = createRule({
                     // CSS variable candidates:
                     // - Identified by names that end with "Vars".
                     // - No need for a case boundary check before "Vars":
-                    //   matches camelCase and PascalCase names like `outlineVars`, `flowDirectionVars`,
+                    //   matches camelCase and PascalCase names like `outlinedVariantVars`, `flowDirectionVariantVars`,
                     //   and even acronym-based names like `someCSSVars`.
                     // - CSS variables should never be functions,
                     //   the `enforce-variable-conventions` rule will handle that check separately.
@@ -745,7 +745,7 @@ export const noForeignCode = createRule({
                         // CSS config expression variable candidates:
                         // - Identified by names that end with "Expressions".
                         // - No need for a case boundary check before "Expressions":
-                        //   matches camelCase and PascalCase names like `outlineExpressions`, `flowDirectionExpressions`,
+                        //   matches camelCase and PascalCase names like `borderConfigExpressions`, `spacerConfigExpressions`,
                         //   and even acronym-based names like `someCSSExpressions`.
                         // - CSS config expression variables should never be functions,
                         //   the `enforce-variable-conventions` rule will handle that check separately.
@@ -756,7 +756,7 @@ export const noForeignCode = createRule({
                         // CSS config option variable candidates:
                         // - Identified by names that end with "Options".
                         // - No need for a case boundary check before "Options":
-                        //   matches camelCase and PascalCase names like `outlineOptions`, `flowDirectionOptions`,
+                        //   matches camelCase and PascalCase names like `borderConfigOptions`, `spacerConfigOptions`,
                         //   and even acronym-based names like `someCSSOptions`.
                         // - CSS config option variables should never be functions,
                         //   the `enforce-variable-conventions` rule will handle that check separately.
