@@ -25,7 +25,7 @@ export const domainOrder = new Set<string>([
 'flowDirectionVariant',
 'sizeVariant',
 'themeVariant',
-'emphasisVariant',
+'emphasizedVariant',
 'outlinedVariant',
 'mildVariant',
 'strippedVariant',

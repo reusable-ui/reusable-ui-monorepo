@@ -1,4 +1,4 @@
-'use client' // The exported `useEmphasisVariant()` hook is client side only.
+'use client' // The exported `useEmphasizedVariant()` hook is client side only.
 
 // Reusable-ui variants:
 import {
@@ -13,9 +13,9 @@ import {
 
 // Types:
 import {
-    type EmphasisVariantProps,
-    type EmphasisVariantOptions,
-    type EmphasisVariant,
+    type EmphasizedVariantProps,
+    type EmphasizedVariantOptions,
+    type EmphasizedVariant,
 }                           from './types.js'
 
 // Defaults:
@@ -26,12 +26,12 @@ import {
 
 // Utilities:
 import {
-    getEmphasisClassname,
+    getEmphasizedClassname,
 }                           from './internal-utilities.js'
 
 // Contexts:
 import {
-    EmphasisVariantContext,
+    EmphasizedVariantContext,
 }                           from './internal-contexts.js'
 
 
@@ -44,7 +44,7 @@ const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inheri
     // Inheritances:
     inheritableVariantToken : 'inherit',
     invertableVariantToken  : 'invert',
-    variantContext          : EmphasisVariantContext,
+    variantContext          : EmphasizedVariantContext,
     invertVariant           : (inheritedVariant) => !inheritedVariant,
     
     // Fallbacks:
@@ -65,7 +65,7 @@ const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inheri
  * @param options - An optional configuration specifying a default emphasized value when no `emphasized` prop is explicitly provided.
  * @returns The resolved emphasized value.
  */
-export const useResolvedEmphasized = (props: EmphasisVariantProps, options?: EmphasisVariantOptions): boolean => {
+export const useResolvedEmphasized = (props: EmphasizedVariantProps, options?: EmphasizedVariantOptions): boolean => {
     // Extract options:
     const {
         defaultEmphasized  : defaultVariant,
@@ -100,33 +100,33 @@ export const useResolvedEmphasized = (props: EmphasisVariantProps, options?: Emp
  * Resolves the emphasized state along with its associated CSS class name,
  * based on component props, optional default configuration, and parent context.
  * 
- * @param {EmphasisVariantProps} props - The component props that may include an `emphasized` value.
- * @param {EmphasisVariantOptions} options - An optional configuration specifying a default emphasized value when no `emphasized` prop is explicitly provided.
- * @returns {EmphasisVariant} - The resolved emphasized state along with its associated CSS class name.
+ * @param {EmphasizedVariantProps} props - The component props that may include an `emphasized` value.
+ * @param {EmphasizedVariantOptions} options - An optional configuration specifying a default emphasized value when no `emphasized` prop is explicitly provided.
+ * @returns {EmphasizedVariant} - The resolved emphasized state along with its associated CSS class name.
  * 
  * @example
  * ```tsx
  * import React, { FC } from 'react';
  * import {
- *     useEmphasisVariant,
- *     EmphasisVariantProps,
- * } from '@reusable-ui/emphasis-variant';
+ *     useEmphasizedVariant,
+ *     EmphasizedVariantProps,
+ * } from '@reusable-ui/emphasized-variant';
  * import styles from './EmphasizedBox.module.css';
  * 
- * export interface EmphasizedBoxProps extends EmphasisVariantProps {}
+ * export interface EmphasizedBoxProps extends EmphasizedVariantProps {}
  * 
  * // A box that conditionally emphasizes its appearance.
  * export const EmphasizedBox: FC<EmphasizedBoxProps> = (props) => {
  *     const {
  *         emphasized,
- *         emphasisClassname,
- *     } = useEmphasisVariant(props, {
+ *         emphasizedClassname,
+ *     } = useEmphasizedVariant(props, {
  *         defaultEmphasized: false, // fallback if not provided
  *     });
  *     
  *     return (
  *         <div
- *             className={`${styles.box} ${emphasisClassname}`}
+ *             className={`${styles.box} ${emphasizedClassname}`}
  *         >
  *             {emphasized && <strong>Important Content</strong>}
  *             <p>Additional details go here.</p>
@@ -135,7 +135,7 @@ export const useResolvedEmphasized = (props: EmphasisVariantProps, options?: Emp
  * };
  * ```
  */
-export const useEmphasisVariant = (props: EmphasisVariantProps, options?: EmphasisVariantOptions): EmphasisVariant => {
+export const useEmphasizedVariant = (props: EmphasizedVariantProps, options?: EmphasizedVariantOptions): EmphasizedVariant => {
     // Resolve effective emphasized value:
     const effectiveIsEmphasized = useResolvedEmphasized(props, options);
     
@@ -143,7 +143,7 @@ export const useEmphasisVariant = (props: EmphasisVariantProps, options?: Emphas
     
     // Return resolved emphasized attributes:
     return {
-        emphasized         : effectiveIsEmphasized,
-        emphasisClassname  : getEmphasisClassname(effectiveIsEmphasized),
-    } satisfies EmphasisVariant;
+        emphasized          : effectiveIsEmphasized,
+        emphasizedClassname : getEmphasizedClassname(effectiveIsEmphasized),
+    } satisfies EmphasizedVariant;
 };

@@ -101,7 +101,7 @@ This avoids **hard-coded prefix strings**, reducing the risk of accidental colli
 | defaultFlowDirectionVariantPrefix | fd    |
 | defaultSizeVariantPrefix          | sz    |
 | defaultThemeVariantPrefix         | th    |
-| defaultEmphasisVariantPrefix      | em    |
+| defaultEmphasizedVariantPrefix    | em    |
 | defaultOutlinedVariantPrefix      | ou    |
 | defaultMildVariantPrefix          | mi    |
 | defaultStrippedVariantPrefix      | st    |

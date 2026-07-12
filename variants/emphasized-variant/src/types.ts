@@ -3,7 +3,7 @@
  * 
  * Accepts an optional `emphasized`, defaulting to a default when not provided.
  */
-export interface EmphasisVariantProps {
+export interface EmphasizedVariantProps {
     /**
      * Specifies the desired emphasized appearance of the component:
      * - `true`     : emphasizes the component
@@ -21,7 +21,7 @@ export interface EmphasisVariantProps {
  * 
  * Applied when the component does not explicitly provide the `emphasized` prop.
  */
-export interface EmphasisVariantOptions {
+export interface EmphasizedVariantOptions {
     /**
      * Specifies the default emphasized appearance when no `emphasized` prop is explicitly provided:
      * - `true`     : emphasizes the component
@@ -48,7 +48,7 @@ export interface EmphasisVariantOptions {
 /**
  * Represents the final resolved emphasized state of the component, along with its associated CSS class name.
  */
-export interface EmphasisVariant {
+export interface EmphasizedVariant {
     /**
      * Indicates whether the component should appear emphasized.
      * 
@@ -65,5 +65,5 @@ export interface EmphasisVariant {
      * - `'is-emphasized'`
      * - `'not-emphasized'`
      */
-    emphasisClassname   : 'is-emphasized' | 'not-emphasized'
+    emphasizedClassname  : 'is-emphasized' | 'not-emphasized'
 }

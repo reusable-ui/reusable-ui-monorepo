@@ -1,6 +1,6 @@
 // Types:
 import {
-    type EmphasisVariantProps,
+    type EmphasizedVariantProps,
 }                           from './types.js'
 
 
@@ -13,7 +13,7 @@ import {
  * 
  * - `'inherit'`: inherits emphasized appearance from a parent context.
  */
-export const defaultDeclarativeEmphasized : Required<EmphasisVariantProps>['emphasized'] = 'inherit';
+export const defaultDeclarativeEmphasized : Required<EmphasizedVariantProps>['emphasized'] = 'inherit';
 
 
 

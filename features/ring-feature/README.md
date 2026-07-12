@@ -52,9 +52,9 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 ```ts
 // Supporting variants:
 import { usingThemeVariant } from '@reusable-ui/theme-variant'
-import { usingEmphasisVariant } from '@reusable-ui/emphasis-variant' // optional
-import { usingOutlinedVariant } from '@reusable-ui/outlined-variant' // optional
-import { usingMildVariant } from '@reusable-ui/mild-variant'         // optional
+import { usingEmphasizedVariant } from '@reusable-ui/emphasized-variant' // optional
+import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'     // optional
+import { usingMildVariant } from '@reusable-ui/mild-variant'             // optional
 
 // Theme-aware ring feature:
 import { usingRingFeature } from '@reusable-ui/ring-feature';
@@ -63,10 +63,10 @@ import { usingRingFeature } from '@reusable-ui/ring-feature';
 import { rule, style } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { themeVariantRule    } = usingThemeVariant();
-    const { emphasisVariantRule } = usingEmphasisVariant(); // optional
-    const { outlinedVariantRule } = usingOutlinedVariant(); // optional
-    const { mildVariantRule     } = usingMildVariant();     // optional
+    const { themeVariantRule      } = usingThemeVariant();
+    const { emphasizedVariantRule } = usingEmphasizedVariant(); // optional
+    const { outlinedVariantRule   } = usingOutlinedVariant();   // optional
+    const { mildVariantRule       } = usingMildVariant();       // optional
     
     const {
         ringFeatureRule,
@@ -81,9 +81,9 @@ export const componentStyle = () => {
         
         // Apply supporting variant rules:
         ...themeVariantRule(),
-        ...emphasisVariantRule(), // optional
-        ...outlinedVariantRule(), // optional
-        ...mildVariantRule(),     // optional
+        ...emphasizedVariantRule(), // optional
+        ...outlinedVariantRule(),   // optional
+        ...mildVariantRule(),       // optional
         
         // Apply theme-aware ring feature:
         ...ringFeatureRule(),

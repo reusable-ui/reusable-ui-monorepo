@@ -6,8 +6,8 @@ import {
     type ThemeVariantProps,
 }                           from '@reusable-ui/theme-variant'       // A utility for managing themes consistently across React components.
 import {
-    type EmphasisVariantProps,
-}                           from '@reusable-ui/emphasis-variant'    // A utility for managing visual emphasis consistently across React components.
+    type EmphasizedVariantProps,
+}                           from '@reusable-ui/emphasized-variant'  // A utility for managing visual emphasis consistently across React components.
 import {
     type OutlinedVariantProps,
 }                           from '@reusable-ui/outlined-variant'    // A utility for managing visual outline consistently across React components.
@@ -35,7 +35,7 @@ export interface StylingVariantsProps
         // Known styling-related variants:
         SizeVariantProps,
         ThemeVariantProps,
-        EmphasisVariantProps,
+        EmphasizedVariantProps,
         OutlinedVariantProps,
         MildVariantProps
 {

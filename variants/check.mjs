@@ -7,7 +7,7 @@ const variantDirs = [
     'flow-direction-variant',
     'size-variant',
     'theme-variant',
-    'emphasis-variant',
+    'emphasized-variant',
     'outlined-variant',
     'mild-variant',
     'stripped-variant',

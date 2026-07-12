@@ -17,14 +17,14 @@ import {
 
 
 /**
- * A list of emphasis-related CSS variables used to enable conditional styling.
+ * A list of emphasized-related CSS variables used to enable conditional styling.
  * 
  * These variables act as boolean switches or numeric factors that determine whether
- * emphasis-specific styles should be applied.
+ * emphasized-specific styles should be applied.
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  */
-export interface EmphasisVariantVars {
+export interface EmphasizedVariantVars {
     /**
      * Applies when the component is emphasized.
      * 
@@ -37,12 +37,12 @@ export interface EmphasisVariantVars {
      * ```ts
      * export const componentStyle = () => style({
      *     // These properties are only applied when the component is emphasized:
-     *     fontWeight     : `${emphasisVariantVars.isEmphasized} bold`,
-     *     textDecoration : `${emphasisVariantVars.isEmphasized} underline`,
+     *     fontWeight     : `${emphasizedVariantVars.isEmphasized} bold`,
+     *     textDecoration : `${emphasizedVariantVars.isEmphasized} underline`,
      * });
      * ```
      */
-    isEmphasized   : unknown
+    isEmphasized     : unknown
     
     /**
      * Applies when the component is not emphasized.
@@ -56,12 +56,12 @@ export interface EmphasisVariantVars {
      * ```ts
      * export const componentStyle = () => style({
      *     // These properties are only applied when the component is not emphasized:
-     *     fontWeight     : `${emphasisVariantVars.notEmphasized} normal`,
-     *     textDecoration : `${emphasisVariantVars.notEmphasized} none`,
+     *     fontWeight     : `${emphasizedVariantVars.notEmphasized} normal`,
+     *     textDecoration : `${emphasizedVariantVars.notEmphasized} none`,
      * });
      * ```
      */
-    notEmphasized  : unknown
+    notEmphasized    : unknown
     
     /**
      * A normalized factor representing the **emphasized state**.
@@ -76,7 +76,7 @@ export interface EmphasisVariantVars {
      * - Applicable to numeric-based properties such as `transform`, `scale`, `opacity`, etc.
      * - Useful in custom `calc()` formulas or other CSS functions.
      */
-    emphasisFactor : unknown
+    emphasizedFactor : unknown
 }
 
 
@@ -84,16 +84,16 @@ export interface EmphasisVariantVars {
 /**
  * Provides a CSS API for enabling conditional styling based on current emphasized state.
  */
-export interface CssEmphasisVariant {
+export interface CssEmphasizedVariant {
     /**
-     * Generates CSS rules that toggle emphasis-related CSS variables based on current emphasized state.
+     * Generates CSS rules that toggle emphasized-related CSS variables based on current emphasized state.
      * 
-     * These rules are scoped using `ifEmphasized()` and `ifNotEmphasized()` to toggle emphasis-related CSS variables.
+     * These rules are scoped using `ifEmphasized()` and `ifNotEmphasized()` to toggle emphasized-related CSS variables.
      */
-    emphasisVariantRule : Lazy<CssRule>
+    emphasizedVariantRule : Lazy<CssRule>
     
     /**
-     * Exposes emphasis-related CSS variables for conditional styling.
+     * Exposes emphasized-related CSS variables for conditional styling.
      * 
      * Includes:
      * - `isEmphasized`  : active when emphasized
@@ -105,5 +105,5 @@ export interface CssEmphasisVariant {
      * 
      * These variables are strongly typed and automatically resolve to consistent CSS variable names.
      */
-    emphasisVariantVars : CssVars<EmphasisVariantVars>
+    emphasizedVariantVars : CssVars<EmphasizedVariantVars>
 }

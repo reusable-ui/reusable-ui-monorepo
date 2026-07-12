@@ -37,7 +37,7 @@
 @reusable-ui/flow-direction-variant     SWITCH_BASED
 @reusable-ui/size-variant               CONFIG_BASED
 @reusable-ui/theme-variant
-@reusable-ui/emphasis-variant           SWITCH_BASED
+@reusable-ui/emphasized-variant         SWITCH_BASED
 @reusable-ui/outlined-variant           SWITCH_BASED
 @reusable-ui/mild-variant               SWITCH_BASED
 @reusable-ui/stripped-variant           SWITCH_BASED
@@ -72,7 +72,7 @@
 | flow-direction-variant | `FlowDirectionVariantProps` | `flowDirection` | `flowDirectionClassname` | ✅ Base form: matches CSS `flex-direction` idiom    | VERIFIED |
 | size-variant           | `SizeVariantProps`          | `size`          | `sizeClassname`          | ✅ Base form: declarative sizing (`sm`, `lg`, etc.) | VERIFIED |
 | theme-variant          | `ThemeVariantProps`         | `theme`         | `themeClassname`         | ✅ Base form: matches design system conventions     | VERIFIED |
-| emphasis-variant       | `EmphasisVariantProps`      | `emphasis`      | `emphasisClassname`      | ✅ Noun form: declarative styling intent            | Should be `<Component emphasis />` (emphasis is a pure noun) |
+| emphasized-variant     | `EmphasizedVariantProps`    | `emphasized`    | `emphasizedClassname`    | ✅ Noun form: declarative styling intent            | Should be `<Component emphasized />` (emphasized is a past-participle adjective) |
 | outlined-variant       | `OutlinedVariantProps`      | `outlined`      | `outlinedClassname`      | ✅ Base form: matches common UI idioms              | Should be `<Component outlined />` (outlined is a past-participle adjective) |
 | mild-variant           | `MildVariantProps`          | `mild`          | `mildClassname`          | ✅ Base form: emotionally descriptive styling       | VERIFIED |
 | stripped-variant       | `StrippedVariantProps`      | `stripped`      | `strippedClassname`      | ✅ Base form: minimalist styling intent             | VERIFIED |

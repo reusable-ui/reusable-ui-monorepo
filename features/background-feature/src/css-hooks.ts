@@ -31,8 +31,8 @@ import {
     usingThemeVariant,
 }                           from '@reusable-ui/theme-variant'       // A utility for managing themes consistently across React components.
 import {
-    usingEmphasisVariant,
-}                           from '@reusable-ui/emphasis-variant'    // A utility for managing visual emphasis consistently across React components.
+    usingEmphasizedVariant,
+}                           from '@reusable-ui/emphasized-variant'  // A utility for managing visual emphasis consistently across React components.
 import {
     usingOutlinedVariant,
 }                           from '@reusable-ui/outlined-variant'    // A utility for managing visual outline consistently across React components.
@@ -65,11 +65,11 @@ export const usingBackgroundFeature = (options?: CssBackgroundFeatureOptions): C
     return {
         backgroundFeatureRule : () => {
             // Peer variant dependencies (may be poisoned if not implemented):
-            const { themeVariantVars    } = usingThemeVariant();
-            const { emphasisVariantVars } = usingEmphasisVariant();
-            const { outlinedVariantVars } = usingOutlinedVariant();
-            const { mildVariantVars     } = usingMildVariant();
-            const { strippedVariantVars } = usingStrippedVariant();
+            const { themeVariantVars      } = usingThemeVariant();
+            const { emphasizedVariantVars } = usingEmphasizedVariant();
+            const { outlinedVariantVars   } = usingOutlinedVariant();
+            const { mildVariantVars       } = usingMildVariant();
+            const { strippedVariantVars   } = usingStrippedVariant();
             
             
             
@@ -86,14 +86,14 @@ export const usingBackgroundFeature = (options?: CssBackgroundFeatureOptions): C
                         Array.isArray(emphasizedBackgroundImage)
                         
                         ? [[
-                            emphasisVariantVars.isEmphasized, // If emphasized variant is active.
+                            emphasizedVariantVars.isEmphasized, // If emphasized variant is active.
                             ...emphasizedBackgroundImage[0],
                         ]] as CssCustomValue
                         
                         : (
                             emphasizedBackgroundImage
                             ? [[
-                                emphasisVariantVars.isEmphasized, // If emphasized variant is active.
+                                emphasizedVariantVars.isEmphasized, // If emphasized variant is active.
                                 emphasizedBackgroundImage,
                             ]]
                             : null

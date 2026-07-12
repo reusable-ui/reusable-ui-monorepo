@@ -1,6 +1,6 @@
 import React from 'react'
 import { type ThemeVariantProps, useThemeVariant } from '@reusable-ui/theme-variant'
-import { type EmphasisVariantProps, useEmphasisVariant } from '@reusable-ui/emphasis-variant'
+import { type EmphasizedVariantProps, useEmphasizedVariant } from '@reusable-ui/emphasized-variant'
 import { type OutlinedVariantProps, useOutlinedVariant } from '@reusable-ui/outlined-variant'
 import { type MildVariantProps, useMildVariant } from '@reusable-ui/mild-variant'
 import { type StrippedVariantProps, useStrippedVariant } from '@reusable-ui/stripped-variant'
@@ -10,7 +10,7 @@ import { useBackgroundFeatureTestStyles } from './BackgroundFeatureTest.loader.j
 export interface BackgroundFeatureTestProps
     extends
         ThemeVariantProps,
-        EmphasisVariantProps,
+        EmphasizedVariantProps,
         OutlinedVariantProps,
         MildVariantProps,
         StrippedVariantProps
@@ -24,18 +24,18 @@ export const BackgroundFeatureTest = (props: BackgroundFeatureTestProps) => {
     
     const styles = useBackgroundFeatureTestStyles();
     
-    const { themeClassname    } = useThemeVariant(props);
-    const { emphasisClassname } = useEmphasisVariant(props);
-    const { outlinedClassname } = useOutlinedVariant(props);
-    const { mildClassname     } = useMildVariant(props);
-    const { strippedClassname } = useStrippedVariant(props);
+    const { themeClassname      } = useThemeVariant(props);
+    const { emphasizedClassname } = useEmphasizedVariant(props);
+    const { outlinedClassname   } = useOutlinedVariant(props);
+    const { mildClassname       } = useMildVariant(props);
+    const { strippedClassname   } = useStrippedVariant(props);
     
     return (
         <div>
             <HydrateStyles />
             <div
                 data-testid="background-feature-test"
-                className={`${styles[backgCustom]} ${themeClassname} ${emphasisClassname} ${outlinedClassname} ${mildClassname} ${strippedClassname}`}
+                className={`${styles[backgCustom]} ${themeClassname} ${emphasizedClassname} ${outlinedClassname} ${mildClassname} ${strippedClassname}`}
             >
                 Background Feature Test
             </div>

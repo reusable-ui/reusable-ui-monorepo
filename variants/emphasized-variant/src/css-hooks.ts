@@ -6,12 +6,12 @@ import {
 
 // Types:
 import {
-    type CssEmphasisVariant,
+    type CssEmphasizedVariant,
 }                           from './css-types.js'
 
 // CSS Variables:
 import {
-    emphasisVariantVars,
+    emphasizedVariantVars,
 }                           from './css-internal-variables.js'
 
 // CSS Selectors:
@@ -23,32 +23,32 @@ import {
 
 
 /**
- * Generates CSS rules that toggle emphasis-related CSS variables based on current emphasized state,
+ * Generates CSS rules that toggle emphasized-related CSS variables based on current emphasized state,
  * and exposes those variables for conditional styling.
  * 
  * @returns A CSS API for enabling conditional styling based on current emphasized state.
  */
-export const usingEmphasisVariant = (): CssEmphasisVariant => {
+export const usingEmphasizedVariant = (): CssEmphasizedVariant => {
     return {
-        emphasisVariantRule : () => usingSwitchVariant({
+        emphasizedVariantRule : () => usingSwitchVariant({
             // Flags for discrete switches in conditional styling:
             flags     : [
                 {
                     ifVariant : ifNotEmphasized,
-                    variable  : emphasisVariantVars.notEmphasized,
+                    variable  : emphasizedVariantVars.notEmphasized,
                     factor    : 0, // Set to 0 when not emphasized.
                 },
                 {
                     ifVariant : ifEmphasized,
-                    variable  : emphasisVariantVars.isEmphasized,
+                    variable  : emphasizedVariantVars.isEmphasized,
                     factor    : 1, // Set to 1 when emphasized.
                 },
             ],
             
             // The factor variable to set when a flag is active:
-            factorVar : emphasisVariantVars.emphasisFactor,
+            factorVar : emphasizedVariantVars.emphasizedFactor,
         }),
         
-        emphasisVariantVars,
-    } satisfies CssEmphasisVariant;
+        emphasizedVariantVars,
+    } satisfies CssEmphasizedVariant;
 };

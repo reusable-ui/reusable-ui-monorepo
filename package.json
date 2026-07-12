@@ -75,7 +75,7 @@
     "variants/flow-direction-variant",
     "variants/size-variant",
     "variants/theme-variant",
-    "variants/emphasis-variant",
+    "variants/emphasized-variant",
     "variants/outlined-variant",
     "variants/mild-variant",
     "variants/stripped-variant",

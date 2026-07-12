@@ -54,7 +54,7 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 ```ts
 // Supporting variants:
 import { usingThemeVariant } from '@reusable-ui/theme-variant'
-import { usingEmphasisVariant } from '@reusable-ui/emphasis-variant' // optional
+import { usingEmphasizedVariant } from '@reusable-ui/emphasized-variant' // optional
 import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'
 import { usingMildVariant } from '@reusable-ui/mild-variant'
 
@@ -65,10 +65,10 @@ import { usingDecorationFeature } from '@reusable-ui/decoration-feature';
 import { style } from '@cssfn/core';
 
 export const componentStyle = () => {
-    const { themeVariantRule    } = usingThemeVariant();
-    const { emphasisVariantRule } = usingEmphasisVariant(); // optional
-    const { outlinedVariantRule } = usingOutlinedVariant();
-    const { mildVariantRule     } = usingMildVariant();
+    const { themeVariantRule      } = usingThemeVariant();
+    const { emphasizedVariantRule } = usingEmphasizedVariant(); // optional
+    const { outlinedVariantRule   } = usingOutlinedVariant();
+    const { mildVariantRule       } = usingMildVariant();
     
     const {
         decorationFeatureRule,
@@ -83,7 +83,7 @@ export const componentStyle = () => {
         
         // Apply supporting variant rules:
         ...themeVariantRule(),
-        ...emphasisVariantRule(), // optional
+        ...emphasizedVariantRule(), // optional
         ...outlinedVariantRule(),
         ...mildVariantRule(),
         
