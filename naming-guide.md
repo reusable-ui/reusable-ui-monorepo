@@ -22,33 +22,33 @@ States describe runtime event interactions and systems. Use this naming priority
 ## 🎨 Design Variants
 Packages managing design variants encapsulate static styling logic, themes, and layouts. The package naming and JSDoc phrasing align deliberately with the props used for component layouts.
 
-| Current Package Name | Status / Rename | Recommended Package Name | Control Prop | JSDoc Phrasing | Architectural Logic |
-|---|---|---|---|---|---|
-| /orientation-variant | 🟢 | /orientation-variant | orientation | Resolves the orientation variant... | Pure noun representing an inherent structural attribute. |
-| /flow-direction-variant | 🟢 | /flow-direction-variant | flowDirection | Resolves the flow direction variant... | Pure noun representing an alignment attribute. |
-| /size-variant | 🟢 | /size-variant | size | Resolves the size variant... | Pure noun representing a scale attribute. |
-| /theme-variant | 🟢 | /theme-variant | theme | Resolves the theme variant... | Pure noun representing a visual configuration system. |
-| /emphasized-variant | 🟢 | /emphasiz<span style="color: red;">ed</span>-variant | emphasiz<span style="color: red;">ed</span> | Resolves the emphasiz<span style="color: red;">ed</span> variant... | Past-participle adjective is chosen because the variant is a visual style modifier. |
-| /outlined-variant | 🟢 | /outlin<span style="color: red;">ed</span>-variant | outlin<span style="color: red;">ed</span> | Resolves the outlin<span style="color: red;">ed</span> variant... | Past-participle adjective is chosen because this variant describes a visual treatment rather than a system domain. |
-| /mild-variant | 🟢 | /mild-variant | mild | Resolves the mild variant... | Pure adjective describing a softened visual style. |
-| /stripped-variant | 🟢 | /stripp<span style="color: red;">ed</span>-variant | stripp<span style="color: red;">ed</span> | Resolves the stripp<span style="color: red;">ed</span> variant... | Past-participle adjective is chosen because it describes a visual stripped-down (borderless) container more clearly than a noun. |
+| Package Name | Control Prop | JSDoc Phrasing | Architectural Logic |
+|---|---|---|---|
+| /orientation-variant | orientation | Resolves the orientation variant... | Pure noun representing an inherent structural attribute. |
+| /flow-direction-variant | flowDirection | Resolves the flow direction variant... | Pure noun representing an alignment attribute. |
+| /size-variant | size | Resolves the size variant... | Pure noun representing a scale attribute. |
+| /theme-variant | theme | Resolves the theme variant... | Pure noun representing a visual configuration system. |
+| /emphasiz<span style="color: red;">ed</span>-variant | emphasiz<span style="color: red;">ed</span> | Resolves the emphasiz<span style="color: red;">ed</span> variant... | Past-participle adjective is chosen because the variant is a visual style modifier. |
+| /outlin<span style="color: red;">ed</span>-variant | outlin<span style="color: red;">ed</span> | Resolves the outlin<span style="color: red;">ed</span> variant... | Past-participle adjective is chosen because this variant describes a visual treatment rather than a system domain. |
+| /mild-variant | mild | Resolves the mild variant... | Pure adjective describing a softened visual style. |
+| /stripp<span style="color: red;">ed</span>-variant | stripp<span style="color: red;">ed</span> | Resolves the stripp<span style="color: red;">ed</span> variant... | Past-participle adjective is chosen because it describes a visual stripped-down (borderless) container more clearly than a noun. |
 
 
 
 ## ⚡ Behavioral States
 Packages managing behavioral states encapsulate event listeners, runtime transitions, and interaction flows. The package name represents the System Domain (Noun Phrase), while the control props represent the Instance Status (Adjective).
 
-| Current Package Name | Status / Rename | Recommended Package Name | Control Prop | JSDoc Phrasing | Architectural Logic |
-|---|---|---|---|---|---|
-| /excited-state | 🟢 | /excit<span style="color: red;">ed</span>-state | excit<span style="color: red;">ed</span> | Resolves the excit<span style="color: red;">ed</span> state... | Past-participle adjective is chosen because the state describes an instance's current condition rather than an underlying mechanism. |
-| /disabled-state | 🟢 | /disabl<span style="color: red;">ed</span>-state | disabl<span style="color: red;">ed</span> | Resolves the disabl<span style="color: red;">ed</span> state... | Past-participle adjective is chosen because disabled is the canonical platform-level status word for this condition. |
-| /read-only-state | 🟢 | /read-only-state | readOnly | Resolves the read-only state... | Fixed platform standard. Matches native form field behaviors. |
-| /focus-state | 🟢 | /focus-state | focus<span style="color: red;">ed</span> | Resolves the focus state... | Pure noun representing the element targeting system. |
-| /hover-state | 🟢 | /hover-state | hover<span style="color: red;">ed</span> | Resolves the hover state... | Pure noun representing the mouse/pointer tracking system. |
-| /press-state | 🟢 | /press-state | press<span style="color: red;">ed</span> | Resolves the press state... | Intentional Exception: Folder uses the interactive noun domain (press), while the prop tracks instance status. |
-| /validity-state | 🟢 | /validity-state | validity | Resolves the validity state... | Pure noun representing the validation and form-verification subsystem. |
-| /drag-state | 🟢 | /drag-state | dragg<span style="color: red;">ed</span> | Resolves the drag state... | Pure noun representing the interactive drag-and-drop system. |
-| /sort-state | 🟢 | /sort-state | sort<span style="color: red;">ed</span> | Resolves the sort state... | Pure noun representing the data ordering system. |
-| /active-state | 🟢 | /active-state | active | Resolves the active state... | Pure adjective functioning cleanly as an interactive category identifier. |
-| /collapse-state | 🟢 | /collapse-state | expand<span style="color: red;">ed</span> | Resolves the expand/collapse state... | Updated to a balanced compound verbal-noun phrase representing the bi-directional machine. |
-| /view-state | 🟢 | /view-state | viewIndex | Resolves the view state... | Pure noun representing the viewport container layout system. |
+| Package Name | Control Prop | JSDoc Phrasing | Architectural Logic |
+|---|---|---|---|
+| /excit<span style="color: red;">ed</span>-state | excit<span style="color: red;">ed</span> | Resolves the excit<span style="color: red;">ed</span> state... | Past-participle adjective is chosen because the state describes an instance's current condition rather than an underlying mechanism. |
+| /disabl<span style="color: red;">ed</span>-state | disabl<span style="color: red;">ed</span> | Resolves the disabl<span style="color: red;">ed</span> state... | Past-participle adjective is chosen because disabled is the canonical platform-level status word for this condition. |
+| /read-only-state | readOnly | Resolves the read-only state... | Fixed platform standard. Matches native form field behaviors. |
+| /focus-state | focus<span style="color: red;">ed</span> | Resolves the focus state... | Pure noun representing the element targeting system. |
+| /hover-state | hover<span style="color: red;">ed</span> | Resolves the hover state... | Pure noun representing the mouse/pointer tracking system. |
+| /press-state | press<span style="color: red;">ed</span> | Resolves the press state... | Intentional Exception: Folder uses the interactive noun domain (press), while the prop tracks instance status. |
+| /validity-state | validity | Resolves the validity state... | Pure noun representing the validation and form-verification subsystem. |
+| /drag-state | dragg<span style="color: red;">ed</span> | Resolves the drag state... | Pure noun representing the interactive drag-and-drop system. |
+| /sort-state | sort<span style="color: red;">ed</span> | Resolves the sort state... | Pure noun representing the data ordering system. |
+| /active-state | active | Resolves the active state... | Pure adjective functioning cleanly as an interactive category identifier. |
+| /collapse-state | expand<span style="color: red;">ed</span> | Resolves the expand/collapse state... | Updated to a balanced compound verbal-noun phrase representing the bi-directional machine. |
+| /view-state | viewIndex | Resolves the view state... | Pure noun representing the viewport container layout system. |
