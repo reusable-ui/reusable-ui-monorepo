@@ -26,6 +26,8 @@
  * - **regular**  → The default solid styling.
  * - **mild**     → A comfortable, text-heavy style for readability and reduced visual intensity.
  * - **outlined** → A transparent style, exposing background surfaces (e.g., images).
+ *   - **Note:** The outlined background always maps to `null` instead of a string,
+ *     indicating that there is no relevant shade role for this case.
  * 
  * **surfaceRole** — the UI surface where color is applied:
  * - **backg**  → The background surface of the component.
@@ -45,26 +47,34 @@
  * - **Edge** → A high-saturation border color for outlined components.
  * - **Soft** → An effect color for rings, overlays, and emphasis.
  */
-export const colorRoleMap = {
-    regular: {
-        backg  : 'Base', // A strong background color.
-        foreg  : 'Flip', // A high-contrast foreground color.
-        decor  : 'Flip', // A high-contrast decoration color.
-        border : 'Bold', // A strong border color.
-        ring   : 'Soft', // An effect color.
-    },
-    mild: {
-        backg  : 'Mild', // A softer background color.
-        foreg  : 'Text', // A comfortable foreground-only color.
-        decor  : 'Face', // A high-saturation decoration color.
-        border : 'Thin', // A softer border color.
-        ring   : null,   // No mild-specific ring color (use regular).
-    },
-    outlined: {
-        backg  : null,   // No background color (transparent).
-        foreg  : 'Face', // A high-saturation foreground color.
-        decor  : 'Face', // A high-saturation decoration color.
-        border : 'Edge', // A high-saturation border color.
-        ring   : null,   // No outlined-specific ring color (use regular).
-    },
-} as const;
+export const colorRoleMap = (() => {
+    const regular = {
+        backg  : 'Base',       // A strong background color.
+        foreg  : 'Flip',       // A high-contrast foreground color.
+        decor  : 'Flip',       // A high-contrast decoration color.
+        border : 'Bold',       // A strong border color.
+        ring   : 'Soft',       // An effect color.
+    };
+    
+    const mild = {
+        backg  : 'Mild',       // A softer background color.
+        foreg  : 'Text',       // A comfortable foreground-only color.
+        decor  : 'Face',       // A high-saturation decoration color.
+        border : 'Thin',       // A softer border color.
+        ring   : regular.ring, // No mild-specific ring color (use regular).
+    };
+    
+    const outlined = {
+        backg  : null,         // No background color (transparent).
+        foreg  : 'Face',       // A high-saturation foreground color.
+        decor  : 'Face',       // A high-saturation decoration color.
+        border : 'Edge',       // A high-saturation border color.
+        ring   : regular.ring, // No outlined-specific ring color (use regular).
+    };
+    
+    return {
+        regular,
+        mild,
+        outlined,
+    } as const;
+})();
