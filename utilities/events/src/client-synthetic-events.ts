@@ -48,7 +48,7 @@ function functionThatNoop(): void {
  * @template TElement - The type of the DOM element associated with the event.
  * @template TEvent - The type of the native event being wrapped.
  */
-export interface CreateSyntheticEventOptions<out TElement extends Element, out TEvent extends Event> {
+export interface CreateSyntheticEventOptions<TElement extends Element, TEvent extends Event> {
     /**
      * The original native event that triggered the synthetic event.
      * 
@@ -214,7 +214,7 @@ export const createSyntheticEvent      = <TElement extends Element, TEvent exten
  * @template TElement - The type of the DOM element associated with the event.
  * @template TEvent - The type of the native UI event being wrapped.
  */
-export interface CreateSyntheticUIEventOptions<out TElement extends Element, out TEvent extends UIEvent>
+export interface CreateSyntheticUIEventOptions<TElement extends Element, TEvent extends UIEvent>
     extends
         // Bases:
         CreateSyntheticEventOptions<TElement, TEvent>
@@ -261,7 +261,7 @@ export const createSyntheticUIEvent    = <TElement extends Element, TEvent exten
  * @template TElement - The type of the DOM element associated with the event.
  * @template TEvent - The type of the native mouse event being wrapped.
  */
-export interface CreateSyntheticMouseEventOptions<out TElement extends Element, out TEvent extends MouseEvent>
+export interface CreateSyntheticMouseEventOptions<TElement extends Element, TEvent extends MouseEvent>
     extends
         // Bases:
         CreateSyntheticUIEventOptions<TElement, TEvent>
@@ -385,7 +385,7 @@ export const createSyntheticMouseEvent = <TElement extends Element, TEvent exten
  * @template TElement - The type of the DOM element associated with the event.
  * @template TEvent - The type of the native pointer event being wrapped.
  */
-export interface CreateSyntheticPointerEventOptions<out TElement extends Element, out TEvent extends PointerEvent>
+export interface CreateSyntheticPointerEventOptions<TElement extends Element, TEvent extends PointerEvent>
     extends
         // Bases:
         CreateSyntheticUIEventOptions<TElement, TEvent>
@@ -537,7 +537,7 @@ export const createSyntheticPointerEvent = <TElement extends Element, TEvent ext
  * @template TElement - The type of the DOM element associated with the event.
  * @template TEvent - The type of the native keyboard event being wrapped.
  */
-export interface CreateSyntheticKeyboardEventOptions<out TElement extends Element, out TEvent extends KeyboardEvent>
+export interface CreateSyntheticKeyboardEventOptions<TElement extends Element, TEvent extends KeyboardEvent>
     extends
         // Bases:
         CreateSyntheticUIEventOptions<TElement, TEvent>
