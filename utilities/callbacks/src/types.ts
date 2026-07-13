@@ -7,7 +7,7 @@
  * @template TArgs - The argument types passed to the callback function.
  * @template TReturn - The return type of the callback function.
  */
-export type Callback<in TArgs extends unknown[] = [], out TReturn extends unknown = void> = (...args: TArgs) => TReturn
+export type Callback<TArgs extends unknown[] = [], TReturn extends unknown = void> = (...args: TArgs) => TReturn
 
 /**
  * Represents a generic event handler function type.
@@ -19,4 +19,4 @@ export type Callback<in TArgs extends unknown[] = [], out TReturn extends unknow
  * @template TExtra - Additional argument types passed to the handler function.
  * @template TReturn - The return type of the handler function.
  */
-export type EventHandler<in TEvent, in TExtra extends unknown[] = [], out TReturn extends unknown = void> = Callback<[TEvent, ...TExtra], TReturn>
+export type EventHandler<TEvent, TExtra extends unknown[] = [], TReturn extends unknown = void> = Callback<[TEvent, ...TExtra], TReturn>
