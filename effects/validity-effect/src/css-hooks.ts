@@ -25,14 +25,17 @@ import {
 
 // Utilities:
 import {
-    colorRoleMap,
-}                           from './internal-utilities.js'
-import {
     colorMix,
 }                           from './css-internal-utilities.js'
 
 // Reusable-ui configs:
 import {
+    // Utilities:
+    colorRoleMap,
+    
+    
+    
+    // Configs:
     colorConfigVars,
 }                           from '@reusable-ui/color-config'        // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 

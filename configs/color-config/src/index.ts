@@ -1,5 +1,7 @@
 export *            from './css-types.js'
 
+export *            from './utilities.js'
+
 export *            from './css-param-config.js'
 
 export *            from './css-config.js'

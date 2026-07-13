@@ -1,7 +1,7 @@
 import React, { type CSSProperties, useMemo, useLayoutEffect } from 'react'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { usingValidityState } from '@reusable-ui/validity-state'
-import { colorConfigVars } from '@reusable-ui/color-config'
+import { colorRoleMap, colorConfigVars } from '@reusable-ui/color-config'
 import { colorParamConfigVars } from '@reusable-ui/color-config'
 import { useThemeVariant } from '@reusable-ui/theme-variant'
 import { useOutlinedVariant, type OutlinedVariantProps } from '@reusable-ui/outlined-variant'
@@ -16,7 +16,6 @@ import {
     invalidRegularBaseColor,
     invalidMildBaseColor,
 } from './base-colors.js'
-import { colorRoleMap } from '../dist/internal-utilities.js'
 import { useValidityEffectTestStyles } from './ValidityEffectTest.loader.js'
 
 
