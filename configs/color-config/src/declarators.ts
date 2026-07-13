@@ -36,14 +36,14 @@ const themesCache = new Set<string>([
 
 
 /**
- * Defines a theme by mapping the given `themeName` to its corresponding colors.
+ * Defines a theme by mapping the given `theme` to its corresponding colors.
  * 
  * @param theme - The theme name to define.
  * @param rootColor - The base CSS color or CSS expression for the theme.
  */
 export const defineTheme = (theme: string, rootColor: CssColor | null | undefined): void => {
     // Validate parameters:
-    if (!theme) throw TypeError('The `themeName` cannot be empty.');
+    if (!theme) throw TypeError('The `theme` parameter cannot be empty.');
     
     
     
