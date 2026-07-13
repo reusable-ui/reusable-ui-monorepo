@@ -107,3 +107,67 @@ export const noForeignCodeInTypes = createRule({
         };
     },
 });
+
+
+
+/**
+ * ESLint rule: ban-variance-annotations
+ * 
+ * Purpose:
+ * - Disallow explicit variance annotations (`in`, `out`, `in out`) in generic type parameters.
+ * - Encourage relying on TypeScript's implicit variance inference.
+ * 
+ * Detection Criteria:
+ * - Matches type parameter declarations containing `in: true` or `out: true`.
+ * 
+ * Why:
+ * - Simplifies code, avoids redundancy, and keeps naming consistent.
+ */
+export const banVarianceAnnotations = createRule({
+    name : 'ban-variance-annotations',
+    meta : {
+        type     : 'problem',
+        docs     : {
+            description : 'Disallow explicit variance annotations (`in`, `out`, `in out`) in generic type parameters.',
+        },
+        schema   : [], // no options accepted
+        messages : {
+            noVariance : 'Variance annotation "{{annotation}}" is not allowed. Remove it and rely on TypeScript\'s implicit inference.',
+        },
+        fixable: 'code',
+    },
+    create(context) {
+        return {
+            TSTypeParameter(node: any) {
+                // The parser exposes `node.in` and `node.out` as booleans
+                if (node.in) {
+                    context.report({
+                        node,
+                        messageId: 'noVariance',
+                        data: { annotation: 'in' },
+                        fix(fixer) {
+                            const sourceCode = context.sourceCode;
+                            const text = sourceCode.getText(node);
+                            const cleaned = text.replace(/\bin\b\s+/g, '');
+                            return fixer.replaceText(node, cleaned);
+                        },
+                    });
+                }
+                if (node.out) {
+                    context.report({
+                        node,
+                        messageId: 'noVariance',
+                        data: { annotation: 'out' },
+                        fix(fixer) {
+                            const sourceCode = context.sourceCode;
+                            const text = sourceCode.getText(node);
+                            const cleaned = text.replace(/\bout\b\s+/g, '');
+                            return fixer.replaceText(node, cleaned);
+                        },
+                    });
+                }
+            },
+        };
+    },
+});
+
