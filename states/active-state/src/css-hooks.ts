@@ -72,7 +72,7 @@ import {
  *     
  *     // Feature: background colors
  *     const {
- *         backgroundFeatureVars : { backgRegularCond, backgColor },
+ *         backgroundFeatureVars : { regularBackgCond, backgColor },
  *     } = usingBackgroundFeature();
  *     
  *     // Feature: outlined variant
@@ -133,7 +133,7 @@ import {
  *     ${backgColor}
  *     calc((1 - ${activeFactor}) * 100%),
  *     
- *     ${switchOf(backgRegularCond, backgColor)}
+ *     ${switchOf(regularBackgCond, backgColor)}
  *     calc(${activeFactor} * 100%)
  * )`,
  *         ]],

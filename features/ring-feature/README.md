@@ -44,7 +44,7 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
 | Variable            | Active When...         | Purpose                                                       |
 |---------------------|------------------------|---------------------------------------------------------------|
-| `ringRegularCond`   | Theme variant active   | Themed ring color for the regular variant                     |
+| `regularRingCond`   | Theme variant active   | Themed ring color for the regular variant                     |
 | `ringColorOverride` | When user override set | User-defined override ring color, highest priority if present |
 
 #### 💡 Usage Example

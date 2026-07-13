@@ -59,9 +59,9 @@ export const usingRingFeature = (options?: CssRingFeatureOptions): CssRingFeatur
                      * Applies regular ring color from the theme.
                      * Poisoned when theme styling is not implemented.
                      */
-                    [ringFeatureVars.ringRegularCond]: switchOf(
-                        themeVariantVars.ringRegularOverride, // ⚠️ Theme override (if active).
-                        themeVariantVars.ringRegular,         // A themed ring color for regular variant.
+                    [ringFeatureVars.regularRingCond]: switchOf(
+                        themeVariantVars.regularRingOverride, // ⚠️ Theme override (if active).
+                        themeVariantVars.regularRing,         // A themed ring color for regular variant.
                     ),
                 }),
                 
@@ -75,7 +75,7 @@ export const usingRingFeature = (options?: CssRingFeatureOptions): CssRingFeatur
                      * 2. Config fallback
                      */
                     [ringFeatureVars.ringVariantColor]: switchOf(
-                        ringFeatureVars.ringRegularCond, // 🎨 Regular variant (if themed).
+                        ringFeatureVars.regularRingCond, // 🎨 Regular variant (if themed).
                         defaultRingColor,                // 🛠️ Config fallback.
                     ),
                     

@@ -67,9 +67,9 @@ export const usingDecorationFeature = (options?: CssDecorationFeatureOptions): C
                      * Applies regular decoration color from the theme.
                      * Poisoned when theme styling is not implemented.
                      */
-                    [decorationFeatureVars.decorRegularCond]: switchOf(
-                        themeVariantVars.decorRegularOverride, // ⚠️ Theme override (if active).
-                        themeVariantVars.decorRegular,         // A themed decoration color for regular variant.
+                    [decorationFeatureVars.regularDecorCond]: switchOf(
+                        themeVariantVars.regularDecorOverride, // ⚠️ Theme override (if active).
+                        themeVariantVars.regularDecor,         // A themed decoration color for regular variant.
                     ),
                     
                     
@@ -80,11 +80,11 @@ export const usingDecorationFeature = (options?: CssDecorationFeatureOptions): C
                      * Applies mild (reading-friendly) decoration color when mild variant is active.
                      * Poisoned when mild variant is inactive.
                      */
-                    [decorationFeatureVars.decorMildCond]: [[
+                    [decorationFeatureVars.mildDecorCond]: [[
                         mildVariantVars.isMild,                 // If mild variant is active.
                         switchOf(
-                            themeVariantVars.decorMildOverride, // ⚠️ Theme override (if active).
-                            themeVariantVars.decorMild,         // A themed decoration color for mild variant.
+                            themeVariantVars.mildDecorOverride, // ⚠️ Theme override (if active).
+                            themeVariantVars.mildDecor,         // A themed decoration color for mild variant.
                         ),
                     ]],
                     
@@ -96,11 +96,11 @@ export const usingDecorationFeature = (options?: CssDecorationFeatureOptions): C
                      * Applies outlined decoration color when outlined variant is active.
                      * Poisoned when outlined variant is inactive.
                      */
-                    [decorationFeatureVars.decorOutlinedCond]: [[
+                    [decorationFeatureVars.outlinedDecorCond]: [[
                         outlinedVariantVars.isOutlined,             // If outlined variant is active.
                         switchOf(
-                            themeVariantVars.decorOutlinedOverride, // ⚠️ Theme override (if active).
-                            themeVariantVars.decorOutlined,         // A themed decoration color for outlined variant.
+                            themeVariantVars.outlinedDecorOverride, // ⚠️ Theme override (if active).
+                            themeVariantVars.outlinedDecor,         // A themed decoration color for outlined variant.
                         ),
                     ]],
                 }),
@@ -117,9 +117,9 @@ export const usingDecorationFeature = (options?: CssDecorationFeatureOptions): C
                      * 4. Config fallback
                      */
                     [decorationFeatureVars.decorVariantColor]: switchOf(
-                        decorationFeatureVars.decorOutlinedCond, // 🧊 Outlined variant (if active).
-                        decorationFeatureVars.decorMildCond,     // 🌸 Mild variant (if active).
-                        decorationFeatureVars.decorRegularCond,  // 🎨 Regular variant (if themed).
+                        decorationFeatureVars.outlinedDecorCond, // 🧊 Outlined variant (if active).
+                        decorationFeatureVars.mildDecorCond,     // 🌸 Mild variant (if active).
+                        decorationFeatureVars.regularDecorCond,  // 🎨 Regular variant (if themed).
                         defaultDecorationColor,                  // 🛠️ Config fallback.
                     ),
                     

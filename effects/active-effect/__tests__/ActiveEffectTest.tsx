@@ -57,7 +57,7 @@ export const ActiveEffectTest = (props: ActiveEffectTestProps) => {
     }, [colorMode])
     
     const { activeStateVars  : { activeFactorCond: activeFactorCondVar } } = usingActiveState();
-    const { themeVariantVars : { backgRegular, backgMild } } = usingThemeVariant();
+    const { themeVariantVars : { regularBackg, mildBackg } } = usingThemeVariant();
     
     // Inline style overrides:
     // - Assigns `activeFactorCond` directly
@@ -71,13 +71,13 @@ export const ActiveEffectTest = (props: ActiveEffectTestProps) => {
         
         // @ts-ignore
         [
-            backgRegular
+            regularBackg
             .slice(4, -1) // fix: var(--customProp) => --customProp
         ]: regularBaseColor,
         
         // @ts-ignore
         [
-            backgMild
+            mildBackg
             .slice(4, -1) // fix: var(--customProp) => --customProp
         ]: mildBaseColor,
     } as CSSProperties), [activeFactorCondVar, activeFactorCond]);

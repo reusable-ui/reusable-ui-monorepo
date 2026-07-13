@@ -40,19 +40,19 @@ export interface BackgroundFeatureVars {
      * References the regular background color from the theme.
      * Poisoned when theme styling is not implemented.
      */
-    backgRegularCond    : unknown
+    regularBackgCond    : unknown
     
     /**
      * References a mild (reading-friendly) background color when mild variant is active.
      * Poisoned when mild variant is inactive.
      */
-    backgMildCond       : unknown
+    mildBackgCond       : unknown
     
     /**
      * References a transparent background color when outlined variant is active.
      * Poisoned when outlined variant is inactive.
      */
-    backgOutlinedCond   : unknown
+    outlinedBackgCond   : unknown
     
     /**
      * References an empty background (`none`) when stripped variant is active.

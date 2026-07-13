@@ -28,7 +28,7 @@ export interface RingFeatureVars {
      * References the regular ring color from the theme.
      * Poisoned when theme styling is not implemented.
      */
-    ringRegularCond    : unknown
+    regularRingCond    : unknown
     //#endregion 🎨 Conditional variables (may be poisoned) 
     
     
@@ -107,7 +107,7 @@ export interface CssRingFeature {
      * with support for CSS color function adjustments.
      * 
      * Includes:
-     * - `ringRegularCond`   : Theme-specific ring color (conditionally valid or poisoned).
+     * - `regularRingCond`   : Theme-specific ring color (conditionally valid or poisoned).
      * - `ringVariantColor`  : Variant-aware ring color from the active variant.
      * - `ringColorOverride` : User-defined override for the ring color.
      * - `ringColor`         : Final ring color consumed by components.

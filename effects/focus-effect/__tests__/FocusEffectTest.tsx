@@ -57,7 +57,7 @@ export const FocusEffectTest = (props: FocusEffectTestProps) => {
     }, [mode])
     
     const { focusStateVars  : { focusFactorCond: focusFactorCondVar } } = usingFocusState();
-    const { themeVariantVars : { backgRegular, backgMild } } = usingThemeVariant();
+    const { themeVariantVars : { regularBackg, mildBackg } } = usingThemeVariant();
     
     // Inline style overrides:
     // - Assigns `focusFactorCond` directly
@@ -71,13 +71,13 @@ export const FocusEffectTest = (props: FocusEffectTestProps) => {
         
         // @ts-ignore
         [
-            backgRegular
+            regularBackg
             .slice(4, -1) // fix: var(--customProp) => --customProp
         ]: regularBaseColor,
         
         // @ts-ignore
         [
-            backgMild
+            mildBackg
             .slice(4, -1) // fix: var(--customProp) => --customProp
         ]: mildBaseColor,
     } as CSSProperties), [focusFactorCondVar, focusFactorCond]);

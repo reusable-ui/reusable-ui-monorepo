@@ -44,9 +44,9 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
 | Variable             | Active When...          | Purpose                                                             |
 |----------------------|-------------------------|---------------------------------------------------------------------|
-| `foregRegularCond`   | Theme variant active    | Themed foreground color for the regular variant                     |
-| `foregMildCond`      | Mild variant active     | Reading-friendly foreground color for mild variant                  |
-| `foregOutlinedCond`  | Outlined variant active | High-contrast foreground color for outlined variant                 |
+| `regularForegCond`   | Theme variant active    | Themed foreground color for the regular variant                     |
+| `mildForegCond`      | Mild variant active     | Reading-friendly foreground color for mild variant                  |
+| `outlinedForegCond`  | Outlined variant active | High-contrast foreground color for outlined variant                 |
 | `foregColorOverride` | When user override set  | User-defined override foreground color, highest priority if present |
 
 #### 💡 Usage Example

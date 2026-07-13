@@ -180,13 +180,13 @@ export const componentStyle = () => {
         ...themeVariantRule(),
         
         // Use semantic theme variables in styling:
-        backgroundColor     : themeVariantVars.backgRegular,
-        color               : themeVariantVars.foregRegular,
+        backgroundColor     : themeVariantVars.regularBackg,
+        color               : themeVariantVars.regularForeg,
         
         // Apply outlined variant styling:
         ...ifOutlined({
             backgroundColor : 'transparent',
-            color           : themeVariantVars.foregOutlined,
+            color           : themeVariantVars.outlinedForeg,
         }),
     });
 };
@@ -197,18 +197,18 @@ export const componentStyle = () => {
 - For each registered theme (e.g. `primary`, `danger`, `success`, etc.), the hook generates scoped rules like:
     ```css
     &.t-primary {
-        --t-backgRegular  : var(--col-primaryBase);
-        --t-foregRegular  : var(--col-primaryFlip);
-        --t-borderRegular : var(--col-primaryBold);
+        --t-regularBackg  : var(--col-primaryBase);
+        --t-regularForeg  : var(--col-primaryFlip);
+        --t-regularBorder : var(--col-primaryBold);
         ...
     }
     ```
-- These rules ensure that semantic theme variables (`--t-backgRegular`, `--t-foregRegular`, etc.) resolve to the correct theme-specific values depending on the active theme variant.
+- These rules ensure that semantic theme variables (`--t-regularBackg`, `--t-regularForeg`, etc.) resolve to the correct theme-specific values depending on the active theme variant.
 - You can then use those theme variables in your component styles:
     ```ts
     style({
-        backgroundColor : themeVariantVars.backgRegular, // gets: `var(--t-backgRegular)`
-        color           : themeVariantVars.foregRegular, // gets: `var(--t-foregRegular)`
+        backgroundColor : themeVariantVars.regularBackg, // gets: `var(--t-regularBackg)`
+        color           : themeVariantVars.regularForeg, // gets: `var(--t-regularForeg)`
     });
     ```
 
@@ -243,20 +243,20 @@ export const componentStyle = () => {
         
         // Use semantic theme variables with fallback chaining:
         backgroundColor     : switchOf(
-            themeVariantVars.backgRegularOverride,
-            themeVariantVars.backgRegular,
+            themeVariantVars.regularBackgOverride,
+            themeVariantVars.regularBackg,
         ),
         color               : switchOf(
-            themeVariantVars.foregRegularOverride,
-            themeVariantVars.foregRegular,
+            themeVariantVars.regularForegOverride,
+            themeVariantVars.regularForeg,
         ),
         
         // Apply outlined variant styling:
         ...ifOutlined({
             backgroundColor : 'transparent',
             color           : switchOf(
-                themeVariantVars.foregOutlinedOverride,
-                themeVariantVars.foregOutlined,
+                themeVariantVars.outlinedForegOverride,
+                themeVariantVars.outlinedForeg,
             ),
         }),
         
@@ -277,18 +277,18 @@ export const componentStyle = () => {
 
 - `usingThemeOverride('danger')` injects high-priority theme variables like:
     ```css
-    --t-backgRegularOverride  : var(--col-dangerBase);
-    --t-foregRegularOverride  : var(--col-dangerFlip);
-    --t-borderRegularOverride : var(--col-dangerBold);
+    --t-regularBackgOverride  : var(--col-dangerBase);
+    --t-regularForegOverride  : var(--col-dangerFlip);
+    --t-regularBorderOverride : var(--col-dangerBold);
     ...
     ```
 - These override the default theme resolution using `switchOf(...)`, which selects the first defined value in the chain:
     ```ts
     style({
         backgroundColor : switchOf(
-            themeVariantVars.backgRegularOverride,
-            themeVariantVars.backgRegular,
-        ), // Will be rendered to: `var(--t-backgRegularOverride, var(--t-backgRegular))`
+            themeVariantVars.regularBackgOverride,
+            themeVariantVars.regularBackg,
+        ), // Will be rendered to: `var(--t-regularBackgOverride, var(--t-regularBackg))`
     });
     ```
 

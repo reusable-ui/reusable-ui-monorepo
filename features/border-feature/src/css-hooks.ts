@@ -101,9 +101,9 @@ export const usingBorderFeature = (options?: CssBorderFeatureOptions): CssBorder
                      * Applies regular border color from the theme.
                      * Poisoned when theme styling is not implemented.
                      */
-                    [borderFeatureVars.borderRegularCond]: switchOf(
-                        themeVariantVars.borderRegularOverride, // ⚠️ Theme override (if active).
-                        themeVariantVars.borderRegular,         // A themed border color for regular variant.
+                    [borderFeatureVars.regularBorderCond]: switchOf(
+                        themeVariantVars.regularBorderOverride, // ⚠️ Theme override (if active).
+                        themeVariantVars.regularBorder,         // A themed border color for regular variant.
                     ),
                     
                     
@@ -114,11 +114,11 @@ export const usingBorderFeature = (options?: CssBorderFeatureOptions): CssBorder
                      * Applies mild (reading-friendly) border color when mild variant is active.
                      * Poisoned when mild variant is inactive.
                      */
-                    [borderFeatureVars.borderMildCond]: [[
+                    [borderFeatureVars.mildBorderCond]: [[
                         mildVariantVars.isMild,                  // If mild variant is active.
                         switchOf(
-                            themeVariantVars.borderMildOverride, // ⚠️ Theme override (if active).
-                            themeVariantVars.borderMild,         // A themed border color for mild variant.
+                            themeVariantVars.mildBorderOverride, // ⚠️ Theme override (if active).
+                            themeVariantVars.mildBorder,         // A themed border color for mild variant.
                         ),
                     ]],
                     
@@ -130,11 +130,11 @@ export const usingBorderFeature = (options?: CssBorderFeatureOptions): CssBorder
                      * Applies outlined border color when outlined variant is active.
                      * Poisoned when outlined variant is inactive.
                      */
-                    [borderFeatureVars.borderOutlinedCond]: [[
+                    [borderFeatureVars.outlinedBorderCond]: [[
                         outlinedVariantVars.isOutlined,              // If outlined variant is active.
                         switchOf(
-                            themeVariantVars.borderOutlinedOverride, // ⚠️ Theme override (if active).
-                            themeVariantVars.borderOutlined,         // A themed border color for outlined variant.
+                            themeVariantVars.outlinedBorderOverride, // ⚠️ Theme override (if active).
+                            themeVariantVars.outlinedBorder,         // A themed border color for outlined variant.
                         ),
                     ]],
                     
@@ -180,9 +180,9 @@ export const usingBorderFeature = (options?: CssBorderFeatureOptions): CssBorder
                      * 4. Config fallback
                      */
                     [borderFeatureVars.borderVariantColor]: switchOf(
-                        borderFeatureVars.borderOutlinedCond, // 🧊 Outlined variant (if active).
-                        borderFeatureVars.borderMildCond,     // 🌸 Mild variant (if active).
-                        borderFeatureVars.borderRegularCond,  // 🎨 Regular variant (if themed).
+                        borderFeatureVars.outlinedBorderCond, // 🧊 Outlined variant (if active).
+                        borderFeatureVars.mildBorderCond,     // 🌸 Mild variant (if active).
+                        borderFeatureVars.regularBorderCond,  // 🎨 Regular variant (if themed).
                         defaultBorderColor,                   // 🛠️ Config fallback.
                     ),
                     

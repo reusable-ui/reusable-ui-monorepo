@@ -28,19 +28,19 @@ export interface BorderFeatureVars {
      * References the regular border color from the theme.
      * Poisoned when theme styling is not implemented.
      */
-    borderRegularCond      : unknown
+    regularBorderCond      : unknown
     
     /**
      * References a mild (reading-friendly) border color when mild variant is active.
      * Poisoned when mild variant is inactive.
      */
-    borderMildCond         : unknown
+    mildBorderCond         : unknown
     
     /**
      * References an outlined border color when outlined variant is active.
      * Poisoned when outlined variant is inactive.
      */
-    borderOutlinedCond     : unknown
+    outlinedBorderCond     : unknown
     
     /**
      * References a zero-length value (`0px`) when stripped variant is active.

@@ -28,19 +28,19 @@ export interface ForegroundFeatureVars {
      * References the regular foreground color from the theme.
      * Poisoned when theme styling is not implemented.
      */
-    foregRegularCond    : unknown
+    regularForegCond    : unknown
     
     /**
      * References a mild (reading-friendly) foreground color when mild variant is active.
      * Poisoned when mild variant is inactive.
      */
-    foregMildCond       : unknown
+    mildForegCond       : unknown
     
     /**
      * References an outlined foreground color when outlined variant is active.
      * Poisoned when outlined variant is inactive.
      */
-    foregOutlinedCond   : unknown
+    outlinedForegCond   : unknown
     //#endregion 🎨 Conditional variables (may be poisoned) 
     
     

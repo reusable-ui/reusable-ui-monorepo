@@ -28,19 +28,19 @@ export interface DecorationFeatureVars {
      * References the regular decoration color from the theme.
      * Poisoned when theme styling is not implemented.
      */
-    decorRegularCond    : unknown
+    regularDecorCond    : unknown
     
     /**
      * References a mild (reading-friendly) decoration color when mild variant is active.
      * Poisoned when mild variant is inactive.
      */
-    decorMildCond       : unknown
+    mildDecorCond       : unknown
     
     /**
      * References an outlined decoration color when outlined variant is active.
      * Poisoned when outlined variant is inactive.
      */
-    decorOutlinedCond   : unknown
+    outlinedDecorCond   : unknown
     //#endregion 🎨 Conditional variables (may be poisoned) 
     
     

@@ -161,7 +161,7 @@ export const usingValidityEffect = (options?: CssValidityEffectOptions): CssVali
                              *   Preserves smooth transitions while keeping opacity stable.
                              * - This two-stage process preserves smooth transitions while ensuring opacity remains stable.
                              */
-                            [themeVariantVars[`${surfaceRole}${startsCapitalized(variantRole)}Override` as keyof typeof themeVariantVars]]: colorMix(
+                            [themeVariantVars[`${variantRole}${startsCapitalized(surfaceRole)}Override` as keyof typeof themeVariantVars]]: colorMix(
                                 // Step 1: resolve discrete validity color (valid vs. invalid).
                                 colorMix(
                                     // Valid color:
@@ -175,7 +175,7 @@ export const usingValidityEffect = (options?: CssValidityEffectOptions): CssVali
                                 validityWeight,
                                 
                                 // Step 2: blend with current theme color (smooth interpolation).
-                                themeVariantVars[`${surfaceRole}${startsCapitalized(variantRole)}` as keyof typeof themeVariantVars],
+                                themeVariantVars[`${variantRole}${startsCapitalized(surfaceRole)}` as keyof typeof themeVariantVars],
                                 unvalidatedWeight
                             ),
                         })

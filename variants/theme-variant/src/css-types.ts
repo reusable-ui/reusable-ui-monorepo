@@ -52,27 +52,27 @@ export interface ThemeVariantVars {
     /**
      * Themed background color for regular style.
      */
-    backgRegular           : unknown
+    regularBackg           : unknown
     
     /**
      * Themed foreground color for regular style.
      */
-    foregRegular           : unknown
+    regularForeg           : unknown
     
     /**
      * Themed decoration color for regular style.
      */
-    decorRegular           : unknown
+    regularDecor           : unknown
     
     /**
      * Themed border color for regular style.
      */
-    borderRegular          : unknown
+    regularBorder          : unknown
     
     /**
      * Themed ring color for regular style.
      */
-    ringRegular            : unknown
+    regularRing            : unknown
     //#endregion 🎨 Regular Style
     
     
@@ -81,22 +81,22 @@ export interface ThemeVariantVars {
     /**
      * Themed background color for mild variant.
      */
-    backgMild              : unknown
+    mildBackg              : unknown
     
     /**
      * Themed foreground color for mild variant.
      */
-    foregMild              : unknown
+    mildForeg              : unknown
     
     /**
      * Themed decoration color for mild variant.
      */
-    decorMild              : unknown
+    mildDecor              : unknown
     
     /**
      * Themed border color for mild variant.
      */
-    borderMild             : unknown
+    mildBorder             : unknown
     //#endregion 🌸 Mild Style (overrides regular style) 
     
     
@@ -105,17 +105,17 @@ export interface ThemeVariantVars {
     /**
      * Themed foreground color for outlined variant.
      */
-    foregOutlined          : unknown
+    outlinedForeg          : unknown
     
     /**
      * Themed decoration color for outlined variant.
      */
-    decorOutlined          : unknown
+    outlinedDecor          : unknown
     
     /**
      * Themed border color for outlined variant.
      */
-    borderOutlined         : unknown
+    outlinedBorder         : unknown
     //#endregion 🧊 Outlined Style (overrides regular style) 
     
     
@@ -126,27 +126,27 @@ export interface ThemeVariantVars {
     /**
      * Background color override for regular style.
      */
-    backgRegularOverride   : unknown
+    regularBackgOverride   : unknown
     
     /**
      * Foreground color override for regular style.
      */
-    foregRegularOverride   : unknown
+    regularForegOverride   : unknown
     
     /**
      * Decoration color override for regular style.
      */
-    decorRegularOverride   : unknown
+    regularDecorOverride   : unknown
     
     /**
      * Border color override for regular style.
      */
-    borderRegularOverride  : unknown
+    regularBorderOverride  : unknown
     
     /**
      * Ring color override for regular style.
      */
-    ringRegularOverride    : unknown
+    regularRingOverride    : unknown
     
     
     
@@ -155,22 +155,22 @@ export interface ThemeVariantVars {
     /**
      * Background color override for mild variant.
      */
-    backgMildOverride      : unknown
+    mildBackgOverride      : unknown
     
     /**
      * Foreground color override for mild variant.
      */
-    foregMildOverride      : unknown
+    mildForegOverride      : unknown
     
     /**
      * Decoration color override for mild variant.
      */
-    decorMildOverride      : unknown
+    mildDecorOverride      : unknown
     
     /**
      * Border color override for mild variant.
      */
-    borderMildOverride     : unknown
+    mildBorderOverride     : unknown
     
     
     
@@ -179,17 +179,17 @@ export interface ThemeVariantVars {
     /**
      * Foreground color override for outlined variant.
      */
-    foregOutlinedOverride  : unknown
+    outlinedForegOverride  : unknown
     
     /**
      * Decoration color override for outlined variant.
      */
-    decorOutlinedOverride  : unknown
+    outlinedDecorOverride  : unknown
     
     /**
      * Border color override for outlined variant.
      */
-    borderOutlinedOverride : unknown
+    outlinedBorderOverride : unknown
     //#endregion ⚠️ Theme Overrides (e.g. error, success, warning) 
 }
 

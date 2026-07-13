@@ -88,10 +88,10 @@ export const usingActiveEffect = (options?: CssActiveEffectOptions): CssActiveEf
     const { mildVariantVars     : { isMild     } } = usingMildVariant();
     
     // Features:
-    const { backgroundFeatureVars : { backgRegularCond , backgVariantColor , backgColorOverride  } } = usingBackgroundFeature();
-    const { foregroundFeatureVars : { foregRegularCond , foregVariantColor , foregColorOverride  } } = usingForegroundFeature();
-    const { decorationFeatureVars : { decorRegularCond , decorVariantColor , decorColorOverride  } } = usingDecorationFeature();
-    const { borderFeatureVars     : { borderRegularCond, borderVariantColor, borderColorOverride } } = usingBorderFeature();
+    const { backgroundFeatureVars : { regularBackgCond , backgVariantColor , backgColorOverride  } } = usingBackgroundFeature();
+    const { foregroundFeatureVars : { regularForegCond , foregVariantColor , foregColorOverride  } } = usingForegroundFeature();
+    const { decorationFeatureVars : { regularDecorCond , decorVariantColor , decorColorOverride  } } = usingDecorationFeature();
+    const { borderFeatureVars     : { regularBorderCond, borderVariantColor, borderColorOverride } } = usingBorderFeature();
     
     // States:
     const { activeStateVars : { activeFactorCond } } = usingActiveState();
@@ -106,10 +106,10 @@ export const usingActiveEffect = (options?: CssActiveEffectOptions): CssActiveEf
             ...rules(
                 [
                     // Domain-specific color overrides:
-                    { regularColor: backgRegularCond , variantColor: backgVariantColor , overrideVar: backgColorOverride  },
-                    { regularColor: foregRegularCond , variantColor: foregVariantColor , overrideVar: foregColorOverride  },
-                    { regularColor: decorRegularCond , variantColor: decorVariantColor , overrideVar: decorColorOverride  },
-                    { regularColor: borderRegularCond, variantColor: borderVariantColor, overrideVar: borderColorOverride },
+                    { regularColor: regularBackgCond , variantColor: backgVariantColor , overrideVar: backgColorOverride  },
+                    { regularColor: regularForegCond , variantColor: foregVariantColor , overrideVar: foregColorOverride  },
+                    { regularColor: regularDecorCond , variantColor: decorVariantColor , overrideVar: decorColorOverride  },
+                    { regularColor: regularBorderCond, variantColor: borderVariantColor, overrideVar: borderColorOverride },
                 ].map(({ regularColor, variantColor, overrideVar }) =>
                     vars({
                         /**

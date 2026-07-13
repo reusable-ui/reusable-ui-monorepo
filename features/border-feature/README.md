@@ -57,9 +57,9 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
 | Variable              | Active When...          | Purpose                                                         |
 |-----------------------|-------------------------|-----------------------------------------------------------------|
-| `borderRegularCond`   | Theme variant active    | Themed border color for the regular variant                     |
-| `borderMildCond`      | Mild variant active     | Reading-friendly border color for mild variant                  |
-| `borderOutlinedCond`  | Outlined variant active | High-contrast border color for outlined variant                 |
+| `regularBorderCond`   | Theme variant active    | Themed border color for the regular variant                     |
+| `mildBorderCond`      | Mild variant active     | Reading-friendly border color for mild variant                  |
+| `outlinedBorderCond`  | Outlined variant active | High-contrast border color for outlined variant                 |
 | `borderStrippedCond`  | Stripped variant active | minimal layout rendering                                        |
 | `borderColorOverride` | When user override set  | User-defined override border color, highest priority if present |
 

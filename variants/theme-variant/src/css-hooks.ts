@@ -61,26 +61,26 @@ export const usingThemeVariant = (): CssThemeVariant => {
                         // Within the scope, define theme-specific variables:
                         vars({
                             // 🎨 Regular Style:
-                            [themeVariantVars.backgRegular  ] : colorConfigVars[`${themeName}Base`], // base strong color
-                            [themeVariantVars.foregRegular  ] : colorConfigVars[`${themeName}Flip`], // max-contrast color
-                            [themeVariantVars.decorRegular  ] : colorConfigVars[`${themeName}Flip`], // max-contrast color
-                            [themeVariantVars.borderRegular ] : colorConfigVars[`${themeName}Bold`], // strong separator
-                            [themeVariantVars.ringRegular   ] : colorConfigVars[`${themeName}Soft`], // attention color
+                            [themeVariantVars.regularBackg  ] : colorConfigVars[`${themeName}Base`], // base strong color
+                            [themeVariantVars.regularForeg  ] : colorConfigVars[`${themeName}Flip`], // max-contrast color
+                            [themeVariantVars.regularDecor  ] : colorConfigVars[`${themeName}Flip`], // max-contrast color
+                            [themeVariantVars.regularBorder ] : colorConfigVars[`${themeName}Bold`], // strong separator
+                            [themeVariantVars.regularRing   ] : colorConfigVars[`${themeName}Soft`], // attention color
                             
                             
                             
                             // 🌸 Mild Style:
-                            [themeVariantVars.backgMild     ] : colorConfigVars[`${themeName}Mild`], // comfort background
-                            [themeVariantVars.foregMild     ] : colorConfigVars[`${themeName}Text`], // readable foreground
-                            [themeVariantVars.decorMild     ] : colorConfigVars[`${themeName}Face`], // fair-contrast icon
-                            [themeVariantVars.borderMild    ] : colorConfigVars[`${themeName}Thin`], // fair separator
+                            [themeVariantVars.mildBackg     ] : colorConfigVars[`${themeName}Mild`], // comfort background
+                            [themeVariantVars.mildForeg     ] : colorConfigVars[`${themeName}Text`], // readable foreground
+                            [themeVariantVars.mildDecor     ] : colorConfigVars[`${themeName}Face`], // fair-contrast icon
+                            [themeVariantVars.mildBorder    ] : colorConfigVars[`${themeName}Thin`], // fair separator
                             
                             
                             
                             // 🧊 Outlined Style:
-                            [themeVariantVars.foregOutlined ] : colorConfigVars[`${themeName}Face`], // edge-contrast foreground
-                            [themeVariantVars.decorOutlined ] : colorConfigVars[`${themeName}Face`], // edge-contrast icon
-                            [themeVariantVars.borderOutlined] : colorConfigVars[`${themeName}Edge`], // edge separator
+                            [themeVariantVars.outlinedForeg ] : colorConfigVars[`${themeName}Face`], // edge-contrast foreground
+                            [themeVariantVars.outlinedDecor ] : colorConfigVars[`${themeName}Face`], // edge-contrast icon
+                            [themeVariantVars.outlinedBorder] : colorConfigVars[`${themeName}Edge`], // edge separator
                         })
                     )
                 )
@@ -106,26 +106,26 @@ export const usingThemeOverride = <TTheme extends string = BasicTheme>(theme: TT
     return style(
         vars({
             // 🎨 Regular Style:
-            [themeVariantVars.backgRegularOverride  ] : theme ? colorConfigVars[`${theme}Base`] : 'unset', // base strong color
-            [themeVariantVars.foregRegularOverride  ] : theme ? colorConfigVars[`${theme}Flip`] : 'unset', // max-contrast color
-            [themeVariantVars.decorRegularOverride  ] : theme ? colorConfigVars[`${theme}Flip`] : 'unset', // max-contrast color
-            [themeVariantVars.borderRegularOverride ] : theme ? colorConfigVars[`${theme}Bold`] : 'unset', // strong separator
-            [themeVariantVars.ringRegularOverride   ] : theme ? colorConfigVars[`${theme}Soft`] : 'unset', // attention color
+            [themeVariantVars.regularBackgOverride  ] : theme ? colorConfigVars[`${theme}Base`] : 'unset', // base strong color
+            [themeVariantVars.regularForegOverride  ] : theme ? colorConfigVars[`${theme}Flip`] : 'unset', // max-contrast color
+            [themeVariantVars.regularDecorOverride  ] : theme ? colorConfigVars[`${theme}Flip`] : 'unset', // max-contrast color
+            [themeVariantVars.regularBorderOverride ] : theme ? colorConfigVars[`${theme}Bold`] : 'unset', // strong separator
+            [themeVariantVars.regularRingOverride   ] : theme ? colorConfigVars[`${theme}Soft`] : 'unset', // attention color
             
             
             
             // 🌸 Mild Style:
-            [themeVariantVars.backgMildOverride     ] : theme ? colorConfigVars[`${theme}Mild`] : 'unset', // comfort background
-            [themeVariantVars.foregMildOverride     ] : theme ? colorConfigVars[`${theme}Text`] : 'unset', // readable foreground
-            [themeVariantVars.decorMildOverride     ] : theme ? colorConfigVars[`${theme}Face`] : 'unset', // fair-contrast icon
-            [themeVariantVars.borderMildOverride    ] : theme ? colorConfigVars[`${theme}Thin`] : 'unset', // fair separator
+            [themeVariantVars.mildBackgOverride     ] : theme ? colorConfigVars[`${theme}Mild`] : 'unset', // comfort background
+            [themeVariantVars.mildForegOverride     ] : theme ? colorConfigVars[`${theme}Text`] : 'unset', // readable foreground
+            [themeVariantVars.mildDecorOverride     ] : theme ? colorConfigVars[`${theme}Face`] : 'unset', // fair-contrast icon
+            [themeVariantVars.mildBorderOverride    ] : theme ? colorConfigVars[`${theme}Thin`] : 'unset', // fair separator
             
             
             
             // 🧊 Outlined Style:
-            [themeVariantVars.foregOutlinedOverride ] : theme ? colorConfigVars[`${theme}Face`] : 'unset', // edge-contrast fore
-            [themeVariantVars.decorOutlinedOverride ] : theme ? colorConfigVars[`${theme}Face`] : 'unset', // edge-contrast icon
-            [themeVariantVars.borderOutlinedOverride] : theme ? colorConfigVars[`${theme}Edge`] : 'unset', // edge separator
+            [themeVariantVars.outlinedForegOverride ] : theme ? colorConfigVars[`${theme}Face`] : 'unset', // edge-contrast fore
+            [themeVariantVars.outlinedDecorOverride ] : theme ? colorConfigVars[`${theme}Face`] : 'unset', // edge-contrast icon
+            [themeVariantVars.outlinedBorderOverride] : theme ? colorConfigVars[`${theme}Edge`] : 'unset', // edge separator
         })
     );
 };

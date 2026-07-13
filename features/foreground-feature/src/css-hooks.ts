@@ -68,9 +68,9 @@ export const usingForegroundFeature = (options?: CssForegroundFeatureOptions): C
                      * Applies regular foreground color from the theme.
                      * Poisoned when theme styling is not implemented.
                      */
-                    [foregroundFeatureVars.foregRegularCond]: switchOf(
-                        themeVariantVars.foregRegularOverride, // ⚠️ Theme override (if active).
-                        themeVariantVars.foregRegular,         // A themed foreground color for regular variant.
+                    [foregroundFeatureVars.regularForegCond]: switchOf(
+                        themeVariantVars.regularForegOverride, // ⚠️ Theme override (if active).
+                        themeVariantVars.regularForeg,         // A themed foreground color for regular variant.
                     ),
                     
                     
@@ -81,11 +81,11 @@ export const usingForegroundFeature = (options?: CssForegroundFeatureOptions): C
                      * Applies mild (reading-friendly) foreground color when mild variant is active.
                      * Poisoned when mild variant is inactive.
                      */
-                    [foregroundFeatureVars.foregMildCond]: [[
+                    [foregroundFeatureVars.mildForegCond]: [[
                         mildVariantVars.isMild,                 // If mild variant is active.
                         switchOf(
-                            themeVariantVars.foregMildOverride, // ⚠️ Theme override (if active).
-                            themeVariantVars.foregMild,         // A themed foreground color for mild variant.
+                            themeVariantVars.mildForegOverride, // ⚠️ Theme override (if active).
+                            themeVariantVars.mildForeg,         // A themed foreground color for mild variant.
                         ),
                     ]],
                     
@@ -97,11 +97,11 @@ export const usingForegroundFeature = (options?: CssForegroundFeatureOptions): C
                      * Applies outlined foreground color when outlined variant is active.
                      * Poisoned when outlined variant is inactive.
                      */
-                    [foregroundFeatureVars.foregOutlinedCond]: [[
+                    [foregroundFeatureVars.outlinedForegCond]: [[
                         outlinedVariantVars.isOutlined,             // If outlined variant is active.
                         switchOf(
-                            themeVariantVars.foregOutlinedOverride, // ⚠️ Theme override (if active).
-                            themeVariantVars.foregOutlined,         // A themed foreground color for outlined variant.
+                            themeVariantVars.outlinedForegOverride, // ⚠️ Theme override (if active).
+                            themeVariantVars.outlinedForeg,         // A themed foreground color for outlined variant.
                         ),
                     ]],
                 }),
@@ -118,9 +118,9 @@ export const usingForegroundFeature = (options?: CssForegroundFeatureOptions): C
                      * 4. Config fallback
                      */
                     [foregroundFeatureVars.foregVariantColor]: switchOf(
-                        foregroundFeatureVars.foregOutlinedCond, // 🧊 Outlined variant (if active).
-                        foregroundFeatureVars.foregMildCond,     // 🌸 Mild variant (if active).
-                        foregroundFeatureVars.foregRegularCond,  // 🎨 Regular variant (if themed).
+                        foregroundFeatureVars.outlinedForegCond, // 🧊 Outlined variant (if active).
+                        foregroundFeatureVars.mildForegCond,     // 🌸 Mild variant (if active).
+                        foregroundFeatureVars.regularForegCond,  // 🎨 Regular variant (if themed).
                         defaultForegroundColor,                  // 🛠️ Config fallback.
                     ),
                     
