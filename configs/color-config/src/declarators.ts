@@ -127,10 +127,10 @@ export const deleteTheme = (theme: string): void => {
 };
 
 /**
- * Retrieves the names of all registered themes.
+ * Retrieves the registered theme names.
  * 
  * @returns An array of theme names.
  */
-export const getThemeNames = () => {
+export const getThemes = () => {
     return Array.from(themesCache);
 };

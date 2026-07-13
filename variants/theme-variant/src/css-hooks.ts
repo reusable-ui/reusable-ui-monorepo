@@ -13,7 +13,7 @@ import {
 
 // Reusable-ui configs:
 import {
-    getThemeNames,
+    getThemes,
     colorConfigVars,
 }                           from '@reusable-ui/color-config'    // A flexible and themeable color management system for web components, utilizing CSS custom properties to enable dynamic styling and easy customization.
 
@@ -52,7 +52,7 @@ export const usingThemeVariant = (): CssThemeVariant => {
         themeVariantRule : () => style(
             variants(
                 // Get registered theme names:
-                getThemeNames()
+                getThemes()
                 
                 // Iterate over all registered theme names:
                 .map((theme) =>
