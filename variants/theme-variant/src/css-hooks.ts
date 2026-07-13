@@ -55,32 +55,32 @@ export const usingThemeVariant = (): CssThemeVariant => {
                 getThemeNames()
                 
                 // Iterate over all registered theme names:
-                .map((themeName) =>
+                .map((theme) =>
                     // Create a scoped rule for the current theme (e.g. `.t-primary`):
-                    ifTheme(themeName,
+                    ifTheme(theme,
                         // Within the scope, define theme-specific variables:
                         vars({
                             // 🎨 Regular Style:
-                            [themeVariantVars.regularBackg  ] : colorConfigVars[`${themeName}Base`], // base strong color
-                            [themeVariantVars.regularForeg  ] : colorConfigVars[`${themeName}Flip`], // max-contrast color
-                            [themeVariantVars.regularDecor  ] : colorConfigVars[`${themeName}Flip`], // max-contrast color
-                            [themeVariantVars.regularBorder ] : colorConfigVars[`${themeName}Bold`], // strong separator
-                            [themeVariantVars.regularRing   ] : colorConfigVars[`${themeName}Soft`], // attention color
+                            [themeVariantVars.regularBackg  ] : colorConfigVars[`${theme}Base`], // base strong color
+                            [themeVariantVars.regularForeg  ] : colorConfigVars[`${theme}Flip`], // max-contrast color
+                            [themeVariantVars.regularDecor  ] : colorConfigVars[`${theme}Flip`], // max-contrast color
+                            [themeVariantVars.regularBorder ] : colorConfigVars[`${theme}Bold`], // strong separator
+                            [themeVariantVars.regularRing   ] : colorConfigVars[`${theme}Soft`], // attention color
                             
                             
                             
                             // 🌸 Mild Style:
-                            [themeVariantVars.mildBackg     ] : colorConfigVars[`${themeName}Mild`], // comfort background
-                            [themeVariantVars.mildForeg     ] : colorConfigVars[`${themeName}Text`], // readable foreground
-                            [themeVariantVars.mildDecor     ] : colorConfigVars[`${themeName}Face`], // fair-contrast icon
-                            [themeVariantVars.mildBorder    ] : colorConfigVars[`${themeName}Thin`], // fair separator
+                            [themeVariantVars.mildBackg     ] : colorConfigVars[`${theme}Mild`], // comfort background
+                            [themeVariantVars.mildForeg     ] : colorConfigVars[`${theme}Text`], // readable foreground
+                            [themeVariantVars.mildDecor     ] : colorConfigVars[`${theme}Face`], // fair-contrast icon
+                            [themeVariantVars.mildBorder    ] : colorConfigVars[`${theme}Thin`], // fair separator
                             
                             
                             
                             // 🧊 Outlined Style:
-                            [themeVariantVars.outlinedForeg ] : colorConfigVars[`${themeName}Face`], // edge-contrast foreground
-                            [themeVariantVars.outlinedDecor ] : colorConfigVars[`${themeName}Face`], // edge-contrast icon
-                            [themeVariantVars.outlinedBorder] : colorConfigVars[`${themeName}Edge`], // edge separator
+                            [themeVariantVars.outlinedForeg ] : colorConfigVars[`${theme}Face`], // edge-contrast foreground
+                            [themeVariantVars.outlinedDecor ] : colorConfigVars[`${theme}Face`], // edge-contrast icon
+                            [themeVariantVars.outlinedBorder] : colorConfigVars[`${theme}Edge`], // edge separator
                         })
                     )
                 )
