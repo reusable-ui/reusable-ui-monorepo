@@ -38,23 +38,23 @@ const themeNamesCache = new Set<string>([
 /**
  * Defines a theme by mapping the given `themeName` to its corresponding colors.
  * 
- * @param themeName - The theme name.
+ * @param theme - The theme name to define.
  * @param rootColor - The base CSS color or CSS expression for the theme.
  */
-export const defineTheme = (themeName: string, rootColor: CssColor | null | undefined): void => {
+export const defineTheme = (theme: string, rootColor: CssColor | null | undefined): void => {
     // Validate parameters:
-    if (!themeName) throw TypeError('The `themeName` cannot be empty.');
+    if (!theme) throw TypeError('The `themeName` cannot be empty.');
     
     
     
     // Caches:
     if (rootColor) {
         // Register the theme name:
-        themeNamesCache.add(themeName);
+        themeNamesCache.add(theme);
     }
     else {
         // Unregister the theme name:
-        themeNamesCache.delete(themeName);
+        themeNamesCache.delete(theme);
     } // if
     
     
@@ -62,7 +62,7 @@ export const defineTheme = (themeName: string, rootColor: CssColor | null | unde
     // Constants:
     
     // Root Color:
-    colorConfigExpressions[themeName] = (
+    colorConfigExpressions[theme] = (
         // Upsert variable:
         rootColor
         
@@ -71,59 +71,59 @@ export const defineTheme = (themeName: string, rootColor: CssColor | null | unde
         // Delete variable:
         (null as unknown as keyof typeof colorConfigExpressions)
     );
-    const rootColorVar = rootColor ? colorConfigVars[themeName] : null;
+    const rootColorVar = rootColor ? colorConfigVars[theme] : null;
     
     
     
     // Background colors:
     
     // Base Color:
-    colorConfigExpressions[`${themeName}Base`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.base) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigExpressions[`${theme}Base`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.base) : (null as unknown as keyof typeof colorConfigExpressions);
     
     // Mild Color:
-    colorConfigExpressions[`${themeName}Mild`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.mild) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigExpressions[`${theme}Mild`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.mild) : (null as unknown as keyof typeof colorConfigExpressions);
     
     
     
     // Foreground colors:
     
     // Flip Color:
-    colorConfigExpressions[`${themeName}Flip`] = rootColorVar ? contrastFlip(   rootColorVar, colorParamConfigVars.flip) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigExpressions[`${theme}Flip`] = rootColorVar ? contrastFlip(   rootColorVar, colorParamConfigVars.flip) : (null as unknown as keyof typeof colorConfigExpressions);
     
     // Text Color:
-    colorConfigExpressions[`${themeName}Text`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.text) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigExpressions[`${theme}Text`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.text) : (null as unknown as keyof typeof colorConfigExpressions);
     
     // Face Color:
-    colorConfigExpressions[`${themeName}Face`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.face) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigExpressions[`${theme}Face`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.face) : (null as unknown as keyof typeof colorConfigExpressions);
     
     
     
     // Border colors:
     
     // Bold Color:
-    colorConfigExpressions[`${themeName}Bold`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.bold) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigExpressions[`${theme}Bold`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.bold) : (null as unknown as keyof typeof colorConfigExpressions);
     
     // Thin Color:
-    colorConfigExpressions[`${themeName}Thin`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.thin) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigExpressions[`${theme}Thin`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.thin) : (null as unknown as keyof typeof colorConfigExpressions);
     
     // Edge Color:
-    colorConfigExpressions[`${themeName}Edge`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.edge) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigExpressions[`${theme}Edge`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.edge) : (null as unknown as keyof typeof colorConfigExpressions);
     
     
     
     // Effect colors:
     
     // Soft Color:
-    colorConfigExpressions[`${themeName}Soft`] = rootColorVar ? adjustOpacity(  rootColorVar, colorParamConfigVars.soft) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigExpressions[`${theme}Soft`] = rootColorVar ? adjustOpacity(  rootColorVar, colorParamConfigVars.soft) : (null as unknown as keyof typeof colorConfigExpressions);
 };
 
 /**
  * Deletes a theme by resetting its mapped color values.
  * 
- * @param themeName - The theme name.
+ * @param theme - The theme name to delete.
  */
-export const deleteTheme = (themeName: string): void => {
-    defineTheme(themeName, null);
+export const deleteTheme = (theme: string): void => {
+    defineTheme(theme, null);
 };
 
 /**
