@@ -22,7 +22,7 @@ import {
 
 
 // Holds the names of all registered themes:
-const themeNamesCache = new Set<string>([
+const themesCache = new Set<string>([
     'primary',
     'secondary',
     'success',
@@ -50,11 +50,11 @@ export const defineTheme = (theme: string, rootColor: CssColor | null | undefine
     // Caches:
     if (rootColor) {
         // Register the theme name:
-        themeNamesCache.add(theme);
+        themesCache.add(theme);
     }
     else {
         // Unregister the theme name:
-        themeNamesCache.delete(theme);
+        themesCache.delete(theme);
     } // if
     
     
@@ -132,5 +132,5 @@ export const deleteTheme = (theme: string): void => {
  * @returns An array of theme names.
  */
 export const getThemeNames = () => {
-    return Array.from(themeNamesCache);
+    return Array.from(themesCache);
 };
