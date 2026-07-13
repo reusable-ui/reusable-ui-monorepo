@@ -67,4 +67,4 @@ export const colorRoleMap = {
         border : 'Edge', // A high-saturation border color.
         ring   : null,   // No outlined-specific ring color (use regular).
     },
-};
+} as const;
