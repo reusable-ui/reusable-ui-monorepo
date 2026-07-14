@@ -187,14 +187,8 @@ export interface ValidityStateVars {
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
      * 
-     * ### Notes:
+     * ### Note:
      * - Already registered as an animatable custom property; no need to apply `@property` manually.
-     * - **Value rationale:**  
-     *   - The factor represents the active lifecycle states (valid/invalid), not the baseline (unvalidated).  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `validityFactor = 0`  : unvalidated (baseline lifecycle state)  
-     *     - `validityFactor = +1` : valid (active lifecycle state)  
-     *     - `validityFactor = -1` : invalid (active lifecycle state)  
      */
     validityFactor        : unknown
     
@@ -221,20 +215,6 @@ export interface ValidityStateVars {
      *   Example of an animation with a spring/bump effect:  
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
-     * 
-     * ### Notes:
-     * - **Value rationale:**  
-     *   - The factor represents the active lifecycle states (valid/invalid), not the baseline (unvalidated).  
-     *   - Mirrors the active lifecycle states (valid/invalid) during transitions and when settled valid/invalid.  
-     *   - Drops to `unset` only when fully unvalidated, so dependent declarations fall back cleanly.  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `validityFactorCond = unset`: settled unvalidated (baseline inactive, declaration dropped)
-     *     - `validityFactorCond = 0`: unvalidated during transition (numeric interpolation)
-     *     - `validityFactorCond = +1`: valid (settled active lifecycle state)  
-     *     - `validityFactorCond = -1`: invalid (settled active lifecycle state)
-     * - **Naming rationale:**  
-     *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
-     *     and when valid/invalid, but conditionally drops to `unset` at baseline unvalidated.
      */
     validityFactorCond    : unknown
 }

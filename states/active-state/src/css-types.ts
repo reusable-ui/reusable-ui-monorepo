@@ -97,13 +97,8 @@ export interface ActiveStateVars {
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
      * 
-     * ### Notes:
+     * ### Note:
      * - Already registered as an animatable custom property; no need to apply `@property` manually.
-     * - **Value rationale:**  
-     *   - The factor represents the active lifecycle state (active), not the baseline (inactive).  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `activeFactor = 0`: inactive (baseline lifecycle state)  
-     *     - `activeFactor = 1`: active (active lifecycle state)  
      */
     activeFactor          : unknown
     
@@ -128,19 +123,6 @@ export interface ActiveStateVars {
      *   Example of an animation with a spring/bump effect:  
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
-     * 
-     * ### Notes:
-     * - **Value rationale:**  
-     *   - The factor represents the active lifecycle state (active), not the baseline (inactive).  
-     *   - Mirrors the active lifecycle state (active) during transitions and when settled active.  
-     *   - Drops to `unset` only when fully inactive, so dependent declarations fall back cleanly.  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `activeFactorCond = unset`: settled inactive (baseline inactive, declaration dropped)
-     *     - `activeFactorCond = 0`: inactive during transition (numeric interpolation)
-     *     - `activeFactorCond = 1`: active (settled active lifecycle state)  
-     * - **Naming rationale:**  
-     *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
-     *     and when active, but conditionally drops to `unset` at baseline inactive.
      */
     activeFactorCond      : unknown
 }

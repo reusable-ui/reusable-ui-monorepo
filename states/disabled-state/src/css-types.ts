@@ -97,15 +97,8 @@ export interface DisabledStateVars {
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
      * 
-     * ### Notes:
+     * ### Note:
      * - Already registered as an animatable custom property; no need to apply `@property` manually.
-     * - **Value rationale:**  
-     *   - The factor represents the active lifecycle state (disabled), not the baseline (enabled).  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `disabledFactor = 0`: enabled (baseline lifecycle state)  
-     *     - `disabledFactor = 1`: disabled (active lifecycle state)  
-     * - **Naming rationale:**  
-     *   - `disabledFactor` instead of `disabledFactor`: factors consistently use the *base form* of the active state (`disabled`, `readOnly`, `expand`, etc.).  
      */
     disabledFactor     : unknown
     
@@ -130,20 +123,6 @@ export interface DisabledStateVars {
      *   Example of an animation with a spring/bump effect:  
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
-     * 
-     * ### Notes:
-     * - **Value rationale:**  
-     *   - The factor represents the active lifecycle state (disabled), not the baseline (enabled).  
-     *   - Mirrors the active lifecycle state (disabled) during transitions and when settled disabled.  
-     *   - Drops to `unset` only when fully enabled, so dependent declarations fall back cleanly.  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `disabledFactorCond = unset`: settled enabled (baseline inactive, declaration dropped)
-     *     - `disabledFactorCond = 0`: enabled during transition (numeric interpolation)
-     *     - `disabledFactorCond = 1`: disabled (settled active lifecycle state)  
-     * - **Naming rationale:**  
-     *   - `disabledFactorCond` instead of `disabledFactorCond`: factors consistently use the *base form* of the active state (`disabled`, `readOnly`, `expand`, etc.).  
-     *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
-     *     and when disabled, but conditionally drops to `unset` at baseline enabled.
      */
     disabledFactorCond : unknown
 }

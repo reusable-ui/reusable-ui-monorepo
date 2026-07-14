@@ -97,13 +97,8 @@ export interface HoverStateVars {
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
      * 
-     * ### Notes:
+     * ### Note:
      * - Already registered as an animatable custom property; no need to apply `@property` manually.
-     * - **Value rationale:**  
-     *   - The factor represents the active lifecycle state (hovered), not the baseline (unhovered).  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `hoverFactor = 0`: unhovered (baseline lifecycle state)  
-     *     - `hoverFactor = 1`: hovered (active lifecycle state)  
      */
     hoverFactor         : unknown
     
@@ -128,19 +123,6 @@ export interface HoverStateVars {
      *   Example of an animation with a spring/bump effect:  
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
-     * 
-     * ### Notes:
-     * - **Value rationale:**  
-     *   - The factor represents the active lifecycle state (hovered), not the baseline (unhovered).  
-     *   - Mirrors the active lifecycle state (hovered) during transitions and when settled hovered.  
-     *   - Drops to `unset` only when fully unhovered, so dependent declarations fall back cleanly.  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `hoverFactorCond = unset`: settled unhovered (baseline inactive, declaration dropped)
-     *     - `hoverFactorCond = 0`: unhovered during transition (numeric interpolation)
-     *     - `hoverFactorCond = 1`: hovered (settled active lifecycle state)  
-     * - **Naming rationale:**  
-     *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
-     *     and when hovered, but conditionally drops to `unset` at baseline unhovered.
      */
     hoverFactorCond     : unknown
 }

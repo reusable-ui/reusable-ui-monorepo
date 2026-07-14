@@ -97,13 +97,8 @@ export interface DragStateVars {
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
      * 
-     * ### Notes:
+     * ### Note:
      * - Already registered as an animatable custom property; no need to apply `@property` manually.
-     * - **Value rationale:**  
-     *   - The factor represents the active lifecycle state (dragged), not the baseline (dropped).  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `dragFactor = 0`: dropped (baseline lifecycle state)  
-     *     - `dragFactor = 1`: dragged (active lifecycle state)  
      */
     dragFactor        : unknown
     
@@ -128,19 +123,6 @@ export interface DragStateVars {
      *   Example of an animation with a spring/bump effect:  
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
-     * 
-     * ### Notes:
-     * - **Value rationale:**  
-     *   - The factor represents the active lifecycle state (dragged), not the baseline (dropped).  
-     *   - Mirrors the active lifecycle state (dragged) during transitions and when settled dragged.  
-     *   - Drops to `unset` only when fully dropped, so dependent declarations fall back cleanly.  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `dragFactorCond = unset`: settled dropped (baseline inactive, declaration dropped)
-     *     - `dragFactorCond = 0`: dropped during transition (numeric interpolation)
-     *     - `dragFactorCond = 1`: dragged (settled active lifecycle state)  
-     * - **Naming rationale:**  
-     *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
-     *     and when dragged, but conditionally drops to `unset` at baseline dropped.
      */
     dragFactorCond    : unknown
     

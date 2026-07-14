@@ -97,13 +97,8 @@ export interface FocusStateVars {
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
      * 
-     * ### Notes:
+     * ### Note:
      * - Already registered as an animatable custom property; no need to apply `@property` manually.
-     * - **Value rationale:**  
-     *   - The factor represents the active lifecycle state (focused), not the baseline (blurred).  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `focusFactor = 0`: blurred (baseline lifecycle state)  
-     *     - `focusFactor = 1`: focused (active lifecycle state)  
      */
     focusFactor       : unknown
     
@@ -128,19 +123,6 @@ export interface FocusStateVars {
      *   Example of an animation with a spring/bump effect:  
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
-     * 
-     * ### Notes:
-     * - **Value rationale:**  
-     *   - The factor represents the active lifecycle state (focused), not the baseline (blurred).  
-     *   - Mirrors the active lifecycle state (focused) during transitions and when settled focused.  
-     *   - Drops to `unset` only when fully blurred, so dependent declarations fall back cleanly.  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `focusFactorCond = unset`: settled blurred (baseline inactive, declaration dropped)
-     *     - `focusFactorCond = 0`: blurred during transition (numeric interpolation)
-     *     - `focusFactorCond = 1`: focused (settled active lifecycle state)  
-     * - **Naming rationale:**  
-     *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
-     *     and when focused, but conditionally drops to `unset` at baseline blurred.
      */
     focusFactorCond   : unknown
 }

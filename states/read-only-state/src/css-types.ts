@@ -97,15 +97,8 @@ export interface ReadOnlyStateVars {
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
      * 
-     * ### Notes:
+     * ### Note:
      * - Already registered as an animatable custom property; no need to apply `@property` manually.
-     * - **Value rationale:**  
-     *   - The factor represents the active lifecycle state (read-only), not the baseline (editable).  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `readOnlyFactor = 0`: editable (baseline lifecycle state)  
-     *     - `readOnlyFactor = 1`: read-only (active lifecycle state)  
-     * - **Naming rationale:**  
-     *   - `readOnlyFactor` instead of `editableFactor`: factors consistently use the *base form* of the active state (`disabled`, `readOnly`, `expand`, etc.).  
      */
     readOnlyFactor     : unknown
     
@@ -130,20 +123,6 @@ export interface ReadOnlyStateVars {
      *   Example of an animation with a spring/bump effect:  
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
-     * 
-     * ### Notes:
-     * - **Value rationale:**  
-     *   - The factor represents the active lifecycle state (read-only), not the baseline (editable).  
-     *   - Mirrors the active lifecycle state (read-only) during transitions and when settled read-only.  
-     *   - Drops to `unset` only when fully editable, so dependent declarations fall back cleanly.  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `readOnlyFactorCond = unset`: settled editable (baseline inactive, declaration dropped)
-     *     - `readOnlyFactorCond = 0`: editable during transition (numeric interpolation)
-     *     - `readOnlyFactorCond = 1`: read-only (settled active lifecycle state)  
-     * - **Naming rationale:**  
-     *   - `readOnlyFactorCond` instead of `editableFactorCond`: factors consistently use the *base form* of the active state (`disabled`, `readOnly`, `expand`, etc.).  
-     *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
-     *     and when read-only, but conditionally drops to `unset` at baseline editable.
      */
     readOnlyFactorCond : unknown
 }

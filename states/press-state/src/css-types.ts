@@ -97,13 +97,8 @@ export interface PressStateVars {
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
      * 
-     * ### Notes:
+     * ### Note:
      * - Already registered as an animatable custom property; no need to apply `@property` manually.
-     * - **Value rationale:**  
-     *   - The factor represents the active lifecycle state (pressed), not the baseline (released).  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `pressFactor = 0`: released (baseline lifecycle state)  
-     *     - `pressFactor = 1`: pressed (active lifecycle state)  
      */
     pressFactor        : unknown
     
@@ -128,19 +123,6 @@ export interface PressStateVars {
      *   Example of an animation with a spring/bump effect:  
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
-     * 
-     * ### Notes:
-     * - **Value rationale:**  
-     *   - The factor represents the active lifecycle state (pressed), not the baseline (released).  
-     *   - Mirrors the active lifecycle state (pressed) during transitions and when settled pressed.  
-     *   - Drops to `unset` only when fully released, so dependent declarations fall back cleanly.  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `pressFactorCond = unset`: settled released (baseline inactive, declaration dropped)
-     *     - `pressFactorCond = 0`: released during transition (numeric interpolation)
-     *     - `pressFactorCond = 1`: pressed (settled active lifecycle state)  
-     * - **Naming rationale:**  
-     *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
-     *     and when pressed, but conditionally drops to `unset` at baseline released.
      */
     pressFactorCond    : unknown
 }

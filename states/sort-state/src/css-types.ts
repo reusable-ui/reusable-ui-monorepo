@@ -49,13 +49,8 @@ export interface SortStateVars {
      *     `0%: 1`, `90%: -0.2`, `100%: 0`  
      *   The undershoot value `-0.2` at `90%` is intentional, creating an "elastic" effect.
      * 
-     * ### Notes:
+     * ### Note:
      * - Already registered as an animatable custom property; no need to apply `@property` manually.
-     * - **Value rationale:**  
-     *   - The factor represents the sorting progress, not a persistent condition.  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `sortFactor = 1`: active unsorted illusion  
-     *     - `sortFactor = 0`: idle, fully sorted baseline
      */
     sortFactor       : unknown
     
@@ -79,18 +74,6 @@ export interface SortStateVars {
      *   Example of an animation with a spring/bump effect:  
      *     `0%: 1`, `90%: -0.2`, `100%: 0`  
      *   The undershoot value `-0.2` at `90%` is intentional, creating an over-trip effect.
-     * 
-     * ### Notes:
-     * - **Value rationale:**  
-     *   - The factor represents the sorting progress, not a persistent condition.  
-     *   - Mirrors the sorting progress while the animation is running.  
-     *   - Drops to `unset` only when idle, so dependent declarations fall back cleanly.  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `sortFactorCond = 1`: active unsorted illusion  
-     *     - `sortFactorCond = unset`: idle (fully sorted baseline, declaration dropped)  
-     * - **Naming rationale:**  
-     *   - `Cond` suffix indicates conditional presence: mirrors numeric factor while the animation is running,
-     *     but conditionally drops to `unset` at baseline idle.
      */
     sortFactorCond   : unknown
     

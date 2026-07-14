@@ -185,11 +185,8 @@ export interface ViewStateVars {
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
      * 
-     * ### Notes:
+     * ### Note:
      * - Already registered as an animatable custom property; no need to apply `@property` manually.
-     * - **Value rationale:**  
-     *   - The factor represents the *relative journey progress*, not the absolute index.  
-     *   - Resets to `0` after completion to reflect the collapsed single-view rendering.  
      */
     viewFactor             : unknown
     
@@ -213,19 +210,6 @@ export interface ViewStateVars {
      *   Example of an animation with a spring/bump effect:  
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating a dynamic rebound before settling.
-     * 
-     * ### Notes:
-     * - **Value rationale:**  
-     *   - The factor represents the *relative journey progress*, not the absolute index.  
-     *   - Mirrors the transient lifecycle states (advancing/receding) during transitions.  
-     *   - Drops to `unset` only when the view is settled, so dependent declarations fall back cleanly.  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `viewFactorCond = unset`: settled single view (baseline inactive, declaration dropped)
-     *     - `viewFactorCond = 0`: origin view during transition (numeric interpolation)
-     *     - `viewFactorCond = ±1`: destination view during transition (numeric interpolation)
-     * - **Naming rationale:**  
-     *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during transitions
-     *     but conditionally drops to `unset` at baseline settled.
      */
     viewFactorCond         : unknown
 }

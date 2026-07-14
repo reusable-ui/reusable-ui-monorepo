@@ -49,13 +49,8 @@ export interface ExcitedStateVars {
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating an over-exciting effect.
      * 
-     * ### Notes:
+     * ### Note:
      * - Already registered as an animatable custom property; no need to apply `@property` manually.
-     * - **Value rationale:**  
-     *   - The factor represents the active activity state (exciting), not the baseline (idle).  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `excitedFactor = 0`: idle (baseline activity state)  
-     *     - `excitedFactor` oscillates between `0 ↔ 1`: exciting activity (active activity state)  
      */
     excitedFactor     : unknown
     
@@ -78,18 +73,6 @@ export interface ExcitedStateVars {
      *   Example of an animation with a spring/bump effect:  
      *     `0%: 0`, `90%: 1.2`, `100%: 1`  
      *   The overshoot value `1.2` at `90%` is intentional, creating an over-exciting effect.
-     * 
-     * ### Notes:
-     * - **Value rationale:**  
-     *   - The factor represents the active activity state (exciting), not the baseline (idle).  
-     *   - Mirrors the active activity state (exciting) during active activities.  
-     *   - Drops to `unset` only when idle, so dependent declarations fall back cleanly.  
-     *   - This keeps naming predictable and teachable across the ecosystem:
-     *     - `excitedFactorCond = unset`: idle (baseline inactive, declaration dropped)
-     *     - `excitedFactorCond` oscillates between `0 ↔ 1`: exciting activity (running active activity state)  
-     * - **Naming rationale:**  
-     *   - `Cond` suffix indicates conditional presence: mirrors numeric factor during active activities,
-     *     but conditionally drops to `unset` at baseline idle.
      */
     excitedFactorCond : unknown
 }
