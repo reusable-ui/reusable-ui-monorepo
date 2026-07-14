@@ -118,7 +118,7 @@ export const useTransitionState = <
     // Extract options and assign defaults:
     const {
         animationPattern  = defaultAnimationPattern,
-        animationBubbling = defaultAnimationBubbling,
+        bubblingAnimation = defaultAnimationBubbling,
     } = options ?? {};
     
     
@@ -136,7 +136,7 @@ export const useTransitionState = <
     const [internalState, setInternalState, runningIntent, animationHandlers] = useAnimationState<TState, TElement>({
         initialIntent: effectiveState,
         animationPattern,
-        animationBubbling,
+        bubblingAnimation,
     });
     
     // Controlled vs uncontrolled resolution:

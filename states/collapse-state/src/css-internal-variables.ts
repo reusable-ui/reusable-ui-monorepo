@@ -30,5 +30,5 @@ import {
 export const [collapseStateVars] = cssVars<CollapseStateVars>({ prefix: defaultCollapseStatePrefix, minify: false });
 
 // Register the expand/collapse-related animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(collapseStateVars.animationExpanding);
-animationRegistry.registerAnimation(collapseStateVars.animationCollapsing);
+animationRegistry.registerAnimation(collapseStateVars.expandingAnimation);
+animationRegistry.registerAnimation(collapseStateVars.collapsingAnimation);

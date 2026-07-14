@@ -57,8 +57,8 @@ import {
  *         collapseStateRule,
  *         collapseStateVars: { isExpanded, isCollapsed, expandFactor },
  *     } = usingCollapseState({
- *         animationExpanding  : 'var(--box-expanding)',
- *         animationCollapsing : 'var(--box-collapsing)',
+ *         expandingAnimation  : 'var(--box-expanding)',
+ *         collapsingAnimation : 'var(--box-collapsing)',
  *     });
  *     
  *     return style({
@@ -112,13 +112,13 @@ export const usingCollapseState = (options?: CssCollapseStateOptions): CssCollap
         animations      : [
             {
                 ifState   : ifExpanding,
-                variable  : collapseStateVars.animationExpanding,
-                animation : options?.animationExpanding,
+                variable  : collapseStateVars.expandingAnimation,
+                animation : options?.expandingAnimation,
             },
             {
                 ifState   : ifCollapsing,
-                variable  : collapseStateVars.animationCollapsing,
-                animation : options?.animationCollapsing,
+                variable  : collapseStateVars.collapsingAnimation,
+                animation : options?.collapsingAnimation,
             },
         ],
         

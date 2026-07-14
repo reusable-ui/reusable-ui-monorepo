@@ -7,8 +7,8 @@ export default function disabledStateTestStyle() {
         disabledStateRule,
         disabledStateVars: { disabledFactor },
     } = usingDisabledState({
-        animationEnabling  : 'var(--test-enabling)',
-        animationDisabling : 'var(--test-disabling)',
+        enablingAnimation  : 'var(--test-enabling)',
+        disablingAnimation : 'var(--test-disabling)',
     });
     
     const {

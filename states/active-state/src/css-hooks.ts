@@ -66,8 +66,8 @@ import {
  *         activeStateRule,
  *         activeStateVars: { isActive, isInactive, activeFactor },
  *     } = usingActiveState({
- *         animationActivating   : 'var(--box-activating)',
- *         animationDeactivating : 'var(--box-deactivating)',
+ *         activatingAnimation   : 'var(--box-activating)',
+ *         deactivatingAnimation : 'var(--box-deactivating)',
  *     });
  *     
  *     // Feature: background colors
@@ -174,13 +174,13 @@ export const usingActiveState = (options?: CssActiveStateOptions): CssActiveStat
         animations      : [
             {
                 ifState   : ifActivating,
-                variable  : activeStateVars.animationActivating,
-                animation : options?.animationActivating,
+                variable  : activeStateVars.activatingAnimation,
+                animation : options?.activatingAnimation,
             },
             {
                 ifState   : ifDeactivating,
-                variable  : activeStateVars.animationDeactivating,
-                animation : options?.animationDeactivating,
+                variable  : activeStateVars.deactivatingAnimation,
+                animation : options?.deactivatingAnimation,
             },
         ],
         

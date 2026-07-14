@@ -30,7 +30,7 @@ export interface SortStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationSorting : unknown
+    sortingAnimation : unknown
     
     /**
      * A normalized, animatable factor representing the **sorting progress**.
@@ -144,7 +144,7 @@ export interface CssSortStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationSorting ?: CssKnownProps['animation']
+    sortingAnimation ?: CssKnownProps['animation']
 }
 
 
@@ -164,9 +164,9 @@ export interface CssSortState {
      * Exposes sort-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationSorting`: Active during sorting actions.
+     * - `sortingAnimation`: Active during sorting actions.
      * 
-     * ⚠️ **Caution**: The `animationSorting` variable becomes invalid when the component is idle.
+     * ⚠️ **Caution**: The `sortingAnimation` variable becomes invalid when the component is idle.
      * If used improperly, it can invalidate the entire CSS declaration.
      * Always wrap it with `switchOf(...)` to ensure graceful fallback.
      * 

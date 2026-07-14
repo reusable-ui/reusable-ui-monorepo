@@ -97,8 +97,8 @@ export const draggableBoxStyle = () => {
         dragStateRule,
         dragStateVars: { dragFactor },
     } = usingDragState({
-        animationDragging : 'var(--box-dragging)',
-        animationDropping : 'var(--box-dropping)',
+        draggingAnimation : 'var(--box-dragging)',
+        droppingAnimation : 'var(--box-dropping)',
     });
     
     // Drag/drop visual effect:

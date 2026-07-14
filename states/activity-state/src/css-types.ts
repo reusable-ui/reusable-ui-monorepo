@@ -23,8 +23,8 @@ import {
  * ```ts
  * const preparingCase : CssActivityAnimationCase = {
  *     ifState   : ifPreparing,
- *     variable  : orderStateVars.animationPreparing,
- *     animation : options.animationPreparing,
+ *     variable  : orderStateVars.preparingAnimation,
+ *     animation : options.preparingAnimation,
  * };
  * ```
  */
@@ -48,7 +48,7 @@ export interface CssActivityAnimationCase
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-var)`
-     * - A strongly typed reference, e.g. `orderStateVars.animationPreparing` (recommended)
+     * - A strongly typed reference, e.g. `orderStateVars.preparingAnimation` (recommended)
      */
     variable   : CssAnimationCase['variable']
     
@@ -59,7 +59,7 @@ export interface CssActivityAnimationCase
      * - A hard-coded CSS variable reference, e.g. `var(--my-animation)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-animation, var(--fallback))`
      * - A literal animation value, e.g. `[['0.2s', 'ease', 'both', 'alternate', 5, 'preparing']]`
-     * - A strongly typed reference, e.g. `options.animationPreparing` (recommended)
+     * - A strongly typed reference, e.g. `options.preparingAnimation` (recommended)
      * 
      * Defaults to `'none'`.
      */
@@ -80,18 +80,18 @@ export interface CssActivityAnimationCase
  *     animations      : [
  *         {
  *             ifState   : ifPreparing,
- *             variable  : orderStateVars.animationPreparing,
- *             animation : options.animationPreparing,
+ *             variable  : orderStateVars.preparingAnimation,
+ *             animation : options.preparingAnimation,
  *         },
  *         {
  *             ifState   : ifShipping,
- *             variable  : orderStateVars.animationShipping,
- *             animation : options.animationShipping,
+ *             variable  : orderStateVars.shippingAnimation,
+ *             animation : options.shippingAnimation,
  *         },
  *         {
  *             ifState   : ifDelivering,
- *             variable  : orderStateVars.animationDelivering,
- *             animation : options.animationDelivering,
+ *             variable  : orderStateVars.deliveringAnimation,
+ *             animation : options.deliveringAnimation,
  *         },
  *     ],
  * });
@@ -206,18 +206,18 @@ export interface CssActivityFactorBehavior
  *     animations      : [
  *         {
  *             ifState   : ifPreparing,
- *             variable  : orderStateVars.animationPreparing,
- *             animation : options.animationPreparing,
+ *             variable  : orderStateVars.preparingAnimation,
+ *             animation : options.preparingAnimation,
  *         },
  *         {
  *             ifState   : ifShipping,
- *             variable  : orderStateVars.animationShipping,
- *             animation : options.animationShipping,
+ *             variable  : orderStateVars.shippingAnimation,
+ *             animation : options.shippingAnimation,
  *         },
  *         {
  *             ifState   : ifDelivering,
- *             variable  : orderStateVars.animationDelivering,
- *             animation : options.animationDelivering,
+ *             variable  : orderStateVars.deliveringAnimation,
+ *             animation : options.deliveringAnimation,
  *         },
  *     ],
  *     

@@ -30,7 +30,7 @@ export interface ReadOnlyStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationThawing   : unknown
+    thawingAnimation   : unknown
     
     /**
      * References an animation used during the freezing transition.
@@ -39,7 +39,7 @@ export interface ReadOnlyStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationFreezing  : unknown
+    freezingAnimation  : unknown
     
     /**
      * Applies when the component is either thawing or fully editable.
@@ -141,7 +141,7 @@ export interface CssReadOnlyStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationThawing  ?: CssKnownProps['animation']
+    thawingAnimation  ?: CssKnownProps['animation']
     
     /**
      * Defines the animation to apply during the freezing transition.
@@ -151,7 +151,7 @@ export interface CssReadOnlyStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationFreezing ?: CssKnownProps['animation']
+    freezingAnimation ?: CssKnownProps['animation']
 }
 
 
@@ -171,8 +171,8 @@ export interface CssReadOnlyState {
      * Exposes editable/read-only-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationThawing`  : Active during the thawing transition.
-     * - `animationFreezing` : Active during the freezing transition.
+     * - `thawingAnimation`  : Active during the thawing transition.
+     * - `freezingAnimation` : Active during the freezing transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.

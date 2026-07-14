@@ -197,18 +197,18 @@ Applies live CSS variables for animation styling, including:
 const orderAnimations : CssRule = usingAnimationState({
     {
         ifState   : ifPreparing,
-        variable  : orderStateVars.animationPreparing,
-        animation : options.animationPreparing,
+        variable  : orderStateVars.preparingAnimation,
+        animation : options.preparingAnimation,
     },
     {
         ifState   : ifShipping,
-        variable  : orderStateVars.animationShipping,
-        animation : options.animationShipping,
+        variable  : orderStateVars.shippingAnimation,
+        animation : options.shippingAnimation,
     },
     {
         ifState   : ifDelivering,
-        variable  : orderStateVars.animationDelivering,
-        animation : options.animationDelivering,
+        variable  : orderStateVars.deliveringAnimation,
+        animation : options.deliveringAnimation,
     },
     
     // Optional factor variables for movement drivers of animation:
@@ -224,7 +224,7 @@ return style({
     fontSize : '1rem',
     
     // Apply animations:
-    animation: `${switchOf(orderStateVars.animationPreparing, 'none')}, ${switchOf(orderStateVars.animationShipping, 'none')}, ${switchOf(orderStateVars.animationDelivering, 'none')}`,
+    animation: `${switchOf(orderStateVars.preparingAnimation, 'none')}, ${switchOf(orderStateVars.shippingAnimation, 'none')}, ${switchOf(orderStateVars.deliveringAnimation, 'none')}`,
     
     // Apply animation state rule:
     ...orderAnimations,

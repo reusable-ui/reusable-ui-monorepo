@@ -92,8 +92,8 @@ export const collapsibleBoxStyle = () => {
         collapseStateRule,
         collapseStateVars: { expandFactor },
     } = usingCollapseState({
-        animationExpanding  : 'var(--box-expanding)',
-        animationCollapsing : 'var(--box-collapsing)',
+        expandingAnimation  : 'var(--box-expanding)',
+        collapsingAnimation : 'var(--box-collapsing)',
     });
     
     // Expand/collapse visual effect:

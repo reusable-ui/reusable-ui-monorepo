@@ -119,7 +119,7 @@ export const useActivityState = <
     // Extract options and assign defaults:
     const {
         animationPattern  = defaultAnimationPattern,
-        animationBubbling = defaultAnimationBubbling,
+        bubblingAnimation = defaultAnimationBubbling,
     } = options ?? {};
     
     
@@ -144,7 +144,7 @@ export const useActivityState = <
     const [, setAnimationIntent, actualAnimationState, animationHandlers] = useAnimationState<TState, TElement>({
         initialIntent : inactiveState, // Initially stopped.
         animationPattern,
-        animationBubbling,
+        bubblingAnimation,
     });
     
     // The current visual state of the animation — what is actually being displayed in the browser:
@@ -175,7 +175,7 @@ export const useActivityState = <
      */
     const handleCaptureAnimationEvent : AnimationEventHandler<TElement> = useStableEventHandler((event) => {
         // Ensure the event is bubbling if required:
-        if (!animationBubbling && event.target !== event.currentTarget) return;
+        if (!bubblingAnimation && event.target !== event.currentTarget) return;
         
         // Ignore if the event is already captured:
         if (activityAnimationEventRef.current) return;

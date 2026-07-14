@@ -70,7 +70,7 @@ export const MockComponent = (props: MockComponentProps) => {
             'expand',
             'collapse',
         ],
-        animationBubbling : false,
+        bubblingAnimation : false,
     });
     expandValueRef([expandState[0], expandState[2]]);
     
@@ -110,7 +110,7 @@ export const MockComponent = (props: MockComponentProps) => {
             'invalidate',
             'uninvalidate',
         ],
-        animationBubbling : false,
+        bubblingAnimation : false,
     });
     validityValueRef([validityState[0], validityState[2]]);
     

@@ -75,7 +75,7 @@ import {
  *         sortStateRule,
  *         sortStateVars: { sortFactor },
  *     } = usingSortState({
- *         animationSorting : 'var(--list-sorting)',
+ *         sortingAnimation : 'var(--list-sorting)',
  *     });
  *     
  *     // Sorting visual effect:

@@ -67,7 +67,7 @@ export interface ReadOnlyStateProviderProps
  *         defaultReadOnly        : false,                   // Defaults to editable.
  *         defaultCascadeReadOnly : true,                    // Defaults to allow contextual read-only.
  *         animationPattern       : ['thawing', 'freezing'], // Matches animation names ending with 'thawing' or 'freezing'.
- *         animationBubbling      : false,                   // Ignores bubbling animation events from children.
+ *         bubblingAnimation      : false,                   // Ignores bubbling animation events from children.
  *     });
  *     
  *     // Or use `useResolvedReadOnly()` if not concerned with animation phases:

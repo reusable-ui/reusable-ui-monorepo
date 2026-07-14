@@ -66,7 +66,7 @@ export interface ActivityStateOptions<TState extends {} | null>
         // Bases:
         Partial<Pick<AnimationStateOptions<TState>,
             | 'animationPattern'
-            | 'animationBubbling'
+            | 'bubblingAnimation'
         >>
 {
     /**
@@ -93,7 +93,7 @@ export interface ActivityStateOptions<TState extends {} | null>
      * 
      * Defaults to `definition.defaultAnimationBubbling`.
      */
-    animationBubbling ?: AnimationStateOptions<TState>['animationBubbling']
+    bubblingAnimation ?: AnimationStateOptions<TState>['bubblingAnimation']
 }
 
 /**
@@ -178,13 +178,13 @@ export interface ActivityStateDefinition<TState extends {} | null, TClassname ex
     defaultAnimationPattern   : AnimationStateOptions<TState>['animationPattern']
     
     /**
-     * A system default bubbling behavior when `animationBubbling` option is not provided.
+     * A system default bubbling behavior when `bubblingAnimation` option is not provided.
      * 
      * Useful when the animated node is deeply nested within the component.
      * 
      * Defaults to `false` (no bubbling).
      */
-    defaultAnimationBubbling ?: AnimationStateOptions<TState>['animationBubbling']
+    defaultAnimationBubbling ?: AnimationStateOptions<TState>['bubblingAnimation']
     
     /**
      * Declares the baseline inactive state (e.g. `false`).

@@ -30,5 +30,5 @@ import {
 export const [viewStateVars] = cssVars<ViewStateVars>({ prefix: defaultViewStatePrefix, minify: false });
 
 // Register the view-related animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(viewStateVars.animationViewAdvancing);
-animationRegistry.registerAnimation(viewStateVars.animationViewReceding);
+animationRegistry.registerAnimation(viewStateVars.viewAdvancingAnimation);
+animationRegistry.registerAnimation(viewStateVars.viewRecedingAnimation);

@@ -24,8 +24,8 @@ import {
  * ```ts
  * const expandingCase : CssInteractionAnimationCase = {
  *     ifState   : ifExpanding,
- *     variable  : collapseStateVars.animationExpanding,
- *     animation : options.animationExpanding,
+ *     variable  : collapseStateVars.expandingAnimation,
+ *     animation : options.expandingAnimation,
  * };
  * ```
  */
@@ -49,7 +49,7 @@ export interface CssInteractionAnimationCase
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-var)`
-     * - A strongly typed reference, e.g. `collapseStateVars.animationExpanding` (recommended)
+     * - A strongly typed reference, e.g. `collapseStateVars.expandingAnimation` (recommended)
      */
     variable   : CssTransitionAnimationCase['variable']
     
@@ -60,7 +60,7 @@ export interface CssInteractionAnimationCase
      * - A hard-coded CSS variable reference, e.g. `var(--my-animation)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-animation, var(--fallback))`
      * - A literal animation value, e.g. `[['0.2s', 'ease', 'both', 'alternate', 5, 'expanding']]`
-     * - A strongly typed reference, e.g. `options.animationExpanding` (recommended)
+     * - A strongly typed reference, e.g. `options.expandingAnimation` (recommended)
      * 
      * Defaults to `'none'`.
      */
@@ -178,13 +178,13 @@ export interface CssActiveInteractionFactorCase
  *     animations      : [
  *         {
  *             ifState   : ifExpanding,
- *             variable  : collapseStateVars.animationExpanding,
- *             animation : options.animationExpanding,
+ *             variable  : collapseStateVars.expandingAnimation,
+ *             animation : options.expandingAnimation,
  *         },
  *         {
  *             ifState   : ifCollapsing,
- *             variable  : collapseStateVars.animationCollapsing,
- *             animation : options.animationCollapsing,
+ *             variable  : collapseStateVars.collapsingAnimation,
+ *             animation : options.collapsingAnimation,
  *         },
  *     ],
  *     

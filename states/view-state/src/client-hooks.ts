@@ -167,7 +167,7 @@ const viewStateDefinition : ViewStateDefinition = {
  *         maxViewIndex      : 4,                                   // Limits maximum view index to 4.
  *         viewIndexStep     : 1,                                   // Snaps to integer view indices.
  *         animationPattern  : ['view-advancing', 'view-receding'], // Matches animation names ending with 'view-advancing' or 'view-receding'.
- *         animationBubbling : false,                               // Ignores bubbling animation events from children.
+ *         bubblingAnimation : false,                               // Ignores bubbling animation events from children.
  *     });
  *     
  *     // Determine which views to render based on visibility range:

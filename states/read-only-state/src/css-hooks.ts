@@ -57,8 +57,8 @@ import {
  *         readOnlyStateRule,
  *         readOnlyStateVars: { isEditable, isReadOnly, readOnlyFactor },
  *     } = usingReadOnlyState({
- *         animationThawing  : 'var(--box-thawing)',
- *         animationFreezing : 'var(--box-freezing)',
+ *         thawingAnimation  : 'var(--box-thawing)',
+ *         freezingAnimation : 'var(--box-freezing)',
  *     });
  *     
  *     return style({
@@ -110,13 +110,13 @@ export const usingReadOnlyState = (options?: CssReadOnlyStateOptions): CssReadOn
         animations      : [
             {
                 ifState   : ifThawing,
-                variable  : readOnlyStateVars.animationThawing,
-                animation : options?.animationThawing,
+                variable  : readOnlyStateVars.thawingAnimation,
+                animation : options?.thawingAnimation,
             },
             {
                 ifState   : ifFreezing,
-                variable  : readOnlyStateVars.animationFreezing,
-                animation : options?.animationFreezing,
+                variable  : readOnlyStateVars.freezingAnimation,
+                animation : options?.freezingAnimation,
             },
         ],
         

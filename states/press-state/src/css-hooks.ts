@@ -57,8 +57,8 @@ import {
  *         pressStateRule,
  *         pressStateVars: { isPressed, isReleased, pressFactor },
  *     } = usingPressState({
- *         animationPressing  : 'var(--box-pressing)',
- *         animationReleasing : 'var(--box-releasing)',
+ *         pressingAnimation  : 'var(--box-pressing)',
+ *         releasingAnimation : 'var(--box-releasing)',
  *     });
  *     
  *     return style({
@@ -113,13 +113,13 @@ export const usingPressState = (options?: CssPressStateOptions): CssPressState =
         animations      : [
             {
                 ifState   : ifPressing,
-                variable  : pressStateVars.animationPressing,
-                animation : options?.animationPressing,
+                variable  : pressStateVars.pressingAnimation,
+                animation : options?.pressingAnimation,
             },
             {
                 ifState   : ifReleasing,
-                variable  : pressStateVars.animationReleasing,
-                animation : options?.animationReleasing,
+                variable  : pressStateVars.releasingAnimation,
+                animation : options?.releasingAnimation,
             },
         ],
         

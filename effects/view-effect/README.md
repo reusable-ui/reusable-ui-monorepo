@@ -98,8 +98,8 @@ export const slideBoxStyle = () => {
         viewStateRule,
         viewStateVars: { viewFactor },
     } = usingViewState({
-        animationViewAdvancing : 'var(--box-view-advancing)',
-        animationViewReceding  : 'var(--box-view-receding)',
+        viewAdvancingAnimation : 'var(--box-view-advancing)',
+        viewRecedingAnimation  : 'var(--box-view-receding)',
     });
     
     // View-switching visual effect:

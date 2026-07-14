@@ -30,7 +30,7 @@ export interface ValidityStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationValidating   : unknown
+    validatingAnimation   : unknown
     
     /**
      * References an animation used during the invalidating transition.
@@ -39,7 +39,7 @@ export interface ValidityStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationInvalidating : unknown
+    invalidatingAnimation : unknown
     
     /**
      * References an animation used during the unvalidating transition.
@@ -48,7 +48,7 @@ export interface ValidityStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationUnvalidating : unknown
+    unvalidatingAnimation : unknown
     
     /**
      * Applies when the component is either validating or fully valid.
@@ -233,7 +233,7 @@ export interface CssValidityStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationValidating   ?: CssKnownProps['animation']
+    validatingAnimation   ?: CssKnownProps['animation']
     
     /**
      * Defines the animation to apply during the invalidating transition.
@@ -243,7 +243,7 @@ export interface CssValidityStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationInvalidating ?: CssKnownProps['animation']
+    invalidatingAnimation ?: CssKnownProps['animation']
     
     /**
      * Defines the animation to apply during the unvalidating transition.
@@ -253,7 +253,7 @@ export interface CssValidityStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationUnvalidating ?: CssKnownProps['animation']
+    unvalidatingAnimation ?: CssKnownProps['animation']
 }
 
 
@@ -273,9 +273,9 @@ export interface CssValidityState {
      * Exposes validity-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationValidating`   : Active during the validating transition.
-     * - `animationInvalidating` : Active during the invalidating transition.
-     * - `animationUnvalidating` : Active during the unvalidating transition.
+     * - `validatingAnimation`   : Active during the validating transition.
+     * - `invalidatingAnimation` : Active during the invalidating transition.
+     * - `unvalidatingAnimation` : Active during the unvalidating transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.

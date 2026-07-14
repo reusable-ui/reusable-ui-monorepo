@@ -30,7 +30,7 @@ export interface DisabledStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationEnabling  : unknown
+    enablingAnimation  : unknown
     
     /**
      * References an animation used during the disabling transition.
@@ -39,7 +39,7 @@ export interface DisabledStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationDisabling : unknown
+    disablingAnimation : unknown
     
     /**
      * Applies when the component is either enabling or fully enabled.
@@ -141,7 +141,7 @@ export interface CssDisabledStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationEnabling  ?: CssKnownProps['animation']
+    enablingAnimation  ?: CssKnownProps['animation']
     
     /**
      * Defines the animation to apply during the disabling transition.
@@ -151,7 +151,7 @@ export interface CssDisabledStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationDisabling ?: CssKnownProps['animation']
+    disablingAnimation ?: CssKnownProps['animation']
 }
 
 
@@ -171,8 +171,8 @@ export interface CssDisabledState {
      * Exposes enabled/disabled-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationEnabling`  : Active during the enabling transition.
-     * - `animationDisabling` : Active during the disabling transition.
+     * - `enablingAnimation`  : Active during the enabling transition.
+     * - `disablingAnimation` : Active during the disabling transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.

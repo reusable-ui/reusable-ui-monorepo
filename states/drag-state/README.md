@@ -101,7 +101,7 @@ export const DraggableOption: FC<CustomButtonProps> = (props) => {
     }, {
         defaultDragged    : 'auto',                   // Defaults to diagnostic mode.
         animationPattern  : ['dragging', 'dropping'], // Matches animation names ending with 'dragging' or 'dropping'.
-        animationBubbling : false,                    // Ignores bubbling animation events from children.
+        bubblingAnimation : false,                    // Ignores bubbling animation events from children.
     });
     
     return (
@@ -213,8 +213,8 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 | Variable            | Active When...                  | Purpose                                                                      |
 |---------------------|---------------------------------|------------------------------------------------------------------------------|
-| `animationDragging` | `.is-dragging`                  | Runs the dragging animation sequence                                         |
-| `animationDropping` | `.is-dropping`                  | Runs the dropping animation sequence                                         |
+| `draggingAnimation` | `.is-dragging`                  | Runs the dragging animation sequence                                         |
+| `droppingAnimation` | `.is-dropping`                  | Runs the dropping animation sequence                                         |
 | `isDragged`         | `.is-dragged` or `.is-dragging` | Conditional variable for the dragged state                                   |
 | `isDropped`         | `.is-dropped` or `.is-dropping` | Conditional variable for the dropped state                                   |
 | `dragOffsetX/Y`     | Always available                | Aligns drag components to the pointer position during dragging               |
@@ -245,8 +245,8 @@ export const draggableBoxStyle = () => {
         dragStateRule,
         dragStateVars: { isDragged, isDropped, dragOffsetX, dragOffsetY, dragFactor },
     } = usingDragState({
-        animationDragging : 'var(--box-dragging)',
-        animationDropping : 'var(--box-dropping)',
+        draggingAnimation : 'var(--box-dragging)',
+        droppingAnimation : 'var(--box-dropping)',
     });
     
     return style({
@@ -294,7 +294,7 @@ export const draggableBoxStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationDragging` and `animationDropping` variables are only defined during **dragging** and **dropping** phases.
+The `draggingAnimation` and `droppingAnimation` variables are only defined during **dragging** and **dropping** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
 Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining drag/drop animations with other state-driven transitions.

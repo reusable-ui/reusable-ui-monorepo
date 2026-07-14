@@ -93,8 +93,8 @@ export const pressableBoxStyle = () => {
         pressStateRule,
         pressStateVars: { pressFactor },
     } = usingPressState({
-        animationPressing   : 'var(--box-pressing)',
-        animationReleasing : 'var(--box-releasing)',
+        pressingAnimation   : 'var(--box-pressing)',
+        releasingAnimation : 'var(--box-releasing)',
     });
     
     // Press/release visual effect:

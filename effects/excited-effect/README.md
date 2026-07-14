@@ -96,7 +96,7 @@ export const excitableBoxStyle = () => {
         excitedStateRule,
         excitedStateVars: { excitedFactor },
     } = usingExcitedState({
-        animationExciting : 'var(--box-exciting)',
+        excitingAnimation : 'var(--box-exciting)',
     });
     
     // Excitement visual effect:

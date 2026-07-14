@@ -215,7 +215,7 @@ const dragStateDefinition : DragStateDefinition = {
  *     }, {
  *         defaultDragged    : 'auto',                   // Defaults to diagnostic mode.
  *         animationPattern  : ['dragging', 'dropping'], // Matches animation names ending with 'dragging' or 'dropping'.
- *         animationBubbling : false,                    // Ignores bubbling animation events from children.
+ *         bubblingAnimation : false,                    // Ignores bubbling animation events from children.
  *     });
  *     
  *     return (

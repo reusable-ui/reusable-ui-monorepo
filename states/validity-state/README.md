@@ -97,7 +97,7 @@ export const CustomInput: FC<CustomInputProps> = (props) => {
         defaultValidity   : 'auto',                                         // Defaults to automatic mode.
         fallbackValidity  : null,                                           // Defaults to unresolved state when `validity` is 'auto' but no `computedValidity` is provided.
         animationPattern  : ['validating', 'invalidating', 'unvalidating'], // Matches animation names ending with 'validating', 'invalidating', or 'unvalidating'.
-        animationBubbling : false,                                          // Ignores bubbling animation events from children.
+        bubblingAnimation : false,                                          // Ignores bubbling animation events from children.
     });
     
     return (
@@ -319,9 +319,9 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 | Variable                | Active When...                          | Purpose                                                                                       |
 |-------------------------|-----------------------------------------|-----------------------------------------------------------------------------------------------|
-| `animationValidating`   | `.is-validating`                        | Runs the validating animation sequence                                                        |
-| `animationInvalidating` | `.is-invalidating`                      | Runs the invalidating animation sequence                                                      |
-| `animationUnvalidating` | `.is-unvalidating`                      | Runs the unvalidating animation sequence                                                      |
+| `validatingAnimation`   | `.is-validating`                        | Runs the validating animation sequence                                                        |
+| `invalidatingAnimation` | `.is-invalidating`                      | Runs the invalidating animation sequence                                                      |
+| `unvalidatingAnimation` | `.is-unvalidating`                      | Runs the unvalidating animation sequence                                                      |
 | `isValid`               | `.is-valid` or `.is-validating`         | Conditional variable for the valid state                                                      |
 | `isInvalid`             | `.is-invalid` or `.is-invalidating`     | Conditional variable for the invalid state                                                    |
 | `isUnvalidated`         | `.is-unvalidated` or `.is-unvalidating` | Conditional variable for the unvalidated state                                                |
@@ -355,9 +355,9 @@ export const validatableBoxStyle = () => {
         validityStateRule,
         validityStateVars: { isValid, isInvalid, isUnvalidated, wasValid, wasInvalid, wasUnvalidated, validityFactor },
     } = usingValidityState({
-        animationValidating   : 'var(--box-validating)',
-        animationInvalidating : 'var(--box-invalidating)',
-        animationUnvalidating : 'var(--box-unvalidating)',
+        validatingAnimation   : 'var(--box-validating)',
+        invalidatingAnimation : 'var(--box-invalidating)',
+        unvalidatingAnimation : 'var(--box-unvalidating)',
     });
     
     return style({
@@ -570,7 +570,7 @@ export const validatableBoxStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationValidating`, `animationInvalidating`, and `animationUnvalidating` variables are only defined during **validating**, **invalidating**, and **unvalidating** phases.
+The `validatingAnimation`, `invalidatingAnimation`, and `unvalidatingAnimation` variables are only defined during **validating**, **invalidating**, and **unvalidating** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
 Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining validity animations with other state-driven transitions.

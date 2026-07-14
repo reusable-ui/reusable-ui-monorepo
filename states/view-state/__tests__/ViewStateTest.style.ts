@@ -17,8 +17,8 @@ function viewsStyle() {
         viewStateRule,
         viewStateVars: { viewIndex, prevViewIndex, viewFactor },
     } = usingViewState({
-        animationViewAdvancing : 'var(--test-view-advancing)',
-        animationViewReceding  : 'var(--test-view-receding)',
+        viewAdvancingAnimation : 'var(--test-view-advancing)',
+        viewRecedingAnimation  : 'var(--test-view-receding)',
     });
     
     const {

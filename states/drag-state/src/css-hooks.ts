@@ -57,8 +57,8 @@ import {
  *         dragStateRule,
  *         dragStateVars: { isDragged, isDropped, dragOffsetX, dragOffsetY, dragFactor },
  *     } = usingDragState({
- *         animationDragging : 'var(--box-dragging)',
- *         animationDropping : 'var(--box-dropping)',
+ *         draggingAnimation : 'var(--box-dragging)',
+ *         droppingAnimation : 'var(--box-dropping)',
  *     });
  *     
  *     return style({
@@ -110,13 +110,13 @@ export const usingDragState = (options?: CssDragStateOptions): CssDragState => (
         animations      : [
             {
                 ifState   : ifDragging,
-                variable  : dragStateVars.animationDragging,
-                animation : options?.animationDragging,
+                variable  : dragStateVars.draggingAnimation,
+                animation : options?.draggingAnimation,
             },
             {
                 ifState   : ifDropping,
-                variable  : dragStateVars.animationDropping,
-                animation : options?.animationDropping,
+                variable  : dragStateVars.droppingAnimation,
+                animation : options?.droppingAnimation,
             },
         ],
         

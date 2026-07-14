@@ -30,7 +30,7 @@ export interface ViewStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationViewAdvancing : unknown
+    viewAdvancingAnimation : unknown
     
     /**
      * References an animation used during the receding (previous) view transition.
@@ -39,7 +39,7 @@ export interface ViewStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationViewReceding  : unknown
+    viewRecedingAnimation  : unknown
     
     /**
      * Applies when the component is in a fully settled state (not transitioning between views).
@@ -228,7 +228,7 @@ export interface CssViewStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationViewAdvancing ?: CssKnownProps['animation']
+    viewAdvancingAnimation ?: CssKnownProps['animation']
     
     /**
      * Defines the animation to apply during the receding (previous) view transition.
@@ -238,7 +238,7 @@ export interface CssViewStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationViewReceding  ?: CssKnownProps['animation']
+    viewRecedingAnimation  ?: CssKnownProps['animation']
 }
 
 
@@ -258,8 +258,8 @@ export interface CssViewState {
      * Exposes view-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationViewAdvancing` : Active during the advancing (next) view transition.
-     * - `animationViewReceding`  : Active during the receding (previous) view transition.
+     * - `viewAdvancingAnimation` : Active during the advancing (next) view transition.
+     * - `viewRecedingAnimation`  : Active during the receding (previous) view transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.

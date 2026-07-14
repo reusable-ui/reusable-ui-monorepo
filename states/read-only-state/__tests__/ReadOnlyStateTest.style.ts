@@ -7,8 +7,8 @@ export default function readOnlyStateTestStyle() {
         readOnlyStateRule,
         readOnlyStateVars: { readOnlyFactor },
     } = usingReadOnlyState({
-        animationThawing  : 'var(--test-thawing)',
-        animationFreezing : 'var(--test-freezing)',
+        thawingAnimation  : 'var(--test-thawing)',
+        freezingAnimation : 'var(--test-freezing)',
     });
     
     const {

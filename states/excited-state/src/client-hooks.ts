@@ -77,7 +77,7 @@ const excitedStateDefinition : ExcitedStateDefinition = {
  *     } = useExcitedState(props, {
  *         defaultExcited    : false,          // Defaults the `excited` prop to `false` if not provided.
  *         animationPattern  : 'box-exciting', // Matches animation names ending with 'box-exciting'.
- *         animationBubbling : false,          // Ignores bubbling animation events from children.
+ *         bubblingAnimation : false,          // Ignores bubbling animation events from children.
  *     });
  *     
  *     return (

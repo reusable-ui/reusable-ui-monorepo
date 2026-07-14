@@ -516,13 +516,13 @@ const collapseStateRule : CssRule = usingInteractionState({
     animations      : [
         {
             ifState   : ifExpanding,
-            variable  : collapseStateVars.animationExpanding,
-            animation : options.animationExpanding,
+            variable  : collapseStateVars.expandingAnimation,
+            animation : options.expandingAnimation,
         },
         {
             ifState   : ifCollapsing,
-            variable  : collapseStateVars.animationCollapsing,
-            animation : options.animationCollapsing,
+            variable  : collapseStateVars.collapsingAnimation,
+            animation : options.collapsingAnimation,
         },
     ],
     

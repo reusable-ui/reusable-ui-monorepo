@@ -229,7 +229,7 @@ const pressStateDefinition : PressStateDefinition = {
  *     }, {
  *         defaultPressed    : 'auto',                    // Defaults to diagnostic mode.
  *         animationPattern  : ['pressing', 'releasing'], // Matches animation names ending with 'pressing' or 'releasing'.
- *         animationBubbling : false,                     // Ignores bubbling animation events from children.
+ *         bubblingAnimation : false,                     // Ignores bubbling animation events from children.
  *     });
  *     
  *     return (

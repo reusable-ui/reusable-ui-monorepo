@@ -30,5 +30,5 @@ import {
 export const [activeStateVars] = cssVars<ActiveStateVars>({ prefix: defaultActiveStatePrefix, minify: false });
 
 // Register the activate/deactivate-related animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(activeStateVars.animationActivating);
-animationRegistry.registerAnimation(activeStateVars.animationDeactivating);
+animationRegistry.registerAnimation(activeStateVars.activatingAnimation);
+animationRegistry.registerAnimation(activeStateVars.deactivatingAnimation);

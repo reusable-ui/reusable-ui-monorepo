@@ -115,7 +115,7 @@ export const SortableList: FC<SortableListProps> = (props) => {
         onStagedSortDataClear,
     }, {
         animationPattern  : 'list-sorting', // Matches animation names ending with 'list-sorting'.
-        animationBubbling : false,          // Ignores bubbling animation events from children.
+        bubblingAnimation : false,          // Ignores bubbling animation events from children.
     });
     
     // Example sort handler: stage a new sorted order without committing immediately:
@@ -230,7 +230,7 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
 | Variable           | Active When...                | Purpose                                                                                     |
 |--------------------|-------------------------------|---------------------------------------------------------------------------------------------|
-| `animationSorting` | `.is-sorting` active          | Triggers sorting animation                                                                  |
+| `sortingAnimation` | `.is-sorting` active          | Triggers sorting animation                                                                  |
 | `sortFactor`       | Always available (animatable) | Normalized factor: 1 = unsorted illusion, 0 = fully sorted, interpolates during transitions |
 | `sortFactorCond`   | Not fully sorted              | Conditional mirror of `sortFactor`, drops to `unset` when fully sorted                      |
 
@@ -262,7 +262,7 @@ export const sortableListStyle = () => {
         sortStateRule,
         sortStateVars: { sortOffsetX, sortOffsetY, sortFactor },
     } = usingSortState({
-        animationSorting : 'var(--list-sorting)',
+        sortingAnimation : 'var(--list-sorting)',
     });
     
     return style({
@@ -307,7 +307,7 @@ export const sortableListStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationSorting` variable is conditionally defined when `.is-sorting` is active.  
+The `sortingAnimation` variable is conditionally defined when `.is-sorting` is active.  
 
 The variable is already registered to `@reusable-ui/animation-feature`, so you typically don't need to consume it directly.  
 Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining sorting animation with other state-driven animations.

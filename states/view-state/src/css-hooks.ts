@@ -55,8 +55,8 @@ import {
  *         viewStateRule,
  *         viewStateVars: { viewIndex, prevViewIndex, viewFactor },
  *     } = usingViewState({
- *         animationViewAdvancing : 'var(--box-view-advancing)',
- *         animationViewReceding  : 'var(--box-view-receding)',
+ *         viewAdvancingAnimation : 'var(--box-view-advancing)',
+ *         viewRecedingAnimation  : 'var(--box-view-receding)',
  *     });
  *     
  *     return style({
@@ -133,13 +133,13 @@ export const usingViewState = (options?: CssViewStateOptions): CssViewState => (
         animations      : [
             {
                 ifState   : ifViewAdvancing,
-                variable  : viewStateVars.animationViewAdvancing,
-                animation : options?.animationViewAdvancing,
+                variable  : viewStateVars.viewAdvancingAnimation,
+                animation : options?.viewAdvancingAnimation,
             },
             {
                 ifState   : ifViewReceding,
-                variable  : viewStateVars.animationViewReceding,
-                animation : options?.animationViewReceding,
+                variable  : viewStateVars.viewRecedingAnimation,
+                animation : options?.viewRecedingAnimation,
             },
         ],
         

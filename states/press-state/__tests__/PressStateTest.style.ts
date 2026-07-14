@@ -7,8 +7,8 @@ export default function pressStateTestStyle() {
         pressStateRule,
         pressStateVars: { pressFactor },
     } = usingPressState({
-        animationPressing  : 'var(--test-pressing)',
-        animationReleasing : 'var(--test-releasing)',
+        pressingAnimation  : 'var(--test-pressing)',
+        releasingAnimation : 'var(--test-releasing)',
     });
     
     const {

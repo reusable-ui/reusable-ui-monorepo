@@ -104,8 +104,8 @@ export const activatableBoxStyle = () => {
         activeStateRule,
         activeStateVars: { activeFactor },
     } = usingActiveState({
-        animationActivating   : 'var(--box-activating)',
-        animationDeactivating : 'var(--box-deactivating)',
+        activatingAnimation   : 'var(--box-activating)',
+        deactivatingAnimation : 'var(--box-deactivating)',
     });
     
     // Active/inactive visual effect:

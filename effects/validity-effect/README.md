@@ -93,9 +93,9 @@ export const invalidableBoxStyle = () => {
         validityStateRule,
         validityStateVars: { wasValid, wasInvalid, validityFactor },
     } = usingValidityState({
-        animationValidating   : 'var(--box-validating)',
-        animationInvalidating : 'var(--box-invalidating)',
-        animationUnvalidating : 'var(--box-unvalidating)',
+        validatingAnimation   : 'var(--box-validating)',
+        invalidatingAnimation : 'var(--box-invalidating)',
+        unvalidatingAnimation : 'var(--box-unvalidating)',
     });
     
     // Validity visual effect:

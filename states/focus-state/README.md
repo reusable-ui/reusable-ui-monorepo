@@ -96,7 +96,7 @@ export const CustomButton: FC<CustomButtonProps> = (props) => {
         defaultFocused    : 'auto',                   // Defaults to diagnostic mode.
         inputLikeFocus    : false,                    // Disables input-like focus styling behavior.
         animationPattern  : ['focusing', 'blurring'], // Matches animation names ending with 'focusing' or 'blurring'.
-        animationBubbling : false,                    // Ignores bubbling animation events from children.
+        bubblingAnimation : false,                    // Ignores bubbling animation events from children.
     });
     
     return (
@@ -205,8 +205,8 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 | Variable             | Active When...                    | Purpose                                                                      |
 |----------------------|-----------------------------------|------------------------------------------------------------------------------|
-| `animationFocusing`  | `.is-focusing`                    | Runs the focusing animation sequence                                         |
-| `animationBlurring`  | `.is-blurring`                    | Runs the blurring animation sequence                                         |
+| `focusingAnimation`  | `.is-focusing`                    | Runs the focusing animation sequence                                         |
+| `blurringAnimation`  | `.is-blurring`                    | Runs the blurring animation sequence                                         |
 | `isBlurred`          | `.is-blurred` or `.is-blurring`   | Conditional variable for the blurred state                                   |
 | `isFocused`          | `.is-focused` or `.is-focusing`   | Conditional variable for the focused state                                   |
 | `focusFactor`        | Always available (animatable)     | Normalized factor: 0 = blurred, 1 = focused, interpolates during transitions |
@@ -236,8 +236,8 @@ export const focusableBoxStyle = () => {
         focusStateRule,
         focusStateVars: { isFocused, isBlurred, focusFactor },
     } = usingFocusState({
-        animationFocusing : 'var(--box-focusing)',
-        animationBlurring : 'var(--box-blurring)',
+        focusingAnimation : 'var(--box-focusing)',
+        blurringAnimation : 'var(--box-blurring)',
     });
     
     return style({
@@ -285,7 +285,7 @@ export const focusableBoxStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationFocusing` and `animationBlurring` variables are only defined during **focusing** and **blurring** phases.
+The `focusingAnimation` and `blurringAnimation` variables are only defined during **focusing** and **blurring** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
 Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining focus/blur animations with other state-driven transitions.

@@ -95,7 +95,7 @@ export const sortableListStyle = () => {
         sortStateRule,
         sortStateVars: { sortFactor },
     } = usingSortState({
-        animationSorting : 'var(--list-sorting)',
+        sortingAnimation : 'var(--list-sorting)',
     });
     
     // Sorting visual effect:

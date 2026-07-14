@@ -43,18 +43,18 @@ import {
  *     animations      : [
  *         {
  *             ifState   : ifValidating,
- *             variable  : validityStateVars.animationValidating,
- *             animation : options.animationValidating,
+ *             variable  : validityStateVars.validatingAnimation,
+ *             animation : options.validatingAnimation,
  *         },
  *         {
  *             ifState   : ifInvalidating,
- *             variable  : validityStateVars.animationInvalidating,
- *             animation : options.animationInvalidating,
+ *             variable  : validityStateVars.invalidatingAnimation,
+ *             animation : options.invalidatingAnimation,
  *         },
  *         {
  *             ifState   : ifUnvalidating,
- *             variable  : validityStateVars.animationUnvalidating,
- *             animation : options.animationUnvalidating,
+ *             variable  : validityStateVars.unvalidatingAnimation,
+ *             animation : options.unvalidatingAnimation,
  *         },
  *     ],
  *     

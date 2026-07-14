@@ -7,8 +7,8 @@ export default function collapseStateTestStyle() {
         collapseStateRule,
         collapseStateVars: { expandFactor },
     } = usingCollapseState({
-        animationExpanding  : 'var(--test-expanding)',
-        animationCollapsing : 'var(--test-collapsing)',
+        expandingAnimation  : 'var(--test-expanding)',
+        collapsingAnimation : 'var(--test-collapsing)',
     });
     
     const {

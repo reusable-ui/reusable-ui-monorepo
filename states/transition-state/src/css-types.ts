@@ -30,8 +30,8 @@ import {
  * ```ts
  * const validatingCase : CssTransitionAnimationCase = {
  *     ifState   : ifValidating,
- *     variable  : validityStateVars.animationValidating,
- *     animation : options.animationValidating,
+ *     variable  : validityStateVars.validatingAnimation,
+ *     animation : options.validatingAnimation,
  * };
  * ```
  */
@@ -55,7 +55,7 @@ export interface CssTransitionAnimationCase
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-var)`
-     * - A strongly typed reference, e.g. `validityStateVars.animationValidating` (recommended)
+     * - A strongly typed reference, e.g. `validityStateVars.validatingAnimation` (recommended)
      */
     variable   : CssAnimationCase['variable']
     
@@ -66,7 +66,7 @@ export interface CssTransitionAnimationCase
      * - A hard-coded CSS variable reference, e.g. `var(--my-animation)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-animation, var(--fallback))`
      * - A literal animation value, e.g. `[['0.2s', 'ease', 'both', 'alternate', 5, 'validating']]`
-     * - A strongly typed reference, e.g. `options.animationValidating` (recommended)
+     * - A strongly typed reference, e.g. `options.validatingAnimation` (recommended)
      * 
      * Defaults to `'none'`.
      */
@@ -188,18 +188,18 @@ export interface CssActiveTransitionFactorCase {
  *     animations      : [
  *         {
  *             ifState   : ifValidating,
- *             variable  : validityStateVars.animationValidating,
- *             animation : options.animationValidating,
+ *             variable  : validityStateVars.validatingAnimation,
+ *             animation : options.validatingAnimation,
  *         },
  *         {
  *             ifState   : ifInvalidating,
- *             variable  : validityStateVars.animationInvalidating,
- *             animation : options.animationInvalidating,
+ *             variable  : validityStateVars.invalidatingAnimation,
+ *             animation : options.invalidatingAnimation,
  *         },
  *         {
  *             ifState   : ifUnvalidating,
- *             variable  : validityStateVars.animationUnvalidating,
- *             animation : options.animationUnvalidating,
+ *             variable  : validityStateVars.unvalidatingAnimation,
+ *             animation : options.unvalidatingAnimation,
  *         },
  *     ],
  *     

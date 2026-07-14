@@ -137,7 +137,7 @@ const collapseStateDefinition : CollapseStateDefinition = {
  *     } = useCollapseState(props, {
  *         defaultExpanded   : false,                       // Fallback for uncontrolled mode.
  *         animationPattern  : ['expanding', 'collapsing'], // Matches animation names ending with 'expanding' or 'collapsing'.
- *         animationBubbling : false,                       // Ignores bubbling animation events from children.
+ *         bubblingAnimation : false,                       // Ignores bubbling animation events from children.
  *     });
  *     
  *     return (

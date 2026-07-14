@@ -228,7 +228,7 @@ const focusStateDefinition : FocusStateDefinition = {
  *         defaultFocused    : 'auto',                   // Defaults to diagnostic mode.
  *         inputLikeFocus    : false,                    // Disables input-like focus styling behavior.
  *         animationPattern  : ['focusing', 'blurring'], // Matches animation names ending with 'focusing' or 'blurring'.
- *         animationBubbling : false,                    // Ignores bubbling animation events from children.
+ *         bubblingAnimation : false,                    // Ignores bubbling animation events from children.
  *     });
  *     
  *     return (

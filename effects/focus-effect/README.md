@@ -92,8 +92,8 @@ export const focusableBoxStyle = () => {
         focusStateRule,
         focusStateVars: { focusFactor },
     } = usingFocusState({
-        animationFocusing : 'var(--box-focusing)',
-        animationBlurring : 'var(--box-blurring)',
+        focusingAnimation : 'var(--box-focusing)',
+        blurringAnimation : 'var(--box-blurring)',
     });
     
     // Focus/blur visual effect:

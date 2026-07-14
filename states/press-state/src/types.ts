@@ -258,7 +258,7 @@ export interface PressStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling      ?: FeedbackStateOptions<boolean>['animationBubbling']
+    bubblingAnimation      ?: FeedbackStateOptions<boolean>['bubblingAnimation']
 }
 
 /**

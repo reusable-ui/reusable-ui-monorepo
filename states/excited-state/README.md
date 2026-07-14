@@ -56,7 +56,7 @@ export const ExcitableBox: FC<ExcitableBoxProps> = (props) => {
     } = useExcitedState(props, {
         defaultExcited    : false,          // Defaults the `excited` prop to `false` if not provided.
         animationPattern  : 'box-exciting', // Matches animation names ending with 'box-exciting'.
-        animationBubbling : false,          // Ignores bubbling animation events from children.
+        bubblingAnimation : false,          // Ignores bubbling animation events from children.
     });
     
     return (
@@ -139,7 +139,7 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
 | Variable            | Active When...                | Purpose                                                                                                    |
 |---------------------|-------------------------------|------------------------------------------------------------------------------------------------------------|
-| `animationExciting` | `.is-excited` active          | Triggers excitement animation                                                                              |
+| `excitingAnimation` | `.is-excited` active          | Triggers excitement animation                                                                              |
 | `excitedFactor`     | Always available (animatable) | Normalized factor: 0 = idle, oscillates between 0 ↔ 1 = exciting activity, interpolates during activities  |
 | `excitedFactorCond` | Is still exciting             | Conditional mirror of `excitedFactor`, drops to `unset` when no longer exciting                            |
 
@@ -167,7 +167,7 @@ export const highlightCardStyle = () => {
         excitedStateRule,
         excitedStateVars: { excitedFactor },
     } = usingExcitedState({
-        animationExciting: 'var(--box-exciting)',
+        excitingAnimation: 'var(--box-exciting)',
     });
     
     return style({
@@ -207,7 +207,7 @@ export const highlightCardStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationExciting` variable is conditionally defined when `.is-excited` is active.  
+The `excitingAnimation` variable is conditionally defined when `.is-excited` is active.  
 
 The variable is already registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume it directly.  
 Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining excitement animation with other state-driven animations.

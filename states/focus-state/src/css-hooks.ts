@@ -57,8 +57,8 @@ import {
  *         focusStateRule,
  *         focusStateVars: { isFocused, isBlurred, focusFactor },
  *     } = usingFocusState({
- *         animationFocusing : 'var(--box-focusing)',
- *         animationBlurring : 'var(--box-blurring)',
+ *         focusingAnimation : 'var(--box-focusing)',
+ *         blurringAnimation : 'var(--box-blurring)',
  *     });
  *     
  *     return style({
@@ -110,13 +110,13 @@ export const usingFocusState = (options?: CssFocusStateOptions): CssFocusState =
         animations      : [
             {
                 ifState   : ifFocusing,
-                variable  : focusStateVars.animationFocusing,
-                animation : options?.animationFocusing,
+                variable  : focusStateVars.focusingAnimation,
+                animation : options?.focusingAnimation,
             },
             {
                 ifState   : ifBlurring,
-                variable  : focusStateVars.animationBlurring,
-                animation : options?.animationBlurring,
+                variable  : focusStateVars.blurringAnimation,
+                animation : options?.blurringAnimation,
             },
         ],
         

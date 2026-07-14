@@ -57,8 +57,8 @@ import {
  *         hoverStateRule,
  *         hoverStateVars: { isHovered, isUnhovered, hoverFactor },
  *     } = usingHoverState({
- *         animationHovering   : 'var(--box-hovering)',
- *         animationUnhovering : 'var(--box-unhovering)',
+ *         hoveringAnimation   : 'var(--box-hovering)',
+ *         unhoveringAnimation : 'var(--box-unhovering)',
  *     });
  *     
  *     return style({
@@ -110,13 +110,13 @@ export const usingHoverState = (options?: CssHoverStateOptions): CssHoverState =
         animations      : [
             {
                 ifState   : ifHovering,
-                variable  : hoverStateVars.animationHovering,
-                animation : options?.animationHovering,
+                variable  : hoverStateVars.hoveringAnimation,
+                animation : options?.hoveringAnimation,
             },
             {
                 ifState   : ifUnhovering,
-                variable  : hoverStateVars.animationUnhovering,
-                animation : options?.animationUnhovering,
+                variable  : hoverStateVars.unhoveringAnimation,
+                animation : options?.unhoveringAnimation,
             },
         ],
         

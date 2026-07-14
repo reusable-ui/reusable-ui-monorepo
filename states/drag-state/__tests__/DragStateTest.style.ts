@@ -8,15 +8,15 @@ export default function dragStateTestStyle() {
         pressStateRule,
         pressStateVars: { pressFactor },
     } = usingPressState({
-        animationPressing  : 'var(--test-pressing)',
-        animationReleasing : 'var(--test-releasing)',
+        pressingAnimation  : 'var(--test-pressing)',
+        releasingAnimation : 'var(--test-releasing)',
     });
     const {
         dragStateRule,
         dragStateVars: { dragOffsetX, dragOffsetY, dragFactor },
     } = usingDragState({
-        animationDragging : 'var(--test-dragging)',
-        animationDropping : 'var(--test-dropping)',
+        draggingAnimation : 'var(--test-dragging)',
+        droppingAnimation : 'var(--test-dropping)',
     });
     
     const {

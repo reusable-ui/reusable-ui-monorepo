@@ -34,13 +34,13 @@ import {
  *     animations      : [
  *         {
  *             ifState   : ifFocusing,
- *             variable  : focusStateVars.animationFocusing,
- *             animation : options.animationFocusing,
+ *             variable  : focusStateVars.focusingAnimation,
+ *             animation : options.focusingAnimation,
  *         },
  *         {
  *             ifState   : ifBlurring,
- *             variable  : focusStateVars.animationBlurring,
- *             animation : options.animationBlurring,
+ *             variable  : focusStateVars.blurringAnimation,
+ *             animation : options.blurringAnimation,
  *         },
  *     ],
  *     

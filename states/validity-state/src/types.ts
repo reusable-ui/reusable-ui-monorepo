@@ -190,7 +190,7 @@ export interface ValidityStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling ?: FeedbackStateOptions<boolean | null>['animationBubbling']
+    bubblingAnimation ?: FeedbackStateOptions<boolean | null>['bubblingAnimation']
 }
 
 /**

@@ -165,7 +165,7 @@ export interface DragStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling ?: FeedbackStateOptions<boolean>['animationBubbling']
+    bubblingAnimation ?: FeedbackStateOptions<boolean>['bubblingAnimation']
 }
 
 /**

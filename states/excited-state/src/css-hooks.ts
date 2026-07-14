@@ -53,7 +53,7 @@ import {
  *         excitedStateRule,
  *         excitedStateVars: { excitedFactor },
  *     } = usingExcitedState({
- *         animationExciting: 'var(--box-exciting)',
+ *         excitingAnimation: 'var(--box-exciting)',
  *     });
  *     
  *     return style({
@@ -96,8 +96,8 @@ export const usingExcitedState = (options?: CssExcitedStateOptions): CssExcitedS
         // Activity animations for visual effects when excited:
         animations : {
             ifState   : ifExcited,
-            variable  : excitedStateVars.animationExciting,
-            animation : options?.animationExciting,
+            variable  : excitedStateVars.excitingAnimation,
+            animation : options?.excitingAnimation,
         },
         
         // Factor variables for movement drivers of activity animation:

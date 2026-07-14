@@ -30,7 +30,7 @@ export interface HoverStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationHovering   : unknown
+    hoveringAnimation   : unknown
     
     /**
      * References an animation used during the unhovering transition.
@@ -39,7 +39,7 @@ export interface HoverStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationUnhovering : unknown
+    unhoveringAnimation : unknown
     
     /**
      * Applies when the component is either hovering or fully hovered.
@@ -141,7 +141,7 @@ export interface CssHoverStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationHovering   ?: CssKnownProps['animation']
+    hoveringAnimation   ?: CssKnownProps['animation']
     
     /**
      * Defines the animation to apply during the unhovering transition.
@@ -151,7 +151,7 @@ export interface CssHoverStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationUnhovering ?: CssKnownProps['animation']
+    unhoveringAnimation ?: CssKnownProps['animation']
 }
 
 
@@ -171,8 +171,8 @@ export interface CssHoverState {
      * Exposes hover/unhover-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationHovering`   : Active during the hovering transition.
-     * - `animationUnhovering` : Active during the unhovering transition.
+     * - `hoveringAnimation`   : Active during the hovering transition.
+     * - `unhoveringAnimation` : Active during the unhovering transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.

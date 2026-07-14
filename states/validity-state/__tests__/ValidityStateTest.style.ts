@@ -7,9 +7,9 @@ export default function validityStateTestStyle() {
         validityStateRule,
         validityStateVars: { wasValid, wasInvalid, validityFactor },
     } = usingValidityState({
-        animationValidating   : 'var(--test-validating)',
-        animationInvalidating : 'var(--test-invalidating)',
-        animationUnvalidating : 'var(--test-unvalidating)',
+        validatingAnimation   : 'var(--test-validating)',
+        invalidatingAnimation : 'var(--test-invalidating)',
+        unvalidatingAnimation : 'var(--test-unvalidating)',
     });
     
     const {

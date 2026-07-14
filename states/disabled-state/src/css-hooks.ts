@@ -57,8 +57,8 @@ import {
  *         disabledStateRule,
  *         disabledStateVars: { isEnabled, isDisabled, disabledFactor },
  *     } = usingDisabledState({
- *         animationEnabling  : 'var(--box-enabling)',
- *         animationDisabling : 'var(--box-disabling)',
+ *         enablingAnimation  : 'var(--box-enabling)',
+ *         disablingAnimation : 'var(--box-disabling)',
  *     });
  *     
  *     return style({
@@ -110,13 +110,13 @@ export const usingDisabledState = (options?: CssDisabledStateOptions): CssDisabl
         animations      : [
             {
                 ifState   : ifEnabling,
-                variable  : disabledStateVars.animationEnabling,
-                animation : options?.animationEnabling,
+                variable  : disabledStateVars.enablingAnimation,
+                animation : options?.enablingAnimation,
             },
             {
                 ifState   : ifDisabling,
-                variable  : disabledStateVars.animationDisabling,
-                animation : options?.animationDisabling,
+                variable  : disabledStateVars.disablingAnimation,
+                animation : options?.disablingAnimation,
             },
         ],
         

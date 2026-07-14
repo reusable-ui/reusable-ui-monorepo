@@ -7,7 +7,7 @@ export default function excitedStateTestStyle() {
         excitedStateRule,
         excitedStateVars: { excitedFactor },
     } = usingExcitedState({
-        animationExciting: 'var(--test-exciting)',
+        excitingAnimation: 'var(--test-exciting)',
     });
     
     const {

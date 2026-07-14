@@ -97,8 +97,8 @@ export const hoverableBoxStyle = () => {
         hoverStateRule,
         hoverStateVars: { hoverFactor },
     } = usingHoverState({
-        animationHovering   : 'var(--box-hovering)',
-        animationUnhovering : 'var(--box-unhovering)',
+        hoveringAnimation   : 'var(--box-hovering)',
+        unhoveringAnimation : 'var(--box-unhovering)',
     });
     
     // Hover/unhover visual effect:

@@ -30,7 +30,7 @@ export interface ExcitedStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationExciting : unknown
+    excitingAnimation : unknown
     
     /**
      * A normalized, animatable factor representing the **exciting activity state**.
@@ -94,7 +94,7 @@ export interface CssExcitedStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationExciting ?: CssKnownProps['animation']
+    excitingAnimation ?: CssKnownProps['animation']
 }
 
 
@@ -114,9 +114,9 @@ export interface CssExcitedState {
      * Exposes excitement-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationExciting`: Active when the component is excited.
+     * - `excitingAnimation`: Active when the component is excited.
      * 
-     * ⚠️ **Caution**: The `animationExciting` variable becomes invalid when the component is idle.
+     * ⚠️ **Caution**: The `excitingAnimation` variable becomes invalid when the component is idle.
      * If used improperly, it can invalidate the entire CSS declaration.
      * Always wrap it with `switchOf(...)` to ensure graceful fallback.
      * 

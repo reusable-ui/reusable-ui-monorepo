@@ -67,7 +67,7 @@ export interface ActiveStateProviderProps
  *         defaultActive        : false,                          // Fallback for uncontrolled mode.
  *         defaultCascadeActive : false,                          // Defaults to prevent contextual activation.
  *         animationPattern     : ['activating', 'deactivating'], // Matches animation names ending with 'activating' or 'deactivating'.
- *         animationBubbling    : false,                          // Ignores bubbling animation events from children.
+ *         bubblingAnimation    : false,                          // Ignores bubbling animation events from children.
  *     });
  *     
  *     // Or use `useResolvedActive()` if not concerned with animation phases:

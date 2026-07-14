@@ -24,8 +24,8 @@ import {
  * ```ts
  * const focusingCase : CssFeedbackAnimationCase = {
  *     ifState   : ifFocusing,
- *     variable  : focusStateVars.animationFocusing,
- *     animation : options.animationFocusing,
+ *     variable  : focusStateVars.focusingAnimation,
+ *     animation : options.focusingAnimation,
  * };
  * ```
  */
@@ -49,7 +49,7 @@ export interface CssFeedbackAnimationCase
      * 
      * Accepts:
      * - A hard-coded CSS variable reference, e.g. `var(--my-var)`
-     * - A strongly typed reference, e.g. `focusStateVars.animationFocusing` (recommended)
+     * - A strongly typed reference, e.g. `focusStateVars.focusingAnimation` (recommended)
      */
     variable   : CssTransitionAnimationCase['variable']
     
@@ -60,7 +60,7 @@ export interface CssFeedbackAnimationCase
      * - A hard-coded CSS variable reference, e.g. `var(--my-animation)`
      * - A hard-coded CSS variable reference with fallback, e.g. `var(--my-animation, var(--fallback))`
      * - A literal animation value, e.g. `[['0.2s', 'ease', 'both', 'alternate', 5, 'focusing']]`
-     * - A strongly typed reference, e.g. `options.animationFocusing` (recommended)
+     * - A strongly typed reference, e.g. `options.focusingAnimation` (recommended)
      * 
      * Defaults to `'none'`.
      */
@@ -178,13 +178,13 @@ export interface CssActiveFeedbackFactorCase
  *     animations      : [
  *         {
  *             ifState   : ifFocusing,
- *             variable  : focusStateVars.animationFocusing,
- *             animation : options.animationFocusing,
+ *             variable  : focusStateVars.focusingAnimation,
+ *             animation : options.focusingAnimation,
  *         },
  *         {
  *             ifState   : ifBlurring,
- *             variable  : focusStateVars.animationBlurring,
- *             animation : options.animationBlurring,
+ *             variable  : focusStateVars.blurringAnimation,
+ *             animation : options.blurringAnimation,
  *         },
  *     ],
  *     

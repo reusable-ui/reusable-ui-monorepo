@@ -30,4 +30,4 @@ import {
 export const [excitedStateVars] = cssVars<ExcitedStateVars>({ prefix: defaultExcitedStatePrefix, minify: false });
 
 // Register the excitement-related animation globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(excitedStateVars.animationExciting);
+animationRegistry.registerAnimation(excitedStateVars.excitingAnimation);

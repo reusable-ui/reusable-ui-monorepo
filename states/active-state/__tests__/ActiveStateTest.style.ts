@@ -7,8 +7,8 @@ export default function activeStateTestStyle() {
         activeStateRule,
         activeStateVars: { activeFactor },
     } = usingActiveState({
-        animationActivating   : 'var(--test-activating)',
-        animationDeactivating : 'var(--test-deactivating)',
+        activatingAnimation   : 'var(--test-activating)',
+        deactivatingAnimation : 'var(--test-deactivating)',
     });
     
     const {

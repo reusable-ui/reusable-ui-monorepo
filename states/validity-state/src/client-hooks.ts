@@ -290,7 +290,7 @@ const validityStateDefinition : ValidityStateDefinition = {
  *         defaultValidity   : 'auto',                                         // Defaults to automatic mode.
  *         fallbackValidity  : null,                                           // Defaults to unresolved state when `validity` is 'auto' but no `computedValidity` is provided.
  *         animationPattern  : ['validating', 'invalidating', 'unvalidating'], // Matches animation names ending with 'validating', 'invalidating', or 'unvalidating'.
- *         animationBubbling : false,                                          // Ignores bubbling animation events from children.
+ *         bubblingAnimation : false,                                          // Ignores bubbling animation events from children.
  *     });
  *     
  *     return (

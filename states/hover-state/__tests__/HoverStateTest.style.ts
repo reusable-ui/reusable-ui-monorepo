@@ -7,8 +7,8 @@ export default function hoverStateTestStyle() {
         hoverStateRule,
         hoverStateVars: { hoverFactor },
     } = usingHoverState({
-        animationHovering   : 'var(--test-hovering)',
-        animationUnhovering : 'var(--test-unhovering)',
+        hoveringAnimation   : 'var(--test-hovering)',
+        unhoveringAnimation : 'var(--test-unhovering)',
     });
     
     const {

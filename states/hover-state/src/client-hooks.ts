@@ -223,7 +223,7 @@ const hoverStateDefinition : HoverStateDefinition = {
  *     }, {
  *         defaultHovered    : 'auto',                     // Defaults to diagnostic mode.
  *         animationPattern  : ['hovering', 'unhovering'], // Matches animation names ending with 'hovering' or 'unhovering'.
- *         animationBubbling : false,                      // Ignores bubbling animation events from children.
+ *         bubblingAnimation : false,                      // Ignores bubbling animation events from children.
  *     });
  *     
  *     return (

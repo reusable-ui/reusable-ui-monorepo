@@ -30,5 +30,5 @@ import {
 export const [disabledStateVars] = cssVars<DisabledStateVars>({ prefix: defaultDisabledStatePrefix, minify: false });
 
 // Register the enabled/disabled-related animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(disabledStateVars.animationEnabling);
-animationRegistry.registerAnimation(disabledStateVars.animationDisabling);
+animationRegistry.registerAnimation(disabledStateVars.enablingAnimation);
+animationRegistry.registerAnimation(disabledStateVars.disablingAnimation);

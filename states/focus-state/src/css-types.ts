@@ -30,7 +30,7 @@ export interface FocusStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationFocusing : unknown
+    focusingAnimation : unknown
     
     /**
      * References an animation used during the blurring transition.
@@ -39,7 +39,7 @@ export interface FocusStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationBlurring : unknown
+    blurringAnimation : unknown
     
     /**
      * Applies when the component is either focusing or fully focused.
@@ -141,7 +141,7 @@ export interface CssFocusStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationFocusing ?: CssKnownProps['animation']
+    focusingAnimation ?: CssKnownProps['animation']
     
     /**
      * Defines the animation to apply during the blurring transition.
@@ -151,7 +151,7 @@ export interface CssFocusStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationBlurring ?: CssKnownProps['animation']
+    blurringAnimation ?: CssKnownProps['animation']
 }
 
 
@@ -171,8 +171,8 @@ export interface CssFocusState {
      * Exposes focus/blur-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationFocusing` : Active during the focusing transition.
-     * - `animationBlurring` : Active during the blurring transition.
+     * - `focusingAnimation` : Active during the focusing transition.
+     * - `blurringAnimation` : Active during the blurring transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.

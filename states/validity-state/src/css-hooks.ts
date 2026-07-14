@@ -63,9 +63,9 @@ import {
  *         validityStateRule,
  *         validityStateVars: { isValid, isInvalid, isUnvalidated, wasValid, wasInvalid, wasUnvalidated, validityFactor },
  *     } = usingValidityState({
- *         animationValidating   : 'var(--box-validating)',
- *         animationInvalidating : 'var(--box-invalidating)',
- *         animationUnvalidating : 'var(--box-unvalidating)',
+ *         validatingAnimation   : 'var(--box-validating)',
+ *         invalidatingAnimation : 'var(--box-invalidating)',
+ *         unvalidatingAnimation : 'var(--box-unvalidating)',
  *     });
  *     
  *     return style({
@@ -282,18 +282,18 @@ export const usingValidityState = (options?: CssValidityStateOptions): CssValidi
         animations      : [
             {
                 ifState   : ifValidating,
-                variable  : validityStateVars.animationValidating,
-                animation : options?.animationValidating,
+                variable  : validityStateVars.validatingAnimation,
+                animation : options?.validatingAnimation,
             },
             {
                 ifState   : ifInvalidating,
-                variable  : validityStateVars.animationInvalidating,
-                animation : options?.animationInvalidating,
+                variable  : validityStateVars.invalidatingAnimation,
+                animation : options?.invalidatingAnimation,
             },
             {
                 ifState   : ifUnvalidating,
-                variable  : validityStateVars.animationUnvalidating,
-                animation : options?.animationUnvalidating,
+                variable  : validityStateVars.unvalidatingAnimation,
+                animation : options?.unvalidatingAnimation,
             },
         ],
         

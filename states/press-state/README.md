@@ -112,7 +112,7 @@ export const CustomButton: FC<CustomButtonProps> = (props) => {
     }, {
         defaultPressed    : 'auto',                    // Defaults to diagnostic mode.
         animationPattern  : ['pressing', 'releasing'], // Matches animation names ending with 'pressing' or 'releasing'.
-        animationBubbling : false,                     // Ignores bubbling animation events from children.
+        bubblingAnimation : false,                     // Ignores bubbling animation events from children.
     });
     
     return (
@@ -253,8 +253,8 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 | Variable              | Active When...                    | Purpose                                                                       |
 |-----------------------|-----------------------------------|-------------------------------------------------------------------------------|
-| `animationPressing`   | `.is-pressing`                    | Runs the pressing animation sequence                                          |
-| `animationReleasing`  | `.is-releasing`                   | Runs the releasing animation sequence                                         |
+| `pressingAnimation`   | `.is-pressing`                    | Runs the pressing animation sequence                                          |
+| `releasingAnimation`  | `.is-releasing`                   | Runs the releasing animation sequence                                         |
 | `isPressed`           | `.is-pressed` or `.is-pressing`   | Conditional variable for the pressed state                                    |
 | `isReleased`          | `.is-released` or `.is-releasing` | Conditional variable for the released state                                   |
 | `pressFactor`         | Always available (animatable)     | Normalized factor: 0 = released, 1 = pressed, interpolates during transitions |
@@ -284,8 +284,8 @@ export const pressableBoxStyle = () => {
         pressStateRule,
         pressStateVars: { isPressed, isReleased, pressFactor },
     } = usingPressState({
-        animationPressing  : 'var(--box-pressing)',
-        animationReleasing : 'var(--box-releasing)',
+        pressingAnimation  : 'var(--box-pressing)',
+        releasingAnimation : 'var(--box-releasing)',
     });
     
     return style({
@@ -336,7 +336,7 @@ export const pressableBoxStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationPressing` and `animationReleasing` variables are only defined during **pressing** and **releasing** phases.
+The `pressingAnimation` and `releasingAnimation` variables are only defined during **pressing** and **releasing** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
 Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining press/release animations with other state-driven transitions.

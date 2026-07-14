@@ -30,4 +30,4 @@ import {
 export const [sortStateVars] = cssVars<SortStateVars>({ prefix: defaultSortStatePrefix, minify: false });
 
 // Register the sort-related animation globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(sortStateVars.animationSorting);
+animationRegistry.registerAnimation(sortStateVars.sortingAnimation);

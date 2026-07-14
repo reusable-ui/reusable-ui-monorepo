@@ -7,7 +7,7 @@ export default function sortStateTestStyle() {
         sortStateRule,
         sortStateVars: { sortOffsetX, sortOffsetY, sortFactor },
     } = usingSortState({
-        animationSorting: 'var(--test-sorting)',
+        sortingAnimation: 'var(--test-sorting)',
     });
     
     const {

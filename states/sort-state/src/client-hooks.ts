@@ -169,7 +169,7 @@ const sortStateDefinition : SortStateDefinition = {
  *         onStagedSortDataClear,
  *     }, {
  *         animationPattern  : 'list-sorting', // Matches animation names ending with 'list-sorting'.
- *         animationBubbling : false,          // Ignores bubbling animation events from children.
+ *         bubblingAnimation : false,          // Ignores bubbling animation events from children.
  *     });
  *     
  *     // Example sort handler: stage a new sorted order without committing immediately:

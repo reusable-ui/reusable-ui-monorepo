@@ -30,5 +30,5 @@ import {
 export const [readOnlyStateVars] = cssVars<ReadOnlyStateVars>({ prefix: defaultReadOnlyStatePrefix, minify: false });
 
 // Register the editable/read-only-related animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(readOnlyStateVars.animationThawing);
-animationRegistry.registerAnimation(readOnlyStateVars.animationFreezing);
+animationRegistry.registerAnimation(readOnlyStateVars.thawingAnimation);
+animationRegistry.registerAnimation(readOnlyStateVars.freezingAnimation);

@@ -181,7 +181,7 @@ export interface ViewStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling ?: InteractionStateOptions<number>['animationBubbling']
+    bubblingAnimation ?: InteractionStateOptions<number>['bubblingAnimation']
 }
 
 /**

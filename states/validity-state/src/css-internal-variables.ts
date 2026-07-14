@@ -30,6 +30,6 @@ import {
 export const [validityStateVars] = cssVars<ValidityStateVars>({ prefix: defaultValidityStatePrefix, minify: false });
 
 // Register the validity-related animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(validityStateVars.animationValidating);
-animationRegistry.registerAnimation(validityStateVars.animationInvalidating);
-animationRegistry.registerAnimation(validityStateVars.animationUnvalidating);
+animationRegistry.registerAnimation(validityStateVars.validatingAnimation);
+animationRegistry.registerAnimation(validityStateVars.invalidatingAnimation);
+animationRegistry.registerAnimation(validityStateVars.unvalidatingAnimation);

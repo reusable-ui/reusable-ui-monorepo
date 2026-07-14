@@ -30,7 +30,7 @@ export interface CollapseStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationExpanding  : unknown
+    expandingAnimation  : unknown
     
     /**
      * References an animation used during the collapsing transition.
@@ -39,7 +39,7 @@ export interface CollapseStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationCollapsing : unknown
+    collapsingAnimation : unknown
     
     /**
      * Applies when the component is either expanding or fully expanded.
@@ -141,7 +141,7 @@ export interface CssCollapseStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationExpanding  ?: CssKnownProps['animation']
+    expandingAnimation  ?: CssKnownProps['animation']
     
     /**
      * Defines the animation to apply during the collapsing transition.
@@ -151,7 +151,7 @@ export interface CssCollapseStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationCollapsing ?: CssKnownProps['animation']
+    collapsingAnimation ?: CssKnownProps['animation']
 }
 
 
@@ -171,8 +171,8 @@ export interface CssCollapseState {
      * Exposes expand/collapse-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationExpanding`  : Active during the expanding transition.
-     * - `animationCollapsing` : Active during the collapsing transition.
+     * - `expandingAnimation`  : Active during the expanding transition.
+     * - `collapsingAnimation` : Active during the collapsing transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.

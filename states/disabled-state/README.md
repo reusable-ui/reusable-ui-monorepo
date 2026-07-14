@@ -65,7 +65,7 @@ export const CustomEditor: FC<CustomEditorProps> = (props) => {
         defaultDisabled        : false,                     // Defaults to enabled.
         defaultCascadeDisabled : true,                      // Defaults to allow contextual disabling.
         animationPattern       : ['enabling', 'disabling'], // Matches animation names ending with 'enabling' or 'disabling'.
-        animationBubbling      : false,                     // Ignores bubbling animation events from children.
+        bubblingAnimation      : false,                     // Ignores bubbling animation events from children.
     });
     
     return (
@@ -132,7 +132,7 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
         defaultDisabled        : false,                     // Defaults to enabled.
         defaultCascadeDisabled : true,                      // Defaults to allow contextual disabling.
         animationPattern       : ['enabling', 'disabling'], // Matches animation names ending with 'enabling' or 'disabling'.
-        animationBubbling      : false,                     // Ignores bubbling animation events from children.
+        bubblingAnimation      : false,                     // Ignores bubbling animation events from children.
     });
     
     // Or use `useResolvedDisabled()` if not concerned with animation phases:
@@ -208,8 +208,8 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 | Variable             | Active When...                    | Purpose                                                                       |
 |----------------------|-----------------------------------|-------------------------------------------------------------------------------|
-| `animationEnabling`  | `.is-enabling`                    | Runs the enabling animation sequence                                          |
-| `animationDisabling` | `.is-disabling`                   | Runs the disabling animation sequence                                         |
+| `enablingAnimation`  | `.is-enabling`                    | Runs the enabling animation sequence                                          |
+| `disablingAnimation` | `.is-disabling`                   | Runs the disabling animation sequence                                         |
 | `isEnabled`          | `.is-enabled` or `.is-enabling`   | Conditional variable for the enabled state                                    |
 | `isDisabled`         | `.is-disabled` or `.is-disabling` | Conditional variable for the disabled state                                   |
 | `disabledFactor`     | Always available (animatable)     | Normalized factor: 0 = enabled, 1 = disabled, interpolates during transitions |
@@ -239,8 +239,8 @@ export const disableableBoxStyle = () => {
         disabledStateRule,
         disabledStateVars: { isEnabled, isDisabled, disabledFactor },
     } = usingDisabledState({
-        animationEnabling  : 'var(--box-enabling)',
-        animationDisabling : 'var(--box-disabling)',
+        enablingAnimation  : 'var(--box-enabling)',
+        disablingAnimation : 'var(--box-disabling)',
     });
     
     return style({
@@ -288,7 +288,7 @@ export const disableableBoxStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationEnabling` and `animationDisabling` variables are only defined during **enabling** and **disabling** phases.
+The `enablingAnimation` and `disablingAnimation` variables are only defined during **enabling** and **disabling** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
 Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining enabled/disabled animations with other state-driven transitions.

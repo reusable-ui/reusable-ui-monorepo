@@ -69,7 +69,7 @@ export const ActivatableBox: FC<ActivatableBoxProps> = (props) => {
         defaultActive        : false,                          // Fallback for uncontrolled mode.
         defaultCascadeActive : false,                          // Defaults to prevent contextual activation.
         animationPattern     : ['activating', 'deactivating'], // Matches animation names ending with 'activating' or 'deactivating'.
-        animationBubbling    : false,                          // Ignores bubbling animation events from children.
+        bubblingAnimation    : false,                          // Ignores bubbling animation events from children.
     });
     
     return (
@@ -188,7 +188,7 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
         defaultActive        : false,                          // Fallback for uncontrolled mode.
         defaultCascadeActive : false,                          // Defaults to prevent contextual activation.
         animationPattern     : ['activating', 'deactivating'], // Matches animation names ending with 'activating' or 'deactivating'.
-        animationBubbling    : false,                          // Ignores bubbling animation events from children.
+        bubblingAnimation    : false,                          // Ignores bubbling animation events from children.
     });
     
     // Or use `useResolvedActive()` if not concerned with animation phases:
@@ -265,8 +265,8 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 | Variable                | Active When...                       | Purpose                                                                      |
 |-------------------------|--------------------------------------|------------------------------------------------------------------------------|
-| `animationActivating`   | `.is-activating`                     | Runs the activating animation sequence                                       |
-| `animationDeactivating` | `.is-deactivating`                   | Runs the deactivating animation sequence                                     |
+| `activatingAnimation`   | `.is-activating`                     | Runs the activating animation sequence                                       |
+| `deactivatingAnimation` | `.is-deactivating`                   | Runs the deactivating animation sequence                                     |
 | `isActive`              | `.is-active` or `.is-activating`     | Conditional variable for the active state                                    |
 | `isInactive`            | `.is-inactive` or `.is-deactivating` | Conditional variable for the inactive state                                  |
 | `activeFactor`          | Always available (animatable)        | Normalized factor: 0 = inactive, 1 = active, interpolates during transitions |
@@ -305,8 +305,8 @@ export const activatableBoxStyle = () => {
         activeStateRule,
         activeStateVars: { isActive, isInactive, activeFactor },
     } = usingActiveState({
-        animationActivating   : 'var(--box-activating)',
-        animationDeactivating : 'var(--box-deactivating)',
+        activatingAnimation   : 'var(--box-activating)',
+        deactivatingAnimation : 'var(--box-deactivating)',
     });
     
     // Feature: background colors
@@ -409,7 +409,7 @@ export const activatableBoxStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationActivating` and `animationDeactivating` variables are only defined during **activating** and **deactivating** phases.
+The `activatingAnimation` and `deactivatingAnimation` variables are only defined during **activating** and **deactivating** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
 Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining activate/deactivate animations with other state-driven transitions.

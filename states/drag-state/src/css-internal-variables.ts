@@ -30,5 +30,5 @@ import {
 export const [dragStateVars] = cssVars<DragStateVars>({ prefix: defaultDragStatePrefix, minify: false });
 
 // Register the drag/drop-related animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(dragStateVars.animationDragging);
-animationRegistry.registerAnimation(dragStateVars.animationDropping);
+animationRegistry.registerAnimation(dragStateVars.draggingAnimation);
+animationRegistry.registerAnimation(dragStateVars.droppingAnimation);

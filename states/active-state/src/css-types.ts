@@ -30,7 +30,7 @@ export interface ActiveStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationActivating   : unknown
+    activatingAnimation   : unknown
     
     /**
      * References an animation used during the deactivating transition.
@@ -39,7 +39,7 @@ export interface ActiveStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationDeactivating : unknown
+    deactivatingAnimation : unknown
     
     /**
      * Applies when the component is either activating or fully active.
@@ -141,7 +141,7 @@ export interface CssActiveStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationActivating   ?: CssKnownProps['animation']
+    activatingAnimation   ?: CssKnownProps['animation']
     
     /**
      * Defines the animation to apply during the deactivating transition.
@@ -151,7 +151,7 @@ export interface CssActiveStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationDeactivating ?: CssKnownProps['animation']
+    deactivatingAnimation ?: CssKnownProps['animation']
 }
 
 
@@ -171,8 +171,8 @@ export interface CssActiveState {
      * Exposes activate/deactivate-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationActivating`   : Active during the activating transition.
-     * - `animationDeactivating` : Active during the deactivating transition.
+     * - `activatingAnimation`   : Active during the activating transition.
+     * - `deactivatingAnimation` : Active during the deactivating transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.

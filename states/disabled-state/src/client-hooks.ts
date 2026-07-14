@@ -159,7 +159,7 @@ const disabledStateDefinition : DisabledStateDefinition = {
  *         defaultDisabled        : false,                     // Defaults to enabled.
  *         defaultCascadeDisabled : true,                      // Defaults to allow contextual disabling.
  *         animationPattern       : ['enabling', 'disabling'], // Matches animation names ending with 'enabling' or 'disabling'.
- *         animationBubbling      : false,                     // Ignores bubbling animation events from children.
+ *         bubblingAnimation      : false,                     // Ignores bubbling animation events from children.
  *     });
  *     
  *     return (

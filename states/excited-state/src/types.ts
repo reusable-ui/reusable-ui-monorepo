@@ -80,7 +80,7 @@ export interface ExcitedStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling ?: ActivityStateOptions<boolean>['animationBubbling']
+    bubblingAnimation ?: ActivityStateOptions<boolean>['bubblingAnimation']
 }
 
 /**

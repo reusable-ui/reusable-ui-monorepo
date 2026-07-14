@@ -32,18 +32,18 @@ import {
  *     animations      : [
  *         {
  *             ifState   : ifPreparing,
- *             variable  : orderStateVars.animationPreparing,
- *             animation : options.animationPreparing,
+ *             variable  : orderStateVars.preparingAnimation,
+ *             animation : options.preparingAnimation,
  *         },
  *         {
  *             ifState   : ifShipping,
- *             variable  : orderStateVars.animationShipping,
- *             animation : options.animationShipping,
+ *             variable  : orderStateVars.shippingAnimation,
+ *             animation : options.shippingAnimation,
  *         },
  *         {
  *             ifState   : ifDelivering,
- *             variable  : orderStateVars.animationDelivering,
- *             animation : options.animationDelivering,
+ *             variable  : orderStateVars.deliveringAnimation,
+ *             animation : options.deliveringAnimation,
  *         },
  *     ],
  *     

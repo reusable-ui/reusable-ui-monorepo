@@ -30,7 +30,7 @@ export interface DragStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationDragging : unknown
+    draggingAnimation : unknown
     
     /**
      * References an animation used during the dropping transition.
@@ -39,7 +39,7 @@ export interface DragStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationDropping : unknown
+    droppingAnimation : unknown
     
     /**
      * Applies when the component is either in the dragging transition or fully dragged.
@@ -195,7 +195,7 @@ export interface CssDragStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationDragging ?: CssKnownProps['animation']
+    draggingAnimation ?: CssKnownProps['animation']
     
     /**
      * Defines the animation to apply during the dropping transition.
@@ -205,7 +205,7 @@ export interface CssDragStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationDropping ?: CssKnownProps['animation']
+    droppingAnimation ?: CssKnownProps['animation']
 }
 
 
@@ -225,8 +225,8 @@ export interface CssDragState {
      * Exposes drag/drop-related CSS variables for use in conditional styling.
      * 
      * Includes:
-     * - `animationDragging` : Active during the dragging transition.
-     * - `animationDropping` : Active during the dropping transition.
+     * - `draggingAnimation` : Active during the dragging transition.
+     * - `droppingAnimation` : Active during the dropping transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.

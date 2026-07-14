@@ -57,7 +57,7 @@ import {
  *         sortStateRule,
  *         sortStateVars: { sortOffsetX, sortOffsetY, sortFactor },
  *     } = usingSortState({
- *         animationSorting : 'var(--list-sorting)',
+ *         sortingAnimation : 'var(--list-sorting)',
  *     });
  *     
  *     return style({
@@ -105,8 +105,8 @@ export const usingSortState = (options?: CssSortStateOptions): CssSortState => (
         // Feedback animations for visual effects whenever a sorting action occurs:
         animations : {
             ifState   : ifSorting,
-            variable  : sortStateVars.animationSorting,
-            animation : options?.animationSorting,
+            variable  : sortStateVars.sortingAnimation,
+            animation : options?.sortingAnimation,
         },
         
         // Factor variables for gradual drivers in transitional styling:

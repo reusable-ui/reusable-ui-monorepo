@@ -90,8 +90,8 @@ export const disableableBoxStyle = () => {
         disabledStateRule,
         disabledStateVars: { disabledFactor },
     } = usingDisabledState({
-        animationEnabling  : 'var(--box-enabling)',
-        animationDisabling : 'var(--box-disabling)',
+        enablingAnimation  : 'var(--box-enabling)',
+        disablingAnimation : 'var(--box-disabling)',
     });
     
     // Enabled/disabled visual effect:

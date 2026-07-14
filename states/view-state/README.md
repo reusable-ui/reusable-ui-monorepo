@@ -152,7 +152,7 @@ export const SlideBox: FC<SlideBoxProps> = (props) => {
         maxViewIndex      : 4,                                   // Limits maximum view index to 4.
         viewIndexStep     : 1,                                   // Snaps to integer view indices.
         animationPattern  : ['view-advancing', 'view-receding'], // Matches animation names ending with 'view-advancing' or 'view-receding'.
-        animationBubbling : false,                               // Ignores bubbling animation events from children.
+        bubblingAnimation : false,                               // Ignores bubbling animation events from children.
     });
     
     // Determine which views to render based on visibility range:
@@ -306,8 +306,8 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 | Variable                 | Active When...                        | Purpose                                                                        |
 |--------------------------|---------------------------------------|--------------------------------------------------------------------------------|
-| `animationViewAdvancing` | `.view-advancing`                     | Runs the advancing animation sequence (0 → +1)                                 |
-| `animationViewReceding`  | `.view-receding`                      | Runs the receding animation sequence (0 → -1)                                  |
+| `viewAdvancingAnimation` | `.view-advancing`                     | Runs the advancing animation sequence (0 → +1)                                 |
+| `viewRecedingAnimation`  | `.view-receding`                      | Runs the receding animation sequence (0 → -1)                                  |
 | `isViewSettled`          | `.view-settled`                       | Conditional variable for the settled state                                     |
 | `isViewAdvancing`        | `.view-advancing`                     | Conditional variable for the advancing transition                              |
 | `isViewReceding`         | `.view-receding`                      | Conditional variable for the receding transition                               |
@@ -341,8 +341,8 @@ export const slideBoxStyle = () => {
         viewStateRule,
         viewStateVars: { viewIndex, prevViewIndex, viewFactor },
     } = usingViewState({
-        animationViewAdvancing : 'var(--box-view-advancing)',
-        animationViewReceding  : 'var(--box-view-receding)',
+        viewAdvancingAnimation : 'var(--box-view-advancing)',
+        viewRecedingAnimation  : 'var(--box-view-receding)',
     });
     
     return style({
@@ -415,7 +415,7 @@ export const slideBoxStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationViewAdvancing` and `animationViewReceding` variables are only defined during their respective transition phases.
+The `viewAdvancingAnimation` and `viewRecedingAnimation` variables are only defined during their respective transition phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
 Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining view-switching animations with other state-driven transitions.

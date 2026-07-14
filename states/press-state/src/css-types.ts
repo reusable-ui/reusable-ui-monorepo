@@ -30,7 +30,7 @@ export interface PressStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationPressing  : unknown
+    pressingAnimation  : unknown
     
     /**
      * References an animation used during the releasing transition.
@@ -39,7 +39,7 @@ export interface PressStateVars {
      * Typically, this variable is not consumed directly.
      * Prefer: `const { animationFeatureVars: { animation } } = usingAnimationFeature();`
      */
-    animationReleasing : unknown
+    releasingAnimation : unknown
     
     /**
      * Applies when the component is either pressing or fully pressed.
@@ -141,7 +141,7 @@ export interface CssPressStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationPressing  ?: CssKnownProps['animation']
+    pressingAnimation  ?: CssKnownProps['animation']
     
     /**
      * Defines the animation to apply during the releasing transition.
@@ -151,7 +151,7 @@ export interface CssPressStateOptions {
      * 
      * Accepts a single animation or multiple layered animations.
      */
-    animationReleasing ?: CssKnownProps['animation']
+    releasingAnimation ?: CssKnownProps['animation']
 }
 
 
@@ -171,8 +171,8 @@ export interface CssPressState {
      * Exposes press/release-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `animationPressing`  : Active during the pressing transition.
-     * - `animationReleasing` : Active during the releasing transition.
+     * - `pressingAnimation`  : Active during the pressing transition.
+     * - `releasingAnimation` : Active during the releasing transition.
      * 
      * ⚠️ **Caution**: These variables become invalid when the component is not in their respective transition states.
      * If used improperly, they can invalidate the entire CSS declaration.

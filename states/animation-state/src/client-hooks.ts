@@ -62,7 +62,7 @@ export const useAnimationState = <TState extends {} | null, TElement extends Ele
     const {
         initialIntent,
         animationPattern,
-        animationBubbling = false,
+        bubblingAnimation = false,
     } = options;
     
     
@@ -129,7 +129,7 @@ export const useAnimationState = <TState extends {} | null, TElement extends Ele
     // Handler for animation starts:
     const handleAnimationStart : AnimationEventHandler<TElement>            = useStableEventHandler((event) => {
         // Ensure the event is bubbling if required:
-        if (!animationBubbling && event.target !== event.currentTarget) return;
+        if (!bubblingAnimation && event.target !== event.currentTarget) return;
         
         // Ensure the animation matches the expected pattern:
         if (!animationNameMatches(event.animationName, animationPattern)) return;
@@ -144,7 +144,7 @@ export const useAnimationState = <TState extends {} | null, TElement extends Ele
     // Handler for animation completion or cancellation:
     const handleAnimationEnd   : AnimationEventHandler<TElement>            = useStableEventHandler((event) => {
         // Ensure the event is bubbling if required:
-        if (!animationBubbling && event.target !== event.currentTarget) return;
+        if (!bubblingAnimation && event.target !== event.currentTarget) return;
         
         // Ensure the animation matches the expected pattern:
         if (!animationNameMatches(event.animationName, animationPattern)) return;

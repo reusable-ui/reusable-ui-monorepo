@@ -159,7 +159,7 @@ export interface ActiveStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling    ?: InteractionStateOptions<boolean>['animationBubbling']
+    bubblingAnimation    ?: InteractionStateOptions<boolean>['bubblingAnimation']
 }
 
 /**

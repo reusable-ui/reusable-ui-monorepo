@@ -65,7 +65,7 @@ export const CustomEditor: FC<CustomEditorProps> = (props) => {
         defaultReadOnly        : false,                   // Defaults to editable.
         defaultCascadeReadOnly : true,                    // Defaults to allow contextual read-only.
         animationPattern       : ['thawing', 'freezing'], // Matches animation names ending with 'thawing' or 'freezing'.
-        animationBubbling      : false,                   // Ignores bubbling animation events from children.
+        bubblingAnimation      : false,                   // Ignores bubbling animation events from children.
     });
     
     return (
@@ -132,7 +132,7 @@ export const ParentComponent: FC<ParentComponentProps> = (props) => {
         defaultReadOnly        : false,                   // Defaults to editable.
         defaultCascadeReadOnly : true,                    // Defaults to allow contextual read-only.
         animationPattern       : ['thawing', 'freezing'], // Matches animation names ending with 'thawing' or 'freezing'.
-        animationBubbling      : false,                   // Ignores bubbling animation events from children.
+        bubblingAnimation      : false,                   // Ignores bubbling animation events from children.
     });
     
     // Or use `useResolvedReadOnly()` if not concerned with animation phases:
@@ -208,8 +208,8 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 | Variable             | Active When...                    | Purpose                                                                         |
 |----------------------|-----------------------------------|---------------------------------------------------------------------------------|
-| `animationThawing`   | `.is-thawing`                     | Runs the thawing animation sequence                                             |
-| `animationFreezing`  | `.is-freezing`                    | Runs the freezing animation sequence                                            |
+| `thawingAnimation`   | `.is-thawing`                     | Runs the thawing animation sequence                                             |
+| `freezingAnimation`  | `.is-freezing`                    | Runs the freezing animation sequence                                            |
 | `isEditable`         | `.is-editable` or `.is-thawing`   | Conditional variable for the editable state                                     |
 | `isReadOnly`         | `.is-read-only` or `.is-freezing` | Conditional variable for the read-only state                                    |
 | `readOnlyFactor`     | Always available (animatable)     | Normalized factor: 0 = editable, 1 = read-only, interpolates during transitions |
@@ -239,8 +239,8 @@ export const readOnlyBoxStyle = () => {
         readOnlyStateRule,
         readOnlyStateVars: { isEditable, isReadOnly, readOnlyFactor },
     } = usingReadOnlyState({
-        animationThawing  : 'var(--box-thawing)',
-        animationFreezing : 'var(--box-freezing)',
+        thawingAnimation  : 'var(--box-thawing)',
+        freezingAnimation : 'var(--box-freezing)',
     });
     
     return style({
@@ -288,7 +288,7 @@ export const readOnlyBoxStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationThawing` and `animationFreezing` variables are only defined during **thawing** and **freezing** phases.
+The `thawingAnimation` and `freezingAnimation` variables are only defined during **thawing** and **freezing** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
 Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining editable/read-only animations with other state-driven transitions.

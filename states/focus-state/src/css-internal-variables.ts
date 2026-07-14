@@ -30,5 +30,5 @@ import {
 export const [focusStateVars] = cssVars<FocusStateVars>({ prefix: defaultFocusStatePrefix, minify: false });
 
 // Register the focus/blur-related animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(focusStateVars.animationFocusing);
-animationRegistry.registerAnimation(focusStateVars.animationBlurring);
+animationRegistry.registerAnimation(focusStateVars.focusingAnimation);
+animationRegistry.registerAnimation(focusStateVars.blurringAnimation);

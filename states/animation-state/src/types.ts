@@ -42,7 +42,7 @@ export interface AnimationStateOptions<TState extends {} | null> {
      * 
      * Defaults to `false` (no bubbling).
      */
-    animationBubbling ?: boolean
+    bubblingAnimation ?: boolean
 }
 
 /**

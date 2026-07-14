@@ -30,5 +30,5 @@ import {
 export const [pressStateVars] = cssVars<PressStateVars>({ prefix: defaultPressStatePrefix, minify: false });
 
 // Register the press/release-related animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(pressStateVars.animationPressing);
-animationRegistry.registerAnimation(pressStateVars.animationReleasing);
+animationRegistry.registerAnimation(pressStateVars.pressingAnimation);
+animationRegistry.registerAnimation(pressStateVars.releasingAnimation);

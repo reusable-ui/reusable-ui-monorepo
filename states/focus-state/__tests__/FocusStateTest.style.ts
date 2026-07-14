@@ -7,8 +7,8 @@ export default function focusStateTestStyle() {
         focusStateRule,
         focusStateVars: { focusFactor },
     } = usingFocusState({
-        animationFocusing : 'var(--test-focusing)',
-        animationBlurring : 'var(--test-blurring)',
+        focusingAnimation : 'var(--test-focusing)',
+        blurringAnimation : 'var(--test-blurring)',
     });
     
     const {

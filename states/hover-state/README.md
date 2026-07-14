@@ -92,7 +92,7 @@ export const CustomCard: FC<CustomCardProps> = (props) => {
     }, {
         defaultHovered    : 'auto',                     // Defaults to diagnostic mode.
         animationPattern  : ['hovering', 'unhovering'], // Matches animation names ending with 'hovering' or 'unhovering'.
-        animationBubbling : false,                      // Ignores bubbling animation events from children.
+        bubblingAnimation : false,                      // Ignores bubbling animation events from children.
     });
     
     return (
@@ -198,8 +198,8 @@ Use `switchOf(...)` to ensure graceful fallback when inactive.
 
 | Variable              | Active When...                      | Purpose                                                                        |
 |-----------------------|-------------------------------------|--------------------------------------------------------------------------------|
-| `animationHovering`   | `.is-hovering`                      | Runs the hovering animation sequence                                           |
-| `animationUnhovering` | `.is-unhovering`                    | Runs the unhovering animation sequence                                         |
+| `hoveringAnimation`   | `.is-hovering`                      | Runs the hovering animation sequence                                           |
+| `unhoveringAnimation` | `.is-unhovering`                    | Runs the unhovering animation sequence                                         |
 | `isHovered`           | `.is-hovered` or `.is-hovering`     | Conditional variable for the hovered state                                     |
 | `isUnhovered`         | `.is-unhovered` or `.is-unhovering` | Conditional variable for the unhovered state                                   |
 | `hoverFactor`         | Always available (animatable)       | Normalized factor: 0 = unhovered, 1 = hovered, interpolates during transitions |
@@ -229,8 +229,8 @@ export const hoverableBoxStyle = () => {
         hoverStateRule,
         hoverStateVars: { isHovered, isUnhovered, hoverFactor },
     } = usingHoverState({
-        animationHovering   : 'var(--box-hovering)',
-        animationUnhovering : 'var(--box-unhovering)',
+        hoveringAnimation   : 'var(--box-hovering)',
+        unhoveringAnimation : 'var(--box-unhovering)',
     });
     
     return style({
@@ -278,7 +278,7 @@ export const hoverableBoxStyle = () => {
 
 #### 🧠 Resolution Logic
 
-The `animationHovering` and `animationUnhovering` variables are only defined during **hovering** and **unhovering** phases.
+The `hoveringAnimation` and `unhoveringAnimation` variables are only defined during **hovering** and **unhovering** phases.
 
 These variables are registered to `@reusable-ui/animation-feature`, so you typically don’t need to consume them directly.  
 Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to apply the unified animation stack—combining hover/unhover animations with other state-driven transitions.

@@ -30,5 +30,5 @@ import {
 export const [hoverStateVars] = cssVars<HoverStateVars>({ prefix: defaultHoverStatePrefix, minify: false });
 
 // Register the hover/unhover-related animations globally for composing a unified animation stack across state packages:
-animationRegistry.registerAnimation(hoverStateVars.animationHovering);
-animationRegistry.registerAnimation(hoverStateVars.animationUnhovering);
+animationRegistry.registerAnimation(hoverStateVars.hoveringAnimation);
+animationRegistry.registerAnimation(hoverStateVars.unhoveringAnimation);
