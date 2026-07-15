@@ -29,8 +29,8 @@ import {
  * This function acts as a **type guard**, meaning if it returns `true`,
  * TypeScript will refine the type of `node` to `ReactElement<ComponentProps<'a'>, 'a'>`.
  * 
- * @param node - The React node to inspect.
- * @returns {node is ReactElement<ComponentProps<'a'>, 'a'>} `true` if the node is a native `<a>` element, otherwise `false`.
+ * @param node The React node to inspect.
+ * @returns `true` if the node is a native `<a>` element, otherwise `false`.
  */
 const isAnchorElement = (node: ReactNode): node is ReactElement<ComponentProps<'a'>, 'a'> => {
     return (
