@@ -70,8 +70,8 @@ type NextLinkElement = ReactElement<CompatLinkProps & {
  * - It is a forwardRef-wrapped element.
  * - It has a `href` prop (Next.js's routing indicator).
  * 
- * @param node - The React node to inspect.
- * @returns {node is NextLinkElement} `true` if the node is a Next.js `<Link>` element, otherwise `false`.
+ * @param node The React node to inspect.
+ * @returns `true` if the node is a Next.js `<Link>` element, otherwise `false`.
  */
 const isNextLinkElement = (node: ReactNode): node is NextLinkElement => {
     return (
@@ -128,8 +128,8 @@ type ReactRouterLinkElement = ReactElement<CompatLinkProps & {
  * - It is a forwardRef-wrapped element.
  * - It has a `to` prop (React Router's routing indicator).
  * 
- * @param node - The React node to inspect.
- * @returns {node is ReactRouterLinkElement} `true` if the node is a React Router `<Link>` element, otherwise `false`.
+ * @param node The React node to inspect.
+ * @returns `true` if the node is a React Router `<Link>` element, otherwise `false`.
  */
 const isReactRouterLinkElement = (node: ReactNode): node is ReactRouterLinkElement => {
     return (
@@ -161,8 +161,8 @@ export type ClientLinkElement =
  * This function acts as a **type guard**, meaning if it returns `true`,
  * TypeScript will refine the type of `node` to `ClientLinkElement`.
  * 
- * @param node - The React node to inspect.
- * @returns {node is ClientLinkElement} `true` if the node is a known client-side `<Link>` element, otherwise `false`.
+ * @param node The React node to inspect.
+ * @returns `true` if the node is a known client-side `<Link>` element, otherwise `false`.
  */
 export const isClientLinkElement = (node: ReactNode): node is ClientLinkElement => {
     return (
