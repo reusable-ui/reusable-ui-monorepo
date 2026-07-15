@@ -49,9 +49,9 @@ const excitedStateDefinition : ExcitedStateDefinition = {
  * 
  * @template TElement - The type of the target DOM element.
  * 
- * @param {ExcitedStateProps} props - The component props that may include a controlled `excited` value and an `onExcitedComplete` callback.
- * @param {ExcitedStateOptions} options - An optional configuration for customizing excitement behavior and animation lifecycle.
- * @returns {ExcitedState<TElement>} - The resolved excited state, associated CSS class name, and animation event handlers.
+ * @param props The component props that may include a controlled `excited` value and an `onExcitedComplete` callback.
+ * @param options An optional configuration for customizing excitement behavior and animation lifecycle.
+ * @returns The resolved excited state, associated CSS class name, and animation event handlers.
  * 
  * @example
  * ```tsx
