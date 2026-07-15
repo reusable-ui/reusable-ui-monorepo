@@ -24,9 +24,9 @@ import {
  * Evaluates the appropriate `role` and `tag` by considering semantic priority, accessibility intent,
  * and provided preferences. Internally uses `useMemo` to avoid redundant computations.
  * 
- * @param {SemanticProps} props - Semantic configuration, including user-defined role and tag preferences.
- * @param {SemanticOptions} [options=props] - Optional override for resolution logic (defaults to `props`).
- * @returns {ResolvedSemanticAttributes} - The resolved semantic attributes.
+ * @param props Semantic configuration, including user-defined role and tag preferences.
+ * @param options Optional override for resolution logic (defaults to `props`).
+ * @returns The resolved semantic attributes.
  * 
  * @example
  * ```ts

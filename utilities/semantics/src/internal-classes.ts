@@ -58,9 +58,9 @@ export class LazySemanticEvaluator implements ResolvedSemanticAttributes {
     /**
      * Initializes the lazy evaluator with the provided attributes.
      * 
-     * @param {SemanticPriority} semanticPriority - The priority-based semantic associations.
-     * @param {Role | null | 'auto'} preferredRole - The preferred role, either explicit or determined automatically.
-     * @param {Tag | null | 'auto'} preferredTag - The preferred tag, either explicit or determined automatically.
+     * @param semanticPriority The priority-based semantic associations.
+     * @param preferredRole The preferred role, either explicit or determined automatically.
+     * @param preferredTag The preferred tag, either explicit or determined automatically.
      */
     constructor(semanticPriority: SemanticPriority, preferredRole: Role | null | 'auto', preferredTag: Tag | null | 'auto') {
         this.#semanticPriority = semanticPriority;
@@ -78,9 +78,9 @@ export class LazySemanticEvaluator implements ResolvedSemanticAttributes {
     /**
      * Retrieves a cached value if available, otherwise computes and stores it.
      * 
-     * @param {number} cacheKey - The unique key identifying the cached value.
-     * @param {() => TValue} resolver - The function to compute the value if not cached.
-     * @returns {TValue} - The retrieved or computed value.
+     * @param cacheKey The unique key identifying the cached value.
+     * @param resolver The function to compute the value if not cached.
+     * @returns The retrieved or computed value.
      */
     #getCachedValue<TValue>(cacheKey: number, resolver: () => TValue): TValue {
         // Return cached value if available:

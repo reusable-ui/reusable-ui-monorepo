@@ -26,9 +26,9 @@ import {
  * 
  * This type guard ensures only meaningful values are retained, filtering out falsy states like `null`, `undefined`, `false` and `true`.
  * 
- * @template TValue - The type of the value being checked.
- * @param {TValue} value - The value to evaluate for non-emptiness.
- * @returns {value is Exclude<TValue, null | undefined | boolean>} - `true` if the value is non-empty; otherwise, `false`.
+ * @template TValue The type of the value being checked.
+ * @param value The value to evaluate for non-emptiness.
+ * @returns `true` if the value is non-empty; otherwise, `false`.
  */
 const isNonEmptyValue = <TValue>(value: TValue): value is Exclude<TValue, null | undefined | boolean> => {
     return (
@@ -56,8 +56,8 @@ const isNonEmptyValue = <TValue>(value: TValue): value is Exclude<TValue, null |
  * - `SemanticPriority` may contain multiple pairs, but each individual pair must have `value[0]` as a `string`.
  * - This approach provides an efficient way to extract `RoleTagPair` from `SemanticPriority = MaybeArray<OptionalOrBoolean<RoleTagPair>>`.
  * 
- * @param {RoleTagPair | OptionalOrBoolean<RoleTagPair>[]} value - The value to check.
- * @returns {value is RoleTagPair} - `true` if the value is a valid role-tag pair, otherwise `false`.
+ * @param value The value to check.
+ * @returns `true` if the value is a valid role-tag pair, otherwise `false`.
  */
 const isRoleTagPair = (value: RoleTagPair | OptionalOrBoolean<RoleTagPair>[]): value is RoleTagPair => {
     return (
@@ -72,9 +72,9 @@ const isRoleTagPair = (value: RoleTagPair | OptionalOrBoolean<RoleTagPair>[]): v
  * 
  * This function is designed for use within iterative methods, where `this` represents the target tag to locate.
  * 
- * @this {Tag | null} - The target tag to locate.
- * @param {RoleTagPair} pair - The role-tag pair to check.
- * @returns {boolean} - `true` if the tag within the pair matches `this`, otherwise `false`.
+ * @param this The target tag to locate.
+ * @param pair The role-tag pair to check.
+ * @returns `true` if the tag within the pair matches `this`, otherwise `false`.
  */
 function hasMatchingTag(this: Tag | null, pair: RoleTagPair): boolean {
     return (pair[1] === this);
@@ -89,10 +89,10 @@ function hasMatchingTag(this: Tag | null, pair: RoleTagPair): boolean {
  * 
  * If the given `pair` contains the `expectedRole`, the corresponding tag is added to `collector`.
  * 
- * @param {(Tag | null)[]} collector - The accumulated list of tags.
- * @param {RoleTagPair} pair - The role-tag pair being evaluated.
- * @param {Role} expectedRole - The role to match for tag extraction.
- * @returns {(Tag | null)[]} - The updated list of collected tags.
+ * @param collector The accumulated list of tags.
+ * @param pair The role-tag pair being evaluated.
+ * @param expectedRole The role to match for tag extraction.
+ * @returns The updated list of collected tags.
  */
 const collectTagsOfRole = (collector: (Tag | null)[], pair: RoleTagPair, expectedRole: Role): (Tag | null)[] => {
     // Add the tag if the role matches `expectedRole`:
@@ -111,8 +111,8 @@ const collectTagsOfRole = (collector: (Tag | null)[], pair: RoleTagPair, expecte
 /**
  * Extracts valid `RoleTagPair`s from the given `semanticPriority`, ensuring falsy values are excluded.
  *
- * @param {SemanticPriority} semanticPriority - The prioritized role-tag pairs, which may be a single pair or an array.
- * @returns {RoleTagPair[]} - An array of collected `RoleTagPair`s.
+ * @param semanticPriority The prioritized role-tag pairs, which may be a single pair or an array.
+ * @returns An array of collected `RoleTagPair`s.
  */
 export const computeRoleTagPairs = (semanticPriority: SemanticPriority): RoleTagPair[] => {
     // Stores the collected pairs:
@@ -150,10 +150,10 @@ export const computeRoleTagPairs = (semanticPriority: SemanticPriority): RoleTag
  * 
  * Uses lazy evaluation for efficiency, deferring role-tag pair resolution until necessary.
  * 
- * @param {Role | null | 'auto'} preferredRole - The user's preferred role, or `'auto'` for automatic determination.
- * @param {Tag | null | 'auto'} preferredTag - The user's preferred tag, used for role matching if `preferredRole` is `'auto'`.
- * @param {Lazy<RoleTagPair[]>} resolvePairs - A lazy function resolving the list of role-tag pairs to evaluate.
- * @returns {Role | null} - The computed role based on user preference, tag association, and available role-tag pairs.
+ * @param preferredRole The user's preferred role, or `'auto'` for automatic determination.
+ * @param preferredTag The user's preferred tag, used for role matching if `preferredRole` is `'auto'`.
+ * @param resolvePairs A lazy function resolving the list of role-tag pairs to evaluate.
+ * @returns The computed role based on user preference, tag association, and available role-tag pairs.
  */
 export const computeRole = (preferredRole: Role | null | 'auto', preferredTag: Tag | null | 'auto', resolvePairs: Lazy<RoleTagPair[]>): Role | null => {
     // Use user-defined role if explicitly provided:
@@ -186,9 +186,9 @@ export const computeRole = (preferredRole: Role | null | 'auto', preferredTag: T
  * 
  * Uses lazy evaluation for efficiency, deferring role-tag pair resolution until necessary.
  * 
- * @param {Role | null} expectedRole - The role whose associated tags should be collected.
- * @param {Lazy<RoleTagPair[]>} resolvePairs - A lazy function resolving the list of role-tag pairs to evaluate.
- * @returns {(Tag | null)[]} - An array of tags associated with the specified `expectedRole`.
+ * @param expectedRole The role whose associated tags should be collected.
+ * @param resolvePairs A lazy function resolving the list of role-tag pairs to evaluate.
+ * @returns An array of tags associated with the specified `expectedRole`.
  */
 export const computeExpectedTags = (expectedRole: Role | null, resolvePairs: Lazy<RoleTagPair[]>): (Tag | null)[] => {
     // Ensure a valid role exists:
@@ -208,9 +208,9 @@ export const computeExpectedTags = (expectedRole: Role | null, resolvePairs: Laz
  * 
  * Uses lazy evaluation for efficiency, deferring expected tags resolution until necessary.
  * 
- * @param {Tag | null | 'auto'} preferredTag - The user's preferred tag, or `'auto'` for automatic determination.
- * @param {Lazy<(Tag | null)[]>} resolveExpectedTags - A lazy function resolving the list of expected tags.
- * @returns {Tag | null} - The computed tag based on user preference and available expected tags.
+ * @param preferredTag The user's preferred tag, or `'auto'` for automatic determination.
+ * @param resolveExpectedTags A lazy function resolving the list of expected tags.
+ * @returns The computed tag based on user preference and available expected tags.
  */
 export const computeTag = (preferredTag: Tag | null | 'auto', resolveExpectedTags: Lazy<(Tag | null)[]>): Tag | null => {
     // Use user-defined tag if explicitly provided:
@@ -227,8 +227,8 @@ export const computeTag = (preferredTag: Tag | null | 'auto', resolveExpectedTag
  * 
  * If `expectedTags` contains one or more tags, the role is considered expected.
  * 
- * @param {(Tag | null)[]} expectedTags - The expected tags associated with the role.
- * @returns {boolean} - `true` if at least one expected tag exists, otherwise `false`.
+ * @param expectedTags The expected tags associated with the role.
+ * @returns `true` if at least one expected tag exists, otherwise `false`.
  */
 export const computeIsExpectedRole = (expectedTags: (Tag | null)[]): boolean => {
     return !!expectedTags.length;
@@ -241,9 +241,9 @@ export const computeIsExpectedRole = (expectedTags: (Tag | null)[]): boolean => 
  * 
  * Uses lazy evaluation for efficiency, deferring computed tag resolution until necessary.
  * 
- * @param {(Tag | null)[]} expectedTags - The expected tags associated with the role.
- * @param {Lazy<Tag | null>} resolveComputedTag - A lazy function resolving the resolved tag to validate.
- * @returns {boolean} - `true` if the resolved tag is found within `expectedTags`, otherwise `false`.
+ * @param expectedTags The expected tags associated with the role.
+ * @param resolveComputedTag A lazy function resolving the resolved tag to validate.
+ * @returns `true` if the resolved tag is found within `expectedTags`, otherwise `false`.
  */
 export const computeIsExpectedTag = (expectedTags: (Tag | null)[], resolveComputedTag: Lazy<Tag | null>): boolean => {
     return !!expectedTags.length && expectedTags.includes(resolveComputedTag());
@@ -258,10 +258,10 @@ export const computeIsExpectedTag = (expectedTags: (Tag | null)[], resolveComput
  * 
  * This decision helps optimize accessibility by avoiding redundant roles when HTML semantics suffice.
  * 
- * @param {Tag | null} computedTag - The resolved HTML tag associated with the element, or `null` if the tag is absent.
- * @param {Lazy<boolean>} resolveIsExpectedTag - A lazy function resolving whether the tag implicitly fulfills the role.
- * @param {Lazy<Role | null>} resolveComputedRole - A lazy function resolving the final computed role.
- * @returns {Role | null} - `null` if the tag suffices semantically, otherwise the resolved role.
+ * @param computedTag The resolved HTML tag associated with the element, or `null` if the tag is absent.
+ * @param resolveIsExpectedTag A lazy function resolving whether the tag implicitly fulfills the role.
+ * @param resolveComputedRole A lazy function resolving the final computed role.
+ * @returns `null` if the tag suffices semantically, otherwise the resolved role.
  */
 export const computeImplicitRole = (computedTag: Tag | null, resolveIsExpectedTag: Lazy<boolean>, resolveComputedRole: Lazy<Role | null>): Role | null => {
     // Omit the explicit role if the tag inherently conveys the intended semantics:
