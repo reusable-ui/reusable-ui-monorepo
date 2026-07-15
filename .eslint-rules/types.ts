@@ -1,6 +1,7 @@
 import path from 'path'
 import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
+import { parse } from 'comment-parser'
 
 
 
@@ -171,3 +172,96 @@ export const banVarianceAnnotations = createRule({
     },
 });
 
+
+
+/**
+ * ESLint rule: ban-redundant-jsdoc-types
+ * 
+ * Purpose:
+ * - Prevent redundant type annotations in JSDoc (`{Type}`) when TypeScript already provides type information.
+ * - Encourage developers to use JSDoc only for descriptions, not duplicating TS types.
+ * 
+ * Detection Criteria:
+ * - Scans leading block comments (`/ * ... * /`) that are JSDoc (`/ ** ... * /`).
+ * - Parses JSDoc tags (`@param`, `@returns`, `@template`, etc.).
+ * - Flags any tag that includes an explicit `{Type}` annotation.
+ * 
+ * Why:
+ * - TypeScript already enforces and documents types.
+ * - Redundant JSDoc types add noise and risk drifting out of sync with actual TS definitions.
+ * - Cleaner, more maintainable documentation by keeping JSDoc focused on intent and behavior.
+ */
+export const banRedundantJsdocTypes = createRule({
+    name : 'ban-redundant-jsdoc-types',
+    meta : {
+        type     : 'suggestion',
+        fixable  : 'code',
+        docs     : {
+            description : 'Disallow redundant type annotations in JSDoc when TypeScript already provides them.',
+        },
+        schema   : [], // no options accepted
+        messages : {
+            redundantType : 'Redundant JSDoc type "{{type}}" — TypeScript already provides this.',
+        },
+    },
+    create(context) {
+        const checkComments = (node: any) => {
+            // Get all leading comments for the node:
+            const comments = context.sourceCode.getCommentsBefore(node);
+            
+            
+            
+            // Iterate over each comment:
+            for (const comment of comments) {
+                // Only process block comments (`/* ... */`):
+                if (comment.type !== 'Block') continue;
+                
+                // Only process JSDoc-style comments (`/** ... */`):
+                if (!comment.value.startsWith('*')) continue;
+                
+                
+                
+                // Restore full comment text (parser strips /* and */):
+                const fullCommentValue = `/*${comment.value}*/`;
+                
+                
+                
+                // Parse JSDoc tags using comment-parser:
+                const jsdoc = parse(fullCommentValue);
+                if (!jsdoc.length) continue;
+                
+                
+                
+                // Iterate over each tag:
+                for (const tag of jsdoc[0].tags) {
+                    // Only process valid tags:
+                    if (!tag.type) continue;
+                    
+                    
+                    
+                    // Flag any tag with an explicit `{Type}`:
+                    context.report({
+                        node,
+                        messageId: 'redundantType',
+                        data: { type: tag.type },
+                        fix(fixer) {
+                            // Remove {Type} but keep the description intact:
+                            const cleaned = comment.value.replace(/\{[^}]+\}\s*/g, '');
+                            return fixer.replaceText(comment, `/*${cleaned}*/`);
+                        },
+                    });
+                } // for
+            } // for
+        };
+        
+        
+        
+        return {
+            FunctionDeclaration: checkComments,
+            VariableDeclaration: checkComments,
+            VariableDeclarator: checkComments,
+            TSTypeAliasDeclaration: checkComments,
+            TSInterfaceDeclaration: checkComments,
+        };
+    },
+});
