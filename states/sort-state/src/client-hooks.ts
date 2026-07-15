@@ -91,9 +91,9 @@ const sortStateDefinition : SortStateDefinition = {
  * @template TItemElement - The type of the sortable DOM element.
  * @template TSortData - The type of the data driving the sortable elements (commonly an array of item metadata).
  * 
- * @param {SortStateProps<TItemElement, TSortData>} props - The component props for passing staged sort data and commit/clear callbacks.
- * @param {SortStateOptions} options - An optional configuration for customizing sort transition behavior and animation lifecycle.
- * @returns {SortState<TElement>} - The current sorting activity status, per-item movements, associated CSS class name, inline CSS variables, and animation event handlers.
+ * @param props The component props for passing staged sort data and commit/clear callbacks.
+ * @param options An optional configuration for customizing sort transition behavior and animation lifecycle.
+ * @returns The current sorting activity status, per-item movements, associated CSS class name, inline CSS variables, and animation event handlers.
  * 
  * @example
  * ```tsx
