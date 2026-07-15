@@ -2,6 +2,7 @@ import path from 'path'
 import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
 import { parse } from 'comment-parser'
+import { isTopLevel } from './scope-utilities.js'
 
 
 
@@ -175,6 +176,34 @@ export const banVarianceAnnotations = createRule({
 
 
 /**
+ * Get the leading JSDoc comments for the *top-level* declaration
+ * associated with the given node.
+ * 
+ * Why:
+ * - JSDoc is attached to the declaration itself (function, type alias, interface),
+ *   not to inner nodes like parameters or type parameters.
+ * - Walking up the AST ensures we don't miss the correct comment block.
+ */
+const getTopLevelComments = (context: any, node: any) => {
+    let current = node;
+    
+    
+    
+    // Traverse upward until we reach a top-level declaration
+    while (current) {
+        if (isTopLevel(current)) {
+            return context.sourceCode.getCommentsBefore(current);
+        }
+        current = current.parent;
+    } // while
+    
+    
+    
+    // Fallback: return comments directly attached to the original node
+    return context.sourceCode.getCommentsBefore(node);
+};
+
+/**
  * ESLint rule: ban-redundant-jsdoc-types
  * 
  * Purpose:
@@ -207,7 +236,7 @@ export const banRedundantJsdocTypes = createRule({
     create(context) {
         const checkComments = (node: any) => {
             // Get all leading comments for the node:
-            const comments = context.sourceCode.getCommentsBefore(node);
+            const comments = getTopLevelComments(context, node);
             
             
             
