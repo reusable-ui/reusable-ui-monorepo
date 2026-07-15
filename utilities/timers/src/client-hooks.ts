@@ -115,7 +115,7 @@ export type CreateScheduledTimeout = (delay: number) => ScheduledPromise<boolean
  * - Supports aborting timeout tasks before resolution.
  * - Automatically cleans up all running timers when the component unmounts.
  * 
- * @returns {CreateScheduledTimeout} A factory function for creating scheduled timeout promises that resolves `true` after the specified delay, or `false` if aborted.
+ * @returns A factory function for creating scheduled timeout promises that resolves `true` after the specified delay, or `false` if aborted.
  * 
  * @example
  * ```ts
@@ -257,7 +257,7 @@ export type CreateScheduledAnimationFrame = (frameCount?: number) => ScheduledPr
  * - Supports aborting animation frame requests before resolution.
  * - Automatically cleans up all pending frame requests when the component unmounts.
  * 
- * @returns {CreateScheduledAnimationFrame} A factory function for creating scheduled animation frame promises that resolves with the timestamp from `requestAnimationFrame`, or `false` if aborted.
+ * @returns A factory function for creating scheduled animation frame promises that resolves with the timestamp from `requestAnimationFrame`, or `false` if aborted.
  * 
  * @example
  * ```ts
