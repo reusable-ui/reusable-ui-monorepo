@@ -270,7 +270,7 @@ export const banRedundantJsdocTypes = createRule({
                     
                     // Flag any tag with an explicit `{Type}`:
                     context.report({
-                        node,
+                        loc: comment.loc,
                         messageId: 'redundantType',
                         data: { type: tag.type },
                         fix(fixer) {
