@@ -16,7 +16,7 @@ import {
 /**
  * A function that always returns `true`.
  * 
- * @returns {true} - The boolean value `true`.
+ * @returns The boolean value `true`.
  */
 function functionThatReturnsTrue(): true {
     return true;
@@ -25,7 +25,7 @@ function functionThatReturnsTrue(): true {
 /**
  * A function that always returns `false`.
  * 
- * @returns {false} - The boolean value `false`.
+ * @returns The boolean value `false`.
  */
 function functionThatReturnsFalse(): false {
     return false;
@@ -34,7 +34,7 @@ function functionThatReturnsFalse(): false {
 /**
  * A function that does nothing (no operation).
  * 
- * @returns {void} - This function does not return any value.
+ * @returns This function does not return any value.
  */
 function functionThatNoop(): void {
     /* noop */
