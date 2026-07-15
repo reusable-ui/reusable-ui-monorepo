@@ -1,22 +1,8 @@
-ifGradient|ifNotGradient|ifInheritGradient|ifOutlined|ifNotOutlined|ifInheritOutlined|ifMild|ifNotMild|ifInheritMild
+ifGradient|ifNotGradient|ifInheritGradient||ifMild|ifNotMild|ifInheritMildifOutlined|ifNotOutlined|ifInheritOutlined
 
 
 
 ifGradient|ifNotGradient|ifInheritGradient
-
-------------------------------------------------------------------------------------
-
-ifOutlined|ifNotOutlined|ifInheritOutlined
-
-outlined = true (Semi nude)
-1. <Carousel> > <Navscroll> // outlined bullet
-2. <Busy>                   // makes bold_color spinner (currentColor)
-
-outlined = false (Regular)
-0. <-- none -->
-
-outlined = inherit
-0. <-- none -->
 
 ------------------------------------------------------------------------------------
 
@@ -39,6 +25,20 @@ mild = inherit(<Parent> dependent)
 1. <CloseButton> => the icon color depends on <Parent>
 2. <ProgressBar> => dependent of <Progress>
 3. (Regular|Action)<ListItem> => dependent of <List>
+
+------------------------------------------------------------------------------------
+
+ifOutlined|ifNotOutlined|ifInheritOutlined
+
+outlined = true (Semi nude)
+1. <Carousel> > <Navscroll> // outlined bullet
+2. <Busy>                   // makes bold_color spinner (currentColor)
+
+outlined = false (Regular)
+0. <-- none -->
+
+outlined = inherit
+0. <-- none -->
 
 ------------------------------------------------------------------------------------
 

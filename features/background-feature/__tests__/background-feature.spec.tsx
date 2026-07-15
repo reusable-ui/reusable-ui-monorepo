@@ -50,7 +50,6 @@ const REGULAR_BACKG_COLORS = {
     light     : 'oklch(0.931 0.0019 248)',
     dark      : 'oklch(0.247 0.0095 248)',
 };
-const OUTLINED_BACKG_COLOR = 'rgba(0, 0, 0, 0)';
 const MILD_BACKG_COLORS    = {
     primary   : 'oklch(0.874 0.0684 260)',
     secondary : 'oklch(0.868 0.0051 245)',
@@ -61,6 +60,7 @@ const MILD_BACKG_COLORS    = {
     light     : 'oklch(0.994 0.0006 248)',
     dark      : 'oklch(0.778 0.003 248)',
 };
+const OUTLINED_BACKG_COLOR = 'rgba(0, 0, 0, 0)';
 
 const NO_BACKG_GRADIENT    = 'none, none, none';
 const NO_BACKG_ORIGIN      = 'padding-box, padding-box, padding-box';
@@ -167,17 +167,6 @@ test.describe('usingBackgroundFeature', () => {
                 expectedBackgroundOrigin : HAS_BACKG_ORIGIN,
             },
             {
-                title                    : `[${themeName}] outlined => should render outlined style`,
-                props                    : {
-                    theme                : themeName,
-                    
-                    outlined             : true,
-                },
-                expectedBackgroundColor  : OUTLINED_BACKG_COLOR,
-                expectedBackgroundImage  : NO_BACKG_GRADIENT,
-                expectedBackgroundOrigin : NO_BACKG_ORIGIN,
-            },
-            {
                 title                    : `[${themeName}] mild => should render mild style`,
                 props                    : {
                     theme                : themeName,
@@ -185,6 +174,17 @@ test.describe('usingBackgroundFeature', () => {
                     mild                 : true,
                 },
                 expectedBackgroundColor  : MILD_BACKG_COLORS[themeName],
+                expectedBackgroundImage  : NO_BACKG_GRADIENT,
+                expectedBackgroundOrigin : NO_BACKG_ORIGIN,
+            },
+            {
+                title                    : `[${themeName}] outlined => should render outlined style`,
+                props                    : {
+                    theme                : themeName,
+                    
+                    outlined             : true,
+                },
+                expectedBackgroundColor  : OUTLINED_BACKG_COLOR,
                 expectedBackgroundImage  : NO_BACKG_GRADIENT,
                 expectedBackgroundOrigin : NO_BACKG_ORIGIN,
             },
@@ -218,12 +218,12 @@ test.describe('usingBackgroundFeature', () => {
                 expectedBackgroundOrigin : HAS_BACKG_ORIGIN,
             },
             {
-                title                    : `[${themeName}] outlined + mild => should render outlined style, mild ignored`,
+                title                    : `[${themeName}] mild + outlined => should render outlined style, mild ignored`,
                 props                    : {
                     theme                : themeName,
                     
-                    outlined             : true,
                     mild                 : true,
+                    outlined             : true,
                 },
                 expectedBackgroundColor  : OUTLINED_BACKG_COLOR,
                 expectedBackgroundImage  : NO_BACKG_GRADIENT,
@@ -235,13 +235,13 @@ test.describe('usingBackgroundFeature', () => {
             
             //#region Three prop activated
             {
-                title                    : `[${themeName}] emphasized + outlined + mild => should render emphasized + outlined style, mild ignored`,
+                title                    : `[${themeName}] emphasized + mild + outlined => should render emphasized + outlined style, mild ignored`,
                 props                    : {
                     theme                : themeName,
                     
                     emphasized           : true,
-                    outlined             : true,
                     mild                 : true,
+                    outlined             : true,
                 },
                 expectedBackgroundColor  : OUTLINED_BACKG_COLOR,
                 expectedBackgroundImage  : HAS_BACKG_GRADIENT,

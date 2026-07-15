@@ -9,11 +9,11 @@ import {
     type EmphasizedVariantProps,
 }                           from '@reusable-ui/emphasized-variant'  // A utility for managing visual emphasis consistently across React components.
 import {
-    type OutlinedVariantProps,
-}                           from '@reusable-ui/outlined-variant'    // A utility for managing visual outline consistently across React components.
-import {
     type MildVariantProps,
 }                           from '@reusable-ui/mild-variant'        // A utility for managing mild styling (reading friendly) consistently across React components.
+import {
+    type OutlinedVariantProps,
+}                           from '@reusable-ui/outlined-variant'    // A utility for managing visual outline consistently across React components.
 
 
 
@@ -27,8 +27,8 @@ import {
  * - `size`
  * - `theme`
  * - `emphasized`
- * - `outlined`
  * - `mild`
+ * - `outlined`
  */
 export interface StylingVariantsProps
     extends
@@ -36,8 +36,8 @@ export interface StylingVariantsProps
         SizeVariantProps,
         ThemeVariantProps,
         EmphasizedVariantProps,
-        OutlinedVariantProps,
-        MildVariantProps
+        MildVariantProps,
+        OutlinedVariantProps
 {
 }
 
@@ -50,8 +50,8 @@ export interface StylingVariantsProps
  * - `size`
  * - `theme`
  * - `emphasized`
- * - `outlined`
  * - `mild`
+ * - `outlined`
  * 
  * Values may be absolute or relative (e.g. `'inherit'`, `'invert'`),
  * and are captured as-is without computing the final visual outcome.

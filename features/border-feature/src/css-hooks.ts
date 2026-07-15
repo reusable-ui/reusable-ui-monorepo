@@ -34,11 +34,11 @@ import {
     usingThemeVariant,
 }                           from '@reusable-ui/theme-variant'       // A utility for managing themes consistently across React components.
 import {
-    usingOutlinedVariant,
-}                           from '@reusable-ui/outlined-variant'    // A utility for managing visual outline consistently across React components.
-import {
     usingMildVariant,
 }                           from '@reusable-ui/mild-variant'        // A utility for managing mild styling (reading friendly) consistently across React components.
+import {
+    usingOutlinedVariant,
+}                           from '@reusable-ui/outlined-variant'    // A utility for managing visual outline consistently across React components.
 import {
     usingStrippedVariant,
 }                           from '@reusable-ui/stripped-variant'    // A utility for managing stripped styling (frameless, minimal layout) consistently across React components.
@@ -86,8 +86,8 @@ export const usingBorderFeature = (options?: CssBorderFeatureOptions): CssBorder
         borderFeatureRule : () => {
             // Peer variant dependencies (may be poisoned if not implemented):
             const { themeVariantVars    } = usingThemeVariant();
-            const { outlinedVariantVars } = usingOutlinedVariant();
             const { mildVariantVars     } = usingMildVariant();
+            const { outlinedVariantVars } = usingOutlinedVariant();
             const { strippedVariantVars } = usingStrippedVariant();
             
             

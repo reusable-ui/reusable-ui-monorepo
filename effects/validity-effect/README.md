@@ -27,7 +27,7 @@ This separation keeps responsibilities clear:
 ## ✨ Features
 ✔ Smooth transition between valid, invalid, and unvalidated states  
 ✔ Customizable options for valid and invalid theme names  
-✔ Unified theme switching across regular, outlined, and mild variants  
+✔ Unified theme switching across regular, mild, and outlined variants  
 ✔ Ready-to-use defaults for common scenarios, while remaining extensible for custom styling  
 
 ## 📦 Installation

@@ -40,7 +40,7 @@ const REGULAR_DECOR_COLORS  = {
     light     : 'oklch(0.098 0.0002 248)',
     dark      : 'oklch(0.926 0.001 248)',
 };
-const OUTLINED_DECOR_COLORS = {
+const MILD_DECOR_COLORS     = {
     primary   : 'oklch(0.551 0.2166 260)',
     secondary : 'oklch(0.532 0.01615 245)',
     success   : 'oklch(0.5225 0.11685 157)',
@@ -50,7 +50,7 @@ const OUTLINED_DECOR_COLORS = {
     light     : 'oklch(0.931 0.0019 248)',
     dark      : 'oklch(0.247 0.0095 248)',
 };
-const MILD_DECOR_COLORS     = {
+const OUTLINED_DECOR_COLORS = {
     primary   : 'oklch(0.551 0.2166 260)',
     secondary : 'oklch(0.532 0.01615 245)',
     success   : 'oklch(0.5225 0.11685 157)',
@@ -156,15 +156,6 @@ test.describe('usingDecorationFeature', () => {
                 expectedDecorationColor  : REGULAR_DECOR_COLORS[themeName],
             },
             {
-                title                    : `[${themeName}] outlined => should render outlined style`,
-                props                    : {
-                    theme                : themeName,
-                    
-                    outlined             : true,
-                },
-                expectedDecorationColor  : OUTLINED_DECOR_COLORS[themeName],
-            },
-            {
                 title                    : `[${themeName}] mild => should render mild style`,
                 props                    : {
                     theme                : themeName,
@@ -172,6 +163,15 @@ test.describe('usingDecorationFeature', () => {
                     mild                 : true,
                 },
                 expectedDecorationColor  : MILD_DECOR_COLORS[themeName],
+            },
+            {
+                title                    : `[${themeName}] outlined => should render outlined style`,
+                props                    : {
+                    theme                : themeName,
+                    
+                    outlined             : true,
+                },
+                expectedDecorationColor  : OUTLINED_DECOR_COLORS[themeName],
             },
             //#endregion One prop activated
             
@@ -199,12 +199,12 @@ test.describe('usingDecorationFeature', () => {
                 expectedDecorationColor  : MILD_DECOR_COLORS[themeName],
             },
             {
-                title                    : `[${themeName}] outlined + mild => should render outlined style, mild ignored`,
+                title                    : `[${themeName}] mild + outlined => should render outlined style, mild ignored`,
                 props                    : {
                     theme                : themeName,
                     
-                    outlined             : true,
                     mild                 : true,
+                    outlined             : true,
                 },
                 expectedDecorationColor  : OUTLINED_DECOR_COLORS[themeName],
             },
@@ -214,13 +214,13 @@ test.describe('usingDecorationFeature', () => {
             
             //#region Three prop activated
             {
-                title                    : `[${themeName}] emphasized + outlined + mild => should render outlined style, mild and emphasized are ignored`,
+                title                    : `[${themeName}] emphasized + mild + outlined => should render outlined style, mild and emphasized are ignored`,
                 props                    : {
                     theme                : themeName,
                     
                     emphasized           : true,
-                    outlined             : true,
                     mild                 : true,
+                    outlined             : true,
                 },
                 expectedDecorationColor  : OUTLINED_DECOR_COLORS[themeName],
             },

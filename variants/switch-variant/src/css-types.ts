@@ -35,8 +35,8 @@ export interface CssSwitchVariantFlagCase {
      * Determines when the flag variable should be active.
      * 
      * Guidelines:
-     * - Use `if**` helpers for positive flags (e.g. `ifOutlined`, `ifMild`).
-     * - Use `ifNot**` helpers for negative flags (e.g. `ifNotOutlined`, `ifNotMild`).
+     * - Use `if**` helpers for positive flags (e.g. `ifMild`, `ifOutlined`).
+     * - Use `ifNot**` helpers for negative flags (e.g. `ifNotMild`, `ifNotOutlined`).
      * 
      * Common sources:
      * - Built-in conditional functions, e.g. `ifOutlined`, `ifNotOutlined`

@@ -1,15 +1,15 @@
 import {
     regularBaseColor,
-    outlinedBaseColor,
     mildBaseColor,
+    outlinedBaseColor,
     
     validRegularBaseColor,
-    validOutlinedBaseColor,
     validMildBaseColor,
+    validOutlinedBaseColor,
     
     invalidRegularBaseColor,
-    invalidOutlinedBaseColor,
     invalidMildBaseColor,
+    invalidOutlinedBaseColor,
 } from './base-colors.js'
 
 
@@ -17,7 +17,7 @@ import {
 /**
  * Supported variant keys for ValidityEffect testing.
  */
-export const variantKeys = ['regular', 'outlined', 'mild'] as const;
+export const variantKeys = ['regular', 'mild', 'outlined'] as const;
 export type VariantKey = typeof variantKeys[number];
 
 /**
@@ -26,8 +26,8 @@ export type VariantKey = typeof variantKeys[number];
  */
 export const variantNameLower: Record<VariantKey, string> = {
     regular  : 'regular',
-    outlined : 'outlined',
     mild     : 'mild',
+    outlined : 'outlined',
 };
 
 /**
@@ -36,8 +36,8 @@ export const variantNameLower: Record<VariantKey, string> = {
  */
 export const variantNameUpper: Record<VariantKey, string> = {
     regular  : 'Regular',
-    outlined : 'Outlined',
     mild     : 'Mild',
+    outlined : 'Outlined',
 };
 
 /**
@@ -46,8 +46,8 @@ export const variantNameUpper: Record<VariantKey, string> = {
  */
 export const variantBaseColor: Record<VariantKey, string> = {
     regular  : regularBaseColor,
-    outlined : outlinedBaseColor,
     mild     : mildBaseColor,
+    outlined : outlinedBaseColor,
 };
 
 /**
@@ -56,8 +56,8 @@ export const variantBaseColor: Record<VariantKey, string> = {
  */
 export const variantValidBaseColor: Record<VariantKey, string> = {
     regular  : validRegularBaseColor,
-    outlined : validOutlinedBaseColor,
     mild     : validMildBaseColor,
+    outlined : validOutlinedBaseColor,
 };
 
 /**
@@ -66,6 +66,6 @@ export const variantValidBaseColor: Record<VariantKey, string> = {
  */
 export const variantInvalidBaseColor: Record<VariantKey, string> = {
     regular  : invalidRegularBaseColor,
-    outlined : invalidOutlinedBaseColor,
     mild     : invalidMildBaseColor,
+    outlined : invalidOutlinedBaseColor,
 };

@@ -1,6 +1,6 @@
 # @reusable-ui/switch-variant 📦  
 
-**switch-variant** is a reusable abstraction for building **switch-based variants** such as `outlined-variant`, `mild-variant`, `orientation-variant`, and `emphasized-variant`.  
+**switch-variant** is a reusable abstraction for building **switch-based variants** such as `orientation-variant`, `emphasized-variant`, `mild-variant`, and `outlined-variant`.  
 It provides a shared `usingSwitchVariant` helper that drives **boolean-like flag variables** and an optional **numeric factor variable** for algebraic styling.
 
 With **switch-variant**, you can:
@@ -184,8 +184,8 @@ This layered approach makes switch-based variants both **expressive** and **main
 - [`@reusable-ui/orientation-variant`](https://www.npmjs.com/package/@reusable-ui/orientation-variant) - A utility for managing orientations consistently across React components.  
 - [`@reusable-ui/flow-direction-variant`](https://www.npmjs.com/package/@reusable-ui/flow-direction-variant) - A utility for managing flow directions consistently across React components.  
 - [`@reusable-ui/emphasized-variant`](https://www.npmjs.com/package/@reusable-ui/emphasized-variant) - A utility for managing visual emphasis consistently across React components.  
-- [`@reusable-ui/outlined-variant`](https://www.npmjs.com/package/@reusable-ui/outlined-variant) - A utility for managing visual outline consistently across React components.  
 - [`@reusable-ui/mild-variant`](https://www.npmjs.com/package/@reusable-ui/mild-variant) - A utility for managing mild styling (reading friendly) consistently across React components.  
+- [`@reusable-ui/outlined-variant`](https://www.npmjs.com/package/@reusable-ui/outlined-variant) - A utility for managing visual outline consistently across React components.  
 - [`@reusable-ui/stripped-variant`](https://www.npmjs.com/package/@reusable-ui/stripped-variant) - A utility for managing stripped styling (frameless, minimal layout) consistently across React components.  
 
 ## 🤝 Contributing  

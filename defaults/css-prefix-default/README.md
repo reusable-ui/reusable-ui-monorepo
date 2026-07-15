@@ -102,8 +102,8 @@ This avoids **hard-coded prefix strings**, reducing the risk of accidental colli
 | defaultSizeVariantPrefix          | sz    |
 | defaultThemeVariantPrefix         | th    |
 | defaultEmphasizedVariantPrefix    | em    |
-| defaultOutlinedVariantPrefix      | ou    |
 | defaultMildVariantPrefix          | mi    |
+| defaultOutlinedVariantPrefix      | ou    |
 | defaultStrippedVariantPrefix      | st    |
 | defaultBackgroundFeaturePrefix    | bg    |
 | defaultForegroundFeaturePrefix    | fg    |

@@ -44,8 +44,8 @@ export interface DragEffectTestProps {
  * - Mocks `activeFactor` via inline style for controlled testing.
  * - Uses static colors for simplicity:
  *   - Regular background  → pure blue   `oklch(0.5 0.3 265 / 1)`
- *   - Outlined background → transparent `oklch(0 0 0 / 0)`
  *   - Mild background     → light blue  `oklch(0.7 0.2 265 / 1)`
+ *   - Outlined background → transparent `oklch(0 0 0 / 0)`
  */
 export const DragEffectTest = (props: DragEffectTestProps) => {
     const {

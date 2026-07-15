@@ -26,11 +26,11 @@ import {
     usingThemeVariant,
 }                           from '@reusable-ui/theme-variant'       // A utility for managing themes consistently across React components.
 import {
-    usingOutlinedVariant,
-}                           from '@reusable-ui/outlined-variant'    // A utility for managing visual outline consistently across React components.
-import {
     usingMildVariant,
 }                           from '@reusable-ui/mild-variant'        // A utility for managing mild styling (reading friendly) consistently across React components.
+import {
+    usingOutlinedVariant,
+}                           from '@reusable-ui/outlined-variant'    // A utility for managing visual outline consistently across React components.
 
 
 
@@ -54,8 +54,8 @@ export const usingForegroundFeature = (options?: CssForegroundFeatureOptions): C
         foregroundFeatureRule : () => {
             // Peer variant dependencies (may be poisoned if not implemented):
             const { themeVariantVars    } = usingThemeVariant();
-            const { outlinedVariantVars } = usingOutlinedVariant();
             const { mildVariantVars     } = usingMildVariant();
+            const { outlinedVariantVars } = usingOutlinedVariant();
             
             
             

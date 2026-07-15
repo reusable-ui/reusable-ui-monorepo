@@ -47,8 +47,8 @@ const testCases: ValidityEffectTestCase[] = [
             title                   : `${variantNameUpper[variant]} variant, factor=unset → expect no switching to validity colors (${mode} mode)`,
             props                   : {
                 validityFactorCond  : 'unset',
-                outlined            : variant === 'outlined',
                 mild                : variant === 'mild',
+                outlined            : variant === 'outlined',
                 mode,
             },
             expectedBackgroundColor : variantBaseColor[variant],
@@ -63,8 +63,8 @@ const testCases: ValidityEffectTestCase[] = [
             title                   : `${variantNameUpper[variant]} variant, factor=0 → expect no switching to validity colors (${mode} mode)`,
             props                   : {
                 validityFactorCond  : 0,
-                outlined            : variant === 'outlined',
                 mild                : variant === 'mild',
+                outlined            : variant === 'outlined',
                 mode,
             },
             expectedBackgroundColor : variantBaseColor[variant],
@@ -79,8 +79,8 @@ const testCases: ValidityEffectTestCase[] = [
             title                   : `${variantNameUpper[variant]} variant, factor=1 → expect fully switching to valid colors (${mode} mode)`,
             props                   : {
                 validityFactorCond  : +1,
-                outlined            : variant === 'outlined',
                 mild                : variant === 'mild',
+                outlined            : variant === 'outlined',
                 mode,
             },
             expectedBackgroundColor : variantValidBaseColor[variant],
@@ -95,8 +95,8 @@ const testCases: ValidityEffectTestCase[] = [
             title                   : `${variantNameUpper[variant]} variant, factor=1 → expect fully switching to invalid colors (${mode} mode)`,
             props                   : {
                 validityFactorCond  : -1,
-                outlined            : variant === 'outlined',
                 mild                : variant === 'mild',
+                outlined            : variant === 'outlined',
                 mode,
             },
             expectedBackgroundColor : variantInvalidBaseColor[variant],
@@ -112,8 +112,8 @@ const testCases: ValidityEffectTestCase[] = [
                 title                   : `${variantNameUpper[variant]} variant, factor=${factor} → expect partially switching to valid colors (${mode} mode)`,
                 props                   : {
                     validityFactorCond  : factor,
-                    outlined            : variant === 'outlined',
                     mild                : variant === 'mild',
+                    outlined            : variant === 'outlined',
                     mode,
                 },
                 
@@ -139,8 +139,8 @@ const testCases: ValidityEffectTestCase[] = [
                 title                   : `${variantNameUpper[variant]} variant, factor=${factor} → expect partially switching to invalid colors (${mode} mode)`,
                 props                   : {
                     validityFactorCond  : factor,
-                    outlined            : variant === 'outlined',
                     mild                : variant === 'mild',
+                    outlined            : variant === 'outlined',
                     mode,
                 },
                 
@@ -166,8 +166,8 @@ const testCases: ValidityEffectTestCase[] = [
                 title                   : `${variantNameUpper[variant]} variant, factor=${factor} → expect clamped switching to invalid colors (${mode} mode)`,
                 props                   : {
                     validityFactorCond  : factor,
-                    outlined            : variant === 'outlined',
                     mild                : variant === 'mild',
+                    outlined            : variant === 'outlined',
                     mode,
                 },
                 expectedBackgroundColor : (factor > 1) ? variantValidBaseColor[variant] : variantInvalidBaseColor[variant],

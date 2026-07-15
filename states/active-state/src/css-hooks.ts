@@ -45,11 +45,11 @@ import {
  * // Background colors:
  * import { usingBackgroundFeature } from '@reusable-ui/background-feature';
  * 
- * // Outlined variant:
- * import { usingOutlinedVariant } from '@reusable-ui/outlined-variant';
- * 
  * // Mild variant:
  * import { usingMildVariant } from '@reusable-ui/mild-variant';
+ * 
+ * // Outlined variant:
+ * import { usingOutlinedVariant } from '@reusable-ui/outlined-variant';
  * 
  * // CSS-in-JS:
  * import { style, vars, keyframes, switchOf } from '@cssfn/core';
@@ -75,15 +75,15 @@ import {
  *         backgroundFeatureVars : { regularBackgCond, backgColor },
  *     } = usingBackgroundFeature();
  *     
- *     // Feature: outlined variant
- *     const {
- *         outlinedVariantVars : { isOutlined, notOutlined },
- *     } = usingOutlinedVariant();
- *     
  *     // Feature: mild variant
  *     const {
  *         mildVariantVars    : { isMild, notMild },
  *     } = usingMildVariant();
+ *     
+ *     // Feature: outlined variant
+ *     const {
+ *         outlinedVariantVars : { isOutlined, notOutlined },
+ *     } = usingOutlinedVariant();
  *     
  *     return style({
  *         display: 'flex',
@@ -120,13 +120,13 @@ import {
  *         // Example usage:
  *         // - Background color interpolates with `activeFactor`.
  *         // - 0 → base (variant-aware) color, 1 → active (regular) color.
- *         // - only applies if outlined or mild (not regular).
+ *         // - only applies if mild or outlined (not regular).
  *         backgroundColor: [[
- *             // Only applies if outlined or mild (not regular):
+ *             // Only applies if mild or outlined (not regular):
  *             switchOf(
- *                 isOutlined,
- *                 // or
  *                 isMild,
+ *                 // or
+ *                 isOutlined,
  *             ),
  *             
  * `color-mix(in oklch,
@@ -141,7 +141,7 @@ import {
  *         // Example usage:
  *         // - filter (brightness, contrast, saturate) interpolates with `activeFactor`.
  *         // - 0 → noop filter, 1 → active filter.
- *         // - only applies if neither outlined nor mild (regular only).
+ *         // - only applies if neither mild nor outlined (regular only).
  *         //
  *         // Example for active brightness value of 0.65:
  *         // brightness(calc(1 - ((1 - 0.65) * factor)))
@@ -152,10 +152,10 @@ import {
  *         '--_activeContrast'   : 1.5,
  *         '--_activeSaturate'   : 1,
  *         filter: [[
- *             // Only applies if neither outlined nor mild (regular only):
- *             notOutlined,
- *             // and
+ *             // Only applies if neither mild nor outlined (regular only):
  *             notMild,
+ *             // and
+ *             notOutlined,
  *             
  *             `brightness(calc(1 - ((1 - var(--_activeBrightness)) * ${activeFactor})))`,
  *             `contrast(calc(1 - ((1 - var(--_activeContrast)) * ${activeFactor})))`,

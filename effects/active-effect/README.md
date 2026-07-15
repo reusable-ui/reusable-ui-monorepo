@@ -6,7 +6,7 @@ making components **visually stand out** when active.
 
 The effects are designed to feel natural to users:  
 - **Regular variants** darken in light mode or lighten in dark mode, enhancing visual interest.  
-- **Outlined and mild variants** smoothly shift from their lighter appearance into the bolder regular style.  
+- **Mild and outlined variants** smoothly shift from their lighter appearance into the bolder regular style.  
 
 By using `usingActiveEffect()`, you can apply these effects consistently across your components — making them appear stronger and more pronounced — with optional customization for brightness, contrast, and saturation.  
 Authors who need more control can override or extend the defaults, but for most everyday cases this package provides a clean, reliable foundation.
@@ -26,7 +26,7 @@ This separation keeps responsibilities clear:
 
 ## ✨ Features
 ✔ Smooth transition between active and inactive states  
-✔ Variant-aware behavior for regular, outlined, and mild styles  
+✔ Variant-aware behavior for regular, mild, and outlined styles  
 ✔ Customizable options for brightness, contrast, and saturation levels  
 ✔ Adaptive brightness that automatically adjusts for light and dark mode  
 ✔ Unified filter stack that composes seamlessly with other state-driven effects  
@@ -52,7 +52,7 @@ Exposes strongly typed CSS variables for transitional effects.
 
 Behavior:
 - Regular variants: darken in light mode or lighten in dark mode.
-- Outlined/mild variants: interpolate from variant colors to regular colors.
+- Mild/outlined variants: interpolate from variant colors to regular colors.
 
 Smoothly transitions between active and inactive states by animating colors and/or filter effects.
 Affects background, foreground, decoration, and border colors.
@@ -209,11 +209,11 @@ making components **visually stand out** when active.
 - At `factor = 0` → neutral values (no adjustment).  
 - At `factor = 1` → configured target values.  
 - Between `0` and `1` → smooth interpolation.  
-- Disabled for **outlined or mild variants**.
+- Disabled for **mild or outlined variants**.
 
 ##### 2. **Color Shades Formula**
 
-- Gradually shifts the **color shades** from lighter variants (**outlined** and **mild**) toward the stronger **regular** variant.  
+- Gradually shifts the **color shades** from lighter variants (**mild** and **outlined**) toward the stronger **regular** variant.  
 - At `factor = 0` → original color shades.  
 - At `factor = 1` → regular color shades.  
 - Between `0` and `1` → smooth interpolation.  

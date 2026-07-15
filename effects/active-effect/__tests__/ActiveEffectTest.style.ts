@@ -1,6 +1,6 @@
 import { style } from '@cssfn/core'
-import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'
 import { usingMildVariant} from '@reusable-ui/mild-variant'
+import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'
 import { usingFilterFeature } from '@reusable-ui/filter-feature';
 import { usingBackgroundFeature } from '@reusable-ui/background-feature';
 import { usingActiveEffect } from '../dist/index.js'
@@ -22,11 +22,11 @@ import {
 export default function activeEffectTestStyle() {
     // Variants:
     const {
-        outlinedVariantRule,
-    } = usingOutlinedVariant();
-    const {
         mildVariantRule,
     } = usingMildVariant();
+    const {
+        outlinedVariantRule,
+    } = usingOutlinedVariant();
     
     // Features:
     const {
@@ -60,8 +60,8 @@ export default function activeEffectTestStyle() {
     
     return style({
         // Variants:
-        ...outlinedVariantRule(),
         ...mildVariantRule(),
+        ...outlinedVariantRule(),
         
         // Features:
         ...filterFeatureRule(),

@@ -1,11 +1,11 @@
 # @reusable-ui/background-feature 📦  
 
-A styling utility for resolving the appropriate background color based on the currently active variants — including theme, emphasize, outlined, mild, and stripped.  
+A styling utility for resolving the appropriate background color based on the currently active variants — including theme, emphasize, mild, outlined, and stripped.  
 It exposes CSS variables for coloring your component’s background, with support for layered background composition and CSS color function adjustments.
 Ideal for buttons, cards, dialogs, and any theme-aware components.
 
 ## ✨ Features
-✔ Dynamically switches background color based on active variants (theme, emphasize, outlined, mild)  
+✔ Dynamically switches background color based on active variants (theme, emphasize, mild, outlined)  
 ✔ Supports stripped variant for geometry-only rendering  
 ✔ Exposes background color variable (`backgColor`) for direct usage or further adjustment via CSS color functions  
 ✔ Exposes composite background layers (`backg`) combining gradient, custom background layers, and themed color  
@@ -62,8 +62,8 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 // Supporting variants:
 import { usingThemeVariant } from '@reusable-ui/theme-variant'
 import { usingEmphasizedVariant } from '@reusable-ui/emphasized-variant'
-import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'
 import { usingMildVariant } from '@reusable-ui/mild-variant'
+import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'
 import { usingStrippedVariant } from '@reusable-ui/stripped-variant'
 
 // Theme-aware background feature:
@@ -75,8 +75,8 @@ import { style } from '@cssfn/core';
 export const componentStyle = () => {
     const { themeVariantRule      } = usingThemeVariant();
     const { emphasizedVariantRule } = usingEmphasizedVariant();
-    const { outlinedVariantRule   } = usingOutlinedVariant();
     const { mildVariantRule       } = usingMildVariant();
+    const { outlinedVariantRule   } = usingOutlinedVariant();
     const { strippedVariantRule   } = usingStrippedVariant();
     
     const {
@@ -97,8 +97,8 @@ export const componentStyle = () => {
         // Apply supporting variant rules:
         ...themeVariantRule(),
         ...emphasizedVariantRule(),
-        ...outlinedVariantRule(),
         ...mildVariantRule(),
+        ...outlinedVariantRule(),
         ...strippedVariantRule(),
         
         // Apply theme-aware background feature:

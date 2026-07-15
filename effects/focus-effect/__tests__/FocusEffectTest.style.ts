@@ -1,6 +1,6 @@
 import { style } from '@cssfn/core'
-import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'
 import { usingMildVariant} from '@reusable-ui/mild-variant'
+import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'
 import { usingBoxShadowFeature } from '@reusable-ui/box-shadow-feature'
 import { usingBackgroundFeature } from '@reusable-ui/background-feature'
 import { usingRingFeature } from '@reusable-ui/ring-feature'
@@ -13,11 +13,11 @@ import { usingFocusEffect } from '../dist/index.js'
 export default function focusEffectTestStyle() {
     // Variants:
     const {
-        outlinedVariantRule,
-    } = usingOutlinedVariant();
-    const {
         mildVariantRule,
     } = usingMildVariant();
+    const {
+        outlinedVariantRule,
+    } = usingOutlinedVariant();
     
     // Features:
     const {
@@ -43,8 +43,8 @@ export default function focusEffectTestStyle() {
     
     return style({
         // Variants:
-        ...outlinedVariantRule(),
         ...mildVariantRule(),
+        ...outlinedVariantRule(),
         
         // Features:
         ...boxShadowFeatureRule(),

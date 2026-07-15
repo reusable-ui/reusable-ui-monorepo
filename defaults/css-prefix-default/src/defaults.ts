@@ -62,8 +62,8 @@ export const defaultFlowDirectionVariantPrefix = 'fd'    // flow-direction
 export const defaultSizeVariantPrefix          = 'sz'    // size
 export const defaultThemeVariantPrefix         = 'th'    // theme
 export const defaultEmphasizedVariantPrefix    = 'em'    // emphasized
-export const defaultOutlinedVariantPrefix      = 'ou'    // outlined
 export const defaultMildVariantPrefix          = 'mi'    // mild
+export const defaultOutlinedVariantPrefix      = 'ou'    // outlined
 export const defaultStrippedVariantPrefix      = 'st'    // stripped
 
 

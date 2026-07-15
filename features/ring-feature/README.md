@@ -53,8 +53,8 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 // Supporting variants:
 import { usingThemeVariant } from '@reusable-ui/theme-variant'
 import { usingEmphasizedVariant } from '@reusable-ui/emphasized-variant' // optional
-import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'     // optional
 import { usingMildVariant } from '@reusable-ui/mild-variant'             // optional
+import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'     // optional
 
 // Theme-aware ring feature:
 import { usingRingFeature } from '@reusable-ui/ring-feature';
@@ -65,8 +65,8 @@ import { rule, style } from '@cssfn/core';
 export const componentStyle = () => {
     const { themeVariantRule      } = usingThemeVariant();
     const { emphasizedVariantRule } = usingEmphasizedVariant(); // optional
-    const { outlinedVariantRule   } = usingOutlinedVariant();   // optional
     const { mildVariantRule       } = usingMildVariant();       // optional
+    const { outlinedVariantRule   } = usingOutlinedVariant();   // optional
     
     const {
         ringFeatureRule,
@@ -82,8 +82,8 @@ export const componentStyle = () => {
         // Apply supporting variant rules:
         ...themeVariantRule(),
         ...emphasizedVariantRule(), // optional
-        ...outlinedVariantRule(),   // optional
         ...mildVariantRule(),       // optional
+        ...outlinedVariantRule(),   // optional
         
         // Apply theme-aware ring feature:
         ...ringFeatureRule(),

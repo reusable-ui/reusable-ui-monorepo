@@ -203,8 +203,8 @@ const orientation = useResolvedInvertableVariant(
 - [`@reusable-ui/size-variant`](https://www.npmjs.com/package/@reusable-ui/size-variant) – small, medium, and large variants.  
 - [`@reusable-ui/theme-variant`](https://www.npmjs.com/package/@reusable-ui/theme-variant) – primary, secondary, success, etc. variants.  
 - [`@reusable-ui/emphasized-variant`](https://www.npmjs.com/package/@reusable-ui/emphasized-variant) – emphasized variant.  
-- [`@reusable-ui/outlined-variant`](https://www.npmjs.com/package/@reusable-ui/outlined-variant) – border-only variant.  
 - [`@reusable-ui/mild-variant`](https://www.npmjs.com/package/@reusable-ui/mild-variant) – content-friendly colored variant.  
+- [`@reusable-ui/outlined-variant`](https://www.npmjs.com/package/@reusable-ui/outlined-variant) – border-only variant.  
 - [`@reusable-ui/stripped-variant`](https://www.npmjs.com/package/@reusable-ui/stripped-variant) – stripped layout variant.  
 
 ## 📖 Part of the Reusable-UI Framework  

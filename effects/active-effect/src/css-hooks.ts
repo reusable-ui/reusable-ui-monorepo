@@ -24,25 +24,25 @@ import {
 
 // Reusable-ui variants:
 import {
-    usingOutlinedVariant,
-}                           from '@reusable-ui/outlined-variant'    // A utility for managing visual outline consistently across React components.
-import {
     usingMildVariant,
 }                           from '@reusable-ui/mild-variant'        // A utility for managing mild styling (reading friendly) consistently across React components.
+import {
+    usingOutlinedVariant,
+}                           from '@reusable-ui/outlined-variant'    // A utility for managing visual outline consistently across React components.
 
 // Reusable-ui features:
 import {
     usingBackgroundFeature,
-}                           from '@reusable-ui/background-feature'  // A styling utility for resolving the appropriate background color based on the currently active variants — including theme, emphasize, outlined, mild, and stripped.
+}                           from '@reusable-ui/background-feature'  // A styling utility for resolving the appropriate background color based on the currently active variants — including theme, emphasize, mild, outlined, and stripped.
 import {
     usingForegroundFeature,
-}                           from '@reusable-ui/foreground-feature'  // A styling utility for resolving the appropriate foreground color based on the currently active variants — including theme, outlined, and mild.
+}                           from '@reusable-ui/foreground-feature'  // A styling utility for resolving the appropriate foreground color based on the currently active variants — including theme, mild, and outlined.
 import {
     usingDecorationFeature,
-}                           from '@reusable-ui/decoration-feature'  // A styling utility for resolving the appropriate decoration color based on the currently active variants — including theme, outlined, and mild.
+}                           from '@reusable-ui/decoration-feature'  // A styling utility for resolving the appropriate decoration color based on the currently active variants — including theme, mild, and outlined.
 import {
     usingBorderFeature,
-}                           from '@reusable-ui/border-feature'      // A styling utility for resolving the appropriate border color, geometry, and radius based on the currently active variants — including theme, outlined, mild, and stripped.
+}                           from '@reusable-ui/border-feature'      // A styling utility for resolving the appropriate border color, geometry, and radius based on the currently active variants — including theme, mild, outlined, and stripped.
 
 // Reusable-ui states:
 import {
@@ -65,7 +65,7 @@ import {
  * 
  * Behavior:
  * - Regular variants: darken in light mode or lighten in dark mode.
- * - Outlined/mild variants: interpolate from variant colors to regular colors.
+ * - Mild/outlined variants: interpolate from variant colors to regular colors.
  * 
  * Smoothly transitions between active and inactive states by animating colors and/or filter effects.
  * Affects background, foreground, decoration, and border colors.
@@ -84,8 +84,8 @@ export const usingActiveEffect = (options?: CssActiveEffectOptions): CssActiveEf
     
     
     // Variants:
-    const { outlinedVariantVars : { isOutlined } } = usingOutlinedVariant();
     const { mildVariantVars     : { isMild     } } = usingMildVariant();
+    const { outlinedVariantVars : { isOutlined } } = usingOutlinedVariant();
     
     // Features:
     const { backgroundFeatureVars : { regularBackgCond , backgVariantColor , backgColorOverride  } } = usingBackgroundFeature();
@@ -116,7 +116,7 @@ export const usingActiveEffect = (options?: CssActiveEffectOptions): CssActiveEf
                          * Color override:
                          * - Fully inactive         → `unset`
                          * - Regular variants       → `unset`
-                         * - Outlined/mild variants → Interpolates between variant and regular colors.
+                         * - Mild/outlined variants → Interpolates between variant and regular colors.
                          * 
                          * Behavior:
                          * - factor = 0      → Original variant color.
@@ -125,7 +125,7 @@ export const usingActiveEffect = (options?: CssActiveEffectOptions): CssActiveEf
                          */
                         [overrideVar]:
 `
-${switchOf(isOutlined, isMild)}
+${switchOf(isMild, isOutlined)}
 
 color-mix(in oklch,
     ${variantColor}
@@ -143,15 +143,15 @@ color-mix(in oklch,
             /**
              * Bump factor:
              * - Fully inactive         → `unset` (`activeFactorCond` is `unset` when fully inactive, so the bump factor is also `unset`).
-             * - Regular variants       → `unset` (`isOutlined and `isMild` are both `unset` for regular variants, so the bump factor is also `unset`).
-             * - Outlined/mild variants → The bump factor on overshoot/undershoot:
+             * - Regular variants       → `unset` (`isMild` and `isOutlined` are both `unset` for regular variants, so the bump factor is also `unset`).
+             * - Mild/outlined variants → The bump factor on overshoot/undershoot:
              *   - Factor > 1      → Positive (over-emphasizes).
              *   - Factor < 0      → Negative (under-emphasizes).
              *   - Between 0 and 1 → 0 (neutral).
              */
             [bumpFactorCond]:
 `
-${switchOf(isOutlined, isMild)}
+${switchOf(isMild, isOutlined)}
 
 calc(
     max(0, ${activeFactorCond} - 1)
@@ -164,7 +164,7 @@ calc(
              * Effective factor:
              * - Fully inactive         → `unset` (`bumpFactorCond` and `activeFactorCond` are both `unset` when fully inactive, so the effective factor is also `unset`).
              * - Regular variants       → Mirrors the active factor (`bumpFactorCond` is `unset` but falls back to `activeFactorCond` for regular variants, so the effective factor directly reflects the active factor).
-             * - Outlined/mild variants → The bump factor on overshoot/undershoot (driven by `bumpFactorCond`):
+             * - Mild/outlined variants → The bump factor on overshoot/undershoot (driven by `bumpFactorCond`):
              *   - Factor > 1      → Positive (over-emphasizes).
              *   - Factor < 0      → Negative (under-emphasizes).
              *   - Between 0 and 1 → 0 (neutral).
@@ -178,7 +178,7 @@ calc(
              * Active filter:
              * - Fully inactive         → `unset`
              * - Regular variants       → Interpolates filter effect adjustments.
-             * - Outlined/mild variants → Neutral at factors between 0 and 1, but responds to overshoot/undershoot.
+             * - Mild/outlined variants → Neutral at factors between 0 and 1, but responds to overshoot/undershoot.
              */
             [activeFilter]: composeFilterEffect(effectiveFactorCond, { ...restOptions, enablesReverseIntent: false, brightness }),
         }),

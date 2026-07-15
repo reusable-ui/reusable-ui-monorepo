@@ -92,8 +92,8 @@ describe('useStylingProps()', () => {
                 size       : undefined,
                 theme      : undefined,
                 emphasized : undefined,
-                outlined   : undefined,
                 mild       : undefined,
+                outlined   : undefined,
             },
             expectedResult : {},
         },
@@ -103,15 +103,15 @@ describe('useStylingProps()', () => {
                 size       : 'lg',
                 theme      : 'primary',
                 emphasized : true,
-                outlined   : false,
                 mild       : 'inherit',
+                outlined   : false,
             },
             expectedResult : {
                 size       : 'lg',
                 theme      : 'primary',
                 emphasized : true,
-                outlined   : false,
                 mild       : 'inherit',
+                outlined   : false,
             },
         },
         {
@@ -120,8 +120,8 @@ describe('useStylingProps()', () => {
                 size       : 'sm',
                 theme      : 'danger',
                 emphasized : false,
-                outlined   : true,
                 mild       : true,
+                outlined   : true,
                 onClick    : () => { },
                 ariaLabel  : 'test',
                 customProp : 'value',
@@ -130,8 +130,8 @@ describe('useStylingProps()', () => {
                 size       : 'sm',
                 theme      : 'danger',
                 emphasized : false,
-                outlined   : true,
                 mild       : true,
+                outlined   : true,
             },
         },
         {
@@ -163,16 +163,16 @@ describe('useStylingProps()', () => {
             props: {
                 size       : 'md',           // defined
                 theme      : undefined,      // undefined
-                outlined   : true,           // defined
                 emphasized : undefined,      // undefined
                 mild       : 'inherit',      // defined
+                outlined   : true,           // defined
                 role       : 'button',       // foreign
                 dataTestId : 'variant-test', // foreign
             },
             expectedResult: {
                 size       : 'md',
-                outlined   : true,
                 mild       : 'inherit',
+                outlined   : true,
             },
         }
     ])(

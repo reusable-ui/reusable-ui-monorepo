@@ -48,8 +48,8 @@ const testCases: FocusEffectTestCase[] = [
             title                  : `${variantNameUpper[variant]} variant, factor=unset → expect no focus ring (${mode} mode)`,
             props                  : {
                 focusFactorCond    : 'unset',
-                outlined           : variant === 'outlined',
                 mild               : variant === 'mild',
+                outlined           : variant === 'outlined',
                 mode,
             },
             expectedBoxShadowWidth : null,
@@ -65,8 +65,8 @@ const testCases: FocusEffectTestCase[] = [
             title                  : `${variantNameUpper[variant]} variant, factor=0 → expect invisible focus ring (${mode} mode)`,
             props                  : {
                 focusFactorCond    : 0,
-                outlined           : variant === 'outlined',
                 mild               : variant === 'mild',
+                outlined           : variant === 'outlined',
                 mode,
             },
             expectedBoxShadowWidth : 0,
@@ -82,8 +82,8 @@ const testCases: FocusEffectTestCase[] = [
             title                  : `${variantNameUpper[variant]} variant, factor=1 → expect fully expanded focus ring (${mode} mode)`,
             props                  : {
                 focusFactorCond    : 1,
-                outlined           : variant === 'outlined',
                 mild               : variant === 'mild',
+                outlined           : variant === 'outlined',
                 mode,
             },
             expectedBoxShadowWidth : 1 * 4, // The configured focus ring width is 4px.
@@ -100,8 +100,8 @@ const testCases: FocusEffectTestCase[] = [
                 title                  : `${variantNameUpper[variant]} variant, factor=${factor} → expect partially expanded focus ring (${mode} mode)`,
                 props                  : {
                     focusFactorCond    : factor,
-                    outlined           : variant === 'outlined',
                     mild               : variant === 'mild',
+                    outlined           : variant === 'outlined',
                     mode,
                 },
                 expectedBoxShadowWidth : factor * 4, // The configured focus ring width is 4px.
@@ -119,8 +119,8 @@ const testCases: FocusEffectTestCase[] = [
                 title                  : `${variantNameUpper[variant]} variant, factor=${factor} → expect ${factor < 0 ? 'clamped to zero' : 'overshoot'} focus ring (${mode} mode)`,
                 props                  : {
                     focusFactorCond    : factor,
-                    outlined           : variant === 'outlined',
                     mild               : variant === 'mild',
+                    outlined           : variant === 'outlined',
                     mode,
                 },
                 expectedBoxShadowWidth : Math.max(0, factor * 4), // The configured focus ring width is 4px.

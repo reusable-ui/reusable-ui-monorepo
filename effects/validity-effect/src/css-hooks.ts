@@ -127,14 +127,14 @@ export const usingValidityEffect = (options?: CssValidityEffectOptions): CssVali
             
             ...rules(
                 (['backg', 'foreg', 'decor', 'border', 'ring'] as const).flatMap((surfaceRole) =>
-                    (['regular', 'outlined', 'mild'] as const).map((variantRole) =>
+                    (['regular', 'mild', 'outlined'] as const).map((variantRole) =>
                         (
                             // Outlined background is always transparent → no override needed:
                             ((surfaceRole === 'backg') && (variantRole === 'outlined'))
                             
                             ||
                             
-                            // Rings always use the regular override → no outlined/mild overrides:
+                            // Rings always use the regular override → no mild/outlined overrides:
                             ((surfaceRole === 'ring') && (variantRole !== 'regular'))
                         )
                         ? neverRule() // Nothing to render.
@@ -142,7 +142,7 @@ export const usingValidityEffect = (options?: CssValidityEffectOptions): CssVali
                             /**
                              * Color override logic:
                              * - Fully unvalidated              → `unset` (no color override, use current theme color).
-                             * - Regular/outlined/mild variants → Interpolates between variant color and valid/invalid colors.
+                             * - Regular/mild/outlined variants → Interpolates between variant color and valid/invalid colors.
                              * 
                              * Behavior:
                              * - factor = 0       → Current theme color (no validity influence).

@@ -3,8 +3,8 @@ import { HydrateStyles } from '@cssfn/cssfn-react'
 import { usingFocusState } from '@reusable-ui/focus-state'
 import { usingThemeVariant } from '@reusable-ui/theme-variant'
 import { colorParamConfigVars } from '@reusable-ui/color-config'
-import { useOutlinedVariant, type OutlinedVariantProps } from '@reusable-ui/outlined-variant'
 import { useMildVariant, type MildVariantProps} from '@reusable-ui/mild-variant'
+import { useOutlinedVariant, type OutlinedVariantProps } from '@reusable-ui/outlined-variant'
 import { regularBaseColor, mildBaseColor } from './base-colors.js'
 import { useFocusEffectTestStyles } from './FocusEffectTest.loader.js'
 
@@ -13,8 +13,8 @@ import { useFocusEffectTestStyles } from './FocusEffectTest.loader.js'
 export interface FocusEffectTestProps
     extends
         // Variants:
-        Required<OutlinedVariantProps>,
-        Required<MildVariantProps>
+        Required<MildVariantProps>,
+        Required<OutlinedVariantProps>
 {
     /**
      * Simulates the `focusFactorCond` CSS variable.
@@ -41,8 +41,8 @@ export interface FocusEffectTestProps
  * - Mocks `focusFactorCond` via inline style for controlled testing.
  * - Uses static colors for simplicity:
  *   - Regular background  → pure blue   `oklch(0.5 0.3 265 / 1)`
- *   - Outlined background → transparent `oklch(0 0 0 / 0)`
  *   - Mild background     → light blue  `oklch(0.7 0.2 265 / 1)`
+ *   - Outlined background → transparent `oklch(0 0 0 / 0)`
  */
 export const FocusEffectTest = (props: FocusEffectTestProps) => {
     const {
@@ -82,15 +82,15 @@ export const FocusEffectTest = (props: FocusEffectTestProps) => {
         ]: mildBaseColor,
     } as CSSProperties), [focusFactorCondVar, focusFactorCond]);
     
-    const { outlinedClassname } = useOutlinedVariant(props);
     const { mildClassname     } = useMildVariant(props);
+    const { outlinedClassname } = useOutlinedVariant(props);
     
     return (
         <div>
             <HydrateStyles />
             <div
                 data-testid="focus-effect-test"
-                className={`${styles.main} ${outlinedClassname} ${mildClassname}`}
+                className={`${styles.main} ${mildClassname} ${outlinedClassname}`}
                 style={inlineStyle}
             >
                 Focus Effect Test

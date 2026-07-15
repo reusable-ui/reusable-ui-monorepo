@@ -4,8 +4,8 @@ import { usingValidityState } from '@reusable-ui/validity-state'
 import { colorRoleMap, colorConfigVars } from '@reusable-ui/color-config'
 import { colorParamConfigVars } from '@reusable-ui/color-config'
 import { useThemeVariant } from '@reusable-ui/theme-variant'
-import { useOutlinedVariant, type OutlinedVariantProps } from '@reusable-ui/outlined-variant'
 import { useMildVariant, type MildVariantProps} from '@reusable-ui/mild-variant'
+import { useOutlinedVariant, type OutlinedVariantProps } from '@reusable-ui/outlined-variant'
 import {
     regularBaseColor,
     mildBaseColor,
@@ -23,8 +23,8 @@ import { useValidityEffectTestStyles } from './ValidityEffectTest.loader.js'
 export interface ValidityEffectTestProps
     extends
         // Variants:
-        Required<OutlinedVariantProps>,
-        Required<MildVariantProps>
+        Required<MildVariantProps>,
+        Required<OutlinedVariantProps>
 {
     /**
      * Simulates the `validityFactorCond` CSS variable.
@@ -53,8 +53,8 @@ export interface ValidityEffectTestProps
  * - Mocks `validityFactorCond` via inline style for controlled testing.
  * - Uses static colors for simplicity:
  *   - Regular background  → pure blue   `oklch(0.5 0.3 265 / 1)`
- *   - Outlined background → transparent `oklch(0 0 0 / 0)`
  *   - Mild background     → light blue  `oklch(0.7 0.2 265 / 1)`
+ *   - Outlined background → transparent `oklch(0 0 0 / 0)`
  */
 export const ValidityEffectTest = (props: ValidityEffectTestProps) => {
     const {
@@ -93,15 +93,15 @@ export const ValidityEffectTest = (props: ValidityEffectTestProps) => {
     } as CSSProperties), [validityFactorCondVar, validityFactorCond]);
     
     const { themeClassname    } = useThemeVariant({ theme: 'primary' });
-    const { outlinedClassname } = useOutlinedVariant(props);
     const { mildClassname     } = useMildVariant(props);
+    const { outlinedClassname } = useOutlinedVariant(props);
     
     return (
         <div>
             <HydrateStyles />
             <div
                 data-testid="validity-effect-test"
-                className={`${styles.main} ${themeClassname} ${outlinedClassname} ${mildClassname}`}
+                className={`${styles.main} ${themeClassname} ${mildClassname} ${outlinedClassname}`}
                 style={inlineStyle}
             >
                 Validity Effect Test

@@ -1,11 +1,11 @@
 # @reusable-ui/border-feature 📦  
 
-A styling utility for resolving the appropriate border color, geometry, and radius based on the currently active variants — including theme, outlined, mild, and stripped.  
+A styling utility for resolving the appropriate border color, geometry, and radius based on the currently active variants — including theme, mild, outlined, and stripped.  
 It exposes CSS variables for styling your component’s border, with support for CSS color function adjustments.
 Ideal for buttons, cards, dialogs, and any theme-aware components.
 
 ## ✨ Features
-✔ Dynamically switches border color based on active variants (theme, outlined, mild)  
+✔ Dynamically switches border color based on active variants (theme, mild, outlined)  
 ✔ Supports stripped variant for geometry-only rendering  
 ✔ Exposes logical border widths and radii for full layout control  
 ✔ Exposes border color variable (`borderColor`) for direct usage or further adjustment via CSS color functions  
@@ -69,8 +69,8 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 // Supporting variants:
 import { usingThemeVariant } from '@reusable-ui/theme-variant'
 import { usingEmphasizedVariant } from '@reusable-ui/emphasized-variant' // optional
-import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'
 import { usingMildVariant } from '@reusable-ui/mild-variant'
+import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'
 import { usingStrippedVariant } from '@reusable-ui/stripped-variant'
 
 // Theme-aware border feature:
@@ -82,8 +82,8 @@ import { style, children } from '@cssfn/core';
 export const componentStyle = () => {
     const { themeVariantRule      } = usingThemeVariant();
     const { emphasizedVariantRule } = usingEmphasizedVariant(); // optional
-    const { outlinedVariantRule   } = usingOutlinedVariant();
     const { mildVariantRule       } = usingMildVariant();
+    const { outlinedVariantRule   } = usingOutlinedVariant();
     const { strippedVariantRule   } = usingStrippedVariant();
     
     const {
@@ -120,8 +120,8 @@ export const componentStyle = () => {
         // Apply supporting variant rules:
         ...themeVariantRule(),
         ...emphasizedVariantRule(), // optional
-        ...outlinedVariantRule(),
         ...mildVariantRule(),
+        ...outlinedVariantRule(),
         ...strippedVariantRule(),
         
         // Apply theme-aware border feature:

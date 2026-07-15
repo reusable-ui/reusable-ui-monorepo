@@ -1,11 +1,11 @@
-import { regularBaseColor, outlinedBaseColor, mildBaseColor } from './base-colors.js'
+import { regularBaseColor, mildBaseColor, outlinedBaseColor } from './base-colors.js'
 
 
 
 /**
  * Supported variant keys for FocusEffect testing.
  */
-export const variantKeys = ['regular', 'outlined', 'mild'] as const;
+export const variantKeys = ['regular', 'mild', 'outlined'] as const;
 export type VariantKey = typeof variantKeys[number];
 
 /**
@@ -14,8 +14,8 @@ export type VariantKey = typeof variantKeys[number];
  */
 export const variantNameLower: Record<VariantKey, string> = {
     regular  : 'regular',
-    outlined : 'outlined',
     mild     : 'mild',
+    outlined : 'outlined',
 };
 
 /**
@@ -24,8 +24,8 @@ export const variantNameLower: Record<VariantKey, string> = {
  */
 export const variantNameUpper: Record<VariantKey, string> = {
     regular  : 'Regular',
-    outlined : 'Outlined',
     mild     : 'Mild',
+    outlined : 'Outlined',
 };
 
 /**
@@ -34,6 +34,6 @@ export const variantNameUpper: Record<VariantKey, string> = {
  */
 export const variantBaseColor: Record<VariantKey, string> = {
     regular  : regularBaseColor,
-    outlined : outlinedBaseColor,
     mild     : mildBaseColor,
+    outlined : outlinedBaseColor,
 };

@@ -29,8 +29,8 @@ Packages managing design variants encapsulate static styling logic, themes, and 
 | /size-variant | size | Resolves the size variant... | Pure noun representing a scale attribute. |
 | /theme-variant | theme | Resolves the theme variant... | Pure noun representing a visual configuration system. |
 | /emphasiz<span style="color: red;">ed</span>-variant | emphasiz<span style="color: red;">ed</span> | Resolves the emphasiz<span style="color: red;">ed</span> variant... | Past-participle adjective is chosen because the variant is a visual style modifier. |
-| /outlin<span style="color: red;">ed</span>-variant | outlin<span style="color: red;">ed</span> | Resolves the outlin<span style="color: red;">ed</span> variant... | Past-participle adjective is chosen because this variant describes a visual treatment rather than a system domain. |
 | /mild-variant | mild | Resolves the mild variant... | Pure adjective describing a softened visual style. |
+| /outlin<span style="color: red;">ed</span>-variant | outlin<span style="color: red;">ed</span> | Resolves the outlin<span style="color: red;">ed</span> variant... | Past-participle adjective is chosen because this variant describes a visual treatment rather than a system domain. |
 | /stripp<span style="color: red;">ed</span>-variant | stripp<span style="color: red;">ed</span> | Resolves the stripp<span style="color: red;">ed</span> variant... | Past-participle adjective is chosen because it describes a visual stripped-down (borderless) container more clearly than a noun. |
 
 

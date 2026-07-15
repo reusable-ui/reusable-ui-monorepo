@@ -1,11 +1,11 @@
 # @reusable-ui/foreground-feature 📦  
 
-A styling utility for resolving the appropriate foreground color based on the currently active variants — including theme, outlined, and mild.  
+A styling utility for resolving the appropriate foreground color based on the currently active variants — including theme, mild, and outlined.  
 It exposes CSS variables for coloring your component’s foreground, with support for CSS color function adjustments.
 Ideal for buttons, cards, dialogs, and any theme-aware components.
 
 ## ✨ Features
-✔ Dynamically switches foreground color based on active variants (theme, outlined, mild)  
+✔ Dynamically switches foreground color based on active variants (theme, mild, outlined)  
 ✔ Exposes foreground color variable (`foregColor`) for direct usage or further adjustment via CSS color functions  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
 ✔ Seamless integration across appearance, theming, and color systems  
@@ -55,8 +55,8 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 // Supporting variants:
 import { usingThemeVariant } from '@reusable-ui/theme-variant'
 import { usingEmphasizedVariant } from '@reusable-ui/emphasized-variant' // optional
-import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'
 import { usingMildVariant } from '@reusable-ui/mild-variant'
+import { usingOutlinedVariant } from '@reusable-ui/outlined-variant'
 
 // Theme-aware foreground feature:
 import { usingForegroundFeature } from '@reusable-ui/foreground-feature';
@@ -67,8 +67,8 @@ import { style } from '@cssfn/core';
 export const componentStyle = () => {
     const { themeVariantRule      } = usingThemeVariant();
     const { emphasizedVariantRule } = usingEmphasizedVariant(); // optional
-    const { outlinedVariantRule   } = usingOutlinedVariant();
     const { mildVariantRule       } = usingMildVariant();
+    const { outlinedVariantRule   } = usingOutlinedVariant();
     
     const {
         foregroundFeatureRule,
@@ -84,8 +84,8 @@ export const componentStyle = () => {
         // Apply supporting variant rules:
         ...themeVariantRule(),
         ...emphasizedVariantRule(), // optional
-        ...outlinedVariantRule(),
         ...mildVariantRule(),
+        ...outlinedVariantRule(),
         
         // Apply theme-aware foreground feature:
         ...foregroundFeatureRule(),

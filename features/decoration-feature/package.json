@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/decoration-feature",
   "version": "7.0.0",
-  "description": "A styling utility for resolving the appropriate decoration color based on the currently active variants — including theme, outlined, and mild.",
+  "description": "A styling utility for resolving the appropriate decoration color based on the currently active variants — including theme, mild, and outlined.",
   "keywords": [
     "decoration",
     "icon",

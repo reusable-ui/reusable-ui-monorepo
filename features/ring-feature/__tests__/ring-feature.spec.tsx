@@ -40,8 +40,8 @@ const REGULAR_RING_COLORS  = {
     light     : 'oklch(0.98 0.002 248 / 0.5)',
     dark      : 'oklch(0.26 0.01 248 / 0.5)',
 };
-const OUTLINED_RING_COLORS = REGULAR_RING_COLORS;
 const MILD_RING_COLORS     = REGULAR_RING_COLORS;
+const OUTLINED_RING_COLORS = REGULAR_RING_COLORS;
 
 const THEME_NAMES           = [
     'primary',
@@ -139,15 +139,6 @@ test.describe('usingRingFeature', () => {
                 expectedRingColor  : REGULAR_RING_COLORS[themeName],
             },
             {
-                title                    : `[${themeName}] outlined => should render outlined style`,
-                props                    : {
-                    theme                : themeName,
-                    
-                    outlined             : true,
-                },
-                expectedRingColor  : OUTLINED_RING_COLORS[themeName],
-            },
-            {
                 title                    : `[${themeName}] mild => should render mild style`,
                 props                    : {
                     theme                : themeName,
@@ -155,6 +146,15 @@ test.describe('usingRingFeature', () => {
                     mild                 : true,
                 },
                 expectedRingColor  : MILD_RING_COLORS[themeName],
+            },
+            {
+                title                    : `[${themeName}] outlined => should render outlined style`,
+                props                    : {
+                    theme                : themeName,
+                    
+                    outlined             : true,
+                },
+                expectedRingColor  : OUTLINED_RING_COLORS[themeName],
             },
             //#endregion One prop activated
             
@@ -182,12 +182,12 @@ test.describe('usingRingFeature', () => {
                 expectedRingColor  : MILD_RING_COLORS[themeName],
             },
             {
-                title                    : `[${themeName}] outlined + mild => should render outlined style, mild ignored`,
+                title                    : `[${themeName}] mild + outlined => should render outlined style, mild ignored`,
                 props                    : {
                     theme                : themeName,
                     
-                    outlined             : true,
                     mild                 : true,
+                    outlined             : true,
                 },
                 expectedRingColor  : OUTLINED_RING_COLORS[themeName],
             },
@@ -197,13 +197,13 @@ test.describe('usingRingFeature', () => {
             
             //#region Three prop activated
             {
-                title                    : `[${themeName}] emphasized + outlined + mild => should render outlined style, mild and emphasized are ignored`,
+                title                    : `[${themeName}] emphasized + mild + outlined => should render outlined style, mild and emphasized are ignored`,
                 props                    : {
                     theme                : themeName,
                     
                     emphasized           : true,
-                    outlined             : true,
                     mild                 : true,
+                    outlined             : true,
                 },
                 expectedRingColor  : OUTLINED_RING_COLORS[themeName],
             },

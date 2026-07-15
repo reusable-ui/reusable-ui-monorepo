@@ -110,8 +110,8 @@ const testCases: ActiveEffectTestCase[] = [
             title                : `factor=unset for ${variantNameLower[variant]} variant → expect original colors with no filters (${colorMode} mode)`,
             props                : {
                 activeFactorCond : 'unset',
-                outlined         : variant === 'outlined',
                 mild             : variant === 'mild',
+                outlined         : variant === 'outlined',
                 colorMode,
             },
             expectedFilters      : {
@@ -137,8 +137,8 @@ const testCases: ActiveEffectTestCase[] = [
             title                : `factor=0 for ${variantNameLower[variant]} variant → expect original colors with baseline filters (${colorMode} mode)`,
             props                : {
                 activeFactorCond : 0,
-                outlined         : variant === 'outlined',
                 mild             : variant === 'mild',
+                outlined         : variant === 'outlined',
                 colorMode,
             },
             expectedFilters      : {
@@ -168,8 +168,8 @@ const testCases: ActiveEffectTestCase[] = [
         title                : `factor=1 for regular variant → expect original colors with fully configured filters (${colorMode} mode)`,
         props                : {
             activeFactorCond : 1,
-            outlined         : false,
             mild             : false,
+            outlined         : false,
             colorMode,
         },
         expectedFilters      : {
@@ -188,14 +188,14 @@ const testCases: ActiveEffectTestCase[] = [
     
     
     
-    // factor=1 for outlined/mild variant → expect regular colors with baseline filters
-    ...(['outlined', 'mild'] as const).flatMap((variant) =>
+    // factor=1 for mild/outlined variant → expect regular colors with baseline filters
+    ...(['mild', 'outlined'] as const).flatMap((variant) =>
         (['light', 'dark'] as const).map((colorMode) => ({
             title                : `factor=1 for ${variantNameLower[variant]} variant → expect regular colors with baseline filters (${colorMode} mode)`,
             props                : {
                 activeFactorCond : 1,
-                outlined         : variant === 'outlined',
                 mild             : variant === 'mild',
+                outlined         : variant === 'outlined',
                 colorMode,
             },
             expectedFilters      : {
@@ -226,8 +226,8 @@ const testCases: ActiveEffectTestCase[] = [
             title                : `factor=${factor} for regular variant → expect original colors with partially configured filters (${colorMode} mode)`,
             props                : {
                 activeFactorCond : factor,
-                outlined         : false,
                 mild             : false,
+                outlined         : false,
                 colorMode,
             },
             expectedFilters      : {
@@ -252,15 +252,15 @@ const testCases: ActiveEffectTestCase[] = [
     
     
     
-    // factor=fractional for outlined/mild variant → expect interpolated colors with baseline filters
+    // factor=fractional for mild/outlined variant → expect interpolated colors with baseline filters
     ...([0.25, 0.5, 0.75] as const).flatMap((factor) =>
-        (['outlined', 'mild'] as const).flatMap((variant) =>
+        (['mild', 'outlined'] as const).flatMap((variant) =>
             (['light', 'dark'] as const).map((colorMode) => ({
                 title                : `factor=${factor} for ${variantNameLower[variant]} variant → expect interpolated colors with baseline filters (${colorMode} mode)`,
                 props                : {
                     activeFactorCond : factor,
-                    outlined         : variant === 'outlined',
                     mild             : variant === 'mild',
+                    outlined         : variant === 'outlined',
                     colorMode,
                 },
                 expectedFilters      : {
@@ -292,8 +292,8 @@ const testCases: ActiveEffectTestCase[] = [
             title                : `factor=${factor} for regular variant → expect original colors with extrapolated filters (${colorMode} mode)`,
             props                : {
                 activeFactorCond : factor,
-                outlined         : false,
                 mild             : false,
+                outlined         : false,
                 colorMode,
             },
             expectedFilters      : {
@@ -318,7 +318,7 @@ const testCases: ActiveEffectTestCase[] = [
     
     
     
-    // factor=extrapolated for outlined/mild variant → expect interpolated colors with extrapolated filters
+    // factor=extrapolated for mild/outlined variant → expect interpolated colors with extrapolated filters
     ...([-0.5, 1.5] as const).flatMap((factor) => {
         // Resolve the overshoot/undershoot factor for extrapolation:
         // - For factor < 0, it goes beyond the baseline (0) in the opposite direction.
@@ -330,13 +330,13 @@ const testCases: ActiveEffectTestCase[] = [
             Math.min(0, factor)
         );
         
-        return (['outlined', 'mild'] as const).flatMap((variant) =>
+        return (['mild', 'outlined'] as const).flatMap((variant) =>
             (['light', 'dark'] as const).map((colorMode) => ({
                 title                : `factor=${factor} for ${variantNameLower[variant]} variant → expect interpolated colors with extrapolated filters (${colorMode} mode)`,
                 props                : {
                     activeFactorCond : factor,
-                    outlined         : variant === 'outlined',
                     mild             : variant === 'mild',
+                    outlined         : variant === 'outlined',
                     colorMode,
                 },
                 expectedFilters      : {

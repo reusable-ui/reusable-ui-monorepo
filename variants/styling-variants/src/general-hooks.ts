@@ -20,8 +20,8 @@ import {
  * - `size`
  * - `theme`
  * - `emphasized`
- * - `outlined`
  * - `mild`
+ * - `outlined`
  * 
  * Values may be absolute or relative (e.g. `'inherit'`, `'invert'`),
  * and are captured as-is without computing the final visual outcome.
@@ -64,8 +64,8 @@ export const useStylingProps = (props: StylingVariantsProps): CollectedStylingPr
         size,
         theme,
         emphasized,
-        outlined,
         mild,
+        outlined,
     } = props;
     
     
@@ -77,8 +77,8 @@ export const useStylingProps = (props: StylingVariantsProps): CollectedStylingPr
             size,
             theme,
             emphasized,
-            outlined,
             mild,
+            outlined,
         } satisfies CollectedStylingProps)
         
         // Filter out the entries with `undefined` values:

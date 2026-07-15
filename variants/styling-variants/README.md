@@ -30,8 +30,8 @@ Includes:
 - `size`
 - `theme`
 - `emphasized`
-- `outlined`
 - `mild`
+- `outlined`
 
 Values may be absolute or relative (e.g. `'inherit'`, `'invert'`),
 and are captured as-is without computing the final visual outcome.

@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/background-feature",
   "version": "7.0.0",
-  "description": "A styling utility for resolving the appropriate background color based on the currently active variants — including theme, emphasize, outlined, mild, and stripped.",
+  "description": "A styling utility for resolving the appropriate background color based on the currently active variants — including theme, emphasize, mild, outlined, and stripped.",
   "keywords": [
     "background",
     "theme",
