@@ -152,8 +152,8 @@ export function useStableCallback<TArgs extends unknown[] = [], TReturn extends 
  * - Useful for combining **multiple event handlers** into a single stable function.
  * 
  * @template TArgs - The argument types passed to each callback function.
- * @param {Optional<Callback<TArgs, void>>[]} callbacks - List of callback functions to merge.
- * @returns {Callback<TArgs, void>} A merged callback function.
+ * @param callbacks - List of callback functions to merge.
+ * @returns A merged callback function.
  * 
  * @example
  * ```ts
@@ -186,8 +186,8 @@ export const useMergedCallbacks = <TArgs extends unknown[] = []>(...callbacks: O
  * - Useful for combining **multiple async event handlers** into a single stable function.
  * 
  * @template TArgs - The argument types passed to each callback function.
- * @param {Optional<Callback<TArgs, Promise<void>>>[]} callbacks - List of async callback functions to merge.
- * @returns {Callback<TArgs, Promise<void>>} A merged async callback function.
+ * @param callbacks - List of async callback functions to merge.
+ * @returns A merged async callback function.
  * 
  * @example
  * ```ts
@@ -224,8 +224,8 @@ export const useMergedAsyncCallbacks = <TArgs extends unknown[] = []>(...callbac
  * @template TEvent - The event object type.
  * @template TExtra - Additional argument types passed to the event handler function.
  * @template TReturn - The return type of the event handler function.
- * @param {EventHandler<TEvent, TExtra, TReturn>} eventHandler - The event handler function to be stabilized.
- * @returns {EventHandler<TEvent, TExtra, TReturn>} A stable event handler function.
+ * @param eventHandler - The event handler function to be stabilized.
+ * @returns A stable event handler function.
  * 
  * @example
  * ```ts
@@ -251,8 +251,8 @@ export const useStableEventHandler = <TEvent, TExtra extends unknown[] = [], TRe
  * 
  * @template TEvent - The event object type.
  * @template TExtra - Additional argument types passed to each handler function.
- * @param {Optional<EventHandler<TEvent, TExtra, void>>[]} eventHandlers - List of event handlers to merge.
- * @returns {EventHandler<TEvent, TExtra, void>} A merged event handler function.
+ * @param eventHandlers - List of event handlers to merge.
+ * @returns A merged event handler function.
  * 
  * @example
  * ```ts
@@ -281,8 +281,8 @@ export const useMergedEventHandlers = <TEvent, TExtra extends unknown[] = []>(..
  * 
  * @template TEvent - The event object type.
  * @template TExtra - Additional argument types passed to each handler function.
- * @param {Optional<EventHandler<TEvent, TExtra, Promise<void>>>[]} eventHandlers - List of async event handler functions to merge.
- * @returns {EventHandler<TEvent, TExtra, Promise<void>>} A merged async event handler function.
+ * @param eventHandlers - List of async event handler functions to merge.
+ * @returns A merged async event handler function.
  * 
  * @example
  * ```ts
