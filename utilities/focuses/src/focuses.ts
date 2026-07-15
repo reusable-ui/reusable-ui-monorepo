@@ -57,8 +57,8 @@ import {
  *   - "Delete"   (tabIndex: 3)
  *   - "Cancel"   (tabIndex: 4)
  * 
- * @param {Element} container - The container to search for focusable elements.
- * @returns {Element[]} A flat list of focusable elements ordered by group-aware `tabIndex` traversal.
+ * @param container The container to search for focusable elements.
+ * @returns A flat list of focusable elements ordered by group-aware `tabIndex` traversal.
  */
 export const getSortedFocusableElements = (container: Element): Element[] => {
     // Step 1: Collect all potential focusable elements within the container:
@@ -139,9 +139,9 @@ export const getSortedFocusableElements = (container: Element): Element[] => {
 /**
  * Attempts to focus the focusable element at the specified index within the given container.
  * 
- * @param {Element} container - The container to search for focusable elements.
- * @param {number} index - The zero-based index of the element to focus. Negative values count from the end.
- * @returns {boolean} `true` if an element was successfully focused, otherwise `false`.
+ * @param container The container to search for focusable elements.
+ * @param index The zero-based index of the element to focus. Negative values count from the end.
+ * @returns `true` if an element was successfully focused, otherwise `false`.
  */
 export const focusElementAt = (container: Element, index: number): boolean => {
     // Retrieve all focusable elements within the container:
@@ -169,8 +169,8 @@ export const focusElementAt = (container: Element, index: number): boolean => {
 /**
  * Attempts to focus the first focusable element within the given container.
  * 
- * @param {Element} container - The container to search for focusable elements.
- * @returns {boolean} `true` if an element was successfully focused, otherwise `false`.
+ * @param container The container to search for focusable elements.
+ * @returns `true` if an element was successfully focused, otherwise `false`.
  */
 export const focusFirstElement = (container: Element): boolean => {
     return focusElementAt(container, 0);
@@ -180,8 +180,8 @@ export const focusFirstElement = (container: Element): boolean => {
 /**
  * Attempts to focus the last focusable element within the given container.
  * 
- * @param {Element} container - The container to search for focusable elements.
- * @returns {boolean} `true` if an element was successfully focused, otherwise `false`.
+ * @param container The container to search for focusable elements.
+ * @returns `true` if an element was successfully focused, otherwise `false`.
  */
 export const focusLastElement = (container: Element): boolean => {
     return focusElementAt(container, -1);
@@ -195,8 +195,8 @@ export const focusLastElement = (container: Element): boolean => {
  * Attempts to focus the previous focusable element within the given container.
  * If no element is currently focused or the first is reached, wraps around to the last.
  * 
- * @param {Element} container - The container to search for focusable elements.
- * @returns {boolean} `true` if an element was successfully focused, otherwise `false`.
+ * @param container The container to search for focusable elements.
+ * @returns `true` if an element was successfully focused, otherwise `false`.
  */
 export const focusPrevElementOrWrapToLast = (container: Element): boolean => {
     // Retrieve all focusable elements within the container:
@@ -243,8 +243,8 @@ export const focusPrevElementOrWrapToLast = (container: Element): boolean => {
  * Attempts to focus the next focusable element within the given container.
  * If no element is currently focused or the last is reached, wraps around to the first.
  * 
- * @param {Element} container - The container to search for focusable elements.
- * @returns {boolean} `true` if an element was successfully focused, otherwise `false`.
+ * @param container The container to search for focusable elements.
+ * @returns `true` if an element was successfully focused, otherwise `false`.
  */
 export const focusNextElementOrWrapToFirst = (container: Element): boolean => {
     // Retrieve all focusable elements within the container:

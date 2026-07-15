@@ -34,8 +34,8 @@ export type ElementGroup = {
  * Determines whether the given element is inside an inert region.
  * Traverses up the DOM tree to check if any ancestor has the 'inert' attribute.
  * 
- * @param {HTMLElement} element - The element to test.
- * @returns {boolean} True if the element or any of its ancestors is inert.
+ * @param element The element to test.
+ * @returns `true` if the element or any of its ancestors is inert.
  */
 export const isInertedElement = (element: HTMLElement): boolean => {
     // Step 1: Start at the element and walk up toward the root:
@@ -69,10 +69,10 @@ export const isInertedElement = (element: HTMLElement): boolean => {
  * - A known focusable ancestor is found (returns it), or
  * - The container boundary is reached (returns null).
  * 
- * @param {Element} element - The element whose ancestors are being inspected.
- * @param {Element} container - The boundary container — traversal halts here.
- * @param {Set<Element>} knownFocusableAncestors - A set of known focusable ancestors to match against.
- * @returns {Element | null} The nearest matching focusable ancestor, or null if none is found.
+ * @param element The element whose ancestors are being inspected.
+ * @param container The boundary container — traversal halts here.
+ * @param knownFocusableAncestors A set of known focusable ancestors to match against.
+ * @returns The nearest matching focusable ancestor, or null if none is found.
  */
 export const findNearestFocusableAncestor = (element: Element, container: Element, knownFocusableAncestors: Set<Element>): Element | null => {
     // Step 1: Start at the element’s immediate parent and walk up toward the container:
@@ -102,8 +102,8 @@ export const findNearestFocusableAncestor = (element: Element, container: Elemen
 /**
  * Computes a flat, tabIndex-sorted list of focusable elements, grouped by their nearest focusable ancestor.
  * 
- * @param {GroupedFocusable[]} allEntries - A complete list of [focusable element, nearest group ancestor] pairs to resolve children from.
- * @returns {Element[]} A flat list of focusable elements ordered by group-aware `tabIndex` traversal.
+ * @param allEntries A complete list of [focusable element, nearest group ancestor] pairs to resolve children from.
+ * @returns A flat list of focusable elements ordered by group-aware `tabIndex` traversal.
  */
 export const computeFocusableOrder = (allEntries: GroupedFocusable[]): Element[] => {
     /*
@@ -182,9 +182,9 @@ export const computeFocusableOrder = (allEntries: GroupedFocusable[]): Element[]
 /**
  * Recursively constructs a tree of grouped focusable elements.
  * 
- * @param {GroupedFocusable[]} currentLevel - Focusable elements to process at the current depth of the DOM grouping tree.
- * @param {GroupedFocusable[]} allEntries - A complete list of [focusable element, nearest group ancestor] pairs to resolve children from.
- * @param {ElementGroup[]} groupNodes - The output array representing the current tree level.
+ * @param currentLevel Focusable elements to process at the current depth of the DOM grouping tree.
+ * @param allEntries A complete list of [focusable element, nearest group ancestor] pairs to resolve children from.
+ * @param groupNodes The output array representing the current tree level.
  */
 const buildGroupHierarchy = (currentLevel: GroupedFocusable[], allEntries: GroupedFocusable[], groupNodes: ElementGroup[]): void => {
     // Loop through each element at the current level:
@@ -221,8 +221,8 @@ const buildGroupHierarchy = (currentLevel: GroupedFocusable[], allEntries: Group
 /**
  * Recursively flattens a hierarchical list of grouped elements into a linear focus order.
  * 
- * @param {ElementGroup[]} currentLevel - Tree nodes to traverse at the current depth of the focus hierarchy.
- * @param {Element[]} flattenedElements - The output array to populate in traversal order.
+ * @param currentLevel Tree nodes to traverse at the current depth of the focus hierarchy.
+ * @param flattenedElements The output array to populate in traversal order.
  */
 const flattenGroupedElements = (currentLevel: ElementGroup[], flattenedElements: Element[]): void => {
     // Loop through each element at the current level:
