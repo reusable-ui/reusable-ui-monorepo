@@ -33,7 +33,7 @@ const emptyDependency : DependencyList = [];
  * Reducer function used to trigger a forced re-render.
  * Always returns a **new unique value** (`Symbol()`) to ensure React detects a state change.
  * 
- * @returns {symbol} A unique identifier for triggering state updates.
+ * @returns A unique identifier for triggering state updates.
  */
 const triggerRenderReducer = (_state: symbol, _action: void): symbol => {
     // Forces a re-render by always returning a new value:
@@ -46,7 +46,7 @@ const triggerRenderReducer = (_state: symbol, _action: void): symbol => {
  * - Ensures the trigger function maintains a **stable reference** across renders.
  * - Useful for manually refreshing components without modifying state.
  * 
- * @returns {[DispatchWithoutAction, symbol]} A tuple containing:
+ * @returns A tuple containing:
  *   - A `triggerRender` function that forces a re-render while maintaining a stable reference across renders.
  *   - The latest **unique state identifier** (`Symbol`) that updates on each trigger.
  * 
@@ -72,7 +72,7 @@ export const useTriggerRender = (): [DispatchWithoutAction, symbol] => {
  * - `true`: The component is currently mounted.
  * - `false`: The component has been unmounted.
  *
- * @returns {RefObject<boolean | undefined>} A ref indicating the mounted status.
+ * @returns A ref indicating the mounted status.
  * 
  * @example
  * ```ts
