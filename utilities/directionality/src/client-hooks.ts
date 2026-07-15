@@ -23,8 +23,8 @@ import {
  * - Tracks RTL status and updates when the component re-renders.
  * - Defaults to `false` unless specified otherwise.
  *
- * @param {boolean} [defaultRtl=false] - The initial RTL state before detecting computed styles.
- * @returns {[boolean, RefCallback<TElement | null>]} A tuple containing the RTL status and a ref callback.
+ * @param defaultRtl The initial RTL state before detecting computed styles.
+ * @returns A tuple containing the RTL status and a ref callback.
  */
 export const useIsRtl = <TElement extends Element = HTMLElement>(defaultRtl: boolean = false): readonly [boolean, RefCallback<TElement | null>] => {
     // States:
