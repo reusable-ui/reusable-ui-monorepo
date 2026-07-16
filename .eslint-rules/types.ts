@@ -2,7 +2,6 @@ import path from 'path'
 import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
 import { parse } from 'comment-parser'
-import { isTopLevel } from './scope-utilities.js'
 
 
 
@@ -176,30 +175,28 @@ export const banVarianceAnnotations = createRule({
 
 
 /**
- * Get the leading JSDoc comments for the *top-level* declaration
- * associated with the given node.
+ * Resolve the declaration node that owns the JSDoc comments
+ * for the given AST node.
  * 
  * Why:
- * - JSDoc is attached to the declaration itself (function, type alias, interface),
+ * - JSDoc is attached to declarations (functions, type aliases, interfaces),
  *   not to inner nodes like parameters or type parameters.
- * - Walking up the AST ensures we don't miss the correct comment block.
+ * - For exported declarations, the JSDoc is attached to the `Export*Declaration`
+ *   wrapper, not the inner node itself.
+ * - We only climb one level for known wrappers (export declarations),
+ *   otherwise we fall back to the node itself.
  */
-const getTopLevelComments = (context: any, node: any) => {
-    let current = node;
+const resolveJsdocOwner = (context: any, node: any) => {
+    switch (node.parent?.type) {
+        case TSESTree.AST_NODE_TYPES.ExportNamedDeclaration:
+        case TSESTree.AST_NODE_TYPES.ExportDefaultDeclaration:
+            // JSDoc is attached to the export wrapper
+            return context.sourceCode.getCommentsBefore(node.parent);
+    } // switch
     
     
     
-    // Traverse upward until we reach a top-level declaration
-    while (current) {
-        if (isTopLevel(current)) {
-            return context.sourceCode.getCommentsBefore(current);
-        }
-        current = current.parent;
-    } // while
-    
-    
-    
-    // Fallback: return comments directly attached to the original node
+    // Fallback: comments directly attached to the node
     return context.sourceCode.getCommentsBefore(node);
 };
 
@@ -236,7 +233,7 @@ export const banRedundantJsdocTypes = createRule({
     create(context) {
         const checkComments = (node: any) => {
             // Get all leading comments for the node:
-            const comments = getTopLevelComments(context, node);
+            const comments = resolveJsdocOwner(context, node);
             
             
             
