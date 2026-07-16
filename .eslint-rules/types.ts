@@ -200,6 +200,18 @@ const resolveJsdocOwner = (context: any, node: any) => {
     return context.sourceCode.getCommentsBefore(node);
 };
 
+// Only process tags that are known to carry type annotations in JSDoc:
+// - In TypeScript, these are redundant because TS already provides type info.
+const typeBearingTags = new Set([
+    'template',
+    'param',
+    'return',
+    'returns',
+    'property',
+    'typedef',
+    // 'throws', 'exception' → Intentionally excluded, since TS cannot infer thrown types.
+]);
+
 /**
  * ESLint rule: ban-redundant-jsdoc-types
  * 
@@ -260,7 +272,10 @@ export const banRedundantJsdocTypes = createRule({
                 
                 // Iterate over each tag:
                 for (const tag of jsdoc[0].tags) {
-                    // Only process valid tags:
+                    // Skip tags that never carry types:
+                    if (!typeBearingTags.has(tag.tag)) continue;
+                    
+                    // Skip if no explicit {Type} presen:
                     if (!tag.type) continue;
                     
                     
