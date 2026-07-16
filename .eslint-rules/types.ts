@@ -275,7 +275,15 @@ export const banRedundantJsdocTypes = createRule({
                         data: { type: tag.type },
                         fix(fixer) {
                             // Remove {Type} but keep the description intact:
-                            const cleaned = comment.value.replace(/\{[^}]+\}\s*/g, '');
+                            // - Only when they follow known tags:
+                            //   - @template
+                            //   - @param
+                            //   - @return
+                            //   - @returns
+                            //   - @property
+                            //   - @typedef
+                            // - Collapse multiple spaces into one.
+                            const cleaned = comment.value.replace(/(?<=@(template|param|returns?|property|typedef))\s+\{[^}]+\}\s*/g, ' ');
                             return fixer.replaceText(comment, `/*${cleaned}*/`);
                         },
                     });
