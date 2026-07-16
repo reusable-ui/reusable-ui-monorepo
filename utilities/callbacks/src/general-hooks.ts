@@ -52,10 +52,10 @@ const emptyDependency : DependencyList = [];
  * - Useful for **event handlers**, preventing unnecessary updates when passed as props.
  * - Useful for **API functions**, ensuring persistent execution without stale closures.
  * 
- * @template TArgs - The argument types passed to the callback function.
- * @template TReturn - The return type of the callback function.
- * @param {Callback<TArgs, TReturn>} callback - The function to be stabilized.
- * @returns {Callback<TArgs, TReturn>} A stable callback function.
+ * @template TArgs The argument types passed to the callback function.
+ * @template TReturn The return type of the callback function.
+ * @param callback The function to be stabilized.
+ * @returns A stable callback function.
  * 
  * @example
  * ```ts
@@ -86,10 +86,10 @@ export function useStableCallback<TArgs extends unknown[] = [], TReturn extends 
  * - Useful for **event handlers**, preventing unnecessary updates when passed as props.
  * - Useful for **API functions**, ensuring persistent execution without stale closures.
  * 
- * @template TArgs - The argument types passed to the callback function.
- * @template TReturn - The return type of the callback function (must be `void` or `undefined`).
- * @param {Callback<TArgs, TReturn> | null | undefined} callback - The function to be stabilized or `null`/`undefined` to create a no-op stable function.
- * @returns {Callback<TArgs, TReturn>} A stable callback function.
+ * @template TArgs The argument types passed to the callback function.
+ * @template TReturn The return type of the callback function (must be `void` or `undefined`).
+ * @param callback The function to be stabilized or `null`/`undefined` to create a no-op stable function.
+ * @returns A stable callback function.
  * 
  * @example
  * ```ts
