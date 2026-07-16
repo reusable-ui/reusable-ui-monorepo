@@ -299,6 +299,7 @@ export const banRedundantJsdocTypes = createRule({
             VariableDeclarator: checkComments,
             TSTypeAliasDeclaration: checkComments,
             TSInterfaceDeclaration: checkComments,
+            TSDeclareFunction: checkComments,
         };
     },
 });
