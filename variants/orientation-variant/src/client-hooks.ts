@@ -101,9 +101,9 @@ export const useResolvedOrientation = (props: OrientationVariantProps, options?:
  * Resolves the orientation value along with its associated CSS class name and accessibility metadata,
  * based on component props, optional default configuration, and parent context.
  * 
- * @param {OrientationVariantProps} props - The component props that may include an `orientation` value.
- * @param {OrientationVariantOptions} options - An optional configuration specifying a default orientation when no `orientation` prop is explicitly provided.
- * @returns {OrientationVariant} - The resolved orientation value along with its associated CSS class name and accessibility metadata.
+ * @param props The component props that may include an `orientation` value.
+ * @param options An optional configuration specifying a default orientation when no `orientation` prop is explicitly provided.
+ * @returns The resolved orientation value along with its associated CSS class name and accessibility metadata.
  * 
  * @example
  * ```tsx
