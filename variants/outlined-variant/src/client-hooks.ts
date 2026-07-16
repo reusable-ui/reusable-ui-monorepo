@@ -100,9 +100,9 @@ export const useResolvedOutlined = (props: OutlinedVariantProps, options?: Outli
  * Resolves the outlined state along with its associated CSS class name,
  * based on component props, optional default configuration, and parent context.
  * 
- * @param {OutlinedVariantProps} props - The component props that may include an `outlined` value.
- * @param {OutlinedVariantOptions} options - An optional configuration specifying a default outlined value when no `outlined` prop is explicitly provided.
- * @returns {OutlinedVariant} - The resolved outlined state along with its associated CSS class name.
+ * @param props The component props that may include an `outlined` value.
+ * @param options An optional configuration specifying a default outlined value when no `outlined` prop is explicitly provided.
+ * @returns The resolved outlined state along with its associated CSS class name.
  * 
  * @example
  * ```tsx
