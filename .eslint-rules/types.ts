@@ -405,7 +405,7 @@ export const banJsdocDash = createRule({
                             //   - @property
                             //   - @typedef
                             // - Collapse multiple spaces into one.
-                            const cleaned = comment.value.replace(/(?<=@(template|param|returns?|property|typedef)(\s+\w+)?)\s*[-‑–]\s*/g, ' ');
+                            const cleaned = comment.value.replace(/(?<=@(template|param|returns?|property|typedef)(\s+(\w+\.)*\w+)?)\s*[-‑–]\s*/g, ' ');
                             return fixer.replaceText(comment, `/*${cleaned}*/`);
                         },
                     });
