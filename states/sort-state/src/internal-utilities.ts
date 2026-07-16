@@ -40,9 +40,9 @@ export const resolveSortActivityClassname = ({ transitionPhase }: ResolveTransit
 /**
  * Snapshots element positions into a keyed Map.
  * 
- * @template TItemElement - The type of the sortable DOM element.
+ * @template TItemElement The type of the sortable DOM element.
  * 
- * @param itemElements - Map of stable React `key` → DOM element.
+ * @param itemElements Map of stable React `key` → DOM element.
  * @returns Map of key → {x, y} positions.
  */
 export const snapshotElementPositions = <TItemElement extends Element = HTMLElement>(itemElements: Map<Key, TItemElement>): Map<Key, SortOffset> => new Map<Key, SortOffset>(

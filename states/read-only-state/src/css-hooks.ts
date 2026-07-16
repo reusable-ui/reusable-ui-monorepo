@@ -31,7 +31,7 @@ import {
  * Generates CSS rules that conditionally apply the editable/read-only animations based on current read-only state,
  * and exposes editable/read-only-related CSS variables for conditional animation.
  * 
- * @param options - An optional configuration for customizing editable/read-only animations.
+ * @param options An optional configuration for customizing editable/read-only animations.
  * @returns A CSS API for conditionally apply the editable/read-only animations based on current read-only state.
  *
  * @example

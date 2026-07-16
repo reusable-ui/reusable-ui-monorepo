@@ -78,16 +78,16 @@ import {
  * Declarative keywords (`'auto'`, `'inherit'`, etc.) must be resolved externally
  * before passing into `effectiveState`.  
  * 
- * @param props - The behavior-specific props, including the externally controlled `effectiveState` and optional update callback.
- * @param options - Optional per-component customization for animation lifecycle (pattern, bubbling, etc.).
- * @param definition - The behavior-specific definition that declares how inactive state and classnames are resolved.
+ * @param props The behavior-specific props, including the externally controlled `effectiveState` and optional update callback.
+ * @param options Optional per-component customization for animation lifecycle (pattern, bubbling, etc.).
+ * @param definition The behavior-specific definition that declares how inactive state and classnames are resolved.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TClassname - The type representing semantic activity classnames.
- * @template TBehaviorProps - The type of the behavior-specific props.
- * @template TBehaviorOptions - The type of the behavior-specific options.
- * @template TBehaviorDefinition - The type of the behavior-specific definition.
- * @template TElement - The type of the target DOM element.
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TClassname The type representing semantic activity classnames.
+ * @template TBehaviorProps The type of the behavior-specific props.
+ * @template TBehaviorOptions The type of the behavior-specific options.
+ * @template TBehaviorDefinition The type of the behavior-specific definition.
+ * @template TElement The type of the target DOM element.
  * 
  * @returns The resolved activity behavior state API.
  */

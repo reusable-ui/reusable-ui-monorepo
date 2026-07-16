@@ -28,9 +28,9 @@ const hasOwn = {}.hasOwnProperty;
 /**
  * Recursively flattens deeply nested arrays into accumulated values.
  * 
- * @param buffer - The mutable accumulator reference.
- * @param values - Deeply nested array of values.
- * @param accumulate - Function that appends a single value into the buffer.
+ * @param buffer The mutable accumulator reference.
+ * @param values Deeply nested array of values.
+ * @param accumulate Function that appends a single value into the buffer.
  */
 export const flattenDeep = <TBuffer, TValue>(buffer: TBuffer, values: MaybeDeepArray<OptionalOrBoolean<TValue>>[], accumulate: (buffer: TBuffer, value: TValue) => void): void => {
     // Iterate through each value in the array:
@@ -61,8 +61,8 @@ export const flattenDeep = <TBuffer, TValue>(buffer: TBuffer, values: MaybeDeepA
 /**
  * Accumulates a class name or conditional mapping object into a buffer.
  * 
- * @param buffer - The class names buffer.
- * @param value - A class name or mapping object.
+ * @param buffer The class names buffer.
+ * @param value A class name or mapping object.
  */
 export const accumulateClassName = (buffer: ClassNamesBuffer, value: string | Record<string, unknown>): void => {
     if (typeof value === 'string') {
@@ -103,8 +103,8 @@ export const accumulateClassName = (buffer: ClassNamesBuffer, value: string | Re
 /**
  * Adds a class name with proper spacing.
  * 
- * @param buffer - The class names buffer.
- * @param className - The class name to append.
+ * @param buffer The class names buffer.
+ * @param className The class name to append.
  */
 const appendClassWithSpace = (buffer: ClassNamesBuffer, className: string) => {
     // Append with spacing if needed:
@@ -123,8 +123,8 @@ const appendClassWithSpace = (buffer: ClassNamesBuffer, className: string) => {
 /**
  * Accumulates a style object into a buffer by merging properties.
  * 
- * @param buffer - The style buffer (`CSSProperties` object).
- * @param value - The style object to merge.
+ * @param buffer The style buffer (`CSSProperties` object).
+ * @param value The style object to merge.
  */
 export const accumulateStyle = (buffer: CSSProperties, value: CSSProperties): void => {
     Object.assign(buffer, value);

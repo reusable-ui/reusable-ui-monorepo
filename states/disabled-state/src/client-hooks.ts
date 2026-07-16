@@ -72,8 +72,8 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * - If `disabled` is `false` and `cascadeDisabled` is `true`, the component checks context for inherited disabled state.
  * - If context is unavailable and `cascadeDisabled` is `true`, the component defaults to enabled (`false`).
  * 
- * @param props - The component props that may include a controlled `disabled` value and contextual `cascadeDisabled` value.
- * @param options - An optional configuration for customizing enabled/disabled behavior.
+ * @param props The component props that may include a controlled `disabled` value and contextual `cascadeDisabled` value.
+ * @param options An optional configuration for customizing enabled/disabled behavior.
  * @returns The resolved enabled/disabled state.
  */
 export const useResolvedDisabled = (props: Pick<DisabledStateProps, 'disabled' | 'cascadeDisabled'>, options?: Pick<DisabledStateOptions, 'defaultDisabled' | 'defaultCascadeDisabled'>) : boolean => {
@@ -125,10 +125,10 @@ const disabledStateDefinition : DisabledStateDefinition = {
  * - Supports controlled disabled state.
  * - Supports contextual override via `cascadeDisabled`.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  * 
- * @param props - The component props that may include a controlled `disabled` value, contextual `cascadeDisabled` value, and `onDisabledUpdate` callback.
- * @param options - An optional configuration for customizing enabled/disabled behavior and animation lifecycle.
+ * @param props The component props that may include a controlled `disabled` value, contextual `cascadeDisabled` value, and `onDisabledUpdate` callback.
+ * @param options An optional configuration for customizing enabled/disabled behavior and animation lifecycle.
  * @returns The resolved enabled/disabled state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @example

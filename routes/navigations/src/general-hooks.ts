@@ -113,11 +113,11 @@ export interface NavigationPathMatchProps {
  * 
  * For even more granular control, consider using the `evaluatePathMatch()` utility.
  * 
- * @param props - A configuration for path matching.
- *   @param props.currentPathname - The current page pathname, used for resolving relative paths and as a reference point for semantic path matching.
- *   @param props.actualPathname - The pathname to test against the expected location. If `null`, skips resolution and matching.
- *   @param props.expectedPathname - The expected target pathname. If `null`, skips resolution and matching.
- *   @param props.pathMatchStrategy - Defines how strictly paths are compared. Defaults to `'partial'`.
+ * @param props A configuration for path matching.
+ *   @param props.currentPathname The current page pathname, used for resolving relative paths and as a reference point for semantic path matching.
+ *   @param props.actualPathname The pathname to test against the expected location. If `null`, skips resolution and matching.
+ *   @param props.expectedPathname The expected target pathname. If `null`, skips resolution and matching.
+ *   @param props.pathMatchStrategy Defines how strictly paths are compared. Defaults to `'partial'`.
  * 
  * @returns `true` if the actual pathname matches the expected target; otherwise `false`.
  * 
@@ -240,10 +240,10 @@ export interface CurrentPathMatchProps
  * 
  * Ideal for components that cannot accept a `<Link>` as a child, but you still need to compare given actual pathname against the current page location.
  * 
- * @param props - A configuration for path matching.
- *   @param props.currentPathname - The current page pathname, used for resolving relative paths and as a reference point for semantic path matching.
- *   @param props.actualPathname - The pathname to test against the current page location. If `null`, skips resolution and matching.
- *   @param props.pathMatchStrategy - Defines how strictly paths are compared. Defaults to `'partial'`.
+ * @param props A configuration for path matching.
+ *   @param props.currentPathname The current page pathname, used for resolving relative paths and as a reference point for semantic path matching.
+ *   @param props.actualPathname The pathname to test against the current page location. If `null`, skips resolution and matching.
+ *   @param props.pathMatchStrategy Defines how strictly paths are compared. Defaults to `'partial'`.
  * 
  * @returns `true` if the actual pathname matches the current page location; otherwise `false`.
  * 
@@ -331,10 +331,10 @@ export interface LinkPathMatchProps
  * 
  * Ideal for components that accept a `<Link>` as a child. Automatically extracts and compares the `<Link>`’s destination against the current page location.
  * 
- * @param props - A configuration for link-based path matching.
- *   @param props.children - Children elements to inspect for a client-side `<Link>` component.
- *   @param props.currentPathname - The current page pathname, used for resolving relative paths and as a reference point for semantic path matching.
- *   @param props.pathMatchStrategy - Defines how strictly paths are compared. Defaults to `'partial'`.
+ * @param props A configuration for link-based path matching.
+ *   @param props.children Children elements to inspect for a client-side `<Link>` component.
+ *   @param props.currentPathname The current page pathname, used for resolving relative paths and as a reference point for semantic path matching.
+ *   @param props.pathMatchStrategy Defines how strictly paths are compared. Defaults to `'partial'`.
  * 
  * @returns `true` if the `<Link>`’s destination matches the current page location; otherwise `false`.
  * 

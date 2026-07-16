@@ -29,7 +29,7 @@ import {
  * 
  * Accepts an optional `viewIndex` prop, defaulting to `undefined` (uncontrolled mode) when not provided.
  * 
- * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
+ * @template TChangeEvent The type of the event triggering the change request (e.g. tab click, swipe gesture).
  */
 export interface ViewStateProps<TChangeEvent = unknown>
     extends
@@ -101,7 +101,7 @@ export interface ViewStateProps<TChangeEvent = unknown>
 /**
  * Options for customizing the view index change dispatcher behavior.
  * 
- * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
+ * @template TChangeEvent The type of the event triggering the change request (e.g. tab click, swipe gesture).
  */
 export interface ViewIndexChangeDispatcherOptions<TChangeEvent = unknown>
     extends
@@ -225,8 +225,8 @@ export type ViewClassname = ViewPhase
 /**
  * An API for accessing the resolved view index, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
- * @template TElement - The type of the target DOM element.
- * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
+ * @template TElement The type of the target DOM element.
+ * @template TChangeEvent The type of the event triggering the change request (e.g. tab click, swipe gesture).
  */
 export interface ViewState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends

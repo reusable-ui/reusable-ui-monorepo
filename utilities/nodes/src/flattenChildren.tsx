@@ -29,7 +29,7 @@ import {
  * - **Nested arrays** are flattened recursively, maintaining child order.
  * - **Unique keys are assigned** to prevent collisions when handling cloned elements within fragments.
  * 
- * @param children - The React children to flatten, which may include fragments, arrays, or single element.
+ * @param children The React children to flatten, which may include fragments, arrays, or single element.
  * @returns A fully flattened array of React nodes, preserving the logical structure.
  */
 export const flattenChildren = (children: ReactNode): ReactNode[] => {

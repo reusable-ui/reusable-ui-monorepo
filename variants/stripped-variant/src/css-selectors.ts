@@ -26,8 +26,8 @@ export const isStrippedSelector    : CssSelectorCollection = '.is-stripped';
 /**
  * A CSS selector targeting elements with a specific stripped mode.
  * 
- * @template TStripped - The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
- * @param specificStripped - A specific stripped mode to target (e.g. `'flat'`, `'flush'`, `'joined'`), or `true` to target stripped elements.
+ * @template TStripped The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
+ * @param specificStripped A specific stripped mode to target (e.g. `'flat'`, `'flush'`, `'joined'`), or `true` to target stripped elements.
  * @returns A `CssSelectorCollection` string for use in conditional styling rules.
  */
 export const isStrippedOfSelector  = <TStripped extends string | true>(specificStripped: TStripped): CssSelectorCollection => (specificStripped === true) ? isStrippedSelector : `.is-${specificStripped}`;
@@ -37,7 +37,7 @@ export const isStrippedOfSelector  = <TStripped extends string | true>(specificS
 /**
  * Applies the given `styles` to stripped elements.
  * 
- * @param styles - The styles applied to stripped elements.
+ * @param styles The styles applied to stripped elements.
  * @returns A `CssRule` that applies the given `styles` for stripped elements.
  * 
  * @example
@@ -56,7 +56,7 @@ export const ifStripped    = (styles: CssStyleCollection): CssRule => rule(isStr
 /**
  * Applies the given `styles` to non-stripped elements.
  * 
- * @param styles - The styles applied to non-stripped elements.
+ * @param styles The styles applied to non-stripped elements.
  * @returns A `CssRule` that applies the given `styles` for non-stripped elements.
  * 
  * @example
@@ -75,9 +75,9 @@ export const ifNotStripped = (styles: CssStyleCollection): CssRule => rule(isNot
 /**
  * Applies the given `styles` to elements with a specific stripped mode.
  * 
- * @template TStripped - The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
- * @param specificStripped - A specific stripped mode to target (e.g. `'flat'`, `'flush'`, `'joined'`), or `true` to target stripped elements.
- * @param styles - The styles applied to elements with a specific stripped mode.
+ * @template TStripped The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
+ * @param specificStripped A specific stripped mode to target (e.g. `'flat'`, `'flush'`, `'joined'`), or `true` to target stripped elements.
+ * @param styles The styles applied to elements with a specific stripped mode.
  * @returns A `CssRule` that applies the given `styles` for elements with a specific stripped mode.
  * 
  * @example

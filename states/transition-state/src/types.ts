@@ -16,7 +16,7 @@ import {
  * 
  * This prop is intended to be dynamic and may change over the lifetime of the component.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
+ * @template TState The concrete type of the state value (must not be declarative).
  */
 export interface TransitionStateProps<TState extends {} | null> {
     /**
@@ -44,7 +44,7 @@ export interface TransitionStateProps<TState extends {} | null> {
  * These options are intended to be static for the lifetime of each component.
  * They define how the animation system interprets and propagates transitions.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
+ * @template TState The concrete type of the state value (must not be declarative).
  */
 export interface TransitionStateOptions<TState extends {} | null>
     extends
@@ -89,10 +89,10 @@ export interface TransitionStateOptions<TState extends {} | null>
  * - from internal state → uncontrolled only
  * - prefer props, fallback to internal state → hybrid
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TBehaviorProps - The type of the behavior-specific props.
- * @template TBehaviorOptions - The type of the behavior-specific options.
- * @template TBehaviorDefinition - The type of the behavior-specific definition.
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TBehaviorProps The type of the behavior-specific props.
+ * @template TBehaviorOptions The type of the behavior-specific options.
+ * @template TBehaviorDefinition The type of the behavior-specific definition.
  */
 export interface ResolveDriverStateArgs<TState extends {} | null, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition> {
     /**
@@ -132,10 +132,10 @@ export interface ResolveDriverStateArgs<TState extends {} | null, TBehaviorProps
  * 
  * The semantic transition phase reflects whether the state is currently settled or in transition.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TBehaviorProps - The type of the behavior-specific props.
- * @template TBehaviorOptions - The type of the behavior-specific options.
- * @template TBehaviorDefinition - The type of the behavior-specific definition.
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TBehaviorProps The type of the behavior-specific props.
+ * @template TBehaviorOptions The type of the behavior-specific options.
+ * @template TBehaviorDefinition The type of the behavior-specific definition.
  */
 export interface ResolveTransitionPhaseArgs<TState extends {} | null, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition> {
     /**
@@ -207,11 +207,11 @@ export interface ResolveTransitionPhaseArgs<TState extends {} | null, TBehaviorP
  * The common implementation maps `transitionPhase` directly to corresponding class names,
  * but more complex logic can be implemented as needed.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TPhase - The type representing semantic transition phases.
- * @template TBehaviorProps - The type of the behavior-specific props.
- * @template TBehaviorOptions - The type of the behavior-specific options.
- * @template TBehaviorDefinition - The type of the behavior-specific definition.
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TPhase The type representing semantic transition phases.
+ * @template TBehaviorProps The type of the behavior-specific props.
+ * @template TBehaviorOptions The type of the behavior-specific options.
+ * @template TBehaviorDefinition The type of the behavior-specific definition.
  */
 export interface ResolveTransitionClassnameArgs<TState extends {} | null, TPhase extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition> {
     /**
@@ -274,11 +274,11 @@ export interface ResolveTransitionClassnameArgs<TState extends {} | null, TPhase
  * Note:
  * - The initial phase present on mount is not considered a phase change and is not passed here.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TPhase - The type representing semantic transition phases.
- * @template TBehaviorProps - The type of the behavior-specific props.
- * @template TBehaviorOptions - The type of the behavior-specific options.
- * @template TBehaviorDefinition - The type of the behavior-specific definition.
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TPhase The type representing semantic transition phases.
+ * @template TBehaviorProps The type of the behavior-specific props.
+ * @template TBehaviorOptions The type of the behavior-specific options.
+ * @template TBehaviorDefinition The type of the behavior-specific definition.
  */
 export interface TriggerTransitionEventArgs<TState extends {} | null, TPhase extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition> {
     /**
@@ -351,12 +351,12 @@ export interface TriggerTransitionEventArgs<TState extends {} | null, TPhase ext
  * 
  * Must be statically defined and remain consistent for each `**-state` hook type.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TPhase - The type representing semantic transition phases.
- * @template TClassname - The type representing semantic transition classnames.
- * @template TBehaviorProps - The type of the behavior-specific props.
- * @template TBehaviorOptions - The type of the behavior-specific options.
- * @template TBehaviorDefinition - The type of the behavior-specific definition.
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TPhase The type representing semantic transition phases.
+ * @template TClassname The type representing semantic transition classnames.
+ * @template TBehaviorProps The type of the behavior-specific props.
+ * @template TBehaviorOptions The type of the behavior-specific options.
+ * @template TBehaviorDefinition The type of the behavior-specific definition.
  */
 export interface TransitionStateDefinition<TState extends {} | null, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition> {
     /**
@@ -431,10 +431,10 @@ export interface TransitionStateDefinition<TState extends {} | null, TPhase exte
  * 
  * This interface represents the common contract returned by all transition-based state hooks.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TPhase - The type representing semantic transition phases.
- * @template TClassname - The type representing semantic transition classnames.
- * @template TElement - The type of the target DOM element.
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TPhase The type representing semantic transition phases.
+ * @template TClassname The type representing semantic transition classnames.
+ * @template TElement The type of the target DOM element.
  */
 export interface TransitionState<TState extends {} | null, TPhase extends string, TClassname extends string, TElement extends Element = HTMLElement>
     extends

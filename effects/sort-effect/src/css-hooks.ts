@@ -132,7 +132,7 @@ import {
  * };
  * ```
  * 
- * @param _options - An optional configuration for customizing sorting effects (currently unused, reserved for future extension).
+ * @param _options An optional configuration for customizing sorting effects (currently unused, reserved for future extension).
  * @returns A CSS API containing effect rules and CSS variables for animating items into their new order whenever a sorting action occurs.
  */
 export const usingSortEffect = (_options?: CssSortEffectOptions): CssSortEffect => {

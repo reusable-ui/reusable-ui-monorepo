@@ -23,7 +23,7 @@ import {
  * 
  * Accepts an optional `active` prop, defaulting to `undefined` (uncontrolled mode) when not provided.
  * 
- * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
+ * @template TChangeEvent The type of the event triggering the change request (e.g. button click, keyboard event).
  */
 export interface ActiveStateProps<TChangeEvent = unknown>
     extends
@@ -99,7 +99,7 @@ export interface ActiveStateProps<TChangeEvent = unknown>
 /**
  * Options for customizing the active change dispatcher behavior.
  * 
- * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
+ * @template TChangeEvent The type of the event triggering the change request (e.g. button click, keyboard event).
  */
 export interface ActiveChangeDispatcherOptions<TChangeEvent = unknown>
     extends
@@ -205,8 +205,8 @@ export type ActiveClassname = `is-${ActivePhase}`
 /**
  * An API for accessing the resolved active/inactive state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
- * @template TElement - The type of the target DOM element.
- * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
+ * @template TElement The type of the target DOM element.
+ * @template TChangeEvent The type of the event triggering the change request (e.g. button click, keyboard event).
  */
 export interface ActiveState<TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends

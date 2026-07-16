@@ -60,10 +60,10 @@ const inheritableVariantDefinition : InheritableVariantDefinition<string, 'inher
  * - `'inherit'` : uses the size value from context.
  * - Otherwise   : uses the explicitly provided size value as-is.
  * 
- * @template TSize - commonly `'sm'`, `'md'`, `'lg'`
+ * @template TSize commonly `'sm'`, `'md'`, `'lg'`
  * 
- * @param props - The component props that may include a `size` value.
- * @param options - A required configuration specifying a default size when no `size` prop is explicitly provided.
+ * @param props The component props that may include a `size` value.
+ * @param options A required configuration specifying a default size when no `size` prop is explicitly provided.
  * @returns The resolved size value.
  */
 export function useResolvedSize<TSize extends string = BasicSize>(props: SizeVariantProps<TSize>, options: SizeVariantOptions<TSize>): TSize;
@@ -77,7 +77,7 @@ export function useResolvedSize<TSize extends string = BasicSize>(props: SizeVar
  * - `'inherit'` : uses the size value from context.
  * - Otherwise   : uses the explicitly provided size value as-is.
  * 
- * @param props - The component props that may include a `size` value.
+ * @param props The component props that may include a `size` value.
  * @returns The resolved size value.
  */
 export function useResolvedSize(props: SizeVariantProps<BasicSize>): BasicSize;

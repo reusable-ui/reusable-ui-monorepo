@@ -62,7 +62,7 @@ export interface HoverObserverProps
  * Includes fallback detection for pre-existing hover on mount,
  * ensuring lifecycle consistency during hydration or layout delay.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  */
 export interface HoverObserverState<TElement extends Element = HTMLElement>
     extends
@@ -90,9 +90,9 @@ export interface HoverObserverState<TElement extends Element = HTMLElement>
  *   since restricted elements cannot be hovered.
  * - When re-enabled, immediately re-evaluates based on current pointer position and containment.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  * 
- * @param props - The hover observer props for describing the current component condition.
+ * @param props The hover observer props for describing the current component condition.
  * @returns The observed hover state, ref, and event handlers.
  */
 export const useHoverObserverState = <TElement extends Element = HTMLElement>(props: HoverObserverProps): HoverObserverState<TElement> => {

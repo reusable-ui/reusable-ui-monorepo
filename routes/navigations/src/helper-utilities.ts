@@ -22,7 +22,7 @@ export interface MatchedRoute {
  * Note: Each returned string may contain zero or more concrete segments
  * delimited by '/' — depending on how the route was defined.
  * 
- * @param matchedRoutes - An array of matched route objects.
+ * @param matchedRoutes An array of matched route objects.
  * @returns An array of segment units representing the path structure.
  */
 export const extractRouteSegmentUnits = (matchedRoutes: MatchedRoute[]): string[] => {

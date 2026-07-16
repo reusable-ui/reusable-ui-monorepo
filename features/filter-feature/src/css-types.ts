@@ -86,9 +86,9 @@ export interface CssFilterRegistry {
     /**
      * Registers a filter variable with optional stacking priority.
      * 
-     * @param filterVariable - A CSS variable reference representing a filter layer.
-     * @param priority - Optional stacking priority; higher values override lower ones.
-     * @returns - An unregister function to remove the variable.
+     * @param filterVariable A CSS variable reference representing a filter layer.
+     * @param priority Optional stacking priority; higher values override lower ones.
+     * @returns An unregister function to remove the variable.
      */
     registerFilter(filterVariable: CssCustomSimpleRef, priority?: number): () => void
     

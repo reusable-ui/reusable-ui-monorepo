@@ -101,9 +101,9 @@ interface ActivePointers {
  * Notes:
  * - The returned function is referentially stable via `useStableCallback`.
  * 
- * @param pressButtons - A button or list of buttons to track (e.g. 0, [0, 1]).
- * @param pressPressure - The minimum pressure threshold for pen input.
- * @param pressFingers - The exact number of fingers required for touch input.
+ * @param pressButtons A button or list of buttons to track (e.g. 0, [0, 1]).
+ * @param pressPressure The minimum pressure threshold for pen input.
+ * @param pressFingers The exact number of fingers required for touch input.
  * @returns A `PointerPressTracker` object containing:
  *   - `track(event, isPressed)` → `true` if the pointer was successfully tracked (on press), or successfully untracked with no remaining active pointers (on release).
  *   - `isPressed()` → `true` if the current pointer state satisfies the configured press gesture.

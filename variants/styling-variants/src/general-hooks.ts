@@ -27,7 +27,7 @@ import {
  * and are captured as-is without computing the final visual outcome.
  * `undefined` props are excluded from the result.
  * 
- * @param props - The component props that may include styling-related variants.
+ * @param props The component props that may include styling-related variants.
  * @returns A subset of styling-related variant props with defined values.
  * 
  * @example

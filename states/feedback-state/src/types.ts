@@ -29,7 +29,7 @@ export {
  * 
  * This prop is intended to be dynamic and may change over the lifetime of the component.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
+ * @template TState The concrete type of the state value (must not be declarative).
  */
 export interface FeedbackStateProps<TState extends {} | null>
     extends
@@ -70,7 +70,7 @@ export interface FeedbackStateProps<TState extends {} | null>
  * These options are intended to be static for the lifetime of each component.
  * They define how feedback states synchronize with the animation system.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
+ * @template TState The concrete type of the state value (must not be declarative).
  */
 export interface FeedbackStateOptions<TState extends {} | null>
     extends
@@ -90,12 +90,12 @@ export interface FeedbackStateOptions<TState extends {} | null>
  * 
  * Must be statically defined and remain consistent for each `**-state` hook type.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TPhase - The type representing semantic transition phases.
- * @template TClassname - The type representing semantic transition classnames.
- * @template TBehaviorProps - The type of the behavior-specific props.
- * @template TBehaviorOptions - The type of the behavior-specific options.
- * @template TBehaviorDefinition - The type of the behavior-specific definition.
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TPhase The type representing semantic transition phases.
+ * @template TClassname The type representing semantic transition classnames.
+ * @template TBehaviorProps The type of the behavior-specific props.
+ * @template TBehaviorOptions The type of the behavior-specific options.
+ * @template TBehaviorDefinition The type of the behavior-specific definition.
  */
 export interface FeedbackStateDefinition<TState extends {} | null, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
     extends
@@ -113,10 +113,10 @@ export interface FeedbackStateDefinition<TState extends {} | null, TPhase extend
  * 
  * This interface represents the common contract returned by all feedback-based state hooks.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TPhase - The type representing semantic transition phases.
- * @template TClassname - The type representing semantic transition classnames.
- * @template TElement - The type of the target DOM element.
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TPhase The type representing semantic transition phases.
+ * @template TClassname The type representing semantic transition classnames.
+ * @template TElement The type of the target DOM element.
  */
 export interface FeedbackState<TState extends {} | null, TPhase extends string, TClassname extends string, TElement extends Element = HTMLElement>
     extends

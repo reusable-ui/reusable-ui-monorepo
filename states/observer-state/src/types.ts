@@ -59,7 +59,7 @@ export interface ObserverProps {
  * These options are intended to be static for the lifetime of each component.
  * They define how state updates are committed.
  * 
- * @template TState - The type of the state value.
+ * @template TState The type of the state value.
  */
 export interface ObserverOptions<TState extends {} | null> {
     /**
@@ -83,8 +83,8 @@ export interface ObserverOptions<TState extends {} | null> {
  * 
  * Must be statically defined and remain consistent for each `**-observer` hook type.
  * 
- * @template TState - The type of the state value.
- * @template TElement - The type of the target DOM element.
+ * @template TState The type of the state value.
+ * @template TElement The type of the target DOM element.
  */
 export interface ObserverDefinition<TState extends {} | null, TElement extends Element> {
     /**
@@ -115,8 +115,8 @@ export interface ObserverDefinition<TState extends {} | null, TElement extends E
 /**
  * An API for accessing the current observed state and supporting properties needed to update or measure it.
  * 
- * @template TState - The type of the state value.
- * @template TElement - The type of the target DOM element.
+ * @template TState The type of the state value.
+ * @template TElement The type of the target DOM element.
  */
 export interface ObserverState<TState extends {} | null, TElement extends Element> {
     /**

@@ -65,11 +65,11 @@ import {
  * - Always triggers `onStateChange`, if provided.
  * - Ideal for components that **dictate** the `state` externally and need a stable dispatcher without lifecycle orchestration.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TChangeEvent - The type of the event triggering the change request (e.g. mouse click, keyboard event).
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TChangeEvent The type of the event triggering the change request (e.g. mouse click, keyboard event).
  * 
- * @param props - The component props that may include `onStateChange` callback but must exclude `defaultState`.
- * @param options - Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
+ * @param props The component props that may include `onStateChange` callback but must exclude `defaultState`.
+ * @param options Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for state change requests.
  */
 export const useDispatchInteractionStateChange = <TState extends {} | null, TChangeEvent = unknown>(props: InteractionStateProps<{} | null, TState, TChangeEvent>, options?: InteractionStateChangeDispatcherOptions<TState, TChangeEvent>) : DispatchValueChange<TState, TChangeEvent> => {
@@ -146,19 +146,19 @@ export const useDispatchInteractionStateChange = <TState extends {} | null, TCha
  * Supports user interaction handling via `dispatchStateChange()`.  
  * Ignores user interaction when the component is disabled or read-only.
  * 
- * @param props - The behavior-specific props, including controlled/uncontrolled state and change request callbacks.
- * @param options - Optional per-component customization for animation lifecycle (pattern, bubbling, etc.) and default state behavior.
- * @param definition - The interaction-specific definition that declares how effective state, phases, and classnames are resolved.
+ * @param props The behavior-specific props, including controlled/uncontrolled state and change request callbacks.
+ * @param options Optional per-component customization for animation lifecycle (pattern, bubbling, etc.) and default state behavior.
+ * @param definition The interaction-specific definition that declares how effective state, phases, and classnames are resolved.
  * 
- * @template TDeclarativeState - The declarative type of the state value (may include keywords).
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TPhase - The type representing semantic transition phases.
- * @template TClassname - The type representing semantic transition classnames.
- * @template TBehaviorProps - The type of the behavior-specific props.
- * @template TBehaviorOptions - The type of the behavior-specific options.
- * @template TBehaviorDefinition - The type of the behavior-specific definition.
- * @template TElement - The type of the target DOM element.
- * @template TChangeEvent - The type of the event triggering the change request (e.g. mouse click, keyboard event).
+ * @template TDeclarativeState The declarative type of the state value (may include keywords).
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TPhase The type representing semantic transition phases.
+ * @template TClassname The type representing semantic transition classnames.
+ * @template TBehaviorProps The type of the behavior-specific props.
+ * @template TBehaviorOptions The type of the behavior-specific options.
+ * @template TBehaviorDefinition The type of the behavior-specific definition.
+ * @template TElement The type of the target DOM element.
+ * @template TChangeEvent The type of the event triggering the change request (e.g. mouse click, keyboard event).
  * 
  * @returns The resolved interaction behavior state API, including a dispatcher for requesting state changes.
  */
@@ -312,16 +312,16 @@ export const useInteractionState = <
  * Supports user interaction handling via `dispatchStateChange()`.  
  * Ignores user interaction when the component is disabled or read-only.
  * 
- * @param props - The behavior-specific props, including controlled/uncontrolled state and change request callbacks.
- * @param options - Optional per-component customization for default state behavior.
- * @param definition - The interaction-specific definition that declares how effective state is resolved.
+ * @param props The behavior-specific props, including controlled/uncontrolled state and change request callbacks.
+ * @param options Optional per-component customization for default state behavior.
+ * @param definition The interaction-specific definition that declares how effective state is resolved.
  * 
- * @template TDeclarativeState - The declarative type of the state value (may include keywords).
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TBehaviorProps - The type of the behavior-specific props.
- * @template TBehaviorOptions - The type of the behavior-specific options.
- * @template TBehaviorDefinition - The type of the behavior-specific definition.
- * @template TChangeEvent - The type of the event triggering the change request (e.g. mouse click, keyboard event).
+ * @template TDeclarativeState The declarative type of the state value (may include keywords).
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TBehaviorProps The type of the behavior-specific props.
+ * @template TBehaviorOptions The type of the behavior-specific options.
+ * @template TBehaviorDefinition The type of the behavior-specific definition.
+ * @template TChangeEvent The type of the event triggering the change request (e.g. mouse click, keyboard event).
  * 
  * @returns A tuple containing:
  * - The resolved concrete interaction state.

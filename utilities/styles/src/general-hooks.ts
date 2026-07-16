@@ -50,7 +50,7 @@ const useMemo : typeof useOriginalReactMemo = (process.env.NODE_ENV !== 'benchma
  * - Recursively flattens **nested arrays** and objects containing class mappings.
  * - Filters out `undefined`, `null`, booleans (`true`, `false`), and empty strings.
  * 
- * @param classes - Class name strings, conditional objects, or nested arrays.
+ * @param classes Class name strings, conditional objects, or nested arrays.
  *    - Strings are added as-is.
  *    - Objects include keys conditionally (`{ className: condition }`).
  *    - Nested arrays and objects are fully supported.
@@ -114,7 +114,7 @@ export const mergeClasses = (...classes: MaybeDeepArray<OptionalOrBoolean<string
  * - Filters out `undefined`, `null`, booleans (`true`, `false`), and non-object values.
  * - Preserves reference stability by memoizing the merged result.
  * 
- * @param styles - List of style objects, including deeply nested structures and conditional values.
+ * @param styles List of style objects, including deeply nested structures and conditional values.
  * @returns A memoized merged style object.
  * 
  * @example

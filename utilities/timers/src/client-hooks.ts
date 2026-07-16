@@ -49,8 +49,8 @@ export class ScheduledPromise<T> extends Promise<T | false> {
     /**
      * Initializes a new ScheduledPromise instance.
      * 
-     * @param executor - Function that resolves or rejects the promise.
-     * @param onAbort - Handler triggered when the scheduled task is aborted.
+     * @param executor Function that resolves or rejects the promise.
+     * @param onAbort Handler triggered when the scheduled task is aborted.
      */
     constructor(
         executor: (
@@ -103,7 +103,7 @@ export class ScheduledPromise<T> extends Promise<T | false> {
 /**
  * A factory function for creating scheduled timeout promises that resolves `true` after the specified delay, or `false` if aborted.
  * 
- * @param delay - The duration (in milliseconds) before the timeout resolves.
+ * @param delay The duration (in milliseconds) before the timeout resolves.
  * @returns A `ScheduledPromise<boolean>` that resolves `true` after the specified delay, or `false` if aborted.
  */
 export type CreateScheduledTimeout = (delay: number) => ScheduledPromise<boolean>
@@ -245,7 +245,7 @@ export const useSetTimeout = (): CreateScheduledTimeout => {
 /**
  * A factory function for creating scheduled animation frame promises that resolves with the timestamp from `requestAnimationFrame`, or `false` if aborted.
  * 
- * @param frameCount - The number of animation frames to wait before resolving (default: `1`).
+ * @param frameCount The number of animation frames to wait before resolving (default: `1`).
  * @returns A `ScheduledPromise<DOMHighResTimeStamp | false>` that resolves with the timestamp from `requestAnimationFrame`, or `false` if aborted.
  */
 export type CreateScheduledAnimationFrame = (frameCount?: number) => ScheduledPromise<DOMHighResTimeStamp | false>

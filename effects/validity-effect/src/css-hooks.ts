@@ -60,7 +60,7 @@ import {
  * Smoothly transitions between valid, invalid, and unvalidated states by interpolating theme colors.
  * Uses the current theme colors as the baseline, ensuring harmony with the component's appearance.
  * 
- * @param options - An optional configuration for customizing validity effects.
+ * @param options An optional configuration for customizing validity effects.
  * @returns A CSS API containing effect rules and CSS variables for the success/danger theme colors.
  */
 export const usingValidityEffect = (options?: CssValidityEffectOptions): CssValidityEffect => {

@@ -54,7 +54,7 @@ export interface DragObserverProps {
  * - Pointer event handlers for integration.
  * - A live relative offset for applying drag translations.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  */
 export interface DragObserverState<TElement extends Element = HTMLElement>
     extends
@@ -77,9 +77,9 @@ export interface DragObserverState<TElement extends Element = HTMLElement>
  * - When `isDragActive = true`, the observer attaches global listeners and continuously updates offsets.
  * - When `isDragActive = false`, listeners are detached and the active pointer ID is cleared.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  * 
- * @param props - The drag observer props describing the current drag condition.
+ * @param props The drag observer props describing the current drag condition.
  * @returns The observed drag offset and event handlers for integration.
  */
 export const useDragObserverState = <TElement extends Element = HTMLElement>(props: DragObserverProps): DragObserverState<TElement> => {

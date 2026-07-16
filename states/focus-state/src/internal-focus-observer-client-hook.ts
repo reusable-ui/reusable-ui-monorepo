@@ -68,7 +68,7 @@ export interface FocusObserverProps
  * Includes fallback detection for pre-existing focus on mount,
  * ensuring lifecycle consistency during hydration or silent autofocus.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  */
 export interface FocusObserverState<TElement extends Element = HTMLElement>
     extends
@@ -96,9 +96,9 @@ export interface FocusObserverState<TElement extends Element = HTMLElement>
  *   since restricted elements cannot be focused.
  * - When re-enabled, remains blurred until the user explicitly refocuses.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  * 
- * @param props - The focus observer props for describing the current component condition.
+ * @param props The focus observer props for describing the current component condition.
  * @returns The observed focus state, ref, and event handlers.
  */
 export const useFocusObserverState = <TElement extends Element = HTMLElement>(props: FocusObserverProps): FocusObserverState<TElement> => {

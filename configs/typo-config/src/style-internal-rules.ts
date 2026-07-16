@@ -74,13 +74,13 @@ export interface ElementRuleOptions {
 /**
  * Generates a styling rule for either inline-like or block-like elements, applying configurable exclusions, spacing logic, and CSS variables.
  *
- * @param isBlock - Determines whether the rule applies to inline-like (`false`) or block-like (`true`) elements.
- * @param options - Configuration object containing:
+ * @param isBlock Determines whether the rule applies to inline-like (`false`) or block-like (`true`) elements.
+ * @param options Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for the target elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic margin adjustments.
  *   - `configVars`: References CSS variables for managing spacing and typography.
- * @param extendedLayoutStyles - Optional styles for additional layout-related customizations.
- * @param extendedConditionalStyles - Optional conditional styles wrapped within logic (`...ifSomething({ ... })`).
+ * @param extendedLayoutStyles Optional styles for additional layout-related customizations.
+ * @param extendedConditionalStyles Optional conditional styles wrapped within logic (`...ifSomething({ ... })`).
  * 
  * @returns A `CssRule` object for styling block-like or inline-like elements.
  */
@@ -183,12 +183,12 @@ export interface BlockElementRuleOptions extends ElementRuleOptions {
 /**
  * Generates a styling rule for block-like elements, applying configurable exclusions, spacing logic, and CSS variables.
  *
- * @param options - Configuration object containing:
+ * @param options Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for block-like elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic top/bottom margin adjustments.
  *   - `configVars`: References CSS variables for managing spacing and typography.
- * @param extendedLayoutStyles - Optional styles for additional layout-related customizations.
- * @param extendedConditionalStyles - Optional conditional styles wrapped within logic (`...ifSomething({ ... })`).
+ * @param extendedLayoutStyles Optional styles for additional layout-related customizations.
+ * @param extendedConditionalStyles Optional conditional styles wrapped within logic (`...ifSomething({ ... })`).
  * 
  * @returns A `CssRule` object for styling block-like elements.
  */
@@ -215,12 +215,12 @@ export interface InlineElementRuleOptions extends ElementRuleOptions {
 /**
  * Generates a styling rule for inline-like elements, applying configurable exclusions, spacing logic, and CSS variables.
  *
- * @param options - Configuration object containing:
+ * @param options Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for inline-like elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic left/right margin adjustments.
  *   - `configVars`: References CSS variables for managing spacing and typography.
- * @param extendedLayoutStyles - Optional styles for additional layout-related customizations.
- * @param extendedConditionalStyles - Optional conditional styles wrapped within logic (`...ifSomething({ ... })`).
+ * @param extendedLayoutStyles Optional styles for additional layout-related customizations.
+ * @param extendedConditionalStyles Optional conditional styles wrapped within logic (`...ifSomething({ ... })`).
  * 
  * @returns A `CssRule` object for styling inline-like elements.
  */
@@ -245,7 +245,7 @@ export interface ParagraphRuleOptions extends BlockElementRuleOptions {
 /**
  * Generates a styling rule for paragraph-like elements, applying configurable exclusions, spacing logic, and CSS variables.
  *
- * @param options - Configuration object containing:
+ * @param options Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for paragraph-like elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic top/bottom margin adjustments.
  *   - `configVars`: References CSS variables for managing spacing and typography.
@@ -282,7 +282,7 @@ export interface HeadingRuleOptions extends BlockElementRuleOptions {
 /**
  * Generates a styling rule for heading-like elements, applying configurable exclusions, spacing logic, and CSS variables.
  *
- * @param options - Configuration object containing:
+ * @param options Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for heading-like elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic top/bottom margin adjustments.
  *   - `configVars`: References CSS variables for managing spacing and typography.
@@ -344,7 +344,7 @@ export interface HeadingLevelRuleOptions {
 /**
  * Generates styling rules for heading levels, dynamically mapping font sizes to the correct level.
  *
- * @param options - The configuration object containing:
+ * @param options The configuration object containing:
  *   - `levels`: Array of numeric heading levels (e.g., `[1, 2, 3, 4, 5, 6]`).
  *   - `selectorFactory`: Function to generate CSS selectors based on heading level.
  *   - `configVars`: References CSS variables for managing spacing and typography across multiple levels.
@@ -389,7 +389,7 @@ export interface BlockquoteRuleOptions extends BlockElementRuleOptions {
 /**
  * Generates a styling rule for blockquote-like elements, applying configurable exclusions, spacing logic, and CSS variables.
  *
- * @param options - Configuration object containing:
+ * @param options Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for blockquote-like elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic top/bottom margin adjustments.
  *   - `configVars`: References CSS variables for managing spacing and typography.
@@ -471,7 +471,7 @@ export interface PlainListRuleOptions extends BlockElementRuleOptions {
 /**
  * Generates a styling rule for list-like elements, applying configurable exclusions, spacing logic, and CSS variables.
  *
- * @param options - Configuration object containing:
+ * @param options Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for list-like elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic top/bottom margin adjustments.
  *   - `configVars`: References CSS variables for managing spacing and typography.
@@ -533,7 +533,7 @@ export interface HorzSeparatorRuleOptions extends BlockElementRuleOptions {
 /**
  * Generates a styling rule for horizontal-separator-like elements, applying configurable exclusions, spacing logic, and CSS variables.
  *
- * @param options - Configuration object containing:
+ * @param options Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for horizontal-separator-like elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic top/bottom margin adjustments.
  *   - `configVars`: References CSS variables for managing spacing and typography.
@@ -556,7 +556,7 @@ export interface VertSeparatorRuleOptions extends HorzSeparatorRuleOptions {
 /**
  * Generates a styling rule for vertical-separator-like elements, applying configurable exclusions, spacing logic, and CSS variables.
  *
- * @param options - Configuration object containing:
+ * @param options Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for vertical-separator-like elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic top/bottom margin adjustments.
  *   - `configVars`: References CSS variables for managing spacing and typography.
@@ -580,7 +580,7 @@ export interface MarkRuleOptions extends InlineElementRuleOptions {
 /**
  * Generates a styling rule for mark-like elements, applying configurable exclusions, spacing logic, and CSS variables.
  *
- * @param options - Configuration object containing:
+ * @param options Configuration object containing:
  *   - `elementFilter`: Defines selectors and exclusions criteria for mark-like elements.
  *   - `spacingFilters`: Defines neighboring elements that trigger automatic left/right margin adjustments.
  *   - `configVars`: References CSS variables for managing spacing and typography.

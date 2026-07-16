@@ -25,7 +25,7 @@ import {
  * 
  * This prop is intended to be dynamic and may change over the lifetime of the component.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
+ * @template TState The concrete type of the state value (must not be declarative).
  */
 export interface ActivityStateProps<TState extends {} | null> {
     /**
@@ -59,7 +59,7 @@ export interface ActivityStateProps<TState extends {} | null> {
  * These options are intended to be static for the lifetime of each component.
  * They define how activity states synchronize with the animation system.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
+ * @template TState The concrete type of the state value (must not be declarative).
  */
 export interface ActivityStateOptions<TState extends {} | null>
     extends
@@ -106,10 +106,10 @@ export interface ActivityStateOptions<TState extends {} | null>
  * The common implementation maps `visualState` directly to corresponding class names,
  * but more complex logic can be implemented as needed.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TBehaviorProps - The type of the behavior-specific props.
- * @template TBehaviorOptions - The type of the behavior-specific options.
- * @template TBehaviorDefinition - The type of the behavior-specific definition.
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TBehaviorProps The type of the behavior-specific props.
+ * @template TBehaviorOptions The type of the behavior-specific options.
+ * @template TBehaviorDefinition The type of the behavior-specific definition.
  */
 export interface ResolveActivityClassnameArgs<TState extends {} | null, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition> {
     /**
@@ -163,11 +163,11 @@ export interface ResolveActivityClassnameArgs<TState extends {} | null, TBehavio
  * 
  * Must be statically defined and remain consistent for each `**-state` hook type.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TClassname - The type representing semantic activity classnames.
- * @template TBehaviorProps - The type of the behavior-specific props.
- * @template TBehaviorOptions - The type of the behavior-specific options.
- * @template TBehaviorDefinition - The type of the behavior-specific definition.
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TClassname The type representing semantic activity classnames.
+ * @template TBehaviorProps The type of the behavior-specific props.
+ * @template TBehaviorOptions The type of the behavior-specific options.
+ * @template TBehaviorDefinition The type of the behavior-specific definition.
  */
 export interface ActivityStateDefinition<TState extends {} | null, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition> {
     /**
@@ -206,9 +206,9 @@ export interface ActivityStateDefinition<TState extends {} | null, TClassname ex
  * 
  * This interface represents the common contract returned by all activity-based state hooks.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TClassname - The type representing semantic activity classnames.
- * @template TElement - The type of the target DOM element.
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TClassname The type representing semantic activity classnames.
+ * @template TElement The type of the target DOM element.
  */
 export interface ActivityState<TState extends {} | null, TClassname extends string, TElement extends Element = HTMLElement>
     extends

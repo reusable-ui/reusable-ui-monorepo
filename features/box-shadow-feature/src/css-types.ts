@@ -86,9 +86,9 @@ export interface CssBoxShadowRegistry {
     /**
      * Registers a box shadow variable with optional stacking priority.
      * 
-     * @param boxShadowVariable - A CSS variable reference representing a box shadow layer.
-     * @param priority - Optional stacking priority; higher values override lower ones.
-     * @returns - An unregister function to remove the variable.
+     * @param boxShadowVariable A CSS variable reference representing a box shadow layer.
+     * @param priority Optional stacking priority; higher values override lower ones.
+     * @returns An unregister function to remove the variable.
      */
     registerBoxShadow(boxShadowVariable: CssCustomSimpleRef, priority?: number): () => void
     

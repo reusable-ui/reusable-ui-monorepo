@@ -39,7 +39,7 @@ import {
  * Composes custom and registered transforms into a unified stack
  * and exposes ready-to-use CSS variables.
  * 
- * @param options - An optional configuration for customizing transform behavior.
+ * @param options An optional configuration for customizing transform behavior.
  * @returns A CSS API for composing a unified transform stack from custom and registered state packages.
  */
 export const usingTransformFeature = (options?: CssTransformFeatureOptions): CssTransformFeature => {

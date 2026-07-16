@@ -9,7 +9,7 @@ import {
 /**
  * Props for resolving an effective state value from controlled props.
  * 
- * @template TState - The type of the resolved state value.
+ * @template TState The type of the resolved state value.
  */
 export interface ControlledStateProps<TState extends {} | null> {
     /**
@@ -26,7 +26,7 @@ export interface ControlledStateProps<TState extends {} | null> {
  * - Declares an optional default state used when no `state` prop
  *   is provided by the consumer.
  * 
- * @template TState - The type of the resolved state value.
+ * @template TState The type of the resolved state value.
  */
 export interface ControlledStateOptions<TState extends {} | null> {
     /**
@@ -41,7 +41,7 @@ export interface ControlledStateOptions<TState extends {} | null> {
  * 
  * - Declares the mandatory default state used when neither `state` prop nor `defaultState` option is provided.
  * 
- * @template TState - The type of the resolved state value.
+ * @template TState The type of the resolved state value.
  */
 export interface ControlledStateDefinition<TState extends {} | null> {
     /**
@@ -57,7 +57,7 @@ export interface ControlledStateDefinition<TState extends {} | null> {
  * Props for resolving an effective state value from controlled props while optionally
  * clamping for a valid range when the clamping function is available.
  * 
- * @template TState - The type of the resolved state value (e.g. number for view index).
+ * @template TState The type of the resolved state value (e.g. number for view index).
  */
 export interface RangedStateProps<TState extends {} | null>
     extends
@@ -75,7 +75,7 @@ export interface RangedStateProps<TState extends {} | null>
  *   is provided by the consumer.
  * - Declares an optional clamping function to enforce valid ranges.
  * 
- * @template TState - The type of the resolved state value (e.g. number for view index).
+ * @template TState The type of the resolved state value (e.g. number for view index).
  */
 export interface RangedStateOptions<TState extends {} | null>
     extends
@@ -98,7 +98,7 @@ export interface RangedStateOptions<TState extends {} | null>
  * - Declares the mandatory default state used when neither `state` prop nor `defaultState` option is provided.
  * - Declares an optional clamping function to enforce valid ranges.
  * 
- * @template TState - The type of the resolved state value (e.g. number for view index).
+ * @template TState The type of the resolved state value (e.g. number for view index).
  */
 export interface RangedStateDefinition<TState extends {} | null>
     extends
@@ -120,7 +120,7 @@ export interface RangedStateDefinition<TState extends {} | null>
  * Props for resolving an effective state value from controlled props while optionally
  * cascading from context when cascade behavior is enabled.
  * 
- * @template TState - The type of the resolved state value.
+ * @template TState The type of the resolved state value.
  */
 export interface CascadeStateProps<TState extends {} | null>
     extends
@@ -144,7 +144,7 @@ export interface CascadeStateProps<TState extends {} | null>
  * - Declares an optional default cascading behavior used when no `cascadeEnabled` prop
  *   is provided by the consumer.
  * 
- * @template TState - The type of the resolved state value.
+ * @template TState The type of the resolved state value.
  */
 export interface CascadeStateOptions<TState extends {} | null>
     extends
@@ -168,7 +168,7 @@ export interface CascadeStateOptions<TState extends {} | null>
  * - Declares the baseline inactive state used to detect when cascading should apply.
  * - Declares the context from which the cascaded state is applied.
  * 
- * @template TState - The type of the resolved state value.
+ * @template TState The type of the resolved state value.
  */
 export interface CascadeStateDefinition<TState extends {} | null>
     extends
@@ -210,8 +210,8 @@ export interface CascadeStateDefinition<TState extends {} | null>
  * delegating to an external observer when the resolved value equals the explicit
  * observable token.
  * 
- * @template TState - The type of the resolved state value.
- * @template TObservableToken - A special string token used to trigger observation (e.g. `'auto'`).
+ * @template TState The type of the resolved state value.
+ * @template TObservableToken A special string token used to trigger observation (e.g. `'auto'`).
  */
 export interface ObservableStateProps<TState extends {} | null, TObservableToken extends string>
     extends
@@ -241,8 +241,8 @@ export interface ObservableStateProps<TState extends {} | null, TObservableToken
  * - Declares an optional default state used when no `state` prop
  *   is provided by the consumer.
  * 
- * @template TState - The type of the resolved state value.
- * @template TObservableToken - A special string token used to trigger observation (e.g. `'auto'`).
+ * @template TState The type of the resolved state value.
+ * @template TObservableToken A special string token used to trigger observation (e.g. `'auto'`).
  */
 export interface ObservableStateOptions<TState extends {} | null, TObservableToken extends string>
     extends
@@ -261,8 +261,8 @@ export interface ObservableStateOptions<TState extends {} | null, TObservableTok
  * - Declares the baseline inactive state used when `isRestricted` is true.
  * - Declares the declarative token that activates dynamic state observation.
  * 
- * @template TState - The type of the resolved state value.
- * @template TObservableToken - A special string token used to trigger observation (e.g. `'auto'`).
+ * @template TState The type of the resolved state value.
+ * @template TObservableToken A special string token used to trigger observation (e.g. `'auto'`).
  */
 export interface ObservableStateDefinition<TState extends {} | null, TObservableToken extends string>
     extends

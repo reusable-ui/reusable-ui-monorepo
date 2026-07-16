@@ -60,10 +60,10 @@ import {
  * };
  * ```
  * 
- * @template TValue - The type of the value being managed.
- * @template TChangeEvent - The type of the event triggering the value change.
+ * @template TValue The type of the value being managed.
+ * @template TChangeEvent The type of the event triggering the value change.
  * 
- * @param props - The controlled value props.
+ * @param props The controlled value props.
  * @returns `[currentValue, dispatchValueChange]` — the current external value and a stable dispatcher to request changes.
  */
 export const useControlledValue   = <TValue, TChangeEvent = unknown>(props: ControlledValueProps<TValue, TChangeEvent>): ValueChangeTuple<TValue, TChangeEvent> => {

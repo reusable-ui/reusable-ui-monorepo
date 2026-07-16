@@ -4,8 +4,8 @@
  * Formats a floating-point number into a more human-friendly form, 
  * reducing excessive decimal places caused by floating-point precision errors.
  *
- * @template TNumber - The input type (`number`, `null`, or `undefined`).
- * @param value - The number to clean. Returns `null`, `undefined`, `NaN`, `Infinity`, or `-Infinity` unchanged.
+ * @template TNumber The input type (`number`, `null`, or `undefined`).
+ * @param value The number to clean. Returns `null`, `undefined`, `NaN`, `Infinity`, or `-Infinity` unchanged.
  * @returns The formatted number with up to 11 decimal places, or the original input if special cases apply.
  */
 export const decimalify = <TNumber extends number|null|undefined>(value: TNumber) : TNumber => {
@@ -25,11 +25,11 @@ export const decimalify = <TNumber extends number|null|undefined>(value: TNumber
 /**
  * Clamps a number within a given range, optionally applying stepping increments.
  *
- * @template TNumber - The input type (`number`, `null`, or `undefined`).
- * @param min - The minimum allowed value. Defaults to `Number.MIN_SAFE_INTEGER` if not provided.
- * @param value - The number to clamp. Returns `null`, `undefined`, `NaN`, `Infinity`, or `-Infinity` unchanged.
- * @param max - The maximum allowed value. Defaults to `Number.MAX_SAFE_INTEGER` if not provided.
- * @param step - Optional stepping interval. If defined, the output is aligned to the nearest step.
+ * @template TNumber The input type (`number`, `null`, or `undefined`).
+ * @param min The minimum allowed value. Defaults to `Number.MIN_SAFE_INTEGER` if not provided.
+ * @param value The number to clamp. Returns `null`, `undefined`, `NaN`, `Infinity`, or `-Infinity` unchanged.
+ * @param max The maximum allowed value. Defaults to `Number.MAX_SAFE_INTEGER` if not provided.
+ * @param step Optional stepping interval. If defined, the output is aligned to the nearest step.
  * @returns The clamped number, adjusted to the nearest valid step if applicable.
  */
 export const clamp = <TNumber extends number|null|undefined>(min: number|TNumber, value: TNumber, max: number|TNumber, step?: number|TNumber): TNumber => {

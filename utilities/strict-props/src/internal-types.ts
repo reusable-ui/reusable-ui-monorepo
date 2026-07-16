@@ -4,9 +4,9 @@
  * 
  * Any prop outside the allowed set is flagged by typing it as `never`.
  * 
- * @template TRestProps - The remaining properties being validated.
- * @template TBaseProps - The base props type (e.g. HTML attributes).
- * @template TExtraProps - Any additional allowed props.
+ * @template TRestProps The remaining properties being validated.
+ * @template TBaseProps The base props type (e.g. HTML attributes).
+ * @template TExtraProps Any additional allowed props.
  */
 export type ForbiddenProps<
     TRestProps extends TBaseProps,

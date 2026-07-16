@@ -18,9 +18,9 @@ import {
  * - 🧹 Discards outdated transitions during overlapping changes.
  * - 🔁 Resumes the latest intent once prior animation finishes.
  * 
- * @template TState - The type representing the animated state value.
- * @param prev - The previous animation state, including intent and running animation.
- * @param action - The dispatched action that modifies the animation state.
+ * @template TState The type representing the animated state value.
+ * @param prev The previous animation state, including intent and running animation.
+ * @param action The dispatched action that modifies the animation state.
  * @returns The updated animation state after applying the reducer logic.
  */
 export const animationStateReducer = <TState extends {} | null>(prev: AnimationState<TState>, action: AnimationAction<TState>): AnimationState<TState> => {

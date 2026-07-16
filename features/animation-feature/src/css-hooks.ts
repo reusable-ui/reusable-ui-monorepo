@@ -40,7 +40,7 @@ import {
  * Composes custom and registered animations into a unified stack
  * and exposes ready-to-use CSS variables.
  * 
- * @param options - An optional configuration for customizing animation behavior.
+ * @param options An optional configuration for customizing animation behavior.
  * @returns A CSS API for composing a unified animation stack from custom and registered state packages.
  */
 export const usingAnimationFeature = (options?: CssAnimationFeatureOptions): CssAnimationFeature => {

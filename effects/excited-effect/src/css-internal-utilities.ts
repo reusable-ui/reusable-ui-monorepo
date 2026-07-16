@@ -13,7 +13,7 @@ import {
  * 
  * Commonly used for conditional activation gates.
  * 
- * @param value - The numeric value to limit.
+ * @param value The numeric value to limit.
  * @returns A CSS numeric formula.
  */
 export const ensureBetweenZeroAndOne = (value: CssNumeric): CssNumericFormula => `clamp(0, ${value}, 1)`;
@@ -29,8 +29,8 @@ export const ensureBetweenZeroAndOne = (value: CssNumeric): CssNumericFormula =>
  * 
  * The small +0.0001 avoids edge cases at exactly 0.
  * 
- * @param condition - The numeric condition to test.
- * @param appliedFactor - The interpolation factor value or expression to apply when the condition is met.
+ * @param condition The numeric condition to test.
+ * @param appliedFactor The interpolation factor value or expression to apply when the condition is met.
  * @returns A CSS numeric formula representing the applied factor or `0`.
  */
 export const    ifPositive      = (condition: CssNumeric,           appliedFactor: CssNumeric): CssNumericFormula => `(${ensureBetweenZeroAndOne(`(((${condition}) + 0.0001) * 99999)`)} * (${appliedFactor}))`;
@@ -42,8 +42,8 @@ export const    ifPositive      = (condition: CssNumeric,           appliedFacto
  * 
  * Multiplication by -99999 flips the sign so negatives map into the positive clamp range.
  * 
- * @param condition - The numeric condition to test.
- * @param appliedFactor - The interpolation factor value or expression to apply when the condition is met.
+ * @param condition The numeric condition to test.
+ * @param appliedFactor The interpolation factor value or expression to apply when the condition is met.
  * @returns A CSS numeric formula representing the applied factor or `0`.
  */
 export const    ifNegative      = (condition: CssNumeric,           appliedFactor: CssNumeric): CssNumericFormula => `(${ensureBetweenZeroAndOne(`((${condition}) * -99999)`)} * (${appliedFactor}))`;
@@ -56,7 +56,7 @@ export const    ifNegative      = (condition: CssNumeric,           appliedFacto
  * 
  * All cases should have the same numeric type.
  * 
- * @param cases - Array of numeric conditional branch expressions.
+ * @param cases Array of numeric conditional branch expressions.
  * @returns A CSS numeric formula combining all cases.
  */
 export function composeCases(...cases: CssNumeric[]): CssNumericFormula { return `(${cases.map((c) => `(${c})`).join(' + ')})` }
@@ -76,7 +76,7 @@ export function composeCases(...cases: CssNumeric[]): CssNumericFormula { return
  * - factor = 0.5 → reversedFactor = 0.5 (midway)
  * - factor = 1   → reversedFactor = 0   (neutral)
  * 
- * @param appliedFactor - The interpolation factor value or expression to reverse.
+ * @param appliedFactor The interpolation factor value or expression to reverse.
  * @returns A CSS numeric formula representing the reversed factor.
  */
 export const reverseFactor                   = (factor: CssNumeric): CssNumericFormula => `(1 - (${factor}))`;

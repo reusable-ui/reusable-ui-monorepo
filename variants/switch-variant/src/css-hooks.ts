@@ -37,7 +37,7 @@ import {
  * - If `factorVar` is provided, each flag entry must define a `factor` value (e.g., 0 or 1).
  * - All flag variables are pre-reset to `unset` to avoid accidental inheritance from parent elements.
  * 
- * @param variantBehavior - A configuration describing the variant flags and optional factor variable.
+ * @param variantBehavior A configuration describing the variant flags and optional factor variable.
  * @returns A `CssRule` that applies the flag variables and optional factor variable according to variant states.
  * 
  * @example

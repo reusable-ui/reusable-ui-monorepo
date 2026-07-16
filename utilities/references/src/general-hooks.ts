@@ -31,8 +31,8 @@ import {
  *   it falls back to calling `ref(null)` upon unmounting.
  * - Prevents unnecessary re-creations by maintaining a stable reference.
  * 
- * @template TValue - The type of the referenced value.
- * @param refs - List of refs to merge.
+ * @template TValue The type of the referenced value.
+ * @param refs List of refs to merge.
  * @returns A stable merged ref function supporting React 19+ cleanups and fallback rules.
  * 
  * @example

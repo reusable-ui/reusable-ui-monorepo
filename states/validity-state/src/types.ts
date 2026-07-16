@@ -242,7 +242,7 @@ export type ValidityClassname = `is-${ResolvedValidityPhase}` | `is-${Transition
 /**
  * An API for accessing the resolved validity state, current transition phase, associated CSS class name, and animation event handlers.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  */
 export interface ValidityState<TElement extends Element = HTMLElement>
     extends

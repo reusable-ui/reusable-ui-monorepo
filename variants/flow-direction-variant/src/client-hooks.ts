@@ -62,8 +62,8 @@ const invertableVariantDefinition : InvertableVariantDefinition<FlowDirection, '
  * - `'invert'`  : flips the flow direction value from context (`'start'` ⇄ `'end'`).
  * - Otherwise   : uses the explicitly provided flow direction value as-is.
  * 
- * @param props - The component props that may include a `flowDirection` value.
- * @param options - An optional configuration specifying a default flow direction when no `flowDirection` prop is explicitly provided.
+ * @param props The component props that may include a `flowDirection` value.
+ * @param options An optional configuration specifying a default flow direction when no `flowDirection` prop is explicitly provided.
  * @returns The resolved flow direction value.
  */
 export const useResolvedFlowDirection = (props: FlowDirectionVariantProps, options?: FlowDirectionVariantOptions): FlowDirection => {

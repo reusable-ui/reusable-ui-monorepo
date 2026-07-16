@@ -37,7 +37,7 @@ import {
  * 
  * Smoothly transitions between drag and drop states by animating transform and filter effects.
  * 
- * @param options - An optional configuration for customizing drag effects.
+ * @param options An optional configuration for customizing drag effects.
  * @returns A CSS API containing effect rules and CSS variables for following the cursor movement while being dragged.
  */
 export const usingDragEffect = (options?: CssDragEffectOptions): CssDragEffect => {

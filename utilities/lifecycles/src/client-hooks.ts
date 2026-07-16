@@ -149,7 +149,7 @@ export const useMountedFlag = (): RefObject<boolean | undefined> => {
  * };
  * ```
  * 
- * @template TValue - The type of the value to track.
+ * @template TValue The type of the value to track.
  * 
  * @param value The current value to track.
  * @returns The previous value, or `undefined` on the first render.

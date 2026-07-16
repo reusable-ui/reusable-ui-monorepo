@@ -70,7 +70,7 @@ import {
  * Smoothly transitions between active and inactive states by animating colors and/or filter effects.
  * Affects background, foreground, decoration, and border colors.
  * 
- * @param options - An optional configuration for customizing active effects.
+ * @param options An optional configuration for customizing active effects.
  * @returns A CSS API containing effect rules and CSS variables for highlighting theme colors.
  */
 export const usingActiveEffect = (options?: CssActiveEffectOptions): CssActiveEffect => {

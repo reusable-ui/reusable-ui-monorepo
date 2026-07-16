@@ -160,8 +160,8 @@ const parseColor = (color: string): [number, number, number] => {
  * Compares two colors with a configurable threshold.
  * Throws an error if the colors differ beyond the threshold.
  * 
- * @param actual - The actual color string (e.g. 'color(srgb 0 0.333 0.666)')
- * @param expected - The expected color string (e.g. 'rgb(85, 85, 170)')
+ * @param actual The actual color string (e.g. 'color(srgb 0 0.333 0.666)')
+ * @param expected The expected color string (e.g. 'rgb(85, 85, 170)')
  */
 export const expectColor = (
     actual: string,

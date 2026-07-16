@@ -24,7 +24,7 @@ import {
  * - **Animation variables** for *visual effects* whenever the corresponding state becomes active
  * - **Factor variables** for *movement drivers* of the animation's motion.
  * 
- * @param animationBehavior - The animation styling behaviors to apply.
+ * @param animationBehavior The animation styling behaviors to apply.
  * @returns A `CssRule` that enables animation styling to work correctly and dynamically.
  * 
  * @example

@@ -36,12 +36,12 @@ import {
  *   4. `variantContext` (when the resolved value equals `inheritableVariantToken`)  
  *   5. `fallbackVariant`  
  * 
- * @template TVariant - The type of the resolved variant value.
- * @template TInheritToken - A special string token used to trigger inheritance (e.g. `'inherit'`).
+ * @template TVariant The type of the resolved variant value.
+ * @template TInheritToken A special string token used to trigger inheritance (e.g. `'inherit'`).
  * 
- * @param props - The props supplied by the component consumer.
- * @param options - The component-level defaults.
- * @param definition - The resolver-level defaults and inheritance contract.
+ * @param props The props supplied by the component consumer.
+ * @param options The component-level defaults.
+ * @param definition The resolver-level defaults and inheritance contract.
  * @returns The resolved variant value, possibly inherited from context.
  * 
  * @example
@@ -133,13 +133,13 @@ export const useResolvedInheritableVariant = <TVariant extends {} | null, TInher
  *   5. Inverted `variantContext` (when the resolved value equals `invertableVariantToken`)  
  *   6. `fallbackVariant`  
  * 
- * @template TVariant - The type of the resolved variant value.
- * @template TInheritToken - A special string token used to trigger inheritance (e.g. `'inherit'`).
- * @template TInvertToken - A special string token used to trigger inversion (e.g. `'invert'`).
+ * @template TVariant The type of the resolved variant value.
+ * @template TInheritToken A special string token used to trigger inheritance (e.g. `'inherit'`).
+ * @template TInvertToken A special string token used to trigger inversion (e.g. `'invert'`).
  * 
- * @param props - The props supplied by the component consumer.
- * @param options - The component-level defaults.
- * @param definition - The resolver-level defaults and inheritance/inversion contracts.
+ * @param props The props supplied by the component consumer.
+ * @param options The component-level defaults.
+ * @param definition The resolver-level defaults and inheritance/inversion contracts.
  * @returns The resolved variant value, possibly inherited or inverted from context.
  * 
  * @example

@@ -32,7 +32,7 @@ import {
  * - **Flag variables** for *discrete switches* in conditional styling
  * - **Factor variables** for *gradual drivers* in transitional styling
  * 
- * @param transitionBehavior - The transitional styling behaviors to apply.
+ * @param transitionBehavior The transitional styling behaviors to apply.
  * @returns A `CssRule` that enables transitional styling to work correctly and dynamically.
  * 
  * @example

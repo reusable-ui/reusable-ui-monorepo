@@ -27,7 +27,7 @@ import {
  * 
  * If you need a guaranteed absolute path, use `resolveAbsolutePathFromSource()`.
  * 
- * @param pathSource - The source path to extract.
+ * @param pathSource The source path to extract.
  * Accepts:
  *   - A pathname string (e.g. `/about/team?query=1#hash`)
  *   - A `UrlObject` with a `pathname` property (e.g. `{ pathname: '/about/team' }`)
@@ -50,7 +50,7 @@ export const extractPathnameFromSource = (pathSource: string | UrlObject | To): 
 /**
  * Resolves an absolute path from a relative path (e.g. `'../profile'`, `'./settings'`) against a current absolute pathname (e.g. `'/dashboard/settings'`).
  * 
- * @param currentPathname - The current page pathname, used for resolving relative paths,
+ * @param currentPathname The current page pathname, used for resolving relative paths,
  * and as a reference point for semantic path matching.
  * 
  * Must be explicitly provided for SSR compatibility.
@@ -63,7 +63,7 @@ export const extractPathnameFromSource = (pathSource: string | UrlObject | To): 
  *           - ['', 'users', 'matt'] → resolves from '/users/matt'
  *           - ['', 'admin/settings'] → represents one route contributing two segments
  * 
- * @param relativePath - A relative path to apply (e.g. '..', './profile', 'dashboard')
+ * @param relativePath A relative path to apply (e.g. '..', './profile', 'dashboard')
  *   Supports standard navigation symbols:
  *     - '..' → go up one route level
  *     - '.' or '' → stay at current level
@@ -127,7 +127,7 @@ export const resolveAbsolutePathFromRelative = (currentPathname: string | string
 /**
  * Extracts a guaranteed absolute pathname from any path-like source (relative path, absolute path, `UrlObject` object, or `To` object).
  * 
- * @param currentPathname - The current page pathname, used for resolving relative paths,
+ * @param currentPathname The current page pathname, used for resolving relative paths,
  * and as a reference point for semantic path matching.
  * 
  * Must be explicitly provided for SSR compatibility.
@@ -140,7 +140,7 @@ export const resolveAbsolutePathFromRelative = (currentPathname: string | string
  *           - ['', 'users', 'matt'] → resolves from '/users/matt'
  *           - ['', 'admin/settings'] → represents one route contributing two segments
  * 
- * @param pathSource - The source path to resolve.
+ * @param pathSource The source path to resolve.
  * Accepts:
  *   - A pathname string (e.g. `/about/team`)
  *   - A `UrlObject` with a `pathname` property (e.g. `{ pathname: '/about/team' }`)
@@ -168,9 +168,9 @@ export const resolveAbsolutePathFromSource = (currentPathname: string | string[]
  * 
  * Use `resolveAbsolutePathFromRelative()` to convert relative path to absolute one.
  * 
- * @param actualPathname - The absolute pathname to test against the expected location (e.g. `/about/team`).
- * @param expectedPathname - The absolute pathname to match against (e.g. `/about`).
- * @param strategy - Defines how strictly paths are compared.
+ * @param actualPathname The absolute pathname to test against the expected location (e.g. `/about/team`).
+ * @param expectedPathname The absolute pathname to match against (e.g. `/about`).
+ * @param strategy Defines how strictly paths are compared.
  * Accepts:
  *   - `'exact'`: Full pathname equality.
  *   - `'partial'`: `startsWith()` match with segment boundary awareness.

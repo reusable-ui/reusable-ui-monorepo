@@ -32,7 +32,7 @@ import {
  * Resolves the appropriate ring color based on the currently active theme variant
  * and exposes ready-to-use CSS variables.
  * 
- * @param options - An optional configuration for customizing ring behavior.
+ * @param options An optional configuration for customizing ring behavior.
  * @returns A CSS API for enabling theme-aware ring styling in components.
  */
 export const usingRingFeature = (options?: CssRingFeatureOptions): CssRingFeature => {

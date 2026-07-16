@@ -48,7 +48,7 @@ import {
  * That hook measures the element's total dimensions and injects the values as CSS variables,
  * enabling the collapse transitions to work correctly.
  * 
- * @param options - An optional configuration for customizing collapse effects.
+ * @param options An optional configuration for customizing collapse effects.
  * @returns A CSS API containing effect rules and CSS variables for the slide down/up transitions.
  */
 export const usingCollapseEffect = (options?: CssCollapseEffectOptions): CssCollapseEffect => {

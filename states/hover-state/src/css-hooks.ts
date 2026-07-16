@@ -31,7 +31,7 @@ import {
  * Generates CSS rules that conditionally apply the hover/unhover animations based on current hovered state,
  * and exposes hover/unhover-related CSS variables for conditional animation.
  * 
- * @param options - An optional configuration for customizing hover/unhover animations.
+ * @param options An optional configuration for customizing hover/unhover animations.
  * @returns A CSS API for conditionally apply the hover/unhover animations based on current hovered state.
  *
  * @example

@@ -44,7 +44,7 @@ export interface LinkExtractionResult {
  * Attempts to extract the first client-side `<Link>` element from a React node,
  * and merges its own children into the surrounding structure.
  * 
- * @param rootNode - The composite React node to inspect.
+ * @param rootNode The composite React node to inspect.
  * @returns A `<Link>` containing the detected link and merged children — or `null` if no link is found.
  */
 export const extractFirstClientLink = (rootNode: ReactNode): LinkExtractionResult | null => {
@@ -122,8 +122,8 @@ export const extractFirstClientLink = (rootNode: ReactNode): LinkExtractionResul
  * - `undefined` values are ignored (not assigned)
  * - All other defined values (including `null`) are included
  * 
- * @template TProps - The expected final props shape.
- * @param propsList - A variadic list of possibly falsy or partial props objects.
+ * @template TProps The expected final props shape.
+ * @param propsList A variadic list of possibly falsy or partial props objects.
  * @returns A merged object containing all defined keys in left-to-right order.
  */
 export const mergeProps = <TProps extends {}>(...propsList: (Partial<TProps> | undefined | null | boolean)[]): TProps => {

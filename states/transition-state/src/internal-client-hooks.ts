@@ -24,11 +24,11 @@ import {
  * - Emits events on **subsequent updates** before browser paint (`useLayoutEffect`),
  *   ensuring handlers can perform timing-sensitive DOM operations.
  * 
- * @template TPhase - The type representing semantic transition phases.
+ * @template TPhase The type representing semantic transition phases.
  * 
- * @param phase - The current transition phase value for changed phase detection.
+ * @param phase The current transition phase value for changed phase detection.
  * 
- * @param handlePhaseChange - A delegate function that maps the given phase to the appropriate event handler calls.
+ * @param handlePhaseChange A delegate function that maps the given phase to the appropriate event handler calls.
  * This function should contain the switch/case logic for invoking `onStart`/`onEnd` callbacks.
  * 
  * @example

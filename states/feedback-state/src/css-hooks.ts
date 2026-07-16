@@ -23,7 +23,7 @@ import {
  * - **Flag variables** for *discrete switches* in conditional styling
  * - **Factor variables** for *gradual drivers* in transitional styling
  * 
- * @param feedbackBehavior - The feedback styling behaviors to apply.
+ * @param feedbackBehavior The feedback styling behaviors to apply.
  * @returns A `CssRule` that enables feedback styling to work correctly and dynamically.
  * 
  * @example

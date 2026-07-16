@@ -69,17 +69,17 @@ import {
  * - **Default animation bubbling**  
  *   Whether to enable bubbling from nested child elements.
  * 
- * @param props - The behavior-specific props, including the `effectiveState` for initializing the transition state.
- * @param options - Optional per-component customization for animation lifecycle (pattern, bubbling, etc.).
- * @param definition - The behavior-specific definition that declares how driver state, transition phases, and transition classnames are resolved.
+ * @param props The behavior-specific props, including the `effectiveState` for initializing the transition state.
+ * @param options Optional per-component customization for animation lifecycle (pattern, bubbling, etc.).
+ * @param definition The behavior-specific definition that declares how driver state, transition phases, and transition classnames are resolved.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TPhase - The type representing semantic transition phases.
- * @template TClassname - The type representing semantic transition classnames.
- * @template TBehaviorProps - The type of the behavior-specific props.
- * @template TBehaviorOptions - The type of the behavior-specific options.
- * @template TBehaviorDefinition - The type of the behavior-specific definition.
- * @template TElement - The type of the target DOM element.
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TPhase The type representing semantic transition phases.
+ * @template TClassname The type representing semantic transition classnames.
+ * @template TBehaviorProps The type of the behavior-specific props.
+ * @template TBehaviorOptions The type of the behavior-specific options.
+ * @template TBehaviorDefinition The type of the behavior-specific definition.
+ * @template TElement The type of the target DOM element.
  * 
  * @returns A tuple containing:
  * - The resolved transition behavior state API.

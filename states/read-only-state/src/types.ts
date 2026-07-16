@@ -179,7 +179,7 @@ export type ReadOnlyClassname = `is-${ReadOnlyPhase}`
 /**
  * An API for accessing the resolved editable/read-only state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  */
 export interface ReadOnlyState<TElement extends Element = HTMLElement>
     extends

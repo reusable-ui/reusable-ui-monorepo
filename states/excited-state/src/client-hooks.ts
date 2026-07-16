@@ -47,7 +47,7 @@ const excitedStateDefinition : ExcitedStateDefinition = {
  * Supports controlled excitement with automatic re-triggering if the parent
  * does not reset the `excited` prop after animation completion.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  * 
  * @param props The component props that may include a controlled `excited` value and an `onExcitedComplete` callback.
  * @param options An optional configuration for customizing excitement behavior and animation lifecycle.

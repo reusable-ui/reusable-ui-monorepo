@@ -22,8 +22,8 @@ import {
  * This ensures cross-environment utilities can safely interact with mutable ref targets 
  * without throwing bundler exceptions or server-side runtime errors.
  * 
- * @template T - The type of the value stored inside the ref.
- * @param initialValue - The initial value for the ref.
+ * @template T The type of the value stored inside the ref.
+ * @param initialValue The initial value for the ref.
  * @returns A mutable `RefObject<T>` object (client: real ref, server: mock object).
  * 
  * @example

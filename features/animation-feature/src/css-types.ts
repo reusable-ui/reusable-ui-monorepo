@@ -86,9 +86,9 @@ export interface CssAnimationRegistry {
     /**
      * Registers an animation variable with optional stacking priority.
      * 
-     * @param animationVariable - A CSS variable reference representing an animation layer.
-     * @param priority - Optional stacking priority; higher values override lower ones.
-     * @returns - An unregister function to remove the variable.
+     * @param animationVariable A CSS variable reference representing an animation layer.
+     * @param priority Optional stacking priority; higher values override lower ones.
+     * @returns An unregister function to remove the variable.
      */
     registerAnimation(animationVariable: CssCustomSimpleRef, priority?: number): () => void
     

@@ -93,7 +93,7 @@ export type ExcitedClassname = 'is-excited' | 'not-excited'
 /**
  * An API for accessing the resolved excited state, associated CSS class name, and animation event handlers.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  */
 export interface ExcitedState<TElement extends Element = HTMLElement>
     extends

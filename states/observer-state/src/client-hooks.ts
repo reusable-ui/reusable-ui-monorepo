@@ -39,12 +39,12 @@ import {
  * When `isRestricted` is `true`, the state is always treated as inactive, regardless of incoming updates.  
  * In this mode, `observedState` remains *reliable* as a reflection of the restricted condition.
  * 
- * @template TState - The type of the state value.
- * @template TElement - The type of the target DOM element.
+ * @template TState The type of the state value.
+ * @template TElement The type of the target DOM element.
  * 
- * @param props - The runtime props for describing the current component condition.
- * @param options - Optional per-component customization (e.g. commit logic).
- * @param definition - The domain-specific definition that defines the inactive state, restriction behavior, and state probe.
+ * @param props The runtime props for describing the current component condition.
+ * @param options Optional per-component customization (e.g. commit logic).
+ * @param definition The domain-specific definition that defines the inactive state, restriction behavior, and state probe.
  * 
  * @returns The resolved state and updater utilities.
  */

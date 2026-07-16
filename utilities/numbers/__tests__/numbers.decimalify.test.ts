@@ -14,8 +14,8 @@ const LimitedDecimal = Decimal.clone({ precision: 15, rounding: Decimal.ROUND_HA
 /**
  * Validates if a decimalified output is human-friendly by checking for excessive trailing zeroes or nines.
  *
- * @param value - The number to check. Returns `true` if the number is `null`, `undefined`, or non-finite.
- * @param decimal - Optional `Decimal` instance for precise comparison.
+ * @param value The number to check. Returns `true` if the number is `null`, `undefined`, or non-finite.
+ * @param decimal Optional `Decimal` instance for precise comparison.
  * @returns `true` if the number is human-friendly; otherwise, `false`.
  */
 const isHumanFriendlyNumber = (value: number|null|undefined, decimal?: Decimal): boolean => {

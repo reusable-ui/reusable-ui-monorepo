@@ -26,8 +26,8 @@ import {
  * });
  * ```
  *
- * @param selector - The target selector to check.
- * @param styles - CSS styles to apply when the condition is met.
+ * @param selector The target selector to check.
+ * @param styles CSS styles to apply when the condition is met.
  * @returns A `CssRule` object for conditional styling.
  */
 export const ifFollows = (selector: string, styles: CssStyleCollection): CssRule => {
@@ -51,8 +51,8 @@ export const ifFollows = (selector: string, styles: CssStyleCollection): CssRule
  * });
  * ```
  *
- * @param selector - The target selector to check.
- * @param styles - CSS styles to apply when the condition is met.
+ * @param selector The target selector to check.
+ * @param styles CSS styles to apply when the condition is met.
  * @returns A `CssRule` object for conditional styling.
  */
 export const ifPrecedes = (selector: string, styles: CssStyleCollection): CssRule => {

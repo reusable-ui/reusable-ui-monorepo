@@ -62,8 +62,8 @@ const invertableVariantDefinition : InvertableVariantDefinition<Orientation, 'in
  * - `'invert'`  : flips the orientation value from context (`'inline'` ⇄ `'block'`).
  * - Otherwise   : uses the explicitly provided orientation value as-is.
  * 
- * @param props - The component props that may include an `orientation` value.
- * @param options - An optional configuration specifying a default orientation when no `orientation` prop is explicitly provided.
+ * @param props The component props that may include an `orientation` value.
+ * @param options An optional configuration specifying a default orientation when no `orientation` prop is explicitly provided.
  * @returns The resolved orientation value.
  */
 export const useResolvedOrientation = (props: OrientationVariantProps, options?: OrientationVariantOptions): Orientation => {

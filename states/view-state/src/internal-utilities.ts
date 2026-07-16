@@ -83,8 +83,8 @@ export const triggerViewPhaseEvents = ({ prevSettledState: prevSettledViewIndex,
 /**
  * Clamps a raw view index within the configured range and step.
  * 
- * @param rawViewIndex - The raw view index to clamp.
- * @param options - Configuration for clamping behavior.
+ * @param rawViewIndex The raw view index to clamp.
+ * @param options Configuration for clamping behavior.
  * @returns The clamped view index.
  */
 export const clampViewIndex = (rawViewIndex: number, options?: Pick<ViewStateOptions, 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>): number => {

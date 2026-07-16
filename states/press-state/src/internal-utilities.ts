@@ -45,8 +45,8 @@ export const triggerPressPhaseEvents = ({ props, changedTransitionPhase }: Trigg
 /**
  * Determines whether the given keyCode matches the expected keyCode(s).
  * 
- * @param actualKey - The keyCode received from a keyboard event (e.g. `event.code`)
- * @param expectedKeys - A string or array of strings representing the keyCode(s) to match against
+ * @param actualKey The keyCode received from a keyboard event (e.g. `event.code`)
+ * @param expectedKeys A string or array of strings representing the keyCode(s) to match against
  * @returns `true` if the actual keyCode matches any of the expected keyCode(s); otherwise `false`
  */
 export const matchesKey = (actualKey: string | undefined, expectedKeys: string | string[] | null): boolean => {
@@ -62,8 +62,8 @@ export const matchesKey = (actualKey: string | undefined, expectedKeys: string |
 /**
  * Determines whether the given pointer button matches the expected button(s).
  * 
- * @param actualButton - The button value received from a pointer event (e.g. `event.button`)
- * @param expectedButtons - A number or array of numbers representing the buttons to match against
+ * @param actualButton The button value received from a pointer event (e.g. `event.button`)
+ * @param expectedButtons A number or array of numbers representing the buttons to match against
  * @returns `true` if the actual button matches any of the expected buttons; otherwise `false`
  */
 export const matchesButton = (actualButton: number, expectedButtons: number | number[] | null): boolean => {

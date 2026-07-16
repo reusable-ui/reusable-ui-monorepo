@@ -35,9 +35,9 @@ export {
  * 
  * This prop is intended to be dynamic and may change over the lifetime of the component.
  * 
- * @template TDeclarativeState - The declarative type of the state value (may include keywords).
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TChangeEvent - The type of the event triggering the change request (e.g. mouse click, keyboard event).
+ * @template TDeclarativeState The declarative type of the state value (may include keywords).
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TChangeEvent The type of the event triggering the change request (e.g. mouse click, keyboard event).
  */
 export interface InteractionStateProps<TDeclarativeState extends {} | null, TState extends TDeclarativeState, TChangeEvent = unknown>
     extends
@@ -84,8 +84,8 @@ export interface InteractionStateProps<TDeclarativeState extends {} | null, TSta
 /**
  * Options for customizing the state change dispatcher behavior.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TChangeEvent - The type of the event triggering the change request (e.g. mouse click, keyboard event).
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TChangeEvent The type of the event triggering the change request (e.g. mouse click, keyboard event).
  */
 export interface InteractionStateChangeDispatcherOptions<TState extends {} | null, TChangeEvent = unknown> {
     /**
@@ -109,7 +109,7 @@ export interface InteractionStateChangeDispatcherOptions<TState extends {} | nul
  * These options are intended to be static for the lifetime of each component.
  * They define how interaction states initialize and synchronize with the animation system.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
+ * @template TState The concrete type of the state value (must not be declarative).
  */
 export interface InteractionStateOptions<TState extends {} | null>
     extends
@@ -131,10 +131,10 @@ export interface InteractionStateOptions<TState extends {} | null>
  * into concrete values after applying inference rules such as disabled/read-only restrictions
  * or contextual inheritance.
  * 
- * @template TDeclarativeState - The declarative type of the state value (may include keywords).
- * @template TBehaviorProps - The type of the behavior-specific props.
- * @template TBehaviorOptions - The type of the behavior-specific options.
- * @template TBehaviorDefinition - The type of the behavior-specific definition.
+ * @template TDeclarativeState The declarative type of the state value (may include keywords).
+ * @template TBehaviorProps The type of the behavior-specific props.
+ * @template TBehaviorOptions The type of the behavior-specific options.
+ * @template TBehaviorDefinition The type of the behavior-specific definition.
  */
 export interface ResolveEffectiveStateArgs<TDeclarativeState extends {} | null, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition> {
     /**
@@ -179,13 +179,13 @@ export interface ResolveEffectiveStateArgs<TDeclarativeState extends {} | null, 
  * 
  * Must be statically defined and remain consistent for each `**-state` hook type.
  * 
- * @template TDeclarativeState - The declarative type of the state value (may include keywords).
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TPhase - The type representing semantic transition phases.
- * @template TClassname - The type representing semantic transition classnames.
- * @template TBehaviorProps - The type of the behavior-specific props.
- * @template TBehaviorOptions - The type of the behavior-specific options.
- * @template TBehaviorDefinition - The type of the behavior-specific definition.
+ * @template TDeclarativeState The declarative type of the state value (may include keywords).
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TPhase The type representing semantic transition phases.
+ * @template TClassname The type representing semantic transition classnames.
+ * @template TBehaviorProps The type of the behavior-specific props.
+ * @template TBehaviorOptions The type of the behavior-specific options.
+ * @template TBehaviorDefinition The type of the behavior-specific definition.
  */
 export interface InteractionStateDefinition<TDeclarativeState extends {} | null, TState extends TDeclarativeState, TPhase extends string, TClassname extends string, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
     extends
@@ -221,11 +221,11 @@ export interface InteractionStateDefinition<TDeclarativeState extends {} | null,
  * 
  * This interface represents the common contract returned by all interaction-based state hooks.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TPhase - The type representing semantic transition phases.
- * @template TClassname - The type representing semantic transition classnames.
- * @template TElement - The type of the target DOM element.
- * @template TChangeEvent - The type of the event triggering the change request (e.g. mouse click, keyboard event).
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TPhase The type representing semantic transition phases.
+ * @template TClassname The type representing semantic transition classnames.
+ * @template TElement The type of the target DOM element.
+ * @template TChangeEvent The type of the event triggering the change request (e.g. mouse click, keyboard event).
  */
 export interface InteractionState<TState extends {} | null, TPhase extends string, TClassname extends string, TElement extends Element = HTMLElement, TChangeEvent = unknown>
     extends

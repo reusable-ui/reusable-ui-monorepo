@@ -61,8 +61,8 @@ const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inheri
  * - `'invert'`  : flips the outlined value from context (`true` ⇄ `false`).
  * - Otherwise   : uses the explicitly provided outlined value as-is.
  * 
- * @param props - The component props that may include an `outlined` value.
- * @param options - An optional configuration specifying a default outlined value when no `outlined` prop is explicitly provided.
+ * @param props The component props that may include an `outlined` value.
+ * @param options An optional configuration specifying a default outlined value when no `outlined` prop is explicitly provided.
  * @returns The resolved outlined value.
  */
 export const useResolvedOutlined = (props: OutlinedVariantProps, options?: OutlinedVariantOptions): boolean => {

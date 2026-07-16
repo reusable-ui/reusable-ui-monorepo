@@ -49,7 +49,7 @@ import {
  * Resolves the appropriate border color and geometry based on the currently active variants
  * and exposes ready-to-use CSS variables.
  * 
- * @param options - An optional configuration for customizing border behavior.
+ * @param options An optional configuration for customizing border behavior.
  * @returns A CSS API for enabling theme-aware border styling in components.
  */
 export const usingBorderFeature = (options?: CssBorderFeatureOptions): CssBorderFeature => {

@@ -39,7 +39,7 @@ import {
  * Composes custom and registered filters into a unified stack
  * and exposes ready-to-use CSS variables.
  * 
- * @param options - An optional configuration for customizing filter behavior.
+ * @param options An optional configuration for customizing filter behavior.
  * @returns A CSS API for composing a unified filter stack from custom and registered state packages.
  */
 export const usingFilterFeature = (options?: CssFilterFeatureOptions): CssFilterFeature => {

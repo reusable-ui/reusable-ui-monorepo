@@ -31,7 +31,7 @@ import {
  * Generates CSS rules that conditionally apply the press/release animations based on current pressed state,
  * and exposes press/release-related CSS variables for conditional animation.
  * 
- * @param options - An optional configuration for customizing press/release animations.
+ * @param options An optional configuration for customizing press/release animations.
  * @returns A CSS API for conditionally apply the press/release animations based on current pressed state.
  *
  * @example

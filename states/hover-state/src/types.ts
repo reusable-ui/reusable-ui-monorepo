@@ -197,7 +197,7 @@ export type HoverClassname = `is-${HoverPhase}`
 /**
  * An API for accessing the resolved hover/unhover state, current transition phase, associated CSS class name, and animation event handlers.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  */
 export interface HoverState<TElement extends Element = HTMLElement>
     extends

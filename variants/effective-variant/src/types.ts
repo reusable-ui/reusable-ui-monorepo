@@ -9,7 +9,7 @@ import {
 /**
  * Props for resolving an effective variant value from controlled props.
  * 
- * @template TVariant - The type of the resolved variant value.
+ * @template TVariant The type of the resolved variant value.
  */
 export interface ControlledVariantProps<TVariant extends {} | null> {
     /**
@@ -26,7 +26,7 @@ export interface ControlledVariantProps<TVariant extends {} | null> {
  * - Declares an optional default variant value used when no `variant` prop
  *   is provided by the consumer.
  * 
- * @template TVariant - The type of the resolved variant value.
+ * @template TVariant The type of the resolved variant value.
  */
 export interface ControlledVariantOptions<TVariant extends {} | null> {
     /**
@@ -41,7 +41,7 @@ export interface ControlledVariantOptions<TVariant extends {} | null> {
  * 
  * - Declares the mandatory default variant value used when neither `variant` prop nor `defaultVariant` option is provided.
  * 
- * @template TVariant - The type of the resolved variant value.
+ * @template TVariant The type of the resolved variant value.
  */
 export interface ControlledVariantDefinition<TVariant extends {} | null> {
     /**
@@ -58,8 +58,8 @@ export interface ControlledVariantDefinition<TVariant extends {} | null> {
  * inheriting from context when the resolved value equals the explicit
  * inheritance token.
  * 
- * @template TVariant - The type of the resolved variant value.
- * @template TInheritToken - A special string token used to trigger inheritance (e.g. `'inherit'`).
+ * @template TVariant The type of the resolved variant value.
+ * @template TInheritToken A special string token used to trigger inheritance (e.g. `'inherit'`).
  */
 export interface InheritableVariantProps<TVariant extends {} | null, TInheritToken extends string>
     extends
@@ -77,8 +77,8 @@ export interface InheritableVariantProps<TVariant extends {} | null, TInheritTok
  * - Declares an optional default variant value used when no `variant` prop
  *   is provided by the consumer.
  * 
- * @template TVariant - The type of the resolved variant value.
- * @template TInheritToken - A special string token used to trigger inheritance (e.g. `'inherit'`).
+ * @template TVariant The type of the resolved variant value.
+ * @template TInheritToken A special string token used to trigger inheritance (e.g. `'inherit'`).
  */
 export interface InheritableVariantOptions<TVariant extends {} | null, TInheritToken extends string>
     extends
@@ -102,8 +102,8 @@ export interface InheritableVariantOptions<TVariant extends {} | null, TInheritT
  * - Declares the context from which the inherited variant is read.
  * - Declares the fallback variant used when no related context value is available.
  * 
- * @template TVariant - The type of the resolved variant value.
- * @template TInheritToken - A special string token used to trigger inheritance (e.g. `'inherit'`).
+ * @template TVariant The type of the resolved variant value.
+ * @template TInheritToken A special string token used to trigger inheritance (e.g. `'inherit'`).
  */
 export interface InheritableVariantDefinition<TVariant extends {} | null, TInheritToken extends string>
     extends
@@ -144,9 +144,9 @@ export interface InheritableVariantDefinition<TVariant extends {} | null, TInher
  * inheriting or inverting from context when the resolved value equals the explicit
  * inheritance/inversion token.
  * 
- * @template TVariant - The type of the resolved variant value.
- * @template TInheritToken - A special string token used to trigger inheritance (e.g. `'inherit'`).
- * @template TInvertToken - A special string token used to trigger inversion (e.g. `'invert'`).
+ * @template TVariant The type of the resolved variant value.
+ * @template TInheritToken A special string token used to trigger inheritance (e.g. `'inherit'`).
+ * @template TInvertToken A special string token used to trigger inversion (e.g. `'invert'`).
  */
 export interface InvertableVariantProps<TVariant extends {} | null, TInheritToken extends string, TInvertToken extends string>
     extends
@@ -164,9 +164,9 @@ export interface InvertableVariantProps<TVariant extends {} | null, TInheritToke
  * - Declares an optional default variant value used when no `variant` prop
  *   is provided by the consumer.
  * 
- * @template TVariant - The type of the resolved variant value.
- * @template TInheritToken - A special string token used to trigger inheritance (e.g. `'inherit'`).
- * @template TInvertToken - A special string token used to trigger inversion (e.g. `'invert'`).
+ * @template TVariant The type of the resolved variant value.
+ * @template TInheritToken A special string token used to trigger inheritance (e.g. `'inherit'`).
+ * @template TInvertToken A special string token used to trigger inversion (e.g. `'invert'`).
  */
 export interface InvertableVariantOptions<TVariant extends {} | null, TInheritToken extends string, TInvertToken extends string>
     extends
@@ -190,9 +190,9 @@ export interface InvertableVariantOptions<TVariant extends {} | null, TInheritTo
  * - Declares the context from which the inherited variant is read.
  * - Declares the fallback variant used when no related context value is available.
  * 
- * @template TVariant - The type of the resolved variant value.
- * @template TInheritToken - A special string token used to trigger inheritance (e.g. `'inherit'`).
- * @template TInvertToken - A special string token used to trigger inversion (e.g. `'invert'`).
+ * @template TVariant The type of the resolved variant value.
+ * @template TInheritToken A special string token used to trigger inheritance (e.g. `'inherit'`).
+ * @template TInvertToken A special string token used to trigger inversion (e.g. `'invert'`).
  */
 export interface InvertableVariantDefinition<TVariant extends {} | null, TInheritToken extends string, TInvertToken extends string>
     extends

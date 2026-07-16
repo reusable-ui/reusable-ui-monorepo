@@ -86,9 +86,9 @@ export interface CssTransformRegistry {
     /**
      * Registers a transform variable with optional stacking priority.
      * 
-     * @param transformVariable - A CSS variable reference representing a transform layer.
-     * @param priority - Optional stacking priority; higher values override lower ones.
-     * @returns - An unregister function to remove the variable.
+     * @param transformVariable A CSS variable reference representing a transform layer.
+     * @param priority Optional stacking priority; higher values override lower ones.
+     * @returns An unregister function to remove the variable.
      */
     registerTransform(transformVariable: CssCustomSimpleRef, priority?: number): () => void
     

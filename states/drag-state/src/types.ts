@@ -239,7 +239,7 @@ export interface DragOffset {
 /**
  * An API for accessing the resolved drag/drop state, current transition phase, associated CSS class name, and animation event handlers.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  */
 export interface DragState<TElement extends Element = HTMLElement>
     extends

@@ -70,9 +70,9 @@ import {
  * - Merges the `<Link>`’s children with the `originalElement`’s children.
  * - Re-wraps the updated element inside the detected `<Link>` with proper semantics.
  * 
- * @template TProps - The original element’s props type (must support children, accessibility, and semantics).
- * @param originalElement - The original JSX element to enhance with optional client navigation behavior.
- * @param propOverrides - Optionally overrides props from `originalElement` during cloning.
+ * @template TProps The original element’s props type (must support children, accessibility, and semantics).
+ * @param originalElement The original JSX element to enhance with optional client navigation behavior.
+ * @param propOverrides Optionally overrides props from `originalElement` during cloning.
  * @returns A new React element: either the enhanced `originalElement`, or it wrapped inside a client-side `<Link>`.
  */
 const renderWithLinkIfPresent = <TProps extends PropsWithChildren<DisabledStateProps & SemanticProps>>(originalElement: ReactElement<TProps, string | JSXElementConstructor<unknown>>, propOverrides: Partial<TProps>): ReactElement<TProps | ClientLinkElement['props'], string | JSXElementConstructor<unknown>> => {
@@ -177,8 +177,8 @@ const renderWithLinkIfPresent = <TProps extends PropsWithChildren<DisabledStateP
  * This abstraction prevents structural instability caused by conditionally swapping JSX trees
  * (such as toggling between `<BaseComponent>` and `<Link><BaseComponent /></Link>`).
  * 
- * @template TProps - The original element’s props type (must support children, accessibility, and semantics).
- * @param originalElement - The original JSX element to enhance with optional client navigation behavior.
+ * @template TProps The original element’s props type (must support children, accessibility, and semantics).
+ * @param originalElement The original JSX element to enhance with optional client navigation behavior.
  * @returns A React element with a stable `type` that mirrors `originalElement` but may render `<Link>`-enhanced output.
  * 
  * @example

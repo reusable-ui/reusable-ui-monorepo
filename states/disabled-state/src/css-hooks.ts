@@ -31,7 +31,7 @@ import {
  * Generates CSS rules that conditionally apply the enabled/disabled animations based on current disabled state,
  * and exposes enabled/disabled-related CSS variables for conditional animation.
  * 
- * @param options - An optional configuration for customizing enabled/disabled animations.
+ * @param options An optional configuration for customizing enabled/disabled animations.
  * @returns A CSS API for conditionally apply the enabled/disabled animations based on current disabled state.
  *
  * @example

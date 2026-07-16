@@ -21,11 +21,11 @@ import {
  *   2. `options.defaultState`  
  *   3. `definition.defaultState`  
  * 
- * @template TState - The type of the resolved state value.
+ * @template TState The type of the resolved state value.
  * 
- * @param props - The props supplied by the component consumer.
- * @param options - The component-level defaults.
- * @param definition - The resolver-level defaults.
+ * @param props The props supplied by the component consumer.
+ * @param options The component-level defaults.
+ * @param definition The resolver-level defaults.
  * @returns The resolved state value.
  * 
  * @example
@@ -100,11 +100,11 @@ export const useResolvedControlledState = <TState extends {} | null>(props: Cont
  *   3. `definition.defaultState`  
  *   4. `clampState` function (normalization)  
  * 
- * @template TState - The type of the resolved state value (e.g. number for view index).
+ * @template TState The type of the resolved state value (e.g. number for view index).
  * 
- * @param props - The props supplied by the component consumer.
- * @param options - The component-level defaults and optional clamping.
- * @param definition - The resolver-level defaults and optional clamping.
+ * @param props The props supplied by the component consumer.
+ * @param options The component-level defaults and optional clamping.
+ * @param definition The resolver-level defaults and optional clamping.
  * @returns The resolved state value, possibly clamped to a valid range.
  * 
  * @example
@@ -183,12 +183,12 @@ export const useResolvedRangedState = <TState extends {} | null>(props: RangedSt
  *   4. `definition.defaultState`  
  *   5. `observedState` (when the resolved value equals `observableStateToken`)  
  * 
- * @template TState - The type of the resolved state value.
- * @template TObservableToken - A special string token used to trigger observation (e.g. `'auto'`).
+ * @template TState The type of the resolved state value.
+ * @template TObservableToken A special string token used to trigger observation (e.g. `'auto'`).
  * 
- * @param props - The props supplied by the component consumer.
- * @param options - The component-level defaults.
- * @param definition - The resolver-level defaults and observation contracts.
+ * @param props The props supplied by the component consumer.
+ * @param options The component-level defaults.
+ * @param definition The resolver-level defaults and observation contracts.
  * @returns The resolved state value, possibly delegated to the observer.
  * 
  * @example

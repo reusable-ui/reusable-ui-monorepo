@@ -31,7 +31,7 @@ import {
  * Generates CSS rules that conditionally apply the activate/deactivate animations based on current active state,
  * and exposes activate/deactivate-related CSS variables for conditional animation.
  * 
- * @param options - An optional configuration for customizing activate/deactivate animations.
+ * @param options An optional configuration for customizing activate/deactivate animations.
  * @returns A CSS API for conditionally apply the activate/deactivate animations based on current active state.
  *
  * @example

@@ -39,10 +39,10 @@ const controlledVariantDefinition : ControlledVariantDefinition<boolean | string
  * 
  * Useful for derived components that need to determine the current stripped variant of the base component.
  * 
- * @template TStripped - The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
+ * @template TStripped The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
  * 
- * @param props - The component props that may include a `stripped` value.
- * @param options - An optional configuration specifying a default stripped value when no `stripped` prop is explicitly provided.
+ * @param props The component props that may include a `stripped` value.
+ * @param options An optional configuration specifying a default stripped value when no `stripped` prop is explicitly provided.
  * @returns The resolved stripped value.
  */
 export const useResolvedStripped = <TStripped extends true | string = true>(props: StrippedVariantProps<TStripped>, options?: StrippedVariantOptions<TStripped>): false | TStripped => {
@@ -79,7 +79,7 @@ export const useResolvedStripped = <TStripped extends true | string = true>(prop
  * Resolves the stripped mode along with its associated CSS class name,
  * based on component props and optional default configuration.
  * 
- * @template TStripped - The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
+ * @template TStripped The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
  * 
  * @param props The component props that may include a `stripped` value.
  * @param options An optional configuration specifying a default stripped value when no `stripped` prop is explicitly provided.

@@ -58,7 +58,7 @@ export const isDisablingOrDisabledSelector : CssSelectorCollection = ':is(.is-di
  * 
  * Excludes elements currently in the enabling transition.
  * 
- * @param styles - The styles applied to elements in the fully enabled state.
+ * @param styles The styles applied to elements in the fully enabled state.
  * @returns A `CssRule` that applies the given `styles` for elements in the fully enabled state.
  * 
  * @example
@@ -78,7 +78,7 @@ export const ifEnabled             = (styles: CssStyleCollection): CssRule => ru
  * 
  * Excludes elements currently in the disabling transition.
  * 
- * @param styles - The styles applied to elements in the fully disabled state.
+ * @param styles The styles applied to elements in the fully disabled state.
  * @returns A `CssRule` that applies the given `styles` for elements in the fully disabled state.
  * 
  * @example
@@ -98,7 +98,7 @@ export const ifDisabled            = (styles: CssStyleCollection): CssRule => ru
  * 
  * Excludes elements that have already reached the enabled state.
  * 
- * @param styles - The styles applied to elements currently in the enabling transition.
+ * @param styles The styles applied to elements currently in the enabling transition.
  * @returns A `CssRule` that applies the given `styles` for elements currently in the enabling transition.
  * 
  * @example
@@ -118,7 +118,7 @@ export const ifEnabling            = (styles: CssStyleCollection): CssRule => ru
  * 
  * Excludes elements that have already reached the disabled state.
  * 
- * @param styles - The styles applied to elements currently in the disabling transition.
+ * @param styles The styles applied to elements currently in the disabling transition.
  * @returns A `CssRule` that applies the given `styles` for elements currently in the disabling transition.
  * 
  * @example
@@ -136,7 +136,7 @@ export const ifDisabling           = (styles: CssStyleCollection): CssRule => ru
 /**
  * Applies the given `styles` to elements that are either enabling or fully enabled.
  * 
- * @param styles - The styles applied to elements that are either enabling or fully enabled.
+ * @param styles The styles applied to elements that are either enabling or fully enabled.
  * @returns A `CssRule` that applies the given `styles` for elements that are either enabling or fully enabled.
  * 
  * @example
@@ -154,7 +154,7 @@ export const ifEnablingOrEnabled   = (styles: CssStyleCollection): CssRule => ru
 /**
  * Applies the given `styles` to elements that are either disabling or fully disabled.
  * 
- * @param styles - The styles applied to elements that are either disabling or fully disabled.
+ * @param styles The styles applied to elements that are either disabling or fully disabled.
  * @returns A `CssRule` that applies the given `styles` for elements that are either disabling or fully disabled.
  * 
  * @example

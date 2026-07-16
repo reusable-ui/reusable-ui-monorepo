@@ -37,7 +37,7 @@ import {
  * Generates CSS rules that conditionally apply the validation animations based on current validity state,
  * and exposes validity-related CSS variables for conditional animation.
  * 
- * @param options - An optional configuration for customizing validity animations.
+ * @param options An optional configuration for customizing validity animations.
  * @returns A CSS API for conditionally apply the validation animations based on current validity state.
  *
  * @example

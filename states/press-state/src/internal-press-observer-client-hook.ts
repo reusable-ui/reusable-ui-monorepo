@@ -103,7 +103,7 @@ export interface PressObserverProps
  * Includes fallback detection for pre-existing press on mount,
  * ensuring lifecycle consistency during hydration or layout delay.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  */
 export interface PressObserverState<TElement extends Element = HTMLElement>
     extends
@@ -130,10 +130,10 @@ export interface PressObserverState<TElement extends Element = HTMLElement>
  *   since restricted elements cannot be pressed.
  * - When re-enabled, remains released until the user explicitly re-presses.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  * 
- * @param props - The press observer props for describing the current component condition.
- * @param options - Configuration for press resolution (keys, buttons, pressure, fingers, global release behavior).
+ * @param props The press observer props for describing the current component condition.
+ * @param options Configuration for press resolution (keys, buttons, pressure, fingers, global release behavior).
  * @returns The observed press state and event handlers.
  */
 export const usePressObserverState = <TElement extends Element = HTMLElement>(props: PressObserverProps, options: Pick<PressStateOptions, 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'> | undefined): PressObserverState<TElement> => {

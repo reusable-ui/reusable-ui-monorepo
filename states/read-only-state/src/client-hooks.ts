@@ -72,8 +72,8 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * - If `readOnly` is `false` and `cascadeReadOnly` is `true`, the component checks context for inherited read-only state.
  * - If context is unavailable and `cascadeReadOnly` is `true`, the component defaults to editable (`false`).
  * 
- * @param props - The component props that may include a controlled `readOnly` value and contextual `cascadeReadOnly` value.
- * @param options - An optional configuration for customizing editable/read-only behavior.
+ * @param props The component props that may include a controlled `readOnly` value and contextual `cascadeReadOnly` value.
+ * @param options An optional configuration for customizing editable/read-only behavior.
  * @returns The resolved editable/read-only state.
  */
 export const useResolvedReadOnly = (props: Pick<ReadOnlyStateProps, 'readOnly' | 'cascadeReadOnly'>, options?: Pick<ReadOnlyStateOptions, 'defaultReadOnly' | 'defaultCascadeReadOnly'>) : boolean => {
@@ -125,10 +125,10 @@ const readOnlyStateDefinition : ReadOnlyStateDefinition = {
  * - Supports controlled read-only state.
  * - Supports contextual override via `cascadeReadOnly`.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  * 
- * @param props - The component props that may include a controlled `readOnly` value, contextual `cascadeReadOnly` value, and `onReadOnlyUpdate` callback.
- * @param options - An optional configuration for customizing editable/read-only behavior and animation lifecycle.
+ * @param props The component props that may include a controlled `readOnly` value, contextual `cascadeReadOnly` value, and `onReadOnlyUpdate` callback.
+ * @param options An optional configuration for customizing editable/read-only behavior and animation lifecycle.
  * @returns The resolved editable/read-only state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @example

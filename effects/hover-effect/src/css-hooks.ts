@@ -47,7 +47,7 @@ import {
  * Preserves the current theme colors and variants while enhancing emphasis
  * through responsive visual cues.
  * 
- * @param options - An optional configuration for customizing hover effects.
+ * @param options An optional configuration for customizing hover effects.
  * @returns A CSS API containing effect rules and CSS variables for signaling component interactivity.
  */
 export const usingHoverEffect = (options?: CssHoverEffectOptions): CssHoverEffect => {

@@ -10,8 +10,8 @@
  * - If the matched pattern starts with a non-word character, it’s always considered boundary-safe.
  * - Otherwise, the character preceding the suffix must be a non-word character or undefined.
  * 
- * @param animationName - The full animation name to evaluate.
- * @param animationPattern - Pattern to match: string, array of strings, or RegExp.
+ * @param animationName The full animation name to evaluate.
+ * @param animationPattern Pattern to match: string, array of strings, or RegExp.
  * @returns `true` if the animation name matches the expected pattern; otherwise `false`.
  */
 export const animationNameMatches = (animationName: string, animationPattern: string | string[] | RegExp): boolean => {

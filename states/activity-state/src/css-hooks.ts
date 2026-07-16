@@ -22,7 +22,7 @@ import {
  * - **Animation variables** for *visual effects* whenever the corresponding activity becomes active
  * - **Factor variables** for *movement drivers* of the activity's motion.
  * 
- * @param activityBehavior - The activity styling behaviors to apply.
+ * @param activityBehavior The activity styling behaviors to apply.
  * @returns A `CssRule` that enables activity styling to work correctly and dynamically.
  * 
  * @example

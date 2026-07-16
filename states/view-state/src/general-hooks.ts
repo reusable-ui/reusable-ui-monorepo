@@ -48,8 +48,8 @@ const rangedStateDefinition : RangedStateDefinition<number> = {
  * - Supports only controlled mode.
  * - Ideal for components that **consume** the resolved `viewIndex` value.
  * 
- * @param props - The component props that may include a controlled `viewIndex` value, but must exclude `defaultViewIndex`.
- * @param options - An optional configuration for customizing view-switching behavior.
+ * @param props The component props that may include a controlled `viewIndex` value, but must exclude `defaultViewIndex`.
+ * @param options An optional configuration for customizing view-switching behavior.
  * @returns The resolved view index.
  */
 export const useResolvedViewIndex = (props: Pick<ViewStateProps<any>, 'viewIndex'> & { defaultViewIndex?: never }, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>) : number => {

@@ -61,8 +61,8 @@ const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inheri
  * - `'invert'`  : flips the emphasized value from context (`true` ⇄ `false`).
  * - Otherwise   : uses the explicitly provided emphasized value as-is.
  * 
- * @param props - The component props that may include an `emphasized` value.
- * @param options - An optional configuration specifying a default emphasized value when no `emphasized` prop is explicitly provided.
+ * @param props The component props that may include an `emphasized` value.
+ * @param options An optional configuration specifying a default emphasized value when no `emphasized` prop is explicitly provided.
  * @returns The resolved emphasized value.
  */
 export const useResolvedEmphasized = (props: EmphasizedVariantProps, options?: EmphasizedVariantOptions): boolean => {

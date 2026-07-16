@@ -52,9 +52,9 @@ import {
  * - 🧹 Discards outdated transitions during overlapping changes.
  * - 🔁 Resumes the latest intent once prior animation finishes.
  * 
- * @template TState - The type representing the animated state value.
- * @template TElement - The type of the target DOM element.
- * @param options - Configuration options that define animation behavior and recognition.
+ * @template TState The type representing the animated state value.
+ * @template TElement The type of the target DOM element.
+ * @param options Configuration options that define animation behavior and recognition.
  * @returns API for accessing and controlling animation state with both tuple-style and named properties.
  */
 export const useAnimationState = <TState extends {} | null, TElement extends Element = HTMLElement>(options: AnimationStateOptions<TState>): AnimationStateApi<TState, TElement> => {

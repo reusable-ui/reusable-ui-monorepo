@@ -41,8 +41,8 @@ export const INTERVAL_PRECISION = 50; // ms
 /**
  * Custom assertion function for validating intervals within precision range.
  *
- * @param expectedInterval - The expected duration in milliseconds.
- * @param receivedInterval - The measured elapsed time in milliseconds.
+ * @param expectedInterval The expected duration in milliseconds.
+ * @param receivedInterval The measured elapsed time in milliseconds.
  */
 export const expectInterval = (expectedInterval: number, receivedInterval: number): void => {
     const isValid = Math.abs(receivedInterval - expectedInterval) <= INTERVAL_PRECISION;

@@ -97,11 +97,11 @@ const observableStateDefinition : ObservableStateDefinition<boolean | null, 'aut
  *   When enabled, parent providers can disable this component or enforce their own validity
  *   when the local validity is `'auto'`.
  * 
- * @param props - The component props that may include:
+ * @param props The component props that may include:
  *   - A controlled `validity` value (`true` | `false` | `null` | `'auto'`).
  *   - A derived `computedValidity` value used when local and parent validity are `'auto'`.
  *   - `enableValidation` and `cascadeValidation` flags to control validation behavior.
- * @param options - An optional configuration for customizing validity behavior.
+ * @param options An optional configuration for customizing validity behavior.
  * @returns The resolved validity state.
  */
 export const useResolvedValidity = (props: Pick<ValidityStateProps, 'enableValidation' | 'validity' | 'cascadeValidation' | 'computedValidity'>, options?: Pick<ValidityStateOptions, 'defaultValidity' | 'fallbackValidity'>) : boolean | null => {
@@ -230,14 +230,14 @@ const validityStateDefinition : ValidityStateDefinition = {
  *   When enabled, parent providers can disable this component or enforce their own validity
  *   when the local validity is `'auto'`.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  * 
- * @param props - The component props that may include:
+ * @param props The component props that may include:
  *   - A controlled `validity` value (`true` | `false` | `null` | `'auto'`).
  *   - A derived `computedValidity` value used when local and parent validity are `'auto'`.
  *   - `enableValidation` and `cascadeValidation` flags to control validation behavior.
  *   - An `onValidityUpdate` callback for observing validity changes.
- * @param options - An optional configuration for customizing validity behavior and animation lifecycle.
+ * @param options An optional configuration for customizing validity behavior and animation lifecycle.
  * @returns The resolved validity state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @example

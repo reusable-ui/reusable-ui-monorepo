@@ -72,10 +72,10 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * - `'auto'` is treated as a declarative diagnostic mode.
  * - Ideal for components that **consume** the resolved `focused` state.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  * 
- * @param props - The component props that may include a controlled `focused` value and derived `computedFocus` value.
- * @param options - An optional configuration for customizing focus/blur behavior.
+ * @param props The component props that may include a controlled `focused` value and derived `computedFocus` value.
+ * @param options An optional configuration for customizing focus/blur behavior.
  * @returns The resolved focus/blur state and event handlers for focus/blur events.
  */
 export const useResolvedFocused = <TElement extends Element = HTMLElement>(props: Pick<FocusStateProps, 'focused' | 'computedFocus'>, options?: Pick<FocusStateOptions, 'defaultFocused'>) : Pick<FocusState<TElement>, 'focused' | 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'> => {
@@ -166,10 +166,10 @@ const focusStateDefinition : FocusStateDefinition = {
  * - Supports diagnostic mode, when `focused` is set to `'auto'`, which derives the effective focus from `computedFocus`.
  * - Supports input-like styling behavior via `inputLikeFocus`, which forces a focus ring to appear when focused—mimicking native `<input>` semantics even on mouse click.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  * 
- * @param props - The component props that may include a controlled `focused` value, derived `computedFocus` value, and `onFocusUpdate` callback.
- * @param options - An optional configuration for customizing focus/blur behavior and animation lifecycle.
+ * @param props The component props that may include a controlled `focused` value, derived `computedFocus` value, and `onFocusUpdate` callback.
+ * @param options An optional configuration for customizing focus/blur behavior and animation lifecycle.
  * @returns The resolved focus/blur state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @example

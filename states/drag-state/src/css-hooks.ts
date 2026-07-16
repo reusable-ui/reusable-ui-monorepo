@@ -31,7 +31,7 @@ import {
  * Generates CSS rules that conditionally apply the drag/drop animations based on current dragged state,
  * and exposes drag/drop-related CSS variables for use in conditional styling.
  * 
- * @param options - An optional configuration for customizing drag/drop animations.
+ * @param options An optional configuration for customizing drag/drop animations.
  * @returns A CSS API for conditionally apply the drag/drop animations based on current dragged state.
  * 
  * @example

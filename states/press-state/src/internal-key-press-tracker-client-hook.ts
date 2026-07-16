@@ -70,7 +70,7 @@ export interface KeyPressTracker {
  * Notes:
  * - The returned function is referentially stable via `useStableCallback`.
  * 
- * @param pressKeys - A key or list of keys to track (e.g. 'Enter', ['Space', 'ArrowDown']).
+ * @param pressKeys A key or list of keys to track (e.g. 'Enter', ['Space', 'ArrowDown']).
  * @returns A `KeyPressTracker` object containing:
  *   - `track(keyCode, isPressed)` → `true` if the key was successfully tracked (on press), or successfully untracked with no remaining active keys (on release).
  *   - `isPressed()` → `true` if the current key state satisfies the configured press gesture.

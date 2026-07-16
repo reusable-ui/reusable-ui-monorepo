@@ -38,7 +38,7 @@ import {
  * Resolves the appropriate decoration color based on the currently active variants
  * and exposes ready-to-use CSS variables.
  * 
- * @param options - An optional configuration for customizing decoration behavior.
+ * @param options An optional configuration for customizing decoration behavior.
  * @returns A CSS API for enabling theme-aware decoration styling in components.
  */
 export const usingDecorationFeature = (options?: CssDecorationFeatureOptions): CssDecorationFeature => {

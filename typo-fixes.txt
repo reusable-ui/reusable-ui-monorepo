@@ -27,8 +27,8 @@
 `**ChangeDispatcherOptions` => `**StateChangeDispatcherOptions`
 
 
- * @template TPhase - The type representing semantic transition phases.
- * @template TPhase - The union type of possible transition phases (e.g. `'enabled' | 'disabled'`).
+ * @template TPhase The type representing semantic transition phases.
+ * @template TPhase The union type of possible transition phases (e.g. `'enabled' | 'disabled'`).
 
 
 "A literal string value with length unit" => "A literal string value with a length unit"

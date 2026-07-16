@@ -87,9 +87,9 @@ const sortStateDefinition : SortStateDefinition = {
  * Supports a declarative workflow by passing staged sort data,
  * committing it via a callback, and then clearing the staged state.
  * 
- * @template TElement - The type of the target DOM element.
- * @template TItemElement - The type of the sortable DOM element.
- * @template TSortData - The type of the data driving the sortable elements (commonly an array of item metadata).
+ * @template TElement The type of the target DOM element.
+ * @template TItemElement The type of the sortable DOM element.
+ * @template TSortData The type of the data driving the sortable elements (commonly an array of item metadata).
  * 
  * @param props The component props for passing staged sort data and commit/clear callbacks.
  * @param options An optional configuration for customizing sort transition behavior and animation lifecycle.

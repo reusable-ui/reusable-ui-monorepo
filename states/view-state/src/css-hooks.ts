@@ -29,7 +29,7 @@ import {
  * Generates CSS rules that conditionally apply the view-switching animations based on current view index,
  * and exposes view-related CSS variables for conditional animation.
  * 
- * @param options - An optional configuration for customizing view-switching animations.
+ * @param options An optional configuration for customizing view-switching animations.
  * @returns A CSS API for conditionally apply the view-switching animations based on current view index.
  *
  * @example

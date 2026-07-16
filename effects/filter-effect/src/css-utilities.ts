@@ -59,8 +59,8 @@ import {
  * - Saturation, brightness, and contrast may overshoot/undershoot if factor goes beyond [0,1].
  * - Each filter formula is safeguarded by clamping mechanisms to avoid invalid ranges.
  * 
- * @param activeFactor - A CSS variable reference representing how far the transition has progressed (from inactive → fully active).
- * @param options - An optional configuration for customizing filter effects.
+ * @param activeFactor A CSS variable reference representing how far the transition has progressed (from inactive → fully active).
+ * @param options An optional configuration for customizing filter effects.
  * @returns A `CssFilterEffectFormula` composing the configured filters or `'unset'`.
  * 
  * @example

@@ -38,8 +38,8 @@ const themesCache = new Set<string>([
 /**
  * Defines a theme by mapping the given `theme` to its corresponding colors.
  * 
- * @param theme - The theme name to define.
- * @param rootColor - The base CSS color or CSS expression for the theme.
+ * @param theme The theme name to define.
+ * @param rootColor The base CSS color or CSS expression for the theme.
  */
 export const defineTheme = (theme: string, rootColor: CssColor | null | undefined): void => {
     // Validate parameters:
@@ -120,7 +120,7 @@ export const defineTheme = (theme: string, rootColor: CssColor | null | undefine
 /**
  * Deletes a theme by resetting its mapped color values.
  * 
- * @param theme - The theme name to delete.
+ * @param theme The theme name to delete.
  */
 export const deleteTheme = (theme: string): void => {
     defineTheme(theme, null);

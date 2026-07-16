@@ -33,9 +33,9 @@ const forwardRefType = Symbol.for('react.forward_ref');
  * This function acts as a **type guard**, meaning if it returns `true`,
  * TypeScript will refine the type of `node` to `node is ReactElement<PropsWithoutRef<TProps> & RefAttributes<TRef>, JSXElementConstructor<PropsWithoutRef<TProps> & RefAttributes<TRef>>>`.
  * 
- * @template TProps - The props type expected by the component element.
- * @template TRef - The ref type expected by the component element.
- * @param node - The React node to inspect.
+ * @template TProps The props type expected by the component element.
+ * @template TRef The ref type expected by the component element.
+ * @param node The React node to inspect.
  * @returns `true` if the node is a React forward ref element, otherwise `false`.
  */
 export const isForwardRefElement = <TProps extends unknown = unknown, TRef extends unknown = unknown>(node: ReactNode): node is ReactElement<PropsWithoutRef<TProps> & RefAttributes<TRef>, JSXElementConstructor<PropsWithoutRef<TProps> & RefAttributes<TRef>>> => {
@@ -64,7 +64,7 @@ const fragmentType = Symbol.for('react.fragment');
  * This function acts as a **type guard**, meaning if it returns `true`,
  * TypeScript will refine the type of `node` to `ReactElement<FragmentProps, JSXElementConstructor<FragmentProps>>`.
  * 
- * @param node - The React node to inspect.
+ * @param node The React node to inspect.
  * @returns `true` if the node is a React fragment element, otherwise `false`.
  */
 export const isFragmentElement = (node: ReactNode): node is ReactElement<FragmentProps, JSXElementConstructor<FragmentProps>> => {
@@ -93,7 +93,7 @@ const contextType = Symbol.for('react.context');
  * This function acts as a **type guard**, meaning if it returns `true`,
  * TypeScript will refine the type of `node` to `ReactElement<TProps, JSXElementConstructor<TProps>>`.
  * 
- * @param node - The React node to inspect.
+ * @param node The React node to inspect.
  * @returns `true` if the node is a React context element, otherwise `false`.
  */
 export const isContextElement = <TProps extends ProviderProps<unknown> = ProviderProps<unknown>>(node: ReactNode): node is ReactElement<TProps, JSXElementConstructor<TProps>> => {
@@ -116,9 +116,9 @@ export const isContextElement = <TProps extends ProviderProps<unknown> = Provide
  * This function acts as a **type guard**, meaning if it returns `true`,
  * TypeScript will refine the type of `node` to `ReactElement<TProps, TConstructor>`.
  * 
- * @template TProps - The props type expected by the component element.
- * @template TConstructor - The component type constructor.
- * @param node - The React node to inspect.
+ * @template TProps The props type expected by the component element.
+ * @template TConstructor The component type constructor.
+ * @param node The React node to inspect.
  * @returns `true` if the node is a valid component element, otherwise `false`.
  */
 export const isComponentElement = <TProps extends unknown = unknown, TConstructor extends JSXElementConstructor<TProps> = JSXElementConstructor<TProps>>(node: ReactNode): node is ReactElement<TProps, TConstructor> => {
@@ -141,8 +141,8 @@ export const isComponentElement = <TProps extends unknown = unknown, TConstructo
  * This function acts as a **type guard**, meaning if it returns `true`,
  * TypeScript will refine the type of `node` to `ReactElement<TProps, string>`.
  * 
- * @template TProps - The props type expected by the DOM element.
- * @param node - The React node to inspect.
+ * @template TProps The props type expected by the DOM element.
+ * @param node The React node to inspect.
  * @returns `true` if the node is a native DOM element, otherwise `false`.
  */
 export const isDOMElement = <TProps extends unknown = unknown>(node: ReactNode): node is ReactElement<TProps, string> => {
@@ -165,7 +165,7 @@ export const isDOMElement = <TProps extends unknown = unknown>(node: ReactNode):
  * This function acts as a **type guard**, meaning if it returns `true`,
  * TypeScript will refine the type of `node` to exclude `undefined`, `null`, and `boolean`.
  * 
- * @param node - The React node to inspect.
+ * @param node The React node to inspect.
  * @returns `true` if the node is renderable, otherwise `false`.
  */
 export const isTruthyNode = (node: ReactNode): node is Exclude<typeof node, undefined | null | boolean> => {
@@ -191,7 +191,7 @@ export const isTruthyNode = (node: ReactNode): node is Exclude<typeof node, unde
  * This function acts as a **type guard**, meaning if it returns `true`,
  * TypeScript will refine the type of `node` to `undefined | null | boolean`.
  * 
- * @param node - The React node to inspect.
+ * @param node The React node to inspect.
  * @returns `true` if the node is non-renderable, otherwise `false`.
  */
 export const isFalsyNode  = (node: ReactNode): node is Extract<typeof node, undefined | null | boolean> => {

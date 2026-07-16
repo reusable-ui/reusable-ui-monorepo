@@ -39,7 +39,7 @@ import {
  * Composes custom and registered box shadows into a unified stack
  * and exposes ready-to-use CSS variables.
  * 
- * @param options - An optional configuration for customizing box shadow behavior.
+ * @param options An optional configuration for customizing box shadow behavior.
  * @returns A CSS API for composing a unified box shadow stack from custom and registered state packages.
  */
 export const usingBoxShadowFeature = (options?: CssBoxShadowFeatureOptions): CssBoxShadowFeature => {

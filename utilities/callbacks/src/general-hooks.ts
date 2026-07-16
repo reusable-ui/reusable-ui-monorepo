@@ -151,8 +151,8 @@ export function useStableCallback<TArgs extends unknown[] = [], TReturn extends 
  * - Executes all provided callbacks sequentially.
  * - Useful for combining **multiple event handlers** into a single stable function.
  * 
- * @template TArgs - The argument types passed to each callback function.
- * @param callbacks - List of callback functions to merge.
+ * @template TArgs The argument types passed to each callback function.
+ * @param callbacks List of callback functions to merge.
  * @returns A merged callback function.
  * 
  * @example
@@ -185,8 +185,8 @@ export const useMergedCallbacks = <TArgs extends unknown[] = []>(...callbacks: O
  * - Executes all provided async callbacks in parallel.
  * - Useful for combining **multiple async event handlers** into a single stable function.
  * 
- * @template TArgs - The argument types passed to each callback function.
- * @param callbacks - List of async callback functions to merge.
+ * @template TArgs The argument types passed to each callback function.
+ * @param callbacks List of async callback functions to merge.
  * @returns A merged async callback function.
  * 
  * @example
@@ -221,10 +221,10 @@ export const useMergedAsyncCallbacks = <TArgs extends unknown[] = []>(...callbac
  * - Avoids stale closures while keeping the latest function reference.
  * - Optimized for performance when passing event handlers as props.
  * 
- * @template TEvent - The event object type.
- * @template TExtra - Additional argument types passed to the event handler function.
- * @template TReturn - The return type of the event handler function.
- * @param eventHandler - The event handler function to be stabilized.
+ * @template TEvent The event object type.
+ * @template TExtra Additional argument types passed to the event handler function.
+ * @template TReturn The return type of the event handler function.
+ * @param eventHandler The event handler function to be stabilized.
  * @returns A stable event handler function.
  * 
  * @example
@@ -249,9 +249,9 @@ export const useStableEventHandler = <TEvent, TExtra extends unknown[] = [], TRe
  * - Executes all provided event handlers sequentially.
  * - Useful for combining **multiple event handlers** into a single stable function.
  * 
- * @template TEvent - The event object type.
- * @template TExtra - Additional argument types passed to each handler function.
- * @param eventHandlers - List of event handlers to merge.
+ * @template TEvent The event object type.
+ * @template TExtra Additional argument types passed to each handler function.
+ * @param eventHandlers List of event handlers to merge.
  * @returns A merged event handler function.
  * 
  * @example
@@ -279,9 +279,9 @@ export const useMergedEventHandlers = <TEvent, TExtra extends unknown[] = []>(..
  * - Executes all provided async event handlers in parallel.
  * - Useful for combining **multiple async event handlers** into a single stable function.
  * 
- * @template TEvent - The event object type.
- * @template TExtra - Additional argument types passed to each handler function.
- * @param eventHandlers - List of async event handler functions to merge.
+ * @template TEvent The event object type.
+ * @template TExtra Additional argument types passed to each handler function.
+ * @param eventHandlers List of async event handler functions to merge.
  * @returns A merged async event handler function.
  * 
  * @example

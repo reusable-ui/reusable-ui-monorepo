@@ -123,7 +123,7 @@ import {
  * }
  * ```
  * 
- * @param options - An optional configuration for customizing view effects.
+ * @param options An optional configuration for customizing view effects.
  * @returns A CSS API containing effect rules and CSS variables for the sliding transitions.
  */
 export const usingViewEffect = (options?: CssViewEffectOptions): CssViewEffect => {

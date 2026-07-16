@@ -66,17 +66,17 @@ import {
  * Declarative keywords (`'auto'`, `'inherit'`, etc.) must be resolved externally
  * before passing into `effectiveState`.
  * 
- * @param props - The behavior-specific props, including the externally controlled `effectiveState` and optional update callback.
- * @param options - Optional per-component customization for animation lifecycle (pattern, bubbling, etc.).
- * @param definition - The feedback-specific definition that declares how phases and classnames are resolved.
+ * @param props The behavior-specific props, including the externally controlled `effectiveState` and optional update callback.
+ * @param options Optional per-component customization for animation lifecycle (pattern, bubbling, etc.).
+ * @param definition The feedback-specific definition that declares how phases and classnames are resolved.
  * 
- * @template TState - The concrete type of the state value (must not be declarative).
- * @template TPhase - The type representing semantic transition phases.
- * @template TClassname - The type representing semantic transition classnames.
- * @template TBehaviorProps - The type of the behavior-specific props.
- * @template TBehaviorOptions - The type of the behavior-specific options.
- * @template TBehaviorDefinition - The type of the behavior-specific definition.
- * @template TElement - The type of the target DOM element.
+ * @template TState The concrete type of the state value (must not be declarative).
+ * @template TPhase The type representing semantic transition phases.
+ * @template TClassname The type representing semantic transition classnames.
+ * @template TBehaviorProps The type of the behavior-specific props.
+ * @template TBehaviorOptions The type of the behavior-specific options.
+ * @template TBehaviorDefinition The type of the behavior-specific definition.
+ * @template TElement The type of the target DOM element.
  * 
  * @returns The resolved feedback behavior state API.
  */

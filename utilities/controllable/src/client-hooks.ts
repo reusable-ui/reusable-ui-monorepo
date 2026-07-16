@@ -80,10 +80,10 @@ import {
  * };
  * ```
  * 
- * @template TValue - The type of the value being managed.
- * @template TChangeEvent - The type of the event triggering the value change.
+ * @template TValue The type of the value being managed.
+ * @template TChangeEvent The type of the event triggering the value change.
  * 
- * @param props - The controllable value props.
+ * @param props The controllable value props.
  * @returns `[currentValue, dispatchValueChange]` — the resolved value and a stable dispatcher to trigger changes.
  */
 export const useControllableValue = <TValue, TChangeEvent = unknown>(props: ControllableValueProps<TValue, TChangeEvent>): ValueChangeTuple<TValue, TChangeEvent> => {
@@ -176,10 +176,10 @@ export const useControllableValue = <TValue, TChangeEvent = unknown>(props: Cont
  * };
  * ```
  * 
- * @template TValue - The type of the value being managed.
- * @template TChangeEvent - The type of the event triggering the value change.
+ * @template TValue The type of the value being managed.
+ * @template TChangeEvent The type of the event triggering the value change.
  * 
- * @param props - The uncontrolled value props.
+ * @param props The uncontrolled value props.
  * @returns `[currentValue, dispatchValueChange]` — the internal state value and a stable dispatcher to update it.
  */
 export const useUncontrolledValue = <TValue, TChangeEvent = unknown>(props: UncontrolledValueProps<TValue, TChangeEvent>): ValueChangeTuple<TValue, TChangeEvent> => {

@@ -24,7 +24,7 @@ import {
  * 
  * The keys are used for semantic mapping and documentation purposes. The values are ignored.
  * 
- * @template TStripped - The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
+ * @template TStripped The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
  */
 export type StrippedVariantVars<TStripped extends true | string = true> =
     & {
@@ -97,7 +97,7 @@ export type StrippedVariantVars<TStripped extends true | string = true> =
 /**
  * Configuration options for enabling stripped-aware styling component configuration.
  * 
- * @template TStripped - The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
+ * @template TStripped The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
  */
 export interface CssStrippedVariantOptions<TStripped extends true | string = true> {
     /**
@@ -109,7 +109,7 @@ export interface CssStrippedVariantOptions<TStripped extends true | string = tru
 /**
  * Provides a CSS API for enabling conditional styling based on current stripped mode.
  * 
- * @template TStripped - The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
+ * @template TStripped The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
  */
 export interface CssStrippedVariant<TStripped extends true | string = true> {
     /**

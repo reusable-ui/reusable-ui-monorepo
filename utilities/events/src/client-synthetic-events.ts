@@ -45,8 +45,8 @@ function functionThatNoop(): void {
 /**
  * Defines the configuration options for creating a React-compatible synthetic event.
  * 
- * @template TElement - The type of the DOM element associated with the event.
- * @template TEvent - The type of the native event being wrapped.
+ * @template TElement The type of the DOM element associated with the event.
+ * @template TEvent The type of the native event being wrapped.
  */
 export interface CreateSyntheticEventOptions<TElement extends Element, TEvent extends Event> {
     /**
@@ -93,10 +93,10 @@ export interface CreateSyntheticEventOptions<TElement extends Element, TEvent ex
 /**
  * Creates a React-compatible synthetic event from a native event.
  * 
- * @template TElement - The type of the DOM element associated with the event.
- * @template TEvent - The type of the native event being wrapped.
+ * @template TElement The type of the DOM element associated with the event.
+ * @template TEvent The type of the native event being wrapped.
  * 
- * @param options - Configuration options for constructing the synthetic event.
+ * @param options Configuration options for constructing the synthetic event.
  * @returns A React-compatible `SyntheticEvent`.
  */
 export const createSyntheticEvent      = <TElement extends Element, TEvent extends Event>(options: CreateSyntheticEventOptions<TElement, TEvent>): ReactSyntheticEvent<TElement, TEvent> => {
@@ -211,8 +211,8 @@ export const createSyntheticEvent      = <TElement extends Element, TEvent exten
 /**
  * Defines the configuration options for creating a React-compatible synthetic UI event.
  * 
- * @template TElement - The type of the DOM element associated with the event.
- * @template TEvent - The type of the native UI event being wrapped.
+ * @template TElement The type of the DOM element associated with the event.
+ * @template TEvent The type of the native UI event being wrapped.
  */
 export interface CreateSyntheticUIEventOptions<TElement extends Element, TEvent extends UIEvent>
     extends
@@ -224,10 +224,10 @@ export interface CreateSyntheticUIEventOptions<TElement extends Element, TEvent 
 /**
  * Creates a React-compatible synthetic UI event from a native UI event.
  * 
- * @template TElement - The type of the DOM element associated with the event.
- * @template TEvent - The type of the native UI event being wrapped.
+ * @template TElement The type of the DOM element associated with the event.
+ * @template TEvent The type of the native UI event being wrapped.
  * 
- * @param options - Configuration options for constructing the synthetic UI event.
+ * @param options Configuration options for constructing the synthetic UI event.
  * @returns A React-compatible `UIEvent`.
  */
 export const createSyntheticUIEvent    = <TElement extends Element, TEvent extends UIEvent>(options: CreateSyntheticUIEventOptions<TElement, TEvent>): ReactUIEvent<TElement, TEvent> => {
@@ -258,8 +258,8 @@ export const createSyntheticUIEvent    = <TElement extends Element, TEvent exten
 /**
  * Defines the configuration options for creating a React-compatible synthetic mouse event.
  * 
- * @template TElement - The type of the DOM element associated with the event.
- * @template TEvent - The type of the native mouse event being wrapped.
+ * @template TElement The type of the DOM element associated with the event.
+ * @template TEvent The type of the native mouse event being wrapped.
  */
 export interface CreateSyntheticMouseEventOptions<TElement extends Element, TEvent extends MouseEvent>
     extends
@@ -280,10 +280,10 @@ export interface CreateSyntheticMouseEventOptions<TElement extends Element, TEve
 /**
  * Creates a React-compatible synthetic mouse event from a native mouse event.
  * 
- * @template TElement - The type of the DOM element associated with the event.
- * @template TEvent - The type of the native mouse event being wrapped.
+ * @template TElement The type of the DOM element associated with the event.
+ * @template TEvent The type of the native mouse event being wrapped.
  * 
- * @param options - Configuration options for constructing the synthetic mouse event.
+ * @param options Configuration options for constructing the synthetic mouse event.
  * @returns A React-compatible `MouseEvent`.
  */
 export const createSyntheticMouseEvent = <TElement extends Element, TEvent extends MouseEvent>(options: CreateSyntheticMouseEventOptions<TElement, TEvent>): ReactMouseEvent<TElement, TEvent> => {
@@ -382,8 +382,8 @@ export const createSyntheticMouseEvent = <TElement extends Element, TEvent exten
 /**
  * Defines the configuration options for creating a React-compatible synthetic pointer event.
  * 
- * @template TElement - The type of the DOM element associated with the event.
- * @template TEvent - The type of the native pointer event being wrapped.
+ * @template TElement The type of the DOM element associated with the event.
+ * @template TEvent The type of the native pointer event being wrapped.
  */
 export interface CreateSyntheticPointerEventOptions<TElement extends Element, TEvent extends PointerEvent>
     extends
@@ -404,10 +404,10 @@ export interface CreateSyntheticPointerEventOptions<TElement extends Element, TE
 /**
  * Creates a React-compatible synthetic pointer event from a native pointer event.
  * 
- * @template TElement - The type of the DOM element associated with the event.
- * @template TEvent - The type of the native pointer event being wrapped.
+ * @template TElement The type of the DOM element associated with the event.
+ * @template TEvent The type of the native pointer event being wrapped.
  * 
- * @param options - Configuration options for constructing the synthetic pointer event.
+ * @param options Configuration options for constructing the synthetic pointer event.
  * @returns A React-compatible `PointerEvent`.
  */
 export const createSyntheticPointerEvent = <TElement extends Element, TEvent extends PointerEvent>(options: CreateSyntheticPointerEventOptions<TElement, TEvent>): ReactPointerEvent<TElement> => {
@@ -534,8 +534,8 @@ export const createSyntheticPointerEvent = <TElement extends Element, TEvent ext
 /**
  * Defines the configuration options for creating a React-compatible synthetic keyboard event.
  * 
- * @template TElement - The type of the DOM element associated with the event.
- * @template TEvent - The type of the native keyboard event being wrapped.
+ * @template TElement The type of the DOM element associated with the event.
+ * @template TEvent The type of the native keyboard event being wrapped.
  */
 export interface CreateSyntheticKeyboardEventOptions<TElement extends Element, TEvent extends KeyboardEvent>
     extends
@@ -547,10 +547,10 @@ export interface CreateSyntheticKeyboardEventOptions<TElement extends Element, T
 /**
  * Creates a React-compatible synthetic keyboard event from a native keyboard event.
  * 
- * @template TElement - The type of the DOM element associated with the event.
- * @template TEvent - The type of the native keyboard event being wrapped.
+ * @template TElement The type of the DOM element associated with the event.
+ * @template TEvent The type of the native keyboard event being wrapped.
  * 
- * @param options - Configuration options for constructing the synthetic keyboard event.
+ * @param options Configuration options for constructing the synthetic keyboard event.
  * @returns A React-compatible `KeyboardEvent`.
  */
 export const createSyntheticKeyboardEvent = <TElement extends Element, TEvent extends KeyboardEvent>(options: CreateSyntheticKeyboardEventOptions<TElement, TEvent>): ReactKeyboardEvent<TElement> => {

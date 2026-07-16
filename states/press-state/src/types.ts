@@ -304,7 +304,7 @@ export type PressClassname = `is-${PressPhase}`
 /**
  * An API for accessing the resolved press/release state, current transition phase, associated CSS class name, and animation event handlers.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  */
 export interface PressState<TElement extends Element = HTMLElement>
     extends

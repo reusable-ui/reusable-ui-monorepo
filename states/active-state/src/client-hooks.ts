@@ -92,8 +92,8 @@ const cascadeStateDefinition : CascadeStateDefinition<boolean> = {
  * - If `active` is `false` and `cascadeActive` is `true`, the component checks context for inherited active state.
  * - If context is unavailable and `cascadeActive` is `true`, the component defaults to inactive (`false`).
  * 
- * @param props - The component props that may include a controlled `active` value and contextual `cascadeActive` value, but must exclude `defaultActive`.
- * @param options - An optional configuration for customizing activate/deactivate behavior.
+ * @param props The component props that may include a controlled `active` value and contextual `cascadeActive` value, but must exclude `defaultActive`.
+ * @param options An optional configuration for customizing activate/deactivate behavior.
  * @returns The resolved active/inactive state.
  */
 export const useResolvedActive = (props: Pick<ActiveStateProps<any>, 'active' | 'cascadeActive'> & { defaultActive?: never }, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>) : boolean => {
@@ -145,10 +145,10 @@ export const useResolvedActive = (props: Pick<ActiveStateProps<any>, 'active' | 
  * - Always triggers `onActiveChange`, if provided.
  * - Ideal for components that **dictate** the `active` state externally and need a stable dispatcher without lifecycle orchestration.
  * 
- * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
+ * @template TChangeEvent The type of the event triggering the change request (e.g. button click, keyboard event).
  * 
- * @param props - The component props that may include `onActiveChange` callback but must exclude `defaultActive`.
- * @param options - Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
+ * @param props The component props that may include `onActiveChange` callback but must exclude `defaultActive`.
+ * @param options Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for activation change requests.
  */
 export const useDispatchActiveChange = <TChangeEvent = unknown>(props: Pick<ActiveStateProps<TChangeEvent>, 'onActiveChange'> & { defaultActive?: never }, options?: ActiveChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<boolean, TChangeEvent> => {
@@ -193,11 +193,11 @@ const activeStateDefinition : ActiveStateDefinition = {
  * - Supports controlled, uncontrolled, and hybrid activation behavior with optional change dispatching.
  * - Supports contextual override via `cascadeActive`.
  * 
- * @template TElement - The type of the target DOM element.
- * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
+ * @template TElement The type of the target DOM element.
+ * @template TChangeEvent The type of the event triggering the change request (e.g. button click, keyboard event).
  * 
- * @param props - The component props that may include a controlled `active` value, optional `defaultActive` value, contextual `cascadeActive` value, and `onActiveChange` callback.
- * @param options - An optional configuration for customizing activate/deactivate behavior and animation lifecycle.
+ * @param props The component props that may include a controlled `active` value, optional `defaultActive` value, contextual `cascadeActive` value, and `onActiveChange` callback.
+ * @param options An optional configuration for customizing activate/deactivate behavior and animation lifecycle.
  * @returns The resolved active/inactive state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
  * @example
@@ -355,10 +355,10 @@ export const useActiveState = <TElement extends Element = HTMLElement, TChangeEv
  * - If `active` is omitted, the internal state is initialized via `defaultActive`.
  * - Ideal for components that **manage** the resolved `active` state.
  * 
- * @template TChangeEvent - The type of the event triggering the change request (e.g. button click, keyboard event).
+ * @template TChangeEvent The type of the event triggering the change request (e.g. button click, keyboard event).
  * 
- * @param props - The component props that may include a controlled `active` value, optional `defaultActive` value, contextual `cascadeActive` value, and `onActiveChange` callback.
- * @param options - An optional configuration for customizing activate/deactivate behavior.
+ * @param props The component props that may include a controlled `active` value, optional `defaultActive` value, contextual `cascadeActive` value, and `onActiveChange` callback.
+ * @param options An optional configuration for customizing activate/deactivate behavior.
  * @returns A tuple of the resolved active/inactive state and a dispatcher for requesting changes.
  */
 export const useActiveController = <TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent>, options?: Pick<ActiveStateOptions, 'defaultActive' | 'defaultCascadeActive'>): [boolean, DispatchValueChange<boolean, TChangeEvent>] => {

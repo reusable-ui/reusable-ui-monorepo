@@ -31,7 +31,7 @@ import {
  * Generates CSS rules that conditionally apply the focus/blur animations based on current focused state,
  * and exposes focus/blur-related CSS variables for conditional animation.
  * 
- * @param options - An optional configuration for customizing focus/blur animations.
+ * @param options An optional configuration for customizing focus/blur animations.
  * @returns A CSS API for conditionally apply the focus/blur animations based on current focused state.
  *
  * @example

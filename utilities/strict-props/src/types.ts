@@ -10,9 +10,9 @@ import {
  * Any disallowed props are flagged as errors at development/compile time,
  * making them easy to identify and remove.
  * 
- * @template TRestProps - The remaining properties being validated.
- * @template TBaseProps - The base props type (e.g. HTML attributes).
- * @template TExtraProps - Any additional allowed props.
+ * @template TRestProps The remaining properties being validated.
+ * @template TBaseProps The base props type (e.g. HTML attributes).
+ * @template TExtraProps Any additional allowed props.
  * 
  * @example
  * ```tsx

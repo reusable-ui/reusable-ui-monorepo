@@ -35,8 +35,8 @@ const controlledStateDefinition : ControlledStateDefinition<boolean> = {
  * - Does not contain internal state.
  * - Ideal for components that **consume** the resolved `excited` state.
  * 
- * @param props - The component props that may include a controlled `excited` value.
- * @param options - An optional configuration for customizing excitement behavior.
+ * @param props The component props that may include a controlled `excited` value.
+ * @param options An optional configuration for customizing excitement behavior.
  * @returns The resolved excited state.
  */
 export const useResolvedExcited = (props: Pick<ExcitedStateProps, 'excited'>, options?: Pick<ExcitedStateOptions, 'defaultExcited'>): boolean => {

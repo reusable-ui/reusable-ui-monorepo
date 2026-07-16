@@ -44,7 +44,7 @@ import {
  * Preserves the current theme colors and variants while reducing emphasis
  * through opacity and/or desaturation.
  * 
- * @param options - An optional configuration for customizing disabled effects.
+ * @param options An optional configuration for customizing disabled effects.
  * @returns A CSS API containing effect rules and CSS variables for muting theme colors.
  */
 export const usingDisabledEffect = (options?: CssDisabledEffectOptions): CssDisabledEffect => {

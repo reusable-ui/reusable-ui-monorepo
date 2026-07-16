@@ -25,11 +25,11 @@
  * />
  * ```
  * 
- * @template TValue - The type of the value being updated.
- * @template TChangeEvent - The type of the event triggering the value change.
+ * @template TValue The type of the value being updated.
+ * @template TChangeEvent The type of the event triggering the value change.
  * 
- * @param newValue - The new value after the change.
- * @param event - The event associated with the change (may contain additional metadata).
+ * @param newValue The new value after the change.
+ * @param event The event associated with the change (may contain additional metadata).
  * 
  * @returns void — used purely for updating state or processing events.
  */
@@ -41,11 +41,11 @@ export type ValueChangeHandler<TValue, TChangeEvent = unknown>  = (newValue: TVa
  * Typically used inside components to notify subscribers about value changes,
  * enabling event-aware reactivity in UI systems.
  * 
- * @template TValue - The type of the value being updated.
- * @template TChangeEvent - The type of the event triggering the value change.
+ * @template TValue The type of the value being updated.
+ * @template TChangeEvent The type of the event triggering the value change.
  * 
- * @param newValue - The new value to dispatch.
- * @param event - The event associated with the dispatch (may contain additional metadata).
+ * @param newValue The new value to dispatch.
+ * @param event The event associated with the dispatch (may contain additional metadata).
  * 
  * @returns void — used purely for notifying listeners of changes.
  */
@@ -63,8 +63,8 @@ export type DispatchValueChange<TValue, TChangeEvent = unknown> = (newValue: TVa
  * This mirrors React's `[state, setState]` convention, but extends the dispatcher
  * to pass both the new value and the triggering event.
  * 
- * @template TValue - The type of the value being managed.
- * @template TChangeEvent - The type of the event triggering the value change.
+ * @template TValue The type of the value being managed.
+ * @template TChangeEvent The type of the event triggering the value change.
  * 
  * @returns A tuple:
  * - `[0]` → `TValue` — the current value.
@@ -80,8 +80,8 @@ export type ValueChangeTuple<TValue, TChangeEvent = unknown>    = [TValue, Dispa
  * Provides an optional callback that responds to updates
  * by providing both the new value and the triggering event.
  * 
- * @template TValue - The type of the value being updated.
- * @template TChangeEvent - The type of the event triggering the value change.
+ * @template TValue The type of the value being updated.
+ * @template TChangeEvent The type of the event triggering the value change.
  */
 export interface ValueProps<TValue, TChangeEvent = unknown> {
     /**
@@ -102,8 +102,8 @@ export interface ValueProps<TValue, TChangeEvent = unknown> {
  * - No internal state is used.
  * - Every change triggers `onValueChange` to request the parent update.
  * 
- * @template TValue - The type of the value being managed.
- * @template TChangeEvent - The type of the event triggering the value change.
+ * @template TValue The type of the value being managed.
+ * @template TChangeEvent The type of the event triggering the value change.
  */
 export interface ControlledValueProps<TValue, TChangeEvent = unknown>
     extends
@@ -126,8 +126,8 @@ export interface ControlledValueProps<TValue, TChangeEvent = unknown>
  * - Requires `defaultValue` to initialize internal state.
  * - Updates are handled internally, but `onValueChange` is still notified.
  * 
- * @template TValue - The type of the value being managed.
- * @template TChangeEvent - The type of the event triggering the value change.
+ * @template TValue The type of the value being managed.
+ * @template TChangeEvent The type of the event triggering the value change.
  */
 export interface UncontrolledValueProps<TValue, TChangeEvent = unknown>
     extends
@@ -151,8 +151,8 @@ export interface UncontrolledValueProps<TValue, TChangeEvent = unknown>
  * - Requires `defaultValue` to initialize internal state.
  * - Every change triggers `onValueChange`, regardless of mode.
  * 
- * @template TValue - The type of the value being managed.
- * @template TChangeEvent - The type of the event triggering the value change.
+ * @template TValue The type of the value being managed.
+ * @template TChangeEvent The type of the event triggering the value change.
  */
 export interface ControllableValueProps<TValue, TChangeEvent = unknown>
     extends

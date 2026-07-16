@@ -40,8 +40,8 @@ import {
  * 
  * @template TSize Commonly `'sm'`, `'md'`, `'lg'`
  * 
- * @param configVars - A CSS configuration that may includes properties suffixed by size identifiers (e.g., `'Sm'`, `'Md'`, `'Lg'`) to define size-specific values.
- * @param options - A required configuration specifying supported size values.
+ * @param configVars A CSS configuration that may includes properties suffixed by size identifiers (e.g., `'Sm'`, `'Md'`, `'Lg'`) to define size-specific values.
+ * @param options A required configuration specifying supported size values.
  * @returns A CSS API for enabling size-aware component configuration.
  */
 export function usingSizeVariant<TSize extends string = BasicSize, TCssConfigProps extends CssConfigProps = CssConfigProps>(configVars: Refs<TCssConfigProps>, options: CssSizeVariantOptions<TSize>): CssSizeVariant;
@@ -52,7 +52,7 @@ export function usingSizeVariant<TSize extends string = BasicSize, TCssConfigPro
  * Automatically maps suffixed properties (e.g. `fontSizeSm`, `paddingMd`, `borderRadiusLg`) to their base counterparts (`--comp-fontSize`, `--comp-padding`, etc.),
  * depending on the currently active size.
  * 
- * @param configVars - A CSS configuration that may includes properties suffixed by size identifiers (e.g., `'Sm'`, `'Md'`, `'Lg'`) to define size-specific values.
+ * @param configVars A CSS configuration that may includes properties suffixed by size identifiers (e.g., `'Sm'`, `'Md'`, `'Lg'`) to define size-specific values.
  * @returns A CSS API for enabling size-aware component configuration.
  */
 export function usingSizeVariant<TCssConfigProps extends CssConfigProps = CssConfigProps>(configVars: Refs<TCssConfigProps>): CssSizeVariant;

@@ -38,7 +38,7 @@ import {
  * Preserves the current theme colors and variants while enhancing emphasis
  * through responsive visual cues.
  * 
- * @param options - An optional configuration for customizing press effects.
+ * @param options An optional configuration for customizing press effects.
  * @returns A CSS API containing effect rules and CSS variables for confirming user input on press.
  */
 export const usingPressEffect = (options?: CssPressEffectOptions): CssPressEffect => {

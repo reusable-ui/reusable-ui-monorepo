@@ -49,7 +49,7 @@ import {
  * Resolves the appropriate background color based on the currently active variants
  * and exposes ready-to-use CSS variables.
  * 
- * @param options - An optional configuration for customizing background behavior.
+ * @param options An optional configuration for customizing background behavior.
  * @returns A CSS API for enabling theme-aware background styling in components.
  */
 export const usingBackgroundFeature = (options?: CssBackgroundFeatureOptions): CssBackgroundFeature => {

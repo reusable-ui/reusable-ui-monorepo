@@ -40,9 +40,9 @@ import {
 /**
  * Handler for committing staged sort data into the committed state (the authoritative state that renders the sortable items).
  * 
- * @template TSortData - The type of the data driving the sortable elements (commonly an array of item metadata).
+ * @template TSortData The type of the data driving the sortable elements (commonly an array of item metadata).
  * 
- * @param stagedSortData - The staged sort data to commit into the committed state.
+ * @param stagedSortData The staged sort data to commit into the committed state.
  */
 export type SortCommitHandler<TSortData = Array<unknown>> = (stagedSortData: TSortData) => void
 
@@ -57,8 +57,8 @@ export type SortCommitHandler<TSortData = Array<unknown>> = (stagedSortData: TSo
  * Sorting animations run once when `stagedSortData` changes,
  * allowing the component to snapshot positions, measure item movement, and commit the new order.
  * 
- * @template TItemElement - The type of the sortable DOM element.
- * @template TSortData - The type of the data driving the sortable elements (commonly an array of item metadata).
+ * @template TItemElement The type of the sortable DOM element.
+ * @template TSortData The type of the data driving the sortable elements (commonly an array of item metadata).
  */
 export interface SortStateProps<TItemElement extends Element = HTMLElement, TSortData = Array<unknown>>
     extends
@@ -250,7 +250,7 @@ export interface SortOffset {
 /**
  * An API for accessing the current sorting activity status, associated CSS class name, and animation event handlers.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  */
 export interface SortState<TElement extends Element = HTMLElement>
     extends

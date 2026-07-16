@@ -72,10 +72,10 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * - `'auto'` is treated as a declarative diagnostic mode.
  * - Ideal for components that **consume** the resolved `pressed` state.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  * 
- * @param props - The component props that may include a controlled `pressed` value and derived `computedPress` value.
- * @param options - An optional configuration for customizing press/release behavior.
+ * @param props The component props that may include a controlled `pressed` value and derived `computedPress` value.
+ * @param options An optional configuration for customizing press/release behavior.
  * @returns The resolved press/release state and event handlers for pointer and keyboard events.
  */
 export const useResolvedPressed = <TElement extends Element = HTMLElement>(props: Pick<PressStateProps, 'pressed' | 'computedPress'>, options?: Pick<PressStateOptions, 'defaultPressed' | 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'>) : Pick<PressState<TElement>, 'pressed' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'> => {
@@ -167,10 +167,10 @@ const pressStateDefinition : PressStateDefinition = {
  * - Supports controlled press state, when `pressed` is set to `true` or `false`.
  * - Supports diagnostic mode, when `pressed` is set to `'auto'`, which derives the effective press from `computedPress`.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  * 
- * @param props - The component props that may include a controlled `pressed` value, derived `computedPress` value, and `onPressUpdate` callback.
- * @param options - An optional configuration for customizing press/release behavior and animation lifecycle.
+ * @param props The component props that may include a controlled `pressed` value, derived `computedPress` value, and `onPressUpdate` callback.
+ * @param options An optional configuration for customizing press/release behavior and animation lifecycle.
  * @returns The resolved press/release state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @example

@@ -26,7 +26,7 @@ import {
  * 
  * Commonly used for conditional activation gates.
  * 
- * @param value - The numeric value to limit.
+ * @param value The numeric value to limit.
  * @returns A CSS numeric formula.
  */
 export const ensureBetweenZeroAndOne = (value: CssNumeric): CssNumericFormula => `clamp(0, ${value}, 1)`;
@@ -36,7 +36,7 @@ export const ensureBetweenZeroAndOne = (value: CssNumeric): CssNumericFormula =>
  * 
  * Useful for formulas where negative results should be floored at `0`.
  * 
- * @param value - The numeric value to limit.
+ * @param value The numeric value to limit.
  * @returns A CSS numeric formula.
  */
 export const ensureNonNegative       = (value: CssNumeric): CssNumericFormula => `max(0, ${value})`;
@@ -46,7 +46,7 @@ export const ensureNonNegative       = (value: CssNumeric): CssNumericFormula =>
  * 
  * Useful for formulas where negative results should be floored at `0px`.
  * 
- * @param value - The length value to limit.
+ * @param value The length value to limit.
  * @returns A CSS length formula.
  */
 export const ensureNonNegativeLength = (value: CssLength): CssLengthFormula   => `max(0px, ${value})`;
@@ -62,7 +62,7 @@ export const ensureNonNegativeLength = (value: CssLength): CssLengthFormula   =>
  * value using `max(value, -value)`. Ensures the result is always
  * non-negative, regardless of the sign of the input.
  * 
- * @param value - The numeric value to normalize.
+ * @param value The numeric value to normalize.
  * @returns A CSS numeric formula representing the absolute value.
  */
 export function absoluteValue(value: CssNumeric): CssNumericFormula;
@@ -73,7 +73,7 @@ export function absoluteValue(value: CssNumeric): CssNumericFormula;
  * value using `max(value, -value)`. Ensures the result is always
  * non-negative, regardless of the sign of the input.
  * 
- * @param value - The angle value to normalize.
+ * @param value The angle value to normalize.
  * @returns A CSS angle formula representing the absolute value.
  */
 export function absoluteValue(value: CssAngle  ): CssAngleFormula;
@@ -84,7 +84,7 @@ export function absoluteValue(value: CssAngle  ): CssAngleFormula;
  * value using `max(value, -value)`. Ensures the result is always
  * non-negative, regardless of the sign of the input.
  * 
- * @param value - The length value to normalize.
+ * @param value The length value to normalize.
  * @returns A CSS length formula representing the absolute value.
  */
 export function absoluteValue(value: CssLength ): CssLengthFormula;
@@ -95,7 +95,7 @@ export function absoluteValue(value: CssLength ): CssLengthFormula;
  * value using `max(value, -value)`. Ensures the result is always
  * non-negative, regardless of the sign of the input.
  * 
- * @param value - The numeric/angle/length value to normalize.
+ * @param value The numeric/angle/length value to normalize.
  * @returns A CSS numeric/angle/length formula representing the absolute value.
  */
 export function absoluteValue(value: CssNumeric | CssAngle | CssLength): CssNumericFormula | CssAngleFormula | CssLengthFormula;
@@ -112,8 +112,8 @@ export function absoluteValue(value: CssNumeric | CssAngle | CssLength): CssNume
  * 
  * The small +0.0001 avoids edge cases at exactly 0.
  * 
- * @param condition - The numeric condition to test.
- * @param appliedFactor - The interpolation factor value or expression to apply when the condition is met.
+ * @param condition The numeric condition to test.
+ * @param appliedFactor The interpolation factor value or expression to apply when the condition is met.
  * @returns A CSS numeric formula representing the applied factor or `0`.
  */
 export const    ifPositive      = (condition: CssNumeric,           appliedFactor: CssNumeric): CssNumericFormula => `(${ensureBetweenZeroAndOne(`(((${condition}) + 0.0001) * 99999)`)} * (${appliedFactor}))`;
@@ -125,8 +125,8 @@ export const    ifPositive      = (condition: CssNumeric,           appliedFacto
  * 
  * Multiplication by -99999 flips the sign so negatives map into the positive clamp range.
  * 
- * @param condition - The numeric condition to test.
- * @param appliedFactor - The interpolation factor value or expression to apply when the condition is met.
+ * @param condition The numeric condition to test.
+ * @param appliedFactor The interpolation factor value or expression to apply when the condition is met.
  * @returns A CSS numeric formula representing the applied factor or `0`.
  */
 export const    ifNegative      = (condition: CssNumeric,           appliedFactor: CssNumeric): CssNumericFormula => `(${ensureBetweenZeroAndOne(`((${condition}) * -99999)`)} * (${appliedFactor}))`;
@@ -139,8 +139,8 @@ export const    ifNegative      = (condition: CssNumeric,           appliedFacto
  * Uses `sign()` to normalize the condition into -1, 0, or 1,
  * then clamps into [0,1] for a clean gate multiplier.
  * 
- * @param condition - The angle condition to test.
- * @param appliedFactor - The interpolation factor value or expression to apply when the condition is met.
+ * @param condition The angle condition to test.
+ * @param appliedFactor The interpolation factor value or expression to apply when the condition is met.
  * @returns A CSS numeric formula representing the applied factor or `0`.
  */
 export function ifPositiveWithUnit(condition: CssAngle ,            appliedFactor: CssNumeric): CssAngleFormula;
@@ -152,8 +152,8 @@ export function ifPositiveWithUnit(condition: CssAngle ,            appliedFacto
  * Uses `sign()` to normalize the condition into -1, 0, or 1,
  * then clamps into [0,1] for a clean gate multiplier.
  * 
- * @param condition - The length condition to test.
- * @param appliedFactor - The interpolation factor value or expression to apply when the condition is met.
+ * @param condition The length condition to test.
+ * @param appliedFactor The interpolation factor value or expression to apply when the condition is met.
  * @returns A CSS numeric formula representing the applied factor or `0`.
  */
 export function ifPositiveWithUnit(condition: CssLength,            appliedFactor: CssNumeric): CssLengthFormula;
@@ -165,8 +165,8 @@ export function ifPositiveWithUnit(condition: CssLength,            appliedFacto
  * Uses `sign()` to normalize the condition into -1, 0, or 1,
  * then clamps into [0,1] for a clean gate multiplier.
  * 
- * @param condition - The angle/length condition to test.
- * @param appliedFactor - The interpolation factor value or expression to apply when the condition is met.
+ * @param condition The angle/length condition to test.
+ * @param appliedFactor The interpolation factor value or expression to apply when the condition is met.
  * @returns A CSS numeric formula representing the applied factor or `0`.
  */
 export function ifPositiveWithUnit(condition: CssAngle | CssLength, appliedFactor: CssNumeric): CssAngleFormula | CssLengthFormula;
@@ -180,8 +180,8 @@ export function ifPositiveWithUnit(condition: CssAngle | CssLength, appliedFacto
  * Uses `-sign()` to flip the sign,
  * then clamps into [0,1] for a clean gate multiplier.
  * 
- * @param condition - The angle condition to test.
- * @param appliedFactor - The interpolation factor value or expression to apply when the condition is met.
+ * @param condition The angle condition to test.
+ * @param appliedFactor The interpolation factor value or expression to apply when the condition is met.
  * @returns A CSS numeric formula representing the applied factor or `0`.
  */
 export function ifNegativeWithUnit(condition: CssAngle ,            appliedFactor: CssNumeric): CssAngleFormula;
@@ -193,8 +193,8 @@ export function ifNegativeWithUnit(condition: CssAngle ,            appliedFacto
  * Uses `-sign()` to flip the sign,
  * then clamps into [0,1] for a clean gate multiplier.
  * 
- * @param condition - The length condition to test.
- * @param appliedFactor - The interpolation factor value or expression to apply when the condition is met.
+ * @param condition The length condition to test.
+ * @param appliedFactor The interpolation factor value or expression to apply when the condition is met.
  * @returns A CSS numeric formula representing the applied factor or `0`.
  */
 export function ifNegativeWithUnit(condition: CssLength,            appliedFactor: CssNumeric): CssLengthFormula;
@@ -206,8 +206,8 @@ export function ifNegativeWithUnit(condition: CssLength,            appliedFacto
  * Uses `-sign()` to flip the sign,
  * then clamps into [0,1] for a clean gate multiplier.
  * 
- * @param condition - The angle/length condition to test.
- * @param appliedFactor - The interpolation factor value or expression to apply when the condition is met.
+ * @param condition The angle/length condition to test.
+ * @param appliedFactor The interpolation factor value or expression to apply when the condition is met.
  * @returns A CSS numeric formula representing the applied factor or `0`.
  */
 export function ifNegativeWithUnit(condition: CssAngle | CssLength, appliedFactor: CssNumeric): CssAngleFormula | CssLengthFormula;
@@ -223,8 +223,8 @@ export function ifNegativeWithUnit(condition: CssAngle | CssLength, appliedFacto
  * - mode < -1 → below 0 (bump)
  * - mode > +1 → above 1 (bump)
  * 
- * @param mode - The mode factor (-1 = dark, +1 = light).
- * @param appliedTarget - The numeric value or expression to apply when the gate is active.
+ * @param mode The mode factor (-1 = dark, +1 = light).
+ * @param appliedTarget The numeric value or expression to apply when the gate is active.
  * @returns A CSS numeric formula representing the applied value or `0`.
  */
 export function ifLightMode(mode: CssNumeric, appliedTarget: CssNumeric): CssNumericFormula;
@@ -238,8 +238,8 @@ export function ifLightMode(mode: CssNumeric, appliedTarget: CssNumeric): CssNum
  * - mode < -1 → below 0 (bump)
  * - mode > +1 → above 1 (bump)
  * 
- * @param mode - The mode factor (-1 = dark, +1 = light).
- * @param appliedTarget - The angle value or expression to apply when the gate is active.
+ * @param mode The mode factor (-1 = dark, +1 = light).
+ * @param appliedTarget The angle value or expression to apply when the gate is active.
  * @returns A CSS angle formula representing the applied value or `0deg`.
  */
 export function ifLightMode(mode: CssNumeric, appliedTarget: CssAngle): CssAngleFormula;
@@ -253,8 +253,8 @@ export function ifLightMode(mode: CssNumeric, appliedTarget: CssAngle): CssAngle
  * - mode < -1 → below 0 (bump)
  * - mode > +1 → above 1 (bump)
  * 
- * @param mode - The mode factor (-1 = dark, +1 = light).
- * @param appliedTarget - The length value or expression to apply when the gate is active.
+ * @param mode The mode factor (-1 = dark, +1 = light).
+ * @param appliedTarget The length value or expression to apply when the gate is active.
  * @returns A CSS length formula representing the applied value or `0px`.
  */
 export function ifLightMode(mode: CssNumeric, appliedTarget: CssLength): CssLengthFormula;
@@ -268,8 +268,8 @@ export function ifLightMode(mode: CssNumeric, appliedTarget: CssLength): CssLeng
  * - mode < -1 → below 0 (bump)
  * - mode > +1 → above 1 (bump)
  * 
- * @param mode - The mode factor (-1 = dark, +1 = light).
- * @param appliedTarget - The numeric/angle/length value or expression to apply when the gate is active.
+ * @param mode The mode factor (-1 = dark, +1 = light).
+ * @param appliedTarget The numeric/angle/length value or expression to apply when the gate is active.
  * @returns A CSS numeric/angle/length formula representing the applied value or `0` (for numeric) or `0deg` (for angle) or `0px` (for length).
  */
 export function ifLightMode(mode: CssNumeric, appliedTarget: CssNumeric | CssAngle | CssLength): CssNumericFormula | CssAngleFormula | CssLengthFormula;
@@ -285,8 +285,8 @@ export function ifLightMode(mode: CssNumeric, appliedTarget: CssNumeric | CssAng
  * - mode < -1 → above 1 (bump)
  * - mode > +1 → below 0 (bump)
  * 
- * @param mode - The mode factor (-1 = dark, +1 = light).
- * @param appliedTarget - The numeric value or expression to apply when the gate is active.
+ * @param mode The mode factor (-1 = dark, +1 = light).
+ * @param appliedTarget The numeric value or expression to apply when the gate is active.
  * @returns A CSS numeric formula representing the applied value or `0`.
  */
 export function ifDarkMode (mode: CssNumeric, appliedTarget: CssNumeric): CssNumericFormula;
@@ -300,8 +300,8 @@ export function ifDarkMode (mode: CssNumeric, appliedTarget: CssNumeric): CssNum
  * - mode < -1 → above 1 (bump)
  * - mode > +1 → below 0 (bump)
  * 
- * @param mode - The mode factor (-1 = dark, +1 = light).
- * @param appliedTarget - The angle value or expression to apply when the gate is active.
+ * @param mode The mode factor (-1 = dark, +1 = light).
+ * @param appliedTarget The angle value or expression to apply when the gate is active.
  * @returns A CSS angle formula representing the applied value or `0deg`.
  */
 export function ifDarkMode (mode: CssNumeric, appliedTarget: CssAngle): CssAngleFormula;
@@ -315,8 +315,8 @@ export function ifDarkMode (mode: CssNumeric, appliedTarget: CssAngle): CssAngle
  * - mode < -1 → above 1 (bump)
  * - mode > +1 → below 0 (bump)
  * 
- * @param mode - The mode factor (-1 = dark, +1 = light).
- * @param appliedTarget - The length value or expression to apply when the gate is active.
+ * @param mode The mode factor (-1 = dark, +1 = light).
+ * @param appliedTarget The length value or expression to apply when the gate is active.
  * @returns A CSS length formula representing the applied value or `0px`.
  */
 export function ifDarkMode (mode: CssNumeric, appliedTarget: CssLength): CssLengthFormula;
@@ -330,8 +330,8 @@ export function ifDarkMode (mode: CssNumeric, appliedTarget: CssLength): CssLeng
  * - mode < -1 → above 1 (bump)
  * - mode > +1 → below 0 (bump)
  * 
- * @param mode - The mode factor (-1 = dark, +1 = light).
- * @param appliedTarget - The numeric/angle/length value or expression to apply when the gate is active.
+ * @param mode The mode factor (-1 = dark, +1 = light).
+ * @param appliedTarget The numeric/angle/length value or expression to apply when the gate is active.
  * @returns A CSS numeric/angle/length formula representing the applied value or `0` (for numeric) or `0deg` (for angle) or `0px` (for length).
  */
 export function ifDarkMode (mode: CssNumeric, appliedTarget: CssNumeric | CssAngle | CssLength): CssNumericFormula | CssAngleFormula | CssLengthFormula;
@@ -345,7 +345,7 @@ export function ifDarkMode (mode: CssNumeric, appliedTarget: CssNumeric | CssAng
  * 
  * All cases should have the same numeric type.
  * 
- * @param cases - Array of numeric conditional branch expressions.
+ * @param cases Array of numeric conditional branch expressions.
  * @returns A CSS numeric formula combining all cases.
  */
 export function composeCases(...cases: CssNumeric[]): CssNumericFormula;
@@ -357,7 +357,7 @@ export function composeCases(...cases: CssNumeric[]): CssNumericFormula;
  * 
  * All cases should have the same angle type.
  * 
- * @param cases - Array of angle conditional branch expressions.
+ * @param cases Array of angle conditional branch expressions.
  * @returns A CSS angle formula combining all cases.
  */
 export function composeCases(...cases: CssAngle[]  ): CssAngleFormula;
@@ -369,7 +369,7 @@ export function composeCases(...cases: CssAngle[]  ): CssAngleFormula;
  * 
  * All cases should have the same length type.
  * 
- * @param cases - Array of length conditional branch expressions.
+ * @param cases Array of length conditional branch expressions.
  * @returns A CSS length formula combining all cases.
  */
 export function composeCases(...cases: CssLength[] ): CssLengthFormula;
@@ -390,7 +390,7 @@ export function composeCases(...cases: (CssNumeric | CssAngle | CssLength)[]): C
  * - factor = 0.5 → reversedFactor = 0.5 (midway)
  * - factor = 1   → reversedFactor = 0   (neutral)
  * 
- * @param appliedFactor - The interpolation factor value or expression to reverse.
+ * @param appliedFactor The interpolation factor value or expression to reverse.
  * @returns A CSS numeric formula representing the reversed factor.
  */
 export const reverseFactor                   = (factor: CssNumeric): CssNumericFormula => `(1 - (${factor}))`;
@@ -407,8 +407,8 @@ export const reverseFactor                   = (factor: CssNumeric): CssNumericF
  * Use for CSS functions where `0` is the neutral baseline
  * (e.g. `blur()`, `drop-shadow()`).
  * 
- * @param factor - The interpolation factor (0 → baseline 0, 1 → target ratio value).
- * @param targetRatio - The target ratio value.
+ * @param factor The interpolation factor (0 → baseline 0, 1 → target ratio value).
+ * @param targetRatio The target ratio value.
  * @returns A CSS numeric formula interpolating between `0` and target ratio value.
  */
 export function interpolateFromNeutralZero     (factor: CssNumeric, targetRatio: CssNumeric): CssNumericFormula;
@@ -424,8 +424,8 @@ export function interpolateFromNeutralZero     (factor: CssNumeric, targetRatio:
  * Use for CSS functions where `0` is the neutral baseline
  * (e.g. `blur()`, `drop-shadow()`).
  * 
- * @param factor - The interpolation factor (0 → baseline 0, 1 → target angle value).
- * @param targetAngle - The target angle value.
+ * @param factor The interpolation factor (0 → baseline 0, 1 → target angle value).
+ * @param targetAngle The target angle value.
  * @returns A CSS numeric formula interpolating between `0` and target angle value.
  */
 export function interpolateFromNeutralZero     (factor: CssNumeric, targetAngle: CssAngle): CssAngleFormula;
@@ -441,8 +441,8 @@ export function interpolateFromNeutralZero     (factor: CssNumeric, targetAngle:
  * Use for CSS functions where `0` is the neutral baseline
  * (e.g. `blur()`, `drop-shadow()`).
  * 
- * @param factor - The interpolation factor (0 → baseline 0, 1 → target length value).
- * @param targetLength - The target length value.
+ * @param factor The interpolation factor (0 → baseline 0, 1 → target length value).
+ * @param targetLength The target length value.
  * @returns A CSS numeric formula interpolating between `0` and target length value.
  */
 export function interpolateFromNeutralZero     (factor: CssNumeric, targetLength: CssLength): CssLengthFormula;
@@ -458,8 +458,8 @@ export function interpolateFromNeutralZero     (factor: CssNumeric, targetLength
  * Use for CSS functions where `0` is the neutral baseline
  * (e.g. `blur()`, `drop-shadow()`).
  * 
- * @param factor - The interpolation factor (0 → baseline 0, 1 → target ratio/angle/length value).
- * @param targetValue - The target ratio/angle/length value.
+ * @param factor The interpolation factor (0 → baseline 0, 1 → target ratio/angle/length value).
+ * @param targetValue The target ratio/angle/length value.
  * @returns A CSS numeric formula interpolating between `0` and target ratio/angle/length value.
  */
 export function interpolateFromNeutralZero     (factor: CssNumeric, targetValue: CssNumeric | CssAngle | CssLength): CssNumericFormula | CssAngleFormula | CssLengthFormula;
@@ -477,8 +477,8 @@ export function interpolateFromNeutralZero     (factor: CssNumeric, targetValue:
  * Use for CSS functions where `1` is the neutral baseline
  * (e.g. `opacity()`, `brightness()`, `contrast()`, `saturate()`).
  * 
- * @param factor - The interpolation factor (0 → baseline 1, 1 → target value).
- * @param targetRatio - The target ratio value.
+ * @param factor The interpolation factor (0 → baseline 1, 1 → target value).
+ * @param targetRatio The target ratio value.
  * @returns A CSS numeric formula interpolating between `1` and target value.
  */
 export const interpolateFromNeutralOne       = (factor: CssNumeric, targetRatio: CssNumeric): CssNumericFormula => `(1 - (1 - (${targetRatio})) * ${factor})`;
@@ -495,9 +495,9 @@ export const interpolateFromNeutralOne       = (factor: CssNumeric, targetRatio:
  * 
  * Use for CSS color transitions where the origin color fades into the target color.
  * 
- * @param factor - The interpolation factor (0 → origin color, 1 → target color).
- * @param originColor - The starting color (e.g. `transparent`).
- * @param targetColor - The destination color.
+ * @param factor The interpolation factor (0 → origin color, 1 → target color).
+ * @param originColor The starting color (e.g. `transparent`).
+ * @param targetColor The destination color.
  * @returns A CSS color formula blending between two colors.
  */
 export const interpolateToTargetColor        = (factor: CssNumeric, originColor: CssColor, targetColor: CssColor): CssColorFormula => `color-mix(in oklch, ${originColor} calc((1 - ${factor}) * 100%), ${targetColor} calc(${factor} * 100%))`;
@@ -514,8 +514,8 @@ export const interpolateToTargetColor        = (factor: CssNumeric, originColor:
  * 
  * Use for CSS color transitions where a transparent color fades into the target color.
  * 
- * @param factor - The interpolation factor (0 → transparent color, 1 → target color).
- * @param targetColor - The destination color.
+ * @param factor The interpolation factor (0 → transparent color, 1 → target color).
+ * @param targetColor The destination color.
  * @returns A CSS color formula blending between two colors.
  */
 export const interpolateFromTransparentColor = (factor: CssNumeric, targetColor: CssColor): CssColorFormula => interpolateToTargetColor(factor, 'transparent', targetColor);
@@ -529,7 +529,7 @@ export const interpolateFromTransparentColor = (factor: CssNumeric, targetColor:
  * 
  * Produces a CSS `opacity()` filter function.
  * 
- * @param ratio - The opacity ratio (0 = fully transparent, 1 = fully opaque).
+ * @param ratio The opacity ratio (0 = fully transparent, 1 = fully opaque).
  * @returns A CSS ratio-based-input filter formula.
  */
 export const opacity    = (ratio: CssNumeric): CssRatioFilterFormula  => `opacity(calc(${ratio}))`    as CssRatioFilterFormula;
@@ -539,7 +539,7 @@ export const opacity    = (ratio: CssNumeric): CssRatioFilterFormula  => `opacit
  * 
  * Produces a CSS `invert()` filter function.
  * 
- * @param ratio - The inversion ratio (0 = no inversion, 1 = full inversion).
+ * @param ratio The inversion ratio (0 = no inversion, 1 = full inversion).
  * @returns A CSS ratio-based-input filter formula.
  */
 export const invert     = (ratio: CssNumeric): CssRatioFilterFormula  => `invert(calc(${ratio}))`     as CssRatioFilterFormula;
@@ -549,7 +549,7 @@ export const invert     = (ratio: CssNumeric): CssRatioFilterFormula  => `invert
  * 
  * Produces a CSS `sepia()` filter function.
  * 
- * @param ratio - The sepia ratio (0 = no sepia, 1 = full sepia).
+ * @param ratio The sepia ratio (0 = no sepia, 1 = full sepia).
  * @returns A CSS ratio-based-input filter formula.
  */
 export const sepia      = (ratio: CssNumeric): CssRatioFilterFormula  => `sepia(calc(${ratio}))`      as CssRatioFilterFormula;
@@ -559,7 +559,7 @@ export const sepia      = (ratio: CssNumeric): CssRatioFilterFormula  => `sepia(
  * 
  * Produces a CSS `brightness()` filter function.
  * 
- * @param ratio - The brightness ratio (1 = unchanged, <1 = darker, >1 = brighter).
+ * @param ratio The brightness ratio (1 = unchanged, <1 = darker, >1 = brighter).
  * @returns A CSS ratio-based-input filter formula.
  */
 export const brightness = (ratio: CssNumeric): CssRatioFilterFormula  => `brightness(calc(${ratio}))` as CssRatioFilterFormula;
@@ -569,7 +569,7 @@ export const brightness = (ratio: CssNumeric): CssRatioFilterFormula  => `bright
  * 
  * Produces a CSS `contrast()` filter function.
  * 
- * @param ratio - The contrast ratio (1 = unchanged, <1 = lower contrast, >1 = higher contrast).
+ * @param ratio The contrast ratio (1 = unchanged, <1 = lower contrast, >1 = higher contrast).
  * @returns A CSS ratio-based-input filter formula.
  */
 export const contrast   = (ratio: CssNumeric): CssRatioFilterFormula  => `contrast(calc(${ratio}))`   as CssRatioFilterFormula;
@@ -579,7 +579,7 @@ export const contrast   = (ratio: CssNumeric): CssRatioFilterFormula  => `contra
  * 
  * Produces a CSS `saturate()` filter function.
  * 
- * @param ratio - The saturation ratio (1 = unchanged, <1 = desaturated, >1 = more saturated).
+ * @param ratio The saturation ratio (1 = unchanged, <1 = desaturated, >1 = more saturated).
  * @returns A CSS ratio-based-input filter formula.
  */
 export const saturate   = (ratio: CssNumeric): CssRatioFilterFormula  => `saturate(calc(${ratio}))`   as CssRatioFilterFormula;
@@ -589,7 +589,7 @@ export const saturate   = (ratio: CssNumeric): CssRatioFilterFormula  => `satura
  * 
  * Produces a CSS `hue-rotate()` filter function.
  * 
- * @param angle - The hue rotation angle.
+ * @param angle The hue rotation angle.
  * @returns A CSS angle-based-input filter formula.
  */
 export const hueRotate  = (angle: CssAngle  ): CssAngleFilterFormula  => `hue-rotate(calc(${angle}))` as CssAngleFilterFormula;
@@ -599,7 +599,7 @@ export const hueRotate  = (angle: CssAngle  ): CssAngleFilterFormula  => `hue-ro
  * 
  * Produces a CSS `blur()` filter function.
  * 
- * @param length - The blur radius length.
+ * @param length The blur radius length.
  * @returns A CSS length-based-input filter formula.
  */
 export const blur       = (length: CssLength): CssLengthFilterFormula => `blur(calc(${length}))`      as CssLengthFilterFormula;
@@ -609,11 +609,11 @@ export const blur       = (length: CssLength): CssLengthFilterFormula => `blur(c
  * 
  * Produces a CSS `drop-shadow()` filter function.
  * 
- * @param params - Object containing shadow parameters.
- * @param params.offsetX - Horizontal offset length.
- * @param params.offsetY - Vertical offset length.
- * @param params.blur - Optional blur radius length.
- * @param params.color - Optional shadow color.
+ * @param params Object containing shadow parameters.
+ *   @param params.offsetX Horizontal offset length.
+ *   @param params.offsetY Vertical offset length.
+ *   @param params.blur Optional blur radius length.
+ *   @param params.color Optional shadow color.
  * @returns A CSS composite-based-input filter formula.
  */
 export const dropShadow = ({

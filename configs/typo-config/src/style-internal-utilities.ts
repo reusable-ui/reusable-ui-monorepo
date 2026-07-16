@@ -28,7 +28,7 @@ import {
  * :is(...selectors):not(:is(...exclusions))
  * ```
  * 
- * @param relatedFilters - Array of element filters defining:
+ * @param relatedFilters Array of element filters defining:
  *   - `selectors`: Target elements to be styled.
  *   - `exclusions`: Elements to be excluded from styling.
  * 

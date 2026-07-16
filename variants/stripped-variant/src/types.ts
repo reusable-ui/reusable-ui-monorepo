@@ -10,7 +10,7 @@
  * The type of `TStripped` can be `true` or a string, depending
  * on the component's needs.
  * 
- * @template TStripped - The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
+ * @template TStripped The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
  */
 export interface StrippedVariantProps<TStripped extends true | string = true> {
     /**
@@ -28,7 +28,7 @@ export interface StrippedVariantProps<TStripped extends true | string = true> {
  * 
  * Applied when the component does not explicitly provide the `stripped` prop.
  * 
- * @template TStripped - The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
+ * @template TStripped The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
  */
 export interface StrippedVariantOptions<TStripped extends true | string = true> {
     /**
@@ -44,7 +44,7 @@ export interface StrippedVariantOptions<TStripped extends true | string = true> 
 /**
  * Represents the final resolved stripped mode of the component, along with its associated CSS class name.
  * 
- * @template TStripped - The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
+ * @template TStripped The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
  */
 export interface StrippedVariant<TStripped extends true | string = true> {
     /**

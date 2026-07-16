@@ -72,10 +72,10 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * - `'auto'` is treated as a declarative diagnostic mode.
  * - Ideal for components that **consume** the resolved `hovered` state.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  * 
- * @param props - The component props that may include a controlled `hovered` value and derived `computedHover` value.
- * @param options - An optional configuration for customizing hover/unhover behavior.
+ * @param props The component props that may include a controlled `hovered` value and derived `computedHover` value.
+ * @param options An optional configuration for customizing hover/unhover behavior.
  * @returns The resolved hover/unhover state and event handlers for mouseenter/mouseleave events.
  */
 export const useResolvedHovered = <TElement extends Element = HTMLElement>(props: Pick<HoverStateProps, 'hovered' | 'computedHover'>, options?: Pick<HoverStateOptions, 'defaultHovered'>) : Pick<HoverState<TElement>, 'hovered' | 'ref' | 'handleMouseEnter' | 'handleMouseLeave'> => {
@@ -163,10 +163,10 @@ const hoverStateDefinition : HoverStateDefinition = {
  * - Supports controlled hover state, when `hovered` is set to `true` or `false`.
  * - Supports diagnostic mode, when `hovered` is set to `'auto'`, which derives the effective hover from `computedHover`.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  * 
- * @param props - The component props that may include a controlled `hovered` value, derived `computedHover` value, and `onHoverUpdate` callback.
- * @param options - An optional configuration for customizing hover/unhover behavior and animation lifecycle.
+ * @param props The component props that may include a controlled `hovered` value, derived `computedHover` value, and `onHoverUpdate` callback.
+ * @param options An optional configuration for customizing hover/unhover behavior and animation lifecycle.
  * @returns The resolved hover/unhover state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @example

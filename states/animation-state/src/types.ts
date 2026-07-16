@@ -12,7 +12,7 @@ import {
  * 
  * Defines the initial intent state, animation pattern recognition, and event listening strategy.
  * 
- * @template TState - The type representing the animated state value.
+ * @template TState The type representing the animated state value.
  */
 export interface AnimationStateOptions<TState extends {} | null> {
     /**
@@ -51,7 +51,7 @@ export interface AnimationStateOptions<TState extends {} | null> {
  * Can be a direct value, or a function that derives the next intent
  * based on the current intent and any ongoing animation.
  * 
- * @template TState - The type representing the animated state value.
+ * @template TState The type representing the animated state value.
  */
 export type SetAnimationIntentAction<TState extends {} | null> =
     | TState
@@ -63,7 +63,7 @@ export type SetAnimationIntentAction<TState extends {} | null> =
  * These handlers should be attached to the element to ensure the animation state
  * is updated correctly in response to animation events.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  */
 export interface AnimationStateHandlers<TElement extends Element = HTMLElement> {
     /**
@@ -88,8 +88,8 @@ export interface AnimationStateHandlers<TElement extends Element = HTMLElement> 
  * Supports both tuple-style destructuring and named properties
  * for ergonomic use in hooks and JSX event bindings.
  * 
- * @template TState - The type representing the animated state value.
- * @template TElement - The type of the target DOM element.
+ * @template TState The type representing the animated state value.
+ * @template TElement The type of the target DOM element.
  */
 export interface AnimationStateApi<TState extends {} | null, TElement extends Element = HTMLElement>
     extends

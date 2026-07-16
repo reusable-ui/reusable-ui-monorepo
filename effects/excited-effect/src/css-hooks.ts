@@ -51,7 +51,7 @@ import {
  * 
  * Runs continuously while the component is in the excited state by animating filter effects.
  * 
- * @param options - An optional configuration for customizing excitement effects.
+ * @param options An optional configuration for customizing excitement effects.
  * @returns A CSS API containing effect rules and CSS variables for grabbing user attention when excited.
  */
 export const usingExcitedEffect = (options?: CssExcitedEffectOptions): CssExcitedEffect => {

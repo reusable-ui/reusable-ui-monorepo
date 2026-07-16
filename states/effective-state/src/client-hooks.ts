@@ -31,11 +31,11 @@ import {
  *   4. `stateContext` (when the cascading is enabled)  
  *   5. `inactiveState` (fallback)  
  * 
- * @template TState - The type of the resolved state value.
+ * @template TState The type of the resolved state value.
  * 
- * @param props - The props supplied by the component consumer.
- * @param options - The component-level defaults and cascading behavior.
- * @param definition - The resolver-level defaults and cascading contracts.
+ * @param props The props supplied by the component consumer.
+ * @param options The component-level defaults and cascading behavior.
+ * @param definition The resolver-level defaults and cascading contracts.
  * @returns The resolved state value, possibly cascaded from context.
  * 
  * @example

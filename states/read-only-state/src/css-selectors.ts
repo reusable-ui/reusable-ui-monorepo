@@ -58,7 +58,7 @@ export const isFreezingOrReadOnlySelector : CssSelectorCollection = ':is(.is-fre
  * 
  * Excludes elements currently in the thawing transition.
  * 
- * @param styles - The styles applied to elements in the fully editable state.
+ * @param styles The styles applied to elements in the fully editable state.
  * @returns A `CssRule` that applies the given `styles` for elements in the fully editable state.
  * 
  * @example
@@ -78,7 +78,7 @@ export const ifEditable               = (styles: CssStyleCollection): CssRule =>
  * 
  * Excludes elements currently in the freezing transition.
  * 
- * @param styles - The styles applied to elements in the fully read-only state.
+ * @param styles The styles applied to elements in the fully read-only state.
  * @returns A `CssRule` that applies the given `styles` for elements in the fully read-only state.
  * 
  * @example
@@ -98,7 +98,7 @@ export const ifReadOnly               = (styles: CssStyleCollection): CssRule =>
  * 
  * Excludes elements that have already reached the editable state.
  * 
- * @param styles - The styles applied to elements currently in the thawing transition.
+ * @param styles The styles applied to elements currently in the thawing transition.
  * @returns A `CssRule` that applies the given `styles` for elements currently in the thawing transition.
  * 
  * @example
@@ -118,7 +118,7 @@ export const ifThawing                = (styles: CssStyleCollection): CssRule =>
  * 
  * Excludes elements that have already reached the read-only state.
  * 
- * @param styles - The styles applied to elements currently in the freezing transition.
+ * @param styles The styles applied to elements currently in the freezing transition.
  * @returns A `CssRule` that applies the given `styles` for elements currently in the freezing transition.
  * 
  * @example
@@ -136,7 +136,7 @@ export const ifFreezing               = (styles: CssStyleCollection): CssRule =>
 /**
  * Applies the given `styles` to elements that are either thawing or fully editable.
  * 
- * @param styles - The styles applied to elements that are either thawing or fully editable.
+ * @param styles The styles applied to elements that are either thawing or fully editable.
  * @returns A `CssRule` that applies the given `styles` for elements that are either thawing or fully editable.
  * 
  * @example
@@ -154,7 +154,7 @@ export const ifThawingOrEditable      = (styles: CssStyleCollection): CssRule =>
 /**
  * Applies the given `styles` to elements that are either freezing or fully read-only.
  * 
- * @param styles - The styles applied to elements that are either freezing or fully read-only.
+ * @param styles The styles applied to elements that are either freezing or fully read-only.
  * @returns A `CssRule` that applies the given `styles` for elements that are either freezing or fully read-only.
  * 
  * @example

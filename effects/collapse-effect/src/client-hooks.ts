@@ -35,7 +35,7 @@ import {
  * - This hook bridges that gap by measuring in JS (via `ResizeObserver`) and
  *   exposing the values as CSS variables.
  * 
- * @template TElement - The type of the collapsible DOM element.
+ * @template TElement The type of the collapsible DOM element.
  * @returns The API containing the element ref and inline style.
  * 
  * @example

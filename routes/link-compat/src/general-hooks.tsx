@@ -57,7 +57,7 @@ import {
  * This is useful when flattening `<Link>` components in compatibility layers
  * (e.g. from Next.js or React Router) to remove nested anchor structures.
  * 
- * @param linkElement - The JSX `<Link>` element to transform.
+ * @param linkElement The JSX `<Link>` element to transform.
  * @returns A reconstructed JSX node with anchorless behavior, or the original JSX if transformation is not applicable.
  * 
  * @example

@@ -50,7 +50,7 @@ export interface GlobalKeyReleaseController {
  * - Defers invocation to a macrotask to allow local handlers to run first
  * - Cleaned up on unmount or manually via `abort()`
  * 
- * @param onRelease - Callback to invoke when the global fallback detects a release
+ * @param onRelease Callback to invoke when the global fallback detects a release
  * @returns A controller with `register()` and `abort()` methods
  */
 export const useGlobalKeyRelease = (onRelease: (event: KeyboardEvent) => void): GlobalKeyReleaseController => {

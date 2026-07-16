@@ -37,7 +37,7 @@ import {
  * Resolves the appropriate padding values based on active stripped mode and framework-level overrides
  * and exposes ready-to-use CSS variables.
  * 
- * @param options - An optional configuration for customizing padding behavior.
+ * @param options An optional configuration for customizing padding behavior.
  * @returns A CSS API for enabling manageable paddings in components.
  */
 export const usingPaddingFeature = (options?: CssPaddingFeatureOptions): CssPaddingFeature => {

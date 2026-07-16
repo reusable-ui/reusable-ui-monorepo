@@ -38,7 +38,7 @@ import {
  * Resolves the appropriate foreground color based on the currently active variants
  * and exposes ready-to-use CSS variables.
  * 
- * @param options - An optional configuration for customizing foreground behavior.
+ * @param options An optional configuration for customizing foreground behavior.
  * @returns A CSS API for enabling theme-aware foreground styling in components.
  */
 export const usingForegroundFeature = (options?: CssForegroundFeatureOptions): CssForegroundFeature => {

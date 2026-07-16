@@ -41,7 +41,7 @@ import {
  * Smoothly transitions between focus and blur states by animating the ring width.
  * Uses the current theme color, ensuring harmony with the component's appearance.
  * 
- * @param options - An optional configuration for customizing focus effects.
+ * @param options An optional configuration for customizing focus effects.
  * @returns A CSS API containing effect rules and CSS variables for the focus ring indicator.
  */
 export const usingFocusEffect = (options?: CssFocusEffectOptions): CssFocusEffect => {

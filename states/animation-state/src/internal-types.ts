@@ -9,7 +9,7 @@ import {
  * Represents the animation-aware state model,
  * combining the latest user intent with any ongoing animation.
  * 
- * @template TState - The type representing the animated state value.
+ * @template TState The type representing the animated state value.
  */
 export interface AnimationState<TState extends {} | null> {
     /**
@@ -29,7 +29,7 @@ export interface AnimationState<TState extends {} | null> {
 /**
  * Defines the actions used to update the animation state reducer.
  * 
- * @template TState - The type representing the animated state value.
+ * @template TState The type representing the animated state value.
  */
 export type AnimationAction<TState extends {} | null> =
     | AnimationChangeAction<TState>
@@ -40,7 +40,7 @@ export type AnimationAction<TState extends {} | null> =
  * 
  * A new animation will be triggered if the `newIntent` value differs from the current lifecycle state.
  * 
- * @template TState - The type representing the animated state value.
+ * @template TState The type representing the animated state value.
  */
 export interface AnimationChangeAction<TState extends {} | null> {
     type      : 'change'

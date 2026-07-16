@@ -89,8 +89,8 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * - `'auto'` is treated as a declarative diagnostic mode.
  * - Ideal for components that **consume** the resolved `dragged` state.
  * 
- * @param props - The component props that may include a controlled `dragged` value and derived `computedDrag` value.
- * @param options - An optional configuration for customizing drag/drop behavior.
+ * @param props The component props that may include a controlled `dragged` value and derived `computedDrag` value.
+ * @param options An optional configuration for customizing drag/drop behavior.
  * @returns The resolved drag/drop state.
  */
 export const useResolvedDragged = (props: Pick<DragStateProps, 'dragged' | 'computedDrag'>, options?: Pick<DragStateOptions, 'defaultDragged' | 'fallbackDragged'>) : boolean => {
@@ -151,10 +151,10 @@ const dragStateDefinition : DragStateDefinition = {
  * - Supports controlled drag state, when `dragged` is set to `true` or `false`.
  * - Supports diagnostic mode, when `dragged` is set to `'auto'`, which derives the effective drag from `computedDrag`.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  * 
- * @param props - The component props that may include a controlled `dragged` value, derived `computedDrag` value, and `onDragUpdate` callback.
- * @param options - An optional configuration for customizing drag/drop behavior and animation lifecycle.
+ * @param props The component props that may include a controlled `dragged` value, derived `computedDrag` value, and `onDragUpdate` callback.
+ * @param options An optional configuration for customizing drag/drop behavior and animation lifecycle.
  * @returns The resolved drag/drop state, current transition phase, associated CSS class name, and animation event handlers.
  * 
  * @example

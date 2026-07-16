@@ -72,7 +72,7 @@ export interface AnchorExtractionResult {
  * Attempts to extract the first native `<a>` element from a React node,
  * along with any surrounding structure (context providers and side elements).
  * 
- * @param rootNode - The composite React node to inspect.
+ * @param rootNode The composite React node to inspect.
  * @returns An `AnchorExtractionResult` containing the detected anchor, optional context provider, and additional side elements — or `null` if no anchor is found.
  */
 export const extractFirstAnchor = (rootNode: ReactNode): AnchorExtractionResult | null => {

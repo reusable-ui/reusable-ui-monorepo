@@ -12,7 +12,7 @@ import {
  * the required dimension variables, injected into the component's inline style.
  * This ensures the expand/collapse transitions work correctly.
  * 
- * @template TElement - The type of the collapsible DOM element.
+ * @template TElement The type of the collapsible DOM element.
  */
 export interface CollapsibleDimensions<TElement extends HTMLElement = HTMLElement> {
     /**

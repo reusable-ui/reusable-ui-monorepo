@@ -215,7 +215,7 @@ export type FocusClassname = `is-${FocusPhase}` | `is-${FocusPhase} input-like-f
 /**
  * An API for accessing the resolved focus/blur state, current transition phase, associated CSS class name, and animation event handlers.
  * 
- * @template TElement - The type of the target DOM element.
+ * @template TElement The type of the target DOM element.
  */
 export interface FocusState<TElement extends Element = HTMLElement>
     extends

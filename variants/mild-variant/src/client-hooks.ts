@@ -61,8 +61,8 @@ const invertableVariantDefinition : InvertableVariantDefinition<boolean, 'inheri
  * - `'invert'`  : flips the mild value from context (`true` ⇄ `false`).
  * - Otherwise   : uses the explicitly provided mild value as-is.
  * 
- * @param props - The component props that may include a `mild` value.
- * @param options - An optional configuration specifying a default mild value when no `mild` prop is explicitly provided.
+ * @param props The component props that may include a `mild` value.
+ * @param options An optional configuration specifying a default mild value when no `mild` prop is explicitly provided.
  * @returns The resolved mild value.
  */
 export const useResolvedMild = (props: MildVariantProps, options?: MildVariantOptions): boolean => {

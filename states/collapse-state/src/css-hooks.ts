@@ -31,7 +31,7 @@ import {
  * Generates CSS rules that conditionally apply the expand/collapse animations based on current expanded state,
  * and exposes expand/collapse-related CSS variables for conditional animation.
  * 
- * @param options - An optional configuration for customizing expand/collapse animations.
+ * @param options An optional configuration for customizing expand/collapse animations.
  * @returns A CSS API for conditionally apply the expand/collapse animations based on current expanded state.
  *
  * @example

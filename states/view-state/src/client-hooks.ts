@@ -83,10 +83,10 @@ import {
  * - Always triggers `onViewIndexChange`, if provided.
  * - Ideal for components that **dictate** the `viewIndex` value externally and need a stable dispatcher without lifecycle orchestration.
  * 
- * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
+ * @template TChangeEvent The type of the event triggering the change request (e.g. tab click, swipe gesture).
  * 
- * @param props - The component props that may include `onViewIndexChange` callback but must exclude `defaultViewIndex`.
- * @param options - Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
+ * @param props The component props that may include `onViewIndexChange` callback but must exclude `defaultViewIndex`.
+ * @param options Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for view index change requests.
  */
 export const useDispatchViewIndexChange = <TChangeEvent = unknown>(props: Pick<ViewStateProps<TChangeEvent>, 'onViewIndexChange'> & { defaultViewIndex?: never }, options?: ViewIndexChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<number, TChangeEvent> => {
@@ -124,11 +124,11 @@ const viewStateDefinition : ViewStateDefinition = {
  * 
  * - Supports controlled, uncontrolled, and hybrid view-switching behavior with optional change dispatching.
  * 
- * @template TElement - The type of the target DOM element.
- * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
+ * @template TElement The type of the target DOM element.
+ * @template TChangeEvent The type of the event triggering the change request (e.g. tab click, swipe gesture).
  * 
- * @param props - The component props that may include a controlled `viewIndex` value, optional `defaultViewIndex` value, and `onViewIndexChange` callback.
- * @param options - An optional configuration for customizing view-switching behavior and animation lifecycle.
+ * @param props The component props that may include a controlled `viewIndex` value, optional `defaultViewIndex` value, and `onViewIndexChange` callback.
+ * @param options An optional configuration for customizing view-switching behavior and animation lifecycle.
  * @returns The resolved view index, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
  * 
  * @example
@@ -358,10 +358,10 @@ export const useViewState = <TElement extends Element = HTMLElement, TChangeEven
  * - If `viewIndex` is omitted, the internal state is initialized via `defaultViewIndex`.
  * - Ideal for components that **manage** the resolved `viewIndex` value.
  * 
- * @template TChangeEvent - The type of the event triggering the change request (e.g. tab click, swipe gesture).
+ * @template TChangeEvent The type of the event triggering the change request (e.g. tab click, swipe gesture).
  * 
- * @param props - The component props that may include a controlled `viewIndex` value, optional `defaultViewIndex` value, and `onViewIndexChange` callback.
- * @param options - An optional configuration for customizing view-switching behavior.
+ * @param props The component props that may include a controlled `viewIndex` value, optional `defaultViewIndex` value, and `onViewIndexChange` callback.
+ * @param options An optional configuration for customizing view-switching behavior.
  * @returns A tuple of the resolved view index and a dispatcher for requesting changes.
  */
 export const useViewController = <TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent>, options?: Pick<ViewStateOptions, 'defaultViewIndex' | 'minViewIndex' | 'maxViewIndex' | 'viewIndexStep'>): [number, DispatchValueChange<number, TChangeEvent>] => {
