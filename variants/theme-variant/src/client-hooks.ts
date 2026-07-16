@@ -59,7 +59,7 @@ const inheritableVariantDefinition : InheritableVariantDefinition<string, 'inher
  * - `'inherit'` : uses the theme value from context.
  * - Otherwise   : uses the explicitly provided theme value as-is.
  * 
- * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
+ * @template TTheme Commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
  * @param props - The component props that may include a `theme` value.
  * @param options - An optional configuration specifying a default theme when no `theme` prop is explicitly provided.
@@ -100,11 +100,11 @@ export const useResolvedTheme = <TTheme extends string = BasicTheme>(props: Them
  * Resolves the theme value along with its associated CSS class name,
  * based on component props, optional default configuration, and parent context.
  * 
- * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
+ * @template TTheme Commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
- * @param {ThemeVariantProps<TTheme>} props - The component props that may include a `theme` value.
- * @param {ThemeVariantOptions<TTheme>} options - An optional configuration specifying a default theme when no `theme` prop is explicitly provided.
- * @returns {ThemeVariant<TTheme>} - The resolved theme value along with its associated CSS class name.
+ * @param props The component props that may include a `theme` value.
+ * @param options An optional configuration specifying a default theme when no `theme` prop is explicitly provided.
+ * @returns The resolved theme value along with its associated CSS class name.
  * 
  * @example
  * ```tsx

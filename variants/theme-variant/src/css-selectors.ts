@@ -21,10 +21,10 @@ import {
 /**
  * Generates a CSS selector targeting elements with a given `theme`.
  * 
- * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
+ * @template TTheme Commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
- * @param {TTheme} theme - The theme token to match, e.g. `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`, or custom value.
- * @returns {CssSelectorCollection} - A `CssSelectorCollection` string for use in conditional styling rules.
+ * @param theme The theme token to match, e.g. `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`, or custom value.
+ * @returns A `CssSelectorCollection` string for use in conditional styling rules.
  */
 export const isThemeSelector = <TTheme extends string = BasicTheme>(theme: TTheme): CssSelectorCollection => `.t-${theme}`;
 
@@ -33,9 +33,9 @@ export const isThemeSelector = <TTheme extends string = BasicTheme>(theme: TThem
 /**
  * Applies the given `styles` to elements matching the specified `theme`.
  * 
- * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
+ * @template TTheme Commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
- * @param {TTheme} theme - The theme token to match, e.g. `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`, or custom value.
+ * @param theme The theme token to match, e.g. `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`, or custom value.
  * @param styles The styles applied to elements matching the specified `theme`.
  * @returns A `CssRule` that applies the given `styles` for the specified `theme`.
  * 

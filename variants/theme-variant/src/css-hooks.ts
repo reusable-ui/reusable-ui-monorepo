@@ -97,7 +97,7 @@ export const usingThemeVariant = (): CssThemeVariant => {
  * Useful for conditional states such as **error**, **success**, **warning**, etc.  
  * The returned `CssRule` should be scoped within a conditional selector (e.g. `:invalid`, `.error`, `.success`) to avoid applying the override unconditionally.
  * 
- * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
+ * @template TTheme Commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
  * @param theme The theme name to override with, or `null` to reset the override.
  * @returns A CSS rule containing theme-specific CSS variables.

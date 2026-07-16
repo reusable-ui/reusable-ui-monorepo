@@ -28,7 +28,7 @@ import {
  * Requires a `theme` value to establish the context,
  * and renders `children` that consume the propagated value.
  * 
- * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
+ * @template TTheme Commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  */
 export interface ThemeVariantProviderProps<TTheme extends string = BasicTheme>
     extends
@@ -41,7 +41,7 @@ export interface ThemeVariantProviderProps<TTheme extends string = BasicTheme>
  * Provides a `theme` value to descendant components,
  * allowing them to inherit the value.
  * 
- * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
+ * @template TTheme Commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
  * @example
  * ```tsx

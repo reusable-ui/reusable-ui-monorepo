@@ -27,7 +27,7 @@ export type BasicTheme = keyof DefaultRootColors
  * 
  * Accepts an optional `theme`, defaulting to a default when not provided.
  * 
- * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
+ * @template TTheme Commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  */
 export interface ThemeVariantProps<TTheme extends string = BasicTheme> {
     /**
@@ -53,7 +53,7 @@ export interface ThemeVariantProps<TTheme extends string = BasicTheme> {
  * 
  * Applied when the component does not explicitly provide the `theme` prop.
  * 
- * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
+ * @template TTheme Commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  */
 export interface ThemeVariantOptions<TTheme extends string = BasicTheme> {
     /**
@@ -95,7 +95,7 @@ export interface ThemeVariantOptions<TTheme extends string = BasicTheme> {
 /**
  * Represents the final resolved theme of the component, along with its associated CSS class name.
  * 
- * @template {string} [TTheme=BasicTheme] — commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
+ * @template TTheme Commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  */
 export interface ThemeVariant<TTheme extends string = BasicTheme> {
     /**
