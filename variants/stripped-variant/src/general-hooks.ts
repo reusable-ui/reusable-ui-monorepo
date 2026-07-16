@@ -81,9 +81,9 @@ export const useResolvedStripped = <TStripped extends true | string = true>(prop
  * 
  * @template TStripped - The extended type of the `stripped` prop, allowing `true` or custom string-based modes.
  * 
- * @param {StrippedVariantProps} props - The component props that may include a `stripped` value.
- * @param {StrippedVariantOptions} options - An optional configuration specifying a default stripped value when no `stripped` prop is explicitly provided.
- * @returns {StrippedVariant} - The resolved stripped mode along with its associated CSS class name.
+ * @param props The component props that may include a `stripped` value.
+ * @param options An optional configuration specifying a default stripped value when no `stripped` prop is explicitly provided.
+ * @returns The resolved stripped mode along with its associated CSS class name.
  * 
  * @example
  * ```tsx
