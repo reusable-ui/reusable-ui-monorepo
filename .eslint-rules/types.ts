@@ -317,3 +317,113 @@ export const banRedundantJsdocTypes = createRule({
         };
     },
 });
+
+
+
+/**
+ * ESLint rule: ban-jsdoc-dash
+ * 
+ * Purpose:
+ * - Prevent the use of a dash (`-`, `–`, `‑`) between JSDoc tag name and description.
+ * - Normalize spacing so descriptions always follow directly after the tag name.
+ * 
+ * Detection Criteria:
+ * - Scans leading block comments (`/ * ... * /`) that are JSDoc (`/ ** ... * /`).
+ * - Parses JSDoc tags (`@param`, `@returns`, `@template`, etc.).
+ * - Flags any tag line containing a dash separator after the name.
+ * 
+ * Why:
+ * - Dash separators are stylistic only and inconsistent across codebases.
+ * - Removing them produces cleaner, more uniform JSDoc.
+ */
+export const banJsdocDash = createRule({
+    name : 'ban-jsdoc-dash',
+    meta : {
+        type     : 'suggestion',
+        fixable  : 'code',
+        docs     : {
+            description : 'Disallow dash between JSDoc tag name and description.',
+        },
+        schema   : [], // no options accepted
+        messages : {
+            dashSeparator : 'Remove dash between JSDoc tag name and description.',
+        },
+    },
+    create(context) {
+        const checkComments = (node: any) => {
+            // Get all leading comments for the node:
+            const comments = resolveJsdocOwner(context, node);
+            
+            
+            
+            // Iterate over each comment:
+            for (const comment of comments) {
+                // Only process block comments (`/* ... */`):
+                if (comment.type !== 'Block') continue;
+                
+                // Only process JSDoc-style comments (`/** ... */`):
+                if (!comment.value.startsWith('*')) continue;
+                
+                
+                
+                // Restore full comment text (parser strips /* and */):
+                const fullCommentValue = `/*${comment.value}*/`;
+                
+                
+                
+                // Parse JSDoc tags using comment-parser:
+                const jsdoc = parse(fullCommentValue);
+                if (!jsdoc.length) continue;
+                
+                
+                
+                // Iterate over each tag:
+                for (const tag of jsdoc[0].tags) {
+                    // Skip if not prefixed by dash:
+                    // - For @return and @returns, comment-parser puts the dash into `name`.
+                    // - For other tags, check the description directly.
+                    if (['return', 'returns'].includes(tag.tag)) {
+                        if (tag.name !== '-') continue;
+                    }
+                    else {
+                        if (!/^\s*[-‑–]\s*/.test(tag.description)) continue;
+                    } // if
+                    
+                    
+                    
+                    // Flag any tag with dash prefix:
+                    context.report({
+                        loc: comment.loc,
+                        messageId: 'dashSeparator',
+                        fix(fixer) {
+                            // Remove dash but keep the description intact:
+                            // - Only when they follow known tags:
+                            //   - @template
+                            //   - @param
+                            //   - @return
+                            //   - @returns
+                            //   - @property
+                            //   - @typedef
+                            // - Collapse multiple spaces into one.
+                            const cleaned = comment.value.replace(/(?<=@(template|param|returns?|property|typedef)(\s+\w+)?)\s*[-‑–]\s*/g, ' ');
+                            return fixer.replaceText(comment, `/*${cleaned}*/`);
+                        },
+                    });
+                } // for
+            } // for
+        };
+        
+        
+        
+        return {
+            FunctionDeclaration: checkComments,
+            VariableDeclaration: checkComments,
+            // VariableDeclarator: checkComments, // JSDoc attaches to the VariableDeclaration, not the inner VariableDeclarator.
+            TSTypeAliasDeclaration: checkComments,
+            TSInterfaceDeclaration: checkComments,
+            TSDeclareFunction: checkComments,
+            TSModuleDeclaration: checkComments,
+            ClassDeclaration: checkComments,
+        };
+    },
+});

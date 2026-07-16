@@ -14,7 +14,7 @@ import { enforceCssPrefixDefaults } from './.eslint-rules/css-prefix-default.js'
 import { enforceCssMountConventions } from './.eslint-rules/css-mount.js'
 import { enforceScopeFunctionUsage, noForeignCode as noForeignCodeInCssStyle } from './.eslint-rules/css-style.js'
 import { enforceIndexReexports } from './.eslint-rules/index-reexports.js'
-import { noForeignCodeInTypes, banVarianceAnnotations, banRedundantJsdocTypes } from './.eslint-rules/types.js'
+import { noForeignCodeInTypes, banVarianceAnnotations, banRedundantJsdocTypes, banJsdocDash } from './.eslint-rules/types.js'
 import { enforceContextCreation } from './.eslint-rules/react-contexts.js'
 import { enforceHookFileLocation, enforceClientHookModules, enforceGeneralHookModules } from './.eslint-rules/react-hooks.js'
 import { migrateUseDomainGroupSuffix, migrateUseResolvedDomainGroupSuffix, migrateTypeDomainGroup, migrateTypeDomainGroupDefinition } from './.eslint-rules/react-migrate-hooks.js'
@@ -303,6 +303,7 @@ export default defineConfig(
                     'no-foreign-code-in-types'         : noForeignCodeInTypes          as unknown as Rule.RuleModule,
                     'ban-variance-annotations'         : banVarianceAnnotations        as unknown as Rule.RuleModule,
                     'ban-redundant-jsdoc-types'        : banRedundantJsdocTypes        as unknown as Rule.RuleModule,
+                    'ban-jsdoc-dash'                   : banJsdocDash                  as unknown as Rule.RuleModule,
                 },
             },
             'react-contexts': {
@@ -358,6 +359,7 @@ export default defineConfig(
             'types/no-foreign-code-in-types'                 : 'error',
             'types/ban-variance-annotations'                 : 'error',
             'types/ban-redundant-jsdoc-types'                : 'error',
+            'types/ban-jsdoc-dash'                           : 'error',
             'react-contexts/enforce-context-creation'        : 'error',
             'react-hooks/enforce-hook-file-location'         : 'error',
             'react-hooks/enforce-client-hook-modules'        : 'error',
