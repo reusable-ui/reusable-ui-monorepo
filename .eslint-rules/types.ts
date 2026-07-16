@@ -293,10 +293,12 @@ export const banRedundantJsdocTypes = createRule({
         return {
             FunctionDeclaration: checkComments,
             VariableDeclaration: checkComments,
-            VariableDeclarator: checkComments,
+            // VariableDeclarator: checkComments, // JSDoc attaches to the VariableDeclaration, not the inner VariableDeclarator.
             TSTypeAliasDeclaration: checkComments,
             TSInterfaceDeclaration: checkComments,
             TSDeclareFunction: checkComments,
+            TSModuleDeclaration: checkComments,
+            ClassDeclaration: checkComments,
         };
     },
 });
