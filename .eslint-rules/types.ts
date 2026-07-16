@@ -379,10 +379,15 @@ export const banJsdocDash = createRule({
                 
                 // Iterate over each tag:
                 for (const tag of jsdoc[0].tags) {
+                    // Skip for `@remarks`:
+                    if (tag.tag === 'remarks') {
+                        continue;
+                    }
+                    
                     // Skip if not prefixed by dash:
                     // - For @return and @returns, comment-parser puts the dash into `name`.
                     // - For other tags, check the description directly.
-                    if (['return', 'returns'].includes(tag.tag)) {
+                    else if (['return', 'returns'].includes(tag.tag)) {
                         if (tag.name !== '-') continue;
                     }
                     else {
