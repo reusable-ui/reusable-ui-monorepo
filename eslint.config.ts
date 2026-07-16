@@ -389,6 +389,12 @@ export default defineConfig(
         },
         plugins: {
             'jest': jestPlugin,
+            'types': {
+                rules: {
+                    'ban-redundant-jsdoc-types'        : banRedundantJsdocTypes        as unknown as Rule.RuleModule,
+                    'ban-jsdoc-dash'                   : banJsdocDash                  as unknown as Rule.RuleModule,
+                },
+            },
         },
         rules: {
             'prefer-const': 'off',
@@ -405,6 +411,9 @@ export default defineConfig(
             '@typescript-eslint/no-unused-vars': 'off',
             
             '@typescript-eslint/no-unsafe-function-type': 'off',
+            
+            'types/ban-redundant-jsdoc-types'                : 'error',
+            'types/ban-jsdoc-dash'                           : 'error',
         },
     },
 );
