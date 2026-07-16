@@ -315,6 +315,7 @@ export const banRedundantJsdocTypes = createRule({
             TSModuleDeclaration: checkComments,
             ClassDeclaration: checkComments,
             MethodDefinition: checkComments,
+            TSMethodSignature: checkComments,
         };
     },
 });
@@ -431,6 +432,7 @@ export const banJsdocDash = createRule({
             TSModuleDeclaration: checkComments,
             ClassDeclaration: checkComments,
             MethodDefinition: checkComments,
+            TSMethodSignature: checkComments,
         };
     },
 });
