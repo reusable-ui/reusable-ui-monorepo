@@ -19,7 +19,7 @@ import {
 /**
  * Configuration options for enabling size-aware component configuration.
  * 
- * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
+ * @template TSize Commonly `'sm'`, `'md'`, `'lg'`
  */
 export interface CssSizeVariantOptions<TSize extends string = BasicSize> {
     /**

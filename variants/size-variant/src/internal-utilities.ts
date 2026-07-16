@@ -24,10 +24,10 @@ const sizeClassnameMap : Record<BasicSize | (string & {}), `s-${BasicSize | (str
  * - Returns the cached class name if available.
  * - If not cached, computes `s-${size}`, stores it, and returns the result.
  * 
- * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
+ * @template TSize Commonly `'sm'`, `'md'`, `'lg'`
  * 
- * @param {TSize} size - The size token to resolve, e.g. `'sm'`, `'md'`, `'lg'`, or custom value.
- * @returns {`s-${TSize}`} A CSS class name in the format `s-${size}`.
+ * @param size The size token to resolve, e.g. `'sm'`, `'md'`, `'lg'`, or custom value.
+ * @returns A CSS class name in the format `s-${size}`.
  */
 export const getSizeClassname = <TSize extends string = BasicSize>(size: TSize): `s-${TSize}` => {
     // Return cached class name if available:

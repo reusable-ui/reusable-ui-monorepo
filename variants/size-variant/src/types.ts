@@ -18,7 +18,7 @@ export type BasicSize =
  * 
  * Accepts an optional `size`, defaulting to a default when not provided.
  * 
- * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
+ * @template TSize Commonly `'sm'`, `'md'`, `'lg'`
  */
 export interface SizeVariantProps<TSize extends string = BasicSize> {
     /**
@@ -40,7 +40,7 @@ export interface SizeVariantProps<TSize extends string = BasicSize> {
  * Used by `useSizeVariant()` to determine fallback behavior and validate
  * against supported size values.
  * 
- * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
+ * @template TSize Commonly `'sm'`, `'md'`, `'lg'`
  */
 export interface SizeVariantOptions<TSize extends string = BasicSize> {
     /**
@@ -81,7 +81,7 @@ export interface SizeVariantOptions<TSize extends string = BasicSize> {
 /**
  * Represents the final resolved size of the component, along with its associated CSS class name.
  * 
- * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
+ * @template TSize Commonly `'sm'`, `'md'`, `'lg'`
  */
 export interface SizeVariant<TSize extends string = BasicSize> {
     /**

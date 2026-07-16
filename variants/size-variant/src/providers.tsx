@@ -28,7 +28,7 @@ import {
  * Requires a `size` value to establish the context,
  * and renders `children` that consume the propagated value.
  * 
- * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
+ * @template TSize Commonly `'sm'`, `'md'`, `'lg'`
  */
 export interface SizeVariantProviderProps<TSize extends string = BasicSize>
     extends
@@ -41,7 +41,7 @@ export interface SizeVariantProviderProps<TSize extends string = BasicSize>
  * Provides a `size` value to descendant components,
  * allowing them to inherit the value.
  * 
- * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
+ * @template TSize Commonly `'sm'`, `'md'`, `'lg'`
  * 
  * @example
  * ```tsx

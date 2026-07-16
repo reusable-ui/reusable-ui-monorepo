@@ -38,7 +38,7 @@ import {
  * Automatically maps suffixed properties (e.g. `fontSizeSm`, `paddingMd`, `borderRadiusLg`) to their base counterparts (`--comp-fontSize`, `--comp-padding`, etc.),
  * depending on the currently active size.
  * 
- * @template {string} [TSize=BasicSize] — commonly `'sm'`, `'md'`, `'lg'`
+ * @template TSize Commonly `'sm'`, `'md'`, `'lg'`
  * 
  * @param configVars - A CSS configuration that may includes properties suffixed by size identifiers (e.g., `'Sm'`, `'Md'`, `'Lg'`) to define size-specific values.
  * @param options - A required configuration specifying supported size values.
