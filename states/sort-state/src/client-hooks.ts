@@ -75,7 +75,7 @@ const sortStateDefinition : SortStateDefinition = {
  * Without this hook, updating items directly (e.g. `setItems(items.toSorted(...))`)
  * reorders items immediately, without visual feedback of *how* items moved.  
  * With this hook, item positions are snapshotted before and after the sort,
- * and each item animates into place — clearly conveying the transition.
+ * and each item animates into place — clearly conveying the change.
  * 
  * Provides:
  * - Current sorting activity status.

@@ -7,7 +7,7 @@ instead of instantly reordering them with no feedback.
 Without sort-state, updating items directly (e.g. `setItems(items.toSorted(...))`)
 reorders items immediately, without visual feedback of *how* items moved.  
 With sort-state, item positions are snapshotted before and after the sort,
-and each item smoothly animates into place — clearly conveying the transition.  
+and each item smoothly animates into place — clearly conveying the change.  
 
 With **sort-state**, you get:  
 - Smooth animated sorting transitions  
@@ -39,7 +39,7 @@ by animating the items from their original unsorted positions into their new sor
 Without this hook, updating items directly (e.g. `setItems(items.toSorted(...))`)
 reorders items immediately, without visual feedback of *how* items moved.  
 With this hook, item positions are snapshotted before and after the sort,
-and each item animates into place — clearly conveying the transition.
+and each item animates into place — clearly conveying the change.
 
 #### 💡 Usage Example
 
