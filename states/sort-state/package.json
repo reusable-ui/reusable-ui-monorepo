@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/sort-state",
   "version": "7.0.0",
-  "description": "Animates sorting transitions whenever a sorting action occurs, making the process feel visible and intuitive.",
+  "description": "Animates sorting transitions whenever a sorting action occurs, making the changes feel visible and intuitive.",
   "keywords": [
     "sorting",
     "sort",

@@ -1,7 +1,7 @@
 # @reusable-ui/sort-state 📦  
 
 **sort-state** animates sorting transitions in sortable UI components (e.g. lists, galleries, grids) whenever a sorting action occurs.  
-It makes the process feel visible and intuitive by animating the items from their original unsorted positions into their new sorted order,
+It makes the changes feel visible and intuitive by animating the items from their original unsorted positions into their new sorted order,
 instead of instantly reordering them with no feedback.  
 
 Without sort-state, updating items directly (e.g. `setItems(items.toSorted(...))`)
@@ -33,7 +33,7 @@ yarn add @reusable-ui/sort-state
 
 ### `useSortState(props, options?)`
 
-Animates sorting transitions whenever a sorting action occurs, making the process feel visible and intuitive
+Animates sorting transitions whenever a sorting action occurs, making the changes feel visible and intuitive
 by animating the items from their original unsorted positions into their new sorted order.
 
 Without this hook, updating items directly (e.g. `setItems(items.toSorted(...))`)
