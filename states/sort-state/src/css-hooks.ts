@@ -109,7 +109,7 @@ export const usingSortState = (options?: CssSortStateOptions): CssSortState => (
             animation : options?.sortingAnimation,
         },
         
-        // Factor variables for gradual drivers in transitional styling:
+        // Factor variables for gradual drivers for activity animation:
         factorVar       : sortStateVars.sortFactor,
         factorCondVar   : sortStateVars.sortFactorCond,
         ifInactiveState : ifNotSorting,
