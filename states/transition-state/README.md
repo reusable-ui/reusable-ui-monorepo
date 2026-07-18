@@ -822,7 +822,7 @@ Applies live CSS variables for transitional styling, including:
 - **Factor variables** for *gradual drivers* in transitional styling
 
 **`CssTransitionBehavior` interface:**
-- **`transitions`**
+- **`animations`**
   Defines transitional animation cases for *visual effects* whenever a transitional state changes.
 - **`flags`**
   Defines flag cases for conditional styling.

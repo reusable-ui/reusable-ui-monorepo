@@ -490,7 +490,7 @@ Applies live CSS variables for feedback styling, including:
 - **Factor variables** for *gradual drivers* in transitional styling
 
 **`CssFeedbackBehavior` interface:**
-- **`transitions`**
+- **`animations`**
   Defines feedback animation cases for *visual effects* whenever a feedback state changes.
 - **`flags`**
   Defines flag cases for conditional styling.

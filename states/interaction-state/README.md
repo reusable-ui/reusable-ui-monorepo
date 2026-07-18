@@ -494,7 +494,7 @@ Applies live CSS variables for interaction styling, including:
 - **Factor variables** for *gradual drivers* in transitional styling
 
 **`CssInteractionBehavior` interface:**
-- **`transitions`**
+- **`animations`**
   Defines feedback animation cases for *visual effects* whenever an interaction state changes.
 - **`flags`**
   Defines flag cases for conditional styling.
