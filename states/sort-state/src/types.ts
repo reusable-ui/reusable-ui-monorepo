@@ -292,7 +292,7 @@ export interface SortState<TElement extends Element = HTMLElement>
     sortOffsets   : Map<Key, SortOffset>
     
     /**
-     * A CSS class name for triggering the sorting animation.
+     * A CSS class name for triggering the sorting animations.
      * 
      * Possible values:
      * - `'is-sorting'`
