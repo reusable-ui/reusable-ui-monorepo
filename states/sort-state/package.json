@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/sort-state",
   "version": "7.0.0",
-  "description": "Adds animated sorting transitions that make sorting actions feel visible and intuitive.",
+  "description": "Animates sorting transitions that make sorting actions feel visible and intuitive.",
   "keywords": [
     "sorting",
     "sort",

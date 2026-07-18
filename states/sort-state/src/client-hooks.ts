@@ -69,7 +69,7 @@ const sortStateDefinition : SortStateDefinition = {
 };
 
 /**
- * Adds animated sorting transitions that make sorting actions feel visible and intuitive
+ * Animates sorting transitions that make sorting actions feel visible and intuitive
  * by animating items from their original unsorted positions into their new sorted order.
  * 
  * Without this hook, updating items directly (e.g. `setItems(items.toSorted(...))`)
