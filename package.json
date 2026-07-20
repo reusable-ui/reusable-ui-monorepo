@@ -94,6 +94,7 @@
     "states/animation-state",
     "states/effective-state",
     "states/observer-state",
+    "states/ephemeral-state",
     "states/activity-state",
     "states/transition-state",
     "states/feedback-state",

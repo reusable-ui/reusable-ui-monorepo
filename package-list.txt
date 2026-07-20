@@ -208,6 +208,7 @@ For hypen character, use standard hyphen (-) instead of non-breaking hyphen (‑
 @reusable-ui/effective-state        non_peer        UTILITY
 @reusable-ui/observer-state         non_peer        UTILITY
 
+@reusable-ui/ephemeral-state        non_peer        BASE
 @reusable-ui/activity-state         non_peer        BASE
 @reusable-ui/transition-state       non_peer        BASE
 @reusable-ui/feedback-state         non_peer        BASE
