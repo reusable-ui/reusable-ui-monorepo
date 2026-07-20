@@ -119,7 +119,7 @@ const viewStateDefinition : ViewStateDefinition = {
 };
 
 /**
- * Resolves the current view index, current transition phase, associated CSS class name, and animation event handlers
+ * Resolves the current view index, current transition phase, associated CSS classname, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  * 
  * - Supports controlled, uncontrolled, and hybrid view-switching behavior with optional change dispatching.
@@ -128,8 +128,8 @@ const viewStateDefinition : ViewStateDefinition = {
  * @template TChangeEvent The type of the event triggering the change request (e.g. tab click, swipe gesture).
  * 
  * @param props The component props that may include a controlled `viewIndex` value, optional `defaultViewIndex` value, and `onViewIndexChange` callback.
- * @param options An optional configuration for customizing view-switching behavior and animation lifecycle.
- * @returns The resolved view index, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
+ * @param options An optional configuration for customizing view-switching behavior and its animation lifecycle.
+ * @returns The resolved view index, current transition phase, associated CSS classname, change dispatcher, and animation event handlers.
  * 
  * @example
  * ```tsx

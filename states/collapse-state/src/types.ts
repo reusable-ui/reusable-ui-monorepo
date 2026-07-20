@@ -101,7 +101,7 @@ export interface CollapseChangeDispatcherOptions<TChangeEvent = unknown>
 }
 
 /**
- * Optional configuration options for customizing expand/collapse behavior and animation lifecycle.
+ * Optional configuration options for customizing expand/collapse behavior and its animation lifecycle.
  */
 export interface CollapseStateOptions
     extends
@@ -178,14 +178,14 @@ export type ExpandPhase =
     | TransitioningExpandPhase
 
 /**
- * A CSS class name reflecting the current expand/collapse phase.
+ * A CSS classname for toggling the expand/collapse phase.
  * 
  * Used for styling based on the lifecycle phase.
  */
 export type ExpandClassname = `is-${ExpandPhase}`
 
 /**
- * An API for accessing the resolved expand/collapse state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
+ * An API for accessing the resolved expand/collapse state, current transition phase, associated CSS classname, change dispatcher, and animation event handlers.
  * 
  * @template TElement The type of the target DOM element.
  * @template TChangeEvent The type of the event triggering the change request (e.g. button click, keyboard event).
@@ -238,7 +238,7 @@ export interface CollapseState<TElement extends Element = HTMLElement, TChangeEv
     expandPhase            : InteractionState<boolean, ExpandPhase, ExpandClassname, TElement, TChangeEvent>['transitionPhase']
     
     /**
-     * A CSS class name reflecting the current expand/collapse phase.
+     * A CSS classname for toggling the expand/collapse phase.
      * 
      * Possible values:
      * - `'is-collapsed'`

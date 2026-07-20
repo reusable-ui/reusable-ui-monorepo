@@ -97,12 +97,12 @@ export const useResolvedMild = (props: MildVariantProps, options?: MildVariantOp
 
 
 /**
- * Resolves the mild state along with its associated CSS class name,
+ * Resolves the mild state along with its associated CSS classname,
  * based on component props, optional default configuration, and parent context.
  * 
  * @param props The component props that may include a `mild` value.
  * @param options An optional configuration specifying a default mild value when no `mild` prop is explicitly provided.
- * @returns The resolved mild state along with its associated CSS class name.
+ * @returns The resolved mild state along with its associated CSS classname.
  * 
  * @example
  * ```tsx

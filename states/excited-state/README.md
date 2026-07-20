@@ -29,7 +29,7 @@ yarn add @reusable-ui/excited-state
 
 ### `useExcitedState(props, options?)`
 
-Resolves the excited state along with its associated CSS class name, based on component props, optional default configuration, and animation lifecycle.
+Resolves the excited state along with its associated CSS classname, based on component props, optional default configuration, and animation lifecycle.
 
 #### 💡 Usage Example
 

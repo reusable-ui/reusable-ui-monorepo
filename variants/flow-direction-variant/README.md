@@ -23,7 +23,7 @@ yarn add @reusable-ui/flow-direction-variant
 
 ### `useFlowDirectionVariant(props, options)`
 
-Resolves the flow direction value along with its associated CSS class name, based on component props, optional default configuration, and parent context.
+Resolves the flow direction value along with its associated CSS classname, based on component props, optional default configuration, and parent context.
 
 #### 💡 Usage Example
 

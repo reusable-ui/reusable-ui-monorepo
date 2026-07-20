@@ -6,7 +6,7 @@ import {
 
 
 /**
- * Maps each flow direction to its corresponding CSS class name.
+ * Maps each flow direction to its corresponding CSS classname.
  */
 export const flowDirectionClassnameMap : Record<FlowDirection, `f-${FlowDirection}`> = {
     'start' : 'f-start',

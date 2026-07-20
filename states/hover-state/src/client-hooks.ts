@@ -157,7 +157,7 @@ const hoverStateDefinition : HoverStateDefinition = {
 };
 
 /**
- * Resolves the hover state, current transition phase, associated CSS class name, and animation event handlers
+ * Resolves the hover state, current transition phase, associated CSS classname, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  * 
  * - Supports controlled hover state, when `hovered` is set to `true` or `false`.
@@ -166,8 +166,8 @@ const hoverStateDefinition : HoverStateDefinition = {
  * @template TElement The type of the target DOM element.
  * 
  * @param props The component props that may include a controlled `hovered` value, derived `computedHover` value, and `onHoverUpdate` callback.
- * @param options An optional configuration for customizing hover/unhover behavior and animation lifecycle.
- * @returns The resolved hover/unhover state, current transition phase, associated CSS class name, and animation event handlers.
+ * @param options An optional configuration for customizing hover/unhover behavior and its animation lifecycle.
+ * @returns The resolved hover/unhover state, current transition phase, associated CSS classname, and animation event handlers.
  * 
  * @example
  * ```tsx

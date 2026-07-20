@@ -6,7 +6,7 @@ import {
 
 
 /**
- * Maps each orientation to its corresponding CSS class name.
+ * Maps each orientation to its corresponding CSS classname.
  */
 export const orientationClassnameMap : Record<Orientation, `o-${Orientation}`> = {
     'inline' : 'o-inline',

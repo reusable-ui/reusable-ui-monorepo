@@ -37,7 +37,7 @@ yarn add @reusable-ui/drag-state
 
 ### `useDragState(props, options?)`
 
-Resolves the drag state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
+Resolves the drag state, current transition phase, associated CSS classname, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
 - Supports controlled drag state, when `dragged` is set to `true` or `false`.
 - Supports diagnostic mode, when `dragged` is set to `'auto'`, which derives the effective drag from `computedDrag`.

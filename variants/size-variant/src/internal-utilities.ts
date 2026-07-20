@@ -6,7 +6,7 @@ import {
 
 
 /**
- * Maps each size to its corresponding CSS class name.
+ * Maps each size to its corresponding CSS classname.
  */
 const sizeClassnameMap : Record<BasicSize | (string & {}), `s-${BasicSize | (string & {})}`> = {
     'xs'  : 's-xs',
@@ -19,7 +19,7 @@ const sizeClassnameMap : Record<BasicSize | (string & {}), `s-${BasicSize | (str
 };
 
 /**
- * Resolves and caches the CSS class name for the given size.
+ * Resolves and caches the CSS classname for the given size.
  * 
  * - Returns the cached class name if available.
  * - If not cached, computes `s-${size}`, stores it, and returns the result.
@@ -27,7 +27,7 @@ const sizeClassnameMap : Record<BasicSize | (string & {}), `s-${BasicSize | (str
  * @template TSize Commonly `'sm'`, `'md'`, `'lg'`
  * 
  * @param size The size token to resolve, e.g. `'sm'`, `'md'`, `'lg'`, or custom value.
- * @returns A CSS class name in the format `s-${size}`.
+ * @returns A CSS classname in the format `s-${size}`.
  */
 export const getSizeClassname = <TSize extends string = BasicSize>(size: TSize): `s-${TSize}` => {
     // Return cached class name if available:

@@ -46,7 +46,7 @@ export interface EmphasizedVariantOptions {
 }
 
 /**
- * Represents the final resolved emphasized state of the component, along with its associated CSS class name.
+ * Represents the final resolved emphasized state of the component, along with its associated CSS classname.
  */
 export interface EmphasizedVariant {
     /**
@@ -59,7 +59,7 @@ export interface EmphasizedVariant {
     emphasized           : boolean
     
     /**
-     * A CSS class name reflecting the resolved emphasized state.
+     * A CSS classname for toggling the emphasized state.
      * 
      * Possible values:
      * - `'is-emphasized'`

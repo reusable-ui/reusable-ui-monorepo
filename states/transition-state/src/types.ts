@@ -39,7 +39,7 @@ export interface TransitionStateProps<TState extends {} | null> {
 }
 
 /**
- * Options for customizing transition-based behavior and animation lifecycle.
+ * Options for customizing transition-based behavior and its animation lifecycle.
  * 
  * These options are intended to be static for the lifetime of each component.
  * They define how the animation system interprets and propagates transitions.
@@ -204,7 +204,7 @@ export interface ResolveTransitionPhaseArgs<TState extends {} | null, TBehaviorP
  * May optionally include previous transition phase information for direction-aware styling,
  * and can also contain customization flags from props or options.
  * 
- * The common implementation maps `transitionPhase` directly to corresponding class names,
+ * The common implementation maps `transitionPhase` directly to corresponding classnames,
  * but more complex logic can be implemented as needed.
  * 
  * @template TState The concrete type of the state value (must not be declarative).
@@ -345,7 +345,7 @@ export interface TriggerTransitionEventArgs<TState extends {} | null, TPhase ext
  * Definition for transition-based state behavior.
  * 
  * Describes how the driver state is resolved, how transition phases are derived, and
- * how transition classnames are generated, etc.
+ * how transition classnames are generated and how the animation system integrates.
  * 
  * Unlike `options`, which are instance-level and optional, definitions are package-level and mandatory.
  * 
@@ -427,7 +427,7 @@ export interface TransitionStateDefinition<TState extends {} | null, TPhase exte
 }
 
 /**
- * An API for accessing the resolved state, current transition phase, associated CSS class name, and animation event handlers.
+ * An API for accessing the resolved state, current transition phase, associated CSS classname, and animation event handlers.
  * 
  * This interface represents the common contract returned by all transition-based state hooks.
  * 
@@ -492,7 +492,7 @@ export interface TransitionState<TState extends {} | null, TPhase extends string
     transitionPhase     : TPhase
     
     /**
-     * A CSS class name reflects the current transition phase.
+     * A CSS classname reflects the current transition phase.
      * 
      * May optionally include previous transition phase information for direction-aware styling,
      * and can also contain customization flags from props or options.

@@ -46,7 +46,7 @@ export interface MildVariantOptions {
 }
 
 /**
- * Represents the final resolved mild state of the component, along with its associated CSS class name.
+ * Represents the final resolved mild state of the component, along with its associated CSS classname.
  */
 export interface MildVariant {
     /**
@@ -59,7 +59,7 @@ export interface MildVariant {
     mild           : boolean
     
     /**
-     * A CSS class name reflecting the resolved mild state.
+     * A CSS classname for toggling the mild state.
      * 
      * Possible values:
      * - `'is-mild'`

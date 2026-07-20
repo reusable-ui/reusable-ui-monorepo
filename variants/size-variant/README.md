@@ -24,7 +24,7 @@ yarn add @reusable-ui/size-variant
 
 ### `useSizeVariant(props, options)`
 
-Resolves the size value along with its associated CSS class name, based on component props, default configuration, and parent context.
+Resolves the size value along with its associated CSS classname, based on component props, default configuration, and parent context.
 
 #### 💡 Usage Example
 

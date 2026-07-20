@@ -84,7 +84,7 @@ export interface ReadOnlyStateProps
 }
 
 /**
- * Optional configuration options for customizing editable/read-only behavior and animation lifecycle.
+ * Optional configuration options for customizing editable/read-only behavior and its animation lifecycle.
  */
 export interface ReadOnlyStateOptions
     extends
@@ -170,14 +170,14 @@ export type ReadOnlyPhase =
     | TransitioningReadOnlyPhase
 
 /**
- * A CSS class name reflecting the current editable/read-only phase.
+ * A CSS classname for toggling the editable/read-only phase.
  * 
  * Used for styling based on the lifecycle phase.
  */
 export type ReadOnlyClassname = `is-${ReadOnlyPhase}`
 
 /**
- * An API for accessing the resolved editable/read-only state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
+ * An API for accessing the resolved editable/read-only state, current transition phase, associated CSS classname, change dispatcher, and animation event handlers.
  * 
  * @template TElement The type of the target DOM element.
  */
@@ -228,7 +228,7 @@ export interface ReadOnlyState<TElement extends Element = HTMLElement>
     readOnlyPhase     : FeedbackState<boolean, ReadOnlyPhase, ReadOnlyClassname, TElement>['transitionPhase']
     
     /**
-     * A CSS class name reflecting the current editable/read-only phase.
+     * A CSS classname for toggling the editable/read-only phase.
      * 
      * Possible values:
      * - `'is-readonly'`

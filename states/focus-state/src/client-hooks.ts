@@ -159,7 +159,7 @@ const focusStateDefinition : FocusStateDefinition = {
 };
 
 /**
- * Resolves the focus state, current transition phase, associated CSS class name, and animation event handlers
+ * Resolves the focus state, current transition phase, associated CSS classname, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  * 
  * - Supports controlled focus state, when `focused` is set to `true` or `false`.
@@ -169,8 +169,8 @@ const focusStateDefinition : FocusStateDefinition = {
  * @template TElement The type of the target DOM element.
  * 
  * @param props The component props that may include a controlled `focused` value, derived `computedFocus` value, and `onFocusUpdate` callback.
- * @param options An optional configuration for customizing focus/blur behavior and animation lifecycle.
- * @returns The resolved focus/blur state, current transition phase, associated CSS class name, and animation event handlers.
+ * @param options An optional configuration for customizing focus/blur behavior and its animation lifecycle.
+ * @returns The resolved focus/blur state, current transition phase, associated CSS classname, and animation event handlers.
  * 
  * @example
  * ```tsx

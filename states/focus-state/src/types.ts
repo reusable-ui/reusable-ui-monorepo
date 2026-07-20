@@ -115,7 +115,7 @@ export interface FocusStateProps
 }
 
 /**
- * Optional configuration options for customizing focus/blur behavior and animation lifecycle.
+ * Optional configuration options for customizing focus/blur behavior and its animation lifecycle.
  */
 export interface FocusStateOptions
     extends
@@ -203,7 +203,7 @@ export type FocusPhase =
     | TransitioningFocusPhase
 
 /**
- * A CSS class name reflecting the current focus/blur phase.
+ * A CSS classname for toggling the focus/blur phase.
  * 
  * Used for styling based on the lifecycle phase.
  * 
@@ -213,7 +213,7 @@ export type FocusPhase =
 export type FocusClassname = `is-${FocusPhase}` | `is-${FocusPhase} input-like-focus`
 
 /**
- * An API for accessing the resolved focus/blur state, current transition phase, associated CSS class name, and animation event handlers.
+ * An API for accessing the resolved focus/blur state, current transition phase, associated CSS classname, and animation event handlers.
  * 
  * @template TElement The type of the target DOM element.
  */
@@ -264,7 +264,7 @@ export interface FocusState<TElement extends Element = HTMLElement>
     focusPhase     : FeedbackState<boolean, FocusPhase, FocusClassname, TElement>['transitionPhase']
     
     /**
-     * A CSS class name reflecting the current focus/blur phase.
+     * A CSS classname for toggling the focus/blur phase.
      * 
      * Possible values:
      * - `'is-blurred'`

@@ -110,7 +110,7 @@ export interface HoverStateProps
 }
 
 /**
- * Optional configuration options for customizing hover/unhover behavior and animation lifecycle.
+ * Optional configuration options for customizing hover/unhover behavior and its animation lifecycle.
  */
 export interface HoverStateOptions
     extends
@@ -188,14 +188,14 @@ export type HoverPhase =
     | TransitioningHoverPhase
 
 /**
- * A CSS class name reflecting the current hover/unhover phase.
+ * A CSS classname for toggling the hover/unhover phase.
  * 
  * Used for styling based on the lifecycle phase.
  */
 export type HoverClassname = `is-${HoverPhase}`
 
 /**
- * An API for accessing the resolved hover/unhover state, current transition phase, associated CSS class name, and animation event handlers.
+ * An API for accessing the resolved hover/unhover state, current transition phase, associated CSS classname, and animation event handlers.
  * 
  * @template TElement The type of the target DOM element.
  */
@@ -246,7 +246,7 @@ export interface HoverState<TElement extends Element = HTMLElement>
     hoverPhase        : FeedbackState<boolean, HoverPhase, HoverClassname, TElement>['transitionPhase']
     
     /**
-     * A CSS class name reflecting the current hover/unhover phase.
+     * A CSS classname for toggling the hover/unhover phase.
      * 
      * Possible values:
      * - `'is-unhovered'`

@@ -54,7 +54,7 @@ export interface ActivityStateProps<TState extends {} | null> {
 }
 
 /**
- * Options for customizing activity-based behavior and animation lifecycle.
+ * Options for customizing activity-based behavior and its animation lifecycle.
  * 
  * These options are intended to be static for the lifetime of each component.
  * They define how activity states synchronize with the animation system.
@@ -103,7 +103,7 @@ export interface ActivityStateOptions<TState extends {} | null>
  * 
  * May optionally contain customization flags from props or options.
  * 
- * The common implementation maps `visualState` directly to corresponding class names,
+ * The common implementation maps `visualState` directly to corresponding classnames,
  * but more complex logic can be implemented as needed.
  * 
  * @template TState The concrete type of the state value (must not be declarative).
@@ -157,7 +157,7 @@ export interface ResolveActivityClassnameArgs<TState extends {} | null, TBehavio
 /**
  * Definition for activity-based state behavior.
  * 
- * Describes the inactive baseline state, how activity classnames are generated, etc.
+ * Describes the inactive baseline state, how activity classnames are generated and how the animation system integrates.
  * 
  * Unlike `options`, which are instance-level and optional, definitions are package-level and mandatory.
  * 
@@ -202,7 +202,7 @@ export interface ActivityStateDefinition<TState extends {} | null, TClassname ex
 }
 
 /**
- * An API for accessing the resolved state, associated CSS class name, and animation event handlers.
+ * An API for accessing the resolved state, associated CSS classname, and animation event handlers.
  * 
  * This interface represents the common contract returned by all activity-based state hooks.
  * 
@@ -250,7 +250,7 @@ export interface ActivityState<TState extends {} | null, TClassname extends stri
     actualState       : TState
     
     /**
-     * A CSS class name reflects the current activity state.
+     * A CSS classname for triggering the activity animation.
      * 
      * Useful for applying semantic styling tied to the activity lifecycle.
      */

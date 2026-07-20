@@ -97,12 +97,12 @@ export const useResolvedEmphasized = (props: EmphasizedVariantProps, options?: E
 
 
 /**
- * Resolves the emphasized state along with its associated CSS class name,
+ * Resolves the emphasized state along with its associated CSS classname,
  * based on component props, optional default configuration, and parent context.
  * 
  * @param props The component props that may include an `emphasized` value.
  * @param options An optional configuration specifying a default emphasized value when no `emphasized` prop is explicitly provided.
- * @returns The resolved emphasized state along with its associated CSS class name.
+ * @returns The resolved emphasized state along with its associated CSS classname.
  * 
  * @example
  * ```tsx

@@ -33,7 +33,7 @@ yarn add @reusable-ui/validity-state
 
 ### `useValidityState(props, options?)`
 
-Resolves the validity state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
+Resolves the validity state, current transition phase, associated CSS classname, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
 - Supports controlled validity state, when `validity` is set to `true`, `false`, or `null`.
 - Supports automatic mode, when `validity` is set to `'auto'`, which defers resolution to

@@ -22,7 +22,7 @@ yarn add @reusable-ui/stripped-variant
 
 ### `useStrippedVariant(props, options)`
 
-Resolves the stripped mode along with its associated CSS class name, based on component props and optional default configuration.
+Resolves the stripped mode along with its associated CSS classname, based on component props and optional default configuration.
 
 #### 💡 Usage Example
 

@@ -111,7 +111,7 @@ yarn add @reusable-ui/view-state
 
 ### `useViewState(props, options?)`
 
-Resolves the current view index, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
+Resolves the current view index, current transition phase, associated CSS classname, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
 - Supports controlled, uncontrolled, and hybrid view-switching behavior with optional change dispatching.
 

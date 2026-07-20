@@ -93,7 +93,7 @@ export interface ThemeVariantOptions<TTheme extends string = BasicTheme> {
 }
 
 /**
- * Represents the final resolved theme of the component, along with its associated CSS class name.
+ * Represents the final resolved theme of the component, along with its associated CSS classname.
  * 
  * @template TTheme Commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  */
@@ -115,7 +115,7 @@ export interface ThemeVariant<TTheme extends string = BasicTheme> {
     theme           : TTheme
     
     /**
-     * A CSS class name reflecting the resolved theme.
+     * A CSS classname for toggling the theme.
      * 
      * Possible values:
      * - `'t-primary'`

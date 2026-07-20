@@ -1,11 +1,11 @@
 /**
- * Resolves the CSS class name for the given mild state.
+ * Resolves the CSS classname for the given mild state.
  * 
  * - Returns `'is-mild'` if `isMild` is `true`.
  * - Returns `'not-mild'` if `isMild` is `false`.
  * 
  * @param isMild A boolean flag indicating whether the component should appear in a mild (reading friendly).
- * @returns A CSS class name reflecting the mild state.
+ * @returns A CSS classname reflecting the mild state.
  */
 export const getMildClassname = (isMild: boolean): 'is-mild' | 'not-mild' => {
     // Return the corresponding class name:

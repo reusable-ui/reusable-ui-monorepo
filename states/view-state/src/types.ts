@@ -112,7 +112,7 @@ export interface ViewIndexChangeDispatcherOptions<TChangeEvent = unknown>
 }
 
 /**
- * Optional configuration options for customizing view-switching behavior and animation lifecycle.
+ * Optional configuration options for customizing view-switching behavior and its animation lifecycle.
  */
 export interface ViewStateOptions
     extends
@@ -216,14 +216,14 @@ export type ViewPhase =
     | TransitioningViewPhase
 
 /**
- * A CSS class name reflecting the current view-switching phase.
+ * A CSS classname for toggling the view-switching phase.
  * 
  * Used for styling based on the lifecycle phase.
  */
 export type ViewClassname = ViewPhase
 
 /**
- * An API for accessing the resolved view index, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
+ * An API for accessing the resolved view index, current transition phase, associated CSS classname, change dispatcher, and animation event handlers.
  * 
  * @template TElement The type of the target DOM element.
  * @template TChangeEvent The type of the event triggering the change request (e.g. tab click, swipe gesture).
@@ -320,7 +320,7 @@ export interface ViewState<TElement extends Element = HTMLElement, TChangeEvent 
     viewPhase               : InteractionState<number, ViewPhase, ViewClassname, TElement, TChangeEvent>['transitionPhase']
     
     /**
-     * A CSS class name reflecting the current view-switching phase.
+     * A CSS classname for toggling the view-switching phase.
      * 
      * Possible values:
      * - `'view-settled'`

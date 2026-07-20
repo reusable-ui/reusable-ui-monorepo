@@ -113,7 +113,7 @@ export interface DragStateProps
 }
 
 /**
- * Optional configuration options for customizing drag/drop behavior and animation lifecycle.
+ * Optional configuration options for customizing drag/drop behavior and its animation lifecycle.
  */
 export interface DragStateOptions
     extends
@@ -205,7 +205,7 @@ export type DragPhase =
     | TransitioningDragPhase
 
 /**
- * A CSS class name reflecting the current drag/drop phase.
+ * A CSS classname for toggling the drag/drop phase.
  * 
  * Used for styling based on the lifecycle phase.
  */
@@ -237,7 +237,7 @@ export interface DragOffset {
 }
 
 /**
- * An API for accessing the resolved drag/drop state, current transition phase, associated CSS class name, and animation event handlers.
+ * An API for accessing the resolved drag/drop state, current transition phase, associated CSS classname, and animation event handlers.
  * 
  * @template TElement The type of the target DOM element.
  */
@@ -304,7 +304,7 @@ export interface DragState<TElement extends Element = HTMLElement>
     dragPhase         : FeedbackState<boolean, DragPhase, DragClassname, TElement>['transitionPhase']
     
     /**
-     * A CSS class name reflecting the current drag/drop phase.
+     * A CSS classname for toggling the drag/drop phase.
      * 
      * Possible values:
      * - `'is-dropped'`

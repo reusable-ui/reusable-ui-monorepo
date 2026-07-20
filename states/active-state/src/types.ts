@@ -110,7 +110,7 @@ export interface ActiveChangeDispatcherOptions<TChangeEvent = unknown>
 }
 
 /**
- * Optional configuration options for customizing activate/deactivate behavior and animation lifecycle.
+ * Optional configuration options for customizing activate/deactivate behavior and its animation lifecycle.
  */
 export interface ActiveStateOptions
     extends
@@ -196,14 +196,14 @@ export type ActivePhase =
     | TransitioningActivePhase
 
 /**
- * A CSS class name reflecting the current activate/deactivate phase.
+ * A CSS classname for toggling the activate/deactivate phase.
  * 
  * Used for styling based on the lifecycle phase.
  */
 export type ActiveClassname = `is-${ActivePhase}`
 
 /**
- * An API for accessing the resolved active/inactive state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
+ * An API for accessing the resolved active/inactive state, current transition phase, associated CSS classname, change dispatcher, and animation event handlers.
  * 
  * @template TElement The type of the target DOM element.
  * @template TChangeEvent The type of the event triggering the change request (e.g. button click, keyboard event).
@@ -256,7 +256,7 @@ export interface ActiveState<TElement extends Element = HTMLElement, TChangeEven
     activePhase          : InteractionState<boolean, ActivePhase, ActiveClassname, TElement, TChangeEvent>['transitionPhase']
     
     /**
-     * A CSS class name reflecting the current activate/deactivate phase.
+     * A CSS classname for toggling the activate/deactivate phase.
      * 
      * Possible values:
      * - `'is-inactive'`

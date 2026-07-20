@@ -187,7 +187,7 @@ const activeStateDefinition : ActiveStateDefinition = {
 };
 
 /**
- * Resolves the active/inactive state, current transition phase, associated CSS class name, and animation event handlers
+ * Resolves the active/inactive state, current transition phase, associated CSS classname, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  * 
  * - Supports controlled, uncontrolled, and hybrid activation behavior with optional change dispatching.
@@ -197,8 +197,8 @@ const activeStateDefinition : ActiveStateDefinition = {
  * @template TChangeEvent The type of the event triggering the change request (e.g. button click, keyboard event).
  * 
  * @param props The component props that may include a controlled `active` value, optional `defaultActive` value, contextual `cascadeActive` value, and `onActiveChange` callback.
- * @param options An optional configuration for customizing activate/deactivate behavior and animation lifecycle.
- * @returns The resolved active/inactive state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
+ * @param options An optional configuration for customizing activate/deactivate behavior and its animation lifecycle.
+ * @returns The resolved active/inactive state, current transition phase, associated CSS classname, change dispatcher, and animation event handlers.
  * 
  * @example
  * ```tsx

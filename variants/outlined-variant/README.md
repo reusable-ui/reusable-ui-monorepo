@@ -22,7 +22,7 @@ yarn add @reusable-ui/outlined-variant
 
 ### `useOutlinedVariant(props, options)`
 
-Resolves the outlined state along with its associated CSS class name, based on component props, optional default configuration, and parent context.
+Resolves the outlined state along with its associated CSS classname, based on component props, optional default configuration, and parent context.
 
 #### 💡 Usage Example
 

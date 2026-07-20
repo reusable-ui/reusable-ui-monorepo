@@ -65,7 +65,7 @@ export interface FeedbackStateProps<TState extends {} | null>
 }
 
 /**
- * Options for customizing feedback-based behavior and animation lifecycle.
+ * Options for customizing feedback-based behavior and its animation lifecycle.
  * 
  * These options are intended to be static for the lifetime of each component.
  * They define how feedback states synchronize with the animation system.
@@ -109,7 +109,7 @@ export interface FeedbackStateDefinition<TState extends {} | null, TPhase extend
 }
 
 /**
- * An API for accessing the resolved state, current transition phase, associated CSS class name, and animation event handlers.
+ * An API for accessing the resolved state, current transition phase, associated CSS classname, and animation event handlers.
  * 
  * This interface represents the common contract returned by all feedback-based state hooks.
  * 

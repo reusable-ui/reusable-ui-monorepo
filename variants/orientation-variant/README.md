@@ -23,7 +23,7 @@ yarn add @reusable-ui/orientation-variant
 
 ### `useOrientationVariant(props, options)`
 
-Resolves the orientation value along with its associated CSS class name and accessibility metadata, based on component props, optional default configuration, and parent context.
+Resolves the orientation value along with its associated CSS classname and accessibility metadata, based on component props, optional default configuration, and parent context.
 
 #### 💡 Usage Example
 

@@ -80,7 +80,7 @@ const sortStateDefinition : SortStateDefinition = {
  * Provides:
  * - Current sorting activity status.
  * - Per-item movement offsets (from unsorted to sorted positions).
- * - A CSS class name for animation triggers.
+ * - A CSS classname for animation triggers.
  * - Inline CSS variables for styling transitions.
  * - Event handlers for coordinating the animation lifecycle.
  * 
@@ -92,8 +92,8 @@ const sortStateDefinition : SortStateDefinition = {
  * @template TSortData The type of the data driving the sortable elements (commonly an array of item metadata).
  * 
  * @param props The component props for passing staged sort data and commit/clear callbacks.
- * @param options An optional configuration for customizing sort transition behavior and animation lifecycle.
- * @returns The current sorting activity status, per-item movements, associated CSS class name, inline CSS variables, and animation event handlers.
+ * @param options An optional configuration for customizing sort transition behavior and its animation lifecycle.
+ * @returns The current sorting activity status, per-item movements, associated CSS classname, inline CSS variables, and animation event handlers.
  * 
  * @example
  * ```tsx

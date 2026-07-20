@@ -31,7 +31,7 @@ yarn add @reusable-ui/collapse-state
 
 ### `useCollapseState(props, options?)`
 
-Resolves the expanded/collapsed state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
+Resolves the expanded/collapsed state, current transition phase, associated CSS classname, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
 - Supports controlled, uncontrolled, and hybrid expansion behavior with optional change dispatching.
 

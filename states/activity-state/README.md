@@ -86,13 +86,13 @@ export interface BusyStateProps {
     onBusyComplete ?: ValueChangeHandler<boolean, AnimationEvent>
 }
 
-/** Options for customizing busy state behavior and animation lifecycle. */
+/** Options for customizing busy state behavior and its animation lifecycle. */
 export interface BusyStateOptions extends ActivityStateOptions<boolean> {
     /** The default busy state if `busy` prop is not provided. */
     defaultBusy ?: boolean | 'auto'
 }
 
-/** Semantic CSS classnames tied to busy state. */
+/** A CSS classname for triggering the busy animation. */
 export type BusyClassname = 'is-busy' | 'not-busy'
 
 /** Private definition for busy state behavior. */
@@ -128,7 +128,7 @@ export interface BusyState<TElement extends Element = HTMLElement>
     /** The actual resolved busy state (immediate, may appear out of sync). */
     actualBusy    : boolean
     
-    /** A CSS classname reflecting the current busy state. */
+    /** A CSS classname for triggering the busy animation. */
     busyClassname : BusyClassname
 }
 

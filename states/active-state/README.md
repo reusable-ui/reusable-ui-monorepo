@@ -33,7 +33,7 @@ yarn add @reusable-ui/active-state
 
 ### `useActiveState(props, options?)`
 
-Resolves the active/inactive state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
+Resolves the active/inactive state, current transition phase, associated CSS classname, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
 - Supports controlled, uncontrolled, and hybrid activation behavior with optional change dispatching.
 - Supports contextual override via `cascadeActive`.

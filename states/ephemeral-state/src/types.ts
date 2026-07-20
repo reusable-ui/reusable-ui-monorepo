@@ -152,7 +152,7 @@ export interface EphemeralStateDefinition<TActivity extends {} | null, TClassnam
 }
 
 /**
- * An API for accessing the current activity status, associated CSS class name, and animation event handlers.
+ * An API for accessing the current activity status, associated CSS classname, and animation event handlers.
  * 
  * This interface represents the common contract returned by all ephemeral state hooks.
  * 
@@ -178,7 +178,7 @@ export interface EphemeralState<TActivity extends {} | null, TClassname extends 
     activity           : TActivity | undefined
     
     /**
-     * A CSS classname for triggering the activity animations.
+     * A CSS classname for triggering the activity animation.
      * 
      * May optionally contain customization flags from props or options.
      * 

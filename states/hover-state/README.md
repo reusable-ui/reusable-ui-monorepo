@@ -32,7 +32,7 @@ yarn add @reusable-ui/hover-state
 
 ### `useHoverState(props, options?)`
 
-Resolves the hover state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
+Resolves the hover state, current transition phase, associated CSS classname, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
 - Supports controlled hover state, when `hovered` is set to `true` or `false`.
 - Supports diagnostic mode, when `hovered` is set to `'auto'`, which derives the effective hover from `computedHover`.

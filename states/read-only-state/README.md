@@ -31,7 +31,7 @@ yarn add @reusable-ui/read-only-state
 
 ### `useReadOnlyState(props, options?)`
 
-Resolves the editable/read-only state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
+Resolves the editable/read-only state, current transition phase, associated CSS classname, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
 - Supports controlled read-only state.
 - Supports contextual override via `cascadeReadOnly`.

@@ -31,7 +31,7 @@ yarn add @reusable-ui/disabled-state
 
 ### `useDisabledState(props, options?)`
 
-Resolves the enabled/disabled state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
+Resolves the enabled/disabled state, current transition phase, associated CSS classname, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
 - Supports controlled disabled state.
 - Supports contextual override via `cascadeDisabled`.

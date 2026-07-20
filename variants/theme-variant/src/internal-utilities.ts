@@ -6,7 +6,7 @@ import {
 
 
 /**
- * Maps each theme to its corresponding CSS class name.
+ * Maps each theme to its corresponding CSS classname.
  */
 const themeClassnameMap : Record<BasicTheme | (string & {}), `t-${BasicTheme | (string & {})}`> = {
     'primary'   : 't-primary',
@@ -20,7 +20,7 @@ const themeClassnameMap : Record<BasicTheme | (string & {}), `t-${BasicTheme | (
 };
 
 /**
- * Resolves and caches the CSS class name for the given theme.
+ * Resolves and caches the CSS classname for the given theme.
  * 
  * - Returns the cached class name if available.
  * - If not cached, computes `t-${theme}`, stores it, and returns the result.
@@ -28,7 +28,7 @@ const themeClassnameMap : Record<BasicTheme | (string & {}), `t-${BasicTheme | (
  * @template TTheme Commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
  * @param theme The theme token to resolve, e.g. `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`, or custom value.
- * @returns A CSS class name in the format `t-${theme}`.
+ * @returns A CSS classname in the format `t-${theme}`.
  */
 export const getThemeClassname = <TTheme extends string = BasicTheme>(theme: TTheme): `t-${TTheme}` => {
     // Return cached class name if available:

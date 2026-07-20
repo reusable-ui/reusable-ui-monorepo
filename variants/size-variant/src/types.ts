@@ -79,7 +79,7 @@ export interface SizeVariantOptions<TSize extends string = BasicSize> {
 }
 
 /**
- * Represents the final resolved size of the component, along with its associated CSS class name.
+ * Represents the final resolved size of the component, along with its associated CSS classname.
  * 
  * @template TSize Commonly `'sm'`, `'md'`, `'lg'`
  */
@@ -96,7 +96,7 @@ export interface SizeVariant<TSize extends string = BasicSize> {
     size            : TSize
     
     /**
-     * A CSS class name reflecting the resolved size.
+     * A CSS classname for toggling the size.
      * 
      * Possible values:
      * - `'s-sm'`

@@ -98,12 +98,12 @@ export const useResolvedFlowDirection = (props: FlowDirectionVariantProps, optio
 
 
 /**
- * Resolves the flow direction value along with its associated CSS class name,
+ * Resolves the flow direction value along with its associated CSS classname,
  * based on component props, optional default configuration, and parent context.
  * 
  * @param props The component props that may include a `flowDirection` value.
  * @param options An optional configuration specifying a default flow direction when no `flowDirection` prop is explicitly provided.
- * @returns The resolved flow direction value along with its associated CSS class name.
+ * @returns The resolved flow direction value along with its associated CSS classname.
  * 
  * @example
  * ```tsx

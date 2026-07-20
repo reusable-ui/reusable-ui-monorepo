@@ -161,7 +161,7 @@ const pressStateDefinition : PressStateDefinition = {
 };
 
 /**
- * Resolves the press state, current transition phase, associated CSS class name, and animation event handlers
+ * Resolves the press state, current transition phase, associated CSS classname, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  * 
  * - Supports controlled press state, when `pressed` is set to `true` or `false`.
@@ -170,8 +170,8 @@ const pressStateDefinition : PressStateDefinition = {
  * @template TElement The type of the target DOM element.
  * 
  * @param props The component props that may include a controlled `pressed` value, derived `computedPress` value, and `onPressUpdate` callback.
- * @param options An optional configuration for customizing press/release behavior and animation lifecycle.
- * @returns The resolved press/release state, current transition phase, associated CSS class name, and animation event handlers.
+ * @param options An optional configuration for customizing press/release behavior and its animation lifecycle.
+ * @returns The resolved press/release state, current transition phase, associated CSS classname, and animation event handlers.
  * 
  * @example
  * ```tsx

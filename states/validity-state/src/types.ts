@@ -136,7 +136,7 @@ export interface ValidityStateProps
 }
 
 /**
- * Optional configuration options for customizing validity behavior and animation lifecycle.
+ * Optional configuration options for customizing validity behavior and its animation lifecycle.
  */
 export interface ValidityStateOptions
     extends
@@ -231,7 +231,7 @@ export type ValidityPhase =
     | TransitioningValidityPhase
 
 /**
- * A CSS class name reflecting the current validity phase.
+ * A CSS classname for toggling the validity phase.
  * 
  * Used for styling based on the lifecycle phase.
  * 
@@ -240,7 +240,7 @@ export type ValidityPhase =
 export type ValidityClassname = `is-${ResolvedValidityPhase}` | `is-${TransitioningValidityPhase} was-${ResolvedValidityPhase}`
 
 /**
- * An API for accessing the resolved validity state, current transition phase, associated CSS class name, and animation event handlers.
+ * An API for accessing the resolved validity state, current transition phase, associated CSS classname, and animation event handlers.
  * 
  * @template TElement The type of the target DOM element.
  */
@@ -293,7 +293,7 @@ export interface ValidityState<TElement extends Element = HTMLElement>
     validityPhase     : FeedbackState<boolean | null, ValidityPhase, ValidityClassname, TElement>['transitionPhase']
     
     /**
-     * A CSS class name reflecting the current validity phase.
+     * A CSS classname for toggling the validity phase.
      * 
      * Possible values:
      * - `'is-valid'`

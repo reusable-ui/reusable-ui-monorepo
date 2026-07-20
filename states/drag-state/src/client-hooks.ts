@@ -145,7 +145,7 @@ const dragStateDefinition : DragStateDefinition = {
 };
 
 /**
- * Resolves the drag state, current transition phase, associated CSS class name, and animation event handlers
+ * Resolves the drag state, current transition phase, associated CSS classname, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  * 
  * - Supports controlled drag state, when `dragged` is set to `true` or `false`.
@@ -154,8 +154,8 @@ const dragStateDefinition : DragStateDefinition = {
  * @template TElement The type of the target DOM element.
  * 
  * @param props The component props that may include a controlled `dragged` value, derived `computedDrag` value, and `onDragUpdate` callback.
- * @param options An optional configuration for customizing drag/drop behavior and animation lifecycle.
- * @returns The resolved drag/drop state, current transition phase, associated CSS class name, and animation event handlers.
+ * @param options An optional configuration for customizing drag/drop behavior and its animation lifecycle.
+ * @returns The resolved drag/drop state, current transition phase, associated CSS classname, and animation event handlers.
  * 
  * @example
  * ```tsx

@@ -46,7 +46,7 @@ export interface OutlinedVariantOptions {
 }
 
 /**
- * Represents the final resolved outlined state of the component, along with its associated CSS class name.
+ * Represents the final resolved outlined state of the component, along with its associated CSS classname.
  */
 export interface OutlinedVariant {
     /**
@@ -59,7 +59,7 @@ export interface OutlinedVariant {
     outlined           : boolean
     
     /**
-     * A CSS class name reflecting the resolved outlined state.
+     * A CSS classname for toggling the outlined state.
      * 
      * Possible values:
      * - `'is-outlined'`

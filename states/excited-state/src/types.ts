@@ -40,7 +40,7 @@ export interface ExcitedStateProps
 }
 
 /**
- * Optional configuration options for customizing excitement behavior and animation lifecycle.
+ * Optional configuration options for customizing excitement behavior and its animation lifecycle.
  */
 export interface ExcitedStateOptions
     extends
@@ -84,14 +84,14 @@ export interface ExcitedStateOptions
 }
 
 /**
- * A CSS class name reflecting the current excited state.
+ * A CSS classname for triggering the excitement animation.
  * 
  * Used for styling based on the current excited state.
  */
 export type ExcitedClassname = 'is-excited' | 'not-excited'
 
 /**
- * An API for accessing the resolved excited state, associated CSS class name, and animation event handlers.
+ * An API for accessing the resolved excited state, associated CSS classname, and animation event handlers.
  * 
  * @template TElement The type of the target DOM element.
  */
@@ -133,7 +133,7 @@ export interface ExcitedState<TElement extends Element = HTMLElement>
     actualExcited    : ActivityState<boolean, ExcitedClassname, TElement>['actualState']
     
     /**
-     * A CSS class name reflecting the resolved excitement state.
+     * A CSS classname for triggering the excitement animation.
      * 
      * Possible values:
      * - `'is-excited'`

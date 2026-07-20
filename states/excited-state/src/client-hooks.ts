@@ -41,7 +41,7 @@ const excitedStateDefinition : ExcitedStateDefinition = {
 };
 
 /**
- * Resolves the excited state, associated CSS class name, and animation event handlers
+ * Resolves the excited state, associated CSS classname, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  *
  * Supports controlled excitement with automatic re-triggering if the parent
@@ -50,8 +50,8 @@ const excitedStateDefinition : ExcitedStateDefinition = {
  * @template TElement The type of the target DOM element.
  * 
  * @param props The component props that may include a controlled `excited` value and an `onExcitedComplete` callback.
- * @param options An optional configuration for customizing excitement behavior and animation lifecycle.
- * @returns The resolved excited state, associated CSS class name, and animation event handlers.
+ * @param options An optional configuration for customizing excitement behavior and its animation lifecycle.
+ * @returns The resolved excited state, associated CSS classname, and animation event handlers.
  * 
  * @example
  * ```tsx

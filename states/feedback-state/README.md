@@ -101,7 +101,7 @@ export interface OnlineStateProps {
     onOnlineUpdate ?: ValueChangeHandler<boolean, unknown>
 }
 
-/** Options for customizing online state behavior and animation lifecycle. */
+/** Options for customizing online state behavior and its animation lifecycle. */
 export interface OnlineStateOptions extends FeedbackStateOptions<boolean> {
     /** The default online state if `online` prop is not provided. */
     defaultOnline ?: boolean | 'auto'
@@ -157,7 +157,7 @@ export interface OnlineState<TElement extends Element = HTMLElement>
     /** The semantic transition phase (`online`, `offline`, `connecting`, `disconnecting`). */
     onlinePhase     : OnlinePhase
     
-    /** A CSS classname reflecting the current online phase. */
+    /** A CSS classname for toggling the online phase. */
     onlineClassname : OnlineClassname
 }
 
@@ -320,7 +320,7 @@ export interface LockedStateProps {
     onLockedUpdate ?: ValueChangeHandler<boolean, unknown>
 }
 
-/** Options for customizing locked state behavior and animation lifecycle. */
+/** Options for customizing locked state behavior and its animation lifecycle. */
 export interface LockedStateOptions extends FeedbackStateOptions<boolean> {
     /** The default locked state if `locked` prop is not provided. */
     defaultLocked ?: boolean | 'auto'
@@ -376,7 +376,7 @@ export interface LockedState<TElement extends Element = HTMLElement>
     /** The semantic transition phase (`locked`, `unlocked`, `locking`, `unlocking`). */
     lockedPhase     : LockedPhase
     
-    /** A CSS classname reflecting the current locked phase. */
+    /** A CSS classname for toggling the locked phase. */
     lockedClassname : LockedClassname
 }
 

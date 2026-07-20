@@ -58,5 +58,3 @@
 "implementators" => "implementors"
 
 "` state changes away from" => "` prop changes away from"
-
-"A CSS class name reflecting the current" => "A CSS class name for triggering the"

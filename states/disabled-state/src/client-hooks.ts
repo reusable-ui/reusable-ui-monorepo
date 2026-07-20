@@ -119,7 +119,7 @@ const disabledStateDefinition : DisabledStateDefinition = {
 };
 
 /**
- * Resolves the enabled/disabled state, current transition phase, associated CSS class name, and animation event handlers
+ * Resolves the enabled/disabled state, current transition phase, associated CSS classname, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  * 
  * - Supports controlled disabled state.
@@ -128,8 +128,8 @@ const disabledStateDefinition : DisabledStateDefinition = {
  * @template TElement The type of the target DOM element.
  * 
  * @param props The component props that may include a controlled `disabled` value, contextual `cascadeDisabled` value, and `onDisabledUpdate` callback.
- * @param options An optional configuration for customizing enabled/disabled behavior and animation lifecycle.
- * @returns The resolved enabled/disabled state, current transition phase, associated CSS class name, and animation event handlers.
+ * @param options An optional configuration for customizing enabled/disabled behavior and its animation lifecycle.
+ * @returns The resolved enabled/disabled state, current transition phase, associated CSS classname, and animation event handlers.
  * 
  * @example
  * ```tsx

@@ -97,14 +97,14 @@ export const useResolvedTheme = <TTheme extends string = BasicTheme>(props: Them
 
 
 /**
- * Resolves the theme value along with its associated CSS class name,
+ * Resolves the theme value along with its associated CSS classname,
  * based on component props, optional default configuration, and parent context.
  * 
  * @template TTheme Commonly `'primary'`, `'secondary'`, `'success'`, `'info'`, `'warning'`, `'danger'`, `'light'`, `'dark'`
  * 
  * @param props The component props that may include a `theme` value.
  * @param options An optional configuration specifying a default theme when no `theme` prop is explicitly provided.
- * @returns The resolved theme value along with its associated CSS class name.
+ * @returns The resolved theme value along with its associated CSS classname.
  * 
  * @example
  * ```tsx

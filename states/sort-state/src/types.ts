@@ -157,7 +157,7 @@ export interface SortStateProps<TItemElement extends Element = HTMLElement, TSor
 }
 
 /**
- * Optional configuration options for customizing sort transition behavior and animation lifecycle.
+ * Optional configuration options for customizing sort transition behavior and its animation lifecycle.
  */
 export interface SortStateOptions
     extends
@@ -192,7 +192,7 @@ export interface SortStateOptions
 }
 
 /**
- * A CSS class name for triggering the sorting animation.
+ * A CSS classname for triggering the sorting animation.
  * 
  * Used for styling based on the current sorting activity status.
  */
@@ -248,7 +248,7 @@ export interface SortOffset {
  */
 
 /**
- * An API for accessing the current sorting activity status, associated CSS class name, and animation event handlers.
+ * An API for accessing the current sorting activity status, associated CSS classname, and animation event handlers.
  * 
  * @template TElement The type of the target DOM element.
  */
@@ -292,7 +292,7 @@ export interface SortState<TElement extends Element = HTMLElement>
     sortOffsets   : Map<Key, SortOffset>
     
     /**
-     * A CSS class name for triggering the sorting animations.
+     * A CSS classname for triggering the sorting animation.
      * 
      * Possible values:
      * - `'is-sorting'`

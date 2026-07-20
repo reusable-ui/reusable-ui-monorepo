@@ -81,7 +81,7 @@ export interface LikeStateProps extends EphemeralStateProps {
     // Extend with custom props if needed.
 }
 
-/** Options for customizing like/unlike behavior and animation lifecycle. */
+/** Options for customizing like/unlike behavior and its animation lifecycle. */
 export interface LikeStateOptions extends EphemeralStateOptions {
     // Extend with custom options if needed.
 }
@@ -89,7 +89,7 @@ export interface LikeStateOptions extends EphemeralStateOptions {
 /** Activity types for like interactions. */
 export type LikeActivity = 'like' | 'unlike'
 
-/** Semantic CSS classnames tied to like/unlike activities. */
+/** A CSS classname for triggering the like/unlike animation. */
 export type LikeClassname = 'is-liking' | 'is-unliking' | 'is-idle'
 
 /** Private definition for like/unlike state behavior. */

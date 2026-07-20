@@ -50,7 +50,7 @@ yarn add @reusable-ui/press-state
 
 ### `usePressState(props, options?)`
 
-Resolves the press state, current transition phase, associated CSS class name, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
+Resolves the press state, current transition phase, associated CSS classname, and animation event handlers based on component props, optional default configuration, and animation lifecycle.
 
 - Supports controlled press state, when `pressed` is set to `true` or `false`.
 - Supports diagnostic mode, when `pressed` is set to `'auto'`, which derives the effective press from `computedPress`.

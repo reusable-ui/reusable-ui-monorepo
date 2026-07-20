@@ -125,14 +125,14 @@ export function useResolvedSize<TSize extends string = BasicSize>(props: SizeVar
 
 
 /**
- * Resolves the size value along with its associated CSS class name,
+ * Resolves the size value along with its associated CSS classname,
  * based on component props, default configuration, and parent context.
  * 
  * @template TSize Commonly `'sm'`, `'md'`, `'lg'`
  * 
  * @param props The component props that may include a `size` value.
  * @param options A required configuration specifying a default size when no `size` prop is explicitly provided.
- * @returns The resolved size value along with its associated CSS class name.
+ * @returns The resolved size value along with its associated CSS classname.
  * 
  * @example
  * ```tsx
@@ -169,11 +169,11 @@ export function useResolvedSize<TSize extends string = BasicSize>(props: SizeVar
 export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVariantProps<TSize>, options: SizeVariantOptions<TSize>): SizeVariant<TSize>;
 
 /**
- * Resolves the size value along with its associated CSS class name,
+ * Resolves the size value along with its associated CSS classname,
  * based on component props and parent context.
  * 
  * @param props The component props that may include a `size` value.
- * @returns The resolved size value along with its associated CSS class name.
+ * @returns The resolved size value along with its associated CSS classname.
  * 
  * @example
  * ```tsx

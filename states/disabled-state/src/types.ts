@@ -84,7 +84,7 @@ export interface DisabledStateProps
 }
 
 /**
- * Optional configuration options for customizing enabled/disabled behavior and animation lifecycle.
+ * Optional configuration options for customizing enabled/disabled behavior and its animation lifecycle.
  */
 export interface DisabledStateOptions
     extends
@@ -170,14 +170,14 @@ export type DisabledPhase =
     | TransitioningDisabledPhase
 
 /**
- * A CSS class name reflecting the current enabled/disabled phase.
+ * A CSS classname for toggling the enabled/disabled phase.
  * 
  * Used for styling based on the lifecycle phase.
  */
 export type DisabledClassname = `is-${DisabledPhase}`
 
 /**
- * An API for accessing the resolved enabled/disabled state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
+ * An API for accessing the resolved enabled/disabled state, current transition phase, associated CSS classname, change dispatcher, and animation event handlers.
  * 
  * @template TElement The type of the target DOM element.
  */
@@ -228,7 +228,7 @@ export interface DisabledState<TElement extends Element = HTMLElement>
     disabledPhase     : FeedbackState<boolean, DisabledPhase, DisabledClassname, TElement>['transitionPhase']
     
     /**
-     * A CSS class name reflecting the current enabled/disabled phase.
+     * A CSS classname for toggling the enabled/disabled phase.
      * 
      * Possible values:
      * - `'is-disabled'`

@@ -104,7 +104,7 @@ export interface InteractionStateChangeDispatcherOptions<TState extends {} | nul
 }
 
 /**
- * Options for customizing interaction-based behavior and animation lifecycle.
+ * Options for customizing interaction-based behavior and its animation lifecycle.
  * 
  * These options are intended to be static for the lifetime of each component.
  * They define how interaction states initialize and synchronize with the animation system.
@@ -217,7 +217,7 @@ export interface InteractionStateDefinition<TDeclarativeState extends {} | null,
 }
 
 /**
- * An API for accessing the resolved state, current transition phase, associated CSS class name, change dispatcher, and animation event handlers.
+ * An API for accessing the resolved state, current transition phase, associated CSS classname, change dispatcher, and animation event handlers.
  * 
  * This interface represents the common contract returned by all interaction-based state hooks.
  * 

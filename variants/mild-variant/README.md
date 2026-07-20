@@ -22,7 +22,7 @@ yarn add @reusable-ui/mild-variant
 
 ### `useMildVariant(props, options)`
 
-Resolves the mild state along with its associated CSS class name, based on component props, optional default configuration, and parent context.
+Resolves the mild state along with its associated CSS classname, based on component props, optional default configuration, and parent context.
 
 #### 💡 Usage Example
 

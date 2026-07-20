@@ -119,7 +119,7 @@ const readOnlyStateDefinition : ReadOnlyStateDefinition = {
 };
 
 /**
- * Resolves the editable/read-only state, current transition phase, associated CSS class name, and animation event handlers
+ * Resolves the editable/read-only state, current transition phase, associated CSS classname, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  * 
  * - Supports controlled read-only state.
@@ -128,8 +128,8 @@ const readOnlyStateDefinition : ReadOnlyStateDefinition = {
  * @template TElement The type of the target DOM element.
  * 
  * @param props The component props that may include a controlled `readOnly` value, contextual `cascadeReadOnly` value, and `onReadOnlyUpdate` callback.
- * @param options An optional configuration for customizing editable/read-only behavior and animation lifecycle.
- * @returns The resolved editable/read-only state, current transition phase, associated CSS class name, and animation event handlers.
+ * @param options An optional configuration for customizing editable/read-only behavior and its animation lifecycle.
+ * @returns The resolved editable/read-only state, current transition phase, associated CSS classname, and animation event handlers.
  * 
  * @example
  * ```tsx

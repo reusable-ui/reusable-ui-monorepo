@@ -216,7 +216,7 @@ const validityStateDefinition : ValidityStateDefinition = {
 };
 
 /**
- * Resolves the validity state, current transition phase, associated CSS class name, and animation event handlers
+ * Resolves the validity state, current transition phase, associated CSS classname, and animation event handlers
  * based on component props, optional default configuration, and animation lifecycle.
  * 
  * - Supports controlled validity state, when `validity` is set to `true`, `false`, or `null`.
@@ -237,8 +237,8 @@ const validityStateDefinition : ValidityStateDefinition = {
  *   - A derived `computedValidity` value used when local and parent validity are `'auto'`.
  *   - `enableValidation` and `cascadeValidation` flags to control validation behavior.
  *   - An `onValidityUpdate` callback for observing validity changes.
- * @param options An optional configuration for customizing validity behavior and animation lifecycle.
- * @returns The resolved validity state, current transition phase, associated CSS class name, and animation event handlers.
+ * @param options An optional configuration for customizing validity behavior and its animation lifecycle.
+ * @returns The resolved validity state, current transition phase, associated CSS classname, and animation event handlers.
  * 
  * @example
  * ```tsx

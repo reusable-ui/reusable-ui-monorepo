@@ -1,11 +1,11 @@
 /**
- * Resolves the CSS class name for the given outlined state.
+ * Resolves the CSS classname for the given outlined state.
  * 
  * - Returns `'is-outlined'` if `isOutlined` is `true`.
  * - Returns `'not-outlined'` if `isOutlined` is `false`.
  * 
  * @param isOutlined A boolean flag indicating whether the component should appear outlined.
- * @returns A CSS class name reflecting the outlined state.
+ * @returns A CSS classname reflecting the outlined state.
  */
 export const getOutlinedClassname = (isOutlined: boolean): 'is-outlined' | 'not-outlined' => {
     // Return the corresponding class name:

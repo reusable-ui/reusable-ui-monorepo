@@ -108,7 +108,7 @@ export interface SelectedChangeDispatcherOptions<TChangeEvent = unknown> {
     onInternalChange ?: ValueChangeHandler<boolean, TChangeEvent>
 }
 
-/** Options for customizing selected state behavior and animation lifecycle. */
+/** Options for customizing selected state behavior and its animation lifecycle. */
 export interface SelectedStateOptions extends Omit<InteractionStateOptions<boolean>, 'defaultState'> {
     /** The initial selected state if `defaultSelected` prop is not provided. */
     defaultSelected ?: boolean
@@ -165,7 +165,7 @@ export interface SelectedState<TElement extends Element = HTMLElement, TChangeEv
     /** The semantic transition phase (`selected`, `unselected`, `selecting`, `deselecting`). */
     selectedPhase          : SelectedPhase
     
-    /** A CSS classname reflecting the current selected phase. */
+    /** A CSS classname for toggling the selected phase. */
     selectedClassname      : SelectedClassname
     
     /** Requests a change to the selected state. */
@@ -370,7 +370,7 @@ export interface SelectedChangeDispatcherOptions<TChangeEvent = unknown> {
     onInternalChange ?: ValueChangeHandler<boolean, TChangeEvent>
 }
 
-/** Options for customizing selected state behavior and animation lifecycle. */
+/** Options for customizing selected state behavior and its animation lifecycle. */
 export interface SelectedStateOptions extends Omit<InteractionStateOptions<boolean>, 'defaultState'> {
     /** The initial selected state if `defaultSelected` prop is not provided. */
     defaultSelected ?: boolean

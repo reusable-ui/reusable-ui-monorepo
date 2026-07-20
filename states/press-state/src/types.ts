@@ -114,7 +114,7 @@ export interface PressStateProps
 }
 
 /**
- * Optional configuration options for customizing press/release behavior and animation lifecycle.
+ * Optional configuration options for customizing press/release behavior and its animation lifecycle.
  */
 export interface PressStateOptions
     extends
@@ -295,14 +295,14 @@ export type PressPhase =
     | TransitioningPressPhase
 
 /**
- * A CSS class name reflecting the current press/release phase.
+ * A CSS classname for toggling the press/release phase.
  * 
  * Used for styling based on the lifecycle phase.
  */
 export type PressClassname = `is-${PressPhase}`
 
 /**
- * An API for accessing the resolved press/release state, current transition phase, associated CSS class name, and animation event handlers.
+ * An API for accessing the resolved press/release state, current transition phase, associated CSS classname, and animation event handlers.
  * 
  * @template TElement The type of the target DOM element.
  */
@@ -353,7 +353,7 @@ export interface PressState<TElement extends Element = HTMLElement>
     pressPhase          : FeedbackState<boolean, PressPhase, PressClassname, TElement>['transitionPhase']
     
     /**
-     * A CSS class name reflecting the current press/release phase.
+     * A CSS classname for toggling the press/release phase.
      * 
      * Possible values:
      * - `'is-released'`
