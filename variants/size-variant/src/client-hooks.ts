@@ -28,7 +28,7 @@ import {
 
 // Utilities:
 import {
-    getSizeClassname,
+    resolveSizeClassname,
 }                           from './internal-utilities.js'
 
 // Contexts:
@@ -215,6 +215,6 @@ export function useSizeVariant<TSize extends string = BasicSize>(props: SizeVari
     // Return resolved size attributes:
     return {
         size          : effectiveSize,
-        sizeClassname : getSizeClassname<TSize>(effectiveSize),
+        sizeClassname : resolveSizeClassname<TSize>(effectiveSize),
     } satisfies SizeVariant<TSize>;
 };

@@ -26,7 +26,7 @@ import {
 
 // Utilities:
 import {
-    getOutlinedClassname,
+    resolveOutlinedClassname,
 }                           from './internal-utilities.js'
 
 // Contexts:
@@ -144,6 +144,6 @@ export const useOutlinedVariant = (props: OutlinedVariantProps, options?: Outlin
     // Return resolved outlined attributes:
     return {
         outlined          : effectiveIsOutlined,
-        outlinedClassname : getOutlinedClassname(effectiveIsOutlined),
+        outlinedClassname : resolveOutlinedClassname(effectiveIsOutlined),
     } satisfies OutlinedVariant;
 };

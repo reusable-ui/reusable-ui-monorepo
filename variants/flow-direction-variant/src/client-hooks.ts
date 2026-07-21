@@ -27,7 +27,7 @@ import {
 
 // Utilities:
 import {
-    flowDirectionClassnameMap,
+    resolveFlowDirectionClassname,
 }                           from './internal-utilities.js'
 
 // Contexts:
@@ -150,6 +150,6 @@ export const useFlowDirectionVariant = (props: FlowDirectionVariantProps, option
     // Return resolved flow direction attributes:
     return {
         flowDirection          : effectiveFlowDirection,
-        flowDirectionClassname : flowDirectionClassnameMap[effectiveFlowDirection],
+        flowDirectionClassname : resolveFlowDirectionClassname(effectiveFlowDirection),
     } satisfies FlowDirectionVariant;
 };

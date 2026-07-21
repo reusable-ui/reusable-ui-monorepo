@@ -27,7 +27,7 @@ import {
 
 // Utilities:
 import {
-    orientationClassnameMap,
+    resolveOrientationClassname,
 }                           from './internal-utilities.js'
 
 // Contexts:
@@ -164,7 +164,7 @@ export const useOrientationVariant = (props: OrientationVariantProps, options?: 
     // Return resolved orientation attributes:
     return {
         orientation          : effectiveOrientation,
-        orientationClassname : orientationClassnameMap[effectiveOrientation],
+        orientationClassname : resolveOrientationClassname(effectiveOrientation),
         isOrientationInline,
         isOrientationBlock   : !isOrientationInline,
         ariaOrientation      : isOrientationInline ? 'horizontal' : 'vertical',

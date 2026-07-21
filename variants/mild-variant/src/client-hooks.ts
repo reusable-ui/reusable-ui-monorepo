@@ -26,7 +26,7 @@ import {
 
 // Utilities:
 import {
-    getMildClassname,
+    resolveMildClassname,
 }                           from './internal-utilities.js'
 
 // Contexts:
@@ -144,6 +144,6 @@ export const useMildVariant = (props: MildVariantProps, options?: MildVariantOpt
     // Return resolved mild attributes:
     return {
         mild          : effectiveIsMild,
-        mildClassname : getMildClassname(effectiveIsMild),
+        mildClassname : resolveMildClassname(effectiveIsMild),
     } satisfies MildVariant;
 };

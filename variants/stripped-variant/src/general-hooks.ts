@@ -23,7 +23,7 @@ import {
 
 // Utilities:
 import {
-    getStrippedClassname,
+    resolveStrippedClassname,
 }                           from './internal-utilities.js'
 
 
@@ -129,6 +129,6 @@ export const useStrippedVariant = <TStripped extends true | string = true>(props
     // Return resolved stripped attributes:
     return {
         stripped          : effectiveStripped,
-        strippedClassname : getStrippedClassname<TStripped>(effectiveStripped),
+        strippedClassname : resolveStrippedClassname<TStripped>(effectiveStripped),
     } satisfies StrippedVariant<TStripped>;
 };

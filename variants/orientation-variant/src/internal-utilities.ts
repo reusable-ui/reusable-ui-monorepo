@@ -6,9 +6,14 @@ import {
 
 
 /**
- * Maps each orientation to its corresponding CSS classname.
+ * Resolves the CSS classname for the given orientation.
+ * 
+ * - Returns `'o-inline'` for `'inline'`.
+ * - Returns `'o-block'` for `'block'`.
+ * 
+ * @param orientation The orientation to resolve.
+ * @returns A CSS classname reflecting the orientation.
  */
-export const orientationClassnameMap : Record<Orientation, `o-${Orientation}`> = {
-    'inline' : 'o-inline',
-    'block'  : 'o-block',
+export const resolveOrientationClassname = (orientation: Orientation): `o-${Orientation}` => {
+    return orientation === 'inline' ? 'o-inline' : 'o-block';
 };

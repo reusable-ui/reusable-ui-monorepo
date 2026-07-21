@@ -6,46 +6,13 @@ import {
 
 
 /**
- * Maps each size to its corresponding CSS classname.
- */
-const sizeClassnameMap : Record<BasicSize | (string & {}), `s-${BasicSize | (string & {})}`> = {
-    'xs'  : 's-xs',
-    'sm'  : 's-sm',
-    'md'  : 's-md',
-    'lg'  : 's-lg',
-    'xl'  : 's-xl',
-    '1em' : 's-1em',
-    '1lh' : 's-1lh',
-};
-
-/**
- * Resolves and caches the CSS classname for the given size.
- * 
- * - Returns the cached class name if available.
- * - If not cached, computes `s-${size}`, stores it, and returns the result.
+ * Resolves the CSS classname for the given size.
  * 
  * @template TSize Commonly `'sm'`, `'md'`, `'lg'`
  * 
- * @param size The size token to resolve, e.g. `'sm'`, `'md'`, `'lg'`, or custom value.
- * @returns A CSS classname in the format `s-${size}`.
+ * @param size The size token to resolve, e.g. `'sm'`, `'md'`, `'lg'`, or a custom value.
+ * @returns A CSS classname reflecting the size.
  */
-export const getSizeClassname = <TSize extends string = BasicSize>(size: TSize): `s-${TSize}` => {
-    // Return cached class name if available:
-    const cachedClassname = sizeClassnameMap[size];
-    if (cachedClassname !== undefined) return cachedClassname as `s-${TSize}`;
-    
-    
-    
-    // Compute the new value:
-    const computedClassname : `s-${TSize}` = `s-${size}`;
-    
-    
-    
-    // Store the new value:
-    sizeClassnameMap[size] = computedClassname;
-    
-    
-    
-    // Return the computed value:
-    return computedClassname;
+export const resolveSizeClassname = <TSize extends string = BasicSize>(size: TSize): `s-${TSize}` => {
+    return `s-${size}`;
 };

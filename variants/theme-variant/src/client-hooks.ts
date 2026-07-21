@@ -27,7 +27,7 @@ import {
 
 // Utilities:
 import {
-    getThemeClassname,
+    resolveThemeClassname,
 }                           from './internal-utilities.js'
 
 // Contexts:
@@ -146,6 +146,6 @@ export const useThemeVariant = <TTheme extends string = BasicTheme>(props: Theme
     // Return resolved theme attributes:
     return {
         theme          : effectiveTheme,
-        themeClassname : getThemeClassname<TTheme>(effectiveTheme),
+        themeClassname : resolveThemeClassname<TTheme>(effectiveTheme),
     } satisfies ThemeVariant<TTheme>;
 };

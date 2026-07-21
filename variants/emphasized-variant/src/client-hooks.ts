@@ -26,7 +26,7 @@ import {
 
 // Utilities:
 import {
-    getEmphasizedClassname,
+    resolveEmphasizedClassname,
 }                           from './internal-utilities.js'
 
 // Contexts:
@@ -144,6 +144,6 @@ export const useEmphasizedVariant = (props: EmphasizedVariantProps, options?: Em
     // Return resolved emphasized attributes:
     return {
         emphasized          : effectiveIsEmphasized,
-        emphasizedClassname : getEmphasizedClassname(effectiveIsEmphasized),
+        emphasizedClassname : resolveEmphasizedClassname(effectiveIsEmphasized),
     } satisfies EmphasizedVariant;
 };

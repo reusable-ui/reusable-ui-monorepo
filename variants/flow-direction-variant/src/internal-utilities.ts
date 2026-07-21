@@ -6,9 +6,14 @@ import {
 
 
 /**
- * Maps each flow direction to its corresponding CSS classname.
+ * Resolves the CSS classname for the given flow direction.
+ * 
+ * - Returns `'f-start'` for `'start'`.
+ * - Returns `'f-end'` for `'end'`.
+ * 
+ * @param flowDirection The flow direction to resolve.
+ * @returns A CSS classname reflecting the flow direction.
  */
-export const flowDirectionClassnameMap : Record<FlowDirection, `f-${FlowDirection}`> = {
-    'start' : 'f-start',
-    'end'   : 'f-end',
+export const resolveFlowDirectionClassname = (flowDirection: FlowDirection): `f-${FlowDirection}` => {
+    return flowDirection === 'start' ? 'f-start' : 'f-end';
 };
