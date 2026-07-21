@@ -24,7 +24,7 @@ import {
 
 
 
-/** Resolves the semantic activity classname for sorting activity status behavior. */
+/** Resolves the semantic activity classname for sort state behavior. */
 export const resolveSortClassname = ({ activity }: ResolveEphemeralClassnameArgs<SortActivity, SortStateProps<Element, unknown>, SortStateOptions, SortStateDefinition>): SortClassname => {
     return (activity !== undefined) ? 'is-sorting' : 'not-sorting';
 };
