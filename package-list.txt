@@ -214,6 +214,7 @@ For hypen character, use standard hyphen (-) instead of non-breaking hyphen (‑
 @reusable-ui/feedback-state         non_peer        BASE
 @reusable-ui/interaction-state      non_peer        BASE
 
+@reusable-ui/sort-state                             EPHEMERAL_BASED
 @reusable-ui/excited-state                          ACTIVITY_BASED
 @reusable-ui/disabled-state                         FEEDBACK_BASED
 @reusable-ui/read-only-state                        FEEDBACK_BASED
@@ -222,13 +223,13 @@ For hypen character, use standard hyphen (-) instead of non-breaking hyphen (‑
 @reusable-ui/press-state                            FEEDBACK_BASED
 @reusable-ui/validity-state                         FEEDBACK_BASED
 @reusable-ui/drag-state                             FEEDBACK_BASED
-@reusable-ui/sort-state                             FEEDBACK_BASED
 @reusable-ui/active-state                           INTERACTION_BASED
 @reusable-ui/collapse-state                         INTERACTION_BASED
 @reusable-ui/view-state                             INTERACTION_BASED
 
 // Reusable-ui effects:
 @reusable-ui/filter-effect          non_peer
+@reusable-ui/sort-effect            non_peer
 @reusable-ui/excited-effect         non_peer
 @reusable-ui/disabled-effect        non_peer
 @reusable-ui/focus-effect           non_peer
@@ -236,7 +237,6 @@ For hypen character, use standard hyphen (-) instead of non-breaking hyphen (‑
 @reusable-ui/press-effect           non_peer
 @reusable-ui/validity-effect        non_peer
 @reusable-ui/drag-effect            non_peer
-@reusable-ui/sort-effect            non_peer
 @reusable-ui/active-effect          non_peer
 @reusable-ui/collapse-effect        non_peer
 @reusable-ui/view-effect            non_peer

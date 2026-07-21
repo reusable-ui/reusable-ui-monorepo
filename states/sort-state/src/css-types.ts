@@ -24,7 +24,7 @@ import {
  */
 export interface SortStateVars {
     /**
-     * References an animation used during sorting actions.
+     * References an animation used during sorting activities.
      * It becomes invalid (`unset`) when no sorting animation is running.
      * 
      * Typically, this variable is not consumed directly.
@@ -137,7 +137,7 @@ export interface SortStateVars {
  */
 export interface CssSortStateOptions {
     /**
-     * Defines the animation to apply during sorting actions.
+     * Defines the animation to apply during sorting activities.
      * 
      * When the `stagedSortData` prop changes, the currently running animation is allowed to complete gracefully—
      * preventing abrupt interruptions or visual glitches.
@@ -150,13 +150,13 @@ export interface CssSortStateOptions {
 
 
 /**
- * Provides a CSS API for conditionally apply the sorting transition whenever a sorting action occurs.
+ * Provides a CSS API for conditionally apply the sorting transition whenever a sorting activity occurs.
  */
 export interface CssSortState {
     /**
-     * Generates CSS rules that conditionally apply the sorting transition whenever a sorting action occurs.
+     * Generates CSS rules that conditionally apply the sorting transition whenever a sorting activity occurs.
      * 
-     * Typically used to toggle animation variables during sorting actions.
+     * Typically used to toggle animation variables during sorting activities.
      */
     sortStateRule : Lazy<CssRule>
     
@@ -164,7 +164,7 @@ export interface CssSortState {
      * Exposes sort-related CSS variables for conditional animation.
      * 
      * Includes:
-     * - `sortingAnimation`: Active during sorting actions.
+     * - `sortingAnimation`: Active during sorting activities.
      * 
      * ⚠️ **Caution**: The `sortingAnimation` variable becomes invalid when the component is idle.
      * If used improperly, it can invalidate the entire CSS declaration.

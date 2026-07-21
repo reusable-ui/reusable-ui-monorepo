@@ -8,31 +8,25 @@ import {
 import {
     type SortStateProps,
     type SortStateOptions,
+    type SortActivity,
     type SortClassname,
     type SortOffset,
 }                           from './types.js'
 import {
-    type SortPhase,
     type SortStateDefinition,
 }                           from './internal-types.js'
 
 // Reusable-ui states:
 import {
     // Types:
-    type ResolveTransitionPhaseArgs,
-    type ResolveTransitionClassnameArgs,
-}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
+    type ResolveEphemeralClassnameArgs,
+}                           from '@reusable-ui/ephemeral-state'     // Animates short-lived UI feedback whenever an activity or status change occurs, making activity-driven state changes feel visible and intuitive.
 
 
-
-/** Resolves the semantic transition phase for sorting activity status behavior. */
-export const resolveSortTransitionPhase = ({ isTransitioning }: ResolveTransitionPhaseArgs<symbol, SortStateProps<Element, unknown>, SortStateOptions, SortStateDefinition>): SortPhase => {
-    return isTransitioning ? 'sorting' : 'sorted';
-};
 
 /** Resolves the semantic activity classname for sorting activity status behavior. */
-export const resolveSortActivityClassname = ({ transitionPhase }: ResolveTransitionClassnameArgs<symbol, SortPhase, SortStateProps<Element, unknown>, SortStateOptions, SortStateDefinition>): SortClassname => {
-    return (transitionPhase === 'sorting') ? 'is-sorting' : 'not-sorting';
+export const resolveSortClassname = ({ activity }: ResolveEphemeralClassnameArgs<SortActivity, SortStateProps<Element, unknown>, SortStateOptions, SortStateDefinition>): SortClassname => {
+    return (activity !== undefined) ? 'is-sorting' : 'not-sorting';
 };
 
 

@@ -18,17 +18,17 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    usingFeedbackState,
-}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
+    usingEphemeralState,
+}                           from '@reusable-ui/ephemeral-state'     // Animates short-lived UI feedback whenever an activity or status change occurs, making activity-driven state changes feel visible and intuitive.
 
 
 
 /**
- * Generates CSS rules that conditionally apply the sorting transition whenever a sorting action occurs,
+ * Generates CSS rules that conditionally apply the sorting transition whenever a sorting activity occurs,
  * and exposes sort-related CSS variables for conditional animation.
  * 
  * @param options An optional configuration for customizing sorting transitions.
- * @returns A CSS API for conditionally apply the sorting transition whenever a sorting action occurs.
+ * @returns A CSS API for conditionally apply the sorting transition whenever a sorting activity occurs.
  *
  * @example
  * ```ts
@@ -101,24 +101,18 @@ import {
  * ```
  */
 export const usingSortState = (options?: CssSortStateOptions): CssSortState => ({
-    sortStateRule : () => usingFeedbackState({
-        // Feedback animations for visual effects whenever a sorting action occurs:
+    sortStateRule : () => usingEphemeralState({
+        // Ephemeral animations for visual effects whenever a sorting activity occurs:
         animations : {
             ifState   : ifSorting,
             variable  : sortStateVars.sortingAnimation,
             animation : options?.sortingAnimation,
         },
         
-        // Factor variables for gradual drivers for activity animation:
+        // Factor variables for gradual drivers that control sorting activity animations:
         factorVar       : sortStateVars.sortFactor,
         factorCondVar   : sortStateVars.sortFactorCond,
         ifInactiveState : ifNotSorting,
-        /*
-        activeFactors   : [
-            // ✅ Implicit final value for `sortFactor`.
-            // It stays at 0 after animation completes (no unsorted illusion).
-        ],
-        */
     }),
     
     sortStateVars,

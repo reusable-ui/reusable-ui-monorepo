@@ -24,19 +24,18 @@ import {
 import {
     type SortStateProps,
     type SortStateOptions,
+    type SortActivity,
     type SortClassname,
     type SortOffset,
     type SortState,
 }                           from './types.js'
 import {
-    type SortPhase,
     type SortStateDefinition,
 }                           from './internal-types.js'
 
 // Utilities:
 import {
-    resolveSortTransitionPhase,
-    resolveSortActivityClassname,
+    resolveSortClassname,
     snapshotElementPositions,
 }                           from './internal-utilities.js'
 
@@ -54,22 +53,21 @@ import {
 // Reusable-ui states:
 import {
     // Hooks:
-    useFeedbackState,
-}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
+    useEphemeralState,
+}                           from '@reusable-ui/ephemeral-state'     // Animates short-lived UI feedback whenever an activity or status change occurs, making activity-driven state changes feel visible and intuitive.
 
 
 
 /** The behavior state definition for sorting activity status management. */
 const sortStateDefinition : SortStateDefinition = {
     // Behavior definitions:
-    defaultAnimationPattern    : 'sorting',                    // Matches animation names for sorting activity.
-    defaultAnimationBubbling   : false,
-    resolveTransitionPhase     : resolveSortTransitionPhase,
-    resolveTransitionClassname : resolveSortActivityClassname, // Resolves classnames.
+    defaultAnimationPattern   : 'sorting',            // Matches animation names for sorting activity.
+    defaultAnimationBubbling  : false,
+    resolveEphemeralClassname : resolveSortClassname, // Resolves classnames.
 };
 
 /**
- * Animates sorting transitions whenever a sorting action occurs, making the changes feel visible and intuitive
+ * Animates sorting transitions whenever a sorting activity occurs, making the changes feel visible and intuitive
  * by animating the items from their original unsorted positions into their new sorted order.
  * 
  * Without this hook, updating items directly (e.g. `setItems(items.toSorted(...))`)
@@ -238,23 +236,13 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
     // - Useful for the initial animation movement from the original unsorted positions to the new sorted positions.
     const [sortOffsets, setSortOffsets] = useState<Map<Key, SortOffset>>(() => new Map<Key, SortOffset>());
     
-    // Animation trigger state:
-    // - A unique pulse value that queues a new sorting animation,
-    //   ensuring that consecutive sort changes always produce a distinct trigger,
-    //   even if the previous animation is still active.
-    const [sortingAnimationTrigger, setSortingAnimationTrigger] = useState<symbol>(() => Symbol());
-    
     // Activity orchestration:
-    const {
-        prevSettledState    : _prevTrigger,   // Unused in this domain.
-        state               : _trigger,       // Unused in this domain.
-        actualState         : _actualTrigger, // Unused in this domain.
-        transitionPhase     : sortPhase,
-        transitionClassname : sortClassname,
+    const [{
+        activity           : sortingActivity,
+        ephemeralClassname : sortClassname,
         ...animationHandlers
-    } = useFeedbackState<
-        symbol,
-        SortPhase,
+    }, setSortActivity] = useEphemeralState<
+        SortActivity,
         SortClassname,
         
         SortStateProps<Element, unknown>,
@@ -265,11 +253,6 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
     >(
         // Props:
         {
-            effectiveState : sortingAnimationTrigger,
-            
-            // Unused in this domain because sort-state has no persistent "sorted" intent (sorting is triggered only by `stagedSortData` changes and runs as a transient state):
-            // onStateUpdate : onSortUpdate,
-            
             /* ...restProps */
         },
         
@@ -354,7 +337,7 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
             
             
             // Queue a new sorting animation:
-            setSortingAnimationTrigger(Symbol());
+            setSortActivity('sorting');
         });
     }, [stagedSortData]);
     
@@ -391,7 +374,7 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
     
     // Return the sorting activity status API:
     return {
-        sorting : (sortPhase === 'sorting'),
+        sorting : (sortingActivity !== undefined),
         sortOffsets,
         sortClassname,
         sortStyles,

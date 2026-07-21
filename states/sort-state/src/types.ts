@@ -15,25 +15,10 @@ import {
 // Reusable-ui states:
 import {
     // Types:
-    type FeedbackStateProps,
-    type FeedbackStateOptions,
-    type FeedbackState,
-}                           from '@reusable-ui/feedback-state'      // Lifecycle-aware feedback state for React, offering reusable hooks for focus, hover, press, and validity.
-
-
-
-/**
- * NOTE:
- * 
- * Sort-state does not expose a `sorted` prop (user intent)
- * to keep the component in a **continuously** sorted condition or to loop the animation indefinitely.
- * Instead, sorting animations are triggered only when the `stagedSortData` prop changes,
- * and they run **once** to transition items into their new order.
- * 
- * For this reason, sort-state uses the -ing form (`is-sorting`, `not-sorting`, `sorting`)
- * to reflect a **transient** activity flag —
- * rather than the -ed form (`sorted`, `actualSorted`) which would imply a **persistent** intent-driven condition.
- */
+    type EphemeralStateProps,
+    type EphemeralStateOptions,
+    type EphemeralState,
+}                           from '@reusable-ui/ephemeral-state'     // Animates short-lived UI feedback whenever an activity or status change occurs, making activity-driven state changes feel visible and intuitive.
 
 
 
@@ -51,7 +36,7 @@ export type SortCommitHandler<TSortData = Array<unknown>> = (stagedSortData: TSo
 /**
  * Props for animating sort transitions of the component's items.
  * 
- * Provides a declarative way to stage and animate item reordering whenever a sorting action occurs,
+ * Provides a declarative way to stage and animate item reordering whenever a sorting activity occurs,
  * along with an optional callback to clear the staged data once it has been committed.
  * 
  * Sorting animations run once when `stagedSortData` changes,
@@ -63,7 +48,7 @@ export type SortCommitHandler<TSortData = Array<unknown>> = (stagedSortData: TSo
 export interface SortStateProps<TItemElement extends Element = HTMLElement, TSortData = Array<unknown>>
     extends
         // Bases:
-        Omit<FeedbackStateProps<boolean>, 'effectiveState' | 'onStateUpdate'> // Currently equivalent to an empty object, reserved for future extensions.
+        EphemeralStateProps // Currently equivalent to an empty object, reserved for future extensions.
 {
     /**
      * References to the sortable item elements, keyed by their stable React `key`.
@@ -162,7 +147,7 @@ export interface SortStateProps<TItemElement extends Element = HTMLElement, TSor
 export interface SortStateOptions
     extends
         // Bases:
-        FeedbackStateOptions<boolean>
+        EphemeralStateOptions
 {
     /**
      * Defines the pattern used to identify sort-related animation names.
@@ -180,7 +165,7 @@ export interface SortStateOptions
      * 
      * Defaults to `'sorting'`.
      */
-    animationPattern  ?: FeedbackStateOptions<boolean>['animationPattern']
+    animationPattern  ?: EphemeralStateOptions['animationPattern']
     
     /**
      * Enables listening to animation events bubbling up from nested child elements.
@@ -188,15 +173,21 @@ export interface SortStateOptions
      * 
      * Defaults to `false` (no bubbling).
      */
-    bubblingAnimation ?: FeedbackStateOptions<boolean>['bubblingAnimation']
+    bubblingAnimation ?: EphemeralStateOptions['bubblingAnimation']
 }
+
+/**
+ * Activity types for sort processes.
+ * - Currently only the "sort" process is available.
+ */
+export type SortActivity = 'sorting'
 
 /**
  * A CSS classname for triggering the sorting animation.
  * 
  * Used for styling based on the current sorting activity status.
  */
-export type SortClassname = 'is-sorting' | 'not-sorting'
+export type SortClassname = `is-${SortActivity}` | `not-${SortActivity}`
 
 /**
  * Represents a relative translation (delta) for a sortable element.
@@ -224,30 +215,6 @@ export interface SortOffset {
 }
 
 /**
- * NOTE:
- * 
- * Unlike intent-driven packages (e.g. disabled-state), sort-state does not include
- * an `actualSorting` flag in its public API.
- * In activity-driven sorting, the trigger for animations is modeled as `symbol`:
- * - `Symbol()` : a unique pulse value that queues a new sorting animation.
- * 
- * Using `symbol` ensures that consecutive `stagedSortData` changes
- * always produce a distinct trigger value, so `useFeedbackState`
- * detects each change reliably. A plain boolean could not re-trigger if set
- * to `true` twice in a row, but a new `Symbol()` guarantees uniqueness.
- * 
- * Internally, `useSortState` still leverages `useFeedbackState`
- * with an **ephemeral** `sorted` value for implementation symmetry with
- * `useDisabledState`. However, only the animation-aware `sorting` flag
- * and its associated classname are exposed.
- * There's no `actualSorting` that driven directly by user's intent for triggering animations,
- * so it is intentionally omitted from the public API to avoid confusion.
- * 
- * The `sortPhase` is also not included since it's a boolean-like activity flag
- * that can be replaced by the more intuitive `sorting`.
- */
-
-/**
  * An API for accessing the current sorting activity status, associated CSS classname, and animation event handlers.
  * 
  * @template TElement The type of the target DOM element.
@@ -255,12 +222,9 @@ export interface SortOffset {
 export interface SortState<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        Omit<FeedbackState<boolean, string, SortClassname, TElement>,
-            | 'prevSettledState'
-            | 'state'
-            | 'actualState'
-            | 'transitionPhase'
-            | 'transitionClassname'
+        Omit<EphemeralState<SortActivity, SortClassname, TElement>,
+            | 'activity'
+            | 'ephemeralClassname'
         >
 {
     /**
@@ -274,7 +238,7 @@ export interface SortState<TElement extends Element = HTMLElement>
      * - `true`  : the sorting transition is currently active
      * - `false` : the sorting transition is idle
      */
-    sorting       : FeedbackState<boolean, string, SortClassname, TElement>['state']
+    sorting       : boolean
     
     /**
      * Translates each sortable element back to its **unsorted position**.
@@ -298,7 +262,7 @@ export interface SortState<TElement extends Element = HTMLElement>
      * - `'is-sorting'`
      * - `'not-sorting'`
      */
-    sortClassname : FeedbackState<boolean, string, SortClassname, TElement>['transitionClassname']
+    sortClassname : EphemeralState<SortActivity, SortClassname, TElement>['ephemeralClassname']
     
     /**
      * Provides inline CSS variables for styling each sortable element,

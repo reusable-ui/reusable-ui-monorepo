@@ -1,7 +1,7 @@
 {
   "name": "@reusable-ui/sort-state",
   "version": "7.0.0",
-  "description": "Animates sorting transitions whenever a sorting action occurs, making the changes feel visible and intuitive.",
+  "description": "Animates sorting transitions whenever a sorting activity occurs, making the changes feel visible and intuitive.",
   "keywords": [
     "sorting",
     "sort",
@@ -59,7 +59,7 @@
     "@cssfn/core": "^4.0.0",
     "@reusable-ui/callbacks": "^7.0.0",
     "@reusable-ui/controllable": "^7.0.0",
-    "@reusable-ui/feedback-state": "^7.0.0",
+    "@reusable-ui/ephemeral-state": "^7.0.0",
     "@reusable-ui/lifecycles": "^7.0.0"
   },
   "peerDependencies": {

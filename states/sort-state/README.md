@@ -1,6 +1,6 @@
 # @reusable-ui/sort-state 📦  
 
-**sort-state** animates sorting transitions in sortable UI components (e.g. lists, galleries, grids) whenever a sorting action occurs.  
+**sort-state** animates sorting transitions in sortable UI components (e.g. lists, galleries, grids) whenever a sorting activity occurs.  
 It makes the changes feel visible and intuitive by animating the items from their original unsorted positions into their new sorted order,
 instead of instantly reordering them with no feedback.  
 
@@ -14,7 +14,7 @@ With **sort-state**, you get:
 - Declarative sorting workflow with staged data and commit/clear callbacks  
 
 ## ✨ Features
-✔ Animated transitions whenever a sorting action occurs  
+✔ Animated transitions whenever a sorting activity occurs  
 ✔ Declarative workflow via staged sort data → commit callback → clear staged data  
 ✔ Queues animations to handle rapid consecutive sorting actions gracefully  
 ✔ Strongly typed CSS variables for safe, expressive styling across SSR and hydration  
@@ -33,7 +33,7 @@ yarn add @reusable-ui/sort-state
 
 ### `useSortState(props, options?)`
 
-Animates sorting transitions whenever a sorting action occurs, making the changes feel visible and intuitive
+Animates sorting transitions whenever a sorting activity occurs, making the changes feel visible and intuitive
 by animating the items from their original unsorted positions into their new sorted order.
 
 Without this hook, updating items directly (e.g. `setItems(items.toSorted(...))`)
@@ -221,7 +221,7 @@ export const componentStyle = () => style({
 
 ### `usingSortState(options?: CssSortStateOptions): CssSortState`
 
-Generates CSS rules that conditionally apply the sorting transition whenever a sorting action occurs,
+Generates CSS rules that conditionally apply the sorting transition whenever a sorting activity occurs,
 and exposes sort-related CSS variables for conditional animation.
 
 #### Supporting Variables (Advanced Use)
