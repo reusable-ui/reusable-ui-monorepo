@@ -210,7 +210,7 @@ const useResolvedBusy = (props: BusyStateProps, options?: BusyStateOptions): boo
     return controlledBusy;
 };
 
-/** Resolves the semantic activity classname for busy behavior. */
+/** Resolves the semantic activity classname for busy state behavior. */
 const resolveBusyActivityClassname = ({ visualState }: ResolveActivityClassnameArgs<boolean, BusyStateProps, BusyStateOptions, BusyStateDefinition>): BusyClassname => {
     return visualState ? 'is-busy' : 'not-busy';
 };
