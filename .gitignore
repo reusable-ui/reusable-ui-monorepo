@@ -9,6 +9,7 @@ capabilities/*/dist/
 variants/*/dist/
 states/*/dist/
 effects/*/dist/
+layouts/*/dist/
 routes/*/dist/
 
 base-components/*/dist/

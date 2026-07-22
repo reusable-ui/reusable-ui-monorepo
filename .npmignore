@@ -17,6 +17,8 @@ states/*/src/
 states/*/__tests__/
 effects/*/src/
 effects/*/__tests__/
+layouts/*/src/
+layouts/*/__tests__/
 routes/*/src/
 routes/*/__tests__/
 
