@@ -44,8 +44,8 @@ These variables are ready-to-use for styling your component’s border.
 | `borderStartEndRadius`   | Resolved border radius on the top-right corner (or top-left in RTL)        |
 | `borderEndStartRadius`   | Resolved border radius on the bottom-left corner (or bottom-right in RTL)  |
 | `borderEndEndRadius`     | Resolved border radius on the bottom-right corner (or bottom-left in RTL)  |
-| `borderInlineBaseWidth`  | Resolved horizontal border width used for general-purpose styling          |
-| `borderBlockBaseWidth`   | Resolved vertical border width used for general-purpose styling            |
+| `borderInlineBaseWidth`  | Resolved inline-axis border width used for general-purpose styling         |
+| `borderBlockBaseWidth`   | Resolved block-axis border width used for general-purpose styling          |
 
 You can further adjust `borderColor` using CSS color functions:
 Example: `oklch(from ${borderColor} l c h / calc(alpha * 0.25))`
@@ -153,8 +153,9 @@ export const componentStyle = () => {
             borderColor,
             borderStyle,
             
-            // Use `borderInlineBaseWidth` instead of `borderBlockBaseWidth` because <hr> is horizontal separator:
-            borderWidth: borderInlineBaseWidth,
+            // Use `borderBlockBaseWidth` instead of `borderInlineBaseWidth` because <hr> is horizontal separator:
+            // - Applies to the logical block axis edges (top & bottom in horizontal-tb).
+            borderBlockWidth: borderBlockBaseWidth,
         }),
     });
 };

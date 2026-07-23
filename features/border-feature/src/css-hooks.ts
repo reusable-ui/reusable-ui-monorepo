@@ -199,13 +199,13 @@ export const usingBorderFeature = (options?: CssBorderFeatureOptions): CssBorder
                     
                     
                     /**
-                     * General-purpose horizontal border width used for layout separators or structural dividers.
+                     * General-purpose inline border width used for layout separators or structural dividers.
                      * Not affected by stripped variant.
                      */
                     [borderFeatureVars.borderInlineBaseWidth] : borderInlineWidth,
                     
                     /**
-                     * General-purpose vertical border width used for layout separators or structural dividers.
+                     * General-purpose block border width used for layout separators or structural dividers.
                      * Not affected by stripped variant.
                      */
                     [borderFeatureVars.borderBlockBaseWidth ] : borderBlockWidth,
