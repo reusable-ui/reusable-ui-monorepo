@@ -69,4 +69,7 @@ export const domainOrder = new Set<string>([
 'collapseEffect',
 'activeEffect',
 'viewEffect',
+
+// Layouts:
+'stackedLayout',
 ]);

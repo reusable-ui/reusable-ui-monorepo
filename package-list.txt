@@ -249,6 +249,7 @@ For hypen character, use standard hyphen (-) instead of non-breaking hyphen (‑
 @reusable-ui/pointer-capturable
 
 // Reusable-ui layouts:
+@reusable-ui/stacked-layout
 
 // Reusable-ui routes:
 @reusable-ui/link-compat

@@ -139,6 +139,7 @@ This avoids **hard-coded prefix strings**, reducing the risk of accidental colli
 | defaultCollapseEffectPrefix       | cole  |
 | defaultActiveEffectPrefix         | acte  |
 | defaultViewEffectPrefix           | viewe |
+| defaultStackedLayoutPrefix        | stk   |
 
 ## 📖 Naming Convention Guide
 

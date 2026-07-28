@@ -111,7 +111,7 @@ export interface DomainMetadata {
  * - Derives the PascalCase domain identifier (e.g. 'ColorConfig', 'BorderFeature').
  * - Splits the identifier into:
  *   • `domain` → the leading part (e.g. 'Color', 'Border').
- *   • `group`  → the trailing suffix (e.g. 'Config', 'Variant', 'Feature', 'State', 'Effect').
+ *   • `group`  → the trailing suffix (e.g. 'Config', 'Variant', 'Feature', 'State', 'Effect', 'Layout').
  * - Detects an optional subdomain identifier from the filename (e.g. 'Param', 'Level').
  * - Provides a conditional domain+subdomain string for special cases (e.g. 'TypoConfig' discards domain if subdomain exists).
  * 
@@ -131,7 +131,7 @@ export const getDomainMetadata = (relativeFilename: string): DomainMetadata | nu
     const subdomain    = getSubDomainIdentifier(relativeFilename);
     
     // Extract group suffix (Config, Variant, Feature, State, Effect):
-    const group        = domainIdentifier.match(/(Config|Variant|Feature|State|Effect)$/)?.[1] ?? '';
+    const group        = domainIdentifier.match(/(Config|Variant|Feature|State|Effect|Layout)$/)?.[1] ?? '';
     
     // Extract domain base (remove group suffix):
     const domain       = domainIdentifier.slice(0, -group.length);

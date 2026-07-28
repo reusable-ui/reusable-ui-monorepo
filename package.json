@@ -123,6 +123,7 @@
     "effects/active-effect",
     "effects/collapse-effect",
     "effects/view-effect",
+    "layouts/stacked-layout",
     "routes/link-compat",
     "routes/next-link-compat",
     "routes/router-link-compat",

@@ -92,7 +92,7 @@ export const enforceHookConventions = createRule({
          */
         const isValidHookName = (name: string): boolean => {
             // Loose validation (no domain context available):
-            if (!domainMetadata)  return /^(using|uses)([A-Z][a-z]*)(Config|Variant|Feature|State|Effect)$/.test(name);
+            if (!domainMetadata)  return /^(using|uses)([A-Z][a-z]*)(Config|Variant|Feature|State|Effect|Layout)$/.test(name);
             
             
             

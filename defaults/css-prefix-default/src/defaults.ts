@@ -138,3 +138,8 @@ export const defaultExcitedEffectPrefix        = 'exce'  // exc → exce
 export const defaultCollapseEffectPrefix       = 'cole'  // col → cole
 export const defaultActiveEffectPrefix         = 'acte'  // act → acte
 export const defaultViewEffectPrefix           = 'viewe' // view → viewe, 5 chars allowed for clarity
+
+
+
+// Layouts:
+export const defaultStackedLayoutPrefix        = 'stk' // stacked

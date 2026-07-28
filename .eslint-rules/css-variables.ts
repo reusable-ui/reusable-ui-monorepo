@@ -139,7 +139,7 @@ export const enforceVariableConventions = createRule({
          */
         const isValidVariableGroupName = (name: string): boolean => {
             // Loose validation (no domain context available):
-            if (!domainMetadata)  return /^[a-z]+([A-Z][a-z]*)?(Config|Variant|Feature|State|Effect)(Vars|Expressions|Options)$/.test(name);
+            if (!domainMetadata)  return /^[a-z]+([A-Z][a-z]*)?(Config|Variant|Feature|State|Effect|Layout)(Vars|Expressions|Options)$/.test(name);
             
             
             
