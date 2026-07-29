@@ -131,6 +131,19 @@ export interface StackedLayoutVars {
      *   so all corners activate.
      */
     innerEndCornerFactor        : unknown
+    
+    /**
+     * Binary factor (0 or 1) indicating whether
+     * a **separator border** should be applied
+     * before the current child.
+     * 
+     * - Defaults to `0` (inactive).
+     * - Set to `1` when the child matches `separatorBeforeSelector` (i.e. not the first child).
+     * - Used internally to drive separator border formulas,
+     *   but also available for custom styling
+     *   (e.g. conditional decoration near separators).
+     */
+    separatorBeforeFactor       : unknown
 }
 
 

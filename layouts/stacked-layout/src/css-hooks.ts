@@ -250,16 +250,10 @@ export const usingStackedLayout = (options?: CssStackedLayoutOptions): CssStacke
         }),
         
         stackedSeparatorRule   : () => style({
-            // Reset all side borders to zero-width by default:
-            ...rules(
-                logicalAxes.map((axis) =>
-                    logicalSides.map((side) =>
-                        vars({
-                            [borderFeatureVars[`border${axis}${side}Width`]]: '0px',
-                        })
-                    )
-                )
-            ),
+            // Reset the separator factor to zero by default:
+            ...vars({
+                [stackedLayoutVars.separatorBeforeFactor] : 0,
+            }),
             
             
             
@@ -282,46 +276,49 @@ export const usingStackedLayout = (options?: CssStackedLayoutOptions): CssStacke
              * The table below shows which side borders activate depending on orientation and flow direction.
              * "Active" means the side receives its `separatorBorder*Width`, while "Inactive" means it resolves to `0px`.
              * 
-             * | Flow Direction | Orientation | Axis        | Side       | Gate          | Active Border Side |
-             * |----------------|-------------|-------------|------------|---------------|--------------------|
-             * | Start (+1)     | Block  (+1) | Block  (+1) | Start (+1) | Active   (+1) | Top       Active   |
-             * | Start (+1)     | Block  (+1) | Block  (+1) | End   (-1) | Inactive (-1) | Bottom    Inactive |
-             * | Start (+1)     | Block  (+1) | Inline (-1) | Start (+1) | Inactive (-1) | Left      Inactive |
-             * | Start (+1)     | Block  (+1) | Inline (-1) | End   (-1) | Inactive (-1) | Right     Inactive |
-             * | Start (+1)     | Inline (-1) | Block  (+1) | Start (+1) | Active   (+1) | Top       Inactive |
-             * | Start (+1)     | Inline (-1) | Block  (+1) | End   (-1) | Inactive (-1) | Bottom    Inactive |
-             * | Start (+1)     | Inline (-1) | Inline (-1) | Start (+1) | Active   (+1) | Left      Active   |
-             * | Start (+1)     | Inline (-1) | Inline (-1) | End   (-1) | Inactive (-1) | Right     Inactive |
-             * | End   (-1)     | Block  (+1) | Block  (+1) | Start (+1) | Inactive (-1) | Top       Inactive |
-             * | End   (-1)     | Block  (+1) | Block  (+1) | End   (-1) | Active   (+1) | Bottom    Active   |
-             * | End   (-1)     | Block  (+1) | Inline (-1) | Start (+1) | Inactive (-1) | Left      Inactive |
-             * | End   (-1)     | Block  (+1) | Inline (-1) | End   (-1) | Inactive (-1) | Right     Inactive |
-             * | End   (-1)     | Inline (-1) | Block  (+1) | Start (+1) | Inactive (-1) | Top       Inactive |
-             * | End   (-1)     | Inline (-1) | Block  (+1) | End   (-1) | Inactive (-1) | Bottom    Inactive |
-             * | End   (-1)     | Inline (-1) | Inline (-1) | Start (+1) | Inactive (-1) | Left      Inactive |
-             * | End   (-1)     | Inline (-1) | Inline (-1) | End   (-1) | Active   (+1) | Right     Active   |
+             * | Flow Direction | Orientation | Axis        | Side       | Gate          | Separator Activation |
+             * |----------------|-------------|-------------|------------|---------------|----------------------|
+             * | Start (+1)     | Block  (+1) | Block  (+1) | Start (+1) | Active   (+1) | Top         Active   |
+             * | Start (+1)     | Block  (+1) | Block  (+1) | End   (-1) | Inactive (-1) | Bottom      Inactive |
+             * | Start (+1)     | Block  (+1) | Inline (-1) | Start (+1) | Inactive (-1) | Left        Inactive |
+             * | Start (+1)     | Block  (+1) | Inline (-1) | End   (-1) | Inactive (-1) | Right       Inactive |
+             * | Start (+1)     | Inline (-1) | Block  (+1) | Start (+1) | Active   (+1) | Top         Inactive |
+             * | Start (+1)     | Inline (-1) | Block  (+1) | End   (-1) | Inactive (-1) | Bottom      Inactive |
+             * | Start (+1)     | Inline (-1) | Inline (-1) | Start (+1) | Active   (+1) | Left        Active   |
+             * | Start (+1)     | Inline (-1) | Inline (-1) | End   (-1) | Inactive (-1) | Right       Inactive |
+             * | End   (-1)     | Block  (+1) | Block  (+1) | Start (+1) | Inactive (-1) | Top         Inactive |
+             * | End   (-1)     | Block  (+1) | Block  (+1) | End   (-1) | Active   (+1) | Bottom      Active   |
+             * | End   (-1)     | Block  (+1) | Inline (-1) | Start (+1) | Inactive (-1) | Left        Inactive |
+             * | End   (-1)     | Block  (+1) | Inline (-1) | End   (-1) | Inactive (-1) | Right       Inactive |
+             * | End   (-1)     | Inline (-1) | Block  (+1) | Start (+1) | Inactive (-1) | Top         Inactive |
+             * | End   (-1)     | Inline (-1) | Block  (+1) | End   (-1) | Inactive (-1) | Bottom      Inactive |
+             * | End   (-1)     | Inline (-1) | Inline (-1) | Start (+1) | Inactive (-1) | Left        Inactive |
+             * | End   (-1)     | Inline (-1) | Inline (-1) | End   (-1) | Active   (+1) | Right       Active   |
              * 
              * ### Compact Border Activation (LTR writing mode)
              * 
-             * | Orientation | Flow Direction | Active Border Side |
-             * |-------------|----------------|--------------------|
-             * | Block  (+1) | Start (+1)     | Top                |
-             * | Block  (+1) | End   (-1)     | Bottom             |
-             * | Inline (-1) | Start (+1)     | Left               |
-             * | Inline (-1) | End   (-1)     | Right              |
+             * | Orientation | Flow Direction | Separator Activation |
+             * |-------------|----------------|----------------------|
+             * | Block  (+1) | Start (+1)     | Top                  |
+             * | Block  (+1) | End   (-1)     | Bottom               |
+             * | Inline (-1) | Start (+1)     | Left                 |
+             * | Inline (-1) | End   (-1)     | Right                |
              */
             ...rule(separatorBeforeSelector, {
-                ...rules(
-                    logicalAxes.map((axis) =>
-                        logicalSides.map((side) =>
-                            vars({
-                                [borderFeatureVars[`border${axis}${side}Width`]]:
-                                    `calc(${stackedLayoutVars[`separatorBorder${axis}Width`]} * max(0, ${orientationFactor} * ${axisFactorMap[axis]}) * max(0, ${sideFactorMap[side]} * ${flowDirectionFactor}))`,
-                            })
-                        )
-                    )
-                ),
+                ...vars({
+                    [stackedLayoutVars.separatorBeforeFactor] : 1,
+                }),
             }),
+            ...rules(
+                logicalAxes.map((axis) =>
+                    logicalSides.map((side) =>
+                        vars({
+                            [borderFeatureVars[`border${axis}${side}Width`]]:
+                                `calc(${stackedLayoutVars[`separatorBorder${axis}Width`]} * max(0, ${orientationFactor} * ${axisFactorMap[axis]}) * max(0, ${sideFactorMap[side]} * ${stackedLayoutVars.separatorBeforeFactor} * ${flowDirectionFactor}))`,
+                        })
+                    )
+                )
+            ),
         }),
         
         stackedLayoutVars,
