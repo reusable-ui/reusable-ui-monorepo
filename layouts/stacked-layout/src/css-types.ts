@@ -118,6 +118,9 @@ export interface StackedLayoutVars {
      * - Set to `1` when the child matches the `innerStartCornerSelector` (e.g. `:first-child`).
      * - For the **only child** case, both start and end factors are `1`,
      *   so all corners activate.
+     * - Used internally to drive corner radius formulas,
+     *   but also available for custom styling
+     *   (e.g. conditional decoration near corners).
      */
     innerStartCornerFactor      : unknown
     
@@ -129,6 +132,9 @@ export interface StackedLayoutVars {
      * - Set to `1` when the child matches the `innerEndCornerSelector` (e.g. `:last-child`).
      * - For the **only child** case, both start and end factors are `1`,
      *   so all corners activate.
+     * - Used internally to drive corner radius formulas,
+     *   but also available for custom styling
+     *   (e.g. conditional decoration near corners).
      */
     innerEndCornerFactor        : unknown
     
