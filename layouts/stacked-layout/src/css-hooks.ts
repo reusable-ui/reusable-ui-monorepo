@@ -168,31 +168,28 @@ export const usingStackedLayout = (options?: CssStackedLayoutOptions): CssStacke
         }),
         
         stackedInnerCornerRule : () => style({
-            // Reset all corner radii to square corners by default:
-            ...rules(
-                logicalSides.map((blockSide) =>
-                    logicalSides.map((inlineSide) =>
-                        vars({
-                            [borderFeatureVars[`border${blockSide}${inlineSide}Radius`]]: '0px',
-                        })
-                    )
-                )
-            ),
+            // Reset all corner factors to zero by default:
+            ...vars({
+                [stackedLayoutVars.innerStartCornerFactor] : 0,
+                [stackedLayoutVars.innerEndCornerFactor  ] : 0,
+            }),
             
             
             
             /**
-             * Applies inner corner radii to the *first* and *last* child when activation conditions are met.
+             * Applies inner corner radii to children based on orientation, flow direction, and position.
              * 
              * ### Activation Rules
              * - Matches the configured **orientation** (`block` or `inline`).
              * - Matches the configured **flow direction** (`start` or `end`).
-             * - Matches the target **child position** (first or last).
+             * - Matches the target **child position** (first, last, or only).
              * 
              * ### Behavior
              * - When active, the computed `innerCorner*Radius` is applied to the corresponding corner.
              * - When inactive, the radius resolves to `0px`.
+             * - `innerStartCornerFactor` and `innerEndCornerFactor` act as binary flags (0 or 1).
              * - Factors normally evaluate to `+1` (default) but flip to `-1` for opposite configurations.
+             * - `min(1, …)` ensures that when both factors are set (only child), gates clamp to `1` instead of `2`.
              * - `max(0, …)` ensures inactive formulas clamp to `0`.
              * 
              * ### Active Gate Table (LTR writing mode)
@@ -200,51 +197,54 @@ export const usingStackedLayout = (options?: CssStackedLayoutOptions): CssStacke
              * The table below shows which corners activate depending on orientation, flow direction, and child position.
              * "Active" means the corner receives its `innerCorner*Radius`, while "Inactive" means it resolves to `0px`.
              * 
-             * | Flow Direction | Orientation | Block Side | Inline Side | Gate          | First Child Active Corners | Last Child Active Corners  |
-             * |----------------|-------------|------------|-------------|---------------|----------------------------|----------------------------|
-             * | Start (+1)     | Block  (+1) | Start (+1) | Start (+1)  | Active   (+1) | Top-Left          Active   | Top-Left          Inactive |
-             * | Start (+1)     | Block  (+1) | Start (+1) | End   (-1)  | Active   (+1) | Top-Right         Active   | Top-Right         Inactive |
-             * | Start (+1)     | Block  (+1) | End   (-1) | Start (+1)  | Inactive (-1) | Bottom-Left       Inactive | Bottom-Left       Active   |
-             * | Start (+1)     | Block  (+1) | End   (-1) | End   (-1)  | Inactive (-1) | Bottom-Right      Inactive | Bottom-Right      Active   |
-             * | Start (+1)     | Inline (-1) | Start (+1) | Start (+1)  | Active   (+1) | Left-Top          Active   | Left-Top          Inactive |
-             * | Start (+1)     | Inline (-1) | Start (+1) | End   (-1)  | Inactive (-1) | Right-Top         Inactive | Right-Top         Active   |
-             * | Start (+1)     | Inline (-1) | End   (-1) | Start (+1)  | Active   (+1) | Left-Bottom       Active   | Left-Bottom       Inactive |
-             * | Start (+1)     | Inline (-1) | End   (-1) | End   (-1)  | Inactive (-1) | Right-Bottom      Inactive | Right-Bottom      Active   |
-             * | End   (-1)     | Block  (+1) | Start (+1) | Start (+1)  | Inactive (-1) | Top-Left          Inactive | Top-Left          Active   |
-             * | End   (-1)     | Block  (+1) | Start (+1) | End   (-1)  | Inactive (-1) | Top-Right         Inactive | Top-Right         Active   |
-             * | End   (-1)     | Block  (+1) | End   (-1) | Start (+1)  | Active   (+1) | Bottom-Left       Active   | Bottom-Left       Inactive |
-             * | End   (-1)     | Block  (+1) | End   (-1) | End   (-1)  | Active   (+1) | Bottom-Right      Active   | Bottom-Right      Inactive |
-             * | End   (-1)     | Inline (-1) | Start (+1) | Start (+1)  | Inactive (-1) | Left-Top          Inactive | Left-Top          Active   |
-             * | End   (-1)     | Inline (-1) | Start (+1) | End   (-1)  | Active   (+1) | Right-Top         Active   | Right-Top         Inactive |
-             * | End   (-1)     | Inline (-1) | End   (-1) | Start (+1)  | Inactive (-1) | Left-Bottom       Inactive | Left-Bottom       Active   |
-             * | End   (-1)     | Inline (-1) | End   (-1) | End   (-1)  | Active   (+1) | Right-Bottom      Active   | Right-Bottom      Inactive |
+             * | Flow Direction | Orientation | Block Side | Inline Side | Gate          | Start-Corner Activation   | End-Corner Activation     |
+             * |----------------|-------------|------------|-------------|---------------|---------------------------|---------------------------|
+             * | Start (+1)     | Block  (+1) | Start (+1) | Start (+1)  | Active   (+1) | Top-Left         Active   | Top-Left         Inactive |
+             * | Start (+1)     | Block  (+1) | Start (+1) | End   (-1)  | Active   (+1) | Top-Right        Active   | Top-Right        Inactive |
+             * | Start (+1)     | Block  (+1) | End   (-1) | Start (+1)  | Inactive (-1) | Bottom-Left      Inactive | Bottom-Left      Active   |
+             * | Start (+1)     | Block  (+1) | End   (-1) | End   (-1)  | Inactive (-1) | Bottom-Right     Inactive | Bottom-Right     Active   |
+             * | Start (+1)     | Inline (-1) | Start (+1) | Start (+1)  | Active   (+1) | Left-Top         Active   | Left-Top         Inactive |
+             * | Start (+1)     | Inline (-1) | Start (+1) | End   (-1)  | Inactive (-1) | Right-Top        Inactive | Right-Top        Active   |
+             * | Start (+1)     | Inline (-1) | End   (-1) | Start (+1)  | Active   (+1) | Left-Bottom      Active   | Left-Bottom      Inactive |
+             * | Start (+1)     | Inline (-1) | End   (-1) | End   (-1)  | Inactive (-1) | Right-Bottom     Inactive | Right-Bottom     Active   |
+             * | End   (-1)     | Block  (+1) | Start (+1) | Start (+1)  | Inactive (-1) | Top-Left         Inactive | Top-Left         Active   |
+             * | End   (-1)     | Block  (+1) | Start (+1) | End   (-1)  | Inactive (-1) | Top-Right        Inactive | Top-Right        Active   |
+             * | End   (-1)     | Block  (+1) | End   (-1) | Start (+1)  | Active   (+1) | Bottom-Left      Active   | Bottom-Left      Inactive |
+             * | End   (-1)     | Block  (+1) | End   (-1) | End   (-1)  | Active   (+1) | Bottom-Right     Active   | Bottom-Right     Inactive |
+             * | End   (-1)     | Inline (-1) | Start (+1) | Start (+1)  | Inactive (-1) | Left-Top         Inactive | Left-Top         Active   |
+             * | End   (-1)     | Inline (-1) | Start (+1) | End   (-1)  | Active   (+1) | Right-Top        Active   | Right-Top        Inactive |
+             * | End   (-1)     | Inline (-1) | End   (-1) | Start (+1)  | Inactive (-1) | Left-Bottom      Inactive | Left-Bottom      Active   |
+             * | End   (-1)     | Inline (-1) | End   (-1) | End   (-1)  | Active   (+1) | Right-Bottom     Active   | Right-Bottom     Inactive |
              * 
              * ### Compact Corner Activation (LTR writing mode)
              * 
-             * | Orientation | Flow Direction | First Child Active Corners | Last Child Active Corners  |
-             * |-------------|----------------|----------------------------|----------------------------|
-             * | Block  (+1) | Start (+1)     | Top-Left,     Top-Right    | Bottom-Left,  Bottom-Right |
-             * | Block  (+1) | End   (-1)     | Bottom-Left,  Bottom-Right | Top-Left,     Top-Right    |
-             * | Inline (-1) | Start (+1)     | Left-Top,     Left-Bottom  | Right-Top,    Right-Bottom |
-             * | Inline (-1) | End   (-1)     | Right-Top,    Right-Bottom | Left-Top,     Left-Bottom  |
+             * | Orientation | Flow Direction | Start-Corner Activation   | End-Corner Activation     |
+             * |-------------|----------------|---------------------------|---------------------------|
+             * | Block  (+1) | Start (+1)     | Top-Left,    Top-Right    | Bottom-Left, Bottom-Right |
+             * | Block  (+1) | End   (-1)     | Bottom-Left, Bottom-Right | Top-Left,    Top-Right    |
+             * | Inline (-1) | Start (+1)     | Left-Top,    Left-Bottom  | Right-Top,   Right-Bottom |
+             * | Inline (-1) | End   (-1)     | Right-Top,   Right-Bottom | Left-Top,    Left-Bottom  |
+             * 
+             * **Note:** When the container has only one child, both `innerStartCornerFactor` and `innerEndCornerFactor` are set to `1`, so all four corners activate.
              */
+            ...rule(innerStartCornerSelector, {
+                ...vars({
+                    [stackedLayoutVars.innerStartCornerFactor] : 1,
+                }),
+            }),
+            ...rule(innerEndCornerSelector, {
+                ...vars({
+                    [stackedLayoutVars.innerEndCornerFactor  ] : 1,
+                }),
+            }),
             ...rules(
-                ([
-                    { selector: innerStartCornerSelector, cornerFlipFactor: +1 },
-                    { selector: innerEndCornerSelector  , cornerFlipFactor: -1 },
-                ] as const).map(({ selector, cornerFlipFactor }) =>
-                    rule(selector, {
-                        ...rules(
-                            logicalSides.map((blockSide) =>
-                                logicalSides.map((inlineSide) =>
-                                    vars({
-                                        [borderFeatureVars[`border${blockSide}${inlineSide}Radius`]]:
-                                            `calc(${stackedLayoutVars[`innerCorner${blockSide}${inlineSide}Radius`]} * (max(0, ${orientationFactor}) * max(0, ${sideFactorMap[blockSide]} * ${flowDirectionFactor} * ${cornerFlipFactor}) + max(0, ${orientationFactor} * -1) * max(0, ${sideFactorMap[inlineSide]} * ${flowDirectionFactor} * ${cornerFlipFactor})))`,
-                                    })
-                                )
-                            )
-                        ),
-                    }),
+                logicalSides.map((blockSide) =>
+                    logicalSides.map((inlineSide) =>
+                        vars({
+                            [borderFeatureVars[`border${blockSide}${inlineSide}Radius`]]:
+                                `calc(${stackedLayoutVars[`innerCorner${blockSide}${inlineSide}Radius`]} * (max(0, ${orientationFactor}) * min(1, max(0, ${sideFactorMap[blockSide]} * ${stackedLayoutVars.innerStartCornerFactor} * ${flowDirectionFactor}) + max(0, ${sideFactorMap[blockSide]} * -1 * ${stackedLayoutVars.innerEndCornerFactor} * ${flowDirectionFactor})) + max(0, ${orientationFactor} * -1) * min(1, max(0, ${sideFactorMap[inlineSide]} * ${stackedLayoutVars.innerStartCornerFactor} * ${flowDirectionFactor}) + max(0, ${sideFactorMap[inlineSide]} * -1 * ${stackedLayoutVars.innerEndCornerFactor} * ${flowDirectionFactor}))))`,
+                        })
+                    )
                 )
             ),
         }),

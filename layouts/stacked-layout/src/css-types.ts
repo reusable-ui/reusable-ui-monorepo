@@ -109,6 +109,28 @@ export interface StackedLayoutVars {
      *   (stacked vertically in horizontal-tb).
      */
     separatorBorderBlockWidth   : unknown
+    
+    /**
+     * Binary factor (0 or 1) indicating whether
+     * the **start-corner** of a child should be rounded.
+     * 
+     * - Defaults to `0` (inactive).
+     * - Set to `1` when the child matches the `innerStartCornerSelector` (e.g. `:first-child`).
+     * - For the **only child** case, both start and end factors are `1`,
+     *   so all corners activate.
+     */
+    innerStartCornerFactor      : unknown
+    
+    /**
+     * Binary factor (0 or 1) indicating whether
+     * the **end-corner** of a child should be rounded.
+     * 
+     * - Defaults to `0` (inactive).
+     * - Set to `1` when the child matches the `innerEndCornerSelector` (e.g. `:last-child`).
+     * - For the **only child** case, both start and end factors are `1`,
+     *   so all corners activate.
+     */
+    innerEndCornerFactor        : unknown
 }
 
 

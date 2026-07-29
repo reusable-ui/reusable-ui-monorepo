@@ -231,6 +231,46 @@ const testCases: StackedLayoutTestCase[] = [
             )
         ),
     ),
+    
+    
+    
+    ...borderRadii.flatMap((borderRadius) =>
+        borderWidths.flatMap((borderWidth) =>
+            flowDirections.flatMap((flowDirection) =>
+                orientations.map((orientation) => {
+                    const expectedInnerCornerRadius = Math.max(0, borderRadius - borderWidth); // Outer corners rounded, slightly smaller
+                    
+                    return {
+                        title: `${orientation} orientation, ${flowDirection} flow, 1 item, border width ${borderWidth}px, border radius ${borderRadius}`,
+                        props: {
+                            orientation                : orientation,
+                            flowDirection              : flowDirection,
+                            
+                            borderWidth                : borderWidth,
+                            
+                            borderStartStartRadius     : borderRadius,
+                            borderStartEndRadius       : borderRadius,
+                            borderEndStartRadius       : borderRadius,
+                            borderEndEndRadius         : borderRadius,
+                        },
+                        expectedItemBorders: [
+                            {
+                                borderInlineStartWidth : 0,
+                                borderInlineEndWidth   : 0,
+                                borderBlockStartWidth  : 0,
+                                borderBlockEndWidth    : 0,
+                                
+                                borderStartStartRadius : expectedInnerCornerRadius,
+                                borderStartEndRadius   : expectedInnerCornerRadius,
+                                borderEndStartRadius   : expectedInnerCornerRadius,
+                                borderEndEndRadius     : expectedInnerCornerRadius,
+                            }
+                        ],
+                    } satisfies StackedLayoutTestCase;
+                })
+            )
+        ),
+    ),
 ];
 
 
