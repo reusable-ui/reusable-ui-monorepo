@@ -25,6 +25,10 @@ import {
 
 // Types:
 import {
+    type CssAlgebraicBoolean,
+    type CssFlippableBoolean,
+}                           from './css-internal-types.js'
+import {
     type CssStackedLayoutOptions,
     type CssStackedLayout,
 }                           from './css-types.js'
@@ -36,10 +40,31 @@ import {
 
 // Utilities:
 import {
+    // Directional Primitives:
     logicalSides,
     sideFactorMap,
     logicalAxes,
     axisFactorMap,
+    
+    
+    
+    // Logic Gates:
+    andAll,
+    orAny,
+    caseSwitch,
+    
+    
+    
+    // Condition Checks:
+    isForward,
+    isReverse,
+    isSame,
+    isOpposite,
+    
+    
+    
+    // Value Gate:
+    whenActive,
 }                           from './css-internal-utilities.js'
 
 
@@ -87,13 +112,13 @@ export const usingStackedLayout = (options?: CssStackedLayoutOptions): CssStacke
      * The result is guaranteed to be either `+1`, `-1`, or a calc-safe math formula,
      * so it can be safely consumed inside `calc()` or other CSS functions.
      */
-    const orientationFactor : 1 | -1 | `(${string})` = (
+    const orientationFactor : CssFlippableBoolean = (
         ((orientation === 'block') || (orientation === 1))
         ? 1
         : (
             ((orientation === 'inline') || (orientation === 0))
             ? -1
-            : `(2 * ${orientation} - 1)`
+            : `(2 * ${orientation} - 1)` as CssFlippableBoolean
         )
     );
     
@@ -106,13 +131,13 @@ export const usingStackedLayout = (options?: CssStackedLayoutOptions): CssStacke
      * The result is guaranteed to be either `+1`, `-1`, or a calc-safe math formula,
      * so it can be safely consumed inside `calc()` or other CSS functions.
      */
-    const flowDirectionFactor : 1 | -1 | `(${string})` = (
+    const flowDirectionFactor : CssFlippableBoolean = (
         ((flowDirection === 'start') || (flowDirection === 0))
         ? 1
         : (
             ((flowDirection === 'end') || (flowDirection === 1))
             ? -1
-            : `(1 - 2 * ${flowDirection})`
+            : `(1 - 2 * ${flowDirection})` as CssFlippableBoolean
         )
     );
     
@@ -241,8 +266,58 @@ export const usingStackedLayout = (options?: CssStackedLayoutOptions): CssStacke
                 logicalSides.map((blockSide) =>
                     logicalSides.map((inlineSide) =>
                         vars({
-                            [borderFeatureVars[`border${blockSide}${inlineSide}Radius`]]:
-                                `calc(${stackedLayoutVars[`innerCorner${blockSide}${inlineSide}Radius`]} * (max(0, ${orientationFactor}) * min(1, max(0, ${sideFactorMap[blockSide]} * ${stackedLayoutVars.innerStartCornerFactor} * ${flowDirectionFactor}) + max(0, ${sideFactorMap[blockSide]} * -1 * ${stackedLayoutVars.innerEndCornerFactor} * ${flowDirectionFactor})) + max(0, ${orientationFactor} * -1) * min(1, max(0, ${sideFactorMap[inlineSide]} * ${stackedLayoutVars.innerStartCornerFactor} * ${flowDirectionFactor}) + max(0, ${sideFactorMap[inlineSide]} * -1 * ${stackedLayoutVars.innerEndCornerFactor} * ${flowDirectionFactor}))))`,
+                            [borderFeatureVars[`border${blockSide}${inlineSide}Radius`]]: whenActive(
+                                // Value applied when condition is active:
+                                stackedLayoutVars[`innerCorner${blockSide}${inlineSide}Radius`],
+                                
+                                // Determines which corners are rounded:
+                                caseSwitch(
+                                    andAll(
+                                        // Orientation is forward (block axis first):
+                                        isForward(orientationFactor),
+                                        
+                                        // Either start or end corner may activate:
+                                        orAny(
+                                            andAll(
+                                                // Skip if start corner inactive:
+                                                stackedLayoutVars.innerStartCornerFactor as CssAlgebraicBoolean,
+                                                
+                                                // Active if flow direction aligns with the current block side:
+                                                isSame(flowDirectionFactor, sideFactorMap[blockSide]),
+                                            ),
+                                            andAll(
+                                                // Skip if end corner inactive:
+                                                stackedLayoutVars.innerEndCornerFactor as CssAlgebraicBoolean,
+                                                
+                                                // Active if flow direction opposes the current block side:
+                                                isOpposite(flowDirectionFactor, sideFactorMap[blockSide]),
+                                            ),
+                                        ),
+                                    ),
+                                    andAll(
+                                        // Orientation is reverse (block axis last):
+                                        isReverse(orientationFactor),
+                                        
+                                        // Either start or end corner may activate:
+                                        orAny(
+                                            andAll(
+                                                // Skip if start corner inactive:
+                                                stackedLayoutVars.innerStartCornerFactor as CssAlgebraicBoolean,
+                                                
+                                                // Active if flow direction aligns with the current inline side:
+                                                isSame(flowDirectionFactor, sideFactorMap[inlineSide]),
+                                            ),
+                                            andAll(
+                                                // Skip if end corner inactive:
+                                                stackedLayoutVars.innerEndCornerFactor as CssAlgebraicBoolean,
+                                                
+                                                // Active if flow direction opposes the current inline side:
+                                                isOpposite(flowDirectionFactor, sideFactorMap[inlineSide]),
+                                            ),
+                                        ),
+                                    ),
+                                )
+                            ),
                         })
                     )
                 )
@@ -313,8 +388,22 @@ export const usingStackedLayout = (options?: CssStackedLayoutOptions): CssStacke
                 logicalAxes.map((axis) =>
                     logicalSides.map((side) =>
                         vars({
-                            [borderFeatureVars[`border${axis}${side}Width`]]:
-                                `calc(${stackedLayoutVars[`separatorBorder${axis}Width`]} * max(0, ${orientationFactor} * ${axisFactorMap[axis]}) * max(0, ${sideFactorMap[side]} * ${stackedLayoutVars.separatorBeforeFactor} * ${flowDirectionFactor}))`,
+                            [borderFeatureVars[`border${axis}${side}Width`]]: whenActive(
+                                // Value applied when condition is active:
+                                stackedLayoutVars[`separatorBorder${axis}Width`],
+                                
+                                // Determines whether a separator border is drawn:
+                                andAll(
+                                    // Skip if separator is disabled for this child:
+                                    stackedLayoutVars.separatorBeforeFactor as CssAlgebraicBoolean,
+                                    
+                                    // Active if orientation aligns with the current axis:
+                                    isSame(orientationFactor, axisFactorMap[axis]),
+                                    
+                                    // Active if flow direction aligns with the current side:
+                                    isSame(flowDirectionFactor, sideFactorMap[side]),
+                                )
+                            ),
                         })
                     )
                 )
