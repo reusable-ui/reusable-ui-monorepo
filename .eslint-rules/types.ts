@@ -90,6 +90,9 @@ export const noForeignCodeInTypes = createRule({
                         statement.type === TSESTree.AST_NODE_TYPES.TSEnumDeclaration
                     ) continue;
                     
+                    // Skip declaration only code (doesn't emit JS code):
+                    if (('declare' in statement) && statement.declare) continue;
+                    
                     
                     
                     // Allow top-level comments (they don't appear as statements in AST)

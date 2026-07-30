@@ -221,6 +221,9 @@ export const noForeignCode = createRule({
                         isCssNameCandidate(statement.id.name)
                     ) continue;
                     
+                    // Skip declaration only code (doesn't emit JS code):
+                    if (('declare' in statement) && statement.declare) continue;
+                    
                     
                     
                     // Allow top-level comments (they don't appear as statements in AST)
