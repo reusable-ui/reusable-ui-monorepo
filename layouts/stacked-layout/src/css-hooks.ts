@@ -266,7 +266,7 @@ export const usingStackedLayout = (options?: CssStackedLayoutOptions): CssStacke
                 logicalSides.map((blockSide) =>
                     logicalSides.map((inlineSide) =>
                         vars({
-                            [borderFeatureVars[`border${blockSide}${inlineSide}Radius`]]: whenActive(
+                            [borderFeatureVars[`border${blockSide}${inlineSide}RadiusOverride`]]: whenActive(
                                 // Value applied when condition is active:
                                 stackedLayoutVars[`innerCorner${blockSide}${inlineSide}Radius`],
                                 
@@ -388,7 +388,7 @@ export const usingStackedLayout = (options?: CssStackedLayoutOptions): CssStacke
                 logicalAxes.map((axis) =>
                     logicalSides.map((side) =>
                         vars({
-                            [borderFeatureVars[`border${axis}${side}Width`]]: whenActive(
+                            [borderFeatureVars[`border${axis}${side}WidthOverride`]]: whenActive(
                                 // Value applied when condition is active:
                                 stackedLayoutVars[`separatorBorder${axis}Width`],
                                 
