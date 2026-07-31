@@ -42,12 +42,12 @@ Example: `oklch(from ${decorColor} l c h / calc(alpha * 0.25))`
 These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding variant is inactive.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable             | Active When...          | Purpose                                                             |
-|----------------------|-------------------------|---------------------------------------------------------------------|
-| `regularDecorCond`   | Theme variant active    | Themed decoration color for the regular variant                     |
-| `mildDecorCond`      | Mild variant active     | Reading-friendly decoration color for mild variant                  |
-| `outlinedDecorCond`  | Outlined variant active | High-contrast decoration color for outlined variant                 |
-| `decorColorOverride` | When user override set  | User-defined override decoration color, highest priority if present |
+| Variable             | Active When...          | Purpose                                                         |
+|----------------------|-------------------------|-----------------------------------------------------------------|
+| `regularDecorCond`   | Theme variant active    | Themed decoration color for the regular variant                 |
+| `mildDecorCond`      | Mild variant active     | Reading-friendly decoration color for mild variant              |
+| `outlinedDecorCond`  | Outlined variant active | High-contrast decoration color for outlined variant             |
+| `decorColorOverride` | When user override set  | External override decoration color, highest priority if present |
 
 #### 💡 Usage Example
 

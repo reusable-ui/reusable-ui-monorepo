@@ -132,8 +132,9 @@ export interface BorderFeatureVars {
     
     //#region ⚠️ State overrides (e.g. active, selected) 
     /**
-     * User-defined override for the border color.
-     * Valid if an override exists, otherwise invalid (unset).
+     * External override for the border color.
+     * Used by color-driven states (e.g. active, selected) to change the border color.
+     * Invalid (unset) if no override is applied.
      */
     borderColorOverride            : unknown
     //#endregion ⚠️ State overrides (e.g. active, selected) 
@@ -386,7 +387,7 @@ export interface CssBorderFeature {
      * - `border**Cond`s         : Variant-specific border colors (conditionally valid or poisoned).
      * - `borderStrippedCond`    : Suppresses border geometry when stripped variant is active.
      * - `borderVariantColor`    : Variant-aware border color from the active variant.
-     * - `borderColorOverride`   : User-defined override for the border color.
+     * - `borderColorOverride`   : External override for the border color.
      * - `border*WidthOverride`  : External override for the border widths.
      * - `border*RadiusOverride` : External override for the border radii.
      * - `borderColor`           : Final border color consumed by components.

@@ -64,8 +64,9 @@ export interface DecorationFeatureVars {
     
     //#region ⚠️ State overrides (e.g. active, selected) 
     /**
-     * User-defined override for the decoration color.
-     * Valid if an override exists, otherwise invalid (unset).
+     * External override for the decoration color.
+     * Used by color-driven states (e.g. active, selected) to change the decoration color.
+     * Invalid (unset) if no override is applied.
      */
     decorColorOverride  : unknown
     //#endregion ⚠️ State overrides (e.g. active, selected) 
@@ -123,7 +124,7 @@ export interface CssDecorationFeature {
      * Includes:
      * - `decor**Cond`s       : Variant-specific decoration colors (conditionally valid or poisoned).
      * - `decorVariantColor`  : Variant-aware decoration color from the active variant.
-     * - `decorColorOverride` : User-defined override for the decoration color.
+     * - `decorColorOverride` : External override for the decoration color.
      * - `decorColor`         : Final decoration color consumed by components.
      * 
      * These variables can be consumed directly or composed into advanced use cases

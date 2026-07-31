@@ -84,8 +84,9 @@ export interface BackgroundFeatureVars {
     
     //#region ⚠️ State overrides (e.g. active, selected) 
     /**
-     * User-defined override for the background color.
-     * Valid if an override exists, otherwise invalid (unset).
+     * External override for the background color.
+     * Used by color-driven states (e.g. active, selected) to change the background color.
+     * Invalid (unset) if no override is applied.
      */
     backgColorOverride  : unknown
     //#endregion ⚠️ State overrides (e.g. active, selected) 
@@ -185,7 +186,7 @@ export interface CssBackgroundFeature {
      * - `backg**Cond`s       : Variant-specific background colors (conditionally valid or poisoned).
      * - `backgStrippedCond`  : Suppresses background styling when stripped variant is active.
      * - `backgVariantColor`  : Variant-aware background color from the active variant.
-     * - `backgColorOverride` : User-defined override for the background color.
+     * - `backgColorOverride` : External override for the background color.
      * - `backgColor`         : Final background color consumed by components.
      * - `backgLayers`   : Composite background layers (gradient, custom, and color) for the current variant.
      * - `backg`         : Final background value, resolved from layers or suppressed via stripped variant.

@@ -46,15 +46,15 @@ Example: `oklch(from ${backgColor} l c h / calc(alpha * 0.25))`
 These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding variant is inactive.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable              | Active When...           | Purpose                                                             |
-|-----------------------|--------------------------|---------------------------------------------------------------------|
-| `backgEmphasizedCond` | Emphasize variant active | Gradient background layer                                           |
-| `backgCond`           | Custom background layers | User-defined background layers                                      |
-| `regularBackgCond`    | Theme variant active     | Themed background color for the regular variant                     |
-| `mildBackgCond`       | Mild variant active      | Reading-friendly background color for mild variant                  |
-| `outlinedBackgCond`   | Outlined variant active  | Transparent background color for outlined variant                   |
-| `backgStrippedCond`   | Stripped variant active  | Suppresses background styling                                       |
-| `backgColorOverride`  | When user override set   | User-defined override background color, highest priority if present |
+| Variable              | Active When...           | Purpose                                                         |
+|-----------------------|--------------------------|-----------------------------------------------------------------|
+| `backgEmphasizedCond` | Emphasize variant active | Gradient background layer                                       |
+| `backgCond`           | Custom background layers | User-defined background layers                                  |
+| `regularBackgCond`    | Theme variant active     | Themed background color for the regular variant                 |
+| `mildBackgCond`       | Mild variant active      | Reading-friendly background color for mild variant              |
+| `outlinedBackgCond`   | Outlined variant active  | Transparent background color for outlined variant               |
+| `backgStrippedCond`   | Stripped variant active  | Suppresses background styling                                   |
+| `backgColorOverride`  | When user override set   | External override background color, highest priority if present |
 
 #### 💡 Usage Example
 

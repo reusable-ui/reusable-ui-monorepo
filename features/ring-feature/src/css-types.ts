@@ -50,8 +50,9 @@ export interface RingFeatureVars {
     
     //#region ⚠️ State overrides (e.g. active, selected) 
     /**
-     * User-defined override for the ring color.
-     * Valid if an override exists, otherwise invalid (unset).
+     * External override for the ring color.
+     * Used by color-driven states (e.g. active, selected) to change the ring color.
+     * Invalid (unset) if no override is applied.
      */
     ringColorOverride  : unknown
     //#endregion ⚠️ State overrides (e.g. active, selected) 
@@ -109,7 +110,7 @@ export interface CssRingFeature {
      * Includes:
      * - `regularRingCond`   : Theme-specific ring color (conditionally valid or poisoned).
      * - `ringVariantColor`  : Variant-aware ring color from the active variant.
-     * - `ringColorOverride` : User-defined override for the ring color.
+     * - `ringColorOverride` : External override for the ring color.
      * - `ringColor`         : Final ring color consumed by components.
      * 
      * These variables can be consumed directly or composed into advanced use cases

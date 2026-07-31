@@ -61,7 +61,7 @@ Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 | `mildBorderCond`                 | Mild variant active     | Reading-friendly border color for mild variant                       |
 | `outlinedBorderCond`             | Outlined variant active | High-contrast border color for outlined variant                      |
 | `borderStrippedCond`             | Stripped variant active | minimal layout rendering                                             |
-| `borderColorOverride`            | When user override set  | User-defined override border color, highest priority if present      |
+| `borderColorOverride`            | When user override set  | External override border color, highest priority if present          |
 | `borderInlineStartWidthOverride` | Layout override applied | External override for inline-start border width (e.g. Group/stacked) |
 | `borderInlineEndWidthOverride`   | Layout override applied | External override for inline-end border width (e.g. Group/stacked)   |
 | `borderBlockStartWidthOverride`  | Layout override applied | External override for block-start border width (e.g. Group/stacked)  |

@@ -42,12 +42,12 @@ Example: `oklch(from ${foregColor} l c h / calc(alpha * 0.25))`
 These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding variant is inactive.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable             | Active When...          | Purpose                                                             |
-|----------------------|-------------------------|---------------------------------------------------------------------|
-| `regularForegCond`   | Theme variant active    | Themed foreground color for the regular variant                     |
-| `mildForegCond`      | Mild variant active     | Reading-friendly foreground color for mild variant                  |
-| `outlinedForegCond`  | Outlined variant active | High-contrast foreground color for outlined variant                 |
-| `foregColorOverride` | When user override set  | User-defined override foreground color, highest priority if present |
+| Variable             | Active When...          | Purpose                                                         |
+|----------------------|-------------------------|-----------------------------------------------------------------|
+| `regularForegCond`   | Theme variant active    | Themed foreground color for the regular variant                 |
+| `mildForegCond`      | Mild variant active     | Reading-friendly foreground color for mild variant              |
+| `outlinedForegCond`  | Outlined variant active | High-contrast foreground color for outlined variant             |
+| `foregColorOverride` | When user override set  | External override foreground color, highest priority if present |
 
 #### 💡 Usage Example
 

@@ -64,8 +64,9 @@ export interface ForegroundFeatureVars {
     
     //#region ⚠️ State overrides (e.g. active, selected) 
     /**
-     * User-defined override for the foreground color.
-     * Valid if an override exists, otherwise invalid (unset).
+     * External override for the foreground color.
+     * Used by color-driven states (e.g. active, selected) to change the foreground color.
+     * Invalid (unset) if no override is applied.
      */
     foregColorOverride  : unknown
     //#endregion ⚠️ State overrides (e.g. active, selected) 
@@ -138,7 +139,7 @@ export interface CssForegroundFeature {
      * Includes:
      * - `foreg**Cond`s       : Variant-specific foreground colors (conditionally valid or poisoned).
      * - `foregVariantColor`  : Variant-aware foreground color from the active variant.
-     * - `foregColorOverride` : User-defined override for the foreground color.
+     * - `foregColorOverride` : External override for the foreground color.
      * - `foregColor`         : Final foreground color consumed by components.
      * 
      * These variables can be consumed directly or composed into advanced use cases
