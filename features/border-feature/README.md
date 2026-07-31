@@ -55,13 +55,21 @@ Example: `oklch(from ${borderColor} l c h / calc(alpha * 0.25))`
 These variables are conditionally valid and may be **poisoned** (`unset`) when their corresponding variant is inactive.  
 Use `switchOf(...)` to ensure graceful fallback. Useful for conditional styling.
 
-| Variable              | Active When...          | Purpose                                                         |
-|-----------------------|-------------------------|-----------------------------------------------------------------|
-| `regularBorderCond`   | Theme variant active    | Themed border color for the regular variant                     |
-| `mildBorderCond`      | Mild variant active     | Reading-friendly border color for mild variant                  |
-| `outlinedBorderCond`  | Outlined variant active | High-contrast border color for outlined variant                 |
-| `borderStrippedCond`  | Stripped variant active | minimal layout rendering                                        |
-| `borderColorOverride` | When user override set  | User-defined override border color, highest priority if present |
+| Variable                         | Active When...          | Purpose                                                              |
+|----------------------------------|-------------------------|----------------------------------------------------------------------|
+| `regularBorderCond`              | Theme variant active    | Themed border color for the regular variant                          |
+| `mildBorderCond`                 | Mild variant active     | Reading-friendly border color for mild variant                       |
+| `outlinedBorderCond`             | Outlined variant active | High-contrast border color for outlined variant                      |
+| `borderStrippedCond`             | Stripped variant active | minimal layout rendering                                             |
+| `borderColorOverride`            | When user override set  | User-defined override border color, highest priority if present      |
+| `borderInlineStartWidthOverride` | Layout override applied | External override for inline-start border width (e.g. Group/stacked) |
+| `borderInlineEndWidthOverride`   | Layout override applied | External override for inline-end border width (e.g. Group/stacked)   |
+| `borderBlockStartWidthOverride`  | Layout override applied | External override for block-start border width (e.g. Group/stacked)  |
+| `borderBlockEndWidthOverride`    | Layout override applied | External override for block-end border width (e.g. Group/stacked)    |
+| `borderStartStartRadiusOverride` | Layout override applied | External override for start-start corner radius (e.g. Group/stacked) |
+| `borderStartEndRadiusOverride`   | Layout override applied | External override for start-end corner radius (e.g. Group/stacked)   |
+| `borderEndStartRadiusOverride`   | Layout override applied | External override for end-start corner radius (e.g. Group/stacked)   |
+| `borderEndEndRadiusOverride`     | Layout override applied | External override for end-end corner radius (e.g. Group/stacked)     |
 
 #### 💡 Usage Example
 

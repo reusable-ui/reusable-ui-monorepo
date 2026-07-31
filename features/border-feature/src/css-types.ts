@@ -70,6 +70,66 @@ export interface BorderFeatureVars {
     
     
     
+    //#region ⚠️ Layout overrides (e.g. Group, stacked-layout) 
+    /**
+     * External override for the border width on the left (or right in RTL).
+     * Used by layout containers (e.g. Group, stacked-layout) to adjust geometry.
+     * Invalid (unset) if no override is applied.
+     */
+    borderInlineStartWidthOverride : unknown
+    
+    /**
+     * External override for the border width on the right (or left in RTL).
+     * Used by layout containers (e.g. Group, stacked-layout) to adjust geometry.
+     * Invalid (unset) if no override is applied.
+     */
+    borderInlineEndWidthOverride   : unknown
+    
+    /**
+     * External override for the border width on the top.
+     * Used by layout containers (e.g. Group, stacked-layout) to adjust geometry.
+     * Invalid (unset) if no override is applied.
+     */
+    borderBlockStartWidthOverride  : unknown
+    
+    /**
+     * External override for the border width on the bottom.
+     * Used by layout containers (e.g. Group, stacked-layout) to adjust geometry.
+     * Invalid (unset) if no override is applied.
+     */
+    borderBlockEndWidthOverride    : unknown
+    
+    /**
+     * External override for the border radius on the top-left corner (or top-right in RTL).
+     * Used by layout containers (e.g. Group, stacked-layout) to merge rounded corners.
+     * Invalid (unset) if no override is applied.
+     */
+    borderStartStartRadiusOverride : unknown
+    
+    /**
+     * External override for the border radius on the top-right corner (or top-left in RTL).
+     * Used by layout containers (e.g. Group, stacked-layout) to merge rounded corners.
+     * Invalid (unset) if no override is applied.
+     */
+    borderStartEndRadiusOverride   : unknown
+    
+    /**
+     * External override for the border radius on the bottom-left corner (or bottom-right in RTL).
+     * Used by layout containers (e.g. Group, stacked-layout) to merge rounded corners.
+     * Invalid (unset) if no override is applied.
+     */
+    borderEndStartRadiusOverride   : unknown
+    
+    /**
+     * External override for the border radius on the bottom-right corner (or bottom-left in RTL).
+     * Used by layout containers (e.g. Group, stacked-layout) to merge rounded corners.
+     * Invalid (unset) if no override is applied.
+     */
+    borderEndEndRadiusOverride     : unknown
+    //#endregion ⚠️ Layout overrides (e.g. Group, stacked-layout) 
+    
+    
+    
     //#region ⚠️ State overrides (e.g. active, selected) 
     /**
      * User-defined override for the border color.

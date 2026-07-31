@@ -160,15 +160,87 @@ export const usingBorderFeature = (options?: CssBorderFeatureOptions): CssBorder
                 ...vars({
                     [borderFeatureVars.borderStyle           ] : borderStyle,
                     
-                    [borderFeatureVars.borderInlineStartWidth] : switchOf(borderFeatureVars.borderStrippedCond, borderInlineStartWidth),
-                    [borderFeatureVars.borderInlineEndWidth  ] : switchOf(borderFeatureVars.borderStrippedCond, borderInlineEndWidth),
-                    [borderFeatureVars.borderBlockStartWidth ] : switchOf(borderFeatureVars.borderStrippedCond, borderBlockStartWidth),
-                    [borderFeatureVars.borderBlockEndWidth   ] : switchOf(borderFeatureVars.borderStrippedCond, borderBlockEndWidth),
+                    /**
+                     * 🧩 Border widths and radii resolution precedence
+                     * 
+                     * The final border widths and radii are resolved in a strict order:
+                     * 
+                     * 1. Layout overrides (e.g. Group, stacked-layout)
+                     *    - Containers may collapse or merge borders/radii to maintain
+                     *      composite shapes (rounded corners, separators).
+                     *    - These overrides must win first, otherwise the container's
+                     *      layout integrity breaks.
+                     * 
+                     * 2. Stripped variant
+                     *    - When active, forces zero-length geometry (`0px`) to remove
+                     *      framing for standalone presentation.
+                     *    - Applied only if no container override is present.
+                     * 
+                     * 3. Base configuration
+                     *    - The default border widths/radii defined by config.
+                     * 
+                     * 📌 Rationale:
+                     * - Stripped is a component-level contract: "no framing."
+                     * - Group/stacked is a container-level contract: "I control framing
+                     *   for all children to preserve the composite layout."
+                     * - By prioritizing layout overrides first, we ensure that stripped
+                     *   components inside a Group still respect the Group's geometry,
+                     *   while standalone stripped components collapse borders entirely.
+                     */
                     
-                    [borderFeatureVars.borderStartStartRadius] : switchOf(borderFeatureVars.borderStrippedCond, borderStartStartRadius),
-                    [borderFeatureVars.borderStartEndRadius  ] : switchOf(borderFeatureVars.borderStrippedCond, borderStartEndRadius),
-                    [borderFeatureVars.borderEndStartRadius  ] : switchOf(borderFeatureVars.borderStrippedCond, borderEndStartRadius),
-                    [borderFeatureVars.borderEndEndRadius    ] : switchOf(borderFeatureVars.borderStrippedCond, borderEndEndRadius),
+                    /**
+                     * Resolves final border widths based on this priority:
+                     * 1. Layout override (e.g. Group/stacked-layout)
+                     * 2. Stripped variant → forces `0px` geometry
+                     * 3. Config fallback
+                     */
+                    [borderFeatureVars.borderInlineStartWidth] : switchOf(
+                        borderFeatureVars.borderInlineStartWidthOverride,
+                        borderFeatureVars.borderStrippedCond,
+                        borderInlineStartWidth,
+                    ),
+                    [borderFeatureVars.borderInlineEndWidth  ] : switchOf(
+                        borderFeatureVars.borderInlineEndWidthOverride,
+                        borderFeatureVars.borderStrippedCond,
+                        borderInlineEndWidth,
+                    ),
+                    [borderFeatureVars.borderBlockStartWidth ] : switchOf(
+                        borderFeatureVars.borderBlockStartWidthOverride,
+                        borderFeatureVars.borderStrippedCond,
+                        borderBlockStartWidth,
+                    ),
+                    [borderFeatureVars.borderBlockEndWidth   ] : switchOf(
+                        borderFeatureVars.borderBlockEndWidthOverride,
+                        borderFeatureVars.borderStrippedCond,
+                        borderBlockEndWidth,
+                    ),
+                    
+                    /**
+                     * Resolves final border radii based on this priority:
+                     * 1. Layout override (e.g. Group/stacked-layout)
+                     * 2. Stripped variant → forces `0px` geometry
+                     * 3. Config fallback
+                     */
+                    [borderFeatureVars.borderStartStartRadius] : switchOf(
+                        borderFeatureVars.borderStartStartRadiusOverride,
+                        borderFeatureVars.borderStrippedCond,
+                        borderStartStartRadius,
+                    ),
+                    [borderFeatureVars.borderStartEndRadius  ] : switchOf(
+                        borderFeatureVars.borderStartEndRadiusOverride,
+                        borderFeatureVars.borderStrippedCond,
+                        borderStartEndRadius,
+                    ),
+                    [borderFeatureVars.borderEndStartRadius  ] : switchOf(
+                        borderFeatureVars.borderEndStartRadiusOverride,
+                        borderFeatureVars.borderStrippedCond,
+                        borderEndStartRadius,
+                    ),
+                    [borderFeatureVars.borderEndEndRadius    ] : switchOf(
+                        borderFeatureVars.borderEndEndRadiusOverride,
+                        borderFeatureVars.borderStrippedCond,
+                        borderEndEndRadius,
+                    ),
                     
                     
                     
