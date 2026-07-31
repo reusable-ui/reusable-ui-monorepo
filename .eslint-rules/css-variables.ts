@@ -867,7 +867,7 @@ export const requireSideeffectsForRegistry = createRule({
                     packageRelativeFilename
                     .replace(/^src(?=[\\/])/, 'dist')
                     .replace(/\.ts$/, '.js')
-                    .replace('\\', '/')
+                    .replace(/\\/g, '/')
                 );
                 
                 // Check if distFile is listed:
