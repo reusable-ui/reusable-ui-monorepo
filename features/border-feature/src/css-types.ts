@@ -28,19 +28,19 @@ export interface BorderFeatureVars {
      * References the regular border color from the theme.
      * Poisoned when theme styling is not implemented.
      */
-    regularBorderCond      : unknown
+    regularBorderCond              : unknown
     
     /**
      * References a mild (reading-friendly) border color when mild variant is active.
      * Poisoned when mild variant is inactive.
      */
-    mildBorderCond         : unknown
+    mildBorderCond                 : unknown
     
     /**
      * References an outlined border color when outlined variant is active.
      * Poisoned when outlined variant is inactive.
      */
-    outlinedBorderCond     : unknown
+    outlinedBorderCond             : unknown
     
     /**
      * References a zero-length value (`0px`) when stripped variant is active.
@@ -48,7 +48,7 @@ export interface BorderFeatureVars {
      * 
      * Used to conditionally suppress directional border widths and radii.
      */
-    borderStrippedCond     : unknown
+    borderStrippedCond             : unknown
     //#endregion 🎨 Conditional variables (may be poisoned) 
     
     
@@ -65,7 +65,7 @@ export interface BorderFeatureVars {
      * Can be further customized using CSS color functions.
      * Example: `oklch(from ${borderFeatureVars.borderVariantColor} l c h / calc(alpha * 0.5))`
      */
-    borderVariantColor     : unknown
+    borderVariantColor             : unknown
     //#endregion 🧩 Intermediate resolved variables (always valid) 
     
     
@@ -135,7 +135,7 @@ export interface BorderFeatureVars {
      * User-defined override for the border color.
      * Valid if an override exists, otherwise invalid (unset).
      */
-    borderColorOverride    : unknown
+    borderColorOverride            : unknown
     //#endregion ⚠️ State overrides (e.g. active, selected) 
     
     
@@ -145,55 +145,55 @@ export interface BorderFeatureVars {
      * References the resolved border style.
      * Always valid via fallback to config default.
      */
-    borderStyle            : unknown
+    borderStyle                    : unknown
     
     /**
      * References the resolved border width on the left (or right in RTL).
      * Always valid via fallback to config default.
      */
-    borderInlineStartWidth : unknown
+    borderInlineStartWidth         : unknown
     
     /**
      * References the resolved border width on the right (or left in RTL).
      * Always valid via fallback to config default.
      */
-    borderInlineEndWidth   : unknown
+    borderInlineEndWidth           : unknown
     
     /**
      * References the resolved border width on the top.
      * Always valid via fallback to config default.
      */
-    borderBlockStartWidth  : unknown
+    borderBlockStartWidth          : unknown
     
     /**
      * References the resolved border width on the bottom.
      * Always valid via fallback to config default.
      */
-    borderBlockEndWidth    : unknown
+    borderBlockEndWidth            : unknown
     
     /**
      * References the resolved border radius on the top-left corner (or top-right in RTL).
      * Always valid via fallback to config default.
      */
-    borderStartStartRadius : unknown
+    borderStartStartRadius         : unknown
     
     /**
      * References the resolved border radius on the top-right corner (or top-left in RTL).
      * Always valid via fallback to config default.
      */
-    borderStartEndRadius   : unknown
+    borderStartEndRadius           : unknown
     
     /**
      * References the resolved border radius on the bottom-left corner (or bottom-right in RTL).
      * Always valid via fallback to config default.
      */
-    borderEndStartRadius   : unknown
+    borderEndStartRadius           : unknown
     
     /**
      * References the resolved border radius on the bottom-right corner (or bottom-left in RTL).
      * Always valid via fallback to config default.
      */
-    borderEndEndRadius     : unknown
+    borderEndEndRadius             : unknown
     
     /**
      * References a final border color consumed by components.
@@ -204,7 +204,7 @@ export interface BorderFeatureVars {
      * Can be further customized using CSS color functions.
      * Example: `oklch(from ${borderFeatureVars.borderColor} l c h / calc(alpha * 0.5))`
      */
-    borderColor            : unknown
+    borderColor                    : unknown
     
     /**
      * References the resolved general-purpose inline border width
@@ -214,7 +214,7 @@ export interface BorderFeatureVars {
      * - Always valid via fallback to config default.
      * - Not affected by stripped variant.
      */
-    borderInlineBaseWidth  : unknown
+    borderInlineBaseWidth          : unknown
     
     /**
      * References the resolved general-purpose block border width
@@ -224,7 +224,7 @@ export interface BorderFeatureVars {
      * - Always valid via fallback to config default.
      * - Not affected by stripped variant.
      */
-    borderBlockBaseWidth   : unknown
+    borderBlockBaseWidth           : unknown
     //#endregion ✅ Final resolved variables (always valid) 
 }
 
