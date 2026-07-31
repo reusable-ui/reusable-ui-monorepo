@@ -9,7 +9,7 @@ import jestPlugin from 'eslint-plugin-jest'
 import { enforceCssTypeConventions, noForeignCode as noForeignCodeInCssTypes } from './.eslint-rules/css-types.js'
 import { enforceSelectorConventions, enforceIfFunctionConventions, noForeignCode as noForeignCodeInCssSelectors } from './.eslint-rules/css-selectors.js'
 import { enforceHookConventions, migrateUsingPrefix, noForeignCode as noForeignCodeInCssHooks } from './.eslint-rules/css-hooks.js'
-import { enforceVariableConventions, enforceCssVarsFunctionUsage, enforceCssConfigFunctionUsage, noForeignCode as noForeignCodeInCssVars } from './.eslint-rules/css-variables.js'
+import { enforceVariableConventions, enforceCssVarsFunctionUsage, enforceCssConfigFunctionUsage, noForeignCode as noForeignCodeInCssVars, requireSideeffectsForRegistry } from './.eslint-rules/css-variables.js'
 import { enforceCssPrefixDefaults } from './.eslint-rules/css-prefix-default.js'
 import { enforceCssMountConventions } from './.eslint-rules/css-mount.js'
 import { enforceScopeFunctionUsage, noForeignCode as noForeignCodeInCssStyle } from './.eslint-rules/css-style.js'
@@ -275,6 +275,7 @@ export default defineConfig(
                     'enforce-cssvars-function-usage'   : enforceCssVarsFunctionUsage   as unknown as Rule.RuleModule,
                     'enforce-cssconfig-function-usage' : enforceCssConfigFunctionUsage as unknown as Rule.RuleModule,
                     'no-foreign-code'                  : noForeignCodeInCssVars        as unknown as Rule.RuleModule,
+                    'require-sideeffects-for-registry' : requireSideeffectsForRegistry as unknown as Rule.RuleModule,
                 },
             },
             'css-prefix-default': {
@@ -348,6 +349,7 @@ export default defineConfig(
             'css-variables/enforce-cssvars-function-usage'   : 'error',
             'css-variables/enforce-cssconfig-function-usage' : 'error',
             'css-variables/no-foreign-code'                  : 'error',
+            'css-variables/require-sideeffects-for-registry' : 'error',
             'css-prefix-default/enforce-css-prefix-defaults' : ['error', {
                 minLength : 1,
                 maxLength : 4,

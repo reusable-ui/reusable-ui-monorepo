@@ -4,7 +4,8 @@ import { ESLintUtils } from '@typescript-eslint/utils'
 import { collectBindingInitializers, collectTopLevelBindings } from './binding-initializers.js'
 import { isTopLevel, isExported } from './scope-utilities.js'
 import { getDomainMetadata, getExpectedCSSVariableModules } from './domain-utilities.js'
-import { resolveGroupPackageRelativePath } from './utilities.js'
+import { resolveGroupPackageRelativePath, findPackageJson } from './utilities.js'
+import fs from 'fs'
 
 
 
@@ -777,6 +778,113 @@ export const noForeignCode = createRule({
                     // - If there's an initializer, report it to indicate the problematic code.
                     context.report({ node: id, messageId: 'foreignCode' });
                 } // for
+            },
+        };
+    },
+});
+
+
+
+/**
+ * ESLint rule: require-sideeffects-for-registry
+ * 
+ * Purpose:
+ * - Ensure that any `xxxRegistry.registerXXX(...)` calls are properly marked as sideEffects in the package.json.
+ * 
+ * Requirements:
+ * - If a registry call is found, the corresponding built file (`dist/css-internal-variables.js`) must be listed in `package.json.sideEffects`.
+ * 
+ * Function candidates:
+ * - Any code that registers something into a global registry, for example:
+ *   - `animationRegistry.registerAnimation(...)`
+ *   - `filterRegistry.registerFilter(...)`
+ *   - `boxShadowRegistry.registerBoxShadow(...)`
+ * - In other words: whenever a registry object is used to "register" an item, that file is considered side-effectful.
+ * 
+ * Why:
+ * - Registry calls mutate global registries (animations, filters, box shadows).
+ * - These mutations are runtime side effects and must be preserved by bundlers.
+ * - Without marking them, tree-shaking may drop the module, breaking unified stacks.
+ */
+export const requireSideeffectsForRegistry = createRule({
+    name : 'require-sideeffects-for-registry',
+    meta : {
+        type     : 'problem',
+        docs     : {
+            description : 'Ensure registry calls are marked as sideEffects in package.json',
+        },
+        schema   : [], // no options accepted
+        messages : {
+            missingSideEffect : 'Registry call detected in `{{file}}`, but `{{distFile}}` is not listed in `package.json.sideEffects`.',
+        },
+    },
+    create(context) {
+        const filename         = context.filename;
+        const basename         = path.basename(filename);
+        const relativeFilename = resolveGroupPackageRelativePath(filename);
+        if (basename !== 'css-internal-variables.ts') return {};
+        
+        
+        
+        // Normalize by dropping everything before "src/":
+        const packageRelativeFilename = relativeFilename.replace(/^.*[\\/](?=src[\\/])/, '');
+        
+        
+        
+        return {
+            CallExpression(node: TSESTree.CallExpression) {
+                // Look for `xxxRegistry.registerXXX(...)`:
+                if (
+                    (node.callee.type !== TSESTree.AST_NODE_TYPES.MemberExpression)
+                    ||
+                    (node.callee.object.type !== TSESTree.AST_NODE_TYPES.Identifier)
+                    ||
+                    (node.callee.property.type !== TSESTree.AST_NODE_TYPES.Identifier)
+                    ||
+                    !node.callee.property.name.startsWith('register')
+                ) return;
+                
+                
+                
+                // Locate `package.json` at project root:
+                const pkgPath = findPackageJson(filename);
+                if (!pkgPath || !fs.existsSync(pkgPath)) return;
+                
+                
+                
+                // Read package.json's content:
+                const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+                const sideEffects: string[] = pkg.sideEffects ?? [];
+                
+                // Normalize entries to array:
+                const sideEffectsArr = Array.isArray(sideEffects) ? sideEffects : [];
+                
+                
+                
+                // Map `src` file to `dist` file:
+                // - Also replace backslashes (\) with forward slashes (/).
+                const relativeDistFile = (
+                    packageRelativeFilename
+                    .replace(/^src(?=[\\/])/, 'dist')
+                    .replace(/\.ts$/, '.js')
+                    .replace('\\', '/')
+                );
+                
+                // Check if distFile is listed:
+                const isListed = sideEffectsArr.includes(relativeDistFile);
+                if (isListed) return;
+                
+                
+                
+                // Enforce listed in sideEffects:
+                context.report({
+                    node,
+                    messageId    : 'missingSideEffect',
+                    data: {
+                        file     : packageRelativeFilename,
+                        distFile : relativeDistFile,
+                    },
+                });
             },
         };
     },
