@@ -383,11 +383,13 @@ export interface CssBorderFeature {
      * with support for geometry styling and CSS color function adjustments.
      * 
      * Includes:
-     * - `border**Cond`s       : Variant-specific border colors (conditionally valid or poisoned).
-     * - `borderStrippedCond`  : Suppresses border geometry when stripped variant is active.
-     * - `borderVariantColor`  : Variant-aware border color from the active variant.
-     * - `borderColorOverride` : User-defined override for the border color.
-     * - `borderColor`         : Final border color consumed by components.
+     * - `border**Cond`s         : Variant-specific border colors (conditionally valid or poisoned).
+     * - `borderStrippedCond`    : Suppresses border geometry when stripped variant is active.
+     * - `borderVariantColor`    : Variant-aware border color from the active variant.
+     * - `borderColorOverride`   : User-defined override for the border color.
+     * - `border*WidthOverride`  : External override for the border widths.
+     * - `border*RadiusOverride` : External override for the border radii.
+     * - `borderColor`           : Final border color consumed by components.
      * - `borderStyle`, `borderWidth`, `borderRadius`, etc.: Resolved geometry styling.
      * 
      * These variables can be consumed directly or composed into advanced use cases
