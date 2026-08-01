@@ -36,7 +36,7 @@ const createRule = ESLintUtils.RuleCreator(
  *     • `css-internal-config.ts`
  *     • `css-<subdomain>-config.ts`
  *     • `css-internal-<subdomain>-config.ts`
- * - Must be exported.
+ * - Must be exported for non-tuple bindings, or must not be exported for tuple bindings.
  * 
  * CSS variable candidates:
  * - Identified by names that end with "Vars".
@@ -60,11 +60,12 @@ export const enforceVariableConventions = createRule({
         },
         schema: [], // no options accepted
         messages: {
-            wrongFile    : 'CSS variables must be declared in the expected module file (e.g. `css-config.ts`, `css-internal-config.ts`, `css-variables.ts`, or their sub-domain variants).',
-            wrongExport  : 'CSS variables must be exported.',
-            wrongType    : 'CSS variables must be typed `CssVars` from `@cssfn/core`.',
-            wrongTypeRef : 'CSS variables must be typed `Refs` from `config[0]`.',
-            wrongName    : 'CSS variable names must follow `<Domain><Group>Vars` naming convention.',
+            wrongFile      : 'CSS variables must be declared in the expected module file (e.g. `css-config.ts`, `css-internal-config.ts`, `css-variables.ts`, or their sub-domain variants).',
+            wrongExport    : 'CSS variables must be exported.',
+            wrongNonExport : 'CSS variable tuple helpers must not be exported.',
+            wrongType      : 'CSS variables must be typed `CssVars` from `@cssfn/core` or from `*Tuple[0-1]`.',
+            wrongTypeRef   : 'CSS variables must be typed `Refs` from `config[0]`.',
+            wrongName      : 'CSS variable names must follow `<Domain><Group>Vars` naming convention.',
         },
     },
     
@@ -99,7 +100,36 @@ export const enforceVariableConventions = createRule({
         
         
         
+        // Tracks `*Tuple` helper declarations that are paired with the exported `*Vars` binding.
+        // Example: `disabledStateTuple` → `disabledStateVars`.
+        const tupleBindings = new Set<string>();
+        
+        
+        
         // Helper functions:
+        
+        /**
+         * Validates the initializer is a `tuple[0]` for `*Vars` or `tuple[1]` for `*Expressions`.
+         */
+        const isValidVarsFromTuple = (bindingName: string, value: TSESTree.Node | null): boolean => {
+            if (!value || (value.type !== TSESTree.AST_NODE_TYPES.MemberExpression)) return false;
+            if (value.object.type !== TSESTree.AST_NODE_TYPES.Identifier) return false;
+            if (value.property.type !== TSESTree.AST_NODE_TYPES.Literal) return false;
+            if (bindingName.endsWith('Vars')) {
+                if (value.property.value !== 0) return false;
+            }
+            else if (bindingName.endsWith('Expressions')) {
+                if (value.property.value !== 1) return false;
+            }
+            else {
+                return false;
+            } // if
+            
+            
+            
+            const tupleName = value.object.name;
+            return tupleBindings.has(tupleName);
+        };
         
         /**
          * Validates the type is `CssVars` (from `@cssfn/core`).
@@ -123,6 +153,27 @@ export const enforceVariableConventions = createRule({
         };
         
         /**
+         * Validates the initializer is a `cssVars()` function call.
+         * 
+         * @param node The variable declarator node to validate.
+         * @returns True if the initializer is a valid `cssVars()` function call, false otherwise.
+         */
+        const isValidCssVarsFunctionCall = (node: TSESTree.VariableDeclarator): boolean => {
+            // Ensure the required import is present:
+            if (!isCssVarsFunctionImported) return false;
+            
+            // Ensure the initializer is a `cssVars()` function call:
+            if (!node.init || (node.init.type !== TSESTree.AST_NODE_TYPES.CallExpression)) return false;
+            if (node.init.callee.type !== TSESTree.AST_NODE_TYPES.Identifier) return false;
+            if (node.init.callee.name !== 'cssVars') return false;
+            
+            
+            
+            // All conditions satisfied, it's a valid `cssVars()` function call:
+            return true;
+        };
+        
+        /**
          * Validates naming convention for CSS variable groups.
          * 
          * Requirements:
@@ -140,14 +191,14 @@ export const enforceVariableConventions = createRule({
          */
         const isValidVariableGroupName = (name: string): boolean => {
             // Loose validation (no domain context available):
-            if (!domainMetadata)  return /^[a-z]+([A-Z][a-z]*)?(Config|Variant|Feature|State|Effect|Layout)(Vars|Expressions|Options)$/.test(name);
+            if (!domainMetadata)  return /^[a-z]+([A-Z][a-z]*)?(Config|Variant|Feature|State|Effect|Layout)(Tuple|Vars|Expressions|Options)$/.test(name);
             
             
             
             // Tight validation (domain context available):
             
             // Build expected name: <domain><subdomain?><group>Vars:
-            const variableSuffix    = name.match(/(Vars|Expressions|Options)$/)?.[1] ?? ''
+            const variableSuffix    = name.match(/(Tuple|Vars|Expressions|Options)$/)?.[1] ?? ''
             const expectedName      = `${domainMetadata.fullIdentifier}${variableSuffix}`;
             
             // Convert expected name to camelCase (first letter lowercase):
@@ -215,7 +266,7 @@ export const enforceVariableConventions = createRule({
                 // - No need for a case boundary check before the suffix:
                 //   matches camelCase and PascalCase names like `outlinedVariantVars`, `flowDirectionVariantVars`,
                 //   and even acronym-based names like `someCSSVars`.
-                if (!/(Vars|Expressions|Options)$/.test(name)) return; // exit function
+                if (!/(Tuple|Vars|Expressions|Options)$/.test(name)) return; // exit function
                 
                 
                 
@@ -274,12 +325,21 @@ export const enforceVariableConventions = createRule({
                     
                     
                     
+                    // Recognize the tuple helper pattern before the regular variable-candidate filter:
+                    // `const disabledStateTuple = cssVars<...>(...)`
+                    // `export const disabledStateVars = disabledStateTuple[0]`
+                    if (bindingName.endsWith('Tuple') && value && (value.type === TSESTree.AST_NODE_TYPES.CallExpression) && (value.callee.type === TSESTree.AST_NODE_TYPES.Identifier) && (value.callee.name === 'cssVars')) {
+                        tupleBindings.add(bindingName);
+                    } // if
+                    
+                    
+                    
                     // CSS variable candidates:
                     // - Identified by names that end with "Vars", "Expressions", or "Options".
                     // - No need for a case boundary check before the suffix:
                     //   matches camelCase and PascalCase names like `outlinedVariantVars`, `flowDirectionVariantVars`,
                     //   and even acronym-based names like `someCSSVars`.
-                    if (!/(Vars|Expressions|Options)$/.test(bindingName)) continue; // exit for
+                    if (!/(Tuple|Vars|Expressions|Options)$/.test(bindingName)) continue; // exit for
                     
                     
                     
@@ -301,7 +361,13 @@ export const enforceVariableConventions = createRule({
                     // Case 2: Constant initializer (string literal, etc.):
                     // - Example: `export const strippedVars: CssVars = ...`
                     else {
-                        if (id.typeAnnotation) {
+                        if (bindingName.endsWith('Tuple')) {
+                            // Enforce implicit type annotation from `cssVars()`'s return type:
+                            if (!isValidCssVarsFunctionCall(node)) {
+                                context.report({ node: id, messageId: 'wrongType' });
+                            } // if
+                        }
+                        else if (id.typeAnnotation) {
                             // Enforce explicit type annotation on the variable identifier:
                             if (!isValidType(id.typeAnnotation.typeAnnotation)) {
                                 context.report({ node: id, messageId: 'wrongType' });
@@ -321,8 +387,10 @@ export const enforceVariableConventions = createRule({
                                 } // if
                             }
                             else {
-                                // Enforce implicit type annotation from `cssVars()`'s return type:
-                                if (!isCssVarsFunctionImported || !node.init || (node.init.type !== TSESTree.AST_NODE_TYPES.CallExpression) || (node.init.callee.type !== TSESTree.AST_NODE_TYPES.Identifier) || (node.init.callee.name !== 'cssVars')) {
+                                // Enforce:
+                                // - Implicit type annotation from `cssVars()`'s return type, or
+                                // - Extracted from the corresponding tuple helper (e.g., `disabledStateTuple[0]` for `disabledStateVars`).
+                                if (!isValidCssVarsFunctionCall(node) && !isValidVarsFromTuple(bindingName, value)) {
                                     context.report({ node: id, messageId: 'wrongType' });
                                 } // if
                             } // if
@@ -331,9 +399,16 @@ export const enforceVariableConventions = createRule({
                     
                     
                     
-                    // Enforce exported:
-                    if (!isExported(node)) {
-                        context.report({ node: id, messageId: 'wrongExport' });
+                    // Enforce exported for non-tuple bindings, or enforce non-exported for tuple bindings:
+                    if (!bindingName.endsWith('Tuple')) {
+                        if (!isExported(node)) {
+                            context.report({ node: id, messageId: 'wrongExport' });
+                        } // if
+                    }
+                    else {
+                        if (isExported(node)) {
+                            context.report({ node: id, messageId: 'wrongNonExport' });
+                        } // if
                     } // if
                     
                     
@@ -658,6 +733,7 @@ export const enforceCssConfigFunctionUsage = createRule({
  * Requirements:
  * - Allowed top-level statements:
  *   - Import declarations.
+ *   - Tuple helpers (ending with `Tuple`), for serving the `*Vars` and `*Options` variables (from `tuple[0-1]`).
  *   - CSS variables (ending with `Vars`).
  *   - For config modules, these are also allowed:
  *     - `config` tuple variable, for serving the `*Vars`, `*Expressions`, and `*Options` variables (from `config[0-2]`).
@@ -724,6 +800,12 @@ export const noForeignCode = createRule({
                     
                     // Get the binding name for easy access:
                     const bindingName = id.name;
+                    
+                    
+                    
+                    // `*Tuple` helper declarations are part of the `*Tuple[0-1]` idiom for `*Vars` and `*Options` variables.
+                    // They are intermediate storage for `cssVars<...>()`, so they should not be rejected as foreign code.
+                    if (/Tuple$/.test(bindingName)) continue; // exit for
                     
                     
                     
