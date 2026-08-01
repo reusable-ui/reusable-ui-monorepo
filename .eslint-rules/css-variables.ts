@@ -659,6 +659,10 @@ export const enforceCssConfigFunctionUsage = createRule({
  * - Allowed top-level statements:
  *   - Import declarations.
  *   - CSS variables (ending with `Vars`).
+ *   - For config modules, these are also allowed:
+ *     - `config` tuple variable, for serving the `*Vars`, `*Expressions`, and `*Options` variables (from `config[0-2]`).
+ *     - `*Expressions` variable (from `config[1]`).
+ *     - `*Options` variable (from `config[2]`).
  *   - Comments.
  * - Disallow any other top-level code.
  * 
