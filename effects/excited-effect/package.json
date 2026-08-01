@@ -40,7 +40,9 @@
     "./index": "./dist/index.js",
     "./index.js": "./dist/index.js"
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "dist/css-internal-variables.js"
+  ],
   "publishConfig": {
     "access": "public"
   },
