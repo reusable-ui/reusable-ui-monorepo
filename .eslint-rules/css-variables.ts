@@ -975,3 +975,116 @@ export const requireSideeffectsForRegistry = createRule({
         };
     },
 });
+
+
+
+/**
+ * ESLint rule: migrate-cssvars-tuple-style
+ * 
+ * Purpose:
+ * - Migrate legacy destructured export style:
+ *   `export const [fooVars] = cssVars<...>(...)`
+ * - Into the tuple-alias style:
+ *   `const fooTuple = cssVars<...>(...)`
+ *   `export const fooVars = fooTuple[0]`
+ * 
+ * Why:
+ * - Keeps the JSDoc attached to the exported variable binding.
+ * - Preserves the tuple helper pattern that newer CSS-variable conventions rely on.
+ */
+export const migrateCssVarsTupleStyle = createRule({
+    name : 'migrate-cssvars-tuple-style',
+    meta : {
+        type     : 'suggestion',
+        fixable  : 'code',
+        docs     : {
+            description : 'Migrate legacy `export const [fooVars] = cssVars<...>(...)` declarations to the tuple helper style.',
+        },
+        schema   : [], // no options accepted
+        messages : {
+            migrateTupleStyle : 'Use the tuple helper form: `const {{tupleName}} = cssVars<...>(...)` and `export const {{bindingName}} = {{tupleName}}[0]`.',
+        },
+    },
+    create(context) {
+        const filename         = context.filename;
+        const basename         = path.basename(filename);
+        if (basename !== 'css-internal-variables.ts') return {};
+        
+        
+        
+        const sourceCode = context.sourceCode;
+        
+        
+        
+        return {
+            ExportNamedDeclaration(node) {
+                if (!node.declaration || (node.declaration.type !== TSESTree.AST_NODE_TYPES.VariableDeclaration)) return;
+                if (node.declaration.declarations.length !== 1) return;
+                
+                
+                
+                const declarator = node.declaration.declarations[0];
+                if (!declarator.id || (declarator.id.type !== TSESTree.AST_NODE_TYPES.ArrayPattern)) return;
+                if (declarator.id.elements.length !== 1) return;
+                
+                
+                
+                const element = declarator.id.elements[0];
+                if (!element || (element.type !== TSESTree.AST_NODE_TYPES.Identifier)) return;
+                
+                
+                
+                const bindingName = element.name;
+                if (!/Vars$/.test(bindingName)) return;
+                
+                
+                
+                const init = declarator.init;
+                if (!init || (init.type !== TSESTree.AST_NODE_TYPES.CallExpression)) return;
+                if ((init.callee.type !== TSESTree.AST_NODE_TYPES.Identifier) || (init.callee.name !== 'cssVars')) return;
+                
+                
+                
+                const tupleName = bindingName.replace(/Vars$/, 'Tuple');
+                
+                // Preserve nearest JSDoc comment:
+                const comments  = (
+                    // Get all comments before the node, then filter for JSDoc comments:
+                    sourceCode.getCommentsBefore(node)
+                    
+                    // JSDoc comments are block comments starting with '*':
+                    .filter((comment) => (comment.type === 'Block') && comment.value.startsWith('*'))
+                    
+                    // Take the last JSDoc comment before the node, if any:
+                    .slice(-1)
+                );
+                
+                const selectionStart = comments.length > 0 ? comments[0].range[0] : node.range[0];
+                const selectionEnd   = node.range[1];
+                
+                
+                
+                context.report({
+                    node,
+                    messageId : 'migrateTupleStyle',
+                    data: {
+                        bindingName,
+                        tupleName,
+                    },
+                    fix(fixer) {
+                        const replacement = [
+                            `const ${tupleName} = ${sourceCode.getText(init)};`,
+                            '',
+                            comments.map((comment) => sourceCode.getText(comment)).join('\n'),
+                            `export const ${bindingName} = ${tupleName}[0];`,
+                        ].join('\n');
+                        
+                        
+                        
+                        return fixer.replaceTextRange([selectionStart, selectionEnd], replacement);
+                    },
+                });
+            },
+        };
+    },
+});
