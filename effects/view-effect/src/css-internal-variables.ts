@@ -21,13 +21,15 @@ import {
 
 
 
+const viewEffectTuple = cssVars<ViewEffectVars>({ prefix: defaultViewEffectPrefix, minify: false });
+
 /**
  * A strongly typed global mapping of view-effect CSS variables.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [viewEffectVars] = cssVars<ViewEffectVars>({ prefix: defaultViewEffectPrefix, minify: false });
+export const viewEffectVars = viewEffectTuple[0];
 
 // Register the view transform globally for composing a unified transform stack across effect packages:
 transformRegistry.registerTransform(viewEffectVars.viewTransform);

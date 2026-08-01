@@ -16,6 +16,8 @@ import {
 
 
 
+const themeVariantTuple = cssVars<ThemeVariantVars>({ prefix: defaultThemeVariantPrefix, minify: false });
+
 /**
  * A strongly typed global mapping of theme-related CSS variables for coloring components.
  * 
@@ -24,4 +26,4 @@ import {
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [themeVariantVars] = cssVars<ThemeVariantVars>({ prefix: defaultThemeVariantPrefix, minify: false });
+export const themeVariantVars = themeVariantTuple[0];

@@ -16,10 +16,12 @@ import {
 
 
 
+const filterFeatureTuple = cssVars<FilterFeatureVars>({ prefix: defaultFilterFeaturePrefix, minify: false });
+
 /**
  * A strongly typed global mapping of filter-related CSS variables used for composing filter stacks.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [filterFeatureVars] = cssVars<FilterFeatureVars>({ prefix: defaultFilterFeaturePrefix, minify: false });
+export const filterFeatureVars = filterFeatureTuple[0];

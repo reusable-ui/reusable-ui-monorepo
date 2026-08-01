@@ -24,13 +24,15 @@ import {
 
 
 
+const excitedEffectTuple = cssVars<ExcitedEffectVars>({ prefix: defaultExcitedEffectPrefix, minify: false });
+
 /**
  * A strongly typed global mapping of excitement-related CSS variables.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [excitedEffectVars] = cssVars<ExcitedEffectVars>({ prefix: defaultExcitedEffectPrefix, minify: false });
+export const excitedEffectVars = excitedEffectTuple[0];
 
 // Register the excitement-related filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(excitedEffectVars.excitedFilter);

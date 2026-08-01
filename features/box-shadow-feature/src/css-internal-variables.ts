@@ -16,10 +16,12 @@ import {
 
 
 
+const boxShadowFeatureTuple = cssVars<BoxShadowFeatureVars>({ prefix: defaultBoxShadowFeaturePrefix, minify: false });
+
 /**
  * A strongly typed global mapping of box-shadow-related CSS variables used for composing box shadow stacks.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [boxShadowFeatureVars] = cssVars<BoxShadowFeatureVars>({ prefix: defaultBoxShadowFeaturePrefix, minify: false });
+export const boxShadowFeatureVars = boxShadowFeatureTuple[0];

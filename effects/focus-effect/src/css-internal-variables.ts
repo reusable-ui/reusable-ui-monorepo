@@ -21,13 +21,15 @@ import {
 
 
 
+const focusEffectTuple = cssVars<FocusEffectVars>({ prefix: defaultFocusEffectPrefix, minify: false });
+
 /**
  * A strongly typed global mapping of focus-effect CSS variables.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [focusEffectVars] = cssVars<FocusEffectVars>({ prefix: defaultFocusEffectPrefix, minify: false });
+export const focusEffectVars = focusEffectTuple[0];
 
 // Register the focus box shadow globally for composing a unified box shadow stack across effect packages:
 boxShadowRegistry.registerBoxShadow(focusEffectVars.focusBoxShadow);

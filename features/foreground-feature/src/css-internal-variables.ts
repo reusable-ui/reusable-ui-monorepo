@@ -16,10 +16,12 @@ import {
 
 
 
+const foregroundFeatureTuple = cssVars<ForegroundFeatureVars>({ prefix: defaultForegroundFeaturePrefix, minify: false });
+
 /**
  * A strongly typed global mapping of foreground-related CSS variables for conditional styling.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [foregroundFeatureVars] = cssVars<ForegroundFeatureVars>({ prefix: defaultForegroundFeaturePrefix, minify: false });
+export const foregroundFeatureVars = foregroundFeatureTuple[0];

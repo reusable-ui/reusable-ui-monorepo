@@ -21,13 +21,15 @@ import {
 
 
 
+const excitedStateTuple = cssVars<ExcitedStateVars>({ prefix: defaultExcitedStatePrefix, minify: false });
+
 /**
  * A strongly typed global mapping of excitement-related CSS variables for conditional animation.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [excitedStateVars] = cssVars<ExcitedStateVars>({ prefix: defaultExcitedStatePrefix, minify: false });
+export const excitedStateVars = excitedStateTuple[0];
 
 // Register the excitement-related animation globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(excitedStateVars.excitingAnimation);

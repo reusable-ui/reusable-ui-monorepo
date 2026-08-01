@@ -21,13 +21,15 @@ import {
 
 
 
+const collapseEffectTuple = cssVars<CollapseEffectVars>({ prefix: defaultCollapseEffectPrefix, minify: false });
+
 /**
  * A strongly typed global mapping of collapse-effect CSS variables.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [collapseEffectVars] = cssVars<CollapseEffectVars>({ prefix: defaultCollapseEffectPrefix, minify: false });
+export const collapseEffectVars = collapseEffectTuple[0];
 
 // Register the overshoot transform globally for composing a unified transform stack across effect packages:
 transformRegistry.registerTransform(collapseEffectVars.overshootTransform);

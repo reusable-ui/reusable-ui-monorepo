@@ -21,13 +21,15 @@ import {
 
 
 
+const pressStateTuple = cssVars<PressStateVars>({ prefix: defaultPressStatePrefix, minify: false });
+
 /**
  * A strongly typed global mapping of press/release-related CSS variables for conditional animation.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [pressStateVars] = cssVars<PressStateVars>({ prefix: defaultPressStatePrefix, minify: false });
+export const pressStateVars = pressStateTuple[0];
 
 // Register the press/release-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(pressStateVars.pressingAnimation);

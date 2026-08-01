@@ -16,10 +16,12 @@ import {
 
 
 
+const validityEffectTuple = cssVars<ValidityEffectVars>({ prefix: defaultValidityEffectPrefix, minify: false });
+
 /**
  * A strongly typed global mapping of validity-effect CSS variables.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [validityEffectVars] = cssVars<ValidityEffectVars>({ prefix: defaultValidityEffectPrefix, minify: false });
+export const validityEffectVars = validityEffectTuple[0];

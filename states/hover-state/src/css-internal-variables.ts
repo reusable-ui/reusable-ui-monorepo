@@ -21,13 +21,15 @@ import {
 
 
 
+const hoverStateTuple = cssVars<HoverStateVars>({ prefix: defaultHoverStatePrefix, minify: false });
+
 /**
  * A strongly typed global mapping of hover/unhover-related CSS variables for conditional animation.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [hoverStateVars] = cssVars<HoverStateVars>({ prefix: defaultHoverStatePrefix, minify: false });
+export const hoverStateVars = hoverStateTuple[0];
 
 // Register the hover/unhover-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(hoverStateVars.hoveringAnimation);

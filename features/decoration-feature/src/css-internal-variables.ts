@@ -16,10 +16,12 @@ import {
 
 
 
+const decorationFeatureTuple = cssVars<DecorationFeatureVars>({ prefix: defaultDecorationFeaturePrefix, minify: false });
+
 /**
  * A strongly typed global mapping of decoration-related CSS variables for conditional styling.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [decorationFeatureVars] = cssVars<DecorationFeatureVars>({ prefix: defaultDecorationFeaturePrefix, minify: false });
+export const decorationFeatureVars = decorationFeatureTuple[0];

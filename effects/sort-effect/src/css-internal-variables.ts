@@ -21,13 +21,15 @@ import {
 
 
 
+const sortEffectTuple = cssVars<SortEffectVars>({ prefix: defaultSortEffectPrefix, minify: false });
+
 /**
  * A strongly typed global mapping of sorting effect CSS variables.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [sortEffectVars] = cssVars<SortEffectVars>({ prefix: defaultSortEffectPrefix, minify: false });
+export const sortEffectVars = sortEffectTuple[0];
 
 // Register the sort transform globally for composing a unified transform stack across effect packages:
 transformRegistry.registerTransform(sortEffectVars.sortTransform);

@@ -21,13 +21,15 @@ import {
 
 
 
+const focusStateTuple = cssVars<FocusStateVars>({ prefix: defaultFocusStatePrefix, minify: false });
+
 /**
  * A strongly typed global mapping of focus/blur-related CSS variables for conditional animation.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [focusStateVars] = cssVars<FocusStateVars>({ prefix: defaultFocusStatePrefix, minify: false });
+export const focusStateVars = focusStateTuple[0];
 
 // Register the focus/blur-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(focusStateVars.focusingAnimation);

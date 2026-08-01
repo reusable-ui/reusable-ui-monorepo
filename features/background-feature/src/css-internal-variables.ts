@@ -16,10 +16,12 @@ import {
 
 
 
+const backgroundFeatureTuple = cssVars<BackgroundFeatureVars>({ prefix: defaultBackgroundFeaturePrefix, minify: false });
+
 /**
  * A strongly typed global mapping of background-related CSS variables for conditional styling.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [backgroundFeatureVars] = cssVars<BackgroundFeatureVars>({ prefix: defaultBackgroundFeaturePrefix, minify: false });
+export const backgroundFeatureVars = backgroundFeatureTuple[0];

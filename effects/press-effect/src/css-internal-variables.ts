@@ -21,13 +21,15 @@ import {
 
 
 
+const pressEffectTuple = cssVars<PressEffectVars>({ prefix: defaultPressEffectPrefix, minify: false });
+
 /**
  * A strongly typed global mapping of press-effect CSS variables.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [pressEffectVars] = cssVars<PressEffectVars>({ prefix: defaultPressEffectPrefix, minify: false });
+export const pressEffectVars = pressEffectTuple[0];
 
 // Register the press filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(pressEffectVars.pressFilter);

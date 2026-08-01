@@ -21,13 +21,15 @@ import {
 
 
 
+const viewStateTuple = cssVars<ViewStateVars>({ prefix: defaultViewStatePrefix, minify: false });
+
 /**
  * A strongly typed global mapping of view-related CSS variables for conditional animation.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [viewStateVars] = cssVars<ViewStateVars>({ prefix: defaultViewStatePrefix, minify: false });
+export const viewStateVars = viewStateTuple[0];
 
 // Register the view-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(viewStateVars.viewAdvancingAnimation);

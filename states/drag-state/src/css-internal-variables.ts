@@ -21,13 +21,15 @@ import {
 
 
 
+const dragStateTuple = cssVars<DragStateVars>({ prefix: defaultDragStatePrefix, minify: false });
+
 /**
  * A strongly typed global mapping of drag/drop-related CSS variables for use in conditional styling.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [dragStateVars] = cssVars<DragStateVars>({ prefix: defaultDragStatePrefix, minify: false });
+export const dragStateVars = dragStateTuple[0];
 
 // Register the drag/drop-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(dragStateVars.draggingAnimation);

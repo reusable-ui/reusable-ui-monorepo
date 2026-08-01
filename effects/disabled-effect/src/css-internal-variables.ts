@@ -21,13 +21,15 @@ import {
 
 
 
+const disabledEffectTuple = cssVars<DisabledEffectVars>({ prefix: defaultDisabledEffectPrefix, minify: false });
+
 /**
  * A strongly typed global mapping of disabled-effect CSS variables.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [disabledEffectVars] = cssVars<DisabledEffectVars>({ prefix: defaultDisabledEffectPrefix, minify: false });
+export const disabledEffectVars = disabledEffectTuple[0];
 
 // Register the disabled filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(disabledEffectVars.disabledFilter);

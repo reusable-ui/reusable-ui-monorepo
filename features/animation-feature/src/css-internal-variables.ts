@@ -16,10 +16,12 @@ import {
 
 
 
+const animationFeatureTuple = cssVars<AnimationFeatureVars>({ prefix: defaultAnimationFeaturePrefix, minify: false });
+
 /**
  * A strongly typed global mapping of animation-related CSS variables used for composing animation stacks.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [animationFeatureVars] = cssVars<AnimationFeatureVars>({ prefix: defaultAnimationFeaturePrefix, minify: false });
+export const animationFeatureVars = animationFeatureTuple[0];

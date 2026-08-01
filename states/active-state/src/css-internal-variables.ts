@@ -21,13 +21,15 @@ import {
 
 
 
+const activeStateTuple = cssVars<ActiveStateVars>({ prefix: defaultActiveStatePrefix, minify: false });
+
 /**
  * A strongly typed global mapping of activate/deactivate-related CSS variables for conditional animation.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [activeStateVars] = cssVars<ActiveStateVars>({ prefix: defaultActiveStatePrefix, minify: false });
+export const activeStateVars = activeStateTuple[0];
 
 // Register the activate/deactivate-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(activeStateVars.activatingAnimation);

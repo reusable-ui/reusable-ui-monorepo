@@ -16,10 +16,12 @@ import {
 
 
 
+const stackedLayoutTuple = cssVars<StackedLayoutVars>({ prefix: defaultStackedLayoutPrefix, minify: false });
+
 /**
  * A strongly typed global mapping of stacked-layout CSS variables.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [stackedLayoutVars] = cssVars<StackedLayoutVars>({ prefix: defaultStackedLayoutPrefix, minify: false });
+export const stackedLayoutVars = stackedLayoutTuple[0];

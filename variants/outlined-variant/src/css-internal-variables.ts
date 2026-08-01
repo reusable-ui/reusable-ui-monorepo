@@ -16,10 +16,12 @@ import {
 
 
 
+const outlinedVariantTuple = cssVars<OutlinedVariantVars>({ prefix: defaultOutlinedVariantPrefix, minify: false });
+
 /**
  * A strongly typed global mapping of outlined-related CSS variables for conditional styling.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [outlinedVariantVars] = cssVars<OutlinedVariantVars>({ prefix: defaultOutlinedVariantPrefix, minify: false });
+export const outlinedVariantVars = outlinedVariantTuple[0];

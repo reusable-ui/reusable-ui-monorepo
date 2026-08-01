@@ -16,10 +16,12 @@ import {
 
 
 
+const strippedVariantTuple = cssVars<StrippedVariantVars<true | string>>({ prefix: defaultStrippedVariantPrefix, minify: false });
+
 /**
  * A strongly typed global mapping of stripped-related CSS variables for conditional styling.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [strippedVariantVars] = cssVars<StrippedVariantVars<true | string>>({ prefix: defaultStrippedVariantPrefix, minify: false });
+export const strippedVariantVars = strippedVariantTuple[0];

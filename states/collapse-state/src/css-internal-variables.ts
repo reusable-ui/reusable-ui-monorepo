@@ -21,13 +21,15 @@ import {
 
 
 
+const collapseStateTuple = cssVars<CollapseStateVars>({ prefix: defaultCollapseStatePrefix, minify: false });
+
 /**
  * A strongly typed global mapping of expand/collapse-related CSS variables for conditional animation.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [collapseStateVars] = cssVars<CollapseStateVars>({ prefix: defaultCollapseStatePrefix, minify: false });
+export const collapseStateVars = collapseStateTuple[0];
 
 // Register the expand/collapse-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(collapseStateVars.expandingAnimation);

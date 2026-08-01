@@ -21,13 +21,15 @@ import {
 
 
 
+const activeEffectTuple = cssVars<ActiveEffectVars>({ prefix: defaultActiveEffectPrefix, minify: false });
+
 /**
  * A strongly typed global mapping of active-effect CSS variables.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [activeEffectVars] = cssVars<ActiveEffectVars>({ prefix: defaultActiveEffectPrefix, minify: false });
+export const activeEffectVars = activeEffectTuple[0];
 
 // Register the active filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(activeEffectVars.activeFilter);

@@ -21,13 +21,15 @@ import {
 
 
 
+const disabledStateTuple = cssVars<DisabledStateVars>({ prefix: defaultDisabledStatePrefix, minify: false });
+
 /**
  * A strongly typed global mapping of enabled/disabled-related CSS variables for conditional animation.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [disabledStateVars] = cssVars<DisabledStateVars>({ prefix: defaultDisabledStatePrefix, minify: false });
+export const disabledStateVars = disabledStateTuple[0];
 
 // Register the enabled/disabled-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(disabledStateVars.enablingAnimation);

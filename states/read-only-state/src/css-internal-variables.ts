@@ -21,13 +21,15 @@ import {
 
 
 
+const readOnlyStateTuple = cssVars<ReadOnlyStateVars>({ prefix: defaultReadOnlyStatePrefix, minify: false });
+
 /**
  * A strongly typed global mapping of editable/read-only-related CSS variables for conditional animation.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [readOnlyStateVars] = cssVars<ReadOnlyStateVars>({ prefix: defaultReadOnlyStatePrefix, minify: false });
+export const readOnlyStateVars = readOnlyStateTuple[0];
 
 // Register the editable/read-only-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(readOnlyStateVars.thawingAnimation);

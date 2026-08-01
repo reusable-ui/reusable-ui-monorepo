@@ -21,13 +21,15 @@ import {
 
 
 
+const validityStateTuple = cssVars<ValidityStateVars>({ prefix: defaultValidityStatePrefix, minify: false });
+
 /**
  * A strongly typed global mapping of validity-related CSS variables for conditional animation.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [validityStateVars] = cssVars<ValidityStateVars>({ prefix: defaultValidityStatePrefix, minify: false });
+export const validityStateVars = validityStateTuple[0];
 
 // Register the validity-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(validityStateVars.validatingAnimation);

@@ -24,13 +24,15 @@ import {
 
 
 
+const dragEffectTuple = cssVars<DragEffectVars>({ prefix: defaultDragEffectPrefix, minify: false });
+
 /**
  * A strongly typed global mapping of drag-effect CSS variables.
  * 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const [dragEffectVars] = cssVars<DragEffectVars>({ prefix: defaultDragEffectPrefix, minify: false });
+export const dragEffectVars = dragEffectTuple[0];
 
 // Register the drag filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(dragEffectVars.dragFilter);
