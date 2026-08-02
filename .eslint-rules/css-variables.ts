@@ -118,7 +118,7 @@ export const enforceVariableConventions = createRule({
             if (bindingName.endsWith('Vars')) {
                 if (value.property.value !== 0) return false;
             }
-            else if (bindingName.endsWith('Expressions')) {
+            else if (bindingName.endsWith('VarOptions')) {
                 if (value.property.value !== 1) return false;
             }
             else {
@@ -191,14 +191,14 @@ export const enforceVariableConventions = createRule({
          */
         const isValidVariableGroupName = (name: string): boolean => {
             // Loose validation (no domain context available):
-            if (!domainMetadata)  return /^[a-z]+([A-Z][a-z]*)?(Config|Variant|Feature|State|Effect|Layout)(Tuple|Vars|Expressions|Options)$/.test(name);
+            if (!domainMetadata)  return /^[a-z]+([A-Z][a-z]*)?(Config|Variant|Feature|State|Effect|Layout)(Tuple|Vars|Expressions|(Var)?Options)$/.test(name);
             
             
             
             // Tight validation (domain context available):
             
             // Build expected name: <domain><subdomain?><group>Vars:
-            const variableSuffix    = name.match(/(Tuple|Vars|Expressions|Options)$/)?.[1] ?? ''
+            const variableSuffix    = name.match(/(Tuple|Vars|Expressions|(Var)?Options)$/)?.[1] ?? ''
             const expectedName      = `${domainMetadata.fullIdentifier}${variableSuffix}`;
             
             // Convert expected name to camelCase (first letter lowercase):
@@ -266,7 +266,7 @@ export const enforceVariableConventions = createRule({
                 // - No need for a case boundary check before the suffix:
                 //   matches camelCase and PascalCase names like `outlinedVariantVars`, `flowDirectionVariantVars`,
                 //   and even acronym-based names like `someCSSVars`.
-                if (!/(Tuple|Vars|Expressions|Options)$/.test(name)) return; // exit function
+                if (!/(Tuple|Vars|Expressions|(Var)?Options)$/.test(name)) return; // exit function
                 
                 
                 
@@ -339,7 +339,7 @@ export const enforceVariableConventions = createRule({
                     // - No need for a case boundary check before the suffix:
                     //   matches camelCase and PascalCase names like `outlinedVariantVars`, `flowDirectionVariantVars`,
                     //   and even acronym-based names like `someCSSVars`.
-                    if (!/(Tuple|Vars|Expressions|Options)$/.test(bindingName)) continue; // exit for
+                    if (!/(Tuple|Vars|Expressions|(Var)?Options)$/.test(bindingName)) continue; // exit for
                     
                     
                     
@@ -377,10 +377,12 @@ export const enforceVariableConventions = createRule({
                             if (domainMetadata?.group === 'Config') {
                                 // Enforce implicit type annotation from `config[0-2]`:
                                 let expectedIndex = NaN;
-                                switch (bindingName.match(/(Vars|Expressions|Options)$/)?.[1]) {
+                                switch (bindingName.match(/(Vars|Expressions|(Var)?Options)$/)?.[1]) {
                                     case 'Vars'        : expectedIndex = 0; break
                                     case 'Expressions' : expectedIndex = 1; break
-                                    case 'Options'     : expectedIndex = 2; break
+                                    
+                                    case 'Options'     :
+                                    case 'VarOptions'  : expectedIndex = 2; break
                                 } // switch
                                 if (!node.init || (node.init.type !== TSESTree.AST_NODE_TYPES.MemberExpression) || (node.init.object.type !== TSESTree.AST_NODE_TYPES.Identifier) || (node.init.object.name !== 'config') || (node.init.property.type !== TSESTree.AST_NODE_TYPES.Literal) || (node.init.property.value !== expectedIndex)) {
                                     context.report({ node: id, messageId: 'wrongTypeRef' });
@@ -817,6 +819,17 @@ export const noForeignCode = createRule({
                     // - CSS variables should never be functions,
                     //   the `enforce-variable-conventions` rule will handle that check separately.
                     if (/Vars$/.test(bindingName)) continue; // exit for
+                    
+                    
+                    
+                    // CSS variable option candidates:
+                    // - Identified by names that end with "VarOptions".
+                    // - No need for a case boundary check before "VarOptions":
+                    //   matches camelCase and PascalCase names like `disabledStateVarOptions`, `focusEffectVarOptions`,
+                    //   and even acronym-based names like `someCSSVarOptions`.
+                    // - CSS variable options should never be functions,
+                    //   the `enforce-variable-conventions` rule will handle that check separately.
+                    if (/VarOptions$/.test(bindingName)) continue; // exit for
                     
                     
                     
