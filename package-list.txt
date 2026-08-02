@@ -228,16 +228,17 @@ For hypen character, use standard hyphen (-) instead of non-breaking hyphen (‑
 @reusable-ui/view-state                             INTERACTION_BASED
 
 // Reusable-ui effects:
-@reusable-ui/filter-effect          non_peer
+@reusable-ui/filter-effect          non_peer        COMPOSITION
+
 @reusable-ui/sort-effect            non_peer
-@reusable-ui/excited-effect         non_peer
-@reusable-ui/disabled-effect        non_peer
+@reusable-ui/excited-effect         non_peer        FILTER_COMPOSED
+@reusable-ui/disabled-effect        non_peer        FILTER_COMPOSED
 @reusable-ui/focus-effect           non_peer
-@reusable-ui/hover-effect           non_peer
-@reusable-ui/press-effect           non_peer
+@reusable-ui/hover-effect           non_peer        FILTER_COMPOSED
+@reusable-ui/press-effect           non_peer        FILTER_COMPOSED
 @reusable-ui/validity-effect        non_peer
-@reusable-ui/drag-effect            non_peer
-@reusable-ui/active-effect          non_peer
+@reusable-ui/drag-effect            non_peer        FILTER_COMPOSED
+@reusable-ui/active-effect          non_peer        FILTER_COMPOSED
 @reusable-ui/collapse-effect        non_peer
 @reusable-ui/view-effect            non_peer
 
