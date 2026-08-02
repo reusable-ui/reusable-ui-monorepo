@@ -188,7 +188,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const vertSeparatorConfigVars        = config[0];
+export const vertSeparatorConfigVars       = config[0];
 
 /**
  * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
@@ -291,7 +291,7 @@ export const vertSeparatorConfigVars        = config[0];
  * }
  * ```
  */
-export const vertSeparatorConfigVarDefs     = config[1];
+export const vertSeparatorConfigVarDefs    = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.
@@ -332,7 +332,7 @@ export const vertSeparatorConfigVarDefs     = config[1];
  * }
  * ```
  */
-export const vertSeparatorConfigVarOptions  = config[2];
+export const vertSeparatorConfigVarOptions = config[2];
 
 
 

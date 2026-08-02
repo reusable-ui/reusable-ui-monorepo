@@ -237,7 +237,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const colorParamConfigVars        = config[0];
+export const colorParamConfigVars       = config[0];
 
 /**
  * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
@@ -302,7 +302,7 @@ export const colorParamConfigVars        = config[0];
  * }
  * ```
  */
-export const colorParamConfigVarDefs     = config[1];
+export const colorParamConfigVarDefs    = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for color parameters**.
@@ -344,7 +344,7 @@ export const colorParamConfigVarDefs     = config[1];
  * }
  * ```
  */
-export const colorParamConfigVarOptions  = config[2];
+export const colorParamConfigVarOptions = config[2];
 
 
 

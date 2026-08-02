@@ -165,7 +165,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const radiusConfigVars        = config[0];
+export const radiusConfigVars       = config[0];
 
 /**
  * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
@@ -227,7 +227,7 @@ export const radiusConfigVars        = config[0];
  * }
  * ```
  */
-export const radiusConfigVarDefs     = config[1];
+export const radiusConfigVarDefs    = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for radius system**.
@@ -268,7 +268,7 @@ export const radiusConfigVarDefs     = config[1];
  * }
  * ```
  */
-export const radiusConfigVarOptions  = config[2];
+export const radiusConfigVarOptions = config[2];
 
 
 

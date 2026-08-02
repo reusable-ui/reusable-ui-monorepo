@@ -285,7 +285,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const codeConfigVars        = config[0];
+export const codeConfigVars       = config[0];
 
 /**
  * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
@@ -395,7 +395,7 @@ export const codeConfigVars        = config[0];
  * }
  * ```
  */
-export const codeConfigVarDefs     = config[1];
+export const codeConfigVarDefs    = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.
@@ -443,7 +443,7 @@ export const codeConfigVarDefs     = config[1];
  * }
  * ```
  */
-export const codeConfigVarOptions  = config[2];
+export const codeConfigVarOptions = config[2];
 
 
 

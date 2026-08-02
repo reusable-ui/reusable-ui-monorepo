@@ -173,7 +173,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const spacerConfigVars        = config[0];
+export const spacerConfigVars       = config[0];
 
 /**
  * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
@@ -237,7 +237,7 @@ export const spacerConfigVars        = config[0];
  * }
  * ```
  */
-export const spacerConfigVarDefs     = config[1];
+export const spacerConfigVarDefs    = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for spacer system**.
@@ -280,7 +280,7 @@ export const spacerConfigVarDefs     = config[1];
  * }
  * ```
  */
-export const spacerConfigVarOptions  = config[2];
+export const spacerConfigVarOptions = config[2];
 
 
 

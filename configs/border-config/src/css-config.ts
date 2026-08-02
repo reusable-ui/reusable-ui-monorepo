@@ -158,7 +158,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const borderConfigVars        = config[0];
+export const borderConfigVars       = config[0];
 
 /**
  * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
@@ -220,7 +220,7 @@ export const borderConfigVars        = config[0];
  * }
  * ```
  */
-export const borderConfigVarDefs     = config[1];
+export const borderConfigVarDefs    = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for border system**.
@@ -261,7 +261,7 @@ export const borderConfigVarDefs     = config[1];
  * }
  * ```
  */
-export const borderConfigVarOptions  = config[2];
+export const borderConfigVarOptions = config[2];
 
 
 

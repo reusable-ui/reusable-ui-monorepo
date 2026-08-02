@@ -332,7 +332,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const blockquoteConfigVars        = config[0];
+export const blockquoteConfigVars       = config[0];
 
 /**
  * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
@@ -443,7 +443,7 @@ export const blockquoteConfigVars        = config[0];
  * }
  * ```
  */
-export const blockquoteConfigVarDefs     = config[1];
+export const blockquoteConfigVarDefs    = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.
@@ -492,7 +492,7 @@ export const blockquoteConfigVarDefs     = config[1];
  * }
  * ```
  */
-export const blockquoteConfigVarOptions  = config[2];
+export const blockquoteConfigVarOptions = config[2];
 
 
 

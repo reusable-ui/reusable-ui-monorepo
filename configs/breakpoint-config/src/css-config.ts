@@ -76,7 +76,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const breakpointConfigVars        = config[0];
+export const breakpointConfigVars       = config[0];
 
 /**
  * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
@@ -125,7 +125,7 @@ export const breakpointConfigVars        = config[0];
  * }
  * ```
  */
-export const breakpointConfigVarDefs     = config[1];
+export const breakpointConfigVarDefs    = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for breakpoint system**.
@@ -165,7 +165,7 @@ export const breakpointConfigVarDefs     = config[1];
  * }
  * ```
  */
-export const breakpointConfigVarOptions  = config[2];
+export const breakpointConfigVarOptions = config[2];
 
 
 

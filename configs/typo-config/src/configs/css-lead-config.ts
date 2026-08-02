@@ -200,7 +200,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const leadConfigVars        = config[0];
+export const leadConfigVars       = config[0];
 
 /**
  * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
@@ -301,7 +301,7 @@ export const leadConfigVars        = config[0];
  * }
  * ```
  */
-export const leadConfigVarDefs     = config[1];
+export const leadConfigVarDefs    = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.
@@ -340,7 +340,7 @@ export const leadConfigVarDefs     = config[1];
  * }
  * ```
  */
-export const leadConfigVarOptions  = config[2];
+export const leadConfigVarOptions = config[2];
 
 
 
