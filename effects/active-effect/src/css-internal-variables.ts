@@ -29,7 +29,7 @@ const activeEffectTuple = cssVars<ActiveEffectVars>({ prefix: defaultActiveEffec
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const activeEffectVars = activeEffectTuple[0];
+export const activeEffectVars       = activeEffectTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **active effect variables**.

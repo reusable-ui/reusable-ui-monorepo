@@ -29,7 +29,7 @@ const viewEffectTuple = cssVars<ViewEffectVars>({ prefix: defaultViewEffectPrefi
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const viewEffectVars = viewEffectTuple[0];
+export const viewEffectVars       = viewEffectTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **view effect variables**.

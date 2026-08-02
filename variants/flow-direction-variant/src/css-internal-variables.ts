@@ -24,7 +24,7 @@ const flowDirectionVariantTuple = cssVars<FlowDirectionVariantVars>({ prefix: de
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const flowDirectionVariantVars = flowDirectionVariantTuple[0];
+export const flowDirectionVariantVars       = flowDirectionVariantTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **flow direction variant variables**.

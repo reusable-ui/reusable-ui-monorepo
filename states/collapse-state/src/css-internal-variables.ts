@@ -29,7 +29,7 @@ const collapseStateTuple = cssVars<CollapseStateVars>({ prefix: defaultCollapseS
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const collapseStateVars = collapseStateTuple[0];
+export const collapseStateVars       = collapseStateTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **collapse state variables**.

@@ -26,7 +26,7 @@ const themeVariantTuple = cssVars<ThemeVariantVars>({ prefix: defaultThemeVarian
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const themeVariantVars = themeVariantTuple[0];
+export const themeVariantVars       = themeVariantTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **theme variant variables**.

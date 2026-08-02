@@ -24,7 +24,7 @@ const foregroundFeatureTuple = cssVars<ForegroundFeatureVars>({ prefix: defaultF
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const foregroundFeatureVars = foregroundFeatureTuple[0];
+export const foregroundFeatureVars       = foregroundFeatureTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **foreground feature variables**.

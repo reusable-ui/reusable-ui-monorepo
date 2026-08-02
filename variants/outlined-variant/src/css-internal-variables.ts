@@ -24,7 +24,7 @@ const outlinedVariantTuple = cssVars<OutlinedVariantVars>({ prefix: defaultOutli
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const outlinedVariantVars = outlinedVariantTuple[0];
+export const outlinedVariantVars       = outlinedVariantTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **outlined variant variables**.

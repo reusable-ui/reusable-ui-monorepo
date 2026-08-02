@@ -24,7 +24,7 @@ const mildVariantTuple = cssVars<MildVariantVars>({ prefix: defaultMildVariantPr
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const mildVariantVars = mildVariantTuple[0];
+export const mildVariantVars       = mildVariantTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **mild variant variables**.

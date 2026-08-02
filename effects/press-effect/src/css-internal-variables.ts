@@ -29,7 +29,7 @@ const pressEffectTuple = cssVars<PressEffectVars>({ prefix: defaultPressEffectPr
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const pressEffectVars = pressEffectTuple[0];
+export const pressEffectVars       = pressEffectTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **press effect variables**.

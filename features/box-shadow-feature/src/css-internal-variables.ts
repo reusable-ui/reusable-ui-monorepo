@@ -24,7 +24,7 @@ const boxShadowFeatureTuple = cssVars<BoxShadowFeatureVars>({ prefix: defaultBox
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const boxShadowFeatureVars = boxShadowFeatureTuple[0];
+export const boxShadowFeatureVars       = boxShadowFeatureTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **box shadow feature variables**.

@@ -29,7 +29,7 @@ const focusEffectTuple = cssVars<FocusEffectVars>({ prefix: defaultFocusEffectPr
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const focusEffectVars = focusEffectTuple[0];
+export const focusEffectVars       = focusEffectTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **focus effect variables**.

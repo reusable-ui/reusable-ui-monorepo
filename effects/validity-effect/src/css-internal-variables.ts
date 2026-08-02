@@ -24,7 +24,7 @@ const validityEffectTuple = cssVars<ValidityEffectVars>({ prefix: defaultValidit
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const validityEffectVars = validityEffectTuple[0];
+export const validityEffectVars       = validityEffectTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **validity effect variables**.

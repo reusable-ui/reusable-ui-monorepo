@@ -29,7 +29,7 @@ const sortEffectTuple = cssVars<SortEffectVars>({ prefix: defaultSortEffectPrefi
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const sortEffectVars = sortEffectTuple[0];
+export const sortEffectVars       = sortEffectTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **sort effect variables**.

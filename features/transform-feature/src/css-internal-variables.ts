@@ -24,7 +24,7 @@ const transformFeatureTuple = cssVars<TransformFeatureVars>({ prefix: defaultTra
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const transformFeatureVars = transformFeatureTuple[0];
+export const transformFeatureVars       = transformFeatureTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **transform feature variables**.

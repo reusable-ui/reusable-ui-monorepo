@@ -24,7 +24,7 @@ const paddingFeatureTuple = cssVars<PaddingFeatureVars>({ prefix: defaultPadding
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const paddingFeatureVars = paddingFeatureTuple[0];
+export const paddingFeatureVars       = paddingFeatureTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **padding feature variables**.

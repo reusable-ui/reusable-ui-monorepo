@@ -24,7 +24,7 @@ const ringFeatureTuple = cssVars<RingFeatureVars>({ prefix: defaultRingFeaturePr
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const ringFeatureVars = ringFeatureTuple[0];
+export const ringFeatureVars       = ringFeatureTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **ring feature variables**.

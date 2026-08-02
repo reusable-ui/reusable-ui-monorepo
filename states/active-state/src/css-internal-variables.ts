@@ -29,7 +29,7 @@ const activeStateTuple = cssVars<ActiveStateVars>({ prefix: defaultActiveStatePr
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const activeStateVars = activeStateTuple[0];
+export const activeStateVars       = activeStateTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **active state variables**.

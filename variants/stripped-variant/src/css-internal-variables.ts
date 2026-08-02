@@ -24,7 +24,7 @@ const strippedVariantTuple = cssVars<StrippedVariantVars<true | string>>({ prefi
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const strippedVariantVars = strippedVariantTuple[0];
+export const strippedVariantVars       = strippedVariantTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **stripped variant variables**.

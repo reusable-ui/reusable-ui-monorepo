@@ -29,7 +29,7 @@ const dragStateTuple = cssVars<DragStateVars>({ prefix: defaultDragStatePrefix, 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const dragStateVars = dragStateTuple[0];
+export const dragStateVars       = dragStateTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **drag state variables**.

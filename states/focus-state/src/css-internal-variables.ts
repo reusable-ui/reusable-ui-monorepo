@@ -29,7 +29,7 @@ const focusStateTuple = cssVars<FocusStateVars>({ prefix: defaultFocusStatePrefi
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const focusStateVars = focusStateTuple[0];
+export const focusStateVars       = focusStateTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **focus state variables**.

@@ -24,7 +24,7 @@ const backgroundFeatureTuple = cssVars<BackgroundFeatureVars>({ prefix: defaultB
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const backgroundFeatureVars = backgroundFeatureTuple[0];
+export const backgroundFeatureVars       = backgroundFeatureTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **background feature variables**.

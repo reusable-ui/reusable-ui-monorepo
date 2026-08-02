@@ -29,7 +29,7 @@ const viewStateTuple = cssVars<ViewStateVars>({ prefix: defaultViewStatePrefix, 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const viewStateVars = viewStateTuple[0];
+export const viewStateVars       = viewStateTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **view state variables**.

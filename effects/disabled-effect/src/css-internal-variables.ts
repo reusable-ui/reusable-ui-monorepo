@@ -29,7 +29,7 @@ const disabledEffectTuple = cssVars<DisabledEffectVars>({ prefix: defaultDisable
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const disabledEffectVars = disabledEffectTuple[0];
+export const disabledEffectVars       = disabledEffectTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **disabled effect variables**.

@@ -29,7 +29,7 @@ const readOnlyStateTuple = cssVars<ReadOnlyStateVars>({ prefix: defaultReadOnlyS
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const readOnlyStateVars = readOnlyStateTuple[0];
+export const readOnlyStateVars       = readOnlyStateTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **read only state variables**.

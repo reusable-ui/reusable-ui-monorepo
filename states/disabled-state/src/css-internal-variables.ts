@@ -29,7 +29,7 @@ const disabledStateTuple = cssVars<DisabledStateVars>({ prefix: defaultDisabledS
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const disabledStateVars = disabledStateTuple[0];
+export const disabledStateVars       = disabledStateTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **disabled state variables**.

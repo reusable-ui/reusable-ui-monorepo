@@ -29,7 +29,7 @@ const excitedStateTuple = cssVars<ExcitedStateVars>({ prefix: defaultExcitedStat
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const excitedStateVars = excitedStateTuple[0];
+export const excitedStateVars       = excitedStateTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **excited state variables**.

@@ -29,7 +29,7 @@ const sortStateTuple = cssVars<SortStateVars>({ prefix: defaultSortStatePrefix, 
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const sortStateVars = sortStateTuple[0];
+export const sortStateVars       = sortStateTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **sort state variables**.

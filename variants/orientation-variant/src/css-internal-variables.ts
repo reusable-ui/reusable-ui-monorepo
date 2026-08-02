@@ -24,7 +24,7 @@ const orientationVariantTuple = cssVars<OrientationVariantVars>({ prefix: defaul
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const orientationVariantVars = orientationVariantTuple[0];
+export const orientationVariantVars       = orientationVariantTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **orientation variant variables**.

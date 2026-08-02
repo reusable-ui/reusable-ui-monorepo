@@ -32,7 +32,7 @@ const dragEffectTuple = cssVars<DragEffectVars>({ prefix: defaultDragEffectPrefi
  * These variables are shared across server and client environments to ensure
  * consistent CSS variable names during SSR and hydration.
  */
-export const dragEffectVars = dragEffectTuple[0];
+export const dragEffectVars       = dragEffectTuple[0];
 
 /**
  * A `LiveCssVarsOptions` object manages configuration for the **drag effect variables**.
