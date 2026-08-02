@@ -65,5 +65,9 @@ export const focusEffectVars       = focusEffectTuple[0];
  */
 export const focusEffectVarOptions = focusEffectTuple[1];
 
+
+
+// Side Effects:
+
 // Register the focus box shadow globally for composing a unified box shadow stack across effect packages:
 boxShadowRegistry.registerBoxShadow(focusEffectVars.focusBoxShadow);

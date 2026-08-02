@@ -70,6 +70,10 @@ export const excitedEffectVars       = excitedEffectTuple[0];
  */
 export const excitedEffectVarOptions = excitedEffectTuple[1];
 
+
+
+// Side Effects:
+
 // Register the excitement-related filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(excitedEffectVars.excitedFilter);
 

@@ -67,5 +67,9 @@ export const viewEffectVars       = viewEffectTuple[0];
  */
 export const viewEffectVarOptions = viewEffectTuple[1];
 
+
+
+// Side Effects:
+
 // Register the view transform globally for composing a unified transform stack across effect packages:
 transformRegistry.registerTransform(viewEffectVars.viewTransform);

@@ -67,5 +67,9 @@ export const hoverEffectVars       = hoverEffectTuple[0];
  */
 export const hoverEffectVarOptions = hoverEffectTuple[1];
 
+
+
+// Side Effects:
+
 // Register the hover filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(hoverEffectVars.hoverFilter);

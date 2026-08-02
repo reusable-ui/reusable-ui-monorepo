@@ -67,6 +67,10 @@ export const hoverStateVars       = hoverStateTuple[0];
  */
 export const hoverStateVarOptions = hoverStateTuple[1];
 
+
+
+// Side Effects:
+
 // Register the hover/unhover-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(hoverStateVars.hoveringAnimation);
 animationRegistry.registerAnimation(hoverStateVars.unhoveringAnimation);

@@ -67,6 +67,10 @@ export const readOnlyStateVars       = readOnlyStateTuple[0];
  */
 export const readOnlyStateVarOptions = readOnlyStateTuple[1];
 
+
+
+// Side Effects:
+
 // Register the editable/read-only-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(readOnlyStateVars.thawingAnimation);
 animationRegistry.registerAnimation(readOnlyStateVars.freezingAnimation);

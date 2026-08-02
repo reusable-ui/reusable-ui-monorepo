@@ -67,6 +67,10 @@ export const pressStateVars       = pressStateTuple[0];
  */
 export const pressStateVarOptions = pressStateTuple[1];
 
+
+
+// Side Effects:
+
 // Register the press/release-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(pressStateVars.pressingAnimation);
 animationRegistry.registerAnimation(pressStateVars.releasingAnimation);

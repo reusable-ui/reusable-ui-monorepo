@@ -67,6 +67,10 @@ export const disabledStateVars       = disabledStateTuple[0];
  */
 export const disabledStateVarOptions = disabledStateTuple[1];
 
+
+
+// Side Effects:
+
 // Register the enabled/disabled-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(disabledStateVars.enablingAnimation);
 animationRegistry.registerAnimation(disabledStateVars.disablingAnimation);

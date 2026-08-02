@@ -67,6 +67,10 @@ export const dragStateVars       = dragStateTuple[0];
  */
 export const dragStateVarOptions = dragStateTuple[1];
 
+
+
+// Side Effects:
+
 // Register the drag/drop-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(dragStateVars.draggingAnimation);
 animationRegistry.registerAnimation(dragStateVars.droppingAnimation);

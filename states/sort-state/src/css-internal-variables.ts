@@ -67,5 +67,9 @@ export const sortStateVars       = sortStateTuple[0];
  */
 export const sortStateVarOptions = sortStateTuple[1];
 
+
+
+// Side Effects:
+
 // Register the sort-related animation globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(sortStateVars.sortingAnimation);

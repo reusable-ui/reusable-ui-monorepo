@@ -67,6 +67,10 @@ export const viewStateVars       = viewStateTuple[0];
  */
 export const viewStateVarOptions = viewStateTuple[1];
 
+
+
+// Side Effects:
+
 // Register the view-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(viewStateVars.viewAdvancingAnimation);
 animationRegistry.registerAnimation(viewStateVars.viewRecedingAnimation);

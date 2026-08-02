@@ -67,5 +67,9 @@ export const excitedStateVars       = excitedStateTuple[0];
  */
 export const excitedStateVarOptions = excitedStateTuple[1];
 
+
+
+// Side Effects:
+
 // Register the excitement-related animation globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(excitedStateVars.excitingAnimation);

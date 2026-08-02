@@ -67,5 +67,9 @@ export const activeEffectVars       = activeEffectTuple[0];
  */
 export const activeEffectVarOptions = activeEffectTuple[1];
 
+
+
+// Side Effects:
+
 // Register the active filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(activeEffectVars.activeFilter);

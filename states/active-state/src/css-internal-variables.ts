@@ -67,6 +67,10 @@ export const activeStateVars       = activeStateTuple[0];
  */
 export const activeStateVarOptions = activeStateTuple[1];
 
+
+
+// Side Effects:
+
 // Register the activate/deactivate-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(activeStateVars.activatingAnimation);
 animationRegistry.registerAnimation(activeStateVars.deactivatingAnimation);

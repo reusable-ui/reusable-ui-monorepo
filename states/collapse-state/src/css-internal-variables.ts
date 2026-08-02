@@ -67,6 +67,10 @@ export const collapseStateVars       = collapseStateTuple[0];
  */
 export const collapseStateVarOptions = collapseStateTuple[1];
 
+
+
+// Side Effects:
+
 // Register the expand/collapse-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(collapseStateVars.expandingAnimation);
 animationRegistry.registerAnimation(collapseStateVars.collapsingAnimation);

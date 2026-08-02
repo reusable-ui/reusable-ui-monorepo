@@ -67,5 +67,9 @@ export const disabledEffectVars       = disabledEffectTuple[0];
  */
 export const disabledEffectVarOptions = disabledEffectTuple[1];
 
+
+
+// Side Effects:
+
 // Register the disabled filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(disabledEffectVars.disabledFilter);

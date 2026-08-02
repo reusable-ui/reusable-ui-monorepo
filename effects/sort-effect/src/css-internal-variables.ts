@@ -65,5 +65,9 @@ export const sortEffectVars       = sortEffectTuple[0];
  */
 export const sortEffectVarOptions = sortEffectTuple[1];
 
+
+
+// Side Effects:
+
 // Register the sort transform globally for composing a unified transform stack across effect packages:
 transformRegistry.registerTransform(sortEffectVars.sortTransform);

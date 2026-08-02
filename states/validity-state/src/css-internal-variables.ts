@@ -67,6 +67,10 @@ export const validityStateVars       = validityStateTuple[0];
  */
 export const validityStateVarOptions = validityStateTuple[1];
 
+
+
+// Side Effects:
+
 // Register the validity-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(validityStateVars.validatingAnimation);
 animationRegistry.registerAnimation(validityStateVars.invalidatingAnimation);

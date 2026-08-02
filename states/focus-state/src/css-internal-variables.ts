@@ -67,6 +67,10 @@ export const focusStateVars       = focusStateTuple[0];
  */
 export const focusStateVarOptions = focusStateTuple[1];
 
+
+
+// Side Effects:
+
 // Register the focus/blur-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(focusStateVars.focusingAnimation);
 animationRegistry.registerAnimation(focusStateVars.blurringAnimation);

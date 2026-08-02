@@ -65,5 +65,9 @@ export const pressEffectVars       = pressEffectTuple[0];
  */
 export const pressEffectVarOptions = pressEffectTuple[1];
 
+
+
+// Side Effects:
+
 // Register the press filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(pressEffectVars.pressFilter);

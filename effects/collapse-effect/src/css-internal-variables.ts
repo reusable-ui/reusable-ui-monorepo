@@ -67,5 +67,9 @@ export const collapseEffectVars       = collapseEffectTuple[0];
  */
 export const collapseEffectVarOptions = collapseEffectTuple[1];
 
+
+
+// Side Effects:
+
 // Register the overshoot transform globally for composing a unified transform stack across effect packages:
 transformRegistry.registerTransform(collapseEffectVars.overshootTransform);
