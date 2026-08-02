@@ -1284,3 +1284,126 @@ export const enforceVarOptionsPair = createRule({
         };
     },
 });
+
+
+
+/**
+ * ESLint rule: enforce-index-varoptions-reexport
+ * 
+ * Purpose:
+ * - Ensure that every `<Domain><Group>VarOptions` exported in `css-internal-variables.ts`
+ *   is also re-exported in the package entrypoint (`index.ts`).
+ * 
+ * Why:
+ * - Normally `css-internal-variables.ts` is internal-only, but `VarOptions` is useful
+ *   for consumers (prefix/minification tweaks).
+ * - This rule enforces the exception consistently across packages.
+ */
+export const enforceIndexVarOptionsReexport = createRule({
+    name : 'enforce-index-varoptions-reexport',
+    meta : {
+        type     : 'problem',
+        fixable  : 'code',
+        docs     : {
+            description : 'Require re-export of `<Domain><Group>VarOptions` from index.ts if defined in css-internal-variables.ts.',
+        },
+        schema   : [], // no options accepted
+        messages : {
+            missingReexport : 'Missing re-export of `{{exportName}}` from index.ts.',
+        },
+    },
+    create(context) {
+        const filename = context.filename;
+        const basename = path.basename(filename);
+        
+        // Only enforce inside `index.ts` files:
+        if (basename !== 'index.ts') return {};
+        
+        
+        
+        // Collect all `*VarOptions` exports from `css-internal-variables.ts`:
+        const varOptionsExports = new Set<string>();
+        try {
+            // Read and parse `css-internal-variables.ts` to find all `*VarOptions` exports:
+            const dir          = path.dirname(filename);
+            const internalFile = path.join(dir, 'css-internal-variables.ts');
+            const code         = fs.readFileSync(internalFile, 'utf8');
+            const ast          = parse(code, { sourceType: 'module', ecmaVersion: 2020 });
+            
+            
+            
+            // Traverse the AST to find all `*VarOptions` exports:
+            for (const node of ast.body) {
+                // Only consider named exports:
+                if (node.type !== TSESTree.AST_NODE_TYPES.ExportNamedDeclaration) continue;
+                
+                // Only consider variable declarations:
+                if (!node.declaration || (node.declaration.type !== TSESTree.AST_NODE_TYPES.VariableDeclaration)) continue;
+                
+                
+                
+                // Check each variable declarator for `*VarOptions`:
+                for (const decl of node.declaration.declarations) {
+                    // Only consider identifiers (should always be the case for named exports):
+                    if (!decl.id || (decl.id.type !== TSESTree.AST_NODE_TYPES.Identifier)) continue;
+                    
+                    // Only consider names that end with `VarOptions`:
+                    if (!decl.id.name.endsWith('VarOptions')) continue;
+                    
+                    
+                    
+                    // Add the name to the set of expected re-exports:
+                    varOptionsExports.add(decl.id.name);
+                } // for
+            } // for
+        }
+        catch {
+            // Ignore if `css-internal-variables.ts` not found.
+        } // try
+        
+        
+        
+        // Track remaining exports to check for missing re-exports:
+        const remainingVarOptionsExports = new Set(varOptionsExports);
+        return {
+            // Remove any `*VarOptions` exports that are already re-exported in `index.ts`:
+            ExportNamedDeclaration(node) {
+                // Only consider re-exports from `./css-internal-variables.js`:
+                if (!node.source || (node.source.type !== TSESTree.AST_NODE_TYPES.Literal) || (node.source.value !== './css-internal-variables.js')) return;
+                
+                
+                
+                // Only consider named exports (not `export *`):
+                for (const specifier of node.specifiers) {
+                    // Only consider named exports:
+                    if (specifier.type !== TSESTree.AST_NODE_TYPES.ExportSpecifier) continue;
+                    if (specifier.exported.type !== TSESTree.AST_NODE_TYPES.Identifier) continue;
+                    
+                    
+                    
+                    // Remove the exported name from the remaining set if it matches a `*VarOptions` export:
+                    remainingVarOptionsExports.delete(specifier.exported.name);
+                }// for
+            },
+            
+            // At the end of the program, report any remaining `*VarOptions` exports that were not re-exported:
+            'Program:exit'(node) {
+                // Enforce re-export of each missing `*VarOptions` export:
+                for (const missingExport of remainingVarOptionsExports) {
+                    context.report({
+                        node,
+                        messageId : 'missingReexport',
+                        data      : { exportName: missingExport },
+                        fix(fixer) {
+                            const insertion =
+`\nexport {
+    ${missingExport},
+}                  from './css-internal-variables.js'`;
+                            return fixer.insertTextAfterRange([node.range[1] - 1, node.range[1] - 1], insertion);
+                        },
+                    });
+                } // for
+            },
+        };
+    },
+});
