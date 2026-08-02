@@ -111,7 +111,7 @@ export const enforceVariableConventions = createRule({
         // Helper functions:
         
         /**
-         * Validates the initializer is a `tuple[0]` for `*Vars` or `tuple[1]` for `*Expressions`.
+         * Validates the initializer is a `tuple[0]` for `*Vars` or `tuple[1]` for `*VarOptions`.
          */
         const isValidVarsFromTuple = (bindingName: string, value: TSESTree.Node | null): boolean => {
             if (!value || (value.type !== TSESTree.AST_NODE_TYPES.MemberExpression)) return false;
