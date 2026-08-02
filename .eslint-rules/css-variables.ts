@@ -3,9 +3,11 @@ import { TSESTree } from '@typescript-eslint/types'
 import { ESLintUtils } from '@typescript-eslint/utils'
 import { collectBindingInitializers, collectTopLevelBindings } from './binding-initializers.js'
 import { isTopLevel, isExported } from './scope-utilities.js'
-import { getDomainMetadata, getExpectedCSSVariableModules } from './domain-utilities.js'
+import { getDomainMetadata, pascalToKebab, getExpectedCSSVariableModules } from './domain-utilities.js'
 import { resolveGroupPackageRelativePath, findPackageJson } from './utilities.js'
+import * as cssPrefixDefault from '@reusable-ui/css-prefix-default'
 import fs from 'fs'
+import { parse } from '@typescript-eslint/parser';
 
 
 
@@ -1097,6 +1099,187 @@ export const migrateCssVarsTupleStyle = createRule({
                         return fixer.replaceTextRange([selectionStart, selectionEnd], replacement);
                     },
                 });
+            },
+        };
+    },
+});
+
+
+
+/**
+ * Helper function to get example props from a domain group. 
+ */
+const getVariableProps = (domainGroup: string, baseDir: string): string[] => {
+    try {
+        const filePath = path.resolve(baseDir, 'css-types.ts');
+        const code = fs.readFileSync(filePath, 'utf8');
+        const ast = parse(code, { sourceType: 'module', ecmaVersion: 2020 });
+        
+        const interfaceName = `${domainGroup}Vars`; // e.g. DisabledStateVars
+        for (const node of ast.body) {
+            if (node.type !== TSESTree.AST_NODE_TYPES.ExportNamedDeclaration) continue;
+            
+            const declaration = node.declaration;
+            if (!declaration || (declaration.type !== TSESTree.AST_NODE_TYPES.TSInterfaceDeclaration)) continue;
+            if (!declaration.id || (declaration.id.type !== TSESTree.AST_NODE_TYPES.Identifier) || (declaration.id.name !== interfaceName)) continue;
+            
+            const properties = (
+                declaration.body.body.filter((m): m is (TSESTree.TSPropertySignatureComputedName | TSESTree.TSPropertySignatureNonComputedName) & { key: TSESTree.Identifier } =>
+                    (m.type === TSESTree.AST_NODE_TYPES.TSPropertySignature) &&
+                    (m.key.type === TSESTree.AST_NODE_TYPES.Identifier)
+                )
+                .map((m) => m.key.name)
+            );
+            return properties;
+        }
+    }
+    catch {
+        // ignore errors
+    } // try
+    
+    
+    
+    // Nothing found, return empty array:
+    return [];
+};
+
+/**
+ * ESLint rule: enforce-var-options-pair
+ * 
+ * Purpose:
+ * - Ensure that for every `export const <Domain><Group>Vars = <tuple>[0]`
+ *   there is a matching `export const <Domain><Group>VarOptions = <tuple>[1]`.
+ * 
+ * Why:
+ * - Prevents missing `VarOptions` exports that configure prefixes/minification.
+ * - Keeps naming consistent across all domain/group variable systems.
+ */
+export const enforceVarOptionsPair = createRule({
+    name : 'enforce-var-options-pair',
+    meta : {
+        type     : 'problem',
+        fixable  : 'code',
+        docs     : {
+            description : 'Require `<Domain><Group>VarOptions` export whenever `<Domain><Group>Vars` is exported.',
+        },
+        schema   : [], // no options accepted
+        messages : {
+            missingPair : 'Missing `{{expectedName}}` export for `{{bindingName}}`.',
+        },
+    },
+    create(context) {
+        const filename         = context.filename;
+        const basename         = path.basename(filename);
+        const relativeFilename = resolveGroupPackageRelativePath(filename);
+        if (basename !== 'css-internal-variables.ts') return {};
+        
+        
+        
+        // Get domain metadata from a relative filename:
+        const domainMetadata = getDomainMetadata(relativeFilename);
+        
+        
+        
+        // Skip config modules (they have config, expressions, options already):
+        if (!domainMetadata || domainMetadata.group === 'Config') return {};
+        
+        
+        
+        // Tracks exported `*Vars` and `*VarOptions`:
+        const varsExported       : Map<string, TSESTree.ExportNamedDeclaration> = new Map();
+        const varOptionsExported : Set<string> = new Set();
+        
+        
+        
+        return {
+            ExportNamedDeclaration(node) {
+                if (!node.declaration || (node.declaration.type !== TSESTree.AST_NODE_TYPES.VariableDeclaration)) return;
+                if (node.declaration.declarations.length !== 1) return;
+                
+                
+                
+                const declarator = node.declaration.declarations[0];
+                
+                
+                
+                if (!declarator.id || (declarator.id.type !== TSESTree.AST_NODE_TYPES.Identifier)) return;
+                
+                
+                
+                const bindingName = declarator.id.name;
+                
+                
+                
+                if (bindingName.endsWith('Vars')) {
+                    varsExported.set(bindingName, node);
+                }
+                else if (bindingName.endsWith('VarOptions')) {
+                    varOptionsExported.add(bindingName);
+                } // if
+            },
+            'Program:exit'() {
+                // For each exported `*Vars`, check if the corresponding `*VarOptions` exists:
+                for (const [bindingName, exportNode] of varsExported.entries()) {
+                    const expectedName = bindingName.replace(/Vars$/, 'VarOptions');
+                    if (varOptionsExported.has(expectedName)) continue;
+                    
+                    
+                    
+                    context.report({
+                        node       : exportNode,
+                        messageId  : 'missingPair',
+                        data       : { expectedName, bindingName },
+                        fix(fixer) {
+                            const domainPascalCase               = domainMetadata?.domain ?? 'Domain';
+                            const domainHumanCase                = pascalToKebab(domainPascalCase).replace('-', ' ');
+                            const group                          = domainMetadata?.group ?? 'Group';
+                            const groupHumanCase                 = pascalToKebab(group).replace('-', ' ');
+                            const domainGroup                    = domainMetadata.fullIdentifier ?? 'DomainGroup';
+                            const domainGroupCamelCase           = domainGroup[0].toLowerCase() + domainGroup.slice(1);
+                            const domainPrefix                   = cssPrefixDefault[`default${domainGroup}Prefix` as keyof typeof cssPrefixDefault] ?? 'abc';
+                            const [prop1 = 'boo', prop2 = 'foo'] = getVariableProps(domainGroup, path.dirname(filename));
+                            const prop1SpaceAdjustment           = prop1.length < prop2.length ? ' '.repeat(prop2.length - prop1.length) : '';
+                            const prop2SpaceAdjustment           = prop2.length < prop1.length ? ' '.repeat(prop1.length - prop2.length) : '';
+                            const jsDoc =
+`/**
+ * A \`LiveCssVarsOptions\` object manages configuration for the **${domainHumanCase} ${groupHumanCase} variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all ${domainHumanCase} ${groupHumanCase} variables.
+ * \`\`\`ts
+ * ${domainGroupCamelCase}VarOptions.prefix = '${domainPrefix}';
+ * \`\`\`
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * \`\`\`ts
+ * ${domainGroupCamelCase}VarOptions.minify = true;
+ * \`\`\`
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with \`minify = false\`:
+ * \`\`\`ts
+ * const {
+ *     ${prop1}, ${prop1SpaceAdjustment}// Resolves to: 'var(--${domainPrefix}-${prop1})'
+ *     ${prop2}, ${prop2SpaceAdjustment}// Resolves to: 'var(--${domainPrefix}-${prop2})'
+ * } = ${domainGroupCamelCase}Vars;
+ * \`\`\`
+ * 
+ * Example with \`minify = true\`:
+ * \`\`\`ts
+ * const {
+ *     ${prop1}, ${prop1SpaceAdjustment}// Resolves to: 'var(--v0)'
+ *     ${prop2}, ${prop2SpaceAdjustment}// Resolves to: 'var(--v1)'
+ * } = ${domainGroupCamelCase}Vars;
+ * \`\`\`
+ */`;
+                            const varOptionsCode = `export const ${expectedName} = ${bindingName.replace(/Vars$/, 'Tuple')}[1];`;
+                            return fixer.insertTextAfter(exportNode, `\n\n${jsDoc}\n${varOptionsCode}`);
+                        }
+                    });
+                } // for
             },
         };
     },
