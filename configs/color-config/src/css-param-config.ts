@@ -311,17 +311,17 @@ export const colorParamConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all color parameter variables.
  * ```ts
- * colorParamConfigOptions.prefix = 'col-p';
+ * colorParamConfigVarOptions.prefix = 'col-p';
  * ```
  * - **Selector Scope:**  
  * Ensures all color parameter variables are declared inside `:root`.
  * ```ts
- * colorParamConfigOptions.selector = ':root';
+ * colorParamConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * colorParamConfigOptions.onChange.subscribe({
+ * colorParamConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Color parameters updated!");
  *     },
@@ -344,7 +344,7 @@ export const colorParamConfigExpressions = config[1];
  * }
  * ```
  */
-export const colorParamConfigOptions     = config[2];
+export const colorParamConfigVarOptions  = config[2];
 
 
 

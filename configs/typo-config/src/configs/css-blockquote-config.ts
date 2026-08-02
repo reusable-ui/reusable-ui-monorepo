@@ -452,17 +452,17 @@ export const blockquoteConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * blockquoteConfigOptions.prefix = 'bq';
+ * blockquoteConfigVarOptions.prefix = 'bq';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * blockquoteConfigOptions.selector = ':root';
+ * blockquoteConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * blockquoteConfigOptions.onChange.subscribe({
+ * blockquoteConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Blockquote typography system updated!");
  *     },
@@ -492,7 +492,7 @@ export const blockquoteConfigExpressions = config[1];
  * }
  * ```
  */
-export const blockquoteConfigOptions     = config[2];
+export const blockquoteConfigVarOptions  = config[2];
 
 
 

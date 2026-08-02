@@ -298,17 +298,17 @@ export const paragraphConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * paragraphConfigOptions.prefix = 'p';
+ * paragraphConfigVarOptions.prefix = 'p';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * paragraphConfigOptions.selector = ':root';
+ * paragraphConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * paragraphConfigOptions.onChange.subscribe({
+ * paragraphConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Paragraph typography system updated!");
  *     },
@@ -326,7 +326,7 @@ export const paragraphConfigExpressions = config[1];
  * }
  * ```
  */
-export const paragraphConfigOptions     = config[2];
+export const paragraphConfigVarOptions  = config[2];
 
 
 

@@ -236,17 +236,17 @@ export const radiusConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all radius variables.
  * ```ts
- * radiusConfigOptions.prefix = 'r';
+ * radiusConfigVarOptions.prefix = 'r';
  * ```
  * - **Selector Scope:**  
  * Ensures all radius variables are declared inside `:root`.
  * ```ts
- * radiusConfigOptions.selector = ':root';
+ * radiusConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * radiusConfigOptions.onChange.subscribe({
+ * radiusConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Radius system updated!");
  *     },
@@ -268,7 +268,7 @@ export const radiusConfigExpressions = config[1];
  * }
  * ```
  */
-export const radiusConfigOptions     = config[2];
+export const radiusConfigVarOptions  = config[2];
 
 
 

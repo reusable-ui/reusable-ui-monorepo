@@ -399,17 +399,17 @@ export const kbdConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * kbdConfigOptions.prefix = 'kbd';
+ * kbdConfigVarOptions.prefix = 'kbd';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * kbdConfigOptions.selector = ':root';
+ * kbdConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * kbdConfigOptions.onChange.subscribe({
+ * kbdConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Kbd typography system updated!");
  *     },
@@ -437,7 +437,7 @@ export const kbdConfigExpressions = config[1];
  * }
  * ```
  */
-export const kbdConfigOptions     = config[2];
+export const kbdConfigVarOptions  = config[2];
 
 
 

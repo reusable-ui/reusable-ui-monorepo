@@ -154,17 +154,17 @@ export const colorConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all color variables.
  * ```ts
- * colorConfigOptions.prefix = 'col';
+ * colorConfigVarOptions.prefix = 'col';
  * ```
  * - **Selector Scope:**  
  * Ensures all all color variables are declared inside `:root`.
  * ```ts
- * colorConfigOptions.selector = ':root';
+ * colorConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * colorConfigOptions.onChange.subscribe({
+ * colorConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Color system updated!");
  *     },
@@ -187,7 +187,7 @@ export const colorConfigExpressions = config[1];
  * }
  * ```
  */
-export const colorConfigOptions     = config[2];
+export const colorConfigVarOptions  = config[2];
 
 
 

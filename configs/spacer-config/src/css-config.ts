@@ -246,17 +246,17 @@ export const spacerConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all spacer variables.
  * ```ts
- * spacerConfigOptions.prefix = 'spc';
+ * spacerConfigVarOptions.prefix = 'spc';
  * ```
  * - **Selector Scope:**  
  * Ensures all spacer variables are declared inside `:root`.
  * ```ts
- * spacerConfigOptions.selector = ':root';
+ * spacerConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * spacerConfigOptions.onChange.subscribe({
+ * spacerConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Spacer system updated!");
  *     },
@@ -280,7 +280,7 @@ export const spacerConfigExpressions = config[1];
  * }
  * ```
  */
-export const spacerConfigOptions     = config[2];
+export const spacerConfigVarOptions  = config[2];
 
 
 

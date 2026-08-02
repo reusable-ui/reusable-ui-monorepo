@@ -370,17 +370,17 @@ export const plainListConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * plainListConfigOptions.prefix = 'plist';
+ * plainListConfigVarOptions.prefix = 'plist';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * plainListConfigOptions.selector = ':root';
+ * plainListConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * plainListConfigOptions.onChange.subscribe({
+ * plainListConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("List typography system updated!");
  *     },
@@ -402,7 +402,7 @@ export const plainListConfigExpressions = config[1];
  * }
  * ```
  */
-export const plainListConfigOptions     = config[2];
+export const plainListConfigVarOptions  = config[2];
 
 
 

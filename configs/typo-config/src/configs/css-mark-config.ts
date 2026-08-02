@@ -402,17 +402,17 @@ export const markConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * markConfigOptions.prefix = 'mrk';
+ * markConfigVarOptions.prefix = 'mrk';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * markConfigOptions.selector = ':root';
+ * markConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * markConfigOptions.onChange.subscribe({
+ * markConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Mark typography system updated!");
  *     },
@@ -440,7 +440,7 @@ export const markConfigExpressions = config[1];
  * }
  * ```
  */
-export const markConfigOptions     = config[2];
+export const markConfigVarOptions  = config[2];
 
 
 

@@ -282,17 +282,17 @@ export const secondaryConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * secondaryConfigOptions.prefix = 'sec';
+ * secondaryConfigVarOptions.prefix = 'sec';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * secondaryConfigOptions.selector = ':root';
+ * secondaryConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * secondaryConfigOptions.onChange.subscribe({
+ * secondaryConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Secondary typography system updated!");
  *     },
@@ -308,7 +308,7 @@ export const secondaryConfigExpressions = config[1];
  * }
  * ```
  */
-export const secondaryConfigOptions     = config[2];
+export const secondaryConfigVarOptions  = config[2];
 
 
 

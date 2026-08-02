@@ -439,17 +439,17 @@ export const typoConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * typoConfigOptions.prefix = 'typ';
+ * typoConfigVarOptions.prefix = 'typ';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * typoConfigOptions.selector = ':root';
+ * typoConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * typoConfigOptions.onChange.subscribe({
+ * typoConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Typography system updated!");
  *     },
@@ -473,7 +473,7 @@ export const typoConfigExpressions = config[1];
  * }
  * ```
  */
-export const typoConfigOptions     = config[2];
+export const typoConfigVarOptions  = config[2];
 
 
 

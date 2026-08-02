@@ -300,17 +300,17 @@ export const vertSeparatorConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * vertSeparatorConfigOptions.prefix = 'hr';
+ * vertSeparatorConfigVarOptions.prefix = 'hr';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * vertSeparatorConfigOptions.selector = ':root';
+ * vertSeparatorConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * vertSeparatorConfigOptions.onChange.subscribe({
+ * vertSeparatorConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Vertical separator typography system updated!");
  *     },
@@ -332,7 +332,7 @@ export const vertSeparatorConfigExpressions = config[1];
  * }
  * ```
  */
-export const vertSeparatorConfigOptions     = config[2];
+export const vertSeparatorConfigVarOptions  = config[2];
 
 
 

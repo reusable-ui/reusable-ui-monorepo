@@ -299,17 +299,17 @@ export const horzSeparatorConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * horzSeparatorConfigOptions.prefix = 'hr';
+ * horzSeparatorConfigVarOptions.prefix = 'hr';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * horzSeparatorConfigOptions.selector = ':root';
+ * horzSeparatorConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * horzSeparatorConfigOptions.onChange.subscribe({
+ * horzSeparatorConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Horizontal separator typography system updated!");
  *     },
@@ -331,7 +331,7 @@ export const horzSeparatorConfigExpressions = config[1];
  * }
  * ```
  */
-export const horzSeparatorConfigOptions     = config[2];
+export const horzSeparatorConfigVarOptions  = config[2];
 
 
 

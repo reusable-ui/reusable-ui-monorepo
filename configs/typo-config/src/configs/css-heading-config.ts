@@ -408,17 +408,17 @@ export const headingConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * headingConfigOptions.prefix = 'h';
+ * headingConfigVarOptions.prefix = 'h';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * headingConfigOptions.selector = ':root';
+ * headingConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * headingConfigOptions.onChange.subscribe({
+ * headingConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Heading typography system updated!");
  *     },
@@ -446,7 +446,7 @@ export const headingConfigExpressions = config[1];
  * }
  * ```
  */
-export const headingConfigOptions     = config[2];
+export const headingConfigVarOptions  = config[2];
 
 
 

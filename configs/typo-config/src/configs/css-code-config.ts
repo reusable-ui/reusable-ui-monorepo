@@ -404,17 +404,17 @@ export const codeConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * codeConfigOptions.prefix = 'code';
+ * codeConfigVarOptions.prefix = 'code';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * codeConfigOptions.selector = ':root';
+ * codeConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * codeConfigOptions.onChange.subscribe({
+ * codeConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Code typography system updated!");
  *     },
@@ -443,7 +443,7 @@ export const codeConfigExpressions = config[1];
  * }
  * ```
  */
-export const codeConfigOptions     = config[2];
+export const codeConfigVarOptions  = config[2];
 
 
 

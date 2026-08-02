@@ -411,17 +411,17 @@ export const displayConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * displayConfigOptions.prefix = 'd';
+ * displayConfigVarOptions.prefix = 'd';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * displayConfigOptions.selector = ':root';
+ * displayConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * displayConfigOptions.onChange.subscribe({
+ * displayConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Display typography system updated!");
  *     },
@@ -449,7 +449,7 @@ export const displayConfigExpressions = config[1];
  * }
  * ```
  */
-export const displayConfigOptions     = config[2];
+export const displayConfigVarOptions  = config[2];
 
 
 

@@ -229,17 +229,17 @@ export const borderConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all border variables.
  * ```ts
- * borderConfigOptions.prefix = 'bor';
+ * borderConfigVarOptions.prefix = 'bor';
  * ```
  * - **Selector Scope:**  
  * Ensures all border variables are declared inside `:root`.
  * ```ts
- * borderConfigOptions.selector = ':root';
+ * borderConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * borderConfigOptions.onChange.subscribe({
+ * borderConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Border system updated!");
  *     },
@@ -261,7 +261,7 @@ export const borderConfigExpressions = config[1];
  * }
  * ```
  */
-export const borderConfigOptions     = config[2];
+export const borderConfigVarOptions  = config[2];
 
 
 

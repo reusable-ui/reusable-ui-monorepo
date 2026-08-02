@@ -310,17 +310,17 @@ export const leadConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all typography variables.
  * ```ts
- * leadConfigOptions.prefix = 'lead';
+ * leadConfigVarOptions.prefix = 'lead';
  * ```
  * - **Selector Scope:**  
  * Ensures all typography variables are declared inside `:root`.
  * ```ts
- * leadConfigOptions.selector = ':root';
+ * leadConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * leadConfigOptions.onChange.subscribe({
+ * leadConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Lead paragraph typography system updated!");
  *     },
@@ -340,7 +340,7 @@ export const leadConfigExpressions = config[1];
  * }
  * ```
  */
-export const leadConfigOptions     = config[2];
+export const leadConfigVarOptions  = config[2];
 
 
 

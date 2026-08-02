@@ -134,17 +134,17 @@ export const breakpointConfigExpressions = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all breakpoint variables.
  * ```ts
- * breakpointConfigOptions.prefix = 'brp';
+ * breakpointConfigVarOptions.prefix = 'brp';
  * ```
  * - **Selector Scope:**  
  * Ensures all breakpoint variables are declared inside `:root`.
  * ```ts
- * breakpointConfigOptions.selector = ':root';
+ * breakpointConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * breakpointConfigOptions.onChange.subscribe({
+ * breakpointConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Breakpoint system updated!");
  *     },
@@ -165,7 +165,7 @@ export const breakpointConfigExpressions = config[1];
  * }
  * ```
  */
-export const breakpointConfigOptions     = config[2];
+export const breakpointConfigVarOptions  = config[2];
 
 
 
