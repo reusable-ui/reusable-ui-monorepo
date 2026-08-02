@@ -193,14 +193,14 @@ export const enforceVariableConventions = createRule({
          */
         const isValidVariableGroupName = (name: string): boolean => {
             // Loose validation (no domain context available):
-            if (!domainMetadata)  return /^[a-z]+([A-Z][a-z]*)?(Config|Variant|Feature|State|Effect|Layout)(Tuple|Vars|Expressions|(Var)?Options)$/.test(name);
+            if (!domainMetadata)  return /^[a-z]+([A-Z][a-z]*)?(Config|Variant|Feature|State|Effect|Layout)(Tuple|Vars|Expressions|VarOptions)$/.test(name);
             
             
             
             // Tight validation (domain context available):
             
             // Build expected name: <domain><subdomain?><group>Vars:
-            const variableSuffix    = name.match(/(Tuple|Vars|Expressions|(Var)?Options)$/)?.[1] ?? ''
+            const variableSuffix    = name.match(/(Tuple|Vars|Expressions|VarOptions)$/)?.[1] ?? ''
             const expectedName      = `${domainMetadata.fullIdentifier}${variableSuffix}`;
             
             // Convert expected name to camelCase (first letter lowercase):
@@ -264,11 +264,11 @@ export const enforceVariableConventions = createRule({
                 
                 
                 // CSS variable candidates:
-                // - Identified by names that end with "Vars", "Expressions", or "Options".
+                // - Identified by names that end with "Vars", "Expressions", or "VarOptions".
                 // - No need for a case boundary check before the suffix:
                 //   matches camelCase and PascalCase names like `outlinedVariantVars`, `flowDirectionVariantVars`,
                 //   and even acronym-based names like `someCSSVars`.
-                if (!/(Tuple|Vars|Expressions|(Var)?Options)$/.test(name)) return; // exit function
+                if (!/(Tuple|Vars|Expressions|VarOptions)$/.test(name)) return; // exit function
                 
                 
                 
@@ -337,11 +337,11 @@ export const enforceVariableConventions = createRule({
                     
                     
                     // CSS variable candidates:
-                    // - Identified by names that end with "Vars", "Expressions", or "Options".
+                    // - Identified by names that end with "Vars", "Expressions", or "VarOptions".
                     // - No need for a case boundary check before the suffix:
                     //   matches camelCase and PascalCase names like `outlinedVariantVars`, `flowDirectionVariantVars`,
                     //   and even acronym-based names like `someCSSVars`.
-                    if (!/(Tuple|Vars|Expressions|(Var)?Options)$/.test(bindingName)) continue; // exit for
+                    if (!/(Tuple|Vars|Expressions|VarOptions)$/.test(bindingName)) continue; // exit for
                     
                     
                     
@@ -379,11 +379,9 @@ export const enforceVariableConventions = createRule({
                             if (domainMetadata?.group === 'Config') {
                                 // Enforce implicit type annotation from `config[0-2]`:
                                 let expectedIndex = NaN;
-                                switch (bindingName.match(/(Vars|Expressions|(Var)?Options)$/)?.[1]) {
+                                switch (bindingName.match(/(Vars|Expressions|VarOptions)$/)?.[1]) {
                                     case 'Vars'        : expectedIndex = 0; break
                                     case 'Expressions' : expectedIndex = 1; break
-                                    
-                                    case 'Options'     :
                                     case 'VarOptions'  : expectedIndex = 2; break
                                 } // switch
                                 if (!node.init || (node.init.type !== TSESTree.AST_NODE_TYPES.MemberExpression) || (node.init.object.type !== TSESTree.AST_NODE_TYPES.Identifier) || (node.init.object.name !== 'config') || (node.init.property.type !== TSESTree.AST_NODE_TYPES.Literal) || (node.init.property.value !== expectedIndex)) {
@@ -737,12 +735,12 @@ export const enforceCssConfigFunctionUsage = createRule({
  * Requirements:
  * - Allowed top-level statements:
  *   - Import declarations.
- *   - Tuple helpers (ending with `Tuple`), for serving the `*Vars` and `*Options` variables (from `tuple[0-1]`).
+ *   - Tuple helpers (ending with `Tuple`), for serving the `*Vars` and `*VarOptions` variables (from `tuple[0-1]`).
  *   - CSS variables (ending with `Vars`).
  *   - For config modules, these are also allowed:
- *     - `config` tuple variable, for serving the `*Vars`, `*Expressions`, and `*Options` variables (from `config[0-2]`).
+ *     - `config` tuple variable, for serving the `*Vars`, `*Expressions`, and `*VarOptions` variables (from `config[0-2]`).
  *     - `*Expressions` variable (from `config[1]`).
- *     - `*Options` variable (from `config[2]`).
+ *     - `*VarOptions` variable (from `config[2]`).
  *   - Comments.
  * - Disallow any other top-level code.
  * 
@@ -807,7 +805,7 @@ export const noForeignCode = createRule({
                     
                     
                     
-                    // `*Tuple` helper declarations are part of the `*Tuple[0-1]` idiom for `*Vars` and `*Options` variables.
+                    // `*Tuple` helper declarations are part of the `*Tuple[0-1]` idiom for `*Vars` and `*VarOptions` variables.
                     // They are intermediate storage for `cssVars<...>()`, so they should not be rejected as foreign code.
                     if (/Tuple$/.test(bindingName)) continue; // exit for
                     
@@ -856,13 +854,13 @@ export const noForeignCode = createRule({
                         
                         
                         // CSS config option variable candidates:
-                        // - Identified by names that end with "Options".
-                        // - No need for a case boundary check before "Options":
-                        //   matches camelCase and PascalCase names like `borderConfigOptions`, `spacerConfigOptions`,
-                        //   and even acronym-based names like `someCSSOptions`.
+                        // - Identified by names that end with "VarOptions".
+                        // - No need for a case boundary check before "VarOptions":
+                        //   matches camelCase and PascalCase names like `borderConfigVarOptions`, `spacerConfigVarOptions`,
+                        //   and even acronym-based names like `someCSSVarOptions`.
                         // - CSS config option variables should never be functions,
                         //   the `enforce-variable-conventions` rule will handle that check separately.
-                        if (/Options$/.test(bindingName)) continue; // exit for
+                        if (/VarOptions$/.test(bindingName)) continue; // exit for
                     } // if
                     
                     
