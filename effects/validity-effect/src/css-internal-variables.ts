@@ -25,3 +25,39 @@ const validityEffectTuple = cssVars<ValidityEffectVars>({ prefix: defaultValidit
  * consistent CSS variable names during SSR and hydration.
  */
 export const validityEffectVars = validityEffectTuple[0];
+
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **validity effect variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all validity effect variables.
+ * ```ts
+ * validityEffectVarOptions.prefix = 'vale';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * validityEffectVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     validSwitch,   // Resolves to: 'var(--vale-validSwitch)'
+ *     invalidSwitch, // Resolves to: 'var(--vale-invalidSwitch)'
+ * } = validityEffectVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     validSwitch,   // Resolves to: 'var(--v0)'
+ *     invalidSwitch, // Resolves to: 'var(--v1)'
+ * } = validityEffectVars;
+ * ```
+ */
+export const validityEffectVarOptions = validityEffectTuple[1];

@@ -25,3 +25,39 @@ const foregroundFeatureTuple = cssVars<ForegroundFeatureVars>({ prefix: defaultF
  * consistent CSS variable names during SSR and hydration.
  */
 export const foregroundFeatureVars = foregroundFeatureTuple[0];
+
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **foreground feature variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all foreground feature variables.
+ * ```ts
+ * foregroundFeatureVarOptions.prefix = 'fg';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * foregroundFeatureVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     regularForegCond, // Resolves to: 'var(--fg-regularForegCond)'
+ *     mildForegCond,    // Resolves to: 'var(--fg-mildForegCond)'
+ * } = foregroundFeatureVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     regularForegCond, // Resolves to: 'var(--v0)'
+ *     mildForegCond,    // Resolves to: 'var(--v1)'
+ * } = foregroundFeatureVars;
+ * ```
+ */
+export const foregroundFeatureVarOptions = foregroundFeatureTuple[1];

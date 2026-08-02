@@ -31,5 +31,39 @@ const focusEffectTuple = cssVars<FocusEffectVars>({ prefix: defaultFocusEffectPr
  */
 export const focusEffectVars = focusEffectTuple[0];
 
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **focus effect variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all focus effect variables.
+ * ```ts
+ * focusEffectVarOptions.prefix = 'foce';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * focusEffectVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     focusBoxShadow, // Resolves to: 'var(--foce-focusBoxShadow)'
+ * } = focusEffectVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     focusBoxShadow, // Resolves to: 'var(--v0)'
+ * } = focusEffectVars;
+ * ```
+ */
+export const focusEffectVarOptions = focusEffectTuple[1];
+
 // Register the focus box shadow globally for composing a unified box shadow stack across effect packages:
 boxShadowRegistry.registerBoxShadow(focusEffectVars.focusBoxShadow);

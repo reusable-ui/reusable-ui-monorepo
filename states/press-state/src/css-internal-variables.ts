@@ -31,6 +31,42 @@ const pressStateTuple = cssVars<PressStateVars>({ prefix: defaultPressStatePrefi
  */
 export const pressStateVars = pressStateTuple[0];
 
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **press state variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all press state variables.
+ * ```ts
+ * pressStateVarOptions.prefix = 'prss';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * pressStateVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     pressingAnimation,  // Resolves to: 'var(--prss-pressingAnimation)'
+ *     releasingAnimation, // Resolves to: 'var(--prss-releasingAnimation)'
+ * } = pressStateVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     pressingAnimation,  // Resolves to: 'var(--v0)'
+ *     releasingAnimation, // Resolves to: 'var(--v1)'
+ * } = pressStateVars;
+ * ```
+ */
+export const pressStateVarOptions = pressStateTuple[1];
+
 // Register the press/release-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(pressStateVars.pressingAnimation);
 animationRegistry.registerAnimation(pressStateVars.releasingAnimation);

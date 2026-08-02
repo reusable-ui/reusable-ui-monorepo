@@ -27,3 +27,39 @@ const themeVariantTuple = cssVars<ThemeVariantVars>({ prefix: defaultThemeVarian
  * consistent CSS variable names during SSR and hydration.
  */
 export const themeVariantVars = themeVariantTuple[0];
+
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **theme variant variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all theme variant variables.
+ * ```ts
+ * themeVariantVarOptions.prefix = 'th';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * themeVariantVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     regularBackg, // Resolves to: 'var(--th-regularBackg)'
+ *     regularForeg, // Resolves to: 'var(--th-regularForeg)'
+ * } = themeVariantVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     regularBackg, // Resolves to: 'var(--v0)'
+ *     regularForeg, // Resolves to: 'var(--v1)'
+ * } = themeVariantVars;
+ * ```
+ */
+export const themeVariantVarOptions = themeVariantTuple[1];

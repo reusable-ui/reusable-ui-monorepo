@@ -34,6 +34,42 @@ const dragEffectTuple = cssVars<DragEffectVars>({ prefix: defaultDragEffectPrefi
  */
 export const dragEffectVars = dragEffectTuple[0];
 
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **drag effect variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all drag effect variables.
+ * ```ts
+ * dragEffectVarOptions.prefix = 'drage';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * dragEffectVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     dragFilter,    // Resolves to: 'var(--drage-dragFilter)'
+ *     dragTransform, // Resolves to: 'var(--drage-dragTransform)'
+ * } = dragEffectVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     dragFilter,    // Resolves to: 'var(--v0)'
+ *     dragTransform, // Resolves to: 'var(--v1)'
+ * } = dragEffectVars;
+ * ```
+ */
+export const dragEffectVarOptions = dragEffectTuple[1];
+
 // Register the drag filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(dragEffectVars.dragFilter);
 

@@ -34,6 +34,42 @@ const excitedEffectTuple = cssVars<ExcitedEffectVars>({ prefix: defaultExcitedEf
  */
 export const excitedEffectVars = excitedEffectTuple[0];
 
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **excited effect variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all excited effect variables.
+ * ```ts
+ * excitedEffectVarOptions.prefix = 'exce';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * excitedEffectVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     excitedFilter,    // Resolves to: 'var(--exce-excitedFilter)'
+ *     excitedTransform, // Resolves to: 'var(--exce-excitedTransform)'
+ * } = excitedEffectVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     excitedFilter,    // Resolves to: 'var(--v0)'
+ *     excitedTransform, // Resolves to: 'var(--v1)'
+ * } = excitedEffectVars;
+ * ```
+ */
+export const excitedEffectVarOptions = excitedEffectTuple[1];
+
 // Register the excitement-related filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(excitedEffectVars.excitedFilter);
 

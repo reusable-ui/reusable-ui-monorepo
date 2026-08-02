@@ -31,5 +31,41 @@ const collapseEffectTuple = cssVars<CollapseEffectVars>({ prefix: defaultCollaps
  */
 export const collapseEffectVars = collapseEffectTuple[0];
 
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **collapse effect variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all collapse effect variables.
+ * ```ts
+ * collapseEffectVarOptions.prefix = 'cole';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * collapseEffectVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     measuredInlineSize, // Resolves to: 'var(--cole-measuredInlineSize)'
+ *     measuredBlockSize,  // Resolves to: 'var(--cole-measuredBlockSize)'
+ * } = collapseEffectVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     measuredInlineSize, // Resolves to: 'var(--v0)'
+ *     measuredBlockSize,  // Resolves to: 'var(--v1)'
+ * } = collapseEffectVars;
+ * ```
+ */
+export const collapseEffectVarOptions = collapseEffectTuple[1];
+
 // Register the overshoot transform globally for composing a unified transform stack across effect packages:
 transformRegistry.registerTransform(collapseEffectVars.overshootTransform);

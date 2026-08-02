@@ -25,3 +25,39 @@ const orientationVariantTuple = cssVars<OrientationVariantVars>({ prefix: defaul
  * consistent CSS variable names during SSR and hydration.
  */
 export const orientationVariantVars = orientationVariantTuple[0];
+
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **orientation variant variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all orientation variant variables.
+ * ```ts
+ * orientationVariantVarOptions.prefix = 'ot';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * orientationVariantVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     isOrientationInline, // Resolves to: 'var(--ot-isOrientationInline)'
+ *     isOrientationBlock,  // Resolves to: 'var(--ot-isOrientationBlock)'
+ * } = orientationVariantVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     isOrientationInline, // Resolves to: 'var(--v0)'
+ *     isOrientationBlock,  // Resolves to: 'var(--v1)'
+ * } = orientationVariantVars;
+ * ```
+ */
+export const orientationVariantVarOptions = orientationVariantTuple[1];

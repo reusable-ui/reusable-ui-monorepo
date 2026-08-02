@@ -25,3 +25,37 @@ const boxShadowFeatureTuple = cssVars<BoxShadowFeatureVars>({ prefix: defaultBox
  * consistent CSS variable names during SSR and hydration.
  */
 export const boxShadowFeatureVars = boxShadowFeatureTuple[0];
+
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **box shadow feature variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all box shadow feature variables.
+ * ```ts
+ * boxShadowFeatureVarOptions.prefix = 'bs';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * boxShadowFeatureVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     boxShadow, // Resolves to: 'var(--bs-boxShadow)'
+ * } = boxShadowFeatureVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     boxShadow, // Resolves to: 'var(--v0)'
+ * } = boxShadowFeatureVars;
+ * ```
+ */
+export const boxShadowFeatureVarOptions = boxShadowFeatureTuple[1];

@@ -31,6 +31,42 @@ const focusStateTuple = cssVars<FocusStateVars>({ prefix: defaultFocusStatePrefi
  */
 export const focusStateVars = focusStateTuple[0];
 
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **focus state variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all focus state variables.
+ * ```ts
+ * focusStateVarOptions.prefix = 'foc';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * focusStateVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     focusingAnimation, // Resolves to: 'var(--foc-focusingAnimation)'
+ *     blurringAnimation, // Resolves to: 'var(--foc-blurringAnimation)'
+ * } = focusStateVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     focusingAnimation, // Resolves to: 'var(--v0)'
+ *     blurringAnimation, // Resolves to: 'var(--v1)'
+ * } = focusStateVars;
+ * ```
+ */
+export const focusStateVarOptions = focusStateTuple[1];
+
 // Register the focus/blur-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(focusStateVars.focusingAnimation);
 animationRegistry.registerAnimation(focusStateVars.blurringAnimation);

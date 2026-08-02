@@ -25,3 +25,39 @@ const borderFeatureTuple = cssVars<BorderFeatureVars>({ prefix: defaultBorderFea
  * consistent CSS variable names during SSR and hydration.
  */
 export const borderFeatureVars = borderFeatureTuple[0];
+
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **border feature variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all border feature variables.
+ * ```ts
+ * borderFeatureVarOptions.prefix = 'bd';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * borderFeatureVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     regularBorderCond, // Resolves to: 'var(--bd-regularBorderCond)'
+ *     mildBorderCond,    // Resolves to: 'var(--bd-mildBorderCond)'
+ * } = borderFeatureVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     regularBorderCond, // Resolves to: 'var(--v0)'
+ *     mildBorderCond,    // Resolves to: 'var(--v1)'
+ * } = borderFeatureVars;
+ * ```
+ */
+export const borderFeatureVarOptions = borderFeatureTuple[1];

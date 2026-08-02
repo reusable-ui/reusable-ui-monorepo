@@ -25,3 +25,39 @@ const outlinedVariantTuple = cssVars<OutlinedVariantVars>({ prefix: defaultOutli
  * consistent CSS variable names during SSR and hydration.
  */
 export const outlinedVariantVars = outlinedVariantTuple[0];
+
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **outlined variant variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all outlined variant variables.
+ * ```ts
+ * outlinedVariantVarOptions.prefix = 'ou';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * outlinedVariantVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     isOutlined,  // Resolves to: 'var(--ou-isOutlined)'
+ *     notOutlined, // Resolves to: 'var(--ou-notOutlined)'
+ * } = outlinedVariantVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     isOutlined,  // Resolves to: 'var(--v0)'
+ *     notOutlined, // Resolves to: 'var(--v1)'
+ * } = outlinedVariantVars;
+ * ```
+ */
+export const outlinedVariantVarOptions = outlinedVariantTuple[1];

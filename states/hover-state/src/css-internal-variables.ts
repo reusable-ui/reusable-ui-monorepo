@@ -31,6 +31,42 @@ const hoverStateTuple = cssVars<HoverStateVars>({ prefix: defaultHoverStatePrefi
  */
 export const hoverStateVars = hoverStateTuple[0];
 
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **hover state variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all hover state variables.
+ * ```ts
+ * hoverStateVarOptions.prefix = 'hov';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * hoverStateVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     hoveringAnimation,   // Resolves to: 'var(--hov-hoveringAnimation)'
+ *     unhoveringAnimation, // Resolves to: 'var(--hov-unhoveringAnimation)'
+ * } = hoverStateVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     hoveringAnimation,   // Resolves to: 'var(--v0)'
+ *     unhoveringAnimation, // Resolves to: 'var(--v1)'
+ * } = hoverStateVars;
+ * ```
+ */
+export const hoverStateVarOptions = hoverStateTuple[1];
+
 // Register the hover/unhover-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(hoverStateVars.hoveringAnimation);
 animationRegistry.registerAnimation(hoverStateVars.unhoveringAnimation);

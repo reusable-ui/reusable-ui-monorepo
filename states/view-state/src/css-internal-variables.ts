@@ -31,6 +31,42 @@ const viewStateTuple = cssVars<ViewStateVars>({ prefix: defaultViewStatePrefix, 
  */
 export const viewStateVars = viewStateTuple[0];
 
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **view state variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all view state variables.
+ * ```ts
+ * viewStateVarOptions.prefix = 'view';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * viewStateVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     viewAdvancingAnimation, // Resolves to: 'var(--view-viewAdvancingAnimation)'
+ *     viewRecedingAnimation,  // Resolves to: 'var(--view-viewRecedingAnimation)'
+ * } = viewStateVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     viewAdvancingAnimation, // Resolves to: 'var(--v0)'
+ *     viewRecedingAnimation,  // Resolves to: 'var(--v1)'
+ * } = viewStateVars;
+ * ```
+ */
+export const viewStateVarOptions = viewStateTuple[1];
+
 // Register the view-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(viewStateVars.viewAdvancingAnimation);
 animationRegistry.registerAnimation(viewStateVars.viewRecedingAnimation);

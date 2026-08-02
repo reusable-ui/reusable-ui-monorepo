@@ -25,3 +25,39 @@ const paddingFeatureTuple = cssVars<PaddingFeatureVars>({ prefix: defaultPadding
  * consistent CSS variable names during SSR and hydration.
  */
 export const paddingFeatureVars = paddingFeatureTuple[0];
+
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **padding feature variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all padding feature variables.
+ * ```ts
+ * paddingFeatureVarOptions.prefix = 'pd';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * paddingFeatureVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     paddingStrippedCond, // Resolves to: 'var(--pd-paddingStrippedCond)'
+ *     paddingInlineStart,  // Resolves to: 'var(--pd-paddingInlineStart)'
+ * } = paddingFeatureVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     paddingStrippedCond, // Resolves to: 'var(--v0)'
+ *     paddingInlineStart,  // Resolves to: 'var(--v1)'
+ * } = paddingFeatureVars;
+ * ```
+ */
+export const paddingFeatureVarOptions = paddingFeatureTuple[1];

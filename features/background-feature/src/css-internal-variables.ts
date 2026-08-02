@@ -25,3 +25,39 @@ const backgroundFeatureTuple = cssVars<BackgroundFeatureVars>({ prefix: defaultB
  * consistent CSS variable names during SSR and hydration.
  */
 export const backgroundFeatureVars = backgroundFeatureTuple[0];
+
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **background feature variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all background feature variables.
+ * ```ts
+ * backgroundFeatureVarOptions.prefix = 'bg';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * backgroundFeatureVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     backgEmphasizedCond, // Resolves to: 'var(--bg-backgEmphasizedCond)'
+ *     backgCond,           // Resolves to: 'var(--bg-backgCond)'
+ * } = backgroundFeatureVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     backgEmphasizedCond, // Resolves to: 'var(--v0)'
+ *     backgCond,           // Resolves to: 'var(--v1)'
+ * } = backgroundFeatureVars;
+ * ```
+ */
+export const backgroundFeatureVarOptions = backgroundFeatureTuple[1];

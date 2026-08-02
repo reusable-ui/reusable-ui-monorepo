@@ -25,3 +25,37 @@ const animationFeatureTuple = cssVars<AnimationFeatureVars>({ prefix: defaultAni
  * consistent CSS variable names during SSR and hydration.
  */
 export const animationFeatureVars = animationFeatureTuple[0];
+
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **animation feature variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all animation feature variables.
+ * ```ts
+ * animationFeatureVarOptions.prefix = 'an';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * animationFeatureVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     animation, // Resolves to: 'var(--an-animation)'
+ * } = animationFeatureVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     animation, // Resolves to: 'var(--v0)'
+ * } = animationFeatureVars;
+ * ```
+ */
+export const animationFeatureVarOptions = animationFeatureTuple[1];

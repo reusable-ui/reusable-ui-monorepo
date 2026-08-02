@@ -31,5 +31,41 @@ const activeEffectTuple = cssVars<ActiveEffectVars>({ prefix: defaultActiveEffec
  */
 export const activeEffectVars = activeEffectTuple[0];
 
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **active effect variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all active effect variables.
+ * ```ts
+ * activeEffectVarOptions.prefix = 'acte';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * activeEffectVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     bumpFactorCond,      // Resolves to: 'var(--acte-bumpFactorCond)'
+ *     effectiveFactorCond, // Resolves to: 'var(--acte-effectiveFactorCond)'
+ * } = activeEffectVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     bumpFactorCond,      // Resolves to: 'var(--v0)'
+ *     effectiveFactorCond, // Resolves to: 'var(--v1)'
+ * } = activeEffectVars;
+ * ```
+ */
+export const activeEffectVarOptions = activeEffectTuple[1];
+
 // Register the active filter globally for composing a unified filter stack across effect packages:
 filterRegistry.registerFilter(activeEffectVars.activeFilter);

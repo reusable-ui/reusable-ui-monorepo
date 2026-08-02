@@ -25,3 +25,39 @@ const ringFeatureTuple = cssVars<RingFeatureVars>({ prefix: defaultRingFeaturePr
  * consistent CSS variable names during SSR and hydration.
  */
 export const ringFeatureVars = ringFeatureTuple[0];
+
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **ring feature variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all ring feature variables.
+ * ```ts
+ * ringFeatureVarOptions.prefix = 'rg';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * ringFeatureVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     regularRingCond,  // Resolves to: 'var(--rg-regularRingCond)'
+ *     ringVariantColor, // Resolves to: 'var(--rg-ringVariantColor)'
+ * } = ringFeatureVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     regularRingCond,  // Resolves to: 'var(--v0)'
+ *     ringVariantColor, // Resolves to: 'var(--v1)'
+ * } = ringFeatureVars;
+ * ```
+ */
+export const ringFeatureVarOptions = ringFeatureTuple[1];

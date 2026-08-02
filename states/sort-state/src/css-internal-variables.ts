@@ -31,5 +31,41 @@ const sortStateTuple = cssVars<SortStateVars>({ prefix: defaultSortStatePrefix, 
  */
 export const sortStateVars = sortStateTuple[0];
 
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **sort state variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all sort state variables.
+ * ```ts
+ * sortStateVarOptions.prefix = 'sort';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * sortStateVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     sortingAnimation, // Resolves to: 'var(--sort-sortingAnimation)'
+ *     sortFactor,       // Resolves to: 'var(--sort-sortFactor)'
+ * } = sortStateVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     sortingAnimation, // Resolves to: 'var(--v0)'
+ *     sortFactor,       // Resolves to: 'var(--v1)'
+ * } = sortStateVars;
+ * ```
+ */
+export const sortStateVarOptions = sortStateTuple[1];
+
 // Register the sort-related animation globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(sortStateVars.sortingAnimation);

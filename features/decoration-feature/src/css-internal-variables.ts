@@ -25,3 +25,39 @@ const decorationFeatureTuple = cssVars<DecorationFeatureVars>({ prefix: defaultD
  * consistent CSS variable names during SSR and hydration.
  */
 export const decorationFeatureVars = decorationFeatureTuple[0];
+
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **decoration feature variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all decoration feature variables.
+ * ```ts
+ * decorationFeatureVarOptions.prefix = 'dn';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * decorationFeatureVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     regularDecorCond, // Resolves to: 'var(--dn-regularDecorCond)'
+ *     mildDecorCond,    // Resolves to: 'var(--dn-mildDecorCond)'
+ * } = decorationFeatureVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     regularDecorCond, // Resolves to: 'var(--v0)'
+ *     mildDecorCond,    // Resolves to: 'var(--v1)'
+ * } = decorationFeatureVars;
+ * ```
+ */
+export const decorationFeatureVarOptions = decorationFeatureTuple[1];

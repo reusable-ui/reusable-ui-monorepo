@@ -31,6 +31,42 @@ const validityStateTuple = cssVars<ValidityStateVars>({ prefix: defaultValidityS
  */
 export const validityStateVars = validityStateTuple[0];
 
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **validity state variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all validity state variables.
+ * ```ts
+ * validityStateVarOptions.prefix = 'val';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * validityStateVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     validatingAnimation,   // Resolves to: 'var(--val-validatingAnimation)'
+ *     invalidatingAnimation, // Resolves to: 'var(--val-invalidatingAnimation)'
+ * } = validityStateVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     validatingAnimation,   // Resolves to: 'var(--v0)'
+ *     invalidatingAnimation, // Resolves to: 'var(--v1)'
+ * } = validityStateVars;
+ * ```
+ */
+export const validityStateVarOptions = validityStateTuple[1];
+
 // Register the validity-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(validityStateVars.validatingAnimation);
 animationRegistry.registerAnimation(validityStateVars.invalidatingAnimation);

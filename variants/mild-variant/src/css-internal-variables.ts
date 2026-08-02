@@ -25,3 +25,39 @@ const mildVariantTuple = cssVars<MildVariantVars>({ prefix: defaultMildVariantPr
  * consistent CSS variable names during SSR and hydration.
  */
 export const mildVariantVars = mildVariantTuple[0];
+
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **mild variant variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all mild variant variables.
+ * ```ts
+ * mildVariantVarOptions.prefix = 'mi';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * mildVariantVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     isMild,  // Resolves to: 'var(--mi-isMild)'
+ *     notMild, // Resolves to: 'var(--mi-notMild)'
+ * } = mildVariantVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     isMild,  // Resolves to: 'var(--v0)'
+ *     notMild, // Resolves to: 'var(--v1)'
+ * } = mildVariantVars;
+ * ```
+ */
+export const mildVariantVarOptions = mildVariantTuple[1];

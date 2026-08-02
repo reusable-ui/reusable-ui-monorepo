@@ -31,5 +31,39 @@ const sortEffectTuple = cssVars<SortEffectVars>({ prefix: defaultSortEffectPrefi
  */
 export const sortEffectVars = sortEffectTuple[0];
 
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **sort effect variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all sort effect variables.
+ * ```ts
+ * sortEffectVarOptions.prefix = 'sorte';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * sortEffectVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     sortTransform, // Resolves to: 'var(--sorte-sortTransform)'
+ * } = sortEffectVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     sortTransform, // Resolves to: 'var(--v0)'
+ * } = sortEffectVars;
+ * ```
+ */
+export const sortEffectVarOptions = sortEffectTuple[1];
+
 // Register the sort transform globally for composing a unified transform stack across effect packages:
 transformRegistry.registerTransform(sortEffectVars.sortTransform);

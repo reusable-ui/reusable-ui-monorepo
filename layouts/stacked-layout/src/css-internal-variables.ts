@@ -25,3 +25,39 @@ const stackedLayoutTuple = cssVars<StackedLayoutVars>({ prefix: defaultStackedLa
  * consistent CSS variable names during SSR and hydration.
  */
 export const stackedLayoutVars = stackedLayoutTuple[0];
+
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **stacked layout variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all stacked layout variables.
+ * ```ts
+ * stackedLayoutVarOptions.prefix = 'stk';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * stackedLayoutVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     innerCornerStartStartRadius, // Resolves to: 'var(--stk-innerCornerStartStartRadius)'
+ *     innerCornerStartEndRadius,   // Resolves to: 'var(--stk-innerCornerStartEndRadius)'
+ * } = stackedLayoutVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     innerCornerStartStartRadius, // Resolves to: 'var(--v0)'
+ *     innerCornerStartEndRadius,   // Resolves to: 'var(--v1)'
+ * } = stackedLayoutVars;
+ * ```
+ */
+export const stackedLayoutVarOptions = stackedLayoutTuple[1];

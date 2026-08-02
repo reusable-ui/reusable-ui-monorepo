@@ -25,3 +25,37 @@ const filterFeatureTuple = cssVars<FilterFeatureVars>({ prefix: defaultFilterFea
  * consistent CSS variable names during SSR and hydration.
  */
 export const filterFeatureVars = filterFeatureTuple[0];
+
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **filter feature variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all filter feature variables.
+ * ```ts
+ * filterFeatureVarOptions.prefix = 'fi';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * filterFeatureVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     filter, // Resolves to: 'var(--fi-filter)'
+ * } = filterFeatureVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     filter, // Resolves to: 'var(--v0)'
+ * } = filterFeatureVars;
+ * ```
+ */
+export const filterFeatureVarOptions = filterFeatureTuple[1];

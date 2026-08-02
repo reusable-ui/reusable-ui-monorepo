@@ -31,6 +31,42 @@ const dragStateTuple = cssVars<DragStateVars>({ prefix: defaultDragStatePrefix, 
  */
 export const dragStateVars = dragStateTuple[0];
 
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **drag state variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all drag state variables.
+ * ```ts
+ * dragStateVarOptions.prefix = 'drag';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * dragStateVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     draggingAnimation, // Resolves to: 'var(--drag-draggingAnimation)'
+ *     droppingAnimation, // Resolves to: 'var(--drag-droppingAnimation)'
+ * } = dragStateVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     draggingAnimation, // Resolves to: 'var(--v0)'
+ *     droppingAnimation, // Resolves to: 'var(--v1)'
+ * } = dragStateVars;
+ * ```
+ */
+export const dragStateVarOptions = dragStateTuple[1];
+
 // Register the drag/drop-related animations globally for composing a unified animation stack across state packages:
 animationRegistry.registerAnimation(dragStateVars.draggingAnimation);
 animationRegistry.registerAnimation(dragStateVars.droppingAnimation);

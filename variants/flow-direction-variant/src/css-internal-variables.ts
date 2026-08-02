@@ -25,3 +25,39 @@ const flowDirectionVariantTuple = cssVars<FlowDirectionVariantVars>({ prefix: de
  * consistent CSS variable names during SSR and hydration.
  */
 export const flowDirectionVariantVars = flowDirectionVariantTuple[0];
+
+/**
+ * A `LiveCssVarsOptions` object manages configuration for the **flow direction variant variables**.
+ * It controls prefixes and minification.
+ * 
+ * - **Prefix Management:**  
+ * Defines the prefix used for all flow direction variant variables.
+ * ```ts
+ * flowDirectionVariantVarOptions.prefix = 'fd';
+ * ```
+ * 
+ * - **Minification Control:**  
+ * Replaces the original variable names with unique shorter names.
+ * ```ts
+ * flowDirectionVariantVarOptions.minify = true;
+ * ```
+ * 
+ * #### **Rendered CSS Variables Example**
+ * 
+ * Example with `minify = false`:
+ * ```ts
+ * const {
+ *     isFlowDirectionStart, // Resolves to: 'var(--fd-isFlowDirectionStart)'
+ *     isFlowDirectionEnd,   // Resolves to: 'var(--fd-isFlowDirectionEnd)'
+ * } = flowDirectionVariantVars;
+ * ```
+ * 
+ * Example with `minify = true`:
+ * ```ts
+ * const {
+ *     isFlowDirectionStart, // Resolves to: 'var(--v0)'
+ *     isFlowDirectionEnd,   // Resolves to: 'var(--v1)'
+ * } = flowDirectionVariantVars;
+ * ```
+ */
+export const flowDirectionVariantVarOptions = flowDirectionVariantTuple[1];
