@@ -132,11 +132,11 @@ const config = cssConfig(() => {
  * spacerConfigVars.customSpacer = "50px"; // Generates "--spc-customSpacer: 50px;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
- * spacerConfigVars.myExpression = [[
+ * spacerConfigVars.myDefinition = [[
  *    "clamp(", spacerConfigVars.xs, ", ", "0.25%", ", ", spacerConfigVars.xl, ")"
- * ]]; // Generates "--spc-myExpression: clamp(var(--spc-xs), 0.25%, var(--spc-xl));"
+ * ]]; // Generates "--spc-myDefinition: clamp(var(--spc-xs), 0.25%, var(--spc-xl));"
  * ```
  * 
  * #### **Removing a CSS Variable**
@@ -147,12 +147,12 @@ const config = cssConfig(() => {
  * spacerConfigVars.customSpacer = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for spacer-related expressions.
+ * In this case, we use **double brackets** for spacer-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -169,54 +169,54 @@ const config = cssConfig(() => {
  *     --spc-xl: calc(var(--spc-md) * 3);
  *     --spc-default: var(--spc-md);
  *     --spc-customSpacer: 50px;
- *     --spc-myExpression: clamp(var(--spc-xs), 0.25%, var(--spc-xl));
+ *     --spc-myDefinition: clamp(var(--spc-xs), 0.25%, var(--spc-xl));
  * }
  * ```
  */
 export const spacerConfigVars        = config[0];
 
 /**
- * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
- * These values are **not precomputed** but instead represent formula-driven expressions.
+ * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
+ * These values are **not precomputed** but instead represent formula-driven definitions.
  * 
  * These values should **not be manually modified outside this system**, as they are managed by `cssConfig()`.
  * 
  * ---
  * 
  * ### **Usage**
- * #### **Retrieving a CSS Expression (Getter)**
- * Access the assembled CSS expression:  
+ * #### **Retrieving a CSS Definition (Getter)**
+ * Access the assembled CSS definition:  
  * ```ts
- * const expression = spacerConfigExpressions.lg; // Resolves to [[ "calc(", spacerConfigVars.md, " * 1.5)" ]]
+ * const definition = spacerConfigVarDefs.lg; // Resolves to [[ "calc(", spacerConfigVars.md, " * 1.5)" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * spacerConfigExpressions.customSpacer = "50px"; // Generates "--spc-customSpacer: 50px;"
+ * spacerConfigVarDefs.customSpacer = "50px"; // Generates "--spc-customSpacer: 50px;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
- * spacerConfigExpressions.myExpression = [[
+ * spacerConfigVarDefs.myDefinition = [[
  *    "clamp(", spacerConfigVars.xs, ", ", "0.25%", ", ", spacerConfigVars.xl, ")"
- * ]]; // Generates "--spc-myExpression: clamp(var(--spc-xs), 0.25%, var(--spc-xl));"
+ * ]]; // Generates "--spc-myDefinition: clamp(var(--spc-xs), 0.25%, var(--spc-xl));"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete spacerConfigExpressions.customSpacer;
- * spacerConfigExpressions.customSpacer = null;
- * spacerConfigExpressions.customSpacer = undefined;
+ * delete spacerConfigVarDefs.customSpacer;
+ * spacerConfigVarDefs.customSpacer = null;
+ * spacerConfigVarDefs.customSpacer = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for spacer-related expressions.
+ * In this case, we use **double brackets** for spacer-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -233,11 +233,11 @@ export const spacerConfigVars        = config[0];
  *     --spc-xl: calc(var(--spc-md) * 3);
  *     --spc-default: var(--spc-md);
  *     --spc-customSpacer: 50px;
- *     --spc-myExpression: clamp(var(--spc-xs), 0.25%, var(--spc-xl));
+ *     --spc-myDefinition: clamp(var(--spc-xs), 0.25%, var(--spc-xl));
  * }
  * ```
  */
-export const spacerConfigExpressions = config[1];
+export const spacerConfigVarDefs     = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for spacer system**.

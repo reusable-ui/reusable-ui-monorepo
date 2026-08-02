@@ -207,7 +207,7 @@ const config = cssConfig(() => {
  * displayConfigVars.fontWeightCustom = 900; // Generates "--d-fontWeightCustom: 900;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
  * displayConfigVars.boxShadow = [[
  *    "0px", "0px", "0px", "calc(", displayConfigVars.marginBlockEnd, " / 4)", "gray"
@@ -261,12 +261,12 @@ const config = cssConfig(() => {
  * displayConfigVars.fontWeightCustom = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for typography-related expressions.
+ * In this case, we use **double brackets** for typography-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -296,29 +296,29 @@ const config = cssConfig(() => {
 export const displayConfigVars        = config[0];
 
 /**
- * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
- * These values are **not precomputed** but instead represent formula-driven expressions.
+ * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
+ * These values are **not precomputed** but instead represent formula-driven definitions.
  * 
  * These values should **not be manually modified outside this system**, as they are managed by `cssConfig()`.
  * 
  * ---
  * 
  * ### **Usage**
- * #### **Retrieving a CSS Expression (Getter)**
- * Access the assembled CSS expression:  
+ * #### **Retrieving a CSS Definition (Getter)**
+ * Access the assembled CSS definition:  
  * ```ts
- * const expression = displayConfigExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--d-marginBlockEnd)", " / 4)", "gray" ]]
+ * const definition = displayConfigVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--d-marginBlockEnd)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * displayConfigExpressions.fontWeightCustom = 900; // Generates "--d-fontWeightCustom: 900;"
+ * displayConfigVarDefs.fontWeightCustom = 900; // Generates "--d-fontWeightCustom: 900;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
- * displayConfigExpressions.boxShadow = [[
+ * displayConfigVarDefs.boxShadow = [[
  *    "0px", "0px", "0px", "calc(", displayConfigVars.marginBlockEnd, " / 4)", "gray"
  * ]]; // Generates "--d-boxShadow: 0px 0px 0px calc(var(--d-marginBlockEnd) / 4) gray;"
  * ```
@@ -326,7 +326,7 @@ export const displayConfigVars        = config[0];
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * displayConfigExpressions.padding = '1rem';
+ * displayConfigVarDefs.padding = '1rem';
  * ```
  * This generates the following styles:
  * 
@@ -348,7 +348,7 @@ export const displayConfigVars        = config[0];
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * displayConfigExpressions.booh = 1234;
+ * displayConfigVarDefs.booh = 1234;
  * ```
  * This generates:
  * 
@@ -365,17 +365,17 @@ export const displayConfigVars        = config[0];
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete displayConfigExpressions.fontWeightCustom;
- * displayConfigExpressions.fontWeightCustom = null;
- * displayConfigExpressions.fontWeightCustom = undefined;
+ * delete displayConfigVarDefs.fontWeightCustom;
+ * displayConfigVarDefs.fontWeightCustom = null;
+ * displayConfigVarDefs.fontWeightCustom = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for typography-related expressions.
+ * In this case, we use **double brackets** for typography-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -402,7 +402,7 @@ export const displayConfigVars        = config[0];
  * }
  * ```
  */
-export const displayConfigExpressions = config[1];
+export const displayConfigVarDefs     = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.

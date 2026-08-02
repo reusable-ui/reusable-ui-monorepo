@@ -108,7 +108,7 @@ const config = cssConfig(() => {
  * vertSeparatorConfigVars.fontWeightCustom = 900; // Generates "--hr-fontWeightCustom: 900;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
  * vertSeparatorConfigVars.boxShadow = [[
  *    "0px", "0px", "0px", "calc(", vertSeparatorConfigVars.marginBlockStart, " / 4)", "gray"
@@ -162,12 +162,12 @@ const config = cssConfig(() => {
  * vertSeparatorConfigVars.fontWeightCustom = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for typography-related expressions.
+ * In this case, we use **double brackets** for typography-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -191,29 +191,29 @@ const config = cssConfig(() => {
 export const vertSeparatorConfigVars        = config[0];
 
 /**
- * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
- * These values are **not precomputed** but instead represent formula-driven expressions.
+ * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
+ * These values are **not precomputed** but instead represent formula-driven definitions.
  * 
  * These values should **not be manually modified outside this system**, as they are managed by `cssConfig()`.
  * 
  * ---
  * 
  * ### **Usage**
- * #### **Retrieving a CSS Expression (Getter)**
- * Access the assembled CSS expression:  
+ * #### **Retrieving a CSS Definition (Getter)**
+ * Access the assembled CSS definition:  
  * ```ts
- * const expression = vertSeparatorConfigExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--hr-marginBlockStart)", " / 4)", "gray" ]]
+ * const definition = vertSeparatorConfigVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--hr-marginBlockStart)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * vertSeparatorConfigExpressions.fontWeightCustom = 900; // Generates "--hr-fontWeightCustom: 900;"
+ * vertSeparatorConfigVarDefs.fontWeightCustom = 900; // Generates "--hr-fontWeightCustom: 900;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
- * vertSeparatorConfigExpressions.boxShadow = [[
+ * vertSeparatorConfigVarDefs.boxShadow = [[
  *    "0px", "0px", "0px", "calc(", vertSeparatorConfigVars.marginBlockStart, " / 4)", "gray"
  * ]]; // Generates "--hr-boxShadow: 0px 0px 0px calc(var(--hr-marginBlockStart) / 4) gray;"
  * ```
@@ -221,7 +221,7 @@ export const vertSeparatorConfigVars        = config[0];
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * vertSeparatorConfigExpressions.visibility = 'visible';
+ * vertSeparatorConfigVarDefs.visibility = 'visible';
  * ```
  * This generates the following styles:
  * 
@@ -243,7 +243,7 @@ export const vertSeparatorConfigVars        = config[0];
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * vertSeparatorConfigExpressions.booh = 1234;
+ * vertSeparatorConfigVarDefs.booh = 1234;
  * ```
  * This generates:
  * 
@@ -260,17 +260,17 @@ export const vertSeparatorConfigVars        = config[0];
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete vertSeparatorConfigExpressions.fontWeightCustom;
- * vertSeparatorConfigExpressions.fontWeightCustom = null;
- * vertSeparatorConfigExpressions.fontWeightCustom = undefined;
+ * delete vertSeparatorConfigVarDefs.fontWeightCustom;
+ * vertSeparatorConfigVarDefs.fontWeightCustom = null;
+ * vertSeparatorConfigVarDefs.fontWeightCustom = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for typography-related expressions.
+ * In this case, we use **double brackets** for typography-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -291,7 +291,7 @@ export const vertSeparatorConfigVars        = config[0];
  * }
  * ```
  */
-export const vertSeparatorConfigExpressions = config[1];
+export const vertSeparatorConfigVarDefs     = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.

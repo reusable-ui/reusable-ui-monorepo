@@ -119,11 +119,11 @@ const config = cssConfig(() => {
  * borderConfigVars.myBorder = "10px"; // Generates "--bor-myBorder: 10px;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
- * borderConfigVars.myExpression = [[
+ * borderConfigVars.myDefinition = [[
  *    "clamp(", borderConfigVars.sm, ", ", "0.25%", ", ", borderConfigVars.lg, ")"
- * ]]; // Generates "--bor-myExpression: clamp(var(--bor-sm), 0.25%, var(--bor-lg));"
+ * ]]; // Generates "--bor-myDefinition: clamp(var(--bor-sm), 0.25%, var(--bor-lg));"
  * ```
  * 
  * #### **Removing a CSS Variable**
@@ -134,12 +134,12 @@ const config = cssConfig(() => {
  * borderConfigVars.myBorder = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for border-related expressions.
+ * In this case, we use **double brackets** for border-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -154,54 +154,54 @@ const config = cssConfig(() => {
  *     --bor-defaultWidth: var(--bor-hair);
  *     --bor-default: var(--bor-style) var(--bor-hair) var(--bor-color);
  *     --bor-myBorder: 10px;
- *     --bor-myExpression: clamp(var(--bor-sm), 0.25%, var(--bor-lg));
+ *     --bor-myDefinition: clamp(var(--bor-sm), 0.25%, var(--bor-lg));
  * }
  * ```
  */
 export const borderConfigVars        = config[0];
 
 /**
- * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
- * These values are **not precomputed** but instead represent formula-driven expressions.
+ * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
+ * These values are **not precomputed** but instead represent formula-driven definitions.
  * 
  * These values should **not be manually modified outside this system**, as they are managed by `cssConfig()`.
  * 
  * ---
  * 
  * ### **Usage**
- * #### **Retrieving a CSS Expression (Getter)**
- * Access the assembled CSS expression:  
+ * #### **Retrieving a CSS Definition (Getter)**
+ * Access the assembled CSS definition:  
  * ```ts
- * const expression = borderConfigExpressions.myExpression; // Resolves to [[ "clamp(", borderConfigVars.sm, ", ", "0.25%", ", ", borderConfigVars.lg, ")" ]]
+ * const definition = borderConfigVarDefs.myDefinition; // Resolves to [[ "clamp(", borderConfigVars.sm, ", ", "0.25%", ", ", borderConfigVars.lg, ")" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * borderConfigExpressions.myBorder = "10px"; // Generates "--bor-myBorder: 10px;"
+ * borderConfigVarDefs.myBorder = "10px"; // Generates "--bor-myBorder: 10px;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
- * borderConfigExpressions.myExpression = [[
+ * borderConfigVarDefs.myDefinition = [[
  *    "clamp(", borderConfigVars.sm, ", ", "0.25%", ", ", borderConfigVars.lg, ")"
- * ]]; // Generates "--bor-myExpression: clamp(var(--bor-sm), 0.25%, var(--bor-lg));"
+ * ]]; // Generates "--bor-myDefinition: clamp(var(--bor-sm), 0.25%, var(--bor-lg));"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete borderConfigExpressions.myBorder;
- * borderConfigExpressions.myBorder = null;
- * borderConfigExpressions.myBorder = undefined;
+ * delete borderConfigVarDefs.myBorder;
+ * borderConfigVarDefs.myBorder = null;
+ * borderConfigVarDefs.myBorder = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for border-related expressions.
+ * In this case, we use **double brackets** for border-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -216,11 +216,11 @@ export const borderConfigVars        = config[0];
  *     --bor-defaultWidth: var(--bor-hair);
  *     --bor-default: var(--bor-style) var(--bor-hair) var(--bor-color);
  *     --bor-myBorder: 10px;
- *     --bor-myExpression: clamp(var(--bor-sm), 0.25%, var(--bor-lg));
+ *     --bor-myDefinition: clamp(var(--bor-sm), 0.25%, var(--bor-lg));
  * }
  * ```
  */
-export const borderConfigExpressions = config[1];
+export const borderConfigVarDefs     = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for border system**.

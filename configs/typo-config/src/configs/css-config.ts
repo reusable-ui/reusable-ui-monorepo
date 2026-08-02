@@ -243,11 +243,11 @@ const config = cssConfig(() => {
  * typoConfigVars.fontWeightCustom = 900; // Generates "--typ-fontWeightCustom: 900;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
- * typoConfigVars.myExpression = [[
+ * typoConfigVars.myDefinition = [[
  *    "calc(", typoConfigVars.lineHeightMd, " * 2)"
- * ]]; // Generates "--typ-myExpression: calc(var(--typ-lineHeightMd) * 2);"
+ * ]]; // Generates "--typ-myDefinition: calc(var(--typ-lineHeightMd) * 2);"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
@@ -297,12 +297,12 @@ const config = cssConfig(() => {
  * typoConfigVars.fontWeightCustom = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for typography-related expressions.
+ * In this case, we use **double brackets** for typography-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -319,7 +319,7 @@ const config = cssConfig(() => {
  *     --typ-fontWeight: var(--typ-fontWeightNormal);
  *     --typ-lineHeight: var(--typ-lineHeightMd);
  *     --typ-fontWeightCustom: 900;
- *     --typ-myExpression: calc(var(--typ-lineHeightMd) * 2);
+ *     --typ-myDefinition: calc(var(--typ-lineHeightMd) * 2);
  *     --typ-padding: 1rem;
  *     --typ-booh: 1234;
  * }
@@ -328,37 +328,37 @@ const config = cssConfig(() => {
 export const typoConfigVars        = config[0];
 
 /**
- * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
- * These values are **not precomputed** but instead represent formula-driven expressions.
+ * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
+ * These values are **not precomputed** but instead represent formula-driven definitions.
  * 
  * These values should **not be manually modified outside this system**, as they are managed by `cssConfig()`.
  * 
  * ---
  * 
  * ### **Usage**
- * #### **Retrieving a CSS Expression (Getter)**
- * Access the assembled CSS expression:  
+ * #### **Retrieving a CSS Definition (Getter)**
+ * Access the assembled CSS definition:  
  * ```ts
- * const expression = typoConfigExpressions.fontSizeLg; // Resolves to [[ "calc(", "var(--typ-fontSize)", " * 1.25)" ]]
+ * const definition = typoConfigVarDefs.fontSizeLg; // Resolves to [[ "calc(", "var(--typ-fontSize)", " * 1.25)" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * typoConfigExpressions.fontWeightCustom = 900; // Generates "--typ-fontWeightCustom: 900;"
+ * typoConfigVarDefs.fontWeightCustom = 900; // Generates "--typ-fontWeightCustom: 900;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
- * typoConfigExpressions.myExpression = [[
+ * typoConfigVarDefs.myDefinition = [[
  *    "calc(", typoConfigVars.lineHeightMd, " * 2)"
- * ]]; // Generates "--typ-myExpression: calc(var(--typ-lineHeightMd) * 2);"
+ * ]]; // Generates "--typ-myDefinition: calc(var(--typ-lineHeightMd) * 2);"
  * ```
  * 
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * typoConfigExpressions.padding = '1rem';
+ * typoConfigVarDefs.padding = '1rem';
  * ```
  * This generates the following styles:
  * 
@@ -380,7 +380,7 @@ export const typoConfigVars        = config[0];
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * typoConfigExpressions.booh = 1234;
+ * typoConfigVarDefs.booh = 1234;
  * ```
  * This generates:
  * 
@@ -397,17 +397,17 @@ export const typoConfigVars        = config[0];
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete typoConfigExpressions.fontWeightCustom;
- * typoConfigExpressions.fontWeightCustom = null;
- * typoConfigExpressions.fontWeightCustom = undefined;
+ * delete typoConfigVarDefs.fontWeightCustom;
+ * typoConfigVarDefs.fontWeightCustom = null;
+ * typoConfigVarDefs.fontWeightCustom = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for typography-related expressions.
+ * In this case, we use **double brackets** for typography-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -424,13 +424,13 @@ export const typoConfigVars        = config[0];
  *     --typ-fontWeight: var(--typ-fontWeightNormal);
  *     --typ-lineHeight: var(--typ-lineHeightMd);
  *     --typ-fontWeightCustom: 900;
- *     --typ-myExpression: calc(var(--typ-lineHeightMd) * 2);
+ *     --typ-myDefinition: calc(var(--typ-lineHeightMd) * 2);
  *     --typ-padding: 1rem;
  *     --typ-booh: 1234;
  * }
  * ```
  */
-export const typoConfigExpressions = config[1];
+export const typoConfigVarDefs     = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.

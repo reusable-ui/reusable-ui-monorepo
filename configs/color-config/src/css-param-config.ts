@@ -195,11 +195,11 @@ const config = cssConfig(() => {
  * colorParamConfigVars.myParam = "3rem"; // Generates "--col-p-myParam: 3rem;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
- * colorParamConfigVars.myExpression = [[
+ * colorParamConfigVars.myDefinition = [[
  *    "calc(", colorParamConfigVars.mild, " * 2)"
- * ]]; // Generates "--col-p-myExpression: calc(var(--col-p-mild) * 2);"
+ * ]]; // Generates "--col-p-myDefinition: calc(var(--col-p-mild) * 2);"
  * ```
  * 
  * #### **Removing a CSS Variable**
@@ -210,12 +210,12 @@ const config = cssConfig(() => {
  * colorParamConfigVars.myParam = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for color-param-related expressions.
+ * In this case, we use **double brackets** for color-param-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -233,54 +233,54 @@ const config = cssConfig(() => {
  *     --col-p-edge: -0.05;
  *     --col-p-soft: -0.5;
  *     --col-p-myParam: 3rem;
- *     --col-p-myExpression: calc(var(--col-p-mild) * 2);
+ *     --col-p-myDefinition: calc(var(--col-p-mild) * 2);
  * }
  * ```
  */
 export const colorParamConfigVars        = config[0];
 
 /**
- * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
- * These values are **not precomputed** but instead represent formula-driven expressions.
+ * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
+ * These values are **not precomputed** but instead represent formula-driven definitions.
  * 
  * These values should **not be manually modified outside this system**, as they are managed by `cssConfig()`.
  * 
  * ---
  * 
  * ### **Usage**
- * #### **Retrieving a CSS Expression (Getter)**
- * Access the assembled CSS expression.
+ * #### **Retrieving a CSS Definition (Getter)**
+ * Access the assembled CSS definition.
  * ```ts
- * const expression = colorParamConfigExpressions.mild; // Resolves to 0.7
+ * const definition = colorParamConfigVarDefs.mild; // Resolves to 0.7
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * colorParamConfigExpressions.myParam = "3rem"; // Generates "--col-p-myParam: 3rem;"
+ * colorParamConfigVarDefs.myParam = "3rem"; // Generates "--col-p-myParam: 3rem;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
- * colorParamConfigExpressions.myExpression = [[
+ * colorParamConfigVarDefs.myDefinition = [[
  *    "calc(", colorParamConfigVars.mild, " * 2)"
- * ]]; // Generates "--col-p-myExpression: calc(var(--col-p-mild) * 2);"
+ * ]]; // Generates "--col-p-myDefinition: calc(var(--col-p-mild) * 2);"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete colorParamConfigExpressions.myParam;
- * colorParamConfigExpressions.myParam = null;
- * colorParamConfigExpressions.myParam = undefined;
+ * delete colorParamConfigVarDefs.myParam;
+ * colorParamConfigVarDefs.myParam = null;
+ * colorParamConfigVarDefs.myParam = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for color-param-related expressions.
+ * In this case, we use **double brackets** for color-param-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -298,11 +298,11 @@ export const colorParamConfigVars        = config[0];
  *     --col-p-edge: -0.05;
  *     --col-p-soft: -0.5;
  *     --col-p-myParam: 3rem;
- *     --col-p-myExpression: calc(var(--col-p-mild) * 2);
+ *     --col-p-myDefinition: calc(var(--col-p-mild) * 2);
  * }
  * ```
  */
-export const colorParamConfigExpressions = config[1];
+export const colorParamConfigVarDefs     = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for color parameters**.

@@ -42,11 +42,11 @@ const config = cssConfig(() => {
  * colorConfigVars.myColor = "oklch(0.45 0.30 264)"; // Generates "--col-myColor: oklch(0.45 0.30 264);"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
- * colorConfigVars.myExpression = [[
+ * colorConfigVars.myDefinition = [[
  *    "oklch(from", colorConfigVars.blue, " l c h / clamp(0.05, alpha * (1 + ", colorParamConfigVars.soft, "), 1))"
- * ]]; // Generates "--col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));"
+ * ]]; // Generates "--col-myDefinition: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));"
  * ```
  * 
  * #### **Removing a CSS Variable**
@@ -57,12 +57,12 @@ const config = cssConfig(() => {
  * colorConfigVars.myColor = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for color-related expressions.
+ * In this case, we use **double brackets** for color-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -78,54 +78,54 @@ const config = cssConfig(() => {
  *     --col-lightSoft: oklch(from var(--col-light) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
  *     --col-darkSoft: oklch(from var(--col-dark) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
  *     --col-myColor: oklch(0.45 0.30 264);
- *     --col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *     --col-myDefinition: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
  * }
  * ```
  */
 export const colorConfigVars        = config[0];
 
 /**
- * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
- * These values are **not precomputed** but instead represent formula-driven expressions.
+ * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
+ * These values are **not precomputed** but instead represent formula-driven definitions.
  * 
  * These values should **not be manually modified outside this system**, as they are managed by `cssConfig()`.
  * 
  * ---
  * 
  * ### **Usage**
- * #### **Retrieving a CSS Expression (Getter)**
- * Access the assembled CSS expression.
+ * #### **Retrieving a CSS Definition (Getter)**
+ * Access the assembled CSS definition.
  * ```ts
- * const expression = colorConfigExpressions.primaryBase; // Resolves to [[ "oklch(from ", "var(--col-primary)", " calc(((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * l) + (1 - min(1, (1 - (", "var(--col-p-base)", " * ", "var(--col-p-mode)", "))))) calc((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * c) h / alpha)" ]]
+ * const definition = colorConfigVarDefs.primaryBase; // Resolves to [[ "oklch(from ", "var(--col-primary)", " calc(((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * l) + (1 - min(1, (1 - (", "var(--col-p-base)", " * ", "var(--col-p-mode)", "))))) calc((1 - max(", "var(--col-p-base)", ", (0 - ", "var(--col-p-base)", "))) * c) h / alpha)" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * colorConfigExpressions.myColor = "oklch(0.45 0.30 264)"; // Generates "--col-myColor: oklch(0.45 0.30 264);"
+ * colorConfigVarDefs.myColor = "oklch(0.45 0.30 264)"; // Generates "--col-myColor: oklch(0.45 0.30 264);"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
- * colorConfigExpressions.myExpression = [[
+ * colorConfigVarDefs.myDefinition = [[
  *    "oklch(from", colorConfigVars.blue, " l c h / clamp(0.05, alpha * (1 + ", colorParamConfigVars.soft, "), 1))"
- * ]]; // Generates "--col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));"
+ * ]]; // Generates "--col-myDefinition: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete colorConfigExpressions.myColor;
- * colorConfigExpressions.myColor = null;
- * colorConfigExpressions.myColor = undefined;
+ * delete colorConfigVarDefs.myColor;
+ * colorConfigVarDefs.myColor = null;
+ * colorConfigVarDefs.myColor = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for color-related expressions.
+ * In this case, we use **double brackets** for color-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -141,11 +141,11 @@ export const colorConfigVars        = config[0];
  *     --col-lightSoft: oklch(from var(--col-light) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
  *     --col-darkSoft: oklch(from var(--col-dark) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
  *     --col-myColor: oklch(0.45 0.30 264);
- *     --col-myExpression: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
+ *     --col-myDefinition: oklch(from var(--col-blue) l c h / clamp(0.05, alpha * (1 + var(--col-p-soft)), 1));
  * }
  * ```
  */
-export const colorConfigExpressions = config[1];
+export const colorConfigVarDefs     = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for color system**.

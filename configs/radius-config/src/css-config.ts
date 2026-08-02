@@ -126,11 +126,11 @@ const config = cssConfig(() => {
  * radiusConfigVars.myRadius = "10px"; // Generates "--r-myRadius: 10px;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
- * radiusConfigVars.myExpression = [[
+ * radiusConfigVars.myDefinition = [[
  *    "clamp(", radiusConfigVars.sm, ", ", "0.25%", ", ", radiusConfigVars.lg, ")"
- * ]]; // Generates "--r-myExpression: clamp(var(--r-sm), 0.25%, var(--r-lg));"
+ * ]]; // Generates "--r-myDefinition: clamp(var(--r-sm), 0.25%, var(--r-lg));"
  * ```
  * 
  * #### **Removing a CSS Variable**
@@ -141,12 +141,12 @@ const config = cssConfig(() => {
  * radiusConfigVars.myRadius = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for radius-related expressions.
+ * In this case, we use **double brackets** for radius-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -161,54 +161,54 @@ const config = cssConfig(() => {
  *     --r-circle: 50%;
  *     --r-default: var(--r-md);
  *     --r-myRadius: 10px;
- *     --r-myExpression: clamp(var(--r-sm), 0.25%, var(--r-lg));
+ *     --r-myDefinition: clamp(var(--r-sm), 0.25%, var(--r-lg));
  * }
  * ```
  */
 export const radiusConfigVars        = config[0];
 
 /**
- * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
- * These values are **not precomputed** but instead represent formula-driven expressions.
+ * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
+ * These values are **not precomputed** but instead represent formula-driven definitions.
  * 
  * These values should **not be manually modified outside this system**, as they are managed by `cssConfig()`.
  * 
  * ---
  * 
  * ### **Usage**
- * #### **Retrieving a CSS Expression (Getter)**
- * Access the assembled CSS expression:  
+ * #### **Retrieving a CSS Definition (Getter)**
+ * Access the assembled CSS definition:  
  * ```ts
- * const expression = radiusConfigExpressions.myExpression; // Resolves to [[ "clamp(", radiusConfigVars.sm, ", ", "0.25%", ", ", radiusConfigVars.lg, ")" ]]
+ * const definition = radiusConfigVarDefs.myDefinition; // Resolves to [[ "clamp(", radiusConfigVars.sm, ", ", "0.25%", ", ", radiusConfigVars.lg, ")" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * radiusConfigExpressions.myRadius = "10px"; // Generates "--r-myRadius: 10px;"
+ * radiusConfigVarDefs.myRadius = "10px"; // Generates "--r-myRadius: 10px;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
- * radiusConfigExpressions.myExpression = [[
+ * radiusConfigVarDefs.myDefinition = [[
  *    "clamp(", radiusConfigVars.sm, ", ", "0.25%", ", ", radiusConfigVars.lg, ")"
- * ]]; // Generates "--r-myExpression: clamp(var(--r-sm), 0.25%, var(--r-lg));"
+ * ]]; // Generates "--r-myDefinition: clamp(var(--r-sm), 0.25%, var(--r-lg));"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete radiusConfigExpressions.myRadius;
- * radiusConfigExpressions.myRadius = null;
- * radiusConfigExpressions.myRadius = undefined;
+ * delete radiusConfigVarDefs.myRadius;
+ * radiusConfigVarDefs.myRadius = null;
+ * radiusConfigVarDefs.myRadius = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for radius-related expressions.
+ * In this case, we use **double brackets** for radius-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -223,11 +223,11 @@ export const radiusConfigVars        = config[0];
  *     --r-circle: 50%;
  *     --r-default: var(--r-md);
  *     --r-myRadius: 10px;
- *     --r-myExpression: clamp(var(--r-sm), 0.25%, var(--r-lg));
+ *     --r-myDefinition: clamp(var(--r-sm), 0.25%, var(--r-lg));
  * }
  * ```
  */
-export const radiusConfigExpressions = config[1];
+export const radiusConfigVarDefs     = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for radius system**.

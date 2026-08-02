@@ -50,7 +50,7 @@ const config = cssConfig(() => {
  * breakpointConfigVars.customBreakpoint = "2560px"; // Generates "--brp-customBreakpoint: 2560px;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ❌ **Not supported** for breakpoint values.
  * 
  * #### **Removing a CSS Variable**
@@ -79,35 +79,35 @@ const config = cssConfig(() => {
 export const breakpointConfigVars        = config[0];
 
 /**
- * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
- * These values are **not precomputed** but instead represent formula-driven expressions.
+ * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
+ * These values are **not precomputed** but instead represent formula-driven definitions.
  * 
  * These values should **not be manually modified outside this system**, as they are managed by `cssConfig()`.
  * 
  * ---
  * 
  * ### **Usage**
- * #### **Retrieving a CSS Expression (Getter)**
- * Access the assembled CSS expression:  
+ * #### **Retrieving a CSS Definition (Getter)**
+ * Access the assembled CSS definition:  
  * ```ts
- * const expression = breakpointConfigExpressions.lg; // Resolves to "992px"
+ * const definition = breakpointConfigVarDefs.lg; // Resolves to "992px"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * breakpointConfigExpressions.customBreakpoint = "2560px"; // Generates "--brp-customBreakpoint: 2560px;"
+ * breakpointConfigVarDefs.customBreakpoint = "2560px"; // Generates "--brp-customBreakpoint: 2560px;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ❌ **Not supported** for breakpoint values.
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete breakpointConfigExpressions.customBreakpoint;
- * breakpointConfigExpressions.customBreakpoint = null;
- * breakpointConfigExpressions.customBreakpoint = undefined;
+ * delete breakpointConfigVarDefs.customBreakpoint;
+ * breakpointConfigVarDefs.customBreakpoint = null;
+ * breakpointConfigVarDefs.customBreakpoint = undefined;
  * ```
  * 
  * #### **Rendered CSS Variables Example**
@@ -125,7 +125,7 @@ export const breakpointConfigVars        = config[0];
  * }
  * ```
  */
-export const breakpointConfigExpressions = config[1];
+export const breakpointConfigVarDefs     = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for breakpoint system**.

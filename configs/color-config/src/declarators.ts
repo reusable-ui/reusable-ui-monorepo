@@ -16,7 +16,7 @@ import {
 }                           from './css-param-config.js'
 import {
     colorConfigVars,
-    colorConfigExpressions,
+    colorConfigVarDefs,
 }                           from './css-config.js'
 
 
@@ -39,7 +39,7 @@ const themesCache = new Set<string>([
  * Defines a theme by mapping the given `theme` to its corresponding colors.
  * 
  * @param theme The theme name to define.
- * @param rootColor The base CSS color or CSS expression for the theme.
+ * @param rootColor The base CSS color or CSS definition for the theme.
  */
 export const defineTheme = (theme: string, rootColor: CssColor | null | undefined): void => {
     // Validate parameters:
@@ -62,14 +62,14 @@ export const defineTheme = (theme: string, rootColor: CssColor | null | undefine
     // Constants:
     
     // Root Color:
-    colorConfigExpressions[theme] = (
+    colorConfigVarDefs[theme] = (
         // Upsert variable:
         rootColor
         
         ||
         
         // Delete variable:
-        (null as unknown as keyof typeof colorConfigExpressions)
+        (null as unknown as keyof typeof colorConfigVarDefs)
     );
     const rootColorVar = rootColor ? colorConfigVars[theme] : null;
     
@@ -78,43 +78,43 @@ export const defineTheme = (theme: string, rootColor: CssColor | null | undefine
     // Background colors:
     
     // Base Color:
-    colorConfigExpressions[`${theme}Base`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.base) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigVarDefs[`${theme}Base`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.base) : (null as unknown as keyof typeof colorConfigVarDefs);
     
     // Mild Color:
-    colorConfigExpressions[`${theme}Mild`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.mild) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigVarDefs[`${theme}Mild`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.mild) : (null as unknown as keyof typeof colorConfigVarDefs);
     
     
     
     // Foreground colors:
     
     // Flip Color:
-    colorConfigExpressions[`${theme}Flip`] = rootColorVar ? contrastFlip(   rootColorVar, colorParamConfigVars.flip) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigVarDefs[`${theme}Flip`] = rootColorVar ? contrastFlip(   rootColorVar, colorParamConfigVars.flip) : (null as unknown as keyof typeof colorConfigVarDefs);
     
     // Text Color:
-    colorConfigExpressions[`${theme}Text`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.text) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigVarDefs[`${theme}Text`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.text) : (null as unknown as keyof typeof colorConfigVarDefs);
     
     // Face Color:
-    colorConfigExpressions[`${theme}Face`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.face) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigVarDefs[`${theme}Face`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.face) : (null as unknown as keyof typeof colorConfigVarDefs);
     
     
     
     // Border colors:
     
     // Bold Color:
-    colorConfigExpressions[`${theme}Bold`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.bold) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigVarDefs[`${theme}Bold`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.bold) : (null as unknown as keyof typeof colorConfigVarDefs);
     
     // Thin Color:
-    colorConfigExpressions[`${theme}Thin`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.thin) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigVarDefs[`${theme}Thin`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.thin) : (null as unknown as keyof typeof colorConfigVarDefs);
     
     // Edge Color:
-    colorConfigExpressions[`${theme}Edge`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.edge) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigVarDefs[`${theme}Edge`] = rootColorVar ? adjustLightness(rootColorVar, colorParamConfigVars.edge) : (null as unknown as keyof typeof colorConfigVarDefs);
     
     
     
     // Effect colors:
     
     // Soft Color:
-    colorConfigExpressions[`${theme}Soft`] = rootColorVar ? adjustOpacity(  rootColorVar, colorParamConfigVars.soft) : (null as unknown as keyof typeof colorConfigExpressions);
+    colorConfigVarDefs[`${theme}Soft`] = rootColorVar ? adjustOpacity(  rootColorVar, colorParamConfigVars.soft) : (null as unknown as keyof typeof colorConfigVarDefs);
 };
 
 /**

@@ -198,7 +198,7 @@ const config = cssConfig(() => {
  * markConfigVars.fontWeightCustom = 900; // Generates "--mrk-fontWeightCustom: 900;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
  * markConfigVars.boxShadow = [[
  *    "0px", "0px", "0px", "calc(", markConfigVars.marginInlineStart, " / 4)", "gray"
@@ -252,12 +252,12 @@ const config = cssConfig(() => {
  * markConfigVars.fontWeightCustom = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for typography-related expressions.
+ * In this case, we use **double brackets** for typography-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -287,29 +287,29 @@ const config = cssConfig(() => {
 export const markConfigVars        = config[0];
 
 /**
- * A `Vals<>` object represents **structured CSS expressions**, allowing direct retrieval and modification.
- * These values are **not precomputed** but instead represent formula-driven expressions.
+ * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
+ * These values are **not precomputed** but instead represent formula-driven definitions.
  * 
  * These values should **not be manually modified outside this system**, as they are managed by `cssConfig()`.
  * 
  * ---
  * 
  * ### **Usage**
- * #### **Retrieving a CSS Expression (Getter)**
- * Access the assembled CSS expression:  
+ * #### **Retrieving a CSS Definition (Getter)**
+ * Access the assembled CSS definition:  
  * ```ts
- * const expression = markConfigExpressions.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--mrk-marginInlineStart)", " / 4)", "gray" ]]
+ * const definition = markConfigVarDefs.boxShadow; // Resolves to [[ "0px", "0px", "0px", "calc(", "var(--mrk-marginInlineStart)", " / 4)", "gray" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * markConfigExpressions.fontWeightCustom = 900; // Generates "--mrk-fontWeightCustom: 900;"
+ * markConfigVarDefs.fontWeightCustom = 900; // Generates "--mrk-fontWeightCustom: 900;"
  * ```
  * 
- * **Expression Assignment:**
+ * **Definition Assignment:**
  * ```ts
- * markConfigExpressions.boxShadow = [[
+ * markConfigVarDefs.boxShadow = [[
  *    "0px", "0px", "0px", "calc(", markConfigVars.marginInlineStart, " / 4)", "gray"
  * ]]; // Generates "--mrk-boxShadow: 0px 0px 0px calc(var(--mrk-marginInlineStart) / 4) gray;"
  * ```
@@ -317,7 +317,7 @@ export const markConfigVars        = config[0];
  * #### **Automatic Application of Valid CSS Properties**
  * When a custom value is assigned using a **valid CSS property name**, it is automatically applied within the styling stylesheet:
  * ```ts
- * markConfigExpressions.opacity = 0.5;
+ * markConfigVarDefs.opacity = 0.5;
  * ```
  * This generates the following styles:
  * 
@@ -339,7 +339,7 @@ export const markConfigVars        = config[0];
  *  
  * However, if the property name **is not a recognized CSS property**, it still generates a CSS variable but does not apply automatically:
  * ```ts
- * markConfigExpressions.booh = 1234;
+ * markConfigVarDefs.booh = 1234;
  * ```
  * This generates:
  * 
@@ -356,17 +356,17 @@ export const markConfigVars        = config[0];
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete markConfigExpressions.fontWeightCustom;
- * markConfigExpressions.fontWeightCustom = null;
- * markConfigExpressions.fontWeightCustom = undefined;
+ * delete markConfigVarDefs.fontWeightCustom;
+ * markConfigVarDefs.fontWeightCustom = null;
+ * markConfigVarDefs.fontWeightCustom = undefined;
  * ```
  * 
- * #### **Expression Handling**
+ * #### **Definition Handling**
  * The **cssfn library** processes:
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for typography-related expressions.
+ * In this case, we use **double brackets** for typography-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -393,7 +393,7 @@ export const markConfigVars        = config[0];
  * }
  * ```
  */
-export const markConfigExpressions = config[1];
+export const markConfigVarDefs     = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for typography system**.
