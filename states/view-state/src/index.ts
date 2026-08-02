@@ -4,3 +4,6 @@ export * from './general-hooks.js'
 export * from './client-hooks.js'
 export * from './css-selectors.js'
 export * from './css-hooks.js'
+export {
+    viewStateVarOptions,
+}                  from './css-internal-variables.js'

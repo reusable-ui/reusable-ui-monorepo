@@ -3,3 +3,6 @@ export *           from './css-types.js'
 export *           from './general-hooks.js'
 export *           from './css-selectors.js'
 export *           from './css-hooks.js'
+export {
+    strippedVariantVarOptions,
+}                  from './css-internal-variables.js'
