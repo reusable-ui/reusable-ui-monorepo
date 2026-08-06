@@ -234,9 +234,31 @@ export const useMergedAsyncCallbacks = <TArgs extends unknown[] = []>(...callbac
  * <input onChange={handleInputChange} />
  * ```
  */
-export const useStableEventHandler = <TEvent, TExtra extends unknown[] = [], TReturn extends unknown = void>(eventHandler: EventHandler<TEvent, TExtra, TReturn>): EventHandler<TEvent, TExtra, TReturn> => {
+export function useStableEventHandler<TEvent, TExtra extends unknown[] = [], TReturn extends unknown = void>(eventHandler: EventHandler<TEvent, TExtra, TReturn>): EventHandler<TEvent, TExtra, TReturn>;
+/**
+ * Ensures a stable event handler function reference across renders.
+ * 
+ * - Prevents unnecessary re-creations of the event handler function.
+ * - Avoids stale closures while keeping the latest function reference.
+ * - Optimized for performance when passing event handlers as props.
+ * 
+ * @template TEvent The event object type.
+ * @template TExtra Additional argument types passed to the event handler function.
+ * @template TReturn The return type of the event handler function (must be `void` or `undefined`).
+ * @param eventHandler The event handler function to be stabilized or `null`/`undefined` to create a no-op stable function.
+ * @returns A stable event handler function.
+ * 
+ * @example
+ * ```ts
+ * // Ensures stable event handlers for performance:
+ * const handleInputChange = useStableEventHandler((event: Event) => console.log('Changed:', event.target.value));
+ * <input onChange={handleInputChange} />
+ * ```
+ */
+export function useStableEventHandler<TEvent, TExtra extends unknown[] = [], TReturn extends void | undefined = void>(eventHandler: EventHandler<TEvent, TExtra, TReturn> | null | undefined): EventHandler<TEvent, TExtra, TReturn>;
+export function useStableEventHandler<TEvent, TExtra extends unknown[] = [], TReturn extends unknown = void>(eventHandler: EventHandler<TEvent, TExtra, TReturn> | null | undefined): EventHandler<TEvent, TExtra, TReturn> {
     // Returns a stable event handler function:
-    return useStableCallback<[TEvent, ...TExtra], TReturn>(eventHandler);
+    return useStableCallback<[TEvent, ...TExtra], TReturn>(eventHandler as Exclude<typeof eventHandler, null | undefined>);
 };
 
 
