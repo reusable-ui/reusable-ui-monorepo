@@ -182,6 +182,7 @@ export const useMergedCallbacks = <TArgs extends unknown[] = []>(...callbacks: O
  * 
  * - Ensures stable references to optimize performance.
  * - Handles cases where some callbacks may be `null` or `undefined`.
+ * - Handles cases where some callbacks may returning `void` or `Promise<void>`.
  * - Executes all provided async callbacks in parallel.
  * - Useful for combining **multiple async event handlers** into a single stable function.
  * 
@@ -194,12 +195,13 @@ export const useMergedCallbacks = <TArgs extends unknown[] = []>(...callbacks: O
  * // Merging multiple async callbacks into a stable reference:
  * const fetchDataA = useStableCallback(async () => console.log('Fetching A...'));
  * const fetchDataB = useStableCallback(async () => console.log('Fetching B...'));
- * const mergedAsyncHandler = useMergedAsyncCallbacks(fetchDataA, fetchDataB);
+ * const fetchDataC = useStableCallback(      () => console.log('Fetching C...'));
+ * const mergedAsyncHandler = useMergedAsyncCallbacks(fetchDataA, fetchDataB, fetchDataC);
  * 
  * await mergedAsyncHandler();
  * ```
  */
-export const useMergedAsyncCallbacks = <TArgs extends unknown[] = []>(...callbacks: Optional<Callback<TArgs, Promise<void>>>[]): Callback<TArgs, Promise<void>> => {
+export const useMergedAsyncCallbacks = <TArgs extends unknown[] = []>(...callbacks: Optional<Callback<TArgs, void | Promise<void>>>[]): Callback<TArgs, Promise<void>> => {
     // Returns a stable merged async callback function:
     return useStableCallback<TArgs, Promise<void>>(async (...args) => {
         // Executes all async callbacks in parallel, resolving missing callbacks safely:

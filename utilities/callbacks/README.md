@@ -58,8 +58,9 @@ import { useMergedAsyncCallbacks } from '@reusable-ui/callbacks';
 
 const fetchDataA = useStableCallback(async () => console.log('Fetching A...'));
 const fetchDataB = useStableCallback(async () => console.log('Fetching B...'));
+const fetchDataC = useStableCallback(      () => console.log('Fetching C...'));
 
-const mergedAsyncHandler = useMergedAsyncCallbacks(fetchDataA, fetchDataB);
+const mergedAsyncHandler = useMergedAsyncCallbacks(fetchDataA, fetchDataB, fetchDataC);
 
 await mergedAsyncHandler();
 ```
