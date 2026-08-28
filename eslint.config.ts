@@ -162,6 +162,7 @@ export default defineConfig(
                 
                 // Built-in types without need for importing:
                 DOMHighResTimeStamp: 'readonly',
+                AddEventListenerOptions: 'readonly',
             },
         },
         settings: {
