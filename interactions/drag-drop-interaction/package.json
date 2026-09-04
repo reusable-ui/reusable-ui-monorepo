@@ -1,0 +1,63 @@
+{
+  "name": "@reusable-ui/drag-drop-interaction",
+  "version": "7.0.0",
+  "description": "Orchestrates the transaction logic for building rich drag-and-drop workflows. Enabling cross-component interactions with data exchange, live UX feedback, and reliable commit events.",
+  "keywords": [
+    "drag-drop",
+    "drag-and-drop",
+    "transaction",
+    "interaction",
+    "workflow",
+    "gesture",
+    "state-driven",
+    "reactive-state",
+    "live-state",
+    "ux-feedback",
+    "ui-framework",
+    "reusable-ui",
+    "react"
+  ],
+  "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
+  "homepage": "https://reusableui.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
+    "directory": "interactions/drag-drop-interaction"
+  },
+  "bugs": {
+    "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./index": "./dist/index.js",
+    "./index.js": "./dist/index.js"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rimraf dist playwright/.cache playwright-report test-results .next",
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "lint": "eslint .",
+    "build": "npm run clean && npm run tsc && npm run lint",
+    "ncu": "ncu --peer",
+    "ncu:upgrade": "ncu --peer --upgrade",
+    "test": "npx playwright test"
+  },
+  "dependencies": {
+    "@reusable-ui/callbacks": "^7.0.0",
+    "@reusable-ui/events": "^7.0.0",
+    "@reusable-ui/lifecycles": "^7.0.0"
+  },
+  "peerDependencies": {
+    "@reusable-ui/disabled-state": "^7.0.0",
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0"
+  }
+}

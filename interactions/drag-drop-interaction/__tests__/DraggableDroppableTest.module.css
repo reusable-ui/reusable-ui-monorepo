@@ -1,0 +1,19 @@
+.container {
+    display: grid;
+    grid-auto-flow: column;
+    border: solid 1px black;
+    padding: 1rem;
+    gap: 100px;
+    box-sizing: border-box;
+    width: fit-content;
+    height: fit-content;
+    -webkit-user-select: none;
+    user-select: none;
+    
+    &>* {
+        border: solid 1px black;
+        width: 100px;
+        height: 100px;
+        box-sizing: border-box;
+    }
+}
