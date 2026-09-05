@@ -1,4 +1,4 @@
-'use client' // The exported hooks are client side only.
+'use client' // The exported utilities are client side only.
 
 // Types:
 import {
