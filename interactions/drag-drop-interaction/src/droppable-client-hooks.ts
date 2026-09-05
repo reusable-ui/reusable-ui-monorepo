@@ -16,11 +16,6 @@ import {
 
 // Reusable-ui states:
 import {
-    // Types:
-    type DisabledStateProps,
-    
-    
-    
     // Hooks:
     useResolvedDisabled,
 }                           from '@reusable-ui/disabled-state'      // Adds enabled/disabled functionality to UI components, with transition animations and semantic styling hooks.
@@ -147,7 +142,7 @@ import {
  * };
  * ```
  */
-export const useDroppableState = <TElement extends Element = HTMLElement>(props: DroppableStateProps<TElement> & Pick<DisabledStateProps, 'disabled' | 'cascadeDisabled'>): DroppableState => {
+export const useDroppableState = <TElement extends Element = HTMLElement>(props: DroppableStateProps<TElement> & Parameters<typeof useResolvedDisabled>[0]): DroppableState => {
     // Resolve whether the component is disabled:
     const isDisabled = useResolvedDisabled(props);
     

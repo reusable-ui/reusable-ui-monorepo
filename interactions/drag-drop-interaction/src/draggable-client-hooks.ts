@@ -21,11 +21,6 @@ import {
 
 // Reusable-ui states:
 import {
-    // Types:
-    type DisabledStateProps,
-    
-    
-    
     // Hooks:
     useResolvedDisabled,
 }                           from '@reusable-ui/disabled-state'      // Adds enabled/disabled functionality to UI components, with transition animations and semantic styling hooks.
@@ -192,7 +187,7 @@ import {
  * };
  * ```
  */
-export const useDraggableState = <TElement extends Element = HTMLElement>(props: DraggableStateProps<TElement> & Pick<DisabledStateProps, 'disabled' | 'cascadeDisabled'>): DraggableState => {
+export const useDraggableState = <TElement extends Element = HTMLElement>(props: DraggableStateProps<TElement> & Parameters<typeof useResolvedDisabled>[0]): DraggableState => {
     // Resolve whether the component is disabled:
     const isDisabled = useResolvedDisabled(props);
     
