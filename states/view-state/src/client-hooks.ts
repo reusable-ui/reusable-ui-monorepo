@@ -58,6 +58,14 @@ import {
     useInteractionState,
     useInteractionController,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
+import {
+    // Hooks:
+    type useResolvedDisabled,
+}                           from '@reusable-ui/disabled-state'      // Adds enabled/disabled functionality to UI components, with transition animations and semantic styling hooks.
+import {
+    // Hooks:
+    type useResolvedReadOnly,
+}                           from '@reusable-ui/read-only-state'     // Adds editable/read-only functionality to UI components, with transition animations and semantic styling hooks.
 
 // Hooks:
 import {
@@ -85,11 +93,11 @@ import {
  * 
  * @template TChangeEvent The type of the event triggering the change request (e.g. tab click, swipe gesture).
  * 
- * @param props The component props that may include `onViewIndexChange` callback but must exclude `defaultViewIndex`.
+ * @param props The component props that may include `onViewIndexChange` callback, disabled/read-only properties, but must exclude `defaultViewIndex`.
  * @param options Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for view index change requests.
  */
-export const useDispatchViewIndexChange = <TChangeEvent = unknown>(props: Pick<ViewStateProps<TChangeEvent>, 'onViewIndexChange'> & { defaultViewIndex?: never }, options?: ViewIndexChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<number, TChangeEvent> => {
+export const useDispatchViewIndexChange = <TChangeEvent = unknown>(props: Pick<ViewStateProps<TChangeEvent>, 'onViewIndexChange'> & Parameters<typeof useResolvedDisabled>[0] & Parameters<typeof useResolvedReadOnly>[0] & { defaultViewIndex?: never }, options?: ViewIndexChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<number, TChangeEvent> => {
     return useDispatchInteractionStateChange<number, TChangeEvent>(
         // Props:
         { onStateChange: props.onViewIndexChange },
@@ -127,7 +135,7 @@ const viewStateDefinition : ViewStateDefinition = {
  * @template TElement The type of the target DOM element.
  * @template TChangeEvent The type of the event triggering the change request (e.g. tab click, swipe gesture).
  * 
- * @param props The component props that may include a controlled `viewIndex` value, optional `defaultViewIndex` value, and `onViewIndexChange` callback.
+ * @param props The component props that may include a controlled `viewIndex` value, optional `defaultViewIndex` value, disabled/read-only properties, and `onViewIndexChange` callback.
  * @param options An optional configuration for customizing view-switching behavior and its animation lifecycle.
  * @returns The resolved view index, current transition phase, associated CSS classname, change dispatcher, and animation event handlers.
  * 
@@ -203,7 +211,7 @@ const viewStateDefinition : ViewStateDefinition = {
  * };
  * ```
  */
-export const useViewState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent>, options?: ViewStateOptions): ViewState<TElement, TChangeEvent> => {
+export const useViewState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ViewStateProps<TChangeEvent> & Parameters<typeof useResolvedDisabled>[0] & Parameters<typeof useResolvedReadOnly>[0], options?: ViewStateOptions): ViewState<TElement, TChangeEvent> => {
     // Extract options and assign defaults:
     const {
         defaultViewIndex : fallbackState,

@@ -58,6 +58,14 @@ import {
     useInteractionState,
     useInteractionController,
 }                           from '@reusable-ui/interaction-state'   // Lifecycle-aware interaction state for React, providing reusable hooks for collapse, active, view, and selected.
+import {
+    // Hooks:
+    type useResolvedDisabled,
+}                           from '@reusable-ui/disabled-state'      // Adds enabled/disabled functionality to UI components, with transition animations and semantic styling hooks.
+import {
+    // Hooks:
+    type useResolvedReadOnly,
+}                           from '@reusable-ui/read-only-state'     // Adds editable/read-only functionality to UI components, with transition animations and semantic styling hooks.
 
 
 
@@ -147,11 +155,11 @@ export const useResolvedActive = (props: Pick<ActiveStateProps<any>, 'active' | 
  * 
  * @template TChangeEvent The type of the event triggering the change request (e.g. button click, keyboard event).
  * 
- * @param props The component props that may include `onActiveChange` callback but must exclude `defaultActive`.
+ * @param props The component props that may include `onActiveChange` callback, disabled/read-only properties, but must exclude `defaultActive`.
  * @param options Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for activation change requests.
  */
-export const useDispatchActiveChange = <TChangeEvent = unknown>(props: Pick<ActiveStateProps<TChangeEvent>, 'onActiveChange'> & { defaultActive?: never }, options?: ActiveChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<boolean, TChangeEvent> => {
+export const useDispatchActiveChange = <TChangeEvent = unknown>(props: Pick<ActiveStateProps<TChangeEvent>, 'onActiveChange'> & Parameters<typeof useResolvedDisabled>[0] & Parameters<typeof useResolvedReadOnly>[0] & { defaultActive?: never }, options?: ActiveChangeDispatcherOptions<TChangeEvent>) : DispatchValueChange<boolean, TChangeEvent> => {
     return useDispatchInteractionStateChange<boolean, TChangeEvent>(
         // Props:
         { onStateChange: props.onActiveChange },
@@ -196,7 +204,7 @@ const activeStateDefinition : ActiveStateDefinition = {
  * @template TElement The type of the target DOM element.
  * @template TChangeEvent The type of the event triggering the change request (e.g. button click, keyboard event).
  * 
- * @param props The component props that may include a controlled `active` value, optional `defaultActive` value, contextual `cascadeActive` value, and `onActiveChange` callback.
+ * @param props The component props that may include a controlled `active` value, optional `defaultActive` value, contextual `cascadeActive` value, disabled/read-only properties, and `onActiveChange` callback.
  * @param options An optional configuration for customizing activate/deactivate behavior and its animation lifecycle.
  * @returns The resolved active/inactive state, current transition phase, associated CSS classname, change dispatcher, and animation event handlers.
  * 
@@ -251,7 +259,7 @@ const activeStateDefinition : ActiveStateDefinition = {
  * };
  * ```
  */
-export const useActiveState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent>, options?: ActiveStateOptions): ActiveState<TElement, TChangeEvent> => {
+export const useActiveState = <TElement extends Element = HTMLElement, TChangeEvent = unknown>(props: ActiveStateProps<TChangeEvent> & Parameters<typeof useResolvedDisabled>[0] & Parameters<typeof useResolvedReadOnly>[0], options?: ActiveStateOptions): ActiveState<TElement, TChangeEvent> => {
     // Extract options:
     const {
         defaultActive : fallbackState,

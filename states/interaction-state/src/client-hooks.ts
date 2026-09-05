@@ -68,18 +68,18 @@ import {
  * @template TState The concrete type of the state value (must not be declarative).
  * @template TChangeEvent The type of the event triggering the change request (e.g. mouse click, keyboard event).
  * 
- * @param props The component props that may include `onStateChange` callback but must exclude `defaultState`.
+ * @param props The component props that may include `onStateChange` callback, disabled/read-only properties, but must exclude `defaultState`.
  * @param options Optional configuration, such as `onInternalChange` for uncontrolled scenarios.
  * @returns A dispatcher function for state change requests.
  */
-export const useDispatchInteractionStateChange = <TState extends {} | null, TChangeEvent = unknown>(props: InteractionStateProps<{} | null, TState, TChangeEvent>, options?: InteractionStateChangeDispatcherOptions<TState, TChangeEvent>) : DispatchValueChange<TState, TChangeEvent> => {
+export const useDispatchInteractionStateChange = <TState extends {} | null, TChangeEvent = unknown>(props: InteractionStateProps<{} | null, TState, TChangeEvent> & Parameters<typeof useResolvedDisabled>[0] & Parameters<typeof useResolvedReadOnly>[0], options?: InteractionStateChangeDispatcherOptions<TState, TChangeEvent>) : DispatchValueChange<TState, TChangeEvent> => {
     // States and flags:
     
     // Resolve whether the component is disabled:
-    const isDisabled   = useResolvedDisabled(props as Parameters<typeof useResolvedDisabled>[0]);
+    const isDisabled   = useResolvedDisabled(props);
     
     // Resolve whether the component is readonly:
-    const isReadonly   = useResolvedReadOnly(props as Parameters<typeof useResolvedReadOnly>[0]);
+    const isReadonly   = useResolvedReadOnly(props);
     
     // Resolve whether the component is in a restricted state:
     const isRestricted = isDisabled || isReadonly;
@@ -146,7 +146,7 @@ export const useDispatchInteractionStateChange = <TState extends {} | null, TCha
  * Supports user interaction handling via `dispatchStateChange()`.  
  * Ignores user interaction when the component is disabled or read-only.
  * 
- * @param props The behavior-specific props, including controlled/uncontrolled state and change request callbacks.
+ * @param props The behavior-specific props, including controlled/uncontrolled state, disabled/read-only properties, and change request callbacks.
  * @param options Optional per-component customization for animation lifecycle (pattern, bubbling, etc.) and default state behavior.
  * @param definition The interaction-specific definition that declares how effective state, phases, and classnames are resolved.
  * 
@@ -176,7 +176,7 @@ export const useInteractionState = <
     
     TChangeEvent = unknown
 >(
-    props      : InteractionStateProps<TDeclarativeState, TState, TChangeEvent>,
+    props      : InteractionStateProps<TDeclarativeState, TState, TChangeEvent> & Parameters<typeof useResolvedDisabled>[0] & Parameters<typeof useResolvedReadOnly>[0],
     options    : InteractionStateOptions<TState> | undefined,
     definition : InteractionStateDefinition<TDeclarativeState, TState, TPhase, TClassname, TBehaviorProps, TBehaviorOptions, TBehaviorDefinition>
 ): InteractionState<TState, TPhase, TClassname, TElement, TChangeEvent> => {
