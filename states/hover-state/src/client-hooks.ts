@@ -74,11 +74,11 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * 
  * @template TElement The type of the target DOM element.
  * 
- * @param props The component props that may include a controlled `hovered` value and derived `computedHover` value.
+ * @param props The component props that may include a controlled `hovered` value, derived `computedHover` value, and disabled properties.
  * @param options An optional configuration for customizing hover/unhover behavior.
  * @returns The resolved hover/unhover state and event handlers for mouseenter/mouseleave events.
  */
-export const useResolvedHovered = <TElement extends Element = HTMLElement>(props: Pick<HoverStateProps, 'hovered' | 'computedHover'>, options?: Pick<HoverStateOptions, 'defaultHovered'>) : Pick<HoverState<TElement>, 'hovered' | 'ref' | 'handleMouseEnter' | 'handleMouseLeave'> => {
+export const useResolvedHovered = <TElement extends Element = HTMLElement>(props: Pick<HoverStateProps, 'hovered' | 'computedHover'> & Parameters<typeof useResolvedDisabled>[0], options?: Pick<HoverStateOptions, 'defaultHovered'>) : Pick<HoverState<TElement>, 'hovered' | 'ref' | 'handleMouseEnter' | 'handleMouseLeave'> => {
     // Extract options:
     const {
         defaultHovered : defaultState,
@@ -97,7 +97,7 @@ export const useResolvedHovered = <TElement extends Element = HTMLElement>(props
     // States and flags:
     
     // Resolve whether the component is in a restricted state (interaction blocked):
-    const isRestricted         = useResolvedDisabled(props as Parameters<typeof useResolvedDisabled>[0]);
+    const isRestricted         = useResolvedDisabled(props);
     
     // Determine control mode:
     const isExplicitValue      = (state !== 'auto');
@@ -165,7 +165,7 @@ const hoverStateDefinition : HoverStateDefinition = {
  * 
  * @template TElement The type of the target DOM element.
  * 
- * @param props The component props that may include a controlled `hovered` value, derived `computedHover` value, and `onHoverUpdate` callback.
+ * @param props The component props that may include a controlled `hovered` value, derived `computedHover` value, `onHoverUpdate` callback, and disabled properties.
  * @param options An optional configuration for customizing hover/unhover behavior and its animation lifecycle.
  * @returns The resolved hover/unhover state, current transition phase, associated CSS classname, and animation event handlers.
  * 
@@ -240,7 +240,7 @@ const hoverStateDefinition : HoverStateDefinition = {
  * };
  * ```
  */
-export const useHoverState = <TElement extends Element = HTMLElement>(props: HoverStateProps, options?: HoverStateOptions): HoverState<TElement> => {
+export const useHoverState = <TElement extends Element = HTMLElement>(props: HoverStateProps & Parameters<typeof useResolvedDisabled>[0], options?: HoverStateOptions): HoverState<TElement> => {
     // Extract props:
     const {
         onHoverUpdate : onStateUpdate,
