@@ -74,11 +74,11 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * 
  * @template TElement The type of the target DOM element.
  * 
- * @param props The component props that may include a controlled `pressed` value and derived `computedPress` value.
+ * @param props The component props that may include a controlled `pressed` value, derived `computedPress` value, and disabled properties.
  * @param options An optional configuration for customizing press/release behavior.
  * @returns The resolved press/release state and event handlers for pointer and keyboard events.
  */
-export const useResolvedPressed = <TElement extends Element = HTMLElement>(props: Pick<PressStateProps, 'pressed' | 'computedPress'>, options?: Pick<PressStateOptions, 'defaultPressed' | 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'>) : Pick<PressState<TElement>, 'pressed' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'> => {
+export const useResolvedPressed = <TElement extends Element = HTMLElement>(props: Pick<PressStateProps, 'pressed' | 'computedPress'> & Parameters<typeof useResolvedDisabled>[0], options?: Pick<PressStateOptions, 'defaultPressed' | 'pressKeys' | 'clickKeys' | 'triggerClickOnKeyUp' | 'pressButtons' | 'pressPressure' | 'pressFingers' | 'noGlobalPointerRelease' | 'noGlobalKeyRelease'>) : Pick<PressState<TElement>, 'pressed' | 'handlePointerDown' | 'handlePointerUp' | 'handlePointerCancel' | 'handleKeyDown' | 'handleKeyUp'> => {
     // Extract options:
     const {
         defaultPressed : defaultState,
@@ -97,7 +97,7 @@ export const useResolvedPressed = <TElement extends Element = HTMLElement>(props
     // States and flags:
     
     // Resolve whether the component is in a restricted state (interaction blocked):
-    const isRestricted         = useResolvedDisabled(props as Parameters<typeof useResolvedDisabled>[0]);
+    const isRestricted         = useResolvedDisabled(props);
     
     // Determine control mode:
     const isExplicitValue      = (state !== 'auto');
@@ -169,7 +169,7 @@ const pressStateDefinition : PressStateDefinition = {
  * 
  * @template TElement The type of the target DOM element.
  * 
- * @param props The component props that may include a controlled `pressed` value, derived `computedPress` value, and `onPressUpdate` callback.
+ * @param props The component props that may include a controlled `pressed` value, derived `computedPress` value, `onPressUpdate` callback, and disabled properties.
  * @param options An optional configuration for customizing press/release behavior and its animation lifecycle.
  * @returns The resolved press/release state, current transition phase, associated CSS classname, and animation event handlers.
  * 
@@ -246,7 +246,7 @@ const pressStateDefinition : PressStateDefinition = {
  * };
  * ```
  */
-export const usePressState = <TElement extends Element = HTMLElement>(props: PressStateProps, options?: PressStateOptions): PressState<TElement> => {
+export const usePressState = <TElement extends Element = HTMLElement>(props: PressStateProps & Parameters<typeof useResolvedDisabled>[0], options?: PressStateOptions): PressState<TElement> => {
     // Extract props:
     const {
         onPressUpdate : onStateUpdate,
