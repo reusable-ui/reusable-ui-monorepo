@@ -101,10 +101,12 @@ const observableStateDefinition : ObservableStateDefinition<boolean | null, 'aut
  *   - A controlled `validity` value (`true` | `false` | `null` | `'auto'`).
  *   - A derived `computedValidity` value used when local and parent validity are `'auto'`.
  *   - `enableValidation` and `cascadeValidation` flags to control validation behavior.
+ *   - Disabled properties.
+ *   - Read-only properties.
  * @param options An optional configuration for customizing validity behavior.
  * @returns The resolved validity state.
  */
-export const useResolvedValidity = (props: Pick<ValidityStateProps, 'enableValidation' | 'validity' | 'cascadeValidation' | 'computedValidity'>, options?: Pick<ValidityStateOptions, 'defaultValidity' | 'fallbackValidity'>) : boolean | null => {
+export const useResolvedValidity = (props: Pick<ValidityStateProps, 'enableValidation' | 'validity' | 'cascadeValidation' | 'computedValidity'> & Parameters<typeof useResolvedDisabled>[0] & Parameters<typeof useResolvedReadOnly>[0], options?: Pick<ValidityStateOptions, 'defaultValidity' | 'fallbackValidity'>) : boolean | null => {
     // Extract options and assign defaults:
     const {
         defaultValidity  : defaultState,
@@ -150,10 +152,10 @@ export const useResolvedValidity = (props: Pick<ValidityStateProps, 'enableValid
     // States and flags:
     
     // Resolve whether the component is disabled:
-    const isDisabled   = useResolvedDisabled(props as Parameters<typeof useResolvedDisabled>[0]);
+    const isDisabled   = useResolvedDisabled(props);
     
     // Resolve whether the component is readonly:
-    const isReadonly   = useResolvedReadOnly(props as Parameters<typeof useResolvedReadOnly>[0]);
+    const isReadonly   = useResolvedReadOnly(props);
     
     // Resolve enablement cumulatively (AND logic):
     // - Both ancestor and local must allow validation.
@@ -237,6 +239,8 @@ const validityStateDefinition : ValidityStateDefinition = {
  *   - A derived `computedValidity` value used when local and parent validity are `'auto'`.
  *   - `enableValidation` and `cascadeValidation` flags to control validation behavior.
  *   - An `onValidityUpdate` callback for observing validity changes.
+ *   - Disabled properties.
+ *   - Read-only properties.
  * @param options An optional configuration for customizing validity behavior and its animation lifecycle.
  * @returns The resolved validity state, current transition phase, associated CSS classname, and animation event handlers.
  * 
@@ -308,7 +312,7 @@ const validityStateDefinition : ValidityStateDefinition = {
  * };
  * ```
  */
-export const useValidityState = <TElement extends Element = HTMLElement>(props: ValidityStateProps, options?: ValidityStateOptions): ValidityState<TElement> => {
+export const useValidityState = <TElement extends Element = HTMLElement>(props: ValidityStateProps & Parameters<typeof useResolvedDisabled>[0] & Parameters<typeof useResolvedReadOnly>[0], options?: ValidityStateOptions): ValidityState<TElement> => {
     // Extract props:
     const {
         onValidityUpdate : onStateUpdate,
