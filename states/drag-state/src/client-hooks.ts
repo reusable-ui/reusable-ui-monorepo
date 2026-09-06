@@ -89,11 +89,11 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * - `'auto'` is treated as a declarative diagnostic mode.
  * - Ideal for components that **consume** the resolved `dragged` state.
  * 
- * @param props The component props that may include a controlled `dragged` value and derived `computedDrag` value.
+ * @param props The component props that may include a controlled `dragged` value, derived `computedDrag` value, and disabled properties.
  * @param options An optional configuration for customizing drag/drop behavior.
  * @returns The resolved drag/drop state.
  */
-export const useResolvedDragged = (props: Pick<DragStateProps, 'dragged' | 'computedDrag'>, options?: Pick<DragStateOptions, 'defaultDragged' | 'fallbackDragged'>) : boolean => {
+export const useResolvedDragged = (props: Pick<DragStateProps, 'dragged' | 'computedDrag'> & Parameters<typeof useResolvedDisabled>[0], options?: Pick<DragStateOptions, 'defaultDragged' | 'fallbackDragged'>) : boolean => {
     // Extract options:
     const {
         defaultDragged  : defaultState,
@@ -113,7 +113,7 @@ export const useResolvedDragged = (props: Pick<DragStateProps, 'dragged' | 'comp
     // States and flags:
     
     // Resolve whether the component is in a restricted state (interaction blocked):
-    const isRestricted         = useResolvedDisabled(props as Parameters<typeof useResolvedDisabled>[0]);
+    const isRestricted         = useResolvedDisabled(props);
     
     
     
@@ -153,7 +153,7 @@ const dragStateDefinition : DragStateDefinition = {
  * 
  * @template TElement The type of the target DOM element.
  * 
- * @param props The component props that may include a controlled `dragged` value, derived `computedDrag` value, and `onDragUpdate` callback.
+ * @param props The component props that may include a controlled `dragged` value, derived `computedDrag` value, `onDragUpdate` callback, and disabled properties.
  * @param options An optional configuration for customizing drag/drop behavior and its animation lifecycle.
  * @returns The resolved drag/drop state, current transition phase, associated CSS classname, and animation event handlers.
  * 
@@ -236,7 +236,7 @@ const dragStateDefinition : DragStateDefinition = {
  * };
  * ```
  */
-export const useDragState = <TElement extends Element = HTMLElement>(props: DragStateProps, options?: DragStateOptions): DragState<TElement> => {
+export const useDragState = <TElement extends Element = HTMLElement>(props: DragStateProps & Parameters<typeof useResolvedDisabled>[0], options?: DragStateOptions): DragState<TElement> => {
     // Extract props:
     const {
         onDragUpdate : onStateUpdate,
