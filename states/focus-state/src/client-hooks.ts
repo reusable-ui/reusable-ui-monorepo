@@ -74,11 +74,11 @@ const observableStateDefinition : ObservableStateDefinition<boolean, 'auto'> = {
  * 
  * @template TElement The type of the target DOM element.
  * 
- * @param props The component props that may include a controlled `focused` value and derived `computedFocus` value.
+ * @param props The component props that may include a controlled `focused` value, derived `computedFocus` value, and disabled properties.
  * @param options An optional configuration for customizing focus/blur behavior.
  * @returns The resolved focus/blur state and event handlers for focus/blur events.
  */
-export const useResolvedFocused = <TElement extends Element = HTMLElement>(props: Pick<FocusStateProps, 'focused' | 'computedFocus'>, options?: Pick<FocusStateOptions, 'defaultFocused'>) : Pick<FocusState<TElement>, 'focused' | 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'> => {
+export const useResolvedFocused = <TElement extends Element = HTMLElement>(props: Pick<FocusStateProps, 'focused' | 'computedFocus'> & Parameters<typeof useResolvedDisabled>[0], options?: Pick<FocusStateOptions, 'defaultFocused'>) : Pick<FocusState<TElement>, 'focused' | 'ref' | 'handleFocus' | 'handleBlur' | 'handleKeyDown'> => {
     // Extract options:
     const {
         defaultFocused : defaultState,
@@ -97,7 +97,7 @@ export const useResolvedFocused = <TElement extends Element = HTMLElement>(props
     // States and flags:
     
     // Resolve whether the component is in a restricted state (interaction blocked):
-    const isRestricted         = useResolvedDisabled(props as Parameters<typeof useResolvedDisabled>[0]);
+    const isRestricted         = useResolvedDisabled(props);
     
     // Determine control mode:
     const isExplicitValue      = (state !== 'auto');
@@ -168,7 +168,7 @@ const focusStateDefinition : FocusStateDefinition = {
  * 
  * @template TElement The type of the target DOM element.
  * 
- * @param props The component props that may include a controlled `focused` value, derived `computedFocus` value, and `onFocusUpdate` callback.
+ * @param props The component props that may include a controlled `focused` value, derived `computedFocus` value, `onFocusUpdate` callback, and disabled properties.
  * @param options An optional configuration for customizing focus/blur behavior and its animation lifecycle.
  * @returns The resolved focus/blur state, current transition phase, associated CSS classname, and animation event handlers.
  * 
@@ -245,7 +245,7 @@ const focusStateDefinition : FocusStateDefinition = {
  * };
  * ```
  */
-export const useFocusState = <TElement extends Element = HTMLElement>(props: FocusStateProps, options?: FocusStateOptions): FocusState<TElement> => {
+export const useFocusState = <TElement extends Element = HTMLElement>(props: FocusStateProps & Parameters<typeof useResolvedDisabled>[0], options?: FocusStateOptions): FocusState<TElement> => {
     // Extract props:
     const {
         onFocusUpdate : onStateUpdate,
