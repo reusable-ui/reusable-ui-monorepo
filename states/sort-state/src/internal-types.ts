@@ -18,7 +18,7 @@ import {
 export interface SortStateDefinition
     extends
         EphemeralStateDefinition<SortActivity, SortClassname,
-            SortStateProps<Element, unknown>,
+            SortStateProps<unknown>,
             SortStateOptions,
             SortStateDefinition
         >

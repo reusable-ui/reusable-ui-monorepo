@@ -44,7 +44,7 @@ and each item animates into place — clearly conveying the change.
 #### 💡 Usage Example
 
 ```tsx
-import React, { FC, Key, useRef, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { flushSync } from 'react-dom';
 import {
     useSortState,
@@ -62,15 +62,12 @@ interface Product {
 
 export interface SortableListProps
     extends
-        SortStateProps<HTMLDivElement, Product[]>
+        SortStateProps<Product[]>
 {
 }
 
 // A list with sortable items and animated transitions:
 export const SortableList: FC<SortableListProps> = (props) => {
-    // Internal map of item refs keyed by React `key` (stable id):
-    const internalSortItemRefs = useRef<Map<Key, HTMLElement>>(new Map<Key, HTMLElement>());
-    
     // Committed data currently rendered in the DOM:
     const [committedItems, setCommittedItems] = useState<Product[]>(() => {
         // Initialize with your data:
@@ -82,7 +79,6 @@ export const SortableList: FC<SortableListProps> = (props) => {
     
     // Props can override these defaults, allowing parent and derived components to control sorting:
     const {
-        sortItemRefs          = internalSortItemRefs,
         stagedSortData        = internalStagedSortData,
         onSortCommit          = (stagedSortData) => {
             // Use `flushSync` so React fully renders the committed state immediately within this callback:
@@ -103,14 +99,14 @@ export const SortableList: FC<SortableListProps> = (props) => {
     const {
         sorting,       // Activity flag
         sortClassname, // CSS class for animation triggers
+        sortItemRefs,  // Refs for sortable items
         sortOffsets,   // Per-item movement
         sortStyles,    // Inline CSS variables
         
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useSortState({
-        sortItemRefs,
+    } = useSortState<HTMLDivElement, HTMLDivElement, Product[]>({
         stagedSortData,
         onSortCommit,
         onStagedSortDataClear,
@@ -318,7 +314,7 @@ Instead, use `animationFeatureVars.animation` from `usingAnimationFeature()` to 
 Originally, **sort-state** exposed an imperative sorting command pattern:
 
 ```ts
-const sortItemRefs      = useRef<Map<Key, HTMLElement>>(new Map<Key, HTMLElement>());
+const sortItemRefs      = useRef<Map<Key, HTMLDivElement>>(new Map<Key, HTMLDivElement>());
 const [items, setItems] = useState<ItemMetadata[]>(initialItems);
 
 const {
@@ -349,7 +345,6 @@ To reuse it in a derived component (e.g. `<SpecificGallery>`), you'd either need
 To solve this, the API was redesigned around a **declarative workflow**:
 
 ```ts
-const internalSortItemRefs = useRef<Map<Key, HTMLElement>>(new Map<Key, HTMLElement>());
 const [items, setItems]    = useState<ItemMetadata[]>(initialItems);
 
 // Local staged state for pending sort data:
@@ -357,7 +352,6 @@ const [internalStagedSortData, setInternalStagedSortData] = useState<ItemMetadat
 
 // Props can override these defaults, allowing derived components to control sorting:
 const {
-    sortItemRefs          = internalSortItemRefs,
     stagedSortData        = internalStagedSortData,
     onSortCommit          = (stagedSortData) => {
         // Commit new sorted order:
@@ -372,11 +366,11 @@ const {
 const {
     sorting,       // Activity flag
     sortClassname, // CSS class for animation triggers
+    sortItemRefs,  // Refs for sortable items
     sortOffsets,   // Per-item movement
     sortStyles,    // Inline CSS variables
     ...animationHandlers,
-} = useSortState({
-    sortItemRefs,
+} = useSortState<HTMLDivElement, HTMLDivElement, ItemMetadata[]>({
     stagedSortData,
     onSortCommit,
     onStagedSortDataClear,
@@ -392,7 +386,7 @@ return items.map(...);
 
 ### Why This Matters
 
-Because `sortItemRefs`, `stagedSortData`, `onSortCommit`, and `onStagedSortDataClear` are exposed as **optional props with internal defaults**, derived components can either:
+Because `stagedSortData`, `onSortCommit`, and `onStagedSortDataClear` are exposed as **optional props with internal defaults**, derived components can either:
 - Use the built-in defaults for internal sorting, or  
 - Override them to fit a specific use case.  
 

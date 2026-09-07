@@ -1,4 +1,4 @@
-import React, { AnimationEvent as ReactAnimationEvent, Key, useRef, useEffect, useState } from 'react'
+import React, { AnimationEvent as ReactAnimationEvent, useRef, useEffect, useState } from 'react'
 import { flushSync } from 'react-dom'
 import { type SortStateProps, useSortState } from '../dist/index.js'
 import { useMergedEventHandlers } from '@reusable-ui/callbacks'
@@ -12,14 +12,12 @@ import { initialProducts } from './dummy-products.js'
 
 export interface SortStateTestProps
     extends
-        SortStateProps<HTMLDivElement, Product[]>,
+        SortStateProps<Product[]>,
         Pick<React.DOMAttributes<HTMLDivElement>, 'onAnimationStart' | 'onAnimationEnd'>
 {
     sortBy ?: 'price' | 'name'
 }
 export const SortStateTest = (props: SortStateTestProps) => {
-    const internalSortItemRefs = useRef<Map<Key, HTMLElement>>(new Map<Key, HTMLElement>());
-    
     const [committedItems, setCommittedItems] = useState<Product[]>(() => Array.from(initialProducts.values()));
     
     const [internalStagedSortData, setInternalStagedSortData] = useState<Product[] | undefined>(undefined);
@@ -27,7 +25,6 @@ export const SortStateTest = (props: SortStateTestProps) => {
     const {
         sortBy = null,
         
-        sortItemRefs          = internalSortItemRefs,
         stagedSortData        = internalStagedSortData,
         onSortCommit          = (stagedSortData) => {
             flushSync(() => {
@@ -46,13 +43,13 @@ export const SortStateTest = (props: SortStateTestProps) => {
     
     const {
         sortClassname,
+        sortItemRefs,
         sortStyles,
         
         handleAnimationStart,
         handleAnimationEnd,
         handleAnimationCancel,
-    } = useSortState({
-        sortItemRefs,
+    } = useSortState<HTMLDivElement, HTMLDivElement, Product[]>({
         stagedSortData,
         onSortCommit,
         onStagedSortDataClear,

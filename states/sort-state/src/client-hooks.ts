@@ -9,6 +9,7 @@ import {
     
     
     // Hooks:
+    useRef,
     useState,
     useLayoutEffect,
     useMemo,
@@ -37,6 +38,7 @@ import {
 import {
     resolveSortClassname,
     snapshotElementPositions,
+    lazyInitializeSortItemRefs,
 }                           from './internal-utilities.js'
 
 // CSS Variables:
@@ -95,7 +97,7 @@ const sortStateDefinition : SortStateDefinition = {
  * 
  * @example
  * ```tsx
- * import React, { FC, Key, useRef, useState } from 'react';
+ * import React, { FC, useState } from 'react';
  * import { flushSync } from 'react-dom';
  * import {
  *     useSortState,
@@ -113,15 +115,12 @@ const sortStateDefinition : SortStateDefinition = {
  * 
  * export interface SortableListProps
  *     extends
- *         SortStateProps<HTMLDivElement, Product[]>
+ *         SortStateProps<Product[]>
  * {
  * }
  * 
  * // A list with sortable items and animated transitions:
  * export const SortableList: FC<SortableListProps> = (props) => {
- *     // Internal map of item refs keyed by React `key` (stable id):
- *     const internalSortItemRefs = useRef<Map<Key, HTMLElement>>(new Map<Key, HTMLElement>());
- *     
  *     // Committed data currently rendered in the DOM:
  *     const [committedItems, setCommittedItems] = useState<Product[]>(() => {
  *         // Initialize with your data:
@@ -133,7 +132,6 @@ const sortStateDefinition : SortStateDefinition = {
  *     
  *     // Props can override these defaults, allowing parent and derived components to control sorting:
  *     const {
- *         sortItemRefs          = internalSortItemRefs,
  *         stagedSortData        = internalStagedSortData,
  *         onSortCommit          = (stagedSortData) => {
  *             // Use `flushSync` so React fully renders the committed state immediately within this callback:
@@ -154,14 +152,14 @@ const sortStateDefinition : SortStateDefinition = {
  *     const {
  *         sorting,       // Activity flag
  *         sortClassname, // CSS class for animation triggers
+ *         sortItemRefs,  // Refs for sortable items
  *         sortOffsets,   // Per-item movement
  *         sortStyles,    // Inline CSS variables
  *         
  *         handleAnimationStart,
  *         handleAnimationEnd,
  *         handleAnimationCancel,
- *     } = useSortState({
- *         sortItemRefs,
+ *     } = useSortState<HTMLDivElement, HTMLDivElement, Product[]>({
  *         stagedSortData,
  *         onSortCommit,
  *         onStagedSortDataClear,
@@ -218,10 +216,9 @@ const sortStateDefinition : SortStateDefinition = {
  * };
  * ```
  */
-export const useSortState = <TElement extends Element = HTMLElement, TItemElement extends Element = HTMLElement, TSortData = Array<unknown>>(props: SortStateProps<TItemElement, TSortData>, options?: SortStateOptions): SortState<TElement> => {
+export const useSortState = <TElement extends Element = HTMLElement, TItemElement extends Element = HTMLElement, TSortData = Array<unknown>>(props: SortStateProps<TSortData>, options?: SortStateOptions): SortState<TElement, TItemElement> => {
     // Extract props:
     const {
-        sortItemRefs,
         stagedSortData,
         onStagedSortDataClear,
         onSortCommit,
@@ -231,6 +228,11 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
     
     
     // States and flags:
+    
+    // Raw ref (starts undefined):
+    const rawSortItemRefs = useRef<Map<Key, TItemElement> | undefined>(undefined);
+    // Lazily initialized map:
+    const sortItemRefs    = lazyInitializeSortItemRefs<TItemElement>(rawSortItemRefs);
     
     // Per-item offsets for creating the unsorted illusion:
     // - Useful for the initial animation movement from the original unsorted positions to the new sorted positions.
@@ -245,7 +247,7 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
         SortActivity,
         SortClassname,
         
-        SortStateProps<Element, unknown>,
+        SortStateProps<unknown>,
         SortStateOptions,
         SortStateDefinition,
         
@@ -287,8 +289,8 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
     //   creating the illusion that elements never left their original positions.
     useLayoutEffect(() => {
         // Guard: if no elements or no staged data, there's nothing to animate → exit early:
-        const sortItemElements = sortItemRefs?.current;
-        if (!sortItemElements?.size || (stagedSortData === undefined)) return;
+        const sortItemElements = sortItemRefs.current;
+        if (!sortItemElements.size || (stagedSortData === undefined)) return;
         
         
         
@@ -376,8 +378,9 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
     return {
         sorting : (sortingActivity !== undefined),
         sortClassname,
+        sortItemRefs,
         sortOffsets,
         sortStyles,
         ...animationHandlers,
-    } satisfies SortState<TElement>;
+    } satisfies SortState<TElement, TItemElement>;
 };

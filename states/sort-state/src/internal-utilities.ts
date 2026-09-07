@@ -2,6 +2,7 @@
 import {
     // Types:
     type Key,
+    type RefObject,
 }                           from 'react'
 
 // Types:
@@ -25,7 +26,7 @@ import {
 
 
 /** Resolves the semantic activity classname for sort state behavior. */
-export const resolveSortClassname = ({ activity }: ResolveEphemeralClassnameArgs<SortActivity, SortStateProps<Element, unknown>, SortStateOptions, SortStateDefinition>): SortClassname => {
+export const resolveSortClassname = ({ activity }: ResolveEphemeralClassnameArgs<SortActivity, SortStateProps<unknown>, SortStateOptions, SortStateDefinition>): SortClassname => {
     return (activity !== undefined) ? 'is-sorting' : 'not-sorting';
 };
 
@@ -52,3 +53,30 @@ export const snapshotElementPositions = <TItemElement extends Element = HTMLElem
         ];
     })
 );
+
+
+
+/**
+ * Lazily initializes a `RefObject` for sortable item elements.
+ * 
+ * @template TItemElement The type of the sortable DOM element.
+ * 
+ * @param rawSortItemRefs A `RefObject` that may or may not already contain a Map of sortable item elements.
+ * @returns A `RefObject` guaranteed to contain a Map of sortable item elements, initializing it if necessary.
+ * 
+ * @remarks
+ * This helper guarantees that the ref is always initialized to a Map,
+ * so consumers can safely access and mutate sortable item elements without null checks.
+ * If the ref already contains a Map, it is returned as-is.
+ * Otherwise, a new Map is created and assigned.
+ */
+export const lazyInitializeSortItemRefs = <TItemElement extends Element = HTMLElement>(rawSortItemRefs: RefObject<Map<Key, TItemElement> | undefined>): RefObject<Map<Key, TItemElement>> => {
+    // Determine if the ref already contains a Map:
+    if (rawSortItemRefs.current !== undefined) return rawSortItemRefs as RefObject<Map<Key, TItemElement>>;
+    
+    
+    
+    // Create a new Map for the ref:
+    rawSortItemRefs.current = new Map<Key, TItemElement>();
+    return rawSortItemRefs as RefObject<Map<Key, TItemElement>>;
+};

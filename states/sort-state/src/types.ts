@@ -42,35 +42,13 @@ export type SortCommitHandler<TSortData = Array<unknown>> = (stagedSortData: TSo
  * Sorting animations run once when `stagedSortData` changes,
  * allowing the component to snapshot positions, measure item movement, and commit the new order.
  * 
- * @template TItemElement The type of the sortable DOM element.
  * @template TSortData The type of the data driving the sortable elements (commonly an array of item metadata).
  */
-export interface SortStateProps<TItemElement extends Element = HTMLElement, TSortData = Array<unknown>>
+export interface SortStateProps<TSortData = Array<unknown>>
     extends
         // Bases:
         EphemeralStateProps // Currently equivalent to an empty object, reserved for future extensions.
 {
-    /**
-     * References to the sortable item elements, keyed by their stable React `key`.
-     * 
-     * - Used to snapshot positions before and after a sort commit,
-     *   then diff to calculate movement offsets.
-     * - Elements must exist both before and after the sort for accurate measurement.
-     * - Disappearing or newly added elements are ignored.
-     * 
-     * Why keys?
-     * React `key`s provide a stable identity for each item across renders.
-     * By storing refs keyed to these identities, we can:
-     * - Reconstruct `sortOffsets`: numeric deltas (x, y) describing each item's
-     *   movement from unsorted → sorted position.
-     * - Reconstruct `sortStyles`: inline CSS variables exposing each item's
-     *   unsorted position in a styling-friendly form.
-     * 
-     * This keyed design makes offsets and styles retrievable by item identity
-     * during JSX iteration (e.g. `style={sortStyles.get(item.id)}`).
-     */
-    sortItemRefs          ?: RefObject<Map<Key, TItemElement>>
-    
     /**
      * Provides the temporary (staged) sort data that is ready to be committed.
      * 
@@ -218,8 +196,9 @@ export interface SortOffset {
  * An API for accessing the current sorting activity status, associated CSS classname, and animation event handlers.
  * 
  * @template TElement The type of the target DOM element.
+ * @template TItemElement The type of the sortable DOM element.
  */
-export interface SortState<TElement extends Element = HTMLElement>
+export interface SortState<TElement extends Element = HTMLElement, TItemElement extends Element = HTMLElement>
     extends
         // Bases:
         Omit<EphemeralState<SortActivity, SortClassname, TElement>,
@@ -248,6 +227,27 @@ export interface SortState<TElement extends Element = HTMLElement>
      * - `'not-sorting'`
      */
     sortClassname : EphemeralState<SortActivity, SortClassname, TElement>['ephemeralClassname']
+    
+    /**
+     * References to the sortable item elements, keyed by their stable React `key`.
+     * 
+     * - Used to snapshot positions before and after a sort commit,
+     *   then diff to calculate movement offsets.
+     * - Elements must exist both before and after the sort for accurate measurement.
+     * - Disappearing or newly added elements are ignored.
+     * 
+     * Why keys?
+     * React `key`s provide a stable identity for each item across renders.
+     * By storing refs keyed to these identities, we can:
+     * - Reconstruct `sortOffsets`: numeric deltas (x, y) describing each item's
+     *   movement from unsorted → sorted position.
+     * - Reconstruct `sortStyles`: inline CSS variables exposing each item's
+     *   unsorted position in a styling-friendly form.
+     * 
+     * This keyed design makes offsets and styles retrievable by item identity
+     * during JSX iteration (e.g. `style={sortStyles.get(item.id)}`).
+     */
+    sortItemRefs  : RefObject<Map<Key, TItemElement>>
     
     /**
      * Translates each sortable element back to its **unsorted position**.
