@@ -153,8 +153,8 @@ const sortStateDefinition : SortStateDefinition = {
  *     // Hook manages animated sorting transitions:
  *     const {
  *         sorting,       // Activity flag
- *         sortOffsets,   // Per-item movement
  *         sortClassname, // CSS class for animation triggers
+ *         sortOffsets,   // Per-item movement
  *         sortStyles,    // Inline CSS variables
  *         
  *         handleAnimationStart,
@@ -375,8 +375,8 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
     // Return the sorting activity status API:
     return {
         sorting : (sortingActivity !== undefined),
-        sortOffsets,
         sortClassname,
+        sortOffsets,
         sortStyles,
         ...animationHandlers,
     } satisfies SortState<TElement>;

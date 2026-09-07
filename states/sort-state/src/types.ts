@@ -241,6 +241,15 @@ export interface SortState<TElement extends Element = HTMLElement>
     sorting       : boolean
     
     /**
+     * A CSS classname for triggering the sorting animation.
+     * 
+     * Possible values:
+     * - `'is-sorting'`
+     * - `'not-sorting'`
+     */
+    sortClassname : EphemeralState<SortActivity, SortClassname, TElement>['ephemeralClassname']
+    
+    /**
      * Translates each sortable element back to its **unsorted position**.
      * 
      * Provides raw numeric deltas (x, y) for each sortable element,
@@ -254,15 +263,6 @@ export interface SortState<TElement extends Element = HTMLElement>
      * driving custom sorting transitions.
      */
     sortOffsets   : Map<Key, SortOffset>
-    
-    /**
-     * A CSS classname for triggering the sorting animation.
-     * 
-     * Possible values:
-     * - `'is-sorting'`
-     * - `'not-sorting'`
-     */
-    sortClassname : EphemeralState<SortActivity, SortClassname, TElement>['ephemeralClassname']
     
     /**
      * Provides inline CSS variables for styling each sortable element,

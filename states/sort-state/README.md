@@ -102,8 +102,8 @@ export const SortableList: FC<SortableListProps> = (props) => {
     // Hook manages animated sorting transitions:
     const {
         sorting,       // Activity flag
-        sortOffsets,   // Per-item movement
         sortClassname, // CSS class for animation triggers
+        sortOffsets,   // Per-item movement
         sortStyles,    // Inline CSS variables
         
         handleAnimationStart,
@@ -323,8 +323,8 @@ const [items, setItems] = useState<ItemMetadata[]>(initialItems);
 
 const {
     startSortTransition,
-    sortOffsets,   // Per-item movement
     sortClassname, // CSS class for animation triggers
+    sortOffsets,   // Per-item movement
     sortStyles,    // Inline CSS variables
     ...animationHandlers,
 } = useSortState(...);
@@ -371,8 +371,8 @@ const {
 
 const {
     sorting,       // Activity flag
-    sortOffsets,   // Per-item movement
     sortClassname, // CSS class for animation triggers
+    sortOffsets,   // Per-item movement
     sortStyles,    // Inline CSS variables
     ...animationHandlers,
 } = useSortState({
