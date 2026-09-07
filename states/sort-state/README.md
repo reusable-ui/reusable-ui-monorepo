@@ -97,11 +97,11 @@ export const SortableList: FC<SortableListProps> = (props) => {
     
     // Hook manages animated sorting transitions:
     const {
-        sorting,       // Activity flag
-        sortClassname, // CSS class for animation triggers
-        sortItemRefs,  // Refs for sortable items
-        sortOffsets,   // Per-item movement
-        sortStyles,    // Inline CSS variables
+        sorting,         // Activity flag
+        sortClassname,   // CSS class for animation triggers
+        sortItemRefs,    // Refs for sortable items
+        sortItemOffsets, // Per-item movement
+        sortItemStyles,  // Inline CSS variables
         
         handleAnimationStart,
         handleAnimationEnd,
@@ -150,7 +150,7 @@ export const SortableList: FC<SortableListProps> = (props) => {
                         };
                     }}
                     className={styles.item}
-                    style={sortStyles.get(id)}
+                    style={sortItemStyles.get(id)}
                 >
                     <p>{name}</p>
                     <p>{price}</p>
@@ -294,7 +294,7 @@ export const sortableListStyle = () => {
             // Base styling for each item goes here.
             
             // Translates each item from its unsorted position → sorted order:
-            // - `sortOffsetX` and `sortOffsetY` are applied per item (via sortStyles).
+            // - `sortOffsetX` and `sortOffsetY` are applied per item (via sortItemStyles).
             // - `sortFactor` applies at the container level, interpolating offsets over time.
             transform: `translate(calc(${sortOffsetX} * 1px * ${sortFactor}), calc(${sortOffsetY} * 1px * ${sortFactor}))`,
         }),
@@ -319,9 +319,9 @@ const [items, setItems] = useState<ItemMetadata[]>(initialItems);
 
 const {
     startSortTransition,
-    sortClassname, // CSS class for animation triggers
-    sortOffsets,   // Per-item movement
-    sortStyles,    // Inline CSS variables
+    sortClassname,   // CSS class for animation triggers
+    sortItemOffsets, // Per-item movement
+    sortItemStyles,  // Inline CSS variables
     ...animationHandlers,
 } = useSortState(...);
 
@@ -364,11 +364,11 @@ const {
 } = props;
 
 const {
-    sorting,       // Activity flag
-    sortClassname, // CSS class for animation triggers
-    sortItemRefs,  // Refs for sortable items
-    sortOffsets,   // Per-item movement
-    sortStyles,    // Inline CSS variables
+    sorting,         // Activity flag
+    sortClassname,   // CSS class for animation triggers
+    sortItemRefs,    // Refs for sortable items
+    sortItemOffsets, // Per-item movement
+    sortItemStyles,  // Inline CSS variables
     ...animationHandlers,
 } = useSortState<HTMLDivElement, HTMLDivElement, ItemMetadata[]>({
     stagedSortData,

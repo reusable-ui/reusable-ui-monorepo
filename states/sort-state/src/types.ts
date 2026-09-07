@@ -217,7 +217,7 @@ export interface SortState<TElement extends Element = HTMLElement, TItemElement 
      * - `true`  : the sorting transition is currently active
      * - `false` : the sorting transition is idle
      */
-    sorting       : boolean
+    sorting         : boolean
     
     /**
      * A CSS classname for triggering the sorting animation.
@@ -226,7 +226,7 @@ export interface SortState<TElement extends Element = HTMLElement, TItemElement 
      * - `'is-sorting'`
      * - `'not-sorting'`
      */
-    sortClassname : EphemeralState<SortActivity, SortClassname, TElement>['ephemeralClassname']
+    sortClassname   : EphemeralState<SortActivity, SortClassname, TElement>['ephemeralClassname']
     
     /**
      * References to the sortable item elements, keyed by their stable React `key`.
@@ -239,15 +239,15 @@ export interface SortState<TElement extends Element = HTMLElement, TItemElement 
      * Why keys?
      * React `key`s provide a stable identity for each item across renders.
      * By storing refs keyed to these identities, we can:
-     * - Reconstruct `sortOffsets`: numeric deltas (x, y) describing each item's
+     * - Reconstruct `sortItemOffsets`: numeric deltas (x, y) describing each item's
      *   movement from unsorted → sorted position.
-     * - Reconstruct `sortStyles`: inline CSS variables exposing each item's
+     * - Reconstruct `sortItemStyles`: inline CSS variables exposing each item's
      *   unsorted position in a styling-friendly form.
      * 
      * This keyed design makes offsets and styles retrievable by item identity
-     * during JSX iteration (e.g. `style={sortStyles.get(item.id)}`).
+     * during JSX iteration (e.g. `style={sortItemStyles.get(item.id)}`).
      */
-    sortItemRefs  : RefObject<Map<Key, TItemElement>>
+    sortItemRefs    : RefObject<Map<Key, TItemElement>>
     
     /**
      * Translates each sortable element back to its **unsorted position**.
@@ -262,7 +262,7 @@ export interface SortState<TElement extends Element = HTMLElement, TItemElement 
      * Useful for animation authors who need direct numeric deltas for
      * driving custom sorting transitions.
      */
-    sortOffsets   : Map<Key, SortOffset>
+    sortItemOffsets : Map<Key, SortOffset>
     
     /**
      * Provides inline CSS variables for styling each sortable element,
@@ -283,5 +283,5 @@ export interface SortState<TElement extends Element = HTMLElement, TItemElement 
      * as long as the variable values remain unchanged,
      * avoiding unnecessary re-renders.
      */
-    sortStyles    : Map<Key, CSSProperties>
+    sortItemStyles  : Map<Key, CSSProperties>
 }

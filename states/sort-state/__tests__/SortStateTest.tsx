@@ -44,7 +44,7 @@ export const SortStateTest = (props: SortStateTestProps) => {
     const {
         sortClassname,
         sortItemRefs,
-        sortStyles,
+        sortItemStyles,
         
         handleAnimationStart,
         handleAnimationEnd,
@@ -135,7 +135,7 @@ export const SortStateTest = (props: SortStateTestProps) => {
                             }}
                             data-testid={id}
                             className='item'
-                            style={sortStyles.get(id)}
+                            style={sortItemStyles.get(id)}
                         >
                             <p>{name}</p>
                             <p>{price}</p>

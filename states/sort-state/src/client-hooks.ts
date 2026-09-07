@@ -150,11 +150,11 @@ const sortStateDefinition : SortStateDefinition = {
  *     
  *     // Hook manages animated sorting transitions:
  *     const {
- *         sorting,       // Activity flag
- *         sortClassname, // CSS class for animation triggers
- *         sortItemRefs,  // Refs for sortable items
- *         sortOffsets,   // Per-item movement
- *         sortStyles,    // Inline CSS variables
+ *         sorting,         // Activity flag
+ *         sortClassname,   // CSS class for animation triggers
+ *         sortItemRefs,    // Refs for sortable items
+ *         sortItemOffsets, // Per-item movement
+ *         sortItemStyles,  // Inline CSS variables
  *         
  *         handleAnimationStart,
  *         handleAnimationEnd,
@@ -203,7 +203,7 @@ const sortStateDefinition : SortStateDefinition = {
  *                         };
  *                     }}
  *                     className={styles.item}
- *                     style={sortStyles.get(id)}
+ *                     style={sortItemStyles.get(id)}
  *                 >
  *                     <p>{name}</p>
  *                     <p>{price}</p>
@@ -236,7 +236,7 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
     
     // Per-item offsets for creating the unsorted illusion:
     // - Useful for the initial animation movement from the original unsorted positions to the new sorted positions.
-    const [sortOffsets, setSortOffsets] = useState<Map<Key, SortOffset>>(() => new Map<Key, SortOffset>());
+    const [sortItemOffsets, setSortItemOffsets] = useState<Map<Key, SortOffset>>(() => new Map<Key, SortOffset>());
     
     // Activity orchestration:
     const [{
@@ -320,7 +320,7 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
             // Diff positions to compute animation offsets:
             // - Each element is offset back to its original unsorted position.
             // - Ignore disappearing or newly added elements.
-            setSortOffsets(new Map<Key, SortOffset>(
+            setSortItemOffsets(new Map<Key, SortOffset>(
                 Array.from(offsetsBefore.entries())
                 .map(([itemKey, offsetBefore]) => {
                     const offsetAfter = offsetsAfter.get(itemKey);
@@ -346,7 +346,7 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
     
     
     // Compute CSS variables for offsets:
-    const sortStyles = useMemo<Map<Key, CSSProperties>>(() => {
+    const sortItemStyles = useMemo<Map<Key, CSSProperties>>(() => {
         // Unwrap the CSS variable names without `var(...)` for assignments:
         const sortOffsetX = (
             sortStateVars.sortOffsetX
@@ -361,7 +361,7 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
         
         // Map the offsets to CSS properties:
         return new Map<Key, CSSProperties>(
-            Array.from(sortOffsets.entries())
+            Array.from(sortItemOffsets.entries())
             .map(([key, { x, y }]) => [
                 key,
                 {
@@ -370,7 +370,7 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
                 } satisfies CSSProperties
             ])
         );
-    }, [sortStateVars.sortOffsetX, sortStateVars.sortOffsetY, sortOffsets]);
+    }, [sortStateVars.sortOffsetX, sortStateVars.sortOffsetY, sortItemOffsets]);
     
     
     
@@ -379,8 +379,8 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
         sorting : (sortingActivity !== undefined),
         sortClassname,
         sortItemRefs,
-        sortOffsets,
-        sortStyles,
+        sortItemOffsets,
+        sortItemStyles,
         ...animationHandlers,
     } satisfies SortState<TElement, TItemElement>;
 };

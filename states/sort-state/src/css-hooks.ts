@@ -92,7 +92,7 @@ import {
  *             // Base styling for each item goes here.
  *             
  *             // Translates each item from its unsorted position → sorted order:
- *             // - `sortOffsetX` and `sortOffsetY` are applied per item (via sortStyles).
+ *             // - `sortOffsetX` and `sortOffsetY` are applied per item (via sortItemStyles).
  *             // - `sortFactor` applies at the container level, interpolating offsets over time.
  *             transform: `translate(calc(${sortOffsetX} * 1px * ${sortFactor}), calc(${sortOffsetY} * 1px * ${sortFactor}))`,
  *         }),
