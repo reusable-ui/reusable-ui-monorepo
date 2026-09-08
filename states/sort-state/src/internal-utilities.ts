@@ -11,7 +11,7 @@ import {
     type SortStateOptions,
     type SortActivity,
     type SortClassname,
-    type SortOffset,
+    type SortItemOffset,
 }                           from './types.js'
 import {
     type SortStateDefinition,
@@ -40,7 +40,7 @@ export const resolveSortClassname = ({ activity }: ResolveEphemeralClassnameArgs
  * @param itemElements Map of stable React `key` → DOM element.
  * @returns Map of key → {x, y} positions.
  */
-export const snapshotElementPositions = <TItemElement extends Element = HTMLElement>(itemElements: Map<Key, TItemElement>): Map<Key, SortOffset> => new Map<Key, SortOffset>(
+export const snapshotElementPositions = <TItemElement extends Element = HTMLElement>(itemElements: Map<Key, TItemElement>): Map<Key, SortItemOffset> => new Map<Key, SortItemOffset>(
     Array.from(itemElements.entries()).map(([itemKey, itemElement]) => {
         const { x, y, width, height } = itemElement.getBoundingClientRect();
         return [
@@ -49,7 +49,7 @@ export const snapshotElementPositions = <TItemElement extends Element = HTMLElem
                 // Use the element's center point for consistency:
                 x : x + (width  / 2),
                 y : y + (height / 2),
-            } satisfies SortOffset
+            } satisfies SortItemOffset
         ];
     })
 );

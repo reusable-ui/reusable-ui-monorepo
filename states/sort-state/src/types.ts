@@ -176,7 +176,7 @@ export type SortClassname = `is-${SortActivity}` | `not-${SortActivity}`
  *   its unsorted illusion relative to the current sorted layout.
  * - They are not logical layout values.
  */
-export interface SortOffset {
+export interface SortItemOffset {
     /**
      * Horizontal delta in pixels.
      * Positive values move the element to the right,
@@ -262,7 +262,7 @@ export interface SortState<TElement extends Element = HTMLElement, TItemElement 
      * Useful for animation authors who need direct numeric deltas for
      * driving custom sorting transitions.
      */
-    sortItemOffsets : Map<Key, SortOffset>
+    sortItemOffsets : Map<Key, SortItemOffset>
     
     /**
      * Provides inline CSS variables for styling each sortable element,

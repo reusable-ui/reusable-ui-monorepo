@@ -27,7 +27,7 @@ import {
     type SortStateOptions,
     type SortActivity,
     type SortClassname,
-    type SortOffset,
+    type SortItemOffset,
     type SortState,
 }                           from './types.js'
 import {
@@ -236,7 +236,7 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
     
     // Per-item offsets for creating the unsorted illusion:
     // - Useful for the initial animation movement from the original unsorted positions to the new sorted positions.
-    const [sortItemOffsets, setSortItemOffsets] = useState<Map<Key, SortOffset>>(() => new Map<Key, SortOffset>());
+    const [sortItemOffsets, setSortItemOffsets] = useState<Map<Key, SortItemOffset>>(() => new Map<Key, SortItemOffset>());
     
     // Activity orchestration:
     const [{
@@ -320,7 +320,7 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
             // Diff positions to compute animation offsets:
             // - Each element is offset back to its original unsorted position.
             // - Ignore disappearing or newly added elements.
-            setSortItemOffsets(new Map<Key, SortOffset>(
+            setSortItemOffsets(new Map<Key, SortItemOffset>(
                 Array.from(offsetsBefore.entries())
                 .map(([itemKey, offsetBefore]) => {
                     const offsetAfter = offsetsAfter.get(itemKey);
@@ -330,10 +330,10 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
                         {
                             x : offsetBefore.x - offsetAfter.x,
                             y : offsetBefore.y - offsetAfter.y,
-                        } satisfies SortOffset,
+                        } satisfies SortItemOffset,
                     ] as const;
                 })
-                .filter((sortOffset): sortOffset is Exclude<typeof sortOffset, null> => (sortOffset !== null))
+                .filter((sortItemOffset): sortItemOffset is Exclude<typeof sortItemOffset, null> => (sortItemOffset !== null))
             ));
             
             
