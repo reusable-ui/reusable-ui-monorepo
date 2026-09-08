@@ -257,7 +257,7 @@ export const sortableListStyle = () => {
     // - Associates sorting animation to drive `sortFactor` smoothly
     const {
         sortStateRule,
-        sortStateVars: { sortOffsetX, sortOffsetY, sortFactor },
+        sortStateVars: { sortItemOffsetX, sortItemOffsetY, sortFactor },
     } = usingSortState({
         sortingAnimation : 'var(--list-sorting)',
     });
@@ -294,9 +294,9 @@ export const sortableListStyle = () => {
             // Base styling for each item goes here.
             
             // Translates each item from its unsorted position → sorted order:
-            // - `sortOffsetX` and `sortOffsetY` are applied per item (via sortItemStyles).
+            // - `sortItemOffsetX` and `sortItemOffsetY` are applied per item (via sortItemStyles).
             // - `sortFactor` applies at the container level, interpolating offsets over time.
-            transform: `translate(calc(${sortOffsetX} * 1px * ${sortFactor}), calc(${sortOffsetY} * 1px * ${sortFactor}))`,
+            transform: `translate(calc(${sortItemOffsetX} * 1px * ${sortFactor}), calc(${sortItemOffsetY} * 1px * ${sortFactor}))`,
         }),
     });
 }

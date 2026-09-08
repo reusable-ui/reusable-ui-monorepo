@@ -5,7 +5,7 @@ import { usingAnimationFeature } from '@reusable-ui/animation-feature'
 export default function sortStateTestStyle() {
     const {
         sortStateRule,
-        sortStateVars: { sortOffsetX, sortOffsetY, sortFactor },
+        sortStateVars: { sortItemOffsetX, sortItemOffsetY, sortFactor },
     } = usingSortState({
         sortingAnimation: 'var(--test-sorting)',
     });
@@ -53,9 +53,9 @@ export default function sortStateTestStyle() {
                 backgroundImage: 'linear-gradient(135deg, oklch(0.9 0.2 265 / 1), oklch(0.7 0.3 265 / 1))',
                 
                 // Translates each item from its unsorted position → sorted order:
-                // - `sortOffsetX` and `sortOffsetY` are applied per item (via sortItemStyles).
+                // - `sortItemOffsetX` and `sortItemOffsetY` are applied per item (via sortItemStyles).
                 // - `sortFactor` applies at the container level, interpolating offsets over time.
-                transform: `translate(calc(${sortOffsetX} * 1px * ${sortFactor}), calc(${sortOffsetY} * 1px * ${sortFactor}))`,
+                transform: `translate(calc(${sortItemOffsetX} * 1px * ${sortFactor}), calc(${sortItemOffsetY} * 1px * ${sortFactor}))`,
             }),
         }),
         

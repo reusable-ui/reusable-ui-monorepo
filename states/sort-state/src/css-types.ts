@@ -97,11 +97,11 @@ export interface SortStateVars {
      * ```ts
      * export const sortableComponentItemStyle = () => style({
      *     // Translate the item horizontally back to its unsorted position:
-     *     transform : `translateX(calc(${sortStateVars.sortOffsetX} * 1px))`,
+     *     transform : `translateX(calc(${sortStateVars.sortItemOffsetX} * 1px))`,
      * });
      * ```
      */
-    sortOffsetX      : unknown
+    sortItemOffsetX  : unknown
     
     /**
      * Translates the current sortable element back to its **unsorted position**.
@@ -123,11 +123,11 @@ export interface SortStateVars {
      * ```ts
      * export const sortableComponentItemStyle = () => style({
      *     // Translate the item vertically back to its unsorted position:
-     *     transform : `translateY(calc(${sortStateVars.sortOffsetY} * 1px))`,
+     *     transform : `translateY(calc(${sortStateVars.sortItemOffsetY} * 1px))`,
      * });
      * ```
      */
-    sortOffsetY      : unknown
+    sortItemOffsetY  : unknown
 }
 
 

@@ -268,7 +268,7 @@ export interface SortState<TElement extends Element = HTMLElement, TItemElement 
      * Provides inline CSS variables for styling each sortable element,
      * keyed by its stable React `key`.
      * 
-     * Each element receives `--so-sortOffsetX` and `--so-sortOffsetY`,
+     * Each element receives `--so-sortItemOffsetX` and `--so-sortItemOffsetY`,
      * providing the translation back to its **unsorted position**
      * in a styling-friendly form.
      * 

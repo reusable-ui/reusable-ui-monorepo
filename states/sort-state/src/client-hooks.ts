@@ -348,12 +348,12 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
     // Compute CSS variables for offsets:
     const sortItemStyles = useMemo<Map<Key, CSSProperties>>(() => {
         // Unwrap the CSS variable names without `var(...)` for assignments:
-        const sortOffsetX = (
-            sortStateVars.sortOffsetX
+        const sortItemOffsetX = (
+            sortStateVars.sortItemOffsetX
             .slice(4, -1) // fix: var(--customProp) => --customProp
         );
-        const sortOffsetY = (
-            sortStateVars.sortOffsetY
+        const sortItemOffsetY = (
+            sortStateVars.sortItemOffsetY
             .slice(4, -1) // fix: var(--customProp) => --customProp
         );
         
@@ -365,12 +365,12 @@ export const useSortState = <TElement extends Element = HTMLElement, TItemElemen
             .map(([key, { x, y }]) => [
                 key,
                 {
-                    [sortOffsetX]: x,
-                    [sortOffsetY]: y,
+                    [sortItemOffsetX]: x,
+                    [sortItemOffsetY]: y,
                 } satisfies CSSProperties
             ])
         );
-    }, [sortStateVars.sortOffsetX, sortStateVars.sortOffsetY, sortItemOffsets]);
+    }, [sortStateVars.sortItemOffsetX, sortStateVars.sortItemOffsetY, sortItemOffsets]);
     
     
     
