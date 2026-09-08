@@ -78,9 +78,9 @@ export interface SortStateVars {
     sortFactorCond   : unknown
     
     /**
-     * Translates the current sortable element back to its **unsorted position**.
+     * Translates the current sortable item element back to its **unsorted position**.
      * 
-     * Provides the raw horizontal delta (x axis) for this element,
+     * Provides the raw horizontal delta (x axis) for this item,
      * translating from its sorted placement to its original unsorted coordinate.
      * 
      * When multiplied by `sortFactor` (transitioning from 1 → 0),
@@ -104,9 +104,9 @@ export interface SortStateVars {
     sortItemOffsetX  : unknown
     
     /**
-     * Translates the current sortable element back to its **unsorted position**.
+     * Translates the current sortable item element back to its **unsorted position**.
      * 
-     * Provides the raw vertical delta (y axis) for this element,
+     * Provides the raw vertical delta (y axis) for this item,
      * translating from its sorted placement to its original unsorted coordinate.
      * 
      * When multiplied by `sortFactor` (transitioning from 1 → 0),
