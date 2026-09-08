@@ -168,25 +168,25 @@ export type SortActivity = 'sorting'
 export type SortClassname = `is-${SortActivity}` | `not-${SortActivity}`
 
 /**
- * Represents a relative translation (delta) for a sortable element.
+ * Represents a relative translation (delta) for a sortable item element.
  * 
  * Note:
  * - These are **physical coordinates** (pixel deltas) derived from sort movements.
- * - They describe how far an element must shift along the x/y axes to recreate
+ * - They describe how far an item must shift along the x/y axes to recreate
  *   its unsorted illusion relative to the current sorted layout.
  * - They are not logical layout values.
  */
 export interface SortItemOffset {
     /**
      * Horizontal delta in pixels.
-     * Positive values move the element to the right,
-     * negative values move it to the left.
+     * Positive values move the item rightward,
+     * negative values move it leftward.
      */
     x : number
     
     /**
      * Vertical delta in pixels.
-     * Positive values move the element downward,
+     * Positive values move the item downward,
      * negative values move it upward.
      */
     y : number
