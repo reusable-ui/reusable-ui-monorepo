@@ -86,7 +86,7 @@ import {
  *     }, [categoryModel]);
  *     
  *     // Orchestrates the transaction logic for droppables:
- *     const { dropStatus, dragPayload, dropRef } = useDroppableState<HTMLDivElement>({
+ *     const { dropStatus, dragPayload, ref } = useDroppableState<HTMLDivElement>({
  *         dropMetadata : categoryMetadata,
  *         dropEnabled  : true,
  *         
@@ -116,7 +116,7 @@ import {
  *     });
  *     
  *     return (
- *         <div ref={dropRef} className='product-category'>
+ *         <div ref={ref} className='product-category'>
  *             <h4>{categoryModel.name}</h4>
  *             <img src={categoryModel.icon} alt='Category' />
  *             
@@ -268,6 +268,6 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     return {
         dropStatus,
         dragPayload,
-        dropRef,
+        ref : dropRef,
     } satisfies DroppableState<TElement>;
 };

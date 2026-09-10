@@ -26,7 +26,7 @@ export const DraggableStateTest = (props: DraggableStateTestProps) => {
     const {
         dragStatus,
         dropMetadata,
-        dragRef,
+        ref,
     } = useDraggableState<HTMLDivElement>({
         ...props,
         computedDrag,
@@ -39,7 +39,7 @@ export const DraggableStateTest = (props: DraggableStateTestProps) => {
     
     return (
         <div
-            ref={dragRef}
+            ref={ref}
             className='draggable-state-test'
             data-testid={`draggable-state-test-${index}`}
             data-status={String(dragStatus)}

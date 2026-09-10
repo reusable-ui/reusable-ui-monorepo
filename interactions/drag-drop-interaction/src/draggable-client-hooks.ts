@@ -110,14 +110,14 @@ import {
  *     });
  *     
  *     // Orchestrates the transaction logic for draggables:
- *     const { dragStatus, dropMetadata, dragRef } = useDraggableState<HTMLDivElement>({
+ *     const { dragStatus, dropMetadata, ref } = useDraggableState<HTMLDivElement>({
  *         dragPayload  : productPayload,
  *         dragEnabled  : true,
  *         computedDrag : dragState.dragged,
  *         
  *         // Prevent the ghost image itself (product card) from being considered a valid drop target:
  *         dropPredicate(dropCandidate): boolean {
- *             const cardElement = dragRef.current;
+ *             const cardElement = ref.current;
  *             return !cardElement || !cardElement.contains(dropCandidate);
  *         },
  *         
@@ -148,7 +148,7 @@ import {
  *     
  *     return (
  *         <div
- *             ref={dragRef}
+ *             ref={ref}
  *             className={`product-card ${pressState.pressClassname} ${dragState.dragClassname}`}
  *             
  *             onAnimationStart={useMergedEventHandlers(pressState.handleAnimationStart, dragState.handleAnimationStart)}
@@ -414,6 +414,6 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     return {
         dragStatus,
         dropMetadata,
-        dragRef,
+        ref : dragRef,
     } satisfies DraggableState<TElement>;
 };

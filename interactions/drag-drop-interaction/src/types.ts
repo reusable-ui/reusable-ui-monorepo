@@ -621,7 +621,7 @@ export interface DraggableState<TElement extends Element = HTMLElement> {
      * If resolves to `null`, the zone is treated as disabled
      * (equivalent to `dragEnabled = false`).
      */
-    dragRef      : RefObject<TElement | null>
+    ref          : RefObject<TElement | null>
 }
 
 /**
@@ -677,7 +677,7 @@ export interface DroppableState<TElement extends Element = HTMLElement> {
      * If resolves to `null`, the zone is treated as disabled
      * (equivalent to `dropEnabled = false`).
      */
-    dropRef      : RefObject<TElement | null>
+    ref          : RefObject<TElement | null>
 }
 
 

@@ -25,7 +25,7 @@ export const DroppableStateTest = (props: DroppableStateTestProps) => {
     const {
         dropStatus,
         dragPayload,
-        dropRef,
+        ref,
     } = useDroppableState<HTMLDivElement>({
         ...props,
         onDropHandshake,
@@ -37,7 +37,7 @@ export const DroppableStateTest = (props: DroppableStateTestProps) => {
     
     return (
         <div
-            ref={dropRef}
+            ref={ref}
             className='droppable-state-test'
             data-testid={`droppable-state-test-${index}`}
             data-status={String(dropStatus)}
