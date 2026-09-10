@@ -724,7 +724,7 @@ export const processDragProbe      = async <TElement extends Element = HTMLEleme
         return;
     } // if
     
-    // Now the `dragElement` here is not null
+    
     
     // Resolve the top-most element under the cursor:
     // - Ignore the "ghost dragging image".
