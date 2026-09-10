@@ -130,7 +130,10 @@ import {
  *             event.dragResponse = isCategoryZone;
  *         },
  *         
- *         // Evaluation: provide live feedback while hovering over a category
+ *         // Evaluation: provide live feedback on every pointer movement while hovering over a category
+ *         // NOTE: avoid relying on this event unless detailed, pointer-level feedback is needed,
+ *         // as it fires *aggressively* on every pointer move and may impact performance.
+ *         // Consider debouncing or throttling if you need to perform expensive operations here.
  *         onDragEvaluation(event) {
  *             const categoryName = event.dropMetadata?.get('name');
  *             console.log(`Hovering over category: ${categoryName}`);

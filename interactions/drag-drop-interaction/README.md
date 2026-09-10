@@ -159,7 +159,10 @@ export const ProductCard: FC<ProductCardProps> = ({ productModel }) => {
             event.dragResponse = isCategoryZone;
         },
         
-        // Evaluation: provide live feedback while hovering over a category
+        // Evaluation: provide live feedback on every pointer movement while hovering over a category
+        // NOTE: avoid relying on this event unless detailed, pointer-level feedback is needed,
+        // as it fires *aggressively* on every pointer move and may impact performance.
+        // Consider debouncing or throttling if you need to perform expensive operations here.
         onDragEvaluation(event) {
             const categoryName = event.dropMetadata?.get('name');
             console.log(`Hovering over category: ${categoryName}`);
@@ -260,7 +263,10 @@ export const ProductCategory: FC<ProductCategoryProps> = ({ categoryModel }) => 
             event.dropResponse = isProduct && inStock;
         },
         
-        // Evaluation: provide live feedback while hovered by a product card
+        // Evaluation: provide live feedback on every pointer movement while hovered by a product card
+        // NOTE: avoid relying on this event unless detailed, pointer-level feedback is needed,
+        // as it fires *aggressively* on every pointer move and may impact performance.
+        // Consider debouncing or throttling if you need to perform expensive operations here.
         onDropEvaluation(event) {
             const productName = event.dragPayload.get('name');
             console.log(`A product: ${productName} is hovering over this category`);
