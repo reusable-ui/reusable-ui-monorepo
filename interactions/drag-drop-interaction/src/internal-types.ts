@@ -62,7 +62,7 @@ export interface DroppableEntry<TElement extends Element = HTMLElement> {
     // Stable event handlers:
     
     /**
-     * Invoked continuously during drag gesture movements
+     * Invoked continuously on every pointer movement during drag gesture movements
      * while a draggable hovers over this droppable.
      * 
      * Allows the droppable to validate the draggable's payload and responds with acceptance or rejection.
@@ -70,7 +70,7 @@ export interface DroppableEntry<TElement extends Element = HTMLElement> {
     handleDropHandshake  : (event: DropHandshakeEvent<TElement>) => Promise<void>
     
     /**
-     * Invoked continuously after handshake negotiation,
+     * Invoked continuously on every pointer movement after handshake negotiation,
      * reflecting the current acceptance/rejection state.
      * 
      * Enables live feedback from the droppable side during a drag gesture,

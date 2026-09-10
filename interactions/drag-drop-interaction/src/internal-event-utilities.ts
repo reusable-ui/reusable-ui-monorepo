@@ -454,14 +454,14 @@ export const dispatchHandshakeEvents      = async <TElement extends Element = HT
     
     // Stable event handlers:
     /**
-     * Invoked continuously during drag gesture movements
+     * Invoked continuously on every pointer movement during drag gesture movements
      * while the draggable hovers over a droppable.
      * 
      * Allows the draggable to validate the target's business context (metadata) and responds with acceptance or rejection.
      */
     handleDragHandshake     : (event: DragHandshakeEvent<TElement>) => Promise<void>
     /**
-     * Invoked continuously during drag gesture movements
+     * Invoked continuously on every pointer movement during drag gesture movements
      * while a draggable hovers over a droppable.
      * 
      * Allows the droppable to validate the draggable's payload and responds with acceptance or rejection.
@@ -544,7 +544,7 @@ export const dispatchEvaluationEvents     = <TElement extends Element = HTMLElem
     
     // Stable event handlers:
     /**
-     * Invoked continuously after handshake negotiation,
+     * Invoked continuously on every pointer movement after handshake negotiation,
      * reflecting the current acceptance/rejection state.
      * 
      * Enables live feedback from the draggable side during a drag gesture,

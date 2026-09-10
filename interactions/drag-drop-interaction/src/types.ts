@@ -72,7 +72,7 @@ export type DropMetadata = DragDropData
 // Handshakes:
 
 /**
- * Emitted continuously during drag gesture movements
+ * Emitted continuously on every pointer movement during drag gesture movements
  * while a draggable hovers over a droppable.
  * 
  * Carries the pair's data along with a mutable `response` field
@@ -108,7 +108,7 @@ export interface DragDropHandshakeEvent<TElement extends Element = HTMLElement>
 }
 
 /**
- * Emitted continuously during drag gesture movements
+ * Emitted continuously on every pointer movement during drag gesture movements
  * while this draggable hovers over a droppable.
  * 
  * Carries the droppable's metadata along with a mutable `dragResponse` field
@@ -154,7 +154,7 @@ export interface DragHandshakeEvent<TElement extends Element = HTMLElement>
 }
 
 /**
- * Emitted continuously during drag gesture movements
+ * Emitted continuously on every pointer movement during drag gesture movements
  * while a draggable hovers over this droppable.
  * 
  * Carries the draggable's payload along with a mutable `dropResponse` field
@@ -204,7 +204,7 @@ export interface DropHandshakeEvent<TElement extends Element = HTMLElement>
 // Evaluations:
 
 /**
- * Emitted continuously after handshake negotiation,
+ * Emitted continuously on every pointer movement after handshake negotiation,
  * reflecting the current acceptance/rejection state.
  * 
  * Enables live feedback from both sides during a drag gesture,
@@ -240,14 +240,21 @@ export interface DragDropEvaluationEvent<TElement extends Element = HTMLElement>
 }
 
 /**
- * Emitted continuously after handshake negotiation,
- * reflecting the current acceptance/rejection state.
+ * Emitted continuously on every pointer movement after handshake negotiation,
+ * reflecting the current acceptance/rejection state and providing droppable metadata.
  * 
  * Enables live feedback from the draggable side during a drag gesture,
  * such as "drop here" indicators, cursor changes,
  * or other contextual hints.
  * 
  * Extends a React `PointerEvent` with drag-drop responses and droppable metadata.
+ * 
+ * Unlike `DraggableState`, which only updates on metadata/acceptance changes,
+ * this event emits *aggressively* on every pointer move.
+ * Consider debouncing for performance.
+ * 
+ * Use this when you need **detailed UX feedback** (hint following cursor, floating preview, tooltip)
+ * tied to the currently hovered droppable, reacting to every pointer movement.
  */
 export interface DragEvaluationEvent<TElement extends Element = HTMLElement>
     extends
@@ -268,14 +275,21 @@ export interface DragEvaluationEvent<TElement extends Element = HTMLElement>
 }
 
 /**
- * Emitted continuously after handshake negotiation,
- * reflecting the current acceptance/rejection state.
+ * Emitted continuously on every pointer movement after handshake negotiation,
+ * reflecting the current acceptance/rejection state and providing draggable payload.
  * 
  * Enables live feedback from the droppable side during a drag gesture,
  * such as "drop here" highlights, glow effects,
  * or other contextual hints.
  * 
  * Extends a React `PointerEvent` with drag-drop responses and draggable payload.
+ * 
+ * Unlike `DroppableState`, which only updates on payload/acceptance changes,
+ * this event emits *aggressively* on every pointer move.
+ * Consider debouncing for performance.
+ * 
+ * Use this when you need **detailed UX feedback** (hint following cursor, floating preview, tooltip)
+ * tied to the currently hovered draggable, reacting to every pointer movement.
  */
 export interface DropEvaluationEvent<TElement extends Element = HTMLElement>
     extends
@@ -458,7 +472,7 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
     /**
      * Validates the target's business context (metadata) and responds with acceptance or rejection.
      * 
-     * Invoked continuously during drag gesture movements
+     * Invoked continuously on every pointer movement during drag gesture movements
      * while this draggable hovers over a droppable.
      * 
      * The handler communicates its decision by mutating `event.dragResponse`.
@@ -475,8 +489,15 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
      * such as "drop here" indicators, cursor changes,
      * or other contextual hints.
      * 
-     * Invoked continuously after handshake negotiation,
-     * reflecting the current acceptance/rejection state.
+     * Invoked continuously on every pointer movement after handshake negotiation,
+     * reflecting the current acceptance/rejection state and providing droppable metadata.
+     * 
+     * Unlike `DraggableState`, which only updates on metadata/acceptance changes,
+     * this event emits *aggressively* on every pointer move.
+     * Consider debouncing for performance.
+     * 
+     * Use this when you need **detailed UX feedback** (hint following cursor, floating preview, tooltip)
+     * tied to the currently hovered droppable, reacting to every pointer movement.
      */
     onDragEvaluation ?: EventHandler<DragEvaluationEvent<TElement>>
     
@@ -531,7 +552,7 @@ export interface DroppableStateProps<TElement extends Element = HTMLElement> {
     /**
      * Validates the actual data being dragged (payload) and responds with acceptance or rejection.
      * 
-     * Invoked continuously during drag gesture movements
+     * Invoked continuously on every pointer movement during drag gesture movements
      * while a draggable hovers over this droppable.
      * 
      * The handler communicates its decision by mutating `event.dropResponse`.
@@ -548,8 +569,15 @@ export interface DroppableStateProps<TElement extends Element = HTMLElement> {
      * such as "drop here" highlights, glow effects,
      * or other contextual hints.
      * 
-     * Invoked continuously after handshake negotiation,
-     * reflecting the current acceptance/rejection state.
+     * Invoked continuously on every pointer movement after handshake negotiation,
+     * reflecting the current acceptance/rejection state and providing draggable payload.
+     * 
+     * Unlike `DroppableState`, which only updates on payload/acceptance changes,
+     * this event emits *aggressively* on every pointer move.
+     * Consider debouncing for performance.
+     * 
+     * Use this when you need **detailed UX feedback** (hint following cursor, floating preview, tooltip)
+     * tied to the currently hovered draggable, reacting to every pointer movement.
      */
     onDropEvaluation ?: EventHandler<DropEvaluationEvent<TElement>>
     
@@ -571,9 +599,16 @@ export interface DroppableStateProps<TElement extends Element = HTMLElement> {
  * Represents the reactive draggable state reflecting the current drag activity status
  * and evaluation outcome for this specific draggable source.
  * 
- * Unlike `DragEvaluationEvent`, which always carries the active droppable's metadata,
- * this state only exposes metadata and acceptance when the draggable is
- * actually hovering over a droppable zone and both sides have agreed.
+ * Enables live feedback from the draggable side during a drag gesture,
+ * such as "drop here" indicators, cursor changes,
+ * or other contextual hints.
+ * 
+ * Unlike `DragEvaluationEvent`, which emits continuously on every pointer movement,
+ * this state only updates when metadata or acceptance changes — making it
+ * lightweight and stable for rendering hints or previews.
+ * 
+ * Use this when you need **simple UX feedback** (highlight, preview, tooltip)
+ * tied to the agreed droppable, without reacting to every pointer movement.
  */
 export interface DraggableState<TElement extends Element = HTMLElement> {
     // Data:
@@ -605,7 +640,8 @@ export interface DraggableState<TElement extends Element = HTMLElement> {
      * - Either side explicitly rejected (`false`).
      * 
      * Differs from `DragEvaluationEvent.dropMetadata`,
-     * which is always reported during a drag gesture (undefined only when not hovering),
+     * which is always reported during a drag gesture
+     * (undefined only when not hovering),
      * whereas here it is stricter: metadata is only preserved when the draggable
      * is actively hovering and both sides have agreed.
      */
@@ -628,9 +664,16 @@ export interface DraggableState<TElement extends Element = HTMLElement> {
  * Represents the reactive droppable state reflecting the current drop activity status
  * and evaluation outcome for this specific droppable target.
  * 
- * Unlike `DropEvaluationEvent`, which always carries the active draggable's payload,
- * this state only exposes payload and acceptance when the draggable is
- * actually hovering over this droppable zone and both sides have agreed.
+ * Enables live feedback from the droppable side during a drag gesture,
+ * such as "drop here" highlights, glow effects,
+ * or other contextual hints.
+ * 
+ * Unlike `DropEvaluationEvent`, which emits continuously on every pointer movement,
+ * this state only updates when payload or acceptance changes — making it
+ * lightweight and stable for rendering hints or previews.
+ * 
+ * Use this when you need **simple UX feedback** (highlight, preview, tooltip)
+ * tied to the agreed draggable, without reacting to every pointer movement.
  */
 export interface DroppableState<TElement extends Element = HTMLElement> {
     // Data:
@@ -663,7 +706,9 @@ export interface DroppableState<TElement extends Element = HTMLElement> {
      * 
      * Differs from `DropEvaluationEvent.dragPayload`,
      * which is always available during a drag gesture
-     * regardless of handshake outcome.
+     * regardless of handshake outcome,
+     * whereas here it is stricter: payload is only preserved when the draggable
+     * is actively hovering and both sides have agreed.
      */
     dragPayload  : DragPayload | undefined
     
