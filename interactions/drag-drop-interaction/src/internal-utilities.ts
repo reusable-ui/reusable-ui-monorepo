@@ -282,13 +282,13 @@ const clearActiveDroppable               = ({
      */
     setDropMetadata         : Dispatch<DraggableState<Element>['dropMetadata']>
 }): void => {
-    // Skip if no active droppable exists:
-    const prevState = activeDroppableRef.current;
-    if (prevState) {
+    // Clear active droppable:
+    const activeDroppableState = activeDroppableRef.current;
+    if (activeDroppableState) {
         // Clear the previously active droppable entry and its bundled data:
-        prevState.entry.setDropStatus(null);       // Drag gesture active but outside any droppable zone.
-        prevState.entry.setDragPayload(undefined); // Clear payload.
-        activeDroppableRef.current = null;         // Clear active droppable reference and its bundled data.
+        activeDroppableState.entry.setDropStatus(null);       // Drag gesture active but outside any droppable zone.
+        activeDroppableState.entry.setDragPayload(undefined); // Clear payload.
+        activeDroppableRef.current = null;                    // Clear active droppable reference and its bundled data.
     } // if
     
     
@@ -363,15 +363,15 @@ const swapActiveDroppable               = <TElement extends Element = HTMLElemen
     
     
     // Skip if both entry and acceptance are unchanged:
-    const prevState = activeDroppableRef.current;
-    if ((activeDroppableEntry === prevState?.entry) && (isAccepted === prevState.isAccepted)) return;
+    const activeDroppableState = activeDroppableRef.current;
+    if ((activeDroppableEntry === activeDroppableState?.entry) && (isAccepted === activeDroppableState.isAccepted)) return;
     
     
     
     // If entry changed, cleanup previous droppable (droppable side):
-    if (prevState && (prevState.entry !== activeDroppableEntry)) {
-        prevState.entry.setDropStatus(null);       // Drag gesture active but outside this zone.
-        prevState.entry.setDragPayload(undefined); // Clear payload.
+    if (activeDroppableState && (activeDroppableState.entry !== activeDroppableEntry)) {
+        activeDroppableState.entry.setDropStatus(null);       // Drag gesture active but outside this zone.
+        activeDroppableState.entry.setDragPayload(undefined); // Clear payload.
     } // if
     
     
@@ -457,10 +457,10 @@ export const updateDragLifecycle          = ({
     
     if (!isSetup) {
         // Clear the previously active droppable entry and its bundled data:
-        const prevState = activeDroppableRef.current;
-        if (prevState) {
-            prevState.entry.setDragPayload(undefined); // Clear payload.
-            activeDroppableRef.current = null;         // Clear active droppable reference and its bundled data.
+        const activeDroppableState = activeDroppableRef.current;
+        if (activeDroppableState) {
+            activeDroppableState.entry.setDragPayload(undefined); // Clear payload.
+            activeDroppableRef.current = null;                    // Clear active droppable reference and its bundled data.
         } // if
     } // if
 };
