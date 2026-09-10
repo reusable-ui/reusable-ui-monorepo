@@ -99,7 +99,7 @@ and provides reactive state reflecting the current drag lifecycle.
 #### 💡 Usage Example
 
 ```tsx
-import React, { type FC, useRef, useMemo } from 'react';
+import React, { type FC, useMemo } from 'react';
 import { usePressState } from '@reusable-ui/press-state';
 import { useDragState } from '@reusable-ui/drag-state';
 import {
@@ -127,8 +127,6 @@ export const ProductCard: FC<ProductCardProps> = ({ productModel }) => {
         ]);
     }, [productModel]);
     
-    const dragCardRef = useRef<HTMLDivElement | null>(null);
-    
     // Tracks whether the pointer is currently pressed or released:
     const pressState = usePressState({
         pressed: 'auto',
@@ -141,15 +139,14 @@ export const ProductCard: FC<ProductCardProps> = ({ productModel }) => {
     });
     
     // Orchestrates the transaction logic for draggables:
-    const { dragStatus, dropMetadata } = useDraggableState({
-        dragRef      : dragCardRef,
+    const { dragStatus, dropMetadata, dragRef } = useDraggableState<HTMLDivElement>({
         dragPayload  : productPayload,
         dragEnabled  : true,
         computedDrag : dragState.dragged,
         
         // Prevent the ghost image itself (product card) from being considered a valid drop target:
-        dropPredicate(dropCandidate) {
-            const cardElement = dragCardRef.current;
+        dropPredicate(dropCandidate): boolean {
+            const cardElement = dragRef.current;
             return !cardElement || !cardElement.contains(dropCandidate);
         },
         
@@ -180,7 +177,7 @@ export const ProductCard: FC<ProductCardProps> = ({ productModel }) => {
     
     return (
         <div
-            ref={dragCardRef}
+            ref={dragRef}
             className={`product-card ${pressState.pressClassname} ${dragState.dragClassname}`}
             
             onAnimationStart={useMergedEventHandlers(pressState.handleAnimationStart, dragState.handleAnimationStart)}
@@ -224,7 +221,7 @@ and provides reactive state reflecting the current drop lifecycle.
 #### 💡 Usage Example
 
 ```tsx
-import React, { type FC, useRef, useMemo } from 'react';
+import React, { type FC, useMemo } from 'react';
 import {
     type DropMetadata,
     useDroppableState,
@@ -248,11 +245,8 @@ export const ProductCategory: FC<ProductCategoryProps> = ({ categoryModel }) => 
         ]);
     }, [categoryModel]);
     
-    const dropZoneRef = useRef<HTMLDivElement | null>(null);
-    
     // Orchestrates the transaction logic for droppables:
-    const { dropStatus, dragPayload } = useDroppableState({
-        dropRef      : dropZoneRef,
+    const { dropStatus, dragPayload, dropRef } = useDroppableState<HTMLDivElement>({
         dropMetadata : categoryMetadata,
         dropEnabled  : true,
         
@@ -282,7 +276,7 @@ export const ProductCategory: FC<ProductCategoryProps> = ({ categoryModel }) => 
     });
     
     return (
-        <div ref={dropZoneRef} className='product-category'>
+        <div ref={dropRef} className='product-category'>
             <h4>{categoryModel.name}</h4>
             <img src={categoryModel.icon} alt='Category' />
             
@@ -341,7 +335,7 @@ export const FileDropZone: FC = () => {
     // nativeDragIntegration.current?.disintegrate();
     
     // Orchestrates the file transaction logic for droppables:
-    const { dropStatus, dragPayload } = useDroppableState({
+    const { dropStatus, dragPayload } = useDroppableState<HTMLDivElement>({
         ......
     });
     
@@ -399,7 +393,7 @@ export const FileDropZone: FC = () => {
     }, []);
     
     // Orchestrates the file transaction logic for droppables:
-    const { dropStatus, dragPayload } = useDroppableState({
+    const { dropStatus, dragPayload } = useDroppableState<HTMLDivElement>({
         ......
     });
     

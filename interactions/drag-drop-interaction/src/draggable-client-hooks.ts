@@ -70,7 +70,7 @@ import {
  * 
  * @example
  * ```tsx
- * import React, { type FC, useRef, useMemo } from 'react';
+ * import React, { type FC, useMemo } from 'react';
  * import { usePressState } from '@reusable-ui/press-state';
  * import { useDragState } from '@reusable-ui/drag-state';
  * import {
@@ -98,8 +98,6 @@ import {
  *         ]);
  *     }, [productModel]);
  *     
- *     const dragCardRef = useRef<HTMLDivElement | null>(null);
- *     
  *     // Tracks whether the pointer is currently pressed or released:
  *     const pressState = usePressState({
  *         pressed: 'auto',
@@ -112,15 +110,14 @@ import {
  *     });
  *     
  *     // Orchestrates the transaction logic for draggables:
- *     const { dragStatus, dropMetadata } = useDraggableState({
- *         dragRef      : dragCardRef,
+ *     const { dragStatus, dropMetadata, dragRef } = useDraggableState<HTMLDivElement>({
  *         dragPayload  : productPayload,
  *         dragEnabled  : true,
  *         computedDrag : dragState.dragged,
  *         
  *         // Prevent the ghost image itself (product card) from being considered a valid drop target:
- *         dropPredicate(dropCandidate) {
- *             const cardElement = dragCardRef.current;
+ *         dropPredicate(dropCandidate): boolean {
+ *             const cardElement = dragRef.current;
  *             return !cardElement || !cardElement.contains(dropCandidate);
  *         },
  *         
@@ -151,7 +148,7 @@ import {
  *     
  *     return (
  *         <div
- *             ref={dragCardRef}
+ *             ref={dragRef}
  *             className={`product-card ${pressState.pressClassname} ${dragState.dragClassname}`}
  *             
  *             onAnimationStart={useMergedEventHandlers(pressState.handleAnimationStart, dragState.handleAnimationStart)}
@@ -187,7 +184,7 @@ import {
  * };
  * ```
  */
-export const useDraggableState = <TElement extends Element = HTMLElement>(props: DraggableStateProps<TElement> & Parameters<typeof useResolvedDisabled>[0]): DraggableState => {
+export const useDraggableState = <TElement extends Element = HTMLElement>(props: DraggableStateProps<TElement> & Parameters<typeof useResolvedDisabled>[0]): DraggableState<TElement> => {
     // Resolve whether the component is disabled:
     const isDisabled = useResolvedDisabled(props);
     
@@ -197,11 +194,6 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     const {
         // Data:
         dragPayload  = emptyMap satisfies DragPayload,
-        
-        
-        
-        // Refs:
-        dragRef      = null,
         
         
         
@@ -224,9 +216,9 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     
     
     
-    // Normalize React ref to DOM element:
-    // - Unwraps the underlying DOM element if passed as a React Ref object.
-    const dragElement : TElement | null = dragRef && ('current' in dragRef) ? dragRef.current : dragRef;
+    // Ref to the draggable DOM element:
+    const dragRef     = useRef<TElement | null>(null);
+    const dragElement = dragRef.current;
     
     
     
@@ -243,8 +235,8 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     
     // Reactive states:
     // - State setters are stable by design, no need to re-syncs or deps in `useEffect()`.
-    const [dragStatus  , setDragStatus  ] = useState<DraggableState['dragStatus'  ]>(undefined);
-    const [dropMetadata, setDropMetadata] = useState<DraggableState['dropMetadata']>(undefined);
+    const [dragStatus  , setDragStatus  ] = useState<DraggableState<TElement>['dragStatus'  ]>(undefined);
+    const [dropMetadata, setDropMetadata] = useState<DraggableState<TElement>['dropMetadata']>(undefined);
     
     
     
@@ -422,5 +414,6 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     return {
         dragStatus,
         dropMetadata,
-    } satisfies DraggableState;
+        dragRef,
+    } satisfies DraggableState<TElement>;
 };

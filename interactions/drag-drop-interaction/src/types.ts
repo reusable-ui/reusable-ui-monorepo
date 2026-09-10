@@ -404,20 +404,6 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
     
     
     
-    // Refs:
-    
-    /**
-     * The reference to the DOM element that serves as the draggable source.
-     * 
-     * If `null` or resolves to `null`, the zone is treated as disabled
-     * (equivalent to `dragEnabled = false`).
-     * 
-     * Defaults to `null` (no DOM element reference).
-     */
-    dragRef          ?: RefObject<TElement | null> | TElement | null
-    
-    
-    
     // Behaviors:
     
     /**
@@ -523,20 +509,6 @@ export interface DroppableStateProps<TElement extends Element = HTMLElement> {
     
     
     
-    // Refs:
-    
-    /**
-     * The reference to the DOM element that serves as the droppable target.
-     * 
-     * If `null` or resolves to `null`, the zone is treated as disabled
-     * (equivalent to `dropEnabled = false`).
-     * 
-     * Defaults to `null` (no DOM element reference).
-     */
-    dropRef          ?: RefObject<TElement | null> | TElement | null
-    
-    
-    
     // Behaviors:
     
     /**
@@ -603,7 +575,9 @@ export interface DroppableStateProps<TElement extends Element = HTMLElement> {
  * this state only exposes metadata and acceptance when the draggable is
  * actually hovering over a droppable zone and both sides have agreed.
  */
-export interface DraggableState {
+export interface DraggableState<TElement extends Element = HTMLElement> {
+    // Data:
+    
     /**
      * Represents whether a drag gesture is currently targeting a droppable zone:
      * - `undefined` → no drag activity at all
@@ -636,6 +610,18 @@ export interface DraggableState {
      * is actively hovering and both sides have agreed.
      */
     dropMetadata : DropMetadata | undefined
+    
+    
+    
+    // Refs:
+    
+    /**
+     * The reference to the DOM element that serves as the draggable source.
+     * 
+     * If resolves to `null`, the zone is treated as disabled
+     * (equivalent to `dragEnabled = false`).
+     */
+    dragRef      : RefObject<TElement | null>
 }
 
 /**
@@ -646,7 +632,9 @@ export interface DraggableState {
  * this state only exposes payload and acceptance when the draggable is
  * actually hovering over this droppable zone and both sides have agreed.
  */
-export interface DroppableState {
+export interface DroppableState<TElement extends Element = HTMLElement> {
+    // Data:
+    
     /**
      * Represents whether a drag gesture is currently targeting this droppable zone:
      * - `undefined` → no drag activity at all
@@ -678,6 +666,18 @@ export interface DroppableState {
      * regardless of handshake outcome.
      */
     dragPayload  : DragPayload | undefined
+    
+    
+    
+    // Refs:
+    
+    /**
+     * The reference to the DOM element that serves as the droppable target.
+     * 
+     * If resolves to `null`, the zone is treated as disabled
+     * (equivalent to `dropEnabled = false`).
+     */
+    dropRef      : RefObject<TElement | null>
 }
 
 

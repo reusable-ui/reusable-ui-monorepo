@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import {
     type DragPayload,
     type DroppableStateProps,
@@ -15,10 +15,8 @@ export interface DroppableStateTestProps
     index: number
 }
 export const DroppableStateTest = (props: DroppableStateTestProps) => {
-    const internalDropRef = useRef<HTMLDivElement | null>(null);
     const {
         index,
-        dropRef = internalDropRef,
         onDropHandshake = handleAcceptDropHandshake,
         dropMetadata,
     } = props;
@@ -27,9 +25,9 @@ export const DroppableStateTest = (props: DroppableStateTestProps) => {
     const {
         dropStatus,
         dragPayload,
-    } = useDroppableState({
-        ...props,
         dropRef,
+    } = useDroppableState<HTMLDivElement>({
+        ...props,
         onDropHandshake,
         onDropped(event) {
             setDropped(event.dragPayload);
@@ -39,7 +37,7 @@ export const DroppableStateTest = (props: DroppableStateTestProps) => {
     
     return (
         <div
-            ref={internalDropRef}
+            ref={dropRef}
             className='droppable-state-test'
             data-testid={`droppable-state-test-${index}`}
             data-status={String(dropStatus)}

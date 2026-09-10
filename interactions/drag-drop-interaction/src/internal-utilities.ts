@@ -275,12 +275,12 @@ const clearActiveDroppable               = ({
      * - `false`     → drag gesture active over a droppable zone but rejected by one or both sides
      * - `true`      → drag gesture active over a droppable zone and mutually accepted
      */
-    setDragStatus           : Dispatch<DraggableState['dragStatus'  ]>
+    setDragStatus           : Dispatch<DraggableState<Element>['dragStatus'  ]>
     /**
      * Updates the exposed metadata from the droppable target
      * currently hovered by this draggable.
      */
-    setDropMetadata         : Dispatch<DraggableState['dropMetadata']>
+    setDropMetadata         : Dispatch<DraggableState<Element>['dropMetadata']>
 }): void => {
     // Skip if no active droppable exists:
     const prevState = activeDroppableRef.current;
@@ -349,12 +349,12 @@ const swapActiveDroppable               = <TElement extends Element = HTMLElemen
      * - `false`     → drag gesture active over a droppable zone but rejected by one or both sides
      * - `true`      → drag gesture active over a droppable zone and mutually accepted
      */
-    setDragStatus           : Dispatch<DraggableState['dragStatus'  ]>
+    setDragStatus           : Dispatch<DraggableState<TElement>['dragStatus'  ]>
     /**
      * Updates the exposed metadata from the droppable target
      * currently hovered by this draggable.
      */
-    setDropMetadata         : Dispatch<DraggableState['dropMetadata']>
+    setDropMetadata         : Dispatch<DraggableState<TElement>['dropMetadata']>
 }): void => {
     // Determine if both sides accepted:
     // - `undefined` is treated as `false`.
@@ -435,12 +435,12 @@ export const updateDragLifecycle          = ({
      * - `false`     → drag gesture active over a droppable zone but rejected by one or both sides
      * - `true`      → drag gesture active over a droppable zone and mutually accepted
      */
-    setDragStatus           : Dispatch<DraggableState['dragStatus'  ]>
+    setDragStatus           : Dispatch<DraggableState<Element>['dragStatus'  ]>
     /**
      * Updates the exposed metadata from the droppable target
      * currently hovered by this draggable.
      */
-    setDropMetadata         : Dispatch<DraggableState['dropMetadata']>
+    setDropMetadata         : Dispatch<DraggableState<Element>['dropMetadata']>
 }): void => {
     // Mark draggable as active (null) or inactive (undefined):
     setDragStatus(isSetup ? null : undefined);
@@ -694,12 +694,12 @@ export const processDragProbe      = async <TElement extends Element = HTMLEleme
      * - `false`     → drag gesture active over a droppable zone but rejected by one or both sides
      * - `true`      → drag gesture active over a droppable zone and mutually accepted
      */
-    setDragStatus           : Dispatch<DraggableState['dragStatus'  ]>
+    setDragStatus           : Dispatch<DraggableState<TElement>['dragStatus'  ]>
     /**
      * Updates the exposed metadata from the droppable target
      * currently hovered by this draggable.
      */
-    setDropMetadata         : Dispatch<DraggableState['dropMetadata']>
+    setDropMetadata         : Dispatch<DraggableState<TElement>['dropMetadata']>
     
     // Utility functions:
     /**

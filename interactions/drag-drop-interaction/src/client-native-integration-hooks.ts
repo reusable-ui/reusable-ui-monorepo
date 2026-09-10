@@ -59,7 +59,7 @@ import {
  *     // nativeDragIntegration.current?.disintegrate();
  *     
  *     // Orchestrates the file transaction logic for droppables:
- *     const { dropStatus, dragPayload } = useDroppableState({
+ *     const { dropStatus, dragPayload } = useDroppableState<HTMLDivElement>({
  *         ......
  *     });
  *     

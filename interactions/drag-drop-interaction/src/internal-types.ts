@@ -99,13 +99,13 @@ export interface DroppableEntry<TElement extends Element = HTMLElement> {
      * - `false`     → drag gesture active over this zone but rejected by one or both sides
      * - `true`      → drag gesture active over this zone and mutually accepted
      */
-    setDropStatus        : Dispatch<DroppableState['dropStatus' ]>
+    setDropStatus        : Dispatch<DroppableState<TElement>['dropStatus' ]>
     
     /**
      * Updates the exposed payload from the draggable source
      * currently hovering over this droppable.
      */
-    setDragPayload       : Dispatch<DroppableState['dragPayload']>
+    setDragPayload       : Dispatch<DroppableState<TElement>['dragPayload']>
 }
 
 

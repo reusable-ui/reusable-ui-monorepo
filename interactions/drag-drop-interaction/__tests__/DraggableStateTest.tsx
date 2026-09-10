@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import {
     type DropMetadata,
     type DraggableStateProps,
@@ -15,10 +15,8 @@ export interface DraggableStateTestProps
     index: number
 }
 export const DraggableStateTest = (props: DraggableStateTestProps) => {
-    const internalDragRef = useRef<HTMLDivElement | null>(null);
     const {
         index,
-        dragRef = internalDragRef,
         computedDrag,
         onDragHandshake = handleAcceptDragHandshake,
         dragPayload,
@@ -28,9 +26,9 @@ export const DraggableStateTest = (props: DraggableStateTestProps) => {
     const {
         dragStatus,
         dropMetadata,
-    } = useDraggableState({
-        ...props,
         dragRef,
+    } = useDraggableState<HTMLDivElement>({
+        ...props,
         computedDrag,
         onDragHandshake,
         onDragged(event) {
@@ -41,7 +39,7 @@ export const DraggableStateTest = (props: DraggableStateTestProps) => {
     
     return (
         <div
-            ref={internalDragRef}
+            ref={dragRef}
             className='draggable-state-test'
             data-testid={`draggable-state-test-${index}`}
             data-status={String(dragStatus)}

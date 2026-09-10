@@ -61,7 +61,7 @@ import {
  * 
  * @example
  * ```tsx
- * import React, { type FC, useRef, useMemo } from 'react';
+ * import React, { type FC, useMemo } from 'react';
  * import {
  *     type DropMetadata,
  *     useDroppableState,
@@ -85,11 +85,8 @@ import {
  *         ]);
  *     }, [categoryModel]);
  *     
- *     const dropZoneRef = useRef<HTMLDivElement | null>(null);
- *     
  *     // Orchestrates the transaction logic for droppables:
- *     const { dropStatus, dragPayload } = useDroppableState({
- *         dropRef      : dropZoneRef,
+ *     const { dropStatus, dragPayload, dropRef } = useDroppableState<HTMLDivElement>({
  *         dropMetadata : categoryMetadata,
  *         dropEnabled  : true,
  *         
@@ -119,7 +116,7 @@ import {
  *     });
  *     
  *     return (
- *         <div ref={dropZoneRef} className='product-category'>
+ *         <div ref={dropRef} className='product-category'>
  *             <h4>{categoryModel.name}</h4>
  *             <img src={categoryModel.icon} alt='Category' />
  *             
@@ -142,7 +139,7 @@ import {
  * };
  * ```
  */
-export const useDroppableState = <TElement extends Element = HTMLElement>(props: DroppableStateProps<TElement> & Parameters<typeof useResolvedDisabled>[0]): DroppableState => {
+export const useDroppableState = <TElement extends Element = HTMLElement>(props: DroppableStateProps<TElement> & Parameters<typeof useResolvedDisabled>[0]): DroppableState<TElement> => {
     // Resolve whether the component is disabled:
     const isDisabled = useResolvedDisabled(props);
     
@@ -152,11 +149,6 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     const {
         // Data:
         dropMetadata = emptyMap satisfies DropMetadata,
-        
-        
-        
-        // Refs:
-        dropRef      = null,
         
         
         
@@ -173,9 +165,9 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     
     
     
-    // Normalize React ref to DOM element:
-    // - Unwraps the underlying DOM element if passed as a React Ref object.
-    const dropElement : TElement | null = dropRef && ('current' in dropRef) ? dropRef.current : dropRef;
+    // Ref to the droppable DOM element:
+    const dropRef     = useRef<TElement | null>(null);
+    const dropElement = dropRef.current;
     
     
     
@@ -192,8 +184,8 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     
     // Reactive states:
     // - State setters are stable by design, no need to re-syncs in the registry entry.
-    const [dropStatus , setDropStatus ] = useState<DroppableState['dropStatus' ]>(undefined);
-    const [dragPayload, setDragPayload] = useState<DroppableState['dragPayload']>(undefined);
+    const [dropStatus , setDropStatus ] = useState<DroppableState<TElement>['dropStatus' ]>(undefined);
+    const [dragPayload, setDragPayload] = useState<DroppableState<TElement>['dragPayload']>(undefined);
     
     
     
@@ -276,5 +268,6 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     return {
         dropStatus,
         dragPayload,
-    } satisfies DroppableState;
+        dropRef,
+    } satisfies DroppableState<TElement>;
 };
