@@ -1,16 +1,12 @@
 // React:
 import {
     // Types:
-    type PointerEvent as ReactPointerEvent,
     type Dispatch,
     type RefObject,
 }                           from 'react'
 
 // Types:
 import {
-    // Data:
-    type DragPayload,
-    
     // Handshakes:
     type DragHandshakeEvent,
     type DropHandshakeEvent,
@@ -24,6 +20,9 @@ import {
 import {
     type DroppableEntry,
     type ActiveDroppableState,
+    
+    // Probings:
+    type DragProbeEvent,
 }                           from './internal-types.js'
 
 // Utilities:
@@ -140,9 +139,6 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
     // Events:
     dragProbeEvent,
     
-    // Data:
-    dragPayload,
-    
     // Stable event handlers:
     handleDragHandshake,
 }: {
@@ -150,13 +146,7 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
     /**
      * The originating probe event.
      */
-    dragProbeEvent          : ReactPointerEvent<TElement>
-    
-    // Data:
-    /**
-     * Carries the actual data being dragged (payload) from the draggable source.
-     */
-    dragPayload             : DragPayload
+    dragProbeEvent          : DragProbeEvent<TElement>
     
     // Stable event handlers:
     /**
@@ -201,7 +191,6 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
             dropElement,
             
             // Data:
-            dragPayload,
             dropMetadata,
             
             // Stable event handlers:
@@ -729,8 +718,66 @@ export const processDragProbe      = async <TElement extends Element = HTMLEleme
     // Resolve the top-most element under the cursor:
     // - Ignore the "ghost dragging image".
     const pointedElement = resolvePointedElement(pointerMoveEvent, dropPredicate);
-    // No element under the pointer → abort:
+    
+    // Create a synthetic probe event for the current pointer position:
+    const dragProbeEvent = createDragProbeEvent<TElement>({
+        // Event metadata:
+        pointerMoveEvent,
+        dragElement,
+        pointedElement,
+        
+        // Data:
+        dragPayload,
+    });
+    
+    
+    
+    // If no element under the pointer → "no contact":
     if (!pointedElement) {
+        clearActiveDroppable({
+            // Actual states:
+            activeDroppableRef,
+            
+            // Reactive states:
+            setDragStatus,
+            setDropMetadata,
+        });
+        
+        // Dispatch "no contact" evaluation events:
+        dispatchEvaluationEvents<TElement>({
+            // Event metadata:
+            dragHandshakeEvent   : dragProbeEvent, // No handshake was performed (no contact) → fallback to probe event.
+            dropHandshakeEvent   : dragProbeEvent, // No handshake was performed (no contact) → fallback to probe event.
+            
+            // Data:
+            activeDroppableEntry : null, // All droppables are inactive due to no contact.
+            
+            // Stable event handlers:
+            handleDragEvaluation,
+        });
+        
+        return;
+    } // if
+    
+    
+    
+    // Initiate handshake negotiation between draggable and droppable:
+    const negotiationResult = await attemptNegotiation<TElement>({
+        // Events:
+        dragProbeEvent,
+        
+        // Stable event handlers:
+        handleDragHandshake,
+    });
+    
+    
+    
+    // Abort probing if:
+    // - Draggable element is missing.
+    // - Component has been unmounted during async wait.
+    // - Draggable is disabled.
+    // - Droppable is disabled (if has negotiation).
+    if (!isDragReady() || (negotiationResult && !negotiationResult.activeDroppableEntry.dropEnabled)) {
         clearActiveDroppable({
             // Actual states:
             activeDroppableRef,
@@ -745,24 +792,7 @@ export const processDragProbe      = async <TElement extends Element = HTMLEleme
     
     
     
-    // Initiate handshake negotiation between draggable and droppable:
-    const dragProbeEvent = createDragProbeEvent<TElement>({
-        // Event metadata:
-        pointerMoveEvent,
-        dragElement,
-        pointedElement,
-    });
-    const negotiationResult = await attemptNegotiation<TElement>({
-        // Events:
-        dragProbeEvent,
-        
-        // Data:
-        dragPayload,
-        
-        // Stable event handlers:
-        handleDragHandshake,
-    });
-    // No negotiation → abort:
+    // No negotiation → assume as "no contact":
     if (!negotiationResult) {
         clearActiveDroppable({
             // Actual states:
@@ -771,6 +801,19 @@ export const processDragProbe      = async <TElement extends Element = HTMLEleme
             // Reactive states:
             setDragStatus,
             setDropMetadata,
+        });
+        
+        // Dispatch "no contact" evaluation events:
+        dispatchEvaluationEvents<TElement>({
+            // Event metadata:
+            dragHandshakeEvent   : dragProbeEvent, // No handshake was performed (no contact) → fallback to probe event.
+            dropHandshakeEvent   : dragProbeEvent, // No handshake was performed (no contact) → fallback to probe event.
+            
+            // Data:
+            activeDroppableEntry : null, // All droppables are inactive due to no contact.
+            
+            // Stable event handlers:
+            handleDragEvaluation,
         });
         
         return;
@@ -787,26 +830,6 @@ export const processDragProbe      = async <TElement extends Element = HTMLEleme
         // Data:
         activeDroppableEntry,
     } = negotiationResult;
-    
-    
-    
-    // Abort evaluation if:
-    // - Draggable element is missing.
-    // - Component has been unmounted during async wait.
-    // - Draggable is disabled.
-    // - Droppable is disabled.
-    if (!isDragReady() || !activeDroppableEntry.dropEnabled) {
-        clearActiveDroppable({
-            // Actual states:
-            activeDroppableRef,
-            
-            // Reactive states:
-            setDragStatus,
-            setDropMetadata,
-        });
-        
-        return;
-    } // if
     
     
     

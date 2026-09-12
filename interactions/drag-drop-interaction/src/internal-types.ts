@@ -2,6 +2,7 @@
 import {
     // Types:
     type Dispatch,
+    type PointerEvent as ReactPointerEvent,
 }                           from 'react'
 
 // Reusable-ui utilities:
@@ -13,6 +14,7 @@ import {
 // Types:
 import {
     // Data:
+    type DragPayload,
     type DropMetadata,
     
     // Handshakes:
@@ -147,4 +149,26 @@ export interface ActiveDroppableState {
      * The most recent native 'pointerup' event from the browser captured during a drag gesture.
      */
     lastPointerUpEvent ?: PointerEvent
+}
+
+
+
+// Probings:
+
+/**
+ * Emitted continuously on every pointer movement during a drag gesture.
+ * 
+ * Carries the current pointer position and the draggable's payload.
+ * 
+ * Used for hit-testing for searching the top-most droppable under the pointer.
+ */
+export interface DragProbeEvent<TElement extends Element = HTMLElement>
+    extends
+        // Bases:
+        ReactPointerEvent<TElement>
+{
+    /**
+     * The payload associated with the current drag gesture.
+     */
+    readonly dragPayload  : DragPayload
 }
