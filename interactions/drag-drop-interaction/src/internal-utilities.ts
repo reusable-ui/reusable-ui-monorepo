@@ -259,6 +259,7 @@ const clearActiveDroppable                = ({
      * - `false`: The draggable is unmounted.
      * 
      * Prevents accidental state updates after unmounted.
+     * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
      */
     isMountedRef            : RefObject<boolean | undefined>
     /**
@@ -341,6 +342,7 @@ const swapActiveDroppable                 = <TElement extends Element = HTMLElem
      * - `false`: The draggable is unmounted.
      * 
      * Prevents accidental state updates after unmounted.
+     * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
      */
     isMountedRef            : RefObject<boolean | undefined>
     /**
@@ -443,6 +445,7 @@ export const updateDragLifecycle          = ({
      * - `false`: The draggable is unmounted.
      * 
      * Prevents accidental state updates after unmounted.
+     * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
      */
     isMountedRef            : RefObject<boolean | undefined>
     /**
@@ -722,6 +725,7 @@ export const processDragProbe      = async <TElement extends Element = HTMLEleme
      * - `false`: The draggable is unmounted.
      * 
      * Prevents accidental state updates after unmounted.
+     * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
      */
     isMountedRef            : RefObject<boolean | undefined>
     

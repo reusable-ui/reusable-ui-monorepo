@@ -247,6 +247,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     
     // Tracks whether the component is mounted:
     // - Prevents accidental state updates after unmounted.
+    //   E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
     const isMountedRef       = useMountedFlag();
     
     // Tracks the currently active droppable state:
