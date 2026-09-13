@@ -246,8 +246,8 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     // Lifecycle flags:
     
     // Tracks whether the component is mounted:
-    // - Prevents state updates after unmount during async operations.
-    const isMounted = useMountedFlag();
+    // - Prevents accidental state updates after unmounted.
+    const isMountedRef       = useMountedFlag();
     
     // Tracks the currently active droppable state:
     // - Holds both the active entry and its acceptance flag together.
@@ -270,7 +270,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
      *   even if the hook re-renders during an async sequence.
      */
     const isDragReady = useStableCallback((): boolean =>
-        !!dragElement && !!isMounted.current && !!dragEnabled
+        !!dragElement && !!isMountedRef.current && !!dragEnabled
     );
     
     
@@ -298,6 +298,9 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
             // Stable event handlers:
             handleDragHandshake,
             handleDragEvaluation,
+            
+            // Actual states:
+            isMountedRef,
             
             // Reactive states:
             setDragStatus,
@@ -347,6 +350,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
             isSetup: true, // ⚙️ `true` → setup
             
             // Actual states:
+            isMountedRef,
             activeDroppableRef,
             
             // Reactive states:
@@ -392,6 +396,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
                 isSetup: false, // 🧹 `false` → cleanup
                 
                 // Actual states:
+                isMountedRef,
                 activeDroppableRef,
                 
                 // Reactive states:

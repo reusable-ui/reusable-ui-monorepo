@@ -34,6 +34,10 @@ import {
 
 // States:
 
+// Tracks whether the component is mounted (integrated):
+// - Prevents accidental state updates after unmounted (disintegrated).
+export const isMountedRef       : RefObject<boolean | undefined>         = { current: false };
+
 /**
  * Tracks the currently active droppable state:
  * - Holds both the active entry and its acceptance flag together.

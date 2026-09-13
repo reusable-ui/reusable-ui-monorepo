@@ -21,6 +21,7 @@ import {
 }                           from './internal-utilities.js'
 import {
     // States:
+    isMountedRef,
     activeDroppableRef,
     dragPayloadRef,
     
@@ -78,6 +79,7 @@ const handleGlobalDragStart = (event: DragEvent): void => {
         isSetup: true, // ⚙️ `true` → setup
         
         // Actual states:
+        isMountedRef,
         activeDroppableRef,
         
         // Reactive states:
@@ -100,6 +102,7 @@ const handleGlobalDragEnd   = (): void => {
         isSetup: false, // 🧹 `false` → cleanup
         
         // Actual states:
+        isMountedRef,
         activeDroppableRef,
         
         // Reactive states:
@@ -134,6 +137,9 @@ const handleGlobalDragOver  = (event: DragEvent): void => {
         // Stable event handlers:
         handleDragHandshake,
         handleDragEvaluation,
+        
+        // Actual states:
+        isMountedRef,
         
         // Reactive states:
         setDragStatus,
@@ -195,6 +201,7 @@ const handleGlobalDrop      = (event: DragEvent): void => {
  */
 const setupGlobalIntegration = (): void => {
     // Setups:
+    isMountedRef.current = true;
     globalAbortController = new AbortController();
     const options : AddEventListenerOptions = { signal: globalAbortController.signal };
     document.addEventListener('dragstart', handleGlobalDragStart, options);
@@ -213,6 +220,7 @@ const setupGlobalIntegration = (): void => {
  */
 const cleanupGlobalIntegration = (): void => {
     // Cleanups:
+    isMountedRef.current = false;
     globalAbortController?.abort();
     globalAbortController = null;
     
