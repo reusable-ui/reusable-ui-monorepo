@@ -198,7 +198,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     
     // Lifecycle flags:
     
-    // Tracks whether the component is mounted:
+    // Tests whether the component is still mounted:
     // - Prevents accidental state updates after unmounted.
     //   E.g., clearing the previously active droppable (but now unmounted) when switching to another droppable.
     const isMountedRef      = useMountedFlag();

@@ -253,7 +253,7 @@ const clearActiveDroppable                = ({
 }: {
     // Actual states:
     /**
-     * Tracks whether the draggable component is mounted:
+     * Tests whether the draggable component is still mounted:
      * - `undefined`: The draggable is not yet mounted.
      * - `true`: The draggable is currently mounted.
      * - `false`: The draggable is unmounted.
@@ -339,7 +339,7 @@ const swapActiveDroppable                 = <TElement extends Element = HTMLElem
     
     // Actual states:
     /**
-     * Tracks whether the draggable component is mounted:
+     * Tests whether the draggable component is still mounted:
      * - `undefined`: The draggable is not yet mounted.
      * - `true`: The draggable is currently mounted.
      * - `false`: The draggable is unmounted.
@@ -447,7 +447,7 @@ export const updateDragLifecycle          = ({
     
     // Actual states:
     /**
-     * Tracks whether the draggable component is mounted:
+     * Tests whether the draggable component is still mounted:
      * - `undefined`: The draggable is not yet mounted.
      * - `true`: The draggable is currently mounted.
      * - `false`: The draggable is unmounted.
@@ -732,7 +732,7 @@ export const processDragProbe      = async <TElement extends Element = HTMLEleme
     
     // Actual states:
     /**
-     * Tracks whether the draggable component is mounted:
+     * Tests whether the draggable component is still mounted:
      * - `undefined`: The draggable is not yet mounted.
      * - `true`: The draggable is currently mounted.
      * - `false`: The draggable is unmounted.

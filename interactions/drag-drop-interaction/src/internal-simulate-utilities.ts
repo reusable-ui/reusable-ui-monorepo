@@ -34,7 +34,7 @@ import {
 
 // States:
 
-// Tracks whether the component is mounted (integrated):
+// Tests whether the component is still mounted (integrated):
 // - Prevents accidental state updates after unmounted (disintegrated).
 //   E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
 export const isMountedRef       : RefObject<boolean | undefined>         = { current: false };

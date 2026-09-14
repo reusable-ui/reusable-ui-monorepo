@@ -96,7 +96,7 @@ export interface DroppableEntry<TElement extends Element = HTMLElement> {
     // Actual states:
     
     /**
-     * Tracks whether the droppable component is mounted:
+     * Tests whether the droppable component is still mounted:
      * - `undefined`: The droppable is not yet mounted.
      * - `true`: The droppable is currently mounted.
      * - `false`: The droppable is unmounted.
