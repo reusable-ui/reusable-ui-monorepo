@@ -606,14 +606,14 @@ export const dispatchEvaluationEvents     = <TElement extends Element = HTMLElem
         dragResponse: ('dragResponse' in dragHandshakeEvent) ? dragHandshakeEvent.dragResponse : undefined, // No dragResponse for non-handshake events.
         isTargeted: false, // Not the current target (broadcast only).
     });
-    for (const droppableEntry of droppableRegistry.values()) {
+    for (const eachDroppableEntry of droppableRegistry.values()) {
         // Skip the active droppable:
-        if (droppableEntry === activeDroppableEntry) continue;
+        if (eachDroppableEntry === activeDroppableEntry) continue;
         
         // Skip disabled droppables:
-        if (!droppableEntry.dropEnabled) continue;
+        if (!eachDroppableEntry.dropEnabled) continue;
         
-        droppableEntry.handleDropEvaluation(inactiveDropEvaluationEvent);
+        eachDroppableEntry.handleDropEvaluation(inactiveDropEvaluationEvent);
     } // for
 };
 
