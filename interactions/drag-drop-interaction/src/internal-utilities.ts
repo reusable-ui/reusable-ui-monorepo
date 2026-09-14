@@ -254,9 +254,9 @@ const clearActiveDroppable                = ({
     // Actual states:
     /**
      * Tests whether the draggable component is still mounted:
-     * - `undefined`: The draggable is not yet mounted.
-     * - `true`: The draggable is currently mounted.
-     * - `false`: The draggable is unmounted.
+     * - `undefined`: The draggable has not yet mounted.
+     * - `true`: The draggable is still mounted.
+     * - `false`: The draggable has been unmounted.
      * 
      * Prevents accidental state updates after unmounted.
      * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
@@ -340,9 +340,9 @@ const swapActiveDroppable                 = <TElement extends Element = HTMLElem
     // Actual states:
     /**
      * Tests whether the draggable component is still mounted:
-     * - `undefined`: The draggable is not yet mounted.
-     * - `true`: The draggable is currently mounted.
-     * - `false`: The draggable is unmounted.
+     * - `undefined`: The draggable has not yet mounted.
+     * - `true`: The draggable is still mounted.
+     * - `false`: The draggable has been unmounted.
      * 
      * Prevents accidental state updates after unmounted.
      * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
@@ -448,9 +448,9 @@ export const updateDragLifecycle          = ({
     // Actual states:
     /**
      * Tests whether the draggable component is still mounted:
-     * - `undefined`: The draggable is not yet mounted.
-     * - `true`: The draggable is currently mounted.
-     * - `false`: The draggable is unmounted.
+     * - `undefined`: The draggable has not yet mounted.
+     * - `true`: The draggable is still mounted.
+     * - `false`: The draggable has been unmounted.
      * 
      * Prevents accidental state updates after unmounted.
      * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
@@ -733,9 +733,9 @@ export const processDragProbe      = async <TElement extends Element = HTMLEleme
     // Actual states:
     /**
      * Tests whether the draggable component is still mounted:
-     * - `undefined`: The draggable is not yet mounted.
-     * - `true`: The draggable is currently mounted.
-     * - `false`: The draggable is unmounted.
+     * - `undefined`: The draggable has not yet mounted.
+     * - `true`: The draggable is still mounted.
+     * - `false`: The draggable has been unmounted.
      * 
      * Prevents accidental state updates after unmounted.
      * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
