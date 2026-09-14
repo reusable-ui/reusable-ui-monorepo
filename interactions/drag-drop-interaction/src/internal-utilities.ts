@@ -612,8 +612,8 @@ export const lazyInitializeDroppableEntry = <TElement extends Element = HTMLElem
      */
     droppableEntryRef       : RefObject<DroppableEntry<TElement> | undefined>
 }): DroppableEntry<TElement> => {
-    const droppableEntry = droppableEntryRef.current;
-    if (droppableEntry) return droppableEntry;
+    const initializedDroppableEntry = droppableEntryRef.current;
+    if (initializedDroppableEntry) return initializedDroppableEntry;
     
     
     
