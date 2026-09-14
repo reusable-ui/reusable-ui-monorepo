@@ -11,6 +11,10 @@ import {
 // Reusable-ui utilities:
 import {
     // Hooks:
+    useMountedFlag,
+}                           from '@reusable-ui/lifecycles'          // A React utility package for managing component lifecycles, ensuring stable effects, and optimizing state updates.
+import {
+    // Hooks:
     useStableEventHandler,
 }                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
 
@@ -192,6 +196,15 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     
     
     
+    // Lifecycle flags:
+    
+    // Tracks whether the component is mounted:
+    // - Prevents accidental state updates after unmounted.
+    //   E.g., clearing the previously active droppable (but now unmounted) when switching to another droppable.
+    const isMountedRef      = useMountedFlag();
+    
+    
+    
     // Registry entry reference:
     const droppableEntryRef = useRef<DroppableEntry<TElement>>(undefined);
     const droppableEntry    = lazyInitializeDroppableEntry<TElement>({
@@ -208,6 +221,9 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
         handleDropHandshake,
         handleDropEvaluation,
         handleDropped,
+        
+        // Actual states:
+        isMountedRef,
         
         // Reactive states:
         setDropStatus,

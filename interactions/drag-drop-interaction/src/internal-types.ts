@@ -3,6 +3,7 @@ import {
     // Types:
     type Dispatch,
     type PointerEvent as ReactPointerEvent,
+    type RefObject,
 }                           from 'react'
 
 // Reusable-ui utilities:
@@ -89,6 +90,21 @@ export interface DroppableEntry<TElement extends Element = HTMLElement> {
      * such as updating state, persisting data, or triggering side effects.
      */
     handleDropped        : EventHandler<DroppedEvent<TElement>>
+    
+    
+    
+    // Actual states:
+    
+    /**
+     * Tracks whether the droppable component is mounted:
+     * - `undefined`: The droppable is not yet mounted.
+     * - `true`: The droppable is currently mounted.
+     * - `false`: The droppable is unmounted.
+     * 
+     * Prevents accidental state updates after unmounted.
+     * E.g., clearing the previously active droppable (but now unmounted) when switching to another droppable.
+     */
+    isMountedRef         : RefObject<boolean | undefined>
     
     
     
