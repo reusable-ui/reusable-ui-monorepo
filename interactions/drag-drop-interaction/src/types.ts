@@ -90,6 +90,8 @@ export interface DragDropHandshakeEvent<TElement extends Element = HTMLElement>
         // Bases:
         PointerEvent<TElement>
 {
+    relatedTarget : EventTarget // Narrows down from `EventTarget | null` to `EventTarget` since the droppable element is already in contact.
+    
     /**
      * The handshake response state from the current side.
      * 
@@ -103,8 +105,6 @@ export interface DragDropHandshakeEvent<TElement extends Element = HTMLElement>
      * - `undefined` → ignored  (no feedback; user keeps searching for a valid drop zone)
      */
     response      : boolean | undefined
-    
-    relatedTarget : EventTarget // Narrows down from `EventTarget | null` to `EventTarget` since the droppable element is already in contact.
 }
 
 /**
