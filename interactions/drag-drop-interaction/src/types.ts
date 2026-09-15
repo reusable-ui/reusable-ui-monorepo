@@ -357,7 +357,23 @@ export interface DragDropCommittedEvent<TElement extends Element = HTMLElement>
         // Bases:
         PointerEvent<TElement>
 {
-    relatedTarget : EventTarget // Narrows down from `EventTarget | null` to `EventTarget` since the droppable element is already in contact.
+    relatedTarget         : EventTarget // Narrows down from `EventTarget | null` to `EventTarget` since the droppable element is already in contact.
+    
+    /**
+     * The payload delivered by the draggable source.
+     * 
+     * Allows the droppable to apply business logic for the payload
+     * (e.g. productId, file type, or other attributes) after approval.
+     */
+    readonly dragPayload  : DragPayload
+    
+    /**
+     * The metadata exposed by the accepted droppable target.
+     * 
+     * Allows the draggable to pick the target's business context
+     * (e.g. categoryId, accepted types, flags, or other attributes) after approval.
+     */
+    readonly dropMetadata : DropMetadata
 }
 
 /**
@@ -374,13 +390,6 @@ export interface DraggedEvent<TElement extends Element = HTMLElement>
         // Bases:
         DragDropCommittedEvent<TElement>
 {
-    /**
-     * The metadata exposed by the accepted droppable target.
-     * 
-     * Allows the draggable to pick the target's business context
-     * (e.g. categoryId, accepted types, flags, or other attributes) after approval.
-     */
-    readonly dropMetadata : DropMetadata
 }
 
 /**
@@ -397,13 +406,6 @@ export interface DroppedEvent<TElement extends Element = HTMLElement>
         // Bases:
         DragDropCommittedEvent<TElement>
 {
-    /**
-     * The payload delivered by the draggable source.
-     * 
-     * Allows the droppable to apply business logic for the payload
-     * (e.g. productId, file type, or other attributes) after approval.
-     */
-    readonly dragPayload  : DragPayload
 }
 
 

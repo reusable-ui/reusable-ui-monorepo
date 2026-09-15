@@ -1068,14 +1068,14 @@ export const processDragDropCommit = <TElement extends Element = HTMLElement>({
         dragElement,
         pointedElement,
         dropElement,
-    });
-    dispatchCommittedEvents<TElement>({
-        // Event metadata:
-        dragDropCommittedEvent,
         
         // Data:
         dragPayload,
         dropMetadata,
+    });
+    dispatchCommittedEvents<TElement>({
+        // Event metadata:
+        dragDropCommittedEvent,
         
         // Stable event handlers:
         handleDragged,

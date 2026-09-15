@@ -328,6 +328,10 @@ export const createDragDropCommittedEvent = <TElement extends Element = HTMLElem
     dragElement,
     pointedElement,
     dropElement,
+    
+    // Data:
+    dragPayload,
+    dropMetadata,
 }: {
     // Event metadata:
     /**
@@ -347,17 +351,35 @@ export const createDragDropCommittedEvent = <TElement extends Element = HTMLElem
      * The reference to the DOM element that serves as the droppable element in contact, set as `relatedTarget`.
      */
     dropElement             : Element
-}): DragDropCommittedEvent<TElement> => createSyntheticPointerEvent<TElement, PointerEvent>({
-    // Event metadata:
     
-    nativeEvent      : lastPointerUpEvent,
+    // Data:
+    /**
+     * The payload delivered by the draggable source.
+     */
+    dragPayload             : DragPayload
+    /**
+     * The metadata exposed by the accepted droppable target.
+     */
+    dropMetadata            : DropMetadata
+}): DragDropCommittedEvent<TElement> => ({
+    ...createSyntheticPointerEvent<TElement, PointerEvent>({
+        // Event metadata:
+        
+        nativeEvent      : lastPointerUpEvent,
+        
+        // type          : 'pointerup',              // Defaults to `nativeEvent.type`, no override needed.
+        
+        currentTarget    : dragElement ?? undefined, // The draggable element initiating the commit.
+        target           : pointedElement,           // The element under the pointer at release.
+        relatedTarget    : dropElement,              // The droppable element in contact.
+    }),
+    // Reassign the `relatedTarget` to satisfy the TS:
+    relatedTarget        : dropElement,              // The droppable element in contact.
     
-    // type          : 'pointerup',              // Defaults to `nativeEvent.type`, no override needed.
-    
-    currentTarget    : dragElement ?? undefined, // The draggable element initiating the commit.
-    target           : pointedElement,           // The element under the pointer at release.
-    relatedTarget    : dropElement,              // The droppable element in contact.
-}) as DragDropCommittedEvent<TElement>;
+    // Data:
+    dragPayload,  // The payload delivered by the draggable source.
+    dropMetadata, // The metadata exposed by the accepted droppable target.
+});
 
 
 
@@ -373,28 +395,16 @@ export const createDragDropCommittedEvent = <TElement extends Element = HTMLElem
 const createDraggedEvent                  = <TElement extends Element = HTMLElement>({
     // Event metadata:
     dragDropCommittedEvent,
-    
-    // Data:
-    dropMetadata,
 }: {
     // Event metadata:
     /**
      * The synthetic committed event from the draggable side.
      */
     dragDropCommittedEvent  : DragDropCommittedEvent<TElement>
-    
-    // Data:
-    /**
-     * The metadata exposed by the accepted droppable target.
-     */
-    dropMetadata            : DropMetadata
 }): DraggedEvent<TElement> => ({
     // Event metadata:
     ...dragDropCommittedEvent,
     type             : 'dragged',
-    
-    // Data:
-    dropMetadata, // The metadata exposed by the accepted droppable target.
 });
 
 /**
@@ -413,21 +423,12 @@ const createDraggedEvent                  = <TElement extends Element = HTMLElem
 const createDroppedEvent                  = <TElement extends Element = HTMLElement>({
     // Event metadata:
     dragDropCommittedEvent,
-    
-    // Data:
-    dragPayload,
 }: {
     // Event metadata:
     /**
      * The synthetic committed event from the droppable side.
      */
     dragDropCommittedEvent  : DragDropCommittedEvent<TElement>
-    
-    // Data:
-    /**
-     * The payload delivered by the draggable source.
-     */
-    dragPayload             : DragPayload
 }): DroppedEvent<TElement> => ({
     // Event metadata:
     ...dragDropCommittedEvent,
@@ -439,9 +440,6 @@ const createDroppedEvent                  = <TElement extends Element = HTMLElem
     // This swap reflects perspective: each side treats itself as current, partner as related.
     currentTarget    : dragDropCommittedEvent.relatedTarget as TElement,
     relatedTarget    : dragDropCommittedEvent.currentTarget,
-    
-    // Data:
-    dragPayload, // The payload delivered by the draggable source.
 });
 
 
@@ -652,10 +650,6 @@ export const dispatchCommittedEvents      = <TElement extends Element = HTMLElem
     // Event metadata:
     dragDropCommittedEvent,
     
-    // Data:
-    dragPayload,
-    dropMetadata,
-    
     // Stable event handlers:
     handleDragged,
     handleDropped,
@@ -665,16 +659,6 @@ export const dispatchCommittedEvents      = <TElement extends Element = HTMLElem
      * The synthetic committed event created earlier.
      */
     dragDropCommittedEvent  : DragDropCommittedEvent<TElement>
-    
-    // Data:
-    /**
-     * The payload delivered by the draggable source.
-     */
-    dragPayload             : DragPayload
-    /**
-     * The metadata exposed by the accepted droppable target.
-     */
-    dropMetadata            : DropMetadata
     
     // Stable event handlers:
     /**
@@ -697,16 +681,10 @@ export const dispatchCommittedEvents      = <TElement extends Element = HTMLElem
     const draggedEvent = createDraggedEvent<TElement>({
         // Event metadata:
         dragDropCommittedEvent,
-        
-        // Data:
-        dropMetadata,
     });
     const droppedEvent = createDroppedEvent< Element>({
         // Event metadata:
         dragDropCommittedEvent,
-        
-        // Data:
-        dragPayload,
     });
     handleDragged(draggedEvent);
     handleDropped(droppedEvent);
