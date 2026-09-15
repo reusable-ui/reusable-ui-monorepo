@@ -260,6 +260,7 @@ const createDropEvaluationEvent           = <TElement extends Element = HTMLElem
     dropHandshakeEvent,
     
     // Data:
+    dropMetadata,
     dragResponse,
     isTargeted,
 }: {
@@ -273,6 +274,10 @@ const createDropEvaluationEvent           = <TElement extends Element = HTMLElem
     dropHandshakeEvent      : DropHandshakeEvent<TElement> | DragProbeEvent<TElement>
     
     // Data:
+    /**
+     * The metadata exposed by the droppable side.
+     */
+    dropMetadata            : DropMetadata
     /**
      * The draggable's acceptance/rejection result.
      */
@@ -298,6 +303,7 @@ const createDropEvaluationEvent           = <TElement extends Element = HTMLElem
     type             : 'dropevaluation',
     
     // Data:
+    dropMetadata, // The metadata exposed by the droppable side.
     dragResponse, // Draggable's acceptance/rejection result.
     isTargeted,   // Whether the draggable is currently hovering over *this* droppable.
 });
@@ -605,6 +611,7 @@ export const dispatchEvaluationEvents     = <TElement extends Element = HTMLElem
             dropHandshakeEvent,
             
             // Data:
+            dropMetadata: activeDroppableEntry.dropMetadata,
             dragResponse: ('dragResponse' in dragHandshakeEvent) ? dragHandshakeEvent.dragResponse : undefined, // No dragResponse for non-handshake events.
             isTargeted: true, // This droppable is the current target.
         });
@@ -612,14 +619,6 @@ export const dispatchEvaluationEvents     = <TElement extends Element = HTMLElem
     } // if
     
     // Dispatch evaluation broadcast for all inactive droppables:
-    const inactiveDropEvaluationEvent = createDropEvaluationEvent< Element>({
-        // Event metadata:
-        dropHandshakeEvent,
-        
-        // Data:
-        dragResponse: ('dragResponse' in dragHandshakeEvent) ? dragHandshakeEvent.dragResponse : undefined, // No dragResponse for non-handshake events.
-        isTargeted: false, // Not the current target (broadcast only).
-    });
     for (const eachDroppableEntry of droppableRegistry.values()) {
         // Skip the active droppable:
         if (eachDroppableEntry === activeDroppableEntry) continue;
@@ -627,6 +626,17 @@ export const dispatchEvaluationEvents     = <TElement extends Element = HTMLElem
         // Skip disabled droppables:
         if (!eachDroppableEntry.dropEnabled) continue;
         
+        
+        
+        const inactiveDropEvaluationEvent = createDropEvaluationEvent< Element>({
+            // Event metadata:
+            dropHandshakeEvent,
+            
+            // Data:
+            dropMetadata: eachDroppableEntry.dropMetadata,
+            dragResponse: ('dragResponse' in dragHandshakeEvent) ? dragHandshakeEvent.dragResponse : undefined, // No dragResponse for non-handshake events.
+            isTargeted: false, // Not the current target (broadcast only).
+        });
         eachDroppableEntry.handleDropEvaluation(inactiveDropEvaluationEvent);
     } // for
 };

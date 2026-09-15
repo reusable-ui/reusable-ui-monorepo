@@ -219,6 +219,36 @@ export interface DragDropEvaluationEvent<TElement extends Element = HTMLElement>
         PointerEvent<TElement>
 {
     /**
+     * The payload of the active draggable source.
+     * 
+     * Allows the droppable to pick the actual data being dragged
+     * (e.g. productId, file type, or other attributes)
+     * and render contextual hints such as:
+     * "Please drop Product A here" or "Drag File X to the desired folder".
+     * 
+     * Always defined — never `undefined` — even when the draggable
+     * is not hovering over the droppable.
+     * 
+     * ⚠️ Note: If you intend to evaluate the payload specifically
+     * for the active droppable under the pointer, check `isTargeted` first.
+     * Otherwise you may be inspecting payload data that was
+     * broadcast for another droppable.
+     */
+    readonly dragPayload  : DragPayload
+    
+    /**
+     * The metadata of the currently hovered droppable target.
+     * 
+     * Allows the draggable to pick the target's business context
+     * (e.g. categoryId, accepted types, flags, or other attributes)
+     * and render contextual hints such as:
+     * "Drop Product A into Category B" or "Drop Product A into a category".
+     * 
+     * Becomes `undefined` when the draggable is not hovering over any droppable.
+     */
+    readonly dropMetadata : DropMetadata | undefined
+    
+    /**
      * The handshake response state from the draggable source.
      * 
      * Indicates the draggable's willingness to drop onto the hovered target:
@@ -261,17 +291,6 @@ export interface DragEvaluationEvent<TElement extends Element = HTMLElement>
         // Bases:
         DragDropEvaluationEvent<TElement>
 {
-    /**
-     * The metadata of the currently hovered droppable target.
-     * 
-     * Allows the draggable to pick the target's business context
-     * (e.g. categoryId, accepted types, flags, or other attributes)
-     * and render contextual hints such as:
-     * "Drop Product A into Category B" or "Drop Product A into a category".
-     * 
-     * Becomes `undefined` when the draggable is not hovering over any droppable.
-     */
-    readonly dropMetadata : DropMetadata | undefined
 }
 
 /**
@@ -297,22 +316,14 @@ export interface DropEvaluationEvent<TElement extends Element = HTMLElement>
         DragDropEvaluationEvent<TElement>
 {
     /**
-     * The payload of the active draggable source.
+     * The metadata of the currently hovered droppable target.
      * 
-     * Allows the droppable to pick the actual data being dragged
-     * (e.g. productId, file type, or other attributes)
+     * Allows the draggable to pick the target's business context
+     * (e.g. categoryId, accepted types, flags, or other attributes)
      * and render contextual hints such as:
-     * "Please drop Product A here" or "Drag File X to the desired folder".
-     * 
-     * Always defined — never `undefined` — even when the draggable
-     * is not hovering over this droppable.
-     * 
-     * ⚠️ Note: If you intend to evaluate the payload specifically
-     * for the active droppable under the pointer, check `isTargeted` first.
-     * Otherwise you may be inspecting payload data that was
-     * broadcast for another droppable.
+     * "Drop Product A into Category B" or "Drop Product A into a category".
      */
-    readonly dragPayload  : DragPayload
+    readonly dropMetadata : DropMetadata
     
     /**
      * Indicates whether the draggable is currently hovering over *this* droppable.
