@@ -263,6 +263,8 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
             
             // Data:
             dropElement,
+            
+            // Actual states:
             droppableEntry,
         });
         
@@ -276,6 +278,8 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
                 
                 // Data:
                 dropElement,
+                
+                // Actual states:
                 droppableEntry,
             });
         };

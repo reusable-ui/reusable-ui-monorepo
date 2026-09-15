@@ -564,6 +564,8 @@ export const updateDroppableRegistry      = <TElement extends Element = HTMLElem
     
     // Data:
     dropElement,
+    
+    // Actual states:
     droppableEntry,
 }: {
     // Lifecycle configs:
@@ -578,6 +580,8 @@ export const updateDroppableRegistry      = <TElement extends Element = HTMLElem
      * becomes the key of the registry entry.
      */
     dropElement             : Element
+    
+    // Actual states:
     /**
      * The droppable entry metadata and callbacks.
      */
