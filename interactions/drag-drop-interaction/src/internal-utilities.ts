@@ -629,14 +629,14 @@ export const lazyInitializeDroppableEntry = <TElement extends Element = HTMLElem
  * Synchronizes droppable entry flags with the latest props.
  */
 export const syncDroppableEntry           = <TElement extends Element = HTMLElement>({
-    // Actual states:
-    droppableEntry,
-    
     // Data:
     dropMetadata,
     
     // Behaviors:
     dropEnabled,
+    
+    // Actual states:
+    droppableEntry,
 }: Pick<DroppableEntry<TElement>,
     // Data:
     | 'dropMetadata'

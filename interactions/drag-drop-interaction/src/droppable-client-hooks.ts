@@ -235,14 +235,14 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     // Keep registry entry in sync with prop changes:
     // - No `useEffect()` needed — these are plain object flags.
     syncDroppableEntry({
-        // Actual states:
-        droppableEntry,
-        
         // Data:
         dropMetadata,
         
         // Behaviors:
         dropEnabled,
+        
+        // Actual states:
+        droppableEntry,
     });
     
     
