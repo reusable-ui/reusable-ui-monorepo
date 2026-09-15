@@ -90,7 +90,25 @@ export interface DragDropHandshakeEvent<TElement extends Element = HTMLElement>
         // Bases:
         PointerEvent<TElement>
 {
-    relatedTarget : EventTarget // Narrows down from `EventTarget | null` to `EventTarget` since the droppable element is already in contact.
+    relatedTarget         : EventTarget // Narrows down from `EventTarget | null` to `EventTarget` since the droppable element is already in contact.
+    
+    /**
+     * The payload carried by the draggable source.
+     * 
+     * Allows the droppable to inspect the actual data being dragged
+     * (e.g. productId, file type, or other attributes)
+     * before deciding acceptance.
+     */
+    readonly dragPayload  : DragPayload
+    
+    /**
+     * The metadata exposed by the candidate droppable target.
+     * 
+     * Allows the draggable to inspect the target's business context
+     * (e.g. categoryId, accepted types, flags, or other attributes)
+     * before deciding acceptance.
+     */
+    readonly dropMetadata : DropMetadata
     
     /**
      * The handshake response state from the current side.
@@ -104,7 +122,7 @@ export interface DragDropHandshakeEvent<TElement extends Element = HTMLElement>
      * - `false`     → rejected (may show 🚫 feedback to indicate drop not allowed)
      * - `undefined` → ignored  (no feedback; user keeps searching for a valid drop zone)
      */
-    response      : boolean | undefined
+    response              : boolean | undefined
 }
 
 /**
@@ -129,15 +147,6 @@ export interface DragHandshakeEvent<TElement extends Element = HTMLElement>
         >
 {
     /**
-     * The metadata exposed by the candidate droppable target.
-     * 
-     * Allows the draggable to inspect the target's business context
-     * (e.g. categoryId, accepted types, flags, or other attributes)
-     * before deciding acceptance.
-     */
-    readonly dropMetadata : DropMetadata
-    
-    /**
      * The handshake response state from the draggable source,
      * based on the inspected `dropMetadata`.
      * 
@@ -150,7 +159,7 @@ export interface DragHandshakeEvent<TElement extends Element = HTMLElement>
      * - `false`     → rejected (may show 🚫 feedback to indicate drop not allowed)
      * - `undefined` → ignored  (no feedback; user keeps searching for a valid drop zone)
      */
-    dragResponse          : DragDropHandshakeEvent['response']
+    dragResponse : DragDropHandshakeEvent['response']
 }
 
 /**
@@ -175,15 +184,6 @@ export interface DropHandshakeEvent<TElement extends Element = HTMLElement>
         >
 {
     /**
-     * The payload carried by the draggable source.
-     * 
-     * Allows the droppable to inspect the actual data being dragged
-     * (e.g. productId, file type, or other attributes)
-     * before deciding acceptance.
-     */
-    readonly dragPayload  : DragPayload
-    
-    /**
      * The handshake response state from the droppable target,
      * based on the inspected `dragPayload`.
      * 
@@ -196,7 +196,7 @@ export interface DropHandshakeEvent<TElement extends Element = HTMLElement>
      * - `false`     → rejected (may show 🚫 feedback to indicate an invalid payload)
      * - `undefined` → ignored  (no feedback; user keeps searching for a valid drop zone)
      */
-    dropResponse          : DragDropHandshakeEvent['response']
+    dropResponse : DragDropHandshakeEvent['response']
 }
 
 

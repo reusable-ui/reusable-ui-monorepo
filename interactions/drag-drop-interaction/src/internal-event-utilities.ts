@@ -105,7 +105,8 @@ export const createDragProbeEvent         = <TElement extends Element = HTMLElem
 /**
  * Creates a synthetic handshake event on the draggable side.
  * 
- * Extends the probe event with the droppable element (`relatedTarget`) and carrying its metadata,
+ * Extends the probe event with the droppable element (`relatedTarget`)
+ * and carrying the droppable's metadata,
  * enabling the draggable to inspect the target's business context before deciding acceptance.
  * 
  * Carries a mutable `dragResponse` field, defaulting to `undefined`
@@ -166,6 +167,9 @@ const createDropHandshakeEvent            = <TElement extends Element = HTMLElem
     // Event metadata:
     dragProbeEvent,
     dropElement,
+    
+    // Data:
+    dropMetadata,
 }: {
     // Event metadata:
     /**
@@ -176,6 +180,12 @@ const createDropHandshakeEvent            = <TElement extends Element = HTMLElem
      * The reference to the DOM element that serves as the droppable element in contact itself, set as `currentTarget`.
      */
     dropElement             : TElement
+    
+    // Data:
+    /**
+     * The metadata exposed by the droppable side.
+     */
+    dropMetadata            : DropMetadata
 }): DropHandshakeEvent<TElement> => ({
     // Event metadata:
     ...dragProbeEvent,
@@ -189,6 +199,7 @@ const createDropHandshakeEvent            = <TElement extends Element = HTMLElem
     
     // Data:
     // dragPayload,               // The payload carried by the draggable side (already carried in `dragProbeEvent`).
+    dropMetadata,                 // The metadata exposed by the droppable side.
     dropResponse     : undefined, // Default: no decision yet from droppable.
 });
 
@@ -504,6 +515,9 @@ export const dispatchHandshakeEvents      = async <TElement extends Element = HT
         // Event metadata:
         dragProbeEvent,
         dropElement,
+        
+        // Data:
+        dropMetadata,
     });
     await Promise.all([
         handleDragHandshake(dragHandshakeEvent),
