@@ -120,7 +120,7 @@ export interface DragActivatedEvent<TElement extends Element = HTMLElement>
  * or other resources tied to the gesture lifecycle.
  * 
  * Extends a React `PointerEvent` with the draggable payload
- * and the droppable metadata (if any) that was contacted when the gesture ended.
+ * and the active droppable metadata (if any) that was contacted when the gesture ended.
  */
 export interface DragDeactivatedEvent<TElement extends Element = HTMLElement>
     extends
@@ -128,7 +128,7 @@ export interface DragDeactivatedEvent<TElement extends Element = HTMLElement>
         DraggableLifecycleEvent<TElement>
 {
     /**
-     * The droppable metadata at the time the gesture ended, if any.
+     * The active droppable metadata at the time the gesture ended, if any.
      * 
      * Becomes `undefined` if no droppable was contacted when the gesture ended.
      */
