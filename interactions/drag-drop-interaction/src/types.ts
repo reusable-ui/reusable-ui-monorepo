@@ -72,14 +72,14 @@ export type DropMetadata = DragDropData
 // Lifecycles:
 
 /**
- * Emitted once the drag gesture begins or ends on the draggable side.
+ * Emitted once the drag gesture begins on the draggable side.
  * 
- * Signals the draggable to initialize or reset its own styling, ghost image,
- * or other resources tied to the gesture lifecycle.
+ * Signals the draggable to initialize its own styling, ghost image,
+ * or other resources tied to the drag activity lifecycle.
  * 
  * Extends a React `PointerEvent` with the draggable payload.
  */
-export interface DraggableLifecycleEvent<TElement extends Element = HTMLElement>
+export interface DragDropActivatedEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
         PointerEvent<TElement>
@@ -98,14 +98,14 @@ export interface DraggableLifecycleEvent<TElement extends Element = HTMLElement>
  * Emitted once the drag gesture begins on the draggable side.
  * 
  * Signals the draggable to initialize its own styling, ghost image,
- * or other resources tied to the gesture lifecycle.
+ * or other resources tied to the drag activity lifecycle.
  * 
  * Extends a React `PointerEvent` with the draggable payload.
  */
 export interface DragActivatedEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        DraggableLifecycleEvent<TElement>
+        DragDropActivatedEvent<TElement>
 {
     // /**
     //  * At activation, no droppable is yet contacted.
@@ -114,51 +114,19 @@ export interface DragActivatedEvent<TElement extends Element = HTMLElement>
 }
 
 /**
- * Emitted once the drag gesture ends on the draggable side.
+ * Emitted once the drag gesture begins on each droppable side.
  * 
- * Signals the draggable to reset its own styling, ghost image,
- * or other resources tied to the gesture lifecycle.
- * 
- * Extends a React `PointerEvent` with the draggable payload
- * and the active droppable metadata (if any) that was contacted when the gesture ended.
- */
-export interface DragDeactivatedEvent<TElement extends Element = HTMLElement>
-    extends
-        // Bases:
-        DraggableLifecycleEvent<TElement>
-{
-    /**
-     * The active droppable metadata at the time the gesture ended, if any.
-     * 
-     * Becomes `undefined` if no droppable was contacted when the gesture ended.
-     */
-    readonly dropMetadata : DropMetadata | undefined
-}
-
-
-
-/**
- * Emitted once the drag gesture begins or ends on each droppable side.
- * 
- * Signals droppables to initialize or reset their own styling, image preview,
+ * Signals droppables to initialize their own styling, image preview,
  * or other resources tied to the drag activity lifecycle.
  * 
- * Extends a React `PointerEvent` with the draggable payload and the droppable metadata.
+ * Extends a React `PointerEvent` with the draggable payload
+ * and the droppable metadata.
  */
-export interface DroppableLifecycleEvent<TElement extends Element = HTMLElement>
+export interface DragPresenceEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        PointerEvent<TElement>
+        DragDropActivatedEvent<TElement>
 {
-    /**
-     * The payload carried by the active draggable source.
-     * 
-     * Allows droppables to inspect the actual data being dragged
-     * (e.g. productId, file type, or other attributes)
-     * for contextual styling or state initialization.
-     */
-    readonly dragPayload  : DragPayload
-    
     /**
      * The metadata exposed by the droppable target.
      * 
@@ -169,19 +137,51 @@ export interface DroppableLifecycleEvent<TElement extends Element = HTMLElement>
     readonly dropMetadata : DropMetadata
 }
 
+
+
 /**
- * Emitted once the drag gesture begins on each droppable side.
+ * Emitted once the drag gesture ends on each droppable side.
  * 
- * Signals droppables to initialize their own styling, image preview,
+ * Signals droppables to reset their own styling, image preview,
  * or other resources tied to the drag activity lifecycle.
  * 
- * Extends a React `PointerEvent` with the draggable payload and the droppable metadata.
+ * Extends a React `PointerEvent` with the draggable payload.
  */
-export interface DragPresenceEvent<TElement extends Element = HTMLElement>
+export interface DragDropDeactivatedEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        DroppableLifecycleEvent<TElement>
+        PointerEvent<TElement>
 {
+    /**
+     * The payload carried by the draggable source.
+     * 
+     * Allows droppables to inspect the actual data being dragged
+     * (e.g. productId, file type, or other attributes)
+     * for contextual styling or state initialization.
+     */
+    readonly dragPayload  : DragPayload
+}
+
+/**
+ * Emitted once the drag gesture ends on the draggable side.
+ * 
+ * Signals the draggable to reset its own styling, ghost image,
+ * or other resources tied to the drag activity lifecycle.
+ * 
+ * Extends a React `PointerEvent` with the draggable payload
+ * and the active droppable metadata (if any) that was contacted when the gesture ended.
+ */
+export interface DragDeactivatedEvent<TElement extends Element = HTMLElement>
+    extends
+        // Bases:
+        DragDropDeactivatedEvent<TElement>
+{
+    /**
+     * The active droppable metadata at the time the gesture ended, if any.
+     * 
+     * Becomes `undefined` if no droppable was contacted when the gesture ended.
+     */
+    readonly dropMetadata : DropMetadata | undefined
 }
 
 /**
@@ -190,13 +190,23 @@ export interface DragPresenceEvent<TElement extends Element = HTMLElement>
  * Signals droppables to reset their own styling, image preview,
  * or other resources tied to the drag activity lifecycle.
  * 
- * Extends a React `PointerEvent` with the draggable payload and the droppable metadata.
+ * Extends a React `PointerEvent` with the draggable payload
+ * and the droppable metadata.
  */
 export interface DragAbsenceEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        DroppableLifecycleEvent<TElement>
+        DragDropDeactivatedEvent<TElement>
 {
+    /**
+     * The metadata exposed by the droppable target.
+     * 
+     * Allows the draggable to inspect the target's business context
+     * (e.g. categoryId, accepted types, flags, or other attributes)
+     * for contextual styling or state initialization.
+     */
+    readonly dropMetadata : DropMetadata
+    
     /**
      * Indicates whether the draggable was hovering over *this* droppable when the gesture ended.
      * 
@@ -208,7 +218,7 @@ export interface DragAbsenceEvent<TElement extends Element = HTMLElement>
      * Useful for distinguishing between global absence broadcasts and
      * the droppable that was actually being pointed at.
      */
-    readonly isTargeted  : boolean
+    readonly isTargeted   : boolean
 }
 
 
