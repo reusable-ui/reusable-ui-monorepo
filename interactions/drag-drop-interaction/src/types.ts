@@ -490,8 +490,9 @@ export interface DropEvaluationEvent<TElement extends Element = HTMLElement>
      * - `false` → The evaluation event is broadcast for another droppable,
      *   so this droppable is not the subject of the current evaluation.
      * 
-     * Useful for distinguishing between global evaluation broadcasts and
-     * the droppable that is actually being evaluated at the moment.
+     * Useful for distinguishing between global evaluation broadcasts
+     * (sent to all droppables for live feedback)
+     * and the droppable that is actually being evaluated at the moment.
      */
     readonly isTargeted   : boolean
 }
