@@ -848,7 +848,8 @@ export const dispatchHandshakeEvents      = async <TElement extends Element = HT
  * Dispatches the evaluation events for both draggable and droppable sides.
  * 
  * - Creates and invokes the draggable evaluation event.
- * - Creates and broadcasts the droppable evaluation event to all registered droppables.
+ * - Creates and invokes the droppable evaluation event for the active droppable (if any).
+ * - Creates and broadcasts the droppable evaluation events to all other registered droppables.
  * - Does not return events, since commit phase is based on pointerup.
  */
 export const dispatchEvaluationEvents     = <TElement extends Element = HTMLElement>({
