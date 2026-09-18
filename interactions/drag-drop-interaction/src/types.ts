@@ -72,7 +72,8 @@ export type DropMetadata = DragDropData
 // Lifecycles:
 
 /**
- * Emitted once the drag gesture begins on the draggable side.
+ * Emitted once the drag gesture begins,
+ * used as the base for draggable and droppable activation events.
  * 
  * Signals the draggable to initialize its own styling, ghost image,
  * or other resources tied to the drag activity lifecycle.
@@ -140,7 +141,8 @@ export interface DragPresenceEvent<TElement extends Element = HTMLElement>
 
 
 /**
- * Emitted once the drag gesture ends on each droppable side.
+ * Emitted once the drag gesture ends,
+ * used as the base for draggable and droppable deactivation events.
  * 
  * Signals droppables to reset their own styling, image preview,
  * or other resources tied to the drag activity lifecycle.
