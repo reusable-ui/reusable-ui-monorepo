@@ -5,6 +5,12 @@ import {
     type RefObject,
 }                           from 'react'
 
+// Reusable-ui utilities:
+import {
+    // Types:
+    type EventHandler,
+}                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
+
 // Types:
 import {
     // Handshakes:
@@ -533,13 +539,13 @@ export const updateGlobalPointerListeners = ({
      * 
      * Allows the drag-drop engine to trigger handshake and evaluation events correctly.
      */
-    handleGlobalPointerMove : (event: PointerEvent) => void
+    handleGlobalPointerMove : EventHandler<PointerEvent>
     /**
      * Invoked once a pointer is released.
      * 
      * Allows the drag-drop engine to trigger dragged and dropped events correctly.
      */
-    handleGlobalPointerUp   : (event: PointerEvent) => void
+    handleGlobalPointerUp   : EventHandler<PointerEvent>
 }): void => {
     if (isSetup) {
         window.addEventListener('pointermove', handleGlobalPointerMove);
