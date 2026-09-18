@@ -581,7 +581,7 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
      * 
      * Defaults to an empty payload (no carried data).
      */
-    dragPayload      ?: DragPayload
+    dragPayload       ?: DragPayload
     
     
     
@@ -598,7 +598,7 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
      * 
      * You can override this default by explicitly passing `dragEnabled`.
      */
-    dragEnabled      ?: boolean
+    dragEnabled       ?: boolean
     
     /**
      * Filters candidate elements to determine valid drop targets.
@@ -606,7 +606,7 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
      * Useful to bypass non-target overlays such as floating drag previews or cursor indicators
      * ensuring hit-testing lands on an actual candidate element.
      */
-    dropPredicate    ?: (dropCandidate: Element) => boolean
+    dropPredicate     ?: (dropCandidate: Element) => boolean
     
     
     
@@ -630,11 +630,27 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
      * 
      * Defaults to `false` (no dragging activity).
      */
-    computedDrag     ?: boolean
+    computedDrag      ?: boolean
     
     
     
     // Events:
+    
+    /**
+     * Signals the draggable to initialize its own styling, ghost image,
+     * or other resources tied to the drag activity lifecycle.
+     * 
+     * Invoked once the drag gesture begins on the draggable side.
+     */
+    onDragActivated   ?: EventHandler<DragActivatedEvent<TElement>>
+    
+    /**
+     * Signals the draggable to reset its own styling, ghost image,
+     * or other resources tied to the drag activity lifecycle.
+     * 
+     * Invoked once the drag gesture ends on the draggable side.
+     */
+    onDragDeactivated ?: EventHandler<DragDeactivatedEvent<TElement>>
     
     /**
      * Validates the target's business context (metadata) and responds with acceptance or rejection.
@@ -649,7 +665,7 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
      * If omitted, or if no handler mutates `event.dragResponse`,
      * the response defaults to `undefined` (no decision).
      */
-    onDragHandshake  ?: (event: DragHandshakeEvent<TElement>) => void | Promise<void>
+    onDragHandshake   ?: (event: DragHandshakeEvent<TElement>) => void | Promise<void>
     
     /**
      * Enables live feedback from the draggable side during a drag gesture,
@@ -666,7 +682,7 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
      * Use this when you need **detailed UX feedback** (hint following cursor, floating preview, tooltip)
      * tied to the currently hovered droppable, reacting to every pointer movement.
      */
-    onDragEvaluation ?: EventHandler<DragEvaluationEvent<TElement>>
+    onDragEvaluation  ?: EventHandler<DragEvaluationEvent<TElement>>
     
     /**
      * Peeks the target's business context (metadata) for the business logic
@@ -675,7 +691,7 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
      * Invoked once the drag gesture ends on this draggable
      * but only if both draggable and droppable sides accepted.
      */
-    onDragged        ?: EventHandler<DraggedEvent<TElement>>
+    onDragged         ?: EventHandler<DraggedEvent<TElement>>
 }
 
 /**
@@ -693,7 +709,7 @@ export interface DroppableStateProps<TElement extends Element = HTMLElement> {
      * 
      * Defaults to an empty metadata (no exposed data).
      */
-    dropMetadata     ?: DropMetadata
+    dropMetadata      ?: DropMetadata
     
     
     
@@ -710,11 +726,27 @@ export interface DroppableStateProps<TElement extends Element = HTMLElement> {
      * 
      * You can override this default by explicitly passing `dropEnabled`.
      */
-    dropEnabled      ?: boolean
+    dropEnabled       ?: boolean
     
     
     
     // Events:
+    
+    /**
+     * Signals droppables to initialize their own styling, image preview,
+     * or other resources tied to the drag activity lifecycle.
+     * 
+     * Invoked once the drag gesture begins on each droppable side.
+     */
+    onDragPresence    ?: EventHandler<DragPresenceEvent<TElement>>
+    
+    /**
+     * Signals droppables to reset their own styling, image preview,
+     * or other resources tied to the drag activity lifecycle.
+     * 
+     * Invoked once the drag gesture ends on each droppable side.
+     */
+    onDragAbsence     ?: EventHandler<DragAbsenceEvent<TElement>>
     
     /**
      * Validates the actual data being dragged (payload) and responds with acceptance or rejection.
@@ -729,7 +761,7 @@ export interface DroppableStateProps<TElement extends Element = HTMLElement> {
      * If omitted, or if no handler mutates `event.dropResponse`,
      * the response defaults to `undefined` (no decision).
      */
-    onDropHandshake  ?: (event: DropHandshakeEvent<TElement>) => void | Promise<void>
+    onDropHandshake   ?: (event: DropHandshakeEvent<TElement>) => void | Promise<void>
     
     /**
      * Enables live feedback from the droppable side during a drag gesture,
@@ -746,7 +778,7 @@ export interface DroppableStateProps<TElement extends Element = HTMLElement> {
      * Use this when you need **detailed UX feedback** (hint following cursor, floating preview, tooltip)
      * tied to the currently hovered draggable, reacting to every pointer movement.
      */
-    onDropEvaluation ?: EventHandler<DropEvaluationEvent<TElement>>
+    onDropEvaluation  ?: EventHandler<DropEvaluationEvent<TElement>>
     
     /**
      * Delivers the actual data being dragged (payload) for the business logic
@@ -755,7 +787,7 @@ export interface DroppableStateProps<TElement extends Element = HTMLElement> {
      * Invoked once the drag gesture ends on this droppable
      * but only if both draggable and droppable sides accepted.
      */
-    onDropped        ?: EventHandler<DroppedEvent<TElement>>
+    onDropped         ?: EventHandler<DroppedEvent<TElement>>
 }
 
 
