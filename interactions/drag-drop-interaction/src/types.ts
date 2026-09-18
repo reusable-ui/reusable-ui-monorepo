@@ -482,18 +482,19 @@ export interface DropEvaluationEvent<TElement extends Element = HTMLElement>
     readonly dropMetadata : DropMetadata
     
     /**
-     * Indicates whether the drag-drop handshake was performed on *this* droppable
+     * Indicates whether the pointer is positioned over *this* droppable
      * during the current pointer movement.
      * 
-     * - `true` → The evaluation event corresponds to this droppable element,
-     *   meaning the draggable has just been evaluated against this droppable.
-     * - `false` → The evaluation event is broadcast for another droppable,
-     *   or the pointer is positioned elsewhere,
-     *   so this droppable is not the subject of the handshake.
+     * - `true` → This evaluation event corresponds to this droppable element,
+     *   meaning the draggable is actively being evaluated here,
+     *   with the handshake performed against this droppable.
+     * - `false` → The pointer is elsewhere, and this event is broadcast
+     *   for another droppable, so this droppable is not the subject
+     *   of the current evaluation.
      * 
      * Useful for distinguishing between global evaluation broadcasts
      * (sent to all droppables for live feedback)
-     * and the droppable that was actually evaluated at the moment.
+     * and the droppable that is actually under the pointer at the moment.
      */
     readonly isTargeted   : boolean
 }
