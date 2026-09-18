@@ -309,7 +309,7 @@ const createDropEvaluationEvent           = <TElement extends Element = HTMLElem
     // Data:
     dropMetadata, // The metadata exposed by the droppable side.
     dragResponse, // Draggable's acceptance/rejection result.
-    isTargeted,   // Whether the draggable is currently hovering over *this* droppable.
+    isTargeted,   // Whether the pointer is positioned over *this* droppable.
 });
 
 
