@@ -850,7 +850,7 @@ export const dispatchHandshakeEvents      = async <TElement extends Element = HT
  * - Creates and invokes the draggable evaluation event.
  * - Creates and invokes the droppable evaluation event for the active droppable (if any).
  * - Creates and broadcasts the droppable evaluation events to all other registered droppables.
- * - Does not return events, since commit phase is based on pointerup.
+ * - Does not return events, since commit and deactivation phases are based on `lastPointerUpEvent`.
  */
 export const dispatchEvaluationEvents     = <TElement extends Element = HTMLElement>({
     // Event metadata:
@@ -952,7 +952,7 @@ export const dispatchEvaluationEvents     = <TElement extends Element = HTMLElem
  * 
  * - Creates the dragged and dropped commit events from the committed stage.
  * - Invokes both draggable and droppable commit handlers.
- * - Does not return events, since no more further phase.
+ * - Does not return events, since commit and deactivation phases are based on `lastPointerUpEvent`.
  */
 export const dispatchCommittedEvents      = <TElement extends Element = HTMLElement>({
     // Event metadata:
