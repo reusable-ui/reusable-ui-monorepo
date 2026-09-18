@@ -10,6 +10,14 @@ import {
     type DragPayload,
     type DropMetadata,
     
+    // Lifecycles:
+    type DragDropActivatedEvent,
+    type DragActivatedEvent,
+    type DragPresenceEvent,
+    type DragDropDeactivatedEvent,
+    type DragDeactivatedEvent,
+    type DragAbsenceEvent,
+    
     // Handshakes:
     type DragHandshakeEvent,
     type DropHandshakeEvent,
@@ -38,6 +46,301 @@ import {
 
 
 // Event factories:
+
+/**
+ * Creates a synthetic activation event at the start of a drag gesture.
+ * 
+ * Wraps the native 'pointerdown' event into a React synthetic event,
+ * establishing the draggable as `currentTarget` and the pointed element as `target`.
+ * 
+ * This represents the initial stage of the drag-drop lifecycle,
+ * fired when the user presses down on the draggable element to initiate a drag gesture.
+ * 
+ * @returns A synthetic `DragDropActivatedEvent` representing the activation stage.
+ */
+export const createDragDropActivatedEvent   = <TElement extends Element = HTMLElement>({
+    // Event metadata:
+    lastPointerDownEvent,
+    dragElement,
+    pointedElement,
+    
+    // Data:
+    dragPayload,
+}: {
+    // Event metadata:
+    /**
+     * The most recent native 'pointerdown' event from the browser captured during a drag gesture.
+     */
+    lastPointerDownEvent    : PointerEvent
+    /**
+     * The reference to the DOM element that serves as the draggable element itself, set as `currentTarget`.
+     * Pass `null` if the drag element is not available, e.g. dragging a file.
+     */
+    dragElement             : TElement | null
+    /**
+     * The reference to the DOM element that currently under the pointer, set as `target`.
+     */
+    pointedElement          : Element
+    
+    // Data:
+    /**
+     * The payload carried by the draggable source.
+     */
+    dragPayload             : DragPayload
+}): DragDropActivatedEvent<TElement> => ({
+    ...createSyntheticPointerEvent<TElement, PointerEvent>({
+        // Event metadata:
+        
+        nativeEvent      : lastPointerDownEvent,
+        
+        // type          : 'pointerdown',            // Defaults to `nativeEvent.type`, no override needed.
+        
+        currentTarget    : dragElement ?? undefined, // The draggable element initiating the activation.
+        target           : pointedElement,           // The element under the pointer at press.
+        // relatedTarget : dropElement,              // Not yet defined at start stage.
+    }),
+    
+    // Data:
+    dragPayload, // The payload carried by the draggable source.
+});
+
+/**
+ * Creates a synthetic deactivation event at the end of a drag gesture.
+ * 
+ * Wraps the native 'pointerup' event into a React synthetic event,
+ * establishing the draggable as `currentTarget`, the pointed element as `target`,
+ * and the droppable element in contact (if any) as `relatedTarget`.
+ * 
+ * This represents the final stage of the drag-drop lifecycle,
+ * fired when the user releases the pointer on the draggable element to conclude the drag gesture.
+ * 
+ * @returns A synthetic `DragDropDeactivatedEvent` representing the deactivation stage.
+ */
+export const createDragDropDeactivatedEvent = <TElement extends Element = HTMLElement>({
+    // Event metadata:
+    lastPointerUpEvent,
+    dragElement,
+    pointedElement,
+    dropElement,
+    
+    // Data:
+    dragPayload,
+}: {
+    // Event metadata:
+    /**
+     * The most recent native 'pointerup' event from the browser captured during a drag gesture.
+     */
+    lastPointerUpEvent      : PointerEvent
+    /**
+     * The reference to the DOM element that serves as the draggable element itself, set as `currentTarget`.
+     * Pass `null` if the drag element is not available, e.g. dragging a file.
+     */
+    dragElement             : TElement | null
+    /**
+     * The reference to the DOM element that currently under the pointer, set as `target`.
+     */
+    pointedElement          : Element
+    /**
+     * The reference to the DOM element that serves as the droppable element in contact, set as `relatedTarget`.
+     * Pass `null` if the droppable element is not available, e.g. when the drag gesture ends outside any droppable.
+     */
+    dropElement             : Element | null
+    
+    // Data:
+    /**
+     * The payload carried by the draggable source.
+     */
+    dragPayload             : DragPayload
+}): DragDropDeactivatedEvent<TElement> => ({
+    ...createSyntheticPointerEvent<TElement, PointerEvent>({
+        // Event metadata:
+        
+        nativeEvent      : lastPointerUpEvent,
+        
+        // type          : 'pointerup',              // Defaults to `nativeEvent.type`, no override needed.
+        
+        currentTarget    : dragElement ?? undefined, // The draggable element initiating the deactivation.
+        target           : pointedElement,           // The element under the pointer at release.
+        relatedTarget    : dropElement,              // The droppable element in contact, if any.
+    }),
+    
+    // Data:
+    dragPayload, // The payload carried by the draggable source.
+});
+
+
+
+/**
+ * Creates a synthetic activation event on the draggable side.
+ * 
+ * Extends the activation event by carrying the draggable's payload,
+ * exposing the actual data being dragged (payload) for the business logic
+ * such as initializing state, preparing initial data, or applying side effects.
+ * 
+ * @returns A synthetic `DragActivatedEvent` representing the draggable activation.
+ */
+const createDragActivatedEvent              = <TElement extends Element = HTMLElement>({
+    // Event metadata:
+    dragDropActivatedEvent,
+}: {
+    // Event metadata:
+    /**
+     * The synthetic activation event created earlier.
+     */
+    dragDropActivatedEvent   : DragDropActivatedEvent<TElement>
+}): DragActivatedEvent<TElement> => ({
+    // Event metadata:
+    ...dragDropActivatedEvent,
+    type             : 'dragactivated',
+});
+
+/**
+ * Creates a synthetic presence event on each droppable side.
+ * 
+ * Extends the activation event by carrying the droppable's metadata,
+ * exposing the target's business context (metadata) for the business logic
+ * such as initializing state, preparing initial data, or applying side effects.
+ * 
+ * The draggable element is swapped from `currentTarget` to `relatedTarget`,
+ * and the droppable element becomes `currentTarget`,
+ * reflecting the droppable's perspective: self as current, partner as related.
+ * 
+ * @returns A synthetic `DragPresenceEvent` representing the drag activity presence.
+ */
+const createDragPresenceEvent               = <TElement extends Element = HTMLElement>({
+    // Event metadata:
+    dragDropActivatedEvent,
+    
+    // Data:
+    dropMetadata,
+}: {
+    // Event metadata:
+    /**
+     * The synthetic activation event created earlier.
+     */
+    dragDropActivatedEvent   : DragDropActivatedEvent<TElement>
+    
+    // Data:
+    /**
+     * The metadata exposed by the droppable target.
+     */
+    dropMetadata            : DropMetadata
+}): DragPresenceEvent<TElement> => ({
+    // Event metadata:
+    ...dragDropActivatedEvent,
+    type             : 'dragpresence',
+    
+    // On the droppable side, `currentTarget` points to the droppable itself.
+    // The draggable that was `currentTarget` in the activation stage is now `relatedTarget`,
+    // and vice versa for the droppable.
+    // This swap reflects perspective: each side treats itself as current, partner as related.
+    currentTarget    : dragDropActivatedEvent.relatedTarget as TElement,
+    relatedTarget    : dragDropActivatedEvent.currentTarget,
+    
+    // Data:
+    dropMetadata, // The metadata exposed by the droppable target.
+});
+
+/**
+ * Creates a synthetic deactivation event on the draggable side.
+ * 
+ * Extends the deactivation event by carrying the draggable's payload,
+ * exposing the actual data being dragged (payload) for the business logic
+ * such as resetting state, clearing temporary data, or removing side effects.
+ * 
+ * @returns A synthetic `DragDeactivatedEvent` representing the draggable deactivation.
+ */
+const createDragDeactivatedEvent            = <TElement extends Element = HTMLElement>({
+    // Event metadata:
+    dragDropDeactivatedEvent,
+    
+    // Data:
+    dropMetadata,
+}: {
+    // Event metadata:
+    /**
+     * The synthetic deactivation event created earlier.
+     */
+    dragDropDeactivatedEvent : DragDropDeactivatedEvent<TElement>
+    
+    // Data:
+    /**
+     * The metadata exposed by the active droppable target (if any).
+     */
+    dropMetadata            : DropMetadata | undefined
+}): DragDeactivatedEvent<TElement> => ({
+    // Event metadata:
+    ...dragDropDeactivatedEvent,
+    type             : 'dragdeactivated',
+    
+    // Data:
+    dropMetadata, // The metadata exposed by the droppable target, if any.
+});
+
+/**
+ * Creates a synthetic absence event on each droppable side.
+ * 
+ * Extends the deactivation event by carrying the droppable's metadata,
+ * exposing the target's business context (metadata) for the business logic
+ * such as resetting state, clearing temporary data, or removing side effects.
+ * 
+ * The draggable element is swapped from `currentTarget` to `relatedTarget`,
+ * and the droppable element becomes `currentTarget`,
+ * reflecting the droppable's perspective: self as current, partner as related.
+ * 
+ * @returns A synthetic `DragAbsenceEvent` representing the drag activity absence.
+ */
+const createDragAbsenceEvent                = <TElement extends Element = HTMLElement>({
+    // Event metadata:
+    dragDropDeactivatedEvent,
+    
+    // Data:
+    dropMetadata,
+    isTargeted,
+}: {
+    // Event metadata:
+    /**
+     * The synthetic deactivation event created earlier.
+     */
+    dragDropDeactivatedEvent : DragDropDeactivatedEvent<TElement>
+    
+    // Data:
+    /**
+     * The metadata exposed by the droppable target.
+     */
+    dropMetadata            : DropMetadata
+    /**
+     * Indicates whether the pointer was positioned over *this* droppable
+     * at the exact moment the drag gesture ended.
+     * 
+     * - `true` → The draggable had already made contact with this droppable,
+     *   meaning the handshake was performed here just before the gesture concluded.
+     * - `false` → The pointer was elsewhere when the gesture ended,
+     *   so no handshake was performed on this droppable.
+     * 
+     * Useful for distinguishing between global absence broadcasts
+     * (sent to all droppables for cleanup)
+     * and the droppable that was actually under the pointer at the end of the gesture.
+     */
+    isTargeted              : boolean
+}): DragAbsenceEvent<TElement> => ({
+    // Event metadata:
+    ...dragDropDeactivatedEvent,
+    type             : 'dragabsence',
+    
+    // On the droppable side, `currentTarget` points to the droppable itself.
+    // The draggable that was `currentTarget` in the deactivation stage is now `relatedTarget`,
+    // and vice versa for the droppable.
+    // This swap reflects perspective: each side treats itself as current, partner as related.
+    currentTarget    : dragDropDeactivatedEvent.relatedTarget as TElement,
+    relatedTarget    : dragDropDeactivatedEvent.currentTarget,
+    
+    // Data:
+    dropMetadata, // The metadata exposed by the droppable target.
+    isTargeted,   // Whether the pointer was positioned over *this* droppable.
+});
+
+
 
 /**
  * Creates a synthetic probe event at the hit-test stage on the draggable side.
