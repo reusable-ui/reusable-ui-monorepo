@@ -1,5 +1,9 @@
 // Reusable-ui utilities:
 import {
+    // Types:
+    type EventHandler,
+}                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
+import {
     // Utilities:
     createSyntheticPointerEvent,
 }                           from '@reusable-ui/events'              // State management hooks for controllable, uncontrollable, and hybrid UI components.
@@ -897,7 +901,7 @@ export const dispatchEvaluationEvents     = <TElement extends Element = HTMLElem
      * such as "drop here" indicators, cursor changes,
      * or other contextual hints.
      */
-    handleDragEvaluation    : (event: DragEvaluationEvent<TElement>) => void
+    handleDragEvaluation    : EventHandler<DragEvaluationEvent<TElement>>
 }): void => {
     const dragEvaluationEvent = createDragEvaluationEvent<TElement>({
         // Event metadata:
@@ -976,7 +980,7 @@ export const dispatchCommittedEvents      = <TElement extends Element = HTMLElem
      * Allows the draggable to peek the target's business context (metadata) for the business logic
      * such as updating state, persisting data, or triggering side effects.
      */
-    handleDragged           : (event: DraggedEvent<TElement>) => void
+    handleDragged           : EventHandler<DraggedEvent<TElement>>
     /**
      * Invoked once the drag gesture ends on the droppable side,
      * but only if both draggable and droppable sides accepted.
@@ -984,7 +988,7 @@ export const dispatchCommittedEvents      = <TElement extends Element = HTMLElem
      * Delivers the draggable's payload for the business logic
      * such as updating state, persisting data, or triggering side effects.
      */
-    handleDropped           : (event: DroppedEvent< Element>) => void
+    handleDropped           : EventHandler<DroppedEvent< Element>>
 }): void => {
     const draggedEvent = createDraggedEvent<TElement>({
         // Event metadata:
