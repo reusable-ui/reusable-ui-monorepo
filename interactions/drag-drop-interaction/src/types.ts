@@ -210,15 +210,17 @@ export interface DragAbsenceEvent<TElement extends Element = HTMLElement>
     readonly dropMetadata : DropMetadata
     
     /**
-     * Indicates whether the draggable was hovering over *this* droppable when the gesture ended.
+     * Indicates whether the pointer was positioned over *this* droppable
+     * at the exact moment the drag gesture ended.
      * 
-     * - `true` → The absence event corresponds to this droppable element,
-     *   meaning it was the active candidate under the pointer when the gesture ended.
-     * - `false` → The absence event was broadcast for another droppable,
-     *   so this droppable is not the current target.
+     * - `true` → The draggable had already made contact with this droppable,
+     *   meaning the handshake was performed here just before the gesture concluded.
+     * - `false` → The pointer was elsewhere when the gesture ended,
+     *   so no handshake was performed on this droppable.
      * 
-     * Useful for distinguishing between global absence broadcasts and
-     * the droppable that was actually being pointed at.
+     * Useful for distinguishing between global absence broadcasts
+     * (sent to all droppables for cleanup)
+     * and the droppable that was actually under the pointer at the end of the gesture.
      */
     readonly isTargeted   : boolean
 }
