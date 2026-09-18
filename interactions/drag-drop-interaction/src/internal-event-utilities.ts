@@ -283,15 +283,16 @@ const createDropEvaluationEvent           = <TElement extends Element = HTMLElem
      */
     dragResponse            : boolean | undefined
     /**
-     * Indicates whether the draggable is currently hovering over *this* droppable.
+     * Indicates whether the evaluation is performed on *this* droppable
+     * during the current pointer movement.
      * 
      * - `true` → The evaluation event corresponds to this droppable element,
-     *   meaning it is the active candidate under the pointer.
-     * - `false` → The evaluation event was broadcast for another droppable,
-     *   so this droppable is not the current target.
+     *   meaning the draggable is actively being evaluated against this droppable.
+     * - `false` → The evaluation event is broadcast for another droppable,
+     *   so this droppable is not the subject of the current evaluation.
      * 
      * Useful for distinguishing between global evaluation broadcasts and
-     * the droppable that is actually being pointed at.
+     * the droppable that is actually being evaluated at the moment.
      */
     isTargeted              : boolean
 }): DropEvaluationEvent<TElement> => ({
