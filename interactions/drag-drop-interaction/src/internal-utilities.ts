@@ -37,10 +37,12 @@ import {
 }                           from './internal-registry.js'
 import {
     // Event factories:
+    createDragDropDeactivatedEvent,
     createDragProbeEvent,
     createDragDropCommittedEvent,
     
     // Event dispatchers:
+    dispatchDeactivatedEvents,
     dispatchHandshakeEvents,
     dispatchEvaluationEvents,
     dispatchCommittedEvents,
@@ -665,6 +667,105 @@ export const syncDroppableEntry           = <TElement extends Element = HTMLElem
 // Processes:
 
 /**
+ * Processes the drag-drop deactivation operation when the lifecycle ends.
+ * 
+ * - Validates drag context.
+ * - Dispatches final `DragDeactivatedEvent` for the draggable side.
+ * - Dispatches `DragAbsenceEvent` for the droppable side (active and broadcast).
+ * - Clears the captured pointerup event to prevent duplicate dragged/dropped/deactivation/absence events.
+ */
+export const processDragDropDeactivate = <TElement extends Element = HTMLElement>({
+    // Data:
+    dragPayload,
+    
+    // Refs:
+    dragElement,
+    activeDroppableRef,
+    
+    // Stable event handlers:
+    handleDragDeactivated,
+    
+    // Utility functions:
+    isDragReady,
+}: Pick<Required<DraggableStateProps<TElement>>,
+    // Data:
+    | 'dragPayload'
+> & {
+    // Refs:
+    /**
+     * The reference to the DOM element that serves as the draggable source.
+     */
+    dragElement             : TElement | null
+    /**
+     * The draggable's ref holding the active droppable state.
+     */
+    activeDroppableRef      : RefObject<ActiveDroppableState | null>
+    
+    // Stable event handlers:
+    /**
+     * Invoked once the drag gesture ends on the draggable side.
+     * 
+     * Signals the draggable to reset its own styling, ghost image,
+     * or other resources tied to the drag activity lifecycle.
+     */
+    handleDragDeactivated   : Required<DraggableStateProps<TElement>>['onDragDeactivated']
+    
+    // Utility functions:
+    /**
+     * Determines whether the draggable state is valid for dragging operation.
+     */
+    isDragReady             : () => boolean
+}): void => {
+    // Abort commit if:
+    // - Draggable element is missing.
+    // - Draggable is unmounted.
+    // - Draggable is disabled.
+    // - No pointerup event was captured.
+    const activeDroppableState = activeDroppableRef.current;
+    if (!isDragReady() || !activeDroppableState?.lastPointerUpEvent) return;
+    
+    
+    
+    // Extract properties from the active droppable state for convenience:
+    const {
+        entry : activeDroppableEntry,
+        pointedElement,
+        dropElement,
+        lastPointerUpEvent,
+    } = activeDroppableState;
+    
+    
+    
+    // Dispatch the final deactivation events:
+    const dragDropDeactivatedEvent = createDragDropDeactivatedEvent<TElement>({
+        // Event metadata:
+        lastPointerUpEvent,
+        dragElement,
+        pointedElement,
+        dropElement,
+        
+        // Data:
+        dragPayload,
+    });
+    dispatchDeactivatedEvents<TElement>({
+        // Event metadata:
+        dragDropDeactivatedEvent,
+        
+        // Data:
+        activeDroppableEntry,
+        
+        // Stable event handlers:
+        handleDragDeactivated,
+    });
+    
+    
+    
+    // Clear the captured pointerup event after commit:
+    // - Prevents accidentally emitting multiple dragged/dropped/dragdeactivated/dragabsence events.
+    activeDroppableState.lastPointerUpEvent = undefined;
+};
+
+/**
  * Processes a drag probe during pointer movement.
  * 
  * - Resolves the pointed element under the cursor.
@@ -998,7 +1099,6 @@ export const processDropCandidate  = ({
  * 
  * - Validates drag context and acceptance.
  * - Dispatches final dragged/dropped events.
- * - Clears the captured pointerup event to prevent duplicate commits.
  */
 export const processDragDropCommit = <TElement extends Element = HTMLElement>({
     // Data:
@@ -1087,10 +1187,4 @@ export const processDragDropCommit = <TElement extends Element = HTMLElement>({
         handleDragged,
         handleDropped,
     });
-    
-    
-    
-    // Clear the captured pointerup event after commit:
-    // - Prevents accidentally emitting multiple dragged/dropped events.
-    activeDroppableState.lastPointerUpEvent = undefined;
 };

@@ -657,6 +657,10 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
      * or other resources tied to the drag activity lifecycle.
      * 
      * Invoked once the drag gesture ends on the draggable side.
+     * 
+     * At the moment this callback runs, the drag state is still active
+     * and can be inspected for business logic. The state will be cleared
+     * shortly after the callback returns (next re-render).
      */
     onDragDeactivated ?: EventHandler<DragDeactivatedEvent<TElement>>
     
@@ -753,6 +757,10 @@ export interface DroppableStateProps<TElement extends Element = HTMLElement> {
      * or other resources tied to the drag activity lifecycle.
      * 
      * Invoked once the drag gesture ends on each droppable side.
+     * 
+     * At the moment this callback runs, the drag state is still active
+     * and can be inspected for business logic. The state will be cleared
+     * shortly after the callback returns (next re-render).
      */
     onDragAbsence     ?: EventHandler<DragAbsenceEvent<TElement>>
     

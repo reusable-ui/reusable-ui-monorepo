@@ -53,6 +53,7 @@ import {
     updateGlobalPointerListeners,
     
     // Processes:
+    processDragDropDeactivate,
     processDragProbe,
     processDropCandidate,
     processDragDropCommit,
@@ -212,6 +213,8 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
         
         
         // Handlers:
+        onDragActivated,
+        onDragDeactivated,
         onDragHandshake,
         onDragEvaluation,
         onDragged,
@@ -227,12 +230,14 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     
     // Stable event handlers:
     // - Wrapped with `useStableEventHandler` so references never change, avoiding unnecessary re-syncs or deps in `useEffect()`.
-    const handleDragHandshake  = useStableEventHandler(async (event: DragHandshakeEvent<TElement>): Promise<void> => {
+    const _handleDragActivated   = useStableEventHandler(onDragActivated);
+    const handleDragDeactivated = useStableEventHandler(onDragDeactivated);
+    const handleDragHandshake   = useStableEventHandler(async (event: DragHandshakeEvent<TElement>): Promise<void> => {
         // Invoke the event callback and wait for `dragResponse` mutation:
         await onDragHandshake?.(event);
     });
-    const handleDragEvaluation = useStableEventHandler(onDragEvaluation);
-    const handleDragged        = useStableEventHandler(onDragged);
+    const handleDragEvaluation  = useStableEventHandler(onDragEvaluation);
+    const handleDragged         = useStableEventHandler(onDragged);
     
     
     
@@ -387,6 +392,22 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
                 
                 // Utility functions:
                 isDragReady, // ✅ Skips the commit if the component is unmounted or disabled.
+            });
+            
+            // Signal deactivation lifecycle before resetting state, to ensure the last pointerup event is processed:
+            processDragDropDeactivate<TElement>({
+                // Data:
+                dragPayload,
+                
+                // Refs:
+                dragElement,
+                activeDroppableRef,
+                
+                // Stable event handlers:
+                handleDragDeactivated,
+                
+                // Utility functions:
+                isDragReady,
             });
             
             
