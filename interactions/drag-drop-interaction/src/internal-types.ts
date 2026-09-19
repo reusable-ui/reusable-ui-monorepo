@@ -18,6 +18,10 @@ import {
     type DragPayload,
     type DropMetadata,
     
+    // Lifecycles:
+    type DragPresenceEvent,
+    type DragAbsenceEvent,
+    
     // Handshakes:
     type DropHandshakeEvent,
     
@@ -63,6 +67,22 @@ export interface DroppableEntry<TElement extends Element = HTMLElement> {
     
     
     // Stable event handlers:
+    
+    /**
+     * Invoked once the drag gesture begins on each droppable side.
+     * 
+     * Signals droppables to initialize their own styling, image preview,
+     * or other resources tied to the drag activity lifecycle.
+     */
+    handleDragPresence   : EventHandler<DragPresenceEvent<TElement>>
+    
+    /**
+     * Invoked once the drag gesture ends on each droppable side.
+     * 
+     * Signals droppables to reset their own styling, image preview,
+     * or other resources tied to the drag activity lifecycle.
+     */
+    handleDragAbsence    : EventHandler<DragAbsenceEvent<TElement>>
     
     /**
      * Invoked continuously on every pointer movement during drag gesture movements

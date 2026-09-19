@@ -165,6 +165,8 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
         
         
         // Handlers:
+        onDragPresence,
+        onDragAbsence,
         onDropHandshake,
         onDropEvaluation,
         onDropped,
@@ -180,6 +182,8 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     
     // Stable event handlers:
     // - Wrapped with `useStableEventHandler` so references never change, avoiding unnecessary re-syncs in the registry entry.
+    const handleDragPresence   = useStableEventHandler(onDragPresence);
+    const handleDragAbsence    = useStableEventHandler(onDragAbsence);
     const handleDropHandshake  = useStableEventHandler(async (event: DropHandshakeEvent<TElement>): Promise<void> => {
         // Invoke the event callback and wait for `dropResponse` mutation:
         await onDropHandshake?.(event);
@@ -218,6 +222,8 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
         dropEnabled,
         
         // Stable event handlers:
+        handleDragPresence,
+        handleDragAbsence,
         handleDropHandshake,
         handleDropEvaluation,
         handleDropped,

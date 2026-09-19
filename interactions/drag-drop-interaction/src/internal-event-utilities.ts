@@ -758,6 +758,151 @@ const createDroppedEvent                  = <TElement extends Element = HTMLElem
 // Event dispatchers:
 
 /**
+ * Dispatches the activation events for both draggable and droppable sides.
+ * 
+ * - Creates and invokes the draggable activation event.
+ * - Creates and broadcasts droppable presence events to all registered droppables.
+ * - Does not return events, since the handshake phase is based on `dragProbeEvent`.
+ */
+export const dispatchActivatedEvents      = <TElement extends Element = HTMLElement>({
+    // Event metadata:
+    dragDropActivatedEvent,
+    
+    // Stable event handlers:
+    handleDragActivated,
+}: {
+    // Event metadata:
+    /**
+     * The synthetic activation event created earlier.
+     */
+    dragDropActivatedEvent : DragDropActivatedEvent<TElement>
+    
+    // Stable event handlers:
+    /**
+     * Invoked once the drag gesture begins on the draggable side.
+     * 
+     * Signals the draggable to initialize its own styling, ghost image,
+     * or other resources tied to the drag activity lifecycle.
+     */
+    handleDragActivated    : EventHandler<DragActivatedEvent<TElement>>
+}): void => {
+    // Dispatch activation for the draggable side:
+    const dragActivatedEvent    = createDragActivatedEvent<TElement>({
+        // Event metadata:
+        dragDropActivatedEvent,
+    });
+    handleDragActivated(dragActivatedEvent);
+    
+    
+    
+    // Dispatch presence broadcast for all droppable sides:
+    for (const eachDroppableEntry of droppableRegistry.values()) {
+        // Skip disabled droppables:
+        if (!eachDroppableEntry.dropEnabled) continue;
+        
+        
+        
+        const dragPresenceEvent = createDragPresenceEvent< Element>({
+            // Event metadata:
+            dragDropActivatedEvent,
+            
+            // Data:
+            dropMetadata: eachDroppableEntry.dropMetadata,
+        });
+        eachDroppableEntry.handleDragPresence(dragPresenceEvent);
+    } // for
+};
+
+/**
+ * Dispatches the deactivation events for both draggable and droppable sides.
+ * 
+ * - Creates and invokes the draggable deactivation event.
+ * - Creates and invokes the droppable absence event for the active droppable (if any).
+ * - Creates and broadcasts droppable absence events to all other registered droppables.
+ * - Does not return events, since no more further phase.
+ */
+export const dispatchDeactivatedEvents    = <TElement extends Element = HTMLElement>({
+    // Event metadata:
+    dragDropDeactivatedEvent,
+    
+    // Data:
+    activeDroppableEntry,
+    
+    // Stable event handlers:
+    handleDragDeactivated,
+}: {
+    // Event metadata:
+    /**
+     * The synthetic deactivation event created earlier.
+     */
+    dragDropDeactivatedEvent : DragDropDeactivatedEvent<TElement>
+    
+    // Data:
+    /**
+     * The droppable entry metadata and handlers associated with the matched target.
+     * 
+     * Pass `null` if no handshake was performed (all droppables are inactive),
+     * e.g. when the draggable is not hovering over any droppable.
+     */
+    activeDroppableEntry    : DroppableEntry< Element> | null
+    
+    // Stable event handlers:
+    /**
+     * Invoked once the drag gesture ends on the draggable side.
+     * 
+     * Signals the draggable to reset its own styling, ghost image,
+     * or other resources tied to the drag activity lifecycle.
+     */
+    handleDragDeactivated    : EventHandler<DragDeactivatedEvent<TElement>>
+}): void => {
+    // Dispatch deactivation for the draggable side:
+    const dragDeactivatedEvent = createDragDeactivatedEvent<TElement>({
+        // Event metadata:
+        dragDropDeactivatedEvent,
+        
+        // Data:
+        dropMetadata: activeDroppableEntry?.dropMetadata,
+    });
+    handleDragDeactivated(dragDeactivatedEvent);
+    
+    
+    
+    // Dispatch absence for the active droppable side:
+    if (activeDroppableEntry) {
+        const activeDragAbsenceEvent   = createDragAbsenceEvent< Element>({
+            // Event metadata:
+            dragDropDeactivatedEvent,
+            
+            // Data:
+            dropMetadata: activeDroppableEntry.dropMetadata,
+            isTargeted: true, // This droppable is the current target.
+        });
+        activeDroppableEntry.handleDragAbsence(activeDragAbsenceEvent);
+    } // if
+    
+    // Dispatch absence broadcast for all inactive droppable sides:
+    for (const eachDroppableEntry of droppableRegistry.values()) {
+        // Skip the active droppable:
+        if (eachDroppableEntry === activeDroppableEntry) continue;
+        
+        // Skip disabled droppables:
+        if (!eachDroppableEntry.dropEnabled) continue;
+        
+        
+        
+        const inactiveDragAbsenceEvent = createDragAbsenceEvent< Element>({
+            // Event metadata:
+            dragDropDeactivatedEvent,
+            
+            // Data:
+            dropMetadata: eachDroppableEntry.dropMetadata,
+            isTargeted: false, // Not the current target (broadcast only).
+        });
+        eachDroppableEntry.handleDragAbsence(inactiveDragAbsenceEvent);
+    } // for
+};
+
+/**
  * Dispatches the handshake events for both draggable and droppable sides.
  * 
  * - Creates handshake events from the probe stage.
