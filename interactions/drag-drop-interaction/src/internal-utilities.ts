@@ -773,7 +773,7 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
  * - Dispatches evaluation events.
  * - Updates the active droppable state when the target or acceptance changes.
  */
-export const processDragProbe      = async <TElement extends Element = HTMLElement>({
+export const processDragProbe          = async <TElement extends Element = HTMLElement>({
     // Events:
     pointerMoveEvent,
     
@@ -1052,7 +1052,7 @@ export const processDragProbe      = async <TElement extends Element = HTMLEleme
  * 
  * - Captures the most recent pointerup event for later commit.
  */
-export const processDropCandidate  = ({
+export const processDropCandidate      = ({
     // Events:
     pointerUpEvent,
     
@@ -1100,7 +1100,7 @@ export const processDropCandidate  = ({
  * - Validates drag context and acceptance.
  * - Dispatches final dragged/dropped events.
  */
-export const processDragDropCommit = <TElement extends Element = HTMLElement>({
+export const processDragDropCommit     = <TElement extends Element = HTMLElement>({
     // Data:
     dragPayload,
     
