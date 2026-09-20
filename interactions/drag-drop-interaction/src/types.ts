@@ -658,7 +658,7 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
      * 
      * Invoked once the drag gesture ends on the draggable side.
      * 
-     * At the moment this callback runs, the drag state is still active
+     * At the moment this callback runs, the `dragStatus` and `dropMetadata` are still available
      * and can be inspected for business logic. The state will be cleared
      * shortly after the callback returns (next re-render).
      */
@@ -758,7 +758,7 @@ export interface DroppableStateProps<TElement extends Element = HTMLElement> {
      * 
      * Invoked once the drag gesture ends on each droppable side.
      * 
-     * At the moment this callback runs, the drag state is still active
+     * At the moment this callback runs, the `dropStatus` and `dragPayload` are still available
      * and can be inspected for business logic. The state will be cleared
      * shortly after the callback returns (next re-render).
      */
