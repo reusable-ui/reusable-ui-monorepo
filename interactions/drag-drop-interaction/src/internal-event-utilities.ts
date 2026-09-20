@@ -83,8 +83,11 @@ export const createDragDropActivatedEvent   = <TElement extends Element = HTMLEl
     dragElement              : TElement | null
     /**
      * The reference to the DOM element that currently under the pointer, set as `target`.
+     * 
+     * Pass `null` if no valid element is detected
+     * (e.g. pointer is only over the draggable itself or filtered out by `dropPredicate`).
      */
-    pointedElement           : Element
+    pointedElement           : Element | null
     
     // Data:
     /**
@@ -97,11 +100,11 @@ export const createDragDropActivatedEvent   = <TElement extends Element = HTMLEl
         
         nativeEvent      : lastPointerDownEvent,
         
-        // type          : 'pointerdown',            // Defaults to `nativeEvent.type`, no override needed.
+        // type          : 'pointerdown',               // Defaults to `nativeEvent.type`, no override needed.
         
-        currentTarget    : dragElement ?? undefined, // The draggable element initiating the activation.
-        target           : pointedElement,           // The element under the pointer at press.
-        // relatedTarget : dropElement,              // Not yet defined at start stage.
+        currentTarget    : dragElement    ?? undefined, // The draggable element initiating the activation.
+        target           : pointedElement ?? undefined, // The element under the pointer at press.
+        // relatedTarget : dropElement,                 // Not yet defined at start stage.
     }),
     
     // Data:
@@ -142,8 +145,11 @@ export const createDragDropDeactivatedEvent = <TElement extends Element = HTMLEl
     dragElement              : TElement | null
     /**
      * The reference to the DOM element that currently under the pointer, set as `target`.
+     * 
+     * Pass `null` if no valid element is detected
+     * (e.g. pointer is only over the draggable itself or filtered out by `dropPredicate`).
      */
-    pointedElement           : Element
+    pointedElement           : Element | null
     /**
      * The reference to the DOM element that serves as the droppable element in contact, set as `relatedTarget`.
      * Pass `null` if the droppable element is not available, e.g. when the drag gesture ends outside any droppable.
@@ -161,11 +167,11 @@ export const createDragDropDeactivatedEvent = <TElement extends Element = HTMLEl
         
         nativeEvent      : lastPointerUpEvent,
         
-        // type          : 'pointerup',              // Defaults to `nativeEvent.type`, no override needed.
+        // type          : 'pointerup',                 // Defaults to `nativeEvent.type`, no override needed.
         
-        currentTarget    : dragElement ?? undefined, // The draggable element initiating the deactivation.
-        target           : pointedElement,           // The element under the pointer at release.
-        relatedTarget    : dropElement,              // The droppable element in contact, if any.
+        currentTarget    : dragElement    ?? undefined, // The draggable element initiating the deactivation.
+        target           : pointedElement ?? undefined, // The element under the pointer at release.
+        relatedTarget    : dropElement,                 // The droppable element in contact, if any.
     }),
     
     // Data:
