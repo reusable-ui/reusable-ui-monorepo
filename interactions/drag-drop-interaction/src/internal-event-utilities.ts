@@ -379,8 +379,8 @@ export const createDragProbeEvent           = <TElement extends Element = HTMLEl
     /**
      * The reference to the DOM element that currently under the pointer, set as `target`.
      * 
-     * Pass `null` if the pointer is not over any valid droppable candidate,
-     * e.g. hovering outside the viewport or over an excluded element (filtered out by `dropCandidate`).
+     * Pass `null` if no valid element is detected
+     * (e.g. pointer is only over the draggable itself or filtered out by `dropPredicate`).
      */
     pointedElement           : Element | null
     
