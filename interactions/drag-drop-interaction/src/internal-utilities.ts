@@ -716,7 +716,7 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
      */
     isDragReady             : () => boolean
 }): void => {
-    // Abort commit if:
+    // Abort deactivate if:
     // - Draggable element is missing.
     // - Draggable is unmounted.
     // - Draggable is disabled.
@@ -760,7 +760,7 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
     
     
     
-    // Clear the captured pointerup event after commit:
+    // Clear the captured pointerup event after deactivate:
     // - Prevents accidentally emitting multiple dragged/dropped/dragdeactivated/dragabsence events.
     activeDroppableState.lastPointerUpEvent = undefined;
 };
