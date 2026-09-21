@@ -760,7 +760,7 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
 };
 
 /**
- * Processes the drag-drop deactivation operation when the lifecycle ends.
+ * Processes the drag-drop deactivation operation when a drag gesture ends.
  * 
  * - Validates drag context.
  * - Dispatches final `DragDeactivatedEvent` for the draggable side.
