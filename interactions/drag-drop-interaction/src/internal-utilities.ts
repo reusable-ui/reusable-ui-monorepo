@@ -37,11 +37,13 @@ import {
 }                           from './internal-registry.js'
 import {
     // Event factories:
+    createDragDropActivatedEvent,
     createDragDropDeactivatedEvent,
     createDragProbeEvent,
     createDragDropCommittedEvent,
     
     // Event dispatchers:
+    dispatchActivatedEvents,
     dispatchDeactivatedEvents,
     dispatchHandshakeEvents,
     dispatchEvaluationEvents,
@@ -665,6 +667,97 @@ export const syncDroppableEntry           = <TElement extends Element = HTMLElem
 
 
 // Processes:
+
+/**
+ * Processes the drag-drop activation operation when a drag gesture begins.
+ * 
+ * - Validates drag context.
+ * - Dispatches initial `DragActivatedEvent` for the draggable side.
+ * - Dispatches `DragPresenceEvent` for the droppable side (broadcast).
+ */
+export const processDragDropActivate   = <TElement extends Element = HTMLElement>({
+    // Data:
+    dragPayload,
+    
+    // Refs:
+    dragElement,
+    
+    // Behaviors:
+    dropPredicate,
+    
+    // Stable event handlers:
+    handleDragActivated,
+    
+    // Actual states:
+    lastPointerDownEventRef,
+    
+    // Utility functions:
+    isDragReady,
+}: Pick<Required<DraggableStateProps<TElement>>,
+    // Data:
+    | 'dragPayload'
+> & Pick<DraggableStateProps<TElement>,
+    // Behaviors:
+    | 'dropPredicate'
+> & {
+    // Refs:
+    /**
+     * The reference to the DOM element that serves as the draggable source.
+     */
+    dragElement             : TElement | null
+    
+    // Stable event handlers:
+    /**
+     * Invoked once the drag gesture begins on the draggable side.
+     * 
+     * Signals the draggable to initialize its own styling, ghost image,
+     * or other resources tied to the drag activity lifecycle.
+     */
+    handleDragActivated     : Required<DraggableStateProps<TElement>>['onDragActivated']
+    
+    // Actual states:
+    lastPointerDownEventRef : RefObject<PointerEvent | undefined> | undefined,
+    
+    // Utility functions:
+    /**
+     * Determines whether the draggable state is valid for dragging operation.
+     */
+    isDragReady             : () => boolean
+}): void => {
+    // Abort activate if:
+    // - Draggable element is missing.
+    // - Draggable is unmounted.
+    // - Draggable is disabled.
+    // - No pointerdown event was captured.
+    const lastPointerDownEvent = lastPointerDownEventRef?.current;
+    if (!isDragReady() || !lastPointerDownEvent) return;
+    
+    
+    
+    // Resolve the top-most element under the cursor:
+    // - Ignore the "ghost dragging image".
+    const pointedElement = resolvePointedElement(lastPointerDownEvent, dropPredicate);
+    
+    
+    
+    // Dispatch the initial activation events:
+    const dragDropActivatedEvent = createDragDropActivatedEvent<TElement>({
+        // Event metadata:
+        lastPointerDownEvent,
+        dragElement,
+        pointedElement,
+        
+        // Data:
+        dragPayload,
+    });
+    dispatchActivatedEvents<TElement>({
+        // Event metadata:
+        dragDropActivatedEvent,
+        
+        // Stable event handlers:
+        handleDragActivated,
+    });
+};
 
 /**
  * Processes the drag-drop deactivation operation when the lifecycle ends.

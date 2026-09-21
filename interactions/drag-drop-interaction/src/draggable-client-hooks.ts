@@ -53,11 +53,16 @@ import {
     updateGlobalPointerListeners,
     
     // Processes:
+    processDragDropActivate,
     processDragDropDeactivate,
     processDragProbe,
     processDropCandidate,
     processDragDropCommit,
 }                           from './internal-utilities.js'
+import {
+    type GlobalPointerIntegration,
+    integrateGlobalPointer,
+}                           from './internal-pointer-tracker-integrations.js'
 
 
 
@@ -230,7 +235,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     
     // Stable event handlers:
     // - Wrapped with `useStableEventHandler` so references never change, avoiding unnecessary re-syncs or deps in `useEffect()`.
-    const _handleDragActivated   = useStableEventHandler(onDragActivated);
+    const handleDragActivated   = useStableEventHandler(onDragActivated);
     const handleDragDeactivated = useStableEventHandler(onDragDeactivated);
     const handleDragHandshake   = useStableEventHandler(async (event: DragHandshakeEvent<TElement>): Promise<void> => {
         // Invoke the event callback and wait for `dragResponse` mutation:
@@ -335,6 +340,31 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     
     
     
+    // "Global Pointer Integration" effect:
+    // - Attaches a shared global `pointerdown` listener when any draggable is enabled.
+    // - Updates `lastPointerDownEventRef` with the most recent native event.
+    // - Cleans up the listener when the draggable is disabled or unmounted.
+    const globalPointerIntegrationRef = useRef<GlobalPointerIntegration | null>(null);
+    useEffect(() => {
+        // Only track while draggable is enabled:
+        if (!dragEnabled) return;
+        
+        
+        
+        // Setup when draggable is enabled:
+        globalPointerIntegrationRef.current = integrateGlobalPointer();
+        
+        
+        
+        // Cleanup when draggable is disabled or unmounted:
+        return () => {
+            globalPointerIntegrationRef.current?.disintegrate();
+            globalPointerIntegrationRef.current = null;
+        };
+    }, [dragEnabled]);
+    
+    
+    
     // "Lifecycle" effect:
     // - Handles drag lifecycle state.
     // - Broadcasts active state on start, inactive state on end.
@@ -349,6 +379,27 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
         
         
         // Setup when drag starts:
+        
+        // Signal activation lifecycle:
+        processDragDropActivate<TElement>({
+            // Data:
+            dragPayload,
+            
+            // Refs:
+            dragElement,
+            
+            // Behaviors:
+            dropPredicate,
+            
+            // Stable event handlers:
+            handleDragActivated,
+            
+            // Actual states:
+            lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
+            
+            // Utility functions:
+            isDragReady,
+        });
         
         // Mark draggable as active and broadcast active state to all droppables:
         updateDragLifecycle({

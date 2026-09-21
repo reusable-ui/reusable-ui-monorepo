@@ -649,6 +649,11 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
      * or other resources tied to the drag activity lifecycle.
      * 
      * Invoked once the drag gesture begins on the draggable side.
+     * 
+     * At the moment this callback runs, the `dragStatus` and `dropMetadata` are still unavailable
+     * because lifecycle setters have not yet applied. The state will be updated
+     * shortly after the callback returns (next re-render).
+     * Instead, use the `DragActivatedEvent` object for reliable access to the `dragStatus` and `dropMetadata`.
      */
     onDragActivated   ?: EventHandler<DragActivatedEvent<TElement>>
     
@@ -749,6 +754,11 @@ export interface DroppableStateProps<TElement extends Element = HTMLElement> {
      * or other resources tied to the drag activity lifecycle.
      * 
      * Invoked once the drag gesture begins on each droppable side.
+     * 
+     * At the moment this callback runs, the `dropStatus` and `dragPayload` are still unavailable
+     * because lifecycle setters have not yet applied. The state will be updated
+     * shortly after the callback returns (next re-render).
+     * Instead, use the `DragPresenceEvent` object for reliable access to the `dropStatus` and `dragPayload`.
      */
     onDragPresence    ?: EventHandler<DragPresenceEvent<TElement>>
     
