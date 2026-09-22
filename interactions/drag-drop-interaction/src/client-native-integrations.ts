@@ -16,7 +16,6 @@ import {
     
     // Processes:
     processDragProbe,
-    processDropCandidate,
     processDragDropCommit,
 }                           from './internal-utilities.js'
 import {
@@ -24,6 +23,7 @@ import {
     isMountedRef,
     activeDroppableRef,
     dragPayloadRef,
+    globalPointerIntegrationRef,
     
     // Functions:
     isDragReady,
@@ -41,6 +41,9 @@ import {
     // Events:
     createPointerEventFromDragEvent,
 }                           from './internal-simulate-utilities.js'
+import {
+    integrateGlobalPointer,
+}                           from './internal-pointer-tracker-integrations.js'
 
 
 
@@ -153,22 +156,8 @@ const handleGlobalDragOver  = (event: DragEvent): void => {
 
 
 // Global drop handler:
-// - Simulates capture the most recent pointerup event during drag gestures for later commit.
 // - Immediately commits after the capture.
 const handleGlobalDrop      = (event: DragEvent): void => {
-    // Simulates capture the most recent pointerup event:
-    const pointerUpEvent = createPointerEventFromDragEvent(event, 'pointerup');
-    processDropCandidate({
-        // Events:
-        pointerUpEvent,
-        
-        // Refs:
-        activeDroppableRef,
-        
-        // Utility functions:
-        isDragReady,
-    });
-    
     // Immediately commits after the capture:
     processDragDropCommit<Element>({
         // Data:
@@ -177,6 +166,7 @@ const handleGlobalDrop      = (event: DragEvent): void => {
         // Refs:
         dragElement: event.target as Element | null,
         activeDroppableRef,
+        lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
         
         // Stable event handlers:
         handleDragged,
@@ -208,6 +198,11 @@ const setupGlobalIntegration = (): void => {
     document.addEventListener('dragend'  , handleGlobalDragEnd  , options);
     document.addEventListener('dragover' , handleGlobalDragOver , options);
     document.addEventListener('drop'     , handleGlobalDrop     , options);
+    
+    // Integrate global pointer tracker:
+    // - Attaches a shared global `pointerdown` and `pointerup` listeners when this integration is enabled.
+    // - Updates `lastPointerDownEventRef` and `lastPointerUpEventRef` with the most recent native events.
+    globalPointerIntegrationRef.current = integrateGlobalPointer();
 };
 
 /**
@@ -223,6 +218,11 @@ const cleanupGlobalIntegration = (): void => {
     isMountedRef.current = false;
     globalAbortController?.abort();
     globalAbortController = null;
+    
+    // Disintegrate global pointer tracker:
+    // - Cleans up the listeners when this integration is disabled.
+    globalPointerIntegrationRef.current?.disintegrate();
+    globalPointerIntegrationRef.current = null;
     
     
     

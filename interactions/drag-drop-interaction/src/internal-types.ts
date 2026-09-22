@@ -161,7 +161,7 @@ export interface ActiveDroppableState {
      * Used for cleanup when switching to another droppable
      * or when unmounting.
      */
-    entry               : DroppableEntry< Element>
+    entry          : DroppableEntry< Element>
     
     /**
      * Indicating whether both draggable and droppable sides accepted.
@@ -169,22 +169,17 @@ export interface ActiveDroppableState {
      * Used at the commit stage (pointerup) to decide
      * if `DraggedEvent` and `DroppedEvent` should be dispatched.
      */
-    isAccepted          : boolean
+    isAccepted     : boolean
     
     /**
      * The element currently pointed by the drag gesture.
      */
-    pointedElement      : Element
+    pointedElement : Element
     
     /**
      * The droppable element currently active.
      */
-    dropElement         : Element
-    
-    /**
-     * The most recent native 'pointerup' event from the browser captured during a drag gesture.
-     */
-    lastPointerUpEvent ?: PointerEvent
+    dropElement    : Element
 }
 
 

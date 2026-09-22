@@ -29,6 +29,9 @@ import {
 import {
     type ActiveDroppableState,
 }                           from './internal-types.js'
+import {
+    type GlobalPointerIntegration,
+}                           from './internal-pointer-tracker-integrations.js'
 
 
 
@@ -37,7 +40,7 @@ import {
 // Tests whether the component is still mounted (integrated):
 // - Prevents accidental state updates after unmounted (disintegrated).
 //   E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
-export const isMountedRef       : RefObject<boolean | undefined>         = { current: false };
+export const isMountedRef                : RefObject<boolean | undefined>             = { current: false };
 
 /**
  * Tracks the currently active droppable state:
@@ -46,7 +49,7 @@ export const isMountedRef       : RefObject<boolean | undefined>         = { cur
  * - Storing the full entry (not just a cleanup callback) makes debugging easier
  *   and future extensions more flexible, with negligible memory overhead.
  */
-export const activeDroppableRef : RefObject<ActiveDroppableState | null> = { current: null };
+export const activeDroppableRef          : RefObject<ActiveDroppableState | null>     = { current: null };
 
 /**
  * Holds the current drag payload extracted by `extractPayloadFromDataTransfer()`.
@@ -54,7 +57,12 @@ export const activeDroppableRef : RefObject<ActiveDroppableState | null> = { cur
  * Assigned during `dragstart` and cleared during `dragend`.
  * Carries metadata (and later full file access) for evaluation and commit.
  */
-export const dragPayloadRef     : RefObject<DragPayload | null>          = { current: null };
+export const dragPayloadRef              : RefObject<DragPayload | null>              = { current: null };
+
+/**
+ * Holds the active "Global Pointer Integration":
+ */
+export const globalPointerIntegrationRef : RefObject<GlobalPointerIntegration | null> = { current: null};
 
 
 
@@ -164,7 +172,7 @@ export const handleDragged        : EventHandler<DraggedEvent<Element>>        =
  * Creates a synthetic `PointerEvent` from a given `DragEvent`.
  * 
  * Useful for compatibility with APIs that expect pointer events
- * (e.g. `processDragProbe()` or `processDropCandidate()`).
+ * (e.g. `processDragProbe()`).
  * 
  * Note:
  * - `DragEvent` inherits from `MouseEvent`, so coordinates and button state

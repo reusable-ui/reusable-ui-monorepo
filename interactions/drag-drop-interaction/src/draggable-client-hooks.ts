@@ -57,7 +57,6 @@ import {
     processDragDropActivate,
     processDragDropDeactivate,
     processDragProbe,
-    processDropCandidate,
     processDragDropCommit,
 }                           from './internal-utilities.js'
 import {
@@ -323,28 +322,12 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
         });
     });
     
-    // Global pointer up handler:
-    // - Captures the most recent pointerup event during drag gestures for later commit.
-    // - Stable reference, safe to use in `useEffect()` without listing in deps, avoiding unnecessary re-runs.
-    const handleGlobalPointerUp   = useStableEventHandler((pointerUpEvent: PointerEvent): void => {
-        processDropCandidate({
-            // Events:
-            pointerUpEvent,
-            
-            // Refs:
-            activeDroppableRef,
-            
-            // Utility functions:
-            isDragReady,
-        });
-    });
-    
     
     
     // "Global Pointer Integration" effect:
-    // - Attaches a shared global `pointerdown` listener when any draggable is enabled.
-    // - Updates `lastPointerDownEventRef` with the most recent native event.
-    // - Cleans up the listener when the draggable is disabled or unmounted.
+    // - Attaches a shared global `pointerdown` and `pointerup` listeners when any draggable is enabled.
+    // - Updates `lastPointerDownEventRef` and `lastPointerUpEventRef` with the most recent native events.
+    // - Cleans up the listeners when the draggable is disabled or unmounted.
     const globalPointerIntegrationRef = useRef<GlobalPointerIntegration | null>(null);
     useEffect(() => {
         // Only track while draggable is enabled:
@@ -402,7 +385,6 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
             
             // Stable event handlers:
             handleGlobalPointerMove,
-            handleGlobalPointerUp,
         });
         
         
@@ -417,6 +399,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
                 // Refs:
                 dragElement,
                 activeDroppableRef, // ✅ Skips the commit if the pointer is not hovering over a droppable zone when the pointer is released.
+                lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
                 
                 // Stable event handlers:
                 handleDragged,
@@ -448,7 +431,6 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
                 
                 // Stable event handlers:
                 handleGlobalPointerMove,
-                handleGlobalPointerUp,
             });
         };
     }, [dragEnabled, computedDrag]);
@@ -500,6 +482,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
                 // Refs:
                 dragElement,
                 activeDroppableRef,
+                lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
                 
                 // Stable event handlers:
                 handleDragDeactivated,
