@@ -17,6 +17,14 @@ import {
 const lastPointerDownEventRef : RefObject<PointerEvent | undefined> = { current: undefined };
 
 /**
+ * Tracks the most recent native `pointerup` event globally.
+ * 
+ * Updated whenever a pointer release occurs,
+ * allowing draggable hooks to access the latest native event when performing drop commit and deactivation.
+ */
+const lastPointerUpEventRef   : RefObject<PointerEvent | undefined> = { current: undefined };
+
+/**
  * Tracks the number of active integrations.
  * 
  * Used for reference-counted setup/cleanup:
@@ -46,15 +54,23 @@ const handleGlobalPointerDown = (event: PointerEvent): void => {
     lastPointerDownEventRef.current = event;
 };
 
+/**
+ * Updates the `lastPointerUpEventRef` with the most recent native event,
+ * making it available to draggable state hooks for drop commit and deactivation logic.
+ */
+const handleGlobalPointerUp   = (event: PointerEvent): void => {
+    lastPointerUpEventRef.current = event;
+};
+
 
 
 // Global setup/cleanup integrations:
 
 /**
- * Performs global setup for the pointerdown tracker integration.
+ * Performs global setup for pointerdown and pointerup tracker integration.
  * 
  * - Creates an `AbortController` to manage event listener lifetimes.
- * - Attaches global `pointerdown` event handler
+ * - Attaches global `pointerdown` and `pointerup` event handlers
  *   to the window with the controller's signal.
  * 
  * Executed once when the first integration is created
@@ -65,12 +81,13 @@ const setupGlobalIntegration = (): void => {
     globalAbortController = new AbortController();
     const options : AddEventListenerOptions = { signal: globalAbortController.signal };
     window.addEventListener('pointerdown', handleGlobalPointerDown, options);
+    window.addEventListener('pointerup'  , handleGlobalPointerUp  , options);
 };
 
 /**
- * Performs global cleanup for the pointerdown tracker integration.
+ * Performs global cleanup for pointerdown and pointerup tracker integration.
  * 
- * - Aborts global `pointerdown` listener attached during setup.
+ * - Aborts global `pointerdown` and `pointerup` listeners attached during setup.
  * - Clears `AbortController` reference.
  * 
  * Executed once when the last integration is disintegrated
@@ -83,7 +100,7 @@ const cleanupGlobalIntegration = (): void => {
 };
 
 /**
- * Represents an attached integration handler that bridges global `pointerdown` events
+ * Represents an attached integration handler that bridges global `pointerdown` and `pointerup` events
  * into the `useDraggableState()` system.
  * 
  * Each call to `integrateGlobalPointer()` produces a handler that manages its own lifecycle:
@@ -107,14 +124,22 @@ export interface GlobalPointerIntegration {
      * allowing draggable hooks to access the latest native event when performing activation.
      */
     lastPointerDownEventRef : RefObject<PointerEvent | undefined>
+    
+    /**
+     * A shared reference to the most recent native `pointerup` event.
+     * 
+     * Updated whenever a pointer release occurs,
+     * allowing draggable hooks to access the latest native event when performing drop commit and deactivation.
+     */
+    lastPointerUpEventRef   : RefObject<PointerEvent | undefined>
 }
 
 /**
- * Integrates global `pointerdown` tracking
+ * Integrates global `pointerdown` and `pointerup` tracking
  * into the `useDraggableState()` system.
  * 
  * @returns An integration handler with a `disintegrate()` callback for releasing the integration
- * and a shared reference to the most recent native `pointerdown` event.
+ * alongside shared references to the most recent native `pointerdown` and `pointerup` events.
  */
 export const integrateGlobalPointer = (): GlobalPointerIntegration => {
     // No integration on server side:
@@ -123,6 +148,7 @@ export const integrateGlobalPointer = (): GlobalPointerIntegration => {
             // noop
         },
         lastPointerDownEventRef,
+        lastPointerUpEventRef,
     } satisfies GlobalPointerIntegration;
     
     
@@ -146,5 +172,6 @@ export const integrateGlobalPointer = (): GlobalPointerIntegration => {
             if (--globalIntegrationRefCount === 0) cleanupGlobalIntegration();
         },
         lastPointerDownEventRef,
+        lastPointerUpEventRef,
     } satisfies GlobalPointerIntegration;
 };
