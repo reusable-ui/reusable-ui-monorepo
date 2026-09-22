@@ -676,15 +676,13 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
     
     // Refs:
     dragElement,
+    lastPointerDownEventRef,
     
     // Behaviors:
     dropPredicate,
     
     // Stable event handlers:
     handleDragActivated,
-    
-    // Actual states:
-    lastPointerDownEventRef,
     
     // Utility functions:
     isDragReady,
@@ -700,6 +698,7 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
      * The reference to the DOM element that serves as the draggable source.
      */
     dragElement             : TElement | null
+    lastPointerDownEventRef : RefObject<PointerEvent | undefined> | undefined,
     
     // Stable event handlers:
     /**
@@ -709,9 +708,6 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
      * or other resources tied to the drag activity lifecycle.
      */
     handleDragActivated     : Required<DraggableStateProps<TElement>>['onDragActivated']
-    
-    // Actual states:
-    lastPointerDownEventRef : RefObject<PointerEvent | undefined> | undefined,
     
     // Utility functions:
     /**

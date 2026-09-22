@@ -459,15 +459,13 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
                 
                 // Refs:
                 dragElement,
+                lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
                 
                 // Behaviors:
                 dropPredicate,
                 
                 // Stable event handlers:
                 handleDragActivated,
-                
-                // Actual states:
-                lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
                 
                 // Utility functions:
                 isDragReady,
