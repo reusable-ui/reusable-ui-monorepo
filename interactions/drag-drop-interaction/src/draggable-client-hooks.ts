@@ -6,6 +6,7 @@ import {
     useState,
     useRef,
     useEffect,
+    useLayoutEffect,
 }                           from 'react'
 
 // Reusable-ui utilities:
@@ -380,27 +381,6 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
         
         // Setup when drag starts:
         
-        // Signal activation lifecycle:
-        processDragDropActivate<TElement>({
-            // Data:
-            dragPayload,
-            
-            // Refs:
-            dragElement,
-            
-            // Behaviors:
-            dropPredicate,
-            
-            // Stable event handlers:
-            handleDragActivated,
-            
-            // Actual states:
-            lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
-            
-            // Utility functions:
-            isDragReady,
-        });
-        
         // Mark draggable as active and broadcast active state to all droppables:
         updateDragLifecycle({
             // Lifecycle configs:
@@ -445,22 +425,6 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
                 isDragReady, // ✅ Skips the commit if the component is unmounted or disabled.
             });
             
-            // Signal deactivation lifecycle before resetting state, to ensure the last pointerup event is processed:
-            processDragDropDeactivate<TElement>({
-                // Data:
-                dragPayload,
-                
-                // Refs:
-                dragElement,
-                activeDroppableRef,
-                
-                // Stable event handlers:
-                handleDragDeactivated,
-                
-                // Utility functions:
-                isDragReady,
-            });
-            
             
             
             // Then reset draggable to inactive, broadcast inactive state to all droppables, and clears the previously active droppable entry:
@@ -488,6 +452,63 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
             });
         };
     }, [dragEnabled, computedDrag]);
+    
+    // "Activation" effect:
+    // - Observes changes in drag activity (`dragStatus`) to trigger activation/deactivation events.
+    // - Events are dispatched *after* draggable and droppable states have *fully* updated.
+    // - Uses `useLayoutEffect` so events fire before the browser repaints,
+    //   allowing consumers to update layout immediately without flicker.
+    const prevActiveRef = useRef<boolean>(false);    // Tracks previous drag activity state.
+    const isActive      = (dragStatus !== undefined); // `undefined` → no drag activity, any other value (`null`/`false`/`true`) → drag activity present.
+    useLayoutEffect(() => {
+        // Only react to changes in activation state:
+        // - Prevents duplicate triggers (e.g. React strict mode double-invocations).
+        if (prevActiveRef.current === isActive) return;
+        prevActiveRef.current = isActive;
+        
+        
+        
+        // Triggers activation/deactivation events:
+        if (isActive) {
+            // Dispatch activation events after state is settled:
+            processDragDropActivate<TElement>({
+                // Data:
+                dragPayload,
+                
+                // Refs:
+                dragElement,
+                
+                // Behaviors:
+                dropPredicate,
+                
+                // Stable event handlers:
+                handleDragActivated,
+                
+                // Actual states:
+                lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
+                
+                // Utility functions:
+                isDragReady,
+            });
+        }
+        else {
+            // Dispatch deactivation events after state is settled:
+            processDragDropDeactivate<TElement>({
+                // Data:
+                dragPayload,
+                
+                // Refs:
+                dragElement,
+                activeDroppableRef,
+                
+                // Stable event handlers:
+                handleDragDeactivated,
+                
+                // Utility functions:
+                isDragReady,
+            });
+        } // if
+    }, [isActive]);
     
     
     

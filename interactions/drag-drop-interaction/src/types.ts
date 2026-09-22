@@ -649,11 +649,6 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
      * or other resources tied to the drag activity lifecycle.
      * 
      * Invoked once the drag gesture begins on the draggable side.
-     * 
-     * At the moment this callback runs, the `dragStatus` and `dropMetadata` are still unavailable
-     * because lifecycle setters have not yet applied. The state will be updated
-     * shortly after the callback returns (next re-render).
-     * Instead, use the `DragActivatedEvent` object for reliable access to the `dragStatus` and `dropMetadata`.
      */
     onDragActivated   ?: EventHandler<DragActivatedEvent<TElement>>
     
@@ -662,10 +657,6 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
      * or other resources tied to the drag activity lifecycle.
      * 
      * Invoked once the drag gesture ends on the draggable side.
-     * 
-     * At the moment this callback runs, the `dragStatus` and `dropMetadata` are still available
-     * and can be inspected for business logic. The state will be cleared
-     * shortly after the callback returns (next re-render).
      */
     onDragDeactivated ?: EventHandler<DragDeactivatedEvent<TElement>>
     
@@ -754,11 +745,6 @@ export interface DroppableStateProps<TElement extends Element = HTMLElement> {
      * or other resources tied to the drag activity lifecycle.
      * 
      * Invoked once the drag gesture begins on each droppable side.
-     * 
-     * At the moment this callback runs, the `dropStatus` and `dragPayload` are still unavailable
-     * because lifecycle setters have not yet applied. The state will be updated
-     * shortly after the callback returns (next re-render).
-     * Instead, use the `DragPresenceEvent` object for reliable access to the `dropStatus` and `dragPayload`.
      */
     onDragPresence    ?: EventHandler<DragPresenceEvent<TElement>>
     
@@ -767,10 +753,6 @@ export interface DroppableStateProps<TElement extends Element = HTMLElement> {
      * or other resources tied to the drag activity lifecycle.
      * 
      * Invoked once the drag gesture ends on each droppable side.
-     * 
-     * At the moment this callback runs, the `dropStatus` and `dragPayload` are still available
-     * and can be inspected for business logic. The state will be cleared
-     * shortly after the callback returns (next re-render).
      */
     onDragAbsence     ?: EventHandler<DragAbsenceEvent<TElement>>
     

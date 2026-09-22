@@ -248,7 +248,6 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
  * 
  * - Resets the droppable's status to `null` (drag gesture active but outside any droppable zone).
  * - Clears the droppable's payload.
- * - Clears the active droppable reference and its bundled data.
  * - Clears the draggable's status to `null` (drag gesture active but outside any droppable zone).
  * - Clears the draggable's metadata.
  */
@@ -292,16 +291,18 @@ const clearActiveDroppable                = ({
      */
     setDropMetadata         : Dispatch<DraggableState<Element>['dropMetadata']>
 }): void => {
-    // Clear active droppable:
+    // Clear the previously active droppable entry:
     const activeDroppableState = activeDroppableRef.current;
     if (activeDroppableState) {
-        // Clear the previously active droppable entry and its bundled data:
         const { entry: activeDroppableEntry } = activeDroppableState;
         if (activeDroppableEntry.isMountedRef.current) {
             activeDroppableEntry.setDropStatus(null);       // Drag gesture active but outside any droppable zone.
             activeDroppableEntry.setDragPayload(undefined); // Clear payload.
         } // if
-        activeDroppableRef.current = null;                  // Clear active droppable reference and its bundled data.
+        
+        // Do not clear the active droppable reference:
+        // - It still required by `processDragDropDeactivate()`.
+        // activeDroppableRef.current = null;
     } // if
     
     
@@ -504,14 +505,17 @@ export const updateDragLifecycle          = ({
     
     
     if (!isSetup) {
-        // Clear the previously active droppable entry and its bundled data:
+        // Clear the previously active droppable entry:
         const activeDroppableState = activeDroppableRef.current;
         if (activeDroppableState) {
             const { entry: activeDroppableEntry } = activeDroppableState;
             if (activeDroppableEntry.isMountedRef.current) {
                 activeDroppableEntry.setDragPayload(undefined); // Clear payload.
             } // if
-            activeDroppableRef.current = null;                  // Clear active droppable reference and its bundled data.
+            
+            // Do not clear the active droppable reference:
+            // - It still required by `processDragDropDeactivate()`.
+            // activeDroppableRef.current = null;
         } // if
     } // if
 };
@@ -765,7 +769,7 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
  * - Validates drag context.
  * - Dispatches final `DragDeactivatedEvent` for the draggable side.
  * - Dispatches `DragAbsenceEvent` for the droppable side (active and broadcast).
- * - Clears the captured pointerup event to prevent duplicate dragged/dropped/deactivation/absence events.
+ * - Clears the active droppable reference and its bundled data.
  */
 export const processDragDropDeactivate = <TElement extends Element = HTMLElement>({
     // Data:
@@ -809,12 +813,17 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
      */
     isDragReady             : () => boolean
 }): void => {
+    // Capture and clear the active droppable reference and its bundled data:
+    const activeDroppableState = activeDroppableRef.current;
+    activeDroppableRef.current = null;
+    
+    
+    
     // Abort deactivate if:
     // - Draggable element is missing.
     // - Draggable is unmounted.
     // - Draggable is disabled.
     // - No pointerup event was captured.
-    const activeDroppableState = activeDroppableRef.current;
     if (!isDragReady() || !activeDroppableState?.lastPointerUpEvent) return;
     
     
@@ -850,12 +859,6 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
         // Stable event handlers:
         handleDragDeactivated,
     });
-    
-    
-    
-    // Clear the captured pointerup event after deactivate:
-    // - Prevents accidentally emitting multiple dragged/dropped/dragdeactivated/dragabsence events.
-    activeDroppableState.lastPointerUpEvent = undefined;
 };
 
 /**
