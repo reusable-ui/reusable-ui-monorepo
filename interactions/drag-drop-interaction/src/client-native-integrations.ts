@@ -166,7 +166,7 @@ const handleGlobalDrop      = (event: DragEvent): void => {
         // Refs:
         dragElement: event.target as Element | null,
         activeDroppableRef,
-        lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
+        lastPointerUpEventRef: globalPointerIntegrationRef.current?.lastPointerUpEventRef,
         
         // Stable event handlers:
         handleDragged,

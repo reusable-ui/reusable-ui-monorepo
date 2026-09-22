@@ -399,7 +399,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
                 // Refs:
                 dragElement,
                 activeDroppableRef, // ✅ Skips the commit if the pointer is not hovering over a droppable zone when the pointer is released.
-                lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
+                lastPointerUpEventRef: globalPointerIntegrationRef.current?.lastPointerUpEventRef,
                 
                 // Stable event handlers:
                 handleDragged,
@@ -482,7 +482,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
                 // Refs:
                 dragElement,
                 activeDroppableRef,
-                lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
+                lastPointerUpEventRef: globalPointerIntegrationRef.current?.lastPointerUpEventRef,
                 
                 // Stable event handlers:
                 handleDragDeactivated,

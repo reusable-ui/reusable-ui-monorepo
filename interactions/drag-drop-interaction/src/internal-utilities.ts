@@ -769,7 +769,7 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
     // Refs:
     dragElement,
     activeDroppableRef,
-    lastPointerDownEventRef,
+    lastPointerUpEventRef,
     
     // Stable event handlers:
     handleDragDeactivated,
@@ -789,7 +789,7 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
      * The draggable's ref holding the active droppable state.
      */
     activeDroppableRef      : RefObject<ActiveDroppableState | null>
-    lastPointerDownEventRef : RefObject<PointerEvent | undefined> | undefined,
+    lastPointerUpEventRef   : RefObject<PointerEvent | undefined> | undefined,
     
     // Stable event handlers:
     /**
@@ -817,7 +817,7 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
     // - Draggable is unmounted.
     // - Draggable is disabled.
     // - No pointerup event was captured.
-    const lastPointerUpEvent = lastPointerDownEventRef?.current;
+    const lastPointerUpEvent = lastPointerUpEventRef?.current;
     if (!isDragReady() || !lastPointerUpEvent) return;
     
     
@@ -1154,7 +1154,7 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
     // Refs:
     dragElement,
     activeDroppableRef,
-    lastPointerDownEventRef,
+    lastPointerUpEventRef,
     
     // Stable event handlers:
     handleDragged,
@@ -1174,7 +1174,7 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
      * The draggable's ref holding the active droppable state.
      */
     activeDroppableRef      : RefObject<ActiveDroppableState | null>
-    lastPointerDownEventRef : RefObject<PointerEvent | undefined> | undefined,
+    lastPointerUpEventRef   : RefObject<PointerEvent | undefined> | undefined,
     
     // Stable event handlers:
     /**
@@ -1198,7 +1198,7 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
     // - Draggable is disabled.
     // - No pointerup event was captured.
     // - No active droppable was accepted during the drag gesture.
-    const lastPointerUpEvent = lastPointerDownEventRef?.current;
+    const lastPointerUpEvent = lastPointerUpEventRef?.current;
     const activeDroppableState = activeDroppableRef.current;
     if (!isDragReady() || !lastPointerUpEvent || !activeDroppableState?.isAccepted) return;
     
