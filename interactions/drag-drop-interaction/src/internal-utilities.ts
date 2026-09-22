@@ -698,6 +698,9 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
      * The reference to the DOM element that serves as the draggable source.
      */
     dragElement             : TElement | null
+    /**
+     * A shared reference to the most recent native `pointerdown` event.
+     */
     lastPointerDownEventRef : RefObject<PointerEvent | undefined> | undefined,
     
     // Stable event handlers:
@@ -785,6 +788,9 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
      * The draggable's ref holding the active droppable state.
      */
     activeDroppableRef      : RefObject<ActiveDroppableState | null>
+    /**
+     * A shared reference to the most recent native `pointerup` event.
+     */
     lastPointerUpEventRef   : RefObject<PointerEvent | undefined> | undefined,
     
     // Stable event handlers:
@@ -1170,6 +1176,9 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
      * The draggable's ref holding the active droppable state.
      */
     activeDroppableRef      : RefObject<ActiveDroppableState | null>
+    /**
+     * A shared reference to the most recent native `pointerup` event.
+     */
     lastPointerUpEventRef   : RefObject<PointerEvent | undefined> | undefined,
     
     // Stable event handlers:
