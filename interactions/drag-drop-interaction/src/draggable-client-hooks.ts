@@ -356,42 +356,9 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     // - Cleans up the previously active droppable entry when drag ends.
     // - Runs only while draggable is enabled and a drag gesture is in progress.
     // - Commit logic is performed inside the cleanup, before resetting state.
-    useEffect(() => {
-        // Only track while draggable is enabled and a drag gesture is active:
-        if (!dragEnabled || !computedDrag) return;
-        
-        
-        
-        // Setup when drag starts:
-        
-        // Mark draggable as active and broadcast active state to all droppables:
-        updateDragLifecycle({
-            // Lifecycle configs:
-            isSetup: true, // ⚙️ `true` → setup
-            
-            // Actual states:
-            isMountedRef,
-            activeDroppableRef,
-            
-            // Reactive states:
-            setDragStatus,
-            setDropMetadata,
-        });
-        
-        // Setup global pointer listeners for drag probing and drop candidate evaluation:
-        updateGlobalPointerListeners({
-            // Lifecycle configs:
-            isSetup: true, // ⚙️ `true` → setup
-            
-            // Stable event handlers:
-            handleGlobalPointerMove,
-        });
-        
-        
-        
-        // Cleanup when drag ends:
-        return () => {
-            // Commit first before resetting state, to ensure the last pointerup event is processed:
+    const handleLifecycleChange = useStableCallback((isSetup: boolean) => {
+        if (!isSetup) {
+            // Cleanup : Commit first before resetting state, to ensure the last pointerup event is processed.
             processDragDropCommit<TElement>({
                 // Data:
                 dragPayload,
@@ -407,31 +374,47 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
                 // Utility functions:
                 isDragReady, // ✅ Skips the commit if the component is unmounted or disabled.
             });
+        } // if
+        
+        // Setup   : Mark draggable as active and broadcast active state to all droppables.
+        // Cleanup : Reset draggable to inactive, broadcast inactive state to all droppables, and clears the previously active droppable entry.
+        updateDragLifecycle({
+            // Lifecycle configs:
+            isSetup,
             
+            // Actual states:
+            isMountedRef,
+            activeDroppableRef,
             
+            // Reactive states:
+            setDragStatus,
+            setDropMetadata,
+        });
+        
+        // Setup   : Attach global pointer listeners for drag probing and drop candidate evaluation.
+        // Cleanup : Detach global pointer listeners for drag probing and drop candidate evaluation.
+        updateGlobalPointerListeners({
+            // Lifecycle configs:
+            isSetup,
             
-            // Then reset draggable to inactive, broadcast inactive state to all droppables, and clears the previously active droppable entry:
-            updateDragLifecycle({
-                // Lifecycle configs:
-                isSetup: false, // 🧹 `false` → cleanup
-                
-                // Actual states:
-                isMountedRef,
-                activeDroppableRef,
-                
-                // Reactive states:
-                setDragStatus,
-                setDropMetadata,
-            });
-            
-            // Cleanup global pointer listeners for drag probing and drop candidate evaluation:
-            updateGlobalPointerListeners({
-                // Lifecycle configs:
-                isSetup: false, // 🧹 `false` → cleanup
-                
-                // Stable event handlers:
-                handleGlobalPointerMove,
-            });
+            // Stable event handlers:
+            handleGlobalPointerMove,
+        });
+    });
+    useEffect(() => {
+        // Only track while draggable is enabled and a drag gesture is active:
+        if (!dragEnabled || !computedDrag) return;
+        
+        
+        
+        // Setup when drag starts:
+        handleLifecycleChange(true);
+        
+        
+        
+        // Cleanup when drag ends:
+        return () => {
+            handleLifecycleChange(false);
         };
     }, [dragEnabled, computedDrag]);
     
