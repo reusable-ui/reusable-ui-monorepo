@@ -425,15 +425,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     //   allowing consumers to update layout immediately without flicker.
     const prevActiveRef = useRef<boolean>(false);    // Tracks previous drag activity state.
     const isActive      = (dragStatus !== undefined); // `undefined` → no drag activity, any other value (`null`/`false`/`true`) → drag activity present.
-    useLayoutEffect(() => {
-        // Only react to changes in activation state:
-        // - Prevents duplicate triggers (e.g. React strict mode double-invocations).
-        if (prevActiveRef.current === isActive) return;
-        prevActiveRef.current = isActive;
-        
-        
-        
-        // Triggers activation/deactivation events:
+    const handleActivationChange = useStableCallback((isActive: boolean) => {
         if (isActive) {
             // Dispatch activation events after state is settled:
             processDragDropActivate<TElement>({
@@ -472,6 +464,17 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
                 isDragReady,
             });
         } // if
+    });
+    useLayoutEffect(() => {
+        // Only react to changes in activation state:
+        // - Prevents duplicate triggers (e.g. React strict mode double-invocations).
+        if (prevActiveRef.current === isActive) return;
+        prevActiveRef.current = isActive;
+        
+        
+        
+        // Triggers activation/deactivation events:
+        handleActivationChange(isActive);
     }, [isActive]);
     
     
