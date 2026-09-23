@@ -257,7 +257,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     // Register/unregister lifecycle:
     // - Register on mount and whenever `dropElement` changes.
     // - Unregister automatically on unmount.
-    const handleRegistrationLifecycle = useStableCallback((isSetup: boolean) => {
+    const handleRegistrationLifecycle = useStableCallback((isSetup: boolean): void => {
         // Abort if the droppable element is missing:
         if (!dropElement) return;
         

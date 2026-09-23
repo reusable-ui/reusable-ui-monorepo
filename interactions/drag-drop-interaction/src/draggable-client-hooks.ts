@@ -356,7 +356,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     // - Cleans up the previously active droppable entry when drag ends.
     // - Runs only while draggable is enabled and a drag gesture is in progress.
     // - Commit logic is performed inside the cleanup, before resetting state.
-    const handleLifecycleChange = useStableCallback((isSetup: boolean) => {
+    const handleLifecycleChange = useStableCallback((isSetup: boolean): void => {
         if (!isSetup) {
             // Cleanup : Commit first before resetting state, to ensure the last pointerup event is processed.
             processDragDropCommit<TElement>({
@@ -425,7 +425,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     //   allowing consumers to update layout immediately without flicker.
     const prevActiveRef = useRef<boolean>(false);    // Tracks previous drag activity state.
     const isActive      = (dragStatus !== undefined); // `undefined` → no drag activity, any other value (`null`/`false`/`true`) → drag activity present.
-    const handleActivationChange = useStableCallback((isActive: boolean) => {
+    const handleActivationChange = useStableCallback((isActive: boolean): void => {
         if (isActive) {
             // Dispatch activation events after state is settled:
             processDragDropActivate<TElement>({
