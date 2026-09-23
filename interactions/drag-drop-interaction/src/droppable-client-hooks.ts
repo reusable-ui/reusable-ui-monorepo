@@ -15,6 +15,7 @@ import {
 }                           from '@reusable-ui/lifecycles'          // A React utility package for managing component lifecycles, ensuring stable effects, and optimizing state updates.
 import {
     // Hooks:
+    useStableCallback,
     useStableEventHandler,
 }                           from '@reusable-ui/callbacks'           // A utility package providing stable and merged callback functions for optimized event handling and performance.
 
@@ -256,16 +257,17 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     // Register/unregister lifecycle:
     // - Register on mount and whenever `dropElement` changes.
     // - Unregister automatically on unmount.
-    useEffect(() => {
-        // Only register when the droppable element exists:
+    const handleRegistrationLifecycle = useStableCallback((isSetup: boolean) => {
+        // Abort if the droppable element is missing:
         if (!dropElement) return;
         
         
         
-        // Register on mount:
+        // Setup   : Register on mount.
+        // Cleanup : Unregister on unmount.
         updateDroppableRegistry<TElement>({
             // Lifecycle configs:
-            isSetup: true, // ⚙️ `true` → setup
+            isSetup,
             
             // Data:
             dropElement,
@@ -273,21 +275,20 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
             // Actual states:
             droppableEntry,
         });
+    });
+    useEffect(() => {
+        // Only register when the droppable element exists:
+        if (!dropElement) return;
         
+        
+        
+        // Register on mount:
+        handleRegistrationLifecycle(true);
         
         
         // Unregister on unmount:
         return () => {
-            updateDroppableRegistry<TElement>({
-                // Lifecycle configs:
-                isSetup: false, // 🧹 `false` → cleanup
-                
-                // Data:
-                dropElement,
-                
-                // Actual states:
-                droppableEntry,
-            });
+            handleRegistrationLifecycle(false);
         };
     }, [dropElement]);
     
