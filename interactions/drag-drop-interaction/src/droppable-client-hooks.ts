@@ -278,7 +278,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
         
         
         // Register on mount:
-        const registeredDropElement = dropElement;
+        const registeredDropElement = dropElement; // Snapshot the current drop element for *later* unregistration.
         handleRegistrationLifecycle(true, registeredDropElement);
         
         
