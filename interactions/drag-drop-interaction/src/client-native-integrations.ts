@@ -15,6 +15,8 @@ import {
     updateDragLifecycle,
     
     // Processes:
+    processDragDropActivate,
+    processDragDropDeactivate,
     processDragProbe,
     processDragDropCommit,
 }                           from './internal-utilities.js'
@@ -34,6 +36,8 @@ import {
     setDropMetadata,
     
     // Handlers:
+    handleDragActivated,
+    handleDragDeactivated,
     handleDragHandshake,
     handleDragEvaluation,
     handleDragged,
@@ -95,10 +99,34 @@ const handleGlobalDragStart = (event: DragEvent): void => {
     
     
     
-    // Prime the probe immediately:
-    handleGlobalDragOver(event);
+    // Wait until the state is settled:
+    setTimeout(() => {
+        // Dispatch activation events after state is settled:
+        processDragDropActivate<Element>({
+            // Data:
+            dragPayload: dragPayloadRef.current ?? emptyMap,
+            
+            // Refs:
+            dragElement: event.target as Element | null,
+            lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
+            
+            // Behaviors:
+            dropPredicate: undefined,
+            
+            // Stable event handlers:
+            handleDragActivated,
+            
+            // Utility functions:
+            isDragReady,
+        });
+        
+        
+        
+        // Prime the probe immediately:
+        handleGlobalDragOver(event);
+    }, 0);
 };
-const handleGlobalDragEnd   = (): void => {
+const handleGlobalDragEnd   = (event: DragEvent): void => {
     // Reset draggable to inactive, broadcast inactive state to all droppables, and clears the previously active droppable entry:
     updateDragLifecycle({
         // Lifecycle configs:
@@ -113,8 +141,32 @@ const handleGlobalDragEnd   = (): void => {
         setDropMetadata,
     });
     
-    // Clear the drag payload:
-    dragPayloadRef.current = null;
+    
+    
+    // Wait until the state is settled:
+    setTimeout(() => {
+        // Dispatch deactivation events after state is settled:
+        processDragDropDeactivate<Element>({
+            // Data:
+            dragPayload: dragPayloadRef.current ?? emptyMap,
+            
+            // Refs:
+            dragElement: event.target as Element | null,
+            activeDroppableRef,
+            lastPointerUpEventRef: globalPointerIntegrationRef.current?.lastPointerUpEventRef,
+            
+            // Stable event handlers:
+            handleDragDeactivated,
+            
+            // Utility functions:
+            isDragReady,
+        });
+        
+        
+        
+        // Clear the drag payload:
+        dragPayloadRef.current = null;
+    }, 0);
 };
 
 

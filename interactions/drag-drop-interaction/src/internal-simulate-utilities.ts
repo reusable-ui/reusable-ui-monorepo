@@ -18,6 +18,8 @@ import {
     type DropMetadata,
     
     // Handshakes:
+    type DragActivatedEvent,
+    type DragDeactivatedEvent,
     type DragHandshakeEvent,
     
     // Evaluations:
@@ -142,11 +144,25 @@ export const setDropMetadata : Dispatch<DropMetadata | undefined>   = noop;
 // Handlers:
 
 /**
+ * Simulates the activation handler.
+ * 
+ * Ignores initialization signal, since no draggable UI is present.
+ */
+export const handleDragActivated   : EventHandler<DragActivatedEvent<Element>>   = noop;
+
+/**
+ * Simulates the deactivation handler.
+ * 
+ * Ignores reset signal, since no draggable UI is present.
+ */
+export const handleDragDeactivated : EventHandler<DragDeactivatedEvent<Element>> = noop;
+
+/**
  * Simulates the handshake handler.
  * 
  * Always accepts the droppable's metadata, regardless of context.
  */
-export const handleDragHandshake  : (event: DragHandshakeEvent<Element>) => Promise<void> = async (event) => {
+export const handleDragHandshake   : (event: DragHandshakeEvent<Element>) => Promise<void> = async (event) => {
     event.dragResponse = true;
 };
 
@@ -155,14 +171,14 @@ export const handleDragHandshake  : (event: DragHandshakeEvent<Element>) => Prom
  * 
  * Does not apply any visual styling feedback, since no draggable UI is present.
  */
-export const handleDragEvaluation : EventHandler<DragEvaluationEvent<Element>> = noop;
+export const handleDragEvaluation  : EventHandler<DragEvaluationEvent<Element>>  = noop;
 
 /**
  * Simulates the dragged handler.
  * 
  * Ignores delivery status, since no draggable UI is present.
  */
-export const handleDragged        : EventHandler<DraggedEvent<Element>>        = noop;
+export const handleDragged         : EventHandler<DraggedEvent<Element>>         = noop;
 
 
 
