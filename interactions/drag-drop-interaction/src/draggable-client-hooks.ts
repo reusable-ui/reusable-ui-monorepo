@@ -350,12 +350,12 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     
     
     // "Lifecycle" effect:
-    // - Handles drag lifecycle state.
-    // - Broadcasts active state on start, inactive state on end.
-    // - Sets up and cleans up global pointer listeners for pointer movements and pointer release.
-    // - Cleans up the previously active droppable entry when drag ends.
-    // - Runs only while draggable is enabled and a drag gesture is in progress.
+    // - Runs only while draggable is enabled and a drag gesture is active.
     // - Commit logic is performed inside the cleanup, before resetting state.
+    // - Handles drag lifecycle state:
+    //   - Broadcasts active state on start, inactive state on end.
+    //   - Cleans up the previously active droppable entry when drag ends.
+    // - Sets up and cleans up global pointer listener for pointer movements.
     const handleLifecycleChange = useStableCallback((isSetup: boolean): void => {
         if (!isSetup) {
             // Cleanup : Commit first before resetting state, to ensure the last pointerup event is processed.

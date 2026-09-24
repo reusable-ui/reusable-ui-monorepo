@@ -74,9 +74,9 @@ let globalAbortController     : AbortController | null = null;
 
 
 // Global lifecycle handlers:
-// - Handles drag lifecycle state.
-// - Broadcasts active state on start, inactive state on end.
-// - Cleans up the previously active droppable entry when drag ends.
+// - Handles drag lifecycle state:
+//   - Broadcasts active state on start, inactive state on end.
+//   - Cleans up the previously active droppable entry when drag ends.
 const handleGlobalDragStart = (event: DragEvent): void => {
     // Setup when drag starts:
     
