@@ -292,12 +292,12 @@ const clearActiveDroppable                = ({
     setDropMetadata         : Dispatch<DraggableState<Element>['dropMetadata']>
 }): void => {
     // Clear the previously active droppable entry:
-    const activeDroppableState = activeDroppableRef.current;
-    if (activeDroppableState) {
-        const { entry: activeDroppableEntry } = activeDroppableState;
-        if (activeDroppableEntry.isMountedRef.current) {
-            activeDroppableEntry.setDropStatus(null);       // Drag gesture active but outside any droppable zone.
-            activeDroppableEntry.setDragPayload(undefined); // Clear payload.
+    const prevActiveDroppableState = activeDroppableRef.current;
+    if (prevActiveDroppableState) {
+        const { entry: prevActiveDroppableEntry } = prevActiveDroppableState;
+        if (prevActiveDroppableEntry.isMountedRef.current) {
+            prevActiveDroppableEntry.setDropStatus(null);       // Drag gesture active but outside any droppable zone.
+            prevActiveDroppableEntry.setDragPayload(undefined); // Clear payload.
         } // if
         
         // Do not clear the active droppable reference:
@@ -390,17 +390,17 @@ const swapActiveDroppable                 = <TElement extends Element = HTMLElem
     
     
     // Skip if both entry and acceptance are unchanged:
-    const activeDroppableState = activeDroppableRef.current;
-    if ((activeDroppableEntry === activeDroppableState?.entry) && (isAccepted === activeDroppableState.isAccepted)) return;
+    const prevActiveDroppableState = activeDroppableRef.current;
+    if ((activeDroppableEntry === prevActiveDroppableState?.entry) && (isAccepted === prevActiveDroppableState.isAccepted)) return;
     
     
     
     // If entry changed, cleanup previous droppable (droppable side):
-    if (activeDroppableState && (activeDroppableState.entry !== activeDroppableEntry)) {
-        const { entry: activeDroppableEntry } = activeDroppableState;
-        if (activeDroppableEntry.isMountedRef.current) {
-            activeDroppableEntry.setDropStatus(null);       // Drag gesture active but outside this zone.
-            activeDroppableEntry.setDragPayload(undefined); // Clear payload.
+    if (prevActiveDroppableState && (prevActiveDroppableState.entry !== activeDroppableEntry)) {
+        const { entry: prevActiveDroppableEntry } = prevActiveDroppableState;
+        if (prevActiveDroppableEntry.isMountedRef.current) {
+            prevActiveDroppableEntry.setDropStatus(null);       // Drag gesture active but outside this zone.
+            prevActiveDroppableEntry.setDragPayload(undefined); // Clear payload.
         } // if
     } // if
     
@@ -506,11 +506,11 @@ export const updateDragLifecycle          = ({
     
     if (!isSetup) {
         // Clear the previously active droppable entry:
-        const activeDroppableState = activeDroppableRef.current;
-        if (activeDroppableState) {
-            const { entry: activeDroppableEntry } = activeDroppableState;
-            if (activeDroppableEntry.isMountedRef.current) {
-                activeDroppableEntry.setDragPayload(undefined); // Clear payload.
+        const prevActiveDroppableState = activeDroppableRef.current;
+        if (prevActiveDroppableState) {
+            const { entry: prevActiveDroppableEntry } = prevActiveDroppableState;
+            if (prevActiveDroppableEntry.isMountedRef.current) {
+                prevActiveDroppableEntry.setDragPayload(undefined); // Clear payload.
             } // if
             
             // Do not clear the active droppable reference:
