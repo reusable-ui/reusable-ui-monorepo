@@ -77,13 +77,12 @@ let globalAbortController     : AbortController | null = null;
 // - Handles drag lifecycle state:
 //   - Broadcasts active state on start, inactive state on end.
 //   - Cleans up the previously active droppable entry when drag ends.
-const handleGlobalDragStart = (event: DragEvent): void => {
-    // Setup when drag starts:
-    
-    // Mark draggable as active and broadcast active state to all droppables:
+const handleLifecycleChange = (isSetup: boolean): Promise<void> => {
+    // Setup   : Mark draggable as active and broadcast active state to all droppables.
+    // Cleanup : Reset draggable to inactive, broadcast inactive state to all droppables, and clears the previously active droppable entry.
     updateDragLifecycle({
         // Lifecycle configs:
-        isSetup: true, // ⚙️ `true` → setup
+        isSetup,
         
         // Actual states:
         isMountedRef,
@@ -94,13 +93,28 @@ const handleGlobalDragStart = (event: DragEvent): void => {
         setDropMetadata,
     });
     
+    
+    
+    // Wait until the state is settled:
+    return new Promise<void>((resolve) => {
+        setTimeout(() => {
+            resolve();
+        }, 0);
+    });
+};
+const handleGlobalDragStart = (event: DragEvent): void => {
+    // Setup when drag starts:
+    
     // Assign the drag payload for reuse during drag over:
     dragPayloadRef.current = extractPayloadFromDataTransfer(event.dataTransfer);
+    
+    // Setup when drag starts:
+    handleLifecycleChange(true)
     
     
     
     // Wait until the state is settled:
-    setTimeout(() => {
+    .then(() => {
         // Dispatch activation events after state is settled:
         processDragDropActivate<Element>({
             // Data:
@@ -124,27 +138,16 @@ const handleGlobalDragStart = (event: DragEvent): void => {
         
         // Prime the probe immediately:
         handleGlobalDragOver(event);
-    }, 0);
+    });
 };
 const handleGlobalDragEnd   = (event: DragEvent): void => {
-    // Reset draggable to inactive, broadcast inactive state to all droppables, and clears the previously active droppable entry:
-    updateDragLifecycle({
-        // Lifecycle configs:
-        isSetup: false, // 🧹 `false` → cleanup
-        
-        // Actual states:
-        isMountedRef,
-        activeDroppableRef,
-        
-        // Reactive states:
-        setDragStatus,
-        setDropMetadata,
-    });
+    // Cleanup when drag ends:
+    handleLifecycleChange(false)
     
     
     
     // Wait until the state is settled:
-    setTimeout(() => {
+    .then(() => {
         // Dispatch deactivation events after state is settled:
         processDragDropDeactivate<Element>({
             // Data:
@@ -164,9 +167,9 @@ const handleGlobalDragEnd   = (event: DragEvent): void => {
         
         
         
-        // Clear the drag payload:
+        // Clear the drag payload after drag end:
         dragPayloadRef.current = null;
-    }, 0);
+    });
 };
 
 
