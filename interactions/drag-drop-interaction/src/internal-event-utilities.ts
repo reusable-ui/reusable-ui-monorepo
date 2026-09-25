@@ -842,6 +842,9 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
     
     // Stable event handlers:
     handleDragDeactivated,
+    
+    // Actual states:
+    isMountedRef,
 }: {
     // Event metadata:
     /**
@@ -866,21 +869,35 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
      * or other resources tied to the drag activity lifecycle.
      */
     handleDragDeactivated    : EventHandler<DragDeactivatedEvent<TElement>>
+    
+    // Actual states:
+    /**
+     * Tests whether the draggable component is still mounted:
+     * - `undefined`: The draggable has not yet mounted.
+     * - `true`: The draggable is still mounted.
+     * - `false`: The draggable has been unmounted.
+     * 
+     * Prevents accidental state updates after unmounted.
+     * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
+     */
+    isMountedRef             : RefObject<boolean | undefined>
 }): void => {
-    // Dispatch deactivation for the draggable side:
-    const dragDeactivatedEvent = createDragDeactivatedEvent<TElement>({
-        // Event metadata:
-        dragDropDeactivatedEvent,
-        
-        // Data:
-        dropMetadata: activeDroppableEntry?.dropMetadata,
-    });
-    handleDragDeactivated(dragDeactivatedEvent);
+    if (isMountedRef.current) {
+        // Dispatch deactivation for the draggable side:
+        const dragDeactivatedEvent = createDragDeactivatedEvent<TElement>({
+            // Event metadata:
+            dragDropDeactivatedEvent,
+            
+            // Data:
+            dropMetadata: activeDroppableEntry?.dropMetadata,
+        });
+        handleDragDeactivated(dragDeactivatedEvent);
+    } // if
     
     
     
-    // Dispatch absence for the active droppable side:
-    if (activeDroppableEntry) {
+    // Dispatch absence for the active droppable:
+    if (activeDroppableEntry?.isMountedRef.current) {
         const activeDragAbsenceEvent   = createDragAbsenceEvent< Element>({
             // Event metadata:
             dragDropDeactivatedEvent,
@@ -892,13 +909,16 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
         activeDroppableEntry.handleDragAbsence(activeDragAbsenceEvent);
     } // if
     
-    // Dispatch absence broadcast for all inactive droppable sides:
-    for (const eachDroppableEntry of droppableRegistry.values()) {
+    // Dispatch absence broadcast for the rest droppables:
+    for (const restDroppableEntry of droppableRegistry.values()) {
+        // Skip unmounted droppables:
+        if (!restDroppableEntry.isMountedRef.current) continue;
+        
         // Skip disabled droppables:
-        if (!eachDroppableEntry.dropEnabled) continue;
+        if (!restDroppableEntry.dropEnabled) continue;
         
         // Skip the active droppable:
-        if (eachDroppableEntry === activeDroppableEntry) continue;
+        if (restDroppableEntry === activeDroppableEntry) continue;
         
         
         
@@ -907,10 +927,10 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
             dragDropDeactivatedEvent,
             
             // Data:
-            dropMetadata: eachDroppableEntry.dropMetadata,
+            dropMetadata: restDroppableEntry.dropMetadata,
             isTargeted: false, // Not the current target (broadcast only).
         });
-        eachDroppableEntry.handleDragAbsence(inactiveDragAbsenceEvent);
+        restDroppableEntry.handleDragAbsence(inactiveDragAbsenceEvent);
     } // for
 };
 
