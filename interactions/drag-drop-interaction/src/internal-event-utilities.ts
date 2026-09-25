@@ -814,7 +814,7 @@ export const dispatchActivatedEvents        = <TElement extends Element = HTMLEl
     isMountedRef             : RefObject<boolean | undefined>
 }): void => {
     if (isMountedRef.current) {
-        // Dispatch activation for the draggable side:
+        // Dispatch activation for the draggable:
         const dragActivatedEvent    = createDragActivatedEvent<TElement>({
             // Event metadata:
             dragDropActivatedEvent,
@@ -903,7 +903,7 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
     isMountedRef             : RefObject<boolean | undefined>
 }): void => {
     if (isMountedRef.current) {
-        // Dispatch deactivation for the draggable side:
+        // Dispatch deactivation for the draggable:
         const dragDeactivatedEvent = createDragDeactivatedEvent<TElement>({
             // Event metadata:
             dragDropDeactivatedEvent,
