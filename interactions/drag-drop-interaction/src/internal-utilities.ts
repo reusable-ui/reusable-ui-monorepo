@@ -1275,12 +1275,13 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
     
     // Extract properties from the active droppable state for convenience:
     const {
-        entry : {
-            dropMetadata,
-        },
+        entry : activeDroppableEntry,
         pointedElement,
         dropElement,
     } = activeDroppableState;
+    const {
+        dropMetadata,
+    } = activeDroppableEntry;
     
     
     
@@ -1305,6 +1306,6 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
         
         // Actual states:
         isMountedRef,
-        activeDroppableRef,
+        activeDroppableEntry,
     });
 };

@@ -43,7 +43,6 @@ import {
 }                           from './types.js'
 import {
     type DroppableEntry,
-    type ActiveDroppableState,
     
     // Probings:
     type DragProbeEvent,
@@ -1151,7 +1150,7 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
     
     // Actual states:
     isMountedRef,
-    activeDroppableRef,
+    activeDroppableEntry,
 }: {
     // Event metadata:
     /**
@@ -1181,9 +1180,9 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
      */
     isMountedRef             : RefObject<boolean | undefined>
     /**
-     * The draggable's ref holding the active droppable state.
+     * The droppable entry currently under negotiation.
      */
-    activeDroppableRef       : RefObject<ActiveDroppableState | null>
+    activeDroppableEntry     : DroppableEntry<Element>
 }): void => {
     if (isMountedRef.current) {
         const draggedEvent = createDraggedEvent<TElement>({
@@ -1195,8 +1194,7 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
     
     
     
-    const activeDroppableEntry = activeDroppableRef.current?.entry;
-    if (activeDroppableEntry?.isMountedRef.current) {
+    if (activeDroppableEntry.isMountedRef.current) {
         const droppedEvent = createDroppedEvent< Element>({
             // Event metadata:
             dragDropCommittedEvent,
