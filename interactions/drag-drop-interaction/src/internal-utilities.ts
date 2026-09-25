@@ -241,18 +241,12 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
  * Deactivates the currently active droppable side.
  */
 const deactivateDroppable = ({
-    // Actual states:
-    activeDroppableRef,
-    
     // Data:
     inactiveDropStatus,
-}: {
-    // Actual states:
-    /**
-     * The draggable's ref holding the active droppable state.
-     */
-    activeDroppableRef      : RefObject<ActiveDroppableState | null>
     
+    // Actual states:
+    activeDroppableRef,
+}: {
     // Data:
     /**
      * Specifies the inactive droppable status:
@@ -260,6 +254,12 @@ const deactivateDroppable = ({
      * - `null`      → drag gesture active but outside this zone, or either side has not responded
      */
     inactiveDropStatus      : null | undefined
+    
+    // Actual states:
+    /**
+     * The draggable's ref holding the active droppable state.
+     */
+    activeDroppableRef      : RefObject<ActiveDroppableState | null>
 }): void => {
     // Ignore unmounted droppable:
     const prevActiveDroppableEntry = activeDroppableRef.current?.entry;
@@ -333,8 +333,11 @@ const clearActiveDroppable                = ({
 }): void => {
     // Deactivate the previously active droppable entry:
     deactivateDroppable({
-        activeDroppableRef,
+        // Data:
         inactiveDropStatus: null, // `null` → drag gesture active but outside this droppable zone.
+        
+        // Actual states:
+        activeDroppableRef,
     });
     
     
@@ -430,8 +433,11 @@ const swapActiveDroppable                 = <TElement extends Element = HTMLElem
     // If entry changed, deactivate the previous droppable (droppable side) before swapping:
     if (prevActiveDroppableState && (prevActiveDroppableState.entry !== activeDroppableEntry)) {
         deactivateDroppable({
-            activeDroppableRef,
+            // Data:
             inactiveDropStatus: null, // `null` → drag gesture active but outside this droppable zone.
+            
+            // Actual states:
+            activeDroppableRef,
         });
     } // if
     
@@ -521,8 +527,11 @@ export const updateDragLifecycle          = ({
     if (!isSetup) {
         // Deactivate the previously active droppable entry:
         deactivateDroppable({
+            // Data:
+            inactiveDropStatus: undefined, // `undefined` → no drag activity at all.
+            
+            // Actual states:
             activeDroppableRef,
-            inactiveDropStatus: undefined // `undefined` → no drag activity at all.
         });
     } // if
     
