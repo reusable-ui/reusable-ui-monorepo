@@ -14,6 +14,7 @@ import {
 // Types:
 import {
     // Data:
+    type DragPayload,
     type DropMetadata,
     
     // Handshakes:
@@ -299,6 +300,43 @@ const activateDraggable = ({
     
     setDragStatus(isAccepted);                              // Set status.
     setDropMetadata(isAccepted ? dropMetadata : undefined); // Expose metadata, if both draggable and droppable sides accepted.
+};
+
+/**
+ * Activates the droppable side.
+ */
+const activateDroppable = ({
+    // Data:
+    isAccepted,
+    dragPayload,
+    
+    // Actual states:
+    activeDroppableRef,
+}: {
+    // Data:
+    /**
+     * Indicating whether both draggable and droppable sides accepted.
+     */
+    isAccepted              : boolean
+    /**
+     * The payload carried by the draggable source.
+     */
+    dragPayload             : DragPayload
+    
+    // Actual states:
+    /**
+     * The draggable's ref holding the active droppable state.
+     */
+    activeDroppableRef      : RefObject<ActiveDroppableState | null>
+}): void => {
+    // Ignore unmounted droppable:
+    const newActiveDroppableEntry = activeDroppableRef.current?.entry;
+    if (!newActiveDroppableEntry?.isMountedRef.current) return;
+    
+    
+    
+    newActiveDroppableEntry.setDropStatus(isAccepted);                            // Set status.
+    newActiveDroppableEntry.setDragPayload(isAccepted ? dragPayload : undefined); // Expose payload, if both draggable and droppable sides accepted.
 };
 
 /**
@@ -642,11 +680,15 @@ const swapActiveDroppable                 = <TElement extends Element = HTMLElem
     
     
     
-    // Update the new active droppable state (droppable side):
-    if (activeDroppableEntry.isMountedRef.current) {
-        activeDroppableEntry.setDropStatus(isAccepted);
-        activeDroppableEntry.setDragPayload(isAccepted ? dropHandshakeEvent.dragPayload : undefined);
-    } // if
+    // Activate the droppable side:
+    activateDroppable({
+        // Data:
+        isAccepted,
+        dragPayload: dropHandshakeEvent.dragPayload,
+        
+        // Actual states:
+        activeDroppableRef,
+    });
 };
 
 /**
