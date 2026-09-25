@@ -238,6 +238,49 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
 // Updates:
 
 /**
+ * Deactivates the currently active droppable side.
+ * 
+ * @param activeDroppableRef The draggable's ref holding the active droppable state.
+ * @param dropStatus `null` → drag gesture active but outside this droppable zone, `undefined` → no drag activity at all.
+ */
+const deactivateDroppable = ({
+    // Actual states:
+    activeDroppableRef,
+    
+    // Data:
+    inactiveDropStatus,
+}: {
+    // Actual states:
+    /**
+     * The draggable's ref holding the active droppable state.
+     */
+    activeDroppableRef      : RefObject<ActiveDroppableState | null>
+    
+    // Data:
+    /**
+     * Specifies the inactive droppable status:
+     * - `undefined` → no drag activity at all
+     * - `null`      → drag gesture active but outside this zone, or either side has not responded
+     */
+    inactiveDropStatus      : null | undefined
+}): void => {
+    // Ignore unmounted droppables:
+    const prevActiveDroppableEntry = activeDroppableRef.current?.entry;
+    if (!prevActiveDroppableEntry?.isMountedRef.current) return;
+    
+    
+    
+    prevActiveDroppableEntry.setDropStatus(inactiveDropStatus); // Reset status.
+    prevActiveDroppableEntry.setDragPayload(undefined);         // Clear payload.
+    
+    
+    
+    // Do not clear the active droppable reference:
+    // - It still required by `processDragDropDeactivate()`.
+    // activeDroppableRef.current = null;
+};
+
+/**
  * Clears the active droppable state when the drag gesture is no longer valid.
  * 
  * Intended to be called when:
@@ -291,19 +334,11 @@ const clearActiveDroppable                = ({
      */
     setDropMetadata         : Dispatch<DraggableState<Element>['dropMetadata']>
 }): void => {
-    // Clear the previously active droppable entry:
-    const prevActiveDroppableState = activeDroppableRef.current;
-    if (prevActiveDroppableState) {
-        const { entry: prevActiveDroppableEntry } = prevActiveDroppableState;
-        if (prevActiveDroppableEntry.isMountedRef.current) {
-            prevActiveDroppableEntry.setDropStatus(null);       // Drag gesture active but outside any droppable zone.
-            prevActiveDroppableEntry.setDragPayload(undefined); // Clear payload.
-        } // if
-        
-        // Do not clear the active droppable reference:
-        // - It still required by `processDragDropDeactivate()`.
-        // activeDroppableRef.current = null;
-    } // if
+    // Deactivate the previously active droppable entry:
+    deactivateDroppable({
+        activeDroppableRef,
+        inactiveDropStatus: null, // `null` → drag gesture active but outside this droppable zone.
+    });
     
     
     
@@ -395,13 +430,12 @@ const swapActiveDroppable                 = <TElement extends Element = HTMLElem
     
     
     
-    // If entry changed, cleanup previous droppable (droppable side):
+    // If entry changed, deactivate the previous droppable (droppable side) before swapping:
     if (prevActiveDroppableState && (prevActiveDroppableState.entry !== activeDroppableEntry)) {
-        const { entry: prevActiveDroppableEntry } = prevActiveDroppableState;
-        if (prevActiveDroppableEntry.isMountedRef.current) {
-            prevActiveDroppableEntry.setDropStatus(null);       // Drag gesture active but outside this zone.
-            prevActiveDroppableEntry.setDragPayload(undefined); // Clear payload.
-        } // if
+        deactivateDroppable({
+            activeDroppableRef,
+            inactiveDropStatus: null, // `null` → drag gesture active but outside this droppable zone.
+        });
     } // if
     
     
@@ -488,18 +522,11 @@ export const updateDragLifecycle          = ({
     setDropMetadata         : Dispatch<DraggableState<Element>['dropMetadata']>
 }): void => {
     if (!isSetup) {
-        // Clear the previously active droppable entry:
-        const prevActiveDroppableState = activeDroppableRef.current;
-        if (prevActiveDroppableState) {
-            const { entry: prevActiveDroppableEntry } = prevActiveDroppableState;
-            if (prevActiveDroppableEntry.isMountedRef.current) {
-                prevActiveDroppableEntry.setDragPayload(undefined); // Clear payload.
-            } // if
-            
-            // Do not clear the active droppable reference:
-            // - It still required by `processDragDropDeactivate()`.
-            // activeDroppableRef.current = null;
-        } // if
+        // Deactivate the previously active droppable entry:
+        deactivateDroppable({
+            activeDroppableRef,
+            inactiveDropStatus: undefined // `undefined` → no drag activity at all.
+        });
     } // if
     
     
@@ -513,10 +540,17 @@ export const updateDragLifecycle          = ({
     } // if
     
     // Broadcast active/inactive state to all droppables:
+    const prevActiveDroppableEntry = activeDroppableRef.current?.entry;
     for (const eachDroppableEntry of droppableRegistry.values()) {
-        if (eachDroppableEntry.isMountedRef.current) {
-            eachDroppableEntry.setDropStatus(isSetup ? null : undefined);
-        } // if
+        // Skip unmounted droppables:
+        if (!eachDroppableEntry.isMountedRef.current) continue;
+        
+        // Skip the previously active droppable:
+        if (eachDroppableEntry ===  prevActiveDroppableEntry) continue;
+        
+        
+        
+        eachDroppableEntry.setDropStatus(isSetup ? null : undefined);
     } // for
 };
 
