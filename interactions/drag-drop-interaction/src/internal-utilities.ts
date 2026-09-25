@@ -239,12 +239,12 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
 
 
 
-// Updates:
+// State updates:
 
 /**
  * Activates the draggable side.
  */
-const activateDraggable = ({
+const activateDraggable        = ({
     // Data:
     isAccepted,
     dropMetadata,
@@ -305,7 +305,7 @@ const activateDraggable = ({
 /**
  * Activates the droppable side.
  */
-const activateDroppable = ({
+const activateDroppable        = ({
     // Data:
     isAccepted,
     dragPayload,
@@ -342,7 +342,7 @@ const activateDroppable = ({
 /**
  * Deactivates the draggable side.
  */
-const deactivateDraggable = ({
+const deactivateDraggable      = ({
     // Data:
     inactiveDragStatus,
     
@@ -400,7 +400,7 @@ const deactivateDraggable = ({
 /**
  * Deactivates the currently active droppable side.
  */
-const deactivateDroppable = ({
+const deactivateDroppable      = ({
     // Data:
     inactiveDropStatus,
     
@@ -480,6 +480,10 @@ const deactivateRestDroppables = ({
         // restDroppableEntry.setDragPayload(undefined);         // Clear payload.
     } // for
 };
+
+
+
+// Updates:
 
 /**
  * Clears the active droppable state when the drag gesture is no longer valid.
