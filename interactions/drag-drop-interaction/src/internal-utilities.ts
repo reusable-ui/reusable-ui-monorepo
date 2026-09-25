@@ -336,6 +336,50 @@ const deactivateDroppable = ({
 };
 
 /**
+ * Deactivates the rest droppable sides (broadcast).
+ * 
+ * All droppable sides except the specified one will be reset.
+ */
+const deactivateRestDroppables = ({
+    // Data:
+    inactiveDropStatus,
+    
+    // Actual states:
+    activeDroppableRef,
+}: {
+    // Data:
+    /**
+     * Specifies the inactive droppable status:
+     * - `undefined` → no drag activity at all
+     * - `null`      → drag gesture active but outside this zone, or either side has not responded
+     */
+    inactiveDropStatus      : null | undefined
+    
+    // Actual states:
+    /**
+     * The draggable's ref holding the active droppable state.
+     */
+    activeDroppableRef      : RefObject<ActiveDroppableState | null>
+}): void => {
+    const prevActiveDroppableEntry = activeDroppableRef.current?.entry;
+    for (const restDroppableEntry of droppableRegistry.values()) {
+        // Skip unmounted droppables:
+        if (!restDroppableEntry.isMountedRef.current) continue;
+        
+        // Skip the previously active droppable:
+        if (restDroppableEntry ===  prevActiveDroppableEntry) continue;
+        
+        
+        
+        restDroppableEntry.setDropStatus(inactiveDropStatus); // Reset status.
+        
+        // No need to clear their payload:
+        // - They never come into contact with the draggable element.
+        // restDroppableEntry.setDragPayload(undefined);         // Clear payload.
+    } // for
+};
+
+/**
  * Clears the active droppable state when the drag gesture is no longer valid.
  * 
  * Intended to be called when:
@@ -615,19 +659,14 @@ export const updateDragLifecycle          = ({
         setDropMetadata,
     });
     
-    // Broadcast active/inactive state to all droppables:
-    const prevActiveDroppableEntry = activeDroppableRef.current?.entry;
-    for (const eachDroppableEntry of droppableRegistry.values()) {
-        // Skip unmounted droppables:
-        if (!eachDroppableEntry.isMountedRef.current) continue;
+    // Deactivate the rest droppable sides (broadcast):
+    deactivateRestDroppables({
+        // Data:
+        inactiveDropStatus: isSetup ? null : undefined, // `null` → drag gesture active but outside all droppable zones, `undefined` → no drag activity at all.
         
-        // Skip the previously active droppable:
-        if (eachDroppableEntry ===  prevActiveDroppableEntry) continue;
-        
-        
-        
-        eachDroppableEntry.setDropStatus(isSetup ? null : undefined);
-    } // for
+        // Actual states:
+        activeDroppableRef,
+    });
 };
 
 /**
