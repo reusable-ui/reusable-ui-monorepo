@@ -238,6 +238,64 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
 // Updates:
 
 /**
+ * Deactivates the draggable side.
+ */
+const deactivateDraggable = ({
+    // Data:
+    inactiveDragStatus,
+    
+    // Actual states:
+    isMountedRef,
+    
+    // Reactive states:
+    setDragStatus,
+    setDropMetadata,
+}: {
+    // Data:
+    /**
+     * Specifies the inactive draggable status:
+     * - `undefined` → no drag activity at all
+     * - `null`      → drag gesture active but outside all droppable zones, or either side has not responded
+     */
+    inactiveDragStatus      : null | undefined
+    
+    // Actual states:
+    /**
+     * Tests whether the draggable component is still mounted:
+     * - `undefined`: The draggable has not yet mounted.
+     * - `true`: The draggable is still mounted.
+     * - `false`: The draggable has been unmounted.
+     * 
+     * Prevents accidental state updates after unmounted.
+     * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
+     */
+    isMountedRef            : RefObject<boolean | undefined>
+    
+    // Reactive states:
+    /**
+     * Updates whether a drag gesture is currently targeting a droppable zone:
+     * - `undefined` → no drag activity at all
+     * - `null`      → drag gesture active but outside all droppable zones, or either side has not responded
+     * - `false`     → drag gesture active over a droppable zone but rejected by one or both sides
+     * - `true`      → drag gesture active over a droppable zone and mutually accepted
+     */
+    setDragStatus           : Dispatch<DraggableState<Element>['dragStatus'  ]>
+    /**
+     * Updates the exposed metadata from the droppable target
+     * currently hovered by this draggable.
+     */
+    setDropMetadata         : Dispatch<DraggableState<Element>['dropMetadata']>
+}): void => {
+    // Ignore unmounted draggable:
+    if (!isMountedRef.current) return;
+    
+    
+    
+    setDragStatus(inactiveDragStatus); // Reset status.
+    setDropMetadata(undefined);        // Clear metadata.
+};
+
+/**
  * Deactivates the currently active droppable side.
  */
 const deactivateDroppable = ({
@@ -342,11 +400,18 @@ const clearActiveDroppable                = ({
     
     
     
-    // Clear draggable state (draggable side):
-    if (isMountedRef.current) {
-        setDragStatus(null);        // Drag gesture active but outside any droppable zone.
-        setDropMetadata(undefined); // Clear metadata.
-    } // if
+    // Deactivate the draggable side:
+    deactivateDraggable({
+        // Data:
+        inactiveDragStatus: null, // `null` → drag gesture active but outside all droppable zones.
+        
+        // Actual states:
+        isMountedRef,
+        
+        // Reactive states:
+        setDragStatus,
+        setDropMetadata,
+    });
 };
 
 /**
@@ -537,13 +602,18 @@ export const updateDragLifecycle          = ({
     
     
     
-    if (isMountedRef.current) {
-        // Mark draggable as active (null) or inactive (undefined):
-        setDragStatus(isSetup ? null : undefined);
+    // Deactivate the draggable side:
+    deactivateDraggable({
+        // Data:
+        inactiveDragStatus: isSetup ? null : undefined, // `null` → drag gesture active but outside all droppable zones, `undefined` → no drag activity at all.
         
-        // Clear metadata at both setup and cleanup:
-        setDropMetadata(undefined);
-    } // if
+        // Actual states:
+        isMountedRef,
+        
+        // Reactive states:
+        setDragStatus,
+        setDropMetadata,
+    });
     
     // Broadcast active/inactive state to all droppables:
     const prevActiveDroppableEntry = activeDroppableRef.current?.entry;
