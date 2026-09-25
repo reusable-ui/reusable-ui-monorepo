@@ -782,6 +782,9 @@ export const dispatchActivatedEvents        = <TElement extends Element = HTMLEl
     
     // Stable event handlers:
     handleDragActivated,
+    
+    // Actual states:
+    isMountedRef,
 }: {
     // Event metadata:
     /**
@@ -797,18 +800,35 @@ export const dispatchActivatedEvents        = <TElement extends Element = HTMLEl
      * or other resources tied to the drag activity lifecycle.
      */
     handleDragActivated      : EventHandler<DragActivatedEvent<TElement>>
+    
+    // Actual states:
+    /**
+     * Tests whether the draggable component is still mounted:
+     * - `undefined`: The draggable has not yet mounted.
+     * - `true`: The draggable is still mounted.
+     * - `false`: The draggable has been unmounted.
+     * 
+     * Prevents accidental state updates after unmounted.
+     * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
+     */
+    isMountedRef             : RefObject<boolean | undefined>
 }): void => {
-    // Dispatch activation for the draggable side:
-    const dragActivatedEvent    = createDragActivatedEvent<TElement>({
-        // Event metadata:
-        dragDropActivatedEvent,
-    });
-    handleDragActivated(dragActivatedEvent);
+    if (isMountedRef.current) {
+        // Dispatch activation for the draggable side:
+        const dragActivatedEvent    = createDragActivatedEvent<TElement>({
+            // Event metadata:
+            dragDropActivatedEvent,
+        });
+        handleDragActivated(dragActivatedEvent);
+    } // if
     
     
     
-    // Dispatch presence broadcast for all droppable sides:
+    // Dispatch presence broadcast for all droppables:
     for (const eachDroppableEntry of droppableRegistry.values()) {
+        // Skip unmounted droppables:
+        if (!eachDroppableEntry.isMountedRef.current) continue;
+        
         // Skip disabled droppables:
         if (!eachDroppableEntry.dropEnabled) continue;
         

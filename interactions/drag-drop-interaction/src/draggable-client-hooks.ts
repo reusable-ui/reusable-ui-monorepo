@@ -445,6 +445,9 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
                 // Stable event handlers:
                 handleDragActivated,
                 
+                // Actual states:
+                isMountedRef,
+                
                 // Utility functions:
                 isDragReady,
             });

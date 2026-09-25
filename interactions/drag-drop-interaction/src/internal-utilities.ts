@@ -721,6 +721,9 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
     // Stable event handlers:
     handleDragActivated,
     
+    // Actual states:
+    isMountedRef,
+    
     // Utility functions:
     isDragReady,
 }: Pick<Required<DraggableStateProps<TElement>>,
@@ -748,6 +751,18 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
      * or other resources tied to the drag activity lifecycle.
      */
     handleDragActivated     : Required<DraggableStateProps<TElement>>['onDragActivated']
+    
+    // Actual states:
+    /**
+     * Tests whether the draggable component is still mounted:
+     * - `undefined`: The draggable has not yet mounted.
+     * - `true`: The draggable is still mounted.
+     * - `false`: The draggable has been unmounted.
+     * 
+     * Prevents accidental state updates after unmounted.
+     * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
+     */
+    isMountedRef            : RefObject<boolean | undefined>
     
     // Utility functions:
     /**
@@ -787,6 +802,9 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
         
         // Stable event handlers:
         handleDragActivated,
+        
+        // Actual states:
+        isMountedRef,
     });
 };
 

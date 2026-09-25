@@ -130,6 +130,9 @@ const handleGlobalDragStart = (event: DragEvent): void => {
             // Stable event handlers:
             handleDragActivated,
             
+            // Actual states:
+            isMountedRef,
+            
             // Utility functions:
             isDragReady,
         });
