@@ -331,7 +331,7 @@ const clearActiveDroppable                = ({
      */
     setDropMetadata         : Dispatch<DraggableState<Element>['dropMetadata']>
 }): void => {
-    // Deactivate the previously active droppable entry:
+    // Deactivate the previously active droppable side:
     deactivateDroppable({
         // Data:
         inactiveDropStatus: null, // `null` → drag gesture active but outside this droppable zone.
@@ -430,7 +430,7 @@ const swapActiveDroppable                 = <TElement extends Element = HTMLElem
     
     
     
-    // If entry changed, deactivate the previous droppable (droppable side) before swapping:
+    // If entry changed, deactivate the previously active droppable side before swapping:
     if (prevActiveDroppableState && (prevActiveDroppableState.entry !== activeDroppableEntry)) {
         deactivateDroppable({
             // Data:
@@ -525,7 +525,7 @@ export const updateDragLifecycle          = ({
     setDropMetadata         : Dispatch<DraggableState<Element>['dropMetadata']>
 }): void => {
     if (!isSetup) {
-        // Deactivate the previously active droppable entry:
+        // Deactivate the previously active droppable side:
         deactivateDroppable({
             // Data:
             inactiveDropStatus: undefined, // `undefined` → no drag activity at all.
