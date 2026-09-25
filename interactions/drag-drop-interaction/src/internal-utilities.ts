@@ -239,9 +239,6 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
 
 /**
  * Deactivates the currently active droppable side.
- * 
- * @param activeDroppableRef The draggable's ref holding the active droppable state.
- * @param dropStatus `null` → drag gesture active but outside this droppable zone, `undefined` → no drag activity at all.
  */
 const deactivateDroppable = ({
     // Actual states:
@@ -264,7 +261,7 @@ const deactivateDroppable = ({
      */
     inactiveDropStatus      : null | undefined
 }): void => {
-    // Ignore unmounted droppables:
+    // Ignore unmounted droppable:
     const prevActiveDroppableEntry = activeDroppableRef.current?.entry;
     if (!prevActiveDroppableEntry?.isMountedRef.current) return;
     
