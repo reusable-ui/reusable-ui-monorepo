@@ -1058,6 +1058,9 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
             
             // Stable event handlers:
             handleDragEvaluation,
+            
+            // Actual states:
+            isMountedRef,
         });
         
         return;
@@ -1120,6 +1123,9 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
             
             // Stable event handlers:
             handleDragEvaluation,
+            
+            // Actual states:
+            isMountedRef,
         });
         
         return;
@@ -1150,6 +1156,9 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
         
         // Stable event handlers:
         handleDragEvaluation,
+        
+        // Actual states:
+        isMountedRef,
     });
     
     

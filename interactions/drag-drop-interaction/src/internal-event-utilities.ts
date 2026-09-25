@@ -1024,6 +1024,9 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
     
     // Stable event handlers:
     handleDragEvaluation,
+    
+    // Actual states:
+    isMountedRef,
 }: {
     // Event metadata:
     /**
@@ -1060,20 +1063,34 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
      * or other contextual hints.
      */
     handleDragEvaluation     : EventHandler<DragEvaluationEvent<TElement>>
+    
+    // Actual states:
+    /**
+     * Tests whether the draggable component is still mounted:
+     * - `undefined`: The draggable has not yet mounted.
+     * - `true`: The draggable is still mounted.
+     * - `false`: The draggable has been unmounted.
+     * 
+     * Prevents accidental state updates after unmounted.
+     * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
+     */
+    isMountedRef             : RefObject<boolean | undefined>
 }): void => {
-    const dragEvaluationEvent = createDragEvaluationEvent<TElement>({
-        // Event metadata:
-        dragHandshakeEvent,
-        
-        // Data:
-        dropResponse: ('dropResponse' in dropHandshakeEvent) ? dropHandshakeEvent.dropResponse : undefined, // No dropResponse for non-handshake events.
-    });
-    handleDragEvaluation(dragEvaluationEvent);
+    if (isMountedRef.current) {
+        const dragEvaluationEvent = createDragEvaluationEvent<TElement>({
+            // Event metadata:
+            dragHandshakeEvent,
+            
+            // Data:
+            dropResponse: ('dropResponse' in dropHandshakeEvent) ? dropHandshakeEvent.dropResponse : undefined, // No dropResponse for non-handshake events.
+        });
+        handleDragEvaluation(dragEvaluationEvent);
+    } // if
     
     
     
     // Dispatch evaluation for the active droppable:
-    if (activeDroppableEntry) {
+    if (activeDroppableEntry?.isMountedRef.current) {
         const activeDropEvaluationEvent   = createDropEvaluationEvent< Element>({
             // Event metadata:
             dropHandshakeEvent,
@@ -1086,13 +1103,16 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
         activeDroppableEntry.handleDropEvaluation(activeDropEvaluationEvent);
     } // if
     
-    // Dispatch evaluation broadcast for all inactive droppables:
-    for (const eachDroppableEntry of droppableRegistry.values()) {
+    // Dispatch evaluation broadcast for the rest droppables:
+    for (const restDroppableEntry of droppableRegistry.values()) {
+        // Skip unmounted droppables:
+        if (!restDroppableEntry.isMountedRef.current) continue;
+        
         // Skip disabled droppables:
-        if (!eachDroppableEntry.dropEnabled) continue;
+        if (!restDroppableEntry.dropEnabled) continue;
         
         // Skip the active droppable:
-        if (eachDroppableEntry === activeDroppableEntry) continue;
+        if (restDroppableEntry === activeDroppableEntry) continue;
         
         
         
@@ -1101,11 +1121,11 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
             dropHandshakeEvent,
             
             // Data:
-            dropMetadata: eachDroppableEntry.dropMetadata,
+            dropMetadata: restDroppableEntry.dropMetadata,
             dragResponse: ('dragResponse' in dragHandshakeEvent) ? dragHandshakeEvent.dragResponse : undefined, // No dragResponse for non-handshake events.
             isTargeted: false, // Not the current target (broadcast only).
         });
-        eachDroppableEntry.handleDropEvaluation(inactiveDropEvaluationEvent);
+        restDroppableEntry.handleDropEvaluation(inactiveDropEvaluationEvent);
     } // for
 };
 
