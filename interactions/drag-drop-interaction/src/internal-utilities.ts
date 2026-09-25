@@ -487,23 +487,6 @@ export const updateDragLifecycle          = ({
      */
     setDropMetadata         : Dispatch<DraggableState<Element>['dropMetadata']>
 }): void => {
-    if (isMountedRef.current) {
-        // Mark draggable as active (null) or inactive (undefined):
-        setDragStatus(isSetup ? null : undefined);
-        
-        // Clear metadata at both setup and cleanup:
-        setDropMetadata(undefined);
-    } // if
-    
-    // Broadcast active/inactive state to all droppables:
-    for (const eachDroppableEntry of droppableRegistry.values()) {
-        if (eachDroppableEntry.isMountedRef.current) {
-            eachDroppableEntry.setDropStatus(isSetup ? null : undefined);
-        } // if
-    } // for
-    
-    
-    
     if (!isSetup) {
         // Clear the previously active droppable entry:
         const prevActiveDroppableState = activeDroppableRef.current;
@@ -518,6 +501,23 @@ export const updateDragLifecycle          = ({
             // activeDroppableRef.current = null;
         } // if
     } // if
+    
+    
+    
+    if (isMountedRef.current) {
+        // Mark draggable as active (null) or inactive (undefined):
+        setDragStatus(isSetup ? null : undefined);
+        
+        // Clear metadata at both setup and cleanup:
+        setDropMetadata(undefined);
+    } // if
+    
+    // Broadcast active/inactive state to all droppables:
+    for (const eachDroppableEntry of droppableRegistry.values()) {
+        if (eachDroppableEntry.isMountedRef.current) {
+            eachDroppableEntry.setDropStatus(isSetup ? null : undefined);
+        } // if
+    } // for
 };
 
 /**
