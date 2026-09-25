@@ -406,6 +406,16 @@ const swapActiveDroppable                 = <TElement extends Element = HTMLElem
     
     
     
+    // Update both entry and acceptance together, along with the pointed and drop elements:
+    activeDroppableRef.current = {
+        entry: activeDroppableEntry,
+        isAccepted,
+        pointedElement : dragHandshakeEvent.target        as Element,
+        dropElement    : dragHandshakeEvent.relatedTarget as Element,
+    } satisfies ActiveDroppableState;
+    
+    
+    
     // Update draggable state (draggable side):
     if (isMountedRef.current) {
         setDragStatus(isAccepted);
@@ -419,16 +429,6 @@ const swapActiveDroppable                 = <TElement extends Element = HTMLElem
         activeDroppableEntry.setDropStatus(isAccepted);
         activeDroppableEntry.setDragPayload(isAccepted ? dropHandshakeEvent.dragPayload : undefined);
     } // if
-    
-    
-    
-    // Update both entry and acceptance together, along with the pointed and drop elements:
-    activeDroppableRef.current = {
-        entry: activeDroppableEntry,
-        isAccepted,
-        pointedElement : dragHandshakeEvent.target        as Element,
-        dropElement    : dragHandshakeEvent.relatedTarget as Element,
-    } satisfies ActiveDroppableState;
 };
 
 /**
