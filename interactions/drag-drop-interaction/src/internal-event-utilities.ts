@@ -888,11 +888,11 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
     
     // Dispatch absence broadcast for all inactive droppable sides:
     for (const eachDroppableEntry of droppableRegistry.values()) {
-        // Skip the active droppable:
-        if (eachDroppableEntry === activeDroppableEntry) continue;
-        
         // Skip disabled droppables:
         if (!eachDroppableEntry.dropEnabled) continue;
+        
+        // Skip the active droppable:
+        if (eachDroppableEntry === activeDroppableEntry) continue;
         
         
         
@@ -1081,11 +1081,11 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
     
     // Dispatch evaluation broadcast for all inactive droppables:
     for (const eachDroppableEntry of droppableRegistry.values()) {
-        // Skip the active droppable:
-        if (eachDroppableEntry === activeDroppableEntry) continue;
-        
         // Skip disabled droppables:
         if (!eachDroppableEntry.dropEnabled) continue;
+        
+        // Skip the active droppable:
+        if (eachDroppableEntry === activeDroppableEntry) continue;
         
         
         
