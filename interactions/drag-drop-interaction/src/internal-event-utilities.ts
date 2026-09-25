@@ -927,12 +927,12 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
     dragProbeEvent,
     dropElement,
     
-    // Data:
-    dropMetadata,
-    
     // Stable event handlers:
     handleDragHandshake,
-    handleDropHandshake,
+    
+    // Actual states:
+    isMountedRef,
+    activeDroppableEntry,
 }: {
     // Event metadata:
     /**
@@ -944,12 +944,6 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
      */
     dropElement              : Element
     
-    // Data:
-    /**
-     * The metadata exposed by the droppable side.
-     */
-    dropMetadata             : DropMetadata
-    
     // Stable event handlers:
     /**
      * Invoked continuously on every pointer movement during drag gesture movements
@@ -958,13 +952,22 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
      * Allows the draggable to validate the target's business context (metadata) and responds with acceptance or rejection.
      */
     handleDragHandshake      : (event: DragHandshakeEvent<TElement>) => Promise<void>
+    
+    // Actual states:
     /**
-     * Invoked continuously on every pointer movement during drag gesture movements
-     * while a draggable hovers over a droppable.
+     * Tests whether the draggable component is still mounted:
+     * - `undefined`: The draggable has not yet mounted.
+     * - `true`: The draggable is still mounted.
+     * - `false`: The draggable has been unmounted.
      * 
-     * Allows the droppable to validate the draggable's payload and responds with acceptance or rejection.
+     * Prevents accidental state updates after unmounted.
+     * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
      */
-    handleDropHandshake      : (event: DropHandshakeEvent< Element>) => Promise<void>
+    isMountedRef             : RefObject<boolean | undefined>
+    /**
+     * The droppable entry currently under negotiation.
+     */
+    activeDroppableEntry     : DroppableEntry<Element>
 }): Promise<{
     // Events:
     /**
@@ -976,7 +979,10 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
      */
     dropHandshakeEvent       : DropHandshakeEvent< Element>
 }> => {
-    const dragHandshakeEvent = createDragHandshakeEvent<TElement>({
+    const {
+        dropMetadata,
+    } = activeDroppableEntry;
+    const dragHandshakeEvent   = createDragHandshakeEvent<TElement>({
         // Event metadata:
         dragProbeEvent,
         dropElement,
@@ -984,7 +990,7 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
         // Data:
         dropMetadata,
     });
-    const dropHandshakeEvent = createDropHandshakeEvent< Element>({
+    const dropHandshakeEvent   = createDropHandshakeEvent< Element>({
         // Event metadata:
         dragProbeEvent,
         dropElement,
@@ -993,8 +999,8 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
         dropMetadata,
     });
     await Promise.all([
-        handleDragHandshake(dragHandshakeEvent),
-        handleDropHandshake(dropHandshakeEvent),
+        isMountedRef.current                      && handleDragHandshake(dragHandshakeEvent),
+        activeDroppableEntry.isMountedRef.current && activeDroppableEntry.handleDropHandshake(dropHandshakeEvent),
     ]);
     
     

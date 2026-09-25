@@ -160,6 +160,9 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
     
     // Stable event handlers:
     handleDragHandshake,
+    
+    // Actual states:
+    isMountedRef,
 }: {
     // Events:
     /**
@@ -175,6 +178,18 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
      * Allows the draggable to validate the target's business context (metadata) and responds with acceptance or rejection.
      */
     handleDragHandshake     : (event: DragHandshakeEvent<TElement>) => Promise<void>
+    
+    // Actual states:
+    /**
+     * Tests whether the draggable component is still mounted:
+     * - `undefined`: The draggable has not yet mounted.
+     * - `true`: The draggable is still mounted.
+     * - `false`: The draggable has been unmounted.
+     * 
+     * Prevents accidental state updates after unmounted.
+     * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
+     */
+    isMountedRef            : RefObject<boolean | undefined>
 }): Promise<NegotiationResult<TElement> | false> => {
     // Holds the nearest candidate that did not achieve a full dual-response:
     let nonResponsiveCandidate : NegotiationResult<TElement> | undefined = undefined;
@@ -186,12 +201,6 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
         // - Skip the disabled ones.
         const activeDroppableEntry = droppableRegistry.get(candidateElement);
         if (!activeDroppableEntry || !activeDroppableEntry.dropEnabled) continue;
-        
-        // Destructure some properties for easier access:
-        const {
-            dropMetadata,
-            handleDropHandshake,
-        } = activeDroppableEntry;
         
         
         
@@ -209,12 +218,12 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
             dragProbeEvent,
             dropElement,
             
-            // Data:
-            dropMetadata,
-            
             // Stable event handlers:
             handleDragHandshake,
-            handleDropHandshake,
+            
+            // Actual states:
+            isMountedRef,
+            activeDroppableEntry,
         });
         
         
@@ -1075,6 +1084,9 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
         
         // Stable event handlers:
         handleDragHandshake,
+        
+        // Actual states:
+        isMountedRef,
     });
     
     
