@@ -13,6 +13,9 @@ import {
 
 // Types:
 import {
+    // Data:
+    type DropMetadata,
+    
     // Handshakes:
     type DragHandshakeEvent,
     type DropHandshakeEvent,
@@ -236,6 +239,67 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
 
 
 // Updates:
+
+/**
+ * Activates the draggable side.
+ */
+const activateDraggable = ({
+    // Data:
+    isAccepted,
+    dropMetadata,
+    
+    // Actual states:
+    isMountedRef,
+    
+    // Reactive states:
+    setDragStatus,
+    setDropMetadata,
+}: {
+    // Data:
+    /**
+     * Indicating whether both draggable and droppable sides accepted.
+     */
+    isAccepted              : boolean
+    /**
+     * The metadata exposed by the droppable side.
+     */
+    dropMetadata            : DropMetadata
+    
+    // Actual states:
+    /**
+     * Tests whether the draggable component is still mounted:
+     * - `undefined`: The draggable has not yet mounted.
+     * - `true`: The draggable is still mounted.
+     * - `false`: The draggable has been unmounted.
+     * 
+     * Prevents accidental state updates after unmounted.
+     * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
+     */
+    isMountedRef            : RefObject<boolean | undefined>
+    
+    // Reactive states:
+    /**
+     * Updates whether a drag gesture is currently targeting a droppable zone:
+     * - `undefined` → no drag activity at all
+     * - `null`      → drag gesture active but outside all droppable zones, or either side has not responded
+     * - `false`     → drag gesture active over a droppable zone but rejected by one or both sides
+     * - `true`      → drag gesture active over a droppable zone and mutually accepted
+     */
+    setDragStatus           : Dispatch<DraggableState<Element>['dragStatus'  ]>
+    /**
+     * Updates the exposed metadata from the droppable target
+     * currently hovered by this draggable.
+     */
+    setDropMetadata         : Dispatch<DraggableState<Element>['dropMetadata']>
+}): void => {
+    // Ignore unmounted draggable:
+    if (!isMountedRef.current) return;
+    
+    
+    
+    setDragStatus(isAccepted);                              // Set status.
+    setDropMetadata(isAccepted ? dropMetadata : undefined); // Expose metadata, if both draggable and droppable sides accepted.
+};
 
 /**
  * Deactivates the draggable side.
@@ -562,11 +626,19 @@ const swapActiveDroppable                 = <TElement extends Element = HTMLElem
     
     
     
-    // Update draggable state (draggable side):
-    if (isMountedRef.current) {
-        setDragStatus(isAccepted);
-        setDropMetadata(isAccepted ? activeDroppableEntry.dropMetadata : undefined);
-    } // if
+    // Activate the draggable side:
+    activateDraggable({
+        // Data:
+        isAccepted,
+        dropMetadata: activeDroppableEntry.dropMetadata,
+        
+        // Actual states:
+        isMountedRef,
+        
+        // Reactive states:
+        setDragStatus,
+        setDropMetadata,
+    });
     
     
     
