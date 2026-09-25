@@ -1,3 +1,9 @@
+// React:
+import {
+    // Types:
+    type RefObject,
+}                           from 'react'
+
 // Reusable-ui utilities:
 import {
     // Types:
@@ -37,6 +43,7 @@ import {
 }                           from './types.js'
 import {
     type DroppableEntry,
+    type ActiveDroppableState,
     
     // Probings:
     type DragProbeEvent,
@@ -1115,7 +1122,10 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
     
     // Stable event handlers:
     handleDragged,
-    handleDropped,
+    
+    // Actual states:
+    isMountedRef,
+    activeDroppableRef,
 }: {
     // Event metadata:
     /**
@@ -1132,23 +1142,39 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
      * such as updating state, persisting data, or triggering side effects.
      */
     handleDragged            : EventHandler<DraggedEvent<TElement>>
+    
+    // Actual states:
     /**
-     * Invoked once the drag gesture ends on the droppable side,
-     * but only if both draggable and droppable sides accepted.
+     * Tests whether the draggable component is still mounted:
+     * - `undefined`: The draggable has not yet mounted.
+     * - `true`: The draggable is still mounted.
+     * - `false`: The draggable has been unmounted.
      * 
-     * Delivers the draggable's payload for the business logic
-     * such as updating state, persisting data, or triggering side effects.
+     * Prevents accidental state updates after unmounted.
+     * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
      */
-    handleDropped            : EventHandler<DroppedEvent< Element>>
+    isMountedRef             : RefObject<boolean | undefined>
+    /**
+     * The draggable's ref holding the active droppable state.
+     */
+    activeDroppableRef       : RefObject<ActiveDroppableState | null>
 }): void => {
-    const draggedEvent = createDraggedEvent<TElement>({
-        // Event metadata:
-        dragDropCommittedEvent,
-    });
-    const droppedEvent = createDroppedEvent< Element>({
-        // Event metadata:
-        dragDropCommittedEvent,
-    });
-    handleDragged(draggedEvent);
-    handleDropped(droppedEvent);
+    if (isMountedRef.current) {
+        const draggedEvent = createDraggedEvent<TElement>({
+            // Event metadata:
+            dragDropCommittedEvent,
+        });
+        handleDragged(draggedEvent);
+    } // if
+    
+    
+    
+    const activeDroppableEntry = activeDroppableRef.current?.entry;
+    if (activeDroppableEntry?.isMountedRef.current) {
+        const droppedEvent = createDroppedEvent< Element>({
+            // Event metadata:
+            dragDropCommittedEvent,
+        });
+        activeDroppableEntry.handleDropped(droppedEvent);
+    } // if
 };

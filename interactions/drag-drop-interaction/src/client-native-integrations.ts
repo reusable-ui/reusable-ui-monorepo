@@ -226,6 +226,9 @@ const handleGlobalDrop      = (event: DragEvent): void => {
         // Stable event handlers:
         handleDragged,
         
+        // Actual states:
+        isMountedRef,
+        
         // Utility functions:
         isDragReady,
     });

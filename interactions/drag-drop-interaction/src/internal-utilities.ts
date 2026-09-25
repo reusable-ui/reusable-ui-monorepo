@@ -1189,6 +1189,9 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
     // Stable event handlers:
     handleDragged,
     
+    // Actual states:
+    isMountedRef,
+    
     // Utility functions:
     isDragReady,
 }: Pick<Required<DraggableStateProps<TElement>>,
@@ -1219,6 +1222,18 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
      */
     handleDragged           : Required<DraggableStateProps<TElement>>['onDragged']
     
+    // Actual states:
+    /**
+     * Tests whether the draggable component is still mounted:
+     * - `undefined`: The draggable has not yet mounted.
+     * - `true`: The draggable is still mounted.
+     * - `false`: The draggable has been unmounted.
+     * 
+     * Prevents accidental state updates after unmounted.
+     * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
+     */
+    isMountedRef            : RefObject<boolean | undefined>
+    
     // Utility functions:
     /**
      * Determines whether the draggable state is valid for dragging operation.
@@ -1241,7 +1256,6 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
     const {
         entry : {
             dropMetadata,
-            handleDropped,
         },
         pointedElement,
         dropElement,
@@ -1267,6 +1281,9 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
         
         // Stable event handlers:
         handleDragged,
-        handleDropped,
+        
+        // Actual states:
+        isMountedRef,
+        activeDroppableRef,
     });
 };
