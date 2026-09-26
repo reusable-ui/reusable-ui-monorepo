@@ -1220,7 +1220,7 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
      */
     isMountedRef             : RefObject<boolean | undefined>
     /**
-     * The droppable entry currently under negotiation.
+     * The droppable entry associated with the commit.
      */
     activeDroppableEntry     : DroppableEntry< Element>
 }): void => {
