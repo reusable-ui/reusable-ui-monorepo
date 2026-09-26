@@ -1006,7 +1006,7 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
     /**
      * The droppable entry currently under negotiation.
      */
-    activeDroppableEntry     : DroppableEntry<Element>
+    activeDroppableEntry     : DroppableEntry< Element>
 }): Promise<{
     // Events:
     /**
@@ -1222,7 +1222,7 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
     /**
      * The droppable entry currently under negotiation.
      */
-    activeDroppableEntry     : DroppableEntry<Element>
+    activeDroppableEntry     : DroppableEntry< Element>
 }): void => {
     if (isMountedRef.current) {
         const draggedEvent = createDraggedEvent<TElement>({
