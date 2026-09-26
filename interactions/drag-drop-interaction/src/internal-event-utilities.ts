@@ -857,29 +857,18 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
     // Event metadata:
     dragDropDeactivatedEvent,
     
-    // Data:
-    activeDroppableEntry,
-    
     // Stable event handlers:
     handleDragDeactivated,
     
     // Actual states:
     isMountedRef,
+    activeDroppableEntry,
 }: {
     // Event metadata:
     /**
      * The synthetic deactivation event created earlier.
      */
     dragDropDeactivatedEvent : DragDropDeactivatedEvent<TElement>
-    
-    // Data:
-    /**
-     * The droppable entry metadata and handlers associated with the matched target.
-     * 
-     * Pass `null` if no handshake was performed (all droppables are inactive),
-     * e.g. when the draggable is not hovering over any droppable.
-     */
-    activeDroppableEntry     : DroppableEntry< Element> | null
     
     // Stable event handlers:
     /**
@@ -901,6 +890,13 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
      * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
      */
     isMountedRef             : RefObject<boolean | undefined>
+    /**
+     * The droppable entry metadata and handlers associated with the matched target.
+     * 
+     * Pass `null` if no handshake was performed (all droppables are inactive),
+     * e.g. when the draggable is not hovering over any droppable.
+     */
+    activeDroppableEntry     : DroppableEntry< Element> | null
 }): void => {
     if (isMountedRef.current) {
         // Dispatch deactivation for the draggable:
@@ -1064,14 +1060,12 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
     dragHandshakeEvent,
     dropHandshakeEvent,
     
-    // Data:
-    activeDroppableEntry,
-    
     // Stable event handlers:
     handleDragEvaluation,
     
     // Actual states:
     isMountedRef,
+    activeDroppableEntry,
 }: {
     // Event metadata:
     /**
@@ -1088,15 +1082,6 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
      * e.g. when the draggable is not hovering over any droppable.
      */
     dropHandshakeEvent       : DropHandshakeEvent< Element> | DragProbeEvent< Element>
-    
-    // Data:
-    /**
-     * The droppable entry metadata and handlers associated with the matched target.
-     * 
-     * Pass `null` if no handshake was performed (all droppables are inactive),
-     * e.g. when the draggable is not hovering over any droppable.
-     */
-    activeDroppableEntry     : DroppableEntry< Element> | null
     
     // Stable event handlers:
     /**
@@ -1120,6 +1105,13 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
      * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
      */
     isMountedRef             : RefObject<boolean | undefined>
+    /**
+     * The droppable entry metadata and handlers associated with the matched target.
+     * 
+     * Pass `null` if no handshake was performed (all droppables are inactive),
+     * e.g. when the draggable is not hovering over any droppable.
+     */
+    activeDroppableEntry     : DroppableEntry< Element> | null
 }): void => {
     if (isMountedRef.current) {
         const dragEvaluationEvent = createDragEvaluationEvent<TElement>({

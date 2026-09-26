@@ -923,14 +923,12 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
         // Event metadata:
         dragDropDeactivatedEvent,
         
-        // Data:
-        activeDroppableEntry,
-        
         // Stable event handlers:
         handleDragDeactivated,
         
         // Actual states:
         isMountedRef,
+        activeDroppableEntry,
     });
 };
 
@@ -1098,14 +1096,12 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
             dragHandshakeEvent   : dragProbeEvent, // No handshake was performed (no contact) → fallback to probe event.
             dropHandshakeEvent   : dragProbeEvent, // No handshake was performed (no contact) → fallback to probe event.
             
-            // Data:
-            activeDroppableEntry : null, // All droppables are inactive due to no contact.
-            
             // Stable event handlers:
             handleDragEvaluation,
             
             // Actual states:
             isMountedRef,
+            activeDroppableEntry : null, // All droppables are inactive due to no contact.
         });
         
         return;
@@ -1166,14 +1162,12 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
             dragHandshakeEvent   : dragProbeEvent, // No handshake was performed (no contact) → fallback to probe event.
             dropHandshakeEvent   : dragProbeEvent, // No handshake was performed (no contact) → fallback to probe event.
             
-            // Data:
-            activeDroppableEntry : null, // All droppables are inactive due to no contact.
-            
             // Stable event handlers:
             handleDragEvaluation,
             
             // Actual states:
             isMountedRef,
+            activeDroppableEntry : null, // All droppables are inactive due to no contact.
         });
         
         return;
@@ -1199,14 +1193,12 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
         dragHandshakeEvent,
         dropHandshakeEvent,
         
-        // Data:
-        activeDroppableEntry,
-        
         // Stable event handlers:
         handleDragEvaluation,
         
         // Actual states:
         isMountedRef,
+        activeDroppableEntry,
     });
     
     
