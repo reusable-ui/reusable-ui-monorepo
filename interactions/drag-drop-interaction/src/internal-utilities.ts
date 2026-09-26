@@ -200,7 +200,7 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
         // Find the corresponding droppable entry by its element:
         // - Skip the disabled ones.
         const activeDroppableEntry = droppableRegistry.get(candidateElement);
-        if (!activeDroppableEntry || !activeDroppableEntry.dropEnabled) continue;
+        if (!activeDroppableEntry?.dropEnabled) continue;
         
         
         
