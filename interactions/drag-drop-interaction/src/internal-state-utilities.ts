@@ -15,7 +15,7 @@ import {
     type DraggableState,
 }                           from './types.js'
 import {
-    type ActiveDroppableState,
+    type DroppableEntry,
 }                           from './internal-types.js'
 
 // Utilities:
@@ -97,7 +97,7 @@ export const activateDroppable        = ({
     dragPayload,
     
     // Actual states:
-    activeDroppableRef,
+    activeDroppableEntry,
 }: {
     // Data:
     /**
@@ -111,18 +111,17 @@ export const activateDroppable        = ({
     
     // Actual states:
     /**
-     * The draggable's ref holding the active droppable state.
+     * The droppable entry to activate.
      */
-    activeDroppableRef      : RefObject<ActiveDroppableState | null>
+    activeDroppableEntry    : DroppableEntry< Element>
 }): void => {
     // Ignore unmounted droppable:
-    const newActiveDroppableEntry = activeDroppableRef.current?.entry;
-    if (!newActiveDroppableEntry?.isMountedRef.current) return;
+    if (!activeDroppableEntry.isMountedRef.current) return;
     
     
     
-    newActiveDroppableEntry.setDropStatus(isAccepted);                            // Set status.
-    newActiveDroppableEntry.setDragPayload(isAccepted ? dragPayload : undefined); // Expose payload, if both draggable and droppable sides accepted.
+    activeDroppableEntry.setDropStatus(isAccepted);                            // Set status.
+    activeDroppableEntry.setDragPayload(isAccepted ? dragPayload : undefined); // Expose payload, if both draggable and droppable sides accepted.
 };
 
 
@@ -192,7 +191,7 @@ export const deactivateDroppable      = ({
     inactiveDropStatus,
     
     // Actual states:
-    activeDroppableRef,
+    activeDroppableEntry,
 }: {
     // Data:
     /**
@@ -204,18 +203,20 @@ export const deactivateDroppable      = ({
     
     // Actual states:
     /**
-     * The draggable's ref holding the active droppable state.
+     * The droppable entry to deactivate.
+     * 
+     * Pass `null` if there is no active droppable (all droppables are inactive),
+     * e.g. when the draggable is not hovering over any droppable.
      */
-    activeDroppableRef      : RefObject<ActiveDroppableState | null>
+    activeDroppableEntry    : DroppableEntry< Element> | null
 }): void => {
     // Ignore unmounted droppable:
-    const prevActiveDroppableEntry = activeDroppableRef.current?.entry;
-    if (!prevActiveDroppableEntry?.isMountedRef.current) return;
+    if (!activeDroppableEntry?.isMountedRef.current) return;
     
     
     
-    prevActiveDroppableEntry.setDropStatus(inactiveDropStatus); // Reset status.
-    prevActiveDroppableEntry.setDragPayload(undefined);         // Clear payload.
+    activeDroppableEntry.setDropStatus(inactiveDropStatus); // Reset status.
+    activeDroppableEntry.setDragPayload(undefined);         // Clear payload.
     
     
     
@@ -234,7 +235,7 @@ export const deactivateRestDroppables = ({
     inactiveDropStatus,
     
     // Actual states:
-    activeDroppableRef,
+    activeDroppableEntry,
 }: {
     // Data:
     /**
@@ -246,17 +247,19 @@ export const deactivateRestDroppables = ({
     
     // Actual states:
     /**
-     * The draggable's ref holding the active droppable state.
+     * The previously active droppable entry to exclude.
+     * 
+     * Pass `null` if there is no active droppable (all droppables are inactive),
+     * e.g. when the draggable is not hovering over any droppable.
      */
-    activeDroppableRef      : RefObject<ActiveDroppableState | null>
+    activeDroppableEntry    : DroppableEntry< Element> | null
 }): void => {
-    const prevActiveDroppableEntry = activeDroppableRef.current?.entry;
     for (const restDroppableEntry of droppableRegistry.values()) {
         // Skip unmounted droppables:
         if (!restDroppableEntry.isMountedRef.current) continue;
         
         // Skip the previously active droppable:
-        if (restDroppableEntry ===  prevActiveDroppableEntry) continue;
+        if (restDroppableEntry ===  activeDroppableEntry) continue;
         
         
         

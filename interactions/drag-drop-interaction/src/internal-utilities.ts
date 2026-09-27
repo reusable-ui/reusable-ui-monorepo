@@ -309,13 +309,17 @@ const clearActiveDroppable                = ({
      */
     setDropMetadata         : Dispatch<DraggableState<Element>['dropMetadata']>
 }): void => {
+    // Get the currently active entry to deactivate, if any:
+    const activeDroppableEntry = activeDroppableRef.current?.entry ?? null;
+    
+    
     // Deactivate the previously active droppable side:
     deactivateDroppable({
         // Data:
         inactiveDropStatus: null, // `null` → drag gesture active but outside this droppable zone.
         
         // Actual states:
-        activeDroppableRef,
+        activeDroppableEntry,
     });
     
     
@@ -422,7 +426,7 @@ const swapActiveDroppable                 = <TElement extends Element = HTMLElem
             inactiveDropStatus: null, // `null` → drag gesture active but outside this droppable zone.
             
             // Actual states:
-            activeDroppableRef,
+            activeDroppableEntry: prevActiveDroppableState.entry, // Pass the prev entry instead of the new one.
         });
     } // if
     
@@ -461,7 +465,7 @@ const swapActiveDroppable                 = <TElement extends Element = HTMLElem
         dragPayload: dropHandshakeEvent.dragPayload,
         
         // Actual states:
-        activeDroppableRef,
+        activeDroppableEntry, // Pass the new entry to activate.
     });
 };
 
@@ -521,6 +525,11 @@ export const updateDragLifecycle          = ({
      */
     setDropMetadata         : Dispatch<DraggableState<Element>['dropMetadata']>
 }): void => {
+    // Get the currently active entry to deactivate, if any:
+    const activeDroppableEntry = activeDroppableRef.current?.entry ?? null;
+    
+    
+    
     if (!isSetup) {
         // Deactivate the previously active droppable side:
         deactivateDroppable({
@@ -528,7 +537,7 @@ export const updateDragLifecycle          = ({
             inactiveDropStatus: undefined, // `undefined` → no drag activity at all.
             
             // Actual states:
-            activeDroppableRef,
+            activeDroppableEntry,
         });
     } // if
     
@@ -553,7 +562,7 @@ export const updateDragLifecycle          = ({
         inactiveDropStatus: isSetup ? null : undefined, // `null` → drag gesture active but outside all droppable zones, `undefined` → no drag activity at all.
         
         // Actual states:
-        activeDroppableRef,
+        activeDroppableEntry,
     });
 };
 
