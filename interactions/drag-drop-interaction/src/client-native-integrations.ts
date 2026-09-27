@@ -76,21 +76,23 @@ let globalAbortController     : AbortController | null = null;
 // Global lifecycle handlers:
 // - Handles drag lifecycle state:
 //   - Broadcasts active state on start, inactive state on end.
-//   - Cleans up the previously active droppable entry when drag ends.
+//   - Resets the previously active droppable states (status + payload) when drag ends.
 const handleLifecycleChange = (isSetup: boolean): Promise<void> => {
     // Setup   : Mark draggable as active and broadcast active state to all droppables.
-    // Cleanup : Reset draggable to inactive, broadcast inactive state to all droppables, and clears the previously active droppable entry.
+    // Cleanup : Reset the draggable side to inactive, broadcast inactive state to all droppables, and resets the previously active droppable side.
     updateDragLifecycle({
         // Lifecycle configs:
         isSetup,
         
         // Actual states:
         isMountedRef,
-        activeDroppableRef,
         
         // Reactive states:
         setDragStatus,
         setDropMetadata,
+        
+        // Contexts:
+        activeDroppableRef,
     });
     
     
@@ -273,7 +275,8 @@ const setupGlobalIntegration = (): void => {
  * Performs global cleanup for native drag integration.
  * 
  * - Aborts all event listeners attached during setup.
- * - Clears references to the active droppable and drag payload.
+ * - Reset and dereference the active droppable.
+ * - Clears references to the drag payload.
  * 
  * Executed once when the last integration is disintegrated.
  */
@@ -292,7 +295,14 @@ const cleanupGlobalIntegration = (): void => {
     
     // Additional cleanups for disintegration prior to drag end:
     
-    // Clear active droppable reference and its bundled data:
+    // Reset and dereference the active droppable:
+    const droppable = activeDroppableRef.current;
+    if (droppable) {
+        // Reset interaction states:
+        droppable.isAccepted     = undefined;
+        droppable.pointedElement = null;
+        droppable.dropElement    = null;
+    } // if
     activeDroppableRef.current = null;
     
     // Clear the drag payload:

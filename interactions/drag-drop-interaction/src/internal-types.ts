@@ -38,13 +38,12 @@ import {
 
 
 /**
- * A registry entry representing a single droppable zone.
+ * Represents the droppable side of a drag-drop interaction.
  * 
- * Stored in the global registry so the engine can resolve hit-testing,
- * handshake negotiation, evaluation feedback,
- * and final drop delivery.
+ * Exposes the droppable's metadata, handlers, and runtime state
+ * for inspection and manipulation by the drag-drop engine.
  */
-export interface DroppableEntry<TElement extends Element = HTMLElement> {
+export interface DroppableContext<TElement extends Element = HTMLElement> {
     // Data:
     
     /**
@@ -122,9 +121,39 @@ export interface DroppableEntry<TElement extends Element = HTMLElement> {
      * - `false`: The droppable has been unmounted.
      * 
      * Prevents accidental state updates after unmounted.
-     * E.g., clearing the previously active droppable (but now unmounted) when switching to another droppable.
+     * E.g., deactivating the previously active droppable side (but now unmounted) when switching to another droppable.
      */
     isMountedRef         : RefObject<boolean | undefined>
+    
+    
+    
+    // Interaction states:
+    
+    /**
+     * Indicating whether both draggable and droppable sides accepted.
+     * 
+     * Used at the commit stage (pointerup) to decide
+     * if `DraggedEvent` and `DroppedEvent` should be dispatched.
+     * 
+     * Becomes `undefined` if no drag-drop handshake was performed.
+     */
+    isAccepted           : boolean | undefined
+    
+    /**
+     * The element currently pointed by the drag gesture.
+     * 
+     * Becomes `null` if the pointed element is not available,
+     * e.g. when the drag gesture is outside any droppable.
+     */
+    pointedElement       : Element | null
+    
+    /**
+     * The droppable element currently active.
+     * 
+     * Becomes `null` if the droppable element is not available,
+     * e.g. when the drag gesture is outside any droppable.
+     */
+    dropElement          : Element | null
     
     
     
@@ -144,42 +173,6 @@ export interface DroppableEntry<TElement extends Element = HTMLElement> {
      * currently hovering over this droppable.
      */
     setDragPayload       : Dispatch<DroppableState<TElement>['dragPayload']>
-}
-
-
-
-/**
- * Represents the currently active droppable state.
- * 
- * Bundles the droppable entry, acceptance status, and the
- * DOM elements needed to construct the committed event.
- */
-export interface ActiveDroppableState {
-    /**
-     * References to currently active droppable entry.
-     * 
-     * Used for cleanup when switching to another droppable
-     * or when unmounting.
-     */
-    entry          : DroppableEntry< Element>
-    
-    /**
-     * Indicating whether both draggable and droppable sides accepted.
-     * 
-     * Used at the commit stage (pointerup) to decide
-     * if `DraggedEvent` and `DroppedEvent` should be dispatched.
-     */
-    isAccepted     : boolean
-    
-    /**
-     * The element currently pointed by the drag gesture.
-     */
-    pointedElement : Element
-    
-    /**
-     * The droppable element currently active.
-     */
-    dropElement    : Element
 }
 
 

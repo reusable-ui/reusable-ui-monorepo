@@ -41,7 +41,7 @@ import {
     type DraggableState,
 }                           from './types.js'
 import {
-    type ActiveDroppableState,
+    type DroppableContext,
 }                           from './internal-types.js'
 
 // Utilities:
@@ -260,12 +260,8 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     //   E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
     const isMountedRef       = useMountedFlag();
     
-    // Tracks the currently active droppable state:
-    // - Holds both the active entry and its acceptance flag together.
-    //   ensuring they are always updated atomically (exist together or not at all).
-    // - Storing the full entry (not just a cleanup callback) makes debugging easier
-    //   and future extensions more flexible, with negligible memory overhead.
-    const activeDroppableRef = useRef<ActiveDroppableState | null>(null);
+    // Tracks the currently active droppable side:
+    const activeDroppableRef = useRef<DroppableContext< Element> | null>(null);
     
     
     
@@ -354,7 +350,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     // - Commit logic is performed inside the cleanup, before resetting state.
     // - Handles drag lifecycle state:
     //   - Broadcasts active state on start, inactive state on end.
-    //   - Cleans up the previously active droppable entry when drag ends.
+    //   - Resets the previously active droppable states (status + payload) when drag ends.
     // - Sets up and cleans up global pointer listener for pointer movements.
     const handleLifecycleChange = useStableCallback((isSetup: boolean): void => {
         if (!isSetup) {
@@ -380,18 +376,20 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
         } // if
         
         // Setup   : Mark draggable as active and broadcast active state to all droppables.
-        // Cleanup : Reset draggable to inactive, broadcast inactive state to all droppables, and clears the previously active droppable entry.
+        // Cleanup : Reset the draggable side to inactive, resets the previously active droppable side, and broadcast inactive state to all droppables.
         updateDragLifecycle({
             // Lifecycle configs:
             isSetup,
             
             // Actual states:
             isMountedRef,
-            activeDroppableRef,
             
             // Reactive states:
             setDragStatus,
             setDropMetadata,
+            
+            // Contexts:
+            activeDroppableRef,
         });
         
         // Setup   : Attach global pointer listeners for drag probing and drop candidate evaluation.

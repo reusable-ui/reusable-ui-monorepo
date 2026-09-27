@@ -40,7 +40,7 @@ import {
     type DroppableState,
 }                           from './types.js'
 import {
-    type DroppableEntry,
+    type DroppableContext,
 }                           from './internal-types.js'
 
 // Utilities:
@@ -50,8 +50,8 @@ import {
 import {
     // Updates:
     updateDroppableRegistry,
-    lazyInitializeDroppableEntry,
-    syncDroppableEntry,
+    lazyInitializeDroppableContext,
+    syncDroppableContext,
 }                           from './internal-utilities.js'
 
 
@@ -182,7 +182,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     
     
     // Stable event handlers:
-    // - Wrapped with `useStableEventHandler` so references never change, avoiding unnecessary re-syncs in the registry entry.
+    // - Wrapped with `useStableEventHandler` so references never change, avoiding unnecessary re-syncs in the droppable context.
     const handleDragPresence   = useStableEventHandler(onDragPresence);
     const handleDragAbsence    = useStableEventHandler(onDragAbsence);
     const handleDropHandshake  = useStableEventHandler(async (event: DropHandshakeEvent<TElement>): Promise<void> => {
@@ -195,7 +195,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     
     
     // Reactive states:
-    // - State setters are stable by design, no need to re-syncs in the registry entry.
+    // - State setters are stable by design, no need to re-syncs in the droppable context.
     const [dropStatus , setDropStatus ] = useState<DroppableState<TElement>['dropStatus' ]>(undefined);
     const [dragPayload, setDragPayload] = useState<DroppableState<TElement>['dragPayload']>(undefined);
     
@@ -205,16 +205,16 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     
     // Tests whether the component is still mounted:
     // - Prevents accidental state updates after unmounted.
-    //   E.g., clearing the previously active droppable (but now unmounted) when switching to another droppable.
-    const isMountedRef      = useMountedFlag();
+    //   E.g., deactivating the previously active droppable side (but now unmounted) when switching to another droppable.
+    const isMountedRef        = useMountedFlag();
     
     
     
-    // Registry entry reference:
-    const droppableEntryRef = useRef<DroppableEntry<TElement>>(undefined);
-    const droppableEntry    = lazyInitializeDroppableEntry<TElement>({
+    // Droppable context reference:
+    const droppableContextRef = useRef<DroppableContext<TElement>>(undefined);
+    const droppableContext    = lazyInitializeDroppableContext<TElement>({
         // Actual states:
-        droppableEntryRef,
+        droppableContextRef,
         
         // Data:
         dropMetadata,
@@ -239,9 +239,9 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     
     
     
-    // Keep registry entry in sync with prop changes:
+    // Keep droppable context in sync with prop changes:
     // - No `useEffect()` needed — these are plain object flags.
-    syncDroppableEntry({
+    syncDroppableContext({
         // Data:
         dropMetadata,
         
@@ -249,7 +249,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
         dropEnabled,
         
         // Actual states:
-        droppableEntry,
+        droppableContext,
     });
     
     
@@ -268,7 +268,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
             dropElement: registeredDropElement,
             
             // Actual states:
-            droppableEntry,
+            droppableContext,
         });
     });
     useEffect(() => {

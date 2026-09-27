@@ -42,7 +42,7 @@ import {
     type DroppedEvent,
 }                           from './types.js'
 import {
-    type DroppableEntry,
+    type DroppableContext,
     
     // Probings:
     type DragProbeEvent,
@@ -133,11 +133,12 @@ export const createDragDropDeactivatedEvent = <TElement extends Element = HTMLEl
     // Event metadata:
     lastPointerUpEvent,
     dragElement,
-    pointedElement,
-    dropElement,
     
     // Data:
     dragPayload,
+    
+    // Contexts:
+    droppable,
 }: {
     // Event metadata:
     /**
@@ -149,40 +150,50 @@ export const createDragDropDeactivatedEvent = <TElement extends Element = HTMLEl
      * Pass `null` if the drag element is not available, e.g. dragging a file.
      */
     dragElement              : TElement | null
-    /**
-     * The reference to the DOM element that currently under the pointer, set as `target`.
-     * 
-     * Pass `null` if no valid element is detected
-     * (e.g. pointer is only over the draggable itself or filtered out by `dropPredicate`).
-     */
-    pointedElement           : Element | null
-    /**
-     * The reference to the DOM element that serves as the droppable element in contact, set as `relatedTarget`.
-     * Pass `null` if the droppable element is not available, e.g. when the drag gesture ends outside any droppable.
-     */
-    dropElement              : Element | null
     
     // Data:
     /**
      * The payload carried by the draggable source.
      */
     dragPayload              : DragPayload
-}): DragDropDeactivatedEvent<TElement> => ({
-    ...createSyntheticPointerEvent<TElement, PointerEvent>({
-        // Event metadata:
-        
-        nativeEvent      : lastPointerUpEvent,
-        
-        // type          : 'pointerup',                 // Defaults to `nativeEvent.type`, no override needed.
-        
-        currentTarget    : dragElement    ?? undefined, // The draggable element initiating the deactivation.
-        target           : pointedElement ?? undefined, // The element under the pointer at release.
-        relatedTarget    : dropElement,                 // The droppable element in contact, if any.
-    }),
     
-    // Data:
-    dragPayload, // The payload carried by the draggable source.
-});
+    // Contexts:
+    /**
+     * The droppable side associated with the matched target.
+     * 
+     * Pass `null` if no handshake was performed (all droppables are inactive),
+     * e.g. when the draggable is not hovering over any droppable.
+     */
+    droppable                : DroppableContext< Element> | null
+}): DragDropDeactivatedEvent<TElement> => {
+    // Extract properties from the droppable context for convenience:
+    // - Defaults all properties to null if no active droppable side.
+    const {
+        // Interaction states:
+        pointedElement,
+        dropElement,
+    } = droppable ?? {
+        pointedElement : null,
+        dropElement    : null,
+    };
+    
+    return {
+        ...createSyntheticPointerEvent<TElement, PointerEvent>({
+            // Event metadata:
+            
+            nativeEvent      : lastPointerUpEvent,
+            
+            // type          : 'pointerup',                 // Defaults to `nativeEvent.type`, no override needed.
+            
+            currentTarget    : dragElement    ?? undefined, // The draggable element initiating the deactivation.
+            target           : pointedElement ?? undefined, // The element under the pointer at release.
+            relatedTarget    : dropElement,                 // The droppable element in contact, if any.
+        }),
+        
+        // Data:
+        dragPayload, // The payload carried by the draggable source.
+    };
+};
 
 
 
@@ -649,12 +660,12 @@ export const createDragDropCommittedEvent   = <TElement extends Element = HTMLEl
     // Event metadata:
     lastPointerUpEvent,
     dragElement,
-    pointedElement,
-    dropElement,
     
     // Data:
     dragPayload,
-    dropMetadata,
+    
+    // Contexts:
+    droppable,
 }: {
     // Event metadata:
     /**
@@ -666,43 +677,50 @@ export const createDragDropCommittedEvent   = <TElement extends Element = HTMLEl
      * Pass `null` if the drag element is not available, e.g. dragging a file.
      */
     dragElement              : TElement | null
-    /**
-     * The reference to the DOM element that currently under the pointer, set as `target`.
-     */
-    pointedElement           : Element
-    /**
-     * The reference to the DOM element that serves as the droppable element in contact, set as `relatedTarget`.
-     */
-    dropElement              : Element
     
     // Data:
     /**
      * The payload delivered by the draggable source.
      */
     dragPayload              : DragPayload
-    /**
-     * The metadata exposed by the accepted droppable target.
-     */
-    dropMetadata             : DropMetadata
-}): DragDropCommittedEvent<TElement> => ({
-    ...createSyntheticPointerEvent<TElement, PointerEvent>({
-        // Event metadata:
-        
-        nativeEvent      : lastPointerUpEvent,
-        
-        // type          : 'pointerup',              // Defaults to `nativeEvent.type`, no override needed.
-        
-        currentTarget    : dragElement ?? undefined, // The draggable element initiating the commit.
-        target           : pointedElement,           // The element under the pointer at release.
-        relatedTarget    : dropElement,              // The droppable element in contact.
-    }),
-    // Reassign the `relatedTarget` to satisfy the TS:
-    relatedTarget        : dropElement,              // The droppable element in contact.
     
-    // Data:
-    dragPayload,  // The payload delivered by the draggable source.
-    dropMetadata, // The metadata exposed by the accepted droppable target.
-});
+    // Contexts:
+    /**
+     * The droppable side associated with the commit.
+     */
+    droppable                : DroppableContext< Element>
+}): DragDropCommittedEvent<TElement> => {
+    const {
+        // Data:
+        dropMetadata,
+        
+        // Interaction states:
+        pointedElement,
+        dropElement,
+    } = droppable;
+    
+    
+    
+    return {
+        ...createSyntheticPointerEvent<TElement, PointerEvent>({
+            // Event metadata:
+            
+            nativeEvent      : lastPointerUpEvent,
+            
+            // type          : 'pointerup',                 // Defaults to `nativeEvent.type`, no override needed.
+            
+            currentTarget    : dragElement    ?? undefined, // The draggable element initiating the commit.
+            target           : pointedElement ?? undefined, // The element under the pointer at release.
+            relatedTarget    : dropElement,                 // The droppable element in contact.
+        }),
+        // Reassign the `relatedTarget` to satisfy the TS:
+        relatedTarget        : dropElement!,                // The droppable element in contact.
+        
+        // Data:
+        dragPayload,  // The payload delivered by the draggable source.
+        dropMetadata, // The metadata exposed by the accepted droppable target.
+    };
+};
 
 
 
@@ -825,12 +843,12 @@ export const dispatchActivatedEvents        = <TElement extends Element = HTMLEl
     
     
     // Dispatch presence broadcast for all droppables:
-    for (const eachDroppableEntry of droppableRegistry.values()) {
+    for (const eachDroppable of droppableRegistry.values()) {
         // Skip unmounted droppables:
-        if (!eachDroppableEntry.isMountedRef.current) continue;
+        if (!eachDroppable.isMountedRef.current) continue;
         
         // Skip disabled droppables:
-        if (!eachDroppableEntry.dropEnabled) continue;
+        if (!eachDroppable.dropEnabled) continue;
         
         
         
@@ -839,9 +857,9 @@ export const dispatchActivatedEvents        = <TElement extends Element = HTMLEl
             dragDropActivatedEvent,
             
             // Data:
-            dropMetadata: eachDroppableEntry.dropMetadata,
+            dropMetadata: eachDroppable.dropMetadata,
         });
-        eachDroppableEntry.handleDragPresence(dragPresenceEvent);
+        eachDroppable.handleDragPresence(dragPresenceEvent);
     } // for
 };
 
@@ -862,7 +880,9 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
     
     // Actual states:
     isMountedRef,
-    activeDroppableEntry,
+    
+    // Contexts:
+    droppable,
 }: {
     // Event metadata:
     /**
@@ -890,13 +910,15 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
      * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
      */
     isMountedRef             : RefObject<boolean | undefined>
+    
+    // Contexts:
     /**
-     * The droppable entry metadata and handlers associated with the matched target.
+     * The droppable side associated with the matched target.
      * 
      * Pass `null` if no handshake was performed (all droppables are inactive),
      * e.g. when the draggable is not hovering over any droppable.
      */
-    activeDroppableEntry     : DroppableEntry< Element> | null
+    droppable                : DroppableContext< Element> | null
 }): void => {
     if (isMountedRef.current) {
         // Dispatch deactivation for the draggable:
@@ -905,7 +927,7 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
             dragDropDeactivatedEvent,
             
             // Data:
-            dropMetadata: activeDroppableEntry?.dropMetadata,
+            dropMetadata: droppable?.dropMetadata,
         });
         handleDragDeactivated(dragDeactivatedEvent);
     } // if
@@ -913,28 +935,28 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
     
     
     // Dispatch absence for the active droppable:
-    if (activeDroppableEntry?.isMountedRef.current) {
+    if (droppable?.isMountedRef.current) {
         const activeDragAbsenceEvent   = createDragAbsenceEvent< Element>({
             // Event metadata:
             dragDropDeactivatedEvent,
             
             // Data:
-            dropMetadata: activeDroppableEntry.dropMetadata,
+            dropMetadata: droppable.dropMetadata,
             isTargeted: true, // This droppable is the current target.
         });
-        activeDroppableEntry.handleDragAbsence(activeDragAbsenceEvent);
+        droppable.handleDragAbsence(activeDragAbsenceEvent);
     } // if
     
     // Dispatch absence broadcast for the rest droppables:
-    for (const restDroppableEntry of droppableRegistry.values()) {
+    for (const restDroppable of droppableRegistry.values()) {
         // Skip unmounted droppables:
-        if (!restDroppableEntry.isMountedRef.current) continue;
+        if (!restDroppable.isMountedRef.current) continue;
         
         // Skip disabled droppables:
-        if (!restDroppableEntry.dropEnabled) continue;
+        if (!restDroppable.dropEnabled) continue;
         
         // Skip the active droppable:
-        if (restDroppableEntry === activeDroppableEntry) continue;
+        if (restDroppable === droppable) continue;
         
         
         
@@ -943,10 +965,10 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
             dragDropDeactivatedEvent,
             
             // Data:
-            dropMetadata: restDroppableEntry.dropMetadata,
+            dropMetadata: restDroppable.dropMetadata,
             isTargeted: false, // Not the current target (broadcast only).
         });
-        restDroppableEntry.handleDragAbsence(inactiveDragAbsenceEvent);
+        restDroppable.handleDragAbsence(inactiveDragAbsenceEvent);
     } // for
 };
 
@@ -967,7 +989,9 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
     
     // Actual states:
     isMountedRef,
-    activeDroppableEntry,
+    
+    // Contexts:
+    droppable,
 }: {
     // Event metadata:
     /**
@@ -999,10 +1023,12 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
      * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
      */
     isMountedRef             : RefObject<boolean | undefined>
+    
+    // Contexts:
     /**
-     * The droppable entry currently under negotiation.
+     * The droppable side currently under negotiation.
      */
-    activeDroppableEntry     : DroppableEntry< Element>
+    droppable                : DroppableContext< Element>
 }): Promise<{
     // Events:
     /**
@@ -1015,8 +1041,12 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
     dropHandshakeEvent       : DropHandshakeEvent< Element>
 }> => {
     const {
+        // Data:
         dropMetadata,
-    } = activeDroppableEntry;
+        
+        // Stable event handlers:
+        handleDropHandshake,
+    } = droppable;
     const dragHandshakeEvent   = createDragHandshakeEvent<TElement>({
         // Event metadata:
         dragProbeEvent,
@@ -1034,8 +1064,8 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
         dropMetadata,
     });
     await Promise.all([
-        isMountedRef.current                      && handleDragHandshake(dragHandshakeEvent),
-        activeDroppableEntry.isMountedRef.current && activeDroppableEntry.handleDropHandshake(dropHandshakeEvent),
+        isMountedRef.current           && handleDragHandshake(dragHandshakeEvent),
+        droppable.isMountedRef.current && handleDropHandshake(dropHandshakeEvent),
     ]);
     
     
@@ -1065,7 +1095,9 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
     
     // Actual states:
     isMountedRef,
-    activeDroppableEntry,
+    
+    // Contexts:
+    droppable,
 }: {
     // Event metadata:
     /**
@@ -1105,13 +1137,15 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
      * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
      */
     isMountedRef             : RefObject<boolean | undefined>
+    
+    // Contexts:
     /**
-     * The droppable entry metadata and handlers associated with the matched target.
+     * The droppable side associated with the matched target.
      * 
      * Pass `null` if no handshake was performed (all droppables are inactive),
      * e.g. when the draggable is not hovering over any droppable.
      */
-    activeDroppableEntry     : DroppableEntry< Element> | null
+    droppable                : DroppableContext< Element> | null
 }): void => {
     if (isMountedRef.current) {
         const dragEvaluationEvent = createDragEvaluationEvent<TElement>({
@@ -1127,29 +1161,29 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
     
     
     // Dispatch evaluation for the active droppable:
-    if (activeDroppableEntry?.isMountedRef.current) {
+    if (droppable?.isMountedRef.current) {
         const activeDropEvaluationEvent   = createDropEvaluationEvent< Element>({
             // Event metadata:
             dropHandshakeEvent,
             
             // Data:
-            dropMetadata: activeDroppableEntry.dropMetadata,
+            dropMetadata: droppable.dropMetadata,
             dragResponse: ('dragResponse' in dragHandshakeEvent) ? dragHandshakeEvent.dragResponse : undefined, // No dragResponse for non-handshake events.
             isTargeted: true, // This droppable is the current target.
         });
-        activeDroppableEntry.handleDropEvaluation(activeDropEvaluationEvent);
+        droppable.handleDropEvaluation(activeDropEvaluationEvent);
     } // if
     
     // Dispatch evaluation broadcast for the rest droppables:
-    for (const restDroppableEntry of droppableRegistry.values()) {
+    for (const restDroppable of droppableRegistry.values()) {
         // Skip unmounted droppables:
-        if (!restDroppableEntry.isMountedRef.current) continue;
+        if (!restDroppable.isMountedRef.current) continue;
         
         // Skip disabled droppables:
-        if (!restDroppableEntry.dropEnabled) continue;
+        if (!restDroppable.dropEnabled) continue;
         
         // Skip the active droppable:
-        if (restDroppableEntry === activeDroppableEntry) continue;
+        if (restDroppable === droppable) continue;
         
         
         
@@ -1158,11 +1192,11 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
             dropHandshakeEvent,
             
             // Data:
-            dropMetadata: restDroppableEntry.dropMetadata,
+            dropMetadata: restDroppable.dropMetadata,
             dragResponse: ('dragResponse' in dragHandshakeEvent) ? dragHandshakeEvent.dragResponse : undefined, // No dragResponse for non-handshake events.
             isTargeted: false, // Not the current target (broadcast only).
         });
-        restDroppableEntry.handleDropEvaluation(inactiveDropEvaluationEvent);
+        restDroppable.handleDropEvaluation(inactiveDropEvaluationEvent);
     } // for
 };
 
@@ -1182,7 +1216,9 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
     
     // Actual states:
     isMountedRef,
-    activeDroppableEntry,
+    
+    // Contexts:
+    droppable,
 }: {
     // Event metadata:
     /**
@@ -1211,10 +1247,12 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
      * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
      */
     isMountedRef             : RefObject<boolean | undefined>
+    
+    // Contexts:
     /**
-     * The droppable entry associated with the commit.
+     * The droppable side associated with the commit.
      */
-    activeDroppableEntry     : DroppableEntry< Element>
+    droppable                : DroppableContext< Element>
 }): void => {
     if (isMountedRef.current) {
         const draggedEvent = createDraggedEvent<TElement>({
@@ -1226,11 +1264,11 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
     
     
     
-    if (activeDroppableEntry.isMountedRef.current) {
+    if (droppable.isMountedRef.current) {
         const droppedEvent = createDroppedEvent< Element>({
             // Event metadata:
             dragDropCommittedEvent,
         });
-        activeDroppableEntry.handleDropped(droppedEvent);
+        droppable.handleDropped(droppedEvent);
     } // if
 };

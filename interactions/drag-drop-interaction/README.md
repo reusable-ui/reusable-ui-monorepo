@@ -444,12 +444,12 @@ export const FileDropZone: FC = () => {
 ### Mechanics
 
 #### 1. Global Registry
-- A registry maps **DOM elements → DroppableEntry objects**.  
-- Each DroppableEntry represents the current state of a droppable element, holding:  
+- A registry maps **DOM elements → DroppableContext objects**.  
+- Each DroppableContext represents the current state of a droppable element, holding:  
   - The droppable's business metadata (`DropMetadata`).  
   - References to its callbacks (`onDropHandshake`, `onDropped`).  
 - Droppable elements **register on mount** and **unregister on unmount** to ensure the registry stays accurate and avoids memory leaks.  
-- When a droppable's metadata or callbacks change, its entry is updated so the system always reflects the latest state.  
+- When a droppable's metadata or callbacks change, its context is updated so the system always reflects the latest state.  
 - During a drag gesture, the engine consults this registry to determine whether the pointer is over a valid droppable and how that droppable should respond.
 
 #### 2. Hit-Testing

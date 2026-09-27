@@ -29,7 +29,7 @@ import {
     type DraggedEvent,
 }                           from './types.js'
 import {
-    type ActiveDroppableState,
+    type DroppableContext,
 }                           from './internal-types.js'
 import {
     type GlobalPointerIntegration,
@@ -42,16 +42,12 @@ import {
 // Tests whether the component is still mounted (integrated):
 // - Prevents accidental state updates after unmounted (disintegrated).
 //   E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
-export const isMountedRef                : RefObject<boolean | undefined>             = { current: false };
+export const isMountedRef                : RefObject<boolean | undefined>               = { current: false };
 
 /**
- * Tracks the currently active droppable state:
- * - Holds both the active entry and its acceptance flag together.
- *   ensuring they are always updated atomically (exist together or not at all).
- * - Storing the full entry (not just a cleanup callback) makes debugging easier
- *   and future extensions more flexible, with negligible memory overhead.
+ * Tracks the currently active droppable side.
  */
-export const activeDroppableRef          : RefObject<ActiveDroppableState | null>     = { current: null };
+export const activeDroppableRef          : RefObject<DroppableContext< Element> | null> = { current: null };
 
 /**
  * Holds the current drag payload extracted by `extractPayloadFromDataTransfer()`.
@@ -59,12 +55,12 @@ export const activeDroppableRef          : RefObject<ActiveDroppableState | null
  * Assigned during `dragstart` and cleared during `dragend`.
  * Carries metadata (and later full file access) for evaluation and commit.
  */
-export const dragPayloadRef              : RefObject<DragPayload | null>              = { current: null };
+export const dragPayloadRef              : RefObject<DragPayload | null>                = { current: null };
 
 /**
  * Holds the active "Global Pointer Integration":
  */
-export const globalPointerIntegrationRef : RefObject<GlobalPointerIntegration | null> = { current: null};
+export const globalPointerIntegrationRef : RefObject<GlobalPointerIntegration | null>   = { current: null };
 
 
 

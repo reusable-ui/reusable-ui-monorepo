@@ -15,7 +15,7 @@ import {
     type DraggableState,
 }                           from './types.js'
 import {
-    type DroppableEntry,
+    type DroppableContext,
 }                           from './internal-types.js'
 
 // Utilities:
@@ -96,8 +96,8 @@ export const activateDroppable        = ({
     isAccepted,
     dragPayload,
     
-    // Actual states:
-    activeDroppableEntry,
+    // Contexts:
+    droppable,
 }: {
     // Data:
     /**
@@ -109,19 +109,19 @@ export const activateDroppable        = ({
      */
     dragPayload             : DragPayload
     
-    // Actual states:
+    // Contexts:
     /**
-     * The droppable entry to activate.
+     * The droppable side to activate.
      */
-    activeDroppableEntry    : DroppableEntry< Element>
+    droppable               : DroppableContext< Element>
 }): void => {
     // Ignore unmounted droppable:
-    if (!activeDroppableEntry.isMountedRef.current) return;
+    if (!droppable.isMountedRef.current) return;
     
     
     
-    activeDroppableEntry.setDropStatus(isAccepted);                            // Set status.
-    activeDroppableEntry.setDragPayload(isAccepted ? dragPayload : undefined); // Expose payload, if both draggable and droppable sides accepted.
+    droppable.setDropStatus(isAccepted);                            // Set status.
+    droppable.setDragPayload(isAccepted ? dragPayload : undefined); // Expose payload, if both draggable and droppable sides accepted.
 };
 
 
@@ -190,8 +190,8 @@ export const deactivateDroppable      = ({
     // Data:
     inactiveDropStatus,
     
-    // Actual states:
-    activeDroppableEntry,
+    // Contexts:
+    droppable,
 }: {
     // Data:
     /**
@@ -201,22 +201,22 @@ export const deactivateDroppable      = ({
      */
     inactiveDropStatus      : null | undefined
     
-    // Actual states:
+    // Contexts:
     /**
-     * The droppable entry to deactivate.
+     * The droppable side to deactivate.
      * 
      * Pass `null` if there is no active droppable (all droppables are inactive),
      * e.g. when the draggable is not hovering over any droppable.
      */
-    activeDroppableEntry    : DroppableEntry< Element> | null
+    droppable               : DroppableContext< Element> | null
 }): void => {
     // Ignore unmounted droppable:
-    if (!activeDroppableEntry?.isMountedRef.current) return;
+    if (!droppable?.isMountedRef.current) return;
     
     
     
-    activeDroppableEntry.setDropStatus(inactiveDropStatus); // Reset status.
-    activeDroppableEntry.setDragPayload(undefined);         // Clear payload.
+    droppable.setDropStatus(inactiveDropStatus); // Reset status.
+    droppable.setDragPayload(undefined);         // Clear payload.
     
     
     
@@ -234,8 +234,8 @@ export const deactivateRestDroppables = ({
     // Data:
     inactiveDropStatus,
     
-    // Actual states:
-    activeDroppableEntry,
+    // Contexts:
+    droppable,
 }: {
     // Data:
     /**
@@ -245,28 +245,28 @@ export const deactivateRestDroppables = ({
      */
     inactiveDropStatus      : null | undefined
     
-    // Actual states:
+    // Contexts:
     /**
-     * The previously active droppable entry to exclude.
+     * The previously active droppable side to exclude.
      * 
      * Pass `null` if there is no active droppable (all droppables are inactive),
      * e.g. when the draggable is not hovering over any droppable.
      */
-    activeDroppableEntry    : DroppableEntry< Element> | null
+    droppable               : DroppableContext< Element> | null
 }): void => {
-    for (const restDroppableEntry of droppableRegistry.values()) {
+    for (const restDroppable of droppableRegistry.values()) {
         // Skip unmounted droppables:
-        if (!restDroppableEntry.isMountedRef.current) continue;
+        if (!restDroppable.isMountedRef.current) continue;
         
         // Skip the previously active droppable:
-        if (restDroppableEntry ===  activeDroppableEntry) continue;
+        if (restDroppable === droppable) continue;
         
         
         
-        restDroppableEntry.setDropStatus(inactiveDropStatus); // Reset status.
+        restDroppable.setDropStatus(inactiveDropStatus); // Reset status.
         
         // No need to clear their payload:
         // - They never come into contact with the draggable element.
-        // restDroppableEntry.setDragPayload(undefined);         // Clear payload.
+        // restDroppable.setDragPayload(undefined);         // Clear payload.
     } // for
 };
