@@ -182,16 +182,11 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
     
     // Walk up the ancestor chain to find the nearest droppable side:
     const pointedElement = dragProbeEvent.target as Element;
-    for (const candidateElement of iterateElementAndAncestors(pointedElement)) {
+    for (const candidateDropElement of iterateElementAndAncestors(pointedElement)) {
         // Find the corresponding droppable side by its element:
         // - Skip the disabled ones.
-        const droppable = droppableRegistry.get(candidateElement);
+        const droppable = droppableRegistry.get(candidateDropElement);
         if (!droppable?.dropEnabled) continue;
-        
-        
-        
-        // The candidate element becomes the active drop element since it found in the registry:
-        const dropElement : Element = candidateElement;
         
         
         
@@ -202,7 +197,7 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
         } = await dispatchHandshakeEvents<TElement>({
             // Event metadata:
             dragProbeEvent,
-            dropElement,
+            candidateDropElement,
             
             // Contexts:
             draggable,

@@ -432,7 +432,7 @@ export const createDragProbeEvent           = <TElement extends Element = HTMLEl
 const createDragHandshakeEvent              = <TElement extends Element = HTMLElement>({
     // Event metadata:
     dragProbeEvent,
-    dropElement,
+    candidateDropElement,
     
     // Data:
     dropMetadata,
@@ -443,9 +443,9 @@ const createDragHandshakeEvent              = <TElement extends Element = HTMLEl
      */
     dragProbeEvent           : DragProbeEvent<TElement>
     /**
-     * The reference to the DOM element that serves as the droppable element in contact, set as `relatedTarget`.
+     * The candidate droppable element, set as `relatedTarget`.
      */
-    dropElement              : Element
+    candidateDropElement     : Element
     
     // Data:
     /**
@@ -456,11 +456,11 @@ const createDragHandshakeEvent              = <TElement extends Element = HTMLEl
     // Event metadata:
     ...dragProbeEvent,
     type             : 'draghandshake',
-    relatedTarget    : dropElement, // The droppable element now in contact.
+    relatedTarget    : candidateDropElement, // The droppable element now in contact.
     
     // Data:
-    dropMetadata,                   // The metadata exposed by the droppable side.
-    dragResponse     : undefined,   // Default: no decision yet from draggable.
+    dropMetadata,                            // The metadata exposed by the droppable side.
+    dragResponse     : undefined,            // Default: no decision yet from draggable.
 });
 
 /**
@@ -481,7 +481,7 @@ const createDragHandshakeEvent              = <TElement extends Element = HTMLEl
 const createDropHandshakeEvent              = <TElement extends Element = HTMLElement>({
     // Event metadata:
     dragProbeEvent,
-    dropElement,
+    candidateDropElement,
     
     // Data:
     dropMetadata,
@@ -492,9 +492,9 @@ const createDropHandshakeEvent              = <TElement extends Element = HTMLEl
      */
     dragProbeEvent           : DragProbeEvent<TElement>
     /**
-     * The reference to the DOM element that serves as the droppable element in contact itself, set as `currentTarget`.
+     * The candidate droppable element itself, set as `currentTarget`.
      */
-    dropElement              : TElement
+    candidateDropElement     : TElement
     
     // Data:
     /**
@@ -509,7 +509,7 @@ const createDropHandshakeEvent              = <TElement extends Element = HTMLEl
     // On the droppable side, `currentTarget` points to the droppable itself.
     // The draggable that was `currentTarget` in the probe stage is now `relatedTarget`.
     // This swap reflects perspective: each side treats itself as current, partner as related.
-    currentTarget    : dropElement,
+    currentTarget    : candidateDropElement,
     relatedTarget    : dragProbeEvent.currentTarget,
     
     // Data:
@@ -916,7 +916,7 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
 export const dispatchHandshakeEvents        = async <TElement extends Element = HTMLElement>({
     // Event metadata:
     dragProbeEvent,
-    dropElement,
+    candidateDropElement,
     
     // Contexts:
     draggable,
@@ -928,9 +928,9 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
      */
     dragProbeEvent           : DragProbeEvent<TElement>
     /**
-     * The reference to the DOM element that serves as the droppable element in contact, set as `relatedTarget`.
+     * The candidate droppable element, set as `relatedTarget`.
      */
-    dropElement              : Element
+    candidateDropElement     : Element
     
     // Contexts:
     /**
@@ -966,7 +966,7 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
     const dragHandshakeEvent   = createDragHandshakeEvent<TElement>({
         // Event metadata:
         dragProbeEvent,
-        dropElement,
+        candidateDropElement,
         
         // Data:
         dropMetadata,
@@ -974,7 +974,7 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
     const dropHandshakeEvent   = createDropHandshakeEvent< Element>({
         // Event metadata:
         dragProbeEvent,
-        dropElement,
+        candidateDropElement,
         
         // Data:
         dropMetadata,
