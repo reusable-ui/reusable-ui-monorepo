@@ -131,7 +131,6 @@ export const createDragDropDeactivatedEvent = <TElement extends Element = HTMLEl
     
     // Contexts:
     draggable,
-    droppable,
 }: {
     // Event metadata:
     /**
@@ -144,27 +143,21 @@ export const createDragDropDeactivatedEvent = <TElement extends Element = HTMLEl
      * The draggable side associated with the drag gesture.
      */
     draggable                : DraggableContext<TElement>
-    /**
-     * The droppable side associated with the matched target.
-     * 
-     * Pass `null` if no handshake was performed (all droppables are inactive),
-     * e.g. when the draggable is not hovering over any droppable.
-     */
-    droppable                : DroppableContext< Element> | null
 }): DragDropDeactivatedEvent<TElement> => {
     // Extract properties from the draggable context for convenience:
     const {
         // Actual states:
         dragElementRef,
+        dragSession,
     } = draggable;
     
-    // Extract properties from the droppable context for convenience:
+    // Extract properties from the drag session for convenience:
     // - Defaults all properties to null if no active droppable side.
     const {
         // Interaction states:
         pointedElement,
         dropElement,
-    } = droppable ?? {
+    } = dragSession ?? {
         pointedElement : null,
         dropElement    : null,
     };
@@ -672,20 +665,31 @@ export const createDragDropCommittedEvent   = <TElement extends Element = HTMLEl
      */
     droppable                : DroppableContext< Element>
 }): DragDropCommittedEvent<TElement> => {
+    // Extract properties from the draggable context for convenience:
     const {
         // Data:
         dragPayload,
         
         // Actual states:
         dragElementRef,
+        dragSession,
     } = draggable;
+    
+    // Extract properties from the drag session for convenience:
+    // - Defaults all properties to null if no active droppable side.
     const {
-        // Data:
-        dropMetadata,
-        
         // Interaction states:
         pointedElement,
         dropElement,
+    } = dragSession ?? {
+        pointedElement : null,
+        dropElement    : null,
+    };
+    
+    // Extract properties from the droppable context for convenience:
+    const {
+        // Data:
+        dropMetadata,
     } = droppable;
     
     

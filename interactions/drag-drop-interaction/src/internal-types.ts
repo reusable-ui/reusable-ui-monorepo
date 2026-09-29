@@ -44,6 +44,47 @@ import {
 
 
 /**
+ * Represents the current interaction between a draggable and a droppable.
+ * 
+ * Stores the interaction state between the draggable side and the
+ * currently active droppable side.
+ * 
+ * A drag session is created when a draggable successfully identifies a
+ * droppable candidate and begins the handshake/evaluation process.
+ */
+export interface DragSession {
+    /**
+     * Indicates whether both draggable and droppable sides have mutually
+     * accepted the current interaction.
+     * 
+     * Used during drop commit stage (pointerup) to determine whether
+     * `DraggedEvent` and `DroppedEvent` should be dispatched.
+     */
+    isAccepted     : boolean
+    
+    /**
+     * The deepest DOM element currently pointed by the drag gesture.
+     * 
+     * This may be the droppable element itself or one of its descendants.
+     * 
+     * Useful for constructing synthetic events whose
+     * `target` reflects the actual element under the pointer.
+     */
+    pointedElement : Element
+    
+    /**
+     * The active droppable element associated with this session.
+     * 
+     * Represents the droppable zone that participated in the
+     * handshake, evaluation, and commit process.
+     * 
+     * Useful for constructing synthetic events whose
+     * `relatedTarget` or `currentTarget` references the accepted droppable zone.
+     */
+    dropElement    : Element
+}
+
+/**
  * Represents the draggable side of a drag-drop interaction.
  * 
  * Exposes the draggable's payload, handlers, and runtime state
@@ -145,6 +186,19 @@ export interface DraggableContext<TElement extends Element = HTMLElement> {
      * The reference of active droppable side.
      */
     activeDroppableRef    : RefObject<DroppableContext< Element> | null>
+    
+    /**
+     * The current drag-drop interaction session.
+     * 
+     * Stores the interaction state between this draggable side and the
+     * currently active droppable side.
+     * 
+     * Becomes `null` when:
+     * - No drag gesture is active.
+     * - The pointer is outside any droppable zone.
+     * - No droppable side has participated in the handshake process.
+     */
+    dragSession           : DragSession | null
     
     
     
@@ -258,36 +312,6 @@ export interface DroppableContext<TElement extends Element = HTMLElement> {
      * E.g., deactivating the previously active droppable side (but now unmounted) when switching to another droppable.
      */
     isMountedRef         : RefObject<boolean | undefined>
-    
-    
-    
-    // Interaction states:
-    
-    /**
-     * Indicating whether both draggable and droppable sides accepted.
-     * 
-     * Used at the commit stage (pointerup) to decide
-     * if `DraggedEvent` and `DroppedEvent` should be dispatched.
-     * 
-     * Becomes `undefined` if no drag-drop handshake was performed.
-     */
-    isAccepted           : boolean | undefined
-    
-    /**
-     * The element currently pointed by the drag gesture.
-     * 
-     * Becomes `null` if the pointed element is not available,
-     * e.g. when the drag gesture is outside any droppable.
-     */
-    pointedElement       : Element | null
-    
-    /**
-     * The droppable element currently active.
-     * 
-     * Becomes `null` if the droppable element is not available,
-     * e.g. when the drag gesture is outside any droppable.
-     */
-    dropElement          : Element | null
     
     
     

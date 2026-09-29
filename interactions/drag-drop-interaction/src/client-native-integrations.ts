@@ -236,14 +236,8 @@ const cleanupGlobalIntegration = (): void => {
     
     // Additional cleanups for disintegration prior to drag end:
     
-    // Reset and dereference the active droppable:
-    const droppable = draggable.activeDroppableRef.current;
-    if (droppable) {
-        // Reset interaction states:
-        droppable.isAccepted     = undefined;
-        droppable.pointedElement = null;
-        droppable.dropElement    = null;
-    } // if
+    // Reset interaction states:
+    draggable.dragSession = null;
     draggable.activeDroppableRef.current = null;
     
     // Clear the drag payload:
