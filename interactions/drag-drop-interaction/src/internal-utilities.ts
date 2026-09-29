@@ -358,6 +358,8 @@ const swapActiveDroppable                   = <TElement extends Element = HTMLEl
         pointedElement : dragHandshakeEvent.target        as Element,
         dropElement    : dragHandshakeEvent.relatedTarget as Element,
     };
+    // A TS fix to guarantee the existence of `draggable.dragSession`:
+    if (!hasDragSession(draggable)) return;
     
     
     
@@ -375,12 +377,8 @@ const swapActiveDroppable                   = <TElement extends Element = HTMLEl
     
     // Activate the droppable side:
     activateDroppable({
-        // Data:
-        isAccepted,
-        dragPayload: dropHandshakeEvent.dragPayload,
-        
         // Contexts:
-        droppable, // Pass the new droppable to activate.
+        draggable,
     });
 };
 

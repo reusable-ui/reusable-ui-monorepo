@@ -1,7 +1,6 @@
 // Types:
 import {
     // Data:
-    type DragPayload,
     type DropMetadata,
 }                           from './types.js'
 import {
@@ -57,30 +56,30 @@ export const activateDraggable        = <TElement extends Element = HTMLElement>
 /**
  * Activates the droppable side.
  */
-export const activateDroppable        = ({
-    // Data:
-    isAccepted,
-    dragPayload,
-    
+export const activateDroppable        = <TElement extends Element = HTMLElement>({
     // Contexts:
-    droppable,
+    draggable,
 }: {
-    // Data:
-    /**
-     * Indicating whether both draggable and droppable sides accepted.
-     */
-    isAccepted              : boolean
-    /**
-     * The payload carried by the draggable source.
-     */
-    dragPayload             : DragPayload
-    
     // Contexts:
     /**
-     * The droppable side to activate.
+     * The draggable side contains droppable to activate.
      */
-    droppable               : DroppableContext< Element>
+    draggable               : DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> }
 }): void => {
+    // Extract properties from the draggable context for convenience:
+    const {
+        // Data:
+        dragPayload,
+        
+        // Actual states:
+        dragSession : {
+            droppable,
+            isAccepted,
+        },
+    } = draggable;
+    
+    
+    
     // Ignore unmounted droppable:
     if (!droppable.isMountedRef.current) return;
     
