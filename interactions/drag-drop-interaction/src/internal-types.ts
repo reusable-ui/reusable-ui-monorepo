@@ -76,7 +76,7 @@ export interface DragSession {
      * The active droppable element associated with this session.
      * 
      * Represents the droppable zone that participated in the
-     * handshake, evaluation, and commit process.
+     * handshake, evaluation, and commit process with the current draggable.
      * 
      * Useful for constructing synthetic events whose
      * `relatedTarget` or `currentTarget` references the accepted droppable zone.
