@@ -1,20 +1,11 @@
-// React:
-import {
-    // Types:
-    type Dispatch,
-    type RefObject,
-}                           from 'react'
-
 // Types:
 import {
     // Data:
     type DragPayload,
     type DropMetadata,
-    
-    // Reactive states:
-    type DraggableState,
 }                           from './types.js'
 import {
+    type DraggableContext,
     type DroppableContext,
 }                           from './internal-types.js'
 
@@ -30,17 +21,13 @@ import {
 /**
  * Activates the draggable side.
  */
-export const activateDraggable        = ({
+export const activateDraggable        = <TElement extends Element = HTMLElement>({
     // Data:
     isAccepted,
     dropMetadata,
     
-    // Actual states:
-    isMountedRef,
-    
-    // Reactive states:
-    setDragStatus,
-    setDropMetadata,
+    // Contexts:
+    draggable,
 }: {
     // Data:
     /**
@@ -52,40 +39,19 @@ export const activateDraggable        = ({
      */
     dropMetadata            : DropMetadata
     
-    // Actual states:
+    // Contexts:
     /**
-     * Tests whether the draggable component is still mounted:
-     * - `undefined`: The draggable has not yet mounted.
-     * - `true`: The draggable is still mounted.
-     * - `false`: The draggable has been unmounted.
-     * 
-     * Prevents accidental state updates after unmounted.
-     * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
+     * The draggable side to activate.
      */
-    isMountedRef            : RefObject<boolean | undefined>
-    
-    // Reactive states:
-    /**
-     * Updates whether a drag gesture is currently targeting a droppable zone:
-     * - `undefined` → no drag activity at all
-     * - `null`      → drag gesture active but outside all droppable zones, or either side has not responded
-     * - `false`     → drag gesture active over a droppable zone but rejected by one or both sides
-     * - `true`      → drag gesture active over a droppable zone and mutually accepted
-     */
-    setDragStatus           : Dispatch<DraggableState<Element>['dragStatus'  ]>
-    /**
-     * Updates the exposed metadata from the droppable target
-     * currently hovered by this draggable.
-     */
-    setDropMetadata         : Dispatch<DraggableState<Element>['dropMetadata']>
+    draggable               : DraggableContext<TElement>
 }): void => {
     // Ignore unmounted draggable:
-    if (!isMountedRef.current) return;
+    if (!draggable.isMountedRef.current) return;
     
     
     
-    setDragStatus(isAccepted);                              // Set status.
-    setDropMetadata(isAccepted ? dropMetadata : undefined); // Expose metadata, if both draggable and droppable sides accepted.
+    draggable.setDragStatus(isAccepted);                              // Set status.
+    draggable.setDropMetadata(isAccepted ? dropMetadata : undefined); // Expose metadata, if both draggable and droppable sides accepted.
 };
 
 /**
@@ -128,16 +94,12 @@ export const activateDroppable        = ({
 /**
  * Deactivates the draggable side.
  */
-export const deactivateDraggable      = ({
+export const deactivateDraggable      = <TElement extends Element = HTMLElement>({
     // Data:
     inactiveDragStatus,
     
-    // Actual states:
-    isMountedRef,
-    
-    // Reactive states:
-    setDragStatus,
-    setDropMetadata,
+    // Contexts:
+    draggable,
 }: {
     // Data:
     /**
@@ -147,40 +109,19 @@ export const deactivateDraggable      = ({
      */
     inactiveDragStatus      : null | undefined
     
-    // Actual states:
+    // Contexts:
     /**
-     * Tests whether the draggable component is still mounted:
-     * - `undefined`: The draggable has not yet mounted.
-     * - `true`: The draggable is still mounted.
-     * - `false`: The draggable has been unmounted.
-     * 
-     * Prevents accidental state updates after unmounted.
-     * E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
+     * The draggable side to deactivate.
      */
-    isMountedRef            : RefObject<boolean | undefined>
-    
-    // Reactive states:
-    /**
-     * Updates whether a drag gesture is currently targeting a droppable zone:
-     * - `undefined` → no drag activity at all
-     * - `null`      → drag gesture active but outside all droppable zones, or either side has not responded
-     * - `false`     → drag gesture active over a droppable zone but rejected by one or both sides
-     * - `true`      → drag gesture active over a droppable zone and mutually accepted
-     */
-    setDragStatus           : Dispatch<DraggableState<Element>['dragStatus'  ]>
-    /**
-     * Updates the exposed metadata from the droppable target
-     * currently hovered by this draggable.
-     */
-    setDropMetadata         : Dispatch<DraggableState<Element>['dropMetadata']>
+    draggable               : DraggableContext<TElement>
 }): void => {
     // Ignore unmounted draggable:
-    if (!isMountedRef.current) return;
+    if (!draggable.isMountedRef.current) return;
     
     
     
-    setDragStatus(inactiveDragStatus); // Reset status.
-    setDropMetadata(undefined);        // Clear metadata.
+    draggable.setDragStatus(inactiveDragStatus); // Reset status.
+    draggable.setDropMetadata(undefined);        // Clear metadata.
 };
 
 /**

@@ -29,33 +29,25 @@ import {
     type DraggedEvent,
 }                           from './types.js'
 import {
+    type DraggableContext,
     type DroppableContext,
 }                           from './internal-types.js'
 import {
     type GlobalPointerIntegration,
 }                           from './internal-pointer-tracker-integrations.js'
 
+// Utilities:
+import {
+    emptyMap,
+}                           from './internal-defaults.js'
+import {
+    // Updates:
+    lazyInitializeDraggableContext,
+}                           from './internal-utilities.js'
+
 
 
 // States:
-
-// Tests whether the component is still mounted (integrated):
-// - Prevents accidental state updates after unmounted (disintegrated).
-//   E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
-export const isMountedRef                : RefObject<boolean | undefined>               = { current: false };
-
-/**
- * Tracks the currently active droppable side.
- */
-export const activeDroppableRef          : RefObject<DroppableContext< Element> | null> = { current: null };
-
-/**
- * Holds the current drag payload extracted by `extractPayloadFromDataTransfer()`.
- * 
- * Assigned during `dragstart` and cleared during `dragend`.
- * Carries metadata (and later full file access) for evaluation and commit.
- */
-export const dragPayloadRef              : RefObject<DragPayload | null>                = { current: null };
 
 /**
  * Holds the active "Global Pointer Integration":
@@ -125,7 +117,7 @@ export const extractPayloadFromDataTransfer = (dataTransfer: DataTransfer | null
  * Since this integration simulates `useDraggableState()` without a real draggable UI,
  * status changes are ignored.
  */
-export const setDragStatus   : Dispatch<boolean | null | undefined> = noop;
+const setDragStatus   : Dispatch<boolean | null | undefined> = noop;
 
 /**
  * No-op setter for drop metadata state.
@@ -133,7 +125,7 @@ export const setDragStatus   : Dispatch<boolean | null | undefined> = noop;
  * Since this integration simulates `useDraggableState()` without a real draggable UI,
  * metadata changes are ignored.
  */
-export const setDropMetadata : Dispatch<DropMetadata | undefined>   = noop;
+const setDropMetadata : Dispatch<DropMetadata | undefined>   = noop;
 
 
 
@@ -144,21 +136,21 @@ export const setDropMetadata : Dispatch<DropMetadata | undefined>   = noop;
  * 
  * Ignores initialization signal, since no draggable UI is present.
  */
-export const handleDragActivated   : EventHandler<DragActivatedEvent<Element>>   = noop;
+const handleDragActivated   : EventHandler<DragActivatedEvent<Element>>   = noop;
 
 /**
  * Simulates the deactivation handler.
  * 
  * Ignores reset signal, since no draggable UI is present.
  */
-export const handleDragDeactivated : EventHandler<DragDeactivatedEvent<Element>> = noop;
+const handleDragDeactivated : EventHandler<DragDeactivatedEvent<Element>> = noop;
 
 /**
  * Simulates the handshake handler.
  * 
  * Always accepts the droppable's metadata, regardless of context.
  */
-export const handleDragHandshake   : (event: DragHandshakeEvent<Element>) => Promise<void> = async (event) => {
+const handleDragHandshake   : (event: DragHandshakeEvent<Element>) => Promise<void> = async (event) => {
     event.dragResponse = true;
 };
 
@@ -167,14 +159,67 @@ export const handleDragHandshake   : (event: DragHandshakeEvent<Element>) => Pro
  * 
  * Does not apply any visual styling feedback, since no draggable UI is present.
  */
-export const handleDragEvaluation  : EventHandler<DragEvaluationEvent<Element>>  = noop;
+const handleDragEvaluation  : EventHandler<DragEvaluationEvent<Element>>  = noop;
 
 /**
  * Simulates the dragged handler.
  * 
  * Ignores delivery status, since no draggable UI is present.
  */
-export const handleDragged         : EventHandler<DraggedEvent<Element>>         = noop;
+const handleDragged         : EventHandler<DraggedEvent<Element>>         = noop;
+
+
+
+// States:
+/**
+ * The reference to the DOM element that serves as the draggable source.
+ */
+const dragElementRef     : RefObject<Element | null>                    = { current: null };
+
+// Tests whether the component is still mounted (integrated):
+// - Prevents accidental state updates after unmounted (disintegrated).
+//   E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
+const isMountedRef       : RefObject<boolean | undefined>               = { current: false };
+
+/**
+ * Tracks the currently active droppable side.
+ */
+const activeDroppableRef : RefObject<DroppableContext< Element> | null> = { current: null };
+
+
+
+// Draggable context reference:
+const draggableContextRef : RefObject<DraggableContext<Element> | undefined> = { current: undefined };
+export const draggable    = lazyInitializeDraggableContext<Element>({
+    // Actual states:
+    draggableContextRef,
+    
+    // Data:
+    dragPayload: emptyMap,
+    
+    // Behaviors:
+    dragEnabled: true,
+    dropPredicate: undefined,
+    
+    // Stable event handlers:
+    handleDragActivated,
+    handleDragDeactivated,
+    handleDragHandshake,
+    handleDragEvaluation,
+    handleDragged,
+    
+    // Actual states:
+    isMountedRef,
+    dragElementRef,
+    activeDroppableRef,
+    
+    // Reactive states:
+    setDragStatus,
+    setDropMetadata,
+    
+    // Utility functions:
+    isDragReady,
+});
 
 
 

@@ -22,25 +22,14 @@ import {
 }                           from './internal-utilities.js'
 import {
     // States:
-    isMountedRef,
-    activeDroppableRef,
-    dragPayloadRef,
     globalPointerIntegrationRef,
     
     // Functions:
     isDragReady,
     extractPayloadFromDataTransfer,
     
-    // Setters:
-    setDragStatus,
-    setDropMetadata,
-    
-    // Handlers:
-    handleDragActivated,
-    handleDragDeactivated,
-    handleDragHandshake,
-    handleDragEvaluation,
-    handleDragged,
+    // Contexts:
+    draggable,
     
     // Events:
     createPointerEventFromDragEvent,
@@ -84,15 +73,8 @@ const handleLifecycleChange = (isSetup: boolean): Promise<void> => {
         // Lifecycle configs:
         isSetup,
         
-        // Actual states:
-        isMountedRef,
-        
-        // Reactive states:
-        setDragStatus,
-        setDropMetadata,
-        
         // Contexts:
-        activeDroppableRef,
+        draggable,
     });
     
     
@@ -105,10 +87,12 @@ const handleLifecycleChange = (isSetup: boolean): Promise<void> => {
     });
 };
 const handleGlobalDragStart = (event: DragEvent): void => {
+    draggable.dragElementRef.current = event.target as Element | null;
+    
     // Setup when drag starts:
     
     // Assign the drag payload for reuse during drag over:
-    dragPayloadRef.current = extractPayloadFromDataTransfer(event.dataTransfer);
+    draggable.dragPayload = extractPayloadFromDataTransfer(event.dataTransfer);
     
     // Setup when drag starts:
     handleLifecycleChange(true)
@@ -119,24 +103,14 @@ const handleGlobalDragStart = (event: DragEvent): void => {
     .then(() => {
         // Dispatch activation events after state is settled:
         processDragDropActivate<Element>({
-            // Data:
-            dragPayload: dragPayloadRef.current ?? emptyMap,
-            
             // Refs:
-            dragElement: event.target as Element | null,
             lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
-            
-            // Behaviors:
-            dropPredicate: undefined,
-            
-            // Stable event handlers:
-            handleDragActivated,
-            
-            // Actual states:
-            isMountedRef,
             
             // Utility functions:
             isDragReady,
+            
+            // Contexts:
+            draggable,
         });
         
         
@@ -146,6 +120,8 @@ const handleGlobalDragStart = (event: DragEvent): void => {
     });
 };
 const handleGlobalDragEnd   = (event: DragEvent): void => {
+    draggable.dragElementRef.current = event.target as Element | null;
+    
     // Cleanup when drag ends:
     handleLifecycleChange(false)
     
@@ -155,28 +131,20 @@ const handleGlobalDragEnd   = (event: DragEvent): void => {
     .then(() => {
         // Dispatch deactivation events after state is settled:
         processDragDropDeactivate<Element>({
-            // Data:
-            dragPayload: dragPayloadRef.current ?? emptyMap,
-            
             // Refs:
-            dragElement: event.target as Element | null,
-            activeDroppableRef,
             lastPointerUpEventRef: globalPointerIntegrationRef.current?.lastPointerUpEventRef,
-            
-            // Stable event handlers:
-            handleDragDeactivated,
-            
-            // Actual states:
-            isMountedRef,
             
             // Utility functions:
             isDragReady,
+            
+            // Contexts:
+            draggable,
         });
         
         
         
         // Clear the drag payload after drag end:
-        dragPayloadRef.current = null;
+        draggable.dragPayload = emptyMap;
     });
 };
 
@@ -185,34 +153,14 @@ const handleGlobalDragEnd   = (event: DragEvent): void => {
 // Global drag over handler:
 // - Drives synchronization between draggable and droppable states during drag gestures.
 const handleGlobalDragOver  = (event: DragEvent): void => {
+    draggable.dragElementRef.current = event.target as Element | null;
     const pointerMoveEvent = createPointerEventFromDragEvent(event, 'pointermove');
     processDragProbe<Element>({
         // Events:
         pointerMoveEvent,
         
-        // Data:
-        dragPayload: dragPayloadRef.current ?? emptyMap,
-        
-        // Refs:
-        dragElement: event.target as Element | null,
-        activeDroppableRef,
-        
-        // Behaviors:
-        dropPredicate: undefined,
-        
-        // Stable event handlers:
-        handleDragHandshake,
-        handleDragEvaluation,
-        
-        // Actual states:
-        isMountedRef,
-        
-        // Reactive states:
-        setDragStatus,
-        setDropMetadata,
-        
-        // Utility functions:
-        isDragReady,
+        // Contexts:
+        draggable,
     });
 };
 
@@ -221,24 +169,17 @@ const handleGlobalDragOver  = (event: DragEvent): void => {
 // Global drop handler:
 // - Immediately commits after the capture.
 const handleGlobalDrop      = (event: DragEvent): void => {
+    draggable.dragElementRef.current = event.target as Element | null;
     // Immediately commits after the capture:
     processDragDropCommit<Element>({
-        // Data:
-        dragPayload: dragPayloadRef.current ?? emptyMap,
-        
         // Refs:
-        dragElement: event.target as Element | null,
-        activeDroppableRef,
         lastPointerUpEventRef: globalPointerIntegrationRef.current?.lastPointerUpEventRef,
-        
-        // Stable event handlers:
-        handleDragged,
-        
-        // Actual states:
-        isMountedRef,
         
         // Utility functions:
         isDragReady,
+        
+        // Contexts:
+        draggable,
     });
 };
 
@@ -257,7 +198,7 @@ const handleGlobalDrop      = (event: DragEvent): void => {
  */
 const setupGlobalIntegration = (): void => {
     // Setups:
-    isMountedRef.current = true;
+    draggable.isMountedRef.current = true;
     globalAbortController = new AbortController();
     const options : AddEventListenerOptions = { signal: globalAbortController.signal };
     document.addEventListener('dragstart', handleGlobalDragStart, options);
@@ -282,7 +223,7 @@ const setupGlobalIntegration = (): void => {
  */
 const cleanupGlobalIntegration = (): void => {
     // Cleanups:
-    isMountedRef.current = false;
+    draggable.isMountedRef.current = false;
     globalAbortController?.abort();
     globalAbortController = null;
     
@@ -296,17 +237,17 @@ const cleanupGlobalIntegration = (): void => {
     // Additional cleanups for disintegration prior to drag end:
     
     // Reset and dereference the active droppable:
-    const droppable = activeDroppableRef.current;
+    const droppable = draggable.activeDroppableRef.current;
     if (droppable) {
         // Reset interaction states:
         droppable.isAccepted     = undefined;
         droppable.pointedElement = null;
         droppable.dropElement    = null;
     } // if
-    activeDroppableRef.current = null;
+    draggable.activeDroppableRef.current = null;
     
     // Clear the drag payload:
-    dragPayloadRef.current = null;
+    draggable.dragPayload = emptyMap;
 };
 
 

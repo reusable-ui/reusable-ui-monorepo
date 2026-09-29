@@ -41,6 +41,7 @@ import {
     type DraggableState,
 }                           from './types.js'
 import {
+    type DraggableContext,
     type DroppableContext,
 }                           from './internal-types.js'
 
@@ -52,6 +53,8 @@ import {
     // Updates:
     updateDragLifecycle,
     updateGlobalPointerListeners,
+    lazyInitializeDraggableContext,
+    syncDraggableContext,
     
     // Processes:
     processDragDropActivate,
@@ -208,7 +211,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
         
         // Behaviors:
         dragEnabled  = !isDisabled,
-        dropPredicate,
+        dropPredicate : unstableDropPredicate,
         
         
         
@@ -228,8 +231,14 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     
     
     // Ref to the draggable DOM element:
-    const dragRef     = useRef<TElement | null>(null);
-    const dragElement = dragRef.current;
+    const dragElementRef = useRef<TElement | null>(null);
+    const dragElement    = dragElementRef.current;
+    
+    
+    
+    // Stable callbacks:
+    // - Wrapped with `useStableCallback` so references never change, avoiding unnecessary re-syncs or deps in `useEffect()`.
+    const dropPredicate = useStableCallback((dropCandidate: Element): boolean => unstableDropPredicate?.(dropCandidate) ?? true);
     
     
     
@@ -282,6 +291,56 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     
     
     
+    // Draggable context reference:
+    const draggableContextRef = useRef<DraggableContext<TElement>>(undefined);
+    const draggable           = lazyInitializeDraggableContext<TElement>({
+        // Actual states:
+        draggableContextRef,
+        
+        // Data:
+        dragPayload,
+        
+        // Behaviors:
+        dragEnabled,
+        dropPredicate,
+        
+        // Stable event handlers:
+        handleDragActivated,
+        handleDragDeactivated,
+        handleDragHandshake,
+        handleDragEvaluation,
+        handleDragged,
+        
+        // Actual states:
+        isMountedRef,
+        dragElementRef,
+        activeDroppableRef,
+        
+        // Reactive states:
+        setDragStatus,
+        setDropMetadata,
+        
+        // Utility functions:
+        isDragReady,
+    });
+    
+    
+    
+    // Keep draggable context in sync with prop changes:
+    // - No `useEffect()` needed — these are plain object flags.
+    syncDraggableContext({
+        // Data:
+        dragPayload,
+        
+        // Behaviors:
+        dragEnabled,
+        
+        // Actual states:
+        draggable,
+    });
+    
+    
+    
     // Event handlers:
     
     // Global pointer move handler:
@@ -292,29 +351,8 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
             // Events:
             pointerMoveEvent,
             
-            // Data:
-            dragPayload,
-            
-            // Refs:
-            dragElement,
-            activeDroppableRef,
-            
-            // Behaviors:
-            dropPredicate,
-            
-            // Stable event handlers:
-            handleDragHandshake,
-            handleDragEvaluation,
-            
-            // Actual states:
-            isMountedRef,
-            
-            // Reactive states:
-            setDragStatus,
-            setDropMetadata,
-            
-            // Utility functions:
-            isDragReady,
+            // Contexts:
+            draggable,
         });
     });
     
@@ -356,22 +394,14 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
         if (!isSetup) {
             // Cleanup : Commit first before resetting state, to ensure the last pointerup event is processed.
             processDragDropCommit<TElement>({
-                // Data:
-                dragPayload,
-                
                 // Refs:
-                dragElement,
-                activeDroppableRef, // ✅ Skips the commit if the pointer is not hovering over a droppable zone when the pointer is released.
                 lastPointerUpEventRef: globalPointerIntegrationRef.current?.lastPointerUpEventRef,
-                
-                // Stable event handlers:
-                handleDragged,
-                
-                // Actual states:
-                isMountedRef,
                 
                 // Utility functions:
                 isDragReady, // ✅ Skips the commit if the component is unmounted or disabled.
+                
+                // Contexts:
+                draggable,
             });
         } // if
         
@@ -381,15 +411,8 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
             // Lifecycle configs:
             isSetup,
             
-            // Actual states:
-            isMountedRef,
-            
-            // Reactive states:
-            setDragStatus,
-            setDropMetadata,
-            
             // Contexts:
-            activeDroppableRef,
+            draggable,
         });
         
         // Setup   : Attach global pointer listeners for drag probing and drop candidate evaluation.
@@ -430,45 +453,27 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
         if (isActive) {
             // Dispatch activation events after state is settled:
             processDragDropActivate<TElement>({
-                // Data:
-                dragPayload,
-                
                 // Refs:
-                dragElement,
                 lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
-                
-                // Behaviors:
-                dropPredicate,
-                
-                // Stable event handlers:
-                handleDragActivated,
-                
-                // Actual states:
-                isMountedRef,
                 
                 // Utility functions:
                 isDragReady,
+                
+                // Contexts:
+                draggable,
             });
         }
         else {
             // Dispatch deactivation events after state is settled:
             processDragDropDeactivate<TElement>({
-                // Data:
-                dragPayload,
-                
                 // Refs:
-                dragElement,
-                activeDroppableRef,
                 lastPointerUpEventRef: globalPointerIntegrationRef.current?.lastPointerUpEventRef,
-                
-                // Stable event handlers:
-                handleDragDeactivated,
-                
-                // Actual states:
-                isMountedRef,
                 
                 // Utility functions:
                 isDragReady,
+                
+                // Contexts:
+                draggable,
             });
         } // if
     });
@@ -490,6 +495,6 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     return {
         dragStatus,
         dropMetadata,
-        ref : dragRef,
+        ref : dragElementRef,
     } satisfies DraggableState<TElement>;
 };

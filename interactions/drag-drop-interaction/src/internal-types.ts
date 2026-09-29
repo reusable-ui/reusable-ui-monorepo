@@ -19,23 +19,157 @@ import {
     type DropMetadata,
     
     // Lifecycles:
+    type DragActivatedEvent,
     type DragPresenceEvent,
+    type DragDeactivatedEvent,
     type DragAbsenceEvent,
     
     // Handshakes:
+    type DragHandshakeEvent,
     type DropHandshakeEvent,
     
     // Evaluations:
+    type DragEvaluationEvent,
     type DropEvaluationEvent,
     
     // Commits:
+    type DraggedEvent,
     type DroppedEvent,
     
     // Reactive states:
+    type DraggableState,
     type DroppableState,
 }                           from './types.js'
 
 
+
+/**
+ * Represents the draggable side of a drag-drop interaction.
+ * 
+ * Exposes the draggable's payload, handlers, and runtime state
+ * for inspection and manipulation by the drag-drop engine.
+ */
+export interface DraggableContext<TElement extends Element = HTMLElement> {
+    // Data:
+    
+    /**
+     * The exposed payload of this draggable source.
+     * 
+     * Will be inspected by droppables during handshake negotiation.
+     */
+    dragPayload           : DragPayload
+    
+    
+    
+    // Behaviors:
+    
+    /**
+     * The exposed flag indicating whether this draggable is currently active
+     * and able to participate in drag-drop interactions.
+     */
+    dragEnabled           : boolean
+    
+    /**
+     * Filters candidate elements to determine valid drop targets.
+     */
+    dropPredicate         : ((dropCandidate: Element) => boolean) | undefined
+    
+    
+    
+    // Stable event handlers:
+    
+    /**
+     * Invoked once the drag gesture begins on the draggable side.
+     * 
+     * Signals the draggable to initialize its own styling, ghost image,
+     * or other resources tied to the drag activity lifecycle.
+     */
+    handleDragActivated   : EventHandler<DragActivatedEvent<TElement>>
+    
+    /**
+     * Invoked once the drag gesture ends on the draggable side.
+     * 
+     * Signals the draggable to reset its own styling, ghost image,
+     * or other resources tied to the drag activity lifecycle.
+     */
+    handleDragDeactivated : EventHandler<DragDeactivatedEvent<TElement>>
+    
+    /**
+     * Invoked continuously on every pointer movement during drag gesture movements
+     * while this draggable hovers over a droppable.
+     * 
+     * Allows the draggable to validate the droppable's metadata and responds with acceptance or rejection.
+     */
+    handleDragHandshake   : (event: DragHandshakeEvent<TElement>) => Promise<void>
+    
+    /**
+     * Invoked continuously on every pointer movement after handshake negotiation,
+     * reflecting the current acceptance/rejection state.
+     * 
+     * Enables live feedback from the draggable side during a drag gesture,
+     * such as "drop here" indicators, cursor changes,
+     * or other contextual hints.
+     */
+    handleDragEvaluation  : EventHandler<DragEvaluationEvent<TElement>>
+    
+    /**
+     * Invoked once the drag gesture ends on this draggable side,
+     * but only if both draggable and droppable sides accepted.
+     * 
+     * Peeks the droppable's metadata for the business logic
+     * such as updating state, persisting data, or triggering side effects.
+     */
+    handleDragged         : EventHandler<DraggedEvent<TElement>>
+    
+    
+    
+    // Actual states:
+    
+    /**
+     * Tests whether the draggable component is still mounted:
+     * - `undefined`: The draggable has not yet mounted.
+     * - `true`: The draggable is still mounted.
+     * - `false`: The draggable has been unmounted.
+     * 
+     * Prevents accidental state updates after unmounted.
+     * E.g., deactivating the currently active draggable side (but now unmounted) when leaving a draggable.
+     */
+    isMountedRef          : RefObject<boolean | undefined>
+    
+    /**
+     * The reference to the DOM element that serves as the draggable source.
+     */
+    dragElementRef        : RefObject<TElement | null>
+    
+    /**
+     * The reference of active droppable side.
+     */
+    activeDroppableRef    : RefObject<DroppableContext< Element> | null>
+    
+    
+    
+    // Reactive states:
+    
+    /**
+     * Updates whether a drag gesture is currently targeting a droppable zone:
+     * - `undefined` → no drag activity at all
+     * - `null`      → drag gesture active but outside all droppable zones, or either side has not responded
+     * - `false`     → drag gesture active over a droppable zone but rejected by one or both sides
+     * - `true`      → drag gesture active over a droppable zone and mutually accepted
+     */
+    setDragStatus         : Dispatch<DraggableState<TElement>['dragStatus'  ]>
+    
+    /**
+     * Updates the exposed metadata of the droppable target
+     * currently hovered by this draggable.
+     */
+    setDropMetadata       : Dispatch<DraggableState<TElement>['dropMetadata']>
+    
+    
+    
+    // Utility functions:
+    isDragReady           : () => boolean
+}
 
 /**
  * Represents the droppable side of a drag-drop interaction.
