@@ -365,10 +365,6 @@ const swapActiveDroppable                   = <TElement extends Element = HTMLEl
     
     // Activate the draggable side:
     activateDraggable<TElement>({
-        // Data:
-        isAccepted,
-        dropMetadata: droppable.dropMetadata,
-        
         // Contexts:
         draggable,
     });
