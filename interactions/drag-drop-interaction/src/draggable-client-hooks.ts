@@ -42,7 +42,6 @@ import {
 }                           from './types.js'
 import {
     type DraggableContext,
-    type DroppableContext,
 }                           from './internal-types.js'
 
 // Utilities:
@@ -267,10 +266,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     // Tests whether the component is still mounted:
     // - Prevents accidental state updates after unmounted.
     //   E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
-    const isMountedRef       = useMountedFlag();
-    
-    // Tracks the currently active droppable side:
-    const activeDroppableRef = useRef<DroppableContext< Element> | null>(null);
+    const isMountedRef = useMountedFlag();
     
     
     
@@ -314,7 +310,6 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
         // Actual states:
         isMountedRef,
         dragElementRef,
-        activeDroppableRef,
         
         // Reactive states:
         setDragStatus,

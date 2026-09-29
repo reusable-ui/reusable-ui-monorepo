@@ -30,7 +30,6 @@ import {
 }                           from './types.js'
 import {
     type DraggableContext,
-    type DroppableContext,
 }                           from './internal-types.js'
 import {
     type GlobalPointerIntegration,
@@ -174,17 +173,12 @@ const handleDragged         : EventHandler<DraggedEvent<Element>>         = noop
 /**
  * The reference to the DOM element that serves as the draggable source.
  */
-const dragElementRef     : RefObject<Element | null>                    = { current: null };
+const dragElementRef : RefObject<Element | null>      = { current: null };
 
 // Tests whether the component is still mounted (integrated):
 // - Prevents accidental state updates after unmounted (disintegrated).
 //   E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
-const isMountedRef       : RefObject<boolean | undefined>               = { current: false };
-
-/**
- * Tracks the currently active droppable side.
- */
-const activeDroppableRef : RefObject<DroppableContext< Element> | null> = { current: null };
+const isMountedRef   : RefObject<boolean | undefined> = { current: false };
 
 
 
@@ -211,7 +205,6 @@ export const draggable    = lazyInitializeDraggableContext<Element>({
     // Actual states:
     isMountedRef,
     dragElementRef,
-    activeDroppableRef,
     
     // Reactive states:
     setDragStatus,

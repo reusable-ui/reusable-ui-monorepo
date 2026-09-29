@@ -54,6 +54,17 @@ import {
 
 
 
+// Tests:
+
+/**
+ * Determines whether the specified draggable context has an existing drag session.
+ */
+const hasDragSession = <TElement extends Element = HTMLElement>(draggable: DraggableContext<TElement>): draggable is DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> } => {
+    return !!draggable.dragSession;
+};
+
+
+
 // Resolvers:
 
 /**
@@ -252,7 +263,8 @@ const clearActiveDroppable                  = <TElement extends Element = HTMLEl
     draggable               : DraggableContext<TElement>
 }): void => {
     // Get the currently active droppable to deactivate, if any:
-    const droppable = draggable.activeDroppableRef.current;
+    const droppable = draggable.dragSession?.droppable ?? null;
+    
     
     
     // Deactivate the previously active droppable side:
@@ -322,13 +334,17 @@ const swapActiveDroppable                   = <TElement extends Element = HTMLEl
     
     
     // Skip if the droppable reference and its acceptance are unchanged:
-    const prevDroppable = draggable.activeDroppableRef.current;
-    if ((droppable === prevDroppable) && (isAccepted === draggable.dragSession?.isAccepted)) return;
+    const {
+        // Actual states:
+        dragSession,
+    } = draggable;
+    const prevDroppable = dragSession?.droppable;
+    if ((droppable === prevDroppable) && (isAccepted === dragSession?.isAccepted)) return;
     
     
     
-    // If droppable changed, deactivate the previously active droppable side before swapping:
-    if (prevDroppable && (prevDroppable !== droppable)) {
+    // Deactivate the previously active droppable side before swapping:
+    if (prevDroppable) {
         deactivateDroppable({
             // Data:
             inactiveDropStatus: null, // `null` → drag gesture active but outside this droppable zone.
@@ -340,13 +356,13 @@ const swapActiveDroppable                   = <TElement extends Element = HTMLEl
     
     
     
-    // Update the drag session, along with the droppable reference:
+    // Update the drag session:
     draggable.dragSession = {
-        isAccepted,
+        droppable,  // Replace with the new droppable.
+        isAccepted, // Replace with the new acceptance value.
         pointedElement : dragHandshakeEvent.target        as Element,
         dropElement    : dragHandshakeEvent.relatedTarget as Element,
     };
-    draggable.activeDroppableRef.current = droppable;
     
     
     
@@ -400,7 +416,7 @@ export const updateDragLifecycle            = <TElement extends Element = HTMLEl
     draggable               : DraggableContext<TElement>
 }): void => {
     // Get the currently active droppable to deactivate, if any:
-    const droppable = draggable.activeDroppableRef.current;
+    const droppable = draggable.dragSession?.droppable ?? null;
     
     
     
@@ -751,43 +767,37 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
      */
     draggable               : DraggableContext<TElement>
 }): void => {
-    // Reset interaction states:
-    draggable.dragSession = null;
-    draggable.activeDroppableRef.current = null;
-    
-    
-    
-    // Get the currently active droppable to deactivate, if any:
-    const droppable = draggable.activeDroppableRef.current;
-    
-    
-    
-    // Abort deactivate if:
-    // - Draggable element is missing.
-    // - Draggable is unmounted.
-    // - Draggable is disabled.
-    // - No pointerup event was captured.
-    const lastPointerUpEvent = lastPointerUpEventRef?.current;
-    if (!isDragReady() || !lastPointerUpEvent) return;
-    
-    
-    
-    // Dispatch the final deactivation events:
-    const dragDropDeactivatedEvent = createDragDropDeactivatedEvent<TElement>({
-        // Event metadata:
-        lastPointerUpEvent,
+    try {
+        // Abort deactivate if:
+        // - Draggable element is missing.
+        // - Draggable is unmounted.
+        // - Draggable is disabled.
+        // - No pointerup event was captured.
+        const lastPointerUpEvent = lastPointerUpEventRef?.current;
+        if (!isDragReady() || !lastPointerUpEvent) return;
         
-        // Contexts:
-        draggable,
-    });
-    dispatchDeactivatedEvents<TElement>({
-        // Event metadata:
-        dragDropDeactivatedEvent,
         
-        // Contexts:
-        draggable,
-        droppable,
-    });
+        
+        // Dispatch the final deactivation events:
+        const dragDropDeactivatedEvent = createDragDropDeactivatedEvent<TElement>({
+            // Event metadata:
+            lastPointerUpEvent,
+            
+            // Contexts:
+            draggable,
+        });
+        dispatchDeactivatedEvents<TElement>({
+            // Event metadata:
+            dragDropDeactivatedEvent,
+            
+            // Contexts:
+            draggable,
+        });
+    }
+    finally {
+        // Reset the drag session:
+        draggable.dragSession = null;
+    } // try
 };
 
 /**
@@ -1010,11 +1020,6 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
      */
     draggable               : DraggableContext<TElement>
 }): void => {
-    // Get the currently active droppable to commit, if any:
-    const droppable = draggable.activeDroppableRef.current;
-    
-    
-    
     // Abort commit if:
     // - Draggable element is missing.
     // - Draggable is unmounted.
@@ -1022,7 +1027,7 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
     // - No pointerup event was captured.
     // - No active droppable side was accepted during the drag gesture.
     const lastPointerUpEvent = lastPointerUpEventRef?.current;
-    if (!isDragReady() || !lastPointerUpEvent || !draggable.dragSession?.isAccepted || !droppable) return;
+    if (!isDragReady() || !lastPointerUpEvent || !hasDragSession(draggable) || !draggable.dragSession.isAccepted) return;
     
     
     
@@ -1033,7 +1038,6 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
         
         // Contexts:
         draggable,
-        droppable,
     });
     dispatchCommittedEvents<TElement>({
         // Event metadata:
@@ -1041,6 +1045,5 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
         
         // Contexts:
         draggable,
-        droppable,
     });
 };

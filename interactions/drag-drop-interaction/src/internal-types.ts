@@ -54,6 +54,18 @@ import {
  */
 export interface DragSession {
     /**
+     * The active droppable side participating in this session.
+     * 
+     * Represents the droppable that participated in the
+     * handshake, evaluation, and commit process with the current draggable.
+     * 
+     * Provides access to the droppable's metadata, handlers,
+     * and runtime state for inspection and manipulation during
+     * the lifetime of this drag-drop interaction.
+    */
+    droppable      : DroppableContext< Element>
+    
+    /**
      * Indicates whether both draggable and droppable sides have mutually
      * accepted the current interaction.
      * 
@@ -181,11 +193,6 @@ export interface DraggableContext<TElement extends Element = HTMLElement> {
      * The reference to the DOM element that serves as the draggable source.
      */
     dragElementRef        : RefObject<TElement | null>
-    
-    /**
-     * The reference of active droppable side.
-     */
-    activeDroppableRef    : RefObject<DroppableContext< Element> | null>
     
     /**
      * The current drag-drop interaction session.

@@ -236,9 +236,8 @@ const cleanupGlobalIntegration = (): void => {
     
     // Additional cleanups for disintegration prior to drag end:
     
-    // Reset interaction states:
+    // Reset the drag session:
     draggable.dragSession = null;
-    draggable.activeDroppableRef.current = null;
     
     // Clear the drag payload:
     draggable.dragPayload = emptyMap;

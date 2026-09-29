@@ -647,7 +647,6 @@ export const createDragDropCommittedEvent   = <TElement extends Element = HTMLEl
     
     // Contexts:
     draggable,
-    droppable,
 }: {
     // Event metadata:
     /**
@@ -659,11 +658,7 @@ export const createDragDropCommittedEvent   = <TElement extends Element = HTMLEl
     /**
      * The draggable side associated with the drag gesture.
      */
-    draggable                : DraggableContext<TElement>
-    /**
-     * The droppable side associated with the commit.
-     */
-    droppable                : DroppableContext< Element>
+    draggable                : DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> }
 }): DragDropCommittedEvent<TElement> => {
     // Extract properties from the draggable context for convenience:
     const {
@@ -672,25 +667,14 @@ export const createDragDropCommittedEvent   = <TElement extends Element = HTMLEl
         
         // Actual states:
         dragElementRef,
-        dragSession,
+        dragSession : {
+            droppable : {
+                dropMetadata,
+            },
+            pointedElement,
+            dropElement,
+        },
     } = draggable;
-    
-    // Extract properties from the drag session for convenience:
-    // - Defaults all properties to null if no active droppable side.
-    const {
-        // Interaction states:
-        pointedElement,
-        dropElement,
-    } = dragSession ?? {
-        pointedElement : null,
-        dropElement    : null,
-    };
-    
-    // Extract properties from the droppable context for convenience:
-    const {
-        // Data:
-        dropMetadata,
-    } = droppable;
     
     
     
@@ -707,7 +691,7 @@ export const createDragDropCommittedEvent   = <TElement extends Element = HTMLEl
             relatedTarget    : dropElement,                         // The droppable element in contact.
         }),
         // Reassign the `relatedTarget` to satisfy the TS:
-        relatedTarget        : dropElement!,                        // The droppable element in contact.
+        relatedTarget        : dropElement,                         // The droppable element in contact.
         
         // Data:
         dragPayload,  // The payload delivered by the draggable source.
@@ -852,7 +836,6 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
     
     // Contexts:
     draggable,
-    droppable,
 }: {
     // Event metadata:
     /**
@@ -865,14 +848,12 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
      * The draggable side associated with the drag gesture.
      */
     draggable                : DraggableContext<TElement>
-    /**
-     * The droppable side associated with the matched target.
-     * 
-     * Pass `null` if no handshake was performed (all droppables are inactive),
-     * e.g. when the draggable is not hovering over any droppable.
-     */
-    droppable                : DroppableContext< Element> | null
 }): void => {
+    // Get the currently active droppable to deactivate, if any:
+    const droppable = draggable.dragSession?.droppable;
+    
+    
+    
     if (draggable.isMountedRef.current) {
         // Dispatch deactivation for the draggable:
         const dragDeactivatedEvent = createDragDeactivatedEvent<TElement>({
@@ -1124,7 +1105,6 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
     
     // Contexts:
     draggable,
-    droppable,
 }: {
     // Event metadata:
     /**
@@ -1136,12 +1116,18 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
     /**
      * The draggable side associated with the drag gesture.
      */
-    draggable                : DraggableContext<TElement>
-    /**
-     * The droppable side associated with the commit.
-     */
-    droppable                : DroppableContext< Element>
+    draggable                : DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> }
 }): void => {
+    // Extract properties from the draggable context for convenience:
+    const {
+        // Actual states:
+        dragSession : {
+            droppable,
+        },
+    } = draggable;
+    
+    
+    
     if (draggable.isMountedRef.current) {
         const draggedEvent = createDraggedEvent<TElement>({
             // Event metadata:
@@ -1152,7 +1138,8 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
     
     
     
-    if (droppable.isMountedRef.current) {
+    // Get the currently active droppable to deactivate, if any:
+    if (droppable?.isMountedRef.current) {
         const droppedEvent = createDroppedEvent< Element>({
             // Event metadata:
             dragDropCommittedEvent,
