@@ -7,7 +7,6 @@ import {
 // Types:
 import {
     // Data:
-    type DragPayload,
     type DropMetadata,
     
     // Lifecycles:
@@ -368,22 +367,16 @@ const createDragAbsenceEvent                = <TElement extends Element = HTMLEl
 export const createDragProbeEvent           = <TElement extends Element = HTMLElement>({
     // Event metadata:
     pointerMoveEvent,
-    dragElement,
     pointedElement,
     
-    // Data:
-    dragPayload,
+    // Contexts:
+    draggable,
 }: {
     // Event metadata:
     /**
      * The originating native 'pointermove' event from the browser.
      */
     pointerMoveEvent         : PointerEvent
-    /**
-     * The reference to the DOM element that serves as the draggable element itself, set as `currentTarget`.
-     * Pass `null` if the drag element is not available, e.g. dragging a file.
-     */
-    dragElement              : TElement | null
     /**
      * The reference to the DOM element that currently under the pointer, set as `target`.
      * 
@@ -392,28 +385,41 @@ export const createDragProbeEvent           = <TElement extends Element = HTMLEl
      */
     pointedElement           : Element | null
     
-    // Data:
+    // Contexts:
     /**
-     * The payload associated with the current drag gesture.
+     * The draggable side associated with the drag gesture.
      */
-    dragPayload              : DragPayload
-}): DragProbeEvent<TElement> => ({
-    // Event metadata:
-    ...createSyntheticPointerEvent<TElement, PointerEvent>({
-        // Event metadata:
+    draggable                : DraggableContext<TElement>
+}): DragProbeEvent<TElement> => {
+    // Extract properties from the draggable context for convenience:
+    const {
+        // Data:
+        dragPayload,
         
-        nativeEvent      : pointerMoveEvent,
-        
-        // type          : 'pointermove',               // Defaults to `nativeEvent.type`, no override needed.
-        
-        currentTarget    : dragElement    ?? undefined, // The draggable element initiating the probe.
-        target           : pointedElement ?? undefined, // The element currently under the pointer.
-        // relatedTarget : dropElement,                 // Not yet defined at probe stage.
-    }),
+        // Actual states:
+        dragElementRef,
+    } = draggable;
     
-    // Data:
-    dragPayload, // The payload associated with the current drag gesture.
-});
+    
+    
+    return {
+        // Event metadata:
+        ...createSyntheticPointerEvent<TElement, PointerEvent>({
+            // Event metadata:
+            
+            nativeEvent      : pointerMoveEvent,
+            
+            // type          : 'pointermove',                       // Defaults to `nativeEvent.type`, no override needed.
+            
+            currentTarget    : dragElementRef.current ?? undefined, // The draggable element initiating the probe.
+            target           : pointedElement         ?? undefined, // The element currently under the pointer.
+            // relatedTarget : dropElement,                         // Not yet defined at probe stage.
+        }),
+        
+        // Data:
+        dragPayload, // The payload associated with the current drag gesture.
+    };
+};
 
 
 

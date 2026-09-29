@@ -822,14 +822,8 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
 }): Promise<void> => {
     // Extract properties from the draggable context for convenience:
     const {
-        // Data:
-        dragPayload,
-        
         // Behaviors:
         dropPredicate,
-        
-        // Actual states:
-        dragElementRef,
         
         // Utility functions:
         isDragReady,
@@ -860,11 +854,10 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
     const dragProbeEvent = createDragProbeEvent<TElement>({
         // Event metadata:
         pointerMoveEvent,
-        dragElement: dragElementRef.current,
         pointedElement,
         
-        // Data:
-        dragPayload,
+        // Contexts:
+        draggable,
     });
     
     
