@@ -225,11 +225,6 @@ export interface DraggableContext<TElement extends Element = HTMLElement> {
      * currently hovered by this draggable.
      */
     setDropMetadata       : Dispatch<DraggableState<TElement>['dropMetadata']>
-    
-    
-    
-    // Utility functions:
-    isDragReady           : () => boolean
 }
 
 /**

@@ -30,6 +30,7 @@ import {
 }                           from './internal-registry.js'
 import {
     // State checks:
+    isDragReady,
     isDropReady,
     
     
@@ -661,9 +662,6 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
     // Refs:
     lastPointerDownEventRef,
     
-    // Utility functions:
-    isDragReady,
-    
     // Contexts:
     draggable,
 }: {
@@ -672,12 +670,6 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
      * A shared reference to the most recent native `pointerdown` event.
      */
     lastPointerDownEventRef : RefObject<PointerEvent | undefined> | undefined,
-    
-    // Utility functions:
-    /**
-     * Determines whether the draggable state is valid for dragging operation.
-     */
-    isDragReady             : () => boolean
     
     // Contexts:
     /**
@@ -691,7 +683,7 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
     // - Draggable is disabled.
     // - No pointerdown event was captured.
     const lastPointerDownEvent = lastPointerDownEventRef?.current;
-    if (!isDragReady() || !lastPointerDownEvent) return;
+    if (!isDragReady(draggable) || !lastPointerDownEvent) return;
     
     
     
@@ -731,9 +723,6 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
     // Refs:
     lastPointerUpEventRef,
     
-    // Utility functions:
-    isDragReady,
-    
     // Contexts:
     draggable,
 }: {
@@ -742,12 +731,6 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
      * A shared reference to the most recent native `pointerup` event.
      */
     lastPointerUpEventRef   : RefObject<PointerEvent | undefined> | undefined,
-    
-    // Utility functions:
-    /**
-     * Determines whether the draggable state is valid for dragging operation.
-     */
-    isDragReady             : () => boolean
     
     // Contexts:
     /**
@@ -762,7 +745,7 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
         // - Draggable is disabled.
         // - No pointerup event was captured.
         const lastPointerUpEvent = lastPointerUpEventRef?.current;
-        if (!isDragReady() || !lastPointerUpEvent) return;
+        if (!isDragReady(draggable) || !lastPointerUpEvent) return;
         
         
         
@@ -819,9 +802,6 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
     const {
         // Behaviors:
         dropPredicate,
-        
-        // Utility functions:
-        isDragReady,
     } = draggable;
     
     
@@ -830,7 +810,7 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
     // - Draggable element is missing.
     // - Draggable is unmounted.
     // - Draggable is disabled.
-    if (!isDragReady()) {
+    if (!isDragReady(draggable)) {
         clearActiveDroppable<TElement>({
             // Contexts:
             draggable,
@@ -895,7 +875,7 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
     // - Draggable is unmounted.
     // - Draggable is disabled.
     // - Droppable is disabled (if has negotiation).
-    if (!isDragReady() || (negotiationResult && !isDropReady(negotiationResult.droppable))) {
+    if (!isDragReady(draggable) || (negotiationResult && !isDropReady(negotiationResult.droppable))) {
         clearActiveDroppable<TElement>({
             // Contexts:
             draggable,
@@ -972,9 +952,6 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
     // Refs:
     lastPointerUpEventRef,
     
-    // Utility functions:
-    isDragReady,
-    
     // Contexts:
     draggable,
 }: {
@@ -983,12 +960,6 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
      * A shared reference to the most recent native `pointerup` event.
      */
     lastPointerUpEventRef   : RefObject<PointerEvent | undefined> | undefined,
-    
-    // Utility functions:
-    /**
-     * Determines whether the draggable state is valid for dragging operation.
-     */
-    isDragReady             : () => boolean
     
     // Contexts:
     /**
@@ -1003,7 +974,7 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
     // - No pointerup event was captured.
     // - No active droppable side was accepted during the drag gesture.
     const lastPointerUpEvent = lastPointerUpEventRef?.current;
-    if (!isDragReady() || !lastPointerUpEvent || !hasDragSession(draggable) || !draggable.dragSession.isAccepted) return;
+    if (!isDragReady(draggable) || !lastPointerUpEvent || !hasDragSession(draggable) || !draggable.dragSession.isAccepted) return;
     
     
     

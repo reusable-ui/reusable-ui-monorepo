@@ -231,7 +231,6 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     
     // Ref to the draggable DOM element:
     const dragElementRef = useRef<TElement | null>(null);
-    const dragElement    = dragElementRef.current;
     
     
     
@@ -270,23 +269,6 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     
     
     
-    // Utility functions:
-    
-    /**
-     * Determines whether the draggable state is valid for dragging operation.
-     * - Ensures the draggable element exists.
-     * - Ensures the component is still mounted.
-     * - Ensures the draggable is enabled.
-     * - Ensures values remain fresh even after async awaits.
-     *   Always evaluates the *latest* variables from `useDraggableState`,
-     *   even if the hook re-renders during an async sequence.
-     */
-    const isDragReady = useStableCallback((): boolean =>
-        !!dragElement && !!dragMountedRef.current && !!dragEnabled
-    );
-    
-    
-    
     // Draggable context reference:
     const draggableContextRef = useRef<DraggableContext<TElement>>(undefined);
     const draggable           = lazyInitializeDraggableContext<TElement>({
@@ -314,9 +296,6 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
         // Reactive states:
         setDragStatus,
         setDropMetadata,
-        
-        // Utility functions:
-        isDragReady,
     });
     
     
@@ -392,9 +371,6 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
                 // Refs:
                 lastPointerUpEventRef: globalPointerIntegrationRef.current?.lastPointerUpEventRef,
                 
-                // Utility functions:
-                isDragReady, // ✅ Skips the commit if the component is unmounted or disabled.
-                
                 // Contexts:
                 draggable,
             });
@@ -451,9 +427,6 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
                 // Refs:
                 lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
                 
-                // Utility functions:
-                isDragReady,
-                
                 // Contexts:
                 draggable,
             });
@@ -463,9 +436,6 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
             processDragDropDeactivate<TElement>({
                 // Refs:
                 lastPointerUpEventRef: globalPointerIntegrationRef.current?.lastPointerUpEventRef,
-                
-                // Utility functions:
-                isDragReady,
                 
                 // Contexts:
                 draggable,

@@ -25,7 +25,6 @@ import {
     globalPointerIntegrationRef,
     
     // Functions:
-    isDragReady,
     extractPayloadFromDataTransfer,
     
     // Contexts:
@@ -106,9 +105,6 @@ const handleGlobalDragStart = (event: DragEvent): void => {
             // Refs:
             lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
             
-            // Utility functions:
-            isDragReady,
-            
             // Contexts:
             draggable,
         });
@@ -133,9 +129,6 @@ const handleGlobalDragEnd   = (event: DragEvent): void => {
         processDragDropDeactivate<Element>({
             // Refs:
             lastPointerUpEventRef: globalPointerIntegrationRef.current?.lastPointerUpEventRef,
-            
-            // Utility functions:
-            isDragReady,
             
             // Contexts:
             draggable,
@@ -174,9 +167,6 @@ const handleGlobalDrop      = (event: DragEvent): void => {
     processDragDropCommit<Element>({
         // Refs:
         lastPointerUpEventRef: globalPointerIntegrationRef.current?.lastPointerUpEventRef,
-        
-        // Utility functions:
-        isDragReady,
         
         // Contexts:
         draggable,

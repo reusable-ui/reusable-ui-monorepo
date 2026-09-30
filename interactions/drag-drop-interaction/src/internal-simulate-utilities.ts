@@ -64,15 +64,6 @@ export const globalPointerIntegrationRef : RefObject<GlobalPointerIntegration | 
 const noop = (): void => {};
 
 /**
- * Simulates the readiness check.
- * 
- * Always reports as ready, regardless of the passed element.
- * When dragging files, the `dragElement` may be unavailable — this forces
- * the assumption of a valid element.
- */
-export const isDragReady = (_dragElementParam?: Element | null): _dragElementParam is Element => true;
-
-/**
  * Extracts a drag payload from the given `DataTransfer`.
  * 
  * - File items are mapped to `File` objects.
@@ -209,9 +200,6 @@ export const draggable    = lazyInitializeDraggableContext<Element>({
     // Reactive states:
     setDragStatus,
     setDropMetadata,
-    
-    // Utility functions:
-    isDragReady,
 });
 
 
