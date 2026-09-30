@@ -29,6 +29,11 @@ import {
     droppableRegistry,
 }                           from './internal-registry.js'
 import {
+    // State checks:
+    isDropReady,
+    
+    
+    
     // State updates:
     activateDraggable,
     activateDroppable,
@@ -186,7 +191,7 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
         // Find the corresponding droppable side by its element:
         // - Skip the disabled ones.
         const candidateDroppable = droppableRegistry.get(candidateDropElement);
-        if (!candidateDroppable?.dropEnabled) continue;
+        if (!isDropReady(candidateDroppable)) continue;
         
         
         
@@ -890,7 +895,7 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
     // - Draggable is unmounted.
     // - Draggable is disabled.
     // - Droppable is disabled (if has negotiation).
-    if (!isDragReady() || (negotiationResult && !negotiationResult.droppable.dropEnabled)) {
+    if (!isDragReady() || (negotiationResult && !isDropReady(negotiationResult.droppable))) {
         clearActiveDroppable<TElement>({
             // Contexts:
             draggable,

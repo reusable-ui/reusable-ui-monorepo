@@ -42,6 +42,10 @@ import {
 import {
     droppableRegistry,
 }                           from './internal-registry.js'
+import {
+    // State checks:
+    isDropReady,
+}                           from './internal-state-utilities.js'
 
 
 
@@ -820,7 +824,7 @@ export const dispatchActivatedEvents        = <TElement extends Element = HTMLEl
         if (!eachDroppable.dropMountedRef.current) continue;
         
         // Skip disabled droppables:
-        if (!eachDroppable.dropEnabled) continue;
+        if (!isDropReady(eachDroppable)) continue;
         
         
         
@@ -882,7 +886,7 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
         if (!eachDroppable.dropMountedRef.current) continue;
         
         // Skip disabled droppables:
-        if (!eachDroppable.dropEnabled) continue;
+        if (!isDropReady(eachDroppable)) continue;
         
         
         
@@ -1047,7 +1051,7 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
         if (!eachDroppable.dropMountedRef.current) continue;
         
         // Skip disabled droppables:
-        if (!eachDroppable.dropEnabled) continue;
+        if (!isDropReady(eachDroppable)) continue;
         
         
         
