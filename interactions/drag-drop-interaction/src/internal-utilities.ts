@@ -335,21 +335,18 @@ const swapActiveDroppable                   = <TElement extends Element = HTMLEl
         // Actual states:
         dragSession,
     } = draggable;
-    const prevDroppable = dragSession?.droppable;
-    if ((droppable === prevDroppable) && (isAccepted === dragSession?.isAccepted)) return;
+    if (dragSession && (droppable === dragSession.droppable) && (isAccepted === dragSession.isAccepted)) return;
     
     
     
-    // Deactivate the previously active droppable side before swapping:
-    if (prevDroppable) {
-        deactivateDroppable({
-            // Data:
-            inactiveDropStatus: null, // `null` → drag gesture active but outside this droppable zone.
-            
-            // Contexts:
-            draggable, // The draggable side contains droppable to deactivate.
-        });
-    } // if
+    // Deactivate the previously active droppable side (if any) before swapping:
+    deactivateDroppable({
+        // Data:
+        inactiveDropStatus: null, // `null` → drag gesture active but outside this droppable zone.
+        
+        // Contexts:
+        draggable, // The draggable side that *may contains* droppable to deactivate.
+    });
     
     
     
