@@ -1101,7 +1101,7 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
     
     
     
-    if (draggable.dragMountedRef.current) {
+    if (isDragReady(draggable)) {
         const draggedEvent = createDraggedEvent<TElement>({
             // Event metadata:
             dragDropCommittedEvent,
@@ -1112,7 +1112,7 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
     
     
     // Get the currently active droppable to deactivate, if any:
-    if (droppable?.dropMountedRef.current) {
+    if (isDropReady(droppable)) {
         const droppedEvent = createDroppedEvent< Element>({
             // Event metadata:
             dragDropCommittedEvent,
