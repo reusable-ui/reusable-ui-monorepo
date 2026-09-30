@@ -20,7 +20,7 @@ import {
  * The draggable must:
  * - exist
  * - be mounted
-*/
+ */
 export const isDragMounted = (draggable: DraggableContext | null | undefined): draggable is DraggableContext & { dragMountedRef: { current: true } } => {
     return !!draggable?.dragMountedRef.current;
 };
@@ -32,7 +32,7 @@ export const isDragMounted = (draggable: DraggableContext | null | undefined): d
  * The droppable must:
  * - exist
  * - be mounted
-*/
+ */
 export const isDropMounted = (droppable: DroppableContext | null | undefined): droppable is DroppableContext & { dropMountedRef: { current: true } } => {
     return !!droppable?.dropMountedRef.current;
 };
@@ -45,7 +45,7 @@ export const isDropMounted = (droppable: DroppableContext | null | undefined): d
  * - exist
  * - be mounted
  * - be enabled
-*/
+ */
 export const isDragReady = (draggable: DraggableContext | null | undefined): draggable is DraggableContext & { dragMountedRef: { current: true }, dragEnabled: true } => {
     return isDragMounted(draggable) && draggable.dragEnabled;
 };
@@ -58,7 +58,7 @@ export const isDragReady = (draggable: DraggableContext | null | undefined): dra
  * - exist
  * - be mounted
  * - be enabled
-*/
+ */
 export const isDropReady = (droppable: DroppableContext | null | undefined): droppable is DroppableContext & { dropMountedRef: { current: true }, dropEnabled: true } => {
     return isDropMounted(droppable) && droppable.dropEnabled;
 };
