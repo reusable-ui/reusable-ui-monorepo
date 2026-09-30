@@ -152,12 +152,6 @@ export const deactivateDroppable      = ({
     
     droppable.setDropStatus(inactiveDropStatus); // Reset status.
     droppable.setDragPayload(undefined);         // Clear payload.
-    
-    
-    
-    // Do not clear the active droppable reference:
-    // - It still required by `processDragDropDeactivate()`.
-    // activeDroppableRef.current = null;
 };
 
 /**
