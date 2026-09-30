@@ -265,8 +265,8 @@ const createDragDeactivatedEvent            = <TElement extends Element = HTMLEl
     // Event metadata:
     dragDropDeactivatedEvent,
     
-    // Data:
-    dropMetadata,
+    // Contexts:
+    droppable,
 }: {
     // Event metadata:
     /**
@@ -274,18 +274,21 @@ const createDragDeactivatedEvent            = <TElement extends Element = HTMLEl
      */
     dragDropDeactivatedEvent : DragDropDeactivatedEvent<TElement>
     
-    // Data:
+    // Contexts:
     /**
-     * The metadata exposed by the active droppable target (if any).
+     * The droppable side associated with the drag absence event.
+     * 
+     * Pass `null` if no handshake was performed (all droppables are inactive),
+     * e.g. when the draggable is not hovering over any droppable.
      */
-    dropMetadata             : DropMetadata | undefined
+    droppable                : DroppableContext< Element> | null
 }): DragDeactivatedEvent<TElement> => ({
     // Event metadata:
     ...dragDropDeactivatedEvent,
     type             : 'dragdeactivated',
     
     // Data:
-    dropMetadata, // The metadata exposed by the droppable target, if any.
+    dropMetadata: droppable?.dropMetadata, // The metadata exposed by the droppable target, if any.
 });
 
 /**
@@ -856,19 +859,14 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
      */
     draggable                : DraggableContext<TElement>
 }): void => {
-    // Get the currently active droppable to deactivate, if any:
-    const droppable = draggable.dragSession?.droppable;
-    
-    
-    
     if (draggable.isMountedRef.current) {
         // Dispatch deactivation for the draggable:
         const dragDeactivatedEvent = createDragDeactivatedEvent<TElement>({
             // Event metadata:
             dragDropDeactivatedEvent,
             
-            // Data:
-            dropMetadata: droppable?.dropMetadata,
+            // Contexts:
+            droppable: draggable.dragSession?.droppable ?? null,
         });
         draggable.handleDragDeactivated(dragDeactivatedEvent);
     } // if
