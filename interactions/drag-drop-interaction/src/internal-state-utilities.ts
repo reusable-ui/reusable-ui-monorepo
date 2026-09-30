@@ -1,12 +1,67 @@
 // Types:
 import {
     type DraggableContext,
+    type DroppableContext,
 }                           from './internal-types.js'
 
 // Utilities:
 import {
     droppableRegistry,
 }                           from './internal-registry.js'
+
+
+
+// State checks:
+
+/**
+ * Determines whether the draggable side is currently available
+ * for state updates and re-renders.
+ * 
+ * The draggable must:
+ * - exist
+ * - be mounted
+*/
+export const isDragMounted = (draggable: DraggableContext | null | undefined): draggable is DraggableContext & { dragMountedRef: { current: true } } => {
+    return !!draggable?.dragMountedRef.current;
+};
+
+/**
+ * Determines whether the droppable side is currently available
+ * for state updates and re-renders.
+ * 
+ * The droppable must:
+ * - exist
+ * - be mounted
+*/
+export const isDropMounted = (droppable: DroppableContext | null | undefined): droppable is DroppableContext & { dropMountedRef: { current: true } } => {
+    return !!droppable?.dropMountedRef.current;
+};
+
+/**
+ * Determines whether the draggable side is currently available
+ * for drag-drop interactions.
+ * 
+ * The draggable must:
+ * - exist
+ * - be mounted
+ * - be enabled
+*/
+export const isDragReady = (draggable: DraggableContext | null | undefined): draggable is DraggableContext & { dragMountedRef: { current: true }, dragEnabled: true } => {
+    return isDragMounted(draggable) && draggable.dragEnabled;
+};
+
+/**
+ * Determines whether the droppable side is currently available
+ * for drag-drop interactions.
+ * 
+ * The droppable must:
+ * - exist
+ * - be mounted
+ * - be enabled
+*/
+export const isDropReady = (droppable: DroppableContext | null | undefined): droppable is DroppableContext & { dropMountedRef: { current: true }, dropEnabled: true } => {
+    return isDropMounted(droppable) && droppable.dropEnabled;
+};
 
 
 
