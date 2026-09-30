@@ -259,18 +259,13 @@ const clearActiveDroppable                  = <TElement extends Element = HTMLEl
     draggable               : DraggableContext<TElement>
 }): void => {
     try {
-        // Get the currently active droppable to deactivate, if any:
-        const droppable = draggable.dragSession?.droppable ?? null;
-        
-        
-        
         // Deactivate the previously active droppable side:
         deactivateDroppable({
             // Data:
             inactiveDropStatus: null, // `null` → drag gesture active but outside this droppable zone.
             
             // Contexts:
-            droppable,
+            draggable,
         });
         
         
@@ -352,7 +347,7 @@ const swapActiveDroppable                   = <TElement extends Element = HTMLEl
             inactiveDropStatus: null, // `null` → drag gesture active but outside this droppable zone.
             
             // Contexts:
-            droppable: prevDroppable, // Pass the prev droppable instead of the new one.
+            draggable, // The draggable side contains droppable to deactivate.
         });
     } // if
     
@@ -411,11 +406,6 @@ export const updateDragLifecycle            = <TElement extends Element = HTMLEl
      */
     draggable               : DraggableContext<TElement>
 }): void => {
-    // Get the currently active droppable to deactivate, if any:
-    const droppable = draggable.dragSession?.droppable ?? null;
-    
-    
-    
     if (!isSetup) {
         // Deactivate the previously active droppable side:
         deactivateDroppable({
@@ -423,7 +413,7 @@ export const updateDragLifecycle            = <TElement extends Element = HTMLEl
             inactiveDropStatus: undefined, // `undefined` → no drag activity at all.
             
             // Contexts:
-            droppable,
+            draggable,
         });
     } // if
     
@@ -444,7 +434,7 @@ export const updateDragLifecycle            = <TElement extends Element = HTMLEl
         inactiveDropStatus: isSetup ? null : undefined, // `null` → drag gesture active but outside all droppable zones, `undefined` → no drag activity at all.
         
         // Contexts:
-        droppable,
+        draggable,
     });
 };
 

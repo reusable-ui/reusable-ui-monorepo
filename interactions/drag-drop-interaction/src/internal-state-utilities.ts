@@ -1,7 +1,6 @@
 // Types:
 import {
     type DraggableContext,
-    type DroppableContext,
 }                           from './internal-types.js'
 
 // Utilities:
@@ -121,12 +120,12 @@ export const deactivateDraggable      = <TElement extends Element = HTMLElement>
 /**
  * Deactivates the currently active droppable side.
  */
-export const deactivateDroppable      = ({
+export const deactivateDroppable      = <TElement extends Element = HTMLElement>({
     // Data:
     inactiveDropStatus,
     
     // Contexts:
-    droppable,
+    draggable,
 }: {
     // Data:
     /**
@@ -138,13 +137,15 @@ export const deactivateDroppable      = ({
     
     // Contexts:
     /**
-     * The droppable side to deactivate.
-     * 
-     * Pass `null` if there is no active droppable (all droppables are inactive),
-     * e.g. when the draggable is not hovering over any droppable.
+     * The draggable side that may contains droppable to deactivate.
      */
-    droppable               : DroppableContext< Element> | null
+    draggable               : DraggableContext<TElement>
 }): void => {
+    // Extract properties from the draggable context for convenience:
+    const droppable = draggable.dragSession?.droppable;
+    
+    
+    
     // Ignore unmounted droppable:
     if (!droppable?.isMountedRef.current) return;
     
@@ -159,12 +160,12 @@ export const deactivateDroppable      = ({
  * 
  * All droppable sides except the specified one will be reset.
  */
-export const deactivateRestDroppables = ({
+export const deactivateRestDroppables = <TElement extends Element = HTMLElement>({
     // Data:
     inactiveDropStatus,
     
     // Contexts:
-    droppable,
+    draggable,
 }: {
     // Data:
     /**
@@ -176,13 +177,15 @@ export const deactivateRestDroppables = ({
     
     // Contexts:
     /**
-     * The previously active droppable side to exclude.
-     * 
-     * Pass `null` if there is no active droppable (all droppables are inactive),
-     * e.g. when the draggable is not hovering over any droppable.
+     * The draggable side that may contains droppable to exclude.
      */
-    droppable               : DroppableContext< Element> | null
+    draggable               : DraggableContext<TElement>
 }): void => {
+    // Extract properties from the draggable context for convenience:
+    const droppable = draggable.dragSession?.droppable;
+    
+    
+    
     for (const restDroppable of droppableRegistry.values()) {
         // Skip unmounted droppables:
         if (!restDroppable.isMountedRef.current) continue;
