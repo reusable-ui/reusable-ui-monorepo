@@ -305,51 +305,52 @@ const createDragAbsenceEvent                = <TElement extends Element = HTMLEl
     // Event metadata:
     dragDropDeactivatedEvent,
     
-    // Data:
-    dropMetadata,
-    isTargeted,
+    // Contexts:
+    draggable,
+    droppable,
 }: {
     // Event metadata:
     /**
      * The synthetic deactivation event created earlier.
      */
-    dragDropDeactivatedEvent : DragDropDeactivatedEvent<TElement>
+    dragDropDeactivatedEvent : DragDropDeactivatedEvent< Element>
     
-    // Data:
+    // Contexts:
     /**
-     * The metadata exposed by the droppable target.
+     * The draggable side associated with the drag gesture.
      */
-    dropMetadata             : DropMetadata
+    draggable                : DraggableContext<TElement>
     /**
-     * Indicates whether the pointer was positioned over *this* droppable
-     * at the exact moment the drag gesture ended.
-     * 
-     * - `true` → The draggable had already made contact with this droppable,
-     *   meaning the handshake was performed here just before the gesture concluded.
-     * - `false` → The pointer was elsewhere when the gesture ended,
-     *   so no handshake was performed on this droppable.
-     * 
-     * Useful for distinguishing between global absence broadcasts
-     * (sent to all droppables for cleanup)
-     * and the droppable that was actually under the pointer at the end of the gesture.
+     * The droppable side associated with the drag absence event.
      */
-    isTargeted               : boolean
-}): DragAbsenceEvent<TElement> => ({
-    // Event metadata:
-    ...dragDropDeactivatedEvent,
-    type             : 'dragabsence',
+    droppable                : DroppableContext< Element>
+}): DragAbsenceEvent< Element> => {
+    // Extract properties from the droppable context for convenience:
+    const {
+        // Data:
+        dropMetadata,
+    } = droppable;
+    const isTargeted = (droppable === draggable.dragSession?.droppable);
     
-    // On the droppable side, `currentTarget` points to the droppable itself.
-    // The draggable that was `currentTarget` in the deactivation stage is now `relatedTarget`,
-    // and vice versa for the droppable.
-    // This swap reflects perspective: each side treats itself as current, partner as related.
-    currentTarget    : dragDropDeactivatedEvent.relatedTarget as TElement,
-    relatedTarget    : dragDropDeactivatedEvent.currentTarget,
     
-    // Data:
-    dropMetadata, // The metadata exposed by the droppable target.
-    isTargeted,   // Whether the pointer was positioned over *this* droppable.
-});
+    
+    return {
+        // Event metadata:
+        ...dragDropDeactivatedEvent,
+        type             : 'dragabsence',
+        
+        // On the droppable side, `currentTarget` points to the droppable itself.
+        // The draggable that was `currentTarget` in the deactivation stage is now `relatedTarget`,
+        // and vice versa for the droppable.
+        // This swap reflects perspective: each side treats itself as current, partner as related.
+        currentTarget    : dragDropDeactivatedEvent.relatedTarget as Element,
+        relatedTarget    : dragDropDeactivatedEvent.currentTarget,
+        
+        // Data:
+        dropMetadata, // The metadata exposed by the droppable target.
+        isTargeted,   // Whether the pointer was positioned over *this* droppable.
+    };
+};
 
 
 
@@ -874,41 +875,25 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
     
     
     
-    // Dispatch absence for the active droppable:
-    if (droppable?.isMountedRef.current) {
-        const activeDragAbsenceEvent   = createDragAbsenceEvent< Element>({
-            // Event metadata:
-            dragDropDeactivatedEvent,
-            
-            // Data:
-            dropMetadata: droppable.dropMetadata,
-            isTargeted: true, // This droppable is the current target.
-        });
-        droppable.handleDragAbsence(activeDragAbsenceEvent);
-    } // if
-    
-    // Dispatch absence broadcast for the rest droppables:
-    for (const restDroppable of droppableRegistry.values()) {
+    // Dispatch absence broadcast for all droppables:
+    for (const eachDroppable of droppableRegistry.values()) {
         // Skip unmounted droppables:
-        if (!restDroppable.isMountedRef.current) continue;
+        if (!eachDroppable.isMountedRef.current) continue;
         
         // Skip disabled droppables:
-        if (!restDroppable.dropEnabled) continue;
-        
-        // Skip the active droppable:
-        if (restDroppable === droppable) continue;
+        if (!eachDroppable.dropEnabled) continue;
         
         
         
-        const inactiveDragAbsenceEvent = createDragAbsenceEvent< Element>({
+        const eachDragAbsenceEvent = createDragAbsenceEvent<TElement>({
             // Event metadata:
             dragDropDeactivatedEvent,
             
-            // Data:
-            dropMetadata: restDroppable.dropMetadata,
-            isTargeted: false, // Not the current target (broadcast only).
+            // Contexts:
+            draggable,
+            droppable: eachDroppable,
         });
-        restDroppable.handleDragAbsence(inactiveDragAbsenceEvent);
+        eachDroppable.handleDragAbsence(eachDragAbsenceEvent);
     } // for
 };
 
