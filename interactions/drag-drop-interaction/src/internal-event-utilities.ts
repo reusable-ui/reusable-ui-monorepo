@@ -44,6 +44,7 @@ import {
 }                           from './internal-registry.js'
 import {
     // State checks:
+    isDragReady,
     isDropReady,
 }                           from './internal-state-utilities.js'
 
@@ -977,8 +978,8 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
         dropMetadata,
     });
     await Promise.all([
-        draggable.dragMountedRef.current && handleDragHandshake(dragHandshakeEvent),
-        candidateDroppable.dropMountedRef.current && handleDropHandshake(dropHandshakeEvent),
+        isDragReady(draggable)          && handleDragHandshake(dragHandshakeEvent),
+        isDropReady(candidateDroppable) && handleDropHandshake(dropHandshakeEvent),
     ]);
     
     
