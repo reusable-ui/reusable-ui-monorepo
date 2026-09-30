@@ -324,7 +324,7 @@ const createDragAbsenceEvent                = <TElement extends Element = HTMLEl
      */
     draggable                : DraggableContext<TElement>
     /**
-     * The droppable side associated with the drag absence event.
+     * Each droppable side associated with the drag absence broadcast event.
      */
     droppable                : DroppableContext< Element>
 }): DragAbsenceEvent< Element> => {
