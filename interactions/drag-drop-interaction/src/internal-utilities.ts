@@ -492,29 +492,29 @@ export const updateDroppableRegistry        = <TElement extends Element = HTMLEl
     dropElement,
     
     // Actual states:
-    droppableContext,
+    droppable,
 }: {
     // Lifecycle configs:
     /**
      * Specifies whether to set up (true) or clean up (false) the droppable lifecycle.
      */
-    isSetup                 : boolean
+    isSetup     : boolean
     
     // Data:
     /**
      * The reference to the DOM element that backing the droppable zone,
      * becomes the key of the droppable registry.
      */
-    dropElement             : Element
+    dropElement : Element
     
     // Actual states:
     /**
      * The droppable context to register or unregister.
      */
-    droppableContext        : DroppableContext<TElement>
+    droppable   : DroppableContext<TElement>
 }): void => {
     if (isSetup) {
-        droppableRegistry.set(dropElement, droppableContext as DroppableContext< Element>);
+        droppableRegistry.set(dropElement, droppable as DroppableContext< Element>);
     }
     else {
         droppableRegistry.delete(dropElement);
@@ -629,7 +629,7 @@ export const syncDroppableContext           = <TElement extends Element = HTMLEl
     dropEnabled,
     
     // Actual states:
-    droppableContext,
+    droppable,
 }: Pick<DroppableContext<TElement>,
     // Data:
     | 'dropMetadata'
@@ -641,10 +641,10 @@ export const syncDroppableContext           = <TElement extends Element = HTMLEl
     /**
      * The droppable context to update.
      */
-    droppableContext        : DroppableContext<TElement>
+    droppable   : DroppableContext<TElement>
 }): void => {
-    droppableContext.dropMetadata = dropMetadata;
-    droppableContext.dropEnabled  = dropEnabled;
+    droppable.dropMetadata = dropMetadata;
+    droppable.dropEnabled  = dropEnabled;
 };
 
 

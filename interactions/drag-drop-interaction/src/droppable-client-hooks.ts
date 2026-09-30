@@ -212,7 +212,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     
     // Droppable context reference:
     const droppableContextRef = useRef<DroppableContext<TElement>>(undefined);
-    const droppableContext    = lazyInitializeDroppableContext<TElement>({
+    const droppable           = lazyInitializeDroppableContext<TElement>({
         // Actual states:
         droppableContextRef,
         
@@ -249,7 +249,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
         dropEnabled,
         
         // Actual states:
-        droppableContext,
+        droppable,
     });
     
     
@@ -268,7 +268,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
             dropElement: registeredDropElement,
             
             // Actual states:
-            droppableContext,
+            droppable,
         });
     });
     useEffect(() => {
