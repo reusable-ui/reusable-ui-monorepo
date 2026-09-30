@@ -880,7 +880,6 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
             
             // Contexts:
             draggable,
-            droppable : null, // No droppable is in contact.
         });
         
         return;
@@ -930,7 +929,6 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
             
             // Contexts:
             draggable,
-            droppable : null, // No droppable is in contact.
         });
         
         return;
@@ -950,19 +948,6 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
     
     
     
-    // Dispatch evaluation events:
-    dispatchEvaluationEvents<TElement>({
-        // Event metadata:
-        dragHandshakeEvent,
-        dropHandshakeEvent,
-        
-        // Contexts:
-        draggable,
-        droppable,
-    });
-    
-    
-    
     // Update the active droppable side when the pointed target or acceptance changes:
     swapActiveDroppable<TElement>({
         // Events:
@@ -972,6 +957,16 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
         // Contexts:
         draggable,
         droppable,
+    });
+    
+    // Dispatch evaluation events:
+    dispatchEvaluationEvents<TElement>({
+        // Event metadata:
+        dragHandshakeEvent,
+        dropHandshakeEvent,
+        
+        // Contexts:
+        draggable,
     });
 };
 

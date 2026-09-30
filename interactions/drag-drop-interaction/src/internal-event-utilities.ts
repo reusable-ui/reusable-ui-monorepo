@@ -585,9 +585,11 @@ const createDropEvaluationEvent             = <TElement extends Element = HTMLEl
     dropHandshakeEvent,
     
     // Data:
-    dropMetadata,
     dragResponse,
-    isTargeted,
+    
+    // Contexts:
+    draggable,
+    droppable,
 }: {
     // Event metadata:
     /**
@@ -596,46 +598,47 @@ const createDropEvaluationEvent             = <TElement extends Element = HTMLEl
      * Pass `DragProbeEvent` if no handshake was performed,
      * e.g. when the draggable is not hovering over any droppable.
      */
-    dropHandshakeEvent       : DropHandshakeEvent<TElement> | DragProbeEvent<TElement>
+    dropHandshakeEvent       : DropHandshakeEvent< Element> | DragProbeEvent< Element>
     
     // Data:
-    /**
-     * The metadata exposed by the droppable side.
-     */
-    dropMetadata             : DropMetadata
     /**
      * The draggable's acceptance/rejection result.
      */
     dragResponse             : boolean | undefined
+    
+    // Contexts:
     /**
-     * Indicates whether the pointer is positioned over *this* droppable
-     * during the current pointer movement.
-     * 
-     * - `true` → This evaluation event corresponds to this droppable element,
-     *   meaning the draggable is actively being evaluated here,
-     *   with the handshake performed against this droppable.
-     * - `false` → The pointer is elsewhere, and this event is broadcast
-     *   for another droppable, so this droppable is not the subject
-     *   of the current evaluation.
-     * 
-     * Useful for distinguishing between global evaluation broadcasts
-     * (sent to all droppables for live feedback)
-     * and the droppable that is actually under the pointer at the moment.
+     * The draggable side associated with the drag gesture.
      */
-    isTargeted               : boolean
-}): DropEvaluationEvent<TElement> => ({
-    // Defaults for non-handshake events:
-    dropResponse     : undefined,
+    draggable                : DraggableContext<TElement>
+    /**
+     * Each droppable side associated with the drag evaluation broadcast event.
+     */
+    droppable                : DroppableContext< Element>
+}): DropEvaluationEvent< Element> => {
+    // Extract properties from the droppable context for convenience:
+    const {
+        // Data:
+        dropMetadata,
+    } = droppable;
+    const isTargeted = (droppable === draggable.dragSession?.droppable);
     
-    // Event metadata:
-    ...dropHandshakeEvent,
-    type             : 'dropevaluation',
     
-    // Data:
-    dropMetadata, // The metadata exposed by the droppable side.
-    dragResponse, // Draggable's acceptance/rejection result.
-    isTargeted,   // Whether the pointer is positioned over *this* droppable.
-});
+    
+    return {
+        // Defaults for non-handshake events:
+        dropResponse     : undefined,
+        
+        // Event metadata:
+        ...dropHandshakeEvent,
+        type             : 'dropevaluation',
+        
+        // Data:
+        dropMetadata, // The metadata exposed by the droppable side.
+        dragResponse, // Draggable's acceptance/rejection result.
+        isTargeted,   // Whether the pointer is positioned over *this* droppable.
+    };
+};
 
 
 
@@ -997,7 +1000,6 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
     
     // Contexts:
     draggable,
-    droppable,
 }: {
     // Event metadata:
     /**
@@ -1020,13 +1022,6 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
      * The draggable side associated with the drag gesture.
      */
     draggable                : DraggableContext<TElement>
-    /**
-     * The droppable side associated with the matched target.
-     * 
-     * Pass `null` if no handshake was performed (all droppables are inactive),
-     * e.g. when the draggable is not hovering over any droppable.
-     */
-    droppable                : DroppableContext< Element> | null
 }): void => {
     if (draggable.isMountedRef.current) {
         const dragEvaluationEvent = createDragEvaluationEvent<TElement>({
@@ -1041,43 +1036,28 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
     
     
     
-    // Dispatch evaluation for the active droppable:
-    if (droppable?.isMountedRef.current) {
-        const activeDropEvaluationEvent   = createDropEvaluationEvent< Element>({
-            // Event metadata:
-            dropHandshakeEvent,
-            
-            // Data:
-            dropMetadata: droppable.dropMetadata,
-            dragResponse: ('dragResponse' in dragHandshakeEvent) ? dragHandshakeEvent.dragResponse : undefined, // No dragResponse for non-handshake events.
-            isTargeted: true, // This droppable is the current target.
-        });
-        droppable.handleDropEvaluation(activeDropEvaluationEvent);
-    } // if
-    
-    // Dispatch evaluation broadcast for the rest droppables:
-    for (const restDroppable of droppableRegistry.values()) {
+    // Dispatch evaluation broadcast for all droppables:
+    for (const eachDroppable of droppableRegistry.values()) {
         // Skip unmounted droppables:
-        if (!restDroppable.isMountedRef.current) continue;
+        if (!eachDroppable.isMountedRef.current) continue;
         
         // Skip disabled droppables:
-        if (!restDroppable.dropEnabled) continue;
-        
-        // Skip the active droppable:
-        if (restDroppable === droppable) continue;
+        if (!eachDroppable.dropEnabled) continue;
         
         
         
-        const inactiveDropEvaluationEvent = createDropEvaluationEvent< Element>({
+        const eachDropEvaluationEvent = createDropEvaluationEvent<TElement>({
             // Event metadata:
             dropHandshakeEvent,
             
             // Data:
-            dropMetadata: restDroppable.dropMetadata,
             dragResponse: ('dragResponse' in dragHandshakeEvent) ? dragHandshakeEvent.dragResponse : undefined, // No dragResponse for non-handshake events.
-            isTargeted: false, // Not the current target (broadcast only).
+            
+            // Contexts:
+            draggable,
+            droppable: eachDroppable,
         });
-        restDroppable.handleDropEvaluation(inactiveDropEvaluationEvent);
+        eachDroppable.handleDropEvaluation(eachDropEvaluationEvent);
     } // for
 };
 
