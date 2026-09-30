@@ -821,14 +821,14 @@ export const dispatchActivatedEvents        = <TElement extends Element = HTMLEl
         
         
         
-        const dragPresenceEvent = createDragPresenceEvent< Element>({
+        const eachDragPresenceEvent = createDragPresenceEvent< Element>({
             // Event metadata:
             dragDropActivatedEvent,
             
             // Data:
             dropMetadata: eachDroppable.dropMetadata,
         });
-        eachDroppable.handleDragPresence(dragPresenceEvent);
+        eachDroppable.handleDragPresence(eachDragPresenceEvent);
     } // for
 };
 
