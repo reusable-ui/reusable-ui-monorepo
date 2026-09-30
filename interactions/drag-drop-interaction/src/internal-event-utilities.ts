@@ -820,10 +820,8 @@ export const dispatchActivatedEvents        = <TElement extends Element = HTMLEl
     
     // Dispatch presence broadcast for all droppables:
     for (const eachDroppable of droppableRegistry.values()) {
-        // Skip unmounted droppables:
-        if (!eachDroppable.dropMountedRef.current) continue;
-        
         // Skip disabled droppables:
+        // - Also skip unmounted ones.
         if (!isDropReady(eachDroppable)) continue;
         
         
@@ -882,10 +880,8 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
     
     // Dispatch absence broadcast for all droppables:
     for (const eachDroppable of droppableRegistry.values()) {
-        // Skip unmounted droppables:
-        if (!eachDroppable.dropMountedRef.current) continue;
-        
         // Skip disabled droppables:
+        // - Also skip unmounted ones.
         if (!isDropReady(eachDroppable)) continue;
         
         
@@ -1047,10 +1043,8 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
     
     // Dispatch evaluation broadcast for all droppables:
     for (const eachDroppable of droppableRegistry.values()) {
-        // Skip unmounted droppables:
-        if (!eachDroppable.dropMountedRef.current) continue;
-        
         // Skip disabled droppables:
+        // - Also skip unmounted ones.
         if (!isDropReady(eachDroppable)) continue;
         
         
