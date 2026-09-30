@@ -944,6 +944,7 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
      */
     dropHandshakeEvent       : DropHandshakeEvent< Element>
 }> => {
+    // Extract properties from the draggable and droppable context for convenience:
     const {
         // Stable event handlers:
         handleDragHandshake,
@@ -955,6 +956,10 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
         // Stable event handlers:
         handleDropHandshake,
     } = droppable;
+    
+    
+    
+    // Dispatch handshake for both sides:
     const dragHandshakeEvent   = createDragHandshakeEvent<TElement>({
         // Event metadata:
         dragProbeEvent,
