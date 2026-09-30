@@ -246,6 +246,7 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
  * - Clears the droppable's payload.
  * - Clears the draggable's status to `null` (drag gesture active but outside any droppable zone).
  * - Clears the draggable's metadata.
+ * - Clears the active droppable reference and its interaction states.
  */
 const clearActiveDroppable                  = <TElement extends Element = HTMLElement>({
     // Contexts:
@@ -257,30 +258,36 @@ const clearActiveDroppable                  = <TElement extends Element = HTMLEl
      */
     draggable               : DraggableContext<TElement>
 }): void => {
-    // Get the currently active droppable to deactivate, if any:
-    const droppable = draggable.dragSession?.droppable ?? null;
-    
-    
-    
-    // Deactivate the previously active droppable side:
-    deactivateDroppable({
-        // Data:
-        inactiveDropStatus: null, // `null` → drag gesture active but outside this droppable zone.
+    try {
+        // Get the currently active droppable to deactivate, if any:
+        const droppable = draggable.dragSession?.droppable ?? null;
         
-        // Contexts:
-        droppable,
-    });
-    
-    
-    
-    // Deactivate the draggable side:
-    deactivateDraggable<TElement>({
-        // Data:
-        inactiveDragStatus: null, // `null` → drag gesture active but outside all droppable zones.
         
-        // Contexts:
-        draggable,
-    });
+        
+        // Deactivate the previously active droppable side:
+        deactivateDroppable({
+            // Data:
+            inactiveDropStatus: null, // `null` → drag gesture active but outside this droppable zone.
+            
+            // Contexts:
+            droppable,
+        });
+        
+        
+        
+        // Deactivate the draggable side:
+        deactivateDraggable<TElement>({
+            // Data:
+            inactiveDragStatus: null, // `null` → drag gesture active but outside all droppable zones.
+            
+            // Contexts:
+            draggable,
+        });
+    }
+    finally {
+        // Reset the drag session:
+        draggable.dragSession = null;
+    } // try
 };
 
 /**
