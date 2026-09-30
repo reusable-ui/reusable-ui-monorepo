@@ -185,8 +185,8 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
     for (const candidateDropElement of iterateElementAndAncestors(pointedElement)) {
         // Find the corresponding droppable side by its element:
         // - Skip the disabled ones.
-        const droppable = droppableRegistry.get(candidateDropElement);
-        if (!droppable?.dropEnabled) continue;
+        const candidateDroppable = droppableRegistry.get(candidateDropElement);
+        if (!candidateDroppable?.dropEnabled) continue;
         
         
         
@@ -201,7 +201,7 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
             
             // Contexts:
             draggable,
-            droppable,
+            candidateDroppable,
         });
         
         
@@ -213,7 +213,7 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
             dropHandshakeEvent,
             
             // Contexts:
-            droppable,
+            droppable: candidateDroppable,
         };
         
         // If both sides responded → negotiation complete:

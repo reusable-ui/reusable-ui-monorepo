@@ -912,7 +912,7 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
     
     // Contexts:
     draggable,
-    droppable,
+    candidateDroppable,
 }: {
     // Event metadata:
     /**
@@ -932,7 +932,7 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
     /**
      * The droppable side currently under negotiation.
      */
-    droppable                : DroppableContext< Element>
+    candidateDroppable       : DroppableContext< Element>
 }): Promise<{
     // Events:
     /**
@@ -944,7 +944,7 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
      */
     dropHandshakeEvent       : DropHandshakeEvent< Element>
 }> => {
-    // Extract properties from the draggable and droppable context for convenience:
+    // Extract properties from the draggable and candidateDroppable context for convenience:
     const {
         // Stable event handlers:
         handleDragHandshake,
@@ -955,7 +955,7 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
         
         // Stable event handlers:
         handleDropHandshake,
-    } = droppable;
+    } = candidateDroppable;
     
     
     
@@ -978,7 +978,7 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
     });
     await Promise.all([
         draggable.isMountedRef.current && handleDragHandshake(dragHandshakeEvent),
-        droppable.isMountedRef.current && handleDropHandshake(dropHandshakeEvent),
+        candidateDroppable.isMountedRef.current && handleDropHandshake(dropHandshakeEvent),
     ]);
     
     
