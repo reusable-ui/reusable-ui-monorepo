@@ -119,6 +119,8 @@ export const deactivateDraggable      = <TElement extends Element = HTMLElement>
 
 /**
  * Deactivates the currently active droppable side.
+ * 
+ * Do nothing if no corresponding droppable in the specified draggable.
  */
 export const deactivateDroppable      = <TElement extends Element = HTMLElement>({
     // Data:
