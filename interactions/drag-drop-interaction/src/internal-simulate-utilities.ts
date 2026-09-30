@@ -178,7 +178,7 @@ const dragElementRef : RefObject<Element | null>      = { current: null };
 // Tests whether the component is still mounted (integrated):
 // - Prevents accidental state updates after unmounted (disintegrated).
 //   E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
-const isMountedRef   : RefObject<boolean | undefined> = { current: false };
+const dragMountedRef : RefObject<boolean | undefined> = { current: false };
 
 
 
@@ -203,7 +203,7 @@ export const draggable    = lazyInitializeDraggableContext<Element>({
     handleDragged,
     
     // Actual states:
-    isMountedRef,
+    dragMountedRef,
     dragElementRef,
     
     // Reactive states:

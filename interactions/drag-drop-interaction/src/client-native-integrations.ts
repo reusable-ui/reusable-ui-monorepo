@@ -198,7 +198,7 @@ const handleGlobalDrop      = (event: DragEvent): void => {
  */
 const setupGlobalIntegration = (): void => {
     // Setups:
-    draggable.isMountedRef.current = true;
+    draggable.dragMountedRef.current = true;
     globalAbortController = new AbortController();
     const options : AddEventListenerOptions = { signal: globalAbortController.signal };
     document.addEventListener('dragstart', handleGlobalDragStart, options);
@@ -223,7 +223,7 @@ const setupGlobalIntegration = (): void => {
  */
 const cleanupGlobalIntegration = (): void => {
     // Cleanups:
-    draggable.isMountedRef.current = false;
+    draggable.dragMountedRef.current = false;
     globalAbortController?.abort();
     globalAbortController = null;
     

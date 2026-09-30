@@ -206,7 +206,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     // Tests whether the component is still mounted:
     // - Prevents accidental state updates after unmounted.
     //   E.g., deactivating the previously active droppable side (but now unmounted) when switching to another droppable.
-    const isMountedRef        = useMountedFlag();
+    const dropMountedRef      = useMountedFlag();
     
     
     
@@ -230,7 +230,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
         handleDropped,
         
         // Actual states:
-        isMountedRef,
+        dropMountedRef,
         
         // Reactive states:
         setDropStatus,

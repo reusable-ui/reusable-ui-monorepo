@@ -39,7 +39,7 @@ export const activateDraggable        = <TElement extends Element = HTMLElement>
     
     
     // Ignore unmounted draggable:
-    if (!draggable.isMountedRef.current) return;
+    if (!draggable.dragMountedRef.current) return;
     
     
     
@@ -75,7 +75,7 @@ export const activateDroppable        = <TElement extends Element = HTMLElement>
     
     
     // Ignore unmounted droppable:
-    if (!droppable.isMountedRef.current) return;
+    if (!droppable.dropMountedRef.current) return;
     
     
     
@@ -109,7 +109,7 @@ export const deactivateDraggable      = <TElement extends Element = HTMLElement>
     draggable               : DraggableContext<TElement>
 }): void => {
     // Ignore unmounted draggable:
-    if (!draggable.isMountedRef.current) return;
+    if (!draggable.dragMountedRef.current) return;
     
     
     
@@ -149,7 +149,7 @@ export const deactivateDroppable      = <TElement extends Element = HTMLElement>
     
     
     // Ignore unmounted droppable:
-    if (!droppable?.isMountedRef.current) return;
+    if (!droppable?.dropMountedRef.current) return;
     
     
     
@@ -190,7 +190,7 @@ export const deactivateRestDroppables = <TElement extends Element = HTMLElement>
     
     for (const restDroppable of droppableRegistry.values()) {
         // Skip unmounted droppables:
-        if (!restDroppable.isMountedRef.current) continue;
+        if (!restDroppable.dropMountedRef.current) continue;
         
         // Skip the previously active droppable:
         if (restDroppable === droppable) continue;

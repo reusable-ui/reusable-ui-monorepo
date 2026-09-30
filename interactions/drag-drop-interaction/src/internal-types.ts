@@ -187,7 +187,7 @@ export interface DraggableContext<TElement extends Element = HTMLElement> {
      * Prevents accidental state updates after unmounted.
      * E.g., deactivating the currently active draggable side (but now unmounted) when leaving a draggable.
      */
-    isMountedRef          : RefObject<boolean | undefined>
+    dragMountedRef        : RefObject<boolean | undefined>
     
     /**
      * The reference to the DOM element that serves as the draggable source.
@@ -318,7 +318,7 @@ export interface DroppableContext<TElement extends Element = HTMLElement> {
      * Prevents accidental state updates after unmounted.
      * E.g., deactivating the previously active droppable side (but now unmounted) when switching to another droppable.
      */
-    isMountedRef         : RefObject<boolean | undefined>
+    dropMountedRef       : RefObject<boolean | undefined>
     
     
     

@@ -803,7 +803,7 @@ export const dispatchActivatedEvents        = <TElement extends Element = HTMLEl
      */
     draggable                : DraggableContext<TElement>
 }): void => {
-    if (draggable.isMountedRef.current) {
+    if (draggable.dragMountedRef.current) {
         // Dispatch activation for the draggable:
         const dragActivatedEvent    = createDragActivatedEvent<TElement>({
             // Event metadata:
@@ -817,7 +817,7 @@ export const dispatchActivatedEvents        = <TElement extends Element = HTMLEl
     // Dispatch presence broadcast for all droppables:
     for (const eachDroppable of droppableRegistry.values()) {
         // Skip unmounted droppables:
-        if (!eachDroppable.isMountedRef.current) continue;
+        if (!eachDroppable.dropMountedRef.current) continue;
         
         // Skip disabled droppables:
         if (!eachDroppable.dropEnabled) continue;
@@ -862,7 +862,7 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
      */
     draggable                : DraggableContext<TElement>
 }): void => {
-    if (draggable.isMountedRef.current) {
+    if (draggable.dragMountedRef.current) {
         // Dispatch deactivation for the draggable:
         const dragDeactivatedEvent = createDragDeactivatedEvent<TElement>({
             // Event metadata:
@@ -879,7 +879,7 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
     // Dispatch absence broadcast for all droppables:
     for (const eachDroppable of droppableRegistry.values()) {
         // Skip unmounted droppables:
-        if (!eachDroppable.isMountedRef.current) continue;
+        if (!eachDroppable.dropMountedRef.current) continue;
         
         // Skip disabled droppables:
         if (!eachDroppable.dropEnabled) continue;
@@ -977,8 +977,8 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
         dropMetadata,
     });
     await Promise.all([
-        draggable.isMountedRef.current && handleDragHandshake(dragHandshakeEvent),
-        candidateDroppable.isMountedRef.current && handleDropHandshake(dropHandshakeEvent),
+        draggable.dragMountedRef.current && handleDragHandshake(dragHandshakeEvent),
+        candidateDroppable.dropMountedRef.current && handleDropHandshake(dropHandshakeEvent),
     ]);
     
     
@@ -1028,7 +1028,7 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
      */
     draggable                : DraggableContext<TElement>
 }): void => {
-    if (draggable.isMountedRef.current) {
+    if (draggable.dragMountedRef.current) {
         const dragEvaluationEvent = createDragEvaluationEvent<TElement>({
             // Event metadata:
             dragHandshakeEvent,
@@ -1044,7 +1044,7 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
     // Dispatch evaluation broadcast for all droppables:
     for (const eachDroppable of droppableRegistry.values()) {
         // Skip unmounted droppables:
-        if (!eachDroppable.isMountedRef.current) continue;
+        if (!eachDroppable.dropMountedRef.current) continue;
         
         // Skip disabled droppables:
         if (!eachDroppable.dropEnabled) continue;
@@ -1102,7 +1102,7 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
     
     
     
-    if (draggable.isMountedRef.current) {
+    if (draggable.dragMountedRef.current) {
         const draggedEvent = createDraggedEvent<TElement>({
             // Event metadata:
             dragDropCommittedEvent,
@@ -1113,7 +1113,7 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
     
     
     // Get the currently active droppable to deactivate, if any:
-    if (droppable?.isMountedRef.current) {
+    if (droppable?.dropMountedRef.current) {
         const droppedEvent = createDroppedEvent< Element>({
             // Event metadata:
             dragDropCommittedEvent,
