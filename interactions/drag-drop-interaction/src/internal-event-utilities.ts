@@ -808,7 +808,7 @@ export const dispatchActivatedEvents        = <TElement extends Element = HTMLEl
      */
     draggable                : DraggableContext<TElement>
 }): void => {
-    if (draggable.dragMountedRef.current) {
+    if (isDragReady(draggable)) {
         // Dispatch activation for the draggable:
         const dragActivatedEvent    = createDragActivatedEvent<TElement>({
             // Event metadata:
@@ -865,7 +865,7 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
      */
     draggable                : DraggableContext<TElement>
 }): void => {
-    if (draggable.dragMountedRef.current) {
+    if (isDragReady(draggable)) {
         // Dispatch deactivation for the draggable:
         const dragDeactivatedEvent = createDragDeactivatedEvent<TElement>({
             // Event metadata:
@@ -1029,7 +1029,7 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
      */
     draggable                : DraggableContext<TElement>
 }): void => {
-    if (draggable.dragMountedRef.current) {
+    if (isDragReady(draggable)) {
         const dragEvaluationEvent = createDragEvaluationEvent<TElement>({
             // Event metadata:
             dragHandshakeEvent,
