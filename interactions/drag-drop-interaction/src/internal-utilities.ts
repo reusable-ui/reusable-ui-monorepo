@@ -200,15 +200,15 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
         const {
             dragHandshakeEvent,
             dropHandshakeEvent,
-        } = await dispatchHandshakeEvents<TElement>({
-            // Event metadata:
-            dragProbeEvent,
-            candidateDropElement,
-            
+        } = await dispatchHandshakeEvents(
             // Contexts:
             draggable,
             candidateDroppable,
-        });
+            
+            // Event metadata:
+            dragProbeEvent,
+            candidateDropElement,
+        );
         
         
         
@@ -658,13 +658,7 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
         // Contexts:
         draggable,
     });
-    dispatchActivatedEvents<TElement>({
-        // Event metadata:
-        dragDropActivatedEvent,
-        
-        // Contexts:
-        draggable,
-    });
+    dispatchActivatedEvents(draggable, dragDropActivatedEvent);
 };
 
 /**
@@ -713,13 +707,7 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
             // Contexts:
             draggable,
         });
-        dispatchDeactivatedEvents<TElement>({
-            // Event metadata:
-            dragDropDeactivatedEvent,
-            
-            // Contexts:
-            draggable,
-        });
+        dispatchDeactivatedEvents(draggable, dragDropDeactivatedEvent);
     }
     finally {
         // Reset the drag session:
@@ -801,14 +789,7 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
         });
         
         // Dispatch "no contact" evaluation events:
-        dispatchEvaluationEvents<TElement>({
-            // Event metadata:
-            dragHandshakeEvent   : dragProbeEvent, // No handshake was performed (no contact) → fallback to probe event.
-            dropHandshakeEvent   : dragProbeEvent, // No handshake was performed (no contact) → fallback to probe event.
-            
-            // Contexts:
-            draggable,
-        });
+        dispatchEvaluationEvents(draggable, dragProbeEvent, dragProbeEvent); // No handshake was performed (no contact) → fallback to probe events.
         
         return;
     } // if
@@ -850,14 +831,7 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
         });
         
         // Dispatch "no contact" evaluation events:
-        dispatchEvaluationEvents<TElement>({
-            // Event metadata:
-            dragHandshakeEvent   : dragProbeEvent, // No handshake was performed (no contact) → fallback to probe event.
-            dropHandshakeEvent   : dragProbeEvent, // No handshake was performed (no contact) → fallback to probe event.
-            
-            // Contexts:
-            draggable,
-        });
+        dispatchEvaluationEvents(draggable, dragProbeEvent, dragProbeEvent); // No handshake was performed (no contact) → fallback to probe events.
         
         return;
     } // if
@@ -888,14 +862,7 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
     });
     
     // Dispatch evaluation events:
-    dispatchEvaluationEvents<TElement>({
-        // Event metadata:
-        dragHandshakeEvent,
-        dropHandshakeEvent,
-        
-        // Contexts:
-        draggable,
-    });
+    dispatchEvaluationEvents(draggable, dragHandshakeEvent, dropHandshakeEvent);
 };
 
 /**
@@ -942,11 +909,5 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
         // Contexts:
         draggable,
     });
-    dispatchCommittedEvents<TElement>({
-        // Event metadata:
-        dragDropCommittedEvent,
-        
-        // Contexts:
-        draggable,
-    });
+    dispatchCommittedEvents(draggable, dragDropCommittedEvent);
 };

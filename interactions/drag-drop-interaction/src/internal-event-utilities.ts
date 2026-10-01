@@ -788,26 +788,14 @@ const createDroppedEvent                    = <TElement extends Element = HTMLEl
  * - Creates and invokes the draggable activation event.
  * - Creates and broadcasts droppable presence events to all registered droppables.
  * - Does not return events, since the handshake phase is based on `dragProbeEvent`.
+ * 
+ * @param draggable The draggable side associated with the drag gesture.
+ * @param dragDropActivatedEvent The synthetic activation event created earlier.
  */
-export const dispatchActivatedEvents        = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    dragDropActivatedEvent,
-    
-    // Contexts:
-    draggable,
-}: {
-    // Event metadata:
-    /**
-     * The synthetic activation event created earlier.
-     */
-    dragDropActivatedEvent   : DragDropActivatedEvent<TElement>
-    
-    // Contexts:
-    /**
-     * The draggable side associated with the drag gesture.
-     */
-    draggable                : DraggableContext<TElement>
-}): void => {
+export const dispatchActivatedEvents        = <TElement extends Element = HTMLElement>(
+    draggable                : DraggableContext<TElement>,
+    dragDropActivatedEvent   : DragDropActivatedEvent<TElement>,
+): void => {
     if (isDragReady(draggable)) {
         // Dispatch activation for the draggable:
         const dragActivatedEvent    = createDragActivatedEvent<TElement>({
@@ -845,26 +833,14 @@ export const dispatchActivatedEvents        = <TElement extends Element = HTMLEl
  * - Creates and invokes the droppable absence event for the active droppable (if any).
  * - Creates and broadcasts droppable absence events to all other registered droppables.
  * - Does not return events, since no more further phase.
+ * 
+ * @param draggable The draggable side associated with the drag gesture.
+ * @param dragDropDeactivatedEvent The synthetic deactivation event created earlier.
  */
-export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    dragDropDeactivatedEvent,
-    
-    // Contexts:
-    draggable,
-}: {
-    // Event metadata:
-    /**
-     * The synthetic deactivation event created earlier.
-     */
-    dragDropDeactivatedEvent : DragDropDeactivatedEvent<TElement>
-    
-    // Contexts:
-    /**
-     * The draggable side associated with the drag gesture.
-     */
-    draggable                : DraggableContext<TElement>
-}): void => {
+export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLElement>(
+    draggable                : DraggableContext<TElement>,
+    dragDropDeactivatedEvent : DragDropDeactivatedEvent<TElement>,
+): void => {
     if (isDragReady(draggable)) {
         // Dispatch deactivation for the draggable:
         const dragDeactivatedEvent = createDragDeactivatedEvent<TElement>({
@@ -905,36 +881,18 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
  * - Creates handshake events from the probe stage.
  * - Invokes both draggable and droppable handshake handlers in parallel.
  * - Returns both events for use in the evaluation phase.
+ * 
+ * @param draggable The draggable side associated with the drag gesture.
+ * @param candidateDroppable The droppable side currently under negotiation.
+ * @param dragProbeEvent The synthetic probe event created earlier.
+ * @param candidateDropElement The candidate droppable element, set as `relatedTarget`.
  */
-export const dispatchHandshakeEvents        = async <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    dragProbeEvent,
-    candidateDropElement,
-    
-    // Contexts:
-    draggable,
-    candidateDroppable,
-}: {
-    // Event metadata:
-    /**
-     * The synthetic probe event created earlier.
-     */
-    dragProbeEvent           : DragProbeEvent<TElement>
-    /**
-     * The candidate droppable element, set as `relatedTarget`.
-     */
-    candidateDropElement     : Element
-    
-    // Contexts:
-    /**
-     * The draggable side associated with the drag gesture.
-     */
-    draggable                : DraggableContext<TElement>
-    /**
-     * The droppable side currently under negotiation.
-     */
-    candidateDroppable       : DroppableContext< Element>
-}): Promise<{
+export const dispatchHandshakeEvents        = async <TElement extends Element = HTMLElement>(
+    draggable                : DraggableContext<TElement>,
+    candidateDroppable       : DroppableContext< Element>,
+    dragProbeEvent           : DragProbeEvent<TElement>,
+    candidateDropElement     : Element,
+): Promise<{
     // Events:
     /**
      * The synthetic handshake event from the draggable side.
@@ -998,37 +956,21 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
  * - Creates and invokes the droppable evaluation event for the active droppable (if any).
  * - Creates and broadcasts the droppable evaluation events to all other registered droppables.
  * - Does not return events, since commit and deactivation phases are based on `lastPointerUpEvent`.
+ * 
+ * @param draggable The draggable side associated with the drag gesture.
+ * @param dragHandshakeEvent The synthetic handshake event from the draggable side.
+ * Pass `DragProbeEvent` if no handshake was performed,
+ * e.g. when the draggable is not hovering over any droppable.
+ * 
+ * @param dropHandshakeEvent The synthetic handshake event from the droppable side.
+ * Pass `DragProbeEvent` if no handshake was performed,
+ * e.g. when the draggable is not hovering over any droppable.
  */
-export const dispatchEvaluationEvents       = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    dragHandshakeEvent,
-    dropHandshakeEvent,
-    
-    // Contexts:
-    draggable,
-}: {
-    // Event metadata:
-    /**
-     * The synthetic handshake event from the draggable side.
-     * 
-     * Pass `DragProbeEvent` if no handshake was performed,
-     * e.g. when the draggable is not hovering over any droppable.
-     */
-    dragHandshakeEvent       : DragHandshakeEvent<TElement> | DragProbeEvent<TElement>
-    /**
-     * The synthetic handshake event from the droppable side.
-     * 
-     * Pass `DragProbeEvent` if no handshake was performed,
-     * e.g. when the draggable is not hovering over any droppable.
-     */
-    dropHandshakeEvent       : DropHandshakeEvent< Element> | DragProbeEvent< Element>
-    
-    // Contexts:
-    /**
-     * The draggable side associated with the drag gesture.
-     */
-    draggable                : DraggableContext<TElement>
-}): void => {
+export const dispatchEvaluationEvents       = <TElement extends Element = HTMLElement>(
+    draggable                : DraggableContext<TElement>,
+    dragHandshakeEvent       : DragHandshakeEvent<TElement> | DragProbeEvent<TElement>,
+    dropHandshakeEvent       : DropHandshakeEvent< Element> | DragProbeEvent< Element>,
+): void => {
     if (isDragReady(draggable)) {
         const dragEvaluationEvent = createDragEvaluationEvent<TElement>({
             // Event metadata:
@@ -1071,26 +1013,14 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
  * - Creates the dragged and dropped commit events from the committed stage.
  * - Invokes both draggable and droppable commit handlers.
  * - Does not return events, since commit and deactivation phases are based on `lastPointerUpEvent`.
+ * 
+ * @param draggable The draggable side associated with the drag gesture.
+ * @param dragDropCommittedEvent The synthetic committed event created earlier.
  */
-export const dispatchCommittedEvents        = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    dragDropCommittedEvent,
-    
-    // Contexts:
-    draggable,
-}: {
-    // Event metadata:
-    /**
-     * The synthetic committed event created earlier.
-     */
-    dragDropCommittedEvent   : DragDropCommittedEvent<TElement>
-    
-    // Contexts:
-    /**
-     * The draggable side associated with the drag gesture.
-     */
-    draggable                : DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> }
-}): void => {
+export const dispatchCommittedEvents        = <TElement extends Element = HTMLElement>(
+    draggable                : DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> },
+    dragDropCommittedEvent   : DragDropCommittedEvent<TElement>,
+): void => {
     // Extract properties from the draggable context for convenience:
     const {
         // Actual states:
