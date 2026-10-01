@@ -405,7 +405,7 @@ export const updateDroppableRegistry        = <TElement extends Element = HTMLEl
  * @returns The current draggable context (newly created or reused).
  */
 export const lazyInitializeDraggableContext = <TElement extends Element = HTMLElement>({
-    // Actual states:
+    // Contexts:
     draggableContextRef,
     
     // Rest:
@@ -414,7 +414,7 @@ export const lazyInitializeDraggableContext = <TElement extends Element = HTMLEl
     // Interaction states:
     | 'dragSession'
 > & {
-    // Actual states:
+    // Contexts:
     /**
      * The draggable's ref holding the current draggable context.
      */
@@ -444,13 +444,13 @@ export const lazyInitializeDraggableContext = <TElement extends Element = HTMLEl
  * @returns The current droppable context (newly created or reused).
  */
 export const lazyInitializeDroppableContext = <TElement extends Element = HTMLElement>({
-    // Actual states:
+    // Contexts:
     droppableContextRef,
     
     // Rest:
     ...initialDroppableContext
 }: DroppableContext<TElement> & {
-    // Actual states:
+    // Contexts:
     /**
      * The droppable's ref holding the current droppable context.
      */
@@ -468,14 +468,14 @@ export const lazyInitializeDroppableContext = <TElement extends Element = HTMLEl
  * Synchronizes draggable context flags with the latest props.
  */
 export const syncDraggableContext           = <TElement extends Element = HTMLElement>({
+    // Contexts:
+    draggable,
+    
     // Data:
     dragPayload,
     
     // Behaviors:
     dragEnabled,
-    
-    // Actual states:
-    draggable,
 }: Pick<DraggableContext<TElement>,
     // Data:
     | 'dragPayload'
@@ -483,7 +483,7 @@ export const syncDraggableContext           = <TElement extends Element = HTMLEl
     // Behaviors:
     | 'dragEnabled'
 > & {
-    // Actual states:
+    // Contexts:
     /**
      * The draggable context to update.
      */
@@ -497,14 +497,14 @@ export const syncDraggableContext           = <TElement extends Element = HTMLEl
  * Synchronizes droppable context flags with the latest props.
  */
 export const syncDroppableContext           = <TElement extends Element = HTMLElement>({
+    // Contexts:
+    droppable,
+    
     // Data:
     dropMetadata,
     
     // Behaviors:
     dropEnabled,
-    
-    // Actual states:
-    droppable,
 }: Pick<DroppableContext<TElement>,
     // Data:
     | 'dropMetadata'
@@ -512,7 +512,7 @@ export const syncDroppableContext           = <TElement extends Element = HTMLEl
     // Behaviors:
     | 'dropEnabled'
 > & {
-    // Actual states:
+    // Contexts:
     /**
      * The droppable context to update.
      */

@@ -176,7 +176,7 @@ const dragMountedRef : RefObject<boolean | undefined> = { current: false };
 // Draggable context reference:
 const draggableContextRef : RefObject<DraggableContext<Element> | undefined> = { current: undefined };
 export const draggable    = lazyInitializeDraggableContext<Element>({
-    // Actual states:
+    // Contexts:
     draggableContextRef,
     
     // Data:

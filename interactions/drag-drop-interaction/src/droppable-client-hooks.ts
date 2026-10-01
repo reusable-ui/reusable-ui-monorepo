@@ -213,7 +213,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     // Droppable context reference:
     const droppableContextRef = useRef<DroppableContext<TElement>>(undefined);
     const droppable           = lazyInitializeDroppableContext<TElement>({
-        // Actual states:
+        // Contexts:
         droppableContextRef,
         
         // Data:
@@ -242,14 +242,14 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     // Keep droppable context in sync with prop changes:
     // - No `useEffect()` needed — these are plain object flags.
     syncDroppableContext({
+        // Contexts:
+        droppable,
+        
         // Data:
         dropMetadata,
         
         // Behaviors:
         dropEnabled,
-        
-        // Actual states:
-        droppable,
     });
     
     

@@ -272,7 +272,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     // Draggable context reference:
     const draggableContextRef = useRef<DraggableContext<TElement>>(undefined);
     const draggable           = lazyInitializeDraggableContext<TElement>({
-        // Actual states:
+        // Contexts:
         draggableContextRef,
         
         // Data:
@@ -303,14 +303,14 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     // Keep draggable context in sync with prop changes:
     // - No `useEffect()` needed — these are plain object flags.
     syncDraggableContext({
+        // Contexts:
+        draggable,
+        
         // Data:
         dragPayload,
         
         // Behaviors:
         dragEnabled,
-        
-        // Actual states:
-        draggable,
     });
     
     
