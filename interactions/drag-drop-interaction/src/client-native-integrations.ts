@@ -101,13 +101,7 @@ const handleGlobalDragStart = (event: DragEvent): void => {
     // Wait until the state is settled:
     .then(() => {
         // Dispatch activation events after state is settled:
-        processDragDropActivate<Element>({
-            // Refs:
-            lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
-            
-            // Contexts:
-            draggable,
-        });
+        processDragDropActivate(draggable, globalPointerIntegrationRef.current?.lastPointerDownEventRef);
         
         
         
@@ -126,13 +120,7 @@ const handleGlobalDragEnd   = (event: DragEvent): void => {
     // Wait until the state is settled:
     .then(() => {
         // Dispatch deactivation events after state is settled:
-        processDragDropDeactivate<Element>({
-            // Refs:
-            lastPointerUpEventRef: globalPointerIntegrationRef.current?.lastPointerUpEventRef,
-            
-            // Contexts:
-            draggable,
-        });
+        processDragDropDeactivate(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef);
         
         
         
@@ -148,13 +136,7 @@ const handleGlobalDragEnd   = (event: DragEvent): void => {
 const handleGlobalDragOver  = (event: DragEvent): void => {
     draggable.dragElementRef.current = event.target as Element | null;
     const pointerMoveEvent = createPointerEventFromDragEvent(event, 'pointermove');
-    processDragProbe<Element>({
-        // Events:
-        pointerMoveEvent,
-        
-        // Contexts:
-        draggable,
-    });
+    processDragProbe(draggable, pointerMoveEvent);
 };
 
 
@@ -164,13 +146,7 @@ const handleGlobalDragOver  = (event: DragEvent): void => {
 const handleGlobalDrop      = (event: DragEvent): void => {
     draggable.dragElementRef.current = event.target as Element | null;
     // Immediately commits after the capture:
-    processDragDropCommit<Element>({
-        // Refs:
-        lastPointerUpEventRef: globalPointerIntegrationRef.current?.lastPointerUpEventRef,
-        
-        // Contexts:
-        draggable,
-    });
+    processDragDropCommit(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef);
 };
 
 

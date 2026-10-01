@@ -613,26 +613,14 @@ export const syncDroppableContext           = <TElement extends Element = HTMLEl
  * - Validates drag context.
  * - Dispatches initial `DragActivatedEvent` for the draggable side.
  * - Dispatches `DragPresenceEvent` for the droppable side (broadcast).
+ * 
+ * @param draggable The draggable side to activate.
+ * @param lastPointerDownEventRef A shared reference to the most recent native `pointerdown` event.
  */
-export const processDragDropActivate   = <TElement extends Element = HTMLElement>({
-    // Refs:
-    lastPointerDownEventRef,
-    
-    // Contexts:
-    draggable,
-}: {
-    // Refs:
-    /**
-     * A shared reference to the most recent native `pointerdown` event.
-     */
+export const processDragDropActivate   = <TElement extends Element = HTMLElement>(
+    draggable               : DraggableContext<TElement>,
     lastPointerDownEventRef : RefObject<PointerEvent | undefined> | undefined,
-    
-    // Contexts:
-    /**
-     * The draggable side to activate.
-     */
-    draggable               : DraggableContext<TElement>
-}): void => {
+): void => {
     // Abort activate if:
     // - Draggable element is missing.
     // - Draggable is unmounted.
@@ -668,26 +656,14 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
  * - Dispatches final `DragDeactivatedEvent` for the draggable side.
  * - Dispatches `DragAbsenceEvent` for the droppable side (active and broadcast).
  * - Clears the active droppable reference and its interaction states.
+ * 
+ * @param draggable The draggable side to deactivate.
+ * @param lastPointerUpEventRef A shared reference to the most recent native `pointerup` event.
  */
-export const processDragDropDeactivate = <TElement extends Element = HTMLElement>({
-    // Refs:
-    lastPointerUpEventRef,
-    
-    // Contexts:
-    draggable,
-}: {
-    // Refs:
-    /**
-     * A shared reference to the most recent native `pointerup` event.
-     */
+export const processDragDropDeactivate = <TElement extends Element = HTMLElement>(
+    draggable               : DraggableContext<TElement>,
     lastPointerUpEventRef   : RefObject<PointerEvent | undefined> | undefined,
-    
-    // Contexts:
-    /**
-     * The draggable side to deactivate.
-     */
-    draggable               : DraggableContext<TElement>
-}): void => {
+): void => {
     try {
         // Abort deactivate if:
         // - Draggable element is missing.
@@ -722,26 +698,14 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
  * - Initiates handshake negotiation between draggable and droppable.
  * - Dispatches evaluation events.
  * - Updates the active droppable side when the pointed target or acceptance changes.
+ * 
+ * @param draggable The draggable side currently under negotiation.
+ * @param pointerMoveEvent The originating native 'pointermove' event from the browser.
  */
-export const processDragProbe          = async <TElement extends Element = HTMLElement>({
-    // Events:
-    pointerMoveEvent,
-    
-    // Contexts:
-    draggable,
-}: {
-    // Events:
-    /**
-     * The originating native 'pointermove' event from the browser.
-     */
-    pointerMoveEvent        : PointerEvent
-    
-    // Contexts:
-    /**
-     * The draggable side currently under negotiation.
-     */
-    draggable               : DraggableContext<TElement>
-}): Promise<void> => {
+export const processDragProbe          = async <TElement extends Element = HTMLElement>(
+    draggable               : DraggableContext<TElement>,
+    pointerMoveEvent        : PointerEvent,
+): Promise<void> => {
     // Extract properties from the draggable context for convenience:
     const {
         // Behaviors:
@@ -870,26 +834,14 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
  * 
  * - Validates drag context and acceptance.
  * - Dispatches final dragged/dropped events.
+ * 
+ * @param draggable The draggable context to commit.
+ * @param lastPointerUpEventRef A shared reference to the most recent native `pointerup` event.
  */
-export const processDragDropCommit     = <TElement extends Element = HTMLElement>({
-    // Refs:
-    lastPointerUpEventRef,
-    
-    // Contexts:
-    draggable,
-}: {
-    // Refs:
-    /**
-     * A shared reference to the most recent native `pointerup` event.
-     */
+export const processDragDropCommit     = <TElement extends Element = HTMLElement>(
+    draggable               : DraggableContext<TElement>,
     lastPointerUpEventRef   : RefObject<PointerEvent | undefined> | undefined,
-    
-    // Contexts:
-    /**
-     * The draggable context to commit.
-     */
-    draggable               : DraggableContext<TElement>
-}): void => {
+): void => {
     // Abort commit if:
     // - Draggable element is missing.
     // - Draggable is unmounted.

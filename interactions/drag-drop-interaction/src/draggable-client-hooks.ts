@@ -321,13 +321,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     // - Drives synchronization between draggable and droppable states during drag gestures.
     // - Stable reference, safe to use in `useEffect()` without listing in deps, avoiding unnecessary re-runs.
     const handleGlobalPointerMove = useStableEventHandler(async (pointerMoveEvent: PointerEvent): Promise<void> => {
-        processDragProbe<TElement>({
-            // Events:
-            pointerMoveEvent,
-            
-            // Contexts:
-            draggable,
-        });
+        processDragProbe(draggable, pointerMoveEvent);
     });
     
     
@@ -367,13 +361,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     const handleLifecycleChange = useStableCallback((isSetup: boolean): void => {
         if (!isSetup) {
             // Cleanup : Commit first before resetting state, to ensure the last pointerup event is processed.
-            processDragDropCommit<TElement>({
-                // Refs:
-                lastPointerUpEventRef: globalPointerIntegrationRef.current?.lastPointerUpEventRef,
-                
-                // Contexts:
-                draggable,
-            });
+            processDragDropCommit(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef);
         } // if
         
         // Setup   : Mark draggable as active and broadcast active state to all droppables.
@@ -423,23 +411,11 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     const handleActivationChange = useStableCallback((isActive: boolean): void => {
         if (isActive) {
             // Dispatch activation events after state is settled:
-            processDragDropActivate<TElement>({
-                // Refs:
-                lastPointerDownEventRef: globalPointerIntegrationRef.current?.lastPointerDownEventRef,
-                
-                // Contexts:
-                draggable,
-            });
+            processDragDropActivate(draggable, globalPointerIntegrationRef.current?.lastPointerDownEventRef);
         }
         else {
             // Dispatch deactivation events after state is settled:
-            processDragDropDeactivate<TElement>({
-                // Refs:
-                lastPointerUpEventRef: globalPointerIntegrationRef.current?.lastPointerUpEventRef,
-                
-                // Contexts:
-                draggable,
-            });
+            processDragDropDeactivate(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef);
         } // if
     });
     useLayoutEffect(() => {
