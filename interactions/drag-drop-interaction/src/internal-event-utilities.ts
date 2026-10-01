@@ -61,35 +61,19 @@ import {
  * This represents the initial stage of the drag-drop lifecycle,
  * fired when the user presses down on the draggable element to initiate a drag gesture.
  * 
+ * @param draggable The draggable side associated with the drag gesture.
+ * @param lastPointerDownEvent The most recent native 'pointerdown' event from the browser captured during a drag gesture.
+ * @param pointedElement The reference to the DOM element that currently under the pointer, set as `target`.
+ * Pass `null` if no valid element is detected
+ * (e.g. pointer is only over the draggable itself or filtered out by `dropPredicate`).
+ * 
  * @returns A synthetic `DragDropActivatedEvent` representing the activation stage.
  */
-export const createDragDropActivatedEvent   = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    lastPointerDownEvent,
-    pointedElement,
-    
-    // Contexts:
-    draggable,
-}: {
-    // Event metadata:
-    /**
-     * The most recent native 'pointerdown' event from the browser captured during a drag gesture.
-     */
-    lastPointerDownEvent     : PointerEvent
-    /**
-     * The reference to the DOM element that currently under the pointer, set as `target`.
-     * 
-     * Pass `null` if no valid element is detected
-     * (e.g. pointer is only over the draggable itself or filtered out by `dropPredicate`).
-     */
-    pointedElement           : Element | null
-    
-    // Contexts:
-    /**
-     * The draggable side associated with the drag gesture.
-     */
-    draggable                : DraggableContext<TElement>
-}): DragDropActivatedEvent<TElement> => {
+export const createDragDropActivatedEvent   = <TElement extends Element = HTMLElement>(
+    draggable                : DraggableContext<TElement>,
+    lastPointerDownEvent     : PointerEvent,
+    pointedElement           : Element | null,
+): DragDropActivatedEvent<TElement> => {
     // Extract properties from the draggable context for convenience:
     const {
         // Data:
@@ -127,27 +111,14 @@ export const createDragDropActivatedEvent   = <TElement extends Element = HTMLEl
  * This represents the final stage of the drag-drop lifecycle,
  * fired when the user releases the pointer on the draggable element to conclude the drag gesture.
  * 
+ * @param draggable The draggable side associated with the drag gesture.
+ * @param lastPointerUpEvent The most recent native 'pointerup' event from the browser captured during a drag gesture.
  * @returns A synthetic `DragDropDeactivatedEvent` representing the deactivation stage.
  */
-export const createDragDropDeactivatedEvent = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    lastPointerUpEvent,
-    
-    // Contexts:
-    draggable,
-}: {
-    // Event metadata:
-    /**
-     * The most recent native 'pointerup' event from the browser captured during a drag gesture.
-     */
-    lastPointerUpEvent       : PointerEvent
-    
-    // Contexts:
-    /**
-     * The draggable side associated with the drag gesture.
-     */
-    draggable                : DraggableContext<TElement>
-}): DragDropDeactivatedEvent<TElement> => {
+export const createDragDropDeactivatedEvent = <TElement extends Element = HTMLElement>(
+    draggable                : DraggableContext<TElement>,
+    lastPointerUpEvent       : PointerEvent,
+): DragDropDeactivatedEvent<TElement> => {
     // Extract properties from the draggable context for convenience:
     const {
         // Actual states:
@@ -193,18 +164,12 @@ export const createDragDropDeactivatedEvent = <TElement extends Element = HTMLEl
  * exposing the actual data being dragged (payload) for the business logic
  * such as initializing state, preparing initial data, or applying side effects.
  * 
+ * @param dragDropActivatedEvent The synthetic activation event created earlier.
  * @returns A synthetic `DragActivatedEvent` representing the draggable activation.
  */
-const createDragActivatedEvent              = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    dragDropActivatedEvent,
-}: {
-    // Event metadata:
-    /**
-     * The synthetic activation event created earlier.
-     */
-    dragDropActivatedEvent   : DragDropActivatedEvent<TElement>
-}): DragActivatedEvent<TElement> => ({
+const createDragActivatedEvent              = <TElement extends Element = HTMLElement>(
+    dragDropActivatedEvent   : DragDropActivatedEvent<TElement>,
+): DragActivatedEvent<TElement> => ({
     // Event metadata:
     ...dragDropActivatedEvent,
     type             : 'dragactivated',
@@ -221,27 +186,14 @@ const createDragActivatedEvent              = <TElement extends Element = HTMLEl
  * and the droppable element becomes `currentTarget`,
  * reflecting the droppable's perspective: self as current, partner as related.
  * 
+ * @param dragDropActivatedEvent The synthetic activation event created earlier.
+ * @param dropMetadata The metadata exposed by the droppable target.
  * @returns A synthetic `DragPresenceEvent` representing the drag activity presence.
  */
-const createDragPresenceEvent               = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    dragDropActivatedEvent,
-    
-    // Data:
-    dropMetadata,
-}: {
-    // Event metadata:
-    /**
-     * The synthetic activation event created earlier.
-     */
-    dragDropActivatedEvent   : DragDropActivatedEvent<TElement>
-    
-    // Data:
-    /**
-     * The metadata exposed by the droppable target.
-     */
-    dropMetadata             : DropMetadata
-}): DragPresenceEvent<TElement> => ({
+const createDragPresenceEvent               = <TElement extends Element = HTMLElement>(
+    dragDropActivatedEvent   : DragDropActivatedEvent<TElement>,
+    dropMetadata             : DropMetadata,
+): DragPresenceEvent<TElement> => ({
     // Event metadata:
     ...dragDropActivatedEvent,
     type             : 'dragpresence',
@@ -264,30 +216,17 @@ const createDragPresenceEvent               = <TElement extends Element = HTMLEl
  * exposing the actual data being dragged (payload) for the business logic
  * such as resetting state, clearing temporary data, or removing side effects.
  * 
+ * @param droppable The droppable side associated with the drag absence event.
+ * Pass `null` if no handshake was performed (all droppables are inactive),
+ * e.g. when the draggable is not hovering over any droppable.
+ * 
+ * @param dragDropDeactivatedEvent The synthetic deactivation event created earlier.
  * @returns A synthetic `DragDeactivatedEvent` representing the draggable deactivation.
  */
-const createDragDeactivatedEvent            = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    dragDropDeactivatedEvent,
-    
-    // Contexts:
-    droppable,
-}: {
-    // Event metadata:
-    /**
-     * The synthetic deactivation event created earlier.
-     */
-    dragDropDeactivatedEvent : DragDropDeactivatedEvent<TElement>
-    
-    // Contexts:
-    /**
-     * The droppable side associated with the drag absence event.
-     * 
-     * Pass `null` if no handshake was performed (all droppables are inactive),
-     * e.g. when the draggable is not hovering over any droppable.
-     */
-    droppable                : DroppableContext< Element> | null
-}): DragDeactivatedEvent<TElement> => ({
+const createDragDeactivatedEvent            = <TElement extends Element = HTMLElement>(
+    droppable                : DroppableContext< Element> | null,
+    dragDropDeactivatedEvent : DragDropDeactivatedEvent<TElement>,
+): DragDeactivatedEvent<TElement> => ({
     // Event metadata:
     ...dragDropDeactivatedEvent,
     type             : 'dragdeactivated',
@@ -307,32 +246,16 @@ const createDragDeactivatedEvent            = <TElement extends Element = HTMLEl
  * and the droppable element becomes `currentTarget`,
  * reflecting the droppable's perspective: self as current, partner as related.
  * 
+ * @param draggable The draggable side associated with the drag gesture.
+ * @param droppable Each droppable side associated with the drag absence broadcast event.
+ * @param dragDropDeactivatedEvent The synthetic deactivation event created earlier.
  * @returns A synthetic `DragAbsenceEvent` representing the drag activity absence.
  */
-const createDragAbsenceEvent                = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    dragDropDeactivatedEvent,
-    
-    // Contexts:
-    draggable,
-    droppable,
-}: {
-    // Event metadata:
-    /**
-     * The synthetic deactivation event created earlier.
-     */
-    dragDropDeactivatedEvent : DragDropDeactivatedEvent< Element>
-    
-    // Contexts:
-    /**
-     * The draggable side associated with the drag gesture.
-     */
-    draggable                : DraggableContext<TElement>
-    /**
-     * Each droppable side associated with the drag absence broadcast event.
-     */
-    droppable                : DroppableContext< Element>
-}): DragAbsenceEvent< Element> => {
+const createDragAbsenceEvent                = <TElement extends Element = HTMLElement>(
+    draggable                : DraggableContext<TElement>,
+    droppable                : DroppableContext< Element>,
+    dragDropDeactivatedEvent : DragDropDeactivatedEvent< Element>,
+): DragAbsenceEvent< Element> => {
     // Extract properties from the droppable context for convenience:
     const {
         // Data:
@@ -371,35 +294,19 @@ const createDragAbsenceEvent                = <TElement extends Element = HTMLEl
  * 
  * Useful for initiating drag-drop negotiation by encapsulating the raw pointer event.
  * 
+ * @param draggable The draggable side associated with the drag gesture.
+ * @param pointerMoveEvent The originating native 'pointermove' event from the browser.
+ * @param pointedElement The reference to the DOM element that currently under the pointer, set as `target`.
+ * Pass `null` if no valid element is detected
+ * (e.g. pointer is only over the draggable itself or filtered out by `dropPredicate`).
+ * 
  * @returns A synthetic `DragProbeEvent` representing the probe stage.
  */
-export const createDragProbeEvent           = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    pointerMoveEvent,
-    pointedElement,
-    
-    // Contexts:
-    draggable,
-}: {
-    // Event metadata:
-    /**
-     * The originating native 'pointermove' event from the browser.
-     */
-    pointerMoveEvent         : PointerEvent
-    /**
-     * The reference to the DOM element that currently under the pointer, set as `target`.
-     * 
-     * Pass `null` if no valid element is detected
-     * (e.g. pointer is only over the draggable itself or filtered out by `dropPredicate`).
-     */
-    pointedElement           : Element | null
-    
-    // Contexts:
-    /**
-     * The draggable side associated with the drag gesture.
-     */
-    draggable                : DraggableContext<TElement>
-}): DragProbeEvent<TElement> => {
+export const createDragProbeEvent           = <TElement extends Element = HTMLElement>(
+    draggable                : DraggableContext<TElement>,
+    pointerMoveEvent         : PointerEvent,
+    pointedElement           : Element | null,
+): DragProbeEvent<TElement> => {
     // Extract properties from the draggable context for convenience:
     const {
         // Data:
@@ -442,40 +349,24 @@ export const createDragProbeEvent           = <TElement extends Element = HTMLEl
  * Carries a mutable `dragResponse` field, defaulting to `undefined`
  * until the draggable responds its decision.
  * 
+ * @param candidateDroppable The droppable side currently under negotiation.
+ * @param dragProbeEvent The synthetic probe event created earlier.
+ * @param candidateDropElement The candidate droppable element, set as `relatedTarget`.
  * @returns A synthetic `DragHandshakeEvent` for negotiation.
  */
-const createDragHandshakeEvent              = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    dragProbeEvent,
-    candidateDropElement,
-    
-    // Data:
-    dropMetadata,
-}: {
-    // Event metadata:
-    /**
-     * The synthetic probe event created earlier.
-     */
-    dragProbeEvent           : DragProbeEvent<TElement>
-    /**
-     * The candidate droppable element, set as `relatedTarget`.
-     */
-    candidateDropElement     : Element
-    
-    // Data:
-    /**
-     * The metadata exposed by the droppable side.
-     */
-    dropMetadata             : DropMetadata
-}): DragHandshakeEvent<TElement> => ({
+const createDragHandshakeEvent              = <TElement extends Element = HTMLElement>(
+    candidateDroppable       : DroppableContext< Element>,
+    dragProbeEvent           : DragProbeEvent<TElement>,
+    candidateDropElement     : Element,
+): DragHandshakeEvent<TElement> => ({
     // Event metadata:
     ...dragProbeEvent,
     type             : 'draghandshake',
-    relatedTarget    : candidateDropElement, // The droppable element now in contact.
+    relatedTarget    : candidateDropElement,            // The droppable element now in contact.
     
     // Data:
-    dropMetadata,                            // The metadata exposed by the droppable side.
-    dragResponse     : undefined,            // Default: no decision yet from draggable.
+    dropMetadata     : candidateDroppable.dropMetadata, // The metadata exposed by the droppable side.
+    dragResponse     : undefined,                       // Default: no decision yet from draggable.
 });
 
 /**
@@ -491,32 +382,16 @@ const createDragHandshakeEvent              = <TElement extends Element = HTMLEl
  * Carries a mutable `dropResponse` field, defaulting to `undefined`
  * until the droppable responds its decision.
  * 
+ * @param candidateDroppable The droppable side currently under negotiation.
+ * @param dragProbeEvent The synthetic probe event created earlier.
+ * @param candidateDropElement The candidate droppable element itself, set as `currentTarget`.
  * @returns A synthetic `DropHandshakeEvent` for negotiation.
  */
-const createDropHandshakeEvent              = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    dragProbeEvent,
-    candidateDropElement,
-    
-    // Data:
-    dropMetadata,
-}: {
-    // Event metadata:
-    /**
-     * The synthetic probe event created earlier.
-     */
-    dragProbeEvent           : DragProbeEvent<TElement>
-    /**
-     * The candidate droppable element itself, set as `currentTarget`.
-     */
-    candidateDropElement     : TElement
-    
-    // Data:
-    /**
-     * The metadata exposed by the droppable side.
-     */
-    dropMetadata             : DropMetadata
-}): DropHandshakeEvent<TElement> => ({
+const createDropHandshakeEvent              = <TElement extends Element = HTMLElement>(
+    candidateDroppable       : DroppableContext< Element>,
+    dragProbeEvent           : DragProbeEvent<TElement>,
+    candidateDropElement     : TElement,
+): DropHandshakeEvent<TElement> => ({
     // Event metadata:
     ...dragProbeEvent,
     type             : 'drophandshake',
@@ -529,8 +404,8 @@ const createDropHandshakeEvent              = <TElement extends Element = HTMLEl
     
     // Data:
     // dragPayload,               // The payload carried by the draggable side (already carried in `dragProbeEvent`).
-    dropMetadata,                 // The metadata exposed by the droppable side.
-    dropResponse     : undefined, // Default: no decision yet from droppable.
+    dropMetadata     : candidateDroppable.dropMetadata, // The metadata exposed by the droppable side.
+    dropResponse     : undefined,                       // Default: no decision yet from droppable.
 });
 
 
@@ -541,30 +416,17 @@ const createDropHandshakeEvent              = <TElement extends Element = HTMLEl
  * Extends the handshake event by carrying the droppable's response,
  * enabling live feedback from the draggable side during a drag gesture.
  * 
+ * @param dragHandshakeEvent The synthetic handshake event from the draggable side.
+ * Pass `DragProbeEvent` if no handshake was performed,
+ * e.g. when the draggable is not hovering over any droppable.
+ * 
+ * @param dropResponse The droppable's acceptance/rejection result.
  * @returns A synthetic `DragEvaluationEvent` for live feedback.
  */
-const createDragEvaluationEvent             = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    dragHandshakeEvent,
-    
-    // Data:
-    dropResponse,
-}: {
-    // Event metadata:
-    /**
-     * The synthetic handshake event from the draggable side.
-     * 
-     * Pass `DragProbeEvent` if no handshake was performed,
-     * e.g. when the draggable is not hovering over any droppable.
-     */
-    dragHandshakeEvent       : DragHandshakeEvent<TElement> | DragProbeEvent<TElement>
-    
-    // Data:
-    /**
-     * The droppable's acceptance/rejection result.
-     */
-    dropResponse             : boolean | undefined
-}): DragEvaluationEvent<TElement> => ({
+const createDragEvaluationEvent             = <TElement extends Element = HTMLElement>(
+    dragHandshakeEvent       : DragHandshakeEvent<TElement> | DragProbeEvent<TElement>,
+    dropResponse             : boolean | undefined,
+): DragEvaluationEvent<TElement> => ({
     // Defaults for non-handshake events:
     dragResponse     : undefined,
     dropMetadata     : undefined,
@@ -583,44 +445,21 @@ const createDragEvaluationEvent             = <TElement extends Element = HTMLEl
  * Extends the handshake event by carrying the draggable's response,
  * enabling live feedback from the droppable side during a drag gesture.
  * 
+ * @param draggable The draggable side associated with the drag gesture.
+ * @param droppable Each droppable side associated with the drag evaluation broadcast event.
+ * @param dropHandshakeEvent The synthetic handshake event from the droppable side.
+ * Pass `DragProbeEvent` if no handshake was performed,
+ * e.g. when the draggable is not hovering over any droppable.
+ * 
+ * @param dragResponse The draggable's acceptance/rejection result.
  * @returns A synthetic `DropEvaluationEvent` for live feedback.
  */
-const createDropEvaluationEvent             = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    dropHandshakeEvent,
-    
-    // Data:
-    dragResponse,
-    
-    // Contexts:
-    draggable,
-    droppable,
-}: {
-    // Event metadata:
-    /**
-     * The synthetic handshake event from the droppable side.
-     * 
-     * Pass `DragProbeEvent` if no handshake was performed,
-     * e.g. when the draggable is not hovering over any droppable.
-     */
-    dropHandshakeEvent       : DropHandshakeEvent< Element> | DragProbeEvent< Element>
-    
-    // Data:
-    /**
-     * The draggable's acceptance/rejection result.
-     */
-    dragResponse             : boolean | undefined
-    
-    // Contexts:
-    /**
-     * The draggable side associated with the drag gesture.
-     */
-    draggable                : DraggableContext<TElement>
-    /**
-     * Each droppable side associated with the drag evaluation broadcast event.
-     */
-    droppable                : DroppableContext< Element>
-}): DropEvaluationEvent< Element> => {
+const createDropEvaluationEvent             = <TElement extends Element = HTMLElement>(
+    draggable                : DraggableContext<TElement>,
+    droppable                : DroppableContext< Element>,
+    dropHandshakeEvent       : DropHandshakeEvent< Element> | DragProbeEvent< Element>,
+    dragResponse             : boolean | undefined,
+): DropEvaluationEvent< Element> => {
     // Extract properties from the droppable context for convenience:
     const {
         // Data:
@@ -657,27 +496,14 @@ const createDropEvaluationEvent             = <TElement extends Element = HTMLEl
  * This represents the final committed stage of the drag-drop lifecycle,
  * fired when the user releases the pointer to complete the transaction.
  * 
+ * @param draggable The draggable side associated with the drag gesture.
+ * @param lastPointerUpEvent The most recent native 'pointerup' event from the browser captured during a drag gesture.
  * @returns A synthetic `DragDropCommittedEvent` representing the committed stage.
  */
-export const createDragDropCommittedEvent   = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    lastPointerUpEvent,
-    
-    // Contexts:
-    draggable,
-}: {
-    // Event metadata:
-    /**
-     * The most recent native 'pointerup' event from the browser captured during a drag gesture.
-     */
-    lastPointerUpEvent       : PointerEvent
-    
-    // Contexts:
-    /**
-     * The draggable side associated with the drag gesture.
-     */
-    draggable                : DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> }
-}): DragDropCommittedEvent<TElement> => {
+export const createDragDropCommittedEvent   = <TElement extends Element = HTMLElement>(
+    draggable                : DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> },
+    lastPointerUpEvent       : PointerEvent,
+): DragDropCommittedEvent<TElement> => {
     // Extract properties from the draggable context for convenience:
     const {
         // Data:
@@ -726,18 +552,12 @@ export const createDragDropCommittedEvent   = <TElement extends Element = HTMLEl
  * exposing the target's business context (metadata) for the business logic
  * such as updating state, persisting data, or triggering side effects.
  * 
+ * @param dragDropCommittedEvent The synthetic committed event from the draggable side.
  * @returns A synthetic `DraggedEvent` representing the committed transaction.
  */
-const createDraggedEvent                    = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    dragDropCommittedEvent,
-}: {
-    // Event metadata:
-    /**
-     * The synthetic committed event from the draggable side.
-     */
+const createDraggedEvent                    = <TElement extends Element = HTMLElement>(
     dragDropCommittedEvent   : DragDropCommittedEvent<TElement>
-}): DraggedEvent<TElement> => ({
+): DraggedEvent<TElement> => ({
     // Event metadata:
     ...dragDropCommittedEvent,
     type             : 'dragged',
@@ -754,18 +574,12 @@ const createDraggedEvent                    = <TElement extends Element = HTMLEl
  * and vice versa for the droppable element,
  * reflecting the droppable's perspective: self as current, partner as related.
  * 
+ * @param dragDropCommittedEvent The synthetic committed event from the droppable side.
  * @returns A synthetic `DroppedEvent` representing the committed transaction.
  */
-const createDroppedEvent                    = <TElement extends Element = HTMLElement>({
-    // Event metadata:
-    dragDropCommittedEvent,
-}: {
-    // Event metadata:
-    /**
-     * The synthetic committed event from the droppable side.
-     */
+const createDroppedEvent                    = <TElement extends Element = HTMLElement>(
     dragDropCommittedEvent   : DragDropCommittedEvent<TElement>
-}): DroppedEvent<TElement> => ({
+): DroppedEvent<TElement> => ({
     // Event metadata:
     ...dragDropCommittedEvent,
     type             : 'dropped',
@@ -798,10 +612,7 @@ export const dispatchActivatedEvents        = <TElement extends Element = HTMLEl
 ): void => {
     if (isDragReady(draggable)) {
         // Dispatch activation for the draggable:
-        const dragActivatedEvent    = createDragActivatedEvent<TElement>({
-            // Event metadata:
-            dragDropActivatedEvent,
-        });
+        const dragActivatedEvent    = createDragActivatedEvent(dragDropActivatedEvent);
         draggable.handleDragActivated(dragActivatedEvent);
     } // if
     
@@ -815,13 +626,7 @@ export const dispatchActivatedEvents        = <TElement extends Element = HTMLEl
         
         
         
-        const eachDragPresenceEvent = createDragPresenceEvent< Element>({
-            // Event metadata:
-            dragDropActivatedEvent,
-            
-            // Data:
-            dropMetadata: eachDroppable.dropMetadata,
-        });
+        const eachDragPresenceEvent = createDragPresenceEvent(dragDropActivatedEvent, eachDroppable.dropMetadata);
         eachDroppable.handleDragPresence(eachDragPresenceEvent);
     } // for
 };
@@ -843,13 +648,7 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
 ): void => {
     if (isDragReady(draggable)) {
         // Dispatch deactivation for the draggable:
-        const dragDeactivatedEvent = createDragDeactivatedEvent<TElement>({
-            // Event metadata:
-            dragDropDeactivatedEvent,
-            
-            // Contexts:
-            droppable: draggable.dragSession?.droppable ?? null,
-        });
+        const dragDeactivatedEvent = createDragDeactivatedEvent(draggable.dragSession?.droppable ?? null, dragDropDeactivatedEvent);
         draggable.handleDragDeactivated(dragDeactivatedEvent);
     } // if
     
@@ -863,14 +662,7 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
         
         
         
-        const eachDragAbsenceEvent = createDragAbsenceEvent<TElement>({
-            // Event metadata:
-            dragDropDeactivatedEvent,
-            
-            // Contexts:
-            draggable,
-            droppable: eachDroppable,
-        });
+        const eachDragAbsenceEvent = createDragAbsenceEvent(draggable, eachDroppable, dragDropDeactivatedEvent);
         eachDroppable.handleDragAbsence(eachDragAbsenceEvent);
     } // for
 };
@@ -903,41 +695,12 @@ export const dispatchHandshakeEvents        = async <TElement extends Element = 
      */
     dropHandshakeEvent       : DropHandshakeEvent< Element>
 }> => {
-    // Extract properties from the draggable and candidateDroppable context for convenience:
-    const {
-        // Stable event handlers:
-        handleDragHandshake,
-    } = draggable;
-    const {
-        // Data:
-        dropMetadata,
-        
-        // Stable event handlers:
-        handleDropHandshake,
-    } = candidateDroppable;
-    
-    
-    
     // Dispatch handshake for both sides:
-    const dragHandshakeEvent   = createDragHandshakeEvent<TElement>({
-        // Event metadata:
-        dragProbeEvent,
-        candidateDropElement,
-        
-        // Data:
-        dropMetadata,
-    });
-    const dropHandshakeEvent   = createDropHandshakeEvent< Element>({
-        // Event metadata:
-        dragProbeEvent,
-        candidateDropElement,
-        
-        // Data:
-        dropMetadata,
-    });
+    const dragHandshakeEvent   = createDragHandshakeEvent(candidateDroppable, dragProbeEvent, candidateDropElement);
+    const dropHandshakeEvent   = createDropHandshakeEvent(candidateDroppable, dragProbeEvent, candidateDropElement);
     await Promise.all([
-        isDragReady(draggable)          && handleDragHandshake(dragHandshakeEvent),
-        isDropReady(candidateDroppable) && handleDropHandshake(dropHandshakeEvent),
+        isDragReady(draggable)          && draggable.handleDragHandshake(dragHandshakeEvent),
+        isDropReady(candidateDroppable) && candidateDroppable.handleDropHandshake(dropHandshakeEvent),
     ]);
     
     
@@ -972,13 +735,10 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
     dropHandshakeEvent       : DropHandshakeEvent< Element> | DragProbeEvent< Element>,
 ): void => {
     if (isDragReady(draggable)) {
-        const dragEvaluationEvent = createDragEvaluationEvent<TElement>({
-            // Event metadata:
+        const dragEvaluationEvent = createDragEvaluationEvent(
             dragHandshakeEvent,
-            
-            // Data:
-            dropResponse: ('dropResponse' in dropHandshakeEvent) ? dropHandshakeEvent.dropResponse : undefined, // No dropResponse for non-handshake events.
-        });
+            ('dropResponse' in dropHandshakeEvent) ? dropHandshakeEvent.dropResponse : undefined // No dropResponse for non-handshake events.
+        );
         draggable.handleDragEvaluation(dragEvaluationEvent);
     } // if
     
@@ -992,17 +752,13 @@ export const dispatchEvaluationEvents       = <TElement extends Element = HTMLEl
         
         
         
-        const eachDropEvaluationEvent = createDropEvaluationEvent<TElement>({
-            // Event metadata:
-            dropHandshakeEvent,
-            
-            // Data:
-            dragResponse: ('dragResponse' in dragHandshakeEvent) ? dragHandshakeEvent.dragResponse : undefined, // No dragResponse for non-handshake events.
-            
-            // Contexts:
+        const eachDropEvaluationEvent = createDropEvaluationEvent(
             draggable,
-            droppable: eachDroppable,
-        });
+            eachDroppable,
+            
+            dropHandshakeEvent,
+            ('dragResponse' in dragHandshakeEvent) ? dragHandshakeEvent.dragResponse : undefined // No dragResponse for non-handshake events.
+        );
         eachDroppable.handleDropEvaluation(eachDropEvaluationEvent);
     } // for
 };
@@ -1032,10 +788,7 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
     
     
     if (isDragReady(draggable)) {
-        const draggedEvent = createDraggedEvent<TElement>({
-            // Event metadata:
-            dragDropCommittedEvent,
-        });
+        const draggedEvent = createDraggedEvent(dragDropCommittedEvent);
         draggable.handleDragged(draggedEvent);
     } // if
     
@@ -1043,10 +796,7 @@ export const dispatchCommittedEvents        = <TElement extends Element = HTMLEl
     
     // Get the currently active droppable to deactivate, if any:
     if (isDropReady(droppable)) {
-        const droppedEvent = createDroppedEvent< Element>({
-            // Event metadata:
-            dragDropCommittedEvent,
-        });
+        const droppedEvent = createDroppedEvent(dragDropCommittedEvent);
         droppable.handleDropped(droppedEvent);
     } // if
 };

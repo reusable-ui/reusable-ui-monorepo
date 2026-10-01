@@ -557,14 +557,7 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
     
     
     // Dispatch the initial activation events:
-    const dragDropActivatedEvent = createDragDropActivatedEvent<TElement>({
-        // Event metadata:
-        lastPointerDownEvent,
-        pointedElement,
-        
-        // Contexts:
-        draggable,
-    });
+    const dragDropActivatedEvent = createDragDropActivatedEvent(draggable, lastPointerDownEvent, pointedElement);
     dispatchActivatedEvents(draggable, dragDropActivatedEvent);
 };
 
@@ -595,13 +588,7 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
         
         
         // Dispatch the final deactivation events:
-        const dragDropDeactivatedEvent = createDragDropDeactivatedEvent<TElement>({
-            // Event metadata:
-            lastPointerUpEvent,
-            
-            // Contexts:
-            draggable,
-        });
+        const dragDropDeactivatedEvent = createDragDropDeactivatedEvent(draggable, lastPointerUpEvent);
         dispatchDeactivatedEvents(draggable, dragDropDeactivatedEvent);
     }
     finally {
@@ -650,14 +637,7 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
     const pointedElement = resolvePointedElement(pointerMoveEvent, dropPredicate);
     
     // Create a synthetic probe event for the current pointer position:
-    const dragProbeEvent = createDragProbeEvent<TElement>({
-        // Event metadata:
-        pointerMoveEvent,
-        pointedElement,
-        
-        // Contexts:
-        draggable,
-    });
+    const dragProbeEvent = createDragProbeEvent(draggable, pointerMoveEvent, pointedElement);
     
     
     
@@ -747,12 +727,6 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
     
     
     // Dispatch the final commit events:
-    const dragDropCommittedEvent = createDragDropCommittedEvent<TElement>({
-        // Event metadata:
-        lastPointerUpEvent,
-        
-        // Contexts:
-        draggable,
-    });
+    const dragDropCommittedEvent = createDragDropCommittedEvent(draggable, lastPointerUpEvent);
     dispatchCommittedEvents(draggable, dragDropCommittedEvent);
 };
