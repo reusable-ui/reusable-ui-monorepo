@@ -46,7 +46,7 @@ export const isDropMounted = <TElement extends Element = HTMLElement>(droppable:
  * - be mounted
  * - be enabled
  */
-export const isDragReady = <TElement extends Element = HTMLElement>(draggable: DraggableContext<TElement> | null | undefined): draggable is DraggableContext<TElement> & { dragMountedRef: { current: true }, dragEnabled: true } => {
+export const isDragReady   = <TElement extends Element = HTMLElement>(draggable: DraggableContext<TElement> | null | undefined): draggable is DraggableContext<TElement> & { dragMountedRef: { current: true }, dragEnabled: true } => {
     return isDragMounted<TElement>(draggable) && draggable.dragEnabled;
 };
 
@@ -59,7 +59,7 @@ export const isDragReady = <TElement extends Element = HTMLElement>(draggable: D
  * - be mounted
  * - be enabled
  */
-export const isDropReady = <TElement extends Element = HTMLElement>(droppable: DroppableContext<TElement> | null | undefined): droppable is DroppableContext<TElement> & { dropMountedRef: { current: true }, dropEnabled: true } => {
+export const isDropReady   = <TElement extends Element = HTMLElement>(droppable: DroppableContext<TElement> | null | undefined): droppable is DroppableContext<TElement> & { dropMountedRef: { current: true }, dropEnabled: true } => {
     return isDropMounted<TElement>(droppable) && droppable.dropEnabled;
 };
 
