@@ -366,23 +366,11 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
         
         // Setup   : Mark draggable as active and broadcast active state to all droppables.
         // Cleanup : Reset the draggable side to inactive, resets the previously active droppable side, and broadcast inactive state to all droppables.
-        updateDragLifecycle({
-            // Lifecycle configs:
-            isSetup,
-            
-            // Contexts:
-            draggable,
-        });
+        updateDragLifecycle(draggable, isSetup);
         
         // Setup   : Attach global pointer listeners for drag probing and drop candidate evaluation.
         // Cleanup : Detach global pointer listeners for drag probing and drop candidate evaluation.
-        updateGlobalPointerListeners({
-            // Lifecycle configs:
-            isSetup,
-            
-            // Stable event handlers:
-            handleGlobalPointerMove,
-        });
+        updateGlobalPointerListeners(handleGlobalPointerMove, isSetup);
     });
     useEffect(() => {
         // Only track while draggable is enabled and a drag gesture is active:

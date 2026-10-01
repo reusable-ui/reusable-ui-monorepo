@@ -162,27 +162,14 @@ interface NegotiationResult<TElement extends Element = HTMLElement> {
  * to locate the nearest registered droppable side,
  * then invokes both sides' handshake handlers to negotiate acceptance.
  * 
+ * @param draggable The draggable side currently under negotiation.
+ * @param dragProbeEvent The originating probe event.
  * @returns A negotiation result if both sides respond, a fallback if only one side responds, or `false` if no target is found.
  */
-const attemptNegotiation = async <TElement extends Element = HTMLElement>({
-    // Events:
-    dragProbeEvent,
-    
-    // Contexts:
-    draggable,
-}: {
-    // Events:
-    /**
-     * The originating probe event.
-     */
-    dragProbeEvent          : DragProbeEvent<TElement>
-    
-    // Contexts:
-    /**
-     * The draggable side currently under negotiation.
-     */
-    draggable               : DraggableContext<TElement>
-}): Promise<NegotiationResult<TElement> | false> => {
+const attemptNegotiation = async <TElement extends Element = HTMLElement>(
+    draggable               : DraggableContext<TElement>,
+    dragProbeEvent          : DragProbeEvent<TElement>,
+): Promise<NegotiationResult<TElement> | false> => {
     // Holds the nearest candidate that did not achieve a full dual-response:
     let nonResponsiveCandidate : NegotiationResult<TElement> | undefined = undefined;
     
@@ -253,17 +240,12 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>({
  * - Clears the draggable's status to `null` (drag gesture active but outside any droppable zone).
  * - Clears the draggable's metadata.
  * - Clears the active droppable reference and its interaction states.
+ * 
+ * @param draggable The draggable side to deactivate.
  */
-const clearActiveDroppable                  = <TElement extends Element = HTMLElement>({
-    // Contexts:
-    draggable,
-}: {
-    // Contexts:
-    /**
-     * The draggable side to deactivate.
-     */
-    draggable               : DraggableContext<TElement>
-}): void => {
+const clearActiveDroppable                  = <TElement extends Element = HTMLElement>(
+    draggable               : DraggableContext<TElement>,
+): void => {
     try {
         // Deactivate the draggable side:
         deactivateDraggable(draggable, null); // `null` → drag gesture active but outside all droppable zones.
@@ -288,36 +270,18 @@ const clearActiveDroppable                  = <TElement extends Element = HTMLEl
  * - Updates draggable side (status + metadata).
  * - Updates the new active droppable side (status + payload).
  * - Updates droppable reference, along with acceptance, pointed element, and drop element.
+ * 
+ * @param draggable The draggable side currently under negotiation.
+ * @param droppable The droppable side currently under negotiation.
+ * @param dragHandshakeEvent The handshake event from the draggable side.
+ * @param dropHandshakeEvent The handshake event from the droppable side.
  */
-const swapActiveDroppable                   = <TElement extends Element = HTMLElement>({
-    // Events:
-    dragHandshakeEvent,
-    dropHandshakeEvent,
-    
-    // Contexts:
-    draggable,
-    droppable,
-}: {
-    // Events:
-    /**
-     * The handshake event from the draggable side.
-     */
-    dragHandshakeEvent      : DragHandshakeEvent<TElement>
-    /**
-     * The handshake event from the droppable side.
-     */
-    dropHandshakeEvent      : DropHandshakeEvent<Element>
-    
-    // Contexts:
-    /**
-     * The draggable side currently under negotiation.
-     */
-    draggable               : DraggableContext<TElement>
-    /**
-     * The droppable side currently under negotiation.
-     */
-    droppable               : DroppableContext< Element>
-}): void => {
+const swapActiveDroppable                   = <TElement extends Element = HTMLElement>(
+    draggable               : DraggableContext<TElement>,
+    droppable               : DroppableContext< Element>,
+    dragHandshakeEvent      : DragHandshakeEvent<TElement>,
+    dropHandshakeEvent      : DropHandshakeEvent< Element>,
+): void => {
     // Determine if both sides accepted:
     // - `undefined` is treated as `false`.
     const isAccepted = !!dragHandshakeEvent.dragResponse && !!dropHandshakeEvent.dropResponse;
@@ -365,26 +329,14 @@ const swapActiveDroppable                   = <TElement extends Element = HTMLEl
  * - On setup   : marks the draggable as active and broadcasts active state to all droppables.
  * - On cleanup : resets the draggable side to inactive, resets the previously active droppable side,
  *   and broadcasts inactive state.
+ * 
+ * @param draggable The draggable side to deactivate.
+ * @param isSetup Specifies whether to set up (true) or clean up (false) the draggable lifecycle.
  */
-export const updateDragLifecycle            = <TElement extends Element = HTMLElement>({
-    // Lifecycle configs:
-    isSetup,
-    
-    // Contexts:
-    draggable,
-}: {
-    // Lifecycle configs:
-    /**
-     * Specifies whether to set up (true) or clean up (false) the draggable lifecycle.
-     */
-    isSetup                 : boolean
-    
-    // Contexts:
-    /**
-     * The draggable side to deactivate.
-     */
-    draggable               : DraggableContext<TElement>
-}): void => {
+export const updateDragLifecycle            = <TElement extends Element = HTMLElement>(
+    draggable               : DraggableContext<TElement>,
+    isSetup                 : boolean,
+): void => {
     // Deactivate the draggable side:
     deactivateDraggable(draggable, isSetup ? null : undefined); // `null` → drag gesture active but outside all droppable zones, `undefined` → no drag activity at all.
     
@@ -403,28 +355,16 @@ export const updateDragLifecycle            = <TElement extends Element = HTMLEl
  * - Attaches `pointermove` (probe/evaluation) handler
  *   when drag is active.
  * - Removes it when drag ends.
+ * 
+ * @param handleGlobalPointerMove Invoked continuously during pointer movements.
+ * Allows the drag-drop engine to trigger handshake and evaluation events correctly.
+ * 
+ * @param isSetup Specifies whether to set up (true) or clean up (false) the listener's lifecycle.
  */
-export const updateGlobalPointerListeners   = ({
-    // Lifecycle configs:
-    isSetup,
-    
-    // Stable event handlers:
-    handleGlobalPointerMove,
-}: {
-    // Lifecycle configs:
-    /**
-     * Specifies whether to set up (true) or clean up (false) the listener's lifecycle.
-     */
-    isSetup                 : boolean
-    
-    // Stable event handlers:
-    /**
-     * Invoked continuously during pointer movements.
-     * 
-     * Allows the drag-drop engine to trigger handshake and evaluation events correctly.
-     */
-    handleGlobalPointerMove : EventHandler<PointerEvent>
-}): void => {
+export const updateGlobalPointerListeners   = (
+    handleGlobalPointerMove : EventHandler<PointerEvent>,
+    isSetup                 : boolean,
+): void => {
     if (isSetup) {
         window.addEventListener('pointermove', handleGlobalPointerMove);
     }
@@ -439,36 +379,15 @@ export const updateGlobalPointerListeners   = ({
  * - Registers the droppable context on mount.
  * - Unregisters it on unmount to prevent leaks and stale references.
  * 
+ * @param droppable The droppable context to register or unregister.
+ * @param dropElement The reference to the DOM element that backing the droppable zone, becomes the key of the droppable registry.
+ * @param isSetup Specifies whether to set up (true) or clean up (false) the droppable lifecycle.
  */
-export const updateDroppableRegistry        = <TElement extends Element = HTMLElement>({
-    // Lifecycle configs:
-    isSetup,
-    
-    // Data:
-    dropElement,
-    
-    // Actual states:
-    droppable,
-}: {
-    // Lifecycle configs:
-    /**
-     * Specifies whether to set up (true) or clean up (false) the droppable lifecycle.
-     */
-    isSetup     : boolean
-    
-    // Data:
-    /**
-     * The reference to the DOM element that backing the droppable zone,
-     * becomes the key of the droppable registry.
-     */
-    dropElement : Element
-    
-    // Actual states:
-    /**
-     * The droppable context to register or unregister.
-     */
-    droppable   : DroppableContext<TElement>
-}): void => {
+export const updateDroppableRegistry        = <TElement extends Element = HTMLElement>(
+    droppable   : DroppableContext<TElement>,
+    dropElement : Element,
+    isSetup     : boolean,
+): void => {
     if (isSetup) {
         droppableRegistry.set(dropElement, droppable as DroppableContext< Element>);
     }
@@ -719,10 +638,7 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
     // - Draggable is unmounted.
     // - Draggable is disabled.
     if (!isDragReady(draggable)) {
-        clearActiveDroppable<TElement>({
-            // Contexts:
-            draggable,
-        });
+        clearActiveDroppable(draggable);
         
         return;
     } // if
@@ -747,10 +663,7 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
     
     // If no element under the pointer → "no contact":
     if (!pointedElement) {
-        clearActiveDroppable<TElement>({
-            // Contexts:
-            draggable,
-        });
+        clearActiveDroppable(draggable);
         
         // Dispatch "no contact" evaluation events:
         dispatchEvaluationEvents(draggable, dragProbeEvent, dragProbeEvent); // No handshake was performed (no contact) → fallback to probe events.
@@ -761,13 +674,7 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
     
     
     // Initiate handshake negotiation between draggable and droppable:
-    const negotiationResult = await attemptNegotiation<TElement>({
-        // Events:
-        dragProbeEvent,
-        
-        // Contexts:
-        draggable,
-    });
+    const negotiationResult = await attemptNegotiation(draggable, dragProbeEvent);
     
     
     
@@ -777,10 +684,7 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
     // - Draggable is disabled.
     // - Droppable is disabled (if has negotiation).
     if (!isDragReady(draggable) || (negotiationResult && !isDropReady(negotiationResult.droppable))) {
-        clearActiveDroppable<TElement>({
-            // Contexts:
-            draggable,
-        });
+        clearActiveDroppable(draggable);
         
         return;
     } // if
@@ -789,10 +693,7 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
     
     // No negotiation → assume as "no contact":
     if (!negotiationResult) {
-        clearActiveDroppable<TElement>({
-            // Contexts:
-            draggable,
-        });
+        clearActiveDroppable(draggable);
         
         // Dispatch "no contact" evaluation events:
         dispatchEvaluationEvents(draggable, dragProbeEvent, dragProbeEvent); // No handshake was performed (no contact) → fallback to probe events.
@@ -815,15 +716,7 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
     
     
     // Update the active droppable side when the pointed target or acceptance changes:
-    swapActiveDroppable<TElement>({
-        // Events:
-        dragHandshakeEvent,
-        dropHandshakeEvent,
-        
-        // Contexts:
-        draggable,
-        droppable,
-    });
+    swapActiveDroppable(draggable, droppable, dragHandshakeEvent, dropHandshakeEvent);
     
     // Dispatch evaluation events:
     dispatchEvaluationEvents(draggable, dragHandshakeEvent, dropHandshakeEvent);

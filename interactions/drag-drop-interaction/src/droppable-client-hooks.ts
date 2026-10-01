@@ -260,16 +260,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     const handleRegistrationLifecycle = useStableCallback((isSetup: boolean, registeredDropElement: TElement): void => {
         // Setup   : Register on mount.
         // Cleanup : Unregister on unmount.
-        updateDroppableRegistry<TElement>({
-            // Lifecycle configs:
-            isSetup,
-            
-            // Data:
-            dropElement: registeredDropElement,
-            
-            // Actual states:
-            droppable,
-        });
+        updateDroppableRegistry(droppable, registeredDropElement, isSetup);
     });
     useEffect(() => {
         // Only register when the droppable element exists:

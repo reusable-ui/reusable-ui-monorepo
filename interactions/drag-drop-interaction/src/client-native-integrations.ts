@@ -68,13 +68,7 @@ let globalAbortController     : AbortController | null = null;
 const handleLifecycleChange = (isSetup: boolean): Promise<void> => {
     // Setup   : Mark draggable as active and broadcast active state to all droppables.
     // Cleanup : Reset the draggable side to inactive, broadcast inactive state to all droppables, and resets the previously active droppable side.
-    updateDragLifecycle({
-        // Lifecycle configs:
-        isSetup,
-        
-        // Contexts:
-        draggable,
-    });
+    updateDragLifecycle(draggable, isSetup);
     
     
     
