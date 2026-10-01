@@ -265,25 +265,13 @@ const clearActiveDroppable                  = <TElement extends Element = HTMLEl
     draggable               : DraggableContext<TElement>
 }): void => {
     try {
-        // Deactivate the previously active droppable side:
-        deactivateDroppable({
-            // Data:
-            inactiveDropStatus: null, // `null` → drag gesture active but outside this droppable zone.
-            
-            // Contexts:
-            draggable,
-        });
-        
-        
-        
         // Deactivate the draggable side:
-        deactivateDraggable<TElement>({
-            // Data:
-            inactiveDragStatus: null, // `null` → drag gesture active but outside all droppable zones.
-            
-            // Contexts:
-            draggable,
-        });
+        deactivateDraggable(draggable, null); // `null` → drag gesture active but outside all droppable zones.
+        
+        
+        
+        // Deactivate the previously active droppable side:
+        deactivateDroppable(draggable, null); // `null` → drag gesture active but outside this droppable zone.
     }
     finally {
         // Reset the drag session:
@@ -346,13 +334,7 @@ const swapActiveDroppable                   = <TElement extends Element = HTMLEl
     
     
     // Deactivate the previously active droppable side (if any) before swapping:
-    deactivateDroppable({
-        // Data:
-        inactiveDropStatus: null, // `null` → drag gesture active but outside this droppable zone.
-        
-        // Contexts:
-        draggable, // The draggable side that *may contains* droppable to deactivate.
-    });
+    deactivateDroppable(draggable, null); // `null` → drag gesture active but outside this droppable zone.
     
     
     
@@ -369,18 +351,12 @@ const swapActiveDroppable                   = <TElement extends Element = HTMLEl
     
     
     // Activate the draggable side:
-    activateDraggable<TElement>({
-        // Contexts:
-        draggable,
-    });
+    activateDraggable(draggable);
     
     
     
     // Activate the droppable side:
-    activateDroppable({
-        // Contexts:
-        draggable,
-    });
+    activateDroppable(draggable);
 };
 
 /**
@@ -409,36 +385,16 @@ export const updateDragLifecycle            = <TElement extends Element = HTMLEl
      */
     draggable               : DraggableContext<TElement>
 }): void => {
+    // Deactivate the draggable side:
+    deactivateDraggable(draggable, isSetup ? null : undefined); // `null` → drag gesture active but outside all droppable zones, `undefined` → no drag activity at all.
+    
     if (!isSetup) {
         // Deactivate the previously active droppable side:
-        deactivateDroppable({
-            // Data:
-            inactiveDropStatus: undefined, // `undefined` → no drag activity at all.
-            
-            // Contexts:
-            draggable,
-        });
+        deactivateDroppable(draggable, undefined); // `undefined` → no drag activity at all.
     } // if
     
-    
-    
-    // Deactivate the draggable side:
-    deactivateDraggable<TElement>({
-        // Data:
-        inactiveDragStatus: isSetup ? null : undefined, // `null` → drag gesture active but outside all droppable zones, `undefined` → no drag activity at all.
-        
-        // Contexts:
-        draggable,
-    });
-    
     // Deactivate the rest droppable sides (broadcast):
-    deactivateRestDroppables({
-        // Data:
-        inactiveDropStatus: isSetup ? null : undefined, // `null` → drag gesture active but outside all droppable zones, `undefined` → no drag activity at all.
-        
-        // Contexts:
-        draggable,
-    });
+    deactivateRestDroppables(draggable, isSetup ? null : undefined); // `null` → drag gesture active but outside all droppable zones, `undefined` → no drag activity at all.
 };
 
 /**

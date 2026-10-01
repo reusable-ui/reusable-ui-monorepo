@@ -69,17 +69,12 @@ export const isDropReady   = <TElement extends Element = HTMLElement>(droppable:
 
 /**
  * Activates the draggable side.
+ * 
+ * @param draggable The draggable side to activate.
  */
-export const activateDraggable        = <TElement extends Element = HTMLElement>({
-    // Contexts:
-    draggable,
-}: {
-    // Contexts:
-    /**
-     * The draggable side to activate.
-     */
-    draggable               : DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> }
-}): void => {
+export const activateDraggable        = <TElement extends Element = HTMLElement>(
+    draggable               : DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> },
+): void => {
     // Extract properties from the draggable context for convenience:
     const {
         // Actual states:
@@ -104,17 +99,12 @@ export const activateDraggable        = <TElement extends Element = HTMLElement>
 
 /**
  * Activates the droppable side.
+ * 
+ * @param draggable The draggable side contains droppable to activate.
  */
-export const activateDroppable        = <TElement extends Element = HTMLElement>({
-    // Contexts:
-    draggable,
-}: {
-    // Contexts:
-    /**
-     * The draggable side contains droppable to activate.
-     */
-    draggable               : DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> }
-}): void => {
+export const activateDroppable        = <TElement extends Element = HTMLElement>(
+    draggable               : DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> },
+): void => {
     // Extract properties from the draggable context for convenience:
     const {
         // Data:
@@ -141,28 +131,16 @@ export const activateDroppable        = <TElement extends Element = HTMLElement>
 
 /**
  * Deactivates the draggable side.
+ * 
+ * @param draggable The draggable side to deactivate.
+ * @param inactiveDragStatus Specifies the inactive draggable status:
+ * - `undefined` → no drag activity at all
+ * - `null`      → drag gesture active but outside all droppable zones, or either side has not responded
  */
-export const deactivateDraggable      = <TElement extends Element = HTMLElement>({
-    // Data:
-    inactiveDragStatus,
-    
-    // Contexts:
-    draggable,
-}: {
-    // Data:
-    /**
-     * Specifies the inactive draggable status:
-     * - `undefined` → no drag activity at all
-     * - `null`      → drag gesture active but outside all droppable zones, or either side has not responded
-     */
-    inactiveDragStatus      : null | undefined
-    
-    // Contexts:
-    /**
-     * The draggable side to deactivate.
-     */
-    draggable               : DraggableContext<TElement>
-}): void => {
+export const deactivateDraggable      = <TElement extends Element = HTMLElement>(
+    draggable               : DraggableContext<TElement>,
+    inactiveDragStatus      : null | undefined,
+): void => {
     // Ignore unmounted draggable:
     if (!isDragMounted(draggable)) return;
     
@@ -176,28 +154,16 @@ export const deactivateDraggable      = <TElement extends Element = HTMLElement>
  * Deactivates the currently active droppable side.
  * 
  * Do nothing if no corresponding droppable in the specified draggable.
+ * 
+ * @param draggable The draggable side that may contains droppable to deactivate.
+ * @param inactiveDropStatus Specifies the inactive droppable status:
+ * - `undefined` → no drag activity at all
+ * - `null`      → drag gesture active but outside this zone, or either side has not responded
  */
-export const deactivateDroppable      = <TElement extends Element = HTMLElement>({
-    // Data:
-    inactiveDropStatus,
-    
-    // Contexts:
-    draggable,
-}: {
-    // Data:
-    /**
-     * Specifies the inactive droppable status:
-     * - `undefined` → no drag activity at all
-     * - `null`      → drag gesture active but outside this zone, or either side has not responded
-     */
-    inactiveDropStatus      : null | undefined
-    
-    // Contexts:
-    /**
-     * The draggable side that may contains droppable to deactivate.
-     */
-    draggable               : DraggableContext<TElement>
-}): void => {
+export const deactivateDroppable      = <TElement extends Element = HTMLElement>(
+    draggable               : DraggableContext<TElement>,
+    inactiveDropStatus      : null | undefined,
+): void => {
     // Extract properties from the draggable context for convenience:
     const droppable = draggable.dragSession?.droppable;
     
@@ -216,28 +182,16 @@ export const deactivateDroppable      = <TElement extends Element = HTMLElement>
  * Deactivates the rest droppable sides (broadcast).
  * 
  * All droppable sides except the specified one will be reset.
+ * 
+ * @param draggable The draggable side that may contains droppable to exclude.
+ * @param inactiveDropStatus Specifies the inactive droppable status:
+ * - `undefined` → no drag activity at all
+ * - `null`      → drag gesture active but outside this zone, or either side has not responded
  */
-export const deactivateRestDroppables = <TElement extends Element = HTMLElement>({
-    // Data:
-    inactiveDropStatus,
-    
-    // Contexts:
-    draggable,
-}: {
-    // Data:
-    /**
-     * Specifies the inactive droppable status:
-     * - `undefined` → no drag activity at all
-     * - `null`      → drag gesture active but outside this zone, or either side has not responded
-     */
-    inactiveDropStatus      : null | undefined
-    
-    // Contexts:
-    /**
-     * The draggable side that may contains droppable to exclude.
-     */
-    draggable               : DraggableContext<TElement>
-}): void => {
+export const deactivateRestDroppables = <TElement extends Element = HTMLElement>(
+    draggable               : DraggableContext<TElement>,
+    inactiveDropStatus      : null | undefined,
+): void => {
     // Extract properties from the draggable context for convenience:
     const droppable = draggable.dragSession?.droppable;
     
