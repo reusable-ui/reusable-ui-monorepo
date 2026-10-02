@@ -18,8 +18,8 @@ import {
     type DropMetadata,
     
     // Handshakes:
-    type DragActivatedEvent,
-    type DragDeactivatedEvent,
+    type DragStartEvent,
+    type DragEndEvent,
     type DragHandshakeEvent,
     
     // Evaluations:
@@ -126,14 +126,14 @@ const setDropMetadata : Dispatch<DropMetadata | undefined>   = noop;
  * 
  * Ignores initialization signal, since no draggable UI is present.
  */
-const handleDragActivated   : EventHandler<DragActivatedEvent<Element>>   = noop;
+const handleDragStart       : EventHandler<DragStartEvent<Element>>       = noop;
 
 /**
  * Simulates the deactivation handler.
  * 
  * Ignores reset signal, since no draggable UI is present.
  */
-const handleDragDeactivated : EventHandler<DragDeactivatedEvent<Element>> = noop;
+const handleDragEnd         : EventHandler<DragEndEvent<Element>>         = noop;
 
 /**
  * Simulates the handshake handler.
@@ -187,8 +187,8 @@ export const draggable    = lazyInitializeDraggableContext<Element>({
     dropPredicate: undefined,
     
     // Stable event handlers:
-    handleDragActivated,
-    handleDragDeactivated,
+    handleDragStart,
+    handleDragEnd,
     handleDragHandshake,
     handleDragEvaluation,
     handleDragged,

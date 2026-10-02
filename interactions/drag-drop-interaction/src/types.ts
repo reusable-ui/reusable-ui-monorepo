@@ -103,7 +103,7 @@ export interface DragDropActivatedEvent<TElement extends Element = HTMLElement>
  * 
  * Extends a React `PointerEvent` with the draggable payload.
  */
-export interface DragActivatedEvent<TElement extends Element = HTMLElement>
+export interface DragStartEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
         DragDropActivatedEvent<TElement>
@@ -173,7 +173,7 @@ export interface DragDropDeactivatedEvent<TElement extends Element = HTMLElement
  * Extends a React `PointerEvent` with the draggable payload
  * and the active droppable metadata (if any) that was contacted when the gesture ended.
  */
-export interface DragDeactivatedEvent<TElement extends Element = HTMLElement>
+export interface DragEndEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
         DragDropDeactivatedEvent<TElement>
@@ -650,7 +650,7 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
      * 
      * Invoked once the drag gesture begins on the draggable side.
      */
-    onDragActivated   ?: EventHandler<DragActivatedEvent<TElement>>
+    onDragStart       ?: EventHandler<DragStartEvent<TElement>>
     
     /**
      * Signals the draggable to reset its own styling, ghost image,
@@ -658,7 +658,7 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
      * 
      * Invoked once the drag gesture ends on the draggable side.
      */
-    onDragDeactivated ?: EventHandler<DragDeactivatedEvent<TElement>>
+    onDragEnd         ?: EventHandler<DragEndEvent<TElement>>
     
     /**
      * Validates the target's business context (metadata) and responds with acceptance or rejection.

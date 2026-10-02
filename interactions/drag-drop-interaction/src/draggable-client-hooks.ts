@@ -220,8 +220,8 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
         
         
         // Handlers:
-        onDragActivated,
-        onDragDeactivated,
+        onDragStart,
+        onDragEnd,
         onDragHandshake,
         onDragEvaluation,
         onDragged,
@@ -242,8 +242,8 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     
     // Stable event handlers:
     // - Wrapped with `useStableEventHandler` so references never change, avoiding unnecessary re-syncs or deps in `useEffect()`.
-    const handleDragActivated   = useStableEventHandler(onDragActivated);
-    const handleDragDeactivated = useStableEventHandler(onDragDeactivated);
+    const handleDragStart       = useStableEventHandler(onDragStart);
+    const handleDragEnd         = useStableEventHandler(onDragEnd);
     const handleDragHandshake   = useStableEventHandler(async (event: DragHandshakeEvent<TElement>): Promise<void> => {
         // Invoke the event callback and wait for `dragResponse` mutation:
         await onDragHandshake?.(event);
@@ -283,8 +283,8 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
         dropPredicate,
         
         // Stable event handlers:
-        handleDragActivated,
-        handleDragDeactivated,
+        handleDragStart,
+        handleDragEnd,
         handleDragHandshake,
         handleDragEvaluation,
         handleDragged,

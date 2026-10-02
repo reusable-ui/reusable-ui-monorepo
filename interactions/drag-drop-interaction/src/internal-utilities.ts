@@ -530,7 +530,7 @@ export const syncDroppableContext           = <TElement extends Element = HTMLEl
  * Processes the drag-drop activation operation when a drag gesture begins.
  * 
  * - Validates drag context.
- * - Dispatches initial `DragActivatedEvent` for the draggable side.
+ * - Dispatches initial `DragStartEvent` for the draggable side.
  * - Dispatches `DragPresenceEvent` for the droppable side (broadcast).
  * 
  * @param draggable The draggable side to activate.
@@ -565,7 +565,7 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
  * Processes the drag-drop deactivation operation when a drag gesture ends.
  * 
  * - Validates drag context.
- * - Dispatches final `DragDeactivatedEvent` for the draggable side.
+ * - Dispatches final `DragEndEvent` for the draggable side.
  * - Dispatches `DragAbsenceEvent` for the droppable side (active and broadcast).
  * - Clears the active droppable reference and its interaction states.
  * 

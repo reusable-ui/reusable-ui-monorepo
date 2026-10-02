@@ -11,10 +11,10 @@ import {
     
     // Lifecycles:
     type DragDropActivatedEvent,
-    type DragActivatedEvent,
+    type DragStartEvent,
     type DragPresenceEvent,
     type DragDropDeactivatedEvent,
-    type DragDeactivatedEvent,
+    type DragEndEvent,
     type DragAbsenceEvent,
     
     // Handshakes:
@@ -165,14 +165,14 @@ export const createDragDropDeactivatedEvent = <TElement extends Element = HTMLEl
  * such as initializing state, preparing initial data, or applying side effects.
  * 
  * @param dragDropActivatedEvent The synthetic activation event created earlier.
- * @returns A synthetic `DragActivatedEvent` representing the draggable activation.
+ * @returns A synthetic `DragStartEvent` representing the draggable activation.
  */
-const createDragActivatedEvent              = <TElement extends Element = HTMLElement>(
+const createDragStartEvent                  = <TElement extends Element = HTMLElement>(
     dragDropActivatedEvent   : DragDropActivatedEvent<TElement>,
-): DragActivatedEvent<TElement> => ({
+): DragStartEvent<TElement> => ({
     // Event metadata:
     ...dragDropActivatedEvent,
-    type             : 'dragactivated',
+    type             : 'dragstart',
 });
 
 /**
@@ -221,15 +221,15 @@ const createDragPresenceEvent               = <TElement extends Element = HTMLEl
  * e.g. when the draggable is not hovering over any droppable.
  * 
  * @param dragDropDeactivatedEvent The synthetic deactivation event created earlier.
- * @returns A synthetic `DragDeactivatedEvent` representing the draggable deactivation.
+ * @returns A synthetic `DragEndEvent` representing the draggable deactivation.
  */
-const createDragDeactivatedEvent            = <TElement extends Element = HTMLElement>(
+const createDragEndEvent                    = <TElement extends Element = HTMLElement>(
     droppable                : DroppableContext< Element> | null,
     dragDropDeactivatedEvent : DragDropDeactivatedEvent<TElement>,
-): DragDeactivatedEvent<TElement> => ({
+): DragEndEvent<TElement> => ({
     // Event metadata:
     ...dragDropDeactivatedEvent,
-    type             : 'dragdeactivated',
+    type             : 'dragend',
     
     // Data:
     dropMetadata: droppable?.dropMetadata, // The metadata exposed by the droppable target, if any.
@@ -612,8 +612,8 @@ export const dispatchActivatedEvents        = <TElement extends Element = HTMLEl
 ): void => {
     if (isDragReady(draggable)) {
         // Dispatch activation for the draggable:
-        const dragActivatedEvent    = createDragActivatedEvent(dragDropActivatedEvent);
-        draggable.handleDragActivated(dragActivatedEvent);
+        const dragStartEvent = createDragStartEvent(dragDropActivatedEvent);
+        draggable.handleDragStart(dragStartEvent);
     } // if
     
     
@@ -648,8 +648,8 @@ export const dispatchDeactivatedEvents      = <TElement extends Element = HTMLEl
 ): void => {
     if (isDragReady(draggable)) {
         // Dispatch deactivation for the draggable:
-        const dragDeactivatedEvent = createDragDeactivatedEvent(draggable.dragSession?.droppable ?? null, dragDropDeactivatedEvent);
-        draggable.handleDragDeactivated(dragDeactivatedEvent);
+        const dragEndEvent = createDragEndEvent(draggable.dragSession?.droppable ?? null, dragDropDeactivatedEvent);
+        draggable.handleDragEnd(dragEndEvent);
     } // if
     
     

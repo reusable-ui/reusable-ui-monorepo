@@ -19,9 +19,9 @@ import {
     type DropMetadata,
     
     // Lifecycles:
-    type DragActivatedEvent,
+    type DragStartEvent,
     type DragPresenceEvent,
-    type DragDeactivatedEvent,
+    type DragEndEvent,
     type DragAbsenceEvent,
     
     // Handshakes:
@@ -137,7 +137,7 @@ export interface DraggableContext<TElement extends Element = HTMLElement> {
      * Signals the draggable to initialize its own styling, ghost image,
      * or other resources tied to the drag activity lifecycle.
      */
-    handleDragActivated   : EventHandler<DragActivatedEvent<TElement>>
+    handleDragStart       : EventHandler<DragStartEvent<TElement>>
     
     /**
      * Invoked once the drag gesture ends on the draggable side.
@@ -145,7 +145,7 @@ export interface DraggableContext<TElement extends Element = HTMLElement> {
      * Signals the draggable to reset its own styling, ghost image,
      * or other resources tied to the drag activity lifecycle.
      */
-    handleDragDeactivated : EventHandler<DragDeactivatedEvent<TElement>>
+    handleDragEnd         : EventHandler<DragEndEvent<TElement>>
     
     /**
      * Invoked continuously on every pointer movement during drag gesture movements
