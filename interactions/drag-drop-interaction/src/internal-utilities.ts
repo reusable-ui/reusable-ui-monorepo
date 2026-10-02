@@ -45,8 +45,8 @@ import {
 }                           from './internal-state-utilities.js'
 import {
     // Event factories:
-    createDragDropActivatedEvent,
-    createDragDropDeactivatedEvent,
+    createDragDropActivationEvent,
+    createDragDropDeactivationEvent,
     createDragProbeEvent,
     createDragDropCommittedEvent,
     
@@ -557,8 +557,8 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
     
     
     // Dispatch the initial activation events:
-    const dragDropActivatedEvent = createDragDropActivatedEvent(draggable, lastPointerDownEvent, pointedElement);
-    dispatchActivatedEvents(draggable, dragDropActivatedEvent);
+    const dragDropActivationEvent = createDragDropActivationEvent(draggable, lastPointerDownEvent, pointedElement);
+    dispatchActivatedEvents(draggable, dragDropActivationEvent);
 };
 
 /**
@@ -588,8 +588,8 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
         
         
         // Dispatch the final deactivation events:
-        const dragDropDeactivatedEvent = createDragDropDeactivatedEvent(draggable, lastPointerUpEvent);
-        dispatchDeactivatedEvents(draggable, dragDropDeactivatedEvent);
+        const dragDropDeactivationEvent = createDragDropDeactivationEvent(draggable, lastPointerUpEvent);
+        dispatchDeactivatedEvents(draggable, dragDropDeactivationEvent);
     }
     finally {
         // Reset the drag session:

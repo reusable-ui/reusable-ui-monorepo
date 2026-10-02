@@ -80,7 +80,7 @@ export type DropMetadata = DragDropData
  * 
  * Extends a React `PointerEvent` with the draggable payload.
  */
-export interface DragDropActivatedEvent<TElement extends Element = HTMLElement>
+export interface DragDropActivationEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
         PointerEvent<TElement>
@@ -106,7 +106,7 @@ export interface DragDropActivatedEvent<TElement extends Element = HTMLElement>
 export interface DragStartEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        DragDropActivatedEvent<TElement>
+        DragDropActivationEvent<TElement>
 {
     // /**
     //  * At activation, no droppable is yet contacted.
@@ -126,7 +126,7 @@ export interface DragStartEvent<TElement extends Element = HTMLElement>
 export interface DragPresenceEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        DragDropActivatedEvent<TElement>
+        DragDropActivationEvent<TElement>
 {
     /**
      * The metadata exposed by the droppable target.
@@ -149,7 +149,7 @@ export interface DragPresenceEvent<TElement extends Element = HTMLElement>
  * 
  * Extends a React `PointerEvent` with the draggable payload.
  */
-export interface DragDropDeactivatedEvent<TElement extends Element = HTMLElement>
+export interface DragDropDeactivationEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
         PointerEvent<TElement>
@@ -176,7 +176,7 @@ export interface DragDropDeactivatedEvent<TElement extends Element = HTMLElement
 export interface DragEndEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        DragDropDeactivatedEvent<TElement>
+        DragDropDeactivationEvent<TElement>
 {
     /**
      * The active droppable metadata at the time the gesture ended, if any.
@@ -198,7 +198,7 @@ export interface DragEndEvent<TElement extends Element = HTMLElement>
 export interface DragAbsenceEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        DragDropDeactivatedEvent<TElement>
+        DragDropDeactivationEvent<TElement>
 {
     /**
      * The metadata exposed by the droppable target.
