@@ -85,19 +85,18 @@ import {
  *     type DragPayload,
  *     useDraggableState,
  * } from '@reusable-ui/drag-drop-interaction';
- * import { useMergedEventHandlers } from '@reusable-ui/callbacks'
+ * import { useMergedEventHandlers } from '@reusable-ui/callbacks';
  * 
  * export interface ProductCardProps {
  *     productModel: ProductModel
  * }
  * 
- * // A draggable product card.
- * // Can be dragged into categories that accept products.
+ * // A draggable product card source.
+ * // Business rule: Can be dragged into categories that accept products.
  * export const ProductCard: FC<ProductCardProps> = ({ productModel }) => {
- *     // Payload describing this product (data carried during drag-drop):
+ *     // 1. Define the source's business data (payload) carried during drag:
  *     const productPayload = useMemo<DragPayload>(() => {
- *         // Extract product details from the model:
- *         return new Map<unknown, unknown>([
+ *         return new Map<string, unknown>([
  *             ['type' , 'product'],
  *             ['id'   , productModel.id],
  *             ['name' , productModel.name],
@@ -106,30 +105,39 @@ import {
  *         ]);
  *     }, [productModel]);
  *     
- *     // Tracks whether the pointer is currently pressed or released:
+ *     // 2. Track whether the pointer is currently pressed or released:
  *     const pressState = usePressState({
  *         pressed: 'auto',
  *     });
  *     
- *     // Continuously tracks pointer coordinates during press-and-hold gestures:
+ *     // 3. Continuously track the pointer coordinates during press-and-hold gestures:
  *     const dragState = useDragState({
  *         dragged: 'auto',
  *         computedDrag: pressState.pressed,
  *     });
  *     
- *     // Orchestrates the transaction logic for draggables:
+ *     // 4. Wire up the draggable transaction lifecycle:
  *     const { dragStatus, dropMetadata, ref } = useDraggableState<HTMLDivElement>({
  *         dragPayload  : productPayload,
  *         dragEnabled  : true,
  *         computedDrag : dragState.dragged,
  *         
- *         // Prevent the ghost image itself (product card) from being considered a valid drop target:
+ *         // Phase 1 - Activation: The user initiated a drag gesture.
+ *         // Useful for initializing drag feedback or custom drag previews.
+ *         onDragStart(event) {
+ *             console.log(`Started dragging product: ${productModel.name}`);
+ *         },
+ *         
+ *         // Phase 2 - Probe: Ignore self/children during pointer hit-testing
+ *         // so the ghost image itself (product card) doesn't block the underlying droppable zone.
  *         dropPredicate(dropCandidate): boolean {
  *             const cardElement = ref.current;
  *             return !cardElement || !cardElement.contains(dropCandidate);
  *         },
  *         
- *         // Handshake: only allow dropping into category zones
+ *         // Phase 3 - Handshake: The pointer entered a candidate droppable.
+ *         // Negotiate by inspecting the candidate target's metadata.
+ *         // NOTE: Keep this fast! It fires frequently on every pointer move.
  *         async onDragHandshake(event) {
  *             // Optional: perform async validation here (e.g. API call).
  *             const isCategoryZone = event.dropMetadata.get('type') === 'category';
@@ -138,25 +146,29 @@ import {
  *             event.dragResponse = isCategoryZone;
  *         },
  *         
- *         // Evaluation: provide live feedback on every pointer movement while hovering over a category
- *         // NOTE: avoid relying on this event unless detailed, pointer-level feedback is needed,
- *         // as it fires *aggressively* on every pointer move and may impact performance.
- *         // Consider debouncing or throttling if you need to perform expensive operations here.
+ *         // Phase 4 - Evaluation: Reports the negotiation result of both sides.
+ *         // Useful for live updates like showing a ✅ or 🚫 icon, or showing a tooltip following the cursor.
+ *         // NOTE: Consider debouncing if executing heavy logic here.
  *         onDragEvaluation(event) {
  *             const categoryName = event.dropMetadata?.get('name');
  *             console.log(`Hovering over category: ${categoryName}`);
- *             // TODO: update ghost image with category label
  *         },
  *         
- *         // Commit: final drop resolution handled by droppable side,
- *         // but we can show confirmation here
+ *         // Phase 5 - Commit: Successfully dropped into an accepted zone.
+ *         // Finalized by the droppable, but useful for source notifications/toasts.
  *         onDragCommit(event) {
  *             const categoryName = event.dropMetadata.get('name');
- *             console.log(`Dropped into category: ${categoryName}`);
- *             // TODO: show toast/notification confirming the move
+ *             console.log(`Successfully dropped into: ${categoryName}`);
+ *         },
+ *         
+ *         // Phase 6 - Deactivation: The drag session concluded (successfully or not).
+ *         // Clean up gesture states and restore resting appearance.
+ *         onDragEnd(event) {
+ *             console.log(`Drag session ended for product: ${productModel.name}`);
  *         },
  *     });
  *     
+ *     // 5. Render the UI and bind pointer event handlers:
  *     return (
  *         <div
  *             ref={ref}
@@ -174,20 +186,16 @@ import {
  *             <h4>{productModel.name}</h4>
  *             <img src={productModel.icon} alt='Product' />
  *             
- *             <span>Live drag status feedback</span>
- *             {dragStatus === true
- *                 ? '✅ Drop here!'
- *                 : dragStatus === null
- *                     ? 'Drag to a category'
- *                     : ''}
+ *             <div className='live-status-indicator'>
+ *                 {dragStatus === true  && '✅ Ready to drop!'}
+ *                 {dragStatus === false && '🚫 Cannot drop in this target.'}
+ *                 {dragStatus === null  && 'Please drag to a valid category target'}
+ *             </div>
  *             
- *             <span>Optional: show category badge while hovering</span>
  *             {dropMetadata?.get('type') === 'category' && (
- *                 <div className='category-badge'>
- *                     <img
- *                         src={dropMetadata.get('icon') as string}
- *                         alt={dropMetadata.get('name') as string}
- *                     />
+ *                 <div className='live-category-preview'>
+ *                     <h4>{dropMetadata.get('name') as string}</h4>
+ *                     <img src={dropMetadata.get('icon') as string} alt='Category preview' />
  *                 </div>
  *             )}
  *         </div>

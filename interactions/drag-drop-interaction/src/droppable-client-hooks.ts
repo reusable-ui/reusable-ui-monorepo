@@ -76,26 +76,35 @@ import {
  *     categoryModel: CategoryModel
  * }
  * 
- * // A droppable product category.
- * // Accepts only products that are in stock.
+ * // A droppable product category zone.
+ * // Business rule: Accepts only products that are in stock.
  * export const ProductCategory: FC<ProductCategoryProps> = ({ categoryModel }) => {
- *     // Metadata describing this droppable zone (business context):
+ *     // 1. Define the target's business context (metadata) exposed to the draggable:
  *     const categoryMetadata = useMemo<DropMetadata>(() => {
- *         // Extract category details from the model:
- *         return new Map<unknown, unknown>([
- *             ['type' , 'category'],
- *             ['id'   , categoryModel.id],
- *             ['name' , categoryModel.name],
- *             ['icon' , categoryModel.icon],
+ *         return new Map<string, unknown>([
+ *             ['type', 'category'],
+ *             ['id'  , categoryModel.id],
+ *             ['name', categoryModel.name],
+ *             ['icon', categoryModel.icon],
  *         ]);
  *     }, [categoryModel]);
  *     
- *     // Orchestrates the transaction logic for droppables:
+ *     // 2. Wire up the droppable transaction lifecycle:
  *     const { dropStatus, dragPayload, ref } = useDroppableState<HTMLDivElement>({
  *         dropMetadata : categoryMetadata,
  *         dropEnabled  : true,
  *         
- *         // Handshake: only accept products that are in stock
+ *         // Phase 1 - Activation: A drag started anywhere on the screen.
+ *         // Useful for proactively highlighting all valid drop zones.
+ *         onDragPresence(event) {
+ *             console.log(`A drag session has started: ${event.dragPayload.get('type')}`);
+ *         },
+ *         
+ *         // No Phase 2 on this side. The draggable handles the probing and ignores self/children during hit-testing.
+ *         
+ *         // Phase 3 - Handshake: The pointer has entered this zone.
+ *         // Negotiate by inspecting the incoming payload.
+ *         // NOTE: Keep this fast! It fires frequently on every pointer move.
  *         async onDropHandshake(event) {
  *             // Optional: perform async validation here (e.g. API call).
  *             const isProduct = event.dragPayload.get('type') === 'product';
@@ -105,39 +114,42 @@ import {
  *             event.dropResponse = isProduct && inStock;
  *         },
  *         
- *         // Evaluation: provide live feedback on every pointer movement while hovered by a product card
- *         // NOTE: avoid relying on this event unless detailed, pointer-level feedback is needed,
- *         // as it fires *aggressively* on every pointer move and may impact performance.
- *         // Consider debouncing or throttling if you need to perform expensive operations here.
+ *         // Phase 4 - Evaluation: Reports the negotiation result of both sides.
+ *         // Useful for live updates like showing a ✅ or 🚫 icon, or previewing a dropped product.
+ *         // NOTE: Consider debouncing if executing heavy logic here.
  *         onDropEvaluation(event) {
  *             const productName = event.dragPayload.get('name');
- *             console.log(`A product: ${productName} is hovering over this category`);
- *             // TODO: show a tooltip of the hovering product
+ *             console.log(`A product: ${productName} is hovering over ${categoryModel.name}`);
  *         },
  *         
- *         // Commit: handle the actual drop
+ *         // Phase 5 - Commit: The user successfully dropped the item here.
+ *         // Apply the payload to your application state or database.
  *         onDropCommit(event) {
  *             const productId = event.dragPayload.get('id');
- *             console.log(`A product with id: ${productId} has been moved into this category`);
- *             // TODO: persist to DB or trigger state update
+ *             console.log(`Committed: Product ${productId} moved to Category ${categoryModel.id}`);
+ *         },
+ *         
+ *         // Phase 6 - Deactivation: The drag session concluded (successfully or not).
+ *         // Clean up any global visual cues.
+ *         onDragAbsence(event) {
+ *             console.log(`Drag concluded. Was it hovered here? ${event.isTargeted}`);
  *         },
  *     });
  *     
+ *     // 3. Render the UI based on the live `dropStatus`:
  *     return (
  *         <div ref={ref} className='product-category'>
  *             <h4>{categoryModel.name}</h4>
  *             <img src={categoryModel.icon} alt='Category' />
  *             
- *             <span>Live acceptance feedback</span>
- *             {dropStatus === true
- *                 ? '✅ Drop here!'
- *                 : dropStatus === null
- *                     ? 'Drag products into this category'
- *                     : ''}
+ *             <div className='live-status-indicator'>
+ *                 {dropStatus === true  && '✅ Valid drop zone! Release to commit.'}
+ *                 {dropStatus === false && '🚫 Invalid payload (out of stock or wrong type).'}
+ *                 {dropStatus === null  && 'A drag is active. Drop products here!'}
+ *             </div>
  *             
- *             <span>Optional preview of the dragged product</span>
  *             {dragPayload?.get('type') === 'product' && (
- *                 <div className='product-preview'>
+ *                 <div className='live-product-preview'>
  *                     <h4>{dragPayload.get('name') as string}</h4>
  *                     <img src={dragPayload.get('icon') as string} alt='Product preview' />
  *                 </div>
