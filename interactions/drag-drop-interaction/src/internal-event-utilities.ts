@@ -606,7 +606,7 @@ const createDropCommitEvent                  = <TElement extends Element = HTMLE
  * @param draggable The draggable side associated with the drag gesture.
  * @param dragDropActivationEvent The synthetic activation event created earlier.
  */
-export const dispatchActivatedEvents         = <TElement extends Element = HTMLElement>(
+export const dispatchActivationEvents        = <TElement extends Element = HTMLElement>(
     draggable                 : DraggableContext<TElement>,
     dragDropActivationEvent   : DragDropActivationEvent<TElement>,
 ): void => {
@@ -642,7 +642,7 @@ export const dispatchActivatedEvents         = <TElement extends Element = HTMLE
  * @param draggable The draggable side associated with the drag gesture.
  * @param dragDropDeactivationEvent The synthetic deactivation event created earlier.
  */
-export const dispatchDeactivatedEvents       = <TElement extends Element = HTMLElement>(
+export const dispatchDeactivationEvents      = <TElement extends Element = HTMLElement>(
     draggable                 : DraggableContext<TElement>,
     dragDropDeactivationEvent : DragDropDeactivationEvent<TElement>,
 ): void => {
@@ -773,7 +773,7 @@ export const dispatchEvaluationEvents        = <TElement extends Element = HTMLE
  * @param draggable The draggable side associated with the drag gesture.
  * @param dragDropCommitEvent The synthetic committed event created earlier.
  */
-export const dispatchCommittedEvents         = <TElement extends Element = HTMLElement>(
+export const dispatchCommitEvents            = <TElement extends Element = HTMLElement>(
     draggable                 : DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> },
     dragDropCommitEvent       : DragDropCommitEvent<TElement>,
 ): void => {

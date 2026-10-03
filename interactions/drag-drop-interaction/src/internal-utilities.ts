@@ -51,11 +51,11 @@ import {
     createDragDropCommitEvent,
     
     // Event dispatchers:
-    dispatchActivatedEvents,
-    dispatchDeactivatedEvents,
+    dispatchActivationEvents,
+    dispatchDeactivationEvents,
     dispatchHandshakeEvents,
     dispatchEvaluationEvents,
-    dispatchCommittedEvents,
+    dispatchCommitEvents,
 }                           from './internal-event-utilities.js'
 
 
@@ -558,7 +558,7 @@ export const processDragActivation   = <TElement extends Element = HTMLElement>(
     
     // Dispatch the initial activation events:
     const dragDropActivationEvent = createDragDropActivationEvent(draggable, lastPointerDownEvent, pointedElement);
-    dispatchActivatedEvents(draggable, dragDropActivationEvent);
+    dispatchActivationEvents(draggable, dragDropActivationEvent);
 };
 
 /**
@@ -589,7 +589,7 @@ export const processDragDeactivation = <TElement extends Element = HTMLElement>(
         
         // Dispatch the final deactivation events:
         const dragDropDeactivationEvent = createDragDropDeactivationEvent(draggable, lastPointerUpEvent);
-        dispatchDeactivatedEvents(draggable, dragDropDeactivationEvent);
+        dispatchDeactivationEvents(draggable, dragDropDeactivationEvent);
     }
     finally {
         // Reset the drag session:
@@ -728,5 +728,5 @@ export const processDragCommit       = <TElement extends Element = HTMLElement>(
     
     // Dispatch the final commit events:
     const dragDropCommitEvent = createDragDropCommitEvent(draggable, lastPointerUpEvent);
-    dispatchCommittedEvents(draggable, dragDropCommitEvent);
+    dispatchCommitEvents(draggable, dragDropCommitEvent);
 };
