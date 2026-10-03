@@ -514,7 +514,7 @@ export interface DropEvaluationEvent<TElement extends Element = HTMLElement>
  * 
  * Extends a React `PointerEvent` with the drag-drop result.
  */
-export interface DragDropCommittedEvent<TElement extends Element = HTMLElement>
+export interface DragDropCommitEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
         PointerEvent<TElement>
@@ -550,7 +550,7 @@ export interface DragDropCommittedEvent<TElement extends Element = HTMLElement>
 export interface DragCommitEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        DragDropCommittedEvent<TElement>
+        DragDropCommitEvent<TElement>
 {
 }
 
@@ -566,7 +566,7 @@ export interface DragCommitEvent<TElement extends Element = HTMLElement>
 export interface DropCommitEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        DragDropCommittedEvent<TElement>
+        DragDropCommitEvent<TElement>
 {
 }
 

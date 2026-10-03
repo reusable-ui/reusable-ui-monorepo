@@ -48,7 +48,7 @@ import {
     createDragDropActivationEvent,
     createDragDropDeactivationEvent,
     createDragProbeEvent,
-    createDragDropCommittedEvent,
+    createDragDropCommitEvent,
     
     // Event dispatchers:
     dispatchActivatedEvents,
@@ -727,6 +727,6 @@ export const processDragDropCommit     = <TElement extends Element = HTMLElement
     
     
     // Dispatch the final commit events:
-    const dragDropCommittedEvent = createDragDropCommittedEvent(draggable, lastPointerUpEvent);
-    dispatchCommittedEvents(draggable, dragDropCommittedEvent);
+    const dragDropCommitEvent = createDragDropCommitEvent(draggable, lastPointerUpEvent);
+    dispatchCommittedEvents(draggable, dragDropCommitEvent);
 };
