@@ -419,83 +419,62 @@ export const FileDropZone: FC = () => {
 ## 🧠 How It Works
 
 ### Key Concepts
-- **Draggable (source)**  
-  The element or file being dragged.  
-  - Provides the actual data being dragged (payload).  
-  - This payload will be inspected by droppables during the handshake process.
 
-- **Drag Payload**
-  Carries the actual data being dragged (payload) — for example:
-  - Identifiers (`productId`, `transactionId`)
-  - Files (`File` objects)
-  - Business objects or structured payloads
+At the heart of the engine are two interacting entities exchanging strongly typed data:
 
-- **Droppable (target)**  
-  The zone where items can be dropped.  
-  - Provides the target's business context (metadata).  
-  - This metadata can be inspected by draggables during the handshake process.
+- **Draggable (Source)**  
+  The UI element or file being dragged.  
+  - Carries a **Drag Payload** (e.g., `productId`, `File` objects, or structured business data).
+  - Inspects target drop zones to decide if it wants to be dropped there.
 
-- **Drop Metadata**
-  Exposes the target's business context (metadata) — for example:
-  - Zone identifiers (`categoryId`, `dropZoneId`)
-  - Accepted types (`"image/*"`, `"text/plain"`)
-  - Custom flags or hints for styling/UX
+- **Droppable (Target)**  
+  The designated zone where items can be dropped.  
+  - Exposes **Drop Metadata** (e.g., `categoryId`, accepted file types, or custom flags).
+  - Inspects incoming payloads to decide if they are allowed.
 
-### Mechanics
+### The Engine Infrastructure
 
-#### 1. Global Registry
-- A registry maps **DOM elements → DroppableContext objects**.  
-- Each DroppableContext represents the current state of a droppable element, holding:  
-  - The droppable's business metadata (`DropMetadata`).  
-  - References to its callbacks (`onDropHandshake`, `onDropCommit`).  
-- Droppable elements **register on mount** and **unregister on unmount** to ensure the registry stays accurate and avoids memory leaks.  
-- When a droppable's metadata or callbacks change, its context is updated so the system always reflects the latest state.  
-- During a drag gesture, the engine consults this registry to determine whether the pointer is over a valid droppable and how that droppable should respond.
+Before a drag even begins, the system relies on an intelligent foundation to manage state:
 
-#### 2. Probing
-- When a draggable moves, the engine uses `elementFromPoint()` to detect which element is under the pointer.  
-- If that element is in the registry, it is treated as a valid droppable zone.
+- **Global Registry:** Droppables automatically register themselves on mount (and unregister on unmount) into a central dictionary mapping DOM elements to `DroppableContext` objects. This ensures the system always knows where valid zones are without causing memory leaks.
+- **Global Awareness:** A drag gesture isn't just local to the pointer. The engine broadcasts drag activity globally, allowing droppable zones to proactively style themselves (e.g., glowing to say *"drop here!"*) even when the pointer is not yet hovering over them.
 
-#### 3. Handshake Negotiation
-- When a draggable hovers over a droppable:  
-  - The draggable passes its payload to the droppable.  
-  - The droppable inspects the draggable's payload and sets a `dropResponse`.  
-  - The draggable inspects the droppable's metadata and sets a `dragResponse`.  
-- Possible responses:  
-  - `true`      → accepted (may show ✅ feedback to indicate a valid drop zone)  
-  - `false`     → rejected (may show 🚫 feedback to indicate drop not allowed)  
-  - `undefined` → ignored  (no feedback; user keeps searching for a valid drop zone)  
-- This two-way handshake allows:  
-  - Draggable to inspect droppable metadata and decide acceptance.  
-  - Droppable to inspect draggable payload and decide acceptance.
+### The 6-Phase Lifecycle
 
-#### 4. Evaluation Feedback
-- After both sides have returned their handshake responses, the engine emits **Evaluation events**.  
-- These events summarize the negotiation state and drive UX feedback:  
-  - ✅ icons for accepted pairs.  
-  - 🚫 icons for rejected pairs.  
-  - Highlight, pulse, shake, or glow animations for visual cues.  
-  - Text hints or cursor changes to guide the user.  
-- Evaluation events do not finalize delivery — they only reflect the current acceptance state, allowing the user to decide whether to drop.
+Every drag-and-drop interaction follows a strict, predictable transaction lifecycle:
 
-#### 5. Global Awareness Outside Droppable Zones
-Drag-drop interaction is not limited to hovered targets.  
-Even when the pointer is **not inside any droppable zone**, the engine broadcasts drag activity globally so all droppables can react.
+#### 1. Activation
+*The user initiates a drag gesture.*
+The engine wakes up, initializes drag states, fires `onDragStart` event, and broadcasts a global `onDragPresence` event.
+Droppables react to this presence by updating their appearance, showing the user all potential valid targets on the screen.
 
-Droppables receive:
-- **`dropStatus = undefined`** → *No drag activity at all.*
-- **`dropStatus = null`** → *A drag gesture is active, but the pointer is outside this zone.*
-- **`dropStatus = false`** → *A drag gesture is active over this zone, but rejected by one or both sides.*
-- **`dropStatus = true`** → *A drag gesture is active over this zone and mutually accepted.*
+#### 2. Probe
+*The user moves the pointer across the screen.*
+On every pointer movement, the engine uses `elementFromPoint()` to hit-test the DOM.
+It checks the topmost elements against the Global Registry to find the nearest valid droppable candidate under the cursor.
 
-This global awareness allows droppables to style themselves proactively — for example, highlighting potential zones or showing "drop here" cues — even before the pointer enters their bounds.
+#### 3. Handshake (Negotiation)
+*The pointer enters a candidate droppable zone.*
+A two-way negotiation instantly occurs between the source and the target:
+- The **droppable** inspects the incoming `DragPayload` and sets a `dropResponse`.
+- The **draggable** inspects the target's `DropMetadata` and sets a `dragResponse`.
+Both sides can respond with: `true` (accept), `false` (reject), or `undefined` (ignore).
 
-#### 6. Drop Delivery
-- On `drop`, the engine synthesizes a **DragCommitEvent** and a **DropCommitEvent**.  
-- The draggable receives confirmation from the accepted droppable.  
-- The droppable receives the draggable's payload.  
-- Global state resets after delivery.  
-- If either side rejects or ignores the handshake, no delivery occurs and these events are never emitted.
+#### 4. Evaluation
+*The engine processes the handshake outcome.*
+Based on the combined responses from the handshake, the engine continuously emits Evaluation events.
+This drives live UX feedback—such as showing a ✅ icon for valid pairs, a 🚫 icon for invalid pairs, or animating a pulse effect.
+*No data is moved yet; this phase purely helps the user decide whether to let go.*
+
+#### 5. Commit
+*The user releases the pointer over an accepted zone.*
+If the handshake was mutually accepted, the transaction finalizes.
+The engine fires the `onDragCommit` and `onDropCommit` events, officially delivering the `DragPayload` to the target zone so your application can update its business logic (e.g., saving to a database or reordering a list). 
+
+#### 6. Deactivation
+*The gesture concludes.*
+Whether the drop was successfully committed, rejected by a target, or cancelled by the user dropping in an empty space, the engine cleans up.
+It resets all active states, fires `onDragEnd` event, and broadcasts a global `onDragAbsence` event – so all components return to their normal resting appearance.
 
 ## 📚 Related Packages
 
