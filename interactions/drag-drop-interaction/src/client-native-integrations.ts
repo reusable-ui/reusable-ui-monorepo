@@ -15,10 +15,10 @@ import {
     updateDragLifecycle,
     
     // Processes:
-    processDragDropActivate,
-    processDragDropDeactivate,
+    processDragActivation,
+    processDragDeactivation,
     processDragProbe,
-    processDragDropCommit,
+    processDragCommit,
 }                           from './internal-utilities.js'
 import {
     // States:
@@ -95,7 +95,7 @@ const handleGlobalDragStart = (event: DragEvent): void => {
     // Wait until the state is settled:
     .then(() => {
         // Dispatch activation events after state is settled:
-        processDragDropActivate(draggable, globalPointerIntegrationRef.current?.lastPointerDownEventRef);
+        processDragActivation(draggable, globalPointerIntegrationRef.current?.lastPointerDownEventRef);
         
         
         
@@ -114,7 +114,7 @@ const handleGlobalDragEnd   = (event: DragEvent): void => {
     // Wait until the state is settled:
     .then(() => {
         // Dispatch deactivation events after state is settled:
-        processDragDropDeactivate(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef);
+        processDragDeactivation(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef);
         
         
         
@@ -140,7 +140,7 @@ const handleGlobalDragOver  = (event: DragEvent): void => {
 const handleGlobalDrop      = (event: DragEvent): void => {
     draggable.dragElementRef.current = event.target as Element | null;
     // Immediately commits after the capture:
-    processDragDropCommit(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef);
+    processDragCommit(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef);
 };
 
 

@@ -56,10 +56,10 @@ import {
     syncDraggableContext,
     
     // Processes:
-    processDragDropActivate,
-    processDragDropDeactivate,
+    processDragActivation,
+    processDragDeactivation,
     processDragProbe,
-    processDragDropCommit,
+    processDragCommit,
 }                           from './internal-utilities.js'
 import {
     type GlobalPointerIntegration,
@@ -361,7 +361,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     const handleLifecycleChange = useStableCallback((isSetup: boolean): void => {
         if (!isSetup) {
             // Cleanup : Commit first before resetting state, to ensure the last pointerup event is processed.
-            processDragDropCommit(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef);
+            processDragCommit(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef);
         } // if
         
         // Setup   : Mark draggable as active and broadcast active state to all droppables.
@@ -399,11 +399,11 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     const handleActivationChange = useStableCallback((isActive: boolean): void => {
         if (isActive) {
             // Dispatch activation events after state is settled:
-            processDragDropActivate(draggable, globalPointerIntegrationRef.current?.lastPointerDownEventRef);
+            processDragActivation(draggable, globalPointerIntegrationRef.current?.lastPointerDownEventRef);
         }
         else {
             // Dispatch deactivation events after state is settled:
-            processDragDropDeactivate(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef);
+            processDragDeactivation(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef);
         } // if
     });
     useLayoutEffect(() => {

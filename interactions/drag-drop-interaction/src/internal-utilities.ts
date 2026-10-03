@@ -536,7 +536,7 @@ export const syncDroppableContext           = <TElement extends Element = HTMLEl
  * @param draggable The draggable side to activate.
  * @param lastPointerDownEventRef A shared reference to the most recent native `pointerdown` event.
  */
-export const processDragDropActivate   = <TElement extends Element = HTMLElement>(
+export const processDragActivation   = <TElement extends Element = HTMLElement>(
     draggable               : DraggableContext<TElement>,
     lastPointerDownEventRef : RefObject<PointerEvent | undefined> | undefined,
 ): void => {
@@ -572,7 +572,7 @@ export const processDragDropActivate   = <TElement extends Element = HTMLElement
  * @param draggable The draggable side to deactivate.
  * @param lastPointerUpEventRef A shared reference to the most recent native `pointerup` event.
  */
-export const processDragDropDeactivate = <TElement extends Element = HTMLElement>(
+export const processDragDeactivation = <TElement extends Element = HTMLElement>(
     draggable               : DraggableContext<TElement>,
     lastPointerUpEventRef   : RefObject<PointerEvent | undefined> | undefined,
 ): void => {
@@ -608,7 +608,7 @@ export const processDragDropDeactivate = <TElement extends Element = HTMLElement
  * @param draggable The draggable side currently under negotiation.
  * @param pointerMoveEvent The originating native 'pointermove' event from the browser.
  */
-export const processDragProbe          = async <TElement extends Element = HTMLElement>(
+export const processDragProbe        = async <TElement extends Element = HTMLElement>(
     draggable               : DraggableContext<TElement>,
     pointerMoveEvent        : PointerEvent,
 ): Promise<void> => {
@@ -711,7 +711,7 @@ export const processDragProbe          = async <TElement extends Element = HTMLE
  * @param draggable The draggable context to commit.
  * @param lastPointerUpEventRef A shared reference to the most recent native `pointerup` event.
  */
-export const processDragDropCommit     = <TElement extends Element = HTMLElement>(
+export const processDragCommit       = <TElement extends Element = HTMLElement>(
     draggable               : DraggableContext<TElement>,
     lastPointerUpEventRef   : RefObject<PointerEvent | undefined> | undefined,
 ): void => {
