@@ -436,7 +436,7 @@ At the heart of the engine are two interacting entities exchanging strongly type
 
 Before a drag even begins, the system relies on an intelligent foundation to manage state:
 
-- **Global Registry:** Droppables automatically register themselves on mount (and unregister on unmount) into a central dictionary mapping DOM elements to `DroppableContext` objects. This ensures the system always knows where valid zones are without causing memory leaks.
+- **Global Registry:** Droppables automatically register themselves on mount (and unregister on unmount) into a central dictionary mapping DOM elements to `DroppableContext` objects. This ensures the system always knows where valid zones are.
 - **Global Awareness:** A drag gesture isn't just local to the pointer. The engine broadcasts drag activity globally, allowing droppable zones to proactively style themselves (e.g., glowing to say *"drop here!"*) even when the pointer is not yet hovering over them.
 
 ### The 6-Phase Lifecycle
@@ -464,7 +464,7 @@ Both sides can respond with: `true` (accept), `false` (reject), or `undefined` (
 *The engine processes the handshake outcome.*
 Based on the combined responses from the handshake, the engine continuously emits Evaluation events.
 This drives live UX feedback—such as showing a ✅ icon for valid pairs, a 🚫 icon for invalid pairs, or animating a pulse effect.
-*No data is moved yet; this phase purely helps the user decide whether to let go.*
+At this phase, no data is moved (committed) yet; this phase purely helps the user decide whether to let go.
 
 #### 5. Commit
 *The user releases the pointer over an accepted zone.*
@@ -473,7 +473,7 @@ The engine fires the `onDragCommit` and `onDropCommit` events, officially delive
 
 #### 6. Deactivation
 *The gesture concludes.*
-Whether the drop was successfully committed, rejected by a target, or cancelled by the user dropping in an empty space, the engine cleans up.
+Whether the drop was successfully committed, rejected by a target, or cancelled by the user, the engine cleans up.
 It resets all active states, fires `onDragEnd` event, and broadcasts a global `onDragAbsence` event – so all components return to their normal resting appearance.
 
 ## 📚 Related Packages
