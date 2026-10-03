@@ -116,7 +116,7 @@ import {
  *         },
  *         
  *         // Commit: handle the actual drop
- *         onDropped(event) {
+ *         onDropCommit(event) {
  *             const productId = event.dragPayload.get('id');
  *             console.log(`A product with id: ${productId} has been moved into this category`);
  *             // TODO: persist to DB or trigger state update
@@ -170,7 +170,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
         onDragAbsence,
         onDropHandshake,
         onDropEvaluation,
-        onDropped,
+        onDropCommit,
     } = props;
     
     
@@ -190,7 +190,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
         await onDropHandshake?.(event);
     });
     const handleDropEvaluation = useStableEventHandler(onDropEvaluation);
-    const handleDropped        = useStableEventHandler(onDropped);
+    const handleDropCommit     = useStableEventHandler(onDropCommit);
     
     
     
@@ -227,7 +227,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
         handleDragAbsence,
         handleDropHandshake,
         handleDropEvaluation,
-        handleDropped,
+        handleDropCommit,
         
         // Actual states:
         dropMountedRef,

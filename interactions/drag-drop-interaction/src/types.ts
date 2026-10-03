@@ -547,7 +547,7 @@ export interface DragDropCommittedEvent<TElement extends Element = HTMLElement>
  * 
  * Extends a React `PointerEvent` with the droppable metadata.
  */
-export interface DraggedEvent<TElement extends Element = HTMLElement>
+export interface DragCommitEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
         DragDropCommittedEvent<TElement>
@@ -563,7 +563,7 @@ export interface DraggedEvent<TElement extends Element = HTMLElement>
  * 
  * Extends a React `PointerEvent` with the draggable payload.
  */
-export interface DroppedEvent<TElement extends Element = HTMLElement>
+export interface DropCommitEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
         DragDropCommittedEvent<TElement>
@@ -699,7 +699,7 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
      * Invoked once the drag gesture ends on this draggable
      * but only if both draggable and droppable sides accepted.
      */
-    onDragged         ?: EventHandler<DraggedEvent<TElement>>
+    onDragCommit      ?: EventHandler<DragCommitEvent<TElement>>
 }
 
 /**
@@ -795,7 +795,7 @@ export interface DroppableStateProps<TElement extends Element = HTMLElement> {
      * Invoked once the drag gesture ends on this droppable
      * but only if both draggable and droppable sides accepted.
      */
-    onDropped         ?: EventHandler<DroppedEvent<TElement>>
+    onDropCommit      ?: EventHandler<DropCommitEvent<TElement>>
 }
 
 

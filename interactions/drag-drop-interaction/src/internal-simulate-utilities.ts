@@ -26,7 +26,7 @@ import {
     type DragEvaluationEvent,
     
     // Commits:
-    type DraggedEvent,
+    type DragCommitEvent,
 }                           from './types.js'
 import {
     type DraggableContext,
@@ -156,7 +156,7 @@ const handleDragEvaluation  : EventHandler<DragEvaluationEvent<Element>>  = noop
  * 
  * Ignores delivery status, since no draggable UI is present.
  */
-const handleDragged         : EventHandler<DraggedEvent<Element>>         = noop;
+const handleDragCommit      : EventHandler<DragCommitEvent<Element>>      = noop;
 
 
 
@@ -191,7 +191,7 @@ export const draggable    = lazyInitializeDraggableContext<Element>({
     handleDragEnd,
     handleDragHandshake,
     handleDragEvaluation,
-    handleDragged,
+    handleDragCommit,
     
     // Actual states:
     dragMountedRef,

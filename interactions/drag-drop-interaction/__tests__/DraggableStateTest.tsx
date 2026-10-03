@@ -31,7 +31,7 @@ export const DraggableStateTest = (props: DraggableStateTestProps) => {
         ...props,
         computedDrag,
         onDragHandshake,
-        onDragged(event) {
+        onDragCommit(event) {
             setDragged(event.dropMetadata);
         },
         dragPayload: dragPayload && !(dragPayload instanceof Map) ? new Map(Object.entries(dragPayload)) : dragPayload, // a fix for playwright serializing problem

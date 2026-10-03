@@ -29,7 +29,7 @@ export const DroppableStateTest = (props: DroppableStateTestProps) => {
     } = useDroppableState<HTMLDivElement>({
         ...props,
         onDropHandshake,
-        onDropped(event) {
+        onDropCommit(event) {
             setDropped(event.dragPayload);
         },
         dropMetadata: dropMetadata && !(dropMetadata instanceof Map) ? new Map(Object.entries(dropMetadata)) : dropMetadata, // a fix for playwright serializing problem

@@ -33,8 +33,8 @@ import {
     type DropEvaluationEvent,
     
     // Commits:
-    type DraggedEvent,
-    type DroppedEvent,
+    type DragCommitEvent,
+    type DropCommitEvent,
     
     // Reactive states:
     type DraggableState,
@@ -70,7 +70,7 @@ export interface DragSession {
      * accepted the current interaction.
      * 
      * Used during drop commit stage (pointerup) to determine whether
-     * `DraggedEvent` and `DroppedEvent` should be dispatched.
+     * `DragCommitEvent` and `DropCommitEvent` should be dispatched.
      */
     isAccepted     : boolean
     
@@ -172,7 +172,7 @@ export interface DraggableContext<TElement extends Element = HTMLElement> {
      * Peeks the droppable's metadata for the business logic
      * such as updating state, persisting data, or triggering side effects.
      */
-    handleDragged         : EventHandler<DraggedEvent<TElement>>
+    handleDragCommit      : EventHandler<DragCommitEvent<TElement>>
     
     
     
@@ -298,7 +298,7 @@ export interface DroppableContext<TElement extends Element = HTMLElement> {
      * Delivers the draggable's payload for the business logic
      * such as updating state, persisting data, or triggering side effects.
      */
-    handleDropped        : EventHandler<DroppedEvent<TElement>>
+    handleDropCommit     : EventHandler<DropCommitEvent<TElement>>
     
     
     

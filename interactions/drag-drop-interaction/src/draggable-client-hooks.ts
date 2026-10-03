@@ -150,7 +150,7 @@ import {
  *         
  *         // Commit: final drop resolution handled by droppable side,
  *         // but we can show confirmation here
- *         onDragged(event) {
+ *         onDragCommit(event) {
  *             const categoryName = event.dropMetadata.get('name');
  *             console.log(`Dropped into category: ${categoryName}`);
  *             // TODO: show toast/notification confirming the move
@@ -224,7 +224,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
         onDragEnd,
         onDragHandshake,
         onDragEvaluation,
-        onDragged,
+        onDragCommit,
     } = props;
     
     
@@ -249,7 +249,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
         await onDragHandshake?.(event);
     });
     const handleDragEvaluation  = useStableEventHandler(onDragEvaluation);
-    const handleDragged         = useStableEventHandler(onDragged);
+    const handleDragCommit      = useStableEventHandler(onDragCommit);
     
     
     
@@ -287,7 +287,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
         handleDragEnd,
         handleDragHandshake,
         handleDragEvaluation,
-        handleDragged,
+        handleDragCommit,
         
         // Actual states:
         dragMountedRef,

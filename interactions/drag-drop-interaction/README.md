@@ -68,7 +68,7 @@ while component developers must wire the underlying [`press-state`](https://www.
 ✔ **Two-Way Handshake Protocol** — Both draggable and droppable inspect each other's data before committing, ensuring predictable acceptance or rejection.  
 ✔ **Strongly Typed Data Exchange** — Uses **DragPayload** and **DropMetadata** for safe, expressive payloads and metadata, with full TypeScript support.  
 ✔ **Continuous Evaluation Events** — Broadcasts live negotiation results (`dragResponse`, `dropResponse`) for real-time UX feedback such as highlights, pulses, or shake effects.  
-✔ **Clear Commit Events** — Finalized delivery via `DraggedEvent` and `DroppedEvent`, separating gesture feedback from business logic.  
+✔ **Clear Commit Events** — Finalized delivery via `DragCommitEvent` and `DropCommitEvent`, separating gesture feedback from business logic.  
 ✔ **Precision Hit-Testing** — Pointer-based detection using `elementFromPoint()` with customizable `dropPredicate` filtering for droppable candidates.  
 ✔ **Global Drag Awareness** — Droppables receive broadcasted drag activity even outside their zones, enabling proactive styling (e.g. “drop here” highlights).  
 ✔ **Framework-Friendly** — Designed for React environments with declarative props and reactive states.  
@@ -171,7 +171,7 @@ export const ProductCard: FC<ProductCardProps> = ({ productModel }) => {
         
         // Commit: final drop resolution handled by droppable side,
         // but we can show confirmation here
-        onDragged(event) {
+        onDragCommit(event) {
             const categoryName = event.dropMetadata.get('name');
             console.log(`Dropped into category: ${categoryName}`);
             // TODO: show toast/notification confirming the move
@@ -274,7 +274,7 @@ export const ProductCategory: FC<ProductCategoryProps> = ({ categoryModel }) => 
         },
         
         // Commit: handle the actual drop
-        onDropped(event) {
+        onDropCommit(event) {
             const productId = event.dragPayload.get('id');
             console.log(`A product with id: ${productId} has been moved into this category`);
             // TODO: persist to DB or trigger state update
@@ -447,7 +447,7 @@ export const FileDropZone: FC = () => {
 - A registry maps **DOM elements → DroppableContext objects**.  
 - Each DroppableContext represents the current state of a droppable element, holding:  
   - The droppable's business metadata (`DropMetadata`).  
-  - References to its callbacks (`onDropHandshake`, `onDropped`).  
+  - References to its callbacks (`onDropHandshake`, `onDropCommit`).  
 - Droppable elements **register on mount** and **unregister on unmount** to ensure the registry stays accurate and avoids memory leaks.  
 - When a droppable's metadata or callbacks change, its context is updated so the system always reflects the latest state.  
 - During a drag gesture, the engine consults this registry to determine whether the pointer is over a valid droppable and how that droppable should respond.
@@ -491,7 +491,7 @@ Droppables receive:
 This global awareness allows droppables to style themselves proactively — for example, highlighting potential zones or showing "drop here" cues — even before the pointer enters their bounds.
 
 #### 6. Drop Delivery
-- On `drop`, the engine synthesizes a **DraggedEvent** and a **DroppedEvent**.  
+- On `drop`, the engine synthesizes a **DragCommitEvent** and a **DropCommitEvent**.  
 - The draggable receives confirmation from the accepted droppable.  
 - The droppable receives the draggable's payload.  
 - Global state resets after delivery.  
