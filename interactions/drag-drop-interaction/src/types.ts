@@ -612,7 +612,7 @@ export interface DraggableStateProps<TElement extends Element = HTMLElement> {
      * Filters candidate elements to determine valid drop targets.
      * 
      * Useful to bypass non-target overlays such as floating drag previews or cursor indicators
-     * ensuring hit-testing lands on an actual candidate element.
+     * ensuring the probing process lands on a valid candidate element.
      */
     dropPredicate     ?: (dropCandidate: Element) => boolean
     

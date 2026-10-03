@@ -12,7 +12,7 @@ import {
  * Each registered context represents the droppable side of a drag-drop interaction
  * and exposes the metadata, handlers, and runtime state required by the drag-drop engine.
  * 
- * During hit-testing, the engine walks the hovered element's ancestor chain
+ * During the probing process, the engine walks the hovered element's ancestor chain
  * and consults this registry to resolve the nearest registered droppable zone.
  * 
  * A pointer is considered inside a droppable zone if it is over:

@@ -344,7 +344,7 @@ export interface DroppableContext<TElement extends Element = HTMLElement> {
  * 
  * Carries the current pointer position and the draggable's payload.
  * 
- * Used for hit-testing for searching the top-most droppable under the pointer.
+ * Used for the probing process for searching the top-most droppable under the pointer.
  */
 export interface DragProbeEvent<TElement extends Element = HTMLElement>
     extends

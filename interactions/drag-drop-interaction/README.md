@@ -31,7 +31,7 @@ With **drag-drop-interaction**, you can build:
 | **Type safety** | Payloads must be stringified for arbitrary types. | TypeScript-first: payloads and metadata are strongly typed (value or reference types). |
 | **Event lifecycle** | Limited to `dragstart`, `dragover`, `drop`. | Full lifecycle: **Handshake → Evaluation → Commit**, with granular events for negotiation, feedback, and delivery. |
 | **Negotiation** | One-way flow; droppable zones cannot inspect payloads until drop occurs. | Two-way handshake: draggables expose payloads, droppables expose metadata, both sides respond before commit. |
-| **Hit-testing** | Browser-native hover detection (varies by engine). | Pointer-based hit-testing via `elementFromPoint()` with `dropPredicate` for filtering droppable candidates. |
+| **Probing** | Browser-native hover detection (varies by engine). | Pointer-based probing via `elementFromPoint()` with `dropPredicate` for filtering droppable candidates. |
 | **Styling hooks** | Requires manual DOM state management or custom event wiring. | Continuous inspection events drive live UX feedback (hover, pulse, shake). |
 | **Ghost image** | Uses custom ghost images via `setDragImage()`, but limited to a single DOM node or image element with fixed transparency. | Uses any React component as the ghost image, with customizable transparency and styling. |
 | **State awareness** | No built-in global awareness; zones can only react when hovered. Developers can simulate global awareness by wiring draggable events manually. | Broadcasts global drag activity so droppables can style themselves proactively, even before hover. |
@@ -69,7 +69,7 @@ while component developers must wire the underlying [`press-state`](https://www.
 ✔ **Strongly Typed Data Exchange** — Uses **DragPayload** and **DropMetadata** for safe, expressive payloads and metadata, with full TypeScript support.  
 ✔ **Continuous Evaluation Events** — Broadcasts live negotiation results (`dragResponse`, `dropResponse`) for real-time UX feedback such as highlights, pulses, or shake effects.  
 ✔ **Clear Commit Events** — Finalized delivery via `DragCommitEvent` and `DropCommitEvent`, separating gesture feedback from business logic.  
-✔ **Precision Hit-Testing** — Pointer-based detection using `elementFromPoint()` with customizable `dropPredicate` filtering for droppable candidates.  
+✔ **Precision Probing** — Pointer-based detection using `elementFromPoint()` with customizable `dropPredicate` filtering for droppable candidates.  
 ✔ **Global Drag Awareness** — Droppables receive broadcasted drag activity even outside their zones, enabling proactive styling (e.g. “drop here” highlights).  
 ✔ **Framework-Friendly** — Designed for React environments with declarative props and reactive states.  
 
@@ -452,7 +452,7 @@ export const FileDropZone: FC = () => {
 - When a droppable's metadata or callbacks change, its context is updated so the system always reflects the latest state.  
 - During a drag gesture, the engine consults this registry to determine whether the pointer is over a valid droppable and how that droppable should respond.
 
-#### 2. Hit-Testing
+#### 2. Probing
 - When a draggable moves, the engine uses `elementFromPoint()` to detect which element is under the pointer.  
 - If that element is in the registry, it is treated as a valid droppable zone.
 

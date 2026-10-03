@@ -76,7 +76,7 @@ const hasDragSession = <TElement extends Element = HTMLElement>(draggable: Dragg
 /**
  * Resolves the top-most DOM element at the given pointer coordinates.
  * 
- * Ensures hit-testing lands on a valid candidate element
+ * Ensures the probing process lands on a valid candidate element
  * by bypassing non-target overlays such as floating drag previews
  * or cursor indicators.
  * 
@@ -107,7 +107,7 @@ const resolvePointedElement = (pointerMoveEvent: PointerEvent, dropPredicate?: (
  * 
  * Sequentially yields each element from self up to root,
  * allowing consumers to short-circuit early
- * once a valid droppable candidate is found during hit-testing.
+ * once a valid droppable candidate is found during the probing process.
  * 
  * @param pointedElement The initial element detected under the pointer via `resolvePointedElement()`.
  * @yields Each element in the ancestor chain, starting with the given element itself.

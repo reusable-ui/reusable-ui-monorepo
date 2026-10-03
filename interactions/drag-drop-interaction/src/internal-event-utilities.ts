@@ -286,7 +286,7 @@ const createDragAbsenceEvent                 = <TElement extends Element = HTMLE
 
 
 /**
- * Creates a synthetic probe event at the hit-test stage on the draggable side.
+ * Creates a synthetic probe event at the probing stage on the draggable side.
  * 
  * Wraps the native 'pointermove' event into a React synthetic event,
  * establishing the draggable as `currentTarget` and the pointed element as `target`.
