@@ -4,7 +4,7 @@ import {
     type DraggableStateProps,
     useDraggableState,
 } from '../dist/index.js'
-import { handleAcceptDragHandshake } from './drag-drop-handler-test.js'
+import { handleAcceptDragHandshake, handleRejectDragHandshake } from './drag-drop-handler-test.js'
 
 
 
@@ -13,13 +13,16 @@ export interface DraggableStateTestProps
         DraggableStateProps<HTMLDivElement>
 {
     index: number
+    simulateDragAccept ?: boolean
 }
 export const DraggableStateTest = (props: DraggableStateTestProps) => {
     const {
         index,
-        computedDrag,
-        onDragHandshake = handleAcceptDragHandshake,
+        simulateDragAccept = true,
         dragPayload,
+        onDragHandshake    : onDragHandshakeProp,
+        onDragCommit       : onDragCommitProp,
+        ...restProps
     } = props;
     const [dragged, setDragged] = useState<DropMetadata | undefined>(undefined);
     
@@ -28,10 +31,13 @@ export const DraggableStateTest = (props: DraggableStateTestProps) => {
         dropMetadata,
         ref,
     } = useDraggableState<HTMLDivElement>({
-        ...props,
-        computedDrag,
-        onDragHandshake,
+        ...restProps,
+        async onDragHandshake(event) {
+            (simulateDragAccept ? handleAcceptDragHandshake : handleRejectDragHandshake)(event);
+            await onDragHandshakeProp?.(event);
+        },
         onDragCommit(event) {
+            onDragCommitProp?.(event);
             setDragged(event.dropMetadata);
         },
         dragPayload: dragPayload && !(dragPayload instanceof Map) ? new Map(Object.entries(dragPayload)) : dragPayload, // a fix for playwright serializing problem

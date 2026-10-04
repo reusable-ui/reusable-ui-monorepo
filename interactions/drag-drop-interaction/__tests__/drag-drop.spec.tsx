@@ -6,8 +6,6 @@ import { DroppableStateTest } from './DroppableStateTest.js'
 import {
     type DragPayload,
     type DropMetadata,
-    type DraggableStateProps,
-    type DroppableStateProps,
 } from '../dist/index.js'
 import {
     TEST_PAYLOAD,
@@ -15,10 +13,6 @@ import {
     TEST_METADATA_2,
     TEST_METADATA_3,
 } from './drag-drop-data-test.js'
-import {
-    handleRejectDragHandshake,
-    handleRejectDropHandshake,
-} from './drag-drop-handler-test.js'
 
 
 
@@ -32,26 +26,26 @@ interface DragDropTestCase {
     /**
      * A descriptive label of the overall test case.
      */
-    title            : string
+    title               : string
     
     /**
      * Optional custom drag handshake handler for the draggable side.
      * 
      * Defaults to always accepting any droppable's metadata and allowing the drag-drop operation to continue.
      */
-    onDragHandshake ?: DraggableStateProps<HTMLDivElement>['onDragHandshake']
+    simulateDragAccept ?: boolean
     
     /**
      * Optional custom drop handshake handler for the droppable side.
      * 
      * Defaults to always accepting any draggable's payload and allowing the drag-drop operation to continue.
      */
-    onDropHandshake ?: DroppableStateProps<HTMLDivElement>['onDropHandshake']
+    simulateDropAccept ?: boolean
     
     /**
      * A sequence of drag state updates and assertions.
      */
-    updates          : {
+    updates             : {
         // Test Inputs:
         
         /**
@@ -188,8 +182,8 @@ interface DragDropTestCase {
 
 const testCases : DragDropTestCase[] = [
     {
-        title           : 'Simple drag activity',
-        updates         : [
+        title               : 'Simple drag activity',
+        updates             : [
             {
                 title               : 'No drag',
                 computedDrag        : false,
@@ -291,8 +285,8 @@ const testCases : DragDropTestCase[] = [
         ],
     },
     {
-        title           : 'Simple drag activity with transitions',
-        updates         : [
+        title               : 'Simple drag activity with transitions',
+        updates             : [
             {
                 title               : 'No drag',
                 computedDrag        : false,
@@ -477,8 +471,8 @@ const testCases : DragDropTestCase[] = [
     
     
     {
-        title           : 'Dropped outside any droppable zone',
-        updates         : [
+        title               : 'Dropped outside any droppable zone',
+        updates             : [
             {
                 title               : 'No drag',
                 computedDrag        : false,
@@ -560,8 +554,8 @@ const testCases : DragDropTestCase[] = [
         ],
     },
     {
-        title           : 'Dropped outside any droppable zone with transitions',
-        updates         : [
+        title               : 'Dropped outside any droppable zone with transitions',
+        updates             : [
             {
                 title               : 'No drag',
                 computedDrag        : false,
@@ -726,8 +720,8 @@ const testCases : DragDropTestCase[] = [
     
     
     {
-        title           : 'Simple drag canceled by draggable side',
-        updates         : [
+        title               : 'Simple drag canceled by draggable side',
+        updates             : [
             {
                 title               : 'No drag',
                 computedDrag        : false,
@@ -834,8 +828,8 @@ const testCases : DragDropTestCase[] = [
         ],
     },
     {
-        title           : 'Simple drag canceled by droppable side',
-        updates         : [
+        title               : 'Simple drag canceled by droppable side',
+        updates             : [
             {
                 title               : 'No drag',
                 computedDrag        : false,
@@ -942,8 +936,8 @@ const testCases : DragDropTestCase[] = [
         ],
     },
     {
-        title           : 'Simple drag canceled by both sides',
-        updates         : [
+        title               : 'Simple drag canceled by both sides',
+        updates             : [
             {
                 title               : 'No drag',
                 computedDrag        : false,
@@ -1051,8 +1045,8 @@ const testCases : DragDropTestCase[] = [
         ],
     },
     {
-        title           : 'Simple drag canceled by draggable side with transitions',
-        updates         : [
+        title               : 'Simple drag canceled by draggable side with transitions',
+        updates             : [
             {
                 title               : 'No drag',
                 computedDrag        : false,
@@ -1239,8 +1233,8 @@ const testCases : DragDropTestCase[] = [
         ],
     },
     {
-        title           : 'Simple drag canceled by droppable side with transitions',
-        updates         : [
+        title               : 'Simple drag canceled by droppable side with transitions',
+        updates             : [
             {
                 title               : 'No drag',
                 computedDrag        : false,
@@ -1427,8 +1421,8 @@ const testCases : DragDropTestCase[] = [
         ],
     },
     {
-        title           : 'Simple drag canceled by both sides with transitions',
-        updates         : [
+        title               : 'Simple drag canceled by both sides with transitions',
+        updates             : [
             {
                 title               : 'No drag',
                 computedDrag        : false,
@@ -1619,9 +1613,9 @@ const testCases : DragDropTestCase[] = [
     
     
     {
-        title           : 'Simple drag handshake rejected by draggable side',
-        onDragHandshake : handleRejectDragHandshake,
-        updates         : [
+        title               : 'Simple drag handshake rejected by draggable side',
+        simulateDragAccept  : false,
+        updates             : [
             {
                 title               : 'No drag',
                 computedDrag        : false,
@@ -1723,9 +1717,9 @@ const testCases : DragDropTestCase[] = [
         ],
     },
     {
-        title           : 'Simple drag handshake rejected by droppable side',
-        onDropHandshake : handleRejectDropHandshake,
-        updates         : [
+        title               : 'Simple drag handshake rejected by droppable side',
+        simulateDropAccept  : false,
+        updates             : [
             {
                 title               : 'No drag',
                 computedDrag        : false,
@@ -1827,10 +1821,10 @@ const testCases : DragDropTestCase[] = [
         ],
     },
     {
-        title           : 'Simple drag handshake rejected by both sides',
-        onDragHandshake : handleRejectDragHandshake,
-        onDropHandshake : handleRejectDropHandshake,
-        updates         : [
+        title               : 'Simple drag handshake rejected by both sides',
+        simulateDragAccept  : false,
+        simulateDropAccept  : false,
+        updates             : [
             {
                 title               : 'No drag',
                 computedDrag        : false,
@@ -1932,9 +1926,9 @@ const testCases : DragDropTestCase[] = [
         ],
     },
     {
-        title           : 'Simple drag handshake rejected by draggable side with transitions',
-        onDragHandshake : handleRejectDragHandshake,
-        updates         : [
+        title               : 'Simple drag handshake rejected by draggable side with transitions',
+        simulateDragAccept  : false,
+        updates             : [
             {
                 title               : 'No drag',
                 computedDrag        : false,
@@ -2116,9 +2110,9 @@ const testCases : DragDropTestCase[] = [
         ],
     },
     {
-        title           : 'Simple drag handshake rejected by droppable side with transitions',
-        onDropHandshake : handleRejectDropHandshake,
-        updates         : [
+        title               : 'Simple drag handshake rejected by droppable side with transitions',
+        simulateDropAccept  : false,
+        updates             : [
             {
                 title               : 'No drag',
                 computedDrag        : false,
@@ -2300,10 +2294,10 @@ const testCases : DragDropTestCase[] = [
         ],
     },
     {
-        title           : 'Simple drag handshake rejected by both sides with transitions',
-        onDragHandshake : handleRejectDragHandshake,
-        onDropHandshake : handleRejectDropHandshake,
-        updates         : [
+        title               : 'Simple drag handshake rejected by both sides with transitions',
+        simulateDragAccept  : false,
+        simulateDropAccept  : false,
+        updates             : [
             {
                 title               : 'No drag',
                 computedDrag        : false,
@@ -2493,8 +2487,8 @@ test.describe('useDraggableState() + useDroppableState()', () => {
     let currentDropEnabled    = true;
     for (const {
         title,
-        onDragHandshake,
-        onDropHandshake,
+        simulateDragAccept,
+        simulateDropAccept,
         updates,
     } of testCases) {
         test(title, async ({ mount, page }) => {
@@ -2502,10 +2496,10 @@ test.describe('useDraggableState() + useDroppableState()', () => {
             const component = await mount(
                 <DraggableDroppableTest>
                     {/* `Object.fromEntries(Map)` => a fix for playwright serializing problem */}
-                    <DraggableStateTest index={0} dragPayload={Object.fromEntries(TEST_PAYLOAD) as typeof TEST_PAYLOAD} computedDrag={currentDragged} dragEnabled={currentDragEnabled} onDragHandshake={onDragHandshake} />
-                    <DroppableStateTest index={0} dropMetadata={Object.fromEntries(TEST_METADATA_1) as typeof TEST_METADATA_1} dropEnabled={currentDropEnabled} onDropHandshake={onDropHandshake} />
-                    <DroppableStateTest index={1} dropMetadata={Object.fromEntries(TEST_METADATA_2) as typeof TEST_METADATA_2} dropEnabled={currentDropEnabled} onDropHandshake={onDropHandshake} />
-                    <DroppableStateTest index={2} dropMetadata={Object.fromEntries(TEST_METADATA_3) as typeof TEST_METADATA_3} dropEnabled={currentDropEnabled} onDropHandshake={onDropHandshake} />
+                    <DraggableStateTest index={0} dragPayload={Object.fromEntries(TEST_PAYLOAD) as typeof TEST_PAYLOAD} computedDrag={currentDragged} dragEnabled={currentDragEnabled} simulateDragAccept={simulateDragAccept} />
+                    <DroppableStateTest index={0} dropMetadata={Object.fromEntries(TEST_METADATA_1) as typeof TEST_METADATA_1} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept} />
+                    <DroppableStateTest index={1} dropMetadata={Object.fromEntries(TEST_METADATA_2) as typeof TEST_METADATA_2} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept} />
+                    <DroppableStateTest index={2} dropMetadata={Object.fromEntries(TEST_METADATA_3) as typeof TEST_METADATA_3} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept} />
                 </DraggableDroppableTest>
             );
             
@@ -2576,10 +2570,10 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                 await component.update(
                     <DraggableDroppableTest>
                         {/* `Object.fromEntries(Map)` => a fix for playwright serializing problem */}
-                        <DraggableStateTest index={0} dragPayload={Object.fromEntries(TEST_PAYLOAD) as typeof TEST_PAYLOAD} computedDrag={currentDragged} dragEnabled={currentDragEnabled} onDragHandshake={onDragHandshake} />
-                        <DroppableStateTest index={0} dropMetadata={Object.fromEntries(TEST_METADATA_1) as typeof TEST_METADATA_1} dropEnabled={currentDropEnabled} onDropHandshake={onDropHandshake} />
-                        <DroppableStateTest index={1} dropMetadata={Object.fromEntries(TEST_METADATA_2) as typeof TEST_METADATA_2} dropEnabled={currentDropEnabled} onDropHandshake={onDropHandshake} />
-                        <DroppableStateTest index={2} dropMetadata={Object.fromEntries(TEST_METADATA_3) as typeof TEST_METADATA_3} dropEnabled={currentDropEnabled} onDropHandshake={onDropHandshake} />
+                        <DraggableStateTest index={0} dragPayload={Object.fromEntries(TEST_PAYLOAD) as typeof TEST_PAYLOAD} computedDrag={currentDragged} dragEnabled={currentDragEnabled} simulateDragAccept={simulateDragAccept} />
+                        <DroppableStateTest index={0} dropMetadata={Object.fromEntries(TEST_METADATA_1) as typeof TEST_METADATA_1} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept} />
+                        <DroppableStateTest index={1} dropMetadata={Object.fromEntries(TEST_METADATA_2) as typeof TEST_METADATA_2} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept} />
+                        <DroppableStateTest index={2} dropMetadata={Object.fromEntries(TEST_METADATA_3) as typeof TEST_METADATA_3} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept} />
                     </DraggableDroppableTest>
                 );
                 
