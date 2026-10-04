@@ -156,7 +156,7 @@ interface DragDropTestCase {
         expectedPayload3    ?: DragPayload | null | undefined | 'no-expect'
         
         
-        // Events:
+        // Reactive States:
         
         /**
          * The expected dragged metadata at the draggable side:
