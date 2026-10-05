@@ -162,6 +162,13 @@ export interface DragDropDeactivationEvent<TElement extends Element = HTMLElemen
      * for contextual styling or state initialization.
      */
     readonly dragPayload  : DragPayload
+    
+    /**
+     * The active droppable metadata at the time the gesture ended, if any.
+     * 
+     * Becomes `undefined` if no droppable was contacted when the gesture ended.
+     */
+    readonly dropMetadata : DropMetadata | undefined
 }
 
 /**
@@ -178,12 +185,6 @@ export interface DragEndEvent<TElement extends Element = HTMLElement>
         // Bases:
         DragDropDeactivationEvent<TElement>
 {
-    /**
-     * The active droppable metadata at the time the gesture ended, if any.
-     * 
-     * Becomes `undefined` if no droppable was contacted when the gesture ended.
-     */
-    readonly dropMetadata : DropMetadata | undefined
 }
 
 /**

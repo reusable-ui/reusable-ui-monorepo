@@ -151,7 +151,8 @@ export const createDragDropDeactivationEvent = <TElement extends Element = HTMLE
         }),
         
         // Data:
-        dragPayload: draggable.dragPayload, // The payload carried by the draggable source.
+        dragPayload  : draggable.dragPayload, // The payload carried by the draggable source.
+        dropMetadata : undefined,             // Will be refined in derived events.
     };
 };
 
