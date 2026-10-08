@@ -720,9 +720,10 @@ export const processDragCommit       = <TElement extends Element = HTMLElement>(
     // - Draggable is unmounted.
     // - Draggable is disabled.
     // - No pointerup event was captured.
+    // - Droppable is disabled
     // - No active droppable side was accepted during the drag gesture.
     const lastPointerUpEvent = lastPointerUpEventRef?.current;
-    if (!isDragReady(draggable) || !lastPointerUpEvent || !hasDragSession(draggable) || !draggable.dragSession.isAccepted) return;
+    if (!isDragReady(draggable) || !lastPointerUpEvent || !hasDragSession(draggable) || !isDropReady(draggable.dragSession.droppable) || !draggable.dragSession.isAccepted) return;
     
     
     
