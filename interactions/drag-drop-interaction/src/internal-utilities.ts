@@ -389,7 +389,7 @@ export const updateDroppableRegistry        = <TElement extends Element = HTMLEl
     isSetup     : boolean,
 ): void => {
     if (isSetup) {
-        droppableRegistry.set(dropElement, droppable as DroppableContext< Element>);
+        droppableRegistry.set(dropElement, droppable as unknown as DroppableContext< Element>);
     }
     else {
         droppableRegistry.delete(dropElement);
