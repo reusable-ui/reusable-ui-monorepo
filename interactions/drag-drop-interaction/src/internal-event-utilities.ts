@@ -477,6 +477,7 @@ const createDropEvaluationEvent              = <TElement extends Element = HTMLE
     const {
         // Actual states:
         dragElementRef,
+        dragSession,
     } = draggable;
     
     const {
@@ -486,7 +487,7 @@ const createDropEvaluationEvent              = <TElement extends Element = HTMLE
         // Actual states:
         dropElementRef,
     } = droppable;
-    const isTargeted = (droppable === draggable.dragSession?.droppable);
+    const isTargeted = (droppable === dragSession?.droppable);
     
     
     
