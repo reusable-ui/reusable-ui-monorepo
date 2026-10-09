@@ -207,7 +207,7 @@ const createDragPresenceEvent                = <TElement extends Element = HTMLE
         type             : 'dragpresence',
         
         // On the droppable side, `currentTarget` points to the droppable itself.
-        // The draggable that was `currentTarget` in the activation stage is now `relatedTarget`,
+        // The draggable that was `currentTarget` in the activation stage is now `relatedTarget`.
         // This swap reflects perspective: each side treats itself as current, partner as related.
         currentTarget    : dropElementRef.current as TElement,
         relatedTarget    : dragDropActivationEvent.currentTarget,
