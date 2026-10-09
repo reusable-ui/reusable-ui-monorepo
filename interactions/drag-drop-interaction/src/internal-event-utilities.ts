@@ -6,9 +6,6 @@ import {
 
 // Types:
 import {
-    // Data:
-    type DropMetadata,
-    
     // Lifecycles:
     type DragDropActivationEvent,
     type DragStartEvent,
@@ -187,28 +184,38 @@ const createDragStartEvent                   = <TElement extends Element = HTMLE
  * and the droppable element becomes `currentTarget`,
  * reflecting the droppable's perspective: self as current, partner as related.
  * 
+ * @param droppable Each droppable side associated with the drag presence broadcast event.
  * @param dragDropActivationEvent The synthetic activation event created earlier.
- * @param dropMetadata The metadata exposed by the droppable target.
  * @returns A synthetic `DragPresenceEvent` representing the drag activity presence.
  */
 const createDragPresenceEvent                = <TElement extends Element = HTMLElement>(
+    droppable                 : DroppableContext<TElement>,
     dragDropActivationEvent   : DragDropActivationEvent<TElement>,
-    dropMetadata              : DropMetadata,
-): DragPresenceEvent<TElement> => ({
-    // Event metadata:
-    ...dragDropActivationEvent,
-    type             : 'dragpresence',
+): DragPresenceEvent<TElement> => {
+    // Extract properties from the droppable context for convenience:
+    const {
+        // Data:
+        dropMetadata,
+        
+        // Actual states:
+        dropElementRef,
+    } = droppable;
     
-    // On the droppable side, `currentTarget` points to the droppable itself.
-    // The draggable that was `currentTarget` in the activation stage is now `relatedTarget`,
-    // and vice versa for the droppable.
-    // This swap reflects perspective: each side treats itself as current, partner as related.
-    currentTarget    : dragDropActivationEvent.relatedTarget as TElement,
-    relatedTarget    : dragDropActivationEvent.currentTarget,
-    
-    // Data:
-    dropMetadata, // The metadata exposed by the droppable target.
-});
+    return {
+        // Event metadata:
+        ...dragDropActivationEvent,
+        type             : 'dragpresence',
+        
+        // On the droppable side, `currentTarget` points to the droppable itself.
+        // The draggable that was `currentTarget` in the activation stage is now `relatedTarget`,
+        // This swap reflects perspective: each side treats itself as current, partner as related.
+        currentTarget    : dropElementRef.current as TElement,
+        relatedTarget    : dragDropActivationEvent.currentTarget,
+        
+        // Data:
+        dropMetadata, // The metadata exposed by the droppable target.
+    };
+};
 
 /**
  * Creates a synthetic deactivation event on the draggable side.
@@ -627,7 +634,7 @@ export const dispatchActivationEvents        = <TElement extends Element = HTMLE
         
         
         
-        const eachDragPresenceEvent = createDragPresenceEvent(dragDropActivationEvent, eachDroppable.dropMetadata);
+        const eachDragPresenceEvent = createDragPresenceEvent(eachDroppable, dragDropActivationEvent);
         eachDroppable.handleDragPresence(eachDragPresenceEvent);
     } // for
 };
