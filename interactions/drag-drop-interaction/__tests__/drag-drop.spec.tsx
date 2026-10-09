@@ -3535,11 +3535,6 @@ const testCases : DragDropTestCase[] = [
 ];
 
 test.describe('useDraggableState() + useDroppableState()', () => {
-    let currentPointerPos     = -1;
-    let currentDragged        = false;
-    let currentPointerPressed = false;
-    let currentDragEnabled    = true;
-    let currentDropEnabled    = true;
     for (const {
         title,
         simulateDragAccept,
@@ -3547,6 +3542,15 @@ test.describe('useDraggableState() + useDroppableState()', () => {
         updates,
     } of testCases) {
         test(title, async ({ mount, page }) => {
+            // Localized state variables unique to this specific test execution:
+            let currentPointerPos     = -1;
+            let currentDragged        = false;
+            let currentPointerPressed = false;
+            let currentDragEnabled    = true;
+            let currentDropEnabled    = true;
+            
+            
+            
             // Event trackers:
             const dragDropEvents = new Map<string, any[]>();
             
