@@ -315,6 +315,11 @@ export interface DroppableContext<TElement extends Element = HTMLElement> {
      */
     dropMountedRef       : RefObject<boolean | undefined>
     
+    /**
+     * The reference to the DOM element that serves as the droppable target.
+     */
+    dropElementRef        : RefObject<TElement | null>
+    
     
     
     // Reactive states:

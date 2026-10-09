@@ -243,6 +243,7 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
         
         // Actual states:
         dropMountedRef,
+        dropElementRef,
         
         // Reactive states:
         setDropStatus,
