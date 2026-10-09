@@ -461,6 +461,9 @@ const createDragEvaluationEvent              = <TElement extends Element = HTMLE
  * Pass `DragProbeEvent` if no handshake was performed,
  * e.g. when the draggable is not hovering over any droppable.
  * 
+ * The *active* droppable element is replaced by *current* droppable,
+ * reflecting the droppable's perspective: self as current, partner as related.
+ * 
  * @param dragResponse The draggable's acceptance/rejection result.
  * @returns A synthetic `DropEvaluationEvent` for live feedback.
  */
@@ -474,6 +477,9 @@ const createDropEvaluationEvent              = <TElement extends Element = HTMLE
     const {
         // Data:
         dropMetadata,
+        
+        // Actual states:
+        dropElementRef,
     } = droppable;
     const isTargeted = (droppable === draggable.dragSession?.droppable);
     
@@ -486,6 +492,11 @@ const createDropEvaluationEvent              = <TElement extends Element = HTMLE
         // Event metadata:
         ...dropHandshakeEvent,
         type             : 'dropevaluation',
+        
+        // On the droppable side, `currentTarget` points to the droppable itself.
+        // The *active* droppable that was `currentTarget` in the handshake stage is now replaced by *current* droppable.
+        // This update reflects perspective: each side treats itself as current, partner as related.
+        currentTarget    : dropElementRef.current as TElement,
         
         // Data:
         dropMetadata, // The metadata exposed by the droppable side.
