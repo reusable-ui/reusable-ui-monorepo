@@ -35,6 +35,10 @@ export const DraggableStateTest = (props: DraggableStateTestProps) => {
         ref,
     } = useDraggableState<HTMLDivElement>({
         ...restProps,
+        dropPredicate(dropCandidate): boolean {
+            const draggableElement = ref.current;
+            return !draggableElement || !draggableElement.contains(dropCandidate);
+        },
         onDragStart(event) {
             props.onDragStart?.({
                 ...event,
