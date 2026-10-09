@@ -188,8 +188,8 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     
     
     // Ref to the droppable DOM element:
-    const dropRef     = useRef<TElement | null>(null);
-    const dropElement = dropRef.current;
+    const dropElementRef = useRef<TElement | null>(null);
+    const dropElement    = dropElementRef.current;
     
     
     
@@ -298,6 +298,6 @@ export const useDroppableState = <TElement extends Element = HTMLElement>(props:
     return {
         dropStatus,
         dragPayload,
-        ref : dropRef,
+        ref : dropElementRef,
     } satisfies DroppableState<TElement>;
 };
