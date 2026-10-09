@@ -268,6 +268,9 @@ const createDragAbsenceEvent                 = <TElement extends Element = HTMLE
     const {
         // Data:
         dropMetadata,
+        
+        // Actual states:
+        dropElementRef,
     } = droppable;
     const isTargeted = (droppable === draggable.dragSession?.droppable);
     
@@ -279,10 +282,9 @@ const createDragAbsenceEvent                 = <TElement extends Element = HTMLE
         type             : 'dragabsence',
         
         // On the droppable side, `currentTarget` points to the droppable itself.
-        // The draggable that was `currentTarget` in the deactivation stage is now `relatedTarget`,
-        // and vice versa for the droppable.
+        // The draggable that was `currentTarget` in the deactivation stage is now `relatedTarget`.
         // This swap reflects perspective: each side treats itself as current, partner as related.
-        currentTarget    : dragDropDeactivationEvent.relatedTarget as Element,
+        currentTarget    : dropElementRef.current as TElement,
         relatedTarget    : dragDropDeactivationEvent.currentTarget,
         
         // Data:
