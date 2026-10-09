@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
 import {
     type DropMetadata,
+    type DragStartEvent,
+    type DragEndEvent,
+    type DragHandshakeEvent,
+    type DragEvaluationEvent,
+    type DragCommitEvent,
     type DraggableStateProps,
     useDraggableState,
 } from '../dist/index.js'
@@ -20,8 +25,6 @@ export const DraggableStateTest = (props: DraggableStateTestProps) => {
         index,
         simulateDragAccept = true,
         dragPayload,
-        onDragHandshake    : onDragHandshakeProp,
-        onDragCommit       : onDragCommitProp,
         ...restProps
     } = props;
     const [dragged, setDragged] = useState<DropMetadata | undefined>(undefined);
@@ -32,12 +35,50 @@ export const DraggableStateTest = (props: DraggableStateTestProps) => {
         ref,
     } = useDraggableState<HTMLDivElement>({
         ...restProps,
+        onDragStart(event) {
+            props.onDragStart?.({
+                ...event,
+                
+                // a fix for playwright serializing problem:
+                dragPayload: Object.fromEntries(event.dragPayload),
+            } satisfies DragStartEvent<HTMLDivElement>);
+        },
+        onDragEnd(event) {
+            props.onDragEnd?.({
+                ...event,
+                
+                // a fix for playwright serializing problem:
+                dragPayload: Object.fromEntries(event.dragPayload),
+                dropMetadata: event.dropMetadata ? Object.fromEntries(event.dropMetadata) : undefined,
+            } satisfies DragEndEvent<HTMLDivElement>);
+        },
         async onDragHandshake(event) {
             (simulateDragAccept ? handleAcceptDragHandshake : handleRejectDragHandshake)(event);
-            await onDragHandshakeProp?.(event);
+            await props.onDragHandshake?.({
+                ...event,
+                
+                // a fix for playwright serializing problem:
+                dragPayload: Object.fromEntries(event.dragPayload),
+                dropMetadata: Object.fromEntries(event.dropMetadata),
+            } satisfies DragHandshakeEvent<HTMLDivElement>);
+        },
+        onDragEvaluation(event) {
+            props.onDragEvaluation?.({
+                ...event,
+                
+                // a fix for playwright serializing problem:
+                dragPayload: Object.fromEntries(event.dragPayload),
+                dropMetadata: event.dropMetadata ? Object.fromEntries(event.dropMetadata) : undefined,
+            } satisfies DragEvaluationEvent<HTMLDivElement>);
         },
         onDragCommit(event) {
-            onDragCommitProp?.(event);
+            props.onDragCommit?.({
+                ...event,
+                
+                // a fix for playwright serializing problem:
+                dragPayload: Object.fromEntries(event.dragPayload),
+                dropMetadata: Object.fromEntries(event.dropMetadata),
+            } satisfies DragCommitEvent<HTMLDivElement>);
             setDragged(event.dropMetadata);
         },
         dragPayload: dragPayload && !(dragPayload instanceof Map) ? new Map(Object.entries(dragPayload)) : dragPayload, // a fix for playwright serializing problem

@@ -18,3 +18,4 @@ export const TEST_METADATA_2 : DropMetadata = new Map<unknown, unknown>([
 export const TEST_METADATA_3 : DropMetadata = new Map<unknown, unknown>([
     ['name', 'TEST_METADATA_3'],
 ]);
+export const TEST_METADATA = [TEST_METADATA_1, TEST_METADATA_2, TEST_METADATA_3] as const;

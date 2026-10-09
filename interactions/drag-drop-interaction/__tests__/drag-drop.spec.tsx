@@ -6,13 +6,28 @@ import { DroppableStateTest } from './DroppableStateTest.js'
 import {
     type DragPayload,
     type DropMetadata,
+    
+    type DragStartEvent,
+    type DragPresenceEvent,
+    type DragEndEvent,
+    type DragAbsenceEvent,
+    type DragHandshakeEvent,
+    type DropHandshakeEvent,
+    type DragEvaluationEvent,
+    type DropEvaluationEvent,
+    type DragCommitEvent,
+    type DropCommitEvent,
 } from '../dist/index.js'
 import {
     TEST_PAYLOAD,
     TEST_METADATA_1,
     TEST_METADATA_2,
     TEST_METADATA_3,
+    TEST_METADATA,
 } from './drag-drop-data-test.js'
+import {
+    getDroppableIndexByPointerPos,
+} from './utilities.js'
 
 
 
@@ -175,6 +190,31 @@ interface DragDropTestCase {
         expectedDropped1    ?: DragPayload | null | undefined | 'no-expect'
         expectedDropped2    ?: DragPayload | null | undefined | 'no-expect'
         expectedDropped3    ?: DragPayload | null | undefined | 'no-expect'
+        
+        
+        
+        // Events:
+        expectedEvents       : {
+            // Draggable side events:
+            // - Set to `true` if the event is expected to be triggered during this update step,
+            // otherwise leave it blank or set to `undefined` if the event is not expected.
+            dragStart       ?: true
+            dragEnd         ?: true
+            dragHandshake   ?: true
+            dragEvaluation  ?: true
+            dragCommit      ?: true
+            
+            // Droppable side events:
+            // - Each droppable zone has its own set of events, represented as an array of three elements.
+            // - The first element corresponds to droppable-1, the second to droppable-2, and the third to droppable-3.
+            // - Set to `true` if the event is expected to be triggered for that droppable zone during this update step,
+            // otherwise leave it blank or set to `undefined` if the event is not expected.
+            dragPresence    ?: [true | undefined, true | undefined, true | undefined]
+            dragAbsence     ?: [true | undefined, true | undefined, true | undefined]
+            dropHandshake   ?: [true | undefined, true | undefined, true | undefined]
+            dropEvaluation  ?: [true | undefined, true | undefined, true | undefined]
+            dropCommit      ?: [true | undefined, true | undefined, true | undefined]
+        }
     }[]
 }
 
@@ -202,6 +242,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // No active drag gesture, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Start dragging',
@@ -222,6 +266,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // An activation gesture begins.
+                    
+                    // Notifies source of drag start and broadcasts global presence to all registered droppables:
+                    dragStart       : true,
+                    dragPresence    : [true, true, true],
+                    
+                    // Emits initial live feedback before hover contact occurs:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between draggable and droppable-1',
@@ -242,6 +298,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-1',
@@ -262,6 +326,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-1).
+                    
+                    // Triggers two-way negotiation between source and droppable-1:
+                    dragHandshake   : true,
+                    dropHandshake   : [true, undefined, undefined], // Targeted handshake only for droppable-1.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Dropped on droppable-1',
@@ -281,6 +357,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : TEST_PAYLOAD,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer released over mutually accepted droppable-1 target.
+                    
+                    // Delivers payload transaction exclusively to droppable-1:
+                    dragCommit      : true,
+                    dropCommit      : [true, undefined, undefined], // Targeted commit only for droppable-1.
+                    
+                    // Notifies source of drag end and broadcasts global absence to all registered droppables:
+                    dragEnd         : true,
+                    dragAbsence     : [true, true, true],
+                },
             },
         ],
     },
@@ -305,6 +393,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // No active drag gesture, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Start dragging',
@@ -325,6 +417,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // An activation gesture begins.
+                    
+                    // Notifies source of drag start and broadcasts global presence to all registered droppables:
+                    dragStart       : true,
+                    dragPresence    : [true, true, true],
+                    
+                    // Emits initial live feedback before hover contact occurs:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between draggable and droppable-1',
@@ -345,6 +449,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-1',
@@ -365,6 +477,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-1).
+                    
+                    // Triggers two-way negotiation between source and droppable-1:
+                    dragHandshake   : true,
+                    dropHandshake   : [true, undefined, undefined], // Targeted handshake only for droppable-1.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between droppable-1 and droppable-2',
@@ -385,6 +509,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-2',
@@ -405,6 +537,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-2).
+                    
+                    // Triggers two-way negotiation between source and droppable-2:
+                    dragHandshake   : true,
+                    dropHandshake   : [undefined, true, undefined], // Targeted handshake only for droppable-2.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between droppable-2 and droppable-3',
@@ -425,6 +569,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-3',
@@ -445,6 +597,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-3).
+                    
+                    // Triggers two-way negotiation between source and droppable-3:
+                    dragHandshake   : true,
+                    dropHandshake   : [undefined, undefined, true], // Targeted handshake only for droppable-3.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Dropped on droppable-3',
@@ -464,6 +628,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : TEST_PAYLOAD,
+                
+                expectedEvents      : {
+                    // Pointer released over mutually accepted droppable-3 target.
+                    
+                    // Delivers payload transaction exclusively to droppable-3:
+                    dragCommit      : true,
+                    dropCommit      : [undefined, undefined, true], // Targeted commit only for droppable-3.
+                    
+                    // Notifies source of drag end and broadcasts global absence to all registered droppables:
+                    dragEnd         : true,
+                    dragAbsence     : [true, true, true],
+                },
             },
         ],
     },
@@ -491,6 +667,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // No active drag gesture, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Start dragging',
@@ -511,6 +691,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // An activation gesture begins.
+                    
+                    // Notifies source of drag start and broadcasts global presence to all registered droppables:
+                    dragStart       : true,
+                    dragPresence    : [true, true, true],
+                    
+                    // Emits initial live feedback before hover contact occurs:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between draggable and droppable-1',
@@ -531,6 +723,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Dropped outside any droppable zone',
@@ -550,6 +750,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer released outside any droppable zone.
+                    
+                    // Notifies source of drag end and broadcasts global absence to all registered droppables:
+                    dragEnd         : true,
+                    dragAbsence     : [true, true, true],
+                },
             },
         ],
     },
@@ -574,6 +782,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // No active drag gesture, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Start dragging',
@@ -594,6 +806,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // An activation gesture begins.
+                    
+                    // Notifies source of drag start and broadcasts global presence to all registered droppables:
+                    dragStart       : true,
+                    dragPresence    : [true, true, true],
+                    
+                    // Emits initial live feedback before hover contact occurs:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between draggable and droppable-1',
@@ -614,6 +838,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-1',
@@ -634,6 +866,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-1).
+                    
+                    // Triggers two-way negotiation between source and droppable-1:
+                    dragHandshake   : true,
+                    dropHandshake   : [true, undefined, undefined], // Targeted handshake only for droppable-1.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between droppable-1 and droppable-2',
@@ -654,6 +898,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-2',
@@ -674,6 +926,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-2).
+                    
+                    // Triggers two-way negotiation between source and droppable-2:
+                    dragHandshake   : true,
+                    dropHandshake   : [undefined, true, undefined], // Targeted handshake only for droppable-2.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between droppable-2 and droppable-3',
@@ -694,6 +958,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Dropped outside any droppable zone',
@@ -713,6 +985,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer released outside any droppable zone.
+                    
+                    // Notifies source of drag end and broadcasts global absence to all registered droppables:
+                    dragEnd         : true,
+                    dragAbsence     : [true, true, true],
+                },
             },
         ],
     },
@@ -740,6 +1020,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // No active drag gesture, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Start dragging',
@@ -760,6 +1044,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // An activation gesture begins.
+                    
+                    // Notifies source of drag start and broadcasts global presence to all registered droppables:
+                    dragStart       : true,
+                    dragPresence    : [true, true, true],
+                    
+                    // Emits initial live feedback before hover contact occurs:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between draggable and droppable-1',
@@ -780,6 +1076,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-1',
@@ -800,11 +1104,27 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-1).
+                    
+                    // Triggers two-way negotiation between source and droppable-1:
+                    dragHandshake   : true,
+                    dropHandshake   : [true, undefined, undefined], // Targeted handshake only for droppable-1.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Disabling draggable before dropping',
                 computedDrag        : true,  // Still dragging while disabling the draggable
                 dragEnabled         : false, // Disable the draggable to make drag-drop operation fail
+                
+                expectedEvents      : {
+                    // The draggable was disabled, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Dropped on droppable-1 but draggable was disabled',
@@ -824,6 +1144,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // The draggable was disabled, so no lifecycle events fire.
+                },
             },
         ],
     },
@@ -848,6 +1172,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // No active drag gesture, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Start dragging',
@@ -868,6 +1196,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // An activation gesture begins.
+                    
+                    // Notifies source of drag start and broadcasts global presence to all registered droppables:
+                    dragStart       : true,
+                    dragPresence    : [true, true, true],
+                    
+                    // Emits initial live feedback before hover contact occurs:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between draggable and droppable-1',
@@ -888,6 +1228,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-1',
@@ -908,11 +1256,27 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-1).
+                    
+                    // Triggers two-way negotiation between source and droppable-1:
+                    dragHandshake   : true,
+                    dropHandshake   : [true, undefined, undefined], // Targeted handshake only for droppable-1.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
-                title               : 'Disabling droppable-1 before dropping',
+                title               : 'Disabling droppable before dropping',
                 computedDrag        : true,  // Still dragging while disabling the droppable
                 dropEnabled         : false, // Disable the droppable to make drag-drop operation fail
+                
+                expectedEvents      : {
+                    // The draggable was disabled, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Dropped on droppable-1 but it was disabled',
@@ -932,6 +1296,13 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer released outside any droppable zone.
+                    
+                    // Notifies source of drag end:
+                    dragEnd         : true,
+                },
             },
         ],
     },
@@ -956,6 +1327,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // No active drag gesture, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Start dragging',
@@ -976,6 +1351,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // An activation gesture begins.
+                    
+                    // Notifies source of drag start and broadcasts global presence to all registered droppables:
+                    dragStart       : true,
+                    dragPresence    : [true, true, true],
+                    
+                    // Emits initial live feedback before hover contact occurs:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between draggable and droppable-1',
@@ -996,6 +1383,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-1',
@@ -1016,12 +1411,28 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-1).
+                    
+                    // Triggers two-way negotiation between source and droppable-1:
+                    dragHandshake   : true,
+                    dropHandshake   : [true, undefined, undefined], // Targeted handshake only for droppable-1.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Disabling draggable and droppable before dropping',
                 computedDrag        : true,  // Still dragging while disabling the draggable and droppable
                 dragEnabled         : false, // Disable the draggable to make drag-drop operation fail
                 dropEnabled         : false, // Disable the droppable to make drag-drop operation fail
+                
+                expectedEvents      : {
+                    // The draggable was disabled, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Dropped on droppable-1 but draggable and droppable was disabled',
@@ -1041,6 +1452,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // The draggable was disabled, so no lifecycle events fire.
+                },
             },
         ],
     },
@@ -1065,6 +1480,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // No active drag gesture, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Start dragging',
@@ -1085,6 +1504,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // An activation gesture begins.
+                    
+                    // Notifies source of drag start and broadcasts global presence to all registered droppables:
+                    dragStart       : true,
+                    dragPresence    : [true, true, true],
+                    
+                    // Emits initial live feedback before hover contact occurs:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between draggable and droppable-1',
@@ -1105,6 +1536,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-1',
@@ -1125,6 +1564,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-1).
+                    
+                    // Triggers two-way negotiation between source and droppable-1:
+                    dragHandshake   : true,
+                    dropHandshake   : [true, undefined, undefined], // Targeted handshake only for droppable-1.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between droppable-1 and droppable-2',
@@ -1145,6 +1596,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-2',
@@ -1165,6 +1624,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-2).
+                    
+                    // Triggers two-way negotiation between source and droppable-2:
+                    dragHandshake   : true,
+                    dropHandshake   : [undefined, true, undefined], // Targeted handshake only for droppable-2.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between droppable-2 and droppable-3',
@@ -1185,6 +1656,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-3',
@@ -1205,11 +1684,27 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-3).
+                    
+                    // Triggers two-way negotiation between source and droppable-3:
+                    dragHandshake   : true,
+                    dropHandshake   : [undefined, undefined, true], // Targeted handshake only for droppable-3.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Disabling draggable before dropping',
                 computedDrag        : true,  // Still dragging while disabling the draggable
                 dragEnabled         : false, // Disable the draggable to make drag-drop operation fail
+                
+                expectedEvents      : {
+                    // The draggable was disabled, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Dropped on droppable-3',
@@ -1229,6 +1724,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // The draggable was disabled, so no lifecycle events fire.
+                },
             },
         ],
     },
@@ -1253,6 +1752,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // No active drag gesture, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Start dragging',
@@ -1273,6 +1776,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // An activation gesture begins.
+                    
+                    // Notifies source of drag start and broadcasts global presence to all registered droppables:
+                    dragStart       : true,
+                    dragPresence    : [true, true, true],
+                    
+                    // Emits initial live feedback before hover contact occurs:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between draggable and droppable-1',
@@ -1293,6 +1808,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-1',
@@ -1313,6 +1836,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-1).
+                    
+                    // Triggers two-way negotiation between source and droppable-1:
+                    dragHandshake   : true,
+                    dropHandshake   : [true, undefined, undefined], // Targeted handshake only for droppable-1.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between droppable-1 and droppable-2',
@@ -1333,6 +1868,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-2',
@@ -1353,6 +1896,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-2).
+                    
+                    // Triggers two-way negotiation between source and droppable-2:
+                    dragHandshake   : true,
+                    dropHandshake   : [undefined, true, undefined], // Targeted handshake only for droppable-2.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between droppable-2 and droppable-3',
@@ -1373,6 +1928,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-3',
@@ -1393,11 +1956,27 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-3).
+                    
+                    // Triggers two-way negotiation between source and droppable-3:
+                    dragHandshake   : true,
+                    dropHandshake   : [undefined, undefined, true], // Targeted handshake only for droppable-3.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
-                title               : 'Disabling droppable-1 before dropping',
+                title               : 'Disabling droppable before dropping',
                 computedDrag        : true,  // Still dragging while disabling the droppable
                 dropEnabled         : false, // Disable the droppable to make drag-drop operation fail
+                
+                expectedEvents      : {
+                    // The draggable was disabled, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Dropped on droppable-3',
@@ -1417,6 +1996,13 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer released outside any droppable zone.
+                    
+                    // Notifies source of drag end:
+                    dragEnd         : true,
+                },
             },
         ],
     },
@@ -1441,6 +2027,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // No active drag gesture, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Start dragging',
@@ -1461,6 +2051,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // An activation gesture begins.
+                    
+                    // Notifies source of drag start and broadcasts global presence to all registered droppables:
+                    dragStart       : true,
+                    dragPresence    : [true, true, true],
+                    
+                    // Emits initial live feedback before hover contact occurs:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between draggable and droppable-1',
@@ -1481,6 +2083,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-1',
@@ -1501,6 +2111,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-1).
+                    
+                    // Triggers two-way negotiation between source and droppable-1:
+                    dragHandshake   : true,
+                    dropHandshake   : [true, undefined, undefined], // Targeted handshake only for droppable-1.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between droppable-1 and droppable-2',
@@ -1521,6 +2143,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-2',
@@ -1541,6 +2171,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-2).
+                    
+                    // Triggers two-way negotiation between source and droppable-2:
+                    dragHandshake   : true,
+                    dropHandshake   : [undefined, true, undefined], // Targeted handshake only for droppable-2.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between droppable-2 and droppable-3',
@@ -1561,6 +2203,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-3',
@@ -1581,12 +2231,28 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-3).
+                    
+                    // Triggers two-way negotiation between source and droppable-3:
+                    dragHandshake   : true,
+                    dropHandshake   : [undefined, undefined, true], // Targeted handshake only for droppable-3.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Disabling draggable and droppable before dropping',
                 computedDrag        : true,  // Still dragging while disabling the draggable and droppable
                 dragEnabled         : false, // Disable the draggable to make drag-drop operation fail
                 dropEnabled         : false, // Disable the droppable to make drag-drop operation fail
+                
+                expectedEvents      : {
+                    // The draggable was disabled, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Dropped on droppable-3',
@@ -1606,6 +2272,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // The draggable was disabled, so no lifecycle events fire.
+                },
             },
         ],
     },
@@ -1634,6 +2304,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // No active drag gesture, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Start dragging',
@@ -1654,6 +2328,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // An activation gesture begins.
+                    
+                    // Notifies source of drag start and broadcasts global presence to all registered droppables:
+                    dragStart       : true,
+                    dragPresence    : [true, true, true],
+                    
+                    // Emits initial live feedback before hover contact occurs:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between draggable and droppable-1',
@@ -1674,6 +2360,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-1',
@@ -1694,6 +2388,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-1).
+                    
+                    // Triggers two-way negotiation between source and droppable-1:
+                    dragHandshake   : true,
+                    dropHandshake   : [true, undefined, undefined], // Targeted handshake only for droppable-1.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Dropped on droppable-1 but draggable rejected the handshake',
@@ -1713,6 +2419,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer released outside any acceptable droppable zone.
+                    
+                    // Notifies source of drag end and broadcasts global absence to all registered droppables:
+                    dragEnd         : true,
+                    dragAbsence     : [true, true, true],
+                },
             },
         ],
     },
@@ -1738,6 +2452,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // No active drag gesture, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Start dragging',
@@ -1758,6 +2476,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // An activation gesture begins.
+                    
+                    // Notifies source of drag start and broadcasts global presence to all registered droppables:
+                    dragStart       : true,
+                    dragPresence    : [true, true, true],
+                    
+                    // Emits initial live feedback before hover contact occurs:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between draggable and droppable-1',
@@ -1778,6 +2508,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-1',
@@ -1798,6 +2536,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-1).
+                    
+                    // Triggers two-way negotiation between source and droppable-1:
+                    dragHandshake   : true,
+                    dropHandshake   : [true, undefined, undefined], // Targeted handshake only for droppable-1.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Dropped on droppable-1 but it rejected the handshake',
@@ -1817,6 +2567,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer released outside any acceptable droppable zone.
+                    
+                    // Notifies source of drag end and broadcasts global absence to all registered droppables:
+                    dragEnd         : true,
+                    dragAbsence     : [true, true, true],
+                },
             },
         ],
     },
@@ -1843,6 +2601,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // No active drag gesture, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Start dragging',
@@ -1863,6 +2625,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // An activation gesture begins.
+                    
+                    // Notifies source of drag start and broadcasts global presence to all registered droppables:
+                    dragStart       : true,
+                    dragPresence    : [true, true, true],
+                    
+                    // Emits initial live feedback before hover contact occurs:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between draggable and droppable-1',
@@ -1883,6 +2657,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-1',
@@ -1903,6 +2685,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-1).
+                    
+                    // Triggers two-way negotiation between source and droppable-1:
+                    dragHandshake   : true,
+                    dropHandshake   : [true, undefined, undefined], // Targeted handshake only for droppable-1.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Dropped on droppable-1 but draggable and droppable rejected the handshake',
@@ -1922,6 +2716,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer released outside any acceptable droppable zone.
+                    
+                    // Notifies source of drag end and broadcasts global absence to all registered droppables:
+                    dragEnd         : true,
+                    dragAbsence     : [true, true, true],
+                },
             },
         ],
     },
@@ -1947,6 +2749,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // No active drag gesture, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Start dragging',
@@ -1967,6 +2773,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // An activation gesture begins.
+                    
+                    // Notifies source of drag start and broadcasts global presence to all registered droppables:
+                    dragStart       : true,
+                    dragPresence    : [true, true, true],
+                    
+                    // Emits initial live feedback before hover contact occurs:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between draggable and droppable-1',
@@ -1987,6 +2805,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-1',
@@ -2007,6 +2833,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-1).
+                    
+                    // Triggers two-way negotiation between source and droppable-1:
+                    dragHandshake   : true,
+                    dropHandshake   : [true, undefined, undefined], // Targeted handshake only for droppable-1.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between droppable-1 and droppable-2',
@@ -2027,6 +2865,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-2',
@@ -2047,6 +2893,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-2).
+                    
+                    // Triggers two-way negotiation between source and droppable-2:
+                    dragHandshake   : true,
+                    dropHandshake   : [undefined, true, undefined], // Targeted handshake only for droppable-2.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between droppable-2 and droppable-3',
@@ -2067,6 +2925,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-3',
@@ -2087,6 +2953,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-3).
+                    
+                    // Triggers two-way negotiation between source and droppable-3:
+                    dragHandshake   : true,
+                    dropHandshake   : [undefined, undefined, true], // Targeted handshake only for droppable-3.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Dropped on droppable-3',
@@ -2106,6 +2984,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer released outside any acceptable droppable zone.
+                    
+                    // Notifies source of drag end and broadcasts global absence to all registered droppables:
+                    dragEnd         : true,
+                    dragAbsence     : [true, true, true],
+                },
             },
         ],
     },
@@ -2131,6 +3017,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // No active drag gesture, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Start dragging',
@@ -2151,6 +3041,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // An activation gesture begins.
+                    
+                    // Notifies source of drag start and broadcasts global presence to all registered droppables:
+                    dragStart       : true,
+                    dragPresence    : [true, true, true],
+                    
+                    // Emits initial live feedback before hover contact occurs:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between draggable and droppable-1',
@@ -2171,6 +3073,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-1',
@@ -2191,6 +3101,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-1).
+                    
+                    // Triggers two-way negotiation between source and droppable-1:
+                    dragHandshake   : true,
+                    dropHandshake   : [true, undefined, undefined], // Targeted handshake only for droppable-1.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between droppable-1 and droppable-2',
@@ -2211,6 +3133,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-2',
@@ -2231,6 +3161,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-2).
+                    
+                    // Triggers two-way negotiation between source and droppable-2:
+                    dragHandshake   : true,
+                    dropHandshake   : [undefined, true, undefined], // Targeted handshake only for droppable-2.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between droppable-2 and droppable-3',
@@ -2251,6 +3193,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-3',
@@ -2271,6 +3221,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-3).
+                    
+                    // Triggers two-way negotiation between source and droppable-3:
+                    dragHandshake   : true,
+                    dropHandshake   : [undefined, undefined, true], // Targeted handshake only for droppable-3.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Dropped on droppable-3',
@@ -2290,6 +3252,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer released outside any acceptable droppable zone.
+                    
+                    // Notifies source of drag end and broadcasts global absence to all registered droppables:
+                    dragEnd         : true,
+                    dragAbsence     : [true, true, true],
+                },
             },
         ],
     },
@@ -2316,6 +3286,10 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // No active drag gesture, so no lifecycle events fire.
+                },
             },
             {
                 title               : 'Start dragging',
@@ -2336,6 +3310,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // An activation gesture begins.
+                    
+                    // Notifies source of drag start and broadcasts global presence to all registered droppables:
+                    dragStart       : true,
+                    dragPresence    : [true, true, true],
+                    
+                    // Emits initial live feedback before hover contact occurs:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between draggable and droppable-1',
@@ -2356,6 +3342,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-1',
@@ -2376,6 +3370,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-1).
+                    
+                    // Triggers two-way negotiation between source and droppable-1:
+                    dragHandshake   : true,
+                    dropHandshake   : [true, undefined, undefined], // Targeted handshake only for droppable-1.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between droppable-1 and droppable-2',
@@ -2396,6 +3402,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-2',
@@ -2416,6 +3430,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-2).
+                    
+                    // Triggers two-way negotiation between source and droppable-2:
+                    dragHandshake   : true,
+                    dropHandshake   : [undefined, true, undefined], // Targeted handshake only for droppable-2.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Between droppable-2 and droppable-3',
@@ -2436,6 +3462,14 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Continuous pointer movement outside target zones.
+                    
+                    // Emits updated live feedback with no active handshake contact:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'At droppable-3',
@@ -2456,6 +3490,18 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer enters candidate target (droppable-3).
+                    
+                    // Triggers two-way negotiation between source and droppable-3:
+                    dragHandshake   : true,
+                    dropHandshake   : [undefined, undefined, true], // Targeted handshake only for droppable-3.
+                    
+                    // Emits updated live feedback reflecting mutual acceptance:
+                    dragEvaluation  : true,
+                    dropEvaluation  : [true, true, true],
+                },
             },
             {
                 title               : 'Dropped on droppable-3',
@@ -2475,12 +3521,21 @@ const testCases : DragDropTestCase[] = [
                 expectedDropped1    : undefined,
                 expectedDropped2    : undefined,
                 expectedDropped3    : undefined,
+                
+                expectedEvents      : {
+                    // Pointer released outside any acceptable droppable zone.
+                    
+                    // Notifies source of drag end and broadcasts global absence to all registered droppables:
+                    dragEnd         : true,
+                    dragAbsence     : [true, true, true],
+                },
             },
         ],
     },
 ];
 
 test.describe('useDraggableState() + useDroppableState()', () => {
+    let currentPointerPos     = -1;
     let currentDragged        = false;
     let currentPointerPressed = false;
     let currentDragEnabled    = true;
@@ -2492,14 +3547,84 @@ test.describe('useDraggableState() + useDroppableState()', () => {
         updates,
     } of testCases) {
         test(title, async ({ mount, page }) => {
+            // Event trackers:
+            const dragDropEvents = new Map<string, any[]>();
+            
+            
+            
+            // Event handlers:
+            const handleDragStart     = (event: DragStartEvent<HTMLDivElement>) => {
+                dragDropEvents.set('dragStart', [...(dragDropEvents.get('dragStart') ?? []), event]);
+            };
+            const handleDragEnd       = (event: DragEndEvent<HTMLDivElement>) => {
+                dragDropEvents.set('dragEnd', [...(dragDropEvents.get('dragEnd') ?? []), event]);
+            };
+            const handleDragHandshake = (event: DragHandshakeEvent<HTMLDivElement>) => {
+                dragDropEvents.set('dragHandshake', [...(dragDropEvents.get('dragHandshake') ?? []), event]);
+            };
+            const handleDragEvaluation  = (event: DragEvaluationEvent<HTMLDivElement>) => {
+                dragDropEvents.set('dragEvaluation', [...(dragDropEvents.get('dragEvaluation') ?? []), event]);
+            };
+            const handleDragCommit = (event: DragCommitEvent<HTMLDivElement>) => {
+                dragDropEvents.set('dragCommit', [...(dragDropEvents.get('dragCommit') ?? []), event]);
+            }
+            
+            const handleDragPresence  = (event: DragPresenceEvent<HTMLDivElement>) => {
+                dragDropEvents.set('dragPresence', [...(dragDropEvents.get('dragPresence') ?? []), event]);
+            };
+            const handleDragAbsence  = (event: DragAbsenceEvent<HTMLDivElement>) => {
+                dragDropEvents.set('dragAbsence', [...(dragDropEvents.get('dragAbsence') ?? []), event]);
+            };
+            const handleDropHandshake = (event: DropHandshakeEvent<HTMLDivElement>, index: number) => {
+                let arr = dragDropEvents.get('dropHandshake');
+                if (!arr) dragDropEvents.set('dropHandshake', arr = []);
+                arr[index] = event;
+            };
+            const handleDropEvaluation  = (event: DropEvaluationEvent<HTMLDivElement>, index: number) => {
+                let arr = dragDropEvents.get('dropEvaluation');
+                if (!arr) dragDropEvents.set('dropEvaluation', arr = []);
+                arr[index] = event;
+            };
+            const handleDropCommit = (event: DropCommitEvent<HTMLDivElement>, index: number) => {
+                let arr = dragDropEvents.get('dropCommit');
+                if (!arr) dragDropEvents.set('dropCommit', arr = []);
+                arr[index] = event;
+            };
+            
+            
+            
             // First render:
             const component = await mount(
                 <DraggableDroppableTest>
                     {/* `Object.fromEntries(Map)` => a fix for playwright serializing problem */}
-                    <DraggableStateTest index={0} dragPayload={Object.fromEntries(TEST_PAYLOAD) as typeof TEST_PAYLOAD} computedDrag={currentDragged} dragEnabled={currentDragEnabled} simulateDragAccept={simulateDragAccept} />
-                    <DroppableStateTest index={0} dropMetadata={Object.fromEntries(TEST_METADATA_1) as typeof TEST_METADATA_1} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept} />
-                    <DroppableStateTest index={1} dropMetadata={Object.fromEntries(TEST_METADATA_2) as typeof TEST_METADATA_2} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept} />
-                    <DroppableStateTest index={2} dropMetadata={Object.fromEntries(TEST_METADATA_3) as typeof TEST_METADATA_3} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept} />
+                    <DraggableStateTest index={0} dragPayload={Object.fromEntries(TEST_PAYLOAD) as typeof TEST_PAYLOAD} computedDrag={currentDragged} dragEnabled={currentDragEnabled} simulateDragAccept={simulateDragAccept}
+                        onDragStart={handleDragStart}
+                        onDragEnd={handleDragEnd}
+                        onDragHandshake={handleDragHandshake}
+                        onDragEvaluation={handleDragEvaluation}
+                        onDragCommit={handleDragCommit}
+                    />
+                    <DroppableStateTest index={0} dropMetadata={Object.fromEntries(TEST_METADATA_1) as typeof TEST_METADATA_1} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept}
+                        onDragPresence={handleDragPresence}
+                        onDragAbsence={handleDragAbsence}
+                        onDropHandshake={(event) => handleDropHandshake(event, 0)}
+                        onDropEvaluation={(event) => handleDropEvaluation(event, 0)}
+                        onDropCommit={(event) => handleDropCommit(event, 0)}
+                    />
+                    <DroppableStateTest index={1} dropMetadata={Object.fromEntries(TEST_METADATA_2) as typeof TEST_METADATA_2} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept}
+                        onDragPresence={handleDragPresence}
+                        onDragAbsence={handleDragAbsence}
+                        onDropHandshake={(event) => handleDropHandshake(event, 1)}
+                        onDropEvaluation={(event) => handleDropEvaluation(event, 1)}
+                        onDropCommit={(event) => handleDropCommit(event, 1)}
+                    />
+                    <DroppableStateTest index={2} dropMetadata={Object.fromEntries(TEST_METADATA_3) as typeof TEST_METADATA_3} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept}
+                        onDragPresence={handleDragPresence}
+                        onDragAbsence={handleDragAbsence}
+                        onDropHandshake={(event) => handleDropHandshake(event, 2)}
+                        onDropEvaluation={(event) => handleDropEvaluation(event, 2)}
+                        onDropCommit={(event) => handleDropCommit(event, 2)}
+                    />
                 </DraggableDroppableTest>
             );
             
@@ -2519,13 +3644,18 @@ test.describe('useDraggableState() + useDroppableState()', () => {
             
             
             
+            // Verify there's no events yet:
+            expect(dragDropEvents.size).toBe(0);
+            
+            
+            
             // Apply update scenarios:
             for (const {
                 title,
                 computedDrag,
                 pointerPos,
-                dragEnabled = true,
-                dropEnabled = true,
+                dragEnabled,
+                dropEnabled,
                 delay,
                 
                 expectedDragStatus   = 'no-expect',
@@ -2542,6 +3672,8 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                 expectedDropped1     = 'no-expect',
                 expectedDropped2     = 'no-expect',
                 expectedDropped3     = 'no-expect',
+                
+                expectedEvents,
             } of updates) {
                 console.log(`[Subtest] ${title}`);
                 
@@ -2566,14 +3698,43 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                 
                 
                 
+                // Clear event trackers:
+                dragDropEvents.clear();
+                
+                
+                
                 // Re-render with updated drag state:
                 await component.update(
                     <DraggableDroppableTest>
                         {/* `Object.fromEntries(Map)` => a fix for playwright serializing problem */}
-                        <DraggableStateTest index={0} dragPayload={Object.fromEntries(TEST_PAYLOAD) as typeof TEST_PAYLOAD} computedDrag={currentDragged} dragEnabled={currentDragEnabled} simulateDragAccept={simulateDragAccept} />
-                        <DroppableStateTest index={0} dropMetadata={Object.fromEntries(TEST_METADATA_1) as typeof TEST_METADATA_1} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept} />
-                        <DroppableStateTest index={1} dropMetadata={Object.fromEntries(TEST_METADATA_2) as typeof TEST_METADATA_2} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept} />
-                        <DroppableStateTest index={2} dropMetadata={Object.fromEntries(TEST_METADATA_3) as typeof TEST_METADATA_3} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept} />
+                        <DraggableStateTest index={0} dragPayload={Object.fromEntries(TEST_PAYLOAD) as typeof TEST_PAYLOAD} computedDrag={currentDragged} dragEnabled={currentDragEnabled} simulateDragAccept={simulateDragAccept}
+                            onDragStart={handleDragStart}
+                            onDragEnd={handleDragEnd}
+                            onDragHandshake={handleDragHandshake}
+                            onDragEvaluation={handleDragEvaluation}
+                            onDragCommit={handleDragCommit}
+                        />
+                        <DroppableStateTest index={0} dropMetadata={Object.fromEntries(TEST_METADATA_1) as typeof TEST_METADATA_1} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept}
+                            onDragPresence={handleDragPresence}
+                            onDragAbsence={handleDragAbsence}
+                            onDropHandshake={(event) => handleDropHandshake(event, 0)}
+                            onDropEvaluation={(event) => handleDropEvaluation(event, 0)}
+                            onDropCommit={(event) => handleDropCommit(event, 0)}
+                        />
+                        <DroppableStateTest index={1} dropMetadata={Object.fromEntries(TEST_METADATA_2) as typeof TEST_METADATA_2} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept}
+                            onDragPresence={handleDragPresence}
+                            onDragAbsence={handleDragAbsence}
+                            onDropHandshake={(event) => handleDropHandshake(event, 1)}
+                            onDropEvaluation={(event) => handleDropEvaluation(event, 1)}
+                            onDropCommit={(event) => handleDropCommit(event, 1)}
+                        />
+                        <DroppableStateTest index={2} dropMetadata={Object.fromEntries(TEST_METADATA_3) as typeof TEST_METADATA_3} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept}
+                            onDragPresence={handleDragPresence}
+                            onDragAbsence={handleDragAbsence}
+                            onDropHandshake={(event) => handleDropHandshake(event, 2)}
+                            onDropEvaluation={(event) => handleDropEvaluation(event, 2)}
+                            onDropCommit={(event) => handleDropCommit(event, 2)}
+                        />
                     </DraggableDroppableTest>
                 );
                 
@@ -2608,7 +3769,8 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                     if (!draggableBox) throw 'draggable does not exist';
                     const centerX = draggableBox.x + draggableBox.width / 2;
                     const centerY = draggableBox.y + draggableBox.height / 2;
-                    await page.mouse.move(centerX + pointerPos, centerY);
+                    currentPointerPos = centerX + pointerPos;
+                    await page.mouse.move(currentPointerPos, centerY);
                 } // if
                 
                 
@@ -2634,6 +3796,267 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                 if (expectedDropped1 !== 'no-expect') await expect(droppable1).toHaveAttribute('data-dropped', expectedDropped1 ? JSON.stringify(Object.fromEntries(expectedDropped1)) : String(expectedDropped1));
                 if (expectedDropped2 !== 'no-expect') await expect(droppable2).toHaveAttribute('data-dropped', expectedDropped2 ? JSON.stringify(Object.fromEntries(expectedDropped2)) : String(expectedDropped2));
                 if (expectedDropped3 !== 'no-expect') await expect(droppable3).toHaveAttribute('data-dropped', expectedDropped3 ? JSON.stringify(Object.fromEntries(expectedDropped3)) : String(expectedDropped3));
+                
+                
+                
+                // Event Interface Rules & Verification:
+                // 
+                // 1. `dragPayload`:
+                //    - Always exists on both draggable and droppable events, as a single draggable is active throughout the lifecycle.
+                //
+                // 2. `dropMetadata`:
+                //    - Always exists on droppable events (an inherent property of the droppable side).
+                //    - On draggable events:
+                //      - Omitted on `dragStart` (no target contacted yet).
+                //      - Always exists on `dragHandshake` and `dragCommit` (both sides are in contact).
+                //      - Optional (`DropMetadata | undefined`) on `dragEvaluation` and `dragEnd` (target contact is optional).
+                //
+                // 3. `isTargeted`:
+                //    - Only exists on droppable broadcast events (`dropEvaluation` and `dragAbsence`).
+                //    - Omitted on `dragPresence` since initial drag start involves no contact.
+                //    - On `dropEvaluation`: `true` for the droppable currently hovered, `false` for others.
+                //    - On `dragAbsence`: `true` for the droppable receiving the committed drop, `false` for others.
+                //
+                // 4. Handshake Responses:
+                //    - `dragHandshake`: Contains `dragResponse` (draggable decision); omits `dropResponse`.
+                //    - `dropHandshake`: Contains `dropResponse` (droppable decision); omits `dragResponse`.
+                //
+                // 5. Evaluation Responses:
+                //    - `dragEvaluation` and `dropEvaluation` contain both `dragResponse` and `dropResponse` to represent the combined status from both sides.
+                //
+                // 6. Commit Responses:
+                //    - `dragCommit` and `dropCommit` omit response flags because triggering a commit inherently implies mutual acceptance.
+                
+                // Find the corresponding droppable index by pointer position:
+                const droppableIndex = getDroppableIndexByPointerPos(currentPointerPos);
+                
+                // Draggable side events:
+                // - Events: dragStart, dragEnd, dragHandshake, dragEvaluation, dragCommit.
+                for (const dragSideEventName of [
+                    'dragStart',
+                    'dragEnd',
+                    'dragHandshake',
+                    'dragEvaluation',
+                    'dragCommit',
+                ] as const) {
+                    const dragSideEvents = dragDropEvents.get(dragSideEventName) ?? [];
+                    dragDropEvents.delete(dragSideEventName);
+                    expect(dragSideEvents.length).toBe(expectedEvents[dragSideEventName] ? 1 : 0);
+                    
+                    const dragSideEvent = dragSideEvents[0];
+                    if (dragSideEvent) {
+                        // Verify `dragPayload`:
+                        // - Always present across all draggable events, as it is the property of the draggable side.
+                        expect(dragSideEvent.dragPayload).toEqual(Object.fromEntries(TEST_PAYLOAD));
+                        
+                        
+                        
+                        // Verify `dropMetadata`:
+                        // - Omitted on `dragStart`.
+                        // - Always present on `dragHandshake` and `dragCommit`.
+                        // - Present on `dragEvaluation` / `dragEnd` only if contact / commit occurred.
+                        if (dragSideEventName === 'dragHandshake') {
+                            expect(droppableIndex).not.toBe(-1);
+                            expect(dragSideEvent.dropMetadata).toEqual(Object.fromEntries(TEST_METADATA[droppableIndex]));
+                        }
+                        else if (dragSideEventName === 'dragEvaluation') {
+                            if (droppableIndex !== -1) {
+                                expect(dragSideEvent.dropMetadata).toEqual(Object.fromEntries(TEST_METADATA[droppableIndex]));
+                            }
+                            else {
+                                expect(dragSideEvent.dropMetadata).toBeUndefined(); // No contact with any droppable.
+                            } // if
+                        }
+                        else if (dragSideEventName === 'dragCommit') {
+                            expect(droppableIndex).not.toBe(-1);
+                            expect(dragSideEvent.dropMetadata).toEqual(Object.fromEntries(TEST_METADATA[droppableIndex]));
+                        }
+                        else if (dragSideEventName === 'dragEnd') {
+                            if (droppableIndex !== -1) {
+                                expect(dragSideEvent.dropMetadata).toEqual(Object.fromEntries(TEST_METADATA[droppableIndex]));
+                            }
+                            else {
+                                expect(dragSideEvent.dropMetadata).toBeUndefined(); // No contact with any droppable.
+                            } // if
+                        }
+                        else {
+                            expect('dropMetadata' in dragSideEvent).toBe(false);
+                        } // if
+                        
+                        
+                        
+                        // Verify `dragResponse`:
+                        // - Always present on `dragHandshake`, representing the current side's (draggable) response.
+                        // - Maybe missing on `dragEvaluation`, indicating the draggable side is not hovering any droppable.
+                        // - Always undefined if not hovering any droppable for `dragEvaluation`.
+                        // - Omitted on all other events.
+                        const isHoveringAnyDroppable = expectedEvents.dropHandshake?.some(Boolean) ?? false;
+                        if (dragSideEventName === 'dragHandshake') {
+                            expect(dragSideEvent.dragResponse).toBe(
+                                // The default drag response is `true`, unless overriden:
+                                simulateDragAccept ?? true
+                            );
+                        }
+                        else if (dragSideEventName === 'dragEvaluation') {
+                            expect(dragSideEvent.dragResponse).toBe(
+                                isHoveringAnyDroppable
+                                
+                                // The default drag response is `true`, unless overriden:
+                                ? simulateDragAccept ?? true
+                                
+                                // Not hovering any droppable → always no response:
+                                : undefined
+                            );
+                        }
+                        else {
+                            expect('dragResponse' in dragSideEvent).toBe(false);
+                        } // if
+                        
+                        
+                        
+                        // Verify `dropResponse`:
+                        // - Always present on `dragEvaluation`, representing the opposite side's (droppable) response.
+                        // - Always undefined if not hovering any droppable.
+                        // - Omitted on all other events.
+                        if (dragSideEventName === 'dragEvaluation') {
+                            expect(dragSideEvent.dropResponse).toBe(
+                                isHoveringAnyDroppable
+                                
+                                // The default drop response is `true`, unless overriden:
+                                ? simulateDropAccept ?? true
+                                
+                                // Not hovering any droppable → always no response:
+                                : undefined
+                            );
+                        }
+                        else {
+                            expect('dropResponse' in dragSideEvent).toBe(false);
+                        } // if
+                    } // if
+                } // for
+                
+                // Droppable side events:
+                // - Events: dragPresence, dragAbsence, dropHandshake, dropEvaluation, dropCommit.
+                for (const dropSideEventName of [
+                    'dragPresence',
+                    'dragAbsence',
+                    'dropHandshake',
+                    'dropEvaluation',
+                    'dropCommit',
+                ] as const) {
+                    const dropSideEvents = dragDropEvents.get(dropSideEventName) ?? [];
+                    dragDropEvents.delete(dropSideEventName);
+                    const expectedDropSideEvents = expectedEvents[dropSideEventName] ?? [];
+                    
+                    // Validate for each droppable side event:
+                    // - There are some droppable sides that may or may not receive the event, depending on the draggable's position.
+                    // - The expected values are arrays of booleans, representing *which* droppable sides are expected to receive the event.
+                    // - If all values are `true`, meaning the event is broadcast to all droppable sides.
+                    // - If only one value is `true`, meaning the event is sent to the specific droppable side.
+                    for (let position = 0; position < expectedDropSideEvents.length; position++) {
+                        const dropSideEvent = dropSideEvents[position];
+                        if (expectedDropSideEvents[position]) {
+                            // The event is triggered for this droppable position, so the event should be defined:
+                            expect(dropSideEvent).toBeDefined();
+                            
+                            
+                            
+                            // Verify `dragPayload`:
+                            // - Always present across all droppable events, as there is always one active draggable during a drag gesture.
+                            expect(dropSideEvent.dragPayload).toEqual(Object.fromEntries(TEST_PAYLOAD));
+                            
+                            
+                            
+                            // Verify `dropMetadata`:
+                            // - Alaways present across all droppable events, as it is the property of the droppable side.
+                            expect(dropSideEvent.dropMetadata).toEqual(Object.fromEntries(TEST_METADATA[position]));
+                            
+                            
+                            
+                            // Verify `isTargeted`:
+                            // - Always present on droppable broadcast events (`dropEvaluation` and `dragAbsence`),
+                            //   except for `dragPresence` since initial drag start involves no contact.
+                            // - Omitted on all non-broadcast events (`dropHandshake` and `dropCommit`).
+                            // - Becomes `true` if the current droppable is being hovered or committed, otherwise `false`.
+                            if (dropSideEventName === 'dropEvaluation') {
+                                expect(dropSideEvent.isTargeted).toBe(
+                                    // Becomes targeted if it has a handshake with the draggable:
+                                    expectedEvents.dropHandshake?.[position] ?? false
+                                );
+                            }
+                            else if (dropSideEventName === 'dragAbsence') {
+                                expect(dropSideEvent.isTargeted).toBe(
+                                    // Becomes targeted if the pointer is hovering at current droppable:
+                                    droppableIndex === position
+                                );
+                            }
+                            else {
+                                expect('isTargeted' in dropSideEvent).toBe(false);
+                            } // if
+                            
+                            
+                            
+                            // Verify `dragResponse`:
+                            // - Always present on `dropEvaluation`, representing the opposite side's (draggable) response.
+                            // - Always broadcast to all droppable sides, even if not hovered by the draggable.
+                            // - Always undefined if no any droppable is hovered by the draggable for `dropEvaluation`.
+                            // - Omitted on all other events.
+                            const anyHoveredByDraggable = expectedEvents.dropHandshake?.some(Boolean) ?? false;
+                            if (dropSideEventName === 'dropEvaluation') {
+                                expect(dropSideEvent.dragResponse).toBe(
+                                    anyHoveredByDraggable
+                                    
+                                    // The default drag response is `true`, unless overriden:
+                                    ? simulateDragAccept ?? true
+                                    
+                                    // No hovered by the draggable → always no response:
+                                    : undefined
+                                );
+                            }
+                            else {
+                                expect('dragResponse' in dropSideEvent).toBe(false);
+                            } // if
+                            
+                            
+                            
+                            // Verify `dropResponse`:
+                            // - Always present on `dropHandshake`, representing the *active* droppable's response.
+                            // - Maybe missing on `dropEvaluation`, indicating the draggable side is not hovering any droppable.
+                            // - Always broadcast to all droppable sides, even if not hovered by the draggable.
+                            // - Always undefined if no any droppable is hovered by the draggable for `dropEvaluation`.
+                            // - Omitted on all other events.
+                            if (dropSideEventName === 'dropHandshake') {
+                                expect(dropSideEvent.dropResponse).toBe(
+                                    // The default drop response is `true`, unless overriden:
+                                    simulateDropAccept ?? true
+                                );
+                            }
+                            else if (dropSideEventName === 'dropEvaluation') {
+                                expect(dropSideEvent.dropResponse).toBe(
+                                    anyHoveredByDraggable
+                                    
+                                    // The default drop response is `true`, unless overriden:
+                                    ? simulateDropAccept ?? true
+                                    
+                                    // Not hovered by the draggable → always no response:
+                                    : undefined
+                                );
+                            }
+                            else {
+                                expect('dropResponse' in dropSideEvent).toBe(false);
+                            } // if
+                        }
+                        else {
+                            // The event is not triggered for this droppable position, so the event should be undefined:
+                            expect(dropSideEvent).toBeUndefined();
+                        } // if
+                    } // for
+                } // for
+                
+                
+                
+                // Verify there's no unverified events left:
+                expect(dragDropEvents.size).toBe(0);
             } // for
         });
     } // for
