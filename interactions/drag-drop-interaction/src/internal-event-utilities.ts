@@ -473,7 +473,12 @@ const createDropEvaluationEvent              = <TElement extends Element = HTMLE
     dropHandshakeEvent        : DropHandshakeEvent< Element> | DragProbeEvent< Element>,
     dragResponse              : boolean | undefined,
 ): DropEvaluationEvent< Element> => {
-    // Extract properties from the droppable context for convenience:
+    // Extract properties from the draggable and droppable context for convenience:
+    const {
+        // Actual states:
+        dragElementRef,
+    } = draggable;
+    
     const {
         // Data:
         dropMetadata,
@@ -497,6 +502,7 @@ const createDropEvaluationEvent              = <TElement extends Element = HTMLE
         // The *active* droppable that was `currentTarget` in the handshake stage is now replaced by *current* droppable.
         // This update reflects perspective: each side treats itself as current, partner as related.
         currentTarget    : dropElementRef.current as TElement,
+        relatedTarget    : dragElementRef.current, // Preserve the related target if the underlying event is DragProbeEvent (doesn't have a correct related target).
         
         // Data:
         dropMetadata, // The metadata exposed by the droppable side.
