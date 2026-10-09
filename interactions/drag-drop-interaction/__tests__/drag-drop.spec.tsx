@@ -3653,6 +3653,18 @@ test.describe('useDraggableState() + useDroppableState()', () => {
             
             
             
+            // Initialize pointer position to the center of the draggable:
+            {
+                const draggableBox = await draggable.boundingBox();
+                if (!draggableBox) throw 'draggable does not exist';
+                const centerX = draggableBox.x + draggableBox.width / 2;
+                const centerY = draggableBox.y + draggableBox.height / 2;
+                currentPointerPos = centerX;
+                await page.mouse.move(currentPointerPos, centerY);
+            } // if
+            
+            
+            
             // Apply update scenarios:
             for (const {
                 title,
