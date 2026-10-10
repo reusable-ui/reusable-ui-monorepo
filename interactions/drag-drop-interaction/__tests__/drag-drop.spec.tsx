@@ -3948,6 +3948,29 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                         else {
                             expect('dropResponse' in dragSideEvent).toBe(false);
                         } // if
+                        
+                        
+                        
+                        // Verify `currentTarget`:
+                        // - Should refer to the draggable itself.
+                        expect(dragSideEvent.currentTarget?.__id).toBe('draggable-state-test-0');
+                        
+                        // Verify `relatedTarget`:
+                        // - Should refer to the active droppable (if any).
+                        if (droppableIndex !== -1) { // The pointer is over an active droppable.
+                            expect(dragSideEvent.relatedTarget?.__id).toBe(`droppable-state-test-${droppableIndex}`);
+                        }
+                        else { // There is no active droppable.
+                            expect(dragSideEvent.relatedTarget).toBeNull();
+                        } // if
+                        
+                        // Verify `target`:
+                        if (droppableIndex !== -1) { // The pointer is over an active droppable.
+                            expect(dragSideEvent.target?.__id).toBe(`droppable-state-test-${droppableIndex}`);
+                        }
+                        else { // There is no active droppable.
+                            expect(dragSideEvent.target?.__id).toBe('draggable-droppable-test'); // Refer to the background component.
+                        } // if
                     } // if
                 } // for
                 
@@ -4060,6 +4083,24 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                             }
                             else {
                                 expect('dropResponse' in dropSideEvent).toBe(false);
+                            } // if
+                            
+                            
+                            
+                            // Verify `currentTarget`:
+                            // - Should refer to the droppable itself.
+                            expect(dropSideEvent.currentTarget?.__id).toBe(`droppable-state-test-${position}`);
+                            
+                            // Verify `relatedTarget`:
+                            // - Should refer to the known draggable even if not in contact with it:
+                            expect(dropSideEvent.relatedTarget?.__id).toBe('draggable-state-test-0');
+                            
+                            // Verify `target`:
+                            if (droppableIndex !== -1) { // The pointer is over an active droppable.
+                                expect(dropSideEvent.target?.__id).toBe(`droppable-state-test-${droppableIndex}`);
+                            }
+                            else { // There is no active droppable.
+                                expect(dropSideEvent.target?.__id).toBe('draggable-droppable-test'); // Refer to the background component.
                             } // if
                         }
                         else {
