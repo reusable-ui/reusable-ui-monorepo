@@ -152,16 +152,10 @@ export interface DropLifecycleEvent<TElement extends Element = HTMLElement>
 export interface DragDropActivationEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        PointerEvent<TElement>
+        Omit<DragDropLifecycleEvent<TElement>,
+            | 'dropMetadata' // Irrelevant at activation: at activation, no droppable is yet contacted.
+        >
 {
-    /**
-     * The payload carried by the draggable source.
-     * 
-     * Allows droppables to inspect the actual data being dragged
-     * (e.g. productId, file type, or other attributes)
-     * for contextual styling or state initialization.
-     */
-    readonly dragPayload  : DragPayload
 }
 
 /**
@@ -175,12 +169,11 @@ export interface DragDropActivationEvent<TElement extends Element = HTMLElement>
 export interface DragStartEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
+        Omit<DragLifecycleEvent<TElement>,
+            | 'dropMetadata' // Irrelevant at activation: at activation, no droppable is yet contacted.
+        >,
         DragDropActivationEvent<TElement>
 {
-    // /**
-    //  * At activation, no droppable is yet contacted.
-    //  */
-    // readonly dropMetadata : undefined // No dropMetadata here — irrelevant at activation.
 }
 
 /**
@@ -195,16 +188,9 @@ export interface DragStartEvent<TElement extends Element = HTMLElement>
 export interface DragPresenceEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
+        DropLifecycleEvent<TElement>,
         DragDropActivationEvent<TElement>
 {
-    /**
-     * The metadata exposed by the droppable target.
-     * 
-     * Allows the draggable to inspect the target's business context
-     * (e.g. categoryId, accepted types, flags, or other attributes)
-     * for contextual styling or state initialization.
-     */
-    readonly dropMetadata : DropMetadata
 }
 
 
