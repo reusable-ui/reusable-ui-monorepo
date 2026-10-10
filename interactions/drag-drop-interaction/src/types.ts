@@ -209,23 +209,8 @@ export interface DragPresenceEvent<TElement extends Element = HTMLElement>
 export interface DragDropDeactivationEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        PointerEvent<TElement>
+        DragDropLifecycleEvent<TElement>
 {
-    /**
-     * The payload carried by the draggable source.
-     * 
-     * Allows droppables to inspect the actual data being dragged
-     * (e.g. productId, file type, or other attributes)
-     * for contextual styling or state initialization.
-     */
-    readonly dragPayload  : DragPayload
-    
-    /**
-     * The active droppable metadata at the time the gesture ended, if any.
-     * 
-     * Becomes `undefined` if no droppable was contacted when the gesture ended.
-     */
-    readonly dropMetadata : DropMetadata | undefined
 }
 
 /**
@@ -240,6 +225,7 @@ export interface DragDropDeactivationEvent<TElement extends Element = HTMLElemen
 export interface DragEndEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
+        DragLifecycleEvent<TElement>,
         DragDropDeactivationEvent<TElement>
 {
 }
@@ -256,17 +242,11 @@ export interface DragEndEvent<TElement extends Element = HTMLElement>
 export interface DragAbsenceEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        DragDropDeactivationEvent<TElement>
+        DropLifecycleEvent<TElement>,
+        Omit<DragDropDeactivationEvent<TElement>,
+            | 'dropMetadata' // Omit the *optional* metadata, instead use the *mandatory* metadata from `DropLifecycleEvent`.
+        >
 {
-    /**
-     * The metadata exposed by the droppable target.
-     * 
-     * Allows the draggable to inspect the target's business context
-     * (e.g. categoryId, accepted types, flags, or other attributes)
-     * for contextual styling or state initialization.
-     */
-    readonly dropMetadata : DropMetadata
-    
     /**
      * Indicates whether the pointer was positioned over *this* droppable
      * at the exact moment the drag gesture ended.
