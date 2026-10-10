@@ -7,9 +7,13 @@ import {
 // Types:
 import {
     // Lifecycles:
+    
+    // Activations:
     type DragDropActivationEvent,
     type DragStartEvent,
     type DragPresenceEvent,
+    
+    // Deactivations:
     type DragDropDeactivationEvent,
     type DragEndEvent,
     type DragAbsenceEvent,

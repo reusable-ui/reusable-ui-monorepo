@@ -18,9 +18,15 @@ import {
     type DragPayload,
     type DropMetadata,
     
+    
+    
     // Lifecycles:
+    
+    // Activations:
     type DragStartEvent,
     type DragPresenceEvent,
+    
+    // Deactivations:
     type DragEndEvent,
     type DragAbsenceEvent,
     
@@ -35,6 +41,8 @@ import {
     // Commits:
     type DragCommitEvent,
     type DropCommitEvent,
+    
+    
     
     // Reactive states:
     type DraggableState,
