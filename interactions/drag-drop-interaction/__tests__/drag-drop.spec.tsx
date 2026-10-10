@@ -3951,6 +3951,11 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                         
                         
                         
+                        // Verify event type:
+                        expect(dragSideEvent.type).toBe(dragSideEventName.toLowerCase());
+                        
+                        
+                        
                         // Verify `currentTarget`:
                         // - Should refer to the draggable itself.
                         expect(dragSideEvent.currentTarget?.__id).toBe('draggable-state-test-0');
@@ -4084,6 +4089,11 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                             else {
                                 expect('dropResponse' in dropSideEvent).toBe(false);
                             } // if
+                            
+                            
+                            
+                            // Verify event type:
+                            expect(dropSideEvent.type).toBe(dropSideEventName.toLowerCase());
                             
                             
                             
