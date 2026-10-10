@@ -71,6 +71,73 @@ export type DropMetadata = DragDropData
 
 // Lifecycles:
 
+// Bases:
+
+/**
+ * Base lifecycle event for drag-drop-related operations.
+ * 
+ * Extends a React `PointerEvent` with the draggable payload.
+ */
+export interface DragDropLifecycleEvent<TElement extends Element = HTMLElement>
+    extends
+        // Bases:
+        PointerEvent<TElement>
+{
+    /**
+     * The payload carried by the draggable source.
+     * 
+     * Allows droppables to inspect the actual data being dragged
+     * (e.g. productId, file type, or other attributes)
+     * for contextual styling or state initialization.
+     */
+    readonly dragPayload  : DragPayload
+    
+    /**
+     * The metadata exposed by the droppable target, if any.
+     * 
+     * Allows the draggable to inspect the target's business context
+     * (e.g. categoryId, accepted types, flags, or other attributes)
+     * for contextual styling or state initialization.
+     * 
+     * Becomes `undefined` when the draggable is not hovering over any droppable.
+     */
+    readonly dropMetadata : DropMetadata | undefined
+}
+
+/**
+ * Base lifecycle event for drag-related operations.
+ * 
+ * Extends a React `PointerEvent` with the draggable payload.
+ */
+export interface DragLifecycleEvent<TElement extends Element = HTMLElement>
+    extends
+        // Bases:
+        DragDropLifecycleEvent<TElement>
+{
+}
+
+/**
+ * Base lifecycle event for drop-related operations.
+ * 
+ * Extends a React `PointerEvent` with the draggable payload.
+ */
+export interface DropLifecycleEvent<TElement extends Element = HTMLElement>
+    extends
+        // Bases:
+        DragDropLifecycleEvent<TElement>
+{
+    /**
+     * The metadata exposed by the droppable target.
+     * 
+     * Allows the draggable to inspect the target's business context
+     * (e.g. categoryId, accepted types, flags, or other attributes)
+     * for contextual styling or state initialization.
+     */
+    readonly dropMetadata : DropMetadata
+}
+
+
+
 // Activations:
 
 /**
