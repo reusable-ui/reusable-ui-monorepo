@@ -71,6 +71,8 @@ export type DropMetadata = DragDropData
 
 // Lifecycles:
 
+// Activations:
+
 /**
  * Emitted once the drag gesture begins,
  * used as the base for draggable and droppable activation events.
@@ -139,6 +141,8 @@ export interface DragPresenceEvent<TElement extends Element = HTMLElement>
 }
 
 
+
+// Deactivations:
 
 /**
  * Emitted once the drag gesture ends,
