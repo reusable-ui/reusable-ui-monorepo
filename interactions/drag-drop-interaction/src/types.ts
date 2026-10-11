@@ -95,7 +95,7 @@ export interface DragDropLifecycleEvent<TElement extends Element = HTMLElement>
     /**
      * The metadata exposed by the droppable target, if any.
      * 
-     * Allows the draggable to inspect the target's business context
+     * Allows draggables to inspect the target's business context
      * (e.g. categoryId, accepted types, flags, or other attributes)
      * for contextual styling or state initialization.
      * 
