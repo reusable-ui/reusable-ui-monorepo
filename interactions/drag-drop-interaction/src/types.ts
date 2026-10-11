@@ -560,25 +560,25 @@ export interface DropEvaluationEvent<TElement extends Element = HTMLElement>
 export interface DragDropCommitEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        PointerEvent<TElement>
+        DragDropLifecycleEvent<TElement>
 {
-    relatedTarget         : EventTarget // Narrows down from `EventTarget | null` to `EventTarget` since the droppable element is already in contact (committed).
-    
     /**
      * The payload delivered by the draggable source.
      * 
      * Allows the droppable to apply business logic for the payload
-     * (e.g. productId, file type, or other attributes) after approval.
+     * (e.g. productId, file type, or other attributes)
+     * after approval.
      */
-    readonly dragPayload  : DragPayload
+    readonly dragPayload  : DragDropLifecycleEvent<TElement>['dragPayload'] // Refine JSDoc for evaluation cases.
     
     /**
      * The metadata exposed by the accepted droppable target.
      * 
      * Allows the draggable to pick the target's business context
-     * (e.g. categoryId, accepted types, flags, or other attributes) after approval.
+     * (e.g. categoryId, accepted types, flags, or other attributes)
+     * after approval.
      */
-    readonly dropMetadata : DropMetadata
+    readonly dropMetadata : DropLifecycleEvent<TElement>['dropMetadata'] // Narrows down from *optional* to *mandatory* metadata from `DropLifecycleEvent`.
 }
 
 /**
@@ -593,6 +593,9 @@ export interface DragDropCommitEvent<TElement extends Element = HTMLElement>
 export interface DragCommitEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
+        Omit<DragLifecycleEvent<TElement>,
+            | 'dropMetadata' // Omit the *optional* metadata, instead use the *mandatory* metadata from `DragDropCommitEvent`.
+        >,
         DragDropCommitEvent<TElement>
 {
 }
@@ -609,6 +612,7 @@ export interface DragCommitEvent<TElement extends Element = HTMLElement>
 export interface DropCommitEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
+        DropLifecycleEvent<TElement>,
         DragDropCommitEvent<TElement>
 {
 }
