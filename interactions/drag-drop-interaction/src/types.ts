@@ -413,12 +413,12 @@ export interface DropHandshakeEvent<TElement extends Element = HTMLElement>
 export interface DragDropEvaluationEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        PointerEvent<TElement>
+        DragDropLifecycleEvent<TElement>
 {
     /**
      * The payload of the active draggable source.
      * 
-     * Allows the droppable to pick the actual data being dragged
+     * Allows the droppable side to inspect the actual data being dragged
      * (e.g. productId, file type, or other attributes)
      * and render contextual hints such as:
      * "Please drop Product A here" or "Drag File X to the desired folder".
@@ -431,19 +431,19 @@ export interface DragDropEvaluationEvent<TElement extends Element = HTMLElement>
      * Otherwise you may be inspecting payload data that was
      * broadcast for another droppable.
      */
-    readonly dragPayload  : DragPayload
+    readonly dragPayload  : DragDropLifecycleEvent<TElement>['dragPayload'] // Refine JSDoc for evaluation cases.
     
     /**
      * The metadata of the currently hovered droppable target.
      * 
-     * Allows the draggable to pick the target's business context
+     * Allows the draggable side to inspect the target's business context
      * (e.g. categoryId, accepted types, flags, or other attributes)
      * and render contextual hints such as:
      * "Drop Product A into Category B" or "Drop Product A into a category".
      * 
      * Becomes `undefined` when the draggable is not hovering over any droppable.
      */
-    readonly dropMetadata : DropMetadata | undefined
+    readonly dropMetadata : DragDropLifecycleEvent<TElement>['dropMetadata'] // Refine JSDoc for evaluation cases.
     
     /**
      * The handshake response state from the draggable source.
@@ -486,6 +486,7 @@ export interface DragDropEvaluationEvent<TElement extends Element = HTMLElement>
 export interface DragEvaluationEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
+        DragLifecycleEvent<TElement>,
         DragDropEvaluationEvent<TElement>
 {
 }
@@ -510,17 +511,20 @@ export interface DragEvaluationEvent<TElement extends Element = HTMLElement>
 export interface DropEvaluationEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        DragDropEvaluationEvent<TElement>
+        DropLifecycleEvent<TElement>,
+        Omit<DragDropEvaluationEvent<TElement>,
+            | 'dropMetadata' // Omit the *optional* metadata, instead use the *mandatory* metadata from `DropLifecycleEvent`.
+        >
 {
     /**
      * The metadata of the currently hovered droppable target.
      * 
-     * Allows the draggable to pick the target's business context
+     * Allows the draggable side to inspect the target's business context
      * (e.g. categoryId, accepted types, flags, or other attributes)
      * and render contextual hints such as:
      * "Drop Product A into Category B" or "Drop Product A into a category".
      */
-    readonly dropMetadata : DropMetadata
+    readonly dropMetadata : DropLifecycleEvent<TElement>['dropMetadata'] // Refine JSDoc for evaluation cases.
     
     /**
      * Indicates whether the pointer is positioned over *this* droppable
