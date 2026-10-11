@@ -2,7 +2,6 @@
 import {
     // Types:
     type Dispatch,
-    type PointerEvent as ReactPointerEvent,
     type RefObject,
 }                           from 'react'
 
@@ -21,6 +20,9 @@ import {
     
     
     // Lifecycles:
+    
+    // Bases:
+    type DragDropLifecycleEvent,
     
     // Activations:
     type DragStartEvent,
@@ -362,10 +364,8 @@ export interface DroppableContext<TElement extends Element = HTMLElement> {
 export interface DragProbeEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        ReactPointerEvent<TElement>
+        Omit<DragDropLifecycleEvent<TElement>,
+            | 'dropMetadata' // Irrelevant at probing: at probing, no droppable is yet contacted.
+        >
 {
-    /**
-     * The payload associated with the current drag gesture.
-     */
-    readonly dragPayload  : DragPayload
 }
