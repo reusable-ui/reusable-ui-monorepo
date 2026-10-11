@@ -358,7 +358,8 @@ export const createDragProbeEvent            = <TElement extends Element = HTMLE
  * 
  * Extends the probe event with the droppable element (`relatedTarget`)
  * and carrying the droppable's metadata,
- * enabling the draggable to inspect the target's business context before deciding acceptance.
+ * enabling the draggable side to inspect the target's business context
+ * before deciding acceptance.
  * 
  * Carries a mutable `dragResponse` field, defaulting to `undefined`
  * until the draggable responds its decision.
@@ -388,7 +389,8 @@ const createDragHandshakeEvent               = <TElement extends Element = HTMLE
  * 
  * Extends the probe event with the droppable element (`currentTarget`)
  * and carrying the draggable's payload,
- * enabling the droppable to inspect the actual data being dragged before deciding acceptance.
+ * enabling the droppable side to inspect the actual data being dragged
+ * before deciding acceptance.
  * 
  * The draggable element swapped from `currentTarget` to `relatedTarget`,
  * reflecting the droppable's perspective: self as current, partner as related.
