@@ -48,7 +48,8 @@
     "build": "npm run clean && npm run tsc && npm run lint",
     "ncu": "ncu --peer",
     "ncu:upgrade": "ncu --peer --upgrade",
-    "test": "npx playwright test"
+    "test": "npx playwright test",
+    "test:types": "npx tsd --files __tests__/**/*.test-d.ts"
   },
   "dependencies": {
     "@reusable-ui/callbacks": "^7.0.0",
