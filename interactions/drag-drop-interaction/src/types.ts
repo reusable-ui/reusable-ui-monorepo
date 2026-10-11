@@ -284,27 +284,25 @@ export interface DragAbsenceEvent<TElement extends Element = HTMLElement>
 export interface DragDropHandshakeEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        PointerEvent<TElement>
+        DragDropLifecycleEvent<TElement>
 {
-    relatedTarget         : EventTarget // Narrows down from `EventTarget | null` to `EventTarget` since the droppable element is already in contact (handshaked).
-    
     /**
      * The payload carried by the draggable source.
      * 
-     * Allows the droppable to inspect the actual data being dragged
+     * Allows the droppable side to inspect the actual data being dragged
      * (e.g. productId, file type, or other attributes)
      * before deciding acceptance.
      */
-    readonly dragPayload  : DragPayload
+    readonly dragPayload  : DragDropLifecycleEvent<TElement>['dragPayload'] // Refine JSDoc for handshake acceptance cases.
     
     /**
      * The metadata exposed by the candidate droppable target.
      * 
-     * Allows the draggable to inspect the target's business context
+     * Allows the draggable side to inspect the target's business context
      * (e.g. categoryId, accepted types, flags, or other attributes)
      * before deciding acceptance.
      */
-    readonly dropMetadata : DropMetadata
+    readonly dropMetadata : DragDropLifecycleEvent<TElement>['dropMetadata'] // Refine JSDoc for handshake acceptance cases.
     
     /**
      * The handshake response state from the current side.
@@ -338,8 +336,9 @@ export interface DragDropHandshakeEvent<TElement extends Element = HTMLElement>
 export interface DragHandshakeEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
+        DragLifecycleEvent<TElement>,
         Omit<DragDropHandshakeEvent<TElement>,
-            | 'response' // Rename to `dragResponse` for the drag side.
+            | 'response'     // Rename `response` to `dragResponse` for the drag side.
         >
 {
     /**
@@ -355,7 +354,7 @@ export interface DragHandshakeEvent<TElement extends Element = HTMLElement>
      * - `false`     → rejected (may show 🚫 feedback to indicate drop not allowed)
      * - `undefined` → ignored  (no feedback; user keeps searching for a valid drop zone)
      */
-    dragResponse : DragDropHandshakeEvent['response']
+    dragResponse : DragDropHandshakeEvent<TElement>['response'] // Rename `response` to `dragResponse` for the drag side.
 }
 
 /**
@@ -375,8 +374,10 @@ export interface DragHandshakeEvent<TElement extends Element = HTMLElement>
 export interface DropHandshakeEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
+        DropLifecycleEvent<TElement>,
         Omit<DragDropHandshakeEvent<TElement>,
-            | 'response' // Rename to `dropResponse` for the drop side.
+            | 'dropMetadata' // Omit the *optional* metadata, instead use the *mandatory* metadata from `DropLifecycleEvent`.
+            | 'response'     // Rename `response` to `dropResponse` for the drop side.
         >
 {
     /**
@@ -392,7 +393,7 @@ export interface DropHandshakeEvent<TElement extends Element = HTMLElement>
      * - `false`     → rejected (may show 🚫 feedback to indicate an invalid payload)
      * - `undefined` → ignored  (no feedback; user keeps searching for a valid drop zone)
      */
-    dropResponse : DragDropHandshakeEvent['response']
+    dropResponse : DragDropHandshakeEvent<TElement>['response'] // Rename `response` to `dropResponse` for the drop side.
 }
 
 
