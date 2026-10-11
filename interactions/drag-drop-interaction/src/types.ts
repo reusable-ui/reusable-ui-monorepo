@@ -302,7 +302,7 @@ export interface DragDropHandshakeEvent<TElement extends Element = HTMLElement>
      * (e.g. categoryId, accepted types, flags, or other attributes)
      * before deciding acceptance.
      */
-    readonly dropMetadata : DragDropLifecycleEvent<TElement>['dropMetadata'] // Refine JSDoc for handshake acceptance cases.
+    readonly dropMetadata : DropLifecycleEvent<TElement>['dropMetadata'] // Narrows down from *optional* to *mandatory* metadata from `DropLifecycleEvent`.
     
     /**
      * The handshake response state from the current side.
@@ -336,7 +336,9 @@ export interface DragDropHandshakeEvent<TElement extends Element = HTMLElement>
 export interface DragHandshakeEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        DragLifecycleEvent<TElement>,
+        Omit<DragLifecycleEvent<TElement>,
+            | 'dropMetadata' // Omit the *optional* metadata, instead use the *mandatory* metadata from `DragDropHandshakeEvent`.
+        >,
         Omit<DragDropHandshakeEvent<TElement>,
             | 'response'     // Rename `response` to `dragResponse` for the drag side.
         >
@@ -376,7 +378,6 @@ export interface DropHandshakeEvent<TElement extends Element = HTMLElement>
         // Bases:
         DropLifecycleEvent<TElement>,
         Omit<DragDropHandshakeEvent<TElement>,
-            | 'dropMetadata' // Omit the *optional* metadata, instead use the *mandatory* metadata from `DropLifecycleEvent`.
             | 'response'     // Rename `response` to `dropResponse` for the drop side.
         >
 {
