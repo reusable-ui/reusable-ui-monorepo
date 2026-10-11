@@ -29,7 +29,7 @@ import {
  * Unrecognized keys are ignored by the other side, allowing both draggable and droppable
  * to attach their own business-specific data without interfering with negotiation.
  */
-export type DragDropData = ReadonlyMap<unknown, unknown>
+export interface DragDropData extends ReadonlyMap<unknown, unknown> {}
 
 /**
  * Carries the actual data being dragged (payload) — for example:
@@ -47,7 +47,7 @@ export type DragDropData = ReadonlyMap<unknown, unknown>
  * Unrecognized keys are ignored by the droppable, allowing the draggable
  * to attach extra business-specific payload without interfering with negotiation.
  */
-export type DragPayload  = DragDropData
+export interface DragPayload  extends DragDropData {}
 
 /**
  * Exposes the target's business context (metadata) — for example:
@@ -65,7 +65,7 @@ export type DragPayload  = DragDropData
  * Unrecognized keys are ignored by the draggable, allowing the droppable
  * to expose extra business-specific metadata without interfering with negotiation.
  */
-export type DropMetadata = DragDropData
+export interface DropMetadata extends DragDropData {}
 
 
 
