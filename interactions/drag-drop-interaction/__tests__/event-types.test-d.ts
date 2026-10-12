@@ -107,7 +107,7 @@ expectType<DropMetadata | undefined>(dragEvaluationEvent.dropMetadata)
 
 
 // ============================================================================
-// 3. `pointedElement` property rules on both draggable and droppable side events:
+// 4. `pointedElement` property rules on both draggable and droppable side events:
 // ============================================================================
 
 // - DragHandshakeEvent, DropHandshakeEvent, DragCommitEvent, and DropCommitEvent:
