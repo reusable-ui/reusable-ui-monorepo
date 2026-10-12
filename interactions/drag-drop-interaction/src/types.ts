@@ -300,13 +300,23 @@ export interface DragDropHandshakeEvent<TElement extends Element = HTMLElement>
         DragDropLifecycleEvent<TElement>
 {
     /**
+     * A reference to the DOM element currently under the pointer during a drag gesture.
+     * 
+     * Invalid elements (such as those rejected by `DraggableStateProps.dropPredicate`) are ignored, 
+     * falling back to the next valid element underneath.
+     */
+    readonly pointedElement : Exclude<DragDropLifecycleEvent<TElement>['pointedElement'], null>  // Narrows down from *optional* to *mandatory* element.
+    
+    
+    
+    /**
      * The payload carried by the draggable source.
      * 
      * Allows the droppable side to inspect the actual data being dragged
      * (e.g. productId, file type, or other attributes)
      * before deciding acceptance.
      */
-    readonly dragPayload  : DragDropLifecycleEvent<TElement>['dragPayload'] // Refine JSDoc for handshake acceptance cases.
+    readonly dragPayload    : DragDropLifecycleEvent<TElement>['dragPayload'] // Refine JSDoc for handshake acceptance cases.
     
     /**
      * The metadata exposed by the candidate droppable target.
@@ -315,7 +325,7 @@ export interface DragDropHandshakeEvent<TElement extends Element = HTMLElement>
      * (e.g. categoryId, accepted types, flags, or other attributes)
      * before deciding acceptance.
      */
-    readonly dropMetadata : DropLifecycleEvent<TElement>['dropMetadata'] // Narrows down from *optional* to *mandatory* metadata from `DropLifecycleEvent`.
+    readonly dropMetadata   : DropLifecycleEvent<TElement>['dropMetadata'] // Narrows down from *optional* to *mandatory* metadata from `DropLifecycleEvent`.
     
     /**
      * The handshake response state from the current side.
@@ -329,7 +339,7 @@ export interface DragDropHandshakeEvent<TElement extends Element = HTMLElement>
      * - `false`     → rejected (may show 🚫 feedback to indicate drop not allowed)
      * - `undefined` → ignored  (no feedback; user keeps searching for a valid drop zone)
      */
-    response              : boolean | undefined
+    response                : boolean | undefined
 }
 
 /**
@@ -350,10 +360,11 @@ export interface DragHandshakeEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
         Omit<DragLifecycleEvent<TElement>,
-            | 'dropMetadata' // Omit the *optional* metadata, instead use the *mandatory* metadata from `DragDropHandshakeEvent`.
+            | 'pointedElement' // Omit the *optional* pointed element, instead use the *mandatory* element from `DragDropHandshakeEvent`.
+            | 'dropMetadata'   // Omit the *optional* metadata, instead use the *mandatory* metadata from `DragDropHandshakeEvent`.
         >,
         Omit<DragDropHandshakeEvent<TElement>,
-            | 'response'     // Rename `response` to `dragResponse` for the drag side.
+            | 'response'       // Rename `response` to `dragResponse` for the drag side.
         >
 {
     /**
@@ -389,9 +400,11 @@ export interface DragHandshakeEvent<TElement extends Element = HTMLElement>
 export interface DropHandshakeEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        DropLifecycleEvent<TElement>,
+        Omit<DropLifecycleEvent<TElement>,
+            | 'pointedElement' // Omit the *optional* pointed element, instead use the *mandatory* element from `DragDropHandshakeEvent`.
+        >,
         Omit<DragDropHandshakeEvent<TElement>,
-            | 'response'     // Rename `response` to `dropResponse` for the drop side.
+            | 'response'       // Rename `response` to `dropResponse` for the drop side.
         >
 {
     /**
@@ -577,6 +590,16 @@ export interface DragDropCommitEvent<TElement extends Element = HTMLElement>
         DragDropLifecycleEvent<TElement>
 {
     /**
+     * A reference to the DOM element currently under the pointer during a drag gesture.
+     * 
+     * Invalid elements (such as those rejected by `DraggableStateProps.dropPredicate`) are ignored, 
+     * falling back to the next valid element underneath.
+     */
+    readonly pointedElement : Exclude<DragDropLifecycleEvent<TElement>['pointedElement'], null>  // Narrows down from *optional* to *mandatory* element.
+    
+    
+    
+    /**
      * The payload delivered by the draggable source.
      * 
      * Allows the droppable to apply business logic for the payload
@@ -608,7 +631,8 @@ export interface DragCommitEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
         Omit<DragLifecycleEvent<TElement>,
-            | 'dropMetadata' // Omit the *optional* metadata, instead use the *mandatory* metadata from `DragDropCommitEvent`.
+            | 'pointedElement' // Omit the *optional* pointed element, instead use the *mandatory* element from `DragDropCommitEvent`.
+            | 'dropMetadata'   // Omit the *optional* metadata, instead use the *mandatory* metadata from `DragDropCommitEvent`.
         >,
         DragDropCommitEvent<TElement>
 {
@@ -626,7 +650,9 @@ export interface DragCommitEvent<TElement extends Element = HTMLElement>
 export interface DropCommitEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
-        DropLifecycleEvent<TElement>,
+        Omit<DropLifecycleEvent<TElement>,
+            | 'pointedElement' // Omit the *optional* pointed element, instead use the *mandatory* element from `DragDropCommitEvent`.
+        >,
         DragDropCommitEvent<TElement>
 {
 }

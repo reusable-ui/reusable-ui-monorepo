@@ -373,7 +373,7 @@ export const createDragProbeEvent            = <TElement extends Element = HTMLE
  */
 const createDragHandshakeEvent               = <TElement extends Element = HTMLElement>(
     candidateDroppable        : DroppableContext< Element>,
-    dragProbeEvent            : DragProbeEvent<TElement>,
+    dragProbeEvent            : DragProbeEvent<TElement> & { pointedElement: Element },
     candidateDropElement      : Element,
 ): DragHandshakeEvent<TElement> => ({
     // Event metadata:
@@ -407,7 +407,7 @@ const createDragHandshakeEvent               = <TElement extends Element = HTMLE
  */
 const createDropHandshakeEvent               = <TElement extends Element = HTMLElement>(
     candidateDroppable        : DroppableContext< Element>,
-    dragProbeEvent            : DragProbeEvent<TElement>,
+    dragProbeEvent            : DragProbeEvent<TElement> & { pointedElement: Element },
     candidateDropElement      : TElement,
 ): DropHandshakeEvent<TElement> => ({
     // Event metadata:
@@ -719,7 +719,7 @@ export const dispatchDeactivationEvents      = <TElement extends Element = HTMLE
 export const dispatchHandshakeEvents         = async <TElement extends Element = HTMLElement>(
     draggable                 : DraggableContext<TElement>,
     candidateDroppable        : DroppableContext< Element>,
-    dragProbeEvent            : DragProbeEvent<TElement>,
+    dragProbeEvent            : DragProbeEvent<TElement> & { pointedElement: Element },
     candidateDropElement      : Element,
 ): Promise<{
     // Events:
