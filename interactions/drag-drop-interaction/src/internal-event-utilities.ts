@@ -229,9 +229,10 @@ const createDragPresenceEvent                = <TElement extends Element = HTMLE
         type             : 'dragpresence',
         
         // On the droppable side, `currentTarget` points to the droppable itself.
-        // The draggable that was `currentTarget` in the activation stage is now `relatedTarget`.
+        // The draggable that was `currentTarget` and `target` in the activation stage is now `relatedTarget`.
         // This swap reflects perspective: each side treats itself as current, partner as related.
         currentTarget    : dropElementRef.current as TElement,
+        target           : dropElementRef.current as TElement,
         relatedTarget    : dragDropActivationEvent.currentTarget,
         
         // Data:
@@ -304,9 +305,10 @@ const createDragAbsenceEvent                 = <TElement extends Element = HTMLE
         type             : 'dragabsence',
         
         // On the droppable side, `currentTarget` points to the droppable itself.
-        // The draggable that was `currentTarget` in the deactivation stage is now `relatedTarget`.
+        // The draggable that was `currentTarget` and `target` in the deactivation stage is now `relatedTarget`.
         // This swap reflects perspective: each side treats itself as current, partner as related.
         currentTarget    : dropElementRef.current as TElement,
+        target           : dropElementRef.current as TElement,
         relatedTarget    : dragDropDeactivationEvent.currentTarget,
         
         // Data:
@@ -439,9 +441,10 @@ const createDropHandshakeEvent               = <TElement extends Element = HTMLE
     type             : 'drophandshake',
     
     // On the droppable side, `currentTarget` points to the droppable itself.
-    // The draggable that was `currentTarget` in the probe stage is now `relatedTarget`.
+    // The draggable that was `currentTarget` and `target` in the probe stage is now `relatedTarget`.
     // This swap reflects perspective: each side treats itself as current, partner as related.
     currentTarget    : candidateDropElement,
+    target           : candidateDropElement,
     relatedTarget    : dragProbeEvent.currentTarget,
     
     // Data:
@@ -532,9 +535,10 @@ const createDropEvaluationEvent              = <TElement extends Element = HTMLE
         type             : 'dropevaluation',
         
         // On the droppable side, `currentTarget` points to the droppable itself.
-        // The *active* droppable that was `currentTarget` in the handshake stage is now replaced by *current* droppable.
+        // The *active* droppable that was `currentTarget` and `target` in the handshake stage is now replaced by *current* droppable.
         // This update reflects perspective: each side treats itself as current, partner as related.
         currentTarget    : dropElementRef.current as TElement,
+        target           : dropElementRef.current as TElement,
         relatedTarget    : dragElementRef.current as TElement, // Preserve the related target if the underlying event is DragProbeEvent (doesn't have a correct related target).
         
         // Data:
@@ -650,10 +654,11 @@ const createDropCommitEvent                  = <TElement extends Element = HTMLE
     type             : 'dropcommit',
     
     // On the droppable side, `currentTarget` points to the droppable itself.
-    // The draggable that was `currentTarget` in the committed stage is now `relatedTarget`,
+    // The draggable that was `currentTarget` and `target` in the committed stage is now `relatedTarget`,
     // and vice versa for the droppable.
     // This swap reflects perspective: each side treats itself as current, partner as related.
     currentTarget    : dragDropCommitEvent.relatedTarget as TElement,
+    target           : dragDropCommitEvent.relatedTarget as TElement,
     relatedTarget    : dragDropCommitEvent.currentTarget,
 });
 

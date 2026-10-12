@@ -3960,6 +3960,11 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                         // - Should refer to the draggable itself.
                         expect(dragSideEvent.currentTarget?.__id).toBe('draggable-state-test-0');
                         
+                        // Verify `target`:
+                        // - It's alias for `currentTarget`.
+                        // - Should be equal to `currentTarget`.
+                        expect(dragSideEvent.target).toEqual(dragSideEvent.currentTarget);
+                        
                         // Verify `relatedTarget`:
                         // - Should refer to the active droppable (if any).
                         if (droppableIndex !== -1) { // The pointer is over an active droppable.
@@ -4100,6 +4105,11 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                             // Verify `currentTarget`:
                             // - Should refer to the droppable itself.
                             expect(dropSideEvent.currentTarget?.__id).toBe(`droppable-state-test-${position}`);
+                            
+                            // Verify `target`:
+                            // - It's alias for `currentTarget`.
+                            // - Should be equal to `currentTarget`.
+                            expect(dropSideEvent.target).toEqual(dropSideEvent.currentTarget);
                             
                             // Verify `relatedTarget`:
                             // - Should refer to the known draggable even if not in contact with it:
