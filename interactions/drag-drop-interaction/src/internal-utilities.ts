@@ -69,6 +69,13 @@ const hasDragSession = <TElement extends Element = HTMLElement>(draggable: Dragg
     return !!draggable.dragSession;
 };
 
+/**
+ * Determines whether the specified probe event has an existing pointed element.
+ */
+const hasPointedElement = <TElement extends Element = HTMLElement>(dragProbeEvent: DragProbeEvent<TElement>): dragProbeEvent is DragProbeEvent<TElement> & { pointedElement: Element } => {
+    return !!dragProbeEvent.pointedElement;
+};
+
 
 
 // Resolvers:
@@ -168,13 +175,13 @@ interface NegotiationResult<TElement extends Element = HTMLElement> {
  */
 const attemptNegotiation = async <TElement extends Element = HTMLElement>(
     draggable               : DraggableContext<TElement>,
-    dragProbeEvent          : DragProbeEvent<TElement>,
+    dragProbeEvent          : DragProbeEvent<TElement> & { pointedElement: Element },
 ): Promise<NegotiationResult<TElement> | false> => {
     // Holds the nearest candidate that did not achieve a full dual-response:
     let nonResponsiveCandidate : NegotiationResult<TElement> | undefined = undefined;
     
     // Walk up the ancestor chain to find the nearest droppable side:
-    const pointedElement = dragProbeEvent.target as Element;
+    const pointedElement = dragProbeEvent.pointedElement;
     for (const candidateDropElement of iterateElementAndAncestors(pointedElement)) {
         // Find the corresponding droppable side by its element:
         // - Skip the disabled ones.
@@ -306,7 +313,7 @@ const swapActiveDroppable                   = <TElement extends Element = HTMLEl
     draggable.dragSession = {
         droppable,  // Replace with the new droppable.
         isAccepted, // Replace with the new acceptance value.
-        pointedElement : dragHandshakeEvent.target        as Element,
+        pointedElement : dragHandshakeEvent.pointedElement,
         dropElement    : dragHandshakeEvent.relatedTarget as Element,
     };
     // A TS fix to guarantee the existence of `draggable.dragSession`:
@@ -648,7 +655,7 @@ export const processDragProbe        = async <TElement extends Element = HTMLEle
     
     
     // If no element under the pointer → "no contact":
-    if (!pointedElement) {
+    if (!hasPointedElement(dragProbeEvent)) {
         clearActiveDroppable(draggable);
         
         // Dispatch "no contact" evaluation events:
