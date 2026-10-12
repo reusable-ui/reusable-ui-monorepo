@@ -83,6 +83,7 @@ export const createDragDropActivationEvent   = <TElement extends Element = HTMLE
         // Actual states:
         dragElementRef,
     } = draggable;
+    const dragElement = dragElementRef.current;
     
     return {
         ...createSyntheticPointerEvent<TElement, PointerEvent>({
@@ -90,12 +91,19 @@ export const createDragDropActivationEvent   = <TElement extends Element = HTMLE
             
             nativeEvent       : lastPointerDownEvent,
             
-            // type           : 'pointerdown',                       // Defaults to `nativeEvent.type`, no override needed.
+            // type           : 'pointerdown', // Defaults to `nativeEvent.type`, no override needed.
             
-            currentTarget     : dragElementRef.current ?? undefined, // The draggable element initiating the activation.
-            // relatedTarget  : dropElement,                         // Not yet defined at start stage.
+            currentTarget     : dragElement!,  // The draggable element initiating the activation.
+            target            : dragElement!,  // The draggable element initiating the activation.
+            relatedTarget     : null,          // Not yet defined at activation stage.
         }),
-        pointedElement,                                              // The element currently under the pointer at press.
+        
+        // Reassign the mandatory properties to satisfy the TS:
+        currentTarget         : dragElement!,  // The draggable element initiating the activation.
+        target                : dragElement!,  // The draggable element initiating the activation.
+        relatedTarget         : null,          // Not yet defined at activation stage.
+        
+        pointedElement,                        // The element currently under the pointer at press.
         
         // Data:
         dragPayload, // The payload carried by the draggable source.
@@ -128,6 +136,7 @@ export const createDragDropDeactivationEvent = <TElement extends Element = HTMLE
         dragElementRef,
         dragSession,
     } = draggable;
+    const dragElement = dragElementRef.current;
     
     // Extract properties from the drag session for convenience:
     // - Defaults all properties to null if no active droppable side.
@@ -146,12 +155,19 @@ export const createDragDropDeactivationEvent = <TElement extends Element = HTMLE
             
             nativeEvent       : lastPointerUpEvent,
             
-            // type           : 'pointerup',                         // Defaults to `nativeEvent.type`, no override needed.
+            // type           : 'pointerup',      // Defaults to `nativeEvent.type`, no override needed.
             
-            currentTarget     : dragElementRef.current ?? undefined, // The draggable element initiating the deactivation.
-            relatedTarget     : dropElement,                         // The droppable element in contact, if any.
+            currentTarget     : dragElement!,     // The draggable element initiating the deactivation.
+            target            : dragElement!,     // The draggable element initiating the deactivation.
+            relatedTarget     : dropElement,      // The droppable element in contact, if any.
         }),
-        pointedElement: pointedElementOrFallback,                    // The element currently under the pointer at release.
+        
+        // Reassign the mandatory properties to satisfy the TS:
+        currentTarget         : dragElement!,     // The draggable element initiating the deactivation.
+        target                : dragElement!,     // The draggable element initiating the deactivation.
+        relatedTarget         : dropElement,      // The droppable element in contact, if any.
+        
+        pointedElement: pointedElementOrFallback, // The element currently under the pointer at release.
         
         // Data:
         dragPayload  : draggable.dragPayload, // The payload carried by the draggable source.
@@ -331,6 +347,7 @@ export const createDragProbeEvent            = <TElement extends Element = HTMLE
         // Actual states:
         dragElementRef,
     } = draggable;
+    const dragElement = dragElementRef.current;
     
     
     
@@ -341,12 +358,19 @@ export const createDragProbeEvent            = <TElement extends Element = HTMLE
             
             nativeEvent       : pointerMoveEvent,
             
-            // type           : 'pointermove',                       // Defaults to `nativeEvent.type`, no override needed.
+            // type           : 'pointermove', // Defaults to `nativeEvent.type`, no override needed.
             
-            currentTarget     : dragElementRef.current ?? undefined, // The draggable element initiating the probe.
-            // relatedTarget  : dropElement,                         // Not yet defined at probe stage.
+            currentTarget     : dragElement!,  // The draggable element initiating the probe.
+            target            : dragElement!,  // The draggable element initiating the probe.
+            relatedTarget     : null,          // Not yet defined at probe stage.
         }),
-        pointedElement,                                              // The element currently under the pointer.
+        
+        // Reassign the mandatory properties to satisfy the TS:
+        currentTarget         : dragElement!,  // The draggable element initiating the probe.
+        target                : dragElement!,  // The draggable element initiating the probe.
+        relatedTarget         : null,          // Not yet defined at probe stage.
+        
+        pointedElement,                        // The element currently under the pointer.
         
         // Data:
         dragPayload, // The payload associated with the current drag gesture.
@@ -511,7 +535,7 @@ const createDropEvaluationEvent              = <TElement extends Element = HTMLE
         // The *active* droppable that was `currentTarget` in the handshake stage is now replaced by *current* droppable.
         // This update reflects perspective: each side treats itself as current, partner as related.
         currentTarget    : dropElementRef.current as TElement,
-        relatedTarget    : dragElementRef.current, // Preserve the related target if the underlying event is DragProbeEvent (doesn't have a correct related target).
+        relatedTarget    : dragElementRef.current as TElement, // Preserve the related target if the underlying event is DragProbeEvent (doesn't have a correct related target).
         
         // Data:
         dropMetadata, // The metadata exposed by the droppable side.
@@ -555,6 +579,7 @@ export const createDragDropCommitEvent       = <TElement extends Element = HTMLE
             dropElement,
         },
     } = draggable;
+    const dragElement = dragElementRef.current;
     
     
     
@@ -564,15 +589,18 @@ export const createDragDropCommitEvent       = <TElement extends Element = HTMLE
             
             nativeEvent       : lastPointerUpEvent,
             
-            // type           : 'pointerup',                         // Defaults to `nativeEvent.type`, no override needed.
+            // type           : 'pointerup',  // Defaults to `nativeEvent.type`, no override needed.
             
-            currentTarget     : dragElementRef.current ?? undefined, // The draggable element initiating the commit.
-            relatedTarget     : dropElement,                         // The droppable element in contact.
+            currentTarget     : dragElement!, // The draggable element initiating the commit.
+            target            : dragElement!, // The draggable element initiating the commit.
+            relatedTarget     : dropElement,  // The droppable element in contact.
         }),
-        pointedElement,                                              // The element currently under the pointer at release.
+        pointedElement,                       // The element currently under the pointer at release.
         
-        // Reassign the `relatedTarget` to satisfy the TS:
-        relatedTarget         : dropElement,                         // The droppable element in contact.
+        // Reassign the mandatory properties to satisfy the TS:
+        currentTarget         : dragElement!, // The draggable element initiating the commit.
+        target                : dragElement!, // The draggable element initiating the commit.
+        relatedTarget         : dropElement,  // The droppable element in contact.
         
         // Data:
         dragPayload,  // The payload delivered by the draggable source.

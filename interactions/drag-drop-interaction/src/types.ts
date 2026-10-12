@@ -84,6 +84,25 @@ export interface DragDropLifecycleEvent<TElement extends Element = HTMLElement>
         PointerEvent<TElement>
 {
     /**
+     * The DOM element of the draggable or droppable side currently handling the event.
+     */
+    readonly currentTarget  : TElement
+    
+    /**
+     * The DOM element of the draggable or droppable side where the event originated.
+     * 
+     * Always mirrors `currentTarget` since this synthetic event does not bubble.
+     */
+    readonly target         : TElement
+    
+    /**
+     * The DOM element of the counterpart side currently in contact.
+     * 
+     * Resolves to `null` if no valid counterpart side is engaged or during uncontacted lifecycle phases.
+     */
+    readonly relatedTarget  : Element | null
+    
+    /**
      * A reference to the DOM element currently under the pointer during a drag gesture.
      * 
      * Invalid elements (such as those rejected by `DraggableStateProps.dropPredicate`) are ignored, 
@@ -127,6 +146,24 @@ export interface DragLifecycleEvent<TElement extends Element = HTMLElement>
         // Bases:
         DragDropLifecycleEvent<TElement>
 {
+    /**
+     * The DOM element of the draggable side currently handling the event.
+     */
+    readonly currentTarget  : TElement
+    
+    /**
+     * The DOM element of the draggable side where the event originated.
+     * 
+     * Always mirrors `currentTarget` since this synthetic event does not bubble.
+     */
+    readonly target         : TElement
+    
+    /**
+     * The DOM element of the counterpart droppable side currently in contact.
+     * 
+     * Resolves to `null` if no valid droppable is engaged or during uncontacted lifecycle phases.
+     */
+    readonly relatedTarget  : Element | null
 }
 
 /**
@@ -139,6 +176,25 @@ export interface DropLifecycleEvent<TElement extends Element = HTMLElement>
         // Bases:
         DragDropLifecycleEvent<TElement>
 {
+    /**
+     * The DOM element of the droppable side currently handling the event.
+     */
+    readonly currentTarget  : TElement
+    
+    /**
+     * The DOM element of the droppable side where the event originated.
+     * 
+     * Always mirrors `currentTarget` since this synthetic event does not bubble.
+     */
+    readonly target         : TElement
+    
+    /**
+     * The DOM element of the active counterpart draggable side initiating the gesture.
+     */
+    readonly relatedTarget  : Element
+    
+    
+    
     /**
      * The metadata exposed by the droppable target.
      * 
@@ -202,7 +258,9 @@ export interface DragPresenceEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
         DropLifecycleEvent<TElement>,
-        DragDropActivationEvent<TElement>
+        Omit<DragDropActivationEvent<TElement>,
+            | 'relatedTarget' // Omit the *optional* related target, instead use the *mandatory* target from `DropLifecycleEvent`.
+        >
 {
 }
 
@@ -257,7 +315,8 @@ export interface DragAbsenceEvent<TElement extends Element = HTMLElement>
         // Bases:
         DropLifecycleEvent<TElement>,
         Omit<DragDropDeactivationEvent<TElement>,
-            | 'dropMetadata' // Omit the *optional* metadata, instead use the *mandatory* metadata from `DropLifecycleEvent`.
+            | 'relatedTarget' // Omit the *optional* related target, instead use the *mandatory* target from `DropLifecycleEvent`.
+            | 'dropMetadata'  // Omit the *optional* metadata, instead use the *mandatory* metadata from `DropLifecycleEvent`.
         >
 {
     /**
@@ -404,6 +463,7 @@ export interface DropHandshakeEvent<TElement extends Element = HTMLElement>
             | 'pointedElement' // Omit the *optional* pointed element, instead use the *mandatory* element from `DragDropHandshakeEvent`.
         >,
         Omit<DragDropHandshakeEvent<TElement>,
+            | 'relatedTarget'  // Omit the *optional* related target, instead use the *mandatory* target from `DropLifecycleEvent`.
             | 'response'       // Rename `response` to `dropResponse` for the drop side.
         >
 {
@@ -540,7 +600,8 @@ export interface DropEvaluationEvent<TElement extends Element = HTMLElement>
         // Bases:
         DropLifecycleEvent<TElement>,
         Omit<DragDropEvaluationEvent<TElement>,
-            | 'dropMetadata' // Omit the *optional* metadata, instead use the *mandatory* metadata from `DropLifecycleEvent`.
+            | 'relatedTarget' // Omit the *optional* related target, instead use the *mandatory* target from `DropLifecycleEvent`.
+            | 'dropMetadata'  // Omit the *optional* metadata, instead use the *mandatory* metadata from `DropLifecycleEvent`.
         >
 {
     /**
@@ -653,7 +714,9 @@ export interface DropCommitEvent<TElement extends Element = HTMLElement>
         Omit<DropLifecycleEvent<TElement>,
             | 'pointedElement' // Omit the *optional* pointed element, instead use the *mandatory* element from `DragDropCommitEvent`.
         >,
-        DragDropCommitEvent<TElement>
+        Omit<DragDropCommitEvent<TElement>,
+            | 'relatedTarget'  // Omit the *optional* related target, instead use the *mandatory* target from `DropLifecycleEvent`.
+        >
 {
 }
 
