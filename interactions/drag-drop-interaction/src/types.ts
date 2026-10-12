@@ -84,13 +84,26 @@ export interface DragDropLifecycleEvent<TElement extends Element = HTMLElement>
         PointerEvent<TElement>
 {
     /**
+     * A reference to the DOM element currently under the pointer during a drag gesture.
+     * 
+     * Invalid elements (such as those rejected by `DraggableStateProps.dropPredicate`) are ignored, 
+     * falling back to the next valid element underneath.
+     * 
+     * Resolves to `null` if no valid droppable element is found at the current pointer coordinates
+     * (e.g. pointer is only over the draggable itself or filtered out by `dropPredicate`).
+     */
+    readonly pointedElement : Element | null
+    
+    
+    
+    /**
      * The payload carried by the draggable source.
      * 
      * Allows droppables to inspect the actual data being dragged
      * (e.g. productId, file type, or other attributes)
      * for contextual styling or state initialization.
      */
-    readonly dragPayload  : DragPayload
+    readonly dragPayload    : DragPayload
     
     /**
      * The metadata exposed by the droppable target, if any.
@@ -101,7 +114,7 @@ export interface DragDropLifecycleEvent<TElement extends Element = HTMLElement>
      * 
      * Becomes `undefined` when the draggable is not hovering over any droppable.
      */
-    readonly dropMetadata : DropMetadata | undefined
+    readonly dropMetadata   : DropMetadata | undefined
 }
 
 /**

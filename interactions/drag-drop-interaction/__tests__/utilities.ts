@@ -37,7 +37,7 @@ export interface SerializedElement {
  * back to the Node.js test runner process across an IPC serialization boundary. Native DOM `Element` 
  * references cannot be serialized to JSON and will be stripped to empty objects (`{}`) in test runner assertions.
  * 
- * This helper transforms event targets (`currentTarget`, `target`, `relatedTarget`) into lightweight 
+ * This helper transforms event targets (`currentTarget`, `target`, `relatedTarget`, and `pointedElement`) into lightweight 
  * objects containing their `data-testid`, allowing test suites (`drag-drop.spec.tsx`) to perform 
  * safe DOM reference identity checks.
  * 

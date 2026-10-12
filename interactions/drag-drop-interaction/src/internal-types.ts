@@ -89,8 +89,7 @@ export interface DragSession {
      * 
      * This may be the droppable element itself or one of its descendants.
      * 
-     * Useful for constructing synthetic events whose
-     * `target` reflects the actual element under the pointer.
+     * Useful for constructing synthetic events.
      */
     pointedElement : Element
     

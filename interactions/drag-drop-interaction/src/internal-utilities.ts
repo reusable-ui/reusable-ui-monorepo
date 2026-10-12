@@ -587,8 +587,14 @@ export const processDragDeactivation = <TElement extends Element = HTMLElement>(
         
         
         
+        // Resolve the top-most element under the cursor:
+        // - Ignore the "ghost dragging image".
+        const pointedElement = resolvePointedElement(lastPointerUpEvent, draggable.dropPredicate);
+        
+        
+        
         // Dispatch the final deactivation events:
-        const dragDropDeactivationEvent = createDragDropDeactivationEvent(draggable, lastPointerUpEvent);
+        const dragDropDeactivationEvent = createDragDropDeactivationEvent(draggable, lastPointerUpEvent, pointedElement);
         dispatchDeactivationEvents(draggable, dragDropDeactivationEvent);
     }
     finally {

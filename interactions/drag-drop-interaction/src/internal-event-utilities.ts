@@ -57,15 +57,15 @@ import {
  * Creates a synthetic activation event at the start of a drag gesture.
  * 
  * Wraps the native 'pointerdown' event into a React synthetic event,
- * establishing the draggable as `currentTarget` and the pointed element as `target`.
+ * establishing the draggable as `currentTarget` and the pointed element as `pointedElement`.
  * 
  * This represents the initial stage of the drag-drop lifecycle,
  * fired when the user presses down on the draggable element to initiate a drag gesture.
  * 
  * @param draggable The draggable side associated with the drag gesture.
  * @param lastPointerDownEvent The most recent native 'pointerdown' event from the browser captured during a drag gesture.
- * @param pointedElement The reference to the DOM element that currently under the pointer, set as `target`.
- * Pass `null` if no valid element is detected
+ * @param pointedElement The reference to the DOM element that currently under the pointer.
+ * Pass `null` if no valid droppable element is found at the current pointer coordinates
  * (e.g. pointer is only over the draggable itself or filtered out by `dropPredicate`).
  * 
  * @returns A synthetic `DragDropActivationEvent` representing the activation stage.
@@ -93,9 +93,9 @@ export const createDragDropActivationEvent   = <TElement extends Element = HTMLE
             // type           : 'pointerdown',                       // Defaults to `nativeEvent.type`, no override needed.
             
             currentTarget     : dragElementRef.current ?? undefined, // The draggable element initiating the activation.
-            target            : pointedElement         ?? undefined, // The element under the pointer at press.
             // relatedTarget  : dropElement,                         // Not yet defined at start stage.
         }),
+        pointedElement,                                              // The element currently under the pointer at press.
         
         // Data:
         dragPayload, // The payload carried by the draggable source.
@@ -106,7 +106,7 @@ export const createDragDropActivationEvent   = <TElement extends Element = HTMLE
  * Creates a synthetic deactivation event at the end of a drag gesture.
  * 
  * Wraps the native 'pointerup' event into a React synthetic event,
- * establishing the draggable as `currentTarget`, the pointed element as `target`,
+ * establishing the draggable as `currentTarget`, the pointed element as `pointedElement`,
  * and the droppable element in contact (if any) as `relatedTarget`.
  * 
  * This represents the final stage of the drag-drop lifecycle,
@@ -114,11 +114,13 @@ export const createDragDropActivationEvent   = <TElement extends Element = HTMLE
  * 
  * @param draggable The draggable side associated with the drag gesture.
  * @param lastPointerUpEvent The most recent native 'pointerup' event from the browser captured during a drag gesture.
+ * @param pointedElement The reference to the DOM element that currently under the pointer.
  * @returns A synthetic `DragDropDeactivationEvent` representing the deactivation stage.
  */
 export const createDragDropDeactivationEvent = <TElement extends Element = HTMLElement>(
     draggable                 : DraggableContext<TElement>,
     lastPointerUpEvent        : PointerEvent,
+    pointedElement            : Element | null,
 ): DragDropDeactivationEvent<TElement> => {
     // Extract properties from the draggable context for convenience:
     const {
@@ -131,10 +133,10 @@ export const createDragDropDeactivationEvent = <TElement extends Element = HTMLE
     // - Defaults all properties to null if no active droppable side.
     const {
         // Interaction states:
-        pointedElement,
+        pointedElement : pointedElementOrFallback,
         dropElement,
     } = dragSession ?? {
-        pointedElement : null,
+        pointedElement : pointedElement,
         dropElement    : null,
     };
     
@@ -147,9 +149,9 @@ export const createDragDropDeactivationEvent = <TElement extends Element = HTMLE
             // type           : 'pointerup',                         // Defaults to `nativeEvent.type`, no override needed.
             
             currentTarget     : dragElementRef.current ?? undefined, // The draggable element initiating the deactivation.
-            target            : pointedElement         ?? undefined, // The element under the pointer at release.
             relatedTarget     : dropElement,                         // The droppable element in contact, if any.
         }),
+        pointedElement: pointedElementOrFallback,                    // The element currently under the pointer at release.
         
         // Data:
         dragPayload  : draggable.dragPayload, // The payload carried by the draggable source.
@@ -303,15 +305,15 @@ const createDragAbsenceEvent                 = <TElement extends Element = HTMLE
  * Creates a synthetic probe event at the probing stage on the draggable side.
  * 
  * Wraps the native 'pointermove' event into a React synthetic event,
- * establishing the draggable as `currentTarget` and the pointed element as `target`.
+ * establishing the draggable as `currentTarget` and the pointed element as `pointedElement`.
  * At this stage, no droppable is yet in contact, so `relatedTarget` remains undefined.
  * 
  * Useful for initiating drag-drop negotiation by encapsulating the raw pointer event.
  * 
  * @param draggable The draggable side associated with the drag gesture.
  * @param pointerMoveEvent The originating native 'pointermove' event from the browser.
- * @param pointedElement The reference to the DOM element that currently under the pointer, set as `target`.
- * Pass `null` if no valid element is detected
+ * @param pointedElement The reference to the DOM element that currently under the pointer.
+ * Pass `null` if no valid droppable element is found at the current pointer coordinates
  * (e.g. pointer is only over the draggable itself or filtered out by `dropPredicate`).
  * 
  * @returns A synthetic `DragProbeEvent` representing the probe stage.
@@ -342,9 +344,9 @@ export const createDragProbeEvent            = <TElement extends Element = HTMLE
             // type           : 'pointermove',                       // Defaults to `nativeEvent.type`, no override needed.
             
             currentTarget     : dragElementRef.current ?? undefined, // The draggable element initiating the probe.
-            target            : pointedElement         ?? undefined, // The element currently under the pointer.
             // relatedTarget  : dropElement,                         // Not yet defined at probe stage.
         }),
+        pointedElement,                                              // The element currently under the pointer.
         
         // Data:
         dragPayload, // The payload associated with the current drag gesture.
@@ -524,7 +526,7 @@ const createDropEvaluationEvent              = <TElement extends Element = HTMLE
  * Creates a synthetic committed event on the draggable side.
  * 
  * Wraps the native 'pointerup' event into a React synthetic event,
- * establishing the draggable as `currentTarget`, the pointed element as `target`,
+ * establishing the draggable as `currentTarget`, the pointed element as `pointedElement`,
  * and the droppable element in contact as `relatedTarget`.
  * 
  * This represents the final committed stage of the drag-drop lifecycle,
@@ -565,9 +567,10 @@ export const createDragDropCommitEvent       = <TElement extends Element = HTMLE
             // type           : 'pointerup',                         // Defaults to `nativeEvent.type`, no override needed.
             
             currentTarget     : dragElementRef.current ?? undefined, // The draggable element initiating the commit.
-            target            : pointedElement         ?? undefined, // The element under the pointer at release.
             relatedTarget     : dropElement,                         // The droppable element in contact.
         }),
+        pointedElement,                                              // The element currently under the pointer at release.
+        
         // Reassign the `relatedTarget` to satisfy the TS:
         relatedTarget         : dropElement,                         // The droppable element in contact.
         

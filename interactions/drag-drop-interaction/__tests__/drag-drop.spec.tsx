@@ -3969,12 +3969,12 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                             expect(dragSideEvent.relatedTarget).toBeNull();
                         } // if
                         
-                        // Verify `target`:
+                        // Verify `pointedElement`:
                         if (droppableIndex !== -1) { // The pointer is over an active droppable.
-                            expect(dragSideEvent.target?.__id).toBe(`droppable-state-test-${droppableIndex}`);
+                            expect(dragSideEvent.pointedElement?.__id).toBe(`droppable-state-test-${droppableIndex}`);
                         }
                         else { // There is no active droppable.
-                            expect(dragSideEvent.target?.__id).toBe('draggable-droppable-test'); // Refer to the background component.
+                            expect(dragSideEvent.pointedElement?.__id).toBe('draggable-droppable-test'); // Refer to the background component.
                         } // if
                     } // if
                 } // for
@@ -4105,12 +4105,12 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                             // - Should refer to the known draggable even if not in contact with it:
                             expect(dropSideEvent.relatedTarget?.__id).toBe('draggable-state-test-0');
                             
-                            // Verify `target`:
+                            // Verify `pointedElement`:
                             if (droppableIndex !== -1) { // The pointer is over an active droppable.
-                                expect(dropSideEvent.target?.__id).toBe(`droppable-state-test-${droppableIndex}`);
+                                expect(dropSideEvent.pointedElement?.__id).toBe(`droppable-state-test-${droppableIndex}`);
                             }
                             else { // There is no active droppable.
-                                expect(dropSideEvent.target?.__id).toBe('draggable-droppable-test'); // Refer to the background component.
+                                expect(dropSideEvent.pointedElement?.__id).toBe('draggable-droppable-test'); // Refer to the background component.
                             } // if
                         }
                         else {

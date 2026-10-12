@@ -47,9 +47,10 @@ export const DraggableStateTest = (props: DraggableStateTestProps) => {
                 // a fix for playwright serializing problem:
                 dragPayload: Object.fromEntries(event.dragPayload),
                 
-                currentTarget : mockEventElement(event.currentTarget) as any,
-                target        : mockEventElement(event.target) as any,
-                relatedTarget : mockEventElement(event.relatedTarget) as any,
+                currentTarget  : mockEventElement(event.currentTarget) as any,
+                target         : mockEventElement(event.target) as any,
+                relatedTarget  : mockEventElement(event.relatedTarget) as any,
+                pointedElement : mockEventElement(event.pointedElement) as any,
             } satisfies DragStartEvent<HTMLDivElement>);
         },
         onDragEnd(event) {
@@ -60,9 +61,10 @@ export const DraggableStateTest = (props: DraggableStateTestProps) => {
                 dragPayload: Object.fromEntries(event.dragPayload),
                 dropMetadata: event.dropMetadata ? Object.fromEntries(event.dropMetadata) : undefined,
                 
-                currentTarget : mockEventElement(event.currentTarget) as any,
-                target        : mockEventElement(event.target) as any,
-                relatedTarget : mockEventElement(event.relatedTarget) as any,
+                currentTarget  : mockEventElement(event.currentTarget) as any,
+                target         : mockEventElement(event.target) as any,
+                relatedTarget  : mockEventElement(event.relatedTarget) as any,
+                pointedElement : mockEventElement(event.pointedElement) as any,
             } satisfies DragEndEvent<HTMLDivElement>);
         },
         async onDragHandshake(event) {
@@ -74,9 +76,10 @@ export const DraggableStateTest = (props: DraggableStateTestProps) => {
                 dragPayload: Object.fromEntries(event.dragPayload),
                 dropMetadata: Object.fromEntries(event.dropMetadata),
                 
-                currentTarget : mockEventElement(event.currentTarget) as any,
-                target        : mockEventElement(event.target) as any,
-                relatedTarget : mockEventElement(event.relatedTarget) as any,
+                currentTarget  : mockEventElement(event.currentTarget) as any,
+                target         : mockEventElement(event.target) as any,
+                relatedTarget  : mockEventElement(event.relatedTarget) as any,
+                pointedElement : mockEventElement(event.pointedElement) as any,
             } satisfies DragHandshakeEvent<HTMLDivElement>);
         },
         onDragEvaluation(event) {
@@ -87,9 +90,10 @@ export const DraggableStateTest = (props: DraggableStateTestProps) => {
                 dragPayload: Object.fromEntries(event.dragPayload),
                 dropMetadata: event.dropMetadata ? Object.fromEntries(event.dropMetadata) : undefined,
                 
-                currentTarget : mockEventElement(event.currentTarget) as any,
-                target        : mockEventElement(event.target) as any,
-                relatedTarget : mockEventElement(event.relatedTarget) as any,
+                currentTarget  : mockEventElement(event.currentTarget) as any,
+                target         : mockEventElement(event.target) as any,
+                relatedTarget  : mockEventElement(event.relatedTarget) as any,
+                pointedElement : mockEventElement(event.pointedElement) as any,
             } satisfies DragEvaluationEvent<HTMLDivElement>);
         },
         onDragCommit(event) {
@@ -100,9 +104,10 @@ export const DraggableStateTest = (props: DraggableStateTestProps) => {
                 dragPayload: Object.fromEntries(event.dragPayload),
                 dropMetadata: Object.fromEntries(event.dropMetadata),
                 
-                currentTarget : mockEventElement(event.currentTarget) as any,
-                target        : mockEventElement(event.target) as any,
-                relatedTarget : mockEventElement(event.relatedTarget) as any,
+                currentTarget  : mockEventElement(event.currentTarget) as any,
+                target         : mockEventElement(event.target) as any,
+                relatedTarget  : mockEventElement(event.relatedTarget) as any,
+                pointedElement : mockEventElement(event.pointedElement) as any,
             } satisfies DragCommitEvent<HTMLDivElement>);
             setDragged(event.dropMetadata);
         },
