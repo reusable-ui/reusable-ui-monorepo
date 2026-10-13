@@ -599,12 +599,13 @@ export const createDragDropCommitEvent       = <TElement extends Element = HTMLE
             target            : dragElement!, // The draggable element initiating the commit.
             relatedTarget     : dropElement,  // The droppable element in contact.
         }),
-        pointedElement,                       // The element currently under the pointer at release.
         
         // Reassign the mandatory properties to satisfy the TS:
         currentTarget         : dragElement!, // The draggable element initiating the commit.
         target                : dragElement!, // The draggable element initiating the commit.
         relatedTarget         : dropElement,  // The droppable element in contact.
+        
+        pointedElement,                       // The element currently under the pointer at release.
         
         // Data:
         dragPayload,  // The payload delivered by the draggable source.
