@@ -202,7 +202,7 @@ export interface DropLifecycleEvent<TElement extends Element = HTMLElement>
      * (e.g. categoryId, accepted types, flags, or other attributes)
      * for contextual styling or state initialization.
      */
-    readonly dropMetadata : Exclude<DragDropLifecycleEvent<TElement>['dropMetadata'], undefined> // Narrows down from *optional* to *mandatory*.
+    readonly dropMetadata   : Exclude<DragDropLifecycleEvent<TElement>['dropMetadata'], undefined> // Narrows down from *optional* to *mandatory*.
 }
 
 
