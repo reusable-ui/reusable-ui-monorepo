@@ -149,21 +149,21 @@ export interface DragLifecycleEvent<TElement extends Element = HTMLElement>
     /**
      * The DOM element of the draggable side currently handling the event.
      */
-    readonly currentTarget  : TElement
+    readonly currentTarget  : DragDropLifecycleEvent<TElement>['currentTarget'] // Refine JSDoc for drag side cases.
     
     /**
      * The DOM element of the draggable side where the event originated.
      * 
      * Always mirrors `currentTarget` since this synthetic event does not bubble.
      */
-    readonly target         : TElement
+    readonly target         : DragDropLifecycleEvent<TElement>['target'] // Refine JSDoc for drag side cases.
     
     /**
      * The DOM element of the counterpart droppable side currently in contact.
      * 
      * Resolves to `null` if no valid droppable is engaged or during uncontacted lifecycle phases.
      */
-    readonly relatedTarget  : Element | null
+    readonly relatedTarget  : DragDropLifecycleEvent<TElement>['relatedTarget'] // Refine JSDoc for drag side cases.
 }
 
 /**
@@ -179,19 +179,19 @@ export interface DropLifecycleEvent<TElement extends Element = HTMLElement>
     /**
      * The DOM element of the droppable side currently handling the event.
      */
-    readonly currentTarget  : TElement
+    readonly currentTarget  : DragDropLifecycleEvent<TElement>['currentTarget'] // Refine JSDoc for drop side cases.
     
     /**
      * The DOM element of the droppable side where the event originated.
      * 
      * Always mirrors `currentTarget` since this synthetic event does not bubble.
      */
-    readonly target         : TElement
+    readonly target         : DragDropLifecycleEvent<TElement>['target'] // Refine JSDoc for drop side cases.
     
     /**
      * The DOM element of the active counterpart draggable side initiating the gesture.
      */
-    readonly relatedTarget  : Element
+    readonly relatedTarget  : Exclude<DragDropLifecycleEvent<TElement>['relatedTarget'], null> // Narrows down from *optional* to *mandatory*.
     
     
     
