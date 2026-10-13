@@ -103,7 +103,7 @@ export const createDragDropActivationEvent   = <TElement extends Element = HTMLE
         target                : dragElement!,  // The draggable element initiating the activation.
         relatedTarget         : null,          // Not yet defined at activation stage.
         
-        pointedElement,                        // The element currently under the pointer at press.
+        pointedElement,                        // The element currently under the pointer.
         
         // Data:
         dragPayload, // The payload carried by the draggable source.
@@ -167,7 +167,7 @@ export const createDragDropDeactivationEvent = <TElement extends Element = HTMLE
         target                : dragElement!,     // The draggable element initiating the deactivation.
         relatedTarget         : dropElement,      // The droppable element in contact, if any.
         
-        pointedElement: pointedElementOrFallback, // The element currently under the pointer at release.
+        pointedElement: pointedElementOrFallback, // The element currently under the pointer.
         
         // Data:
         dragPayload  : draggable.dragPayload, // The payload carried by the draggable source.
@@ -605,7 +605,7 @@ export const createDragDropCommitEvent       = <TElement extends Element = HTMLE
         target                : dragElement!, // The draggable element initiating the commit.
         relatedTarget         : dropElement,  // The droppable element in contact.
         
-        pointedElement,                       // The element currently under the pointer at release.
+        pointedElement,                       // The element currently under the pointer.
         
         // Data:
         dragPayload,  // The payload delivered by the draggable source.
