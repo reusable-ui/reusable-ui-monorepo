@@ -181,8 +181,7 @@ const attemptNegotiation = async <TElement extends Element = HTMLElement>(
     let nonResponsiveCandidate : NegotiationResult<TElement> | undefined = undefined;
     
     // Walk up the ancestor chain to find the nearest droppable side:
-    const pointedElement = dragProbeEvent.pointedElement;
-    for (const candidateDropElement of iterateElementAndAncestors(pointedElement)) {
+    for (const candidateDropElement of iterateElementAndAncestors(dragProbeEvent.pointedElement)) {
         // Find the corresponding droppable side by its element:
         // - Skip the disabled ones.
         const candidateDroppable = droppableRegistry.get(candidateDropElement);
