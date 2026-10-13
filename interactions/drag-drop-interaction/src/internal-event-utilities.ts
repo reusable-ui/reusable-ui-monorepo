@@ -99,11 +99,11 @@ export const createDragDropActivationEvent   = <TElement extends Element = HTMLE
         }),
         
         // Reassign the mandatory properties to satisfy the TS:
-        currentTarget         : dragElement!,  // The draggable element initiating the activation.
-        target                : dragElement!,  // The draggable element initiating the activation.
-        relatedTarget         : null,          // Not yet defined at activation stage.
+        currentTarget         : dragElement!, // The draggable element initiating the activation.
+        target                : dragElement!, // The draggable element initiating the activation.
+        relatedTarget         : null,         // Not yet defined at activation stage.
         
-        pointedElement,                        // The element currently under the pointer at press.
+        pointedElement,                       // The element currently under the pointer at press.
         
         // Data:
         dragPayload, // The payload carried by the draggable source.
@@ -368,11 +368,11 @@ export const createDragProbeEvent            = <TElement extends Element = HTMLE
         }),
         
         // Reassign the mandatory properties to satisfy the TS:
-        currentTarget         : dragElement!,  // The draggable element initiating the probe.
-        target                : dragElement!,  // The draggable element initiating the probe.
-        relatedTarget         : null,          // Not yet defined at probe stage.
+        currentTarget         : dragElement!, // The draggable element initiating the probe.
+        target                : dragElement!, // The draggable element initiating the probe.
+        relatedTarget         : null,         // Not yet defined at probe stage.
         
-        pointedElement,                        // The element currently under the pointer.
+        pointedElement,                       // The element currently under the pointer.
         
         // Data:
         dragPayload, // The payload associated with the current drag gesture.
