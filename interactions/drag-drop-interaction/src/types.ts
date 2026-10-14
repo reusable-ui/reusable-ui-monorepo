@@ -332,7 +332,7 @@ export interface DragAbsenceEvent<TElement extends Element = HTMLElement>
      * (sent to all droppables for cleanup)
      * and the droppable that was actually under the pointer at the end of the gesture.
      */
-    readonly isTargeted   : boolean
+    readonly isTargeted : boolean
 }
 
 
@@ -435,7 +435,7 @@ export interface DragHandshakeEvent<TElement extends Element = HTMLElement>
     /**
      * The DOM element of the counterpart droppable side currently in negotiation.
      */
-    readonly relatedTarget : DragDropHandshakeEvent<TElement>['relatedTarget'] // Refine JSDoc for drag side cases.
+    readonly relatedTarget  : DragDropHandshakeEvent<TElement>['relatedTarget'] // Refine JSDoc for drag side cases.
     
     /**
      * The handshake response state from the draggable source,
@@ -450,7 +450,7 @@ export interface DragHandshakeEvent<TElement extends Element = HTMLElement>
      * - `false`     → rejected (may show 🚫 feedback to indicate drop not allowed)
      * - `undefined` → ignored  (no feedback; user keeps searching for a valid drop zone)
      */
-    dragResponse           : DragDropHandshakeEvent<TElement>['response'] // Rename `response` to `dragResponse` for the drag side.
+    dragResponse            : DragDropHandshakeEvent<TElement>['response'] // Rename `response` to `dragResponse` for the drag side.
 }
 
 /**
@@ -480,7 +480,7 @@ export interface DropHandshakeEvent<TElement extends Element = HTMLElement>
     /**
      * The DOM element of the counterpart draggable side currently in negotiation.
      */
-    readonly relatedTarget : DragDropHandshakeEvent<TElement>['relatedTarget'] // Refine JSDoc for drag side cases.
+    readonly relatedTarget  : DragDropHandshakeEvent<TElement>['relatedTarget'] // Refine JSDoc for drag side cases.
     
     /**
      * The handshake response state from the droppable target,
@@ -495,7 +495,7 @@ export interface DropHandshakeEvent<TElement extends Element = HTMLElement>
      * - `false`     → rejected (may show 🚫 feedback to indicate an invalid payload)
      * - `undefined` → ignored  (no feedback; user keeps searching for a valid drop zone)
      */
-    dropResponse           : DragDropHandshakeEvent<TElement>['response'] // Rename `response` to `dropResponse` for the drop side.
+    dropResponse            : DragDropHandshakeEvent<TElement>['response'] // Rename `response` to `dropResponse` for the drop side.
 }
 
 
@@ -687,7 +687,7 @@ export interface DragDropCommitEvent<TElement extends Element = HTMLElement>
      * (e.g. productId, file type, or other attributes)
      * after approval.
      */
-    readonly dragPayload  : DragDropLifecycleEvent<TElement>['dragPayload'] // Refine JSDoc for evaluation cases.
+    readonly dragPayload    : DragDropLifecycleEvent<TElement>['dragPayload'] // Refine JSDoc for evaluation cases.
     
     /**
      * The metadata exposed by the accepted droppable target.
@@ -696,7 +696,7 @@ export interface DragDropCommitEvent<TElement extends Element = HTMLElement>
      * (e.g. categoryId, accepted types, flags, or other attributes)
      * after approval.
      */
-    readonly dropMetadata : DropLifecycleEvent<TElement>['dropMetadata'] // Narrows down from *optional* to *mandatory* metadata from `DropLifecycleEvent`.
+    readonly dropMetadata   : DropLifecycleEvent<TElement>['dropMetadata'] // Narrows down from *optional* to *mandatory* metadata from `DropLifecycleEvent`.
 }
 
 /**
@@ -721,7 +721,7 @@ export interface DragCommitEvent<TElement extends Element = HTMLElement>
     /**
      * The DOM element of the counterpart droppable side that just committed.
      */
-    readonly relatedTarget : DragDropCommitEvent<TElement>['relatedTarget'] // Refine JSDoc for drag side cases.
+    readonly relatedTarget  : DragDropCommitEvent<TElement>['relatedTarget'] // Refine JSDoc for drag side cases.
 }
 
 /**
@@ -744,7 +744,7 @@ export interface DropCommitEvent<TElement extends Element = HTMLElement>
     /**
      * The DOM element of the counterpart draggable side that just committed.
      */
-    readonly relatedTarget : DragDropCommitEvent<TElement>['relatedTarget'] // Refine JSDoc for drag side cases.
+    readonly relatedTarget  : DragDropCommitEvent<TElement>['relatedTarget'] // Refine JSDoc for drag side cases.
 }
 
 
