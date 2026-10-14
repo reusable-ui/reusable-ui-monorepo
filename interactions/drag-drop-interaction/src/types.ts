@@ -361,7 +361,7 @@ export interface DragDropHandshakeEvent<TElement extends Element = HTMLElement>
     /**
      * The DOM element of the counterpart side currently in negotiation.
      */
-    readonly relatedTarget  : Exclude<DragDropLifecycleEvent<TElement>['relatedTarget'], null>  // Narrows down from *optional* to *mandatory* element.
+    readonly relatedTarget  : Exclude<DragDropLifecycleEvent<TElement>['relatedTarget'], null>  // Narrows down from *optional* to *mandatory*.
     
     /**
      * A reference to the DOM element currently under the pointer during a drag gesture.
@@ -369,7 +369,7 @@ export interface DragDropHandshakeEvent<TElement extends Element = HTMLElement>
      * Invalid elements (such as those rejected by `DraggableStateProps.dropPredicate`) are ignored, 
      * falling back to the next valid element underneath.
      */
-    readonly pointedElement : Exclude<DragDropLifecycleEvent<TElement>['pointedElement'], null> // Narrows down from *optional* to *mandatory* element.
+    readonly pointedElement : Exclude<DragDropLifecycleEvent<TElement>['pointedElement'], null> // Narrows down from *optional* to *mandatory*.
     
     
     
@@ -389,7 +389,7 @@ export interface DragDropHandshakeEvent<TElement extends Element = HTMLElement>
      * (e.g. categoryId, accepted types, flags, or other attributes)
      * before deciding acceptance.
      */
-    readonly dropMetadata   : DropLifecycleEvent<TElement>['dropMetadata'] // Narrows down from *optional* to *mandatory* metadata from `DropLifecycleEvent`.
+    readonly dropMetadata   : DropLifecycleEvent<TElement>['dropMetadata'] // Narrows down from *optional* to *mandatory*.
     
     /**
      * The handshake response state from the current side.
@@ -668,7 +668,7 @@ export interface DragDropCommitEvent<TElement extends Element = HTMLElement>
     /**
      * The DOM element of the counterpart side that just committed.
      */
-    readonly relatedTarget  : Exclude<DragDropLifecycleEvent<TElement>['relatedTarget'], null>  // Narrows down from *optional* to *mandatory* element.
+    readonly relatedTarget  : Exclude<DragDropLifecycleEvent<TElement>['relatedTarget'], null>  // Narrows down from *optional* to *mandatory*.
     
     /**
      * A reference to the DOM element currently under the pointer during a drag gesture.
@@ -676,7 +676,7 @@ export interface DragDropCommitEvent<TElement extends Element = HTMLElement>
      * Invalid elements (such as those rejected by `DraggableStateProps.dropPredicate`) are ignored, 
      * falling back to the next valid element underneath.
      */
-    readonly pointedElement : Exclude<DragDropLifecycleEvent<TElement>['pointedElement'], null> // Narrows down from *optional* to *mandatory* element.
+    readonly pointedElement : Exclude<DragDropLifecycleEvent<TElement>['pointedElement'], null> // Narrows down from *optional* to *mandatory*.
     
     
     
@@ -696,7 +696,7 @@ export interface DragDropCommitEvent<TElement extends Element = HTMLElement>
      * (e.g. categoryId, accepted types, flags, or other attributes)
      * after approval.
      */
-    readonly dropMetadata   : DropLifecycleEvent<TElement>['dropMetadata'] // Narrows down from *optional* to *mandatory* metadata from `DropLifecycleEvent`.
+    readonly dropMetadata   : DropLifecycleEvent<TElement>['dropMetadata'] // Narrows down from *optional* to *mandatory*.
 }
 
 /**
