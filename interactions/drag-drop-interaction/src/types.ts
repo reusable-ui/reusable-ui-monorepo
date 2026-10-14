@@ -222,7 +222,8 @@ export interface DragDropActivationEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
         Omit<DragDropLifecycleEvent<TElement>,
-            | 'dropMetadata' // Irrelevant at activation: at activation, no droppable is yet contacted.
+            | 'relatedTarget' // Irrelevant at activation: at activation, no droppable is yet contacted.
+            | 'dropMetadata'  // Irrelevant at activation: at activation, no droppable is yet contacted.
         >
 {
 }
@@ -239,7 +240,8 @@ export interface DragStartEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
         Omit<DragLifecycleEvent<TElement>,
-            | 'dropMetadata' // Irrelevant at activation: at activation, no droppable is yet contacted.
+            | 'relatedTarget' // Irrelevant at activation: at activation, no droppable is yet contacted.
+            | 'dropMetadata'  // Irrelevant at activation: at activation, no droppable is yet contacted.
         >,
         DragDropActivationEvent<TElement>
 {
@@ -359,12 +361,17 @@ export interface DragDropHandshakeEvent<TElement extends Element = HTMLElement>
         DragDropLifecycleEvent<TElement>
 {
     /**
+     * The DOM element of the counterpart side currently in negotiation.
+     */
+    readonly relatedTarget  : Exclude<DragDropLifecycleEvent<TElement>['relatedTarget'], null>  // Narrows down from *optional* to *mandatory* element.
+    
+    /**
      * A reference to the DOM element currently under the pointer during a drag gesture.
      * 
      * Invalid elements (such as those rejected by `DraggableStateProps.dropPredicate`) are ignored, 
      * falling back to the next valid element underneath.
      */
-    readonly pointedElement : Exclude<DragDropLifecycleEvent<TElement>['pointedElement'], null>  // Narrows down from *optional* to *mandatory* element.
+    readonly pointedElement : Exclude<DragDropLifecycleEvent<TElement>['pointedElement'], null> // Narrows down from *optional* to *mandatory* element.
     
     
     
@@ -419,6 +426,7 @@ export interface DragHandshakeEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
         Omit<DragLifecycleEvent<TElement>,
+            | 'relatedTarget'  // Omit the *optional* related target, instead use the *mandatory* target from `DragDropHandshakeEvent`.
             | 'pointedElement' // Omit the *optional* pointed element, instead use the *mandatory* element from `DragDropHandshakeEvent`.
             | 'dropMetadata'   // Omit the *optional* metadata, instead use the *mandatory* metadata from `DragDropHandshakeEvent`.
         >,
@@ -426,6 +434,11 @@ export interface DragHandshakeEvent<TElement extends Element = HTMLElement>
             | 'response'       // Rename `response` to `dragResponse` for the drag side.
         >
 {
+    /**
+     * The DOM element of the counterpart droppable side currently in negotiation.
+     */
+    readonly relatedTarget : DragDropHandshakeEvent<TElement>['relatedTarget'] // Refine JSDoc for drag side cases.
+    
     /**
      * The handshake response state from the draggable source,
      * based on the inspected `dropMetadata`.
@@ -439,7 +452,7 @@ export interface DragHandshakeEvent<TElement extends Element = HTMLElement>
      * - `false`     → rejected (may show 🚫 feedback to indicate drop not allowed)
      * - `undefined` → ignored  (no feedback; user keeps searching for a valid drop zone)
      */
-    dragResponse : DragDropHandshakeEvent<TElement>['response'] // Rename `response` to `dragResponse` for the drag side.
+    dragResponse           : DragDropHandshakeEvent<TElement>['response'] // Rename `response` to `dragResponse` for the drag side.
 }
 
 /**
@@ -463,10 +476,14 @@ export interface DropHandshakeEvent<TElement extends Element = HTMLElement>
             | 'pointedElement' // Omit the *optional* pointed element, instead use the *mandatory* element from `DragDropHandshakeEvent`.
         >,
         Omit<DragDropHandshakeEvent<TElement>,
-            | 'relatedTarget'  // Omit the *optional* related target, instead use the *mandatory* target from `DropLifecycleEvent`.
             | 'response'       // Rename `response` to `dropResponse` for the drop side.
         >
 {
+    /**
+     * The DOM element of the counterpart draggable side currently in negotiation.
+     */
+    readonly relatedTarget : DragDropHandshakeEvent<TElement>['relatedTarget'] // Refine JSDoc for drag side cases.
+    
     /**
      * The handshake response state from the droppable target,
      * based on the inspected `dragPayload`.
@@ -480,7 +497,7 @@ export interface DropHandshakeEvent<TElement extends Element = HTMLElement>
      * - `false`     → rejected (may show 🚫 feedback to indicate an invalid payload)
      * - `undefined` → ignored  (no feedback; user keeps searching for a valid drop zone)
      */
-    dropResponse : DragDropHandshakeEvent<TElement>['response'] // Rename `response` to `dropResponse` for the drop side.
+    dropResponse           : DragDropHandshakeEvent<TElement>['response'] // Rename `response` to `dropResponse` for the drop side.
 }
 
 
@@ -651,12 +668,17 @@ export interface DragDropCommitEvent<TElement extends Element = HTMLElement>
         DragDropLifecycleEvent<TElement>
 {
     /**
+     * The DOM element of the counterpart side that just committed.
+     */
+    readonly relatedTarget  : Exclude<DragDropLifecycleEvent<TElement>['relatedTarget'], null>  // Narrows down from *optional* to *mandatory* element.
+    
+    /**
      * A reference to the DOM element currently under the pointer during a drag gesture.
      * 
      * Invalid elements (such as those rejected by `DraggableStateProps.dropPredicate`) are ignored, 
      * falling back to the next valid element underneath.
      */
-    readonly pointedElement : Exclude<DragDropLifecycleEvent<TElement>['pointedElement'], null>  // Narrows down from *optional* to *mandatory* element.
+    readonly pointedElement : Exclude<DragDropLifecycleEvent<TElement>['pointedElement'], null> // Narrows down from *optional* to *mandatory* element.
     
     
     
@@ -692,11 +714,16 @@ export interface DragCommitEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
         Omit<DragLifecycleEvent<TElement>,
+            | 'relatedTarget'  // Omit the *optional* related target, instead use the *mandatory* target from `DragDropCommitEvent`.
             | 'pointedElement' // Omit the *optional* pointed element, instead use the *mandatory* element from `DragDropCommitEvent`.
             | 'dropMetadata'   // Omit the *optional* metadata, instead use the *mandatory* metadata from `DragDropCommitEvent`.
         >,
         DragDropCommitEvent<TElement>
 {
+    /**
+     * The DOM element of the counterpart droppable side that just committed.
+     */
+    readonly relatedTarget : DragDropCommitEvent<TElement>['relatedTarget'] // Refine JSDoc for drag side cases.
 }
 
 /**
@@ -714,10 +741,12 @@ export interface DropCommitEvent<TElement extends Element = HTMLElement>
         Omit<DropLifecycleEvent<TElement>,
             | 'pointedElement' // Omit the *optional* pointed element, instead use the *mandatory* element from `DragDropCommitEvent`.
         >,
-        Omit<DragDropCommitEvent<TElement>,
-            | 'relatedTarget'  // Omit the *optional* related target, instead use the *mandatory* target from `DropLifecycleEvent`.
-        >
+        DragDropCommitEvent<TElement>
 {
+    /**
+     * The DOM element of the counterpart draggable side that just committed.
+     */
+    readonly relatedTarget : DragDropCommitEvent<TElement>['relatedTarget'] // Refine JSDoc for drag side cases.
 }
 
 

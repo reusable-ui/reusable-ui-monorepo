@@ -49,7 +49,9 @@ export const DraggableStateTest = (props: DraggableStateTestProps) => {
                 
                 currentTarget  : mockEventElement(event.currentTarget) as any,
                 target         : mockEventElement(event.target) as any,
-                relatedTarget  : mockEventElement(event.relatedTarget) as any,
+                ...(('relatedTarget' in event) ? {
+                    relatedTarget  : mockEventElement((event as any).relatedTarget) as any,
+                } : {}),
                 pointedElement : mockEventElement(event.pointedElement) as any,
             } satisfies DragStartEvent<HTMLDivElement>);
         },

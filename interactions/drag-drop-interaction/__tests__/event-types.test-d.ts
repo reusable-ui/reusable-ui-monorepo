@@ -134,3 +134,39 @@ expectType<Element | null>(dragEvaluationEvent.pointedElement)
 expectType<Element | null>(dragPresenceEvent.pointedElement)
 expectType<Element | null>(dragAbsenceEvent.pointedElement)
 expectType<Element | null>(dropEvaluationEvent.pointedElement)
+
+
+
+// ============================================================================
+// 5. All `relatedTarget` properties in the droppable side events should be 
+// mandatory `Element` (the active counterpart draggable side initiating the gesture).
+// ============================================================================
+
+// Droppable sides:
+expectType<Element>(dragPresenceEvent.relatedTarget)
+expectType<Element>(dragAbsenceEvent.relatedTarget)
+expectType<Element>(dropHandshakeEvent.relatedTarget)
+expectType<Element>(dropEvaluationEvent.relatedTarget)
+expectType<Element>(dropCommitEvent.relatedTarget)
+
+
+
+// ============================================================================
+// 6. `relatedTarget` property rules on the draggable side events:
+// ============================================================================
+
+// Draggable sides:
+
+// - DragStartEvent: `relatedTarget` doesn't exist since at activation, 
+// the droppable is never contacted.
+expectNotAssignable<{ relatedTarget: any }>(dragStartEvent)
+
+// - DragHandshakeEvent and DragCommitEvent: `relatedTarget` should be 
+// mandatory since both sides are explicitly in contact.
+expectType<Element>(dragHandshakeEvent.relatedTarget)
+expectType<Element>(dragCommitEvent.relatedTarget)
+
+// - DragEndEvent and DragEvaluationEvent: `relatedTarget` should be nullable 
+// because it's possible the draggable and droppable sides are not in contact.
+expectType<Element | null>(dragEndEvent.relatedTarget)
+expectType<Element | null>(dragEvaluationEvent.relatedTarget)

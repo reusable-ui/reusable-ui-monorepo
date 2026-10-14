@@ -85,23 +85,25 @@ export const createDragDropActivationEvent   = <TElement extends Element = HTMLE
     } = draggable;
     const dragElement = dragElementRef.current;
     
+    const {
+        relatedTarget : _relatedTarget, // Unused in this domain.
+        ...restSyntheticPointerEvent
+    } = createSyntheticPointerEvent<TElement, PointerEvent>({
+        // Event metadata:
+        
+        nativeEvent       : lastPointerDownEvent,
+        
+        // type           : 'pointerdown', // Defaults to `nativeEvent.type`, no override needed.
+        
+        currentTarget     : dragElement!,  // The draggable element initiating the activation.
+        target            : dragElement!,  // The draggable element initiating the activation.
+    });
     return {
-        ...createSyntheticPointerEvent<TElement, PointerEvent>({
-            // Event metadata:
-            
-            nativeEvent       : lastPointerDownEvent,
-            
-            // type           : 'pointerdown', // Defaults to `nativeEvent.type`, no override needed.
-            
-            currentTarget     : dragElement!,  // The draggable element initiating the activation.
-            target            : dragElement!,  // The draggable element initiating the activation.
-            relatedTarget     : null,          // Not yet defined at activation stage.
-        }),
+        ...restSyntheticPointerEvent,
         
         // Reassign the mandatory properties to satisfy the TS:
         currentTarget         : dragElement!,  // The draggable element initiating the activation.
         target                : dragElement!,  // The draggable element initiating the activation.
-        relatedTarget         : null,          // Not yet defined at activation stage.
         
         pointedElement,                        // The element currently under the pointer.
         
