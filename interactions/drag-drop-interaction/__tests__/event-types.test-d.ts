@@ -34,18 +34,18 @@ import {
 // Declare test instances for all event types to be used in assertions:
 
 // Draggable sides:
-declare const dragStartEvent      : DragStartEvent
-declare const dragEndEvent        : DragEndEvent
-declare const dragHandshakeEvent  : DragHandshakeEvent
-declare const dragEvaluationEvent : DragEvaluationEvent
-declare const dragCommitEvent     : DragCommitEvent
+declare const dragStartEvent      : DragStartEvent<Element>
+declare const dragEndEvent        : DragEndEvent<Element>
+declare const dragHandshakeEvent  : DragHandshakeEvent<Element>
+declare const dragEvaluationEvent : DragEvaluationEvent<Element>
+declare const dragCommitEvent     : DragCommitEvent<Element>
 
 // Droppable sides:
-declare const dragPresenceEvent   : DragPresenceEvent
-declare const dragAbsenceEvent    : DragAbsenceEvent
-declare const dropHandshakeEvent  : DropHandshakeEvent
-declare const dropEvaluationEvent : DropEvaluationEvent
-declare const dropCommitEvent     : DropCommitEvent
+declare const dragPresenceEvent   : DragPresenceEvent<Element>
+declare const dragAbsenceEvent    : DragAbsenceEvent<Element>
+declare const dropHandshakeEvent  : DropHandshakeEvent<Element>
+declare const dropEvaluationEvent : DropEvaluationEvent<Element>
+declare const dropCommitEvent     : DropCommitEvent<Element>
 
 
 
