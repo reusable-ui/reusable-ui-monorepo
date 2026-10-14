@@ -260,9 +260,7 @@ export interface DragPresenceEvent<TElement extends Element = HTMLElement>
     extends
         // Bases:
         DropLifecycleEvent<TElement>,
-        Omit<DragDropActivationEvent<TElement>,
-            | 'relatedTarget' // Omit the *optional* related target, instead use the *mandatory* target from `DropLifecycleEvent`.
-        >
+        DragDropActivationEvent<TElement>
 {
 }
 
