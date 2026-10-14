@@ -170,3 +170,45 @@ expectType<Element>(dragCommitEvent.relatedTarget)
 // because it's possible the draggable and droppable sides are not in contact.
 expectType<Element | null>(dragEndEvent.relatedTarget)
 expectType<Element | null>(dragEvaluationEvent.relatedTarget)
+
+
+
+// ============================================================================
+// 7. All `currentTarget` properties in the drag and drop side events should be 
+// mandatory `Element`. Always exists on both draggable and droppable events.
+// ============================================================================
+
+// Draggable sides:
+expectType<Element>(dragStartEvent.currentTarget)
+expectType<Element>(dragEndEvent.currentTarget)
+expectType<Element>(dragHandshakeEvent.currentTarget)
+expectType<Element>(dragEvaluationEvent.currentTarget)
+expectType<Element>(dragCommitEvent.currentTarget)
+
+// Droppable sides:
+expectType<Element>(dragPresenceEvent.currentTarget)
+expectType<Element>(dragAbsenceEvent.currentTarget)
+expectType<Element>(dropHandshakeEvent.currentTarget)
+expectType<Element>(dropEvaluationEvent.currentTarget)
+expectType<Element>(dropCommitEvent.currentTarget)
+
+
+
+// ============================================================================
+// 8. All `target` properties in the drag and drop side events should be 
+// mandatory `Element`. Always exists on both draggable and droppable events.
+// ============================================================================
+
+// Draggable sides:
+expectType<Element>(dragStartEvent.target)
+expectType<Element>(dragEndEvent.target)
+expectType<Element>(dragHandshakeEvent.target)
+expectType<Element>(dragEvaluationEvent.target)
+expectType<Element>(dragCommitEvent.target)
+
+// Droppable sides:
+expectType<Element>(dragPresenceEvent.target)
+expectType<Element>(dragAbsenceEvent.target)
+expectType<Element>(dropHandshakeEvent.target)
+expectType<Element>(dropEvaluationEvent.target)
+expectType<Element>(dropCommitEvent.target)
