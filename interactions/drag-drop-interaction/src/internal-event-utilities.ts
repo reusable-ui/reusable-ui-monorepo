@@ -1,3 +1,9 @@
+// React:
+import {
+    // Types:
+    type PointerEvent as ReactPointerEvent,
+}                           from 'react'
+
 // Reusable-ui utilities:
 import {
     // Utilities:
@@ -54,6 +60,34 @@ import {
 // Event factories:
 
 /**
+ * Creates a React-compatible synthetic drag-drop event from a native pointer event.
+ * 
+ * @param nativeEvent The original native pointer event that triggered the synthetic event.
+ * @param currentTarget The DOM element of the draggable or droppable side currently handling the event.
+ * @param relatedTarget The DOM element of the counterpart side currently in contact.
+ * @param pointedElement A reference to the DOM element currently under the pointer during a drag gesture.
+ * @returns A synthetic drag-drop event.
+ */
+const createSyntheticDragDropEvent = <TElement extends Element = HTMLElement, TRelatedElement extends Element | null = HTMLElement | null, TPointedElement extends Element | null = HTMLElement | null>(nativeEvent: PointerEvent, currentTarget: TElement, relatedTarget: TRelatedElement, pointedElement: TPointedElement): ReactPointerEvent & { currentTarget: TElement, target: TElement, relatedTarget: TRelatedElement, pointedElement: TPointedElement } => {
+    const pointerEvent = createSyntheticPointerEvent<TElement, PointerEvent>({
+        // Base events:
+        nativeEvent,
+        
+        // Elements:
+        currentTarget,
+        target: currentTarget,
+        relatedTarget,
+    });
+    return {
+        // Base events:
+        ...pointerEvent as typeof pointerEvent & { target: TElement, relatedTarget: TRelatedElement },
+        
+        // Elements:
+        pointedElement,
+    };
+};
+
+/**
  * Creates a synthetic activation event at the start of a drag gesture.
  * 
  * Wraps the native 'pointerdown' event into a React synthetic event,
@@ -86,26 +120,20 @@ export const createDragDropActivationEvent   = <TElement extends Element = HTMLE
     const dragElement = dragElementRef.current;
     
     const {
-        relatedTarget : _relatedTarget, // Unused in this domain.
-        ...restSyntheticPointerEvent
-    } = createSyntheticPointerEvent<TElement, PointerEvent>({
-        // Event metadata:
+        relatedTarget : _relatedTarget, // Unused: Always no related target at activation stage.
+        ...restSyntheticDragDropEvent
+    } = createSyntheticDragDropEvent<TElement, null, Element | null>(
+        // Base events:
+        lastPointerDownEvent,
         
-        nativeEvent       : lastPointerDownEvent,
-        
-        // type           : 'pointerdown', // Defaults to `nativeEvent.type`, no override needed.
-        
-        currentTarget     : dragElement!,  // The draggable element initiating the activation.
-        target            : dragElement!,  // The draggable element initiating the activation.
-    });
+        // Elements:
+        dragElement!,   // The draggable element initiating the activation.
+        null,           // Always no related target at activation stage.
+        pointedElement, // The element currently under the pointer, if any.
+    );
     return {
-        ...restSyntheticPointerEvent,
-        
-        // Reassign the mandatory properties to satisfy the TS:
-        currentTarget         : dragElement!,  // The draggable element initiating the activation.
-        target                : dragElement!,  // The draggable element initiating the activation.
-        
-        pointedElement,                        // The element currently under the pointer.
+        // Base events:
+        ...restSyntheticDragDropEvent,
         
         // Data:
         dragPayload, // The payload carried by the draggable source.
@@ -152,24 +180,16 @@ export const createDragDropDeactivationEvent = <TElement extends Element = HTMLE
     };
     
     return {
-        ...createSyntheticPointerEvent<TElement, PointerEvent>({
-            // Event metadata:
+        // Base events:
+        ...createSyntheticDragDropEvent<TElement, Element | null, Element | null>(
+            // Base events:
+            lastPointerUpEvent,
             
-            nativeEvent       : lastPointerUpEvent,
-            
-            // type           : 'pointerup',      // Defaults to `nativeEvent.type`, no override needed.
-            
-            currentTarget     : dragElement!,     // The draggable element initiating the deactivation.
-            target            : dragElement!,     // The draggable element initiating the deactivation.
-            relatedTarget     : dropElement,      // The droppable element in contact, if any.
-        }),
-        
-        // Reassign the mandatory properties to satisfy the TS:
-        currentTarget         : dragElement!,     // The draggable element initiating the deactivation.
-        target                : dragElement!,     // The draggable element initiating the deactivation.
-        relatedTarget         : dropElement,      // The droppable element in contact, if any.
-        
-        pointedElement: pointedElementOrFallback, // The element currently under the pointer.
+            // Elements:
+            dragElement!,             // The draggable element initiating the deactivation.
+            dropElement,              // The droppable element in contact, if any.
+            pointedElementOrFallback, // The element currently under the pointer, if any.
+        ),
         
         // Data:
         dragPayload  : draggable.dragPayload, // The payload carried by the draggable source.
@@ -353,28 +373,17 @@ export const createDragProbeEvent            = <TElement extends Element = HTMLE
     } = draggable;
     const dragElement = dragElementRef.current;
     
-    
-    
     return {
-        // Event metadata:
-        ...createSyntheticPointerEvent<TElement, PointerEvent>({
-            // Event metadata:
+        // Base events:
+        ...createSyntheticDragDropEvent<TElement, null, Element | null>(
+            // Base events:
+            pointerMoveEvent,
             
-            nativeEvent       : pointerMoveEvent,
-            
-            // type           : 'pointermove', // Defaults to `nativeEvent.type`, no override needed.
-            
-            currentTarget     : dragElement!,  // The draggable element initiating the probe.
-            target            : dragElement!,  // The draggable element initiating the probe.
-            relatedTarget     : null,          // Not yet defined at probe stage.
-        }),
-        
-        // Reassign the mandatory properties to satisfy the TS:
-        currentTarget         : dragElement!,  // The draggable element initiating the probe.
-        target                : dragElement!,  // The draggable element initiating the probe.
-        relatedTarget         : null,          // Not yet defined at probe stage.
-        
-        pointedElement,                        // The element currently under the pointer.
+            // Elements:
+            dragElement!,   // The draggable element initiating the probe.
+            null,           // Always no related target at probe stage.
+            pointedElement, // The element currently under the pointer, if any.
+        ),
         
         // Data:
         dragPayload, // The payload associated with the current drag gesture.
@@ -587,27 +596,17 @@ export const createDragDropCommitEvent       = <TElement extends Element = HTMLE
     } = draggable;
     const dragElement = dragElementRef.current;
     
-    
-    
     return {
-        ...createSyntheticPointerEvent<TElement, PointerEvent>({
-            // Event metadata:
+        // Base events:
+        ...createSyntheticDragDropEvent<TElement, Element, Element>(
+            // Base events:
+            lastPointerUpEvent,
             
-            nativeEvent       : lastPointerUpEvent,
-            
-            // type           : 'pointerup',  // Defaults to `nativeEvent.type`, no override needed.
-            
-            currentTarget     : dragElement!, // The draggable element initiating the commit.
-            target            : dragElement!, // The draggable element initiating the commit.
-            relatedTarget     : dropElement,  // The droppable element in contact.
-        }),
-        
-        // Reassign the mandatory properties to satisfy the TS:
-        currentTarget         : dragElement!, // The draggable element initiating the commit.
-        target                : dragElement!, // The draggable element initiating the commit.
-        relatedTarget         : dropElement,  // The droppable element in contact.
-        
-        pointedElement,                       // The element currently under the pointer.
+            // Elements:
+            dragElement!,   // The draggable element initiating the commit.
+            dropElement,    // The droppable element in contact.
+            pointedElement, // The element currently under the pointer.
+        ),
         
         // Data:
         dragPayload,  // The payload delivered by the draggable source.
