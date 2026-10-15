@@ -50,64 +50,85 @@ declare const dropCommitEvent     : DropCommitEvent<Element>
 
 
 // ============================================================================
-// 1. All `dragPayload` properties in the drag and drop side events should be 
-// mandatory `DragPayload`. Always exists on both draggable and droppable events.
+// 1. All `currentTarget` properties in the drag and drop side events should be 
+// mandatory `Element`. Always exists on both draggable and droppable events.
 // ============================================================================
 
 // Draggable sides:
-expectType<DragPayload>(dragStartEvent.dragPayload)
-expectType<DragPayload>(dragEndEvent.dragPayload)
-expectType<DragPayload>(dragHandshakeEvent.dragPayload)
-expectType<DragPayload>(dragEvaluationEvent.dragPayload)
-expectType<DragPayload>(dragCommitEvent.dragPayload)
+expectType<Element>(dragStartEvent.currentTarget)
+expectType<Element>(dragEndEvent.currentTarget)
+expectType<Element>(dragHandshakeEvent.currentTarget)
+expectType<Element>(dragEvaluationEvent.currentTarget)
+expectType<Element>(dragCommitEvent.currentTarget)
 
 // Droppable sides:
-expectType<DragPayload>(dragPresenceEvent.dragPayload)
-expectType<DragPayload>(dragAbsenceEvent.dragPayload)
-expectType<DragPayload>(dropHandshakeEvent.dragPayload)
-expectType<DragPayload>(dropEvaluationEvent.dragPayload)
-expectType<DragPayload>(dropCommitEvent.dragPayload)
+expectType<Element>(dragPresenceEvent.currentTarget)
+expectType<Element>(dragAbsenceEvent.currentTarget)
+expectType<Element>(dropHandshakeEvent.currentTarget)
+expectType<Element>(dropEvaluationEvent.currentTarget)
+expectType<Element>(dropCommitEvent.currentTarget)
 
 
 
 // ============================================================================
-// 2. All `dropMetadata` properties in the droppable side events should be 
-// mandatory `DropMetadata` (an inherent property of the droppable side).
+// 2. All `target` properties in the drag and drop side events should be 
+// mandatory `Element`. Always exists on both draggable and droppable events.
+// ============================================================================
+
+// Draggable sides:
+expectType<Element>(dragStartEvent.target)
+expectType<Element>(dragEndEvent.target)
+expectType<Element>(dragHandshakeEvent.target)
+expectType<Element>(dragEvaluationEvent.target)
+expectType<Element>(dragCommitEvent.target)
+
+// Droppable sides:
+expectType<Element>(dragPresenceEvent.target)
+expectType<Element>(dragAbsenceEvent.target)
+expectType<Element>(dropHandshakeEvent.target)
+expectType<Element>(dropEvaluationEvent.target)
+expectType<Element>(dropCommitEvent.target)
+
+
+
+// ============================================================================
+// 3. All `relatedTarget` properties in the droppable side events should be 
+// mandatory `Element` (the active counterpart draggable side initiating the gesture).
 // ============================================================================
 
 // Droppable sides:
-expectType<DropMetadata>(dragPresenceEvent.dropMetadata)
-expectType<DropMetadata>(dragAbsenceEvent.dropMetadata)
-expectType<DropMetadata>(dropHandshakeEvent.dropMetadata)
-expectType<DropMetadata>(dropEvaluationEvent.dropMetadata)
-expectType<DropMetadata>(dropCommitEvent.dropMetadata)
+expectType<Element>(dragPresenceEvent.relatedTarget)
+expectType<Element>(dragAbsenceEvent.relatedTarget)
+expectType<Element>(dropHandshakeEvent.relatedTarget)
+expectType<Element>(dropEvaluationEvent.relatedTarget)
+expectType<Element>(dropCommitEvent.relatedTarget)
 
 
 
 // ============================================================================
-// 3. `dropMetadata` property rules on the draggable side events:
+// 4. `relatedTarget` property rules on the draggable side events:
 // ============================================================================
 
 // Draggable sides:
 
-// - DragStartEvent: `dropMetadata` doesn't exist since at activation, 
+// - DragStartEvent: `relatedTarget` doesn't exist since at activation, 
 // the droppable is never contacted.
-expectNotAssignable<{ dropMetadata: any }>(dragStartEvent)
+expectNotAssignable<{ relatedTarget: any }>(dragStartEvent)
 
-// - DragHandshakeEvent and DragCommitEvent: `dropMetadata` should be 
+// - DragHandshakeEvent and DragCommitEvent: `relatedTarget` should be 
 // mandatory since both sides are explicitly in contact.
-expectType<DropMetadata>(dragHandshakeEvent.dropMetadata)
-expectType<DropMetadata>(dragCommitEvent.dropMetadata)
+expectType<Element>(dragHandshakeEvent.relatedTarget)
+expectType<Element>(dragCommitEvent.relatedTarget)
 
-// - DragEndEvent and DragEvaluationEvent: `dropMetadata` should be nullable 
+// - DragEndEvent and DragEvaluationEvent: `relatedTarget` should be nullable 
 // because it's possible the draggable and droppable sides are not in contact.
-expectType<DropMetadata | undefined>(dragEndEvent.dropMetadata)
-expectType<DropMetadata | undefined>(dragEvaluationEvent.dropMetadata)
+expectType<Element | null>(dragEndEvent.relatedTarget)
+expectType<Element | null>(dragEvaluationEvent.relatedTarget)
 
 
 
 // ============================================================================
-// 4. `pointedElement` property rules on both draggable and droppable side events:
+// 5. `pointedElement` property rules on both draggable and droppable side events:
 // ============================================================================
 
 // - DragHandshakeEvent, DropHandshakeEvent, DragCommitEvent, and DropCommitEvent:
@@ -138,77 +159,56 @@ expectType<Element | null>(dropEvaluationEvent.pointedElement)
 
 
 // ============================================================================
-// 5. All `relatedTarget` properties in the droppable side events should be 
-// mandatory `Element` (the active counterpart draggable side initiating the gesture).
+// 6. All `dragPayload` properties in the drag and drop side events should be 
+// mandatory `DragPayload`. Always exists on both draggable and droppable events.
+// ============================================================================
+
+// Draggable sides:
+expectType<DragPayload>(dragStartEvent.dragPayload)
+expectType<DragPayload>(dragEndEvent.dragPayload)
+expectType<DragPayload>(dragHandshakeEvent.dragPayload)
+expectType<DragPayload>(dragEvaluationEvent.dragPayload)
+expectType<DragPayload>(dragCommitEvent.dragPayload)
+
+// Droppable sides:
+expectType<DragPayload>(dragPresenceEvent.dragPayload)
+expectType<DragPayload>(dragAbsenceEvent.dragPayload)
+expectType<DragPayload>(dropHandshakeEvent.dragPayload)
+expectType<DragPayload>(dropEvaluationEvent.dragPayload)
+expectType<DragPayload>(dropCommitEvent.dragPayload)
+
+
+
+// ============================================================================
+// 7. All `dropMetadata` properties in the droppable side events should be 
+// mandatory `DropMetadata` (an inherent property of the droppable side).
 // ============================================================================
 
 // Droppable sides:
-expectType<Element>(dragPresenceEvent.relatedTarget)
-expectType<Element>(dragAbsenceEvent.relatedTarget)
-expectType<Element>(dropHandshakeEvent.relatedTarget)
-expectType<Element>(dropEvaluationEvent.relatedTarget)
-expectType<Element>(dropCommitEvent.relatedTarget)
+expectType<DropMetadata>(dragPresenceEvent.dropMetadata)
+expectType<DropMetadata>(dragAbsenceEvent.dropMetadata)
+expectType<DropMetadata>(dropHandshakeEvent.dropMetadata)
+expectType<DropMetadata>(dropEvaluationEvent.dropMetadata)
+expectType<DropMetadata>(dropCommitEvent.dropMetadata)
 
 
 
 // ============================================================================
-// 6. `relatedTarget` property rules on the draggable side events:
+// 8. `dropMetadata` property rules on the draggable side events:
 // ============================================================================
 
 // Draggable sides:
 
-// - DragStartEvent: `relatedTarget` doesn't exist since at activation, 
+// - DragStartEvent: `dropMetadata` doesn't exist since at activation, 
 // the droppable is never contacted.
-expectNotAssignable<{ relatedTarget: any }>(dragStartEvent)
+expectNotAssignable<{ dropMetadata: any }>(dragStartEvent)
 
-// - DragHandshakeEvent and DragCommitEvent: `relatedTarget` should be 
+// - DragHandshakeEvent and DragCommitEvent: `dropMetadata` should be 
 // mandatory since both sides are explicitly in contact.
-expectType<Element>(dragHandshakeEvent.relatedTarget)
-expectType<Element>(dragCommitEvent.relatedTarget)
+expectType<DropMetadata>(dragHandshakeEvent.dropMetadata)
+expectType<DropMetadata>(dragCommitEvent.dropMetadata)
 
-// - DragEndEvent and DragEvaluationEvent: `relatedTarget` should be nullable 
+// - DragEndEvent and DragEvaluationEvent: `dropMetadata` should be nullable 
 // because it's possible the draggable and droppable sides are not in contact.
-expectType<Element | null>(dragEndEvent.relatedTarget)
-expectType<Element | null>(dragEvaluationEvent.relatedTarget)
-
-
-
-// ============================================================================
-// 7. All `currentTarget` properties in the drag and drop side events should be 
-// mandatory `Element`. Always exists on both draggable and droppable events.
-// ============================================================================
-
-// Draggable sides:
-expectType<Element>(dragStartEvent.currentTarget)
-expectType<Element>(dragEndEvent.currentTarget)
-expectType<Element>(dragHandshakeEvent.currentTarget)
-expectType<Element>(dragEvaluationEvent.currentTarget)
-expectType<Element>(dragCommitEvent.currentTarget)
-
-// Droppable sides:
-expectType<Element>(dragPresenceEvent.currentTarget)
-expectType<Element>(dragAbsenceEvent.currentTarget)
-expectType<Element>(dropHandshakeEvent.currentTarget)
-expectType<Element>(dropEvaluationEvent.currentTarget)
-expectType<Element>(dropCommitEvent.currentTarget)
-
-
-
-// ============================================================================
-// 8. All `target` properties in the drag and drop side events should be 
-// mandatory `Element`. Always exists on both draggable and droppable events.
-// ============================================================================
-
-// Draggable sides:
-expectType<Element>(dragStartEvent.target)
-expectType<Element>(dragEndEvent.target)
-expectType<Element>(dragHandshakeEvent.target)
-expectType<Element>(dragEvaluationEvent.target)
-expectType<Element>(dragCommitEvent.target)
-
-// Droppable sides:
-expectType<Element>(dragPresenceEvent.target)
-expectType<Element>(dragAbsenceEvent.target)
-expectType<Element>(dropHandshakeEvent.target)
-expectType<Element>(dropEvaluationEvent.target)
-expectType<Element>(dropCommitEvent.target)
+expectType<DropMetadata | undefined>(dragEndEvent.dropMetadata)
+expectType<DropMetadata | undefined>(dragEvaluationEvent.dropMetadata)
