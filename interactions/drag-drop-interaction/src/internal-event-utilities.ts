@@ -560,7 +560,12 @@ const createDropEvaluationEvent              = <TElement extends Element = HTMLE
         // On the droppable side, `currentTarget` points to the droppable itself.
         // The *active* droppable that was `currentTarget` and `target` in the handshake stage is now replaced by *current* droppable.
         // This update reflects perspective: each side treats itself as current, partner as related.
-        ...swapEventTargets(dragElementRef.current as TElement, dropElementRef.current as TElement),
+        ...swapEventTargets(
+            // dropHandshakeEvent.currentTarget // ← ⚠️ The source event's perspective is mixed. It could originate from either a droppable side (`DropHandshakeEvent< Element>`) or a draggable side (`DragProbeEvent< Element>`) perspective.
+            dragElementRef.current as TElement  // ← ✅ The stable draggable side reference.
+            ,
+            dropElementRef.current as TElement
+        ),
         
         // Data:
         dropMetadata, // The metadata exposed by the droppable side.
