@@ -119,7 +119,7 @@ export interface DraggableContext<TElement extends Element = HTMLElement> {
      * 
      * Will be inspected by droppables during handshake negotiation.
      */
-    dragPayload           : DragPayload
+    dragPayload          : DragPayload
     
     
     
@@ -129,12 +129,12 @@ export interface DraggableContext<TElement extends Element = HTMLElement> {
      * The exposed flag indicating whether this draggable is currently active
      * and able to participate in drag-drop interactions.
      */
-    dragEnabled           : boolean
+    dragEnabled          : boolean
     
     /**
      * Filters candidate elements to determine valid drop targets.
      */
-    dropPredicate         : ((dropCandidate: Element) => boolean) | undefined
+    dropPredicate        : ((dropCandidate: Element) => boolean) | undefined
     
     
     
@@ -146,7 +146,7 @@ export interface DraggableContext<TElement extends Element = HTMLElement> {
      * Signals the draggable to initialize its own styling, ghost image,
      * or other resources tied to the drag activity lifecycle.
      */
-    handleDragStart       : EventHandler<DragStartEvent<TElement>>
+    handleDragStart      : EventHandler<DragStartEvent<TElement>>
     
     /**
      * Invoked once the drag gesture ends on the draggable side.
@@ -154,7 +154,7 @@ export interface DraggableContext<TElement extends Element = HTMLElement> {
      * Signals the draggable to reset its own styling, ghost image,
      * or other resources tied to the drag activity lifecycle.
      */
-    handleDragEnd         : EventHandler<DragEndEvent<TElement>>
+    handleDragEnd        : EventHandler<DragEndEvent<TElement>>
     
     /**
      * Invoked continuously on every pointer movement during drag gesture movements
@@ -162,7 +162,7 @@ export interface DraggableContext<TElement extends Element = HTMLElement> {
      * 
      * Allows the draggable to validate the droppable's metadata and responds with acceptance or rejection.
      */
-    handleDragHandshake   : (event: DragHandshakeEvent<TElement>) => Promise<void>
+    handleDragHandshake  : (event: DragHandshakeEvent<TElement>) => Promise<void>
     
     /**
      * Invoked continuously on every pointer movement after handshake negotiation,
@@ -172,7 +172,7 @@ export interface DraggableContext<TElement extends Element = HTMLElement> {
      * such as "drop here" indicators, cursor changes,
      * or other contextual hints.
      */
-    handleDragEvaluation  : EventHandler<DragEvaluationEvent<TElement>>
+    handleDragEvaluation : EventHandler<DragEvaluationEvent<TElement>>
     
     /**
      * Invoked once the drag gesture ends on this draggable side,
@@ -181,7 +181,7 @@ export interface DraggableContext<TElement extends Element = HTMLElement> {
      * Peeks the droppable's metadata for the business logic
      * such as updating state, persisting data, or triggering side effects.
      */
-    handleDragCommit      : EventHandler<DragCommitEvent<TElement>>
+    handleDragCommit     : EventHandler<DragCommitEvent<TElement>>
     
     
     
@@ -196,12 +196,12 @@ export interface DraggableContext<TElement extends Element = HTMLElement> {
      * Prevents accidental state updates after unmounted.
      * E.g., deactivating the currently active draggable side (but now unmounted) when leaving a draggable.
      */
-    dragMountedRef        : RefObject<boolean | undefined>
+    dragMountedRef       : RefObject<boolean | undefined>
     
     /**
      * The reference to the DOM element that serves as the draggable source.
      */
-    dragElementRef        : RefObject<TElement | null>
+    dragElementRef       : RefObject<TElement | null>
     
     /**
      * The current drag-drop interaction session.
@@ -214,7 +214,7 @@ export interface DraggableContext<TElement extends Element = HTMLElement> {
      * - The pointer is outside any droppable zone.
      * - No droppable side has participated in the handshake process.
      */
-    dragSession           : DragSession | null
+    dragSession          : DragSession | null
     
     
     
@@ -227,13 +227,13 @@ export interface DraggableContext<TElement extends Element = HTMLElement> {
      * - `false`     → drag gesture active over a droppable zone but rejected by one or both sides
      * - `true`      → drag gesture active over a droppable zone and mutually accepted
      */
-    setDragStatus         : Dispatch<DraggableState<TElement>['dragStatus'  ]>
+    setDragStatus        : Dispatch<DraggableState<TElement>['dragStatus'  ]>
     
     /**
      * Updates the exposed metadata of the droppable target
      * currently hovered by this draggable.
      */
-    setDropMetadata       : Dispatch<DraggableState<TElement>['dropMetadata']>
+    setDropMetadata      : Dispatch<DraggableState<TElement>['dropMetadata']>
 }
 
 /**
@@ -327,7 +327,7 @@ export interface DroppableContext<TElement extends Element = HTMLElement> {
     /**
      * The reference to the DOM element that serves as the droppable target.
      */
-    dropElementRef        : RefObject<TElement | null>
+    dropElementRef       : RefObject<TElement | null>
     
     
     
