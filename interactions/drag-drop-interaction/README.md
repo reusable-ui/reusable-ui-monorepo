@@ -26,20 +26,20 @@ With **drag-drop-interaction**, you can build:
 
 | Aspect | **Native HTML Drag & Drop API** | **drag-drop-interaction** |
 |--------|---------------------------------|---------------------------|
-| **Input device support** | Only supports mouse-based dragging; touch and pen input are not natively handled. | Polyfilled to support any pointing device (mouse, touch, stylus), ensuring consistent drag-drop behavior across platforms. |
-| **Data model** | Relies on `DataTransfer` (string-based, loosely typed). | Uses generic, strongly typed **DragPayload** and **DropMetadata** objects for safe, expressive data exchange. |
-| **Type safety** | Payloads must be stringified for arbitrary types. | TypeScript-first: payloads and metadata are strongly typed (value or reference types). |
-| **Event lifecycle** | Limited to `dragstart`, `dragover`, `drop`. | Full lifecycle: **Handshake → Evaluation → Commit**, with granular events for negotiation, feedback, and delivery. |
-| **Negotiation** | One-way flow; droppable zones cannot inspect payloads until drop occurs. | Two-way handshake: draggables expose payloads, droppables expose metadata, both sides respond before commit. |
-| **Probing** | Browser-native hover detection (varies by engine). | Pointer-based probing via `elementFromPoint()` with `dropPredicate` for filtering droppable candidates. |
-| **Styling hooks** | Requires manual DOM state management or custom event wiring. | Continuous inspection events drive live UX feedback (hover, pulse, shake). |
-| **Ghost image** | Uses custom ghost images via `setDragImage()`, but limited to a single DOM node or image element with fixed transparency. | Uses any React component as the ghost image, with customizable transparency and styling. |
-| **State awareness** | No built-in global awareness; zones can only react when hovered. Developers can simulate global awareness by wiring draggable events manually. | Broadcasts global drag activity so droppables can style themselves proactively, even before hover. |
-| **Extensibility** | Browser-bound, imperative customization. | Reactive hook-based, extensible foundation for custom drag-drop primitives (lists, boards, file uploads, etc.). |
+| **Input Support** | Mouse-only natively. Requires external polyfills for touch and stylus. | Universal pointer support (mouse, touch, stylus) out of the box. |
+| **Data & Typing** | String-based `DataTransfer` object. Requires manual serialization. | Strongly typed `DragPayload` and `DropMetadata` objects (supports values and references). |
+| **Negotiation** | One-way flow. Draggable sends data; droppable cannot easily expose its state. | Two-way handshake. Both sides exchange and inspect data before committing. |
+| **Draggable Events** | `dragstart` → `drag` → `dragend` | `dragstart` → `draghandshake` → `dragevaluation` → `dragcommit` → `dragend` |
+| **Droppable Events** | `dragenter` → `dragover` → `drop` → `dragleave` | `dragpresence` → `drophandshake` → `dropevaluation` → `dropcommit` → `dragabsence` |
+| **Target Probing** | Relies on browser-native DOM hover detection. | Pointer-based `elementFromPoint()` with `dropPredicate` filtering. |
+| **Ghost Image** | Uses `setDragImage()` (limited to DOM nodes/images with fixed browser opacity). | Uses any React component with fully customizable styling and transparency. |
+| **Global Awareness** | None built-in. Droppables only react when actively hovered. | Broadcasts global activity. Droppables can highlight proactively before hover. |
+| **Styling Hooks** | Requires manual DOM event wiring and custom state management. | Continuous evaluation events drive reactive UI states (e.g., hover, pulse, reject). |
+| **Extensibility** | Imperative, browser-bound API. | Reactive, hook-based foundation designed for building custom drag primitives. |
 
 ### 🧩 Key Insight
-The native API provides **raw mechanics** — enough to implement basic drag/drop, but with limited negotiation, input device coverage, and styling flexibility.  
-**@reusable-ui/drag-drop-interaction** elevates this into a **predictable, type-safe negotiation system** with lifecycle events, global awareness, multi-device support, and expressive styling hooks — designed for modern UI frameworks.
+The native API provides **raw mechanics** — enough for basic features, but with limited negotiation, input device coverage, and styling flexibility.  
+**@reusable-ui/drag-drop-interaction** elevates this into a **predictable, type-safe negotiation system** with strict lifecycle events, global awareness, multi-device support, and expressive styling hooks designed specifically for modern UI frameworks.
 
 ## ⚠️ Coordinated Dependencies: The Drag-Drop Stack
 
