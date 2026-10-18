@@ -17,6 +17,9 @@ import {
     type DropHandshakeEvent,
 }                           from './types.js'
 import {
+    type DragSession,
+    type DragInteraction,
+    
     type DraggableContext,
     type DroppableContext,
     
@@ -63,10 +66,10 @@ import {
 // Tests:
 
 /**
- * Determines whether the specified draggable context has an existing drag session.
+ * Determines whether the specified draggable context has an existing drag interaction.
  */
-const hasDragSession = <TElement extends Element = HTMLElement>(draggable: DraggableContext<TElement>): draggable is DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> } => {
-    return !!draggable.dragSession;
+const hasDragInteraction = <TElement extends Element = HTMLElement>(draggable: DraggableContext<TElement>): draggable is DraggableContext<TElement> & { dragSession: DragSession & { interaction: DragInteraction, pointedElement: Element } } => {
+    return !!draggable.dragSession?.interaction && !!draggable.dragSession.pointedElement;
 };
 
 /**
@@ -262,8 +265,8 @@ const clearActiveDroppable                  = <TElement extends Element = HTMLEl
         deactivateDroppable(draggable, null); // `null` → drag gesture active but outside this droppable zone.
     }
     finally {
-        // Reset the drag session:
-        draggable.dragSession = null;
+        // Reset the drag interaction:
+        if (draggable.dragSession) draggable.dragSession.interaction = null;
     } // try
 };
 
@@ -295,11 +298,10 @@ const swapActiveDroppable                   = <TElement extends Element = HTMLEl
     
     
     // Skip if the droppable reference and its acceptance are unchanged:
-    const {
-        // Actual states:
-        dragSession,
-    } = draggable;
-    if (dragSession && (droppable === dragSession.droppable) && (isAccepted === dragSession.isAccepted)) return;
+    const { dragSession } = draggable;
+    if (!dragSession) return;
+    const { interaction } = dragSession;
+    if (interaction && (droppable === interaction.droppable) && (isAccepted === interaction.isAccepted)) return;
     
     
     
@@ -308,15 +310,14 @@ const swapActiveDroppable                   = <TElement extends Element = HTMLEl
     
     
     
-    // Update the drag session:
-    draggable.dragSession = {
+    // Update the drag interaction:
+    dragSession.interaction = {
         droppable,  // Replace with the new droppable.
         isAccepted, // Replace with the new acceptance value.
-        pointedElement : dragHandshakeEvent.pointedElement,
         dropElement    : dragHandshakeEvent.relatedTarget as Element,
     };
-    // A TS fix to guarantee the existence of `draggable.dragSession`:
-    if (!hasDragSession(draggable)) return;
+    // A TS fix to guarantee the existence of `draggable.dragSession.interaction`:
+    if (!hasDragInteraction(draggable)) return;
     
     
     
@@ -562,6 +563,14 @@ export const processDragActivation   = <TElement extends Element = HTMLElement>(
     
     
     
+    // Initialize the drag session:
+    draggable.dragSession = {
+        pointedElement,
+        interaction    : null,
+    };
+    
+    
+    
     // Dispatch the initial activation events:
     const dragDropActivationEvent = createDragDropActivationEvent(draggable, lastPointerDownEvent, pointedElement);
     dispatchActivationEvents(draggable, dragDropActivationEvent);
@@ -628,6 +637,9 @@ export const processDragProbe        = async <TElement extends Element = HTMLEle
     const {
         // Behaviors:
         dropPredicate,
+        
+        // Actual states:
+        dragSession,
     } = draggable;
     
     
@@ -636,7 +648,8 @@ export const processDragProbe        = async <TElement extends Element = HTMLEle
     // - Draggable element is missing.
     // - Draggable is unmounted.
     // - Draggable is disabled.
-    if (!isDragReady(draggable)) {
+    // - Drag session is not initialized.
+    if (!isDragReady(draggable) || !dragSession) {
         clearActiveDroppable(draggable);
         
         return;
@@ -647,6 +660,7 @@ export const processDragProbe        = async <TElement extends Element = HTMLEle
     // Resolve the top-most element under the cursor:
     // - Ignore the "ghost dragging image".
     const pointedElement = resolvePointedElement(pointerMoveEvent, dropPredicate);
+    dragSession.pointedElement = pointedElement;
     
     // Create a synthetic probe event for the current pointer position:
     const dragProbeEvent = createDragProbeEvent(draggable, pointerMoveEvent, pointedElement);
@@ -735,7 +749,9 @@ export const processDragCommit       = <TElement extends Element = HTMLElement>(
     // - Droppable is disabled
     // - No active droppable side was accepted during the drag gesture.
     const lastPointerUpEvent = lastPointerUpEventRef?.current;
-    if (!isDragReady(draggable) || !lastPointerUpEvent || !hasDragSession(draggable) || !isDropReady(draggable.dragSession.droppable) || !draggable.dragSession.isAccepted) return;
+    if (!isDragReady(draggable) || !lastPointerUpEvent || !hasDragInteraction(draggable)) return;
+    const interaction = draggable.dragSession.interaction;
+    if (!isDropReady(interaction.droppable) || !interaction.isAccepted) return;
     
     
     

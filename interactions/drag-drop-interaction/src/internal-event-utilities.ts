@@ -38,6 +38,9 @@ import {
     type DropCommitEvent,
 }                           from './types.js'
 import {
+    type DragSession,
+    type DragInteraction,
+    
     type DraggableContext,
     type DroppableContext,
     
@@ -187,15 +190,8 @@ export const createDragDropDeactivationEvent = <TElement extends Element = HTMLE
     const dragElement = dragElementRef.current;
     
     // Extract properties from the drag session for convenience:
-    // - Defaults all properties to null if no active droppable side.
-    const {
-        // Interaction states:
-        pointedElement : pointedElementOrFallback,
-        dropElement,
-    } = dragSession ?? {
-        pointedElement : pointedElement,
-        dropElement    : null,
-    };
+    const pointedElementOrFallback = dragSession?.pointedElement ?? pointedElement;
+    const dropElement              = dragSession?.interaction?.dropElement ?? null;
     
     return {
         // Base events:
@@ -325,7 +321,12 @@ const createDragAbsenceEvent                 = <TElement extends Element = HTMLE
     droppable                 : DroppableContext< Element>,
     dragDropDeactivationEvent : DragDropDeactivationEvent< Element>,
 ): DragAbsenceEvent< Element> => {
-    // Extract properties from the droppable context for convenience:
+    // Extract properties from the draggable and droppable context for convenience:
+    const {
+        // Actual states:
+        dragSession,
+    } = draggable;
+    
     const {
         // Data:
         dropMetadata,
@@ -333,7 +334,7 @@ const createDragAbsenceEvent                 = <TElement extends Element = HTMLE
         // Actual states:
         dropElementRef,
     } = droppable;
-    const isTargeted = (droppable === draggable.dragSession?.droppable);
+    const isTargeted = (droppable === dragSession?.interaction?.droppable);
     
     
     
@@ -545,7 +546,7 @@ const createDropEvaluationEvent              = <TElement extends Element = HTMLE
         // Actual states:
         dropElementRef,
     } = droppable;
-    const isTargeted = (droppable === dragSession?.droppable);
+    const isTargeted = (droppable === dragSession?.interaction?.droppable);
     
     
     
@@ -591,7 +592,7 @@ const createDropEvaluationEvent              = <TElement extends Element = HTMLE
  * @returns A synthetic `DragDropCommitEvent` representing the committed stage.
  */
 export const createDragDropCommitEvent       = <TElement extends Element = HTMLElement>(
-    draggable                 : DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> },
+    draggable                 : DraggableContext<TElement> & { dragSession: DragSession & { interaction: DragInteraction, pointedElement: Element } },
     lastPointerUpEvent        : PointerEvent,
 ): DragDropCommitEvent<TElement> => {
     // Extract properties from the draggable context for convenience:
@@ -602,11 +603,13 @@ export const createDragDropCommitEvent       = <TElement extends Element = HTMLE
         // Actual states:
         dragElementRef,
         dragSession : {
-            droppable : {
-                dropMetadata,
+            interaction : {
+                droppable : {
+                    dropMetadata,
+                },
+                dropElement,
             },
             pointedElement,
-            dropElement,
         },
     } = draggable;
     const dragElement = dragElementRef.current;
@@ -733,7 +736,7 @@ export const dispatchDeactivationEvents      = <TElement extends Element = HTMLE
 ): void => {
     if (isDragReady(draggable)) {
         // Dispatch deactivation for the draggable:
-        const dragEndEvent = createDragEndEvent(draggable.dragSession?.droppable ?? null, dragDropDeactivationEvent);
+        const dragEndEvent = createDragEndEvent(draggable.dragSession?.interaction?.droppable ?? null, dragDropDeactivationEvent);
         draggable.handleDragEnd(dragEndEvent);
     } // if
     
@@ -859,14 +862,16 @@ export const dispatchEvaluationEvents        = <TElement extends Element = HTMLE
  * @param dragDropCommitEvent The synthetic committed event created earlier.
  */
 export const dispatchCommitEvents            = <TElement extends Element = HTMLElement>(
-    draggable                 : DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> },
+    draggable                 : DraggableContext<TElement> & { dragSession: DragSession & { interaction: DragInteraction, pointedElement: Element } },
     dragDropCommitEvent       : DragDropCommitEvent<TElement>,
 ): void => {
     // Extract properties from the draggable context for convenience:
     const {
         // Actual states:
         dragSession : {
-            droppable,
+            interaction : {
+                droppable,
+            },
         },
     } = draggable;
     

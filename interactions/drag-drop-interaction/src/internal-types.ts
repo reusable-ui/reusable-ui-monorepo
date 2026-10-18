@@ -54,17 +54,52 @@ import {
 
 
 /**
- * Represents the current interaction between a draggable and a droppable.
+ * Represents the lifetime of a drag gesture.
  * 
- * Stores the interaction state between the draggable side and the
- * currently active droppable side.
+ * A drag session is created when a drag gesture becomes active
+ * and persists until the gesture ends.
  * 
- * A drag session is created when a draggable successfully identifies a
- * droppable candidate and begins the handshake/evaluation process.
+ * During its lifetime, the session may interact with zero or more droppable sides.
+ * The current interaction (if any) is exposed through `interaction`.
  */
 export interface DragSession {
     /**
-     * The active droppable side participating in this session.
+     * The deepest DOM element currently pointed by the drag gesture.
+     * 
+     * This may be:
+     * - A droppable element.
+     * - A descendant of a droppable element.
+     * - A non-droppable element.
+     * 
+     * Becomes `null` when:
+     * - The pointer is outside any droppable zone.
+     * 
+     * Useful for pointer tracking, hit-testing diagnostics,
+     * and constructing synthetic events.
+     */
+    pointedElement : Element | null
+    
+    /**
+     * The current draggable ↔ droppable interaction.
+     * 
+     * Becomes `null` when:
+     * - The pointer is outside any droppable zone.
+     * - No droppable is participating in the handshake process.
+     * - The previous interaction has been cleared while searching for
+     *   another candidate.
+     */
+    interaction    : DragInteraction | null
+}
+
+/**
+ * Represents the current interaction between a draggable side and a droppable side.
+ * 
+ * An interaction is created when a droppable candidate participates in the handshake process
+ * and is replaced whenever another droppable becomes the active droppable.
+ */
+export interface DragInteraction {
+    /**
+     * The active droppable side participating in this interaction.
      * 
      * Represents the droppable that participated in the
      * handshake, evaluation, and commit process with the current draggable.
@@ -73,7 +108,7 @@ export interface DragSession {
      * and runtime state for inspection and manipulation during
      * the lifetime of this drag-drop interaction.
     */
-    droppable      : DroppableContext< Element>
+    droppable   : DroppableContext< Element>
     
     /**
      * Indicates whether both draggable and droppable sides have mutually
@@ -82,27 +117,18 @@ export interface DragSession {
      * Used during drop commit stage (pointerup) to determine whether
      * `DragCommitEvent` and `DropCommitEvent` should be dispatched.
      */
-    isAccepted     : boolean
+    isAccepted  : boolean
     
     /**
-     * The deepest DOM element currently pointed by the drag gesture.
-     * 
-     * This may be the droppable element itself or one of its descendants.
-     * 
-     * Useful for constructing synthetic events.
-     */
-    pointedElement : Element
-    
-    /**
-     * The active droppable element associated with this session.
+     * The active droppable element associated with this interaction.
      * 
      * Represents the droppable zone that participated in the
      * handshake, evaluation, and commit process with the current draggable.
      * 
      * Useful for constructing synthetic events whose
-     * `relatedTarget` or `currentTarget` references the accepted droppable zone.
+     * `currentTarget` or `relatedTarget` must reference the participating droppable element.
      */
-    dropElement    : Element
+    dropElement : Element
 }
 
 /**

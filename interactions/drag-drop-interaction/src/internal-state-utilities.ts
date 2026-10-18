@@ -1,5 +1,8 @@
 // Types:
 import {
+    type DragSession,
+    type DragInteraction,
+    
     type DraggableContext,
     type DroppableContext,
 }                           from './internal-types.js'
@@ -73,16 +76,18 @@ export const isDropReady   = <TElement extends Element = HTMLElement>(droppable:
  * @param draggable The draggable side to activate.
  */
 export const activateDraggable        = <TElement extends Element = HTMLElement>(
-    draggable               : DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> },
+    draggable               : DraggableContext<TElement> & { dragSession: DragSession & { interaction: DragInteraction, pointedElement: Element } },
 ): void => {
     // Extract properties from the draggable context for convenience:
     const {
         // Actual states:
         dragSession : {
-            droppable : {
-                dropMetadata,
+            interaction : {
+                droppable : {
+                    dropMetadata,
+                },
+                isAccepted,
             },
-            isAccepted,
         },
     } = draggable;
     
@@ -103,7 +108,7 @@ export const activateDraggable        = <TElement extends Element = HTMLElement>
  * @param draggable The draggable side contains droppable to activate.
  */
 export const activateDroppable        = <TElement extends Element = HTMLElement>(
-    draggable               : DraggableContext<TElement> & { dragSession: Exclude<DraggableContext<TElement>['dragSession'], null> },
+    draggable               : DraggableContext<TElement> & { dragSession: DragSession & { interaction: DragInteraction, pointedElement: Element } },
 ): void => {
     // Extract properties from the draggable context for convenience:
     const {
@@ -112,8 +117,10 @@ export const activateDroppable        = <TElement extends Element = HTMLElement>
         
         // Actual states:
         dragSession : {
-            droppable,
-            isAccepted,
+            interaction : {
+                droppable,
+                isAccepted,
+            },
         },
     } = draggable;
     
@@ -165,7 +172,7 @@ export const deactivateDroppable      = <TElement extends Element = HTMLElement>
     inactiveDropStatus      : null | undefined,
 ): void => {
     // Extract properties from the draggable context for convenience:
-    const droppable = draggable.dragSession?.droppable;
+    const droppable = draggable.dragSession?.interaction?.droppable;
     
     
     
@@ -193,7 +200,7 @@ export const deactivateRestDroppables = <TElement extends Element = HTMLElement>
     inactiveDropStatus      : null | undefined,
 ): void => {
     // Extract properties from the draggable context for convenience:
-    const droppable = draggable.dragSession?.droppable;
+    const droppable = draggable.dragSession?.interaction?.droppable;
     
     
     
