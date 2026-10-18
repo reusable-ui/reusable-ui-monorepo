@@ -547,6 +547,14 @@ export const processDragActivation   = <TElement extends Element = HTMLElement>(
     draggable               : DraggableContext<TElement>,
     lastPointerDownEventRef : RefObject<PointerEvent | undefined> | undefined,
 ): void => {
+    // Extract properties from the draggable context for convenience:
+    const {
+        // Behaviors:
+        dropPredicate,
+    } = draggable;
+    
+    
+    
     // Abort activate if:
     // - Draggable element is missing.
     // - Draggable is unmounted.
@@ -557,22 +565,16 @@ export const processDragActivation   = <TElement extends Element = HTMLElement>(
     
     
     
-    // Resolve the top-most element under the cursor:
-    // - Ignore the "ghost dragging image".
-    const pointedElement = resolvePointedElement(lastPointerDownEvent, draggable.dropPredicate);
-    
-    
-    
     // Initialize the drag session:
     draggable.dragSession = {
-        pointedElement,
+        pointedElement : resolvePointedElement(lastPointerDownEvent, dropPredicate),
         interaction    : null,
     };
     
     
     
     // Dispatch the initial activation events:
-    const dragDropActivationEvent = createDragDropActivationEvent(draggable, lastPointerDownEvent, pointedElement);
+    const dragDropActivationEvent = createDragDropActivationEvent(draggable, lastPointerDownEvent);
     dispatchActivationEvents(draggable, dragDropActivationEvent);
 };
 
@@ -591,25 +593,36 @@ export const processDragDeactivation = <TElement extends Element = HTMLElement>(
     draggable               : DraggableContext<TElement>,
     lastPointerUpEventRef   : RefObject<PointerEvent | undefined> | undefined,
 ): void => {
+    // Extract properties from the draggable context for convenience:
+    const {
+        // Behaviors:
+        dropPredicate,
+        
+        // Actual states:
+        dragSession,
+    } = draggable;
+    
+    
+    
     try {
         // Abort deactivate if:
         // - Draggable element is missing.
         // - Draggable is unmounted.
         // - Draggable is disabled.
+        // - Drag session is not initialized.
         // - No pointerup event was captured.
         const lastPointerUpEvent = lastPointerUpEventRef?.current;
-        if (!isDragReady(draggable) || !lastPointerUpEvent) return;
+        if (!isDragReady(draggable) || !dragSession || !lastPointerUpEvent) return;
         
         
         
-        // Resolve the top-most element under the cursor:
-        // - Ignore the "ghost dragging image".
-        const pointedElement = resolvePointedElement(lastPointerUpEvent, draggable.dropPredicate);
+        // Update the pointed element:
+        dragSession.pointedElement = resolvePointedElement(lastPointerUpEvent, dropPredicate);
         
         
         
         // Dispatch the final deactivation events:
-        const dragDropDeactivationEvent = createDragDropDeactivationEvent(draggable, lastPointerUpEvent, pointedElement);
+        const dragDropDeactivationEvent = createDragDropDeactivationEvent(draggable, lastPointerUpEvent);
         dispatchDeactivationEvents(draggable, dragDropDeactivationEvent);
     }
     finally {
@@ -657,13 +670,13 @@ export const processDragProbe        = async <TElement extends Element = HTMLEle
     
     
     
-    // Resolve the top-most element under the cursor:
-    // - Ignore the "ghost dragging image".
-    const pointedElement = resolvePointedElement(pointerMoveEvent, dropPredicate);
-    dragSession.pointedElement = pointedElement;
+    // Update the pointed element:
+    dragSession.pointedElement = resolvePointedElement(pointerMoveEvent, dropPredicate);
+    
+    
     
     // Create a synthetic probe event for the current pointer position:
-    const dragProbeEvent = createDragProbeEvent(draggable, pointerMoveEvent, pointedElement);
+    const dragProbeEvent = createDragProbeEvent(draggable, pointerMoveEvent);
     
     
     

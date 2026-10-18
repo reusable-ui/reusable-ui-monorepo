@@ -128,7 +128,6 @@ const swapEventTargets = <TElement extends Element = HTMLElement, TRelatedElemen
 export const createDragDropActivationEvent   = <TElement extends Element = HTMLElement>(
     draggable                 : DraggableContext<TElement>,
     lastPointerDownEvent      : PointerEvent,
-    pointedElement            : Element | null,
 ): DragDropActivationEvent<TElement> => {
     // Extract properties from the draggable context for convenience:
     const {
@@ -137,8 +136,10 @@ export const createDragDropActivationEvent   = <TElement extends Element = HTMLE
         
         // Actual states:
         dragElementRef,
+        dragSession,
     } = draggable;
-    const dragElement = dragElementRef.current;
+    const dragElement    = dragElementRef.current;
+    const pointedElement = dragSession?.pointedElement ?? null;
     
     const {
         relatedTarget : _relatedTarget, // Unused: Always no related target at activation stage.
@@ -179,7 +180,6 @@ export const createDragDropActivationEvent   = <TElement extends Element = HTMLE
 export const createDragDropDeactivationEvent = <TElement extends Element = HTMLElement>(
     draggable                 : DraggableContext<TElement>,
     lastPointerUpEvent        : PointerEvent,
-    pointedElement            : Element | null,
 ): DragDropDeactivationEvent<TElement> => {
     // Extract properties from the draggable context for convenience:
     const {
@@ -187,11 +187,9 @@ export const createDragDropDeactivationEvent = <TElement extends Element = HTMLE
         dragElementRef,
         dragSession,
     } = draggable;
-    const dragElement = dragElementRef.current;
-    
-    // Extract properties from the drag session for convenience:
-    const pointedElementOrFallback = dragSession?.pointedElement ?? pointedElement;
-    const dropElement              = dragSession?.interaction?.dropElement ?? null;
+    const dragElement    = dragElementRef.current;
+    const pointedElement = dragSession?.pointedElement ?? null;
+    const dropElement    = dragSession?.interaction?.dropElement ?? null;
     
     return {
         // Base events:
@@ -200,9 +198,9 @@ export const createDragDropDeactivationEvent = <TElement extends Element = HTMLE
             lastPointerUpEvent,
             
             // Elements:
-            dragElement!,             // The draggable element initiating the deactivation.
-            dropElement,              // The droppable element in contact, if any.
-            pointedElementOrFallback, // The element currently under the pointer, if any.
+            dragElement!,   // The draggable element initiating the deactivation.
+            dropElement,    // The droppable element in contact, if any.
+            pointedElement, // The element currently under the pointer, if any.
         ),
         
         // Data:
@@ -376,7 +374,6 @@ const createDragAbsenceEvent                 = <TElement extends Element = HTMLE
 export const createDragProbeEvent            = <TElement extends Element = HTMLElement>(
     draggable                 : DraggableContext<TElement>,
     pointerMoveEvent          : PointerEvent,
-    pointedElement            : Element | null,
 ): DragProbeEvent<TElement> => {
     // Extract properties from the draggable context for convenience:
     const {
@@ -385,8 +382,10 @@ export const createDragProbeEvent            = <TElement extends Element = HTMLE
         
         // Actual states:
         dragElementRef,
+        dragSession,
     } = draggable;
-    const dragElement = dragElementRef.current;
+    const dragElement    = dragElementRef.current;
+    const pointedElement = dragSession?.pointedElement ?? null;
     
     return {
         // Base events:
