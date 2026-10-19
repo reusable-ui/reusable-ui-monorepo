@@ -74,9 +74,10 @@ const handleLifecycleChange = (isSetup: boolean): Promise<void> => {
     });
 };
 const handleGlobalDragStart = (event: DragEvent): void => {
-    draggable.dragElementRef.current = event.target as Element | null;
-    
     // Setup when drag starts:
+    
+    // Assign the drag element reference:
+    draggable.dragElementRef.current = event.target as Element | null;
     
     // Assign the drag payload for reuse during drag movements:
     draggable.dragPayload = extractPayloadFromDataTransfer(event.dataTransfer);
@@ -112,6 +113,9 @@ const handleGlobalDragEnd   = (event: DragEvent): void => {
         
         // Clear the drag payload after drag end:
         draggable.dragPayload = emptyMap;
+        
+        // Clear the drag element reference:
+        draggable.dragElementRef.current = null;
     });
 };
 
