@@ -84,7 +84,7 @@ const handleGlobalDragStart = (event: DragEvent): void => {
     
     // Setup when drag starts:
     
-    // Assign the drag payload for reuse during drag over:
+    // Assign the drag payload for reuse during drag movement:
     draggable.dragPayload = extractPayloadFromDataTransfer(event.dataTransfer);
     
     // Setup when drag starts:
@@ -100,7 +100,7 @@ const handleGlobalDragStart = (event: DragEvent): void => {
         
         
         // Prime the probe immediately:
-        handleGlobalDragOver(event);
+        handleGlobalDrag(event);
     });
 };
 const handleGlobalDragEnd   = (event: DragEvent): void => {
@@ -125,9 +125,9 @@ const handleGlobalDragEnd   = (event: DragEvent): void => {
 
 
 
-// Global drag over handler:
+// Global drag handler:
 // - Drives synchronization between draggable and droppable states during drag gestures.
-const handleGlobalDragOver  = (event: DragEvent): void => {
+const handleGlobalDrag      = (event: DragEvent): void => {
     draggable.dragElementRef.current = event.target as Element | null;
     const pointerMoveEvent = createPointerEventFromDragEvent(event, 'pointermove');
     processDragProbe(draggable, pointerMoveEvent);
@@ -151,7 +151,7 @@ const handleGlobalDrop      = (event: DragEvent): void => {
  * Performs global setup for native drag integration.
  * 
  * - Creates an `AbortController` to manage event listener lifetimes.
- * - Attaches global drag event handlers (`dragstart`, `dragend`, `dragover`, `drop`)
+ * - Attaches global drag event handlers (`dragstart`, `dragend`, `drag`, `drop`)
  *   to the document with the controller's signal.
  * 
  * Executed once when the first integration is created.
@@ -163,7 +163,7 @@ const setupGlobalIntegration = (): void => {
     const options : AddEventListenerOptions = { signal: globalAbortController.signal };
     document.addEventListener('dragstart', handleGlobalDragStart, options);
     document.addEventListener('dragend'  , handleGlobalDragEnd  , options);
-    document.addEventListener('dragover' , handleGlobalDragOver , options);
+    document.addEventListener('drag'     , handleGlobalDrag     , options);
     document.addEventListener('drop'     , handleGlobalDrop     , options);
     
     // Integrate global pointer tracker:
