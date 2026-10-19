@@ -120,6 +120,19 @@ const setDropMetadata : Dispatch<DropMetadata | undefined>   = noop;
 
 
 
+// Callbacks:
+
+/**
+ * Ignores the draggable element itself during pointer hit-testing
+ * so that the element is not considered as the element being pointed to or examined.
+ */
+const dropPredicate = (dropCandidate: Element): boolean => {
+    const dragElement = dragElementRef.current;
+    return !dragElement || !dragElement.contains(dropCandidate);
+};
+
+
+
 // Handlers:
 
 /**
@@ -172,7 +185,7 @@ export const draggable    = lazyInitializeDraggableContext<Element>({
     
     // Behaviors:
     dragEnabled: true,
-    dropPredicate: undefined,
+    dropPredicate,
     
     // Stable event handlers:
     handleDragStart,
