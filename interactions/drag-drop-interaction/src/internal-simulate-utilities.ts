@@ -43,6 +43,19 @@ import {
 
 
 
+// States:
+/**
+ * The reference to the DOM element that serves as the draggable source.
+ */
+const dragElementRef : RefObject<Element | null>      = { current: null };
+
+// Tests whether the component is still mounted (integrated):
+// - Prevents accidental state updates after unmounted (disintegrated).
+//   E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
+const dragMountedRef : RefObject<boolean | undefined> = { current: false };
+
+
+
 // Functions:
 
 /**
@@ -145,19 +158,6 @@ const handleDragEvaluation  : EventHandler<DragEvaluationEvent<Element>>  = noop
  * Ignores delivery status, since no draggable UI is present.
  */
 const handleDragCommit      : EventHandler<DragCommitEvent<Element>>      = noop;
-
-
-
-// States:
-/**
- * The reference to the DOM element that serves as the draggable source.
- */
-const dragElementRef : RefObject<Element | null>      = { current: null };
-
-// Tests whether the component is still mounted (integrated):
-// - Prevents accidental state updates after unmounted (disintegrated).
-//   E.g., clearing the draggable's states after unmount when no contact with any droppable zone.
-const dragMountedRef : RefObject<boolean | undefined> = { current: false };
 
 
 
