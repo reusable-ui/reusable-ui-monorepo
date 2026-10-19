@@ -21,9 +21,6 @@ import {
     processDragCommit,
 }                           from './internal-utilities.js'
 import {
-    // States:
-    globalPointerIntegrationRef,
-    
     // Functions:
     extractPayloadFromDataTransfer,
     
@@ -33,9 +30,6 @@ import {
     // Events:
     createPointerEventFromDragEvent,
 }                           from './internal-simulate-utilities.js'
-import {
-    integrateGlobalPointer,
-}                           from './internal-pointer-tracker-integrations.js'
 
 
 
@@ -95,7 +89,7 @@ const handleGlobalDragStart = (event: DragEvent): void => {
     // Wait until the state is settled:
     .then(() => {
         // Dispatch activation events after state is settled:
-        processDragActivation(draggable, globalPointerIntegrationRef.current?.lastPointerDownEventRef.current);
+        processDragActivation(draggable, createPointerEventFromDragEvent(event, 'pointerdown'));
         
         
         
@@ -114,7 +108,7 @@ const handleGlobalDragEnd   = (event: DragEvent): void => {
     // Wait until the state is settled:
     .then(() => {
         // Dispatch deactivation events after state is settled:
-        processDragDeactivation(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef.current);
+        processDragDeactivation(draggable, createPointerEventFromDragEvent(event, 'pointerup'));
         
         
         
@@ -129,8 +123,7 @@ const handleGlobalDragEnd   = (event: DragEvent): void => {
 // - Drives synchronization between draggable and droppable states during drag movements.
 const handleGlobalDrag      = (event: DragEvent): void => {
     draggable.dragElementRef.current = event.target as Element | null;
-    const pointerMoveEvent = createPointerEventFromDragEvent(event, 'pointermove');
-    processDragProbe(draggable, pointerMoveEvent);
+    processDragProbe(draggable, createPointerEventFromDragEvent(event, 'pointermove'));
 };
 
 
@@ -140,7 +133,7 @@ const handleGlobalDrag      = (event: DragEvent): void => {
 const handleGlobalDrop      = (event: DragEvent): void => {
     draggable.dragElementRef.current = event.target as Element | null;
     // Immediately commits after the capture:
-    processDragCommit(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef.current);
+    processDragCommit(draggable, createPointerEventFromDragEvent(event, 'pointerup'));
 };
 
 
@@ -165,11 +158,6 @@ const setupGlobalIntegration = (): void => {
     document.addEventListener('dragend'  , handleGlobalDragEnd  , options);
     document.addEventListener('drag'     , handleGlobalDrag     , options);
     document.addEventListener('drop'     , handleGlobalDrop     , options);
-    
-    // Integrate global pointer tracker:
-    // - Attaches a shared global `pointerdown` and `pointerup` listeners when this integration is enabled.
-    // - Updates `lastPointerDownEventRef` and `lastPointerUpEventRef` with the most recent native events.
-    globalPointerIntegrationRef.current = integrateGlobalPointer();
 };
 
 /**
@@ -186,11 +174,6 @@ const cleanupGlobalIntegration = (): void => {
     draggable.dragMountedRef.current = false;
     globalAbortController?.abort();
     globalAbortController = null;
-    
-    // Disintegrate global pointer tracker:
-    // - Cleans up the listeners when this integration is disabled.
-    globalPointerIntegrationRef.current?.disintegrate();
-    globalPointerIntegrationRef.current = null;
     
     
     

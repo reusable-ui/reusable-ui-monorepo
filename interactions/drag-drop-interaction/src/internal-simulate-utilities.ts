@@ -31,9 +31,6 @@ import {
 import {
     type DraggableContext,
 }                           from './internal-types.js'
-import {
-    type GlobalPointerIntegration,
-}                           from './internal-pointer-tracker-integrations.js'
 
 // Utilities:
 import {
@@ -43,15 +40,6 @@ import {
     // Updates:
     lazyInitializeDraggableContext,
 }                           from './internal-utilities.js'
-
-
-
-// States:
-
-/**
- * Holds the active "Global Pointer Integration":
- */
-export const globalPointerIntegrationRef : RefObject<GlobalPointerIntegration | null>   = { current: null };
 
 
 
