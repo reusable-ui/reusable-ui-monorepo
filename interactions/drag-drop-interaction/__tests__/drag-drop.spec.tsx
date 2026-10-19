@@ -3695,6 +3695,11 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                 
                 
                 
+                // Clear event trackers:
+                dragDropEvents.clear();
+                
+                
+                
                 // Update props:
                 if (computedDrag !== undefined) currentDragged     = computedDrag;
                 if (dragEnabled  !== undefined) currentDragEnabled = dragEnabled;
@@ -3711,11 +3716,6 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                         await page.mouse.up();
                     } // if
                 } // if
-                
-                
-                
-                // Clear event trackers:
-                dragDropEvents.clear();
                 
                 
                 
@@ -3756,6 +3756,19 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                 
                 
                 
+                // Simulate pointer move:
+                if (pointerPos !== undefined) {
+                    const draggable = component.getByTestId('draggable-state-test-0');
+                    const draggableBox = await draggable.boundingBox();
+                    if (!draggableBox) throw 'draggable does not exist';
+                    const centerX = draggableBox.x + draggableBox.width / 2;
+                    const centerY = draggableBox.y + draggableBox.height / 2;
+                    currentPointerPos = centerX + pointerPos;
+                    await page.mouse.move(currentPointerPos, centerY);
+                } // if
+                
+                
+                
                 // Wait for the specified delay:
                 if (delay !== undefined) {
                     await new Promise((resolve) => {
@@ -3776,18 +3789,6 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                 await expect(droppable2).toContainClass('droppable-state-test');
                 const droppable3 = component.getByTestId('droppable-state-test-2');
                 await expect(droppable3).toContainClass('droppable-state-test');
-                
-                
-                
-                // Simulate pointer move:
-                if (pointerPos !== undefined) {
-                    const draggableBox = await draggable.boundingBox();
-                    if (!draggableBox) throw 'draggable does not exist';
-                    const centerX = draggableBox.x + draggableBox.width / 2;
-                    const centerY = draggableBox.y + draggableBox.height / 2;
-                    currentPointerPos = centerX + pointerPos;
-                    await page.mouse.move(currentPointerPos, centerY);
-                } // if
                 
                 
                 
