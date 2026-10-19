@@ -84,7 +84,7 @@ const handleGlobalDragStart = (event: DragEvent): void => {
     
     // Setup when drag starts:
     
-    // Assign the drag payload for reuse during drag movement:
+    // Assign the drag payload for reuse during drag movements:
     draggable.dragPayload = extractPayloadFromDataTransfer(event.dataTransfer);
     
     // Setup when drag starts:
@@ -126,7 +126,7 @@ const handleGlobalDragEnd   = (event: DragEvent): void => {
 
 
 // Global drag handler:
-// - Drives synchronization between draggable and droppable states during drag gestures.
+// - Drives synchronization between draggable and droppable states during drag movements.
 const handleGlobalDrag      = (event: DragEvent): void => {
     draggable.dragElementRef.current = event.target as Element | null;
     const pointerMoveEvent = createPointerEventFromDragEvent(event, 'pointermove');
