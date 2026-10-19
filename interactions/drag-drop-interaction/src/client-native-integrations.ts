@@ -95,7 +95,7 @@ const handleGlobalDragStart = (event: DragEvent): void => {
     // Wait until the state is settled:
     .then(() => {
         // Dispatch activation events after state is settled:
-        processDragActivation(draggable, globalPointerIntegrationRef.current?.lastPointerDownEventRef);
+        processDragActivation(draggable, globalPointerIntegrationRef.current?.lastPointerDownEventRef.current);
         
         
         
@@ -114,7 +114,7 @@ const handleGlobalDragEnd   = (event: DragEvent): void => {
     // Wait until the state is settled:
     .then(() => {
         // Dispatch deactivation events after state is settled:
-        processDragDeactivation(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef);
+        processDragDeactivation(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef.current);
         
         
         
@@ -140,7 +140,7 @@ const handleGlobalDrag      = (event: DragEvent): void => {
 const handleGlobalDrop      = (event: DragEvent): void => {
     draggable.dragElementRef.current = event.target as Element | null;
     // Immediately commits after the capture:
-    processDragCommit(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef);
+    processDragCommit(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef.current);
 };
 
 

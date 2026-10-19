@@ -369,7 +369,7 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     const handleLifecycleChange = useStableCallback((isSetup: boolean): void => {
         if (!isSetup) {
             // Cleanup : Commit first before resetting state, to ensure the last pointerup event is processed.
-            processDragCommit(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef);
+            processDragCommit(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef.current);
         } // if
         
         // Setup   : Mark draggable as active and broadcast active state to all droppables.
@@ -407,11 +407,11 @@ export const useDraggableState = <TElement extends Element = HTMLElement>(props:
     const handleActivationChange = useStableCallback((isActive: boolean): void => {
         if (isActive) {
             // Dispatch activation events after state is settled:
-            processDragActivation(draggable, globalPointerIntegrationRef.current?.lastPointerDownEventRef);
+            processDragActivation(draggable, globalPointerIntegrationRef.current?.lastPointerDownEventRef.current);
         }
         else {
             // Dispatch deactivation events after state is settled:
-            processDragDeactivation(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef);
+            processDragDeactivation(draggable, globalPointerIntegrationRef.current?.lastPointerUpEventRef.current);
         } // if
     });
     useLayoutEffect(() => {

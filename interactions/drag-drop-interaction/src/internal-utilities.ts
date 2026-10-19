@@ -541,11 +541,11 @@ export const syncDroppableContext           = <TElement extends Element = HTMLEl
  * - Dispatches `DragPresenceEvent` for the droppable side (broadcast).
  * 
  * @param draggable The draggable side to activate.
- * @param lastPointerDownEventRef A shared reference to the most recent native `pointerdown` event.
+ * @param pointerDownEvent The originating native 'pointerdown' event from the browser.
  */
 export const processDragActivation   = <TElement extends Element = HTMLElement>(
     draggable               : DraggableContext<TElement>,
-    lastPointerDownEventRef : RefObject<PointerEvent | undefined> | undefined,
+    pointerDownEvent        : PointerEvent | undefined,
 ): void => {
     // Extract properties from the draggable context for convenience:
     const {
@@ -560,21 +560,20 @@ export const processDragActivation   = <TElement extends Element = HTMLElement>(
     // - Draggable is unmounted.
     // - Draggable is disabled.
     // - No pointerdown event was captured.
-    const lastPointerDownEvent = lastPointerDownEventRef?.current;
-    if (!isDragReady(draggable) || !lastPointerDownEvent) return;
+    if (!isDragReady(draggable) || !pointerDownEvent) return;
     
     
     
     // Initialize the drag session:
     draggable.dragSession = {
-        pointedElement : resolvePointedElement(lastPointerDownEvent, dropPredicate),
+        pointedElement : resolvePointedElement(pointerDownEvent, dropPredicate),
         interaction    : null,
     };
     
     
     
     // Dispatch the initial activation events:
-    const dragDropActivationEvent = createDragDropActivationEvent(draggable, lastPointerDownEvent);
+    const dragDropActivationEvent = createDragDropActivationEvent(draggable, pointerDownEvent);
     dispatchActivationEvents(draggable, dragDropActivationEvent);
 };
 
@@ -587,11 +586,11 @@ export const processDragActivation   = <TElement extends Element = HTMLElement>(
  * - Clears the active droppable reference and its interaction states.
  * 
  * @param draggable The draggable side to deactivate.
- * @param lastPointerUpEventRef A shared reference to the most recent native `pointerup` event.
+ * @param pointerUpEvent The originating native 'pointerup' event from the browser.
  */
 export const processDragDeactivation = <TElement extends Element = HTMLElement>(
     draggable               : DraggableContext<TElement>,
-    lastPointerUpEventRef   : RefObject<PointerEvent | undefined> | undefined,
+    pointerUpEvent          : PointerEvent | undefined,
 ): void => {
     // Extract properties from the draggable context for convenience:
     const {
@@ -611,18 +610,17 @@ export const processDragDeactivation = <TElement extends Element = HTMLElement>(
         // - Draggable is disabled.
         // - Drag session is not initialized.
         // - No pointerup event was captured.
-        const lastPointerUpEvent = lastPointerUpEventRef?.current;
-        if (!isDragReady(draggable) || !dragSession || !lastPointerUpEvent) return;
+        if (!isDragReady(draggable) || !dragSession || !pointerUpEvent) return;
         
         
         
         // Update the pointed element:
-        dragSession.pointedElement = resolvePointedElement(lastPointerUpEvent, dropPredicate);
+        dragSession.pointedElement = resolvePointedElement(pointerUpEvent, dropPredicate);
         
         
         
         // Dispatch the final deactivation events:
-        const dragDropDeactivationEvent = createDragDropDeactivationEvent(draggable, lastPointerUpEvent);
+        const dragDropDeactivationEvent = createDragDropDeactivationEvent(draggable, pointerUpEvent);
         dispatchDeactivationEvents(draggable, dragDropDeactivationEvent);
     }
     finally {
@@ -748,11 +746,11 @@ export const processDragProbe        = async <TElement extends Element = HTMLEle
  * - Dispatches final dragged/dropped events.
  * 
  * @param draggable The draggable context to commit.
- * @param lastPointerUpEventRef A shared reference to the most recent native `pointerup` event.
+ * @param pointerUpEvent The originating native 'pointerup' event from the browser.
  */
 export const processDragCommit       = <TElement extends Element = HTMLElement>(
     draggable               : DraggableContext<TElement>,
-    lastPointerUpEventRef   : RefObject<PointerEvent | undefined> | undefined,
+    pointerUpEvent          : PointerEvent | undefined,
 ): void => {
     // Abort commit if:
     // - Draggable element is missing.
@@ -761,14 +759,13 @@ export const processDragCommit       = <TElement extends Element = HTMLElement>(
     // - No pointerup event was captured.
     // - Droppable is disabled
     // - No active droppable side was accepted during the drag gesture.
-    const lastPointerUpEvent = lastPointerUpEventRef?.current;
-    if (!isDragReady(draggable) || !lastPointerUpEvent || !hasDragInteraction(draggable)) return;
+    if (!isDragReady(draggable) || !pointerUpEvent || !hasDragInteraction(draggable)) return;
     const interaction = draggable.dragSession.interaction;
     if (!isDropReady(interaction.droppable) || !interaction.isAccepted) return;
     
     
     
     // Dispatch the final commit events:
-    const dragDropCommitEvent = createDragDropCommitEvent(draggable, lastPointerUpEvent);
+    const dragDropCommitEvent = createDragDropCommitEvent(draggable, pointerUpEvent);
     dispatchCommitEvents(draggable, dragDropCommitEvent);
 };
