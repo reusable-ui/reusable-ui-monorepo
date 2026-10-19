@@ -98,8 +98,6 @@ const handleGlobalDragStart = (event: DragEvent): void => {
     });
 };
 const handleGlobalDragEnd   = (event: DragEvent): void => {
-    draggable.dragElementRef.current = event.target as Element | null;
-    
     // Cleanup when drag ends:
     handleLifecycleChange(false)
     
@@ -122,7 +120,6 @@ const handleGlobalDragEnd   = (event: DragEvent): void => {
 // Global drag handler:
 // - Drives synchronization between draggable and droppable states during drag movements.
 const handleGlobalDrag      = (event: DragEvent): void => {
-    draggable.dragElementRef.current = event.target as Element | null;
     processDragProbe(draggable, createPointerEventFromDragEvent(event, 'pointermove'));
 };
 
@@ -131,7 +128,6 @@ const handleGlobalDrag      = (event: DragEvent): void => {
 // Global drop handler:
 // - Immediately commits after the capture.
 const handleGlobalDrop      = (event: DragEvent): void => {
-    draggable.dragElementRef.current = event.target as Element | null;
     // Immediately commits after the capture:
     processDragCommit(draggable, createPointerEventFromDragEvent(event, 'pointerup'));
 };
