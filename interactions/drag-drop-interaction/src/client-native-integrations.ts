@@ -157,6 +157,21 @@ const handleGlobalDragOver  = (event: DragEvent): void => {
 const handleGlobalDrop      = (event: DragEvent): void => {
     // Immediately commits after the capture:
     processDragCommit(draggable, createPointerEventFromDragEvent(event, 'pointerup'));
+    
+    
+    
+    // Centralized native drop handler:
+    // - Conditionally calls `preventDefault()` on behalf of active droppable targets.
+    // - Only intercepts if the negotiated handshake is accepted.
+    // - Prevents interference with non-integrated native droppable zones on the page.
+    // - Crucial: Calling `preventDefault()` here stops the browser's default drop behavior
+    //   (e.g., preventing the browser from navigating away to open a dropped file).
+    // - Uses `.contains()` because `event.target` might be a nested child element 
+    //   (like an icon or text) inside the actual `dropElement`.
+    const { dragSession } = draggable;
+    if (dragSession?.interaction?.isAccepted && dragSession.interaction.dropElement.contains(event.target as Element)) {
+        event.preventDefault();
+    } // if
 };
 
 
