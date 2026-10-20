@@ -142,9 +142,6 @@ export const DroppableStateTest = (props: DroppableStateTestProps) => {
             data-status={String(dropStatus)}
             data-payload={dragPayload ? JSON.stringify(Object.fromEntries(dragPayload)) : 'undefined'}
             data-dropped={dropped ? JSON.stringify(Object.fromEntries(dropped)) : 'undefined'}
-            onDragOver={(event) => {
-                event.preventDefault();
-            }}
         >
             Droppable State Test {index}
         </div>

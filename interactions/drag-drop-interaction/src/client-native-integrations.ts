@@ -129,8 +129,25 @@ const handleGlobalDragEnd   = (event: DragEvent): void => {
 //   2. External File Support: OS-level file drags do not originate from a DOM element, 
 //      so they never fire `drag` events. Document-level `dragover` correctly captures 
 //      both internal HTML elements and external file drops.
+//   3. Centralized Drop Acceptance: Intercepts `dragover` at the document root to conditionally 
+//      invoke `preventDefault()`, enabling native `drop` events without requiring individual 
+//      droppable elements to attach their own native listeners.
 const handleGlobalDragOver  = (event: DragEvent): void => {
     processDragProbe(draggable, createPointerEventFromDragEvent(event, 'pointermove'));
+    
+    
+    
+    // Centralized native drop zone acceptance:
+    // - Conditionally calls `preventDefault()` on behalf of active droppable targets.
+    // - Only intercepts if the negotiated handshake is accepted.
+    // - Prevents interference with non-integrated native droppable zones on the page.
+    // - Crucial: Calling `preventDefault()` is what authorizes the browser to fire the subsequent native `drop` event.
+    // - Uses `.contains()` because `event.target` might be a nested child element 
+    //   (like an icon or text) inside the actual `dropElement`.
+    const { dragSession } = draggable;
+    if (dragSession?.interaction?.isAccepted && dragSession.interaction.dropElement.contains(event.target as Element)) {
+        event.preventDefault();
+    } // if
 };
 
 
