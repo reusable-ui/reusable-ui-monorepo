@@ -119,6 +119,40 @@ const handleGlobalDragEnd   = (event: DragEvent): void => {
     });
 };
 
+// Global dragenter handler (External Drag Initialization):
+// - Acts as a surrogate `dragstart` for external items (OS files, text, links).
+// - External drags do not fire `dragstart` because they originate outside the DOM.
+const handleGlobalDragEnter = (event: DragEvent): void => {
+    // Skip if a session is already active. This prevents:
+    // - Overriding the current drag session.
+    // - Re-initializing when transitioning into nested child elements.
+    if (draggable.dragSession !== null) return;
+    
+    
+    
+    // Simulate `dragstart` to bootstrap the session for the incoming external item:
+    handleGlobalDragStart(event);
+};
+
+// Global dragleave handler (External Drag Cancellation):
+// - Acts as a surrogate `dragend` for external items (OS files, text, links).
+// - External drags do not fire `dragend` because they originate outside the DOM.
+const handleGlobalDragLeave = (event: DragEvent): void => {
+    // Skip if a session is already terminated. This prevents:
+    // - Unnecessary cleanup tasks.
+    if (draggable.dragSession === null) return;
+    
+    
+    
+    // ⚠️ CRITICAL: `dragleave` fires repeatly when transitioning between nested child elements.
+    // We MUST verify `relatedTarget === null`, which exclusively happens when the pointer 
+    // completely exits the browser window back to the OS.
+    if (!event.relatedTarget) {
+        // Simulate `dragend` to safely terminate the abandoned session:
+        handleGlobalDragEnd(event);
+    } // if
+};
+
 
 
 // Global drag handler:
@@ -194,6 +228,8 @@ const setupGlobalIntegration = (): void => {
     const options : AddEventListenerOptions = { signal: globalAbortController.signal };
     document.addEventListener('dragstart', handleGlobalDragStart, options);
     document.addEventListener('dragend'  , handleGlobalDragEnd  , options);
+    document.addEventListener('dragenter', handleGlobalDragEnter, options);
+    document.addEventListener('dragleave', handleGlobalDragLeave, options);
     document.addEventListener('dragover' , handleGlobalDragOver , options);
     document.addEventListener('drop'     , handleGlobalDrop     , options);
 };
