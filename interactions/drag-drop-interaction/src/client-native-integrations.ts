@@ -95,7 +95,7 @@ const handleGlobalDragStart = (event: DragEvent): void => {
         
         
         // Prime the probe immediately:
-        handleGlobalDrag(event);
+        handleGlobalDragOver(event);
     });
 };
 const handleGlobalDragEnd   = (event: DragEvent): void => {
@@ -123,7 +123,13 @@ const handleGlobalDragEnd   = (event: DragEvent): void => {
 
 // Global drag handler:
 // - Drives synchronization between draggable and droppable states during drag movements.
-const handleGlobalDrag      = (event: DragEvent): void => {
+// - Why `dragover` instead of `drag`?
+//   1. Continuous Probing: `dragover` provides a reliable, high-frequency coordinate stream 
+//      to drive `processDragProbe()` across all browsers.
+//   2. External File Support: OS-level file drags do not originate from a DOM element, 
+//      so they never fire `drag` events. Document-level `dragover` correctly captures 
+//      both internal HTML elements and external file drops.
+const handleGlobalDragOver  = (event: DragEvent): void => {
     processDragProbe(draggable, createPointerEventFromDragEvent(event, 'pointermove'));
 };
 
@@ -156,7 +162,7 @@ const setupGlobalIntegration = (): void => {
     const options : AddEventListenerOptions = { signal: globalAbortController.signal };
     document.addEventListener('dragstart', handleGlobalDragStart, options);
     document.addEventListener('dragend'  , handleGlobalDragEnd  , options);
-    document.addEventListener('drag'     , handleGlobalDrag     , options);
+    document.addEventListener('dragover' , handleGlobalDragOver , options);
     document.addEventListener('drop'     , handleGlobalDrop     , options);
 };
 
