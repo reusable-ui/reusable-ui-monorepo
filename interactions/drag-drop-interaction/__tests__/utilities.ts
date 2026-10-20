@@ -1,3 +1,9 @@
+import {
+    type DragPayload,
+} from '../dist/index.js'
+
+
+
 /**
  * Gets the droppable index by the given pointer position.
  * 
@@ -50,4 +56,23 @@ export const mockEventElement = (element: EventTarget | null | undefined): Seria
     return {
         __id: (element as Element).getAttribute('data-testid'),
     } satisfies SerializedElement;
+};
+
+
+
+export const resolveMockedDragPayload = <TDragPayload extends DragPayload | undefined>(dragPayloadRaw: TDragPayload): TDragPayload | Promise<TDragPayload> => {
+    if (!dragPayloadRaw) return dragPayloadRaw;
+    if (!(dragPayloadRaw instanceof Map)) dragPayloadRaw = new Map(Object.entries(dragPayloadRaw)) as unknown as NonNullable<TDragPayload>;
+    if (!dragPayloadRaw.has('string/0')) return dragPayloadRaw;
+    
+    const data = dragPayloadRaw.get('string/0');
+    if (!(data instanceof Promise)) return dragPayloadRaw;
+    
+    return new Promise<TDragPayload>((resolve) => {
+        data.then((resolved) => {
+            const dragPayloadObject = JSON.parse(String(resolved));
+            const dragPayload = new Map(Object.entries(dragPayloadObject)) as unknown as NonNullable<TDragPayload>;
+            resolve(dragPayload);
+        });
+    });
 };

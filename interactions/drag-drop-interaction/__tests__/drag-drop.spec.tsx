@@ -2,6 +2,7 @@ import React from 'react'
 import { test, expect } from '@playwright/experimental-ct-react';
 import { DraggableDroppableTest } from './DraggableDroppableTest.js'
 import { DraggableStateTest } from './DraggableStateTest.js'
+import { NativeDraggableStateTest } from './NativeDraggableStateTest.js'
 import { DroppableStateTest } from './DroppableStateTest.js'
 import {
     type DragPayload,
@@ -3535,201 +3536,85 @@ const testCases : DragDropTestCase[] = [
 ];
 
 test.describe('useDraggableState() + useDroppableState()', () => {
-    for (const {
-        title,
-        simulateDragAccept,
-        simulateDropAccept,
-        updates,
-    } of testCases) {
-        test(title, async ({ mount, page }) => {
-            // Localized state variables unique to this specific test execution:
-            let currentPointerPos     = -1;
-            let currentDragged        = false;
-            let currentPointerPressed = false;
-            let currentDragEnabled    = true;
-            let currentDropEnabled    = true;
+    for (const simulateNativeDraggable of [false, true]) {
+        for (const {
+            title,
+            simulateDragAccept,
+            simulateDropAccept,
+            updates,
+        } of testCases) {
+            // Skips unsupported native draggable cases:
+            if (simulateNativeDraggable && (simulateDragAccept !== undefined)) continue;
             
             
             
-            // Event trackers:
-            const dragDropEvents = new Map<string, any[]>();
-            
-            
-            
-            // Event handlers:
-            const handleDragStart     = (event: DragStartEvent<HTMLDivElement>) => {
-                dragDropEvents.set('dragStart', [...(dragDropEvents.get('dragStart') ?? []), event]);
-            };
-            const handleDragEnd       = (event: DragEndEvent<HTMLDivElement>) => {
-                dragDropEvents.set('dragEnd', [...(dragDropEvents.get('dragEnd') ?? []), event]);
-            };
-            const handleDragHandshake = (event: DragHandshakeEvent<HTMLDivElement>) => {
-                dragDropEvents.set('dragHandshake', [...(dragDropEvents.get('dragHandshake') ?? []), event]);
-            };
-            const handleDragEvaluation  = (event: DragEvaluationEvent<HTMLDivElement>) => {
-                dragDropEvents.set('dragEvaluation', [...(dragDropEvents.get('dragEvaluation') ?? []), event]);
-            };
-            const handleDragCommit = (event: DragCommitEvent<HTMLDivElement>) => {
-                dragDropEvents.set('dragCommit', [...(dragDropEvents.get('dragCommit') ?? []), event]);
-            }
-            
-            const handleDragPresence  = (event: DragPresenceEvent<HTMLDivElement>) => {
-                dragDropEvents.set('dragPresence', [...(dragDropEvents.get('dragPresence') ?? []), event]);
-            };
-            const handleDragAbsence  = (event: DragAbsenceEvent<HTMLDivElement>) => {
-                dragDropEvents.set('dragAbsence', [...(dragDropEvents.get('dragAbsence') ?? []), event]);
-            };
-            const handleDropHandshake = (event: DropHandshakeEvent<HTMLDivElement>, index: number) => {
-                let arr = dragDropEvents.get('dropHandshake');
-                if (!arr) dragDropEvents.set('dropHandshake', arr = []);
-                arr[index] = event;
-            };
-            const handleDropEvaluation  = (event: DropEvaluationEvent<HTMLDivElement>, index: number) => {
-                let arr = dragDropEvents.get('dropEvaluation');
-                if (!arr) dragDropEvents.set('dropEvaluation', arr = []);
-                arr[index] = event;
-            };
-            const handleDropCommit = (event: DropCommitEvent<HTMLDivElement>, index: number) => {
-                let arr = dragDropEvents.get('dropCommit');
-                if (!arr) dragDropEvents.set('dropCommit', arr = []);
-                arr[index] = event;
-            };
-            
-            
-            
-            // First render:
-            const component = await mount(
-                <DraggableDroppableTest>
-                    {/* `Object.fromEntries(Map)` => a fix for playwright serializing problem */}
-                    <DraggableStateTest index={0} dragPayload={Object.fromEntries(TEST_PAYLOAD) as typeof TEST_PAYLOAD} computedDrag={currentDragged} dragEnabled={currentDragEnabled} simulateDragAccept={simulateDragAccept}
-                        onDragStart={handleDragStart}
-                        onDragEnd={handleDragEnd}
-                        onDragHandshake={handleDragHandshake}
-                        onDragEvaluation={handleDragEvaluation}
-                        onDragCommit={handleDragCommit}
-                    />
-                    <DroppableStateTest index={0} dropMetadata={Object.fromEntries(TEST_METADATA_1) as typeof TEST_METADATA_1} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept}
-                        onDragPresence={handleDragPresence}
-                        onDragAbsence={handleDragAbsence}
-                        onDropHandshake={(event) => handleDropHandshake(event, 0)}
-                        onDropEvaluation={(event) => handleDropEvaluation(event, 0)}
-                        onDropCommit={(event) => handleDropCommit(event, 0)}
-                    />
-                    <DroppableStateTest index={1} dropMetadata={Object.fromEntries(TEST_METADATA_2) as typeof TEST_METADATA_2} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept}
-                        onDragPresence={handleDragPresence}
-                        onDragAbsence={handleDragAbsence}
-                        onDropHandshake={(event) => handleDropHandshake(event, 1)}
-                        onDropEvaluation={(event) => handleDropEvaluation(event, 1)}
-                        onDropCommit={(event) => handleDropCommit(event, 1)}
-                    />
-                    <DroppableStateTest index={2} dropMetadata={Object.fromEntries(TEST_METADATA_3) as typeof TEST_METADATA_3} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept}
-                        onDragPresence={handleDragPresence}
-                        onDragAbsence={handleDragAbsence}
-                        onDropHandshake={(event) => handleDropHandshake(event, 2)}
-                        onDropEvaluation={(event) => handleDropEvaluation(event, 2)}
-                        onDropCommit={(event) => handleDropCommit(event, 2)}
-                    />
-                </DraggableDroppableTest>
-            );
-            
-            
-            
-            // Ensure the component is rendered correctly:
-            const container = component.getByTestId('draggable-droppable-test');
-            await expect(container).toContainClass('draggable-droppable-test');
-            const draggable = component.getByTestId('draggable-state-test-0');
-            await expect(draggable).toContainClass('draggable-state-test');
-            const droppable1 = component.getByTestId('droppable-state-test-0');
-            await expect(droppable1).toContainClass('droppable-state-test');
-            const droppable2 = component.getByTestId('droppable-state-test-1');
-            await expect(droppable2).toContainClass('droppable-state-test');
-            const droppable3 = component.getByTestId('droppable-state-test-2');
-            await expect(droppable3).toContainClass('droppable-state-test');
-            
-            
-            
-            // Verify there's no events yet:
-            expect(dragDropEvents.size).toBe(0);
-            
-            
-            
-            // Initialize pointer position to the center of the draggable:
-            {
-                const draggableBox = await draggable.boundingBox();
-                if (!draggableBox) throw 'draggable does not exist';
-                const centerX = draggableBox.x + draggableBox.width / 2;
-                const centerY = draggableBox.y + draggableBox.height / 2;
-                currentPointerPos = centerX;
-                await page.mouse.move(currentPointerPos, centerY);
-            } // if
-            
-            
-            
-            // Apply update scenarios:
-            for (const {
-                title,
-                computedDrag,
-                pointerPos,
-                dragEnabled,
-                dropEnabled,
-                delay,
-                
-                expectedDragStatus   = 'no-expect',
-                expectedDropStatus1  = 'no-expect',
-                expectedDropStatus2  = 'no-expect',
-                expectedDropStatus3  = 'no-expect',
-                
-                expectedMetadata     = 'no-expect',
-                expectedPayload1     = 'no-expect',
-                expectedPayload2     = 'no-expect',
-                expectedPayload3     = 'no-expect',
-                
-                expectedDragged      = 'no-expect',
-                expectedDropped1     = 'no-expect',
-                expectedDropped2     = 'no-expect',
-                expectedDropped3     = 'no-expect',
-                
-                expectedEvents,
-            } of updates) {
-                console.log(`[Subtest] ${title}`);
+            test(title + (simulateNativeDraggable ? ' (native draggable)' : ''), async ({ mount, page }) => {
+                // Localized state variables unique to this specific test execution:
+                let currentPointerPos     = -1;
+                let currentDragged        = false;
+                let currentPointerPressed = false;
+                let currentDragEnabled    = true;
+                let currentDropEnabled    = true;
                 
                 
                 
-                // Clear event trackers:
-                dragDropEvents.clear();
+                // Event trackers:
+                const dragDropEvents = new Map<string, any[]>();
                 
                 
                 
-                // Update props:
-                if (computedDrag !== undefined) currentDragged     = computedDrag;
-                if (dragEnabled  !== undefined) currentDragEnabled = dragEnabled;
-                if (dropEnabled  !== undefined) currentDropEnabled = dropEnabled;
+                // Event handlers:
+                const handleDragStart     = (event: DragStartEvent<HTMLDivElement>) => {
+                    dragDropEvents.set('dragStart', [...(dragDropEvents.get('dragStart') ?? []), event]);
+                };
+                const handleDragEnd       = (event: DragEndEvent<HTMLDivElement>) => {
+                    dragDropEvents.set('dragEnd', [...(dragDropEvents.get('dragEnd') ?? []), event]);
+                };
+                const handleDragHandshake = (event: DragHandshakeEvent<HTMLDivElement>) => {
+                    dragDropEvents.set('dragHandshake', [...(dragDropEvents.get('dragHandshake') ?? []), event]);
+                };
+                const handleDragEvaluation  = (event: DragEvaluationEvent<HTMLDivElement>) => {
+                    dragDropEvents.set('dragEvaluation', [...(dragDropEvents.get('dragEvaluation') ?? []), event]);
+                };
+                const handleDragCommit = (event: DragCommitEvent<HTMLDivElement>) => {
+                    dragDropEvents.set('dragCommit', [...(dragDropEvents.get('dragCommit') ?? []), event]);
+                }
+                
+                const handleDragPresence  = (event: DragPresenceEvent<HTMLDivElement>) => {
+                    dragDropEvents.set('dragPresence', [...(dragDropEvents.get('dragPresence') ?? []), event]);
+                };
+                const handleDragAbsence  = (event: DragAbsenceEvent<HTMLDivElement>) => {
+                    dragDropEvents.set('dragAbsence', [...(dragDropEvents.get('dragAbsence') ?? []), event]);
+                };
+                const handleDropHandshake = (event: DropHandshakeEvent<HTMLDivElement>, index: number) => {
+                    let arr = dragDropEvents.get('dropHandshake');
+                    if (!arr) dragDropEvents.set('dropHandshake', arr = []);
+                    arr[index] = event;
+                };
+                const handleDropEvaluation  = (event: DropEvaluationEvent<HTMLDivElement>, index: number) => {
+                    let arr = dragDropEvents.get('dropEvaluation');
+                    if (!arr) dragDropEvents.set('dropEvaluation', arr = []);
+                    arr[index] = event;
+                };
+                const handleDropCommit = (event: DropCommitEvent<HTMLDivElement>, index: number) => {
+                    let arr = dragDropEvents.get('dropCommit');
+                    if (!arr) dragDropEvents.set('dropCommit', arr = []);
+                    arr[index] = event;
+                };
                 
                 
                 
-                // Simulate pointer press/release:
-                if (currentPointerPressed !== currentDragged) {
-                    currentPointerPressed = currentDragged;
-                    if (currentDragged) {
-                        await page.mouse.down();
-                    } else {
-                        await page.mouse.up();
-                    } // if
-                } // if
-                
-                
-                
-                // Re-render with updated drag state:
-                await component.update(
+                // First render:
+                const component = await mount(
                     <DraggableDroppableTest>
                         {/* `Object.fromEntries(Map)` => a fix for playwright serializing problem */}
-                        <DraggableStateTest index={0} dragPayload={Object.fromEntries(TEST_PAYLOAD) as typeof TEST_PAYLOAD} computedDrag={currentDragged} dragEnabled={currentDragEnabled} simulateDragAccept={simulateDragAccept}
+                        {!simulateNativeDraggable ? <DraggableStateTest index={0} dragPayload={Object.fromEntries(TEST_PAYLOAD) as typeof TEST_PAYLOAD} computedDrag={currentDragged} dragEnabled={currentDragEnabled} simulateDragAccept={simulateDragAccept}
                             onDragStart={handleDragStart}
                             onDragEnd={handleDragEnd}
                             onDragHandshake={handleDragHandshake}
                             onDragEvaluation={handleDragEvaluation}
                             onDragCommit={handleDragCommit}
-                        />
+                        /> : <NativeDraggableStateTest index={0} dragPayload={Object.fromEntries(TEST_PAYLOAD) as typeof TEST_PAYLOAD} dragEnabled={currentDragEnabled} />}
                         <DroppableStateTest index={0} dropMetadata={Object.fromEntries(TEST_METADATA_1) as typeof TEST_METADATA_1} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept}
                             onDragPresence={handleDragPresence}
                             onDragAbsence={handleDragAbsence}
@@ -3756,28 +3641,6 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                 
                 
                 
-                // Simulate pointer move:
-                if (pointerPos !== undefined) {
-                    const draggable = component.getByTestId('draggable-state-test-0');
-                    const draggableBox = await draggable.boundingBox();
-                    if (!draggableBox) throw 'draggable does not exist';
-                    const centerX = draggableBox.x + draggableBox.width / 2;
-                    const centerY = draggableBox.y + draggableBox.height / 2;
-                    currentPointerPos = centerX + pointerPos;
-                    await page.mouse.move(currentPointerPos, centerY);
-                } // if
-                
-                
-                
-                // Wait for the specified delay:
-                if (delay !== undefined) {
-                    await new Promise((resolve) => {
-                        setTimeout(resolve, delay);
-                    });
-                } // if
-                
-                
-                
                 // Ensure the component is rendered correctly:
                 const container = component.getByTestId('draggable-droppable-test');
                 await expect(container).toContainClass('draggable-droppable-test');
@@ -3792,356 +3655,521 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                 
                 
                 
-                // Verify the expected statuses:
-                if (expectedDragStatus  !== 'no-expect') await expect(draggable) .toHaveAttribute('data-status', String(expectedDragStatus));
-                if (expectedDropStatus1 !== 'no-expect') await expect(droppable1).toHaveAttribute('data-status', String(expectedDropStatus1));
-                if (expectedDropStatus2 !== 'no-expect') await expect(droppable2).toHaveAttribute('data-status', String(expectedDropStatus2));
-                if (expectedDropStatus3 !== 'no-expect') await expect(droppable3).toHaveAttribute('data-status', String(expectedDropStatus3));
+                // Verify there's no events yet:
+                expect(dragDropEvents.size).toBe(0);
                 
                 
                 
-                // Verify the expected metadata/payload:
-                if (expectedMetadata !== 'no-expect') await expect(draggable) .toHaveAttribute('data-metadata', expectedMetadata ? JSON.stringify(Object.fromEntries(expectedMetadata)) : String(expectedMetadata));
-                if (expectedPayload1 !== 'no-expect') await expect(droppable1).toHaveAttribute('data-payload',  expectedPayload1 ? JSON.stringify(Object.fromEntries(expectedPayload1)) : String(expectedPayload1));
-                if (expectedPayload2 !== 'no-expect') await expect(droppable2).toHaveAttribute('data-payload',  expectedPayload2 ? JSON.stringify(Object.fromEntries(expectedPayload2)) : String(expectedPayload2));
-                if (expectedPayload3 !== 'no-expect') await expect(droppable3).toHaveAttribute('data-payload',  expectedPayload3 ? JSON.stringify(Object.fromEntries(expectedPayload3)) : String(expectedPayload3));
+                // Initialize pointer position to the center of the draggable:
+                {
+                    const draggableBox = await draggable.boundingBox();
+                    if (!draggableBox) throw 'draggable does not exist';
+                    const centerX = draggableBox.x + draggableBox.width / 2;
+                    const centerY = draggableBox.y + draggableBox.height / 2;
+                    currentPointerPos = centerX;
+                    await page.mouse.move(currentPointerPos, centerY);
+                } // if
                 
                 
                 
-                // Verify the expected dragged/dropped events:
-                if (expectedDragged  !== 'no-expect') await expect(draggable) .toHaveAttribute('data-dragged', expectedDragged  ? JSON.stringify(Object.fromEntries(expectedDragged))  : String(expectedDragged));
-                if (expectedDropped1 !== 'no-expect') await expect(droppable1).toHaveAttribute('data-dropped', expectedDropped1 ? JSON.stringify(Object.fromEntries(expectedDropped1)) : String(expectedDropped1));
-                if (expectedDropped2 !== 'no-expect') await expect(droppable2).toHaveAttribute('data-dropped', expectedDropped2 ? JSON.stringify(Object.fromEntries(expectedDropped2)) : String(expectedDropped2));
-                if (expectedDropped3 !== 'no-expect') await expect(droppable3).toHaveAttribute('data-dropped', expectedDropped3 ? JSON.stringify(Object.fromEntries(expectedDropped3)) : String(expectedDropped3));
-                
-                
-                
-                // Event Interface Rules & Verification:
-                // 
-                // 1. `dragPayload`:
-                //    - Always exists on both draggable and droppable events, as a single draggable is active throughout the lifecycle.
-                //
-                // 2. `dropMetadata`:
-                //    - Always exists on droppable events (an inherent property of the droppable side).
-                //    - On draggable events:
-                //      - Omitted on `dragStart` (no target contacted yet).
-                //      - Always exists on `dragHandshake` and `dragCommit` (both sides are in contact).
-                //      - Optional (`DropMetadata | undefined`) on `dragEvaluation` and `dragEnd` (target contact is optional).
-                //
-                // 3. `isTargeted`:
-                //    - Only exists on droppable broadcast events (`dropEvaluation` and `dragAbsence`).
-                //    - Omitted on `dragPresence` since initial drag start involves no contact.
-                //    - On `dropEvaluation`: `true` for the droppable currently hovered, `false` for others.
-                //    - On `dragAbsence`: `true` for the droppable receiving the committed drop, `false` for others.
-                //
-                // 4. Handshake Responses:
-                //    - `dragHandshake`: Contains `dragResponse` (draggable decision); omits `dropResponse`.
-                //    - `dropHandshake`: Contains `dropResponse` (droppable decision); omits `dragResponse`.
-                //
-                // 5. Evaluation Responses:
-                //    - `dragEvaluation` and `dropEvaluation` contain both `dragResponse` and `dropResponse` to represent the combined status from both sides.
-                //
-                // 6. Commit Responses:
-                //    - `dragCommit` and `dropCommit` omit response flags because triggering a commit inherently implies mutual acceptance.
-                
-                // Find the corresponding droppable index by pointer position:
-                const droppableIndex = getDroppableIndexByPointerPos(currentPointerPos);
-                
-                // Draggable side events:
-                // - Events: dragStart, dragEnd, dragHandshake, dragEvaluation, dragCommit.
-                for (const dragSideEventName of [
-                    'dragStart',
-                    'dragEnd',
-                    'dragHandshake',
-                    'dragEvaluation',
-                    'dragCommit',
-                ] as const) {
-                    const dragSideEvents = dragDropEvents.get(dragSideEventName) ?? [];
-                    dragDropEvents.delete(dragSideEventName);
-                    expect(dragSideEvents.length).toBe(expectedEvents[dragSideEventName] ? 1 : 0);
+                // Apply update scenarios:
+                for (const {
+                    title,
+                    computedDrag,
+                    pointerPos,
+                    dragEnabled,
+                    dropEnabled,
+                    delay,
                     
-                    const dragSideEvent = dragSideEvents[0];
-                    if (dragSideEvent) {
-                        // Verify event type:
-                        expect(dragSideEvent.type).toBe(dragSideEventName.toLowerCase());
-                        
-                        
-                        
-                        // Verify `currentTarget`:
-                        // - Should refer to the draggable itself.
-                        expect(dragSideEvent.currentTarget?.__id).toBe('draggable-state-test-0');
-                        
-                        // Verify `target`:
-                        // - It's alias for `currentTarget`.
-                        // - Should be equal to `currentTarget`.
-                        expect(dragSideEvent.target).toEqual(dragSideEvent.currentTarget);
-                        
-                        // Verify `relatedTarget`:
-                        // - Omitted on `dragStart`.
-                        // - Should refer to the active droppable (if any).
-                        if (dragSideEventName !== 'dragStart') {
-                            if (droppableIndex !== -1) { // The pointer is over an active droppable.
-                                expect(dragSideEvent.relatedTarget?.__id).toBe(`droppable-state-test-${droppableIndex}`);
-                            }
-                            else { // There is no active droppable.
-                                expect(dragSideEvent.relatedTarget).toBeNull();
+                    expectedDragStatus   = 'no-expect',
+                    expectedDropStatus1  = 'no-expect',
+                    expectedDropStatus2  = 'no-expect',
+                    expectedDropStatus3  = 'no-expect',
+                    
+                    expectedMetadata     = 'no-expect',
+                    expectedPayload1     = 'no-expect',
+                    expectedPayload2     = 'no-expect',
+                    expectedPayload3     = 'no-expect',
+                    
+                    expectedDragged      = 'no-expect',
+                    expectedDropped1     = 'no-expect',
+                    expectedDropped2     = 'no-expect',
+                    expectedDropped3     = 'no-expect',
+                    
+                    expectedEvents,
+                } of updates) {
+                    console.log(`[Subtest] ${title}`);
+                    
+                    
+                    
+                    // Clear event trackers:
+                    dragDropEvents.clear();
+                    
+                    
+                    
+                    // Update props:
+                    if (computedDrag !== undefined) currentDragged     = computedDrag;
+                    if (dragEnabled  !== undefined) currentDragEnabled = dragEnabled;
+                    if (dropEnabled  !== undefined) currentDropEnabled = dropEnabled;
+                    
+                    
+                    
+                    // Simulate pointer press/release:
+                    if (currentPointerPressed !== currentDragged) {
+                        currentPointerPressed = currentDragged;
+                        if (currentDragged) {
+                            await page.mouse.down();
+                            
+                            // Move the pointer slightly to simulate a native dragstart:
+                            // - A native drag operation will not begin until **a pointer movement** following the pointer down event.
+                            if (simulateNativeDraggable) {
+                                const draggable = component.getByTestId('draggable-state-test-0');
+                                await expect(draggable).toContainClass('draggable-state-test');
+                                const draggableBox = await draggable.boundingBox();
+                                if (!draggableBox) throw 'draggable does not exist';
+                                const centerY = draggableBox.y + draggableBox.height / 2;
+                                currentPointerPos += 10;
+                                await page.mouse.move(currentPointerPos, centerY);
                             } // if
-                        }
-                        else {
-                            expect('relatedTarget' in dragSideEvent).toBe(false);
-                        } // if
-                        
-                        // Verify `pointedElement`:
-                        if (droppableIndex !== -1) { // The pointer is over an active droppable.
-                            expect(dragSideEvent.pointedElement?.__id).toBe(`droppable-state-test-${droppableIndex}`);
-                        }
-                        else { // There is no active droppable.
-                            expect(dragSideEvent.pointedElement?.__id).toBe('draggable-droppable-test'); // Refer to the background component.
-                        } // if
-                        
-                        
-                        
-                        // Verify `dragPayload`:
-                        // - Always present across all draggable events, as it is the property of the draggable side.
-                        expect(dragSideEvent.dragPayload).toEqual(Object.fromEntries(TEST_PAYLOAD));
-                        
-                        
-                        
-                        // Verify `dropMetadata`:
-                        // - Omitted on `dragStart`.
-                        // - Always present on `dragHandshake` and `dragCommit`.
-                        // - Present on `dragEvaluation` / `dragEnd` only if contact / commit occurred.
-                        if (dragSideEventName === 'dragHandshake') {
-                            expect(droppableIndex).not.toBe(-1);
-                            expect(dragSideEvent.dropMetadata).toEqual(Object.fromEntries(TEST_METADATA[droppableIndex]));
-                        }
-                        else if (dragSideEventName === 'dragEvaluation') {
-                            if (droppableIndex !== -1) {
-                                expect(dragSideEvent.dropMetadata).toEqual(Object.fromEntries(TEST_METADATA[droppableIndex]));
-                            }
-                            else {
-                                expect(dragSideEvent.dropMetadata).toBeUndefined(); // No contact with any droppable.
-                            } // if
-                        }
-                        else if (dragSideEventName === 'dragCommit') {
-                            expect(droppableIndex).not.toBe(-1);
-                            expect(dragSideEvent.dropMetadata).toEqual(Object.fromEntries(TEST_METADATA[droppableIndex]));
-                        }
-                        else if (dragSideEventName === 'dragEnd') {
-                            if (droppableIndex !== -1) {
-                                expect(dragSideEvent.dropMetadata).toEqual(Object.fromEntries(TEST_METADATA[droppableIndex]));
-                            }
-                            else {
-                                expect(dragSideEvent.dropMetadata).toBeUndefined(); // No contact with any droppable.
-                            } // if
-                        }
-                        else {
-                            expect('dropMetadata' in dragSideEvent).toBe(false);
-                        } // if
-                        
-                        
-                        
-                        // Verify `dragResponse`:
-                        // - Always present on `dragHandshake`, representing the current side's (draggable) response.
-                        // - Maybe missing on `dragEvaluation`, indicating the draggable side is not hovering any droppable.
-                        // - Always undefined if not hovering any droppable for `dragEvaluation`.
-                        // - Omitted on all other events.
-                        const isHoveringAnyDroppable = expectedEvents.dropHandshake?.some(Boolean) ?? false;
-                        if (dragSideEventName === 'dragHandshake') {
-                            expect(dragSideEvent.dragResponse).toBe(
-                                // The default drag response is `true`, unless overriden:
-                                simulateDragAccept ?? true
-                            );
-                        }
-                        else if (dragSideEventName === 'dragEvaluation') {
-                            expect(dragSideEvent.dragResponse).toBe(
-                                isHoveringAnyDroppable
-                                
-                                // The default drag response is `true`, unless overriden:
-                                ? simulateDragAccept ?? true
-                                
-                                // Not hovering any droppable → always no response:
-                                : undefined
-                            );
-                        }
-                        else {
-                            expect('dragResponse' in dragSideEvent).toBe(false);
-                        } // if
-                        
-                        
-                        
-                        // Verify `dropResponse`:
-                        // - Always present on `dragEvaluation`, representing the opposite side's (droppable) response.
-                        // - Always undefined if not hovering any droppable.
-                        // - Omitted on all other events.
-                        if (dragSideEventName === 'dragEvaluation') {
-                            expect(dragSideEvent.dropResponse).toBe(
-                                isHoveringAnyDroppable
-                                
-                                // The default drop response is `true`, unless overriden:
-                                ? simulateDropAccept ?? true
-                                
-                                // Not hovering any droppable → always no response:
-                                : undefined
-                            );
-                        }
-                        else {
-                            expect('dropResponse' in dragSideEvent).toBe(false);
+                        } else {
+                            await page.mouse.up();
                         } // if
                     } // if
-                } // for
-                
-                // Droppable side events:
-                // - Events: dragPresence, dragAbsence, dropHandshake, dropEvaluation, dropCommit.
-                for (const dropSideEventName of [
-                    'dragPresence',
-                    'dragAbsence',
-                    'dropHandshake',
-                    'dropEvaluation',
-                    'dropCommit',
-                ] as const) {
-                    const dropSideEvents = dragDropEvents.get(dropSideEventName) ?? [];
-                    dragDropEvents.delete(dropSideEventName);
-                    const expectedDropSideEvents = expectedEvents[dropSideEventName] ?? [];
                     
-                    // Validate for each droppable side event:
-                    // - There are some droppable sides that may or may not receive the event, depending on the draggable's position.
-                    // - The expected values are arrays of booleans, representing *which* droppable sides are expected to receive the event.
-                    // - If all values are `true`, meaning the event is broadcast to all droppable sides.
-                    // - If only one value is `true`, meaning the event is sent to the specific droppable side.
-                    for (let position = 0; position < expectedDropSideEvents.length; position++) {
-                        const dropSideEvent = dropSideEvents[position];
-                        if (expectedDropSideEvents[position]) {
-                            // The event is triggered for this droppable position, so the event should be defined:
-                            expect(dropSideEvent).toBeDefined();
+                    
+                    
+                    // Re-render with updated drag state:
+                    await component.update(
+                        <DraggableDroppableTest>
+                            {/* `Object.fromEntries(Map)` => a fix for playwright serializing problem */}
+                            {!simulateNativeDraggable ? <DraggableStateTest index={0} dragPayload={Object.fromEntries(TEST_PAYLOAD) as typeof TEST_PAYLOAD} computedDrag={currentDragged} dragEnabled={currentDragEnabled} simulateDragAccept={simulateDragAccept}
+                            onDragStart={handleDragStart}
+                            onDragEnd={handleDragEnd}
+                            onDragHandshake={handleDragHandshake}
+                            onDragEvaluation={handleDragEvaluation}
+                                onDragCommit={handleDragCommit}
+                            /> : <NativeDraggableStateTest index={0} dragPayload={Object.fromEntries(TEST_PAYLOAD) as typeof TEST_PAYLOAD} dragEnabled={currentDragEnabled} />}
+                            <DroppableStateTest index={0} dropMetadata={Object.fromEntries(TEST_METADATA_1) as typeof TEST_METADATA_1} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept}
+                                onDragPresence={handleDragPresence}
+                                onDragAbsence={handleDragAbsence}
+                                onDropHandshake={(event) => handleDropHandshake(event, 0)}
+                                onDropEvaluation={(event) => handleDropEvaluation(event, 0)}
+                                onDropCommit={(event) => handleDropCommit(event, 0)}
+                            />
+                            <DroppableStateTest index={1} dropMetadata={Object.fromEntries(TEST_METADATA_2) as typeof TEST_METADATA_2} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept}
+                                onDragPresence={handleDragPresence}
+                                onDragAbsence={handleDragAbsence}
+                                onDropHandshake={(event) => handleDropHandshake(event, 1)}
+                                onDropEvaluation={(event) => handleDropEvaluation(event, 1)}
+                                onDropCommit={(event) => handleDropCommit(event, 1)}
+                            />
+                            <DroppableStateTest index={2} dropMetadata={Object.fromEntries(TEST_METADATA_3) as typeof TEST_METADATA_3} dropEnabled={currentDropEnabled} simulateDropAccept={simulateDropAccept}
+                                onDragPresence={handleDragPresence}
+                                onDragAbsence={handleDragAbsence}
+                                onDropHandshake={(event) => handleDropHandshake(event, 2)}
+                                onDropEvaluation={(event) => handleDropEvaluation(event, 2)}
+                                onDropCommit={(event) => handleDropCommit(event, 2)}
+                            />
+                        </DraggableDroppableTest>
+                    );
+                    
+                    
+                    
+                    // Simulate pointer move:
+                    if (pointerPos !== undefined) {
+                        const draggable = component.getByTestId('draggable-state-test-0');
+                        const draggableBox = await draggable.boundingBox();
+                        if (!draggableBox) throw 'draggable does not exist';
+                        const centerX = draggableBox.x + draggableBox.width / 2;
+                        const centerY = draggableBox.y + draggableBox.height / 2;
+                        currentPointerPos = centerX + pointerPos;
+                        await page.mouse.move(currentPointerPos, centerY);
+                    } // if
+                    
+                    
+                    
+                    // Wait for the specified delay:
+                    if (delay !== undefined) {
+                        await new Promise((resolve) => {
+                            setTimeout(resolve, delay);
+                        });
+                    } // if
+                    
+                    
+                    
+                    // Ensure the component is rendered correctly:
+                    const container = component.getByTestId('draggable-droppable-test');
+                    await expect(container).toContainClass('draggable-droppable-test');
+                    const draggable = component.getByTestId('draggable-state-test-0');
+                    await expect(draggable).toContainClass('draggable-state-test');
+                    const droppable1 = component.getByTestId('droppable-state-test-0');
+                    await expect(droppable1).toContainClass('droppable-state-test');
+                    const droppable2 = component.getByTestId('droppable-state-test-1');
+                    await expect(droppable2).toContainClass('droppable-state-test');
+                    const droppable3 = component.getByTestId('droppable-state-test-2');
+                    await expect(droppable3).toContainClass('droppable-state-test');
+                    
+                    
+                    
+                    // Verify the expected statuses:
+                    if (!simulateNativeDraggable) {
+                        if (expectedDragStatus  !== 'no-expect') await expect(draggable) .toHaveAttribute('data-status', String(expectedDragStatus));
+                    } // if
+                    if (expectedDropStatus1 !== 'no-expect') await expect(droppable1).toHaveAttribute('data-status', String(expectedDropStatus1));
+                    if (expectedDropStatus2 !== 'no-expect') await expect(droppable2).toHaveAttribute('data-status', String(expectedDropStatus2));
+                    if (expectedDropStatus3 !== 'no-expect') await expect(droppable3).toHaveAttribute('data-status', String(expectedDropStatus3));
+                    
+                    
+                    
+                    // Verify the expected metadata/payload:
+                    if (!simulateNativeDraggable) {
+                        if (expectedMetadata !== 'no-expect') await expect(draggable) .toHaveAttribute('data-metadata', expectedMetadata ? JSON.stringify(Object.fromEntries(expectedMetadata)) : String(expectedMetadata));
+                    } // if
+                    if (expectedPayload1 !== 'no-expect') await expect(droppable1).toHaveAttribute('data-payload',  expectedPayload1 ? JSON.stringify(Object.fromEntries(expectedPayload1)) : String(expectedPayload1));
+                    if (expectedPayload2 !== 'no-expect') await expect(droppable2).toHaveAttribute('data-payload',  expectedPayload2 ? JSON.stringify(Object.fromEntries(expectedPayload2)) : String(expectedPayload2));
+                    if (expectedPayload3 !== 'no-expect') await expect(droppable3).toHaveAttribute('data-payload',  expectedPayload3 ? JSON.stringify(Object.fromEntries(expectedPayload3)) : String(expectedPayload3));
+                    
+                    
+                    
+                    // Verify the expected dragged/dropped events:
+                    if (!simulateNativeDraggable) {
+                        if (expectedDragged  !== 'no-expect') await expect(draggable) .toHaveAttribute('data-dragged', expectedDragged  ? JSON.stringify(Object.fromEntries(expectedDragged))  : String(expectedDragged));
+                    } // if
+                    if (expectedDropped1 !== 'no-expect') await expect(droppable1).toHaveAttribute('data-dropped', expectedDropped1 ? JSON.stringify(Object.fromEntries(expectedDropped1)) : String(expectedDropped1));
+                    if (expectedDropped2 !== 'no-expect') await expect(droppable2).toHaveAttribute('data-dropped', expectedDropped2 ? JSON.stringify(Object.fromEntries(expectedDropped2)) : String(expectedDropped2));
+                    if (expectedDropped3 !== 'no-expect') await expect(droppable3).toHaveAttribute('data-dropped', expectedDropped3 ? JSON.stringify(Object.fromEntries(expectedDropped3)) : String(expectedDropped3));
+                    
+                    
+                    
+                    // Event Interface Rules & Verification:
+                    // 
+                    // 1. `dragPayload`:
+                    //    - Always exists on both draggable and droppable events, as a single draggable is active throughout the lifecycle.
+                    //
+                    // 2. `dropMetadata`:
+                    //    - Always exists on droppable events (an inherent property of the droppable side).
+                    //    - On draggable events:
+                    //      - Omitted on `dragStart` (no target contacted yet).
+                    //      - Always exists on `dragHandshake` and `dragCommit` (both sides are in contact).
+                    //      - Optional (`DropMetadata | undefined`) on `dragEvaluation` and `dragEnd` (target contact is optional).
+                    //
+                    // 3. `isTargeted`:
+                    //    - Only exists on droppable broadcast events (`dropEvaluation` and `dragAbsence`).
+                    //    - Omitted on `dragPresence` since initial drag start involves no contact.
+                    //    - On `dropEvaluation`: `true` for the droppable currently hovered, `false` for others.
+                    //    - On `dragAbsence`: `true` for the droppable receiving the committed drop, `false` for others.
+                    //
+                    // 4. Handshake Responses:
+                    //    - `dragHandshake`: Contains `dragResponse` (draggable decision); omits `dropResponse`.
+                    //    - `dropHandshake`: Contains `dropResponse` (droppable decision); omits `dragResponse`.
+                    //
+                    // 5. Evaluation Responses:
+                    //    - `dragEvaluation` and `dropEvaluation` contain both `dragResponse` and `dropResponse` to represent the combined status from both sides.
+                    //
+                    // 6. Commit Responses:
+                    //    - `dragCommit` and `dropCommit` omit response flags because triggering a commit inherently implies mutual acceptance.
+                    
+                    // Find the corresponding droppable index by pointer position:
+                    const droppableIndex = getDroppableIndexByPointerPos(currentPointerPos);
+                    
+                    // Draggable side events:
+                    if (!simulateNativeDraggable) {
+                        // - Events: dragStart, dragEnd, dragHandshake, dragEvaluation, dragCommit.
+                        for (const dragSideEventName of [
+                            'dragStart',
+                            'dragEnd',
+                            'dragHandshake',
+                            'dragEvaluation',
+                            'dragCommit',
+                        ] as const) {
+                            const dragSideEvents = dragDropEvents.get(dragSideEventName) ?? [];
+                            dragDropEvents.delete(dragSideEventName);
+                            expect(dragSideEvents.length).toBe(expectedEvents[dragSideEventName] ? 1 : 0);
                             
-                            
-                            
-                            // Verify event type:
-                            expect(dropSideEvent.type).toBe(dropSideEventName.toLowerCase());
-                            
-                            
-                            
-                            // Verify `currentTarget`:
-                            // - Should refer to the droppable itself.
-                            expect(dropSideEvent.currentTarget?.__id).toBe(`droppable-state-test-${position}`);
-                            
-                            // Verify `target`:
-                            // - It's alias for `currentTarget`.
-                            // - Should be equal to `currentTarget`.
-                            expect(dropSideEvent.target).toEqual(dropSideEvent.currentTarget);
-                            
-                            // Verify `relatedTarget`:
-                            // - Should refer to the known draggable even if not in contact with it:
-                            expect(dropSideEvent.relatedTarget?.__id).toBe('draggable-state-test-0');
-                            
-                            // Verify `pointedElement`:
-                            if (droppableIndex !== -1) { // The pointer is over an active droppable.
-                                expect(dropSideEvent.pointedElement?.__id).toBe(`droppable-state-test-${droppableIndex}`);
-                            }
-                            else { // There is no active droppable.
-                                expect(dropSideEvent.pointedElement?.__id).toBe('draggable-droppable-test'); // Refer to the background component.
+                            const dragSideEvent = dragSideEvents[0];
+                            if (dragSideEvent) {
+                                // Verify event type:
+                                expect(dragSideEvent.type).toBe(dragSideEventName.toLowerCase());
+                                
+                                
+                                
+                                // Verify `currentTarget`:
+                                // - Should refer to the draggable itself.
+                                expect(dragSideEvent.currentTarget?.__id).toBe('draggable-state-test-0');
+                                
+                                // Verify `target`:
+                                // - It's alias for `currentTarget`.
+                                // - Should be equal to `currentTarget`.
+                                expect(dragSideEvent.target).toEqual(dragSideEvent.currentTarget);
+                                
+                                // Verify `relatedTarget`:
+                                // - Omitted on `dragStart`.
+                                // - Should refer to the active droppable (if any).
+                                if (dragSideEventName !== 'dragStart') {
+                                    if (droppableIndex !== -1) { // The pointer is over an active droppable.
+                                        expect(dragSideEvent.relatedTarget?.__id).toBe(`droppable-state-test-${droppableIndex}`);
+                                    }
+                                    else { // There is no active droppable.
+                                        expect(dragSideEvent.relatedTarget).toBeNull();
+                                    } // if
+                                }
+                                else {
+                                    expect('relatedTarget' in dragSideEvent).toBe(false);
+                                } // if
+                                
+                                // Verify `pointedElement`:
+                                if (droppableIndex !== -1) { // The pointer is over an active droppable.
+                                    expect(dragSideEvent.pointedElement?.__id).toBe(`droppable-state-test-${droppableIndex}`);
+                                }
+                                else { // There is no active droppable.
+                                    expect(dragSideEvent.pointedElement?.__id).toBe('draggable-droppable-test'); // Refer to the background component.
+                                } // if
+                                
+                                
+                                
+                                // Verify `dragPayload`:
+                                // - Always present across all draggable events, as it is the property of the draggable side.
+                                expect(dragSideEvent.dragPayload).toEqual(Object.fromEntries(TEST_PAYLOAD));
+                                
+                                
+                                
+                                // Verify `dropMetadata`:
+                                // - Omitted on `dragStart`.
+                                // - Always present on `dragHandshake` and `dragCommit`.
+                                // - Present on `dragEvaluation` / `dragEnd` only if contact / commit occurred.
+                                if (dragSideEventName === 'dragHandshake') {
+                                    expect(droppableIndex).not.toBe(-1);
+                                    expect(dragSideEvent.dropMetadata).toEqual(Object.fromEntries(TEST_METADATA[droppableIndex]));
+                                }
+                                else if (dragSideEventName === 'dragEvaluation') {
+                                    if (droppableIndex !== -1) {
+                                        expect(dragSideEvent.dropMetadata).toEqual(Object.fromEntries(TEST_METADATA[droppableIndex]));
+                                    }
+                                    else {
+                                        expect(dragSideEvent.dropMetadata).toBeUndefined(); // No contact with any droppable.
+                                    } // if
+                                }
+                                else if (dragSideEventName === 'dragCommit') {
+                                    expect(droppableIndex).not.toBe(-1);
+                                    expect(dragSideEvent.dropMetadata).toEqual(Object.fromEntries(TEST_METADATA[droppableIndex]));
+                                }
+                                else if (dragSideEventName === 'dragEnd') {
+                                    if (droppableIndex !== -1) {
+                                        expect(dragSideEvent.dropMetadata).toEqual(Object.fromEntries(TEST_METADATA[droppableIndex]));
+                                    }
+                                    else {
+                                        expect(dragSideEvent.dropMetadata).toBeUndefined(); // No contact with any droppable.
+                                    } // if
+                                }
+                                else {
+                                    expect('dropMetadata' in dragSideEvent).toBe(false);
+                                } // if
+                                
+                                
+                                
+                                // Verify `dragResponse`:
+                                // - Always present on `dragHandshake`, representing the current side's (draggable) response.
+                                // - Maybe missing on `dragEvaluation`, indicating the draggable side is not hovering any droppable.
+                                // - Always undefined if not hovering any droppable for `dragEvaluation`.
+                                // - Omitted on all other events.
+                                const isHoveringAnyDroppable = expectedEvents.dropHandshake?.some(Boolean) ?? false;
+                                if (dragSideEventName === 'dragHandshake') {
+                                    expect(dragSideEvent.dragResponse).toBe(
+                                        // The default drag response is `true`, unless overriden:
+                                        simulateDragAccept ?? true
+                                    );
+                                }
+                                else if (dragSideEventName === 'dragEvaluation') {
+                                    expect(dragSideEvent.dragResponse).toBe(
+                                        isHoveringAnyDroppable
+                                        
+                                        // The default drag response is `true`, unless overriden:
+                                        ? simulateDragAccept ?? true
+                                        
+                                        // Not hovering any droppable → always no response:
+                                        : undefined
+                                    );
+                                }
+                                else {
+                                    expect('dragResponse' in dragSideEvent).toBe(false);
+                                } // if
+                                
+                                
+                                
+                                // Verify `dropResponse`:
+                                // - Always present on `dragEvaluation`, representing the opposite side's (droppable) response.
+                                // - Always undefined if not hovering any droppable.
+                                // - Omitted on all other events.
+                                if (dragSideEventName === 'dragEvaluation') {
+                                    expect(dragSideEvent.dropResponse).toBe(
+                                        isHoveringAnyDroppable
+                                        
+                                        // The default drop response is `true`, unless overriden:
+                                        ? simulateDropAccept ?? true
+                                        
+                                        // Not hovering any droppable → always no response:
+                                        : undefined
+                                    );
+                                }
+                                else {
+                                    expect('dropResponse' in dragSideEvent).toBe(false);
+                                } // if
                             } // if
-                            
-                            
-                            
-                            // Verify `dragPayload`:
-                            // - Always present across all droppable events, as there is always one active draggable during a drag gesture.
-                            expect(dropSideEvent.dragPayload).toEqual(Object.fromEntries(TEST_PAYLOAD));
-                            
-                            
-                            
-                            // Verify `dropMetadata`:
-                            // - Alaways present across all droppable events, as it is the property of the droppable side.
-                            expect(dropSideEvent.dropMetadata).toEqual(Object.fromEntries(TEST_METADATA[position]));
-                            
-                            
-                            
-                            // Verify `isTargeted`:
-                            // - Always present on droppable broadcast events (`dropEvaluation` and `dragAbsence`),
-                            //   except for `dragPresence` since initial drag start involves no contact.
-                            // - Omitted on all non-broadcast events (`dropHandshake` and `dropCommit`).
-                            // - Becomes `true` if the current droppable is being hovered or committed, otherwise `false`.
-                            if (dropSideEventName === 'dropEvaluation') {
-                                expect(dropSideEvent.isTargeted).toBe(
-                                    // Becomes targeted if it has a handshake with the draggable:
-                                    expectedEvents.dropHandshake?.[position] ?? false
-                                );
-                            }
-                            else if (dropSideEventName === 'dragAbsence') {
-                                expect(dropSideEvent.isTargeted).toBe(
-                                    // Becomes targeted if the pointer is hovering at current droppable:
-                                    droppableIndex === position
-                                );
+                        } // for
+                    } // if
+                    
+                    // Droppable side events:
+                    // - Events: dragPresence, dragAbsence, dropHandshake, dropEvaluation, dropCommit.
+                    for (const dropSideEventName of [
+                        'dragPresence',
+                        'dragAbsence',
+                        'dropHandshake',
+                        'dropEvaluation',
+                        'dropCommit',
+                    ] as const) {
+                        const dropSideEvents = dragDropEvents.get(dropSideEventName) ?? [];
+                        dragDropEvents.delete(dropSideEventName);
+                        const expectedDropSideEvents = expectedEvents[dropSideEventName] ?? [];
+                        
+                        // Validate for each droppable side event:
+                        // - There are some droppable sides that may or may not receive the event, depending on the draggable's position.
+                        // - The expected values are arrays of booleans, representing *which* droppable sides are expected to receive the event.
+                        // - If all values are `true`, meaning the event is broadcast to all droppable sides.
+                        // - If only one value is `true`, meaning the event is sent to the specific droppable side.
+                        for (let position = 0; position < expectedDropSideEvents.length; position++) {
+                            const dropSideEvent = dropSideEvents[position];
+                            if (expectedDropSideEvents[position]) {
+                                // The event is triggered for this droppable position, so the event should be defined:
+                                expect(dropSideEvent).toBeDefined();
+                                
+                                
+                                
+                                // Verify event type:
+                                expect(dropSideEvent.type).toBe(dropSideEventName.toLowerCase());
+                                
+                                
+                                
+                                // Verify `currentTarget`:
+                                // - Should refer to the droppable itself.
+                                expect(dropSideEvent.currentTarget?.__id).toBe(`droppable-state-test-${position}`);
+                                
+                                // Verify `target`:
+                                // - It's alias for `currentTarget`.
+                                // - Should be equal to `currentTarget`.
+                                expect(dropSideEvent.target).toEqual(dropSideEvent.currentTarget);
+                                
+                                // Verify `relatedTarget`:
+                                // - Should refer to the known draggable even if not in contact with it:
+                                expect(dropSideEvent.relatedTarget?.__id).toBe('draggable-state-test-0');
+                                
+                                // Verify `pointedElement`:
+                                if (droppableIndex !== -1) { // The pointer is over an active droppable.
+                                    expect(dropSideEvent.pointedElement?.__id).toBe(`droppable-state-test-${droppableIndex}`);
+                                }
+                                else { // There is no active droppable.
+                                    expect(dropSideEvent.pointedElement?.__id).toBe('draggable-droppable-test'); // Refer to the background component.
+                                } // if
+                                
+                                
+                                
+                                // Verify `dragPayload`:
+                                // - Always present across all droppable events, as there is always one active draggable during a drag gesture.
+                                expect(dropSideEvent.dragPayload).toEqual(Object.fromEntries(TEST_PAYLOAD));
+                                
+                                
+                                
+                                // Verify `dropMetadata`:
+                                // - Alaways present across all droppable events, as it is the property of the droppable side.
+                                expect(dropSideEvent.dropMetadata).toEqual(Object.fromEntries(TEST_METADATA[position]));
+                                
+                                
+                                
+                                // Verify `isTargeted`:
+                                // - Always present on droppable broadcast events (`dropEvaluation` and `dragAbsence`),
+                                //   except for `dragPresence` since initial drag start involves no contact.
+                                // - Omitted on all non-broadcast events (`dropHandshake` and `dropCommit`).
+                                // - Becomes `true` if the current droppable is being hovered or committed, otherwise `false`.
+                                if (dropSideEventName === 'dropEvaluation') {
+                                    expect(dropSideEvent.isTargeted).toBe(
+                                        // Becomes targeted if it has a handshake with the draggable:
+                                        expectedEvents.dropHandshake?.[position] ?? false
+                                    );
+                                }
+                                else if (dropSideEventName === 'dragAbsence') {
+                                    expect(dropSideEvent.isTargeted).toBe(
+                                        // Becomes targeted if the pointer is hovering at current droppable:
+                                        droppableIndex === position
+                                    );
+                                }
+                                else {
+                                    expect('isTargeted' in dropSideEvent).toBe(false);
+                                } // if
+                                
+                                
+                                
+                                // Verify `dragResponse`:
+                                // - Always present on `dropEvaluation`, representing the opposite side's (draggable) response.
+                                // - Always broadcast to all droppable sides, even if not hovered by the draggable.
+                                // - Always undefined if no any droppable is hovered by the draggable for `dropEvaluation`.
+                                // - Omitted on all other events.
+                                const anyHoveredByDraggable = expectedEvents.dropHandshake?.some(Boolean) ?? false;
+                                if (dropSideEventName === 'dropEvaluation') {
+                                    expect(dropSideEvent.dragResponse).toBe(
+                                        anyHoveredByDraggable
+                                        
+                                        // The default drag response is `true`, unless overriden:
+                                        ? simulateDragAccept ?? true
+                                        
+                                        // No hovered by the draggable → always no response:
+                                        : undefined
+                                    );
+                                }
+                                else {
+                                    expect('dragResponse' in dropSideEvent).toBe(false);
+                                } // if
+                                
+                                
+                                
+                                // Verify `dropResponse`:
+                                // - Always present on `dropHandshake`, representing the *active* droppable's response.
+                                // - Maybe missing on `dropEvaluation`, indicating the draggable side is not hovering any droppable.
+                                // - Always broadcast to all droppable sides, even if not hovered by the draggable.
+                                // - Always undefined if no any droppable is hovered by the draggable for `dropEvaluation`.
+                                // - Omitted on all other events.
+                                if (dropSideEventName === 'dropHandshake') {
+                                    expect(dropSideEvent.dropResponse).toBe(
+                                        // The default drop response is `true`, unless overriden:
+                                        simulateDropAccept ?? true
+                                    );
+                                }
+                                else if (dropSideEventName === 'dropEvaluation') {
+                                    expect(dropSideEvent.dropResponse).toBe(
+                                        anyHoveredByDraggable
+                                        
+                                        // The default drop response is `true`, unless overriden:
+                                        ? simulateDropAccept ?? true
+                                        
+                                        // Not hovered by the draggable → always no response:
+                                        : undefined
+                                    );
+                                }
+                                else {
+                                    expect('dropResponse' in dropSideEvent).toBe(false);
+                                } // if
                             }
                             else {
-                                expect('isTargeted' in dropSideEvent).toBe(false);
+                                // The event is not triggered for this droppable position, so the event should be undefined:
+                                expect(dropSideEvent).toBeUndefined();
                             } // if
-                            
-                            
-                            
-                            // Verify `dragResponse`:
-                            // - Always present on `dropEvaluation`, representing the opposite side's (draggable) response.
-                            // - Always broadcast to all droppable sides, even if not hovered by the draggable.
-                            // - Always undefined if no any droppable is hovered by the draggable for `dropEvaluation`.
-                            // - Omitted on all other events.
-                            const anyHoveredByDraggable = expectedEvents.dropHandshake?.some(Boolean) ?? false;
-                            if (dropSideEventName === 'dropEvaluation') {
-                                expect(dropSideEvent.dragResponse).toBe(
-                                    anyHoveredByDraggable
-                                    
-                                    // The default drag response is `true`, unless overriden:
-                                    ? simulateDragAccept ?? true
-                                    
-                                    // No hovered by the draggable → always no response:
-                                    : undefined
-                                );
-                            }
-                            else {
-                                expect('dragResponse' in dropSideEvent).toBe(false);
-                            } // if
-                            
-                            
-                            
-                            // Verify `dropResponse`:
-                            // - Always present on `dropHandshake`, representing the *active* droppable's response.
-                            // - Maybe missing on `dropEvaluation`, indicating the draggable side is not hovering any droppable.
-                            // - Always broadcast to all droppable sides, even if not hovered by the draggable.
-                            // - Always undefined if no any droppable is hovered by the draggable for `dropEvaluation`.
-                            // - Omitted on all other events.
-                            if (dropSideEventName === 'dropHandshake') {
-                                expect(dropSideEvent.dropResponse).toBe(
-                                    // The default drop response is `true`, unless overriden:
-                                    simulateDropAccept ?? true
-                                );
-                            }
-                            else if (dropSideEventName === 'dropEvaluation') {
-                                expect(dropSideEvent.dropResponse).toBe(
-                                    anyHoveredByDraggable
-                                    
-                                    // The default drop response is `true`, unless overriden:
-                                    ? simulateDropAccept ?? true
-                                    
-                                    // Not hovered by the draggable → always no response:
-                                    : undefined
-                                );
-                            }
-                            else {
-                                expect('dropResponse' in dropSideEvent).toBe(false);
-                            } // if
-                        }
-                        else {
-                            // The event is not triggered for this droppable position, so the event should be undefined:
-                            expect(dropSideEvent).toBeUndefined();
-                        } // if
+                        } // for
                     } // for
+                    
+                    
+                    
+                    // Verify there's no unverified events left:
+                    expect(dragDropEvents.size).toBe(0);
                 } // for
-                
-                
-                
-                // Verify there's no unverified events left:
-                expect(dragDropEvents.size).toBe(0);
-            } // for
-        });
+            });
+        } // for
     } // for
 });
