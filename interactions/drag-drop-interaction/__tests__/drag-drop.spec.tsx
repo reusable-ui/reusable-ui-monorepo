@@ -3784,6 +3784,37 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                         const centerY = draggableBox.y + draggableBox.height / 2;
                         currentPointerPos = centerX + pointerPos;
                         await page.mouse.move(currentPointerPos, centerY);
+                        
+                        // WORKAROUND: Playwright limitations with native HTML5 Drag and Drop.
+                        // - Native Draggable: During a native drag, browsers hand control over to the OS.
+                        //   Playwright's `mouse.move` fails to trigger the continuous `dragover` 
+                        //   events reliably. We must manually dispatch it to simulate the OS-level event loop.
+                        // - Polyfilled Draggable: Our custom drag engine relies on a global `pointermove` listener 
+                        //   which Playwright triggers perfectly. No synthetic `dragover` patch is needed here.
+                        if (simulateNativeDraggable) {
+                            // Manually dispatch `dragover` to the element exactly under the pointer:
+                            await page.evaluate(({ x, y }) => {
+                                // 1. Identify the exact drop target beneath the current pointer coordinates:
+                                const targetElement = document.elementFromPoint(x, y) || document.body;
+                                
+                                // 2. Mock a native DataTransfer object (required for valid D&D events):
+                                const dataTransfer = new DataTransfer();
+                                dataTransfer.setData('plain/text', 'MOCK_DATA');
+                                
+                                // 3. Construct and dispatch a fully-formed, bubbling `dragover` event:
+                                const dragOverEvent = new DragEvent('dragover', {
+                                    bubbles: true,
+                                    cancelable: true,
+                                    clientX: x,
+                                    clientY: y,
+                                    screenX: x, // Usually sufficient for testing to match clientX.
+                                    screenY: y,
+                                    dataTransfer,
+                                });
+                                
+                                targetElement.dispatchEvent(dragOverEvent);
+                            }, { x: currentPointerPos, y: centerY });
+                        } // if
                     } // if
                     
                     
