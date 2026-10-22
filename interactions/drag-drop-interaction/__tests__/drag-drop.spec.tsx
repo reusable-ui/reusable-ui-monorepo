@@ -25,6 +25,8 @@ import {
     TEST_METADATA_2,
     TEST_METADATA_3,
     TEST_METADATA,
+    
+    expectedPayloadOrMasked,
 } from './drag-drop-data-test.js'
 import {
     getDroppableIndexByPointerPos,
@@ -3555,6 +3557,7 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                 let currentPointerPressed = false;
                 let currentDragEnabled    = true;
                 let currentDropEnabled    = true;
+                let hasCommitedEvent      = false;
                 
                 
                 
@@ -3600,6 +3603,9 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                     let arr = dragDropEvents.get('dropCommit');
                     if (!arr) dragDropEvents.set('dropCommit', arr = []);
                     arr[index] = event;
+                    
+                    // Mark the commit event has occurred:
+                    hasCommitedEvent = true;
                 };
                 
                 
@@ -3793,13 +3799,13 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                         //   which Playwright triggers perfectly. No synthetic `dragover` patch is needed here.
                         if (simulateNativeDraggable) {
                             // Manually dispatch `dragover` to the element exactly under the pointer:
-                            await page.evaluate(({ x, y }) => {
+                            await page.evaluate(({ x, y, STRINGIFIED_TEST_PAYLOAD }) => {
                                 // 1. Identify the exact drop target beneath the current pointer coordinates:
                                 const targetElement = document.elementFromPoint(x, y) || document.body;
                                 
                                 // 2. Mock a native DataTransfer object (required for valid D&D events):
                                 const dataTransfer = new DataTransfer();
-                                dataTransfer.setData('plain/text', 'MOCK_DATA');
+                                dataTransfer.setData('text/mock-data', STRINGIFIED_TEST_PAYLOAD);
                                 
                                 // 3. Construct and dispatch a fully-formed, bubbling `dragover` event:
                                 const dragOverEvent = new DragEvent('dragover', {
@@ -3813,7 +3819,7 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                                 });
                                 
                                 targetElement.dispatchEvent(dragOverEvent);
-                            }, { x: currentPointerPos, y: centerY });
+                            }, { x: currentPointerPos, y: centerY, STRINGIFIED_TEST_PAYLOAD: JSON.stringify(Object.fromEntries(TEST_PAYLOAD)) });
                         } // if
                     } // if
                     
@@ -3856,9 +3862,9 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                     if (!simulateNativeDraggable) {
                         if (expectedMetadata !== 'no-expect') await expect(draggable) .toHaveAttribute('data-metadata', expectedMetadata ? JSON.stringify(Object.fromEntries(expectedMetadata)) : String(expectedMetadata));
                     } // if
-                    if (expectedPayload1 !== 'no-expect') await expect(droppable1).toHaveAttribute('data-payload',  expectedPayload1 ? JSON.stringify(Object.fromEntries(expectedPayload1)) : String(expectedPayload1));
-                    if (expectedPayload2 !== 'no-expect') await expect(droppable2).toHaveAttribute('data-payload',  expectedPayload2 ? JSON.stringify(Object.fromEntries(expectedPayload2)) : String(expectedPayload2));
-                    if (expectedPayload3 !== 'no-expect') await expect(droppable3).toHaveAttribute('data-payload',  expectedPayload3 ? JSON.stringify(Object.fromEntries(expectedPayload3)) : String(expectedPayload3));
+                    if (expectedPayload1 !== 'no-expect') await expect(droppable1).toHaveAttribute('data-payload',  expectedPayload1 ? JSON.stringify(Object.fromEntries(expectedPayloadOrMasked(expectedPayload1, simulateNativeDraggable, hasCommitedEvent))) : String(expectedPayload1));
+                    if (expectedPayload2 !== 'no-expect') await expect(droppable2).toHaveAttribute('data-payload',  expectedPayload2 ? JSON.stringify(Object.fromEntries(expectedPayloadOrMasked(expectedPayload2, simulateNativeDraggable, hasCommitedEvent))) : String(expectedPayload2));
+                    if (expectedPayload3 !== 'no-expect') await expect(droppable3).toHaveAttribute('data-payload',  expectedPayload3 ? JSON.stringify(Object.fromEntries(expectedPayloadOrMasked(expectedPayload3, simulateNativeDraggable, hasCommitedEvent))) : String(expectedPayload3));
                     
                     
                     
@@ -3866,9 +3872,9 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                     if (!simulateNativeDraggable) {
                         if (expectedDragged  !== 'no-expect') await expect(draggable) .toHaveAttribute('data-dragged', expectedDragged  ? JSON.stringify(Object.fromEntries(expectedDragged))  : String(expectedDragged));
                     } // if
-                    if (expectedDropped1 !== 'no-expect') await expect(droppable1).toHaveAttribute('data-dropped', expectedDropped1 ? JSON.stringify(Object.fromEntries(expectedDropped1)) : String(expectedDropped1));
-                    if (expectedDropped2 !== 'no-expect') await expect(droppable2).toHaveAttribute('data-dropped', expectedDropped2 ? JSON.stringify(Object.fromEntries(expectedDropped2)) : String(expectedDropped2));
-                    if (expectedDropped3 !== 'no-expect') await expect(droppable3).toHaveAttribute('data-dropped', expectedDropped3 ? JSON.stringify(Object.fromEntries(expectedDropped3)) : String(expectedDropped3));
+                    if (expectedDropped1 !== 'no-expect') await expect(droppable1).toHaveAttribute('data-dropped', expectedDropped1 ? JSON.stringify(Object.fromEntries(expectedPayloadOrMasked(expectedDropped1, simulateNativeDraggable, hasCommitedEvent))) : String(expectedDropped1));
+                    if (expectedDropped2 !== 'no-expect') await expect(droppable2).toHaveAttribute('data-dropped', expectedDropped2 ? JSON.stringify(Object.fromEntries(expectedPayloadOrMasked(expectedDropped2, simulateNativeDraggable, hasCommitedEvent))) : String(expectedDropped2));
+                    if (expectedDropped3 !== 'no-expect') await expect(droppable3).toHaveAttribute('data-dropped', expectedDropped3 ? JSON.stringify(Object.fromEntries(expectedPayloadOrMasked(expectedDropped3, simulateNativeDraggable, hasCommitedEvent))) : String(expectedDropped3));
                     
                     
                     
@@ -4105,7 +4111,7 @@ test.describe('useDraggableState() + useDroppableState()', () => {
                                 
                                 // Verify `dragPayload`:
                                 // - Always present across all droppable events, as there is always one active draggable during a drag gesture.
-                                expect(dropSideEvent.dragPayload).toEqual(Object.fromEntries(TEST_PAYLOAD));
+                                expect(dropSideEvent.dragPayload).toEqual(Object.fromEntries(expectedPayloadOrMasked(TEST_PAYLOAD, simulateNativeDraggable, hasCommitedEvent)));
                                 
                                 
                                 

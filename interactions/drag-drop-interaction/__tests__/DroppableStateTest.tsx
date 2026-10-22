@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState } from 'react'
 import {
     type DragPayload,
     type DragPresenceEvent,
@@ -36,8 +36,8 @@ export const DroppableStateTest = (props: DroppableStateTestProps) => {
         ref,
     } = useDroppableState<HTMLDivElement>({
         ...restProps,
-        async onDragPresence(event) {
-            const resolvedDragPayload = await resolveMockedDragPayload(event.dragPayload);
+        onDragPresence(event) {
+            const resolvedDragPayload = resolveMockedDragPayload(event.dragPayload);
             
             props.onDragPresence?.({
                 ...event,
@@ -52,8 +52,8 @@ export const DroppableStateTest = (props: DroppableStateTestProps) => {
                 pointedElement : mockEventElement(event.pointedElement) as any,
             } satisfies DragPresenceEvent<HTMLDivElement>);
         },
-        async onDragAbsence(event) {
-            const resolvedDragPayload = await resolveMockedDragPayload(event.dragPayload);
+        onDragAbsence(event) {
+            const resolvedDragPayload = resolveMockedDragPayload(event.dragPayload);
             
             props.onDragAbsence?.({
                 ...event,
@@ -69,7 +69,7 @@ export const DroppableStateTest = (props: DroppableStateTestProps) => {
             } satisfies DragAbsenceEvent<HTMLDivElement>);
         },
         async onDropHandshake(event) {
-            const resolvedDragPayload = await resolveMockedDragPayload(event.dragPayload);
+            const resolvedDragPayload = resolveMockedDragPayload(event.dragPayload);
             
             (simulateDropAccept ? handleAcceptDropHandshake : handleRejectDropHandshake)(event);
             await props.onDropHandshake?.({
@@ -85,8 +85,8 @@ export const DroppableStateTest = (props: DroppableStateTestProps) => {
                 pointedElement : mockEventElement(event.pointedElement) as any,
             } satisfies DropHandshakeEvent<HTMLDivElement>);
         },
-        async onDropEvaluation(event) {
-            const resolvedDragPayload = await resolveMockedDragPayload(event.dragPayload);
+        onDropEvaluation(event) {
+            const resolvedDragPayload = resolveMockedDragPayload(event.dragPayload);
             
             props.onDropEvaluation?.({
                 ...event,
@@ -101,8 +101,8 @@ export const DroppableStateTest = (props: DroppableStateTestProps) => {
                 pointedElement : mockEventElement(event.pointedElement) as any,
             } satisfies DropEvaluationEvent<HTMLDivElement>);
         },
-        async onDropCommit(event) {
-            const resolvedDragPayload = await resolveMockedDragPayload(event.dragPayload);
+        onDropCommit(event) {
+            const resolvedDragPayload = resolveMockedDragPayload(event.dragPayload);
             
             props.onDropCommit?.({
                 ...event,
@@ -121,18 +121,7 @@ export const DroppableStateTest = (props: DroppableStateTestProps) => {
         dropMetadata: dropMetadata && !(dropMetadata instanceof Map) ? new Map(Object.entries(dropMetadata)) : dropMetadata, // a fix for playwright serializing problem
     });
     
-    const [dragPayload, setDragPayload] = useState<any>(undefined);
-    useLayoutEffect(() => {
-        const promisedDragPayload = resolveMockedDragPayload(dragPayloadRaw);
-        if (!(promisedDragPayload instanceof Promise)) {
-            setDragPayload(promisedDragPayload);
-            return;
-        } // if
-        
-        promisedDragPayload.then((dragPayload) => {
-            setDragPayload(dragPayload);
-        });
-    }, [dragPayloadRaw]);
+    const dragPayload = resolveMockedDragPayload(dragPayloadRaw);
     
     return (
         <div

@@ -30,10 +30,10 @@ export const NativeDraggableStateTest = (props: NativeDraggableStateTestProps) =
             draggable={dragEnabled}
             onDragStart={(event) => {
                 if (dragPayload) {
-                    event.dataTransfer.setData('MOCK_DATA', JSON.stringify(Object.fromEntries(dragPayload)))
+                    event.dataTransfer.setData('text/mock-data', JSON.stringify(Object.fromEntries(dragPayload)));
                 }
                 else {
-                    event.dataTransfer.clearData('MOCK_DATA');
+                    event.dataTransfer.clearData('text/mock-data');
                 } // if
             }}
         >

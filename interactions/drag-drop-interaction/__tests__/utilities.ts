@@ -1,6 +1,9 @@
 import {
     type DragPayload,
 } from '../dist/index.js'
+import {
+    TEST_METADATA_MASKED,
+} from './drag-drop-data-test.js'
 
 
 
@@ -60,19 +63,15 @@ export const mockEventElement = (element: EventTarget | null | undefined): Seria
 
 
 
-export const resolveMockedDragPayload = <TDragPayload extends DragPayload | undefined>(dragPayloadRaw: TDragPayload): TDragPayload | Promise<TDragPayload> => {
+export const resolveMockedDragPayload = <TDragPayload extends DragPayload | undefined>(dragPayloadRaw: TDragPayload): TDragPayload => {
     if (!dragPayloadRaw) return dragPayloadRaw;
     if (!(dragPayloadRaw instanceof Map)) dragPayloadRaw = new Map(Object.entries(dragPayloadRaw)) as unknown as NonNullable<TDragPayload>;
-    if (!dragPayloadRaw.has('string/0')) return dragPayloadRaw;
+    if (!dragPayloadRaw.has('text/mock-data')) return dragPayloadRaw;
     
-    const data = dragPayloadRaw.get('string/0');
-    if (!(data instanceof Promise)) return dragPayloadRaw;
+    const data = dragPayloadRaw.get('text/mock-data')?.[0];
+    if (data === null) return TEST_METADATA_MASKED as NonNullable<TDragPayload>;
     
-    return new Promise<TDragPayload>((resolve) => {
-        data.then((resolved) => {
-            const dragPayloadObject = JSON.parse(String(resolved));
-            const dragPayload = new Map(Object.entries(dragPayloadObject)) as unknown as NonNullable<TDragPayload>;
-            resolve(dragPayload);
-        });
-    });
+    const dragPayloadObject = JSON.parse(String(data));
+    const dragPayload = new Map(Object.entries(dragPayloadObject)) as unknown as NonNullable<TDragPayload>;
+    return dragPayload;
 };
