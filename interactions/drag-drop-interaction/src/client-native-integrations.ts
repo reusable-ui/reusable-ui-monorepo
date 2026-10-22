@@ -215,7 +215,8 @@ const handleGlobalDrop      = async (event: DragEvent): Promise<void> => {
     
     // Securely resolve and unmask the drag payload data:
     // - Unlocks DataTransfer readers and awaits completion of any asynchronous extractions.
-    await secureResolvePayload(dragPayload);
+    const { dataTransfer } = event;
+    if (dataTransfer) await secureResolvePayload(dragPayload, dataTransfer);
     
     
     

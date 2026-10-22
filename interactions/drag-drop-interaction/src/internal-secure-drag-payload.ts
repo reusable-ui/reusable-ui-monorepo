@@ -30,13 +30,6 @@ export class SecureDragPayload
         DragPayload
 {
     /**
-     * Holds the original native `DataTransfer` object provided by the browser event.
-     */
-    readonly #dataTransfer: DataTransfer;
-    
-    
-    
-    /**
      * Creates a secure drag payload instance and initializes Phase 1 (Null-Masking).
      * 
      * Safe to invoke during intermediate drag events (`dragstart`, `dragover`)
@@ -46,26 +39,27 @@ export class SecureDragPayload
      */
     constructor(dataTransfer: DataTransfer) {
         super();
-        this.#dataTransfer = dataTransfer;
         
-        // Phase 1: Initialize metadata and null-masked slots for UI inspection:
-        this.#resolvePayload(false);
+        // Phase 1: Transiently inspect metadata and populate null masks:
+        this.#resolvePayload(dataTransfer, false);
     }
     
     /**
-     * Extracts and categorizes drag payloads from the given `DataTransfer` object,
-     * grouping items by their MIME type.
+     * Extracts and categorizes drag items from the given `DataTransfer` object,
+     * grouping them by their MIME type.
      * 
-     * Handles both Phase 1 (null-masking) and Phase 2 (secure data extraction).
+     * Handles both Phase 1 (null-masking during initialization) and
+     * Phase 2 (secure data extraction during the drop event).
      * 
+     * @param dataTransfer The native browser `DataTransfer` instance to inspect or read from.
      * @param isSecured
-     * When `false`, populates slots with `null` placeholders.
-     * When `true`, unlocks `DataTransfer` readers to populate actual values.
+     * When `false`, populates slots with `null` placeholders (Phase 1).
+     * When `true`, invokes native readers (`getAsString`/`getAsFile`) to populate actual values (Phase 2).
      * 
      * @returns A promise that resolves when all synchronous and asynchronous data extractions complete.
      * Useful to ensure the `SecureDragPayload` is fully resolved before exposing it to consumers (e.g., during drop commit).
      */
-    async #resolvePayload(isSecured: boolean): Promise<void> {
+    async #resolvePayload(dataTransfer: DataTransfer, isSecured: boolean): Promise<void> {
         // Tracks the grouped item index:
         let itemIndex = -1;
         
@@ -75,7 +69,7 @@ export class SecureDragPayload
         
         
         // Extract each payload item from the `DataTransfer` object:
-        for (const item of this.#dataTransfer.items ?? []) {
+        for (const item of dataTransfer.items ?? []) {
             // Increment the index for accurate tracking:
             itemIndex++;
             
@@ -164,9 +158,12 @@ export class SecureDragPayload
      * ⚠️ **Critical Security Warning:** Must be invoked strictly inside the synchronous macrotask
      * of the `drop` event handler, before any asynchronous `await` calls.
      * Once control yields to a microtask, the browser locks down the data store and extraction will permanently fail.
+     * 
+     * @param dataTransfer The native browser `DataTransfer` instance to inspect or read from.
      */
-    public [SECURE_RESOLVE_PAYLOAD](): Promise<void> {
-        return this.#resolvePayload(true);
+    public [SECURE_RESOLVE_PAYLOAD](dataTransfer: DataTransfer): Promise<void> {
+        // Phase 2: Invokes secure resolution using the fresh drop DataTransfer:
+        return this.#resolvePayload(dataTransfer, true);
     }
     
     /**
@@ -192,7 +189,7 @@ export class SecureDragPayload
 
 /**
  * Securely resolves the masked payload values to their actual `string` or `File` objects, if the payload is a `SecureDragPayload`.
- * Otherwise no-op for standard `DragPayload`.
+ * No-ops for standard `DragPayload`.
  * 
  * ⚠️ **Critical Security Warning:** Must be invoked strictly inside the synchronous macrotask
  * of the `drop` event handler, before any asynchronous `await` calls.
@@ -202,11 +199,12 @@ export class SecureDragPayload
  * Keep this function scoped within the library internals.
  * 
  * @param dragPayload The drag payload instance to resolve.
+ * @param dataTransfer The live `DataTransfer` object from the native `drop` event.
  * @returns A promise that resolves when all payload data extractions are fully complete.
  */
-export const secureResolvePayload = async (dragPayload: DragPayload): Promise<void> => {
+export const secureResolvePayload = async (dragPayload: DragPayload, dataTransfer: DataTransfer): Promise<void> => {
     // If it's a secure payload, trigger its asynchronous resolution:
-    if (dragPayload instanceof SecureDragPayload) await dragPayload[SECURE_RESOLVE_PAYLOAD]();
+    if (dragPayload instanceof SecureDragPayload) await dragPayload[SECURE_RESOLVE_PAYLOAD](dataTransfer);
     
     // For standard `DragPayload`, there is nothing to resolve (no-op).
 };
