@@ -21,15 +21,19 @@ import {
     processDragCommit,
 }                           from './internal-utilities.js'
 import {
-    // Functions:
-    extractPayloadFromDataTransfer,
-    
     // Contexts:
     draggable,
     
     // Events:
     createPointerEventFromDragEvent,
 }                           from './internal-simulate-utilities.js'
+import {
+    // Classes:
+    SecureDragPayload,
+    
+    // Utilities:
+    secureResolvePayload,
+}                           from './internal-secure-drag-payload.js'
 
 
 
@@ -80,7 +84,8 @@ const handleGlobalDragStart = (event: DragEvent): void => {
     draggable.dragElementRef.current = event.target as Element | null;
     
     // Assign the drag payload for reuse during drag movements:
-    draggable.dragPayload = extractPayloadFromDataTransfer(event.dataTransfer);
+    const { dataTransfer } = event;
+    draggable.dragPayload = dataTransfer ? new SecureDragPayload(dataTransfer) : emptyMap;
     
     // Setup when drag starts:
     handleLifecycleChange(true)
@@ -187,25 +192,35 @@ const handleGlobalDragOver  = (event: DragEvent): void => {
 
 
 // Global drop handler:
-// - Immediately commits after the capture.
-const handleGlobalDrop      = (event: DragEvent): void => {
-    // Immediately commits after the capture:
-    processDragCommit(draggable, createPointerEventFromDragEvent(event, 'pointerup'));
+// - Manages event prevention, secure payload extraction, and drop commitment.
+const handleGlobalDrop      = async (event: DragEvent): Promise<void> => {
+    const { dragSession, dragPayload } = draggable;
     
     
     
-    // Centralized native drop handler:
+    // Intercept and prevent default browser drop behavior synchronously:
     // - Conditionally calls `preventDefault()` on behalf of active droppable targets.
+    // - Must occur before any `await` to ensure the browser respects it.
     // - Only intercepts if the negotiated handshake is accepted.
     // - Prevents interference with non-integrated native droppable zones on the page.
     // - Crucial: Calling `preventDefault()` here stops the browser's default drop behavior
     //   (e.g., preventing the browser from navigating away to open a dropped file).
     // - Uses `.contains()` because `event.target` might be a nested child element 
     //   (like an icon or text) inside the actual `dropElement`.
-    const { dragSession } = draggable;
     if (dragSession?.interaction?.isAccepted && dragSession.interaction.dropElement.contains(event.target as Element)) {
         event.preventDefault();
     } // if
+    
+    
+    
+    // Securely resolve and unmask the drag payload data:
+    // - Unlocks DataTransfer readers and awaits completion of any asynchronous extractions.
+    await secureResolvePayload(dragPayload);
+    
+    
+    
+    // Immediately commits after the capture:
+    processDragCommit(draggable, createPointerEventFromDragEvent(event, 'pointerup'));
 };
 
 

@@ -14,7 +14,6 @@ import {
 // Types:
 import {
     // Data:
-    type DragPayload,
     type DropMetadata,
     
     // Handshakes:
@@ -63,40 +62,6 @@ const dragMountedRef : RefObject<boolean | undefined> = { current: false };
  * Used as a placeholder for handlers and callbacks that intentionally do nothing.
  */
 const noop = (): void => {};
-
-/**
- * Extracts a drag payload from the given `DataTransfer`.
- * 
- * - File items are mapped to `File` objects.
- * - String items are mapped to promises resolving their string values.
- * 
- * @param dataTransfer The `DataTransfer` object from a drag event.
- * @returns A `DragPayload` map containing extracted items.
- */
-export const extractPayloadFromDataTransfer = (dataTransfer: DataTransfer | null): DragPayload => {
-    let fileIndex  = 0;
-    let otherIndex = 0;
-    
-    return new Map<unknown, unknown>(
-        Array.from(dataTransfer?.items ?? [])
-        .map((item): readonly [unknown, unknown] => {
-            switch (item.kind) {
-                case 'file':
-                    return [`file/${fileIndex++}`, item.getAsFile()];
-                
-                default:
-                    return [
-                        `${item.kind}/${otherIndex++}`,
-                        new Promise<string>((resolve) => {
-                            item.getAsString((stringValue) => {
-                                resolve(stringValue);
-                            })
-                        })
-                    ]
-            } // switch
-        })
-    );
-};
 
 
 
