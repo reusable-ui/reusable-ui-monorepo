@@ -47,6 +47,41 @@ import {
  * 
  * @returns An integration reference for manual control.
  * 
+ * @remarks
+ * #### 🔒 Native Drag Payload Behavior & Browser Security
+ * 
+ * Due to browser-enforced **Protected Mode** sandboxing, native drag-and-drop operations impose strict limitations on when data can be accessed.  
+ * To comply with these security policies while maintaining predictable UI reactivity, the native `DragPayload` operates in a **Two-Phase State Model**:
+ * 
+ * 1. **Masked Phase (Pre-Commit):**  
+ *    Prior to the drop commit (`DragPresenceEvent`, `DropHandshakeEvent`, `DropEvaluationEvent`),  
+ *    browser security rules prevent scripts from reading raw data.  
+ *    Only metadata (item kinds, MIME types, and counts) is visible, while all underlying values are masked to `null`.  
+ *    * *Example:* `DragPayload { 'text/html' => [null, null] }` (Indicates an HTML type carrying two masked items).
+ * 
+ * 2. **Resolved Phase (Post-Commit):**  
+ *    Once the drop commit occurs (`DropCommitEvent`),  
+ *    native readers unlock, and values are fully resolved into `string` or `File` instances in-place.  
+ *    * *Example:* `DragPayload { 'text/html' => ['<!DOCTYPE html>...', File] }` (Indicates an HTML type carrying actual resolved data).
+ * 
+ * The table below outlines how `dragPayload` appears across various droppable event phases:
+ * 
+ * |    Event Phase    |       Event Name      | `dragPayload` Condition |                                  Description                                 |
+ * | ----------------- | --------------------- | ----------------------- | ---------------------------------------------------------------------------- |
+ * | **Activations**   | `DragPresenceEvent`   | 🛡️ **Masked** (`null`) | Hover active; metadata visible, data locked by browser sandbox.              |
+ * | **Handshakes**    | `DropHandshakeEvent`  | 🛡️ **Masked** (`null`) | Target negotiation ongoing; data remains protected.                          |
+ * | **Evaluations**   | `DropEvaluationEvent` | 🛡️ **Masked** (`null`) | Drop eligibility evaluated; data remains protected.                          |
+ * | **Commits**       | `DropCommitEvent`     | ✨ **Fully Resolved**  | Drop completed; native readers unlock, values populated.                     |
+ * | **Deactivations** | `DragAbsenceEvent`    | 🔀 **Conditional**     | Fully resolved if the drop committed successfully; otherwise remains masked. |
+ * 
+ * ℹ️ **Note on Draggable Events:**  
+ * There are no draggable-side events (`DragStartEvent`, `DragHandshakeEvent`, `DragEvaluationEvent`, `DragCommitEvent`, `DragEndEvent`)  
+ * for native drags because the draggable side is **virtually simulated** by the library wrapper.
+ * 
+ * 📌 **Reference Stability:**  
+ * The `.dragPayload` property exposed via `useDroppableState()` and all drag/drop event objects share the exact same instance reference throughout the gesture.  
+ * The values are initially masked (`null`) and automatically transition to `string` or `File` in-place once the drop commit occurs.
+ * 
  * @example
  * ```tsx
  * import React, { FC } from 'react';
