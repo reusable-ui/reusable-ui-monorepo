@@ -49,13 +49,13 @@ import {
  * ```
  * 
  * ✅ Final focus order (flattened):
- *   - "Quantity" group (tabIndex: 1)
- *     - └─ input (tabIndex: 1)
- *     - └─ [-]   (tabIndex: 2)
- *     - └─ [+]   (tabIndex: 3)
- *   - "Edit"     (tabIndex: 2)
- *   - "Delete"   (tabIndex: 3)
- *   - "Cancel"   (tabIndex: 4)
+ *   1. "Quantity" group (tabIndex: 1)
+ *   2. - └─ input (tabIndex: 1)
+ *   3. - └─ [-]   (tabIndex: 2)
+ *   4. - └─ [+]   (tabIndex: 3)
+ *   5. "Edit"     (tabIndex: 2)
+ *   6. "Delete"   (tabIndex: 3)
+ *   7. "Cancel"   (tabIndex: 4)
  * 
  * @param container The container to search for focusable elements.
  * @returns A flat list of focusable elements ordered by group-aware `tabIndex` traversal.
