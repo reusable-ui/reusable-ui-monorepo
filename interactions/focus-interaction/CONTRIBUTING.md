@@ -1,4 +1,4 @@
-# Contributing to @reusable-ui/focuses 🎯  
+# Contributing to @reusable-ui/focus-interaction 🎯  
 
 Thank you for your interest in contributing! 🚀  
 This project thrives on community collaboration, and we welcome contributions of all kinds.  
@@ -29,7 +29,7 @@ Even if you're not coding, you can help by:
 ## 📦 Setting Up Locally  
 ```sh
 git clone https://github.com/reusable-ui/reusable-ui-monorepo.git
-cd utilities/focuses
+cd interactions/focus-interaction
 npm install
 npm run build
 ```
@@ -37,4 +37,4 @@ npm run build
 ## 💬 Need Help?  
 Join our [GitHub Discussions](https://github.com/reusable-ui/reusable-ui-monorepo/discussions) or ask in an issue! 🎉  
 
-Thanks for helping make **@reusable-ui/focuses** better! 🚀  
+Thanks for helping make **@reusable-ui/focus-interaction** better! 🚀  

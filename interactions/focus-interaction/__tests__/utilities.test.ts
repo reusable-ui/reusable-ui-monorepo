@@ -3,8 +3,8 @@ import {
     focusFirstElement,
     focusLastElement,
     
-    focusPrevElementOrWrapToLast,
-    focusNextElementOrWrapToFirst,
+    focusPreviousElement,
+    focusNextElement,
 } from '../dist/index.js'
 import { JSDOM } from 'jsdom'
 
@@ -48,7 +48,7 @@ const runFocusNavigationTest = (html: string, expectedIds: string[]) => {
     // Previous with wrapping
     for (let index = 0; index < expectedIds.length; index++) {
         focusElementAt(container, index);
-        focusPrevElementOrWrapToLast(container);
+        focusPreviousElement(container, true);
         const prevIndex = (index - 1 + expectedIds.length) % expectedIds.length;
         expect(getActiveTestId()).toBe(expectedIds[prevIndex]);
     }
@@ -58,7 +58,7 @@ const runFocusNavigationTest = (html: string, expectedIds: string[]) => {
     // Next with wrapping
     for (let index = 0; index < expectedIds.length; index++) {
         focusElementAt(container, index);
-        focusNextElementOrWrapToFirst(container);
+        focusNextElement(container, true);
         const nextIndex = (index + 1) % expectedIds.length;
         expect(getActiveTestId()).toBe(expectedIds[nextIndex]);
     }
@@ -66,7 +66,7 @@ const runFocusNavigationTest = (html: string, expectedIds: string[]) => {
 
 
 
-describe('focusElementAt, focusFirstElement, focusLastElement, focusPrevElementOrWrapToLast, focusNextElementOrWrapToFirst', () => {
+describe('focusElementAt, focusFirstElement, focusLastElement, focusPreviousElement, focusNextElement', () => {
     beforeAll(() => {
         global.getComputedStyle = (element: Element) => ({
             display    : element.getAttribute('style')?.includes('display: none') ? 'none' : 'block',

@@ -1,15 +1,19 @@
 {
-  "name": "@reusable-ui/focuses",
+  "name": "@reusable-ui/focus-interaction",
   "version": "7.0.0",
-  "description": "Utility functions for navigating focusable elements while respecting accessibility standards.",
+  "description": "Enhances native keyboard navigation and focus management with robust utilities such as focus traps and cyclic wrap-around navigation.",
   "keywords": [
     "focus",
+    "focus-trap",
+    "cyclic-navigation",
+    "focus-management",
     "tabindex",
     "accessibility",
-    "a11y",
     "keyboard-navigation",
+    "keyboard-accessibility",
     "DOM",
-    "utilities"
+    "utilities",
+    "reusable-ui"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
   "homepage": "https://reusableui.com",
@@ -17,7 +21,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "utilities/focuses"
+    "directory": "interactions/focus-interaction"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"

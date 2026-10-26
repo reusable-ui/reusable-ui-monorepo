@@ -25,7 +25,6 @@
 @reusable-ui/controllable
 @reusable-ui/events                                 deps: @reusable-ui/callbacks, @reusable-ui/lifecycles, **likely to use @reusable-ui/timers later** for delay management.
 @reusable-ui/semantics
-@reusable-ui/focuses
 
 // Reusable-ui variants:
 @reusable-ui/effective-variant          non_peer        UTILITY
@@ -254,6 +253,7 @@ For hypen character, use standard hyphen (-) instead of non-breaking hyphen (‑
 
 // Reusable-ui interactions:
 @reusable-ui/drag-drop-interaction
+@reusable-ui/focus-interaction
 
 // Reusable-ui routes:
 @reusable-ui/link-compat

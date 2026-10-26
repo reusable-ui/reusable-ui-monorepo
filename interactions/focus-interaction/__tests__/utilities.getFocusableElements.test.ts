@@ -1,11 +1,11 @@
 import {
-    getSortedFocusableElements,
+    getFocusableElements,
 } from '../dist/index.js'
 import { JSDOM } from 'jsdom'
 
 
 
-describe('getSortedFocusableElements', () => {
+describe('getFocusableElements', () => {
     beforeAll(() => {
         globalThis.getComputedStyle = (element: Element) => ({
             display    : element.getAttribute('style')?.includes('display: none') ? 'none' : 'block',
@@ -65,7 +65,7 @@ describe('getSortedFocusableElements', () => {
         
         
         
-        const focusables = getSortedFocusableElements(container);
+        const focusables = getFocusableElements(container);
         
         const ids = focusables.map((element) => element.getAttribute('data-testid'));
         
@@ -132,7 +132,7 @@ describe('getSortedFocusableElements', () => {
         
         
         
-        const focusables = getSortedFocusableElements(container);
+        const focusables = getFocusableElements(container);
         
         const quantityGroupStart = focusables.findIndex((element) => element.getAttribute('data-testid') === 'quantity')!;
         const quantityGroup = focusables.slice(quantityGroupStart, quantityGroupStart + 4); // take 4 items starting from it.
@@ -179,7 +179,7 @@ describe('getSortedFocusableElements', () => {
         
         
         
-        const focusables = getSortedFocusableElements(container);
+        const focusables = getFocusableElements(container);
         
         const ids = focusables.map((element) => element.getAttribute('data-testid'));
         
@@ -244,7 +244,7 @@ describe('getSortedFocusableElements', () => {
         
         
         
-        const focusables = getSortedFocusableElements(container);
+        const focusables = getFocusableElements(container);
         
         const ids = focusables.map((element) => element.getAttribute('data-testid'));
         
@@ -325,7 +325,7 @@ describe('getSortedFocusableElements', () => {
         
         
         
-        const focusables = getSortedFocusableElements(container);
+        const focusables = getFocusableElements(container);
         
         const ids = focusables.map((element) => element.getAttribute('data-testid'));
         
