@@ -241,7 +241,7 @@ For hypen character, use standard hyphen (-) instead of non-breaking hyphen (‑
 @reusable-ui/collapse-effect        non_peer
 @reusable-ui/view-effect            non_peer
 
-// Reusable-ui capabilities:
+// Reusable-ui capabilities: (DEPRECATED)
 @reusable-ui/floatable
 @reusable-ui/global-stackable
 @reusable-ui/auto-focusable
