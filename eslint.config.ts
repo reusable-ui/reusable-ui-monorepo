@@ -90,7 +90,7 @@ export default defineConfig(
             '**/capabilities/**',
             '**/components/**',
             '**/*-components/**',
-            '**/barrels/**',
+            '**/barrels/{!core}/**',
             
             // Ignore deprecated package directories:
             // '**/capabilities/floatable/**',
