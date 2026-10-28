@@ -131,6 +131,7 @@
     "routes/router-link-compat",
     "routes/links",
     "routes/navigations",
+    "barrels/core",
     "__configs/*",
     "__utilities/*",
     "__features/*",
