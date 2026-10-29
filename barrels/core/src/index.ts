@@ -1,14 +1,14 @@
 // Reusable-ui configs:
-// - Provides shared configurations (app cutomization) across UI components for consistency and seamless theming.
-// - Exposes the configured values via css config variables to be consumed across component's styling.
-// - Exposes configuration functions to update their variables from JavaScript code.
-// - Requires to be installed as peer dependencies as these configs act as single source of truth.
-/*peer*/ export * from '@reusable-ui/color-config'              // Configures theme color system across UI components.
-/*peer*/ export * from '@reusable-ui/border-config'             // Configures border stroke (thickness, styling, and colors) across UI components.
-/*peer*/ export * from '@reusable-ui/radius-config'             // Configures rounding system (border radii) across UI components.
-/*peer*/ export * from '@reusable-ui/spacer-config'             // Configures spacer system (margins, paddings, and gaps) across UI components.
-/*peer*/ export * from '@reusable-ui/breakpoint-config'         // Configures breakpoint system (responsive layouts) across UI components.
-/*peer*/ export * from '@reusable-ui/typo-config'               // Configures typography (font faces, font sizes, overflow wraps, etc) across UI components.
+// - Provides shared global configuration tokens across all UI components for consistent theming.
+// - Exposes configured values via CSS variables for component styling consumption.
+// - Exposes object modeling and helper APIs to perform CRUD operations on the underlying configuration variables from JavaScript code.
+// - Acts as the single source of truth and must be installed as peer dependencies.
+/*peer*/ export * from '@reusable-ui/color-config'              // Configures the theme color system (color palettes and shades) across all UI components.
+/*peer*/ export * from '@reusable-ui/border-config'             // Configures border stroke (thickness, styling, and colors) across all UI components.
+/*peer*/ export * from '@reusable-ui/radius-config'             // Configures corner rounding (border radii) across all UI components.
+/*peer*/ export * from '@reusable-ui/spacer-config'             // Configures the spacing system (margins, paddings, and gaps) across all UI components.
+/*peer*/ export * from '@reusable-ui/breakpoint-config'         // Configures the breakpoint system (responsive layouts) across all UI components.
+/*peer*/ export * from '@reusable-ui/typo-config'               // Configures the typography system (font faces, font sizes, overflow wraps, etc.) across all UI components.
 
 
 
