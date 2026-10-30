@@ -1,18 +1,18 @@
 /**
- * A mapping of variant role → surface role → shade role.
- * Determines the appropriate shade role for a given component variant and surface.
+ * A mapping of variant token → surface token → shade token.
+ * Determines the appropriate shade token for a given component variant and surface.
  * 
- * This mapping defines which shade roles apply to each variant and surface.
+ * This mapping defines which shade tokens apply to each variant and surface.
  * 
  * The color variables within `colorConfigVars` follow the naming convention:
  * ```ts
- * const shadeRole     = colorRoleMap[variantRole][surfaceRole];
- * const expectedColor = colorConfigVars[`${themeRole}${shadeRole}`];
+ * const shadeToken    = colorTokenMap[variantToken][surfaceToken];
+ * const expectedColor = colorConfigVars[`${themeToken}${shadeToken}`];
  * ```
  * 
- * ### Roles
+ * ### Tokens
  * 
- * **themeRole** — the thematic role:
+ * **themeToken** — the thematic token:
  * - **primary**   → The site's core branding or company identity color.
  * - **secondary** → A visual alternative to primary, used for supportive accents (e.g., table rows, secondary actions).
  * - **success**   → Indicates positive actions, confirmations, or successful states.
@@ -22,21 +22,21 @@
  * - **light**     → A light color against a dark background or a softer accent.
  * - **dark**      → A dark color against a light background or a strong accent.
  * 
- * **variantRole** — the component style variant:
+ * **variantToken** — the component style variant:
  * - **regular**  → The default solid styling.
  * - **mild**     → A comfortable, text-heavy style for readability and reduced visual intensity.
  * - **outlined** → A transparent style, exposing background surfaces (e.g., images).
  *   - **Note:** The outlined background always maps to `null` instead of a string,
- *     indicating that there is no relevant shade role for this case.
+ *     indicating that there is no relevant shade token for this case.
  * 
- * **surfaceRole** — the UI surface where color is applied:
+ * **surfaceToken** — the UI surface where color is applied:
  * - **backg**  → The background surface of the component.
  * - **foreg**  → The foreground surface (text).
  * - **decor**  → The decoration surface (icons, graphics).
  * - **border** → The border/outline surface.
  * - **ring**   → The ring/focus surface (ring focus indicators).
  * 
- * **shadeRole** — the functional color role:
+ * **shadeToken** — the functional color token:
  * - **Base** → A strong background color adapted to the theme.
  * - **Mild** → A softer background color for text-heavy components.
  * - **Flip** → A high-contrast foreground and decoration color against base.
@@ -47,7 +47,7 @@
  * - **Edge** → A high-saturation border color for outlined components.
  * - **Soft** → An effect color for rings, overlays, and emphasis.
  */
-export const colorRoleMap = (() => {
+export const colorTokenMap = (() => {
     const regular = {
         backg  : 'Base',       // A strong background color.
         foreg  : 'Flip',       // A high-contrast foreground color.

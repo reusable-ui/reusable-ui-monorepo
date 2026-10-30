@@ -1,7 +1,7 @@
 import React, { type CSSProperties, useMemo, useLayoutEffect } from 'react'
 import { HydrateStyles } from '@cssfn/cssfn-react'
 import { usingValidityState } from '@reusable-ui/validity-state'
-import { colorRoleMap, colorConfigVars } from '@reusable-ui/color-config'
+import { colorTokenMap, colorConfigVars } from '@reusable-ui/color-config'
 import { colorParamConfigVars } from '@reusable-ui/color-config'
 import { useThemeVariant } from '@reusable-ui/theme-variant'
 import { useMildVariant, type MildVariantProps} from '@reusable-ui/mild-variant'
@@ -69,14 +69,14 @@ export const ValidityEffectTest = (props: ValidityEffectTestProps) => {
     }, [mode]);
     
     useLayoutEffect(() => {
-        colorConfigVars[`primary${colorRoleMap['regular']['backg']}` as keyof typeof colorConfigVars] = regularBaseColor        as any;
-        colorConfigVars[`primary${colorRoleMap['mild'   ]['backg']}` as keyof typeof colorConfigVars] = mildBaseColor           as any;
+        colorConfigVars[`primary${colorTokenMap['regular']['backg']}` as keyof typeof colorConfigVars] = regularBaseColor        as any;
+        colorConfigVars[`primary${colorTokenMap['mild'   ]['backg']}` as keyof typeof colorConfigVars] = mildBaseColor           as any;
         
-        colorConfigVars[`success${colorRoleMap['regular']['backg']}` as keyof typeof colorConfigVars] = validRegularBaseColor   as any;
-        colorConfigVars[`success${colorRoleMap['mild'   ]['backg']}` as keyof typeof colorConfigVars] = validMildBaseColor      as any;
+        colorConfigVars[`success${colorTokenMap['regular']['backg']}` as keyof typeof colorConfigVars] = validRegularBaseColor   as any;
+        colorConfigVars[`success${colorTokenMap['mild'   ]['backg']}` as keyof typeof colorConfigVars] = validMildBaseColor      as any;
         
-        colorConfigVars[`danger${ colorRoleMap['regular']['backg']}` as keyof typeof colorConfigVars] = invalidRegularBaseColor as any;
-        colorConfigVars[`danger${ colorRoleMap['mild'   ]['backg']}` as keyof typeof colorConfigVars] = invalidMildBaseColor    as any;
+        colorConfigVars[`danger${ colorTokenMap['regular']['backg']}` as keyof typeof colorConfigVars] = invalidRegularBaseColor as any;
+        colorConfigVars[`danger${ colorTokenMap['mild'   ]['backg']}` as keyof typeof colorConfigVars] = invalidMildBaseColor    as any;
     }, []);
     
     const { validityStateVars  : { validityFactorCond: validityFactorCondVar } } = usingValidityState();

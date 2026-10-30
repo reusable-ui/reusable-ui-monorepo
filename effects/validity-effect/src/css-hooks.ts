@@ -31,7 +31,7 @@ import {
 // Reusable-ui configs:
 import {
     // Utilities:
-    colorRoleMap,
+    colorTokenMap,
     
     
     
@@ -165,11 +165,11 @@ export const usingValidityEffect = (options?: CssValidityEffectOptions): CssVali
                                 // Step 1: resolve discrete validity color (valid vs. invalid).
                                 colorMix(
                                     // Valid color:
-                                    colorConfigVars[`${validTheme}${colorRoleMap[variantRole][surfaceRole]}` as keyof typeof colorConfigVars],
+                                    colorConfigVars[`${validTheme}${colorTokenMap[variantRole][surfaceRole]}` as keyof typeof colorConfigVars],
                                     validSwitch,
                                     
                                     // Invalid color:
-                                    colorConfigVars[`${invalidTheme}${colorRoleMap[variantRole][surfaceRole]}` as keyof typeof colorConfigVars],
+                                    colorConfigVars[`${invalidTheme}${colorTokenMap[variantRole][surfaceRole]}` as keyof typeof colorConfigVars],
                                     invalidSwitch
                                 ),
                                 validityWeight,
