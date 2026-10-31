@@ -66,12 +66,12 @@ Certain shades (`Flip`, `Face`, `Soft`) are designed for cross-variant reuse, re
 
 ## ✨ Features
 
-✔ **CRUD-Driven Management** — Easily retrieve, add, update, and delete color tokens from JavaScript.
-✔ **Themeable** — Provides structured support for standard thematic roles (`primary`, `success`, `warning`, `danger`, etc.).
-✔ **Contextual Shades** — Automatically generates specialized shades (such as text contrast, border strokes, and background fills).
-✔ **Light/Dark Mode Aware** — Supports automatic contrast and color flipping across all UI components.
-✔ **CSS-First Approach** — Minimal JavaScript runtime overhead; config propagation relies on native CSS variable cascades, while color shadings use native CSS color functions and `calc()`.
-✔ **Powered by @cssfn/core** — Efficient CSS-in-JS rendering supporting AOT for fast page loads and JIT for dynamic styling.
+✔ **CRUD-Driven Management** — Easily retrieve, add, update, and delete color tokens from JavaScript.  
+✔ **Themeable** — Provides structured support for standard thematic roles (`primary`, `success`, `warning`, `danger`, etc.).  
+✔ **Contextual Shades** — Automatically generates specialized shades (such as text contrast, border strokes, and background fills).  
+✔ **Light/Dark Mode Aware** — Supports automatic contrast and color flipping across all UI components.  
+✔ **CSS-First Approach** — Minimal JavaScript runtime overhead; config propagation relies on native CSS variable cascades, while color shadings use native CSS color functions and `calc()`.  
+✔ **Powered by @cssfn/core** — Efficient CSS-in-JS rendering supporting AOT for fast page loads and JIT for dynamic styling.  
 
 ## 📦 Installation & Setup  
 Install **@reusable-ui/color-config** via npm or yarn:
