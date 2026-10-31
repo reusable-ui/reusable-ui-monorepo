@@ -8,7 +8,7 @@ import {
     adjustLightness,
     contrastFlip,
     adjustOpacity,
-}                           from './internal-utilities.js'
+}                           from './color-adjustment-utilities.js'
 
 // Configs:
 import {

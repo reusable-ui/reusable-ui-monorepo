@@ -1,6 +1,7 @@
 export *            from './css-types.js'
 
 export *            from './utilities.js'
+export *            from './color-adjustment-utilities.js'
 
 export *            from './css-param-config.js'
 
