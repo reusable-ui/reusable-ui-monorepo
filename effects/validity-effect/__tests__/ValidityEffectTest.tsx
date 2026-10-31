@@ -69,14 +69,14 @@ export const ValidityEffectTest = (props: ValidityEffectTestProps) => {
     }, [mode]);
     
     useLayoutEffect(() => {
-        colorConfigVars[`primary${colorTokenMap['regular']['backg']}` as keyof typeof colorConfigVars] = regularBaseColor        as any;
-        colorConfigVars[`primary${colorTokenMap['mild'   ]['backg']}` as keyof typeof colorConfigVars] = mildBaseColor           as any;
+        colorConfigVars[`primary${colorTokenMap['regular']['backg']}`] = regularBaseColor        as any;
+        colorConfigVars[`primary${colorTokenMap['mild'   ]['backg']}`] = mildBaseColor           as any;
         
-        colorConfigVars[`success${colorTokenMap['regular']['backg']}` as keyof typeof colorConfigVars] = validRegularBaseColor   as any;
-        colorConfigVars[`success${colorTokenMap['mild'   ]['backg']}` as keyof typeof colorConfigVars] = validMildBaseColor      as any;
+        colorConfigVars[`success${colorTokenMap['regular']['backg']}`] = validRegularBaseColor   as any;
+        colorConfigVars[`success${colorTokenMap['mild'   ]['backg']}`] = validMildBaseColor      as any;
         
-        colorConfigVars[`danger${ colorTokenMap['regular']['backg']}` as keyof typeof colorConfigVars] = invalidRegularBaseColor as any;
-        colorConfigVars[`danger${ colorTokenMap['mild'   ]['backg']}` as keyof typeof colorConfigVars] = invalidMildBaseColor    as any;
+        colorConfigVars[`danger${ colorTokenMap['regular']['backg']}`] = invalidRegularBaseColor as any;
+        colorConfigVars[`danger${ colorTokenMap['mild'   ]['backg']}`] = invalidMildBaseColor    as any;
     }, []);
     
     const { validityStateVars  : { validityFactorCond: validityFactorCondVar } } = usingValidityState();
