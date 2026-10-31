@@ -165,11 +165,11 @@ export const usingValidityEffect = (options?: CssValidityEffectOptions): CssVali
                                 // Step 1: resolve discrete validity color (valid vs. invalid).
                                 colorMix(
                                     // Valid color:
-                                    colorConfigVars[`${validTheme}${colorTokenMap[variantRole][surfaceRole]}` as keyof typeof colorConfigVars],
+                                    colorConfigVars[`${validTheme}${colorTokenMap[variantRole][surfaceRole]}`],
                                     validSwitch,
                                     
                                     // Invalid color:
-                                    colorConfigVars[`${invalidTheme}${colorTokenMap[variantRole][surfaceRole]}` as keyof typeof colorConfigVars],
+                                    colorConfigVars[`${invalidTheme}${colorTokenMap[variantRole][surfaceRole]}`],
                                     invalidSwitch
                                 ),
                                 validityWeight,
