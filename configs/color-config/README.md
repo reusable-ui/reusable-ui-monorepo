@@ -44,25 +44,24 @@ Contextual shades represent specific brightness levels derived from a root color
 Certain shades (`Flip`, `Face`, `Soft`) are designed for cross-variant reuse, referencing shared design tokens across different component variants (`regular`, `mild`, `outlined`).
 
 - **Backgrounds:**
-  - **`Base`** — A strong, vivid color designed to fill the component's primary background area.
-  - **`Mild`** — A smooth, soft tone (near-white in light mode, near-black in dark mode) designed for content surfaces that serve as readable article areas (akin to paper).
+  - **`Base`** — Regular background colors, filling the entire regular background surfaces (such as standard buttons and panels).
+  - **`Mild`** — Content-heavy background colors, filling the entire content-heavy background surfaces (such as articles and textboxes).
 
 - **Foregrounds:**
-  - **`Flip`** — A high-contrast text color formulated for readability against regular backgrounds (typically near-white against dark backgrounds, or near-black against perceptually bright backgrounds such as yellow or cyan).
-  - **`Text`** — A high-contrast text color formulated for readability against mild backgrounds (typically near-black in light mode or near-white in dark mode).
-  - **`Face`** — A high-saturation, vivid color dedicated to preserving the authentic visual expression of graphic art.
-    Special case exceptions:
-    - **Regular Variant:** Because `Face` can be too close in tone to the `Base` background, graphics and icons gracefully fall back to `Flip` for optimal contrast and legibility.
-    - **Outlined Variant:** Text, icons, graphics, and borders act together as a unified piece of graphic art:
-      - Icons and graphics natively consume `Face`.
-      - Text color falls back to `Face` (instead of neutral `Flip` or `Text`), allowing text to act as a vibrant graphic element floating over a transparent background.
-      - The `Edge` border typically mirrors the `Face` color to maintain a cohesive, single-unit aesthetic.
+  - **`Flip`** — Regular text colors, ensuring readability against regular backgrounds (such as standard buttons and panels), while still retaining a subtle trace of the original color.
+  - **`Text`** — Content-heavy text colors, ensuring readability against mild backgrounds (such as articles and textboxes), while still retaining a subtle trace of the original color.
+  - **`Face`** — Graphic and icon colors, preserving the authentic, high-saturation visual expression of graphic art.  
+    Special cases:
+    - **Regular Variant:**  : Graphics and icons fall back to `Flip` as the `Face` can be too close in tone to the `Base` background.
+    - **Outlined Variant:** : All surfaces (text, graphics, icons, and borders) fall back to `Face` to act as a unified piece of art floating over transparent backgrounds.
 
 - **Borders:**
-  - **`Bold`** — A high-contrast border and separator color designed to frame regular backgrounds.
-  - **`Thin`** — A fair-contrast border and separator color designed to frame mild backgrounds. Using `Bold` against mild backgrounds creates excessive contrast, which is why the `Thin` border variant exists.
-  - **`Edge`** — A colorful, high-saturation border and separator color designed to frame outlined (transparent) backgrounds, avoiding the dullness of `Bold` or `Thin`. It typically mirrors the `Face` color.
-  - **`Soft`** — A semi-transparent effect color used for focus ring indicators and box shadows. Instead of shifting lightness, it relies on alpha transparency to blend smoothly with surrounding environment colors across all component variants (`regular`, `mild`, `outlined`).
+  - **`Bold`** — Regular borders and separators, providing high-contrast framing that wraps securely around regular `Base` backgrounds.
+  - **`Thin`** — Content-heavy borders and separators, providing softer contrast framing that wraps gently around content-heavy `Mild` backgrounds. Using `Bold` against mild backgrounds creates excessive, harsh contrast, making `Thin` necessary for hierarchical balance.
+  - **`Edge`** — Outlined borders and separators, providing colorful, high-saturation framing for outlined (transparent) backgrounds. To maintain a cohesive single-unit aesthetic, `Edge` typically mirrors the `Face` color.
+
+- **Effects:**
+  - **`Soft`** — Effect colors, creating visual focus and drawing attention to interactive elements without overwhelming the overall design.
 
 ## ✨ Features
 
@@ -296,17 +295,17 @@ To adjust how generated color shades behave across various themes, assign a conc
 
 Here are the exposed configuration tokens you can adjust:
 
-- **`mode`** → Changes the active light/dark mode context.
-- **`base`** → Adjusts the baseline lightness of regular background surfaces.
-- **`mild`** → Adjusts the scaling or tone for mild background surfaces.
-- **`flip`** → Adjusts the contrast scaling for high-contrast foreground and decoration elements against base backgrounds.
-- **`flipThreshold`** → Sets the luminance threshold used to trigger contrast inversion for flip text/icons.
-- **`text`** → Adjusts the contrast scaling for text-only foreground elements.
-- **`face`** → Adjusts the visual weight lightness for graphic-like elements.
-- **`bold`** → Adjusts the prominence or contrast for strong component borders.
-- **`thin`** → Adjusts the delicacy or softness for subtle component borders.
-- **`edge`** → Adjusts the contrast for outlined component borders.
-- **`soft`** → Adjusts the opacity for soft effects, rings, and focus indicators.
+- **`mode`** → Changes the active color mode context.
+- **`base`** → Adjusts the lightness for regular background colors.
+- **`mild`** → Adjusts the lightness for content-heavy background colors.
+- **`flip`** → Adjusts the contrast scaling for regular text colors.
+- **`flipThreshold`** → Adjusts the luminance threshold at which text colors flip (switch between dark and light).
+- **`text`** → Adjusts the lightness for content-heavy text colors.
+- **`face`** → Adjusts the lightness for graphic and icon colors.
+- **`bold`** → Adjusts the lightness for regular borders and separators.
+- **`thin`** → Adjusts the lightness for content-heavy borders and separators.
+- **`edge`** → Adjusts the lightness for outlined borders and separators.
+- **`soft`** → Adjusts the opacity level for effect colors.
 
 > **⚠️ Warning:**
 > Technically, you can perform all CRUD operations on these configuration mappings.

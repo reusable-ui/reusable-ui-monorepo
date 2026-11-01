@@ -18,9 +18,14 @@ const config = cssConfig(() => {
         // Color mode:
         
         /**
-         * Defines the color mode.
-         * `1`  → Light mode.
-         * `-1` → Dark mode.
+         * Changes the active color mode context.
+         * 
+         * - `1`  → Light mode.
+         * - `-1` → Dark mode.
+         * 
+         * Values between `-1` and `+1` (e.g., `0.75`) are supported to proportionally blend
+         * between light and dark modes, enabling smooth mode transitions in animations.
+         * Underflow/overflow values (e.g., `-1.25`, `+1.25`) produce underbright/overbright effects.
          */
         mode            : 1         as -1 | 1,
         
@@ -29,29 +34,24 @@ const config = cssConfig(() => {
         // Background colors:
         
         /**
-         * Adjusts the brightness of regular background colors (**Base Colors**).
+         * Adjusts the lightness for regular background colors (**`Base`**).
          * 
-         * **Base Colors** serve as the **standard UI backgrounds**, providing **moderate tones**  
-         * ensuring **optimal contrast in light and dark modes**.
+         * **Base Colors** fill the entire regular background surfaces (such as standard buttons and panels).
          * 
-         * Typically used for **regular UI surfaces**, such as **buttons and standard panels**.
-         * 
-         * - **Light mode:** Positive values lighten, negative values darken.
-         * - **Dark mode:** Positive values darken, negative values lighten.
+         * - **Typical Value Range:** Small ratios (e.g., `-0.05`) to preserve rich color saturation.
+         * - **Light Mode (`mode = 1`)**: Positive values lighten, negative values darken.
+         * - **Dark Mode (`mode = -1`)**: Positive values darken, negative values lighten.
          */
         base            : -0.05     as number,
         
         /**
-         * Adjusts the brightness of content-heavy background colors (**Mild Colors**).
+         * Adjusts the lightness for content-heavy background colors (**`Mild`**).
          * 
-         * **Mild Colors** are designed for **comfortable readability**, being **soft and bright in light mode**  
-         * and **deep and muted in dark mode**  
-         * enhancing **visual comfort and reduces eye strain**.
+         * **Mild Colors** fill the entire content-heavy background surfaces (such as articles and textboxes).
          * 
-         * Typically used for **content-heavy surfaces**, such as **articles and textboxes**.
-         * 
-         * - **Light mode:** Positive values lighten, negative values darken.
-         * - **Dark mode:** Positive values darken, negative values lighten.
+         * - **Typical Value Range:** Moderate-to-high positive ratios (e.g., `0.7`), making them nearly white in light mode or nearly black in dark mode to enhance visual comfort and reduce eye strain.
+         * - **Light Mode (`mode = 1`)**: Positive values lighten, negative values darken.
+         * - **Dark Mode (`mode = -1`)**: Positive values darken, negative values lighten.
          */
         mild            : 0.7       as number,
         
@@ -60,56 +60,48 @@ const config = cssConfig(() => {
         // Foreground colors:
         
         /**
-         * Adjusts the brightness of regular text colors (**Flip Colors**).
+         * Adjusts the contrast scaling for regular text colors (**`Flip`**).
          * 
-         * **Flip Colors** dynamically adapt to **background brightness**,  
-         * ensuring **strong contrast against `baseColors` backgrounds**.  
-         * They maintain **readability** across themes by automatically switching between light and dark tones.
+         * **Flip Colors** ensure readability against regular backgrounds (such as standard buttons and panels), while still retaining a subtle trace of the original color.
          * 
-         * Typically used for **regular UI texts**, such as **buttons and standard panels**.
-         * 
-         * The brightness **is measured** by extracting the lightness (`L`) element in OKLCH  
-         * and comparing it against `flipThreshold`.
-         * 
-         * - **Positive values:** Ensure correct contrast (dark text on light backgrounds, light text on dark backgrounds).
-         * - **Negative values:** Cause incorrect flipping (light text on light backgrounds, dark text on dark backgrounds)—rarely used.
+         * - **Typical Value Range:** Recommended near `0.9` (keeping ratio under `1` retains a subtle trace of color; setting it to `1` forces pure black or white).
+         * - **Behavior:** Automatically inverts tone based on background luminance and the configured `flipThreshold`.
          */
         flip            : 0.9       as number,
         
         /**
-         * Adjusts the brightness threshold at which text colors flip (switch between dark and light)  
-         * based on the background color's **OKLCH lightness (`L`)**.
+         * Adjusts the luminance threshold at which text colors flip (switch between dark and light).
          * 
-         * - **If background lightness (`L`) is below this threshold**, the text color **lightens**.
-         * - **If background lightness (`L`) is above this threshold**, the text color **darkens**.
-         * - Works **independently** from the mode (`light` or `dark`).
+         * Measured against the background color's brightness level:
+         * - If the background lightness is **below** this threshold, the flip color lightens.
+         * - If the background lightness is **above** this threshold, the flip color darkens.
+         * - Operates independently of active light/dark mode settings.
          */
         flipThreshold   : 0.75      as number,
         
         /**
-         * Adjusts the brightness of content-heavy text colors (**Text Colors**).
+         * Adjusts the lightness for content-heavy text colors (**`Text`**).
          * 
-         * **Text Colors** are optimized for extended reading,  
-         * ensuring **comfortable contrast against `mildColors` backgrounds**.  
-         * They remain **gentle on the eyes**, reducing strain while maintaining readability.
+         * **Text Colors** ensure readability against mild backgrounds (such as articles and textboxes), while still retaining a subtle trace of the original color.
          * 
-         * Typically used for **content-heavy texts**, such as **articles and textboxes**.
-         * 
-         * - **Light mode:** Positive values lighten, negative values darken.
-         * - **Dark mode:** Positive values darken, negative values lighten.
+         * - **Typical Value Range:** Strong negative ratios near `-0.9` (keeping ratio above `-1` retains a subtle trace of color; setting it to `-1` forces pure black or white).
+         * - **Light Mode (`mode = 1`)**: Positive values lighten, negative values darken.
+         * - **Dark Mode (`mode = -1`)**: Positive values darken, negative values lighten.
          */
         text            : -0.9      as number,
         
         /**
-         * Adjusts the brightness of backgroundless text colors (**Face Colors**).
+         * Adjusts the lightness for graphic and icon colors (**`Face`**).
          * 
-         * **Face Colors** define the foreground appearance of texts and icons in **transparent UI elements**,  
-         * ensuring **clear visibility while preserving background transparency**.
+         * **Face Colors** preserve the authentic, high-saturation visual expression of graphic art.
          * 
-         * Typically used for **backgroundless texts**, such as **outlined UI texts and icons**.
+         * Special cases:
+         * - **Regular Variant:**  : Graphics and icons fall back to `Flip` as the `Face` can be too close in tone to the `Base` background.
+         * - **Outlined Variant:** : All surfaces (text, graphics, icons, and borders) fall back to `Face` to act as a unified piece of art floating over transparent backgrounds.
          * 
-         * - **Light mode:** Positive values lighten, negative values darken.
-         * - **Dark mode:** Positive values darken, negative values lighten.
+         * - **Typical Value Range:** Small ratios (e.g., `-0.05`) to preserve rich color saturation.
+         * - **Light Mode (`mode = 1`)**: Positive values lighten, negative values darken.
+         * - **Dark Mode (`mode = -1`)**: Positive values darken, negative values lighten.
          */
         face            : -0.05     as number,
         
@@ -118,41 +110,37 @@ const config = cssConfig(() => {
         // Border colors:
         
         /**
-         * Adjusts the brightness of regular border colors (**Bold Colors**).
+         * Adjusts the lightness for regular borders and separators (**`Bold`**).
          * 
-         * **Bold Colors** define **high-contrast borders**,  
-         * ensuring **strong visual separation between UI elements**.
+         * **Bold Colors** provide high-contrast framing that wraps securely around regular `Base` backgrounds.
          * 
-         * Typically used for **regular UI borders**, such as **buttons and standard panels**.
-         * 
-         * - **Light mode:** Positive values lighten, negative values darken.
-         * - **Dark mode:** Positive values darken, negative values lighten.
+         * - **Typical Value Range:** Moderate negative ratios (e.g., `-0.6`) to establish distinct visual separation.
+         * - **Light Mode (`mode = 1`)**: Positive values lighten, negative values darken.
+         * - **Dark Mode (`mode = -1`)**: Positive values darken, negative values lighten.
          */
         bold            : -0.6      as number,
         
         /**
-         * Adjusts the brightness of content-heavy border colors (**Thin Colors**).
+         * Adjusts the lightness for content-heavy borders and separators (**`Thin`**).
          * 
-         * **Thin Colors** provide **soft contrast borders**,  
-         * ensuring **gentle visual separation between UI elements**.
+         * **Thin Colors** provide softer contrast framing that wraps gently around content-heavy `Mild` backgrounds.
+         * Using `Bold` against mild backgrounds creates excessive, harsh contrast, making `Thin` necessary for hierarchical balance.
          * 
-         * Typically used for **content-heavy borders**, such as **articles and textboxes**.
-         * 
-         * - **Light mode:** Positive values lighten, negative values darken.
-         * - **Dark mode:** Positive values darken, negative values lighten.
+         * - **Typical Value Range:** Moderate negative ratios (e.g., `-0.5`) to establish gentle visual separation.
+         * - **Light Mode (`mode = 1`)**: Positive values lighten, negative values darken.
+         * - **Dark Mode (`mode = -1`)**: Positive values darken, negative values lighten.
          */
         thin            : -0.5      as number,
         
         /**
-         * Adjusts the brightness of backgroundless border colors (**Edge Colors**).
+         * Adjusts the lightness for outlined borders and separators (**`Edge`**).
          * 
-         * **Edge Colors** enhance **outline visibility**,  
-         * ensuring **clear outlines while preserving background transparency**.
+         * **Edge Colors** provide colorful, high-saturation framing for outlined (transparent) backgrounds.
+         * To maintain a cohesive single-unit aesthetic, `Edge` typically mirrors the `Face` color.
          * 
-         * Typically used for **backgroundless borders**, such as **outlined UI texts and floating elements**.
-         * 
-         * - **Light mode:** Positive values lighten, negative values darken.
-         * - **Dark mode:** Positive values darken, negative values lighten.
+         * - **Typical Value Range:** Small ratios (e.g., `-0.05`) matching `Face` to maintain rich color saturation.
+         * - **Light Mode (`mode = 1`)**: Positive values lighten, negative values darken.
+         * - **Dark Mode (`mode = -1`)**: Positive values darken, negative values lighten.
          */
         edge            : -0.05     as number,
         
@@ -161,15 +149,13 @@ const config = cssConfig(() => {
         // Effect colors (shadows, rings, focus indicators):
         
         /**
-         * Adjusts the opacity level of effect colors (**Soft Colors**).
+         * Adjusts the opacity level for effect colors (**`Soft`**).
          * 
-         * **Soft Colors** create subtle emphasis,  
-         * providing **visual focus and draws attention to surrounding elements**.
+         * **Soft Colors** create visual focus and draw attention to interactive elements without overwhelming the overall design.
          * 
-         * Typically used for **ring-focus indicators**, background glows, or subtle overlays.
-         * 
-         * - **Positive values:** Increase opacity, making the effect more prominent.
-         * - **Negative values:** Decrease opacity, making the effect more transparent.
+         * - **Typical Value Range:** Moderate negative ratios (e.g., `-0.5`) for subtle focus rings, glows, and box shadows.
+         * - **Positive values:** Increases opacity (makes the color more solid).
+         * - **Negative values:** Decreases opacity (makes the color more transparent/blended).
          */
         soft            : -0.5      as number,
     };
