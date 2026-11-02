@@ -84,7 +84,7 @@ Each semantic theme automatically expands into the full set of derived contextua
 
 #### Theme-to-Shade Mapping Structure
 
-When you define a theme via `defineTheme()`, the theme token automatically generates the complete contextual shades:
+When you define a theme via `defineTheme()`, the system automatically generates the following contextual shades for that theme:
 
 | Theme Token     | Base            | Mild            | Flip            | Text            | Face            | Bold            | Thin            | Edge            | Soft            |
 | --------------- | --------------- | --------------- | --------------- | --------------- | --------------- | --------------- | --------------- | --------------- | --------------- |
