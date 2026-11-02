@@ -63,6 +63,39 @@ Certain shades (`Flip`, `Face`, `Soft`) are designed for cross-variant reuse, re
 - **Effects:**
   - **`Soft`** — Effect colors, creating visual focus and drawing attention to interactive elements without overwhelming the overall design.
 
+### 🌈 Default Contextual Themes
+
+Building upon the contextual shades defined above, the library provides out-of-the-box support for standard **theme tokens**.
+Each semantic theme automatically expands into the full set of derived contextual shades to maintain visual consistency across all UI components.
+
+#### Semantic Theme Roles
+
+| Theme Token     | Description                                                                                                  |
+| --------------- | ------------------------------------------------------------------------------------------------------------ |
+| **`primary`**   | Establishes the core brand identity for primary calls-to-action and prominent interactive surfaces.          |
+| **`secondary`** | Complements primary elements with an accent color for secondary actions, alternative badges, and highlights. |
+| **`success`**   | Signifies positive states, successful form submissions, confirmations, and safe operations.                  |
+| **`info`**      | Represents neutral states, helpful guidance, system notices, and informational alerts.                       |
+| **`warning`**   | Signals cautionary states, alerts, or user actions that require attention before proceeding.                 |
+| **`danger`**    | Denotes critical states, destructive operations (e.g., deletions), and validation errors.                    |
+| **`light`**     | Renders a light-toned theme optimized for high-contrast visibility against dark backgrounds.                 |
+| **`dark`**      | Renders a dark-toned theme optimized for high-contrast visibility against light backgrounds.                 |
+
+#### Theme-to-Shade Mapping Structure
+
+When you define a theme via `defineTheme()`, the theme token automatically populates the complete contextual shades:
+
+| Theme Token     | Base            | Mild            | Flip            | Text            | Face            | Bold            | Thin            | Edge            | Soft            |
+| --------------- | --------------- | --------------- | --------------- | --------------- | --------------- | --------------- | --------------- | --------------- | --------------- |
+| **`primary`**   | `primaryBase`   | `primaryMild`   | `primaryFlip`   | `primaryText`   | `primaryFace`   | `primaryBold`   | `primaryThin`   | `primaryEdge`   | `primarySoft`   |
+| **`secondary`** | `secondaryBase` | `secondaryMild` | `secondaryFlip` | `secondaryText` | `secondaryFace` | `secondaryBold` | `secondaryThin` | `secondaryEdge` | `secondarySoft` |
+| **`success`**   | `successBase`   | `successMild`   | `successFlip`   | `successText`   | `successFace`   | `successBold`   | `successThin`   | `successEdge`   | `successSoft`   |
+| **`info`**      | `infoBase`      | `infoMild`      | `infoFlip`      | `infoText`      | `infoFace`      | `infoBold`      | `infoThin`      | `infoEdge`      | `infoSoft`      |
+| **`warning`**   | `warningBase`   | `warningMild`   | `warningFlip`   | `warningText`   | `warningFace`   | `warningBold`   | `warningThin`   | `warningEdge`   | `warningSoft`   |
+| **`danger`**    | `dangerBase`    | `dangerMild`    | `dangerFlip`    | `dangerText`    | `dangerFace`    | `dangerBold`    | `dangerThin`    | `dangerEdge`    | `dangerSoft`    |
+| **`light`**     | `lightBase`     | `lightMild`     | `lightFlip`     | `lightText`     | `lightFace`     | `lightBold`     | `lightThin`     | `lightEdge`     | `lightSoft`     |
+| **`dark`**      | `darkBase`      | `darkMild`      | `darkFlip`      | `darkText`      | `darkFace`      | `darkBold`      | `darkThin`      | `darkEdge`      | `darkSoft`      |
+
 ## ✨ Features
 
 ✔ **CRUD-Driven Management** — Easily retrieve, add, update, and delete color tokens from JavaScript.  
