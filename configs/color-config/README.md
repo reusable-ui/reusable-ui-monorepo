@@ -361,8 +361,8 @@ Here are the exposed configuration tokens you can adjust:
 import { colorParamConfigVars, colorParamConfigVarDefs } from '@reusable-ui/color-config';
 
 // Example: Customizing color generation parameters
-colorParamConfigVars.base    = '0.55'; // Adjust base lightness.
-colorParamConfigVarDefs.soft = '-0.4'; // Adjust global soft effect opacity.
+colorParamConfigVars.base    = 0.55; // Adjust base lightness.
+colorParamConfigVarDefs.soft = -0.4; // Adjust global soft effect opacity.
 ```
 
 ### Color Adjustment Utilities
