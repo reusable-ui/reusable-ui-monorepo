@@ -322,6 +322,17 @@ defineTheme('royal', null);
 defineTheme('vibrant', undefined);
 ```
 
+### Retrieving Registered Themes
+
+To retrieve an array of all currently registered theme tokens (including both built-in themes and custom user-defined themes), use `getThemes()`:
+
+```ts
+import { getThemes } from '@reusable-ui/color-config';
+
+// Retrieves all registered theme tokens:
+const themes = getThemes(); // Returns string[] e.g., ['primary', 'secondary', 'success', 'info', 'warning', 'danger', 'light', 'dark', 'cool', 'royal', 'vibrant']
+```
+
 ### Adjusting Color Parameters
 
 To adjust how generated color shades behave across various themes, assign a concrete value or expression to either `colorParamConfigVars` or `colorParamConfigVarDefs` (both yield identical assignment results).
