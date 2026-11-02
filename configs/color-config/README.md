@@ -99,6 +99,8 @@ When you define a theme via `defineTheme()`, the system automatically generates 
 | **`light`**     | `lightBase`     | `lightMild`     | `lightFlip`     | `lightText`     | `lightFace`     | `lightBold`     | `lightThin`     | `lightEdge`     | `lightSoft`     |
 | **`dark`**      | `darkBase`      | `darkMild`      | `darkFlip`      | `darkText`      | `darkFace`      | `darkBold`      | `darkThin`      | `darkEdge`      | `darkSoft`      |
 
+*(See [Adding and Updating Contextual Colors](#adding-and-updating-contextual-colors) for instructions on defining themes and overriding specific generated shades.)*
+
 ## ✨ Features
 
 ✔ **CRUD-Driven Management** — Easily retrieve, add, update, and delete color tokens and themes from JavaScript.  
