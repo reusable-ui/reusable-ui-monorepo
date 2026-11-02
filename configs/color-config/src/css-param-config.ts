@@ -36,7 +36,7 @@ const config = cssConfig(() => {
         /**
          * Adjusts the lightness for regular background colors (**`Base`**).
          * 
-         * **Base Colors** fill the entire regular background surfaces (such as standard buttons and panels).
+         * **Base Colors** fill regular background surfaces (such as standard buttons and panels).
          * 
          * - **Typical Value Range:** Small ratios (e.g., `-0.05`) to preserve rich color saturation.
          * - **Light Mode (`mode = 1`)**: Positive values lighten, negative values darken.
@@ -47,7 +47,7 @@ const config = cssConfig(() => {
         /**
          * Adjusts the lightness for content-heavy background colors (**`Mild`**).
          * 
-         * **Mild Colors** fill the entire content-heavy background surfaces (such as articles and textboxes).
+         * **Mild Colors** fill content-heavy background surfaces (such as articles and textboxes).
          * 
          * - **Typical Value Range:** Moderate-to-high positive ratios (e.g., `0.7`), making them nearly white in light mode or nearly black in dark mode to enhance visual comfort and reduce eye strain.
          * - **Light Mode (`mode = 1`)**: Positive values lighten, negative values darken.
@@ -64,7 +64,7 @@ const config = cssConfig(() => {
          * 
          * **Flip Colors** ensure readability against regular backgrounds (such as standard buttons and panels), while still retaining a subtle trace of the original color.
          * 
-         * - **Typical Value Range:** Recommended near `0.9` (keeping ratio under `1` retains a subtle trace of color; setting it to `1` forces pure black or white).
+         * - **Typical Value Range:** Recommended near `0.9` (keeping ratios under `1` retains a subtle trace of color; setting it to `1` forces pure black or white).
          * - **Behavior:** Automatically inverts tone based on background luminance and the configured `flipThreshold`.
          */
         flip            : 0.9       as number,
@@ -84,7 +84,7 @@ const config = cssConfig(() => {
          * 
          * **Text Colors** ensure readability against mild backgrounds (such as articles and textboxes), while still retaining a subtle trace of the original color.
          * 
-         * - **Typical Value Range:** Strong negative ratios near `-0.9` (keeping ratio above `-1` retains a subtle trace of color; setting it to `-1` forces pure black or white).
+         * - **Typical Value Range:** Strong negative ratios near `-0.9` (keeping ratios above `-1` retains a subtle trace of color; setting it to `-1` forces pure black or white).
          * - **Light Mode (`mode = 1`)**: Positive values lighten, negative values darken.
          * - **Dark Mode (`mode = -1`)**: Positive values darken, negative values lighten.
          */
@@ -96,8 +96,8 @@ const config = cssConfig(() => {
          * **Face Colors** preserve the authentic, high-saturation visual expression of graphic art.
          * 
          * Special cases:
-         * - **Regular Variant:**  : Graphics and icons fall back to `Flip` as the `Face` can be too close in tone to the `Base` background.
-         * - **Outlined Variant:** : All surfaces (text, graphics, icons, and borders) fall back to `Face` to act as a unified piece of art floating over transparent backgrounds.
+         * - **Regular Variant:** Graphics and icons fall back to `Flip` because `Face` can be too close in tone to the `Base` background.
+         * - **Outlined Variant:** All surfaces (text, graphics, icons, and borders) fall back to `Face` to act as a unified piece of art floating over transparent backgrounds.
          * 
          * - **Typical Value Range:** Small ratios (e.g., `-0.05`) to preserve rich color saturation.
          * - **Light Mode (`mode = 1`)**: Positive values lighten, negative values darken.
@@ -154,8 +154,8 @@ const config = cssConfig(() => {
          * **Soft Colors** create visual focus and draw attention to interactive elements without overwhelming the overall design.
          * 
          * - **Typical Value Range:** Moderate negative ratios (e.g., `-0.5`) for subtle focus rings, glows, and box shadows.
-         * - **Positive values:** Increases opacity (makes the color more solid).
-         * - **Negative values:** Decreases opacity (makes the color more transparent/blended).
+         * - **Positive values:** Increase opacity (make the color more solid).
+         * - **Negative values:** Decrease opacity (make the color more transparent/blended).
          */
         soft            : -0.5      as number,
     };

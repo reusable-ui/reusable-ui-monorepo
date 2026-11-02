@@ -44,16 +44,16 @@ Contextual shades represent specific brightness levels derived from a root color
 Certain shades (`Flip`, `Face`, `Soft`) are designed for cross-variant reuse, referencing shared design tokens across different component variants (`regular`, `mild`, `outlined`).
 
 - **Backgrounds:**
-  - **`Base`** — Regular background colors, filling the entire regular background surfaces (such as standard buttons and panels).
-  - **`Mild`** — Content-heavy background colors, filling the entire content-heavy background surfaces (such as articles and textboxes).
+  - **`Base`** — Regular background colors, filling regular background surfaces (such as standard buttons and panels).
+  - **`Mild`** — Content-heavy background colors, filling content-heavy background surfaces (such as articles and textboxes).
 
 - **Foregrounds:**
   - **`Flip`** — Regular text colors, ensuring readability against regular backgrounds (such as standard buttons and panels), while still retaining a subtle trace of the original color.
   - **`Text`** — Content-heavy text colors, ensuring readability against mild backgrounds (such as articles and textboxes), while still retaining a subtle trace of the original color.
   - **`Face`** — Graphic and icon colors, preserving the authentic, high-saturation visual expression of graphic art.  
     Special cases:
-    - **Regular Variant:**  : Graphics and icons fall back to `Flip` as the `Face` can be too close in tone to the `Base` background.
-    - **Outlined Variant:** : All surfaces (text, graphics, icons, and borders) fall back to `Face` to act as a unified piece of art floating over transparent backgrounds.
+    - **Regular Variant:** Graphics and icons fall back to `Flip` because `Face` can be too close in tone to the `Base` background.
+    - **Outlined Variant:** All surfaces (text, graphics, icons, and borders) fall back to `Face` to act as a unified piece of art floating over transparent backgrounds.
 
 - **Borders:**
   - **`Bold`** — Regular borders and separators, providing high-contrast framing that wraps securely around regular `Base` backgrounds.
@@ -309,9 +309,9 @@ Here are the exposed configuration tokens you can adjust:
 
 > **⚠️ Warning:**
 > Technically, you can perform all CRUD operations on these configuration mappings.
-However, you should generally only modify the existing built-in parameter tokens.
-Deleting built-in tokens can result in unpredictable runtime behavior.
-Adding custom tokens is fully supported if you need adjustable shared parameters for your own custom formulas.
+> However, you should generally only modify the existing built-in parameter tokens.
+> Deleting built-in tokens can result in unpredictable runtime behavior.
+> Adding custom tokens is fully supported if you need adjustable shared parameters for your own custom formulas.
 
 ```ts
 import { colorParamConfigVars, colorParamConfigVarDefs } from '@reusable-ui/color-config';
