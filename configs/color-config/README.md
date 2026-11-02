@@ -64,6 +64,8 @@ Certain shades (`Flip`, `Face`, `Soft`) are designed for cross-variant reuse, re
 - **Effects:**
   - **`Soft`** — Effect colors, creating visual focus and drawing attention to interactive elements without overwhelming the overall design.
 
+*(See [Adjusting Color Parameters](#adjusting-color-parameters) to customize how these shades are calculated.)*
+
 ### 🌈 Default Contextual Themes
 
 Building upon the contextual shades defined above, the library provides out-of-the-box support for standard **theme tokens**.
