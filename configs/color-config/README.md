@@ -306,6 +306,8 @@ colorConfigVars.coolSoft  = `oklch(from ${colorConfigVars.cool} l c h / calc(a *
 colorConfigVars.royalMild = adjustLightness(colorConfigVars.royal, colorParamConfigVars.mild); // Lighten root color using utility & parameter.
 ```
 
+*(See [Color Adjustment Utilities](#color-adjustment-utilities) to easily manipulate colors without manually crafting complex CSS formulas.)*
+
 ### Deleting Contextual Colors
 
 To delete a themed color alongside its associated shades, use `deleteTheme`.
