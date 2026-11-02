@@ -272,7 +272,7 @@ The auto-generated shades are created based on the configured **color parameter 
 These shades are reactive, mirroring parameter configurations whether modified prior to or following creation.
 You can adjust the parameters later (if needed) without redefining the theme.
 Changing light/dark mode parameter also updates the shades automatically.  
-*(See [Adjusting Color Parameters](#adjusting-color-parameters) to customize how these shades are calculated)*
+*(See [Adjusting Color Parameters](#adjusting-color-parameters) to customize how these shades are calculated.)*
 
 If needed, you can override any generated shade using the provided JavaScript CRUD APIs.
 
