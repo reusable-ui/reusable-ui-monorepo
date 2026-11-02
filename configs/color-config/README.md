@@ -299,8 +299,8 @@ defineTheme('royal', 'oklch(0.46 0.19 30)');
 defineTheme('vibrant', `color-mix(in oklch, ${colorConfigVars.cool} 50%, ${colorConfigVars.royal} 50%)`);
 
 // 2. Overriding specific generated shades using CRUD/assignment:
-colorConfigVars.coolMild = `oklch(from ${colorConfigVars.cool} calc(l * 1.7) c h / a)`; // Lighten the root color.
-colorConfigVars.coolSoft = `oklch(from ${colorConfigVars.cool} l c h / calc(a * 0.5))`; // Make root color semi-transparent.
+colorConfigVars.coolMild  = `oklch(from ${colorConfigVars.cool} calc(l * 1.7) c h / a)`; // Lighten the root color.
+colorConfigVars.coolSoft  = `oklch(from ${colorConfigVars.cool} l c h / calc(a * 0.5))`; // Make root color semi-transparent.
 colorConfigVars.royalMild = adjustLightness(colorConfigVars.royal, colorParamConfigVars.mild); // Lighten root color using utility & parameter.
 ```
 
