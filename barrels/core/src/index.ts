@@ -4,7 +4,7 @@
 // - Exposes object modeling and helper APIs to perform CRUD operations on the underlying configuration variables from JavaScript code.
 // - Acts as the single source of truth and must be installed as peer dependencies.
 /*peer*/ export * from '@reusable-ui/color-config'              // Configures the theme color system (color palettes and shades) across all UI components.
-/*peer*/ export * from '@reusable-ui/border-config'             // Configures border stroke (thickness, styling, and colors) across all UI components.
+/*peer*/ export * from '@reusable-ui/border-config'             // Configures border strokes (thickness, styling, and colors) across all UI components.
 /*peer*/ export * from '@reusable-ui/radius-config'             // Configures corner rounding (border radii) across all UI components.
 /*peer*/ export * from '@reusable-ui/spacer-config'             // Configures the spacing system (margins, paddings, and gaps) across all UI components.
 /*peer*/ export * from '@reusable-ui/breakpoint-config'         // Configures the breakpoint system (responsive layouts) across all UI components.
