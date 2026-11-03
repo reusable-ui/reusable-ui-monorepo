@@ -169,6 +169,8 @@ Below is an overview of the predefined color tokens and how root semantic colors
 | **light**          | `lightBase`     | `lightMild`     | `lightFlip`     | `lightText`     | `lightFace`     | `lightBold`     | `lightThin`     | `lightEdge`     | `lightSoft`     |
 | **dark**           | `darkBase`      | `darkMild`      | `darkFlip`      | `darkText`      | `darkFace`      | `darkBold`      | `darkThin`      | `darkEdge`      | `darkSoft`      |
 
+*(Need to customize? See [Adding and Updating Colors](#adding-and-updating-colors) or [Adding and Updating Contextual Colors](#adding-and-updating-contextual-colors).)*
+
 ## 🎨 Usage and Customization
 
 Using `colorConfigVars` or `colorConfigVarDefs`, you can perform CRUD operations keyed by your desired color tokens.
