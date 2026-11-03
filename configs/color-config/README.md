@@ -168,6 +168,11 @@ Below is an overview of the predefined color tokens and how root semantic colors
 | **light**          | `lightBase`     | `lightMild`     | `lightFlip`     | `lightText`     | `lightFace`     | `lightBold`     | `lightThin`     | `lightEdge`     | `lightSoft`     |
 | **dark**           | `darkBase`      | `darkMild`      | `darkFlip`      | `darkText`      | `darkFace`      | `darkBold`      | `darkThin`      | `darkEdge`      | `darkSoft`      |
 
+> **⚠️ Warning:**
+> Do not delete the predefined color tokens, as standard components rely on their existence.
+> You are free to override their values, but the token keys themselves must remain intact.
+> Adding custom tokens is fully encouraged for additional color configurations.
+
 *(Need to customize? See [Adding and Updating Colors](#adding-and-updating-colors) or [Adding and Updating Contextual Colors](#adding-and-updating-contextual-colors).)*
 
 ## 🎨 Usage and Customization
