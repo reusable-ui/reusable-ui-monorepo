@@ -5,9 +5,8 @@
 Under the hood, it stores configurations in native CSS variables placed at the `:root` level,
 allowing them to be shared seamlessly across all components within the app.
 
-To easily access and update these variables programmatically, the package provides a robust object-based configuration API and helper utilities.  
-You can perform CRUD operations, and any changes are instantly reflected to the corresponding CSS variables
-and propagated across all consuming components.
+To easily access and update these variables programmatically, the package provides a robust object-based configuration API and helper utilities.
+You can perform CRUD operations, and any changes are instantly reflected in the corresponding CSS variables and propagated across all consuming components.
 
 With **color-config**, you can:
 
