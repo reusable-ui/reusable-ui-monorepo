@@ -176,16 +176,16 @@ Using `colorConfigVars` or `colorConfigVarDefs`, you can perform CRUD operations
 
 ### Retrieving Colors
 
-- **`colorConfigVars`** retrieves a live CSS variable reference (recommended for reactive component styling).
-- **`colorConfigVarDefs`** retrieves the evaluated expression or concrete value (a snapshot at retrieval time, useful when your JavaScript logic needs the raw color value).
+- **`colorConfigVars`** retrieves live CSS variable references (recommended for reactive component styling).
+- **`colorConfigVarDefs`** retrieves the evaluated expressions or concrete values (snapshots at retrieval time, useful when your JavaScript logic needs raw color values).
 
 ```ts
 import { colorConfigVars, colorConfigVarDefs } from '@reusable-ui/color-config';
 
-// Gets the live CSS variable reference (reactive & linked to config):
+// Gets the live CSS variable references (reactive & linked to config):
 const colorRef = colorConfigVars.primaryBase; // Resolves to 'var(--col-primaryBase)'
 
-// Gets the evaluated snapshot value/expression (for JS logic calculations):
+// Gets the evaluated snapshot values/expressions (for JS logic calculations):
 const colorDef = colorConfigVarDefs.primaryBase; // Resolves to 'oklch(from var(--col-primary) ...)'
 ```
 
@@ -201,7 +201,7 @@ colorConfigVars.coolBlue  = '#5555ff';
 colorConfigVars.deepBlue  = 'oklch(0.6 0.2 250)';
 colorConfigVars.mixedBlue = `color-mix(in oklch, ${colorConfigVars.coolBlue} 50%, ${colorConfigVars.deepBlue} 50%)`;
 
-// Alternatively assigning via colorConfigVarDefs:
+// Alternatively, assigning via colorConfigVarDefs:
 colorConfigVarDefs.coolBlue  = '#5555ff';
 colorConfigVarDefs.deepBlue  = 'oklch(0.6 0.2 250)';
 colorConfigVarDefs.mixedBlue = `color-mix(in oklch, ${colorConfigVars.coolBlue} 50%, ${colorConfigVars.deepBlue} 50%)`;
@@ -214,11 +214,11 @@ To delete a color token, use the `delete` operator or assign `null` / `undefined
 ```ts
 import { colorConfigVars, colorConfigVarDefs } from '@reusable-ui/color-config';
 
-// Deleting tokens:
+// Deleting tokens using the delete operator:
 delete colorConfigVars.coolBlue;
 delete colorConfigVarDefs.deepBlue;
 
-// Deleting tokens via null or undefined:
+// Deleting tokens using null or undefined assignment:
 colorConfigVars.mixedBlue      = null;
 colorConfigVarDefs.customColor = undefined;
 ```
@@ -252,7 +252,7 @@ const backgroundShade = colorTokenMap[activeVariant]['backg' ];
 const foregroundShade = colorTokenMap[activeVariant]['foreg' ];
 const borderShade     = colorTokenMap[activeVariant]['border'];
 
-// 3. Get the live CSS variable reference (reactive & linked to config):
+// 3. Get the live CSS variable references (reactive & linked to config):
 const backgroundColorRef = (
     backgroundShade
     ? colorConfigVars[`${activeTheme}${backgroundShade}`]                          // Resolves to e.g. 'var(--col-primaryBase)'
@@ -261,7 +261,7 @@ const backgroundColorRef = (
 const foregroundColorRef = colorConfigVars[`${activeTheme}${foregroundShade}`];    // Resolves to e.g. 'var(--col-primaryFlip)'
 const borderColorRef     = colorConfigVars[`${activeTheme}${borderShade}`];        // Resolves to e.g. 'var(--col-primaryBold)'
 
-// 4. Get the evaluated snapshot value/expression (for JS logic calculations):
+// 4. Get the evaluated snapshot values/expressions (for JS logic calculations):
 const backgroundColorDef = (
     backgroundShade
     ? colorConfigVarDefs[`${activeTheme}${backgroundShade}`]                       // Resolves to e.g. 'oklch(from var(--col-primary) ...)'
@@ -326,7 +326,7 @@ import { deleteTheme, defineTheme } from '@reusable-ui/color-config';
 // 1. Deleting a themed color by its token:
 deleteTheme('cool');
 
-// 2. Deleting a themed color via null or undefined assignment:
+// 2. Deleting a themed color using null or undefined assignment:
 defineTheme('royal', null);
 defineTheme('vibrant', undefined);
 ```
