@@ -72,7 +72,7 @@ Below is an overview of the predefined border tokens:
 | `default`      | `.defaultWidth` `.defaultStyle` `.defaultColor` | Default border (width + style + color) |
 
 > **⚠️ Warning:**
-> Do not delete the predefined tokens, as standard components rely on their existence.
+> Do not delete the predefined border tokens, as standard components rely on their existence.
 > You are free to override their values, but the token keys themselves must remain intact.
 > Adding custom tokens is fully encouraged for additional border configurations.
 
