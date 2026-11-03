@@ -13,7 +13,7 @@ With **color-config**, you can:
 
 - **Consume** configured color palettes and shades across all UI components for consistent theming.
 - **Access and manipulate** color configurations dynamically from JavaScript code.
-- **Define custom themes** or modify default color settings on the fly.
+- **Define custom themes** or modify predefined color settings on the fly.
 - **Switch between light and dark modes** seamlessly, with automatic color flipping and contrast adjustments.
 
 ## 🧩 Color Variable Architecture
@@ -99,7 +99,7 @@ When you define a theme via `defineTheme()`, the system automatically generates 
 | **`light`**     | `lightBase`     | `lightMild`     | `lightFlip`     | `lightText`     | `lightFace`     | `lightBold`     | `lightThin`     | `lightEdge`     | `lightSoft`     |
 | **`dark`**      | `darkBase`      | `darkMild`      | `darkFlip`      | `darkText`      | `darkFace`      | `darkBold`      | `darkThin`      | `darkEdge`      | `darkSoft`      |
 
-*(See [Adding and Updating Contextual Colors](#adding-and-updating-contextual-colors) for instructions on defining themes and overriding specific generated shades.)*
+*(See [Adding and Updating Contextual Colors](#adding-and-updating-contextual-colors) for instructions on defining custom themes and overriding specific generated shades.)*
 
 ## ✨ Features
 
@@ -139,9 +139,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-## Default Colors and Shades
+## Predefined Colors and Shades
 
-Below is an overview of the default color tokens and how root semantic colors map across the derived contextual shading tiers:
+Below is an overview of the predefined color tokens and how root semantic colors map across the derived contextual shading tiers:
 
 | Invariant (Source) | Base            | Mild            | Flip            | Text            | Face            | Bold            | Thin            | Edge            | Soft            |
 | ------------------ | --------------- | --------------- | --------------- | --------------- | --------------- | --------------- | --------------- | --------------- | --------------- |
