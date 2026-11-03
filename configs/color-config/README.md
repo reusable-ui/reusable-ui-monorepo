@@ -426,5 +426,5 @@ Licensed under the **MIT License** – see the [LICENSE](./LICENSE) file for det
 
 ---
 
-🚀 **@reusable-ui/color-config configures color system using CRUD operations.**  
+🚀 **@reusable-ui/color-config simplifies color management for dynamic UI designs.**  
 Give it a ⭐ on GitHub if you find it useful!  
