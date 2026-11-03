@@ -2,7 +2,7 @@
 
 **@reusable-ui/color-config** configures the theme color system (color palettes and shades) across all UI components.
 
-Under the hood, it stores configurations in native CSS variables placed at the root level,
+Under the hood, it stores configurations in native CSS variables placed at the `:root` level,
 allowing them to be shared seamlessly across all components within the app.
 
 To easily access and update these variables programmatically, the package provides a robust object-based configuration API and helper utilities.  
