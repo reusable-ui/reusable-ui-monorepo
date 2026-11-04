@@ -19,7 +19,7 @@ With **border-config**, you can:
 The border system categorizes border configurations into two main groups:
 
 - **Border Widths:** Sizing tokens for stroke thickness (`none`, `hair`, `thin`, `bold`, etc.).
-- **Default Borders:** Fallback tokens governing default styles across standard components (`defaultWidth`, `defaultStyle`, `defaultColor`, `default`, etc.).
+- **Default Borders:** Fallback tokens governing default borders across standard components (`defaultWidth`, `defaultStyle`, `defaultColor`, `default`, etc.).
 
 ## ✨ Features
 
