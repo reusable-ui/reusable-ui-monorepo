@@ -55,7 +55,7 @@ import {
 export const usingBorderFeature = (options?: CssBorderFeatureOptions): CssBorderFeature => {
     // Extract options and assign defaults:
     const {
-        borderStyle                      = borderConfigVars.style,
+        borderStyle                      = borderConfigVars.defaultStyle,
         
         
         
@@ -77,7 +77,7 @@ export const usingBorderFeature = (options?: CssBorderFeatureOptions): CssBorder
         
         
         
-        borderColor : defaultBorderColor = borderConfigVars.color, // Ensures a concrete fallback to avoid invalid value.
+        borderColor : defaultBorderColor = borderConfigVars.defaultColor, // Ensures a concrete fallback to avoid invalid value.
     } = options ?? {};
     
     

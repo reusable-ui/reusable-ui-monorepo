@@ -52,41 +52,41 @@ const config = cssConfig(() => {
     
     
     
-    // Border styles:
-    
-    /**
-     * Border styling properties.
-     * Defines color and type of border rendering.
-     */
-    const borderStyles = {
-        /**
-         * The color of border.
-         */
-        color   : 'currentColor'    as CssBorderColor,
-        
-        /**
-         * The styling of border.
-         */
-        style   : 'solid'           as CssBorderStyle,
-    };
-    
-    
-    
     // Default borders:
     
     /**
-     * Default border settings applied across components.
+     * Default border widths.
      */
-    const defaultBorders = {
+    const defaultBorderWidths = {
         /**
-         * Standard border width.
+         * Default border width.
          */
-        defaultWidth : borderWidths.hair                                                as CssBorderWidth,
+        defaultWidth : borderWidths.hair    as CssBorderWidth,
+    };
+    
+    /**
+     * Default border styles and colors.
+     */
+    const defaultBorderStyles = {
+        /**
+         * Default border style.
+         */
+        defaultStyle : 'solid'              as CssBorderStyle,
         
         /**
-         * Full default border definition.
+         * Default border color.
          */
-        default      : [[ borderStyles.style, borderWidths.hair, borderStyles.color ]]  as CssBorder,
+        defaultColor : 'currentColor'       as CssBorderColor,
+    };
+    
+    /**
+     * Default border shorthands.
+     */
+    const defaultBorderShorthands = {
+        /**
+         * Default border shorthand.
+         */
+        default      : [[ defaultBorderWidths.defaultWidth, defaultBorderStyles.defaultStyle, defaultBorderStyles.defaultColor ]]   as CssBorder,
     };
     
     
@@ -94,8 +94,9 @@ const config = cssConfig(() => {
     // Merge all border definitions:
     return {
         ...borderWidths,
-        ...borderStyles,
-        ...defaultBorders,
+        ...defaultBorderWidths,
+        ...defaultBorderStyles,
+        ...defaultBorderShorthands,
     };
 }, { prefix: defaultBorderConfigPrefix });
 

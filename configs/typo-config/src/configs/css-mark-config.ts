@@ -57,7 +57,7 @@ const config = cssConfig(() => {
          * Defines the **border style** for `<mark>` elements.
          * Typically uses the default border style for consistency.
          */
-        borderStyle            : borderConfigVars.style                                         as CssKnownProps['borderStyle'       ],
+        borderStyle            : borderConfigVars.defaultStyle                                  as CssKnownProps['borderStyle'       ],
         
         /**
          * Defines the **border width** for `<mark>` elements.

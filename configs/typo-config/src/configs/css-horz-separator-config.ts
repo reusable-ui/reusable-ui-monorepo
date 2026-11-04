@@ -41,7 +41,7 @@ const config = cssConfig(() => {
          * Defines the **border style** for horizontal separators.
          * Typically uses the default border style for consistency.
          */
-        borderStyle            : borderConfigVars.style         as CssKnownProps['borderStyle'       ],
+        borderStyle            : borderConfigVars.defaultStyle  as CssKnownProps['borderStyle'       ],
         
         /**
          * Defines the **border width** for horizontal separators.
