@@ -187,10 +187,10 @@ Using `colorConfigVars` or `colorConfigVarDefs`, you can perform CRUD operations
 ```ts
 import { colorConfigVars, colorConfigVarDefs } from '@reusable-ui/color-config';
 
-// Gets the live CSS variable references (reactive & linked to config):
+// Gets live CSS variable references (reactive & linked to config):
 const colorRef = colorConfigVars.primaryBase; // Resolves to 'var(--col-primaryBase)'
 
-// Gets the evaluated snapshot values/expressions (for JS logic calculations):
+// Gets evaluated snapshot values/expressions (for JS logic calculations):
 const colorDef = colorConfigVarDefs.primaryBase; // Resolves to 'oklch(from var(--col-primary) ...)'
 ```
 

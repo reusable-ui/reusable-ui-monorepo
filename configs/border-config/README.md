@@ -90,11 +90,11 @@ Using `borderConfigVars` or `borderConfigVarDefs`, you can perform CRUD operatio
 ```ts
 import { borderConfigVars, borderConfigVarDefs } from '@reusable-ui/border-config';
 
-// Gets the live CSS variable references (reactive & linked to config):
+// Gets live CSS variable references (reactive & linked to config):
 const borderWidthRef   = borderConfigVars.hair;    // Resolves to 'var(--bor-hair)'
 const borderDefaultRef = borderConfigVars.default; // Resolves to 'var(--bor-default)'
 
-// Gets the evaluated snapshot values/expressions (for JS logic calculations):
+// Gets evaluated snapshot values/expressions (for JS logic calculations):
 const borderWidthDef   = borderConfigVarDefs.hair;    // Resolves to '1px'
 const borderDefaultDef = borderConfigVarDefs.default; // Resolves to 'var(--bor-defaultWidth) var(--bor-defaultStyle) var(--bor-defaultColor)'
 ```
