@@ -35,7 +35,7 @@ const config = cssConfig(() => {
         none    : '0px'             as CssBorderWidth,
         
         /**
-         * Ultra-thin border.
+         * Hairline border.
          */
         hair    : '1px'             as CssBorderWidth,
         
@@ -84,7 +84,7 @@ const config = cssConfig(() => {
      */
     const defaultBorderShorthands = {
         /**
-         * Default border shorthand.
+         * Default border (width + style + color).
          */
         default      : [[ defaultBorderWidths.defaultWidth, defaultBorderStyles.defaultStyle, defaultBorderStyles.defaultColor ]]   as CssBorder,
     };
