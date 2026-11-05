@@ -257,7 +257,7 @@ const backgroundShade = colorTokenMap[activeVariant]['backg' ];
 const foregroundShade = colorTokenMap[activeVariant]['foreg' ];
 const borderShade     = colorTokenMap[activeVariant]['border'];
 
-// 3. Get the live CSS variable references (reactive & linked to config):
+// 3. Get live CSS variable references (reactive & linked to config):
 const backgroundColorRef = (
     backgroundShade
     ? colorConfigVars[`${activeTheme}${backgroundShade}`]                          // Resolves to e.g. 'var(--col-primaryBase)'
@@ -266,7 +266,7 @@ const backgroundColorRef = (
 const foregroundColorRef = colorConfigVars[`${activeTheme}${foregroundShade}`];    // Resolves to e.g. 'var(--col-primaryFlip)'
 const borderColorRef     = colorConfigVars[`${activeTheme}${borderShade}`];        // Resolves to e.g. 'var(--col-primaryBold)'
 
-// 4. Get the evaluated snapshot values/expressions (for JS logic calculations):
+// 4. Get evaluated snapshot values/expressions (for JS logic calculations):
 const backgroundColorDef = (
     backgroundShade
     ? colorConfigVarDefs[`${activeTheme}${backgroundShade}`]                       // Resolves to e.g. 'oklch(from var(--col-primary) ...)'
