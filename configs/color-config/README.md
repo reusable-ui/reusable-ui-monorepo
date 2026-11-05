@@ -204,11 +204,17 @@ import { colorConfigVars, colorConfigVarDefs } from '@reusable-ui/color-config';
 // Assigning via colorConfigVars:
 colorConfigVars.coolBlue  = '#5555ff';
 colorConfigVars.deepBlue  = 'oklch(0.6 0.2 250)';
+
+// Using string interpolation to construct dynamic expressions:
+// - Ideal for creating formulas driven by one or more variables.
 colorConfigVars.mixedBlue = `color-mix(in oklch, ${colorConfigVars.coolBlue} 50%, ${colorConfigVars.deepBlue} 50%)`;
 
 // Alternatively, assigning via colorConfigVarDefs:
 colorConfigVarDefs.coolBlue  = '#5555ff';
 colorConfigVarDefs.deepBlue  = 'oklch(0.6 0.2 250)';
+
+// Using string interpolation to construct dynamic expressions:
+// - Ideal for creating formulas driven by one or more variables.
 colorConfigVarDefs.mixedBlue = `color-mix(in oklch, ${colorConfigVars.coolBlue} 50%, ${colorConfigVars.deepBlue} 50%)`;
 ```
 
@@ -308,6 +314,9 @@ import { defineTheme, colorConfigVars adjustLightness, colorParamConfigVars } fr
 // 1. Defining themes via defineTheme helper:
 defineTheme('cool', '#5555ff');
 defineTheme('royal', 'oklch(0.46 0.19 30)');
+
+// Using string interpolation to construct dynamic expressions:
+// - Ideal for creating formulas driven by one or more variables.
 defineTheme('vibrant', `color-mix(in oklch, ${colorConfigVars.cool} 50%, ${colorConfigVars.royal} 50%)`);
 
 // 2. Overriding specific generated shades using CRUD/assignment:

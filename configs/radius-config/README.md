@@ -111,6 +111,9 @@ import { radiusConfigVars, radiusConfigVarDefs } from '@reusable-ui/radius-confi
 
 // Assigning via radiusConfigVars:
 radiusConfigVars.xxxl = '4rem';
+
+// Using string interpolation to construct dynamic expressions:
+// - Ideal for creating formulas driven by one or more variables.
 radiusConfigVars.mega = `calc(${radiusConfigVars.lg} * 1.5)`;
 
 // Using double brackets (`[[...]]`) to automatically join sub-expressions with spaces:
@@ -123,6 +126,9 @@ radiusConfigVars.giga = [[
 
 // Alternatively, assigning via radiusConfigVarDefs:
 radiusConfigVarDefs.xxxl = '4rem';
+
+// Using string interpolation to construct dynamic expressions:
+// - Ideal for creating formulas driven by one or more variables.
 radiusConfigVarDefs.mega = `calc(${radiusConfigVars.lg} * 1.5)`;
 
 // Using double brackets (`[[...]]`) to automatically join sub-expressions with spaces:

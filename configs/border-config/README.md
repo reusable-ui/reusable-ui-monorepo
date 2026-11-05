@@ -110,6 +110,9 @@ import { borderConfigVars, borderConfigVarDefs } from '@reusable-ui/border-confi
 borderConfigVars.extraBold      = '8px';
 borderConfigVars.ultraBold      = `calc(${borderConfigVars.extraBold} * 2)`;
 borderConfigVars.highlightColor = 'red';
+
+// Using string interpolation to construct dynamic expressions:
+// - Ideal for creating formulas driven by one or more variables.
 borderConfigVars.highlight      = `${borderConfigVars.extraBold} ${borderConfigVars.defaultStyle} ${borderConfigVars.highlightColor}`;
 
 // Using double brackets (`[[...]]`) to automatically join sub-expressions with spaces:
@@ -124,6 +127,9 @@ borderConfigVars.selection      = [[
 borderConfigVarDefs.extraBold      = '8px';
 borderConfigVarDefs.ultraBold      = `calc(${borderConfigVars.extraBold} * 2)`;
 borderConfigVarDefs.highlightColor = 'red';
+
+// Using string interpolation to construct dynamic expressions:
+// - Ideal for creating formulas driven by one or more variables.
 borderConfigVarDefs.highlight      = `${borderConfigVars.extraBold} ${borderConfigVars.defaultStyle} ${borderConfigVars.highlightColor}`;
 
 // Using double brackets (`[[...]]`) to automatically join sub-expressions with spaces:
