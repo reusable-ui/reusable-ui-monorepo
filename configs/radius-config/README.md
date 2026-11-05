@@ -116,7 +116,7 @@ radiusConfigVars.xxxl = '4rem';
 // - Ideal for creating formulas driven by one or more variables.
 radiusConfigVars.mega = `calc(${radiusConfigVars.lg} * 1.5)`;
 
-// Using double brackets (`[[...]]`) to automatically join sub-expressions with spaces:
+// Alternative syntax to string interpolation (using double brackets `[[...]]` to automatically join array items with spaces):
 radiusConfigVars.giga = [[
   'calc(',
   radiusConfigVars.lg,
@@ -133,7 +133,7 @@ radiusConfigVarDefs.xxxl = '4rem';
 // - Ideal for creating formulas driven by one or more variables.
 radiusConfigVarDefs.mega = `calc(${radiusConfigVars.lg} * 1.5)`;
 
-// Using double brackets (`[[...]]`) to automatically join sub-expressions with spaces:
+// Alternative syntax to string interpolation (using double brackets `[[...]]` to automatically join array items with spaces):
 radiusConfigVarDefs.giga = [[
   'calc(',
   radiusConfigVars.lg,

@@ -115,8 +115,7 @@ borderConfigVars.highlightColor = 'red';
 // - Ideal for creating formulas driven by one or more variables.
 borderConfigVars.highlight      = `${borderConfigVars.extraBold} ${borderConfigVars.defaultStyle} ${borderConfigVars.highlightColor}`;
 
-// Using double brackets (`[[...]]`) to automatically join sub-expressions with spaces:
-// - Ideal for CSS shorthand properties like width, style, and color.
+// Alternative syntax to string interpolation (using double brackets `[[...]]` to automatically join array items with spaces):
 borderConfigVars.selection      = [[
   borderConfigVars.ultraBold,
   borderConfigVars.defaultStyle,
@@ -134,8 +133,7 @@ borderConfigVarDefs.highlightColor = 'red';
 // - Ideal for creating formulas driven by one or more variables.
 borderConfigVarDefs.highlight      = `${borderConfigVars.extraBold} ${borderConfigVars.defaultStyle} ${borderConfigVars.highlightColor}`;
 
-// Using double brackets (`[[...]]`) to automatically join sub-expressions with spaces:
-// - Ideal for CSS shorthand properties like width, style, and color.
+// Alternative syntax to string interpolation (using double brackets `[[...]]` to automatically join array items with spaces):
 borderConfigVarDefs.selection      = [[
   borderConfigVars.ultraBold,
   borderConfigVars.defaultStyle,
