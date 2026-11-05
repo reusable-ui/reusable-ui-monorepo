@@ -123,6 +123,8 @@ borderConfigVars.selection      = [[
   borderConfigVars.highlightColor,
 ]]; // Resolves to 'var(--bor-ultraBold) var(--bor-defaultStyle) var(--bor-highlightColor)'
 
+
+
 // Alternatively, assigning via borderConfigVarDefs:
 borderConfigVarDefs.extraBold      = '8px';
 borderConfigVarDefs.ultraBold      = `calc(${borderConfigVars.extraBold} * 2)`;

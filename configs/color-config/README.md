@@ -209,6 +209,8 @@ colorConfigVars.deepBlue  = 'oklch(0.6 0.2 250)';
 // - Ideal for creating formulas driven by one or more variables.
 colorConfigVars.mixedBlue = `color-mix(in oklch, ${colorConfigVars.coolBlue} 50%, ${colorConfigVars.deepBlue} 50%)`;
 
+
+
 // Alternatively, assigning via colorConfigVarDefs:
 colorConfigVarDefs.coolBlue  = '#5555ff';
 colorConfigVarDefs.deepBlue  = 'oklch(0.6 0.2 250)';
@@ -318,6 +320,8 @@ defineTheme('royal', 'oklch(0.46 0.19 30)');
 // Using string interpolation to construct dynamic expressions:
 // - Ideal for creating formulas driven by one or more variables.
 defineTheme('vibrant', `color-mix(in oklch, ${colorConfigVars.cool} 50%, ${colorConfigVars.royal} 50%)`);
+
+
 
 // 2. Overriding specific generated shades using CRUD/assignment:
 colorConfigVars.coolMild  = `oklch(from ${colorConfigVars.cool} calc(l * 1.7) c h / a)`; // Lighten the root color.
