@@ -160,8 +160,8 @@ In addition to configuration tokens, **breakpoint-config** provides responsive q
 
 | Purpose / Condition                 | Screen Utility             | Container Utility             | Description                                                                                                               |
 | ----------------------------------- | -------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| **Minimum Width** *(At least)*      | `ifScreenWidthAtLeast`     | `ifContainerWidthAtLeast`     | Applies styles when the width is **greater than or equal to** the specified breakpoint.                                   |
-| **Maximum Width** *(Smaller than)*  | `ifScreenWidthSmallerThan` | `ifContainerWidthSmallerThan` | Applies styles when the width is **less than** the specified breakpoint.                                                  |
+| **Minimum Width** *(At least)*      | `ifScreenWidthAtLeast`     | `ifContainerWidthAtLeast`     | Applies styles when the width is **bigger than or equal to** the specified breakpoint.                                    |
+| **Maximum Width** *(Smaller than)*  | `ifScreenWidthSmallerThan` | `ifContainerWidthSmallerThan` | Applies styles when the width is **smaller than** the specified breakpoint.                                               |
 | **Range Width** *(Between)*         | `ifScreenWidthBetween`     | `ifContainerWidthBetween`     | Applies styles when the width is **between** the minimum (inclusive) and maximum (exclusive) breakpoints.                 |
 | **Exact Width** *(At breakpoint)*   | `ifScreenWidthAt`          | `ifContainerWidthAt`          | Applies styles when the width **starts** from the specified breakpoint (inclusive) up to the next breakpoint (exclusive). |
 
