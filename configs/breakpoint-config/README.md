@@ -163,7 +163,7 @@ In addition to configuration tokens, **breakpoint-config** provides responsive q
 | **Minimum Width** *(At least)*      | `ifScreenWidthAtLeast`     | `ifContainerWidthAtLeast`     | Applies styles when the width is **bigger than or equal to** the specified breakpoint.                                                  |
 | **Maximum Width** *(Smaller than)*  | `ifScreenWidthSmallerThan` | `ifContainerWidthSmallerThan` | Applies styles when the width is **smaller than** the specified breakpoint.                                                             |
 | **Range Width** *(Between)*         | `ifScreenWidthBetween`     | `ifContainerWidthBetween`     | Applies styles when the width **spans** from the starting value of the lower breakpoint up to the ending value of the upper breakpoint. |
-| **Exact Width** *(At breakpoint)*   | `ifScreenWidthAt`          | `ifContainerWidthAt`          | Applies styles when the width **starts** from the specified breakpoint (inclusive) up to the next breakpoint (exclusive).               |
+| **Exact Width** *(At breakpoint)*   | `ifScreenWidthAt`          | `ifContainerWidthAt`          | Applies styles when the width **spans** from the starting value of the specified breakpoint up to its ending value.                     |
 
 ```ts
 import { style } from '@cssfn/core';
