@@ -55,19 +55,14 @@ const config = cssConfig(() => {
     // Default borders:
     
     /**
-     * Default border widths.
+     * Default border applied across components.
      */
-    const defaultBorderWidths = {
+    const defaultBorders = {
         /**
          * Default border width.
          */
         defaultWidth : borderWidths.hair    as CssBorderWidth,
-    };
-    
-    /**
-     * Default border styles and colors.
-     */
-    const defaultBorderStyles = {
+        
         /**
          * Default border style.
          */
@@ -86,7 +81,7 @@ const config = cssConfig(() => {
         /**
          * Default border (width + style + color).
          */
-        default      : [[ defaultBorderWidths.defaultWidth, defaultBorderStyles.defaultStyle, defaultBorderStyles.defaultColor ]]   as CssBorder,
+        default      : [[ defaultBorders.defaultWidth, defaultBorders.defaultStyle, defaultBorders.defaultColor ]]   as CssBorder,
     };
     
     
@@ -94,8 +89,7 @@ const config = cssConfig(() => {
     // Merge all border definitions:
     return {
         ...borderWidths,
-        ...defaultBorderWidths,
-        ...defaultBorderStyles,
+        ...defaultBorders,
         ...defaultBorderShorthands,
     };
 }, { prefix: defaultBorderConfigPrefix });
