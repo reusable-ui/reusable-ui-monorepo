@@ -172,6 +172,25 @@ In addition to configuration tokens, **breakpoint-config** provides responsive q
 | **Range Width** *(Between)*        | `ifScreenWidthBetween`     | `ifContainerWidthBetween`     | Applies styles when the width **spans** from the starting threshold of the lower breakpoint up to the ending threshold of the upper breakpoint. |
 | **Exact Width** *(At breakpoint)*  | `ifScreenWidthAt`          | `ifContainerWidthAt`          | Applies styles when the width **spans** from the starting threshold of the specified breakpoint up to its ending threshold.                     |
 
+Here's a visual representation of the predefined breakpoint tokens and their corresponding ranges:
+
+```txt
+Tokens:                [  xs  )   [  sm  )   [  md  )   [  lg  )   [  xl  )   ...
+                                             │          │          │   
+Thresholds:                                  └─ start   └─ start   └─ start
+                                                 `md`      `lg`       `xl`
+
+Responsive Queries Visualized:
+• atLeast('md')                              [────────────────────────────>   ...
+• smallerThan('md')    <─────────────────)
+• between('md', 'lg')                        [─────────────────)
+• at('md')                                   [──────)
+
+Boundaries:
+• `[` : Starting threshold (inclusive)
+• `)` : Ending threshold (exclusive, one tick before the next starting threshold)
+```
+
 ```ts
 import { style } from '@cssfn/core';
 import { breakpointConfigVars, ifScreenWidthAtLeast, ifContainerWidthAtLeast } from '@reusable-ui/breakpoint-config';
