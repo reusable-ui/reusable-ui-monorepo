@@ -19,8 +19,15 @@ With **breakpoint-config**, you can:
 
 ## 🧩 Breakpoint Variable Architecture
 
-The breakpoint system maps named tokens to absolute width thresholds (`xs`, `sm`, `md`, `lg`, `xl`, `xxl`, `xxxl`, etc.).
+The breakpoint system maps named tokens (`xs`, `sm`, `md`, `lg`, `xl`, `xxl`, `xxxl`, etc.) to absolute width thresholds.
 These thresholds are evaluated against screen or container layouts to drive media queries and responsive adjustments.
+
+Each breakpoint value acts as a **starting threshold** for responsive queries.
+The **ending threshold** is implicitly defined as the point right before the next breakpoint begins.
+For example, if `md` is set to `768px` and `lg` to `992px`, the effective range for the `md` tier spans from `768px` up to `991.99px`.
+For the largest breakpoint (`xxxl`), the ending threshold extends infinitely (`Infinity`), creating an open-ended range.
+
+*(See [Predefined Breakpoint Tokens](#predefined-breakpoint-tokens) for a complete list of tokens and their ranges.)*
 
 ## ✨ Features
 
@@ -62,15 +69,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 Below is an overview of the predefined breakpoint tokens:
 
-| Token  | Value    | Description                     |
-| ------ | -------- | ------------------------------- |
-| `xs`   | `0px`    | Extra-small screen width        |
-| `sm`   | `576px`  | Small screen width (tablets)    |
-| `md`   | `768px`  | Medium screen width (laptops)   |
-| `lg`   | `992px`  | Large screen width (desktops)   |
-| `xl`   | `1200px` | Extra-large screen width        |
-| `xxl`  | `1400px` | Double-extra-large screen width |
-| `xxxl` | `1600px` | Triple-extra-large screen width |
+| Token  | Value (Staring Threshold) | Implicit Ending Threshold | Description                     |
+| ------ | ------------------------- | ------------------------- | ------------------------------- |
+| `xs`   | `0px`                     | `575.99px`                | Extra-small screen width        |
+| `sm`   | `576px`                   | `767.99px`                | Small screen width (tablets)    |
+| `md`   | `768px`                   | `991.99px`                | Medium screen width (laptops)   |
+| `lg`   | `992px`                   | `1199.99px`               | Large screen width (desktops)   |
+| `xl`   | `1200px`                  | `1399.99px`               | Extra-large screen width        |
+| `xxl`  | `1400px`                  | `1599.99px`               | Double-extra-large screen width |
+| `xxxl` | `1600px`                  | `Infinity`                | Triple-extra-large screen width |
 
 > **⚠️ Warning:**
 > Do not delete the predefined breakpoint tokens, as standard components rely on their existence.
