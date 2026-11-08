@@ -69,15 +69,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 Below is an overview of the predefined breakpoint tokens:
 
-| Token  | Value (Staring Threshold) | Implicit Ending Threshold | Description                     |
-| ------ | ------------------------- | ------------------------- | ------------------------------- |
-| `xs`   | `0px`                     | `575.99px`                | Extra-small screen width        |
-| `sm`   | `576px`                   | `767.99px`                | Small screen width (tablets)    |
-| `md`   | `768px`                   | `991.99px`                | Medium screen width (laptops)   |
-| `lg`   | `992px`                   | `1199.99px`               | Large screen width (desktops)   |
-| `xl`   | `1200px`                  | `1399.99px`               | Extra-large screen width        |
-| `xxl`  | `1400px`                  | `1599.99px`               | Double-extra-large screen width |
-| `xxxl` | `1600px`                  | `Infinity`                | Triple-extra-large screen width |
+| Token  | Value (Starting Threshold) | Implicit Ending Threshold | Description                     |
+| ------ | -------------------------- | ------------------------- | ------------------------------- |
+| `xs`   | `0px`                      | `575.99px`                | Extra-small screen width        |
+| `sm`   | `576px`                    | `767.99px`                | Small screen width (tablets)    |
+| `md`   | `768px`                    | `991.99px`                | Medium screen width (laptops)   |
+| `lg`   | `992px`                    | `1199.99px`               | Large screen width (desktops)   |
+| `xl`   | `1200px`                   | `1399.99px`               | Extra-large screen width        |
+| `xxl`  | `1400px`                   | `1599.99px`               | Double-extra-large screen width |
+| `xxxl` | `1600px`                   | `Infinity`                | Triple-extra-large screen width |
 
 > **⚠️ Warning:**
 > Do not delete the predefined breakpoint tokens, as standard components rely on their existence.
