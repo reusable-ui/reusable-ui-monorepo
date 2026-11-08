@@ -87,7 +87,7 @@ const config = cssConfig(() => {
     // Default radiuses:
     
     /**
-     * Default radiuses setting.
+     * Default radiuses applied across components.
      */
     const defaultRadiuses = {
         /**
