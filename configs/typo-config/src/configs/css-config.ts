@@ -33,7 +33,7 @@ const config = cssConfig(() => {
         
         
         /**
-         * The default sans-serif font stack, optimized for cross-platform compatibility.
+         * The default sans font stack, optimized for cross-platform compatibility.
          */
         fontFamilySans       : [
             'system-ui',
