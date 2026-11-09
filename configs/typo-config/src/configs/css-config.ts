@@ -40,6 +40,7 @@ const config = cssConfig(() => {
             '-apple-system',
             '"Segoe UI"',
             'Roboto',
+            'Helvetica',
             '"Helvetica Neue"',
             '"Noto Sans"',
             '"Liberation Sans"',
