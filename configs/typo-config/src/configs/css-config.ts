@@ -35,7 +35,7 @@ const config = cssConfig(() => {
         /**
          * The default sans-serif font stack, optimized for cross-platform compatibility.
          */
-        fontFamilySansSerief : [
+        fontFamilySans       : [
             'system-ui',
             '-apple-system',
             '"Segoe UI"',
@@ -197,7 +197,7 @@ const config = cssConfig(() => {
          * Can be set to a primary typeface or a fallback stack.
          * Example: `'Arial, sans-serif'`.
          */
-        defaultFontFamily    : staticTypoDefinitions.fontFamilySansSerief                           as CssKnownProps['fontFamily'    ],
+        defaultFontFamily    : staticTypoDefinitions.fontFamilySans                                 as CssKnownProps['fontFamily'    ],
         
         /**
          * Defines the **font weight** applied globally.
@@ -309,13 +309,13 @@ const config = cssConfig(() => {
  * ```css
  * :root {
  *     --typ-fontSizeMd: 16px;
- *     --typ-fontFamilySansSerief: system-ui, ..., "Noto Color Emoji";
+ *     --typ-fontFamilySans: system-ui, ..., "Noto Color Emoji";
  *     --typ-fontFamilyMonospace: SFMono-Regular, ..., monospace;
  *     ............
  *     --typ-fontSize: var(--typ-fontSizeMd);
  *     --typ-fontSizeXs: calc(var(--typ-fontSize) * 0.50);
  *     --typ-fontSizeSm: calc(var(--typ-fontSize) * 0.75);
- *     --typ-fontFamily: var(--typ-fontFamilySansSerief);
+ *     --typ-fontFamily: var(--typ-fontFamilySans);
  *     --typ-fontWeight: var(--typ-fontWeightNormal);
  *     --typ-lineHeight: var(--typ-lineHeightMd);
  *     --typ-fontWeightCustom: 900;
@@ -414,13 +414,13 @@ export const typoConfigVars       = config[0];
  * ```css
  * :root {
  *     --typ-fontSizeMd: 16px;
- *     --typ-fontFamilySansSerief: system-ui, ..., "Noto Color Emoji";
+ *     --typ-fontFamilySans: system-ui, ..., "Noto Color Emoji";
  *     --typ-fontFamilyMonospace: SFMono-Regular, ..., monospace;
  *     ............
  *     --typ-fontSize: var(--typ-fontSizeMd);
  *     --typ-fontSizeXs: calc(var(--typ-fontSize) * 0.50);
  *     --typ-fontSizeSm: calc(var(--typ-fontSize) * 0.75);
- *     --typ-fontFamily: var(--typ-fontFamilySansSerief);
+ *     --typ-fontFamily: var(--typ-fontFamilySans);
  *     --typ-fontWeight: var(--typ-fontWeightNormal);
  *     --typ-lineHeight: var(--typ-lineHeightMd);
  *     --typ-fontWeightCustom: 900;
@@ -461,13 +461,13 @@ export const typoConfigVarDefs    = config[1];
  * ```css
  * :root {
  *     --typ-fontSizeMd: 16px;
- *     --typ-fontFamilySansSerief: system-ui, ..., "Noto Color Emoji";
+ *     --typ-fontFamilySans: system-ui, ..., "Noto Color Emoji";
  *     --typ-fontFamilyMonospace: SFMono-Regular, ..., monospace;
  *     ............
  *     --typ-fontSize: var(--typ-fontSizeMd);
  *     --typ-fontSizeXs: calc(var(--typ-fontSize) * 0.50);
  *     --typ-fontSizeSm: calc(var(--typ-fontSize) * 0.75);
- *     --typ-fontFamily: var(--typ-fontFamilySansSerief);
+ *     --typ-fontFamily: var(--typ-fontFamilySans);
  *     --typ-fontWeight: var(--typ-fontWeightNormal);
  *     --typ-lineHeight: var(--typ-lineHeightMd);
  * }
