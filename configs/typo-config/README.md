@@ -141,8 +141,8 @@ import {
     mountVertSeparatorStyle,
 } from '@reusable-ui/typo-config';
 
-typoConfigVars.defaultFontFamily = 'Arial, sans-serif' as any; // `as any` => force to assign bare value
-typoConfigVars.defaultLineHeight = 1.5 as any;
+typoConfigVars.fontFamily = 'Arial, sans-serif' as any; // `as any` => force to assign bare value
+typoConfigVars.lineHeight = 1.5 as any;
 paragraphConfigVars.marginBlockStart = '2em' as any;
 paragraphConfigVars.marginBlockEnd = paragraphConfigVars.marginBlockStart;
 secondaryConfigVars.borderColor = 'var(--custom-secondary-color)';

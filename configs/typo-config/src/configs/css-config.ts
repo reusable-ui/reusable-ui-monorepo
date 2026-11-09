@@ -210,27 +210,27 @@ const config = cssConfig(() => {
          * Allows dynamic font scaling for responsive layouts.
          * Accepts absolute or relative units (`px`, `em`, `%`, etc.).
          */
-        defaultFontSize      : staticTypoDefinitions.fontSizeMd                                     as CssKnownProps['fontSize'      ],
+        fontSize             : staticTypoDefinitions.fontSizeMd                                     as CssKnownProps['fontSize'      ],
         
         /**
          * Defines the **font family** applied globally.
          * Can be set to a primary typeface or a fallback stack.
          * Example: `'Arial, sans-serif'`.
          */
-        defaultFontFamily    : staticTypoDefinitions.fontFamilySans                                 as CssKnownProps['fontFamily'    ],
+        fontFamily           : staticTypoDefinitions.fontFamilySans                                 as CssKnownProps['fontFamily'    ],
         
         /**
          * Defines the **font weight** applied globally.
          * Accepts predefined weights (`normal`, `bold`, `lighter`) or numeric values (`100-900`).
          */
-        defaultFontWeight    : staticTypoDefinitions.fontWeightNormal                               as CssKnownProps['fontWeight'    ],
+        fontWeight           : staticTypoDefinitions.fontWeightNormal                               as CssKnownProps['fontWeight'    ],
         
         /**
          * Defines the **line height** applied globally.
          * Helps with text readability by adjusting vertical spacing.
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
-        defaultLineHeight    : staticTypoDefinitions.lineHeightMd                                   as CssKnownProps['lineHeight'    ],
+        lineHeight           : staticTypoDefinitions.lineHeightMd                                   as CssKnownProps['lineHeight'    ],
     };
     
     
