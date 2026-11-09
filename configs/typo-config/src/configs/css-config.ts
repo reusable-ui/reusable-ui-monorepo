@@ -53,6 +53,21 @@ const config = cssConfig(() => {
         ]                                       as CssKnownProps['fontFamily'    ],
         
         /**
+         * The default serif font stack, optimized for readability in print and formal contexts.
+         */
+        fontFamilySerif      : [
+            'Georgia',
+            'Cambria',
+            '"Times New Roman"',
+            'Times',
+            'serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+            '"Noto Color Emoji"',
+        ]                                       as CssKnownProps['fontFamily'    ],
+        
+        /**
          * The default monospace font stack, optimized for readability in code or terminal interfaces.
          */
         fontFamilyMonospace  : [
