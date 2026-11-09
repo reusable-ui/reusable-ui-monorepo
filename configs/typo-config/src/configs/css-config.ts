@@ -63,6 +63,10 @@ const config = cssConfig(() => {
             '"Liberation Mono"',
             '"Courier New"',
             'monospace',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+            '"Noto Color Emoji"',
         ]                                       as CssKnownProps['fontFamily'    ],
         
         
