@@ -130,12 +130,6 @@ const config = cssConfig(() => {
          * A large line height for spacious text readability.
          */
         lineHeightLg         : 2.00             as CssKnownProps['lineHeight'    ],
-        
-        
-        /**
-         * Controls word wrapping behavior to prevent overflow.
-         */
-        overflowWrap         : 'break-word'     as CssKnownProps['overflowWrap'  ],
     };
     
     
@@ -230,6 +224,11 @@ const config = cssConfig(() => {
          * Can be set using relative values like `1.5` or absolute units like `px`.
          */
         lineHeight           : staticTypoDefinitions.lineHeightMd                                   as CssKnownProps['lineHeight'    ],
+        
+        /**
+         * Controls word wrapping behavior to prevent overflow.
+         */
+        overflowWrap         : 'break-word'                                                         as CssKnownProps['overflowWrap'  ],
     };
     
     
