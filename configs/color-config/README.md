@@ -12,7 +12,7 @@ With **color-config**, you can:
 
 - **Consume** configured color palettes and shades across all UI components for consistent theming.
 - **Access and manipulate** color configurations dynamically from JavaScript code.
-- **Define custom themes** or modify predefined color settings on the fly.
+- **Define custom themes** or modify predefined color themes and their shades on the fly.
 - **Switch between light and dark modes** seamlessly, with automatic color flipping and contrast adjustments.
 
 ## 🧩 Color Variable Architecture

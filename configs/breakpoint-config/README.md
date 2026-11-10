@@ -15,7 +15,7 @@ With **breakpoint-config**, you can:
 - **Consume** configured breakpoint tokens across all UI components for consistent responsive layouts.
 - **Access and manipulate** breakpoint configurations dynamically from JavaScript code.
 - **Write responsive styles** conditionally applying styles based on screen or container width thresholds using built-in query utilities.
-- **Define custom breakpoint tokens** or modify predefined breakpoint settings on the fly.
+- **Define custom breakpoint tokens** or modify predefined breakpoint thresholds on the fly.
 
 ## 🧩 Breakpoint Variable Architecture
 

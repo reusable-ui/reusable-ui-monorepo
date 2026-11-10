@@ -12,7 +12,7 @@ With **radius-config**, you can:
 
 - **Consume** configured border radii across all UI components for consistent corner rounding.
 - **Access and manipulate** radius configurations dynamically from JavaScript code.
-- **Define custom radius tokens** or modify predefined radius settings on the fly.
+- **Define custom radius tokens** or modify predefined radius scales and default settings on the fly.
 
 ## 🧩 Radius Variable Architecture
 

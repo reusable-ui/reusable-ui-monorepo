@@ -12,7 +12,7 @@ With **spacer-config**, you can:
 
 - **Consume** configured spacing tokens across all UI components for consistent layout sizing.
 - **Access and manipulate** spacing configurations dynamically from JavaScript code.
-- **Define custom spacer tokens** or modify predefined spacing settings on the fly.
+- **Define custom spacer tokens** or modify predefined spacing scales and default settings on the fly.
 
 ## 🧩 Spacer Variable Architecture
 

@@ -12,7 +12,7 @@ With **border-config**, you can:
 
 - **Consume** configured border strokes, widths, and styles across all UI components for consistent visual framing.
 - **Access and manipulate** border configurations dynamically from JavaScript code.
-- **Define custom border tokens** or modify predefined border settings on the fly.
+- **Define custom border tokens** or modify predefined border scales and default settings on the fly.
 
 ## 🧩 Border Variable Architecture
 
