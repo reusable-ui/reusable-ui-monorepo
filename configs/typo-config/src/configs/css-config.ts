@@ -117,20 +117,6 @@ const config = cssConfig(() => {
         
         
         /**
-         * Defines the **font style** applied globally (normal, italic, oblique).
-         * Used to define emphasis within visual hierarchy.
-         */
-        fontStyle            : 'normal'         as CssKnownProps['fontStyle'     ],
-        
-        /**
-         * Defines the **text decoration** applied globally.
-         * Controls styling such as `underline`, `line-through`, or `none`.
-         * Useful for adding emphasis or distinguishing elements visually.
-         */
-        textDecoration       : 'none'           as CssKnownProps['textDecoration'],
-        
-        
-        /**
          * A small line height for compact text presentation.
          */
         lineHeightSm         : 1.25             as CssKnownProps['lineHeight'    ],
@@ -224,6 +210,19 @@ const config = cssConfig(() => {
          * Accepts predefined weights (`normal`, `bold`, `lighter`) or numeric values (`100-900`).
          */
         fontWeight           : staticTypoDefinitions.fontWeightNormal                               as CssKnownProps['fontWeight'    ],
+        
+        /**
+         * Defines the **font style** applied globally (normal, italic, oblique).
+         * Used to define emphasis within visual hierarchy.
+         */
+        fontStyle            : 'normal'                                                             as CssKnownProps['fontStyle'     ],
+        
+        /**
+         * Defines the **text decoration** applied globally.
+         * Controls styling such as `underline`, `line-through`, or `none`.
+         * Useful for adding emphasis or distinguishing elements visually.
+         */
+        textDecoration       : 'none'                                                               as CssKnownProps['textDecoration'],
         
         /**
          * Defines the **line height** applied globally.
