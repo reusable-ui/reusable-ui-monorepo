@@ -72,7 +72,7 @@ Below is an overview of the predefined typography tokens:
 | `fontSize`            | `.fontSizeMd`        | General  | Default font size for standard application text.                                    |
 | `fontSizeXs`          | `.fontSizeMd * 0.50` | Specific | Extra-small font size for fine print, captions, and secondary metadata.             |
 | `fontSizeSm`          | `.fontSizeMd * 0.75` | Specific | Small font size for minor text elements and supportive annotations.                 |
-| `fontSizeMd`          | `16px`               | Specific | Medium font size for standard body text and general content.                        |
+| `fontSizeMd`          | `16px`               | Specific | Medium font size for standard body text and general content (base unit).            |
 | `fontSizeLg`          | `.fontSizeMd * 1.25` | Specific | Large font size for section headings and emphasized content blocks.                 |
 | `fontSizeXl`          | `.fontSizeMd * 1.50` | Specific | Extra-large font size for titles, banners, and prominent headings.                  |
 | `fontSizeXxl`         | `.fontSizeMd * 1.75` | Specific | Double-extra-large font size for prominent headings and hero sections.              |
