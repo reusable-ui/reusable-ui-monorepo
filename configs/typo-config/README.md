@@ -67,34 +67,34 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 Below is an overview of the predefined typography tokens:
 
-| Token                 | Value                | Category | Description                                                                        |
-| --------------------- | -------------------- | -------- | ---------------------------------------------------------------------------------- |
-| `fontSize`            | `.fontSizeMd`        | General  | Default font size for standard application text                                    |
-| `fontSizeXs`          | `.fontSizeMd * 0.50` | Specific | Extra-small font size for fine print, captions, and secondary metadata             |
-| `fontSizeSm`          | `.fontSizeMd * 0.75` | Specific | Small font size for minor text elements and supportive annotations                 |
-| `fontSizeMd`          | `16px`               | Specific | Medium font size for standard body text and general content                        |
-| `fontSizeLg`          | `.fontSizeMd * 1.25` | Specific | Large font size for section headings and emphasized content blocks                 |
-| `fontSizeXl`          | `.fontSizeMd * 1.50` | Specific | Extra-large font size for titles, banners, and prominent headings                  |
-| `fontSizeXxl`         | `.fontSizeMd * 1.75` | Specific | Double-extra-large font size for prominent headings and hero sections              |
-| `fontSizeXxxl`        | `.fontSizeMd * 2.00` | Specific | Triple-extra-large font size for hero sections, display text, and major callouts   |
-| `fontFamily`          | `.fontFamilySans`    | General  | Cross-platform default font stack for standard application text                    |
-| `fontFamilySans`      | sans font stack      | Specific | Cross-platform sans-serif font stack for modern UI design and readability          |
-| `fontFamilySerif`     | serif font stack     | Specific | Cross-platform serif font stack for traditional and formal text presentation       |
-| `fontFamilyMonospace` | monospace font stack | Specific | Cross-platform monospace font stack for code snippets, terminals, and tabular data |
-| `fontWeight`          | `.fontWeightNormal`  | General  | Default font weight for standard application text                                  |
-| `fontWeightLighter`   | `lighter`            | Specific | Lightest font weight for subtle emphasis and secondary text                        |
-| `fontWeightLight`     | `300`                | Specific | Light font weight for delicate text and secondary content                          |
-| `fontWeightNormal`    | `400`                | Specific | Standard font weight for regular text and body content                             |
-| `fontWeightSemibold`  | `600`                | Specific | Semi-bold font weight for moderate emphasis and subheadings                        |
-| `fontWeightBold`      | `700`                | Specific | Bold font weight for strong emphasis, headings, and callouts                       |
-| `fontWeightBolder`    | `bolder`             | Specific | Boldest font weight for maximum emphasis and attention-grabbing text               |
-| `fontStyle`           | `normal`             | General  | Default font style for standard application text                                   |
-| `textDecoration`      | `none`               | General  | Default text decoration for standard application text                              |
-| `lineHeight`          | `.lineHeightMd`      | General  | Default line height for standard application text                                  |
-| `lineHeightSm`        | `1.25`               | Specific | Slightly reduced line height for compact text blocks and tight layouts             |
-| `lineHeightMd`        | `1.50`               | Specific | Standard line height for comfortable reading and balanced text spacing             |
-| `lineHeightLg`        | `2.00`               | Specific | Large line height for relaxed text readability                                     |
-| `overflowWrap`        | `break-word`         | General  | Controls word wrapping behavior to prevent overflow in constrained containers      |
+| Token                 | Value                | Category | Description                                                                         |
+| --------------------- | -------------------- | -------- | ----------------------------------------------------------------------------------- |
+| `fontSize`            | `.fontSizeMd`        | General  | Default font size for standard application text.                                    |
+| `fontSizeXs`          | `.fontSizeMd * 0.50` | Specific | Extra-small font size for fine print, captions, and secondary metadata.             |
+| `fontSizeSm`          | `.fontSizeMd * 0.75` | Specific | Small font size for minor text elements and supportive annotations.                 |
+| `fontSizeMd`          | `16px`               | Specific | Medium font size for standard body text and general content.                        |
+| `fontSizeLg`          | `.fontSizeMd * 1.25` | Specific | Large font size for section headings and emphasized content blocks.                 |
+| `fontSizeXl`          | `.fontSizeMd * 1.50` | Specific | Extra-large font size for titles, banners, and prominent headings.                  |
+| `fontSizeXxl`         | `.fontSizeMd * 1.75` | Specific | Double-extra-large font size for prominent headings and hero sections.              |
+| `fontSizeXxxl`        | `.fontSizeMd * 2.00` | Specific | Triple-extra-large font size for hero sections, display text, and major callouts.   |
+| `fontFamily`          | `.fontFamilySans`    | General  | Cross-platform default font stack for standard application text.                    |
+| `fontFamilySans`      | sans font stack      | Specific | Cross-platform sans-serif font stack for modern UI design and readability.          |
+| `fontFamilySerif`     | serif font stack     | Specific | Cross-platform serif font stack for traditional and formal text presentation.       |
+| `fontFamilyMonospace` | monospace font stack | Specific | Cross-platform monospace font stack for code snippets, terminals, and tabular data. |
+| `fontWeight`          | `.fontWeightNormal`  | General  | Default font weight for standard application text.                                  |
+| `fontWeightLighter`   | `lighter`            | Specific | Lightest font weight for subtle emphasis and secondary text.                        |
+| `fontWeightLight`     | `300`                | Specific | Light font weight for delicate text and secondary content.                          |
+| `fontWeightNormal`    | `400`                | Specific | Standard font weight for regular text and body content.                             |
+| `fontWeightSemibold`  | `600`                | Specific | Semi-bold font weight for moderate emphasis and subheadings.                        |
+| `fontWeightBold`      | `700`                | Specific | Bold font weight for strong emphasis, headings, and callouts.                       |
+| `fontWeightBolder`    | `bolder`             | Specific | Boldest font weight for maximum emphasis and attention-grabbing text.               |
+| `fontStyle`           | `normal`             | General  | Default font style for standard application text.                                   |
+| `textDecoration`      | `none`               | General  | Default text decoration for standard application text.                              |
+| `lineHeight`          | `.lineHeightMd`      | General  | Default line height for standard application text.                                  |
+| `lineHeightSm`        | `1.25`               | Specific | Slightly reduced line height for compact text blocks and tight layouts.             |
+| `lineHeightMd`        | `1.50`               | Specific | Standard line height for comfortable reading and balanced text spacing.             |
+| `lineHeightLg`        | `2.00`               | Specific | Large line height for relaxed text readability.                                     |
+| `overflowWrap`        | `break-word`         | General  | Controls word wrapping behavior to prevent overflow in constrained containers.      |
 
 > **⚠️ Warning:**
 > Do not delete the predefined typography tokens, as standard components rely on their existence.
