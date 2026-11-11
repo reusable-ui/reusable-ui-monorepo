@@ -43,7 +43,7 @@ import {
 export const usingPaddingFeature = (options?: CssPaddingFeatureOptions): CssPaddingFeature => {
     // Extract options and assign defaults:
     const {
-        padding            = spacerConfigVars.default,
+        padding            = spacerConfigVars.spacing,
         paddingInline      = padding,
         paddingBlock       = padding,
         paddingInlineStart = paddingInline,

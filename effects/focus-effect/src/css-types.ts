@@ -57,7 +57,7 @@ export interface CssFocusEffectOptions {
      * - Percentage units are not allowed.
      * - Negative values are not allowed.
      * 
-     * Defaults to `spacerConfigVars.xs` (small ring width).
+     * Defaults to `spacerConfigVars.spacingXs` (small ring width).
      */
     ringWidth ?: CssKnownProps['borderWidth']
 }

@@ -18,9 +18,9 @@ With **spacer-config**, you can:
 
 The spacing system categorizes spacing configurations into two main groups:
 
-- **Fixed Spacers:** Absolute sizing tokens for explicit margins, paddings, and gaps (`none`, `xxs`, `xs`, `semiXs`, `sm`, `semiSm`, `md`, `lg`, `xl`, etc.).
-  This group includes both static sizing tokens and computed tokens (which use `md` as their base for easier maintenance and can be overridden with concrete values or expressions).
-- **Default Spacers:** Fallback tokens governing default spacing across standard components (`default`, etc.).
+- **Fixed Spacers:** Absolute sizing tokens for explicit margins, paddings, and gaps (`spacingNone`, `spacingXxs`, `spacingXs`, `spacingSemiXs`, `spacingSm`, `spacingSemiSm`, `spacingMd`, `spacingLg`, `spacingXl`, etc.).
+  This group includes both static sizing tokens and computed tokens (which use `spacingMd` as their base for easier maintenance and can be overridden with concrete values or expressions).
+- **Default Spacers:** Fallback tokens governing default spacing across standard components (`spacing`, etc.).
 
 ## ✨ Features
 
@@ -61,18 +61,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 Below is an overview of the predefined spacer tokens:
 
-| Category            | Token     | Value       | Description                |
-| ------------------- | --------- | ----------- | -------------------------- |
-| **Fixed Spacers**   | `none`    | `0rem`      | Zero spacing               |
-|                     | `xxs`     | `.md / 8`   | Extra-extra-small spacing  |
-|                     | `xs`      | `.md / 4`   | Extra-small spacing        |
-|                     | `semiXs`  | `.md / 3`   | Semi-extra-small spacing   |
-|                     | `sm`      | `.md / 2`   | Small spacing              |
-|                     | `semiSm`  | `.md / 1.5` | Semi-small spacing         |
-|                     | `md`      | `1rem`      | Medium spacing (base unit) |
-|                     | `lg`      | `.md * 1.5` | Large spacing              |
-|                     | `xl`      | `.md * 3`   | Extra-large spacing        |
-| **Default Spacers** | `default` | `.md`       | Default component spacing  |
+| Category            | Token           | Value              | Description                |
+| ------------------- | --------------- | ------------------ | -------------------------- |
+| **Fixed Spacers**   | `spacingNone`   | `0rem`             | Zero spacing               |
+|                     | `spacingXxs`    | `.spacingMd / 8`   | Extra-extra-small spacing  |
+|                     | `spacingXs`     | `.spacingMd / 4`   | Extra-small spacing        |
+|                     | `spacingSemiXs` | `.spacingMd / 3`   | Semi-extra-small spacing   |
+|                     | `spacingSm`     | `.spacingMd / 2`   | Small spacing              |
+|                     | `spacingSemiSm` | `.spacingMd / 1.5` | Semi-small spacing         |
+|                     | `spacingMd`     | `1rem`             | Medium spacing (base unit) |
+|                     | `spacingLg`     | `.spacingMd * 1.5` | Large spacing              |
+|                     | `spacingXl`     | `.spacingMd * 3`   | Extra-large spacing        |
+| **Default Spacers** | `spacing`       | `.spacingMd`       | Default component spacing  |
 
 > **⚠️ Warning:**
 > Do not delete the predefined spacer tokens, as standard components rely on their existence.
@@ -94,12 +94,12 @@ Using `spacerConfigVars` or `spacerConfigVarDefs`, you can perform CRUD operatio
 import { spacerConfigVars, spacerConfigVarDefs } from '@reusable-ui/spacer-config';
 
 // Gets live CSS variable references (reactive & linked to config):
-const spacerMediumRef  = spacerConfigVars.md;      // Resolves to 'var(--spc-md)'
-const spacerDefaultRef = spacerConfigVars.default; // Resolves to 'var(--spc-default)'
+const spacerMediumRef  = spacerConfigVars.spacingMd; // Resolves to 'var(--spc-spacingMd)'
+const spacerDefaultRef = spacerConfigVars.spacing;   // Resolves to 'var(--spc-spacing)'
 
 // Gets evaluated snapshot values/expressions (for JS logic calculations):
-const spacerMediumDef  = spacerConfigVarDefs.md;      // Resolves to '1rem'
-const spacerDefaultDef = spacerConfigVarDefs.default; // Resolves to 'var(--spc-md)'
+const spacerMediumDef  = spacerConfigVarDefs.spacingMd; // Resolves to '1rem'
+const spacerDefaultDef = spacerConfigVarDefs.spacing;   // Resolves to 'var(--spc-spacingMd)'
 ```
 
 ### Adding and Updating Spacers
@@ -110,36 +110,36 @@ To create or update (upsert) a spacer token, assign a concrete value or expressi
 import { spacerConfigVars, spacerConfigVarDefs } from '@reusable-ui/spacer-config';
 
 // Assigning via spacerConfigVars:
-spacerConfigVars.xxl = '6rem';
+spacerConfigVars.spacingXxl = '6rem';
 
 // Using string interpolation to construct dynamic expressions:
 // - Ideal for creating formulas driven by one or more variables.
-spacerConfigVars.mega = `calc(${spacerConfigVars.md} * 9)`;
+spacerConfigVars.spacingMega = `calc(${spacerConfigVars.spacingMd} * 9)`;
 
 // Alternative syntax to string interpolation (using double brackets `[[...]]` to automatically join array items with spaces):
-spacerConfigVars.giga = [[
+spacerConfigVars.spacingGiga = [[
   'calc(',
-  spacerConfigVars.md,
+  spacerConfigVars.spacingMd,
   '* 18',
   ')',
-]]; // Resolves to 'calc( var(--spc-md) * 18 )'
+]]; // Resolves to 'calc( var(--spc-spacingMd) * 18 )'
 
 
 
 // Alternatively, assigning via spacerConfigVarDefs:
-spacerConfigVarDefs.xxl = '6rem';
+spacerConfigVarDefs.spacingXxl = '6rem';
 
 // Using string interpolation to construct dynamic expressions:
 // - Ideal for creating formulas driven by one or more variables.
-spacerConfigVarDefs.mega = `calc(${spacerConfigVars.md} * 9)`;
+spacerConfigVarDefs.spacingMega = `calc(${spacerConfigVars.spacingMd} * 9)`;
 
 // Alternative syntax to string interpolation (using double brackets `[[...]]` to automatically join array items with spaces):
-spacerConfigVarDefs.giga = [[
+spacerConfigVarDefs.spacingGiga = [[
   'calc(',
-  spacerConfigVars.md,
+  spacerConfigVars.spacingMd,
   '* 18',
   ')',
-]]; // Resolves to 'calc( var(--spc-md) * 18 )'
+]]; // Resolves to 'calc( var(--spc-spacingMd) * 18 )'
 ```
 
 ### Deleting Spacers
@@ -150,12 +150,12 @@ To delete a spacer token, use the `delete` operator or assign `null` / `undefine
 import { spacerConfigVars, spacerConfigVarDefs } from '@reusable-ui/spacer-config';
 
 // Deleting tokens using the delete operator:
-delete spacerConfigVars.xxl;
-delete spacerConfigVars.mega;
+delete spacerConfigVars.spacingXxl;
+delete spacerConfigVars.spacingMega;
 
 // Deleting tokens using null or undefined assignment:
-spacerConfigVarDefs.xxl = null;
-spacerConfigVarDefs.mega = undefined;
+spacerConfigVarDefs.spacingXxl = null;
+spacerConfigVarDefs.spacingMega = undefined;
 ```
 
 ## 📖 Part of the Reusable-UI Framework  

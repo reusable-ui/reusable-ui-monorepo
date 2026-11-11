@@ -47,7 +47,7 @@ import {
 export const usingFocusEffect = (options?: CssFocusEffectOptions): CssFocusEffect => {
     // Extract options and assign defaults:
     const {
-        ringWidth = spacerConfigVars.xs, // Defaults to `spacerConfigVars.xs` (small ring width).
+        ringWidth = spacerConfigVars.spacingXs, // Defaults to `spacerConfigVars.spacingXs` (small ring width).
     } = options ?? {};
     
     

@@ -29,12 +29,12 @@ const config = cssConfig(() => {
         /**
          * No spacing.
          */
-        none    : '0rem'    as CssLength,
+        spacingNone   : '0rem'  as CssLength,
         
         /**
          * Medium spacing.
          */
-        md      : '1rem'    as CssLength,
+        spacingMd     : '1rem'  as CssLength,
     };
     
     
@@ -42,50 +42,50 @@ const config = cssConfig(() => {
     // Computed spacer widths:
     
     /**
-     * Dynamically calculated spacer widths based on `md` size.
+     * Dynamically calculated spacer widths based on `spacingMd` size.
      * Provides scaling options for finer control over spacing.
      */
     const computedSpacerWidths = {
-        // Smaller than `md`:
+        // Smaller than `spacingMd`:
         
         /**
          * Extra extra small spacing.
          */
-        xxs     : [[ 'calc(', staticSpacerWidths.md, '/', 8  , ')' ]]       as CssLength,
+        spacingXxs    : [[ 'calc(', staticSpacerWidths.spacingMd, '/', 8  , ')' ]]      as CssLength,
         
         /**
          * Extra small spacing.
          */
-        xs      : [[ 'calc(', staticSpacerWidths.md, '/', 4  , ')' ]]       as CssLength,
+        spacingXs     : [[ 'calc(', staticSpacerWidths.spacingMd, '/', 4  , ')' ]]      as CssLength,
         
         /**
          * Semi extra small spacing.
          */
-        semiXs  : [[ 'calc(', staticSpacerWidths.md, '/', 3  , ')' ]]       as CssLength,
+        spacingSemiXs : [[ 'calc(', staticSpacerWidths.spacingMd, '/', 3  , ')' ]]      as CssLength,
         
         /**
          * Small spacing.
          */
-        sm      : [[ 'calc(', staticSpacerWidths.md, '/', 2  , ')' ]]       as CssLength,
+        spacingSm     : [[ 'calc(', staticSpacerWidths.spacingMd, '/', 2  , ')' ]]      as CssLength,
         
         /**
          * Semi small spacing.
          */
-        semiSm  : [[ 'calc(', staticSpacerWidths.md, '/', 1.5, ')' ]]       as CssLength,
+        spacingSemiSm : [[ 'calc(', staticSpacerWidths.spacingMd, '/', 1.5, ')' ]]      as CssLength,
         
         
         
-        // Bigger than `md`:
+        // Bigger than `spacingMd`:
         
         /**
          * Large spacing.
          */
-        lg      : [[ 'calc(', staticSpacerWidths.md, '*', 1.5, ')' ]]       as CssLength,
+        spacingLg     : [[ 'calc(', staticSpacerWidths.spacingMd, '*', 1.5, ')' ]]      as CssLength,
         
         /**
          * Extra large spacing.
          */
-        xl      : [[ 'calc(', staticSpacerWidths.md, '*', 3  , ')' ]]       as CssLength,
+        spacingXl     : [[ 'calc(', staticSpacerWidths.spacingMd, '*', 3  , ')' ]]      as CssLength,
     };
     
     
@@ -99,7 +99,7 @@ const config = cssConfig(() => {
         /**
          * Standard spacing.
          */
-        default : staticSpacerWidths.md       as CssLength,
+        spacing       : staticSpacerWidths.spacingMd    as CssLength,
     };
     
     
@@ -123,28 +123,28 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = spacerConfigVars.lg; // Resolves to "var(--spc-lg)"
+ * const value = spacerConfigVars.spacingLg; // Resolves to "var(--spc-spacingLg)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * spacerConfigVars.customSpacer = "50px"; // Generates "--spc-customSpacer: 50px;"
+ * spacerConfigVars.spacingCustom = "50px"; // Generates "--spc-spacingCustom: 50px;"
  * ```
  * 
  * **Definition Assignment:**
  * ```ts
  * spacerConfigVars.myDefinition = [[
- *    "clamp(", spacerConfigVars.xs, ", ", "0.25%", ", ", spacerConfigVars.xl, ")"
- * ]]; // Generates "--spc-myDefinition: clamp(var(--spc-xs), 0.25%, var(--spc-xl));"
+ *    "clamp(", spacerConfigVars.spacingXs, ", ", "0.25%", ", ", spacerConfigVars.spacingXl, ")"
+ * ]]; // Generates "--spc-myDefinition: clamp(var(--spc-spacingXs), 0.25%, var(--spc-spacingXl));"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete spacerConfigVars.customSpacer;
- * spacerConfigVars.customSpacer = null;
- * spacerConfigVars.customSpacer = undefined;
+ * delete spacerConfigVars.spacingCustom;
+ * spacerConfigVars.spacingCustom = null;
+ * spacerConfigVars.spacingCustom = undefined;
  * ```
  * 
  * #### **Definition Handling**
@@ -158,18 +158,18 @@ const config = cssConfig(() => {
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --spc-none: 0rem;
- *     --spc-md: 1rem;
- *     --spc-xxs: calc(var(--spc-md) / 8);
- *     --spc-xs: calc(var(--spc-md) / 4);
- *     --spc-semiXs: calc(var(--spc-md) / 3);
- *     --spc-sm: calc(var(--spc-md) / 2);
- *     --spc-semiSm: calc(var(--spc-md) / 1.5);
- *     --spc-lg: calc(var(--spc-md) * 1.5);
- *     --spc-xl: calc(var(--spc-md) * 3);
- *     --spc-default: var(--spc-md);
- *     --spc-customSpacer: 50px;
- *     --spc-myDefinition: clamp(var(--spc-xs), 0.25%, var(--spc-xl));
+ *     --spc-spacing: var(--spc-spacingMd);
+ *     --spc-spacingNone: 0rem;
+ *     --spc-spacingXxs: calc(var(--spc-spacingMd) / 8);
+ *     --spc-spacingXs: calc(var(--spc-spacingMd) / 4);
+ *     --spc-spacingSemiXs: calc(var(--spc-spacingMd) / 3);
+ *     --spc-spacingSm: calc(var(--spc-spacingMd) / 2);
+ *     --spc-spacingSemiSm: calc(var(--spc-spacingMd) / 1.5);
+ *     --spc-spacingMd: 1rem;
+ *     --spc-spacingLg: calc(var(--spc-spacingMd) * 1.5);
+ *     --spc-spacingXl: calc(var(--spc-spacingMd) * 3);
+ *     --spc-spacingCustom: 50px;
+ *     --spc-myDefinition: clamp(var(--spc-spacingXs), 0.25%, var(--spc-spacingXl));
  * }
  * ```
  */
@@ -187,28 +187,28 @@ export const spacerConfigVars       = config[0];
  * #### **Retrieving a CSS Definition (Getter)**
  * Access the assembled CSS definition:  
  * ```ts
- * const definition = spacerConfigVarDefs.lg; // Resolves to [[ "calc(", spacerConfigVars.md, " * 1.5)" ]]
+ * const definition = spacerConfigVarDefs.spacingLg; // Resolves to [[ "calc(", spacerConfigVars.spacingMd, " * 1.5)" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * spacerConfigVarDefs.customSpacer = "50px"; // Generates "--spc-customSpacer: 50px;"
+ * spacerConfigVarDefs.spacingCustom = "50px"; // Generates "--spc-spacingCustom: 50px;"
  * ```
  * 
  * **Definition Assignment:**
  * ```ts
  * spacerConfigVarDefs.myDefinition = [[
- *    "clamp(", spacerConfigVars.xs, ", ", "0.25%", ", ", spacerConfigVars.xl, ")"
- * ]]; // Generates "--spc-myDefinition: clamp(var(--spc-xs), 0.25%, var(--spc-xl));"
+ *    "clamp(", spacerConfigVars.spacingXs, ", ", "0.25%", ", ", spacerConfigVars.spacingXl, ")"
+ * ]]; // Generates "--spc-myDefinition: clamp(var(--spc-spacingXs), 0.25%, var(--spc-spacingXl));"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete spacerConfigVarDefs.customSpacer;
- * spacerConfigVarDefs.customSpacer = null;
- * spacerConfigVarDefs.customSpacer = undefined;
+ * delete spacerConfigVarDefs.spacingCustom;
+ * spacerConfigVarDefs.spacingCustom = null;
+ * spacerConfigVarDefs.spacingCustom = undefined;
  * ```
  * 
  * #### **Definition Handling**
@@ -222,18 +222,18 @@ export const spacerConfigVars       = config[0];
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --spc-none: 0rem;
- *     --spc-md: 1rem;
- *     --spc-xxs: calc(var(--spc-md) / 8);
- *     --spc-xs: calc(var(--spc-md) / 4);
- *     --spc-semiXs: calc(var(--spc-md) / 3);
- *     --spc-sm: calc(var(--spc-md) / 2);
- *     --spc-semiSm: calc(var(--spc-md) / 1.5);
- *     --spc-lg: calc(var(--spc-md) * 1.5);
- *     --spc-xl: calc(var(--spc-md) * 3);
- *     --spc-default: var(--spc-md);
- *     --spc-customSpacer: 50px;
- *     --spc-myDefinition: clamp(var(--spc-xs), 0.25%, var(--spc-xl));
+ *     --spc-spacing: var(--spc-spacingMd);
+ *     --spc-spacingNone: 0rem;
+ *     --spc-spacingXxs: calc(var(--spc-spacingMd) / 8);
+ *     --spc-spacingXs: calc(var(--spc-spacingMd) / 4);
+ *     --spc-spacingSemiXs: calc(var(--spc-spacingMd) / 3);
+ *     --spc-spacingSm: calc(var(--spc-spacingMd) / 2);
+ *     --spc-spacingSemiSm: calc(var(--spc-spacingMd) / 1.5);
+ *     --spc-spacingMd: 1rem;
+ *     --spc-spacingLg: calc(var(--spc-spacingMd) * 1.5);
+ *     --spc-spacingXl: calc(var(--spc-spacingMd) * 3);
+ *     --spc-spacingCustom: 50px;
+ *     --spc-myDefinition: clamp(var(--spc-spacingXs), 0.25%, var(--spc-spacingXl));
  * }
  * ```
  */
@@ -267,16 +267,16 @@ export const spacerConfigVarDefs    = config[1];
  * Example of CSS variables generated:
  * ```css
  * :root {
- *     --spc-none: 0rem;
- *     --spc-md: 1rem;
- *     --spc-xxs: calc(var(--spc-md) / 8);
- *     --spc-xs: calc(var(--spc-md) / 4);
- *     --spc-semiXs: calc(var(--spc-md) / 3);
- *     --spc-sm: calc(var(--spc-md) / 2);
- *     --spc-semiSm: calc(var(--spc-md) / 1.5);
- *     --spc-lg: calc(var(--spc-md) * 1.5);
- *     --spc-xl: calc(var(--spc-md) * 3);
- *     --spc-default: var(--spc-md);
+ *     --spc-spacing: var(--spc-spacingMd);
+ *     --spc-spacingNone: 0rem;
+ *     --spc-spacingXxs: calc(var(--spc-spacingMd) / 8);
+ *     --spc-spacingXs: calc(var(--spc-spacingMd) / 4);
+ *     --spc-spacingSemiXs: calc(var(--spc-spacingMd) / 3);
+ *     --spc-spacingSm: calc(var(--spc-spacingMd) / 2);
+ *     --spc-spacingSemiSm: calc(var(--spc-spacingMd) / 1.5);
+ *     --spc-spacingMd: 1rem;
+ *     --spc-spacingLg: calc(var(--spc-spacingMd) * 1.5);
+ *     --spc-spacingXl: calc(var(--spc-spacingMd) * 3);
  * }
  * ```
  */

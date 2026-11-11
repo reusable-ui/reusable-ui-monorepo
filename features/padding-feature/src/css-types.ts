@@ -102,7 +102,7 @@ export interface CssPaddingFeatureOptions
      * 
      * Serves as the default for horizontal and vertical paddings (`paddingInline` and `paddingBlock`)
      * 
-     * Defaults to `spacerConfigVars.default`.
+     * Defaults to `spacerConfigVars.spacing`.
      */
     padding            ?: CssKnownProps['padding']
     
