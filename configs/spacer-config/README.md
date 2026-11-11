@@ -67,18 +67,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 Below is an overview of the predefined spacer tokens:
 
-| Token           | Value              | Category | Description                |
-| --------------- | ------------------ | -------- | -------------------------- |
-| `spacing`       | `.spacingMd`       | General  | Default component spacing  |
-| `spacingNone`   | `0rem`             | Specific | Zero spacing               |
-| `spacingXxs`    | `.spacingMd / 8`   | Specific | Extra-extra-small spacing  |
-| `spacingXs`     | `.spacingMd / 4`   | Specific | Extra-small spacing        |
-| `spacingSemiXs` | `.spacingMd / 3`   | Specific | Semi-extra-small spacing   |
-| `spacingSm`     | `.spacingMd / 2`   | Specific | Small spacing              |
-| `spacingSemiSm` | `.spacingMd / 1.5` | Specific | Semi-small spacing         |
-| `spacingMd`     | `1rem`             | Specific | Medium spacing (base unit) |
-| `spacingLg`     | `.spacingMd * 1.5` | Specific | Large spacing              |
-| `spacingXl`     | `.spacingMd * 3`   | Specific | Extra-large spacing        |
+| Token           | Value              | Category | Description                 |
+| --------------- | ------------------ | -------- | --------------------------- |
+| `spacing`       | `.spacingMd`       | General  | Default component spacing.  |
+| `spacingNone`   | `0rem`             | Specific | Zero spacing.               |
+| `spacingXxs`    | `.spacingMd / 8`   | Specific | Extra-extra-small spacing.  |
+| `spacingXs`     | `.spacingMd / 4`   | Specific | Extra-small spacing.        |
+| `spacingSemiXs` | `.spacingMd / 3`   | Specific | Semi-extra-small spacing.   |
+| `spacingSm`     | `.spacingMd / 2`   | Specific | Small spacing.              |
+| `spacingSemiSm` | `.spacingMd / 1.5` | Specific | Semi-small spacing.         |
+| `spacingMd`     | `1rem`             | Specific | Medium spacing (base unit). |
+| `spacingLg`     | `.spacingMd * 1.5` | Specific | Large spacing.              |
+| `spacingXl`     | `.spacingMd * 3`   | Specific | Extra-large spacing.        |
 
 > **⚠️ Warning:**
 > Do not delete the predefined spacer tokens, as standard components rely on their existence.
