@@ -1,14 +1,20 @@
 {
   "name": "@reusable-ui/typo-config",
   "version": "7.0.0",
-  "description": "A versatile typography system for handling text styles, paragraphs, fonts, and structured layouts.",
+  "description": "Configures the typography system (font sizes, font families, font weights, line heights, and text wrapping rules) across all UI components.",
   "keywords": [
+    "typography-config",
+    "typography-system",
     "typography",
-    "fonts",
-    "text styles",
-    "paragraphs",
-    "headings",
-    "UI design"
+    "font-size",
+    "font-family",
+    "font-weight",
+    "config",
+    "configuration",
+    "css-variables",
+    "crud",
+    "styling",
+    "reusable-ui"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
   "homepage": "https://reusableui.com",
