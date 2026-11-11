@@ -1,19 +1,19 @@
 {
   "name": "@reusable-ui/radius-config",
   "version": "7.0.0",
-  "description": "A flexible rounding system for UI components, utilizing CSS custom properties to enable dynamic styling and easy customization.",
+  "description": "Configures corner rounding (border radii) across all UI components.",
   "keywords": [
+    "radius-config",
+    "radius-system",
     "radius",
     "border-radius",
-    "rounded",
-    "css",
-    "CSS variables",
-    "custom-properties",
-    "variables",
+    "corner-rounding",
+    "config",
     "configuration",
-    "stylesheet",
-    "UI design",
-    "web components"
+    "css-variables",
+    "crud",
+    "styling",
+    "reusable-ui"
   ],
   "author": "HeyMarco <31385284+heyymarco@users.noreply.github.com>",
   "homepage": "https://reusableui.com",
