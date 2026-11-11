@@ -19,8 +19,8 @@ With **typo-config**, you can:
 The typography configuration divides its tokens into two categories:
 
 1. **General Typography Properties (Defaults):**
-  Base typography properties that define the global defaults for font size, family, weight, line height, and wrapping rules across the application.
-  These serve as the foundational fallback for standard text elements.
+  Base typography properties that define the global defaults for font size, family, weight, line height, and wrapping rules across standard components.
+  These serve as the foundational fallback for text styling and hierarchy.
   - **Naming Format:** Written in bare format `<property>` (e.g., `fontSize`, `fontFamily`, `fontWeight`, `lineHeight`).
 
 2. **Specific Typography Properties (Variants):**
