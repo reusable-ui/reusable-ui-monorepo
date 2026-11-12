@@ -8,13 +8,13 @@ allowing them to be shared seamlessly across all components within the app.
 To easily access and update these variables programmatically, the package provides a robust object-based configuration API.
 You can perform CRUD operations, and any changes are instantly reflected in the corresponding CSS variables and propagated across all consuming components.
 
-With **spacer-config**, you can:
+With **spacing-config**, you can:
 
 - **Consume** configured spacing tokens across all UI components for consistent layout sizing.
 - **Access and manipulate** spacing configurations dynamically from JavaScript code.
-- **Define custom spacer tokens** or modify predefined spacing scales and default settings on the fly.
+- **Define custom spacing tokens** or modify predefined spacing scales and default settings on the fly.
 
-## 🧩 Spacer Variable Architecture & Naming Convention
+## 🧩 Spacing Variable Architecture & Naming Convention
 
 The spacing configuration divides its tokens into two categories:
 
@@ -30,7 +30,7 @@ The spacing configuration divides its tokens into two categories:
 
 ## ✨ Features
 
-✔ **CRUD-Driven Management** — Easily retrieve, add, update, and delete spacer tokens from JavaScript.  
+✔ **CRUD-Driven Management** — Easily retrieve, add, update, and delete spacing tokens from JavaScript.  
 ✔ **Direct Token Mapping** — Simple key-value pair structure.  
 ✔ **CSS-First Approach** — Minimal JavaScript runtime overhead; config propagation relies on native CSS variable cascades.  
 ✔ **Powered by @cssfn/core** — Efficient CSS-in-JS rendering supporting AOT for fast page loads and JIT for dynamic styling.  
@@ -63,9 +63,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-## Predefined Spacer Tokens
+## Predefined Spacing Tokens
 
-Below is an overview of the predefined spacer tokens:
+Below is an overview of the predefined spacing tokens:
 
 | Token           | Value              | Category | Description                 |
 | --------------- | ------------------ | -------- | --------------------------- |
@@ -81,17 +81,17 @@ Below is an overview of the predefined spacer tokens:
 | `spacingXl`     | `.spacingMd * 3`   | Specific | Extra-large spacing.        |
 
 > **⚠️ Warning:**
-> Do not delete the predefined spacer tokens, as standard components rely on their existence.
+> Do not delete the predefined spacing tokens, as standard components rely on their existence.
 > You are free to override their values, but the token keys themselves must remain intact.
 > Adding custom tokens is fully encouraged for additional spacing configurations.
 
-*(Need to customize? See [Adding and Updating Spacers](#adding-and-updating-spacers).)*
+*(Need to customize? See [Adding and Updating Spacing](#adding-and-updating-spacing).)*
 
 ## 📐 Usage and Customization
 
-Using `spacingConfigVars` or `spacingConfigVarDefs`, you can perform CRUD operations keyed by your desired spacer tokens.
+Using `spacingConfigVars` or `spacingConfigVarDefs`, you can perform CRUD operations keyed by your desired spacing tokens.
 
-### Retrieving Spacers
+### Retrieving Spacing
 
 - **`spacingConfigVars`** retrieves live CSS variable references (recommended for reactive component styling).
 - **`spacingConfigVarDefs`** retrieves the evaluated expressions or concrete values (snapshots at retrieval time, useful when your JavaScript logic needs raw spacing values).
@@ -100,17 +100,17 @@ Using `spacingConfigVars` or `spacingConfigVarDefs`, you can perform CRUD operat
 import { spacingConfigVars, spacingConfigVarDefs } from '@reusable-ui/spacing-config';
 
 // Gets live CSS variable references (reactive & linked to config):
-const spacerMediumRef  = spacingConfigVars.spacingMd; // Resolves to 'var(--spc-spacingMd)'
-const spacerDefaultRef = spacingConfigVars.spacing;   // Resolves to 'var(--spc-spacing)'
+const spacingMediumRef  = spacingConfigVars.spacingMd; // Resolves to 'var(--spc-spacingMd)'
+const spacingDefaultRef = spacingConfigVars.spacing;   // Resolves to 'var(--spc-spacing)'
 
 // Gets evaluated snapshot values/expressions (for JS logic calculations):
-const spacerMediumDef  = spacingConfigVarDefs.spacingMd; // Resolves to '1rem'
-const spacerDefaultDef = spacingConfigVarDefs.spacing;   // Resolves to 'var(--spc-spacingMd)'
+const spacingMediumDef  = spacingConfigVarDefs.spacingMd; // Resolves to '1rem'
+const spacingDefaultDef = spacingConfigVarDefs.spacing;   // Resolves to 'var(--spc-spacingMd)'
 ```
 
-### Adding and Updating Spacers
+### Adding and Updating Spacing
 
-To create or update (upsert) a spacer token, assign a concrete value or expression to either `spacingConfigVars` or `spacingConfigVarDefs` (both yield identical assignment results):
+To create or update (upsert) a spacing token, assign a concrete value or expression to either `spacingConfigVars` or `spacingConfigVarDefs` (both yield identical assignment results):
 
 ```ts
 import { spacingConfigVars, spacingConfigVarDefs } from '@reusable-ui/spacing-config';
@@ -148,9 +148,9 @@ spacingConfigVarDefs.spacingGiga = [[
 ]]; // Resolves to 'calc( var(--spc-spacingMd) * 18 )'
 ```
 
-### Deleting Spacers
+### Deleting Spacing
 
-To delete a spacer token, use the `delete` operator or assign `null` / `undefined` to either proxy. Both approaches yield identical results:
+To delete a spacing token, use the `delete` operator or assign `null` / `undefined` to either proxy. Both approaches yield identical results:
 
 ```ts
 import { spacingConfigVars, spacingConfigVarDefs } from '@reusable-ui/spacing-config';

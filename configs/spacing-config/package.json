@@ -3,7 +3,7 @@
   "version": "7.0.0",
   "description": "Configures the spacing system (margins, paddings, and gaps) across all UI components.",
   "keywords": [
-    "spacer-config",
+    "spacing-config",
     "spacing-system",
     "spacing",
     "margins",

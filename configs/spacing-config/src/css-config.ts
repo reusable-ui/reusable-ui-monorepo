@@ -19,13 +19,13 @@ import {
 // Configs:
 
 const config = cssConfig(() => {
-    // Static spacer widths:
+    // Static spacing widths:
     
     /**
-     * Predefined spacer widths for consistent spacing across components.
+     * Predefined spacing widths for consistent spacing across components.
      * Used to define margins, paddings, and gaps.
      */
-    const staticSpacerWidths = {
+    const staticSpacingWidths = {
         /**
          * No spacing.
          */
@@ -39,39 +39,39 @@ const config = cssConfig(() => {
     
     
     
-    // Computed spacer widths:
+    // Computed spacing widths:
     
     /**
-     * Dynamically calculated spacer widths based on `spacingMd` size.
+     * Dynamically calculated spacing widths based on `spacingMd` size.
      * Provides scaling options for finer control over spacing.
      */
-    const computedSpacerWidths = {
+    const computedSpacingWidths = {
         // Smaller than `spacingMd`:
         
         /**
          * Extra extra small spacing.
          */
-        spacingXxs    : [[ 'calc(', staticSpacerWidths.spacingMd, '/', 8  , ')' ]]      as CssLength,
+        spacingXxs    : [[ 'calc(', staticSpacingWidths.spacingMd, '/', 8  , ')' ]]     as CssLength,
         
         /**
          * Extra small spacing.
          */
-        spacingXs     : [[ 'calc(', staticSpacerWidths.spacingMd, '/', 4  , ')' ]]      as CssLength,
+        spacingXs     : [[ 'calc(', staticSpacingWidths.spacingMd, '/', 4  , ')' ]]     as CssLength,
         
         /**
          * Semi extra small spacing.
          */
-        spacingSemiXs : [[ 'calc(', staticSpacerWidths.spacingMd, '/', 3  , ')' ]]      as CssLength,
+        spacingSemiXs : [[ 'calc(', staticSpacingWidths.spacingMd, '/', 3  , ')' ]]     as CssLength,
         
         /**
          * Small spacing.
          */
-        spacingSm     : [[ 'calc(', staticSpacerWidths.spacingMd, '/', 2  , ')' ]]      as CssLength,
+        spacingSm     : [[ 'calc(', staticSpacingWidths.spacingMd, '/', 2  , ')' ]]     as CssLength,
         
         /**
          * Semi small spacing.
          */
-        spacingSemiSm : [[ 'calc(', staticSpacerWidths.spacingMd, '/', 1.5, ')' ]]      as CssLength,
+        spacingSemiSm : [[ 'calc(', staticSpacingWidths.spacingMd, '/', 1.5, ')' ]]     as CssLength,
         
         
         
@@ -80,40 +80,40 @@ const config = cssConfig(() => {
         /**
          * Large spacing.
          */
-        spacingLg     : [[ 'calc(', staticSpacerWidths.spacingMd, '*', 1.5, ')' ]]      as CssLength,
+        spacingLg     : [[ 'calc(', staticSpacingWidths.spacingMd, '*', 1.5, ')' ]]     as CssLength,
         
         /**
          * Extra large spacing.
          */
-        spacingXl     : [[ 'calc(', staticSpacerWidths.spacingMd, '*', 3  , ')' ]]      as CssLength,
+        spacingXl     : [[ 'calc(', staticSpacingWidths.spacingMd, '*', 3  , ')' ]]     as CssLength,
     };
     
     
     
-    // Default spacers:
+    // Default spacing:
     
     /**
      * Default spacing applied across components.
      */
-    const defaultSpacers = {
+    const defaultSpacing = {
         /**
          * Standard spacing.
          */
-        spacing       : staticSpacerWidths.spacingMd    as CssLength,
+        spacing       : staticSpacingWidths.spacingMd   as CssLength,
     };
     
     
     
-    // Merge all spacer definitions:
+    // Merge all spacing definitions:
     return {
-        ...staticSpacerWidths,
-        ...computedSpacerWidths,
-        ...defaultSpacers,
+        ...staticSpacingWidths,
+        ...computedSpacingWidths,
+        ...defaultSpacing,
     };
 }, { prefix: defaultSpacingConfigPrefix });
 
 /**
- * A `Refs<>` object represents CSS variables mapped to a **spacer system**, allowing dynamic adjustments through JavaScript.
+ * A `Refs<>` object represents CSS variables mapped to a **spacing system**, allowing dynamic adjustments through JavaScript.
  * 
  * These values should **not be manually modified outside this system**, as they are managed by `cssConfig()`.
  * 
@@ -152,7 +152,7 @@ const config = cssConfig(() => {
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for spacer-related definitions.
+ * In this case, we use **double brackets** for spacing-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -216,7 +216,7 @@ export const spacingConfigVars       = config[0];
  * - **Single brackets (`[...]`)** → `.join(', ')`  
  * - **Double brackets (`[[...]]`)** → `.join(' ')`  
  * 
- * In this case, we use **double brackets** for spacer-related definitions.
+ * In this case, we use **double brackets** for spacing-related definitions.
  * 
  * #### **Rendered CSS Variables Example**
  * Example of CSS variables generated:
@@ -240,16 +240,16 @@ export const spacingConfigVars       = config[0];
 export const spacingConfigVarDefs    = config[1];
 
 /**
- * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for spacer system**.
+ * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for spacing system**.
  * It provides control over prefixes, selectors, and dynamic updates.
  * 
  * - **Prefix Management:**  
- * Defines the prefix used for all spacer variables.
+ * Defines the prefix used for all spacing variables.
  * ```ts
  * spacingConfigVarOptions.prefix = 'spc';
  * ```
  * - **Selector Scope:**  
- * Ensures all spacer variables are declared inside `:root`.
+ * Ensures all spacing variables are declared inside `:root`.
  * ```ts
  * spacingConfigVarOptions.selector = ':root';
  * ```
@@ -258,7 +258,7 @@ export const spacingConfigVarDefs    = config[1];
  * ```ts
  * spacingConfigVarOptions.onChange.subscribe({
  *     next: () => {
- *         console.log("Spacer system updated!");
+ *         console.log("Spacing system updated!");
  *     },
  * });
  * ```
