@@ -1,6 +1,6 @@
-# @reusable-ui/spacer-config 📏  
+# @reusable-ui/spacing-config 📏  
 
-**@reusable-ui/spacer-config** configures the spacing system (margins, paddings, and gaps) across all UI components.
+**@reusable-ui/spacing-config** configures the spacing system (margins, paddings, and gaps) across all UI components.
 
 Under the hood, it stores configurations in native CSS variables placed at the `:root` level,
 allowing them to be shared seamlessly across all components within the app.
@@ -36,16 +36,16 @@ The spacing configuration divides its tokens into two categories:
 ✔ **Powered by @cssfn/core** — Efficient CSS-in-JS rendering supporting AOT for fast page loads and JIT for dynamic styling.  
 
 ## 📦 Installation & Setup  
-Install **@reusable-ui/spacer-config** via npm or yarn:
+Install **@reusable-ui/spacing-config** via npm or yarn:
 
 ```sh
-npm install @reusable-ui/spacer-config
+npm install @reusable-ui/spacing-config
 # or
-yarn add @reusable-ui/spacer-config
+yarn add @reusable-ui/spacing-config
 ```
 
 ## 🚀 Supporting Setup for CSSFN  
-In order for **@reusable-ui/spacer-config** to work, `<StaticStyles />` and `<HydrateStyles />` must be included inside `<head>` for correct CSS rendering:
+In order for **@reusable-ui/spacing-config** to work, `<StaticStyles />` and `<HydrateStyles />` must be included inside `<head>` for correct CSS rendering:
 
 ```ts
 import { StaticStyles, HydrateStyles } from '@cssfn/cssfn-react/server';
@@ -97,7 +97,7 @@ Using `spacingConfigVars` or `spacingConfigVarDefs`, you can perform CRUD operat
 - **`spacingConfigVarDefs`** retrieves the evaluated expressions or concrete values (snapshots at retrieval time, useful when your JavaScript logic needs raw spacing values).
 
 ```ts
-import { spacingConfigVars, spacingConfigVarDefs } from '@reusable-ui/spacer-config';
+import { spacingConfigVars, spacingConfigVarDefs } from '@reusable-ui/spacing-config';
 
 // Gets live CSS variable references (reactive & linked to config):
 const spacerMediumRef  = spacingConfigVars.spacingMd; // Resolves to 'var(--spc-spacingMd)'
@@ -113,7 +113,7 @@ const spacerDefaultDef = spacingConfigVarDefs.spacing;   // Resolves to 'var(--s
 To create or update (upsert) a spacer token, assign a concrete value or expression to either `spacingConfigVars` or `spacingConfigVarDefs` (both yield identical assignment results):
 
 ```ts
-import { spacingConfigVars, spacingConfigVarDefs } from '@reusable-ui/spacer-config';
+import { spacingConfigVars, spacingConfigVarDefs } from '@reusable-ui/spacing-config';
 
 // Assigning via spacingConfigVars:
 spacingConfigVars.spacingXxl = '6rem';
@@ -153,7 +153,7 @@ spacingConfigVarDefs.spacingGiga = [[
 To delete a spacer token, use the `delete` operator or assign `null` / `undefined` to either proxy. Both approaches yield identical results:
 
 ```ts
-import { spacingConfigVars, spacingConfigVarDefs } from '@reusable-ui/spacer-config';
+import { spacingConfigVars, spacingConfigVarDefs } from '@reusable-ui/spacing-config';
 
 // Deleting tokens using the delete operator:
 delete spacingConfigVars.spacingXxl;
@@ -169,12 +169,12 @@ This package is a **spacing system module** inside the [Reusable-UI](https://git
 For full UI components, visit **@reusable-ui/core** and **@reusable-ui/components**.
 
 ## 🤝 Contributing  
-Want to improve **@reusable-ui/spacer-config**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
+Want to improve **@reusable-ui/spacing-config**? Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines!  
 
 ## 🛡️ License  
 Licensed under the **MIT License** – see the [LICENSE](./LICENSE) file for details.  
 
 ---
 
-🚀 **@reusable-ui/spacer-config simplifies spacing management for dynamic UI designs.**  
+🚀 **@reusable-ui/spacing-config simplifies spacing management for dynamic UI designs.**  
 Give it a ⭐ on GitHub if you find it useful!

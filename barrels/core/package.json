@@ -124,7 +124,7 @@
     "@reusable-ui/read-only-state": "^7.0.0",
     "@reusable-ui/size-variant": "^7.0.0",
     "@reusable-ui/sort-state": "^7.0.0",
-    "@reusable-ui/spacer-config": "^7.0.0",
+    "@reusable-ui/spacing-config": "^7.0.0",
     "@reusable-ui/stripped-variant": "^7.0.0",
     "@reusable-ui/theme-variant": "^7.0.0",
     "@reusable-ui/transform-feature": "^7.0.0",

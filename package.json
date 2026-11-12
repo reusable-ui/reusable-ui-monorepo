@@ -51,7 +51,7 @@
     "configs/color-config",
     "configs/border-config",
     "configs/radius-config",
-    "configs/spacer-config",
+    "configs/spacing-config",
     "configs/breakpoint-config",
     "configs/typo-config",
     "utilities/strict-props",

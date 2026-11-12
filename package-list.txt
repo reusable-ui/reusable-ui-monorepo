@@ -5,7 +5,7 @@
 @reusable-ui/color-config
 @reusable-ui/border-config
 @reusable-ui/radius-config
-@reusable-ui/spacer-config
+@reusable-ui/spacing-config
 @reusable-ui/breakpoint-config
 @reusable-ui/typo-config
 

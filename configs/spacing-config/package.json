@@ -1,5 +1,5 @@
 {
-  "name": "@reusable-ui/spacer-config",
+  "name": "@reusable-ui/spacing-config",
   "version": "7.0.0",
   "description": "Configures the spacing system (margins, paddings, and gaps) across all UI components.",
   "keywords": [
@@ -22,7 +22,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reusable-ui/reusable-ui-monorepo.git",
-    "directory": "configs/spacer-config"
+    "directory": "configs/spacing-config"
   },
   "bugs": {
     "url": "https://github.com/reusable-ui/reusable-ui-monorepo/issues"
