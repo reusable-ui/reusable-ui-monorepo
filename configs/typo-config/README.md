@@ -21,12 +21,12 @@ The typography configuration divides its tokens into two categories:
 1. **General Typography Properties (Defaults):**
   Base typography properties that define the global defaults for font size, family, weight, line height, and wrapping rules across standard components.
   These serve as the foundational fallback for text styling and hierarchy.
-  - **Naming Format:** Written in bare format `<property>` (e.g., `fontSize`, `fontFamily`, `fontWeight`, `lineHeight`).
+  - **Naming Format:** Written in bare format `<domain>` (e.g., `fontSize`, `fontFamily`, `fontWeight`, `lineHeight`).
 
 2. **Specific Typography Properties (Variants):**
   Specific typography properties that allow for fine-tuned control over the appearance of different text types, such as headings, paragraphs, and other typographic elements.
   These serve as scale variants and alternatives to the general typography properties, allowing developers to customize typography for different UI elements and layouts.
-  - **Naming Format:** Written with the property as a namespace prefix followed by the variant `<property><Variant>` (e.g., `fontSizeSm`, `fontSizeMd`, `fontFamilySans`, `fontFamilySerif`).
+  - **Naming Format:** Written with the domain as a namespace prefix followed by the variant `<domain><Variant>` (e.g., `fontSizeSm`, `fontSizeMd`, `fontFamilySans`, `fontFamilySerif`).
 
 ## ✨ Features
 

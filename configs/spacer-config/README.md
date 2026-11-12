@@ -21,12 +21,12 @@ The spacing configuration divides its tokens into two categories:
 1. **General Spacing Properties (Defaults):**
   Base spacing properties that define the global default spacing across standard components.
   These serve as the foundational fallback for layout sizing.
-  - **Naming Format:** Written in bare format `<property>` (e.g., `spacing`).
+  - **Naming Format:** Written in bare format `<domain>` (e.g., `spacing`).
 
 2. **Specific Spacing Properties (Variants):**
   Specific spacing properties that allow for fine-tuned control over explicit margins, paddings, and gaps.
   These serve as scale variants to the general spacing properties, allowing developers to customize spacing for different UI elements and layouts.
-  - **Naming Format:** Written with the property as a namespace prefix followed by the variant `<property><Variant>` (e.g., `spacingNone`, `spacingXxs`, `spacingMd`, `spacingLg`).
+  - **Naming Format:** Written with the domain as a namespace prefix followed by the variant `<domain><Variant>` (e.g., `spacingNone`, `spacingXxs`, `spacingMd`, `spacingLg`).
 
 ## ✨ Features
 
