@@ -29,7 +29,7 @@ Rather than writing manual CSS conditionals or locking yourself into rigid compo
 
 The framework is organized into comprehensive subsystem modules exported through `@ui-engine/core`:
 
-1. **Configurations (`@ui-engine/*-config`):** Acts as the single source of truth for global design tokens (colors, borders, radii, spacers, breakpoints, and typography) exposed as CSS configuration variables.
+1. **Configurations (`@ui-engine/*-config`):** Acts as the single source of truth for global design tokens (colors, borders, radii, spacing, breakpoints, and typography) exposed as CSS configuration variables.
 
 
 2. **Universal Utilities:** Low-level helpers for strict prop validation, numeric precision, React node handling, CSS resets, SSR/client environment checks, isomorphic hooks, lifecycles, and directionality (RTL/LTR).
