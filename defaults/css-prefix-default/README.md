@@ -35,7 +35,7 @@ Import the default prefixes when defining `cssConfig` or `cssVars` in your packa
 import {
     // Configs:
     defaultColorConfigPrefix,
-    defaultSpacerConfigPrefix,
+    defaultSpacingConfigPrefix,
     
     // Variants:
     defaultThemeVariantPrefix,
@@ -50,8 +50,8 @@ import {
 // color-config:
 const colorConfig = cssConfig(() => { ... }, { prefix: defaultColorConfigPrefix });
 
-// spacer-config:
-const spacerConfig = cssConfig(() => { ... }, { prefix: defaultSpacerConfigPrefix });
+// spacing-config:
+const spacingConfig = cssConfig(() => { ... }, { prefix: defaultSpacingConfigPrefix });
 
 // theme-variant:
 export const [themeVariantVars, themeVariantOptions] = cssVars<ThemeVariantVars>({
