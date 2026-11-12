@@ -23,7 +23,7 @@ import {
 
 // Reusable-ui configs:
 import {
-    spacerConfigVars,
+    spacingConfigVars,
 }                           from '@reusable-ui/spacer-config'       // A flexible spacer management system for web components, utilizing CSS custom properties to enable dynamic spacing, theming, and customization.
 
 // Reusable-ui variants:
@@ -43,7 +43,7 @@ import {
 export const usingPaddingFeature = (options?: CssPaddingFeatureOptions): CssPaddingFeature => {
     // Extract options and assign defaults:
     const {
-        padding            = spacerConfigVars.spacing,
+        padding            = spacingConfigVars.spacing,
         paddingInline      = padding,
         paddingBlock       = padding,
         paddingInlineStart = paddingInline,

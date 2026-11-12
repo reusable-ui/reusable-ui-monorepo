@@ -89,60 +89,60 @@ Below is an overview of the predefined spacer tokens:
 
 ## 📐 Usage and Customization
 
-Using `spacerConfigVars` or `spacerConfigVarDefs`, you can perform CRUD operations keyed by your desired spacer tokens.
+Using `spacingConfigVars` or `spacingConfigVarDefs`, you can perform CRUD operations keyed by your desired spacer tokens.
 
 ### Retrieving Spacers
 
-- **`spacerConfigVars`** retrieves live CSS variable references (recommended for reactive component styling).
-- **`spacerConfigVarDefs`** retrieves the evaluated expressions or concrete values (snapshots at retrieval time, useful when your JavaScript logic needs raw spacing values).
+- **`spacingConfigVars`** retrieves live CSS variable references (recommended for reactive component styling).
+- **`spacingConfigVarDefs`** retrieves the evaluated expressions or concrete values (snapshots at retrieval time, useful when your JavaScript logic needs raw spacing values).
 
 ```ts
-import { spacerConfigVars, spacerConfigVarDefs } from '@reusable-ui/spacer-config';
+import { spacingConfigVars, spacingConfigVarDefs } from '@reusable-ui/spacer-config';
 
 // Gets live CSS variable references (reactive & linked to config):
-const spacerMediumRef  = spacerConfigVars.spacingMd; // Resolves to 'var(--spc-spacingMd)'
-const spacerDefaultRef = spacerConfigVars.spacing;   // Resolves to 'var(--spc-spacing)'
+const spacerMediumRef  = spacingConfigVars.spacingMd; // Resolves to 'var(--spc-spacingMd)'
+const spacerDefaultRef = spacingConfigVars.spacing;   // Resolves to 'var(--spc-spacing)'
 
 // Gets evaluated snapshot values/expressions (for JS logic calculations):
-const spacerMediumDef  = spacerConfigVarDefs.spacingMd; // Resolves to '1rem'
-const spacerDefaultDef = spacerConfigVarDefs.spacing;   // Resolves to 'var(--spc-spacingMd)'
+const spacerMediumDef  = spacingConfigVarDefs.spacingMd; // Resolves to '1rem'
+const spacerDefaultDef = spacingConfigVarDefs.spacing;   // Resolves to 'var(--spc-spacingMd)'
 ```
 
 ### Adding and Updating Spacers
 
-To create or update (upsert) a spacer token, assign a concrete value or expression to either `spacerConfigVars` or `spacerConfigVarDefs` (both yield identical assignment results):
+To create or update (upsert) a spacer token, assign a concrete value or expression to either `spacingConfigVars` or `spacingConfigVarDefs` (both yield identical assignment results):
 
 ```ts
-import { spacerConfigVars, spacerConfigVarDefs } from '@reusable-ui/spacer-config';
+import { spacingConfigVars, spacingConfigVarDefs } from '@reusable-ui/spacer-config';
 
-// Assigning via spacerConfigVars:
-spacerConfigVars.spacingXxl = '6rem';
+// Assigning via spacingConfigVars:
+spacingConfigVars.spacingXxl = '6rem';
 
 // Using string interpolation to construct dynamic expressions:
 // - Ideal for creating formulas driven by one or more variables.
-spacerConfigVars.spacingMega = `calc(${spacerConfigVars.spacingMd} * 9)`;
+spacingConfigVars.spacingMega = `calc(${spacingConfigVars.spacingMd} * 9)`;
 
 // Alternative syntax to string interpolation (using double brackets `[[...]]` to automatically join array items with spaces):
-spacerConfigVars.spacingGiga = [[
+spacingConfigVars.spacingGiga = [[
   'calc(',
-  spacerConfigVars.spacingMd,
+  spacingConfigVars.spacingMd,
   '* 18',
   ')',
 ]]; // Resolves to 'calc( var(--spc-spacingMd) * 18 )'
 
 
 
-// Alternatively, assigning via spacerConfigVarDefs:
-spacerConfigVarDefs.spacingXxl = '6rem';
+// Alternatively, assigning via spacingConfigVarDefs:
+spacingConfigVarDefs.spacingXxl = '6rem';
 
 // Using string interpolation to construct dynamic expressions:
 // - Ideal for creating formulas driven by one or more variables.
-spacerConfigVarDefs.spacingMega = `calc(${spacerConfigVars.spacingMd} * 9)`;
+spacingConfigVarDefs.spacingMega = `calc(${spacingConfigVars.spacingMd} * 9)`;
 
 // Alternative syntax to string interpolation (using double brackets `[[...]]` to automatically join array items with spaces):
-spacerConfigVarDefs.spacingGiga = [[
+spacingConfigVarDefs.spacingGiga = [[
   'calc(',
-  spacerConfigVars.spacingMd,
+  spacingConfigVars.spacingMd,
   '* 18',
   ')',
 ]]; // Resolves to 'calc( var(--spc-spacingMd) * 18 )'
@@ -153,15 +153,15 @@ spacerConfigVarDefs.spacingGiga = [[
 To delete a spacer token, use the `delete` operator or assign `null` / `undefined` to either proxy. Both approaches yield identical results:
 
 ```ts
-import { spacerConfigVars, spacerConfigVarDefs } from '@reusable-ui/spacer-config';
+import { spacingConfigVars, spacingConfigVarDefs } from '@reusable-ui/spacer-config';
 
 // Deleting tokens using the delete operator:
-delete spacerConfigVars.spacingXxl;
-delete spacerConfigVars.spacingMega;
+delete spacingConfigVars.spacingXxl;
+delete spacingConfigVars.spacingMega;
 
 // Deleting tokens using null or undefined assignment:
-spacerConfigVarDefs.spacingXxl = null;
-spacerConfigVarDefs.spacingMega = undefined;
+spacingConfigVarDefs.spacingXxl = null;
+spacingConfigVarDefs.spacingMega = undefined;
 ```
 
 ## 📖 Part of the Reusable-UI Framework  

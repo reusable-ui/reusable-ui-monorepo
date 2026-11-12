@@ -123,28 +123,28 @@ const config = cssConfig(() => {
  * #### **Retrieving a CSS Variable (Getter)**
  * Access the CSS variable reference:
  * ```ts
- * const value = spacerConfigVars.spacingLg; // Resolves to "var(--spc-spacingLg)"
+ * const value = spacingConfigVars.spacingLg; // Resolves to "var(--spc-spacingLg)"
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * spacerConfigVars.spacingCustom = "50px"; // Generates "--spc-spacingCustom: 50px;"
+ * spacingConfigVars.spacingCustom = "50px"; // Generates "--spc-spacingCustom: 50px;"
  * ```
  * 
  * **Definition Assignment:**
  * ```ts
- * spacerConfigVars.myDefinition = [[
- *    "clamp(", spacerConfigVars.spacingXs, ", ", "0.25%", ", ", spacerConfigVars.spacingXl, ")"
+ * spacingConfigVars.myDefinition = [[
+ *    "clamp(", spacingConfigVars.spacingXs, ", ", "0.25%", ", ", spacingConfigVars.spacingXl, ")"
  * ]]; // Generates "--spc-myDefinition: clamp(var(--spc-spacingXs), 0.25%, var(--spc-spacingXl));"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete spacerConfigVars.spacingCustom;
- * spacerConfigVars.spacingCustom = null;
- * spacerConfigVars.spacingCustom = undefined;
+ * delete spacingConfigVars.spacingCustom;
+ * spacingConfigVars.spacingCustom = null;
+ * spacingConfigVars.spacingCustom = undefined;
  * ```
  * 
  * #### **Definition Handling**
@@ -173,7 +173,7 @@ const config = cssConfig(() => {
  * }
  * ```
  */
-export const spacerConfigVars       = config[0];
+export const spacingConfigVars       = config[0];
 
 /**
  * A `Vals<>` object represents **structured CSS definitions**, allowing direct retrieval and modification.
@@ -187,28 +187,28 @@ export const spacerConfigVars       = config[0];
  * #### **Retrieving a CSS Definition (Getter)**
  * Access the assembled CSS definition:  
  * ```ts
- * const definition = spacerConfigVarDefs.spacingLg; // Resolves to [[ "calc(", spacerConfigVars.spacingMd, " * 1.5)" ]]
+ * const definition = spacingConfigVarDefs.spacingLg; // Resolves to [[ "calc(", spacingConfigVars.spacingMd, " * 1.5)" ]]
  * ```
  * 
  * #### **Assigning a Custom Value (Setter)**
  * **Direct Assignment:**
  * ```ts
- * spacerConfigVarDefs.spacingCustom = "50px"; // Generates "--spc-spacingCustom: 50px;"
+ * spacingConfigVarDefs.spacingCustom = "50px"; // Generates "--spc-spacingCustom: 50px;"
  * ```
  * 
  * **Definition Assignment:**
  * ```ts
- * spacerConfigVarDefs.myDefinition = [[
- *    "clamp(", spacerConfigVars.spacingXs, ", ", "0.25%", ", ", spacerConfigVars.spacingXl, ")"
+ * spacingConfigVarDefs.myDefinition = [[
+ *    "clamp(", spacingConfigVars.spacingXs, ", ", "0.25%", ", ", spacingConfigVars.spacingXl, ")"
  * ]]; // Generates "--spc-myDefinition: clamp(var(--spc-spacingXs), 0.25%, var(--spc-spacingXl));"
  * ```
  * 
  * #### **Removing a CSS Variable**
  * A variable can be removed using any of the following:
  * ```ts
- * delete spacerConfigVarDefs.spacingCustom;
- * spacerConfigVarDefs.spacingCustom = null;
- * spacerConfigVarDefs.spacingCustom = undefined;
+ * delete spacingConfigVarDefs.spacingCustom;
+ * spacingConfigVarDefs.spacingCustom = null;
+ * spacingConfigVarDefs.spacingCustom = undefined;
  * ```
  * 
  * #### **Definition Handling**
@@ -237,7 +237,7 @@ export const spacerConfigVars       = config[0];
  * }
  * ```
  */
-export const spacerConfigVarDefs    = config[1];
+export const spacingConfigVarDefs    = config[1];
 
 /**
  * A `LiveCssConfigOptions` object manages configuration related to **CSS variables for spacer system**.
@@ -246,17 +246,17 @@ export const spacerConfigVarDefs    = config[1];
  * - **Prefix Management:**  
  * Defines the prefix used for all spacer variables.
  * ```ts
- * spacerConfigVarOptions.prefix = 'spc';
+ * spacingConfigVarOptions.prefix = 'spc';
  * ```
  * - **Selector Scope:**  
  * Ensures all spacer variables are declared inside `:root`.
  * ```ts
- * spacerConfigVarOptions.selector = ':root';
+ * spacingConfigVarOptions.selector = ':root';
  * ```
  * - **Change Listener:**  
  * Detects updates and responds dynamically.
  * ```ts
- * spacerConfigVarOptions.onChange.subscribe({
+ * spacingConfigVarOptions.onChange.subscribe({
  *     next: () => {
  *         console.log("Spacer system updated!");
  *     },
@@ -280,10 +280,10 @@ export const spacerConfigVarDefs    = config[1];
  * }
  * ```
  */
-export const spacerConfigVarOptions = config[2];
+export const spacingConfigVarOptions = config[2];
 
 
 
 export {
-    spacerConfigVars as default, // Default export for simplified imports.
+    spacingConfigVars as default, // Default export for simplified imports.
 }

@@ -112,7 +112,7 @@ The final paddings (`paddingInlineStart`, `paddingBlockEnd`, etc.) are determine
 
 1. Framework override (based on active conditions)
 2. Explicit values from `CssPaddingFeatureOptions`
-3. Config fallback (default: `spacerConfigVars.spacing`)
+3. Config fallback (default: `spacingConfigVars.spacing`)
 
 ---
 
